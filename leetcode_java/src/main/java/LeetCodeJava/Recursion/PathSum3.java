@@ -179,6 +179,13 @@ public class PathSum3 {
         // 2. Check for paths ending at the current node.
         // If (currentSum - targetSum) exists in the map, it means there is a segment
         // starting from an ancestor that, when added to the segment from ancestor+1 to 'node', equals targetSum.
+        /** NOTE !!!
+         *
+         *  `2 sum` trick
+         *  -> via requiredAncestorSum = currentSum - targetSum,
+         *    we can check if there is a candidate in the visited node,
+         *    then we can update the cnt to map accordingly
+         */
         long requiredAncestorSum = currentSum - targetSum;
         if (prefixSumCounts.containsKey(requiredAncestorSum)) {
             count += prefixSumCounts.get(requiredAncestorSum);
