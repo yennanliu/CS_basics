@@ -80,7 +80,6 @@
 			- 124
 	- LC 104 Maximum Depth of Binary Tree
 		- gpt
-			- 129
 			- 124
 			- 297
 		- gemini
