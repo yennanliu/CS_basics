@@ -4,7 +4,9 @@ package LeetCodeJava.Recursion;
 
 import LeetCodeJava.DataStructure.TreeNode;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -44,6 +46,42 @@ public class PathSum3 {
 //    public int pathSum(TreeNode root, int targetSum) {
 //
 //    }
+
+    // V0-1
+    // IDEA: DFS + HASHMAP (fixed by gpt)
+    // map: { path_sum : count }
+    Map<Long, Integer> pathCntMap = new HashMap<>();
+
+    public int pathSum_0_1(TreeNode root, int targetSum) {
+        if (root == null)
+            return 0;
+
+        getPathHelper(root, new ArrayList<>());
+        return pathCntMap.getOrDefault((long) targetSum, 0);
+    }
+
+    private void getPathHelper(TreeNode node, List<Long> cur) {
+        if (node == null)
+            return;
+
+        // add current node
+        cur.add((long) node.val);
+
+        // update all sub-path sums ending at this node
+        long sum = 0;
+        for (int i = cur.size() - 1; i >= 0; i--) {
+            sum += cur.get(i);
+            pathCntMap.put(sum, pathCntMap.getOrDefault(sum, 0) + 1);
+        }
+
+        // DFS
+        getPathHelper(node.left, cur);
+        getPathHelper(node.right, cur);
+
+        // backtrack
+        cur.remove(cur.size() - 1);
+    }
+    
 
     // V1
     // https://leetcode.ca/2017-02-09-437-Path-Sum-III/

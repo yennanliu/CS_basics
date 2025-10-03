@@ -615,10 +615,94 @@ public class WorkSpace17 {
     }
 
     // LC 437
+    // 10.47 - 10.57 am
+    /**
+     *  -> return the `number of paths` where the sum of the
+     *    values along the path equals `targetSum.`
+     *
+     *  - The path `DOES NOT` need to` start or end at the root or a leaf,`
+     *     but it must go `downwards `
+     *    (i.e., traveling only from parent nodes to child nodes).
+     *
+     *  IDEA 1) DFS (pre-order traverse) + HASHMAP
+     *
+     */
+    // map:  { path_sum: paths }
+    Map<Integer, List<Integer>> pathCntMap = new HashMap<>();
+    //List<Integer> cur = new ArrayList<>();
     public int pathSum(TreeNode root, int targetSum) {
+        // edge
+        if(root == null){
+            return 0;
+        }
+        if(root.left == null && root.right == null){
+            return root.val == targetSum ? 1: 0;
+        }
 
-        return 0;
+        // dfs
+        getPathHelper2(root, new ArrayList<>());
+        System.out.println(">>> pathCntMap = " + pathCntMap);
+
+        if(!pathCntMap.containsKey(targetSum)){
+            return 0;
+        }
+        return pathCntMap.get(targetSum).size();
     }
+
+    private void getPathHelper2(TreeNode root, List<Integer> cur){
+        // edge
+        if(root == null){
+            return;
+        }
+        // NOTE !!! add cur root val to cache first
+        cur.add(root.val);
+
+        // update to map
+        int _sum = getListSum(cur);
+        List<Integer> collected = new ArrayList<>();
+        if(pathCntMap.containsKey(_sum)){
+            collected = pathCntMap.get(_sum);
+        }
+        collected.add(_sum);
+        pathCntMap.put(_sum, collected);
+//
+//        // ??? do the same on `single cur node` ???
+//        List<Integer> collected2 = new ArrayList<>();
+//        if(pathCntMap.containsKey(root.val)){
+//            collected2 = pathCntMap.get(_sum);
+//        }
+//        collected2.add(root.val);
+//        pathCntMap.put(root.val, collected2);
+//        pathCntMap.put(_sum, getToUpdateValues(pathCntMap, root, _sum));
+//        pathCntMap.put(_sum, getToUpdateValues(pathCntMap, root, root.val));
+
+        getPathHelper2(root.left, cur);
+        getPathHelper2(root.right, cur);
+
+        // NOTE !!! backtrack
+        cur.remove(cur.size() - 1);
+
+    }
+
+    private List<Integer> getToUpdateValues(Map<Integer, List<Integer>> pathCntMap, TreeNode node, int val){
+        List<Integer> collected = new ArrayList<>();
+        //int val = node.val;
+        if(pathCntMap.containsKey(val)){
+            collected = pathCntMap.get(val);
+        }
+        collected.add(val);
+        return collected;
+    }
+
+    private int getListSum(List<Integer> list){
+        int res = 0;
+        for(int x: list){
+            res += x;
+        }
+        return res;
+    }
+
+
 
 
 
