@@ -802,6 +802,11 @@ public class WorkSpace17 {
         return true;
     }
 
+    // LC 1838
+    public int maxFrequency(int[] nums, int k) {
+
+        return 0;
+    }
 
 
 
