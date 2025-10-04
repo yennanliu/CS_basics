@@ -703,6 +703,101 @@ public class WorkSpace17 {
     }
 
 
+    // LC 298
+    // 17.32 - 42 pm
+    /**
+     * -> Given a `binary tree`,
+     *    find the `length` of
+     *    the `longest consecutive sequence path.`
+     *
+     *
+     *  - The` path` refers to any sequence
+     *   of nodes from some starting node to any node
+     *    in the tree along the parent-child connections. The longest consecutive
+     *    path need to be from parent to child (cannot be the reverse)
+     *
+     *  - e.g. path: from ANY node, to its child (top -> down)
+     *
+     *
+     *  IDEA 1) DFS + PATH + HASHMAP
+     *
+     *   -> get path per node and save in hashMap
+     *   -> then iterate over key in map
+     *   -> and find the path with max length
+     *
+     */
+    // map: { node : path(child_1, child_2,....) }
+    Map<TreeNode, List<Integer>> pathMap2 = new HashMap<>();
+    public int longestConsecutive(TreeNode root) {
+        // edge
+        if(root == null){
+            return 0;
+        }
+        if(root.left == null && root.right == null){
+            return 1;
+        }
+        int maxConsecutivePathLen = 0;
+        for(List<Integer> path: pathMap2.values()){
+            if(isConsecutive(path)){
+                maxConsecutivePathLen = Math.max(maxConsecutivePathLen, path.size());
+            }
+        }
+        return maxConsecutivePathLen;
+    }
+
+    private void getNodePath(TreeNode node, List<Integer> path){
+        // edge
+        if(node == null){
+            return;
+        }
+        // NOTE !!! add path to cur first
+        path.add(node.val);
+
+        // add to
+
+        List<Integer> savedPath = new ArrayList<>();
+        // ???
+        if(pathMap2.containsKey(node)){
+            savedPath = pathMap2.get(node);
+        }
+        savedPath.add(node.val);
+
+        // ?????
+        /** NOTE !!!
+         *
+         *  trick below:
+         *
+         *   via iterate the `collected` path, we can get all possible `sub path`
+         *   from the path
+         */
+//        for(int i = 0; i < savedPath.size(); i++){
+//            List<Integer> subPath = savedPath.subList(0, i);
+//            pathMap2.put()
+//        }
+        pathMap2.put(node, savedPath);
+
+
+        // recursive call (DFS)
+        getNodePath(node.left, path);
+        getNodePath(node.right, path);
+
+        // backtrack !!!! (undo)
+        path.remove(path.size() - 1);
+    }
+
+    private boolean isConsecutive(List<Integer> path){
+        //int res = 0;
+        int prev = path.get(0);
+        for(int i = 1; i < path.size(); i++){
+            if(path.get(i) != prev + 1){
+                return false;
+            }
+            prev = path.get(i);
+            //res += 1;
+        }
+
+        return true;
+    }
 
 
 

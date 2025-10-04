@@ -82,8 +82,6 @@
 		- gpt
 			- 297
 		- gemini
-			- 124
-			- 298
 	- LC 100 Same Tree
 		- gpt
 		- gemini
