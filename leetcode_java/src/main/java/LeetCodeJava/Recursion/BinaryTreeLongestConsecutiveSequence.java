@@ -75,7 +75,7 @@ public class BinaryTreeLongestConsecutiveSequence {
     // TODO : validate it
     int longestCnt = 0;
 
-    public int longestConsecutive_0_1(TreeNode root) {
+    public int longestConsecutive(TreeNode root) {
         if (root == null) {
             return 0;
         }
@@ -137,6 +137,89 @@ public class BinaryTreeLongestConsecutiveSequence {
         // Return the max length between left and right consecutive paths
         return Math.max(leftCount, rightCount) + 1;  // Include current node
     }
+
+    // V0-1
+    // IDEA: DFS (fixed by gpt)
+    // TODO: validate
+    public int longestConsecutive_0_1(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        return dfs(root, root.val - 1, 0);
+    }
+
+    private int dfs(TreeNode node, int prevVal, int currLen) {
+        if (node == null) {
+            return currLen;
+        }
+
+        // Check consecutive condition
+        if (node.val == prevVal + 1) {
+            currLen = currLen + 1;
+        } else {
+            currLen = 1;
+        }
+
+        int leftMax = dfs(node.left, node.val, currLen);
+        int rightMax = dfs(node.right, node.val, currLen);
+
+        // Return max among current, left subtree, right subtree
+        return Math.max(currLen, Math.max(leftMax, rightMax));
+    }
+
+    // V0-2
+    // IDEA: DFS (gemini)
+    // TODO: validate
+    // Global variable to track the maximum consecutive path length found anywhere in the tree.
+    private int maxLen = 0;
+
+    public int longestConsecutive_0_2(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+
+        // Start the DFS. The return value of the helper is discarded in the main function;
+        // the global maxLen is updated inside the helper.
+        dfs(root);
+
+        return maxLen;
+    }
+
+    /**
+     * Finds the length of the longest consecutive sequence *ending* at the current node.
+     * @param node The current node.
+     * @return The length of the longest consecutive sequence ending at 'node'.
+     */
+    private int dfs(TreeNode node) {
+        if (node == null) {
+            return 0;
+        }
+
+        // Recursively find the longest consecutive path lengths ending at children.
+        int leftLen = dfs(node.left);
+        int rightLen = dfs(node.right);
+
+        // Current length starts at 1 (the node itself).
+        int currentLen = 1;
+
+        // Check if the current node extends the left path.
+        if (node.left != null && node.left.val == node.val + 1) {
+            currentLen = Math.max(currentLen, leftLen + 1);
+        }
+
+        // Check if the current node extends the right path.
+        if (node.right != null && node.right.val == node.val + 1) {
+            currentLen = Math.max(currentLen, rightLen + 1);
+        }
+
+        // Update the global maximum path length.
+        maxLen = Math.max(maxLen, currentLen);
+
+        // Return the length of the path that can be EXTENDED by the parent.
+        // The parent can only choose to extend the current node's path in ONE direction (upwards).
+        return currentLen;
+    }
+
 
     // V1
     // IDEA : TREE, RECURSION
@@ -224,4 +307,6 @@ public class BinaryTreeLongestConsecutiveSequence {
         return len;
     }
 
+
+    
 }
