@@ -1046,6 +1046,125 @@ class Solution(object):
         return root
 ```
 
+```java
+// java
+// LC 450
+// V0
+// IDEA: DFS + BST property
+/**
+ *
+ * (when found a node to delete)
+ *
+ *    // Case 1: No children
+ *
+ *    // Case 2: One child
+ *
+ *    // Case 3: Two children
+ *
+ */
+/**
+ *
+ *  Summary of Deletion Strategy:
+ *
+ *
+ *  | Case         | Description        | What Happens                                  |
+ * |--------------|--------------------|-----------------------------------------------|
+ * | Leaf         | No children         | Return `null`                                 |
+ * | One Child    | One child           | Replace node with its child                   |
+ * | Two Children | Both children       | Replace with in-order successor, then delete the successor |
+ *
+ *
+ *  `in-order successor`:  Left → root → Right
+ */
+
+public TreeNode deleteNode(TreeNode root, int key) {
+    return deleteNodeHelper_0(root, key);
+}
+
+private TreeNode deleteNodeHelper_0(TreeNode root, int key) {
+    if (root == null) {
+        return null;
+    }
+
+    /**
+     * CASE 1)  NOT found a node to delete
+     */
+    if (key < root.val) {
+        // search in left subtree
+        /**
+         *  NOTE !!!
+         *
+         *   we assign `left sub tree` as res from deleteNodeHelper_0(root.left, key)
+         *
+         *   -> NOT return `deleteNodeHelper_0(root.left, key)`
+         *      as res directly, since it deleteNodeHelper_0
+         *      could NOT be a null val, we need it to assign root.left,
+         *      so we can keep `whole BST info`
+         */
+        root.left = deleteNodeHelper_0(root.left, key);
+    } else if (key > root.val) {
+        // search in right subtree
+        /**
+         *  NOTE !!!
+         *
+         *   we assign `right sub tree` as res from deleteNodeHelper_0(root.right, key)
+         */
+        root.right = deleteNodeHelper_0(root.right, key);
+    }
+    /**
+     * CASE 2)  Found a node to delete
+     */
+    else {
+        // Case 1: No left child
+        if (root.left == null) {
+            return root.right;
+        }
+
+        // Case 2: No right child
+        if (root.right == null) {
+            return root.left;
+        }
+
+        /**
+         *  NOTE !!!! below
+         *
+         *  step 1) find `min` val  (`sub right tree`)
+         *  step 2) set root val as min val
+         *  step 3)  delete the `min` val node from sub right tree
+         *             - `recursively` call `deleteNodeHelper`
+         *
+         */
+        // Case 3: Two children → find inorder successor
+        /**
+         *  NOTE !!!
+         *
+         *   we need to find a `min` tree from `sub right tree`
+         *   as a node to `swap` with current node.
+         *
+         *   Reason:
+         *      since it is a BST, so  `left < root < right`.
+         *      so after swapping `min` from sub right tree.
+         *      with current node
+         *          -> the tree `remains` BST.
+         *          we DON'T have to do any further modification.
+         *
+         */
+        TreeNode minNode = findMin_0(root.right);
+        root.val = minNode.val; // copy value
+        root.right = deleteNodeHelper(root.right, minNode.val); // delete successor
+    }
+
+    return root;
+}
+
+private TreeNode findMin_0(TreeNode node) {
+    while (node.left != null) {
+        node = node.left;
+    }
+    return node;
+}
+```
+
 ### 2-4) Find Duplicate Subtrees
 ```python
 # 652 Find Duplicate Subtrees
