@@ -138,11 +138,113 @@ public class BinaryTreeLongestConsecutiveSequence {
     }
 
     // V0-0-1
+    // IDEA: 437. Path Sum III (gpt)
+    // TODO: validate
+    /**
+     *  DEMO:
+     *
+     *  ✅ Yes — that’s a very sharp observation.
+     * You can absolutely reuse the LC 437 (Path Sum III) idea to solve LC 298 (Longest Consecutive Sequence) in a clean, efficient way — just swap out the “path sum accumulation” logic with “check subpath consecutiveness” logic.
+     *
+     * ⸻
+     *
+     * 🧠 Why this works
+     *
+     * In LC 437, the trick is:
+     * 	•	Maintain a cur list = path from root → current node.
+     * 	•	At each node, scan backward to get all subpaths ending at this node, and aggregate their sums into a map.
+     *
+     * For LC 298, instead of summing, we can:
+     * 	•	Maintain cur list = path from root → current node.
+     * 	•	At each node, scan backward through cur to find the longest consecutive increasing subpath ending at this node.
+     * 	•	Keep a global maxLen.
+     *
+     * This perfectly matches your earlier idea:
+     *
+     * for node “1”, we want to collect [1], [1,3], [1,3,2], [1,3,4], [1,3,4,5] — i.e. all subpaths ending at each node.
+     *
+     * ⸻
+     *
+     * ✅ Walkthrough on your example tree
+     *
+     *    1
+     *     \
+     *      3
+     *     / \
+     *    2   4
+     *         \
+     *          5
+     *
+     * 	•	Path to node 5: [1, 3, 4, 5]
+     * 	•	Backward scan: 5 ← 4 ← 3 ← 1
+     * 	•	Consecutive sequence length = 3 (3 → 4 → 5)
+     * 	•	Path to node 2: [1, 3, 2]
+     * 	•	2 ← 3 ← 1 → break at 3→2 (not consecutive)
+     * 	•	max remains 3
+     *
+     * Final maxConsecutive = 3 ✅
+     *
+     * ⸻
+     *
+     * 📝 Key differences vs your original code
+     * 	•	No need for pathMap2 to store all paths.
+     * 	•	We compute on the fly, like LC 437’s prefix-sum approach.
+     * 	•	Uses List<Integer> path + backtrack, but no extra map needed.
+     *
+     * ⸻
+     *
+     * ✅ Advantages
+     * 	•	Reuses a well-known LC 437 DFS pattern.
+     * 	•	Time complexity: O(n × h) worst-case (where h is height), but typically O(n) since consecutive sequences break early.
+     * 	•	Clean, Java 8 compatible.
+     *
+     */
+    int maxConsecutive = 0;
+    public int longestConsecutive_0_0_1(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        dfs(root, new ArrayList<>());
+        return maxConsecutive;
+    }
+
+    private void dfs(TreeNode node, List<Integer> path) {
+        if (node == null) {
+            return;
+        }
+
+        // add current node to path
+        path.add(node.val);
+
+        // check all sub-paths ending at this node (like LC 437 sum scan)
+        int len = 1;
+        int prev = node.val;
+        // scan backward
+        for (int i = path.size() - 2; i >= 0; i--) {
+            if (path.get(i) + 1 == prev) {
+                len++;
+                prev = path.get(i);
+            } else {
+                break;  // stop if not consecutive anymore
+            }
+        }
+        maxConsecutive = Math.max(maxConsecutive, len);
+
+        // DFS left & right
+        dfs(node.left, path);
+        dfs(node.right, path);
+
+        // backtrack
+        path.remove(path.size() - 1);
+    }
+
+
+    // V0-1
     // IDEA: DFS + PATH SUM + CONSECUTIVE PATH CHECK (fixed by gpt)
     // LC 298 - Binary Tree Longest Consecutive Sequence
     // DFS + pathMap2 (node -> path from root to this node) + post traversal to get max consecutive path
     Map<TreeNode, List<List<Integer>>> pathMap2 = new HashMap<>();
-    public int longestConsecutive_0_0_1(TreeNode root) {
+    public int longestConsecutive_0_1(TreeNode root) {
         if (root == null) return 0;
         collectAllPaths(root, new ArrayList<>(), root);
 
@@ -162,7 +264,7 @@ public class BinaryTreeLongestConsecutiveSequence {
         return maxLen;
     }
 
-
+// NOTE !!! below is WRONG
 //    private void getNodePath(TreeNode node, List<Integer> path) {
 //        if (node == null) {
 //            return;
@@ -216,10 +318,10 @@ public class BinaryTreeLongestConsecutiveSequence {
         return true;
     }
 
-    // V0-1
+    // V0-2
     // IDEA: DFS (fixed by gpt)
     // TODO: validate
-    public int longestConsecutive_0_1(TreeNode root) {
+    public int longestConsecutive_0_2(TreeNode root) {
         if (root == null) {
             return 0;
         }
@@ -245,13 +347,13 @@ public class BinaryTreeLongestConsecutiveSequence {
         return Math.max(currLen, Math.max(leftMax, rightMax));
     }
 
-    // V0-2
+    // V0-3
     // IDEA: DFS (gemini)
     // TODO: validate
     // Global variable to track the maximum consecutive path length found anywhere in the tree.
     private int maxLen = 0;
 
-    public int longestConsecutive_0_2(TreeNode root) {
+    public int longestConsecutive_0_3(TreeNode root) {
         if (root == null) {
             return 0;
         }
