@@ -8,7 +8,6 @@
 		- 30
 	- LC 347 Top K Frequent Elements
 		- 621
-		- 1838
 	- LC 271 – Encode and Decode Strings
 		- 640
 	- LC 128 - Longest Consecutive Sequence
