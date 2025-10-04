@@ -5,8 +5,7 @@ package LeetCodeJava.Recursion;
 
 import LeetCodeJava.DataStructure.TreeNode;
 
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.*;
 
 /**
  *
@@ -136,6 +135,65 @@ public class BinaryTreeLongestConsecutiveSequence {
          */
         // Return the max length between left and right consecutive paths
         return Math.max(leftCount, rightCount) + 1;  // Include current node
+    }
+
+    // V0-0-1
+    // IDEA: DFS + PATH SUM + CONSECUTIVE PATH CHECK (fixed by gpt)
+    // LC 298 - Binary Tree Longest Consecutive Sequence
+// DFS + pathMap2 (node -> path from root to this node) + post traversal to get max consecutive path
+    Map<TreeNode, List<Integer>> pathMap2 = new HashMap<>();
+
+    public int longestConsecutive_0_0_1(TreeNode root) {
+        // edge
+        if (root == null) {
+            return 0;
+        }
+        if (root.left == null && root.right == null) {
+            return 1;
+        }
+
+        // Build pathMap2 using DFS
+        getNodePath(root, new ArrayList<>());
+
+        // Iterate over all stored paths and find max consecutive length
+        int maxConsecutivePathLen = 0;
+        for (List<Integer> path : pathMap2.values()) {
+            if (path.size() == 0) continue;
+            if (isConsecutive(path)) {
+                maxConsecutivePathLen = Math.max(maxConsecutivePathLen, path.size());
+            }
+        }
+        return maxConsecutivePathLen;
+    }
+
+    private void getNodePath(TreeNode node, List<Integer> path) {
+        if (node == null) {
+            return;
+        }
+
+        // Add current node to path
+        path.add(node.val);
+
+        // ⚠️ Important: store a COPY of the current path for this node
+        pathMap2.put(node, new ArrayList<>(path));
+
+        // Recurse left and right
+        getNodePath(node.left, path);
+        getNodePath(node.right, path);
+
+        // Backtrack (undo)
+        path.remove(path.size() - 1);
+    }
+
+    private boolean isConsecutive(List<Integer> path) {
+        int prev = path.get(0);
+        for (int i = 1; i < path.size(); i++) {
+            if (path.get(i) != prev + 1) {
+                return false;
+            }
+            prev = path.get(i);
+        }
+        return true;
     }
 
     // V0-1
@@ -308,5 +366,5 @@ public class BinaryTreeLongestConsecutiveSequence {
     }
 
 
-    
+
 }
