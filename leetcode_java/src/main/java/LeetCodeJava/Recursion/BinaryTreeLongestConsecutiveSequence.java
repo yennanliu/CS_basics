@@ -140,48 +140,68 @@ public class BinaryTreeLongestConsecutiveSequence {
     // V0-0-1
     // IDEA: DFS + PATH SUM + CONSECUTIVE PATH CHECK (fixed by gpt)
     // LC 298 - Binary Tree Longest Consecutive Sequence
-// DFS + pathMap2 (node -> path from root to this node) + post traversal to get max consecutive path
-    Map<TreeNode, List<Integer>> pathMap2 = new HashMap<>();
-
+    // DFS + pathMap2 (node -> path from root to this node) + post traversal to get max consecutive path
+    Map<TreeNode, List<List<Integer>>> pathMap2 = new HashMap<>();
     public int longestConsecutive_0_0_1(TreeNode root) {
-        // edge
-        if (root == null) {
-            return 0;
-        }
-        if (root.left == null && root.right == null) {
-            return 1;
+        if (root == null) return 0;
+        collectAllPaths(root, new ArrayList<>(), root);
+
+        System.out.println(">>> pathMap2 = ");
+        for (TreeNode node : pathMap2.keySet()) {
+            System.out.println(node.val + " -> " + pathMap2.get(node));
         }
 
-        // Build pathMap2 using DFS
-        getNodePath(root, new ArrayList<>());
-
-        // Iterate over all stored paths and find max consecutive length
-        int maxConsecutivePathLen = 0;
-        for (List<Integer> path : pathMap2.values()) {
-            if (path.size() == 0) continue;
-            if (isConsecutive(path)) {
-                maxConsecutivePathLen = Math.max(maxConsecutivePathLen, path.size());
+        int maxLen = 0;
+        for (List<List<Integer>> paths : pathMap2.values()) {
+            for (List<Integer> p : paths) {
+                if (isConsecutive(p)) {
+                    maxLen = Math.max(maxLen, p.size());
+                }
             }
         }
-        return maxConsecutivePathLen;
+        return maxLen;
     }
 
-    private void getNodePath(TreeNode node, List<Integer> path) {
-        if (node == null) {
-            return;
-        }
 
-        // Add current node to path
+//    private void getNodePath(TreeNode node, List<Integer> path) {
+//        if (node == null) {
+//            return;
+//        }
+//
+//        // Add current node to path
+//        path.add(node.val);
+//        // ⚠️ Important: store a COPY of the current path for this node
+//        pathMap2.put(node, new ArrayList<>(path));
+//
+//        // Recurse left and right
+//        getNodePath(node.left, path);
+//        getNodePath(node.right, path);
+//
+//        // Backtrack (undo)
+//        path.remove(path.size() - 1);
+//    }
+
+    private void collectAllPaths(TreeNode node, List<Integer> path, TreeNode rootAncestor) {
+        if (node == null) return;
+
         path.add(node.val);
 
-        // ⚠️ Important: store a COPY of the current path for this node
-        pathMap2.put(node, new ArrayList<>(path));
+        /**
+         * Put a COPY of current path into the ancestor's path list
+         */
+        // V1
+//        pathMap2.computeIfAbsent(rootAncestor, k -> new ArrayList<>())
+//                .add(new ArrayList<>(path));
+        // V2
+        // store multiple paths for each node
+        Map<TreeNode, List<List<Integer>>> pathMap2 = new HashMap<>();
+        // somewhere in DFS when you want to store the current path
+        pathMap2.computeIfAbsent(rootAncestor, k -> new ArrayList<>())
+                .add(new ArrayList<>(path));
 
-        // Recurse left and right
-        getNodePath(node.left, path);
-        getNodePath(node.right, path);
+        collectAllPaths(node.left, path, rootAncestor);
+        collectAllPaths(node.right, path, rootAncestor);
 
-        // Backtrack (undo)
         path.remove(path.size() - 1);
     }
 

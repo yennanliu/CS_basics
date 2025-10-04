@@ -753,28 +753,31 @@ public class WorkSpace17 {
         // NOTE !!! add path to cur first
         path.add(node.val);
 
-        // add to
+        // ????
+        pathMap2.put(node, new ArrayList<>(path));
 
-        List<Integer> savedPath = new ArrayList<>();
-        // ???
-        if(pathMap2.containsKey(node)){
-            savedPath = pathMap2.get(node);
-        }
-        savedPath.add(node.val);
-
-        // ?????
-        /** NOTE !!!
-         *
-         *  trick below:
-         *
-         *   via iterate the `collected` path, we can get all possible `sub path`
-         *   from the path
-         */
-//        for(int i = 0; i < savedPath.size(); i++){
-//            List<Integer> subPath = savedPath.subList(0, i);
-//            pathMap2.put()
+//        // add to
+//
+//        List<Integer> savedPath = new ArrayList<>();
+//        // ???
+//        if(pathMap2.containsKey(node)){
+//            savedPath = pathMap2.get(node);
 //        }
-        pathMap2.put(node, savedPath);
+//        savedPath.add(node.val);
+//
+//        // ?????
+//        /** NOTE !!!
+//         *
+//         *  trick below:
+//         *
+//         *   via iterate the `collected` path, we can get all possible `sub path`
+//         *   from the path
+//         */
+////        for(int i = 0; i < savedPath.size(); i++){
+////            List<Integer> subPath = savedPath.subList(0, i);
+////            pathMap2.put()
+////        }
+//        pathMap2.put(node, savedPath);
 
 
         // recursive call (DFS)
