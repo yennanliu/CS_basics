@@ -57,6 +57,33 @@ public class FrequencyOfTheMostFrequentElement {
 //
 //    }
 
+    // V0-1
+    // IDEA: SLIDE WINDOW (fixed by gpt)
+    public int maxFrequency_0_1(int[] nums, int k) {
+        Arrays.sort(nums); // sort ascending
+
+        long windowSum = 0; // use long to avoid overflow
+        int left = 0;
+        int res = 1;
+
+        for (int right = 0; right < nums.length; right++) {
+            windowSum += nums[right];
+
+            // cost to make all numbers in window [left..right] equal to nums[right]:
+            //   cost = nums[right] * windowSize - windowSum
+            // if cost > k, shrink from the left
+            while ((long) nums[right] * (right - left + 1) - windowSum > k) {
+                windowSum -= nums[left];
+                left++;
+            }
+
+            // update max length
+            res = Math.max(res, right - left + 1);
+        }
+
+        return res;
+    }
+
     // V1-1
     // IDEA: Sliding Window
     // https://leetcode.com/problems/frequency-of-the-most-frequent-element/editorial/
