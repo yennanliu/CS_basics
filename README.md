@@ -340,7 +340,7 @@
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Note           | Status| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 1004 | [Max Consecutive Ones III](https://leetcode.com/problems/max-consecutive-ones-iii/) |  [Java](./leetcode_java/src/main/java/LeetCodeJava/SlideWindow/MaxConsecutiveOnes3.java)| _O(n^2)_ | _O(1)_  | Medium  | slide window| Again (1)
-1838 | [Frequency of the Most Frequent Element](https://leetcode.com/problems/frequency-of-the-most-frequent-element/description/) |  [Java](./leetcode_java/src/main/java/LeetCodeJava/SlideWindow/FrequencyOfTheMostFrequentElement.java)| _O(n^2)_ | _O(1)_  | Medium  | slide window, binary search| NOT start
+1838 | [Frequency of the Most Frequent Element](https://leetcode.com/problems/frequency-of-the-most-frequent-element/description/) |  [Java](./leetcode_java/src/main/java/LeetCodeJava/SlideWindow/FrequencyOfTheMostFrequentElement.java)| _O(n^2)_ | _O(1)_  | Medium  | slide window, binary search| AGAIN******** (1)(good)
 
 
 ## Hash Table
