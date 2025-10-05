@@ -959,7 +959,81 @@ public class WorkSpace17 {
         return res;
     }
 
+    // LC 1740
+    // 17.29 - 39 pm
+    /**
+     * Given the root of a binary tree and two integers p and q,
+     * return the `distance` between the nodes of value` p and value q in the tree.`
+     *
+     * The distance between two nodes
+     * is the number of edges on the path from one to the other.
+     *
+     *
+     *  IDEA 1) DFS
+     *
+     *  IDEA 2) LCA ??
+     *   -> find the LCA (the least common ancestor) of p, q
+     *   and get the path sum of that root to p, q
+     *
+     */
+    public int findDistance(TreeNode root, int p, int q) {
+        // edge
+        if(root == null){
+            return -1;
+        }
+        if(p == q){
+            return 0;
+        }
 
+        TreeNode nodeLCA = getLCA(root, p, q);
+        int len1 = getPathLen(nodeLCA, p, 0);
+        int len2 = getPathLen(nodeLCA, q, 0);
+
+        return len1 + len2;
+    }
+
+    private TreeNode getLCA(TreeNode root, int p, int q){
+        if(root == null){
+            return null; // ???
+        }
+        if(root.val == p){
+            return root; // ???
+        }
+        if(root.val == q){
+            return root; // ???
+        }
+
+        TreeNode _left = getLCA(root.left, p, q);
+        TreeNode _right = getLCA(root.right, p, q);
+
+        if(_left != null && _right != null){
+            return root;
+        }
+
+        if(_left == null){
+            return _right;
+        }
+
+        return _left;
+    }
+
+    // ???
+    private int getPathLen(TreeNode root, int childVal, int move){
+        // edge ???
+        if(root == null){
+            return 0;
+        }
+        if(root.val == childVal){
+            return move; // ?????
+        }
+        getPathLen(root.left, childVal, move + 1);
+        getPathLen(root.right, childVal, move + 1);
+
+        // backtrack
+        move -= 1; // ??
+
+        return move; // ????
+    }
 
 
 
