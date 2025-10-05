@@ -996,11 +996,15 @@ public class WorkSpace17 {
         if(root == null){
             return null; // ???
         }
-        if(root.val == p){
-            return root; // ???
-        }
-        if(root.val == q){
-            return root; // ???
+        // ???
+//        if(root.val == p){
+//            return root; // ???
+//        }
+//        if(root.val == q){
+//            return root; // ???
+//        }
+        if(root.val == p || root.val == q){
+            return root;
         }
 
         TreeNode _left = getLCA(root.left, p, q);
@@ -1026,13 +1030,21 @@ public class WorkSpace17 {
         if(root.val == childVal){
             return move; // ?????
         }
-        getPathLen(root.left, childVal, move + 1);
-        getPathLen(root.right, childVal, move + 1);
+//        getPathLen(root.left, childVal, move + 1);
+//        getPathLen(root.right, childVal, move + 1);
+//
+//        // backtrack
+//        move -= 1; // ??
+//
+//        return move; // ????
 
-        // backtrack
-        move -= 1; // ??
+        int _left = getPathLen(root.left, childVal, move + 1);
+        if(_left != -1){
+            return _left; //????
+        }
 
-        return move; // ????
+        int _right = getPathLen(root.right, childVal, move + 1);
+        return _right; // ???
     }
 
 

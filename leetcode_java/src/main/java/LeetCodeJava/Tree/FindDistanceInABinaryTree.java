@@ -53,7 +53,7 @@ public class FindDistanceInABinaryTree {
 //    }
 
     // V0-1
-    // IDEA: LCA (fixed by gpt)
+    // IDEA: LCA + NODE DIST + DFS (fixed by gpt)
     // TODO: validate
     public int findDistance_0_1(TreeNode root, int p, int q) {
         // edge
@@ -89,19 +89,79 @@ public class FindDistanceInABinaryTree {
         return left != null ? left : right;
     }
 
+    /** NOTE !!!
+     *
+     *  help func: get dist between `root` and the node with `target` val
+     *
+     *  1) This is a helper function that:
+     * 	  - Starts at root
+     * 	  - Tries to find a node whose value = target
+     * 	  - Returns the distance (number of edges) from root to target.
+     *
+     */
+    /**
+     *  IDEA of `getPathLen` help func:
+     *
+     *  🧠 Summary of Logic Flow
+     * 	1.	Stop when null (return -1) or when target is found (return distance).
+     * 	2.	Search left first. If found, return immediately.
+     * 	3.	Otherwise, search right.
+     * 	4.	If neither side contains the target, the function will bubble up -1.
+     */
     private int getPathLen(TreeNode root, int target, int dist) {
+        /** NOTE !!!
+         *
+         *   base case:
+         *
+         *  •	Base case #1:
+         *        if we hit a null node,
+         *        -> the target DOES NOT exist in this branch.
+         *
+         * 	•	Returning -1 is a sentinel value
+         * 	    meaning “not found in this subtree”
+         */
         if (root == null) {
             return -1;  // not found
         }
+        /**
+         *  NOTE !!!
+         *
+         *  •	Base case #2: if the current node matches the target, return dist, which is the current number of edges from the starting node (typically the LCA) to this node.
+         * 	•	This is the successful termination of the recursion.
+         */
         if (root.val == target) {
             return dist;
         }
 
+        /**
+         *  NOTE !!!
+         *
+         *  •	Recurse into the left subtree.
+         * 	•	Increment dist by 1 because we moved down one level.
+         * 	•	Store the result in left.
+         * 	      - If target is in this subtree,
+         * 	        left will contain the distance.
+         * 	     - Otherwise, left will be -1.
+         */
         int left = getPathLen(root.left, target, dist + 1);
+        /**
+         * 	•	If we found the target in the left subtree,
+         * 	    return that distance immediately.
+         * 	•	This avoids unnecessary searching in the right subtree.
+         */
         if (left != -1) {
             return left;
         }
 
+        /**
+         *  NOTE !!!
+         *
+         *  •	If not found on the left, search the right subtree with dist + 1.
+         * 	•	Return the result directly:
+         * 	     - Either a valid distance if found,
+         * 	     - Or -1 if not found in right subtree either.
+         *
+         */
         int right = getPathLen(root.right, target, dist + 1);
         return right;
     }
