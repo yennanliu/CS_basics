@@ -834,10 +834,23 @@ public class WorkSpace17 {
         if(nums.length == 1){
             return 1;
         }
+        // ???
+        int curSum = 0; // ???
         int res = 0;
+        //int r = 0;
+        int l = 0;
 
-        int r = 0;
+        for(int r = 0; r < nums.length; r++){
+            // ???
+            curSum += nums[r];
+            while((long) nums[r] * (r - l + 1) - curSum > k){
+                // ??
+                curSum -= nums[l];
+                l += 1;
+            }
 
+            res = Math.max(res, r - l + 1);
+        }
 
 
         return res;

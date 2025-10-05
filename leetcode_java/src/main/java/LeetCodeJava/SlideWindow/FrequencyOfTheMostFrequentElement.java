@@ -59,20 +59,74 @@ public class FrequencyOfTheMostFrequentElement {
 
     // V0-1
     // IDEA: SLIDE WINDOW (fixed by gpt)
+    /**  IDEA:
+     *
+     * 🧠 Intuition
+     * 	•	Sort first, so that when we “upgrade” elements to match nums[right], it’s always non-decreasing.
+     * 	•	Maintain the current window sum.
+     * 	•	Compute cost = (target * windowSize) - sumOfWindow.
+     * 	•	If cost ≤ k → valid window → update max frequency.
+     * 	•	If cost > k → shrink window by moving left.
+     */
     public int maxFrequency_0_1(int[] nums, int k) {
+        /**
+         *
+         * Sort nums in non-decreasing order.
+         * Sorting is crucial — when array is sorted,
+         * if we want to raise several elements
+         * to match some target value,
+         * the cheapest target to aim for is
+         * always the current rightmost value in a sorted window.
+         */
         Arrays.sort(nums); // sort ascending
 
+        /**
+         * Maintain the `sum of the current sliding window. `
+         * Use long to prevent integer overflow
+         * if nums values and window size are large.
+         *
+         *
+         * -> windowSum: sum of cur slide window
+         */
         long windowSum = 0; // use long to avoid overflow
+        // left is the left index of the sliding window. res stores the best (maximum) window size found so far.
+        // Initialize res = 1 because at least one element always fits.
         int left = 0;
         int res = 1;
 
         for (int right = 0; right < nums.length; right++) {
             windowSum += nums[right];
 
+            /**
+             *  NOTE !!! core logic:
+             *
+             *  This computes the cost to make every element in window [left..right] equal to nums[right]:
+             *
+             * 	 - nums[right] * windowSize is the total value
+             * 	   if every element became nums[right].
+             * 	 - Subtract windowSum (the current total) to
+             * 	   get how much increment is needed.
+             *
+             * If this cost exceeds k, the current window is
+             *  not achievable with at most k increments,
+             *  so we must shrink it from the left.
+             *
+             *
+             * Important: cast nums[right] to long (done by (long)) to avoid overflow in product.
+             *
+             */
             // cost to make all numbers in window [left..right] equal to nums[right]:
-            //   cost = nums[right] * windowSize - windowSum
+            // cost = nums[right] * windowSize - windowSum
             // if cost > k, shrink from the left
+            /**  NOTE !!
+             *
+             *  nums[right] * (right - left + 1):  how much increment needed
+             *
+             */
             while ((long) nums[right] * (right - left + 1) - windowSum > k) {
+                /**
+                 * Remove the leftmost element from the window sum because we are going to increment left.
+                 */
                 windowSum -= nums[left];
                 left++;
             }
