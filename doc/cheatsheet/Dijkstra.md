@@ -1,14 +1,14 @@
 # Dijkstra's Algorithm
 
 ## Overview
-**Dijkstra's algorithm** is a greedy algorithm that solves the single-source shortest path problem for a graph with non-negative edge weights. It finds the shortest path from a starting node (source) to all other nodes in the graph.
+**Dijkstra's algorithm** is a greedy algorithm that solves the single-source shortest path problem for a graph with `NON-NEGATIVE` edge weights. It finds the shortest path from a starting node (source) to all other nodes in the graph.
 
 ### Key Properties
 - **Time Complexity**: O((V + E) log V) with binary heap, O(V²) with array
 - **Space Complexity**: O(V) for distance array and visited set
 - **Core Idea**: Greedily select the unvisited node with minimum distance
 - **When to Use**: Single-source shortest path with non-negative weights
-- **Limitation**: Cannot handle negative edge weights
+- **Limitation**: `Cannot` handle `negative` edge weights
 
 ### Core Characteristics
 - **Greedy Algorithm**: Always selects the minimum distance node
