@@ -803,10 +803,107 @@ public class WorkSpace17 {
     }
 
     // LC 1838
+    // 16.20 - 16.35 pm
+    /**
+     *  -> Return the `maximum` possible frequency
+     *   of an element `after performing at most k operations.`
+     *
+     *   - The frequency of an element is the number
+     *     of times it occurs in an array.
+     *
+     *   - given nums and an integer k.
+     *
+     *    - In one op, you can choose an `index` of nums
+     *      and `increment the element at that index by 1.`
+     *
+     *
+     *
+     *  IDEA 1) sort + SLIDE WINDOW
+     *   -> sort from small -> big
+     *   - target is the `biggest` one
+     *   -> try to `do op` within window under the condition ( op times <= k)
+     *   - and maintain the `max freq` of current array
+     *
+     *
+     */
     public int maxFrequency(int[] nums, int k) {
+        // edge
+        if(nums == null || nums.length == 0){
+            return 0;
+        }
+        if(nums.length == 1){
+            return 1;
+        }
+        int res = 0;
 
-        return 0;
+        int r = 0;
+
+
+
+        return res;
     }
+
+
+
+
+    public int maxFrequency_100(int[] nums, int k) {
+        // edge
+        if(nums == null || nums.length == 0){
+            return 0;
+        }
+        if(nums.length == 1){
+            return 1;
+        }
+        // map: {val : cnt}
+        Map<Integer, Integer> map = new HashMap<>();
+        for(int x: nums){
+            map.put(x, map.getOrDefault(x, 0) + 1);
+        }
+
+        int res = 1;
+        res = getMaxCnt(map);
+
+        // ??? sort arr (small -> big)
+        Arrays.sort(nums); // ????
+
+        // slide window
+        /**
+         *  for (...){
+         *      while(...){
+         *
+         *  }
+         */
+        // ???
+        //int kBackup = k;
+        int l = 0;
+        for(int r = 0; r < nums.length; r++){
+            int opCnt = 0;
+            int target = nums[r];
+            while(nums[l] < target && opCnt < k && l < r){
+                int diff = nums[r] - nums[l];
+                //k -= (diff);
+                opCnt += diff;
+                l += 1;
+            }
+            // reset k
+            //k = kBackup;
+            res = Math.max(res, getMaxCnt(map));
+        }
+
+
+        return res;
+    }
+
+
+    private int getMaxCnt(Map<Integer, Integer> map){
+        int res = 0;
+        for(int val: map.values()){
+            res = Math.max(res, val);
+        }
+        return res;
+    }
+
+
 
 
 
