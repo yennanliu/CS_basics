@@ -826,6 +826,7 @@ public class WorkSpace17 {
      *
      *
      */
+    // binary search
     public int maxFrequency(int[] nums, int k) {
         // edge
         if(nums == null || nums.length == 0){
@@ -834,27 +835,69 @@ public class WorkSpace17 {
         if(nums.length == 1){
             return 1;
         }
-        // ???
-        int curSum = 0; // ???
+
+        Arrays.sort(nums);
+
         int res = 0;
-        //int r = 0;
+        long windowSum = 0L;
         int l = 0;
+        int r = nums.length - 1;
+        while(r >= l){
+            int mid = (l + r) / 2;
+            int val = nums[mid];
 
-        for(int r = 0; r < nums.length; r++){
-            // ???
-            curSum += nums[r];
-            while((long) nums[r] * (r - l + 1) - curSum > k){
-                // ??
-                curSum -= nums[l];
-                l += 1;
-            }
 
-            res = Math.max(res, r - l + 1);
         }
 
 
+//        for(int r = 0; r < nums.length; r++){
+//            // cur window sum
+//            windowSum += nums[r];
+//            //???
+//            while( (long) (r - l + 1) * nums[r] - windowSum > k){
+//                windowSum -= nums[l];
+//                l += 1;
+//            }
+//            res = Math.max(res, r - l + 1);
+//        }
+
         return res;
     }
+
+
+
+
+    // slide window
+    public int maxFrequency_99(int[] nums, int k) {
+        // edge
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
+        if (nums.length == 1) {
+            return 1;
+        }
+
+        Arrays.sort(nums);
+
+        int res = 0;
+        long windowSum = 0L;
+        int l = 0;
+
+        for (int r = 0; r < nums.length; r++) {
+            // cur window sum
+            windowSum += nums[r];
+            //???
+            while ((long) (r - l + 1) * nums[r] - windowSum > k) {
+                windowSum -= nums[l];
+                l += 1;
+            }
+            res = Math.max(res, r - l + 1);
+        }
+
+        return res;
+    }
+
+
 
 
 
