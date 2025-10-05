@@ -54,6 +54,7 @@ public class FindDistanceInABinaryTree {
 
     // V0-1
     // IDEA: LCA + NODE DIST + DFS (fixed by gpt)
+    // https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/tree.md
     // TODO: validate
     public int findDistance_0_1(TreeNode root, int p, int q) {
         // edge

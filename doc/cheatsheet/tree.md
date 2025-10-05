@@ -1306,36 +1306,82 @@ class Solution(object):
 ```
 
 ### 1-1-18) Distance Between Nodes
-```python
-# LC 1740 Find Distance in a Binary Tree
-def findDistance(self, root, p, q):
-    def dfs(node, target, path):
-        if not node:
-            return False
-        path.append(node)
-        if node.val == target:
-            return True
-        if dfs(node.left, target, path) or dfs(node.right, target, path):
-            return True
-        path.pop()
-        return False
 
-    path_p, path_q = [], []
-    dfs(root, p, path_p)
-    dfs(root, q, path_q)
-
-    # Find LCA index
-    i = 0
-    while i < min(len(path_p), len(path_q)) and path_p[i].val == path_q[i].val:
-        i += 1
-
-    # Distance = (len(path_p) - i) + (len(path_q) - i)
-    return (len(path_p) - i) + (len(path_q) - i)
-```
 
 ```java
 // java
 // LC 1740 Find Distance in a Binary Tree
+
+// V1
+/**
+ *  IDEA of `getPathLen` help func:
+ *
+ *  🧠 Summary of Logic Flow
+ *  1.  Stop when null (return -1) or when target is found (return distance).
+ *  2.  Search left first. If found, return immediately.
+ *  3.  Otherwise, search right.
+ *  4.  If neither side contains the target, the function will bubble up -1.
+ */
+private int getPathLen(TreeNode root, int target, int dist) {
+    /** NOTE !!!
+     *
+     *   base case:
+     *
+     *  •   Base case #1:
+     *        if we hit a null node,
+     *        -> the target DOES NOT exist in this branch.
+     *
+     *  •   Returning -1 is a sentinel value
+     *      meaning “not found in this subtree”
+     */
+    if (root == null) {
+        return -1;  // not found
+    }
+    /**
+     *  NOTE !!!
+     *
+     *  •   Base case #2: if the current node matches the target, return dist, which is the current number of edges from the starting node (typically the LCA) to this node.
+     *  •   This is the successful termination of the recursion.
+     */
+    if (root.val == target) {
+        return dist;
+    }
+
+    /**
+     *  NOTE !!!
+     *
+     *  •   Recurse into the left subtree.
+     *  •   Increment dist by 1 because we moved down one level.
+     *  •   Store the result in left.
+     *        - If target is in this subtree,
+     *          left will contain the distance.
+     *       - Otherwise, left will be -1.
+     */
+    int left = getPathLen(root.left, target, dist + 1);
+    /**
+     *  •   If we found the target in the left subtree,
+     *      return that distance immediately.
+     *  •   This avoids unnecessary searching in the right subtree.
+     */
+    if (left != -1) {
+        return left;
+    }
+
+    /**
+     *  NOTE !!!
+     *
+     *  •   If not found on the left, search the right subtree with dist + 1.
+     *  •   Return the result directly:
+     *       - Either a valid distance if found,
+     *       - Or -1 if not found in right subtree either.
+     *
+     */
+    int right = getPathLen(root.right, target, dist + 1);
+    return right;
+}
+    
+
+// V2
 public int findDistance(TreeNode root, int p, int q) {
     TreeNode lca = findLCA(root, p, q);
     return getDistance(lca, p) + getDistance(lca, q);
