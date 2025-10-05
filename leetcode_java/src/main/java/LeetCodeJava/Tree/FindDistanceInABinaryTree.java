@@ -49,6 +49,140 @@ import LeetCodeJava.DataStructure.TreeNode;
 public class FindDistanceInABinaryTree {
 
     // V0
+//    public int findDistance(TreeNode root, int p, int q) {
+//    }
+
+    // V0-1
+    // IDEA: LCA (fixed by gpt)
+    // TODO: validate
+    public int findDistance_0_1(TreeNode root, int p, int q) {
+        // edge
+        if (root == null) {
+            return -1;
+        }
+        if (p == q) {
+            return 0;
+        }
+
+        TreeNode nodeLCA = getLCA(root, p, q);
+        int len1 = getPathLen(nodeLCA, p, 0);
+        int len2 = getPathLen(nodeLCA, q, 0);
+
+        return len1 + len2;
+    }
+
+    private TreeNode getLCA(TreeNode root, int p, int q) {
+        if (root == null) {
+            return null;
+        }
+        if (root.val == p || root.val == q) {
+            return root;
+        }
+
+        TreeNode left = getLCA(root.left, p, q);
+        TreeNode right = getLCA(root.right, p, q);
+
+        if (left != null && right != null) {
+            return root;
+        }
+
+        return left != null ? left : right;
+    }
+
+    private int getPathLen(TreeNode root, int target, int dist) {
+        if (root == null) {
+            return -1;  // not found
+        }
+        if (root.val == target) {
+            return dist;
+        }
+
+        int left = getPathLen(root.left, target, dist + 1);
+        if (left != -1) {
+            return left;
+        }
+
+        int right = getPathLen(root.right, target, dist + 1);
+        return right;
+    }
+
+    // V0-2
+    // IDEA: LCA (fixed by gemini)
+    // TODO: validate
+    public int findDistance_0_2(TreeNode root, int p, int q) {
+        // Edge case check.
+        if (root == null) {
+            return -1; // Or throw an error, depending on problem constraints.
+        }
+        if (p == q) {
+            return 0;
+        }
+
+        // 1. Find the LCA of nodes p and q.
+        TreeNode nodeLCA = getLCA_0_2(root, p, q);
+
+        // 2. Calculate the distance from the LCA to each node.
+        // We use a helper that returns the distance from the target node to the current root.
+        int len1 = getDistanceToTarget(nodeLCA, p);
+        int len2 = getDistanceToTarget(nodeLCA, q);
+
+        // 3. The total distance is the sum of the two distances.
+        return len1 + len2;
+    }
+
+    // --- Helper 1: Find the Lowest Common Ancestor (LCA) ---
+    private TreeNode getLCA_0_2(TreeNode root, int p, int q) {
+        // Base case: If we hit null or find one of the targets, return the current node.
+        if (root == null || root.val == p || root.val == q) {
+            return root;
+        }
+
+        // Search the left and right subtrees.
+        TreeNode left = getLCA_0_2(root.left, p, q);
+        TreeNode right = getLCA_0_2(root.right, p, q);
+
+        // Case 1: If both left and right return non-null, the current root is the LCA.
+        if (left != null && right != null) {
+            return root;
+        }
+
+        // Case 2: If only one side is non-null, pass that result up.
+        // The ternary operator is a concise way to return the non-null result.
+        return left != null ? left : right;
+    }
+
+    // --- Helper 2: Find the Distance from a Root (LCA) to a Target Node ---
+    // Returns the number of edges from 'root' down to the node with value 'targetVal'.
+    // Returns -1 if the target is not found in the subtree (shouldn't happen if LCA is correct).
+    private int getDistanceToTarget(TreeNode root, int targetVal) {
+        if (root == null) {
+            return -1; // Target not found in this subtree.
+        }
+
+        if (root.val == targetVal) {
+            return 0; // Found the target, distance is 0 from here.
+        }
+
+        // Search the left subtree.
+        int leftDist = getDistanceToTarget(root.left, targetVal);
+
+        // If found on the left, return 1 + the distance from the left child.
+        if (leftDist != -1) {
+            return leftDist + 1;
+        }
+
+        // Search the right subtree.
+        int rightDist = getDistanceToTarget(root.right, targetVal);
+
+        // If found on the right, return 1 + the distance from the right child.
+        if (rightDist != -1) {
+            return rightDist + 1;
+        }
+
+        // Target not found in either subtree.
+        return -1;
+    }
+
 
     // V1-1
     // IDEA: alternative: hashmap to store distance of every node-pair during finding LCA, then just map look up
