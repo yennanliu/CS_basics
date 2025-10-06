@@ -1154,15 +1154,80 @@ public class WorkSpace17 {
     // LC 24
     // 15.20 - 15.30 pm
     /**
+     * IDEA 1) LINKED LIST -> list -> swap -> linked list
      *
+     * IDEA 2) LINKED LIST OP
      *
      *
      */
+    //  IDEA 1) LINKED LIST -> list -> swap -> linked list
     public ListNode swapPairs(ListNode head) {
+        // edge
+        if(head == null || head.next == null){
+            return head;
+        }
+        List<Integer> list = new ArrayList<>();
+        while(head != null){
+            list.add(head.val);
+            head = head.next;
+        }
 
-        return null;
+        ListNode node = new ListNode();
+        ListNode res = node;
+
+        // 2 pointer
+        ListNode pointerI = head;
+        ListNode pointerJ = head.next; // ???
+
+        ListNode _prev = null;
+
+        while(pointerI != null && pointerI.next.next != null
+                && pointerJ != null && pointerJ.next.next != null){
+
+            ListNode _next = head.next;
+            ListNode _cur = head;
+
+            _next.next = _cur;
+            _cur.next = _prev;
+
+
+            pointerI = pointerI.next.next; // ???
+            pointerJ = pointerJ.next.next;
+        }
+
+        return res.next;
     }
 
+
+
+    // ????
+    private List<Integer> swapList(List<Integer> list){
+        // 2 pointers
+        int i = 0;
+        int j = 1;
+        /**
+         *    [1,2,3]  -> swap -->  [2,1,3]   -> [2,1,3]
+         *     i j                   i j              i j  (terminate)
+         *
+         *
+         *   [1,2,3,4]   - swap ->   [2,1,3,4]  -> [2,1,3,4]   - swap ->  [2,1,4,3]   --> [2,1,4,3]
+         *    i j                     i j               i j                    i j                  i  j (terminate)
+         *
+         */
+        while(j < list.size() && i < list.size()){
+            Integer val1= list.get(i);
+            Integer val2 = list.get(j);
+            // swap
+            //list.
+            // NOTE !!!!
+            list.set(1,2);
+
+            i += 2;
+            j += 2;
+        }
+
+        return list;
+    }
 
 
 }
