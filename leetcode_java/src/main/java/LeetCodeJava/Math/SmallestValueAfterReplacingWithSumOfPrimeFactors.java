@@ -53,73 +53,6 @@ public class SmallestValueAfterReplacingWithSumOfPrimeFactors {
 //
 //    }
 
-    // TODO: fix below
-    //    public int smallestValue(int n) {
-//        // edge
-//        if(n <= 3){
-//            return n;
-//        }
-//
-//        while(hasFactor(n)){
-//            // ....
-//            List<Integer> list = divideToFactors(n);
-//            System.out.println(">>> n = " + n + ", list = " + list);
-//            n = getListSum(list);
-//        }
-//
-//        return n;
-//    }
-//
-//    private int getListSum(List<Integer> list){
-//        int res = 0;
-//        for(int x: list){
-//            res += x;
-//        }
-//        return res;
-//    }
-//
-//    private List<Integer> divideToFactors(int x){
-//        List<Integer> res = new ArrayList<>();
-//        // ????
-//        int i = 2;
-//        //int sqrtX = (int) Math.sqrt(x); // ??
-//        while(i < x){
-//            // ???
-//            while(x % i == 0){
-//                //return true;
-//                res.add(i);
-//                x = x / i; // ???
-//            }
-//            i += 1;
-//        }
-//
-//        // ??
-//        if(x != 1){
-//            res.add(x); // ?? append the `remaining val` to list
-//        }
-//
-//        return res;
-//    }
-//
-//    private boolean hasFactor(int x){
-//        // ???
-//        int sqrtX = (int) Math.sqrt(x); // ??
-//        int i = 2;
-//        System.out.println(">>> (hasFactor)  x = " + x + ", sqrtX = " + sqrtX);
-//        while(i <= sqrtX + 1){
-//            System.out.println(">>> (hasFactor)  x = " + x + ", i = " + i);
-//            if(x % i == 0){
-//                return true;
-//            }
-//            i += 1;
-//        }
-//        return false;
-//    }
-
-
-
-
-
     // V0-1
     // IDEA: MATH (fixed by gemini)
     /**
@@ -142,6 +75,14 @@ public class SmallestValueAfterReplacingWithSumOfPrimeFactors {
             // Calculate the sum of these factors
             int sumOfFactors = getListSum(factors);
 
+            /**
+             *  NOTE !!!
+             *
+             *   have below logic to AVOID `ENDLESS LOOP`
+             *   e.g. we should JUMP OUT from while loop
+             *       if the `sumOfFactors` is unchanged (compared with prev iteration)
+             *
+             */
             // If the number doesn't change, we've reached a prime number (the smallest value).
             if (sumOfFactors == n) {
                 break;
@@ -221,6 +162,70 @@ public class SmallestValueAfterReplacingWithSumOfPrimeFactors {
         }
         return sum;
     }
+
+
+    // TODO: fix below
+//    public int smallestValue(int n) {
+//        // edge
+//        if(n <= 3){
+//            return n;
+//        }
+//
+//        while(hasFactor(n)){
+//            // ....
+//            List<Integer> list = divideToFactors(n);
+//            System.out.println(">>> n = " + n + ", list = " + list);
+//            n = getListSum(list);
+//        }
+//
+//        return n;
+//    }
+//
+//    private int getListSum(List<Integer> list){
+//        int res = 0;
+//        for(int x: list){
+//            res += x;
+//        }
+//        return res;
+//    }
+//
+//    private List<Integer> divideToFactors(int x){
+//        List<Integer> res = new ArrayList<>();
+//        // ????
+//        int i = 2;
+//        //int sqrtX = (int) Math.sqrt(x); // ??
+//        while(i < x){
+//            // ???
+//            while(x % i == 0){
+//                //return true;
+//                res.add(i);
+//                x = x / i; // ???
+//            }
+//            i += 1;
+//        }
+//
+//        // ??
+//        if(x != 1){
+//            res.add(x); // ?? append the `remaining val` to list
+//        }
+//
+//        return res;
+//    }
+//
+//    private boolean hasFactor(int x){
+//        // ???
+//        int sqrtX = (int) Math.sqrt(x); // ??
+//        int i = 2;
+//        System.out.println(">>> (hasFactor)  x = " + x + ", sqrtX = " + sqrtX);
+//        while(i <= sqrtX + 1){
+//            System.out.println(">>> (hasFactor)  x = " + x + ", i = " + i);
+//            if(x % i == 0){
+//                return true;
+//            }
+//            i += 1;
+//        }
+//        return false;
+//    }
 
 
 }
