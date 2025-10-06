@@ -827,8 +827,53 @@ public class WorkSpace17 {
      *
      *
      */
-    // binary search
+    // slide window
+    /**
+     *  IDEA 1) SLIDE WINDOW
+     *
+     *  -> keep calculating `cum_sum` in cur window
+     *     - maintain `max freq cnt ( r - l + 1) on the same time
+     *  -> use while loop to check  `nums[r] - cum_sum > k`
+     *      - if yes, move left pointer, update cum_sum
+     *      - else, jump out of while loop
+     *   -> move right pointer,
+     *
+     *   -> return max freq cnt as ans
+     *
+     */
     public int maxFrequency(int[] nums, int k) {
+        // edge
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
+        if (nums.length == 1) {
+            return 1;
+        }
+
+        Arrays.sort(nums); // small -> big arr
+        int maxFreqCnt = 0;
+        long cumSum = 0L;
+        int l = 0;
+
+        for(int r = 0; r < nums.length; r++){
+
+            cumSum += nums[r]; // ???
+
+            while((long) nums[r] * (r - l + 1) - cumSum > k){
+                cumSum -= nums[l];
+                l += 1;
+            }
+            maxFreqCnt = Math.max(maxFreqCnt, r - l + 1);
+        }
+
+        return maxFreqCnt;
+    }
+
+
+
+
+    // binary search
+    public int maxFrequency_200(int[] nums, int k) {
         // edge
         if(nums == null || nums.length == 0){
             return 0;

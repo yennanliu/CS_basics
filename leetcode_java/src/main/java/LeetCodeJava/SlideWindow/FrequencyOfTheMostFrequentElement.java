@@ -66,13 +66,20 @@ public class FrequencyOfTheMostFrequentElement {
         Arrays.sort(nums);
 
         int res = 0;
+        /** NOTE !!
+         *
+         *  we use `long` for dealing with `overflow` issue
+         */
         long windowSum = 0L;
         int l = 0;
 
         for (int r = 0; r < nums.length; r++) {
             // cur window sum
             windowSum += nums[r];
-            //???
+            /** NOTE !!
+             *
+             *  we use `long` for dealing with `overflow` issue
+             */
             while ((long) (r - l + 1) * nums[r] - windowSum > k) {
                 windowSum -= nums[l];
                 l += 1;
