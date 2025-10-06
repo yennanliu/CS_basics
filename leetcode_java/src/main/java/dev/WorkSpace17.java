@@ -1,5 +1,6 @@
 package dev;
 
+import DataStructure.ListNode;
 import LeetCodeJava.DataStructure.TreeNode;
 
 import java.util.*;
@@ -1046,6 +1047,45 @@ public class WorkSpace17 {
         int _right = getPathLen(root.right, childVal, move + 1);
         return _right; // ???
     }
+
+
+    // LC 21
+    // 14.52 - 15.02 PM
+    public ListNode mergeTwoLists(ListNode list1, ListNode list2) {
+        // edge
+        if(list1 == null && list2 == null){
+            return null;
+        }
+        if(list1 == null || list2 == null){
+            return list1 == null ? list1: list2;
+        }
+
+        ListNode node = new ListNode();
+        ListNode res = node;
+
+        //int prev = Math.min(list1.val, list2.val);
+
+        while(list1 != null && list2 != null){
+            if(list1.val < list2.val){
+                node.next = new ListNode(list1.val);
+                list1 = list1.next;
+            }else{
+                node.next = new ListNode(list2.val);
+                list2 = list2.next;
+            }
+            node = node.next;
+        }
+
+        // check if list1 still has node or list2 still has node
+        if(list1 != null){
+            node.next = list1;
+        }else{
+            node.next = list2;
+        }
+
+        return res.next;
+    }
+
 
 
 
