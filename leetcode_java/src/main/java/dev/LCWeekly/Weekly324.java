@@ -2,6 +2,7 @@ package dev.LCWeekly;
 
 // https://leetcode.com/contest/weekly-contest-324/
 
+import javax.print.DocFlavor;
 import java.util.*;
 
 public class Weekly324 {
@@ -273,10 +274,126 @@ public class Weekly324 {
 //    }
 
 
-
-
     // Q3
+    // LC 2508
+    // 17.48 - 17.58 pm
     // https://leetcode.com/problems/add-edges-to-make-degrees-of-all-nodes-even/description/
+    /**
+     *
+     *  -> Return `true` if it is possible to make
+     *     the `degree` of each node in the graph `EVEN`, otherwise return false.
+     *
+     *   - The `degree` of a node is the `number of edges connected to it.`
+     *   - You can add `at most two additional edges` (possibly none) to this graph
+     *      so that there are NO `repeated edges and no self-loops.`
+     *      
+     *   - There is an undirected graph consisting of n nodes
+     *     numbered from 1 to n.
+     *
+     *
+     *   IDEA 1) GRAPH + hashMap + `degree check`
+     *      -> M
+     *
+     *
+     *
+     *   ex 1)
+     *
+     *    n =  3
+     *
+     *      *  *
+     *       *
+     */
+    public boolean isPossible(int n, List<List<Integer>> edges) {
+        // edge
+        if(n <= 1){
+            return true;
+        }
+        if(n == 2){
+            return false;
+        }
+        if(n == 3){
+            return true; // ???
+        }
+        // build map
+        // map:  { node : List[neighbor_1, neighbor_2,...] }
+        Map<Integer, List<Integer>> map = new HashMap<>();
+        for(List<Integer> edge: edges){
+            Integer _start = edge.get(0);
+            Integer _end = edge.get(1);
+            
+            // start -> end
+            List<Integer> list = new ArrayList<>();
+            if(map.containsKey(_start)){
+                list = map.get(_start);
+            }
+            map.put(_start, list);
+            
+            // end -> start
+            List<Integer> list2 = new ArrayList<>();
+            if(map.containsKey(_end)){
+                list2 = map.get(_end);
+            }
+            map.put(_end, list2);
+            
+        }
+        
+        // edge: ALL nodes already have `even` degree
+        if(isAllEven(map)){
+            return true;
+        }
+        
+        // check if it's possible
+        // to update graph by `2 operation`
+        // if yes, return true; otherwise false
+
+        //return false;
+        return canUpdateToValid(n, map);
+    }
+
+    private boolean canUpdateToValid(int n, Map<Integer, List<Integer>> map){
+
+        // loop over `non even` edge
+        for(Integer k: map.keySet()){
+            // need to update
+            List<Integer> connected = map.get(k);
+            if(connected.size() % 2 != 0){
+                // loop over `candidates
+                for(int i = 1; i < n + 1; i++){
+                    if(!connected.contains(i)){
+                        // try to connect
+                        connected.add(i);
+                        // update the `connected node`'s connected node as well
+                        //canUpdateToValid(n, )
+                        List<Integer> connected2 = map.get(i);
+                        connected2.add(k);
+                        // update map
+                        map.put(k, connected);
+                        map.put(i, connected2);
+
+                        // ??? check if `current state is ALL EVEN`
+                        if(isAllEven(map)){
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private boolean isAllEven(Map<Integer, List<Integer>> map){
+        for(List<Integer> e: map.values()){
+            if(e.size() % 2 != 0){
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    
+
+
 
     // Q4
     // https://leetcode.com/problems/cycle-length-queries-in-a-tree/description/
