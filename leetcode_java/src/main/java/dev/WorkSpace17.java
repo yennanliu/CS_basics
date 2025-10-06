@@ -1088,10 +1088,69 @@ public class WorkSpace17 {
 
 
     // LC 86
+    // 15.06 - 15.16 pm
+    /**
+     *  -> modify the linked list such that
+     *    all nodes <= x, are at the `LEFT HAND SIDE`
+     *    of the nodes that >= x. need to KEEP the
+     *    `relative ordering` of input nodes
+     *
+     *   ex 1)
+     *    [1,4,3,2,5,2], x = 3
+     *
+     *    -> [1,2,2, 4,3,5]
+     *
+     *    ex 2)
+     *     [2,1], x = 2
+     *     -> [1,2]
+     *
+     *  IDEA 1) linked list -> array -> split -> reconnect
+     *
+     *
+     */
     public ListNode partition(ListNode head, int x) {
+        // edge
+        if(head == null || head.next == null){
+            return head; // ??
+        }
 
-        return null;
+        List<Integer> smaller = new ArrayList<>();
+        List<Integer> bigger = new ArrayList<>();
+
+        ListNode head2 = head;
+
+        while(head2 != null){
+            if(head2.val < x){
+                smaller.add(head2.val);
+            }else{
+                bigger.add(head2.val);
+            }
+            head2 = head2.next;
+        }
+
+        System.out.println(">>> smaller = " + smaller);
+        System.out.println(">>> bigger = " + bigger);
+
+        ListNode node = new ListNode();
+        ListNode res = node;
+
+        // reconnect smaller, then bigger
+        for(Integer val: smaller){
+            node.next = new ListNode(val);
+            node = node.next;
+        }
+
+        for(Integer val: bigger){
+            node.next = new ListNode(val);
+            node = node.next;
+        }
+
+        System.out.println(">>> node = " + node + ", res = " + res);
+
+        return res.next;
     }
+
+
 
 
 }

@@ -1,8 +1,12 @@
 package LeetCodeJava.TwoPointer;
 
 // https://leetcode.com/problems/partition-list/description/
+// https://leetcode.cn/problems/partition-list/
 
 import DataStructure.ListNode;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 86. Partition List
@@ -43,9 +47,48 @@ import DataStructure.ListNode;
 public class PartitionList {
 
     // V0
-//    public ListNode partition(ListNode head, int x) {
-//
-//    }
+    //IDEA 1) linked list -> array -> split -> reconnect
+    public ListNode partition(ListNode head, int x) {
+        // edge
+        if (head == null || head.next == null) {
+            return head; // ??
+        }
+
+        List<Integer> smaller = new ArrayList<>();
+        List<Integer> bigger = new ArrayList<>();
+
+        ListNode head2 = head;
+
+        while (head2 != null) {
+            if (head2.val < x) {
+                smaller.add(head2.val);
+            } else {
+                bigger.add(head2.val);
+            }
+            head2 = head2.next;
+        }
+
+//        System.out.println(">>> smaller = " + smaller);
+//        System.out.println(">>> bigger = " + bigger);
+
+        ListNode node = new ListNode();
+        ListNode res = node;
+
+        // reconnect smaller, then bigger
+        for (Integer val : smaller) {
+            node.next = new ListNode(val);
+            node = node.next;
+        }
+
+        for (Integer val : bigger) {
+            node.next = new ListNode(val);
+            node = node.next;
+        }
+
+        //System.out.println(">>> node = " + node + ", res = " + res);
+
+        return res.next;
+    }
 
     // V1
     // https://leetcode.ca/2016-02-24-86-Partition-List/
