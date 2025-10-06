@@ -977,7 +977,76 @@ public class WorkSpace17 {
      *   and get the path sum of that root to p, q
      *
      */
+    // get LCA -> get path between LCA, p, and LCA, q
     public int findDistance(TreeNode root, int p, int q) {
+        // edge
+        if(root == null){
+            return -1;
+        }
+        if(p == q){
+            return 0;
+        }
+
+        TreeNode LCANode = getLCA2(root, p, q);
+
+        int len1 = getPathLen2(LCANode, p, 0);
+        int len2 = getPathLen2(LCANode, q, 0);
+
+        return len1 + len2;
+    }
+
+    private int getPathLen2(TreeNode node, int val, int move){
+        if(node == null){
+            return -1; //??? // ?????
+        }
+
+        if(node.val == val){
+            return move; // ???
+        }
+
+        //move +=1;
+
+        // get `left` path first
+        int _leftPath = getPathLen2(node.left, val, move + 1);
+        if(_leftPath != -1){
+            return _leftPath;
+        }
+        // then check `right` path
+        int _rightPath = getPathLen2(node.left, val, move + 1);
+
+        // backtrack ???
+        move -= 1;
+
+        return _rightPath;
+    }
+
+    private TreeNode getLCA2(TreeNode root, int p, int q){
+        if(root == null){
+            return root; // ??
+        }
+        if(root.val == p || root.val == q){
+            return root; // ??
+        }
+
+        TreeNode left = getLCA2(root.left, p, q);
+        TreeNode right = getLCA2(root.right, p, q);
+
+        if(left != null && right != null){
+            return root;
+        }
+
+        return left != null ? left : right;
+    }
+
+
+
+
+
+
+
+    // --------------------
+
+    public int findDistance_100(TreeNode root, int p, int q) {
         // edge
         if(root == null){
             return -1;

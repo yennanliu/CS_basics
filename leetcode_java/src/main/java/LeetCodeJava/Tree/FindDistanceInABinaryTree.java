@@ -122,6 +122,10 @@ public class FindDistanceInABinaryTree {
          * 	    meaning “not found in this subtree”
          */
         if (root == null) {
+            /**  NOTE !!!
+             *
+             *  return `-1` if a node is NOT found in sub tree
+             */
             return -1;  // not found
         }
         /**
@@ -164,6 +168,15 @@ public class FindDistanceInABinaryTree {
          *
          */
         int right = getPathLen(root.right, target, dist + 1);
+
+        // https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/backtrack.md
+        /**
+         *   // NOTE !!! we don't need a `backtrack` below,
+         *         // since `int` is a `primitive dtype in java
+         *         //  -> 	Each recursive call gets its own copy of move.
+         *         // if we use dtype such as Mutable shared state (e.g. List, Set)
+         *         // we need a backtrack (undo)
+         */
         return right;
     }
 

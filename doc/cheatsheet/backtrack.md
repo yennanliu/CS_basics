@@ -1143,11 +1143,83 @@ if (i > 0 && nums[i] == nums[i - 1] && !used[i - 1])
 
 // dfsFind(board, word, x+1, y, visited, start_idx + 1)
 
-//  1) You’re passing a copy of start_idx + 1 to the recursive function. So, inside the recursive call, start_idx is a new variable, and changes to it won’t affect the start_idx in the calling function.
+//  1) You're passing a copy of start_idx + 1 to the recursive function. So, inside the recursive call, start_idx is a new variable, and changes to it won't affect the start_idx in the calling function.
 
 
-// 2) We don’t need start_idx -= 1; because start_idx is passed by value, not by reference. So modifying it in the recursive call doesn’t affect the caller’s start_idx. We’re already handling the correct index in each recursive call by passing start_idx + 1.
+// 2) We don't need start_idx -= 1; because start_idx is passed by value, not by reference. So modifying it in the recursive call doesn't affect the caller's start_idx. We're already handling the correct index in each recursive call by passing start_idx + 1.
 
+```
+
+**Important Note: When Backtracking is NOT Needed**
+
+```java
+// LC 1740
+// NOTE !!! we don't need a `backtrack` below,
+// since `int` is a `primitive dtype in java
+//  ->     Each recursive call gets its own copy of move.
+// if we use dtype such as Mutable shared state (e.g. List, Set)
+// we need a backtrack (undo)
+
+private int getPathLen(TreeNode root, int target, int dist) {
+    if (root == null) {
+        return -1;  // not found
+    }
+    if (root.val == target) {
+        return dist;
+    }
+    int left = getPathLen(root.left, target, dist + 1);
+
+    if (left != -1) {
+        return left;
+    }
+    int right = getPathLen(root.right, target, dist + 1);
+
+    // NOTE !!! we don't need a `backtrack` below,
+    // since `int` is a `primitive dtype in java
+    //  ->  Each recursive call gets its own copy of move.
+    // if we use dtype such as Mutable shared state (e.g. List, Set)
+    // we need a backtrack (undo)
+    return right;
+}
+```
+
+**When to Use Backtracking (Undo)**:
+
+| Data Type | Need Backtrack? | Reason |
+|-----------|-----------------|--------|
+| Primitive types (`int`, `char`, `boolean`, etc.) | ❌ No | Passed by value; each recursive call gets its own copy |
+| Mutable objects (`List`, `Set`, `Map`, `StringBuilder`, etc.) | ✅ Yes | Passed by reference; modifications affect all recursive calls |
+| Immutable objects (`String`, `Integer`, etc.) | ❌ No | Modifications create new instances |
+
+**Example: When Backtracking IS Needed**:
+```java
+// Mutable shared state - NEEDS backtracking
+void backtrack(List<Integer> path, int[] nums) {
+    if (path.size() == nums.length) {
+        result.add(new ArrayList<>(path));
+        return;
+    }
+    for (int num : nums) {
+        path.add(num);              // modify shared state
+        backtrack(path, nums);      // recursive call
+        path.remove(path.size()-1); // MUST undo - backtrack!
+    }
+}
+```
+
+**Example: When Backtracking is NOT Needed**:
+```java
+// Primitive types - NO backtracking needed
+int dfs(TreeNode root, int depth) {
+    if (root == null) return depth;
+
+    int left = dfs(root.left, depth + 1);   // depth + 1 creates a NEW value
+    int right = dfs(root.right, depth + 1); // depth is unchanged for right call
+
+    // No need to do: depth -= 1;
+    // because depth was passed by value
+    return Math.max(left, right);
+}
 ```
 
 ### 1-3)  if `true`, return true right after recursive call
