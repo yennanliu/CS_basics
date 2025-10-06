@@ -117,6 +117,41 @@ public class MergeTwoSortedLists {
         return head.next; // NOTE !!!
     }
 
+    // V0-0-1
+    // IDEA: LINKED LIST OP
+    public ListNode mergeTwoLists_0_0_1(ListNode list1, ListNode list2) {
+        // edge
+        if (list1 == null && list2 == null) {
+            return null;
+        }
+        if (list1 == null || list2 == null) {
+            return list1 == null ? list2 : list1;
+        }
+
+        ListNode node = new ListNode();
+        ListNode res = node;
+        
+        while (list1 != null && list2 != null) {
+            if (list1.val < list2.val) {
+                node.next = new ListNode(list1.val);
+                list1 = list1.next;
+            } else {
+                node.next = new ListNode(list2.val);
+                list2 = list2.next;
+            }
+            node = node.next;
+        }
+
+        // check if list1 still has node or list2 still has node
+        if (list1 != null) {
+            node.next = list1;
+        } else {
+            node.next = list2;
+        }
+
+        return res.next;
+    }
+
     // V0-1
     public ListNode mergeTwoLists_0_1(ListNode list1, ListNode list2) {
 
