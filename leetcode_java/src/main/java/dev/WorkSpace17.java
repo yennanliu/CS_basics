@@ -1087,6 +1087,11 @@ public class WorkSpace17 {
     }
 
 
+    // LC 86
+    public ListNode partition(ListNode head, int x) {
+
+        return null;
+    }
 
 
 }
