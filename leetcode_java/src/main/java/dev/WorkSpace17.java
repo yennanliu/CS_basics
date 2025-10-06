@@ -1151,6 +1151,18 @@ public class WorkSpace17 {
     }
 
 
+    // LC 24
+    // 15.20 - 15.30 pm
+    /**
+     *
+     *
+     *
+     */
+    public ListNode swapPairs(ListNode head) {
+
+        return null;
+    }
+
 
 
 }

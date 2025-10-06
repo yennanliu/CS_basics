@@ -51,7 +51,6 @@
 			- 71
 	- LC 206 Reverse Linked List
 		- gpt
-			- 24
 			- 25
 			- 61
 		- gemini
