@@ -130,7 +130,7 @@ public class MergeTwoSortedLists {
 
         ListNode node = new ListNode();
         ListNode res = node;
-        
+
         while (list1 != null && list2 != null) {
             if (list1.val < list2.val) {
                 node.next = new ListNode(list1.val);
