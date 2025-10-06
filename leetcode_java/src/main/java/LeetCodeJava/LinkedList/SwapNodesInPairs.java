@@ -82,6 +82,12 @@ public class SwapNodesInPairs {
         // Swap adjacent pairs in array list
         for (int i = 0; i < vals.size() - 1; i += 2) {
             int tmp = vals.get(i);
+            /** NOTE !!!
+             *
+             *  Java `list` op:
+             *     set idx new val: list.set(idx, new_val)
+             *
+             */
             vals.set(i, vals.get(i + 1));
             vals.set(i + 1, tmp);
         }
@@ -217,7 +223,7 @@ public class SwapNodesInPairs {
         // Return the new head node.
         return dummy.next;
     }
-    
+
 
 
 }

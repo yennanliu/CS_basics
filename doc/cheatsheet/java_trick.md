@@ -122,6 +122,8 @@ System.out.println(Arrays.toString(arr2));      // 1D: [1, 2, 3, 4, 5]
 System.out.println(Arrays.deepToString(result)); // 2D: [[0, 1], [2, 3], [0, 0], [0, 0]]
 ```
 
+### 2.2) Array Initialization Patterns
+
 
 ### 2.3) Array ↔ List Conversions
 
@@ -256,7 +258,26 @@ List<List<Integer>> commonCells = new ArrayList<>();
 List<int[]> result = new ArrayList<>(); //return value
 ```
 
-#### 1-0-0-1) `Reverse` loop over a list
+### 1-0-0-1) `Replace` list val at index
+
+```java
+// java
+
+List<Integer> list = new ArrayList<>();
+list.add(1);
+list.add(2);
+list.add(3);
+
+System.out.println("list = " + list); // list = [1, 2, 3]
+
+list.set(0, 0);
+System.out.println("(after op) list = " + list); // list = [0, 2, 3]
+
+// LC 24
+```
+
+
+#### 1-0-0-2) `Reverse` loop over a list
 
 ```java
 // java
