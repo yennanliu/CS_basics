@@ -130,7 +130,150 @@ public class Weekly324 {
 
 
     // Q2
+    // LC 2507
+    // 17.07 - 17 pm
     // https://leetcode.com/problems/smallest-value-after-replacing-with-sum-of-prime-factors/description/
+    /**
+     *  IDEA 1) MATH + BRUTE FORCE
+     *
+     *
+     */
+    /**
+     * Calculates the smallest value by repeatedly replacing a number n with the
+     * sum of its prime factors until n becomes a prime number.
+     * The process stops when n == sum_of_prime_factors(n).
+     */
+    public int smallestValue(int n) {
+        // Base case: If n is 1, return 1. (Though constraints start at n=2)
+        if (n <= 1) {
+            return n;
+        }
+
+        // Loop as long as the number can be reduced.
+        // We break when sumOfFactors == n, which means n is prime.
+        while (true) {
+            // Get the list of prime factors (including duplicates)
+            List<Integer> factors = getPrimeFactors(n);
+
+            // Calculate the sum of these factors
+            int sumOfFactors = getListSum(factors);
+
+            // If the number doesn't change, we've reached a prime number (the smallest value).
+            if (sumOfFactors == n) {
+                break;
+            }
+
+            // Otherwise, replace n with the new sum and repeat.
+            n = sumOfFactors;
+        }
+
+        return n;
+    }
+
+    /**
+     * Correctly finds the prime factors of x (including duplicates).
+     * This replaces the flawed divideToFactors function.
+     */
+    private List<Integer> getPrimeFactors(int x) {
+        List<Integer> res = new ArrayList<>();
+        int i = 2;
+
+        // Loop up to the square root of the current value of x.
+        while (i * i <= x) {
+            while (x % i == 0) {
+                res.add(i);
+                x = x / i;
+            }
+            // Only increment i for the next potential prime factor
+            i += 1;
+        }
+
+        // If x is greater than 1 after the loop, the remaining x is the largest prime factor.
+        if (x > 1) {
+            res.add(x);
+        }
+
+        return res;
+    }
+
+    /**
+     * Calculates the sum of all elements in the list.
+     * This function was already correct.
+     */
+    private int getListSum(List<Integer> list) {
+        int res = 0;
+        for (int x : list) {
+            res += x;
+        }
+        return res;
+    }
+
+    // The unnecessary and flawed hasFactor function is removed.
+
+//    public int smallestValue(int n) {
+//        // edge
+//        if(n <= 3){
+//            return n;
+//        }
+//
+//        while(hasFactor(n)){
+//            // ....
+//            List<Integer> list = divideToFactors(n);
+//            System.out.println(">>> n = " + n + ", list = " + list);
+//            n = getListSum(list);
+//        }
+//
+//        return n;
+//    }
+//
+//    private int getListSum(List<Integer> list){
+//        int res = 0;
+//        for(int x: list){
+//            res += x;
+//        }
+//        return res;
+//    }
+//
+//    private List<Integer> divideToFactors(int x){
+//        List<Integer> res = new ArrayList<>();
+//        // ????
+//        int i = 2;
+//        //int sqrtX = (int) Math.sqrt(x); // ??
+//        while(i < x){
+//            // ???
+//            while(x % i == 0){
+//                //return true;
+//                res.add(i);
+//                x = x / i; // ???
+//            }
+//            i += 1;
+//        }
+//
+//        // ??
+//        if(x != 1){
+//            res.add(x); // ?? append the `remaining val` to list
+//        }
+//
+//        return res;
+//    }
+//
+//    private boolean hasFactor(int x){
+//        // ???
+//        int sqrtX = (int) Math.sqrt(x); // ??
+//        int i = 2;
+//        System.out.println(">>> (hasFactor)  x = " + x + ", sqrtX = " + sqrtX);
+//        while(i <= sqrtX + 1){
+//            System.out.println(">>> (hasFactor)  x = " + x + ", i = " + i);
+//            if(x % i == 0){
+//                return true;
+//            }
+//            i += 1;
+//        }
+//        return false;
+//    }
+
+
+
 
     // Q3
     // https://leetcode.com/problems/add-edges-to-make-degrees-of-all-nodes-even/description/
