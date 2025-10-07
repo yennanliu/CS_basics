@@ -391,9 +391,6 @@ public class Weekly324 {
         return true;
     }
     
-    
-
-
 
     // Q4
     // https://leetcode.com/problems/cycle-length-queries-in-a-tree/description/
