@@ -86,9 +86,35 @@ Trees can be efficiently represented using arrays, especially for complete binar
 - **Key**: Use one array for structure, another for positioning
 
 #### **Pattern 5: Tree Serialization**
-- **Use Case**: Convert tree to/from string representation  
+- **Use Case**: Convert tree to/from string representation
 - **Examples**: LC 297 (Serialize/Deserialize), LC 449 (BST Codec)
 - **Techniques**: Preorder, postorder, or level-order encoding
+
+#### **Pattern 6: Move Parent (Bidirectional Tree Traversal)**
+- **Use Case**: Problems requiring upward traversal or multi-directional exploration
+- **Core Concept**: Convert tree to graph by adding parent pointers
+- **Key Technique**: Build parent map + BFS for distance-based problems
+- **Example**: LC 863 (All Nodes Distance K in Binary Tree)
+- **Why it works**:
+  - Tree nodes only know children (left/right), not parents
+  - Build parent map via DFS preprocessing
+  - Then use BFS to explore all directions: left, right, **and up (parent)**
+  - Visited set prevents cycles when parent edges create bidirectional paths
+
+**Template Structure:**
+```
+1. Build parent map (DFS preprocessing)
+2. Convert tree to undirected graph (children + parent edges)
+3. BFS from target node, exploring all neighbors (left, right, parent)
+4. Track visited nodes to avoid cycles
+5. Stop at desired distance/condition
+```
+
+**Common Applications:**
+- Finding all nodes at distance K from target
+- Closest node to target with specific property
+- Path between any two nodes (not necessarily ancestor-descendant)
+- Problems requiring "omnidirectional" tree exploration
 
 ### 0-3) Traversal Order Selection Strategy
 
@@ -97,18 +123,21 @@ When to use which traversal:
 
 1. No specific root processing needed?
    → Any order works (preorder/inorder/postorder)
-   
-2. Need parent data for children?  
+
+2. Need parent data for children?
    → Use PREORDER (root → left → right)
-   
+
 3. Need children data for parent?
    → Use POSTORDER (left → right → root)
-   
+
 4. Processing sorted data (BST)?
    → Use INORDER (left → root → right)
-   
+
 5. Level-by-level processing?
    → Use BFS/Level-order traversal
+
+6. Need to move upward (to parent) or explore all directions?
+   → Use MOVE PARENT pattern (Build parent map + BFS)
 ```
 
 ## 1) Tree Templates & Algorithms
@@ -168,6 +197,7 @@ public ResultType solveTreeProblem(TreeNode root, ParamType params) {
 | **BFS Level-order** | Queue-based | Level processing needed | LC 102, 199, 515 |
 | **Divide & Conquer** | Bottom-up recursion | Need subtree results | LC 124, 543, 687 |
 | **Path Tracking** | DFS with path state | Path-related problems | LC 112, 257, 437 |
+| **Move Parent** | Parent map + BFS | Bidirectional exploration | LC 863, 742, 1740 |
 
 ### 1.3) Core Operations
 
@@ -512,14 +542,18 @@ Problem Analysis Decision Tree:
    └── No: Continue
 
 3. Need information from parent for children?
-   ├── Yes: Use PREORDER traversal  
+   ├── Yes: Use PREORDER traversal
    └── No: Continue
 
 4. Processing level by level?
    ├── Yes: Use BFS/Level-order traversal
    └── No: Continue
 
-5. Working with BST and need sorted order?
+5. Need to move upward (to parent) or explore multi-directionally?
+   ├── Yes: Use MOVE PARENT pattern (Build parent map + BFS)
+   └── No: Continue
+
+6. Working with BST and need sorted order?
    ├── Yes: Use INORDER traversal
    └── No: Use any suitable approach
 ```
@@ -1269,24 +1303,207 @@ class Solution(object):
     }
 ```
 
-### 1-1-16) Get neighborhood node (for each node) from tree
-```python
-# LC 863. All Nodes Distance K in Binary Tree
-# dfs
-# IDEA : DFS
-# ...
-from collections import defaultdict
-def build(parent,child):
-    graph = defaultdict(list)
-    if parent and child:
-        graph[parent.val].append(child.val)
-        graph[child.val].append(parent.val)
-    if child.left:
-        build(child,child.left)
-    if child.right:
-        build(child,child.right)
-# ....
+### 1-1-16) Move Parent Pattern - Bidirectional Tree Traversal
+
+**Core Concept**: Convert tree to graph by building parent map, then use BFS for multi-directional exploration.
+
+#### **Pattern Overview**
 ```
+Standard Tree (Unidirectional)        →    Tree with Parent Map (Bidirectional)
+
+      1                                          1
+     / \              Build Parent Map          / \
+    2   3             ===============>         2 ← 3
+   / \                                        / \
+  4   5                                      4 ← 5
+
+Can only go down (left/right)          Can go down (left/right) AND up (parent)
+```
+
+#### **LC 863: All Nodes Distance K in Binary Tree**
+
+```java
+// java
+// IDEA: DFS + Parent Map + BFS
+/**
+ * Why this works?
+ *
+ * Tree → Graph → BFS (visiting)
+ *
+ * • From target you need to explore all directions reachable in k steps:
+ *   left, right, and up (to parent).
+ *   Converting the tree to an undirected graph (children + parent edges)
+ *   and then running BFS from target to depth k returns the desired nodes.
+ *
+ * • visited ensures we don't revisit nodes (which would otherwise make the BFS
+ *   incorrect/infinite once parent edges are present).
+ */
+
+public List<Integer> distanceK(TreeNode root, TreeNode target, int k) {
+    List<Integer> res = new ArrayList<>();
+    // parentMap stores parent pointers for every node (node -> parent)
+    Map<TreeNode, TreeNode> parentMap = new HashMap<>();
+
+    if (root == null) return res;
+
+    // Step 1: Build parent map for all nodes
+    buildParentMap(root, null, parentMap);
+
+    // Step 2: BFS starting from target, stop at distance k
+    Queue<TreeNode> queue = new LinkedList<>();
+    Set<TreeNode> visited = new HashSet<>();
+    queue.offer(target);
+    visited.add(target);
+    int dist = 0;
+
+    /**
+     * • Each loop iteration processes one BFS "level"
+     *   (all nodes at the same distance from target).
+     *
+     * • If current distance dist equals k, the nodes currently
+     *   in queue are exactly the nodes at distance k.
+     */
+    while (!queue.isEmpty()) {
+        int size = queue.size();
+
+        if (dist == k) {
+            // Collect all nodes currently in the queue
+            for (TreeNode node : queue) {
+                res.add(node.val);
+            }
+            break;
+        }
+
+        /**
+         * NOTE!!!
+         * For each node, we visit cur.left, cur.right, and its parent via BFS
+         *
+         * • Process the size nodes of the current level:
+         *   - For each cur, try to move to cur.left, cur.right, and its parent
+         *   - visited.add(node) returns true only if node was not already present
+         *     That both checks and marks in one call
+         *
+         * • After processing the whole level, increment dist and continue
+         */
+        for (int i = 0; i < size; i++) {
+            TreeNode cur = queue.poll();
+
+            // Explore neighbors: left, right, parent
+            if (cur.left != null && visited.add(cur.left)) {
+                queue.offer(cur.left);
+            }
+            if (cur.right != null && visited.add(cur.right)) {
+                queue.offer(cur.right);
+            }
+            TreeNode parent = parentMap.get(cur);
+            if (parent != null && visited.add(parent)) {
+                queue.offer(parent);
+            }
+        }
+        dist++;
+    }
+
+    return res;
+}
+
+/**
+ * NOTE!!! Helper function to build parent map
+ *
+ * • We need to be able to move upwards from any node (to parent).
+ *   A binary tree node only knows left/right children, so we precompute
+ *   parents by a DFS.
+ *
+ * • Simple DFS that records parent of each node (parentMap.put(node, parent))
+ * • For root we pass parent = null
+ * • After this every node maps to its parent (or null for root)
+ */
+private void buildParentMap(TreeNode node, TreeNode parent,
+                            Map<TreeNode, TreeNode> parentMap) {
+    if (node == null) return;
+
+    parentMap.put(node, parent);
+    buildParentMap(node.left, node, parentMap);
+    buildParentMap(node.right, node, parentMap);
+}
+```
+
+```python
+# python
+# LC 863. All Nodes Distance K in Binary Tree
+from collections import defaultdict, deque
+
+def distanceK(root, target, k):
+    """
+    IDEA: Build bidirectional graph + BFS
+
+    Step 1: DFS to build parent-child bidirectional edges
+    Step 2: BFS from target to find all nodes at distance k
+    """
+
+    # Build undirected graph
+    graph = defaultdict(list)
+
+    def build_graph(parent, child):
+        """DFS to build bidirectional edges"""
+        if parent and child:
+            graph[parent.val].append(child.val)
+            graph[child.val].append(parent.val)
+        if child.left:
+            build_graph(child, child.left)
+        if child.right:
+            build_graph(child, child.right)
+
+    # Build graph from root
+    build_graph(None, root)
+
+    # BFS from target
+    queue = deque([(target.val, 0)])
+    visited = {target.val}
+    result = []
+
+    while queue:
+        node_val, dist = queue.popleft()
+
+        if dist == k:
+            result.append(node_val)
+            continue
+
+        # Explore all neighbors (left, right, parent)
+        for neighbor in graph[node_val]:
+            if neighbor not in visited:
+                visited.add(neighbor)
+                queue.append((neighbor, dist + 1))
+
+    return result
+```
+
+#### **Key Points**
+1. **Parent Map Construction**: O(N) time, O(N) space
+2. **BFS Exploration**: O(N) time in worst case
+3. **Visited Set**: Critical to prevent infinite loops
+4. **Applications**:
+   - Distance-based problems
+   - Finding paths between arbitrary nodes
+   - Closest node with property
+   - Problems requiring upward traversal
+
+#### **Pattern Comparison: Standard Tree vs Move Parent**
+
+| Aspect | Standard Tree Traversal | Move Parent Pattern |
+|--------|-------------------------|---------------------|
+| **Direction** | Unidirectional (down only) | Bidirectional (down + up) |
+| **Preprocessing** | None required | Build parent map (O(N)) |
+| **Space Complexity** | O(h) recursion stack | O(N) parent map + visited |
+| **Visited Tracking** | Usually not needed | **Critical** to prevent cycles |
+| **Traversal Method** | DFS recursive | DFS (build) + BFS (explore) |
+| **Use Cases** | Standard tree problems | Distance, path, multi-directional |
+| **Graph Conversion** | Tree remains tree | Tree → Undirected graph |
+
+#### **Common Mistakes to Avoid**
+1. ❌ Forgetting visited set → infinite loops
+2. ❌ Not handling null parent for root → NPE
+3. ❌ Using DFS instead of BFS for distance → incorrect results
+4. ❌ Building graph with values instead of node references → fails with duplicate values
 
 ### 1-1-17) check Symmetric Tree
 ```python
@@ -1789,11 +2006,12 @@ class Solution(object):
         return res
 ```
 
-### 2-5) Closest Leaf in a Binary Tree
+### 2-5) Closest Leaf in a Binary Tree (Move Parent Pattern)
 ```python
 # LeetCode 742. Closest Leaf in a Binary Tree
 # V0
-# IDEA : DFS build GRAPH + BFS find ans
+# IDEA : DFS build GRAPH + BFS find ans (MOVE PARENT PATTERN)
+# See section 1-1-16 for detailed explanation of this pattern
 ### NOTE :  closest to a leaf means the least number of edges travelled on the binary tree to reach any leaf of the tree. Also, a node is called a leaf if it has no children.
 #         -> We only consider the min distance between left (no sub tree) and k
 ### NOTE : we need DFS create the graph

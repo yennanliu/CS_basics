@@ -67,7 +67,6 @@
 		 	- 160
 	- LC 226 Invert Binary Tree
 		- gpt
-			- 117
 			- 652
 		- gemini
 	- LC 104 Maximum Depth of Binary Tree

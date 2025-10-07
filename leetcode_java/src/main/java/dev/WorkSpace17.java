@@ -1428,6 +1428,11 @@ public class WorkSpace17 {
         return rightDist; // ???
     }
 
+    // LC 117
+    public Node connect(Node root) {
+
+        return null;
+    }
 
 
 }
