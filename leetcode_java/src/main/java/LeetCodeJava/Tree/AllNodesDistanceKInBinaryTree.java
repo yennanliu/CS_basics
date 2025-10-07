@@ -50,7 +50,25 @@ public class AllNodesDistanceKInBinaryTree {
 
     // V0-1
     // IDEA: DFS + `Parent Map` + BFS (fixed by gpt)
+    /**  IDEA:
+     *
+     * Why this works ?
+     *
+     *  Tree -> Graph -> BFS (visiting)
+     *
+     * 	•	From target you need to explore `all directions` reachable in k steps:
+     * 	   ` left, right, and up (to parent). `
+     * 	    Converting the tree to an `undirected graph` (children + parent edges)
+     * 	    and then running BFS from target to depth k returns the desired nodes.
+     *
+     * 	•	visited ensures we don’t revisit nodes (which would otherwise make the BFS
+     *    	incorrect / infinite once parent edges are present).
+     *
+     */
     List<Integer> res = new ArrayList<>();
+    /**
+     * parentMap stores `parent` pointers for every node (node -> parent).
+     */
     Map<TreeNode, TreeNode> parentMap = new HashMap<>();
 
     public List<Integer> distanceK_0_1(TreeNode root, TreeNode target, int k) {
@@ -60,6 +78,14 @@ public class AllNodesDistanceKInBinaryTree {
         // 1️⃣ Build parent map for all nodes
         buildParentMap(root, null);
 
+        /**
+         * 	•	We do a breadth-first search (BFS) starting at the target node.
+         * 	•	queue holds the frontier for BFS.
+         * 	•	visited prevents revisiting nodes
+         *   	(prevents cycles when we traverse parent links too).
+         * 	•	Enqueue target and mark visited immediately so we don’t re-add it.
+         * 	•	dist tracks current BFS depth (distance from target).
+         */
         // 2️⃣ BFS starting from target, stop at distance k
         Queue<TreeNode> queue = new LinkedList<>();
         Set<TreeNode> visited = new HashSet<>();
@@ -67,6 +93,15 @@ public class AllNodesDistanceKInBinaryTree {
         visited.add(target);
         int dist = 0;
 
+        /**
+         * 	-	Each loop iteration processes one BFS “level”
+         * 	    (all nodes at the same distance from target).
+         *
+         * 	-	If current distance dist equals k, the nodes currently
+         * 	    in queue are exactly the nodes at distance k.
+         *
+         *  - We collect their values and break out — no need to explore further.
+         */
         while (!queue.isEmpty()) {
             int size = queue.size();
             if (dist == k) {
@@ -76,6 +111,22 @@ public class AllNodesDistanceKInBinaryTree {
                 }
                 break;
             }
+            /**
+             *  NOTE !!!
+             *
+             *   for each node, we visit `cur.left, cur.right, and its parent` via BFS
+             *
+             *
+             * 	- Process the size nodes of the current level:
+             * 	   - For each cur, try to move to `cur.left, cur.right, and its parent.`
+             * 	   - visited.add(node) returns true only if node was not already present in visited.
+             * 	     That both checks and marks in one call, so if (node != null && visited.add(node))
+             * 	     queue.offer(node); is a compact idiom to avoid duplicates.
+             *
+             * 	-	After processing the whole level, increment dist and continue to next level.
+             * 	- 	If BFS finishes without dist == k (e.g. k larger than tree diameter), res remains empty.
+             * 	- 	Finally return res.
+             */
             for (int i = 0; i < size; i++) {
                 TreeNode cur = queue.poll();
                 // explore neighbors: left, right, parent
@@ -96,6 +147,16 @@ public class AllNodesDistanceKInBinaryTree {
         return res;
     }
 
+    /**  NOTE !!! help func
+     *
+     * 	•	We need to be able to move `upwards` from any node (to parent).
+     * 	A binary tree node only knows left/right children, so we precompute parents by a DFS.
+     *
+     *
+     * 	•	Simple DFS that records parent of each node (parentMap.put(node, parent)).
+     * 	•	For root we pass parent = null.
+     * 	•	After this every node maps to its parent (or null for root).
+     */
     private void buildParentMap(TreeNode node, TreeNode parent) {
         if (node == null)
             return;
