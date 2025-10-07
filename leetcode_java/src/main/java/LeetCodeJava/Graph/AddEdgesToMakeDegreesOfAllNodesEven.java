@@ -60,7 +60,7 @@ public class AddEdgesToMakeDegreesOfAllNodesEven {
 //    }
 
     // V0-1
-    // IDEA: GRAPH (gpt)
+    // IDEA: GRAPH + Very simple case analysis + graph adjacency checks (gpt)
     /**  IDEA:
      *
      *  1.	Nodes with odd degree are the ones that need fixing.
@@ -71,13 +71,65 @@ public class AddEdgesToMakeDegreesOfAllNodesEven {
      * 	4.	If it’s 4, pair them in some way — check possible pairings that avoid existing edges.
      * 	5.	For any other odd count (like 1, 3, 5, …), impossible with at most two edges.
      *
+     *
+     * 	 IDEA V2:
+     *
+     * 	1.	Build adjacency sets for O(1) existence checks between any two nodes.
+     * 	2.	Find all nodes with odd degree (odd list).
+     * 	3.	If m == 0 → already ok.
+     * 	4.	If m == 2 → check whether we can fix with 1 edge (connect those two), else try to fix with 2 edges by connecting both odd nodes to a third node c such that neither a–c nor b–c already exists.
+     * 	5.	If m == 4 → try the three possible pairings of the four odd nodes (pair them into two edges) and check if both edges in a pairing do not already exist.
+     * 	6.	Otherwise return false.
+     *
+     * Complexities: building adjacency O(n + E).
+     * The checks are small constant work (m ≤ n). Overall O(n + E + n) ≈ O(n + E).
+     *
+     */
+    /**  CLARIFICATION:
+     *
+     * 1) Why we only need to consider m = 0, 2, 4 (and not 6, 8, ...)?
+     *
+     *   Two facts:
+     *
+     *      - A. Handshaking lemma → the number of odd-degree vertices is even.
+     *           Sum of degrees = 2 * edges ⇒ sum of degrees is even ⇒ number of
+     *           vertices with odd degree must be even. So m (count of odd-degree nodes)
+     *           is always even: 0, 2, 4, 6, ....
+     *
+     *      - B. Each added edge toggles parity of exactly two nodes (its endpoints).
+     * 	        - Add one edge → flips parity of two vertices.
+     * 	        - Add two edges → flips parity of up to four vertices
+     * 	         (if edges touch distinct endpoints), or fewer if endpoints overlap.
+     *
+     *
+     * -> We may add `AT MOST 2 edges. `
+     *    So we can change parity of at most `4 vertices. `
+     *    To make all odd-degree vertices even we therefore need `m ≤ 4.`
+     *    Combined with (A) that means the only possible m values we
+     *    can hope to fix with ≤2 edges are 0, 2, 4. If m >= 6 you need at least 3 edges
+     *    (each edge fixes at most two odd nodes), so impossible.
+     *
+     *
      */
     public boolean isPossible_0_1(int n, List<List<Integer>> edges) {
         // Build adjacency (undirected) in a Set for fast existence check
+        /**
+         *   NOTE !!
+         *
+         * - Create adjacency structure. Using n+1 and indexing 1..n
+         *   (common in LC). Each graph[i] is a HashSet
+         *   of neighbors of i for O(1) neighbor checks.
+         *
+         *
+         *   -> e.g. graph[i] contains ALL neighbors for `node i`
+         *
+         */
         Set<Integer>[] graph = new Set[n + 1];
         for (int i = 1; i <= n; i++) {
             graph[i] = new HashSet<>();
         }
+
+        // Fill the adjacency sets from the given edge list. Undirected graph: add both directions.
         for (List<Integer> e : edges) {
             int u = e.get(0);
             int v = e.get(1);
@@ -85,7 +137,12 @@ public class AddEdgesToMakeDegreesOfAllNodesEven {
             graph[v].add(u);
         }
 
-        // Collect nodes with odd degree
+        /**
+         *  NOTE !!
+         *
+         *  Collect nodes with odd degree
+         *
+         */
         List<Integer> odd = new ArrayList<>();
         for (int i = 1; i <= n; i++) {
             if ((graph[i].size() % 2) != 0) {
@@ -93,10 +150,27 @@ public class AddEdgesToMakeDegreesOfAllNodesEven {
             }
         }
 
+        // edge case: if ALL nodes are `even` degree, return `true` directly
         int m = odd.size();
         if (m == 0) {
             return true;
         }
+
+        /**
+         *  Case 1) m = 2
+         *
+         *  - If two odd nodes a and b:
+         *
+         * 	    - If a and b are not already adjacent,
+         * 	    a single edge a–b fixes both → return true.
+         *
+         * 	    - If they are adjacent, adding a–b would duplicate
+         * 	    existing edge (not allowed). We still can try two edges:
+         * 	    choose some node c ≠ a,b such that neither a–c nor b–c already exists.
+         * 	    Adding a–c and b–c flips a and b only
+         * 	    (node c gets two new edges so its degree parity stays the same),
+         * 	    so this fixes a and b. If such c exists → true; else false.
+         */
         if (m == 2) {
             int a = odd.get(0), b = odd.get(1);
             // If there’s no edge between them already, connect directly
@@ -114,6 +188,23 @@ public class AddEdgesToMakeDegreesOfAllNodesEven {
             }
             return false;
         }
+
+        /**
+         *  Case 1) m = 4
+         *
+         *  - If four odd nodes, we must pair them up into two new edges
+         *    (each new edge flips parity of its endpoints).
+         *    There are exactly 3 pairings of four labeled items into two unordered pairs:
+         * 	    1.	(a,b) & (c,d)
+         * 	    2.	(a,c) & (b,d)
+         * 	    3.	(a,d) & (b,c)
+         *
+         * 	- For any pairing to be valid we must be able to add both edges
+         * 	  (i.e. neither edge already exists).
+         * 	  If any pairing works → true. Otherwise false.
+         *
+         *
+         */
         if (m == 4) {
             int a = odd.get(0), b = odd.get(1), c = odd.get(2), d = odd.get(3);
             // check pairing possibilities (3 ways)
@@ -125,6 +216,12 @@ public class AddEdgesToMakeDegreesOfAllNodesEven {
                 return true;
             return false;
         }
+
+        /**
+         * 	All other counts (1, 3, 5, …) are impossible
+         * 	given constraints (handshaking lemma rules out odd counts, but code covers them).
+         * 	Counts ≥ 6 cannot be fixed with ≤2 edges.
+         */
         // any other odd count (1,3,5, …) not fixable with ≤2 edges
         return false;
     }
