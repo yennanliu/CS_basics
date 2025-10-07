@@ -113,13 +113,26 @@ public class PopulatingNextRightPointersInEachNode2 {
         queue.offer(root);
 
         // Standard BFS by level
+        /** NOTE !!!
+         *`
+         *  -> we visit tree vis BFS (layer by layer)
+         */
         while (!queue.isEmpty()) {
             int size = queue.size();
+
+            /** NOTE !!!
+             *
+             *  we init `prev` for `next` pointer connect per problem request
+             */
             Node prev = null;
 
             for (int i = 0; i < size; i++) {
                 Node cur = queue.poll();
 
+                /** NOTE !!!
+                 *
+                 *  we connect (point) prev to cur
+                 */
                 // link previous node in this level to current node
                 if (prev != null) {
                     prev.next = cur;
@@ -135,6 +148,11 @@ public class PopulatingNextRightPointersInEachNode2 {
                 }
             }
 
+            /** NOTE !!!
+             *
+             *  we connect (point) prev to next `at the end of layer visiting`
+             *  e.g. we visit tree vis BFS (layer by layer)
+             */
             // last node in this level should point to null
             if (prev != null) {
                 prev.next = null;
