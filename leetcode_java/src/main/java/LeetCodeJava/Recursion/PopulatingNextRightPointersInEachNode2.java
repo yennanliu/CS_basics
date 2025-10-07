@@ -46,6 +46,8 @@ package LeetCodeJava.Recursion;
  *
  */
 
+import DataStructure.Node;
+
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -75,30 +77,72 @@ public class PopulatingNextRightPointersInEachNode2 {
     */
 
     // TODO: move to dataStructure package
-    class Node {
-        public int val;
-        public Node left;
-        public Node right;
-        public Node next;
-
-        public Node() {}
-
-        public Node(int _val) {
-            val = _val;
-        }
-
-        public Node(int _val, Node _left, Node _right, Node _next) {
-            val = _val;
-            left = _left;
-            right = _right;
-            next = _next;
-        }
-    };
+//    class Node {
+//        public int val;
+//        public Node left;
+//        public Node right;
+//        public Node next;
+//
+//        public Node() {}
+//
+//        public Node(int _val) {
+//            val = _val;
+//        }
+//
+//        public Node(int _val, Node _left, Node _right, Node _next) {
+//            val = _val;
+//            left = _left;
+//            right = _right;
+//            next = _next;
+//        }
+//    };
 
     // V0
 //    public Node connect(Node root) {
 //
 //    }
+
+    // V0-1
+    // IDEA: BFS (fixed by gpt)
+    public Node connect_0_1(Node root) {
+        if (root == null) {
+            return root;
+        }
+
+        Queue<Node> queue = new LinkedList<>();
+        queue.offer(root);
+
+        // Standard BFS by level
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            Node prev = null;
+
+            for (int i = 0; i < size; i++) {
+                Node cur = queue.poll();
+
+                // link previous node in this level to current node
+                if (prev != null) {
+                    prev.next = cur;
+                }
+                prev = cur;
+
+                // add children to queue
+                if (cur.left != null) {
+                    queue.offer(cur.left);
+                }
+                if (cur.right != null) {
+                    queue.offer(cur.right);
+                }
+            }
+
+            // last node in this level should point to null
+            if (prev != null) {
+                prev.next = null;
+            }
+        }
+
+        return root;
+    }
 
     // V1
     // https://leetcode.com/problems/populating-next-right-pointers-in-each-node-ii/solutions/5449615/my-easy-accepted-java-solution-100-by-di-nz2w/
@@ -146,5 +190,5 @@ public class PopulatingNextRightPointersInEachNode2 {
     // IDEA: RECURSION
     // https://leetcode.com/problems/populating-next-right-pointers-in-each-node-ii/solutions/2033511/3-approaches-bfs-bfs-linkedlist-recursio-0q68/
 
-    
+
 }

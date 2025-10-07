@@ -999,15 +999,16 @@ public class workSpace1 {
             return visited.get(cur_val);
         }
 
-        Node copiedNode = new Node(node.val, new ArrayList());
-        visited.put(cur_val, copiedNode);
+//        Node copiedNode = new Node(node.val, new ArrayList());
+//        visited.put(cur_val, copiedNode);
+//
+//
+//        for (Node _node : node.neighbors) {
+//            copiedNode.neighbors.add(_clone(visited, _node));
+//        }
 
-
-        for (Node _node : node.neighbors) {
-            copiedNode.neighbors.add(_clone(visited, _node));
-        }
-
-        return copiedNode; // ?
+       // return copiedNode; // ?
+        return null;
     }
 
     // https://leetcode.com/problems/rotting-oranges/
@@ -1135,5 +1136,106 @@ public class workSpace1 {
 
         return ans;
     }
+
+
+    // LC 117
+    // 10.58 - 11.08 am
+    /**
+     *
+     *  class Node {
+     *     public int val;
+     *     public Node left;
+     *     public Node right;
+     *     public Node next;
+     *
+     *     public Node() {}
+     *
+     *     public Node(int _val) {
+     *         val = _val;
+     *     }
+     *
+     *     public Node(int _val, Node _left, Node _right, Node _next) {
+     *         val = _val;
+     *         left = _left;
+     *         right = _right;
+     *         next = _next;
+     *     }
+     * };
+     *
+     *  Populate each next pointer to point to its next right node.
+     *  If there is no next right node, the next pointer should be set to NULL.
+     *
+     *  Initially, all next pointers are set to NULL.
+     *
+     *
+     *   IDEA 1) BFS
+     *
+     *
+     */
+    class Node {
+        public int val;
+        public Node left;
+        public Node right;
+        public Node next;
+
+        public Node() {}
+
+        public Node(int _val) {
+            val = _val;
+        }
+
+        public Node(int _val, Node _left, Node _right, Node _next) {
+            val = _val;
+            left = _left;
+            right = _right;
+            next = _next;
+        }
+    };
+    public Node connect(Node root) {
+        if(root == null){
+            return root;
+        }
+        if(root.left == null && root.right == null){
+            root.next = null;
+            return root;
+        }
+        // bfs
+        Queue<Node> q = new LinkedList<>();
+        q.add(root);
+        // ???
+        List<String> list = new ArrayList<>();
+        while(!q.isEmpty()){
+            int _size = q.size();
+            for(int i = 0; i < _size; i++){
+                Node cur = q.poll();
+                list.add(String.valueOf(cur.val));
+                //list.add(",");
+                if(cur.left != null){
+                    q.add(cur.left);
+                }
+                if(cur.right != null){
+                    q.add(cur.right);
+                }
+            }
+            list.add("#");
+        }
+
+        // build result
+        Node node = new Node(); // ??
+        Node res = node;
+        for(String x: list){
+            if(x.equals("#")){
+                node.next = null; // ???
+            }else{
+                node.next = new Node(Integer.parseInt(x));
+            }
+            node = node.next;
+        }
+
+        // ???
+        return res.next; // ???
+    }
+
+
 
 }
