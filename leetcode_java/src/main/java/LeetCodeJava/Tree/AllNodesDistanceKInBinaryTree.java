@@ -48,6 +48,125 @@ public class AllNodesDistanceKInBinaryTree {
 //
 //    }
 
+    // V0-1
+    // IDEA: DFS + `Parent Map` + BFS (fixed by gpt)
+    List<Integer> res = new ArrayList<>();
+    Map<TreeNode, TreeNode> parentMap = new HashMap<>();
+
+    public List<Integer> distanceK_0_1(TreeNode root, TreeNode target, int k) {
+        if (root == null)
+            return res;
+
+        // 1️⃣ Build parent map for all nodes
+        buildParentMap(root, null);
+
+        // 2️⃣ BFS starting from target, stop at distance k
+        Queue<TreeNode> queue = new LinkedList<>();
+        Set<TreeNode> visited = new HashSet<>();
+        queue.offer(target);
+        visited.add(target);
+        int dist = 0;
+
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            if (dist == k) {
+                // collect all nodes currently in the queue
+                for (TreeNode node : queue) {
+                    res.add(node.val);
+                }
+                break;
+            }
+            for (int i = 0; i < size; i++) {
+                TreeNode cur = queue.poll();
+                // explore neighbors: left, right, parent
+                if (cur.left != null && visited.add(cur.left)) {
+                    queue.offer(cur.left);
+                }
+                if (cur.right != null && visited.add(cur.right)) {
+                    queue.offer(cur.right);
+                }
+                TreeNode parent = parentMap.get(cur);
+                if (parent != null && visited.add(parent)) {
+                    queue.offer(parent);
+                }
+            }
+            dist++;
+        }
+
+        return res;
+    }
+
+    private void buildParentMap(TreeNode node, TreeNode parent) {
+        if (node == null)
+            return;
+        parentMap.put(node, parent);
+        buildParentMap(node.left, node);
+        buildParentMap(node.right, node);
+    }
+
+    // VO-2
+    // IDEA: PURE DFS (gpt)
+    List<Integer> res_0_2 = new ArrayList<>();
+
+    public List<Integer> distanceK_0_2(TreeNode root, TreeNode target, int k) {
+        dfs(root, target, k);
+        return res_0_2;
+    }
+
+    // dfs() returns the distance from current node to target, or -1 if target is not in this subtree
+    private int dfs(TreeNode node, TreeNode target, int k) {
+        if (node == null)
+            return -1;
+
+        // 🎯 Base case: found target
+        if (node == target) {
+            // collect all nodes downward at distance k from target
+            collectDownward(node, 0, k);
+            return 0; // distance from target to itself
+        }
+
+        // 🔹 Search left subtree
+        int leftDist = dfs(node.left, target, k);
+        if (leftDist != -1) {
+            int distFromNode = leftDist + 1;
+            if (distFromNode == k) {
+                res_0_2.add(node.val);
+            } else {
+                // find nodes in right subtree that are k - distFromNode - 0 away
+                collectDownward(node.right, distFromNode + 1, k);
+            }
+            return distFromNode;
+        }
+
+        // 🔸 Search right subtree
+        int rightDist = dfs(node.right, target, k);
+        if (rightDist != -1) {
+            int distFromNode = rightDist + 1;
+            if (distFromNode == k) {
+                res_0_2.add(node.val);
+            } else {
+                // find nodes in left subtree that are k - distFromNode away
+                collectDownward(node.left, distFromNode + 1, k);
+            }
+            return distFromNode;
+        }
+
+        // target not found in either subtree
+        return -1;
+    }
+
+    // helper: collect all nodes downward at distance k
+    private void collectDownward(TreeNode node, int dist, int k) {
+        if (node == null)
+            return;
+        if (dist == k) {
+            res_0_2.add(node.val);
+            return;
+        }
+        collectDownward(node.left, dist + 1, k);
+        collectDownward(node.right, dist + 1, k);
+    }
+
     // V1
     // https://leetcode.ca/2018-04-11-863-All-Nodes-Distance-K-in-Binary-Tree/
     // IDEA: DFS + HASHMAP

@@ -1345,9 +1345,89 @@ public class WorkSpace17 {
 
 
     // LC 863
-    public List<Integer> distanceK(TreeNode root, TreeNode target, int k) {
+    // 9.49 - 9.59 am
+    /**
+     *  IDEA 1) DFS
+     *    - find the target node
+     *      - for  `child` nodes at the SAME side as target node,
+     *        use DFS get the nodes fit requirement
+     *      - for  `child` nodes at the DIFFERENT side
+     *        use DFS, but the dist = `left path to target ` + `k -  `left path to target ``
+     *
+     *  IDEA 2) BFS
+     *
+     *
+     */
+    List<Integer> res = new ArrayList<>();
+    public List<Integer> distanceK(TreeNode root, TreeNode target, int k) {;
+        // edge
+        if(root == null){
+            return res;
+        }
+        if(root.left == null && root.right == null){
+            if(k != 0){
+                return res;
+            }
+            // ???
+            res.add(root.val);
+            return res;
+        }
+
+//        List<Integer> list1 = new ArrayList<>();
+//        List<Integer> list2 = new ArrayList<>();
+
+        // case 1) dist(node, target) = k, node, target on the SAME side
+        getDistKNodes(target, root, k);
+        // case 2) dist(node, target) = k, node, target on the DIFFERENT side
+        int distTargetRoot = getNodeDist(root, target.val, 0);
+        if(k - distTargetRoot > 0){
+            getDistKNodes(root, root, k - distTargetRoot);
+
+        }
 
         return null;
     }
+
+    // dist: the `expect distance` between node and target
+    // move: the move we have made
+    // DFS visiting all nodes (pre-order traverse)
+    // target: the `target` node (to be compared node)
+    // root: the current node (the node met when traverse over tree)
+    private void getDistKNodes(TreeNode root, TreeNode target, int k){
+      if(root == null){
+          return; // ??
+      }
+      //int move = getNodeDist(root, dist);
+      int dist = getNodeDist(target, root.val, k);
+
+      if(dist == k){
+          res.add(root.val);
+      }
+      getDistKNodes(root.left, target, k);
+      getDistKNodes(root.right, target, k);
+    }
+
+    // roo
+    // helper func get dist between root and the node has value == val
+    private int getNodeDist(TreeNode root, int val, int dist){
+        if(root == null){
+            return -1; //???
+        }
+        if(root.val == val){
+            return dist;
+        }
+        int leftDist = getNodeDist(root.left, val, dist + 1);
+        int rightDist = getNodeDist(root.left, val, dist + 1);
+        // ????
+        if(leftDist != -1){
+            return leftDist;
+        }
+
+        // NOTE !!!  NO NEED to do backtrack for primitive dtyoe (int)
+
+        return rightDist; // ???
+    }
+
+
 
 }
