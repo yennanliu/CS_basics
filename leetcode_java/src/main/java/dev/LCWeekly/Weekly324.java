@@ -347,10 +347,10 @@ public class Weekly324 {
         // if yes, return true; otherwise false
 
         //return false;
-        return canUpdateToValid(n, map);
+        return updateGraph(n, map);
     }
 
-    private boolean canUpdateToValid(int n, Map<Integer, List<Integer>> map){
+    private boolean updateGraph(int n, Map<Integer, List<Integer>> map){
 
         // loop over `non even` edge
         for(Integer k: map.keySet()){
