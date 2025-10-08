@@ -1,6 +1,7 @@
 package LeetCodeJava.Tree;
 
 // https://leetcode.com/problems/cycle-length-queries-in-a-tree/description/
+// https://leetcode.cn/problems/cycle-length-queries-in-a-tree/solutions/
 /**
  * 2509. Cycle Length Queries in a Tree
  * Hard
@@ -61,6 +62,132 @@ public class CycleLengthQueriesInATree {
 //    public int[] cycleLengthQueries(int n, int[][] queries) {
 //
 //    }
+
+    // V0-1
+    // IDEA: LCA (gpt)
+    /**  NOTE !!!
+     *
+     * A cycle is a path that `starts and ends at the same node,`
+     * and each edge in the path is visited only once.
+     *
+     */
+    /** IDEA:
+     *
+     *  Key idea (short)
+     *
+     * The tree is a perfect binary tree with nodes labeled 1..(2^n - 1).
+     * The parent of node x is x/2 (integer division).
+     * If we add an edge between a and b, the cycle length equals the number
+     * of edges on the path between a and b in the tree plus the new edge.
+     * So we need distance(a,b) + 1. The LCA can be found by repeatedly moving
+     * the deeper/higher labeled node up via x /= 2 until a == b.
+     * The number of moves is distance(a,b).
+     *
+     */
+    public int[] cycleLengthQueries_0_1(int n, int[][] queries) {
+        int m = queries.length;
+        int[] ans = new int[m];
+
+        for (int i = 0; i < m; ++i) {
+            int a = queries[i][0];
+            int b = queries[i][1];
+
+            // start with 1 to account for the extra edge added between a and b
+            int length = 1;
+
+            // climb the deeper node until both nodes meet at LCA
+            while (a != b) {
+                if (a > b) {
+                    a /= 2; // move a to its parent
+                } else {
+                    b /= 2; // move b to its parent
+                }
+                ++length; // each move is one tree-edge on the path a<->b
+            }
+            ans[i] = length; // distance(a,b) + 1
+        }
+        return ans;
+    }
+
+    // V0-2
+    // IDEA:   Lowest Common Ancestor (LCA)  (gemini)
+    /**
+     *  IDEA:
+     *
+     * This problem, LeetCode 2509, "Cycle Length Queries in a Tree," involves finding the length of the cycle formed by adding an edge between two nodes, a and b, in a complete binary tree.
+     *
+     * Since the tree is a complete binary tree where nodes are indexed from 1, the parent-child relationship is defined by:
+     *
+     * Parent of node i (for i>1) is ⌊i/2⌋.
+     *
+     * Children of node i are 2i and 2i+1.
+     *
+     * The length of the cycle formed by adding the edge (a,b) is given by the length of the path from a to b through the tree, plus the new edge (a,b) itself.
+     *
+     * Cycle Length=Distance(a,b)+1
+     * The distance between two nodes in a tree is:
+     *
+     * Distance(a,b)=Depth(a)+Depth(b)−2×Depth(LCA(a,b))
+     * The Depth (or level) of a node i is related to ⌊log
+     * 2
+     * ​
+     *  i⌋+1. Since the path length is what matters, we can use the height (depth starting from 0) which is simply ⌊log
+     * 2
+     * ​
+     *  i⌋.
+     *
+     * Algorithm Steps
+     * Find the Lowest Common Ancestor (LCA) of a and b. The LCA is the deepest node that is an ancestor of both a and b. In a complete binary tree, we can find the LCA by iteratively moving a and b up to their parents until they become equal.
+     *
+     * Calculate the distance from a to LCA(a,b) and the distance from b to LCA(a,b).
+     *
+     * Total Path Length a→LCA→b is the sum of these two distances.
+     *
+     * Cycle Length is the total path length +1.
+     *
+     * In the provided Java solution, the distance is found by counting the steps (edges) taken to move a and b up to the LCA.
+     */
+    public int[] cycleLengthQueries_0_2(int n, int[][] queries) {
+        // The problem is about finding the length of the cycle created by adding an edge
+        // between two nodes (a, b) in a complete binary tree.
+        // Cycle Length = Distance(a, b) + 1
+        // Distance(a, b) = steps from a to LCA + steps from b to LCA
+
+        int m = queries.length; // 'm' is the number of queries.
+        int[] results = new int[m]; // Array to store the cycle length for each query.
+
+        // Loop through each query [a, b]
+        for (int i = 0; i < m; i++) {
+            int a = queries[i][0]; // Starting node of the new edge
+            int b = queries[i][1]; // Ending node of the new edge
+
+            int stepsA = 0; // Steps (distance) from 'a' up to the LCA
+            int stepsB = 0; // Steps (distance) from 'b' up to the LCA
+
+            // This while loop finds the LCA of 'a' and 'b' and counts the steps.
+            // The LCA is found when 'a' and 'b' become equal.
+            while (a != b) {
+                // Determine which node is deeper (larger index means potentially deeper/lower in the tree)
+                if (a > b) {
+                    // 'a' is lower, move 'a' up to its parent: parent = floor(a/2)
+                    a /= 2;
+                    stepsA++; // Count one step (edge)
+                } else {
+                    // 'b' is lower or they are at the same level, move 'b' up
+                    b /= 2;
+                    stepsB++; // Count one step (edge)
+                }
+            }
+
+            // At this point, a == b, which is the LCA.
+
+            // Total path length in the tree: stepsA + stepsB
+            // Cycle length = path length + 1 (for the new edge (a, b))
+            results[i] = stepsA + stepsB + 1;
+        }
+
+        return results; // Return the array of cycle lengths.
+    }
 
     // V1
     // https://leetcode.com/problems/cycle-length-queries-in-a-tree/solutions/2923489/javacpython-lowest-common-ancestor-by-le-p3ft/

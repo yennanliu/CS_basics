@@ -395,8 +395,30 @@ public class Weekly324 {
     // Q4
     // https://leetcode.com/problems/cycle-length-queries-in-a-tree/description/
     // LC 2509
-    // 8.31 - 41 am
+    // 8.31 - 9.00 am
+    /**
+     *  -> Return an array answer of length m
+     *     where answer[i] is the answer to the ith query.
+     *
+     *  - You are given an integer n.
+     *    There is a complete binary tree with 2n - 1 nodes.
+     *
+     *  - You are also given a 2D integer array queries of length m,
+     *    where queries[i] = [ai, bi].
+     *
+     *  - For each query, solve the following problem:
+     *      1. Add an edge between the nodes with values ai and bi.
+     *      2. Find the length of the cycle in the graph.
+     *      3. Remove the added edge between nodes with values ai and bi.
+     *
+     *
+     *    IDEA 1) DFS + QUICK UNION ???
+     *
+     */
     public int[] cycleLengthQueries(int n, int[][] queries) {
+        // edge
+        //if(n == )
+        // build graph
 
         return null;
     }
