@@ -438,6 +438,33 @@ String withoutFirst = s.substring(1);           // Remove first character
 String withoutLast = s.substring(0, s.length() - 1); // Remove last character
 ```
 
+```java
+// java
+// LC 752. Open the Lock
+while (!q.isEmpty()) {
+    // ...
+    // process all nodes in current layer
+    for (int k = 0; k < size; k++) {
+        // ...
+        // Move 4 directions (wheel rotations)
+        for (int i = 0; i < 4; i++) {
+            // ...
+
+            /**  NOTE !!!  
+             *  
+             *  Instead of using stringBuilder,
+             *  we use `substring` for update string per given idx
+             */
+            String str1 = cur.substring(0, i) + valMinus + cur.substring(i + 1);
+            String str2 = cur.substring(0, i) + valPlus + cur.substring(i + 1);
+            
+            // ...
+        }
+    }
+    // ...
+}
+```
+
 **Important**: `substring(start, end)` uses **[start, end)** interval - includes start, excludes end.
 
 
