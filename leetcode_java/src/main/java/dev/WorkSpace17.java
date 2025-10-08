@@ -1536,18 +1536,62 @@ public class WorkSpace17 {
      *
      */
     // custom class ???
-    public class MyTreeNode{
-        String word;
-        Boolean isEnd;
-
-        public MyTreeNode(String word, Boolean isEnd){
-            this.word = word;
-            this.isEnd = false;
-        }
-    }
+//    public class MyTreeNode{
+//        String word;
+//        Boolean isEnd;
+//
+//        public MyTreeNode(String word, Boolean isEnd){
+//            this.word = word;
+//            this.isEnd = false;
+//        }
+//    }
+//    public class Trie{
+//        MyTreeNode node;
+//        Map<String, MyTreeNode>  children;
+//    }
     public class Trie{
-        MyTreeNode node;
-        Map<String, MyTreeNode>  children;
+
+        // sub class
+        public class TrieNode{
+            // attr
+            TrieNode[] children;
+            boolean isEnd;
+
+            TrieNode(){
+                this.children = new TrieNode[26];
+                this.isEnd = false;
+            }
+        }
+
+        // attr
+        TrieNode root;
+
+        // constructor
+        public Trie(){
+            this.root = new TrieNode();
+        }
+
+        // method
+        public void insert(String word){
+            for(Character x: word.toCharArray()){
+                // `x - 'a'` : index ???
+                int idx = x - 'a';
+                if(this.root.children[idx] == null){
+                    this.root.children[idx] = new TrieNode();
+                }
+                this.root = this.root.children[idx];
+            }
+            this.root.isEnd = true;
+        }
+
+        public boolean search(String word){
+            return false;
+        }
+
+        public boolean startWith(String word){
+            return false;
+        }
+
     }
 
 
