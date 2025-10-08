@@ -1428,5 +1428,99 @@ public class WorkSpace17 {
         return rightDist; // ???
     }
 
+    // LC 752
+    // 9.19 - 9.29 am
+    /**
+     *   -> return the `min` op to reach the target, return -1 if NOT possible
+     *
+     *    - "0000" as init state
+     *    - can move `2 direction` on a single wheel each op
+     *       - e.g. "0" -> "9" or "9" -> "0"
+     *
+     *    - if meet a `deadlock` return -1 directly
+     *
+     *
+     *
+     *   IDEA 1) BFS
+     *
+     *
+     */
+    public int openLock(String[] deadends, String target) {
+        // edge
+        if(target.equals("0000")){
+            return 0;
+        }
+        // deadLock map
+        Map<String, Integer> map = new HashMap<>();
+        for(String x: deadends){
+            map.put(x, 1);
+            if(x.equals(target)){
+                return -1;
+            }
+        }
+
+        System.out.println(">>> map = " + map);
+        int minOp = -1;
+
+        // BFS
+        // Queue : { "wheel_num_1" , "wheel_num_2", .... }
+        Queue<String> q = new LinkedList<>();
+        q.add("0000");
+        int layer = 0;
+        Set<String> visited = new HashSet<>();
+        //visited.add("0000");
+
+        while(!q.isEmpty()){
+            String cur = q.poll();
+            visited.add(cur);
+            System.out.println(">>> cur  = " + cur);
+            // move 4 dir on each digit
+            // e.g. for "0000", move "1000", "0100", "0010", "0001"
+            for(int i = 0; i < cur.length(); i++){
+
+                int size = cur.length();
+
+                for(int j = 0; j < size; j++){
+
+                    System.out.println(">>> i  = " + i + ", j = " + j);
+
+                    if(cur.equals(target)){
+                        return layer;
+                    }
+
+                    int val = Integer.parseInt(String.valueOf(cur.charAt(j)));
+
+                    int valMinus = val - 1;
+                    int valPlus = val + 1;
+                    if(val == 0){
+                        valMinus = 9;
+                    }
+                    if(val == 9){
+                        valPlus = 0;
+                    }
+                    StringBuilder sb = new StringBuilder(cur);
+                    String str1 =  sb.replace(j, j + 1, String.valueOf(valMinus)).toString();
+                    String str2 = sb.replace(j, j + 1, String.valueOf(valPlus)).toString();
+
+                    System.out.println(">>> str1  = " + str1 + ", str2 = " + str2);
+
+
+                    if( !map.containsKey(str1) && visited.contains(str1) ){
+                        q.add(str1);
+                    }
+                    if( !map.containsKey(str2) && visited.contains(str2) ){
+                        q.add(str2);
+                    }
+                }
+            }
+
+            layer += 1;
+        }
+
+        return minOp;
+    }
+
+
+
 
 }

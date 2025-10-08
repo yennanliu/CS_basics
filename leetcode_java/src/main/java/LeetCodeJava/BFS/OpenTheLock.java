@@ -52,7 +52,68 @@ import java.util.*;
  */
 public class OpenTheLock {
 
-    // V0
+    // V0-1
+    // IDEA: BFS + String replace (fixed by gpt)
+    public int openLock_0_1(String[] deadends, String target) {
+        // Edge: starting point is the target
+        if (target.equals("0000")) {
+            return 0;
+        }
+
+        // Deadends set
+        Set<String> dead = new HashSet<>();
+        for (String x : deadends) {
+            dead.add(x);
+            if (x.equals("0000")) { // can't start
+                return -1;
+            }
+        }
+
+        // BFS
+        Queue<String> q = new LinkedList<>();
+        q.add("0000");
+        Set<String> visited = new HashSet<>();
+        visited.add("0000");
+        int layer = 0;
+
+        while (!q.isEmpty()) {
+            int size = q.size();
+            // process all nodes in current layer
+            for (int k = 0; k < size; k++) {
+                String cur = q.poll();
+
+                // Found target
+                if (cur.equals(target)) {
+                    return layer;
+                }
+
+                // Move 4 directions (wheel rotations)
+                for (int i = 0; i < 4; i++) {
+                    int val = cur.charAt(i) - '0';
+
+                    int valMinus = (val == 0) ? 9 : val - 1;
+                    int valPlus = (val == 9) ? 0 : val + 1;
+
+                    String str1 = cur.substring(0, i) + valMinus + cur.substring(i + 1);
+                    String str2 = cur.substring(0, i) + valPlus + cur.substring(i + 1);
+
+                    if (!dead.contains(str1) && !visited.contains(str1)) {
+                        q.add(str1);
+                        visited.add(str1);
+                    }
+                    if (!dead.contains(str2) && !visited.contains(str2)) {
+                        q.add(str2);
+                        visited.add(str2);
+                    }
+                }
+            }
+            layer++;
+        }
+
+        return -1; // not found
+    }
+
+    // V0-2
     // IDEA: BFS + custom class (fixed by gpt)
     public class LockInfo {
         String lock;
@@ -64,7 +125,7 @@ public class OpenTheLock {
         }
     }
 
-    public int openLock(String[] deadends, String target) {
+    public int openLock_0_2(String[] deadends, String target) {
         // edge case
         if (target.equals("0000")) {
             return 0;
@@ -380,5 +441,7 @@ public class OpenTheLock {
 //
 //        return -1; // Target is not reachable
 //    }
+
+
 
 }
