@@ -1522,7 +1522,48 @@ public class WorkSpace17 {
 
 
     // LC 1268
+    // 10.22 - 10.32 am
+    /**
+     *
+     *  -> Return a list of lists of the suggested
+     *     products after each character of searchWord is typed.
+     *
+     *   - Design a system that suggests ` at most 3 product` names from products
+     *
+     *  IDEA 1) TRIE
+     *
+     *
+     *
+     */
+    // custom class ???
+    public class MyTreeNode{
+        String word;
+        Boolean isEnd;
+
+        public MyTreeNode(String word, Boolean isEnd){
+            this.word = word;
+            this.isEnd = false;
+        }
+    }
+    public class Trie{
+        MyTreeNode node;
+        Map<String, MyTreeNode>  children;
+    }
+
+
     public List<List<String>> suggestedProducts(String[] products, String searchWord) {
+        List<List<String>> res = new ArrayList<>();
+        // edge
+        if(products.length == 1){
+             for(int i = 0; i < searchWord.length(); i++){
+                 List<String> tmp = new ArrayList<>();
+                 tmp.add(products[0]);
+                 res.add(tmp);
+             }
+             return res;
+        }
+
+
 
         return null;
     }
