@@ -172,6 +172,7 @@ public class AddEdgesToMakeDegreesOfAllNodesEven {
          * 	    so this fixes a and b. If such c exists → true; else false.
          */
         if (m == 2) {
+
             int a = odd.get(0), b = odd.get(1);
             // If there’s no edge between them already, connect directly
             if (!graph[a].contains(b)) {

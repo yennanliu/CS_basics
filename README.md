@@ -545,6 +545,7 @@
 1666| [Change the Root of a Binary Tree](https://leetcode.com/problems/change-the-root-of-a-binary-tree/) | [Java](./leetcode_java/src/main/java/LeetCodeJava/Tree/ChangeTheRootOfABinaryTree.java) ||| Medium |LC 1448, good trick, google| AGAIN (1) (not start)
 1740| [Find Distance in a Binary Tree](https://leetcode.com/problems/find-distance-in-a-binary-tree/description/) | [Java](./leetcode_java/src/main/java/LeetCodeJava/Tree/FindDistanceInABinaryTree.java) ||| Medium |LCA + NODE DIST + DFS, DFS, LCA| AGAIN (1)****
 2415| [Reverse Odd Levels of Binary Tree](https://leetcode.com/problems/reverse-odd-levels-of-binary-tree) | [Java](./leetcode_java/src/main/java/LeetCodeJava/Tree/ReverseOddLevelsOfBinaryTree.java) ||| Medium |LC 226, dfs, bfs, tree| AGAIN (not start)
+2509| [Cycle Length Queries in a Tree](https://leetcode.com/problems/cycle-length-queries-in-a-tree) | [Java](./leetcode_java/src/main/java/LeetCodeJava/Tree/CycleLengthQueriesInATree.java) ||| Hard |LC weekly, tree| AGAIN (not start)
 2707| [Extra Characters in a String](https://leetcode.com/problems/extra-characters-in-a-string/) |  [Java](./leetcode_java/src/main/java/LeetCodeJava/Trie/ExtraCharactersInAString.java) ||| Medium |dp, Trie| AGAIN (not start)
 
 

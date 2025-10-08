@@ -394,5 +394,11 @@ public class Weekly324 {
 
     // Q4
     // https://leetcode.com/problems/cycle-length-queries-in-a-tree/description/
+    // LC 2509
+    // 8.31 - 41 am
+    public int[] cycleLengthQueries(int n, int[][] queries) {
+
+        return null;
+    }
 
 }
