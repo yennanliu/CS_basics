@@ -91,9 +91,17 @@ public class OpenTheLock {
                 for (int i = 0; i < 4; i++) {
                     int val = cur.charAt(i) - '0';
 
+                    /**  NOTE !!!
+                     *
+                     *  we deal with "0" -> "9", "9" -> "0" case
+                     *  via below elegant way
+                     */
                     int valMinus = (val == 0) ? 9 : val - 1;
                     int valPlus = (val == 9) ? 0 : val + 1;
 
+                    /**  NOTE !!!  Instead of using stringBuilder,
+                     *  we use `substring` for update string per given idx
+                     */
                     String str1 = cur.substring(0, i) + valMinus + cur.substring(i + 1);
                     String str2 = cur.substring(0, i) + valPlus + cur.substring(i + 1);
 
@@ -107,6 +115,16 @@ public class OpenTheLock {
                     }
                 }
             }
+            /**  NOTE !!
+             *
+             *   we update `cnt` (layer) after finishing the BFS per cycle
+             *   e.g. when below completed
+             *
+             *     int q_size = q.size();
+             *     for (int i = 0; i <  q_size; i++){
+             *         //
+             *     }
+             */
             layer++;
         }
 
