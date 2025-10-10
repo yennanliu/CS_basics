@@ -1699,7 +1699,35 @@ public class WorkSpace17 {
 //    }
 
     // LC 160
+    // 16.44 - 54 pm
+    /**
+     *  IDEA 1) HASHSET + FAST - SLOW POINTER ???
+     *
+     */
     public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        // edge
+        if(headA == null && headB == null){
+            return null; // ??
+        }
+        if(headA == null || headB == null){
+            return null; // ??
+        }
+        // move headA till the end first,
+        // save its node, then move headB
+        // and check if the node existed in headA hashset
+        HashSet<ListNode> set = new HashSet<>();
+        while(headA != null){
+            set.add(headA);
+            headA = headA.next;
+        }
+
+        while(headB != null){
+            //set.add(headA);
+            if (set.contains(headB)) {
+                return headB;
+            }
+            headB = headB.next;
+        }
 
         return null;
     }
