@@ -1734,11 +1734,117 @@ public class WorkSpace17 {
 
 
 
-
     // LC 32
+    // 17.04 - 17.14 pm
+    /**
+     *
+     * -> Given a string containing just the characters '(' and ')',
+     *   return the length of the `longest` valid
+     *    (well-formed) parentheses substring.
+     *
+     *
+     *
+     *  ex 1)
+     *
+     *  Input: s = "(()"
+     *  Output: 2
+     *  Explanation: The longest valid parentheses substring is "()".
+     *
+     *
+     *  IDEA 1) STACK
+     *
+     *
+     *  ->
+     *   (()
+     *   x       st = ["("]
+     *
+     *   (()    st = ["(", "("]
+     *    x
+     *
+     *   (()    st = ["("], ans = 2
+     *     x
+     *
+     *
+     *  ex 2)
+     *
+     *  Input: s = ")()())"
+     *  Output: 4
+     *  Explanation: The longest valid parentheses substring is "()()".
+     *
+     *   )()())   st = [")"]
+     *   x
+     *
+     *   )()())   st = [")", "("]
+     *    x
+     *
+     *   )()())   st = [")"], ans = 2
+     *     x
+     *
+     *   ...
+     *
+     *   )()()),  st = [")", ")"],  and = 4
+     *        x
+     *
+     *
+     *  ex 3_
+     *
+     *   s = "(())"
+     *
+     *   (())
+     *   x      st = ["("]
+     *
+     *
+     *   (())
+     *    x    st = ["(", "("]
+     *
+     *
+     *   (())
+     *     x   st = ["("], ans = 2
+     *
+     *
+     *  (())
+     *     x    st = [], ans = 4
+     *
+     *
+     */
     public int longestValidParentheses(String s) {
+        // edge
+        if(s.isEmpty()){
+            return 0;
+        }
+        // ??
+        if(s.length() < 2){
+            return 0;
+        }
 
-        return 0;
+        int tmp = 0;
+        int ans = 0;
+
+        // ???
+        String prev = null;
+
+        // stack: FILO
+        Stack<String> st = new Stack<>();
+        for(String x: s.split("")){
+            if(st.isEmpty()){
+                st.add(x);
+            }
+            else if(x.equals(")") && st.peek().equals("(")){
+                st.pop();
+                tmp += 2;
+                ans = Math.max(tmp, ans);
+            }else{
+                // ??? reset tmp cnt ???
+                if(!(x.equals("(") && prev.equals(")"))){
+                    tmp = 0;
+                }
+                st.add(x);
+            }
+
+            prev = x; // ???
+        }
+
+        return ans;
     }
 
 
