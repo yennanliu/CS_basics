@@ -46,28 +46,91 @@ public class LongestValidParentheses {
     // IDEA: STACK (fixed by gpt)
     public int longestValidParentheses_0_1(String s) {
         // Edge cases
+        // Strings shorter than 2 can’t form valid pairs.
         if (s == null || s.length() < 2) {
             return 0;
         }
 
+        /**  NOTE !!!
+         *
+         *  Stack : { idx_of_char }
+         *
+         * - stack — will store indexes of characters in s (not the chars themselves).
+         *
+         *  -> This helps compute substring lengths.
+         *
+         * - maxLen — will track the maximum valid length found so far.
+         */
         Stack<Integer> stack = new Stack<>();
         int maxLen = 0;
 
         // Base: push -1 to handle the first valid substring
+        /**
+         * Push a base index -1 before iteration.
+         * Why?
+         *
+         * It acts as a starting boundary for the first valid substring.
+         *
+         * When we find a valid substring starting from index 0,
+         * subtracting from -1 gives the correct length.
+         *
+         * 📦 Stack now: [ -1 ]
+         */
         stack.push(-1);
 
+        // Iterate through each character in the string, keeping track of its index i.
         for (int i = 0; i < s.length(); i++) {
             char c = s.charAt(i);
 
+            /**
+             *  CASE 1) "("
+             *
+             *  ➡️ Push its index onto the stack.
+             *
+             * Reason:
+             *
+             * A '(' could be matched later by a ')'.
+             *
+             * Keeping its index lets us know where a valid substring could start.
+             *
+             */
             if (c == '(') {
                 stack.push(i);
-            } else { // c == ')'
+            }
+            /**  CASE 2)  ")"
+             *
+             *  Pop the last '(' index —
+             *  we’re trying to match it with this ')'.
+             *
+             */
+            else { // c == ')'
                 stack.pop();
 
+                /**  SUB CASE 2-1) Stack becomes empty after popping
+                 *
+                 *  ➡️ If the stack is empty, it means there’s
+                 *  no unmatched '(' left to pair with this ')'.
+                 *  So this ')' is a kind of “reset point”.
+                 *
+                 * We push its index to mark a new base.
+                 *
+                 * -> This means: valid substrings can only start after index 0.
+                 *
+                 */
                 if (stack.isEmpty()) {
                     // no matching '(' — reset base index
                     stack.push(i);
-                } else {
+                }
+                /**  SUB CASE 2-2) Stack is not empty
+                 *
+                 * ➡️ If the stack still has something,
+                 *  the top element (stack.peek()) represents
+                 *  the index before the start of the current valid substring.
+                 *
+                 * Substring length = current index (i) − top of stack.
+                 *
+                 */
+                else {
                     // valid substring length = current index - last unmatched '(' index
                     maxLen = Math.max(maxLen, i - stack.peek());
                 }
