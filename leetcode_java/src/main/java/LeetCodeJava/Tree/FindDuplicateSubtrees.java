@@ -86,6 +86,37 @@ public class FindDuplicateSubtrees {
     }
 
     // V0-2
+    // IDEA: DFS (Post-order traversal)  + MAP
+    // map: serialization → count
+    Map<String, Integer> freq = new HashMap<>();
+    List<TreeNode> res = new ArrayList<>();
+
+    public List<TreeNode> findDuplicateSubtrees_0_2(TreeNode root) {
+        dfs_0_2(root);
+        return res;
+    }
+
+    // Post-order traversal: left → right → node
+    private String dfs_0_2(TreeNode node) {
+        if (node == null) {
+            return "#"; // marker for null
+        }
+
+        String left = dfs_0_2(node.left);
+        String right = dfs_0_2(node.right);
+        String serial = node.val + "," + left + "," + right;
+
+        int count = freq.getOrDefault(serial, 0);
+        if (count == 1) {
+            // Found a duplicate subtree (add the node only once)
+            res.add(node);
+        }
+        freq.put(serial, count + 1);
+
+        return serial;
+    }
+
+    // V0-3
     // IDEA: HASHMAP + DFS + NODE PATH
     /**
      *  The main idea is to serialize each subtree as a string, store it in a map,
@@ -106,7 +137,7 @@ public class FindDuplicateSubtrees {
      * 	 pathMap: { node: list_of_paths }
      */
     Map<TreeNode, List<String>> pathMap = new HashMap<>();
-    public List<TreeNode> findDuplicateSubtrees_0_2(TreeNode root) {
+    public List<TreeNode> findDuplicateSubtrees_0_3(TreeNode root) {
         List<TreeNode> res = new ArrayList<>();
         if (root == null) {
             return res;

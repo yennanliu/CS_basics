@@ -1612,6 +1612,91 @@ public class WorkSpace17 {
         return null;
     }
 
+    // LC 652
+    // 16.02 - 16.12 pm
+    /**
+     *
+     * -> Given the root of a binary tree,
+     *    return ALL `duplicate subtrees.`
+     *
+     *
+     *  - Two trees are duplicate if they have the
+     *     `same structure with the same node values.`
+     *
+     *   - For each kind of duplicate subtrees,
+     *   you only need to return the root node of any one of them.
+     *
+     *
+     *  IDEA 1) DFS + SAME TREE  + HASHMAP + node path ??
+     *
+     *    - if 2 `single node` has same value
+     *        -> they are `duplicate subtree` as well
+     *
+     *
+     */
+    Map<String, Integer> pathCnt = new HashMap<>();
+    public List<TreeNode> findDuplicateSubtrees(TreeNode root) {
+        List<TreeNode> res = new ArrayList<>();
+        // edge
+        if(root == null){
+            return res;
+        }
+        if(root.left == null && root.right == null){
+            return res;
+        }
+
+        ///  bfs ???
+        Queue<TreeNode> q = new LinkedList<>();
+        q.add(root);
+        while(!q.isEmpty()){
+            TreeNode node = q.poll();
+            // 1) path - cnt
+            String path = getNodePath2(root);
+            pathCnt.put(path, pathCnt.getOrDefault(path, 0) + 1);
+
+            // 2) `cur single node` - cnt
+            String singleNodePath = String.valueOf(node.val); // ???
+            pathCnt.put(singleNodePath, pathCnt.getOrDefault(singleNodePath, 0) + 1);
+
+            if(node.left != null){
+                q.add(node.left);
+            }
+            if(node.right != null){
+                q.add(node.right);
+            }
+        }
+
+        System.out.println(">>> pathCnt = " + pathCnt);
+        for(String k: pathCnt.keySet()){
+            if(pathCnt.get(k) > 1){
+                TreeNode _node = new TreeNode(k.charAt(0)); // ????
+                res.add(_node);
+            }
+        }
+
+        return null;
+    }
+
+    // dfs: post order: left -> right -> root
+    private String getNodePath2(TreeNode root){
+        if(root == null){
+            return "#"; // ???
+        }
+        return root.val + "," + getNodePath2(root.left)
+                + getNodePath2(root.right);
+    }
+
+
+
+//    private List<Integer> getNodePath_2(TreeNode root, List<Integer> list){
+//        // edge
+//        if(root == null){
+//            return null; // ???
+//        }
+//
+//
+//        return list; // ????
+//    }
 
 
 
