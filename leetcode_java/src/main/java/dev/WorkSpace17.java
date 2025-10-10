@@ -1698,6 +1698,12 @@ public class WorkSpace17 {
 //        return list; // ????
 //    }
 
+    // LC 160
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+
+        return null;
+    }
+
 
 
 }

@@ -116,6 +116,63 @@ Trees can be efficiently represented using arrays, especially for complete binar
 - Path between any two nodes (not necessarily ancestor-descendant)
 - Problems requiring "omnidirectional" tree exploration
 
+#### **Pattern 7: Node Path (Subtree Serialization)**
+- **Use Case**: Problems requiring subtree comparison, duplicate detection, or structural matching
+- **Core Concept**: Serialize each subtree into a unique string representation for comparison
+- **Key Technique**: Post-order traversal to build serialization strings bottom-up
+- **Examples**: LC 652 (Find Duplicate Subtrees), LC 572 (Subtree of Another Tree)
+- **Why it works**:
+  - Each unique subtree structure maps to a unique serialization string
+  - Post-order ensures children are serialized before parent
+  - String comparison is O(1) with hashing, enabling efficient duplicate detection
+  - Can use HashMap to track seen subtree patterns
+
+**Template Structure:**
+```java
+// Serialize a subtree rooted at 'node' into a unique string
+private String getNodePath(TreeNode node) {
+    if (node == null) {
+        return "#"; // marker for null children
+    }
+
+    // post-order: left → right → node
+    String left = getNodePath(node.left);
+    String right = getNodePath(node.right);
+
+    // build serialization string
+    return node.val + "," + left + "," + right;
+}
+```
+
+```python
+# Python version
+def get_node_path(node):
+    if not node:
+        return "#"
+
+    # post-order: left → right → node
+    left = get_node_path(node.left)
+    right = get_node_path(node.right)
+
+    # build serialization string
+    return f"{node.val},{left},{right}"
+```
+
+**Common Applications:**
+- Finding duplicate subtrees in a binary tree
+- Checking if one tree is a subtree of another
+- Counting unique subtree structures
+- Tree isomorphism problems
+- Pattern matching in trees
+
+**Key Points:**
+- Use post-order traversal (children before parent)
+- Include null markers ("#") to distinguish structures
+- Use HashMap<String, Integer> to track frequency
+- Delimiter (e.g., ",") prevents ambiguity (e.g., "12" vs "1,2")
+- Time complexity: O(N²) worst case (string building), O(N) with optimization
+- Space complexity: O(N) for HashMap and recursion stack
+
 ### 0-3) Traversal Order Selection Strategy
 
 ```
@@ -138,6 +195,9 @@ When to use which traversal:
 
 6. Need to move upward (to parent) or explore all directions?
    → Use MOVE PARENT pattern (Build parent map + BFS)
+
+7. Need to compare or identify subtrees?
+   → Use NODE PATH pattern (Subtree serialization with post-order)
 ```
 
 ## 1) Tree Templates & Algorithms
@@ -198,6 +258,7 @@ public ResultType solveTreeProblem(TreeNode root, ParamType params) {
 | **Divide & Conquer** | Bottom-up recursion | Need subtree results | LC 124, 543, 687 |
 | **Path Tracking** | DFS with path state | Path-related problems | LC 112, 257, 437 |
 | **Move Parent** | Parent map + BFS | Bidirectional exploration | LC 863, 742, 1740 |
+| **Node Path** | Subtree serialization | Subtree comparison/detection | LC 652, 572 |
 
 ### 1.3) Core Operations
 
@@ -528,6 +589,13 @@ public class TreeNode {
 | Flatten Binary Tree to Linked List | 114 | DFS Restructuring | Tree Flattening | Medium |
 | Merge Two Binary Trees | 617 | DFS Combination | Tree Merging | Easy |
 
+#### **Subtree Comparison Problems (Node Path Pattern)**
+| Problem | LC # | Pattern | Template | Difficulty |
+|---------|------|---------|----------|------------|
+| Find Duplicate Subtrees | 652 | Node Path Serialization | Subtree Hashing | Medium |
+| Subtree of Another Tree | 572 | Node Path Comparison | Subtree Matching | Easy |
+| Count Univalue Subtrees | 250 | Node Path Validation | Subtree Property Check | Medium |
+
 ### 2.2) Pattern Selection Guide
 
 ```
@@ -553,7 +621,11 @@ Problem Analysis Decision Tree:
    ├── Yes: Use MOVE PARENT pattern (Build parent map + BFS)
    └── No: Continue
 
-6. Working with BST and need sorted order?
+6. Need to compare or find duplicate subtrees?
+   ├── Yes: Use NODE PATH pattern (Subtree serialization)
+   └── No: Continue
+
+7. Working with BST and need sorted order?
    ├── Yes: Use INORDER traversal
    └── No: Use any suitable approach
 ```
@@ -1853,6 +1925,223 @@ private int checkBalance(TreeNode node) {
     return 1 + Math.max(leftHeight, rightHeight);
 }
 ```
+
+### 1-1-21) Node Path Pattern - Subtree Serialization
+
+The Node Path pattern serializes each subtree into a unique string for efficient comparison and duplicate detection.
+
+#### **LC 652: Find Duplicate Subtrees**
+
+```java
+// java
+// LC 652 Find Duplicate Subtrees
+/**
+ * IDEA: Node Path Pattern with Subtree Serialization
+ *
+ * Approach:
+ * 1. Serialize each subtree using post-order traversal
+ * 2. Use HashMap to track serialization frequency
+ * 3. Add to result when count reaches 2 (first duplicate)
+ *
+ * Key Points:
+ * - Post-order ensures children are processed before parent
+ * - Delimiter "," prevents ambiguity (e.g., "12" vs "1,2")
+ * - Null marker "#" distinguishes different structures
+ */
+
+public List<TreeNode> findDuplicateSubtrees(TreeNode root) {
+    List<TreeNode> result = new ArrayList<>();
+    Map<String, Integer> pathCount = new HashMap<>();
+    getNodePath(root, pathCount, result);
+    return result;
+}
+
+private String getNodePath(TreeNode node, Map<String, Integer> pathCount,
+                           List<TreeNode> result) {
+    if (node == null) {
+        return "#";  // null marker
+    }
+
+    // Post-order: left → right → node
+    String left = getNodePath(node.left, pathCount, result);
+    String right = getNodePath(node.right, pathCount, result);
+
+    // Build serialization string with delimiter
+    String path = node.val + "," + left + "," + right;
+
+    // Track frequency and add to result on first duplicate
+    int count = pathCount.getOrDefault(path, 0);
+    if (count == 1) {
+        result.add(node);  // First duplicate occurrence
+    }
+    pathCount.put(path, count + 1);
+
+    return path;
+}
+```
+
+```python
+# python
+# LC 652 Find Duplicate Subtrees
+from collections import defaultdict
+
+def findDuplicateSubtrees(root):
+    """
+    IDEA: Node Path Pattern
+
+    Time: O(N²) worst case (string operations), O(N) with optimization
+    Space: O(N) for HashMap and recursion
+    """
+    result = []
+    path_count = defaultdict(int)
+
+    def get_node_path(node):
+        if not node:
+            return "#"
+
+        # Post-order: left → right → node
+        left = get_node_path(node.left)
+        right = get_node_path(node.right)
+
+        # Build serialization string
+        path = f"{node.val},{left},{right}"
+
+        # Track frequency
+        if path_count[path] == 1:
+            result.append(node)
+        path_count[path] += 1
+
+        return path
+
+    get_node_path(root)
+    return result
+```
+
+#### **LC 572: Subtree of Another Tree**
+
+```java
+// java
+// LC 572 Subtree of Another Tree
+/**
+ * IDEA: Node Path Pattern for Subtree Matching
+ *
+ * Approach 1: Serialize both trees and check if subRoot is substring of root
+ * Approach 2: Traditional recursive comparison (shown below)
+ */
+
+// Method 1: Using Node Path Serialization
+public boolean isSubtree(TreeNode root, TreeNode subRoot) {
+    String rootPath = serialize(root);
+    String subPath = serialize(subRoot);
+
+    // Check if subPath is substring of rootPath
+    return rootPath.contains("," + subPath + ",");
+}
+
+private String serialize(TreeNode node) {
+    if (node == null) {
+        return "#";
+    }
+
+    // Post-order serialization with delimiters
+    String left = serialize(node.left);
+    String right = serialize(node.right);
+
+    // Add delimiters to prevent false matches (e.g., "12" in "123")
+    return "," + node.val + "," + left + "," + right + ",";
+}
+
+// Method 2: Traditional Recursive Comparison
+public boolean isSubtree_v2(TreeNode root, TreeNode subRoot) {
+    if (root == null) {
+        return false;
+    }
+
+    // Check if current tree matches OR check subtrees
+    return isSameTree(root, subRoot) ||
+           isSubtree_v2(root.left, subRoot) ||
+           isSubtree_v2(root.right, subRoot);
+}
+
+private boolean isSameTree(TreeNode p, TreeNode q) {
+    if (p == null && q == null) return true;
+    if (p == null || q == null) return false;
+    if (p.val != q.val) return false;
+
+    return isSameTree(p.left, q.left) && isSameTree(p.right, q.right);
+}
+```
+
+```python
+# python
+# LC 572 Subtree of Another Tree
+
+# Method 1: Node Path Serialization
+def isSubtree(root, subRoot):
+    """
+    Serialize both trees and check substring match
+
+    Time: O(M + N) where M, N are tree sizes
+    Space: O(M + N) for serialization strings
+    """
+    def serialize(node):
+        if not node:
+            return "#"
+
+        # Post-order with delimiters
+        left = serialize(node.left)
+        right = serialize(node.right)
+
+        return f",{node.val},{left},{right},"
+
+    root_path = serialize(root)
+    sub_path = serialize(subRoot)
+
+    return sub_path in root_path
+
+# Method 2: Traditional Recursive
+def isSubtree_v2(root, subRoot):
+    if not root:
+        return False
+
+    def is_same(p, q):
+        if not p and not q:
+            return True
+        if not p or not q:
+            return False
+        return (p.val == q.val and
+                is_same(p.left, q.left) and
+                is_same(p.right, q.right))
+
+    return (is_same(root, subRoot) or
+            isSubtree_v2(root.left, subRoot) or
+            isSubtree_v2(root.right, subRoot))
+```
+
+#### **Pattern Insights**
+
+**When to use Node Path Pattern:**
+- Finding duplicate or similar subtrees
+- Checking if one tree is subtree of another
+- Counting unique tree structures
+- Tree pattern matching problems
+
+**Key Implementation Points:**
+1. **Post-order traversal**: Process children before parent
+2. **Null markers**: Use "#" or "null" to represent null nodes
+3. **Delimiters**: Use "," to separate values and prevent ambiguity
+4. **HashMap tracking**: Store serialization → frequency mapping
+5. **Early termination**: Add to result at count == 1 for duplicates
+
+**Common Pitfalls:**
+- ❌ Forgetting delimiters → "12" matches "1,2" incorrectly
+- ❌ Not handling null nodes → different structures have same serialization
+- ❌ Using pre-order → harder to build complete subtree representation
+- ❌ Not caching serialization strings → O(N²) time complexity
+
+**Complexity Analysis:**
+- **Time**: O(N²) worst case (string concatenation), O(N) with StringBuilder
+- **Space**: O(N) for HashMap and recursion stack, O(N²) for all paths
 
 ## 2) LC Example
 

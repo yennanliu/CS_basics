@@ -64,7 +64,6 @@
 			- 23
 			- 25
 		- gemini
-		 	- 160
 	- LC 226 Invert Binary Tree
 		- gpt
 		- gemini
