@@ -10,11 +10,14 @@ import java.util.Set;
 public class IntersectionOfTwoLinkedLists {
 
     // V0
+//    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+//
+//    }
 
     // V1
     // IDEA : BRUTE FORCE
     // https://leetcode.com/problems/intersection-of-two-linked-lists/editorial/
-    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+    public ListNode getIntersectionNode_1(ListNode headA, ListNode headB) {
         while (headA != null) {
             ListNode pB = headB;
             while (pB != null) {

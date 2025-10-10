@@ -308,11 +308,11 @@ public class FindDuplicateSubtrees {
     // IDEA: HASHMAP
     // https://leetcode.com/problems/find-duplicate-subtrees/solutions/1370456/java-easy-approach-with-explanation-hash-6hx9/
     HashMap<String, Integer> map = new HashMap<>();//String -- frequency//it store the string at every instant when we visit parent after visiting its children //it also calculates the frequency of the String in the tree
-    ArrayList<TreeNode> res = new ArrayList<>();//it contain the list of dublicate nodes
+    ArrayList<TreeNode> res3 = new ArrayList<>();//it contain the list of dublicate nodes
 
     public List<TreeNode> findDuplicateSubtrees_3(TreeNode root) {
         Mapper(root);
-        return res;//returning the list containing a node of dublicate subtree
+        return res3;//returning the list containing a node of dublicate subtree
     }
 
     public String Mapper(TreeNode root) {//we are doing postorder traversal because we want to first deal with children and then the parent
@@ -328,7 +328,7 @@ public class FindDuplicateSubtrees {
         map.put(curr, map.getOrDefault(curr, 0) + 1);//counting the frequency of string
 
         if (map.get(curr) == 2)//only the dublicate string node are added to the ArrayList
-            res.add(root);
+            res3.add(root);
 
         return curr;//returning to the parent to that i am present, and here is my string with the informationn of my left and right child
     }
