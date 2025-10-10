@@ -2,6 +2,7 @@ package dev;
 
 import DataStructure.ListNode;
 import LeetCodeJava.DataStructure.TreeNode;
+import LeetCodeJava.DynamicProgramming.TargetSum;
 
 import java.util.*;
 
@@ -1358,8 +1359,99 @@ public class WorkSpace17 {
      *
      *
      */
+    // 17.54 - 18.12 pm
+    /**  IDEA 1) BFS + `map record parent node`
+     *    -> so BFS can move UP, left, right
+     *    -> collect the `k dist` node
+     */
+    // ?????
+    // parentMap: { node, [parent_node_1,  parent_node_2, ...] }
+    Map<TreeNode, List<TreeNode>> parentMap = new HashMap<>();
+    public List<Integer> distanceK(TreeNode root, TreeNode target, int k) {
+        List<Integer> res = new ArrayList<>();
+        // edge
+        if(root == null){
+            return res;
+        }
+        Queue<TreeNode> q = new LinkedList<>();
+        q.add(root);
+
+        // ??
+        int layer = 0;
+        //int start = 0;
+        boolean shouldStartCnt = false;
+
+        while(!q.isEmpty()){
+
+            int size = q.size();
+
+            for(int i = 0; i < size; i++){
+                TreeNode cur = q.poll();
+                if(cur.equals(target)){
+                    shouldStartCnt = true;
+                }
+
+                // collect res
+                if(layer == k){
+                    res.add(cur.val);
+                }
+
+                // move up
+                if(parentMap.containsKey(cur)){
+                    //q.add()
+                    // ??
+                    for(TreeNode _node: parentMap.get(cur)){
+                        q.add(_node);
+                    }
+                }
+
+                // move left
+                if(cur.left != null){
+                    updateParentMap(root, root.left);
+                    q.add(cur.left);
+                }
+                // move right
+                if(cur.right != null){
+                    updateParentMap(root, root.right);
+                    q.add(cur.right);
+                }
+            }
+
+            // ???
+            if(shouldStartCnt){
+                layer += 1;
+            }
+
+        }
+
+
+        return res;
+    }
+
+    private void updateParentMap(TreeNode parent, TreeNode node){
+        List<TreeNode> parents = new ArrayList<>();
+        if(parentMap.containsKey(node)){
+            parents = parentMap.get(node);
+        }
+        parents.add(parent);
+        parentMap.put(node, parents);
+    }
+
+
+
+
+
+
+//
+//    private int getNodeDist(){
+//
+//    }
+
+
+
+
     List<Integer> res = new ArrayList<>();
-    public List<Integer> distanceK(TreeNode root, TreeNode target, int k) {;
+    public List<Integer> distanceK_100(TreeNode root, TreeNode target, int k) {;
         // edge
         if(root == null){
             return res;
