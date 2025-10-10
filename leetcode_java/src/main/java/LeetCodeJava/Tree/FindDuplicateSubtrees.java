@@ -56,6 +56,25 @@ public class FindDuplicateSubtrees {
 
     // V0-1
     // IDEA: HASHMAP + DFS + NODE PATH
+    /**  NOTE !!!
+     *
+     *   get `NODE PATH` for tree
+     *
+     *   // Serialize a subtree rooted at 'node' into a unique string
+     * private String getNodePath(TreeNode node) {
+     *     if (node == null) {
+     *         return "#"; // marker for null children
+     *     }
+     *
+     *     // post-order: left → right → node
+     *     String left = getNodePath(node.left);
+     *     String right = getNodePath(node.right);
+     *
+     *     // build serialization string
+     *     return node.val + "," + left + "," + right;
+     * }
+     *
+     */
     private Map<String, Integer> counter_0_1;
     private List<TreeNode> ans_0_1;
 
@@ -78,7 +97,7 @@ public class FindDuplicateSubtrees {
         String v = root.val + "," + dfs_0_1(root.left) + "," + dfs_0_1(root.right);
         counter_0_1.put(v, counter_0_1.getOrDefault(v, 0) + 1);
 
-        /** NOTE !!! if cnt > 1, add it to ans directly */
+        /** NOTE !!! if cnt > 1, add it to answer directly */
         if (counter_0_1.get(v) == 2) {
             ans_0_1.add(root);
         }
