@@ -48,6 +48,72 @@ public class AllNodesDistanceKInBinaryTree {
 //
 //    }
 
+    // V0-0-1
+    // IDEA: BFS + PARENT MAP (fixed by gpt)
+    // LeetCode 863 - All Nodes Distance K in Binary Tree
+
+    Map<TreeNode, TreeNode> parentMap_0_0_1 = new HashMap<>();
+
+    public List<Integer> distanceK_0_0_1(TreeNode root, TreeNode target, int k) {
+        List<Integer> res = new ArrayList<>();
+        if (root == null)
+            return res;
+
+        // 1️⃣ Build parent references for all nodes
+        buildParentMap_0_0_1(root, null);
+
+        // 2️⃣ BFS starting from target
+        Queue<TreeNode> q = new LinkedList<>();
+        Set<TreeNode> visited = new HashSet<>();
+
+        q.offer(target);
+        visited.add(target);
+
+        int distance = 0;
+
+        while (!q.isEmpty()) {
+            int size = q.size();
+
+            // When distance == k, collect all node values at this level
+            if (distance == k) {
+                for (TreeNode node : q) {
+                    res.add(node.val);
+                }
+                return res;
+            }
+
+            // Expand one layer
+            for (int i = 0; i < size; i++) {
+                TreeNode cur = q.poll();
+
+                // Check neighbors: left, right, parent
+                if (cur.left != null && visited.add(cur.left)) {
+                    q.offer(cur.left);
+                }
+                if (cur.right != null && visited.add(cur.right)) {
+                    q.offer(cur.right);
+                }
+                if (parentMap_0_0_1.containsKey(cur) && visited.add(parentMap_0_0_1.get(cur))) {
+                    q.offer(parentMap_0_0_1.get(cur));
+                }
+            }
+
+            distance++;
+        }
+
+        return res;
+    }
+
+    // Helper: Build parent map
+    private void buildParentMap_0_0_1(TreeNode node, TreeNode parent) {
+        if (node == null)
+            return;
+        if (parent != null)
+            parentMap_0_0_1.put(node, parent);
+        buildParentMap_0_0_1(node.left, node);
+        buildParentMap_0_0_1(node.right, node);
+    }
+
     // V0-1
     // IDEA: DFS + `Parent Map` + BFS (fixed by gpt)
     /**  IDEA:
