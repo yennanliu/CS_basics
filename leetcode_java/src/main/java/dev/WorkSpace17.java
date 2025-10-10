@@ -1367,6 +1367,7 @@ public class WorkSpace17 {
     // ?????
     // parentMap: { node, [parent_node_1,  parent_node_2, ...] }
     Map<TreeNode, List<TreeNode>> parentMap = new HashMap<>();
+    Map<TreeNode, TreeNode> parentMap100 = new HashMap<>();
     public List<Integer> distanceK(TreeNode root, TreeNode target, int k) {
         List<Integer> res = new ArrayList<>();
         // edge
@@ -1429,12 +1430,25 @@ public class WorkSpace17 {
     }
 
     private void updateParentMap(TreeNode parent, TreeNode node){
-        List<TreeNode> parents = new ArrayList<>();
-        if(parentMap.containsKey(node)){
-            parents = parentMap.get(node);
+      //  List<TreeNode> parents = new ArrayList<>();
+//        if(parentMap.containsKey(node)){
+//            parents = parentMap.get(node);
+//        }
+        if(node == null){
+            return;
         }
-        parents.add(parent);
-        parentMap.put(node, parents);
+        parentMap100.put(node, parent);
+        updateParentMap(node, node.left);
+        updateParentMap(node, node.right);
+    }
+
+    private void buildParentMap100(TreeNode parent, TreeNode root){
+        if(root == null){
+            return;
+        }
+//        parentMap.put(root, parent);
+//
+//        buildParentMap100(root.)
     }
 
 

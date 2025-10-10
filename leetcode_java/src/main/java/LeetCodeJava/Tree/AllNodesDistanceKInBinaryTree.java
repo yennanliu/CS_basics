@@ -52,6 +52,16 @@ public class AllNodesDistanceKInBinaryTree {
     // IDEA: BFS + PARENT MAP (fixed by gpt)
     // LeetCode 863 - All Nodes Distance K in Binary Tree
 
+    /**  NOTE !!!
+     *
+     *  parentMap_0_0_1:  { node, parent }
+     *
+     *  we ONLY get the `a SINGLE parent` from current node
+     *
+     *  e.g. we ONLY record (node, parent) relation,
+     *       but NOT (node, [parent_1, parent_2,...])
+     *
+     */
     Map<TreeNode, TreeNode> parentMap_0_0_1 = new HashMap<>();
 
     public List<Integer> distanceK_0_0_1(TreeNode root, TreeNode target, int k) {
@@ -59,13 +69,16 @@ public class AllNodesDistanceKInBinaryTree {
         if (root == null)
             return res;
 
+        /** NOTE !!! we build parent map first */
         // 1️⃣ Build parent references for all nodes
         buildParentMap_0_0_1(root, null);
 
         // 2️⃣ BFS starting from target
         Queue<TreeNode> q = new LinkedList<>();
+        /** NOTE !!! use visited to AVOID endless BFS traverse */
         Set<TreeNode> visited = new HashSet<>();
 
+        /** NOTE !!! BST starts from TARGET, (NOT root) */
         q.offer(target);
         visited.add(target);
 
@@ -82,17 +95,25 @@ public class AllNodesDistanceKInBinaryTree {
                 return res;
             }
 
+            /** NOTE !!!
+             *
+             * do BFS layer by later, since we need to get `distance` from
+             * target node
+             */
             // Expand one layer
             for (int i = 0; i < size; i++) {
                 TreeNode cur = q.poll();
 
                 // Check neighbors: left, right, parent
+                // move left
                 if (cur.left != null && visited.add(cur.left)) {
                     q.offer(cur.left);
                 }
+                // move right
                 if (cur.right != null && visited.add(cur.right)) {
                     q.offer(cur.right);
                 }
+                // move `UP`
                 if (parentMap_0_0_1.containsKey(cur) && visited.add(parentMap_0_0_1.get(cur))) {
                     q.offer(parentMap_0_0_1.get(cur));
                 }
@@ -104,6 +125,14 @@ public class AllNodesDistanceKInBinaryTree {
         return res;
     }
 
+    /**  NOTE !!!
+     *
+     *  we ONLY get the `a SINGLE parent` from current node
+     *
+     *  e.g. we ONLY record (node, parent) relation,
+     *       but NOT (node, [parent_1, parent_2,...])
+     *
+     */
     // Helper: Build parent map
     private void buildParentMap_0_0_1(TreeNode node, TreeNode parent) {
         if (node == null)
