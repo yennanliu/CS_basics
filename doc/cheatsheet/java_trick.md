@@ -72,6 +72,24 @@ char c = 'c';
 int index = c - 'a';  // Returns 2 (c is 3rd letter, 0-indexed)
 ```
 
+```java
+// java
+String x = "abcxyz";
+for ( Character c: x.toCharArray()){
+    /** 
+     *  c = a, a - ? = 0
+     *  c = b, a - ? = -1
+     *  c = c, a - ? = -2
+     *  c = x, a - ? = -23
+     *  c = y, a - ? = -24
+     *  c = z, a - ? = -25
+     */
+    System.out.println(" c = " + c +
+            ", a - ? = " + ('a' - c)
+    );
+}
+```
+
 **Performance Note**: `charAt(i)` is O(1) for strings, making it efficient for character-by-character processing.
 
 ## 2) Array and Collection Operations
