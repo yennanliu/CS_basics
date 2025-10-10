@@ -42,6 +42,41 @@ public class LongestValidParentheses {
 //
 //    }
 
+    // V0-1
+    // IDEA: STACK (fixed by gpt)
+    public int longestValidParentheses_0_1(String s) {
+        // Edge cases
+        if (s == null || s.length() < 2) {
+            return 0;
+        }
+
+        Stack<Integer> stack = new Stack<>();
+        int maxLen = 0;
+
+        // Base: push -1 to handle the first valid substring
+        stack.push(-1);
+
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+
+            if (c == '(') {
+                stack.push(i);
+            } else { // c == ')'
+                stack.pop();
+
+                if (stack.isEmpty()) {
+                    // no matching '(' — reset base index
+                    stack.push(i);
+                } else {
+                    // valid substring length = current index - last unmatched '(' index
+                    maxLen = Math.max(maxLen, i - stack.peek());
+                }
+            }
+        }
+
+        return maxLen;
+    }
+
     // V1-1
     // https://leetcode.ca/2016-01-01-32-Longest-Valid-Parentheses/
     public int longestValidParentheses_1_1(String s) {
