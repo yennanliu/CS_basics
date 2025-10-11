@@ -1841,68 +1841,229 @@ private void dfs(TreeNode node, int remaining, List<Integer> path,
 
 ### 1-1-20) Tree Height and Depth Operations
 
-#### Height vs Depth Comparison
-```python
-# Height: Distance from node to deepest leaf (bottom-up)
-def height(node):
-    if not node:
-        return 0
-    return 1 + max(height(node.left), height(node.right))
+#### **Core Concepts: Height vs Depth**
 
-# Depth: Distance from root to node (top-down)
-def assign_depths(node, depth=0):
-    if not node:
-        return
-    node.depth = depth
-    assign_depths(node.left, depth + 1)
-    assign_depths(node.right, depth + 1)
+| Concept | Definition | Direction | Traversal | Use Case |
+|---------|------------|-----------|-----------|----------|
+| **Height** | Distance from node to deepest leaf | Bottom-up | Post-order DFS | Tree properties, balance check |
+| **Depth** | Distance from root to target node | Top-down | Pre-order DFS | Node distance, level finding |
 
-# Get depth of specific node
-def get_node_depth(root, target, depth=0):
-    if not root:
-        return -1
-    if root.val == target:
-        return depth
+**Key Insight**: `getDepth()` is the fundamental algorithm for calculating distance between nodes (from root to any target node).
 
-    left_depth = get_node_depth(root.left, target, depth + 1)
-    if left_depth != -1:
-        return left_depth
+#### **Visual Comparison**
 
-    return get_node_depth(root.right, target, depth + 1)
 ```
+        1           Height of 1: 2 (to deepest leaf)
+       / \          Depth of 1: 0 (root)
+      2   3         Height of 2: 1, Depth of 2: 1
+     / \            Height of 4: 0, Depth of 4: 2
+    4   5           Height of 5: 0, Depth of 5: 2
+
+Height measures "how far down can I go?"
+Depth measures "how far am I from the root?"
+```
+
+#### **1. Get Height (Post-order DFS)**
+
+**Purpose**: Calculate distance from node to its deepest descendant leaf.
 
 ```java
 // java
-// Get tree height
+/**
+ * 🌳 Get Height - Bottom-up approach
+ *
+ * Time: O(N) - visit each node once
+ * Space: O(h) - recursion stack depth
+ *
+ * Returns: Height of tree (number of edges from node to deepest leaf)
+ */
 public int getHeight(TreeNode root) {
     if (root == null) {
-        return 0;
+        return -1;  // ✅ Return -1 for null (so leaf height = 0)
     }
-    return 1 + Math.max(getHeight(root.left), getHeight(root.right));
+
+    // Post-order: process children first, then current node
+    int leftHeight = getHeight(root.left);
+    int rightHeight = getHeight(root.right);
+
+    return Math.max(leftHeight, rightHeight) + 1;
 }
 
-// Get node depth
-public int getDepth(TreeNode root, int target) {
+/**
+ * Why return -1 for null?
+ *
+ * • By definition: leaf node has height 0
+ * • If root is a leaf:
+ *   - leftHeight = -1 (null)
+ *   - rightHeight = -1 (null)
+ *   - max(-1, -1) + 1 = 0 ✅ (correct leaf height)
+ *
+ * Alternative: return 0 for null
+ * Then leaf height would be 1 (which is also valid but less standard)
+ */
+```
+
+```python
+# python
+def get_height(node):
+    """
+    Height: Distance from node to deepest leaf (bottom-up)
+
+    Returns -1 for null so leaf height = 0
+    """
+    if not node:
+        return -1
+
+    left_height = get_height(node.left)
+    right_height = get_height(node.right)
+
+    return max(left_height, right_height) + 1
+```
+
+#### **2. Get Depth (Pre-order DFS)**
+
+**Purpose**: Calculate distance from root to target node. **This is the core distance-finding algorithm.**
+
+```java
+// java
+/**
+ * 🌿 Get Depth - Top-down approach
+ *
+ * This is the fundamental algorithm for finding distance between nodes:
+ * - Distance from root to any target node
+ * - Can be used as building block for node-to-node distance (via LCA)
+ *
+ * Time: O(N) - worst case visit all nodes
+ * Space: O(h) - recursion stack depth
+ *
+ * Returns:
+ * - Depth (number of edges from root to target) if found
+ * - -1 if target not found
+ */
+public int getDepth(TreeNode root, TreeNode target) {
     return getDepthHelper(root, target, 0);
 }
 
-private int getDepthHelper(TreeNode node, int target, int depth) {
+private int getDepthHelper(TreeNode root, TreeNode target, int depth) {
+    if (root == null) {
+        return -1; // ❌ Target not found in this branch
+    }
+
+    if (root == target) {
+        return depth; // ✅ Found! Return current distance from root
+    }
+
+    // Pre-order: try left subtree first
+    int leftDepth = getDepthHelper(root.left, target, depth + 1);
+    if (leftDepth != -1) {
+        return leftDepth; // Found in left subtree
+    }
+
+    // If not in left, try right subtree
+    return getDepthHelper(root.right, target, depth + 1);
+}
+
+/**
+ * Why return -1 for null?
+ *
+ * • -1 is a sentinel value meaning "not found"
+ * • Allows us to distinguish between:
+ *   - "Found at root" (depth = 0)
+ *   - "Not found" (depth = -1)
+ * • Enables early termination when target is found
+ */
+```
+
+```python
+# python
+def get_depth(root, target, depth=0):
+    """
+    Depth: Distance from root to target node (top-down)
+
+    This is the core distance algorithm - finds distance from root to any node.
+
+    Returns:
+    - depth (number of edges) if target found
+    - -1 if target not found
+    """
+    if not root:
+        return -1  # Not found
+
+    if root == target or root.val == target:
+        return depth  # Found!
+
+    # Try left subtree
+    left_depth = get_depth(root.left, target, depth + 1)
+    if left_depth != -1:
+        return left_depth
+
+    # Try right subtree
+    return get_depth(root.right, target, depth + 1)
+```
+
+#### **3. Comparison Table**
+
+| Aspect | Get Height | Get Depth |
+|--------|------------|-----------|
+| **Traversal Order** | Post-order (left → right → root) | Pre-order (root → left → right) |
+| **Direction** | Bottom-up (leaf to node) | Top-down (root to node) |
+| **Null Return** | `-1` (so leaf height = 0) | `-1` (meaning "not found") |
+| **Parameter Passing** | None (computed from children) | Pass `depth` down through recursion |
+| **Use Case** | Tree balance, tree properties | **Distance calculation**, level finding |
+| **When to Use** | Need children data first | Need parent data for children |
+| **Example Problems** | LC 104 (Max Depth), LC 110 (Balanced Tree) | LC 1740 (Distance in Tree), LC 863 (Distance K) |
+
+#### **4. Relationship to Distance Between Nodes**
+
+```java
+/**
+ * Finding distance between ANY two nodes uses getDepth() as building block:
+ *
+ * 1. Find Lowest Common Ancestor (LCA) of node1 and node2
+ * 2. Distance = getDepth(LCA, node1) + getDepth(LCA, node2)
+ *
+ * See LC 1740 for full implementation.
+ */
+public int findDistance(TreeNode root, int p, int q) {
+    TreeNode lca = findLCA(root, p, q);
+    return getDepth(lca, p) + getDepth(lca, q);
+}
+```
+
+#### **5. Common Variations**
+
+```java
+// java
+
+// Variation 1: Get depth by value instead of node reference
+public int getDepth(TreeNode root, int targetVal) {
+    return getDepthHelper(root, targetVal, 0);
+}
+
+private int getDepthHelper(TreeNode node, int targetVal, int depth) {
     if (node == null) {
         return -1;
     }
-    if (node.val == target) {
+    if (node.val == targetVal) {
         return depth;
     }
 
-    int leftDepth = getDepthHelper(node.left, target, depth + 1);
-    if (leftDepth != -1) {
-        return leftDepth;
-    }
+    int left = getDepthHelper(node.left, targetVal, depth + 1);
+    if (left != -1) return left;
 
-    return getDepthHelper(node.right, target, depth + 1);
+    return getDepthHelper(node.right, targetVal, depth + 1);
 }
 
-// Check if tree is balanced (height difference ≤ 1)
+// Variation 2: Get height returning 0 for null (leaf height = 1)
+public int getHeightAlternative(TreeNode root) {
+    if (root == null) {
+        return 0;  // Leaf node height = 1 with this approach
+    }
+    return 1 + Math.max(getHeightAlternative(root.left),
+                        getHeightAlternative(root.right));
+}
+
+// Variation 3: Check if tree is balanced (height difference ≤ 1)
 public boolean isBalanced(TreeNode root) {
     return checkBalance(root) != -1;
 }
@@ -1919,12 +2080,24 @@ private int checkBalance(TreeNode node) {
     if (rightHeight == -1) return -1;
 
     if (Math.abs(leftHeight - rightHeight) > 1) {
-        return -1;
+        return -1;  // Unbalanced
     }
 
     return 1 + Math.max(leftHeight, rightHeight);
 }
 ```
+
+#### **6. Key Takeaways**
+
+1. **Height (Post-order)**: Used for tree properties, needs children info first
+2. **Depth (Pre-order)**: **Core distance algorithm**, passes info down to children
+3. **Return -1 for null**:
+   - Height: Makes leaf height = 0 (standard definition)
+   - Depth: Signals "target not found"
+4. **Distance between nodes** = Use `getDepth()` twice with LCA
+5. **Choose based on info flow**:
+   - Need children data? → Use height (post-order)
+   - Need parent data? → Use depth (pre-order)
 
 ### 1-1-21) Node Path Pattern - Subtree Serialization
 
