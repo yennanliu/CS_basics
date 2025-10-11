@@ -1725,47 +1725,107 @@ public class WorkSpace17 {
 //        MyTreeNode node;
 //        Map<String, MyTreeNode>  children;
 //    }
-    public class Trie{
+//    public class Trie{
+//
+//        // sub class
+//        public class TrieNode{
+//            // attr
+//            TrieNode[] children;
+//            boolean isEnd;
+//
+//            TrieNode(){
+//                this.children = new TrieNode[26];
+//                this.isEnd = false;
+//            }
+//        }
+//
+//        // attr
+//        TrieNode root;
+//
+//        // constructor
+//        public Trie(){
+//            this.root = new TrieNode();
+//        }
+//
+//        // method
+//        public void insert(String word){
+//            for(Character x: word.toCharArray()){
+//                // `x - 'a'` : index ???
+//                int idx = x - 'a';
+//                if(this.root.children[idx] == null){
+//                    this.root.children[idx] = new TrieNode();
+//                }
+//                this.root = this.root.children[idx];
+//            }
+//            this.root.isEnd = true;
+//        }
+//
+//        public boolean search(String word){
+//            return false;
+//        }
+//
+//        public boolean startWith(String word){
+//            return false;
+//        }
+//
+//    }
 
-        // sub class
-        public class TrieNode{
-            // attr
-            TrieNode[] children;
+    /**
+     *  -> Design a system that suggests` at most three product` names from products
+     *
+     */
+    class Trie{
+        class TrieNode{
+            Map<String, TrieNode> children;
             boolean isEnd;
 
             TrieNode(){
-                this.children = new TrieNode[26];
+                this.children = new HashMap<>();
                 this.isEnd = false;
             }
         }
 
-        // attr
-        TrieNode root;
+        TrieNode node;
+        // new attr
+        List<String> products;
 
-        // constructor
-        public Trie(){
-            this.root = new TrieNode();
+        Trie(){
+            this.node = new TrieNode();
+            this.products = new ArrayList<>();
         }
 
         // method
-        public void insert(String word){
-            for(Character x: word.toCharArray()){
-                // `x - 'a'` : index ???
-                int idx = x - 'a';
-                if(this.root.children[idx] == null){
-                    this.root.children[idx] = new TrieNode();
+        private void insert(String word){
+
+            // ... TODO: implement
+            this.products.add(word);
+        }
+
+        private boolean hasWord(String word){
+            return false;
+        }
+
+        private boolean startFrom(String word){
+            return false;
+        }
+
+        // recommend AT MOST 3 products
+        // the products SHOULD HAVE the COMMON prefix
+        // if there is a tie (more that 3 products)
+        // order by lexicographically order (small -> big)
+        private List<String> recommend(String word){
+            List<String> res = new ArrayList<>();
+            String cur = ""; // ??
+            for(String x: word.split("")){
+                if(res.size() >= 3){
+                    return res;
                 }
-                this.root = this.root.children[idx];
+                cur += x;
+               // if(this.)
+
             }
-            this.root.isEnd = true;
-        }
 
-        public boolean search(String word){
-            return false;
-        }
-
-        public boolean startWith(String word){
-            return false;
+            return res; // if res size < 3 or null
         }
 
     }
@@ -1773,6 +1833,7 @@ public class WorkSpace17 {
 
     public List<List<String>> suggestedProducts(String[] products, String searchWord) {
         List<List<String>> res = new ArrayList<>();
+
         // edge
         if(products.length == 1){
              for(int i = 0; i < searchWord.length(); i++){
@@ -1783,10 +1844,28 @@ public class WorkSpace17 {
              return res;
         }
 
+        // init system
+        // ??
+        Trie trie = new Trie();
 
+        // step 1) insert products
+        for(String x: products){
+            trie.insert(x);
+        }
 
-        return null;
+        // step 2) search
+        for(String x: searchWord.split("")){
+            //trie.insert(x);
+            res.add(trie.recommend(x));
+        }
+
+        return res;
     }
+
+
+
+
+
 
     // LC 652
     // 16.02 - 16.12 pm
