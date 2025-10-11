@@ -2127,10 +2127,13 @@ public class WorkSpace17 {
                 int _idx = nodeIdx.idx;
                 TreeNode _node = nodeIdx.node;
                 // add to map
+                /// //////////////////////
                 List<Integer> list = map.get(_idx);
                 if(map.containsKey(_idx)){
                     list = map.get(_idx);
                 }
+                // NOTE !!!
+                list.add(_node.val);
                 map.put(_idx, list);
 
                 if(_node.left != null){
