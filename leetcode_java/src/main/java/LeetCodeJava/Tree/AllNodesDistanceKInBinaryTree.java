@@ -44,9 +44,74 @@ import java.util.*;
 public class AllNodesDistanceKInBinaryTree {
 
     // V0
-//    public List<Integer> distanceK(TreeNode root, TreeNode target, int k) {
-//
-//    }
+    // IDEA: BFS + PARENT MAP (fixed by gpt)
+    Map<TreeNode, TreeNode> parentMap = new HashMap<>();
+    public List<Integer> distanceK(TreeNode root, TreeNode target, int k) {
+        List<Integer> res = new ArrayList<>();
+        if (root == null) {
+            return res;
+        }
+
+        // ✅ Build parent relationships first
+        buildParentMap_0(root, null);
+
+        Queue<TreeNode> q = new LinkedList<>();
+        Set<TreeNode> visited = new HashSet<>();
+
+        // ✅ Start BFS from target
+        q.add(target);
+        visited.add(target);
+
+        int layer = 0;
+        while (!q.isEmpty()) {
+            int size = q.size();
+
+            // ✅ When we reach distance k, collect all nodes in queue
+            if (layer == k) {
+                for (TreeNode node : q) {
+                    res.add(node.val);
+                }
+                return res;
+            }
+
+            for (int i = 0; i < size; i++) {
+                TreeNode node = q.poll();
+
+                // move left
+                if (node.left != null && !visited.contains(node.left)) {
+                    visited.add(node.left);
+                    q.add(node.left);
+                }
+
+                // move right
+                if (node.right != null && !visited.contains(node.right)) {
+                    visited.add(node.right);
+                    q.add(node.right);
+                }
+
+                // move UP
+                TreeNode parent = parentMap.get(node);
+                if (parent != null && !visited.contains(parent)) {
+                    visited.add(parent);
+                    q.add(parent);
+                }
+            }
+            layer++;
+        }
+
+        return res; // ✅ Return result (not null)
+    }
+
+    // ✅ Build parent map correctly once (before BFS)
+    private void buildParentMap_0(TreeNode node, TreeNode parent) {
+        if (node == null) {
+            return;
+        }
+        parentMap.put(node, parent);
+        buildParentMap_0(node.left, node);
+        buildParentMap_0(node.right, node);
+    }
+
 
     // V0-0-1
     // IDEA: BFS + PARENT MAP (fixed by gpt)

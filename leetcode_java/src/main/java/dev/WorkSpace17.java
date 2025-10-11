@@ -1359,6 +1359,76 @@ public class WorkSpace17 {
      *
      *
      */
+    // 14.09 - 14.19 pm
+    /**  IDEA 1) BFS + `map record parent node`
+     *    -> so BFS can move UP, left, right
+     *    -> collect the `k dist` node
+     */
+    Map<TreeNode, TreeNode> parentMap = new HashMap<>();
+    public List<Integer> distanceK(TreeNode root, TreeNode target, int k) {
+        List<Integer> res = new ArrayList<>();
+        if(root == null){
+            return res;
+        }
+        //buildParentMap(node, null);
+        Queue<TreeNode> q = new LinkedList<>();
+
+        //buildParentMap()
+        Set<TreeNode> visited = new HashSet<>();
+
+
+        // NOTE !!! we START from target
+        q.add(target);
+
+        int layer = 0;
+        while(!q.isEmpty()){
+            int size = q.size();
+            //System.out.println(">>> size = " + size);
+            for(int i = 0; i < size; i++){
+                TreeNode node = q.poll();
+                visited.add(node);
+                System.out.println(">>> size = " + size +
+                        ",  i = " + i +
+                        ", node = " + node +
+                        ", layer = " + layer);
+                if(layer == k){
+                    res.add(node.val);
+                }
+                // move left
+                if(node.left != null && !visited.contains(node.left)){
+                    buildParentMap(node.left, node);
+                    q.add(node.left);
+                }
+                // move right
+                if(node.right != null){
+                    buildParentMap(node.right, node);
+                    q.add(node.right);
+                }
+                // move `UP`
+                if(parentMap.containsKey(node) && !visited.contains(node.right)){
+                    q.add(parentMap.get(node));
+                }
+            }
+            layer += 1;
+        }
+
+        return null;
+    }
+
+    // { node: parent }
+    // NOTE !!! ONLY save node and its `last` parent (e.g. move up by 1 idx)
+    private void buildParentMap(TreeNode node, TreeNode parent){
+        if(node == null){
+            return;
+        }
+        parentMap.put(node, parent); // ???
+        buildParentMap(node.left, node);
+        buildParentMap(node.right, node);
+    }
+
+
+
+
     // 17.54 - 18.12 pm
     /**  IDEA 1) BFS + `map record parent node`
      *    -> so BFS can move UP, left, right
@@ -1366,92 +1436,92 @@ public class WorkSpace17 {
      */
     // ?????
     // parentMap: { node, [parent_node_1,  parent_node_2, ...] }
-    Map<TreeNode, List<TreeNode>> parentMap = new HashMap<>();
-    Map<TreeNode, TreeNode> parentMap100 = new HashMap<>();
-    public List<Integer> distanceK(TreeNode root, TreeNode target, int k) {
-        List<Integer> res = new ArrayList<>();
-        // edge
-        if(root == null){
-            return res;
-        }
-        Queue<TreeNode> q = new LinkedList<>();
-        q.add(root);
-
-        // ??
-        int layer = 0;
-        //int start = 0;
-        boolean shouldStartCnt = false;
-
-        while(!q.isEmpty()){
-
-            int size = q.size();
-
-            for(int i = 0; i < size; i++){
-                TreeNode cur = q.poll();
-                if(cur.equals(target)){
-                    shouldStartCnt = true;
-                }
-
-                // collect res
-                if(layer == k){
-                    res.add(cur.val);
-                }
-
-                // move up
-                if(parentMap.containsKey(cur)){
-                    //q.add()
-                    // ??
-                    for(TreeNode _node: parentMap.get(cur)){
-                        q.add(_node);
-                    }
-                }
-
-                // move left
-                if(cur.left != null){
-                    updateParentMap(root, root.left);
-                    q.add(cur.left);
-                }
-                // move right
-                if(cur.right != null){
-                    updateParentMap(root, root.right);
-                    q.add(cur.right);
-                }
-            }
-
-            // ???
-            if(shouldStartCnt){
-                layer += 1;
-            }
-
-        }
-
-
-        return res;
-    }
-
-    private void updateParentMap(TreeNode parent, TreeNode node){
-      //  List<TreeNode> parents = new ArrayList<>();
-//        if(parentMap.containsKey(node)){
-//            parents = parentMap.get(node);
+//    Map<TreeNode, List<TreeNode>> parentMap = new HashMap<>();
+//    Map<TreeNode, TreeNode> parentMap100 = new HashMap<>();
+//    public List<Integer> distanceK(TreeNode root, TreeNode target, int k) {
+//        List<Integer> res = new ArrayList<>();
+//        // edge
+//        if(root == null){
+//            return res;
 //        }
-        if(node == null){
-            return;
-        }
-        parentMap100.put(node, parent);
-        updateParentMap(node, node.left);
-        updateParentMap(node, node.right);
-    }
-
-    private void buildParentMap100(TreeNode parent, TreeNode root){
-        if(root == null){
-            return;
-        }
-//        parentMap.put(root, parent);
+//        Queue<TreeNode> q = new LinkedList<>();
+//        q.add(root);
 //
-//        buildParentMap100(root.)
-    }
-
-
+//        // ??
+//        int layer = 0;
+//        //int start = 0;
+//        boolean shouldStartCnt = false;
+//
+//        while(!q.isEmpty()){
+//
+//            int size = q.size();
+//
+//            for(int i = 0; i < size; i++){
+//                TreeNode cur = q.poll();
+//                if(cur.equals(target)){
+//                    shouldStartCnt = true;
+//                }
+//
+//                // collect res
+//                if(layer == k){
+//                    res.add(cur.val);
+//                }
+//
+//                // move up
+//                if(parentMap.containsKey(cur)){
+//                    //q.add()
+//                    // ??
+//                    for(TreeNode _node: parentMap.get(cur)){
+//                        q.add(_node);
+//                    }
+//                }
+//
+//                // move left
+//                if(cur.left != null){
+//                    updateParentMap(root, root.left);
+//                    q.add(cur.left);
+//                }
+//                // move right
+//                if(cur.right != null){
+//                    updateParentMap(root, root.right);
+//                    q.add(cur.right);
+//                }
+//            }
+//
+//            // ???
+//            if(shouldStartCnt){
+//                layer += 1;
+//            }
+//
+//        }
+//
+//
+//        return res;
+//    }
+//
+//    private void updateParentMap(TreeNode parent, TreeNode node){
+//      //  List<TreeNode> parents = new ArrayList<>();
+////        if(parentMap.containsKey(node)){
+////            parents = parentMap.get(node);
+////        }
+//        if(node == null){
+//            return;
+//        }
+//        parentMap100.put(node, parent);
+//        updateParentMap(node, node.left);
+//        updateParentMap(node, node.right);
+//    }
+//
+//    private void buildParentMap100(TreeNode parent, TreeNode root){
+//        if(root == null){
+//            return;
+//        }
+////        parentMap.put(root, parent);
+////
+////        buildParentMap100(root.)
+//    }
+//
+//
 
 
 
