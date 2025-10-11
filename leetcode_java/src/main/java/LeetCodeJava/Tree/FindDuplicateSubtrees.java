@@ -66,10 +66,10 @@ public class FindDuplicateSubtrees {
      *         return "#"; // marker for null children
      *     }
      *
-     *     // post-order: left → right → node
      *     String left = getNodePath(node.left);
      *     String right = getNodePath(node.right);
      *
+     *     // pre-order: node -> right -> right
      *     // build serialization string
      *     return node.val + "," + left + "," + right;
      * }
