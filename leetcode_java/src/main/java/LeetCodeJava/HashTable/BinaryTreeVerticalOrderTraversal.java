@@ -146,6 +146,11 @@ public class BinaryTreeVerticalOrderTraversal {
                 // add node value to map
                 map.computeIfAbsent(idx, k -> new ArrayList<>()).add(node.val);
 
+                /**
+                 *  we maintain the min, max val of idx
+                 *  so we can easily go through in the correct order and range
+                 *  when collect result
+                 */
                 // track range of column indices
                 minCol = Math.min(minCol, idx);
                 maxCol = Math.max(maxCol, idx);
@@ -164,7 +169,7 @@ public class BinaryTreeVerticalOrderTraversal {
         }
     }
 
-    
+
     // V1-1
     // IDEA: BFS + SORT
     // https://neetcode.io/solutions/binary-tree-vertical-order-traversal
@@ -208,9 +213,19 @@ public class BinaryTreeVerticalOrderTraversal {
         return res;
     }
 
+    /** NOTE !!!
+     *
+     *  the param of this dfs helper func
+     *
+     *    -> int row, int col
+     */
     private void dfs(TreeNode node, int row, int col) {
         if (node == null) return;
         cols.computeIfAbsent(col, k -> new ArrayList<>()).add(new int[]{row, node.val});
+        /** NOTE !!!
+         *
+         *  how we recursively call the dfs func
+         */
         dfs(node.left, row + 1, col - 1);
         dfs(node.right, row + 1, col + 1);
     }
