@@ -39,19 +39,24 @@ import java.util.*;
  * target is the value of one of the nodes in the tree.
  * 0 <= k <= 1000
  *
- *
  */
 public class AllNodesDistanceKInBinaryTree {
 
     // V0
     // IDEA: BFS + PARENT MAP (fixed by gpt)
-    Map<TreeNode, TreeNode> parentMap = new HashMap<>();
+    Map<TreeNode, TreeNode> parentMap_0 = new HashMap<>();
     public List<Integer> distanceK(TreeNode root, TreeNode target, int k) {
         List<Integer> res = new ArrayList<>();
         if (root == null) {
             return res;
         }
 
+        /**  NOTE !!!
+         *
+         *  1. we call the `build parent map` func BEFORE BFS logic
+         *  2. the param we use
+         *      - // 1st param: node, 2nd param: parent
+         */
         // ✅ Build parent relationships first
         buildParentMap_0(root, null);
 
@@ -66,6 +71,13 @@ public class AllNodesDistanceKInBinaryTree {
         while (!q.isEmpty()) {
             int size = q.size();
 
+            /**  NOTE !!!
+             *
+             *  if layer == k,
+             *  -> we collect ALL nodes in queue directly,
+             *    and return result directly (early exit)
+             *    (before the for loop logic)
+             */
             // ✅ When we reach distance k, collect all nodes in queue
             if (layer == k) {
                 for (TreeNode node : q) {
@@ -90,7 +102,13 @@ public class AllNodesDistanceKInBinaryTree {
                 }
 
                 // move UP
-                TreeNode parent = parentMap.get(node);
+                /**  NOTE !!!
+                 *
+                 *  1. we ONLY use parent map when `move UP`
+                 *  2. NO need to update parent map or call `buildParentMap_0` again within BFS
+                 *      - since we ONLY build the parent map before BFS as code above
+                 */
+                TreeNode parent = parentMap_0.get(node);
                 if (parent != null && !visited.contains(parent)) {
                     visited.add(parent);
                     q.add(parent);
@@ -102,12 +120,13 @@ public class AllNodesDistanceKInBinaryTree {
         return res; // ✅ Return result (not null)
     }
 
+    // 1st param: node, 2nd param: parent
     // ✅ Build parent map correctly once (before BFS)
     private void buildParentMap_0(TreeNode node, TreeNode parent) {
         if (node == null) {
             return;
         }
-        parentMap.put(node, parent);
+        parentMap_0.put(node, parent);
         buildParentMap_0(node.left, node);
         buildParentMap_0(node.right, node);
     }
