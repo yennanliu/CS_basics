@@ -49,8 +49,49 @@ import java.util.*;
 public class BinaryTreeLevelOrderTraversal_ii {
 
     // V0
-    // IDEA : BFS
+    // IDEA: BFS
     public List<List<Integer>> levelOrderBottom(TreeNode root) {
+
+        List<List<Integer>> res = new ArrayList<>();
+        List<List<Integer>> cache = new ArrayList<>();
+        if (root == null) {
+            return res;
+        }
+        Queue<TreeNode> q = new LinkedList<>();
+        q.add(root);
+
+        while (!q.isEmpty()) {
+            List<Integer> list = new ArrayList<>();
+            int size = q.size();
+            for (int i = 0; i < size; i++) {
+                TreeNode node = q.poll();
+                System.out.println(">>> node.val = " + node.val
+                        + ", list = " + list);
+                list.add(node.val);
+                if (node.left != null) {
+                    q.add(node.left);
+                }
+                if (node.right != null) {
+                    q.add(node.right);
+                }
+            }
+            cache.add(new ArrayList<>(list));
+        }
+
+        System.out.println(">>> cache = " + cache);
+        for (int i = cache.size() - 1; i >= 0; i--) {
+            System.out.println(">>> ");
+            List<Integer> _list = cache.get(i);
+            System.out.println(">>> i = " + i + ", _list = " + _list);
+            res.add(_list);
+        }
+
+        return res;
+    }
+
+    // V0-1
+    // IDEA : BFS
+    public List<List<Integer>> levelOrderBottom_0_1(TreeNode root) {
 
         List<List<Integer>> res = new ArrayList<>();
         List<List<Integer>> resFinal = new ArrayList<>();
@@ -153,5 +194,7 @@ public class BinaryTreeLevelOrderTraversal_ii {
         Collections.reverse(levels);
         return levels;
     }
+
+
 
 }
