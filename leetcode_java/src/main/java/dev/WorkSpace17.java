@@ -1954,9 +1954,52 @@ public class WorkSpace17 {
     }
 
     // LC 103
+    // 12.01 - 12.11 pm
+    /**
+     *
+     *  IDEA 1) BFS + LAYER traverse + inverse
+     *
+     */
     public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
+        List<List<Integer>> res = new ArrayList<>();
+        List<List<Integer>> cache = new ArrayList<>();
+        if(root == null){
+            return res;
+        }
+        Queue<TreeNode> q = new LinkedList<>();
+        q.add(root);
+       // int layer = 0;
 
-        return null;
+        while(!q.isEmpty()){
+            List<Integer> list = new ArrayList<>();
+            int size = q.size();
+            for(int i = 0; i < size; i++){
+                TreeNode node = q.poll();
+                System.out.println(">>> node.val = " + node.val
+                        + ", list = " + list);
+                list.add(node.val);
+                if(node.left != null){
+                    q.add(node.left);
+                }
+                if(node.right != null){
+                    q.add(node.right);
+                }
+            }
+            cache.add(new ArrayList<>(list)); // ????
+            //layer += 1;
+        }
+
+        System.out.println(">>> cache = " + cache);
+        // i = 0: left -> right, i = 1: right -> right ....
+        for(int i = 0; i < cache.size(); i++){
+            List<Integer> _list = cache.get(i);
+            if(i % 2 == 1){
+                Collections.reverse(_list);
+            }
+            res.add(_list);
+        }
+
+        return res;
     }
 
 
