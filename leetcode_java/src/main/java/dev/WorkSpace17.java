@@ -2054,8 +2054,108 @@ public class WorkSpace17 {
     }
 
     // LC 314
+    // 13.37 - 47 pm
+    /**
+     * Given a binary tree,
+     *
+     * -> return the vertical order traversal of its nodes' values.
+     *
+     * (ie, from top to bottom, column by column).
+     *
+     *
+     * - If two nodes are in the same row and column,
+     *   the order should be from left to right.
+     *
+     *
+     *   IDEA 1) BFS + CUSTOM class
+     *
+     *
+     *
+     *   ex 1)
+     *
+     *   Input: [3,9,20,null,null,15,7]
+     *
+     *    3
+     *   /\
+     *  /  \
+     *  9  20
+     *     /\
+     *    /  \
+     *   15   7
+     *
+     * Output:
+     *
+     * [
+     *   [9],
+     *   [3,15],
+     *   [20],
+     *   [7]
+     * ]
+     *
+     *   BFS res:
+     *    [
+     *     [3],
+     *     [9,20],
+     *     [15,7]
+     *    ]
+     *
+     *
+     */
+    public class NodeIdx{
+        int idx;
+        TreeNode node;
+        public NodeIdx(int idx, TreeNode node){
+            this.idx = idx;
+            this.node = node;
+        }
+    }
     public List<List<Integer>> verticalOrder(TreeNode root) {
-        return null;
+        List<List<Integer>> res = new ArrayList<>();
+        if(root == null){
+            return res;
+        }
+        Queue<NodeIdx> q = new LinkedList<>();
+        q.add(new NodeIdx(0, root));
+        // ??
+        // map: { idx: [node_val_1, node_val_2, ...] }
+        Map<Integer, List<Integer>> map = new HashMap<>();
+
+        while(!q.isEmpty()){
+            int size = q.size();
+            for(int i = 0; i < size; i++){
+                NodeIdx nodeIdx = q.poll();
+                int _idx = nodeIdx.idx;
+                TreeNode _node = nodeIdx.node;
+                // add to map
+                List<Integer> list = map.get(_idx);
+                if(map.containsKey(_idx)){
+                    list = map.get(_idx);
+                }
+                map.put(_idx, list);
+
+                if(_node.left != null){
+                    q.add(new NodeIdx(_idx - 1, _node.left));
+                }
+                if(_node.right != null){
+                    q.add(new NodeIdx(_idx + 1, _node.right));
+                }
+            }
+        }
+
+        System.out.println(">>> map = " + map);
+        // ??? optimize below
+        List<Integer> keys = new ArrayList<>();
+        for(Integer x: map.keySet()){
+            keys.add(x);
+        }
+        // sort (small -> big)
+        Collections.sort(keys);
+
+        for(Integer k: keys){
+            res.add(map.get(k));
+        }
+
+        return res;
     }
 
 

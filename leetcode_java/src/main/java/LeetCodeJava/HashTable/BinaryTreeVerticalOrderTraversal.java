@@ -114,6 +114,57 @@ public class BinaryTreeVerticalOrderTraversal {
 //    public List<List<Integer>> verticalOrder(TreeNode root) {
 //    }
 
+    // V0-1
+    // IDEA: BFS + CUSTOM CLASS (fixed by gpt)
+    class Solution {
+        public class NodeIdx {
+            int idx;
+            TreeNode node;
+            public NodeIdx(int idx, TreeNode node) {
+                this.idx = idx;
+                this.node = node;
+            }
+        }
+
+        public List<List<Integer>> verticalOrder_0_1(TreeNode root) {
+            List<List<Integer>> res = new ArrayList<>();
+            if (root == null) return res;
+
+            // BFS queue
+            Queue<NodeIdx> q = new LinkedList<>();
+            q.add(new NodeIdx(0, root));
+
+            // map: { column index -> list of node values }
+            Map<Integer, List<Integer>> map = new HashMap<>();
+            int minCol = 0, maxCol = 0;
+
+            while (!q.isEmpty()) {
+                NodeIdx cur = q.poll();
+                int idx = cur.idx;
+                TreeNode node = cur.node;
+
+                // add node value to map
+                map.computeIfAbsent(idx, k -> new ArrayList<>()).add(node.val);
+
+                // track range of column indices
+                minCol = Math.min(minCol, idx);
+                maxCol = Math.max(maxCol, idx);
+
+                // add children with updated column index
+                if (node.left != null) q.add(new NodeIdx(idx - 1, node.left));
+                if (node.right != null) q.add(new NodeIdx(idx + 1, node.right));
+            }
+
+            // build result list from minCol → maxCol
+            for (int i = minCol; i <= maxCol; i++) {
+                res.add(map.get(i));
+            }
+
+            return res;
+        }
+    }
+
+    
     // V1-1
     // IDEA: BFS + SORT
     // https://neetcode.io/solutions/binary-tree-vertical-order-traversal
