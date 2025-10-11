@@ -3,6 +3,7 @@ package LeetCodeJava.HashTable;
 // https://leetcode.com/problems/binary-tree-vertical-order-traversal/description/
 // https://www.youtube.com/watch?v=-JFngYs21Y8
 
+import DataStructure.Pair;
 import LeetCodeJava.DataStructure.TreeNode;
 
 import java.util.*;
@@ -90,6 +91,25 @@ import java.util.*;
  */
 public class BinaryTreeVerticalOrderTraversal {
 
+    // custom helper class (GPT)
+//    class Pair<K, V> {
+//        private K key;
+//        private V value;
+//
+//        public Pair(K key, V value) {
+//            this.key = key;
+//            this.value = value;
+//        }
+//
+//        public K getKey() {
+//            return key;
+//        }
+//
+//        public V getValue() {
+//            return value;
+//        }
+//    }
+
     // V0
 //    public List<List<Integer>> verticalOrder(TreeNode root) {
 //    }
@@ -97,26 +117,26 @@ public class BinaryTreeVerticalOrderTraversal {
     // V1-1
     // IDEA: BFS + SORT
     // https://neetcode.io/solutions/binary-tree-vertical-order-traversal
-//    public List<List<Integer>> verticalOrder_1_1(TreeNode root) {
-//        if (root == null) return new ArrayList<>();
-//
-//        Map<Integer, List<Integer>> cols = new TreeMap<>();
-//        Queue<Pair<TreeNode, Integer>> queue = new LinkedList<>();
-//        queue.offer(new Pair<>(root, 0));
-//
-//        while (!queue.isEmpty()) {
-//            Pair<TreeNode, Integer> p = queue.poll();
-//            TreeNode node = p.getKey();
-//            int pos = p.getValue();
-//
-//            cols.computeIfAbsent(pos, k -> new ArrayList<>()).add(node.val);
-//
-//            if (node.left != null) queue.offer(new Pair<>(node.left, pos - 1));
-//            if (node.right != null) queue.offer(new Pair<>(node.right, pos + 1));
-//        }
-//
-//        return new ArrayList<>(cols.values());
-//    }
+    public List<List<Integer>> verticalOrder_1_1(TreeNode root) {
+        if (root == null) return new ArrayList<>();
+
+        Map<Integer, List<Integer>> cols = new TreeMap<>();
+        Queue<Pair<TreeNode, Integer>> queue = new LinkedList<>();
+        queue.offer(new Pair<>(root, 0));
+
+        while (!queue.isEmpty()) {
+            Pair<TreeNode, Integer> p = queue.poll();
+            TreeNode node = p.getKey();
+            int pos = p.getValue();
+
+            cols.computeIfAbsent(pos, k -> new ArrayList<>()).add(node.val);
+
+            if (node.left != null) queue.offer(new Pair<>(node.left, pos - 1));
+            if (node.right != null) queue.offer(new Pair<>(node.right, pos + 1));
+        }
+
+        return new ArrayList<>(cols.values());
+    }
 
     // V1-2
     // IDEA: DFS + SORT
@@ -147,33 +167,33 @@ public class BinaryTreeVerticalOrderTraversal {
     // V1-3
     // IDEA: Breadth First Search (Optimal)
     // https://neetcode.io/solutions/binary-tree-vertical-order-traversal
-//    public List<List<Integer>> verticalOrder_1_3(TreeNode root) {
-//        if (root == null) return new ArrayList<>();
-//
-//        Map<Integer, List<Integer>> cols = new HashMap<>();
-//        Queue<Pair<TreeNode, Integer>> queue = new LinkedList<>();
-//        queue.offer(new Pair<>(root, 0));
-//        int minCol = 0, maxCol = 0;
-//
-//        while (!queue.isEmpty()) {
-//            Pair<TreeNode, Integer> p = queue.poll();
-//            TreeNode node = p.getKey();
-//            int col = p.getValue();
-//
-//            cols.computeIfAbsent(col, x -> new ArrayList<>()).add(node.val);
-//            minCol = Math.min(minCol, col);
-//            maxCol = Math.max(maxCol, col);
-//
-//            if (node.left != null) queue.offer(new Pair<>(node.left, col - 1));
-//            if (node.right != null) queue.offer(new Pair<>(node.right, col + 1));
-//        }
-//
-//        List<List<Integer>> res = new ArrayList<>();
-//        for (int c = minCol; c <= maxCol; c++) {
-//            res.add(cols.get(c));
-//        }
-//        return res;
-//    }
+    public List<List<Integer>> verticalOrder_1_3(TreeNode root) {
+        if (root == null) return new ArrayList<>();
+
+        Map<Integer, List<Integer>> cols = new HashMap<>();
+        Queue<Pair<TreeNode, Integer>> queue = new LinkedList<>();
+        queue.offer(new Pair<>(root, 0));
+        int minCol = 0, maxCol = 0;
+
+        while (!queue.isEmpty()) {
+            Pair<TreeNode, Integer> p = queue.poll();
+            TreeNode node = p.getKey();
+            int col = p.getValue();
+
+            cols.computeIfAbsent(col, x -> new ArrayList<>()).add(node.val);
+            minCol = Math.min(minCol, col);
+            maxCol = Math.max(maxCol, col);
+
+            if (node.left != null) queue.offer(new Pair<>(node.left, col - 1));
+            if (node.right != null) queue.offer(new Pair<>(node.right, col + 1));
+        }
+
+        List<List<Integer>> res = new ArrayList<>();
+        for (int c = minCol; c <= maxCol; c++) {
+            res.add(cols.get(c));
+        }
+        return res;
+    }
 
     // V1-4
     // IDEA: DFS (OPTIMAL)
@@ -212,34 +232,33 @@ public class BinaryTreeVerticalOrderTraversal {
     // V2-2
     // IDEA: BFS
     // https://leetcode.ca/2016-10-09-314-Binary-Tree-Vertical-Order-Traversal/
-//    public List<List<Integer>> verticalOrder_2_2(TreeNode root) {
-//        List<List<Integer>> ans = new ArrayList<>();
-//        if (root == null) {
-//            return ans;
-//        }
-//        Deque<Pair<TreeNode, Integer>> q = new ArrayDeque<>();
-//        q.offer(new Pair<>(root, 0));
-//        TreeMap<Integer, List<Integer>> d = new TreeMap<>();
-//        while (!q.isEmpty()) {
-//            for (int n = q.size(); n > 0; --n) {
-//                var p = q.pollFirst();
-//                root = p.getKey();
-//                int offset = p.getValue();
-//                d.computeIfAbsent(offset, k -> new ArrayList()).add(root.val);
-//                if (root.left != null) {
-//                    q.offer(new Pair<>(root.left, offset - 1));
-//                }
-//                if (root.right != null) {
-//                    q.offer(new Pair<>(root.right, offset + 1));
-//                }
-//            }
-//        }
-//        return new ArrayList<>(d.values());
-//    }
+    public List<List<Integer>> verticalOrder_2_2(TreeNode root) {
+        List<List<Integer>> ans = new ArrayList<>();
+        if (root == null) {
+            return ans;
+        }
+        Deque<Pair<TreeNode, Integer>> q = new ArrayDeque<>();
+        q.offer(new Pair<>(root, 0));
+        TreeMap<Integer, List<Integer>> d = new TreeMap<>();
+        while (!q.isEmpty()) {
+            for (int n = q.size(); n > 0; --n) {
+                Pair<TreeNode, Integer> p = q.pollFirst();
+                root = p.getKey();
+                int offset = p.getValue();
+                d.computeIfAbsent(offset, k -> new ArrayList()).add(root.val);
+                if (root.left != null) {
+                    q.offer(new Pair<>(root.left, offset - 1));
+                }
+                if (root.right != null) {
+                    q.offer(new Pair<>(root.right, offset + 1));
+                }
+            }
+        }
+        return new ArrayList<>(d.values());
+    }
 
 
     // V3
-
 
 
 }

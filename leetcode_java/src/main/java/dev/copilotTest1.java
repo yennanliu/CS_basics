@@ -42,6 +42,7 @@ public class copilotTest1 {
                 right = mid - 1;
             }
         }
-
     }
+
+    
 }
