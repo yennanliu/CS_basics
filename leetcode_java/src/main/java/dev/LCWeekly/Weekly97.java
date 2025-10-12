@@ -239,33 +239,41 @@ public class Weekly97 {
      *
      */
     public int maximizeWin(int[] prizePositions, int k) {
-        // edge
-        if(prizePositions == null || prizePositions.length == 0){
-            return 0;
-        }
-        if(k > prizePositions.length){
-            return -1; // ???
-        }
-        // ???
-        if(k == 0){
-            return 2;
-        }
 
-        int ans = 0;
-        // map : { val : cnt }
-        Map<Integer, Integer> map = new HashMap<>();
-        for(int x: prizePositions){
-            map.put(x, map.getOrDefault(x, 0) + 1);
-        }
-
-        System.out.println(">>> map = " + map);
-
-        // ??? brute force
-
-
-
-        return ans;
+        return 0;
     }
+
+
+
+
+//    public int maximizeWin(int[] prizePositions, int k) {
+//        // edge
+//        if(prizePositions == null || prizePositions.length == 0){
+//            return 0;
+//        }
+//        if(k > prizePositions.length){
+//            return -1; // ???
+//        }
+//        // ???
+//        if(k == 0){
+//            return 2;
+//        }
+//
+//        int ans = 0;
+//        // map : { val : cnt }
+//        Map<Integer, Integer> map = new HashMap<>();
+//        for(int x: prizePositions){
+//            map.put(x, map.getOrDefault(x, 0) + 1);
+//        }
+//
+//        System.out.println(">>> map = " + map);
+//
+//        // ??? brute force
+//
+//
+//
+//        return ans;
+//    }
 
 
 

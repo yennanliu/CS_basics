@@ -45,6 +45,45 @@ public class MaximizeWinFromTwoSegments {
 //
 //    }
 
+    // V0-1
+    // IDEA: DP + SLIDE WINDOW (fixed by gpt)
+    public int maximizeWin_0_1(int[] prizePositions, int k) {
+        int n = prizePositions.length;
+        if (n == 0)
+            return 0;
+
+        // best[i] = max number of prizes we can collect using ONE segment up to index i
+        int[] best = new int[n];
+        int ans = 0;
+
+        // sliding window [left..right]
+        int left = 0;
+        for (int right = 0; right < n; right++) {
+            // move left until segment length <= k
+            while (prizePositions[right] - prizePositions[left] > k) {
+                left++;
+            }
+            int windowSize = right - left + 1;
+
+            // best so far up to index right
+            best[right] = (right == 0) ? windowSize : Math.max(best[right - 1], windowSize);
+        }
+
+        // Second pass: choose second segment starting at i, combine with best from before i
+        left = 0;
+        for (int right = 0; right < n; right++) {
+            while (prizePositions[right] - prizePositions[left] > k) {
+                left++;
+            }
+            int windowSize = right - left + 1;
+
+            int prevBest = (left > 0) ? best[left - 1] : 0;
+            ans = Math.max(ans, prevBest + windowSize);
+        }
+
+        return ans;
+    }
+
     // V0-5
     // IDEA:  SLIDE WINDOW + PREFIX SUM
     // https://leetcode.com/problems/maximize-win-from-two-segments/solutions/7026737/on-sliding-window-prefix-sum-by-wbcnskdh-f2zv/
