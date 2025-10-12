@@ -1,8 +1,6 @@
 package dev.LCWeekly;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class Weekly97 {
 
@@ -60,7 +58,7 @@ public class Weekly97 {
     }
 
 
-    // Q2
+    // Q2: to fix
     // LC 2554
     // 15.31 - 15.41 pm
     // https://leetcode.com/problems/maximum-number-of-integers-to-choose-from-a-range-i/description/
@@ -171,19 +169,67 @@ public class Weekly97 {
 
 
 
-    // Q3
+    // Q3: to fix
     // LC 2555
     // 16.00 - 16.10 pm
     // https://leetcode.com/problems/maximize-win-from-two-segments/description/
     /**
      *
+     *  -> Return the `MAX number of prizes`
+     *    you can win if you choose the `two segments` optimally.
+     *
+     *  - The `length` of `EACH segment` must be k
+     *
+     *  - prizePositions is SORT in INCREASING order
+     *  - prizePositions[i] is the idx of i th prize
+     *  - There could be different prizes at the same position on the line.
+     *  - You are allowed to select `2 segments` with integer endpoints.
+     *
+     *
+     *
+     *   IDEA 1) HASHMAP + BRUTE FORCE
+     *
+     *
+     *    ex 1)
+     *
+     *      Input: prizePositions = [1,1,2,2,3,3,5], k = 2
+     *      Output: 7
+     *
+     *      -> map : {1: 2, 2: 2, 3: 2, 5 : 1}
+     *
      *
      *
      */
     public int maximizeWin(int[] prizePositions, int k) {
+        // edge
+        if(prizePositions == null || prizePositions.length == 0){
+            return 0;
+        }
+        if(k > prizePositions.length){
+            return -1; // ???
+        }
+        // ???
+        if(k == 0){
+            return 2;
+        }
 
-        return 0;
+        int ans = 0;
+        // map : { val : cnt }
+        Map<Integer, Integer> map = new HashMap<>();
+        for(int x: prizePositions){
+            map.put(x, map.getOrDefault(x, 0) + 1);
+        }
+
+        System.out.println(">>> map = " + map);
+
+        // ??? brute force
+
+
+
+        return ans;
     }
+    
+
 
 
     // Q4
