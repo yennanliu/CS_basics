@@ -54,6 +54,35 @@ public class MaximumNumberOfIntegersToChooseFromARange1 {
 //
 //    }
 
+    // V0-1
+    // IDEA: GREEDY gpt)
+    public int maxCount_0_1(int[] banned, int n, int maxSum) {
+        // Use a set for fast banned lookups
+        Set<Integer> bannedSet = new HashSet<>();
+        for (int x : banned) {
+            bannedSet.add(x);
+        }
+
+        int count = 0;
+        int sum = 0;
+
+        // Iterate through 1..n
+        for (int i = 1; i <= n; i++) {
+            if (bannedSet.contains(i)) {
+                continue; // skip banned numbers
+            }
+
+            if (sum + i <= maxSum) {
+                sum += i;
+                count++;
+            } else {
+                break; // once we exceed maxSum, stop
+            }
+        }
+
+        return count;
+    }
+
     // V1-1
     // IDEA:  BINARY SEARCH
     // https://leetcode.com/problems/maximum-number-of-integers-to-choose-from-a-range-i/editorial/
