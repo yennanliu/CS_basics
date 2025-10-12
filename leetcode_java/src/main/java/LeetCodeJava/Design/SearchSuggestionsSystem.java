@@ -52,6 +52,64 @@ public class SearchSuggestionsSystem {
 //
 //    }
 
+    // V0-4
+    // IDEA: 2 POINTERS
+    // https://www.youtube.com/watch?v=D4T2N0yAr20
+    public List<List<String>> suggestedProducts_0_4(String[] products, String searchWord) {
+        // Final list to store the results for each prefix
+        List<List<String>> result = new ArrayList<>();
+
+        // Step 1: Sort the products array alphabetically (O(N log N)).
+        // This ensures that products with the same prefix are grouped together,
+        // and suggestions are returned in lexicographical order.
+        Arrays.sort(products);
+
+        int left = 0; // Left pointer for the current matching range
+        int right = products.length - 1; // Right pointer for the current matching range
+
+        // Step 2: Iterate through each character of the search word to build prefixes.
+        for (int i = 0; i < searchWord.length(); i++) {
+            char c = searchWord.charAt(i);
+
+            // --- Narrow the Left Pointer ---
+            // Move 'left' pointer forward as long as:
+            // 1. The pointers haven't crossed (left <= right).
+            // 2. The current product is too short (doesn't have character at index i).
+            // 3. The character at index i in the current product doesn't match the search character 'c'.
+            while (left <= right &&
+                    (products[left].length() <= i || products[left].charAt(i) != c)) {
+                left++;
+            }
+
+            // --- Narrow the Right Pointer ---
+            // Move 'right' pointer backward using the same logic.
+            while (left <= right &&
+                    (products[right].length() <= i || products[right].charAt(i) != c)) {
+                right--;
+            }
+
+            // --- Collect Suggestions ---
+            List<String> suggestions = new ArrayList<>();
+
+            // The number of valid suggestions in the current window [left, right]
+            int numSuggestions = right - left + 1;
+
+            // We only want the first 3 suggestions (which are the lexicographically smallest).
+            int limit = Math.min(3, numSuggestions);
+
+            // Add up to 3 products from the start of the valid range (index 'left').
+            for (int j = 0; j < limit; j++) {
+                // Add product at index left + j
+                suggestions.add(products[left + j]);
+            }
+
+            result.add(suggestions);
+        }
+
+        return result;
+    }
+
+
     // V1-1
     // IDEA: TRIE + DFS
     // https://leetcode.com/problems/search-suggestions-system/editorial/
