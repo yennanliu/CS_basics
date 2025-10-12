@@ -55,8 +55,63 @@ public class MaximumNumberOfIntegersToChooseFromARange1 {
 //    }
 
     // V0-1
-    // IDEA: GREEDY gpt)
+    // IDEA: GREEDY (fixed by gpt)
     public int maxCount_0_1(int[] banned, int n, int maxSum) {
+        // Edge cases
+        if (n <= 0 || maxSum <= 0) {
+            return 0;
+        }
+
+        Set<Integer> bannedSet = new HashSet<>();
+        for (int x : banned) {
+            bannedSet.add(x);
+        }
+
+        /** NOTE !!!  cnt as number cnt, cumsum as cumulated sum */
+        int cnt = 0;
+        int cumSum = 0;
+
+        // Loop from 1 to n
+        for (int i = 1; i <= n; i++) {
+            if (bannedSet.contains(i)) {
+                continue;
+            }
+
+            /** NOTE !!!
+             *
+             *  1. cumSum + i > maxSum  condition
+             *
+             *  2. below is WRONG !!!!
+             *     -> we SHOULD check if `cumSum + i ` is <=  maxSum
+             *        BEFORE pick the `new i`
+             *
+             *
+             *
+             *             if(cumSum > maxSum){
+             *                 break;
+             *             }
+             *
+             *             //ans = Math.max(ans, i + 1); // ??
+             *             cnt += 1;
+             *             cumSum += i;
+             *
+             *
+             */
+            // Check if adding this number exceeds maxSum
+            if (cumSum + i > maxSum) {
+                break;
+            }
+
+            cumSum += i;
+            cnt++;
+        }
+
+        return cnt;
+    }
+
+    // V0-2
+    // IDEA: GREEDY (gpt)
+    public int maxCount_0_2(int[] banned, int n, int maxSum) {
         // Use a set for fast banned lookups
         Set<Integer> bannedSet = new HashSet<>();
         for (int x : banned) {

@@ -119,7 +119,7 @@ public class Weekly97 {
      *
      *
      */
-
+    // IDEA 1) GREEDY
     public int maxCount(int[] banned, int n, int maxSum) {
         // edge
         if(n <= 1){
@@ -128,45 +128,82 @@ public class Weekly97 {
         if(maxSum == 1){
             return 0;
         }
-        int ans = 0;
 
-        // ???
-        List<Integer> bannedList = new ArrayList<>();
-        for(int x: banned){
-            bannedList.add(x);
+        Set<Integer> bannedSet = new HashSet<>();
+        for(int x : banned){
+            bannedSet.add(x);
         }
 
-        List<Integer> candidates = new ArrayList<>();
-        for(int i = 0; i < n; i++){
-            if(!bannedList.contains(i)){
-                candidates.add(i);
+        int cnt = 0;
+        int cumSum = 0;
+
+        for(int i = 1; i <= n ; i++){
+            if(bannedSet.contains(i)){
+                continue;
             }
-        }
-
-        // prefix sum array
-        List<Integer> prefixSum = new ArrayList<>();
-        int preSum = candidates.get(0);
-        for(int i = 1; i < candidates.size(); i++){
-            preSum += candidates.get(i);
-            prefixSum.add(preSum);
-        }
-
-        // ???
-        prefixSum.add(preSum);
-
-
-        System.out.println(">>> prefixSum = " + prefixSum);
-
-        // ???
-        for(int i = 0; i < prefixSum.size(); i++){
-            if(maxSum < prefixSum.get(i)){
+            if(cumSum > maxSum){
                 break;
             }
-            ans = Math.max(ans, i+1);
+
+            //ans = Math.max(ans, i + 1); // ??
+            cnt += 1;
+            cumSum += i;
         }
 
-        return ans;
+
+        return cnt; // ???
     }
+
+
+
+
+//    public int maxCount(int[] banned, int n, int maxSum) {
+//        // edge
+//        if(n <= 1){
+//            return n;
+//        }
+//        if(maxSum == 1){
+//            return 0;
+//        }
+//        int ans = 0;
+//
+//        // ???
+//        List<Integer> bannedList = new ArrayList<>();
+//        for(int x: banned){
+//            bannedList.add(x);
+//        }
+//
+//        List<Integer> candidates = new ArrayList<>();
+//        for(int i = 0; i < n; i++){
+//            if(!bannedList.contains(i)){
+//                candidates.add(i);
+//            }
+//        }
+//
+//        // prefix sum array
+//        List<Integer> prefixSum = new ArrayList<>();
+//        int preSum = candidates.get(0);
+//        for(int i = 1; i < candidates.size(); i++){
+//            preSum += candidates.get(i);
+//            prefixSum.add(preSum);
+//        }
+//
+//        // ???
+//        prefixSum.add(preSum);
+//
+//
+//        System.out.println(">>> prefixSum = " + prefixSum);
+//
+//        // ???
+//        for(int i = 0; i < prefixSum.size(); i++){
+//            if(maxSum < prefixSum.get(i)){
+//                break;
+//            }
+//            ans = Math.max(ans, i+1);
+//        }
+//
+//        return ans;
+//    }
 
 
 
