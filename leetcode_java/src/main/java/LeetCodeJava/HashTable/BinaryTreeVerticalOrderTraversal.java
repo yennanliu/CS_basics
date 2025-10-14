@@ -114,59 +114,102 @@ public class BinaryTreeVerticalOrderTraversal {
 //    public List<List<Integer>> verticalOrder(TreeNode root) {
 //    }
 
+    // V0-0-1
+    // IDEA: DFS + idx track (LC 987)
+    // TODO: validate
+    // TreeMap ensures column ordering from left to right automatically
+    private Map<Integer, List<int[]>> cols = new TreeMap<>();
+
+    public List<List<Integer>> verticalOrder_0_0_1(TreeNode root) {
+        dfs_0_0_1(root, 0, 0);  // start at row=0, col=0
+
+        List<List<Integer>> res = new ArrayList<>();
+
+        // Iterate over columns in ascending order (because TreeMap)
+        for (List<int[]> list : cols.values()) {
+            // Sort each column by row value ascending (top-to-bottom)
+            list.sort(Comparator.comparingInt(a -> a[0]));
+
+            List<Integer> colVals = new ArrayList<>();
+            for (int[] p : list) {
+                colVals.add(p[1]); // p[1] is node.val
+            }
+            res.add(colVals);
+        }
+
+        return res;
+    }
+
+    /**
+     * DFS helper
+     * @param node current node
+     * @param row current row index (depth)
+     * @param col current column index
+     */
+    private void dfs_0_0_1(TreeNode node, int row, int col) {
+        if (node == null) return;
+
+        // Store [row, val] in the list for this column
+        cols.computeIfAbsent(col, k -> new ArrayList<>()).add(new int[]{row, node.val});
+
+        // Go left: row+1, col-1
+        dfs_0_0_1(node.left, row + 1, col - 1);
+
+        // Go right: row+1, col+1
+        dfs_0_0_1(node.right, row + 1, col + 1);
+    }
+    
     // V0-1
     // IDEA: BFS + CUSTOM CLASS (fixed by gpt)
-    class Solution {
-        public class NodeIdx {
-            int idx;
-            TreeNode node;
-            public NodeIdx(int idx, TreeNode node) {
-                this.idx = idx;
-                this.node = node;
-            }
+    public class NodeIdx {
+        int idx;
+        TreeNode node;
+        public NodeIdx(int idx, TreeNode node) {
+            this.idx = idx;
+            this.node = node;
+        }
+    }
+
+    public List<List<Integer>> verticalOrder_0_1(TreeNode root) {
+        List<List<Integer>> res = new ArrayList<>();
+        if (root == null) return res;
+
+        // BFS queue
+        Queue<NodeIdx> q = new LinkedList<>();
+        q.add(new NodeIdx(0, root));
+
+        // map: { column index -> list of node values }
+        Map<Integer, List<Integer>> map = new HashMap<>();
+        int minCol = 0, maxCol = 0;
+
+        while (!q.isEmpty()) {
+            NodeIdx cur = q.poll();
+            int idx = cur.idx;
+            TreeNode node = cur.node;
+
+            // add node value to map
+            map.computeIfAbsent(idx, k -> new ArrayList<>()).add(node.val);
+
+            /**
+             *  we maintain the min, max val of idx
+             *  so we can easily go through in the correct order and range
+             *  when collect result
+             */
+            // track range of column indices
+            minCol = Math.min(minCol, idx);
+            maxCol = Math.max(maxCol, idx);
+
+            // add children with updated column index
+            if (node.left != null) q.add(new NodeIdx(idx - 1, node.left));
+            if (node.right != null) q.add(new NodeIdx(idx + 1, node.right));
         }
 
-        public List<List<Integer>> verticalOrder_0_1(TreeNode root) {
-            List<List<Integer>> res = new ArrayList<>();
-            if (root == null) return res;
-
-            // BFS queue
-            Queue<NodeIdx> q = new LinkedList<>();
-            q.add(new NodeIdx(0, root));
-
-            // map: { column index -> list of node values }
-            Map<Integer, List<Integer>> map = new HashMap<>();
-            int minCol = 0, maxCol = 0;
-
-            while (!q.isEmpty()) {
-                NodeIdx cur = q.poll();
-                int idx = cur.idx;
-                TreeNode node = cur.node;
-
-                // add node value to map
-                map.computeIfAbsent(idx, k -> new ArrayList<>()).add(node.val);
-
-                /**
-                 *  we maintain the min, max val of idx
-                 *  so we can easily go through in the correct order and range
-                 *  when collect result
-                 */
-                // track range of column indices
-                minCol = Math.min(minCol, idx);
-                maxCol = Math.max(maxCol, idx);
-
-                // add children with updated column index
-                if (node.left != null) q.add(new NodeIdx(idx - 1, node.left));
-                if (node.right != null) q.add(new NodeIdx(idx + 1, node.right));
-            }
-
-            // build result list from minCol → maxCol
-            for (int i = minCol; i <= maxCol; i++) {
-                res.add(map.get(i));
-            }
-
-            return res;
+        // build result list from minCol → maxCol
+        for (int i = minCol; i <= maxCol; i++) {
+            res.add(map.get(i));
         }
+
+        return res;
     }
 
 
