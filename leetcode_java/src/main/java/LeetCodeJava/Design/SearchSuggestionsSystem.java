@@ -59,6 +59,12 @@ public class SearchSuggestionsSystem {
         // Final list to store the results for each prefix
         List<List<String>> result = new ArrayList<>();
 
+        /** NOTE !!!
+         *
+         *  sort words alphabetically
+         *
+         *  -> so the java default sorting meets the requirement
+         */
         // Step 1: Sort the products array alphabetically (O(N log N)).
         // This ensures that products with the same prefix are grouped together,
         // and suggestions are returned in lexicographical order.
@@ -67,10 +73,34 @@ public class SearchSuggestionsSystem {
         int left = 0; // Left pointer for the current matching range
         int right = products.length - 1; // Right pointer for the current matching range
 
+        /** NOTE !!!
+         *
+         *   The looping structure:
+         *
+         *     for(alphabet in searchWord){
+         *
+         *         while(left boundary Not valid ...){
+         *             // update left pointer
+         *         }
+         *
+         *         while(right boundary Not valid ...){
+         *             // update right pointer
+         *         }
+         *
+         *     }
+         *
+         */
         // Step 2: Iterate through each character of the search word to build prefixes.
         for (int i = 0; i < searchWord.length(); i++) {
+            // NOTE !!! we get current search alphabet as `char` type
             char c = searchWord.charAt(i);
 
+            /** NOTE !!!
+             *
+             *  we split `left, right` pointer `narrow` op one by one
+             *
+             *  -> e.g. we DO the left, right boundary update separately
+             */
             // --- Narrow the Left Pointer ---
             // Move 'left' pointer forward as long as:
             // 1. The pointers haven't crossed (left <= right).
@@ -81,6 +111,12 @@ public class SearchSuggestionsSystem {
                 left++;
             }
 
+            /** NOTE !!!
+             *
+             *  we split `left, right` pointer `narrow` op one by one
+             *
+             *  -> e.g. we DO the left, right boundary update separately
+             */
             // --- Narrow the Right Pointer ---
             // Move 'right' pointer backward using the same logic.
             while (left <= right &&
@@ -94,6 +130,7 @@ public class SearchSuggestionsSystem {
             // The number of valid suggestions in the current window [left, right]
             int numSuggestions = right - left + 1;
 
+            /** NOTE !!! max to-collect list is  size = 3 */
             // We only want the first 3 suggestions (which are the lexicographically smallest).
             int limit = Math.min(3, numSuggestions);
 
