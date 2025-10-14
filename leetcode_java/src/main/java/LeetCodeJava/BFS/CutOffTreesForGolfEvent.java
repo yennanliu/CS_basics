@@ -62,6 +62,204 @@ public class CutOffTreesForGolfEvent {
 //        return 0;
 //    }
 
+    // V0-1
+    // IDEA: BFS + PQ (fixed by gpt)
+    public int cutOffTree_0_1(List<List<Integer>> forest) {
+        if (forest == null || forest.size() == 0 || forest.get(0).size() == 0) {
+            return -1;
+        }
+
+        int m = forest.size();
+        int n = forest.get(0).size();
+
+        // Step 1: Collect all trees (height > 1)
+        List<int[]> trees = new ArrayList<>();
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                int height = forest.get(i).get(j);
+                if (height > 1) {
+                    trees.add(new int[] { i, j, height });
+                }
+            }
+        }
+
+        // Step 2: Sort trees by height (ascending)
+        trees.sort(Comparator.comparingInt(a -> a[2]));
+
+        // Step 3: Start from (0,0), walk to each tree in order
+        int totalSteps = 0;
+        int startX = 0, startY = 0;
+
+        for (int[] tree : trees) {
+            int targetX = tree[0];
+            int targetY = tree[1];
+
+            int steps = bfs(forest, startX, startY, targetX, targetY);
+            if (steps == -1) {
+                return -1; // unreachable tree
+            }
+
+            totalSteps += steps;
+            startX = targetX;
+            startY = targetY;
+        }
+
+        return totalSteps;
+    }
+
+    // BFS to find shortest path between (sx,sy) and (tx,ty)
+    private int bfs(List<List<Integer>> forest, int sx, int sy, int tx, int ty) {
+        if (sx == tx && sy == ty)
+            return 0;
+
+        int m = forest.size();
+        int n = forest.get(0).size();
+        boolean[][] visited = new boolean[m][n];
+        int[][] dirs = new int[][] { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 } };
+
+        Queue<int[]> q = new LinkedList<>();
+        q.add(new int[] { sx, sy, 0 });
+        visited[sx][sy] = true;
+
+        while (!q.isEmpty()) {
+            int[] cur = q.poll();
+            int x = cur[0];
+            int y = cur[1];
+            int steps = cur[2];
+
+            for (int[] d : dirs) {
+                int nx = x + d[0];
+                int ny = y + d[1];
+
+                if (nx < 0 || nx >= m || ny < 0 || ny >= n)
+                    continue;
+                if (visited[nx][ny] || forest.get(nx).get(ny) == 0)
+                    continue;
+
+                if (nx == tx && ny == ty) {
+                    return steps + 1;
+                }
+
+                visited[nx][ny] = true;
+                q.add(new int[] { nx, ny, steps + 1 });
+            }
+        }
+
+        return -1; // unreachable
+    }
+
+    // V0-2
+    // IDEA: BFS + PQ (fixed by gemini)
+    // Global variables for grid dimensions
+    private int R, C;
+    public int cutOffTree_0_2(List<List<Integer>> forest) {
+        if (forest == null || forest.isEmpty() || forest.get(0).isEmpty()) {
+            return 0;
+        }
+
+        R = forest.size();
+        C = forest.get(0).size();
+
+        // 1. Collect all trees with height > 1 and sort them by height.
+        // Each array stores: [height, row, col]
+        List<int[]> trees = new ArrayList<>();
+        for (int r = 0; r < R; r++) {
+            for (int c = 0; c < C; c++) {
+                if (forest.get(r).get(c) > 1) {
+                    trees.add(new int[] { forest.get(r).get(c), r, c });
+                }
+            }
+        }
+
+        // Sort trees by height (o1[0] - o2[0])
+        trees.sort(Comparator.comparingInt(a -> a[0]));
+
+        int totalSteps = 0;
+        // Start position is (0, 0)
+        int startR = 0;
+        int startC = 0;
+
+        // 2. Sequentially move from one tree to the next.
+        for (int[] tree : trees) {
+            int targetR = tree[1];
+            int targetC = tree[2];
+
+            // Find the shortest path (minimum steps) from the current position to the next target tree.
+            int steps = bfs_0_2(forest, startR, startC, targetR, targetC);
+
+            // If the path is impossible, return -1 immediately.
+            if (steps == -1) {
+                return -1;
+            }
+
+            // Add the steps to the total count.
+            totalSteps += steps;
+
+            // Update the starting position for the next iteration.
+            startR = targetR;
+            startC = targetC;
+        }
+
+        return totalSteps;
+    }
+
+    /**
+     * BFS to find the shortest path (min steps) between two points in the forest.
+     * @return Minimum steps, or -1 if unreachable.
+     */
+    private int bfs_0_2(List<List<Integer>> forest, int startR, int startC, int targetR, int targetC) {
+        // Already at the target. (Shouldn't happen for the first move, but good practice)
+        if (startR == targetR && startC == targetC) {
+            return 0;
+        }
+
+        // Queue stores [row, col]
+        Queue<int[]> queue = new LinkedList<>();
+        queue.offer(new int[] { startR, startC });
+
+        // Visited array to prevent cycles and re-visiting cells
+        boolean[][] visited = new boolean[R][C];
+        visited[startR][startC] = true;
+
+        // Allowed movements: up, down, left, right
+        int[][] directions = new int[][] { { 0, 1 }, { 0, -1 }, { 1, 0 }, { -1, 0 } };
+        int steps = 0;
+
+        while (!queue.isEmpty()) {
+            steps++; // Increment steps for the next layer
+            int size = queue.size();
+
+            for (int i = 0; i < size; i++) {
+                int[] current = queue.poll();
+                int r = current[0];
+                int c = current[1];
+
+                for (int[] dir : directions) {
+                    int nextR = r + dir[0];
+                    int nextC = c + dir[1];
+
+                    // Check boundaries, if already visited, or if the cell is blocked (value 0).
+                    if (nextR < 0 || nextR >= R || nextC < 0 || nextC >= C ||
+                            visited[nextR][nextC] || forest.get(nextR).get(nextC) == 0) {
+                        continue;
+                    }
+
+                    // Found the target!
+                    if (nextR == targetR && nextC == targetC) {
+                        return steps;
+                    }
+
+                    // Not target, but valid path.
+                    visited[nextR][nextC] = true;
+                    queue.offer(new int[] { nextR, nextC });
+                }
+            }
+        }
+
+        // Target is unreachable
+        return -1;
+    }
+
     // V1
     // https://leetcode.ca/2017-10-05-675-Cut-Off-Trees-for-Golf-Event/
     private int[] dist = new int[3600];

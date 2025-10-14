@@ -2444,14 +2444,14 @@ public class WorkSpace17 {
 
         minPq.add(new int[] {0,0,1,0});
 
-        int minMove = l * w; // ???
+        //int minMove = l * w; // ???
         //int curTree
 
         while(!minPq.isEmpty()){
             int[] cur = minPq.poll();
             int x = cur[0];
             int y = cur[1];
-            int move = cur[2];
+            int cost = cur[2];
             int curTreeCnt = cur[3];
 
             // early quit
@@ -2459,10 +2459,10 @@ public class WorkSpace17 {
 //                return move; // ???
 //            }
             if(curTreeCnt == treeCnt){
-                return move;
+                return cost;
             }
 
-            minMove = Math.min(move, minMove);
+           // minMove = Math.min(move, minMove);
 
             for(int[] m: moves){
                 int x_ = x + m[0];
@@ -2475,7 +2475,7 @@ public class WorkSpace17 {
                 }
                 // add to queue
                // visited[y_][x_] = true;
-                minPq.add(new int[] {x_,y_,move + 1, curTreeCnt + 1});
+                minPq.add(new int[] {x_,y_,cost + forest.get(y_).get(x_), curTreeCnt + 1});
             }
 
         }
