@@ -2383,5 +2383,10 @@ public class WorkSpace17 {
     }
 
 
+    // LC 675
+    public int cutOffTree(List<List<Integer>> forest) {
+
+        return 0;
+    }
 
 }
