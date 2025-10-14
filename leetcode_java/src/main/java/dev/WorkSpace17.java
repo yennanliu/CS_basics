@@ -2485,9 +2485,89 @@ public class WorkSpace17 {
     }
 
     // LC 987
+    // 16.29 - 39 pm
+    /**
+     * -> Given the root of a `binary tree,`
+     *    calculate the `vertical order traversal` of the binary tree.
+     *
+     *    (Return the vertical order traversal of the binary tree.)
+     *
+     *    - For each node at position (row, col), its left and right children
+     *       will be at positions (row + 1, col - 1) and (row + 1, col + 1)
+     *       respectively.
+     *     - The root of the tree is at (0, 0).
+     *     -
+     *
+     *
+     *  IDEA 1) DFS ???
+     *
+     *  IDEA 1) BFS ???
+     *
+     */
+    List<List<Integer>> verticalNodes = new ArrayList<>();
+    Map<Integer, List<Integer>> nodeMap = new HashMap<>();
+    // ???
+    int minIdx = Integer.MAX_VALUE;
+    int maxIdx = Integer.MIN_VALUE;
     public List<List<Integer>> verticalTraversal(TreeNode root) {
+        //List<List<Integer>> res = new ArrayList<>();
+        // edge
+        if(root == null){
+            return verticalNodes; // ??
+        }
+        if(root.left == null && root.right == null){
+            List<Integer> tmp = new ArrayList<>();
+            tmp.add(root.val);
+            verticalNodes.add(tmp);
+            return verticalNodes;
+        }
 
-        return null;
+        // dfs call
+        getVerticalNodes(root, new ArrayList<>(), 0);
+        System.out.println(">>> nodeMap " + nodeMap );
+        System.out.println(">>> minIdx " + minIdx + ", maxIdx = " + maxIdx );
+
+        for(int i = minIdx; i < maxIdx+1; i++){
+           List<Integer> tmp =  nodeMap.get(i);
+           System.out.println(">>> (before sort) tmp = " + tmp);
+           // ???
+           //tmp.addAll(nodeMap.get(i));
+           // sort: small -> big
+           Collections.sort(tmp);
+           System.out.println(">>> (after sort) tmp = " + tmp);
+           verticalNodes.add(tmp);
+        }
+
+        System.out.println(">>> verticalNodes = " + verticalNodes);
+
+        return verticalNodes; // ???
+    }
+
+    // idx: the `index` compared to the `root` idx
+    // root idx = 0
+    // move 1 left, idx = -1
+    // move 1 right, idx = 1
+    // ...
+    private void getVerticalNodes(TreeNode root, List<Integer> cur, int idx){
+        if(root == null){
+            // ???
+            //verticalNodes.add(new ArrayList<>(cur)); // ???
+            return;
+        }
+
+        minIdx = Math.min(minIdx, idx);
+        maxIdx  = Math.max(maxIdx, idx);
+
+        // add the map
+        List<Integer> list = new ArrayList<>();
+        if(nodeMap.containsKey(idx)){
+            list = nodeMap.get(idx);
+        }
+        list.add(root.val);
+        nodeMap.put(idx, list);
+
+        getVerticalNodes(root.left, cur, idx - 1);
+        getVerticalNodes(root.right, cur, idx + 1);
     }
 
 
