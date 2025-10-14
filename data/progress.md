@@ -78,7 +78,6 @@
 		- gemini
 	- LC 102 Binary Tree Level Order Traversal
 		- gpt
-			- 987
 		- gemini
 			- 116
 - neetcode 250

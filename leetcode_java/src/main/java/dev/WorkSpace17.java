@@ -2484,6 +2484,11 @@ public class WorkSpace17 {
         return -1; // ????
     }
 
+    // LC 987
+    public List<List<Integer>> verticalTraversal(TreeNode root) {
+
+        return null;
+    }
 
 
 }
