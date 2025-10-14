@@ -2384,9 +2384,106 @@ public class WorkSpace17 {
 
 
     // LC 675
+    // 11.10 - 11.20 am
+    /**
+     *
+     *  ->  return the `minimum steps` you need to walk to cut off ALL the trees.
+     *      If you cannot cut off all the trees, return -1.
+     *
+     *    - 0 means the cell CAN NOT be walked through.
+     *    - 1 represents an empty cell that CAN be walked through.
+     *    - A number > 1 represents a tree in a cell that
+     *       CAN be walked through, and this number is the ` tree's height.`
+     *     - can move UP, DOWN, LEFT, RIGHT, can decide whether to cut a tree or not
+     *     - MUST cut off the trees in order from shortest -> tallest.
+     *       When you cut off a tree, the value at its cell becomes 1 (an empty cell).
+     *
+     *
+     *
+     *  IDEA 1) BFS + PQ (Dijkstra's algo ???)
+     *
+     *
+     */
     public int cutOffTree(List<List<Integer>> forest) {
+        // edge
+        int l = forest.size();
+        int w = forest.get(0).size();
 
-        return 0;
+        if(forest.isEmpty() || l == 0 || w == 0){
+            return 0;
+        }
+        if(l == 1 && w == 1){
+            return forest.get(0).get(0) == 0 ? 0 : -1; // ??????
+        }
+        // get tree cnt
+        int treeCnt = 0;
+        for(List<Integer> list: forest){
+            for(Integer x: list){
+                if(x != 0){
+                    treeCnt += 1;
+                }
+            }
+        }
+
+        // bfs
+        // Queue:  { [x,y, move] }
+        int[][] moves = new int[][] { {0,1}, {0,-1}, {1,0}, {-1,0}, {1,1} };
+        //boolean[][] visited = new boolean[l][w];
+
+        // queue: { [x,y, move, treeCnt], ... }
+        // minPQ: sort on `cut off tree cost`
+        // small -> big
+        //Queue<int[]> q = new LinkedList<>();
+        PriorityQueue<int[]> minPq = new PriorityQueue<>(new Comparator<int[]>() {
+            @Override
+            public int compare(int[] o1, int[] o2) {
+                int diff = o1[3] - o2[3];
+                return diff;
+            }
+        });
+
+        minPq.add(new int[] {0,0,1,0});
+
+        int minMove = l * w; // ???
+        //int curTree
+
+        while(!minPq.isEmpty()){
+            int[] cur = minPq.poll();
+            int x = cur[0];
+            int y = cur[1];
+            int move = cur[2];
+            int curTreeCnt = cur[3];
+
+            // early quit
+//            if(x == w - 1 && y == l - 1){
+//                return move; // ???
+//            }
+            if(curTreeCnt == treeCnt){
+                return move;
+            }
+
+            minMove = Math.min(move, minMove);
+
+            for(int[] m: moves){
+                int x_ = x + m[0];
+                int y_ = y + m[1];
+//                if(x_ < 0 || x_ >= w || y_ < 0 || y_ >= l || visited[y_][x_] || grid[y_][x_] != 0){
+//                    continue;
+//                }
+                  if(x_ < 0 || x_ >= w || y_ < 0 || y_ >= l || forest.get(y_).get(x_) != 0){
+                    continue;
+                }
+                // add to queue
+               // visited[y_][x_] = true;
+                minPq.add(new int[] {x_,y_,move + 1, curTreeCnt + 1});
+            }
+
+        }
+
+
+        return -1; // ????
     }
+
+
 
 }
