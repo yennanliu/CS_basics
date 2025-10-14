@@ -158,7 +158,7 @@ public class BinaryTreeVerticalOrderTraversal {
         // Go right: row+1, col+1
         dfs_0_0_1(node.right, row + 1, col + 1);
     }
-    
+
     // V0-1
     // IDEA: BFS + CUSTOM CLASS (fixed by gpt)
     public class NodeIdx {

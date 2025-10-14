@@ -1770,6 +1770,79 @@ public class WorkSpace17 {
 //
 //    }
 
+    // IDEA: 2 POINTERS ???
+    // needcode : https://www.youtube.com/watch?v=D4T2N0yAr20
+    /**
+     *
+     *  step 1) collect all products,
+     *          sort by `lexicographically`
+     *
+     *
+     *  step 2)  2 Pointers: left, right
+     *   one start from `idx = 0`,
+     *   the other start from `idx = len - 1`
+     *   move
+     *    - left += 1
+     *    - right -= 1
+     *    till `size = 3`
+     *    and collect as res
+     *
+     *
+     */
+    public List<List<String>> suggestedProducts(String[] products, String searchWord) {
+        List<List<String>> res = new ArrayList<>();
+        if(products == null || products.length == 0){
+            return res; // ???
+        }
+        if(searchWord == null){
+            return res; // ???
+        }
+        List<String> productList = new ArrayList<>();
+        for(String p: productList){
+            productList.add(p);
+        }
+
+        System.out.println(">>> (before sort) productList = " + productList);
+
+        // custom sort: lexicographically
+        productList.sort(new Comparator<String>() {
+            @Override
+            public int compare(String o1, String o2) {
+                int diff = o1.compareTo(o2); // ??????
+                return diff; // ??
+            }
+        });
+
+        System.out.println(">>> (after sort) productList = " + productList);
+
+        for(String x: searchWord.split("")){
+            // the `to search` alphabet: x
+            // the current product: productList.get(l), productList.get(r)
+            // ???
+            int l = 0;
+            int r = productList.size() - 1;
+            List<String> tmp = new ArrayList<>();
+            while(r > l && (r - l + 1) < 3  && productList.get(l).equals(x)
+                    && productList.get(r).equals(x) ){
+                // ??? some condition
+                //f()
+                l += 1;
+                r -= 1;
+            }
+            // ???
+            //tmp.add(productList.co)
+            // add tmp to res
+            res.add(tmp);
+        }
+
+        return res;
+    }
+
+
+
+
+
+
     /**
      *  -> Design a system that suggests` at most three product` names from products
      *
@@ -1831,7 +1904,7 @@ public class WorkSpace17 {
     }
 
 
-    public List<List<String>> suggestedProducts(String[] products, String searchWord) {
+    public List<List<String>> suggestedProducts_100(String[] products, String searchWord) {
         List<List<String>> res = new ArrayList<>();
 
         // edge
@@ -2571,5 +2644,10 @@ public class WorkSpace17 {
         getVerticalNodes(root.right, cur, idx + 1);
     }
 
+    // LC 1268
+//    public List<List<String>> suggestedProducts(String[] products, String searchWord) {
+//
+//        return null;
+//    }
 
 }
