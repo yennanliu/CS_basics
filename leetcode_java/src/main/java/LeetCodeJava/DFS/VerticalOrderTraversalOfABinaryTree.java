@@ -68,6 +68,58 @@ public class VerticalOrderTraversalOfABinaryTree {
 //
 //    }
 
+    // V0-1
+    // IDEA: DFS + col, row tracking (fixed by gpt)
+    List<List<Integer>> verticalNodes = new ArrayList<>();
+    Map<Integer, List<int[]>> nodeMap = new HashMap<>(); // col -> list of [row, val]
+    int minIdx = Integer.MAX_VALUE;
+    int maxIdx = Integer.MIN_VALUE;
+
+    public List<List<Integer>> verticalTraversal_0_1(TreeNode root) {
+        if (root == null) {
+            return verticalNodes;
+        }
+
+        dfs(root, 0, 0);
+
+        // build verticalNodes from minIdx to maxIdx
+        for (int i = minIdx; i <= maxIdx; i++) {
+            List<int[]> list = nodeMap.get(i);
+            if (list == null)
+                continue;
+
+            // sort by row, then val
+            Collections.sort(list, (a, b) -> {
+                if (a[0] != b[0])
+                    return a[0] - b[0]; // row ascending
+                return a[1] - b[1]; // value ascending
+            });
+
+            List<Integer> colVals = new ArrayList<>();
+            for (int[] pair : list) {
+                colVals.add(pair[1]);
+            }
+            verticalNodes.add(colVals);
+        }
+
+        return verticalNodes;
+    }
+
+    private void dfs(TreeNode root, int row, int col) {
+        if (root == null)
+            return;
+
+        minIdx = Math.min(minIdx, col);
+        maxIdx = Math.max(maxIdx, col);
+
+        List<int[]> list = nodeMap.getOrDefault(col, new ArrayList<>());
+        list.add(new int[] { row, root.val });
+        nodeMap.put(col, list);
+
+        dfs(root.left, row + 1, col - 1);
+        dfs(root.right, row + 1, col + 1);
+    }
+
     // V1
     // IDEA: DFS
     // https://leetcode.ca/2018-08-13-987-Vertical-Order-Traversal-of-a-Binary-Tree/
