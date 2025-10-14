@@ -2310,6 +2310,78 @@ public class WorkSpace17 {
         return res;
     }
 
+    // LC 1091
+    // 10.14 - 10.24 am
+    /**
+     *  -> Given an n x n binary matrix grid,
+     *  return the `length of the shortest clear path in the matrix. `
+     *  If there is NO clear path, return -1.
+     *
+     *  - A clear path in a binary matrix is a path from the top-left cell (i.e., (0, 0))
+     *    to the bottom-right cell (i.e., (n - 1, n - 1)) such that:
+     *       - All the visited cells of the path are 0.
+     *       - All the adjacent cells of the path are 8-directionally connected
+     *            (i.e., they are different and they share an edge or a corner).
+     *
+     *  -  len  of a clear path is  # of visited cells in path.
+     *
+     *
+     *   IDEA 1) BFS
+     */
+    public int shortestPathBinaryMatrix(int[][] grid) {
+        // edge
+        if(grid == null || grid.length == 0 || grid[0].length == 0){
+            return 0;
+        }
+        if(grid.length == 1 && grid[0].length == 1){
+            return  grid[0][0] == 0 ? 1 : 0; // /??
+        }
+        int l = grid.length;
+        int w = grid[0].length;
+        if(grid[l-1][w-1] != 0 || grid[0][0] != 0  ){
+            return -1;
+        }
+
+        int[][] moves = new int[][] { {0,1}, {0,-1}, {1,0}, {-1,0}, {1,1} };
+        boolean[][] visited = new boolean[l][w];
+
+        // queue: { [x,y, move], ... }
+        Queue<int[]> q = new LinkedList<>();
+
+        q.add(new int[] {0,0,1});
+
+        int minMove = l * w; // ???
+
+        while(!q.isEmpty()){
+            int[] cur = q.poll();
+            int x = cur[0];
+            int y = cur[1];
+            int move = cur[2];
+
+            // early quit
+            if(x == w - 1 && y == l - 1){
+                return move; // ???
+            }
+
+            minMove = Math.min(move, minMove);
+
+            for(int[] m: moves){
+                int x_ = x + m[0];
+                int y_ = y + m[1];
+                if(x_ < 0 || x_ >= w || y_ < 0 || y_ >= l || visited[y_][x_] || grid[y_][x_] != 0){
+                    continue;
+                }
+                // add to queue
+                visited[y_][x_] = true;
+                q.add(new int[] {x_,y_,move + 1});
+            }
+
+        }
+
+
+        return minMove == l * w ? -1 : minMove;
+    }
+
 
 
 }
