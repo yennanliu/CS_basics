@@ -129,6 +129,7 @@ public class ShortestPathInBinaryMatrix {
 
         // start at (0,0) with path length 1
         q.add(new int[] { 0, 0, 1 });
+        /** NOTE !!! set (0,0) as visited  */
         visited[0][0] = true;
 
         while (!q.isEmpty()) {
@@ -146,6 +147,11 @@ public class ShortestPathInBinaryMatrix {
                 int nx = x + m[0];
                 int ny = y + m[1];
 
+                /** NOTE !!!
+                 *
+                 *    validate if `new x, y` is a valid one,
+                 *    -> then add them to queue, proceed to BFS
+                 */
                 if (nx < 0 || nx >= w || ny < 0 || ny >= l)
                     continue;
                 if (visited[ny][nx] || grid[ny][nx] != 0)
