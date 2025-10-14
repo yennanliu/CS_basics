@@ -81,7 +81,6 @@
 			- 987
 		- gemini
 			- 116
-			- 1091
 			- 675
 - neetcode 250
 	- https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V6/LC_goog_all.pdf

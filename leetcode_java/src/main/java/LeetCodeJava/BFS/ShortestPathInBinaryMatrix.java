@@ -101,6 +101,64 @@ public class ShortestPathInBinaryMatrix {
         return -1;
     }
 
+    // V0-0-1
+    // IDEA: BFS (fixed by gpt)
+    public int shortestPathBinaryMatrix_0_0_1(int[][] grid) {
+        // edge
+        if (grid == null || grid.length == 0 || grid[0].length == 0) {
+            return -1;
+        }
+
+        int l = grid.length;
+        int w = grid[0].length;
+
+        // if start or end is blocked
+        if (grid[0][0] != 0 || grid[l - 1][w - 1] != 0) {
+            return -1;
+        }
+
+        /** NOTE !!! // Directions for 8-connected neighbors  */
+        // 8-directional moves
+        int[][] moves = new int[][] {
+                { 0, 1 }, { 0, -1 }, { 1, 0 }, { -1, 0 },
+                { 1, 1 }, { 1, -1 }, { -1, 1 }, { -1, -1 }
+        };
+
+        boolean[][] visited = new boolean[l][w];
+        Queue<int[]> q = new LinkedList<>();
+
+        // start at (0,0) with path length 1
+        q.add(new int[] { 0, 0, 1 });
+        visited[0][0] = true;
+
+        while (!q.isEmpty()) {
+            int[] cur = q.poll();
+            int x = cur[0];
+            int y = cur[1];
+            int move = cur[2];
+
+            // reached target
+            if (x == w - 1 && y == l - 1) {
+                return move;
+            }
+
+            for (int[] m : moves) {
+                int nx = x + m[0];
+                int ny = y + m[1];
+
+                if (nx < 0 || nx >= w || ny < 0 || ny >= l)
+                    continue;
+                if (visited[ny][nx] || grid[ny][nx] != 0)
+                    continue;
+
+                visited[ny][nx] = true;
+                q.add(new int[] { nx, ny, move + 1 });
+            }
+        }
+
+        return -1;
+    }
+
     // V0-1
     // IDEA: BFS (fixed by gpt)
     public int shortestPathBinaryMatrix_0_1(int[][] grid) {
