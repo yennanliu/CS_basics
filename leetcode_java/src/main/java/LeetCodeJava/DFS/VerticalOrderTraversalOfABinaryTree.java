@@ -71,6 +71,10 @@ public class VerticalOrderTraversalOfABinaryTree {
     // V0-1
     // IDEA: DFS + col, row tracking (fixed by gpt)
     List<List<Integer>> verticalNodes = new ArrayList<>();
+    /** NOTE !!!
+     *
+     *  nodeMap: { col: [node_val_1, node_val_2, ...] }
+     */
     Map<Integer, List<int[]>> nodeMap = new HashMap<>(); // col -> list of [row, val]
     int minIdx = Integer.MAX_VALUE;
     int maxIdx = Integer.MIN_VALUE;
@@ -88,6 +92,13 @@ public class VerticalOrderTraversalOfABinaryTree {
             if (list == null)
                 continue;
 
+            /** NOTE !!!!
+             *
+             *  we do CUSTOM sort the `map val (list)`
+             *
+             *  -> 1. row: small -> big
+             *     2. `node val`: small -> big
+             */
             // sort by row, then val
             Collections.sort(list, (a, b) -> {
                 if (a[0] != b[0])
@@ -95,6 +106,7 @@ public class VerticalOrderTraversalOfABinaryTree {
                 return a[1] - b[1]; // value ascending
             });
 
+            // add to result
             List<Integer> colVals = new ArrayList<>();
             for (int[] pair : list) {
                 colVals.add(pair[1]);
@@ -105,6 +117,11 @@ public class VerticalOrderTraversalOfABinaryTree {
         return verticalNodes;
     }
 
+    /** NOTE !!!
+     *
+     *  we track BOTH col, row in helper func.
+     *  -> as we need BOTH col, row info to build the result
+     */
     private void dfs(TreeNode root, int row, int col) {
         if (root == null)
             return;
@@ -116,6 +133,10 @@ public class VerticalOrderTraversalOfABinaryTree {
         list.add(new int[] { row, root.val });
         nodeMap.put(col, list);
 
+        /** NOTE !!!
+         *
+         *  below param
+         */
         dfs(root.left, row + 1, col - 1);
         dfs(root.right, row + 1, col + 1);
     }
