@@ -1889,7 +1889,132 @@ public class WorkSpace17 {
      *
      *
      */
+    // IDEA: 2 POINTERS
     public List<List<String>> suggestedProducts(String[] products, String searchWord) {
+        List<List<String>> res = new ArrayList<>();
+        if (products == null || products.length == 0 || searchWord == null) {
+            return res;
+        }
+
+        // 1️⃣ Sort products lexicographically
+        List<String> productList = new ArrayList<>(Arrays.asList(products));
+        Collections.sort(productList);
+
+        // 2️⃣ Two pointers to maintain valid prefix window
+        int l = 0;
+        int r = productList.size() - 1;
+
+        for (int i = 0; i < searchWord.length(); i++) {
+            char c = searchWord.charAt(i);
+
+            // shrink left boundary
+            while (l <= r && (productList.get(l).length() <= i || productList.get(l).charAt(i) != c)) {
+                l++;
+            }
+
+            // shrink right boundary
+            while (l <= r && (productList.get(r).length() <= i || productList.get(r).charAt(i) != c)) {
+                r--;
+            }
+
+            // collect up to 3 results
+            List<String> cache = new ArrayList<>();
+            //int end = Math.min(l + 3, r + 1);
+            int size = Math.min(3, r - l + 1);
+            for (int j = l; j < l + size; j++) {
+                cache.add(productList.get(j));
+            }
+            res.add(cache);
+        }
+
+        return res;
+    }
+
+
+//    public List<List<String>> suggestedProducts(String[] products, String searchWord) {
+//        List<List<String>> res = new ArrayList<>();
+//        if(products == null || products.length == 0){
+//            return res; // ???
+//        }
+//        if(searchWord == null){
+//            return res; // ???
+//        }
+//        List<String> productList = new ArrayList<>();
+//        // NOTE !!! below
+//        for(String p: products){
+//            productList.add(p);
+//        }
+//
+//        System.out.println(">>> (before sort) productList = " + productList);
+//
+//        // custom sort: lexicographically
+//        productList.sort(new Comparator<String>() {
+//            @Override
+//            public int compare(String o1, String o2) {
+//                int diff = o1.compareTo(o2); // ??????
+//                return diff; // ??
+//            }
+//        });
+//
+//        System.out.println(">>> (after sort) productList = " + productList);
+//
+//        // 2 pointers
+//        int l = 0;
+//        int r = productList.size() - 1;
+//
+//        //String[] searchWordList = searchWord.split("");
+//        //String x = searchWordList[0];
+//        // for(int i = 0; i < searchWord.toCharArray().length; i++)
+//        for(int i = 0; i < searchWord.toCharArray().length; i++){
+//            List<String> cache = new ArrayList<>();
+//            int size = 3; // ??
+//            char c = searchWord.charAt(i);
+//
+//            /** NOTE !!! deal with left, right pointer separately */
+//
+//            /** NOTE !!! left pointer */
+//            // ???
+////            while(l < productList.size() && productList.get(l).charAt(i) != searchWord.charAt(i)){
+////                l += 1;
+////            }
+////            while(l <= r && l < productList.size() && productList.get(l).startsWith(searchWord.substring(0, i+1))){
+////                l += 1;
+////            }
+//            while (l <= r && (productList.get(l).length() <= i || productList.get(l).charAt(i) != c)) {
+//                l++;
+//            }
+//
+//            /** NOTE !!! right pointer */
+//            // /??
+////            while(r > 0 && productList.get(r).charAt(i) != searchWord.charAt(i)){
+////                r -= 1;
+////            }
+////            while(l <= r && r < productList.size() && productList.get(r).startsWith(searchWord.substring(0, i+1))){
+////                r += 1;
+////            }
+//            while (l <= r && (productList.get(r).length() <= i || productList.get(r).charAt(i) != c)) {
+//                r--;
+//            }
+//
+//            size = Math.min(size, r - l + 1);
+//            // ??
+//            for(int j = l; j < l + size; j++){
+//                cache.add(productList.get(j));
+//            }
+//            res.add(cache);
+//        }
+//
+//
+//        return res;
+//    }
+
+
+
+
+    // -------------
+
+    // IDEA: 2 POINTERS
+    public List<List<String>> suggestedProducts_99(String[] products, String searchWord) {
         List<List<String>> res = new ArrayList<>();
         if(products == null || products.length == 0){
             return res; // ???
