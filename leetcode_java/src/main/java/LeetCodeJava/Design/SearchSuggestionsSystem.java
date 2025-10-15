@@ -52,6 +52,59 @@ public class SearchSuggestionsSystem {
 //
 //    }
 
+    // V0-3
+    // IDEA: 2 POINTERS
+    public List<List<String>> suggestedProducts_0_3(String[] products, String searchWord) {
+        List<List<String>> res = new ArrayList<>();
+        if (products == null || products.length == 0 || searchWord == null) {
+            return res;
+        }
+
+        // 1️⃣ Sort products lexicographically
+        List<String> productList = new ArrayList<>(Arrays.asList(products));
+        Collections.sort(productList);
+
+        // 2️⃣ Two pointers to maintain valid prefix window
+        int l = 0;
+        int r = productList.size() - 1;
+
+        for (int i = 0; i < searchWord.length(); i++) {
+            char c = searchWord.charAt(i);
+
+            /** NOTE !!!
+             *
+             *  the `to-shrink` condition
+             *    1.  l <= r
+             *    2.  `product L` len <= i  (so NO out of idx error)
+             *    3. ` product L` 's  char (i) STILL NOT equals to c
+             */
+            // shrink left boundary
+            while (l <= r && (productList.get(l).length() <= i || productList.get(l).charAt(i) != c)) {
+                l++;
+            }
+
+            // shrink right boundary
+            while (l <= r && (productList.get(r).length() <= i || productList.get(r).charAt(i) != c)) {
+                r--;
+            }
+
+            // collect up to 3 results
+            List<String> cache = new ArrayList<>();
+
+            /** NOTE !!!
+             *
+             *  get the smaller size
+             */
+            int size = Math.min(3, r - l + 1);
+            for (int j = l; j < l + size; j++) {
+                cache.add(productList.get(j));
+            }
+            res.add(cache);
+        }
+
+        return res;
+    }
+
     // V0-4
     // IDEA: 2 POINTERS
     // https://www.youtube.com/watch?v=D4T2N0yAr20
