@@ -42,8 +42,73 @@ public class WorkSpace17 {
      *  IDEA 1) DFS
      *
      */
-    // IDEA 1) iterative
+    // LC 700
+    // DFS
     public TreeNode searchBST(TreeNode root, int val) {
+       // System.out.println(">>> root val = " + root.val);
+        // edge
+        if(root == null){
+            return null;
+        }
+//        // dfs
+//        if(root.val == val){
+//            return root;
+//        }
+//        if(root.val < val){
+//            searchBST(root.right, val);
+//        }else{
+//            searchBST(root.left, val);
+//        }
+
+        return dfsCheck(root, val);
+    }
+
+    private TreeNode dfsCheck(TreeNode root, int val){
+        // edge
+        if(root == null){
+            return null;
+        }
+        System.out.println(">>> root val = " + root.val);
+        // dfs
+        if(root.val == val){
+            return root;
+        }
+
+        TreeNode _left =  searchBST(root.left, val);
+        TreeNode _right = searchBST(root.right, val);
+
+        return _left == null ? _right: _left;
+    }
+
+
+    // BFS
+    public TreeNode searchBST_98(TreeNode root, int val) {
+        System.out.println(">>> root val = " + root.val);
+        // edge
+        if(root == null){
+            return null;
+        }
+        Queue<TreeNode> q = new LinkedList<>();
+        q.add(root);
+        while(!q.isEmpty()){
+            TreeNode cur = q.poll();
+            if(cur.val == val){
+                return cur;
+            }
+            if(cur.left != null){
+                q.add(cur.left);
+            }
+            if(cur.right != null){
+                q.add(cur.right);
+            }
+        }
+
+        return null;
+    }
+
+
+    // IDEA 1) iterative
+    public TreeNode searchBST_99(TreeNode root, int val) {
         // edge
         if(root == null){
             return null;
@@ -2646,6 +2711,12 @@ public class WorkSpace17 {
 
     // LC 1268
 //    public List<List<String>> suggestedProducts(String[] products, String searchWord) {
+//
+//        return null;
+//    }
+
+//    // LC 700
+//    public TreeNode searchBST(TreeNode root, int val) {
 //
 //        return null;
 //    }
