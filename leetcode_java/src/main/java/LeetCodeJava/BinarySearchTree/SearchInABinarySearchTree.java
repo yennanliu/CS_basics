@@ -36,6 +36,9 @@ package LeetCodeJava.BinarySearchTree;
  */
 import LeetCodeJava.DataStructure.TreeNode;
 
+import java.util.LinkedList;
+import java.util.Queue;
+
 public class SearchInABinarySearchTree {
 
     // V0
@@ -100,10 +103,122 @@ public class SearchInABinarySearchTree {
             return root;
         }
 
+        /** NOTE !!!
+         *
+         *  we have if-else logic to either
+         *  return dfs call on left child node or right child node
+         *
+         *  -> but NOT return root as final result.
+         *  e.g. below is WRONG:
+         *
+         *     ```
+         *
+         *     _help(root.right, val);
+         *     _help(root.left, val);
+         *
+         *     // ....
+         *     return root
+         *     ```
+         *
+         */
         if(root.val < val){
             return _help(root.right, val);
         }else{
             return _help(root.left, val);
+        }
+    }
+
+    // V0-3
+    // IDEA: BFS
+    public TreeNode searchBST_0_3(TreeNode root, int val) {
+        // edge
+        if(root == null){
+            return null;
+        }
+        Queue<TreeNode> q = new LinkedList<>();
+        q.add(root);
+        while(!q.isEmpty()){
+            TreeNode cur = q.poll();
+            if(cur.val == val){
+                return cur;
+            }
+            if(cur.left != null){
+                q.add(cur.left);
+            }
+            if(cur.right != null){
+                q.add(cur.right);
+            }
+        }
+
+        return null;
+    }
+
+    // V0-4
+    // IDEA: PURE DFS (without use BST property)
+    public TreeNode searchBST_0_4(TreeNode root, int val) {
+        // edge
+        if (root == null) {
+            return null;
+        }
+        return dfsCheck(root, val);
+    }
+
+    private TreeNode dfsCheck(TreeNode root, int val) {
+        // edge
+        if (root == null) {
+            return null;
+        }
+        //System.out.println(">>> root val = " + root.val);
+        // dfs
+        if (root.val == val) {
+            return root;
+        }
+
+        TreeNode _left = dfsCheck(root.left, val);
+        TreeNode _right = dfsCheck(root.right, val);
+
+        /** NOTE !!! below condition
+         *
+         *
+         *  we either return left if left is NOT null
+         *  and right if right is NOT null
+         */
+        return _left == null ? _right : _left;
+    }
+
+    // V0-5
+    // IDEA: DFS + BST (fixed by gpt)
+    public TreeNode searchBST_0_5(TreeNode root, int val) {
+        if (root == null) {
+            return null;
+        }
+
+        if (root.val == val) {
+            return root;
+        }
+
+        /** NOTE !!!
+         *
+         *  we have if-else logic to either
+         *  return dfs call on left child node or right child node
+         *
+         *  -> but NOT return root as final result.
+         *  e.g. below is WRONG:
+         *
+         *     ```
+         *
+         *     _help(root.right, val);
+         *     _help(root.left, val);
+         *
+         *     // ....
+         *     return root
+         *     ```
+         *
+         */
+        if (val < root.val) {
+            return searchBST_0_5(root.left, val);
+        } else {
+            return searchBST_0_5(root.right, val);
         }
     }
 
