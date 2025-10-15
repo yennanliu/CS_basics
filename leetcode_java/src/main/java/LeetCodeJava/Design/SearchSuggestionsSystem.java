@@ -52,6 +52,206 @@ public class SearchSuggestionsSystem {
 //
 //    }
 
+
+    // V0-1
+    // IDEA: TRIE + DFS (fixed by gpt)
+    // --------- start of custom class: MyTrie
+    static class MyTrie {
+        class MyTrieNode {
+            boolean isEnd;
+            Map<Character, MyTrieNode> child;
+
+            MyTrieNode() {
+                this.isEnd = false;
+                this.child = new HashMap<>();
+            }
+        }
+
+        MyTrieNode root;
+
+        MyTrie() {
+            this.root = new MyTrieNode();
+        }
+
+        // Insert word into Trie
+        void insert(String word) {
+            if (word == null)
+                return;
+            MyTrieNode node = root;
+            for (char c : word.toCharArray()) {
+                node.child.putIfAbsent(c, new MyTrieNode());
+                node = node.child.get(c);
+            }
+            node.isEnd = true;
+        }
+
+        // Recommend up to 3 words starting with prefix
+        List<String> recommend(String prefix) {
+            List<String> result = new ArrayList<>();
+            MyTrieNode node = root;
+
+            // 1️⃣ Traverse down the Trie to the prefix node
+            for (char c : prefix.toCharArray()) {
+                if (!node.child.containsKey(c)) {
+                    return result; // prefix not found → empty list
+                }
+                node = node.child.get(c);
+            }
+
+            // 2️⃣ DFS from prefix node to collect up to 3 lexicographically smallest words
+            dfs(node, new StringBuilder(prefix), result);
+            return result;
+        }
+
+        private void dfs(MyTrieNode node, StringBuilder path, List<String> result) {
+            if (result.size() >= 3)
+                return;
+            if (node.isEnd) {
+                result.add(path.toString());
+            }
+            // sort children by key to ensure lexicographic order
+            List<Character> sortedKeys = new ArrayList<>(node.child.keySet());
+            Collections.sort(sortedKeys);
+            for (char c : sortedKeys) {
+                path.append(c);
+                dfs(node.child.get(c), path, result);
+                path.deleteCharAt(path.length() - 1);
+                if (result.size() >= 3)
+                    return;
+            }
+        }
+
+    }
+    // --------- end of custom class: MyTrie
+
+
+    // Main code for LC 1268 (trie)
+    public List<List<String>> suggestedProducts_0_1(String[] products, String searchWord) {
+        List<List<String>> res = new ArrayList<>();
+        if (products == null || products.length == 0 || searchWord == null) {
+            return res;
+        }
+
+        // 1️⃣ Build Trie
+        Arrays.sort(products); // optional — but we DFS in lex order anyway
+        MyTrie trie = new MyTrie();
+        for (String p : products) {
+            trie.insert(p);
+        }
+
+        // 2️⃣ For each prefix, get recommendations
+        StringBuilder prefix = new StringBuilder();
+        for (char c : searchWord.toCharArray()) {
+            prefix.append(c);
+            res.add(trie.recommend(prefix.toString()));
+        }
+
+        return res;
+    }
+
+    // V0-2
+    // IDEA: TRIE (fixed by gemini)
+    // A static inner class for the Trie structure
+    static class MyTrie2 {
+
+        // --- 1. MyTrieNode Class ---
+        class MyTrieNode {
+            // Map keys are characters (char), children are MyTrieNode instances.
+            Map<Character, MyTrieNode> children;
+
+            // List of complete words that pass through this node.
+            // Since we pre-sort the input, this list is guaranteed to be sorted lexicographically.
+            List<String> products;
+
+            MyTrieNode() {
+                this.children = new HashMap<>();
+                this.products = new ArrayList<>();
+            }
+        }
+
+        private MyTrieNode root;
+
+        MyTrie2() {
+            this.root = new MyTrieNode();
+        }
+
+        // --- 2. Insert Method ---
+        public void insert(String word) {
+            MyTrieNode curr = this.root;
+            for (char c : word.toCharArray()) {
+                // If the child node for character c doesn't exist, create it.
+                curr.children.putIfAbsent(c, new MyTrieNode());
+
+                // Move to the child node.
+                curr = curr.children.get(c);
+
+                // Store the full word in this node's product list.
+                // We only need to store up to 3 for the result, optimizing space.
+                if (curr.products.size() < 3) {
+                    curr.products.add(word);
+                }
+            }
+        }
+
+        // --- 3. Find Node for Prefix ---
+        // This method finds the node corresponding to the end of the given prefix.
+        public MyTrieNode findNodeForPrefix(String prefix) {
+            MyTrieNode curr = this.root;
+            for (char c : prefix.toCharArray()) {
+                if (!curr.children.containsKey(c)) {
+                    // If any character in the prefix is missing, the prefix is not in the Trie.
+                    return null;
+                }
+                curr = curr.children.get(c);
+            }
+            return curr;
+        }
+    }
+
+    // --- Main Method ---
+    public List<List<String>> suggestedProducts(String[] products, String searchWord) {
+        List<List<String>> res = new ArrayList<>();
+        if (products == null || products.length == 0 || searchWord == null) {
+            return res;
+        }
+
+        // FIX 1: Sort the input array first! This is crucial for the Trie to store
+        // the top 3 results in lexicographical order in each node's product list.
+        Arrays.sort(products);
+
+        MyTrie2 trie = new MyTrie2();
+        for (String p : products) {
+            trie.insert(p);
+        }
+
+        MyTrie2.MyTrieNode curr = trie.root;
+
+        // FIX 2: Iterate through the search word, building the prefix step-by-step.
+        for (int i = 0; i < searchWord.length(); i++) {
+            char c = searchWord.charAt(i);
+
+            // If the current node is null (prefix is broken), we can stop searching.
+            if (curr == null) {
+                res.add(new ArrayList<>());
+                continue;
+            }
+
+            // Traverse to the next node based on the current character.
+            curr = curr.children.get(c);
+
+            if (curr != null) {
+                // The current node exists, so its 'products' list holds the top 3 lexicographically.
+                res.add(curr.products);
+            } else {
+                // Prefix is broken, add an empty list, and keep curr as null for subsequent iterations.
+                res.add(new ArrayList<>());
+            }
+        }
+
+        return res;
+    }
+
+
     // V0-3
     // IDEA: 2 POINTERS
     public List<List<String>> suggestedProducts_0_3(String[] products, String searchWord) {

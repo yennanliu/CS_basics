@@ -1889,8 +1889,117 @@ public class WorkSpace17 {
      *
      *
      */
-    // IDEA: 2 POINTERS
+    // IDEA: TRIE
+    static class MyTrie{
+
+        // sub class
+        class MyTrieNode{
+            // attr
+            boolean isEnd;
+            Map<String, MyTrieNode> child;
+
+            // constructor
+            MyTrieNode(){
+                this.isEnd = false;
+                this.child = new HashMap<>();
+            }
+            MyTrieNode(boolean isEnd, Map<String, MyTrieNode> child){
+                this.isEnd = isEnd;
+                this.child = child;
+            }
+
+        }
+
+        // attr
+        MyTrieNode node;
+
+        // constructor
+        MyTrie(){
+            this.node = new MyTrieNode();
+        }
+
+        // method
+        private void insert(String word){
+            if(word == null){
+                return;
+            }
+            MyTrieNode node = this.node;
+            for(char c: word.toCharArray()){
+                String s = String.valueOf(c);
+                if(!node.child.containsKey(c)){
+                    node.child.put(s, new MyTrieNode()); // ???
+                }
+                node = node.child.get(s);
+            }
+            node.isEnd = true; // ???
+        }
+
+        private boolean contains(String word){
+            return false;
+        }
+
+        private boolean startWith(String word){
+            return false;
+        }
+
+        // dfs call ???? or bfs ????
+        private List<String> recommend(String w){
+            List<String> res = new ArrayList<>();
+            MyTrieNode node = this.node;
+            Queue<MyTrieNode> q = new LinkedList<>();
+            q.add(node);
+
+            while(!q.isEmpty()){
+                if(res.size() >= 3){
+                    return res; // ?? TODO: get top 3 if res size > 3
+                }
+                MyTrieNode cur = q.poll();
+                if(cur.child.containsKey(w)){
+                    q.add(cur.child.get(w)); // /??
+                }
+
+            }
+
+            return res; // ????
+        }
+
+    }
+
+    // IDEA: trie
     public List<List<String>> suggestedProducts(String[] products, String searchWord) {
+
+        List<List<String>> res = new ArrayList<>();
+        if (products == null || products.length == 0 || searchWord == null) {
+            return res;
+        }
+
+        MyTrie trie = new MyTrie();
+        for(String p: products){
+            trie.insert(p);
+        }
+
+        // ???
+        for(char c: searchWord.toCharArray()){
+           // String s =
+            // ???
+            res.add(trie.recommend(String.valueOf(c)));
+        }
+
+        return res;
+    }
+
+
+
+    // --------------------
+
+
+
+
+
+
+
+    // IDEA: 2 POINTERS
+    public List<List<String>> suggestedProducts_98(String[] products, String searchWord) {
         List<List<String>> res = new ArrayList<>();
         if (products == null || products.length == 0 || searchWord == null) {
             return res;
