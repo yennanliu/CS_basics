@@ -103,6 +103,61 @@ public class SearchSuggestionsSystem {
             return result;
         }
 
+        /**  NOTE !!!
+         *
+         *    Whether `BFS` or `DFS` for the word suggestion (recommend) ?
+         *    
+         *
+         *    (check V0-2)
+         *    (However, the most efficient and standard solution for this specific problem
+         *    (as demonstrated in the final fixed code) AVOIDS a separate DFS/BFS for the
+         *     recommendation step entirely by pre-sorting the input array)
+         *
+         *
+         *
+         *    -> you should use Depth-First Search (DFS),
+         *    specifically an optimized version that utilizes
+         *    the lexicographical properties of the Trie.
+         *
+         *    -> (in short)
+         *       via DFS, you can `prioritize` visiting the child nodes
+         *       in `alphabetical order.`
+         *
+         *
+         *  For the recommend method in the Trie-based solution for LeetCode 1268 (Search Suggestions System), you should use Depth-First Search (DFS), specifically an optimized version that utilizes the lexicographical properties of the Trie.
+         *
+         *  ->  Why DFS is Better for recommend
+         *       The primary goal of the recommendation is to find
+         *        the top 3 lexicographically smallest words that start with a given prefix.
+         *
+         *    1. DFS for Lexicographical Order
+         *
+         *       - A Trie is inherently sorted when traversed in DFS order
+         *        because the map keys (characters) are typically processed alphabetically.
+         *
+         *      - Once you reach the node corresponding to the end of the input prefix,
+         *        you need to explore its descendants.
+         *
+         *      - By using DFS, you can prioritize visiting the child nodes
+         *        in alphabetical order. The very first three complete words you encounter
+         *        will be the three lexicographically smallest matches.
+         *
+         *      - Once you find three words, you can immediately stop the
+         *        search in that branch and return.
+         *
+         *
+         *   -------------------
+         *
+         *
+         *   2. Why BFS is Less Efficient
+         *
+         *   -  While Breadth-First Search (BFS) explores layer by layer (level order),
+         *    it does not guarantee lexicographical order across different branches.
+         *    You would need to sort the nodes within each level of the queue,
+         *    making it more complex and less direct than DFS.
+         *
+         *
+         */
         private void dfs(MyTrieNode node, StringBuilder path, List<String> result) {
             if (result.size() >= 3)
                 return;
@@ -193,6 +248,36 @@ public class SearchSuggestionsSystem {
             }
         }
 
+        /**  NOTE !!!
+         *
+         *  in the `VO-2` approach, we ARE NOT using neither BFS nor DFS,
+         *  but using below algorithm.
+         *
+         *  -> 3. The Optimized Approach (The Fix)
+         *
+         *     However, the most efficient and standard solution for this specific
+         *      problem (as demonstrated in the final fixed code) avoids
+         *      a separate DFS/BFS for the recommendation step entirely
+         *      by pre-sorting the input array:
+         *
+         *
+         *    - Pre-Sort: Sort the entire products array once.
+         *
+         *    - Trie Construction: During insertion, since the words are
+         *       added in sorted order, the products list within each TrieNode only
+         *       needs to store the first three words it encounters.
+         *
+         *    - Recommendation: To recommend, you simply traverse
+         *      the Trie to the end of the prefix. The node reached will already
+         *      have the required three lexicographically smallest suggestions in its pre-sorted list.
+         *
+         *
+         *  -> In summary: If you had to choose a pure traversal for the recommendation,
+         *     DFS is the correct choice to ensure lexicographical order.
+         *     But for the optimal LeetCode 1268 solution,
+         *     the structure is designed to avoid a complex post-fix traversal altogether.
+         *
+         */
         // --- 3. Find Node for Prefix ---
         // This method finds the node corresponding to the end of the given prefix.
         public MyTrieNode findNodeForPrefix(String prefix) {
