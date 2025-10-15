@@ -170,40 +170,75 @@ public class WorkSpace17 {
      *
      * IDEA 2) BST property
      */
-    List<Integer> nodes = new ArrayList<>();
+    //  return the minimum absolute difference between the values of any two different nodes in the tree.
+    // dfs or bfs get all nodes, sort, get big diff
+    // BFS
     public int getMinimumDifference(TreeNode root) {
-        // edge
         if(root == null){
             return -1; // ????
         }
-        if(root.left == null && root.right == null){
-            return -1; // ???
+        Queue<TreeNode> q = new LinkedList<>();
+        q.add(root);
+        List<Integer> list = new ArrayList<>();
+        while(!q.isEmpty()){
+            TreeNode node = q.poll();
+            list.add(node.val);
+            if(node.left != null){
+                q.add(node.left);
+            }
+            if(node.right != null){
+                q.add(node.right);
+            }
         }
-
-        getNodesDFS(root);
-
-        // sort (small -> big)
-        Collections.sort(nodes);
-        System.out.println(">>> nodes = " + nodes);
-
+        System.out.println(">>> list = " + list);
+        // sort
+        Collections.sort(list);
         int minDiff = Integer.MAX_VALUE;
-
-        for(int i = 0; i < nodes.size() - 1; i++){
-            int diff = Math.abs(nodes.get(i+1) - nodes.get(i));
-            minDiff = Math.min(minDiff, diff);
+        for(int i = 1; i < list.size(); i++){
+            minDiff = Math.min(minDiff, Math.abs(list.get(i) - list.get(i-1)));
         }
 
         return minDiff;
     }
 
-    private void getNodesDFS(TreeNode root){
-        if(root == null){
-            return;
-        }
-        nodes.add(root.val);
-        getNodesDFS(root.left);
-        getNodesDFS(root.right);
-    }
+
+
+
+
+//    List<Integer> nodes = new ArrayList<>();
+//    public int getMinimumDifference_100(TreeNode root) {
+//        // edge
+//        if(root == null){
+//            return -1; // ????
+//        }
+//        if(root.left == null && root.right == null){
+//            return -1; // ???
+//        }
+//
+//        getNodesDFS(root);
+//
+//        // sort (small -> big)
+//        Collections.sort(nodes);
+//        System.out.println(">>> nodes = " + nodes);
+//
+//        int minDiff = Integer.MAX_VALUE;
+//
+//        for(int i = 0; i < nodes.size() - 1; i++){
+//            int diff = Math.abs(nodes.get(i+1) - nodes.get(i));
+//            minDiff = Math.min(minDiff, diff);
+//        }
+//
+//        return minDiff;
+//    }
+//
+//    private void getNodesDFS(TreeNode root){
+//        if(root == null){
+//            return;
+//        }
+//        nodes.add(root.val);
+//        getNodesDFS(root.left);
+//        getNodesDFS(root.right);
+//    }
 
     // LC 235
     // 16.39 - 49 pm
@@ -2719,6 +2754,12 @@ public class WorkSpace17 {
 //    public TreeNode searchBST(TreeNode root, int val) {
 //
 //        return null;
+//    }
+
+    // LC 530
+//    public int getMinimumDifference(TreeNode root) {
+//
+//        return 0;
 //    }
 
 }

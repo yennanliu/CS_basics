@@ -82,7 +82,6 @@
 			- 116
 	- LC 98 Validate Binary Search Tree
 		- gpt
-			- 530
 			- 333
 			- 99
 		- gemini
