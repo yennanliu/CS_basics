@@ -2763,8 +2763,77 @@ public class WorkSpace17 {
 //    }
 
     // LC 333
+    // 10.39 - 10.49 am
+    /**
+     * Given the root of a binary tree, find the largest subtree,
+     * which is also a Binary Search Tree (BST),
+     * where the largest means subtree has the largest number of nodes.
+     *
+     * -> find the LARGEST subtree which is a BST.
+     *   - largest means subtree has the largest number of nodes.
+     *
+     *
+     *  IDEA 1) DFS + BST property
+     *
+     */
+    // ??
+    int maxBSTNodeCnt = 0;
     public int largestBSTSubtree(TreeNode root) {
-        return 0;
+        if(root == null){
+            return 0; // ??
+        }
+        if(root.left == null && root.right == null){
+            return 1;
+        }
+        // BFS go through nodes
+        Queue<TreeNode> q = new LinkedList<>();
+        q.add(root);
+
+        while(!q.isEmpty()){
+            TreeNode node = q.poll();
+            // ????
+            if(isBST(node, Integer.MIN_VALUE, Integer.MAX_VALUE)){
+                maxBSTNodeCnt = Math.max(maxBSTNodeCnt, getSubTreeNode(node));
+            }
+            if(node.left != null){
+                q.add(node.left);
+            }
+            if(node.right != null){
+                q.add(node.right);
+            }
+        }
+
+
+        return maxBSTNodeCnt;
     }
+
+    private boolean isBST(TreeNode root, int minVal, int maxVal){
+        if(root == null){
+            return true;
+        }
+//        if(root.val > maxVal){
+//            return false;
+//        }
+//        if(root.val < minVal){
+//            return false;
+//        }
+        if (root.val <= minVal || root.val >= maxVal){
+            return false;
+        }
+        return isBST(root.left, minVal, root.val) &&
+                isBST(root.right, root.val, maxVal);
+    }
+
+    private int getSubTreeNode(TreeNode root){
+        if(root == null){
+            return 0; // ???
+        }
+        // ????
+        //getSubTreeNode(root)
+        return 1 + getSubTreeNode(root.left) + getSubTreeNode(root.right);
+    }
+
+
+
 
 }

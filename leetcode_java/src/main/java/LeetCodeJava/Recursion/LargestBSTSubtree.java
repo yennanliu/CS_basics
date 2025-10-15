@@ -5,6 +5,9 @@ package LeetCodeJava.Recursion;
 
 import LeetCodeJava.DataStructure.TreeNode;
 
+import java.util.LinkedList;
+import java.util.Queue;
+
 /**
  * 333. Largest BST Subtree
  * Given a binary tree, find the largest subtree which is a Binary Search Tree (BST), where largest means subtree with largest number of nodes in it.
@@ -42,6 +45,119 @@ public class LargestBSTSubtree {
     // V0
 //    public int largestBSTSubtree(TreeNode root) {
 //    }
+
+    // V0-1
+    // IDEA: BFS + BST + NODE cnt (fixed by gpt)
+    // TODO: validate
+    int maxBSTNodeCnt = 0;
+
+    public int largestBSTSubtree_0_1(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+
+        Queue<TreeNode> q = new LinkedList<>();
+        q.add(root);
+
+        while (!q.isEmpty()) {
+            TreeNode node = q.poll();
+            if (isBST(node, Long.MIN_VALUE, Long.MAX_VALUE)) {
+                maxBSTNodeCnt = Math.max(maxBSTNodeCnt, getSubTreeNode(node));
+            }
+            if (node.left != null) {
+                q.add(node.left);
+            }
+            if (node.right != null) {
+                q.add(node.right);
+            }
+        }
+
+        return maxBSTNodeCnt;
+    }
+
+    private boolean isBST(TreeNode root, long minVal, long maxVal) {
+        if (root == null) {
+            return true;
+        }
+        if (root.val <= minVal || root.val >= maxVal) {
+            return false;
+        }
+        return isBST(root.left, minVal, root.val) &&
+                isBST(root.right, root.val, maxVal);
+    }
+
+    private int getSubTreeNode(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        return 1 + getSubTreeNode(root.left) + getSubTreeNode(root.right);
+    }
+
+    // V0-2
+    // IDEA: DFS (gemini)
+    // TODO: validate
+    // Global variable to track the maximum size of a valid BST found so far.
+    private int maxBSTNodeCnt_0_2 = 0;
+
+    public int largestBSTSubtree_0_2(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+
+        // Start the recursive, post-order helper function.
+        traverse(root);
+
+        return maxBSTNodeCnt_0_2;
+    }
+
+    /**
+     * Post-order traversal (Bottom-Up) to check BST properties and calculate size.
+     * For each node, returns an array: {size, min_value, max_value}.
+     * * If the subtree is NOT a BST, we return size = -1.
+     */
+    private int[] traverse(TreeNode root) {
+        // Base case: A null node is a valid BST of size 0.
+        // We use Integer.MAX_VALUE and MIN_VALUE to satisfy the comparison
+        // in the parent node (any value is greater than MAX_VALUE of left,
+        // and smaller than MIN_VALUE of right).
+        if (root == null) {
+            return new int[]{0, Integer.MAX_VALUE, Integer.MIN_VALUE};
+        }
+
+        // 1. Traverse left and right subtrees (Post-Order).
+        int[] leftResult = traverse(root.left);
+        int[] rightResult = traverse(root.right);
+
+        int leftSize = leftResult[0];
+        int leftMax = leftResult[2]; // Max value in left subtree
+
+        int rightSize = rightResult[0];
+        int rightMin = rightResult[1]; // Min value in right subtree
+
+        // 2. Check the BST condition for the current node:
+        // A node forms a BST if:
+        // a) Both children are valid BSTs (size >= 0).
+        // b) Current value is GREATER than max value in the left subtree.
+        // c) Current value is SMALLER than min value in the right subtree.
+
+        if (leftSize != -1 && rightSize != -1 &&
+                root.val > leftMax && root.val < rightMin) {
+
+            // 3. If it IS a BST: Calculate the size and update the global max.
+            int currentSize = leftSize + rightSize + 1;
+            maxBSTNodeCnt_0_2 = Math.max(maxBSTNodeCnt_0_2, currentSize);
+
+            // Return the new size, and the new min/max for this consolidated BST.
+            int newMin = Math.min(root.val, leftResult[1]);
+            int newMax = Math.max(root.val, rightResult[2]);
+
+            return new int[]{currentSize, newMin, newMax};
+
+        } else {
+            // 4. If it is NOT a BST: Mark it as invalid by returning size = -1.
+            return new int[]{-1, 0, 0};
+        }
+    }
 
 
     // V1
