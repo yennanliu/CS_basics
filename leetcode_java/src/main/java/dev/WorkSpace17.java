@@ -1926,9 +1926,12 @@ public class WorkSpace17 {
             MyTrieNode node = this.node;
             for(char c: word.toCharArray()){
                 String s = String.valueOf(c);
-                if(!node.child.containsKey(c)){
-                    node.child.put(s, new MyTrieNode()); // ???
-                }
+                // V1
+//                if(!node.child.containsKey(c)){
+//                    node.child.put(s, new MyTrieNode()); // ???
+//                }
+                // V2
+                node.child.putIfAbsent(s, new MyTrieNode());
                 node = node.child.get(s);
             }
             node.isEnd = true; // ???
@@ -1942,25 +1945,70 @@ public class WorkSpace17 {
             return false;
         }
 
+        /** // Recommend up to 3 words starting with prefix
+         *
+         *  NOTE !!! param: prefix
+         */
         // dfs call ???? or bfs ????
-        private List<String> recommend(String w){
+        private List<String> recommend(String prefix){
             List<String> res = new ArrayList<>();
             MyTrieNode node = this.node;
-            Queue<MyTrieNode> q = new LinkedList<>();
-            q.add(node);
 
-            while(!q.isEmpty()){
-                if(res.size() >= 3){
-                    return res; // ?? TODO: get top 3 if res size > 3
+            // dfs ????
+            // get `prefix` ???
+            for(char c: prefix.toCharArray()){
+                // ????
+                if(!node.child.containsKey(c)){
+                    return res;
                 }
-                MyTrieNode cur = q.poll();
-                if(cur.child.containsKey(w)){
-                    q.add(cur.child.get(w)); // /??
-                }
-
+                node = node.child.get(c);
             }
 
+            dfs(node, new StringBuilder(prefix), res);
+
+            // NOTE !!! pass `node` and prefix to DFS func
+
+//            // bfs  ???
+//            Queue<MyTrieNode> q = new LinkedList<>();
+//            q.add(node);
+//
+//            while(!q.isEmpty()){
+//                if(res.size() >= 3){
+//                    return res; // ?? TODO: get top 3 if res size > 3
+//                }
+//                MyTrieNode cur = q.poll();
+//                if(cur.child.containsKey(w)){
+//                    q.add(cur.child.get(w)); // /??
+//                }
+//
+//            }
+
             return res; // ????
+        }
+
+        // DFS helper func
+        private void dfs(MyTrieNode node, StringBuilder path, List<String> result){
+            if(result.size() >= 3){
+                return;
+            }
+            if(node.isEnd){
+                //res.add(nd)
+                // ???
+                result.add(path.toString());
+            }
+
+            // // sort children by key to ensure lexicographic order ????
+            List<String> sortedKeys = new ArrayList<>(node.child.keySet());
+            Collections.sort(sortedKeys);
+            for(String s: sortedKeys){
+                path.append(s);
+                dfs(node.child.get(s), path, result);
+                if(result.size() >= 3){
+                    return;
+                }
+            }
+
+
         }
 
     }
