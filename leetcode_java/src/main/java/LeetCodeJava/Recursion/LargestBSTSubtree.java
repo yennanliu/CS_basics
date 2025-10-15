@@ -94,12 +94,45 @@ public class LargestBSTSubtree {
     }
 
     // V0-2
+    // IDEA: IMPROVED OF V0-1 (gpt)
+    int maxBST = 0;
+
+    public int largestBSTSubtree_0_2(TreeNode root) {
+        dfs_0_2(root);
+        return maxBST;
+    }
+
+    private int[] dfs_0_2(TreeNode node) {
+        // return {minVal, maxVal, size}
+        if (node == null) {
+            return new int[]{Integer.MAX_VALUE, Integer.MIN_VALUE, 0};
+        }
+
+        int[] left = dfs_0_2(node.left);
+        int[] right = dfs_0_2(node.right);
+
+        // if either left or right is invalid BST
+        if (left[2] == -1 || right[2] == -1 || node.val <= left[1] || node.val >= right[0]) {
+            return new int[]{0, 0, -1}; // mark as invalid BST
+        }
+
+        int size = 1 + left[2] + right[2];
+        maxBST = Math.max(maxBST, size);
+
+        int minVal = Math.min(node.val, left[0]);
+        int maxVal = Math.max(node.val, right[1]);
+
+        return new int[]{minVal, maxVal, size};
+    }
+
+
+    // V0-3
     // IDEA: DFS (gemini)
     // TODO: validate
     // Global variable to track the maximum size of a valid BST found so far.
-    private int maxBSTNodeCnt_0_2 = 0;
+    private int maxBSTNodeCnt_0_3 = 0;
 
-    public int largestBSTSubtree_0_2(TreeNode root) {
+    public int largestBSTSubtree_0_3(TreeNode root) {
         if (root == null) {
             return 0;
         }
@@ -107,7 +140,7 @@ public class LargestBSTSubtree {
         // Start the recursive, post-order helper function.
         traverse(root);
 
-        return maxBSTNodeCnt_0_2;
+        return maxBSTNodeCnt_0_3;
     }
 
     /**
@@ -145,7 +178,7 @@ public class LargestBSTSubtree {
 
             // 3. If it IS a BST: Calculate the size and update the global max.
             int currentSize = leftSize + rightSize + 1;
-            maxBSTNodeCnt_0_2 = Math.max(maxBSTNodeCnt_0_2, currentSize);
+            maxBSTNodeCnt_0_3 = Math.max(maxBSTNodeCnt_0_3, currentSize);
 
             // Return the new size, and the new min/max for this consolidated BST.
             int newMin = Math.min(root.val, leftResult[1]);
