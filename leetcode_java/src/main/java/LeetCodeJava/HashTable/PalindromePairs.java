@@ -84,18 +84,19 @@ public class PalindromePairs {
                 String s1 = word.substring(0, j);
                 String s2 = word.substring(j);
 
+                /** Case 1: w1 = s1, w2 = reverse(s2). We want w1 + w2 to be a palindrome. */
                 // Case 1: w1 = s1, w2 = reverse(s2). We want w1 + w2 to be a palindrome.
                 // words[i] + words[k] = s1 + s2 + reverse(s2)
                 // For this to be a palindrome, s1 must be equal to reverse(s2).
                 //
-                // Check 1.1: If s1 is a palindrome (or empty) AND reverse(s2) is in the map
+                /** Check 1.1: If s1 is a palindrome (or empty) AND reverse(s2) is in the map */
                 //   - word: s2 + s1
                 //   - candidate pair: words[k] + words[i]
                 //   - words[k] must be reverse(s1) for the total to be a palindrome.
                 //   - Example: word[i]="s-e-e-s" (s2="s-e-e-s", s1=""), reverse(s1)="" exists at k. Result: "" + "s-e-e-s"
                 //   - The correct logic is simpler:
 
-                // Check 1.2: If s1 is a palindrome, check if reverse(s2) exists in the map
+                /**  Check 1.2: If s1 is a palindrome, check if reverse(s2) exists in the map */
                 // If s1 is a palindrome, we need words[k] to be reverse(s2) such that
                 // words[i] + words[k] = s1 + s2 + reverse(s2) is a palindrome.
                 if (isPalindrome_0_1(s1)) {
@@ -107,16 +108,19 @@ public class PalindromePairs {
                             // words[k] (reverse(s2)) + words[i] (s1 + s2)
                             // Concatenation: reverse(s2) + s1 + s2.
                             // Since s1 is a palindrome, this forms a palindrome.
-                            res.add(List.of(k, i));
+
+                            // res.add(List.of(k, i));
+                            // fix for java 8
+                            res.add(Arrays.asList(k, i));
                         }
                     }
                 }
 
-                // Case 2: w1 = reverse(s1), w2 = s2. We want w1 + w2 to be a palindrome.
+                /** Case 2: w1 = reverse(s1), w2 = s2. We want w1 + w2 to be a palindrome.  */
                 // words[k] + words[i] = reverse(s1) + s1 + s2
                 // For this to be a palindrome, s2 must be a palindrome.
 
-                // Check 2.1: If s2 is a palindrome, check if reverse(s1) exists in the map
+                /** Check 2.1: If s2 is a palindrome, check if reverse(s1) exists in the map */
                 // Note: s2 must not be empty. If j=0, s2=word, s1="". This case is covered by Case 1 with j=word.length() (s1=word, s2="").
                 if (s2.length() != 0 && isPalindrome_0_1(s2)) {
                     String s1Reversed = reverseStr_0_1(s1);
