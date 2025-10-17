@@ -4,7 +4,6 @@
 - needcode `grind 75` - similar LC by AI
 	- https://neetcode.io/practice?tab=blind75
 	- LC 49 Group Anagrams
-		- 30
 	- LC 347 Top K Frequent Elements
 		- 621
 	- LC 271 – Encode and Decode Strings
