@@ -55,6 +55,173 @@ public class PalindromePairs {
 //
 //    }
 
+    // V0-1
+    // IDEA: HASHMAP (fixed by gemini)
+    /**
+     * Finds all unique pairs of indices (i, j) such that the concatenation
+     * words[i] + words[j] is a palindrome.
+     * * @param words The array of strings.
+     * @return A list of lists, where each inner list is a pair of indices.
+     */
+    public List<List<Integer>> palindromePairs_0_1(String[] words) {
+        List<List<Integer>> res = new ArrayList<>();
+
+        // 1. Map to store word -> index for O(1) lookup
+        Map<String, Integer> map = new HashMap<>();
+        for (int i = 0; i < words.length; i++) {
+            map.put(words[i], i);
+        }
+
+        // 2. Iterate through each word and check all possible splits
+        for (int i = 0; i < words.length; i++) {
+            String word = words[i];
+
+            // Split 'word' into two parts: prefix (s1) and suffix (s2)
+            // s1 = word.substring(0, j)
+            // s2 = word.substring(j)
+            // The split point 'j' goes from 0 to word.length() (inclusive)
+            for (int j = 0; j <= word.length(); j++) {
+                String s1 = word.substring(0, j);
+                String s2 = word.substring(j);
+
+                // Case 1: w1 = s1, w2 = reverse(s2). We want w1 + w2 to be a palindrome.
+                // words[i] + words[k] = s1 + s2 + reverse(s2)
+                // For this to be a palindrome, s1 must be equal to reverse(s2).
+                //
+                // Check 1.1: If s1 is a palindrome (or empty) AND reverse(s2) is in the map
+                //   - word: s2 + s1
+                //   - candidate pair: words[k] + words[i]
+                //   - words[k] must be reverse(s1) for the total to be a palindrome.
+                //   - Example: word[i]="s-e-e-s" (s2="s-e-e-s", s1=""), reverse(s1)="" exists at k. Result: "" + "s-e-e-s"
+                //   - The correct logic is simpler:
+
+                // Check 1.2: If s1 is a palindrome, check if reverse(s2) exists in the map
+                // If s1 is a palindrome, we need words[k] to be reverse(s2) such that
+                // words[i] + words[k] = s1 + s2 + reverse(s2) is a palindrome.
+                if (isPalindrome_0_1(s1)) {
+                    String s2Reversed = reverseStr_0_1(s2);
+                    if (map.containsKey(s2Reversed)) {
+                        int k = map.get(s2Reversed);
+                        // Prevent adding the same word twice (e.g., words[i] + words[i])
+                        if (i != k) {
+                            // words[k] (reverse(s2)) + words[i] (s1 + s2)
+                            // Concatenation: reverse(s2) + s1 + s2.
+                            // Since s1 is a palindrome, this forms a palindrome.
+                            res.add(List.of(k, i));
+                        }
+                    }
+                }
+
+                // Case 2: w1 = reverse(s1), w2 = s2. We want w1 + w2 to be a palindrome.
+                // words[k] + words[i] = reverse(s1) + s1 + s2
+                // For this to be a palindrome, s2 must be a palindrome.
+
+                // Check 2.1: If s2 is a palindrome, check if reverse(s1) exists in the map
+                // Note: s2 must not be empty. If j=0, s2=word, s1="". This case is covered by Case 1 with j=word.length() (s1=word, s2="").
+                if (s2.length() != 0 && isPalindrome_0_1(s2)) {
+                    String s1Reversed = reverseStr_0_1(s1);
+                    if (map.containsKey(s1Reversed)) {
+                        int k = map.get(s1Reversed);
+                        // Prevent adding the same word twice and avoid duplicates already covered in Case 1.
+                        // For the pair (i, k), if i < k, it will be covered in Case 1 when we process word[i].
+                        // Since we already added (k, i) in Case 1, we only need to add (i, k) here.
+                        // The main reason is to avoid duplicates, the split logic ensures we find all pairs.
+                        if (i != k) {
+                            // words[i] (s1 + s2) + words[k] (reverse(s1))
+                            // Concatenation: s1 + s2 + reverse(s1).
+                            // Since s2 is a palindrome, this forms a palindrome.
+
+                            //res.add(List.of(i, k));
+                            // fix for java 8
+                            res.add(Arrays.asList(i, k));
+                        }
+                    }
+                }
+            }
+        }
+
+        return res;
+    }
+
+    /**
+     * Helper to reverse a string.
+     */
+    private String reverseStr_0_1(String str) {
+        return new StringBuilder(str).reverse().toString();
+    }
+
+    /**
+     * Helper to check if a string is a palindrome.
+     */
+    private boolean isPalindrome_0_1(String str) {
+        int l = 0;
+        int r = str.length() - 1;
+        while (l < r) {
+            if (str.charAt(l) != str.charAt(r)) {
+                return false;
+            }
+            l++;
+            r--;
+        }
+        return true;
+    }
+
+    // V0-2
+    // IDEA: HAHSMAP (fixed by gpt)
+    public List<List<Integer>> palindromePairs(String[] words) {
+        List<List<Integer>> res = new ArrayList<>();
+        if (words == null || words.length == 0)
+            return res;
+
+        // 1️⃣ Build a map from reversed word -> index
+        Map<String, Integer> map = new HashMap<>();
+        for (int i = 0; i < words.length; i++) {
+            map.put(new StringBuilder(words[i]).reverse().toString(), i);
+        }
+
+        // 2️⃣ For each word, check palindrome pairs
+        for (int i = 0; i < words.length; i++) {
+            String word = words[i];
+
+            // Check all possible splits: prefix | suffix
+            for (int cut = 0; cut <= word.length(); cut++) {
+                String prefix = word.substring(0, cut);
+                String suffix = word.substring(cut);
+
+                // Case A: prefix is palindrome, look for reversed suffix
+                if (isPalindrome_0_2(prefix)) {
+                    Integer j = map.get(suffix);
+                    if (j != null && j != i) {
+                        // reversed(suffix) + word forms palindrome
+                        res.add(Arrays.asList(j, i));
+                    }
+                }
+
+                // Case B: suffix is palindrome, look for reversed prefix
+                // avoid double counting when cut == word.length()
+                if (cut != word.length() && isPalindrome_0_2(suffix)) {
+                    Integer j = map.get(prefix);
+                    if (j != null && j != i) {
+                        // word + reversed(prefix) forms palindrome
+                        res.add(Arrays.asList(i, j));
+                    }
+                }
+            }
+        }
+
+        return res;
+    }
+
+    private boolean isPalindrome_0_2(String s) {
+        int l = 0, r = s.length() - 1;
+        while (l < r) {
+            if (s.charAt(l++) != s.charAt(r--))
+                return false;
+        }
+        return true;
+    }
+
+
     // V1
     // https://leetcode.com/problems/palindrome-pairs/solutions/79210/the-easy-to-unserstand-java-solution-by-09k79/
     public List<List<Integer>> palindromePairs_1(String[] words) {

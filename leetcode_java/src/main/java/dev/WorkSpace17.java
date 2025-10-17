@@ -3118,9 +3118,119 @@ public class WorkSpace17 {
 
 
     // LC 336
+    // 10.18 - 10.32 am
+    /**
+     *  -> Return an `array` of ALL the` palindrome pairs` of words.
+     *
+     *   - You are given a 0-indexed array of unique strings words.
+     *   - 0 <= i, j < words.length,
+     *   - i != j, and
+     *   - words[i] + words[j] (the concatenation of the two strings) is a palindrome.
+     *
+     *
+     *
+     *  IDEA 1) BRUTE FORCE
+     *
+     *  IDEA 2) HASHMAP
+     *
+     *
+     */
+    // BRUTE FORCE + HAHSHMAP
     public List<List<Integer>> palindromePairs(String[] words) {
 
-        return null;
+        List<List<Integer>> res = new ArrayList<>();
+        // map: { str : idx } // ???
+        Map<String, Integer> map = new HashMap<>();
+
+        // edge
+        if(words == null || words.length == 0){
+            return res;
+        }
+        if(words.length == 1){
+            return res;
+        }
+        // ???
+        if(words.length == 2){
+            String w1 = words[0];
+            String w2 = words[1];
+            if(isPalindrome(w1+w2)){
+                List<Integer> tmp = new ArrayList<>();
+                // ???
+                tmp.add(0);
+                tmp.add(1);
+                res.add(tmp);
+            }
+            if(isPalindrome(w2 + w1)){
+                List<Integer> tmp = new ArrayList<>();
+                // ???
+                tmp.add(1);
+                tmp.add(0);
+                res.add(tmp);
+            }
+
+            //Map<String, Integer> map = new HashMap<>();
+            for(int i = 0; i < words.length; i++){
+                map.put(words[i], i);
+            }
+
+            // brute force: double loop
+            for(int i = 0; i < words.length; i++){
+                String word = words[i];
+                String wordReversed = reverseStr(word);
+                if(map.containsKey(wordReversed)){
+                    if(i != map.get(wordReversed)){
+                        List<Integer> tmp = new ArrayList<>();
+                        tmp.add(i);
+                        map.get(wordReversed);
+                        res.add(tmp);
+                    }
+                }
+                // check if the `reverse str` existed in map and idx i != idx j
+
+//                for(int j = i+1; j < words.length; j++){
+//                    System.out.println(">>> i = " + i + ", j = " + j);
+//                    String newWord = words[i] + words[j];
+//                    if(isPalindrome(newWord)){
+//                        List<Integer> tmp = new ArrayList<>();
+//                        // ???
+//                        tmp.add(i);
+//                        tmp.add(j);
+//                        res.add(tmp);
+//                    }
+//                }
+
+            }
+
+
+            return res;
+        }
+
+        return res;
+    }
+
+    private String reverseStr(String str){
+        if(str.isEmpty()){
+            return str;
+        }
+        StringBuilder sb = new StringBuilder(str);
+        return sb.reverse().toString(); // ????
+    }
+
+    private boolean isPalindrome(String str){
+        if(str.isEmpty()){
+            return true;
+        }
+        int l = 0;
+        int r = str.length() - 1;
+
+        while(r > l){
+            if(str.charAt(l) != str.charAt(r)){
+                return false;
+            }
+            r -= 1;
+            l += 1;
+        }
+        return true;
     }
 
 
