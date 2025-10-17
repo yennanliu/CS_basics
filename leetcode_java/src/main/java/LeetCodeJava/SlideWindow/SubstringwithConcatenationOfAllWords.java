@@ -81,14 +81,26 @@ public class SubstringwithConcatenationOfAllWords {
 
         int wordLen = words[0].length();
         int wordCount = words.length;
-        int totalLen = wordLen * wordCount;
+        //int totalLen = wordLen * wordCount;
 
+        /** NOTE !!!
+         *
+         *   map: { word: freq }
+         *
+         *   // save frequency of words
+         *
+         *   // Example: words = ["foo", "bar"] → {"foo":1, "bar":1}.
+         */
         // Step 1️⃣ Build frequency map of words
         Map<String, Integer> wordFreq = new HashMap<>();
         for (String w : words) {
             wordFreq.put(w, wordFreq.getOrDefault(w, 0) + 1);
         }
 
+        /**
+         * 	•	There may be multiple valid substrings depending on alignment.
+         * 	•	For example, with wordLen=3, check starting at index 0, 1, 2.
+         */
         // Step 2️⃣ Loop through s with different starting offsets
         for (int offset = 0; offset < wordLen; offset++) {
             int left = offset; // left boundary of the window
@@ -96,11 +108,19 @@ public class SubstringwithConcatenationOfAllWords {
             Map<String, Integer> windowMap = new HashMap<>();
             int matchedWords = 0;
 
+
+            /**
+             * 	•	Take a wordLen chunk each time and
+             *    	move the right pointer forward.
+             */
             // Step 3️⃣ Expand window by word length steps
             while (right + wordLen <= s.length()) {
                 String word = s.substring(right, right + wordLen);
                 right += wordLen;
 
+                /**
+                 * Keep track of counts in the current window.
+                 */
                 if (wordFreq.containsKey(word)) {
                     // Add to window
                     windowMap.put(word, windowMap.getOrDefault(word, 0) + 1);
@@ -108,6 +128,11 @@ public class SubstringwithConcatenationOfAllWords {
                         matchedWords++;
                     }
 
+                    /** Shrink if Overused
+                     *
+                     * -> 	If a word appears more than expected,
+                     *     move the left pointer and reduce counts.
+                     */
                     // Step 4️⃣ Shrink window if word appears too many times
                     while (windowMap.get(word) > wordFreq.get(word)) {
                         String leftWord = s.substring(left, left + wordLen);
@@ -118,11 +143,23 @@ public class SubstringwithConcatenationOfAllWords {
                         left += wordLen;
                     }
 
+                    /** Check Complete Match
+                     *
+                     * -> If all word counts match,
+                     *    the current window is a valid starting index.
+                     */
                     // Step 5️⃣ Check if all words matched
                     if (matchedWords == wordFreq.size()) {
                         res.add(left);
                     }
-                } else {
+                }
+                /**
+                 * Invalid Word → Reset
+                 *
+                 * -> 	If we find a chunk that’s not in words,
+                 *      reset the window to start after it.
+                 */
+                else {
                     // Not a valid word → reset window
                     windowMap.clear();
                     matchedWords = 0;
