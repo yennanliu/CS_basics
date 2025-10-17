@@ -182,8 +182,11 @@ public class SubstringwithConcatenationOfAllWords {
         // 1. Pre-calculate necessary lengths and target frequency map.
         int wordLen = words[0].length();
         int numWords = words.length;
+
+        // NOTE !!!
         int substringLen = wordLen * numWords;
 
+        // NOTE !!!
         // If the search string is shorter than the required substring length, no match is possible.
         if (s.length() < substringLen) {
             return resultIndices;
