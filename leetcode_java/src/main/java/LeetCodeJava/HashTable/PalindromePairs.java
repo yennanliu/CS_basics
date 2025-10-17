@@ -167,7 +167,7 @@ public class PalindromePairs {
     }
 
     // V0-2
-    // IDEA: HAHSMAP (fixed by gpt)
+    // IDEA: HASHMAP +  prefix - suffix palindrome check (fixed by gpt)
     public List<List<Integer>> palindromePairs(String[] words) {
         List<List<Integer>> res = new ArrayList<>();
         if (words == null || words.length == 0)
@@ -183,6 +183,69 @@ public class PalindromePairs {
         for (int i = 0; i < words.length; i++) {
             String word = words[i];
 
+            /**  NOTE !!! trick: prefix - suffix palindrome check
+             *
+             *  - That double loop with prefix/suffix splitting is the core trick for solving LeetCode 336.
+             *    Palindrome Pairs efficiently.
+             *
+             *  1. we go through each word in word list
+             *  2. with EACH word, we do below check
+             *     - 2-1: sample `prefix` from 0 till end of word,
+             *            and check if the `palindrome of prefix` ever EXISTS in the hashmap
+             *            -> if yes, means we can find the `pair of palindrome` from word list
+             *
+             *     - 2-2: sample `suffix` from 0 till end of word
+             *            and check if the `palindrome of suffix` ever EXISTS in the hashmap
+             *            -> if yes, means we can find the `pair of palindrome` from word list
+             *
+             *
+             *  ------------------------
+             *
+             *
+             *   For any two words A and B,
+             *     → A + B is a palindrome iff
+             *      one part of A is already a palindrome, and the other part of
+             *      A matches the reverse of B.
+             *
+             *   So for each word, we split it into every possible prefix | suffix, and:
+             *
+             * 	  •	If the prefix is a palindrome, then to make the whole string palindrome,
+             * 	    we need a word that equals reverse(suffix) in front of it.
+             *
+             * 	  •	If the suffix is a palindrome, then to make the whole string palindrome,
+             * 	     we need a word that equals reverse(prefix) after it.
+             *
+             *
+             *  ------------------------
+             *
+             *  📝 Why two cases?
+             *
+             *   We have to handle both:
+             * 	    •	Case A: reversed(suffix) + word
+             *           This handles situations like ["dcba", "abcd"] → abcd has
+             *           palindrome prefix, so you prepend dcba.
+             * 	    •	Case B: word + reversed(prefix)
+             *          This handles situations like ["abcd", "dcba"] → abcd
+             *          has palindrome suffix, so you append dcba.
+             *
+             * If we only did one direction, we’d miss half of the valid pairs.
+             *
+             *  ------------------------
+             *
+             *   Example:
+             *
+             *   Take word = "abcd", reversed map contains "dcba" -> 1.
+             *   Split:
+             * 	    •	"" | "abcd" → prefix palindrome, look up "abcd" → no match.
+             * 	    •	"a" | "bcd" → prefix palindrome (a), lookup reversed suffix "dcb" → no match.
+             * 	    •	"ab" | "cd" → no palindrome.
+             * 	    •	"abc" | "d" → no palindrome.
+             * 	    •	"abcd" | "" → suffix palindrome (empty), lookup reversed prefix, "dcba" → found index 1. → [0,1].
+             *
+             *
+             *   Similarly, "dcba" finds [1,0].
+             *
+             */
             // Check all possible splits: prefix | suffix
             for (int cut = 0; cut <= word.length(); cut++) {
                 String prefix = word.substring(0, cut);
