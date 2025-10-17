@@ -3234,6 +3234,12 @@ public class WorkSpace17 {
     }
 
 
+    // LC 30
+    public List<Integer> findSubstring(String s, String[] words) {
+
+        return null;
+    }
+
 
 
 }
