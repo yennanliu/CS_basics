@@ -71,6 +71,147 @@ public class SubstringwithConcatenationOfAllWords {
 //
 //    }
 
+    // V0-1
+    // IDEA: SLIDE WINDOW + BACKTRACK + HASH MAP (fixed by gpt)
+    public List<Integer> findSubstring_0_1(String s, String[] words) {
+        List<Integer> res = new ArrayList<>();
+        if (s == null || s.length() == 0 || words == null || words.length == 0) {
+            return res;
+        }
+
+        int wordLen = words[0].length();
+        int wordCount = words.length;
+        int totalLen = wordLen * wordCount;
+
+        // Step 1️⃣ Build frequency map of words
+        Map<String, Integer> wordFreq = new HashMap<>();
+        for (String w : words) {
+            wordFreq.put(w, wordFreq.getOrDefault(w, 0) + 1);
+        }
+
+        // Step 2️⃣ Loop through s with different starting offsets
+        for (int offset = 0; offset < wordLen; offset++) {
+            int left = offset; // left boundary of the window
+            int right = offset;
+            Map<String, Integer> windowMap = new HashMap<>();
+            int matchedWords = 0;
+
+            // Step 3️⃣ Expand window by word length steps
+            while (right + wordLen <= s.length()) {
+                String word = s.substring(right, right + wordLen);
+                right += wordLen;
+
+                if (wordFreq.containsKey(word)) {
+                    // Add to window
+                    windowMap.put(word, windowMap.getOrDefault(word, 0) + 1);
+                    if (windowMap.get(word).equals(wordFreq.get(word))) {
+                        matchedWords++;
+                    }
+
+                    // Step 4️⃣ Shrink window if word appears too many times
+                    while (windowMap.get(word) > wordFreq.get(word)) {
+                        String leftWord = s.substring(left, left + wordLen);
+                        if (windowMap.get(leftWord).equals(wordFreq.get(leftWord))) {
+                            matchedWords--;
+                        }
+                        windowMap.put(leftWord, windowMap.get(leftWord) - 1);
+                        left += wordLen;
+                    }
+
+                    // Step 5️⃣ Check if all words matched
+                    if (matchedWords == wordFreq.size()) {
+                        res.add(left);
+                    }
+                } else {
+                    // Not a valid word → reset window
+                    windowMap.clear();
+                    matchedWords = 0;
+                    left = right;
+                }
+            }
+        }
+
+        return res;
+    }
+
+    // V0-2
+    // IDEA: (fixed by gemini)
+    public List<Integer> findSubstring_0_2(String s, String[] words) {
+        List<Integer> resultIndices = new ArrayList<>();
+        if (s == null || s.isEmpty() || words == null || words.length == 0) {
+            return resultIndices;
+        }
+
+        // 1. Pre-calculate necessary lengths and target frequency map.
+        int wordLen = words[0].length();
+        int numWords = words.length;
+        int substringLen = wordLen * numWords;
+
+        // If the search string is shorter than the required substring length, no match is possible.
+        if (s.length() < substringLen) {
+            return resultIndices;
+        }
+
+        // Target frequency map: {word: required_count}
+        Map<String, Integer> wordCounts = new HashMap<>();
+        for (String word : words) {
+            wordCounts.put(word, wordCounts.getOrDefault(word, 0) + 1);
+        }
+
+        // 2. Slide the window. We only need to check 'wordLen' different starting positions
+        // because all valid substrings must start at index i, i + wordLen, i + 2*wordLen, etc.
+        for (int i = 0; i < wordLen; i++) {
+
+            // Current frequency map for the sliding window: {word: current_count}
+            Map<String, Integer> currentCounts = new HashMap<>();
+            int wordsUsed = 0;
+            int left = i; // The left boundary of the sliding window
+
+            // The 'right' boundary shifts by 'wordLen' in each step.
+            for (int right = i; right <= s.length() - wordLen; right += wordLen) {
+
+                String currentWord = s.substring(right, right + wordLen);
+
+                // --- Case 1: Word is NOT in the target list ---
+                if (!wordCounts.containsKey(currentWord)) {
+                    // Reset the window completely.
+                    currentCounts.clear();
+                    wordsUsed = 0;
+                    left = right + wordLen;
+                    continue;
+                }
+
+                // --- Case 2: Word IS in the target list ---
+                currentCounts.put(currentWord, currentCounts.getOrDefault(currentWord, 0) + 1);
+                wordsUsed++;
+
+                // --- Case 3: Too many of the current word (Contraction) ---
+                while (currentCounts.get(currentWord) > wordCounts.get(currentWord)) {
+                    // Remove the word at the left of the window and shrink the window.
+                    String leftWord = s.substring(left, left + wordLen);
+                    currentCounts.put(leftWord, currentCounts.get(leftWord) - 1);
+                    wordsUsed--;
+                    left += wordLen; // Shift left pointer by one word length
+                }
+
+                // --- Case 4: Window is a match (Check) ---
+                if (wordsUsed == numWords) {
+                    // We found a valid concatenation starting at 'left'.
+                    resultIndices.add(left);
+
+                    // Since we must continue searching, we slide the window one word length to the right.
+                    // Remove the leftmost word and update counts/pointers.
+                    String leftWord = s.substring(left, left + wordLen);
+                    currentCounts.put(leftWord, currentCounts.get(leftWord) - 1);
+                    wordsUsed--;
+                    left += wordLen;
+                }
+            }
+        }
+
+        return resultIndices;
+    }
+
     // V1
     // https://leetcode.ca/2015-12-30-30-Substring-with-Concatenation-of-All-Words/
     public List<Integer> findSubstring_1(String s, String[] words) {

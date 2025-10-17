@@ -3235,9 +3235,160 @@ public class WorkSpace17 {
 
 
     // LC 30
+    // 16.47 - 17:05 pm
+    /**
+     * -> Return an array of the starting indices of all
+     *    the concatenated substrings in s.
+     *    You can return the answer in any order.
+     *
+     *    - A `concatenated string` is a string that exactly contains
+     *       ALL the strings of ANY permutation of words concatenated.
+     *
+     *    IDEA 1) backtrack + HASH MAP + SLIDE WINDOW ???
+     *
+     *    - backtrack get all combination
+     *    - HASH MAP record above
+     *    - SLIDE WINDOW go through s, get the validated idx
+     *
+     *
+     *
+     *   ex 1)
+     *
+     *   Input: s = "barfoothefoobarman", words = ["foo","bar"]
+     *   Output: [0,9]
+     *
+     *
+     *   -> candidates: foobar, barfoo
+     *   // map : { combination: cnt }
+     *   -> map : {"foobar": 1, "barfoo": 1} // ????
+     *
+     *   "barfoothefoobarman"    ans = [0]
+     *    l    r
+     *
+     *    ...
+     *
+     *    "barfoothefoobarman"    ans = [0, 9]
+     *              l    r
+     *
+     *
+     *   ex 2)
+     *
+     *    Input: s = "wordgoodgoodgoodbestword",
+     *    words = ["word","good","best","word"]
+     *    -> `combination cnt = 4! = 24 ????
+     *
+     *    -> map: {"wordgoodbestword": 1, ....}
+     *    -> ans = []
+     *
+     *
+     *   ex 3)
+     *
+     *   Input: s = "barfoofoobarthefoobarman", words = ["bar","foo","the"]
+     *   Output: [6,9,12]
+     *
+     *   -> combination cnt = 3! = 6 ???
+     *   -> map: {
+     *       barfoothe: 1,
+     *       barthefoo: 1,
+     *       foothebar: 1,
+     *       foobarthe: 1,
+     *       thebarfoo: 1,
+     *       thefoobar: 1
+     *   }
+     *
+     *
+     */
+    // ????
+    List<String> combinaitons = new ArrayList<>();
     public List<Integer> findSubstring(String s, String[] words) {
+        List<Integer> res = new ArrayList<>();
+        // edge
+        if(s.isEmpty()){
+            return res;
+        }
+        if(words == null || words.length == 0){
+            return res;
+        }
 
-        return null;
+        List<String> list = new ArrayList<>();
+        for(String w: words){
+            list.add(w);
+        }
+
+        // map
+        Map<String, Integer> map = new HashMap<>();
+
+        //  private void getComgination(String[] words, String s, List<String> cur, int startIdx)
+        getComgination(words, s, new ArrayList<>(), 0);
+
+        System.out.println(">>> combinaitons = " + combinaitons);
+        
+        // slide window
+        /**  pattern:
+         *
+         *  for(int r = 0; r < len; r++){
+         *      while(condition){
+         *      // ...
+         *          l += 1;
+         *      }
+         *      // ...
+         *  }
+         *
+         */
+        int l = 0;
+        for(int r = 0; r < s.length(); r++){
+
+            // ????
+            while( r > l && !isValid2( s.substring(l, r+1), map )){
+                l += 1;
+            }
+
+            res.add(l);
+        }
+
+
+        return res;
+    }
+
+    private boolean isValid2(String cur, Map<String, Integer> map){
+        return map.containsKey(cur); // ????
+    }
+
+    private boolean isValid(String s, String cur){
+        // ??? check cur, and s is the `same combination`
+        // via `char diff` ???
+        int diff1 = 0;
+        int diff2 = 0;
+        for(char ch: s.toCharArray()){
+            diff1 += (ch - 'a');
+        }
+        for(char ch: cur.toCharArray()){
+            diff2 += (ch - 'a');
+        }
+        return diff1 == diff2; // /???
+    }
+
+    // ???
+    private void getComgination(String[] words, String s, List<String> cur, int startIdx){
+        // backtrack get `all combination`
+       String str = cur.toString(); ///
+        if(str.length() > s.length()){
+            return; // ???
+        }
+        if(str.length() == s.length()){
+            // ???
+            if(!combinaitons.contains(str)){
+                // ???
+                combinaitons.add(str); // ???
+            }
+        }
+        for(int i = startIdx; i < words.length; i++){
+            cur.add(words[i]);
+            getComgination(words, s, cur, startIdx + 1); // ???
+        }
+        // backtrack ???
+        //startIdx -= 1; //???
+        cur.remove(cur.size() - 1); // ???
     }
 
 
