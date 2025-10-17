@@ -387,8 +387,12 @@ public class PalindromePairs {
                 for (int j = 0; j < words.length; j++) {
                     String w = words[j];
                     if (isPal(w, 0, w.length()-1) && j != i) {
-                        ans.add(List.of(i, j));
-                        ans.add(List.of(j, i));
+
+                        //ans.add(List.of(i, j));
+                        //ans.add(List.of(j, i));
+                        // fix for java 8
+                        ans.add(Arrays.asList(i, j));
+                        ans.add(Arrays.asList(j, i));
                     }
                 }
                 continue;
@@ -398,18 +402,30 @@ public class PalindromePairs {
             String bw = sb.toString();
             if (wmap.containsKey(bw)) {
                 int res = wmap.get(bw);
-                if (res != i) ans.add(List.of(i, res));
+                // fix for java 8
+                //if (res != i) ans.add(List.of(i, res));
+                if (res != i){
+                    ans.add(Arrays.asList(i, res));
+                }
             }
             for (int j = 1; j < bw.length(); j++) {
                 if (isPal(bw, 0, j-1)) {
                     String s = bw.substring(j);
-                    if (wmap.containsKey(s))
-                        ans.add(List.of(i, wmap.get(s)));
+//                    if (wmap.containsKey(s))
+//                        ans.add(List.of(i, wmap.get(s)));
+                    if (wmap.containsKey(s)){
+                        //ans.add(List.of(i, wmap.get(s)));
+                        ans.add(Arrays.asList(i, wmap.get(s)));
+                    }
                 }
                 if (isPal(bw, j, bw.length()-1)) {
                     String s = bw.substring(0,j);
-                    if (wmap.containsKey(s))
-                        ans.add(List.of(wmap.get(s), i));
+//                    if (wmap.containsKey(s))
+//                        ans.add(List.of(wmap.get(s), i));
+                    if (wmap.containsKey(s)){
+                        ans.add(Arrays.asList(wmap.get(s), i));
+                    }
+
                 }
             }
         }

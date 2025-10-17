@@ -240,13 +240,13 @@ public class BinaryTreeVerticalOrderTraversal {
     // V1-2
     // IDEA: DFS + SORT
     // https://neetcode.io/solutions/binary-tree-vertical-order-traversal
-    private Map<Integer, List<int[]>> cols = new TreeMap<>();
+    private Map<Integer, List<int[]>> cols_1_2 = new TreeMap<>();
 
     public List<List<Integer>> verticalOrder_1_2(TreeNode root) {
         dfs(root, 0, 0);
         List<List<Integer>> res = new ArrayList<>();
 
-        for (List<int[]> list : cols.values()) {
+        for (List<int[]> list : cols_1_2.values()) {
             list.sort(Comparator.comparingInt(a -> a[0]));
             List<Integer> colVals = new ArrayList<>();
             for (int[] p : list) colVals.add(p[1]);
@@ -264,7 +264,7 @@ public class BinaryTreeVerticalOrderTraversal {
      */
     private void dfs(TreeNode node, int row, int col) {
         if (node == null) return;
-        cols.computeIfAbsent(col, k -> new ArrayList<>()).add(new int[]{row, node.val});
+        cols_1_2.computeIfAbsent(col, k -> new ArrayList<>()).add(new int[]{row, node.val});
         /** NOTE !!!
          *
          *  how we recursively call the dfs func
