@@ -3563,4 +3563,101 @@ public class WorkSpace17 {
     }
 
 
+    // LC 209
+    // 17.53 - 18.07 pm
+    /**
+     *
+     *  -> Given an array of positive integers nums and a positive integer target,
+     *  return the minimal length of a subarray whose sum
+     *   is greater than or equal to target.
+     *  If there is no such subarray, return 0 instead.
+     *
+     *
+     *   -> return the min len of subarray st the sum >= target
+     *    if can't find, return 0
+     *
+     *  - A subarray is a `contiguous` non-empty sequence of elements within an array.
+     *
+     *
+     *  // IDEA 1) SLIDE WINDOW ???
+     *
+     */
+    public int minSubArrayLen(int target, int[] nums) {
+        // edge
+        if(nums == null || nums.length == 0){
+            return 0;
+        }
+
+        /**
+         *  slide window pattern:
+         *
+         *  int l = 0;
+         *
+         *  for(int r = 0; r < len; r++){
+         *      while(condition){
+         *          // ..
+         *          l += 1;
+         *      }
+         *      ans = min(ans, r - l + 1);
+         *      // ...
+         *  }
+         *
+         */
+        /**
+         *  Dry run:
+         *
+         *
+         *   exp 1)
+         *    Input: target = 7, nums = [2,3,1,2,4,3]
+         *    ans = 2
+         *
+         *   ->
+         *
+         *    [2,3,1,2,4,3]   sum = 2
+         *     l
+         *     r
+         *
+         *    [2,3,1,2,4,3]   sum = 5
+         *     l r
+         *
+         *    [2,3,1,2,4,3]  sum = 6
+         *     l   r
+         *
+         *    [2,3,1,2,4,3]  sum = 8 -> sum = 6
+         *     l l   r
+         *
+         *    [2,3,1,2,4,3]  sum = 10 -> sum = 7, ans = 3
+         *       l l   r
+         *
+         *    [2,3,1,2,4,3]  sum = 10 -> sum = 9 -> sum = 7, ans = 2
+         *         l l l   r
+         *
+         */
+        int minLen = Integer.MAX_VALUE;
+        int l = 0;
+
+        int curSum = 0;
+        for(int r = 0; r < nums.length; r++){
+            // ??
+            curSum += nums[r];
+            System.out.println(">>> (outside while) r = " + r + ", l = " + l + ", curSum = " + curSum);
+            while (r > l && curSum > target){
+                System.out.println(">>> (inside while) r = " + r + ", l = " + l + ", curSum = " + curSum);
+                l += 1;
+                curSum -= nums[l]; // ???
+            }
+
+            if(curSum == target){
+                System.out.println(">>> minLen = " + minLen);
+                minLen = Math.min(minLen, r - l + 1);
+            }
+        }
+
+
+        return minLen == Integer.MAX_VALUE ? 0: minLen;
+    }
+
+
+
+
 }
