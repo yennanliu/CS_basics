@@ -1,5 +1,6 @@
 package LeetCodeJava.BFS;
 
+import java.util.Comparator;
 import java.util.PriorityQueue;
 
 // https://leetcode.com/problems/trapping-rain-water-ii/description/
@@ -43,6 +44,86 @@ public class TrappingRainWater2 {
 //
 //    }
 
+    // V0-1
+    // IDEA: (gpt)
+    public int trapRainWater_0_1(int[][] heightMap) {
+        if (heightMap == null || heightMap.length == 0 || heightMap[0].length == 0)
+            return 0;
+
+        int rows = heightMap.length;
+        int cols = heightMap[0].length;
+        // A grid with fewer than 3 rows or cols can't trap water.
+        if (rows < 3 || cols < 3)
+            return 0;
+
+        boolean[][] visited = new boolean[rows][cols];
+
+        // Min-heap ordered by cell height
+        //PriorityQueue<Cell> pq = new PriorityQueue<>(Comparator.comparingInt(c -> c.h));
+        PriorityQueue<Cell> pq = new PriorityQueue<>(new Comparator<Cell>() {
+            @Override
+            public int compare(Cell o1, Cell o2) {
+                int diff = o1.h - o2.h;
+                return diff;
+            }
+        });
+
+
+        // Push all border cells into the PQ and mark visited
+        for (int c = 0; c < cols; c++) {
+            pq.offer(new Cell(0, c, heightMap[0][c]));
+            pq.offer(new Cell(rows - 1, c, heightMap[rows - 1][c]));
+            visited[0][c] = true;
+            visited[rows - 1][c] = true;
+        }
+        for (int r = 1; r < rows - 1; r++) {
+            pq.offer(new Cell(r, 0, heightMap[r][0]));
+            pq.offer(new Cell(r, cols - 1, heightMap[r][cols - 1]));
+            visited[r][0] = true;
+            visited[r][cols - 1] = true;
+        }
+
+        int totalWater = 0;
+        int[][] dirs = { { -1, 0 }, { 1, 0 }, { 0, -1 }, { 0, 1 } };
+
+        // Expand from the lowest boundary inward
+        while (!pq.isEmpty()) {
+            Cell cell = pq.poll(); // current lowest boundary cell
+            for (int[] d : dirs) {
+                int nr = cell.r + d[0];
+                int nc = cell.c + d[1];
+
+                if (nr < 0 || nr >= rows || nc < 0 || nc >= cols || visited[nr][nc])
+                    continue;
+
+                visited[nr][nc] = true;
+                int neighborHeight = heightMap[nr][nc];
+
+                // If neighbor is lower than current boundary -> it traps water
+                if (neighborHeight < cell.h) {
+                    totalWater += cell.h - neighborHeight;
+                    // push with raised height = cell.h (the water level / new boundary)
+                    pq.offer(new Cell(nr, nc, cell.h));
+                } else {
+                    // no water trapped, push with its own height
+                    pq.offer(new Cell(nr, nc, neighborHeight));
+                }
+            }
+        }
+
+        return totalWater;
+    }
+
+    private static class Cell {
+        int r, c, h;
+
+        Cell(int r, int c, int h) {
+            this.r = r;
+            this.c = c;
+            this.h = h;
+        }
+    }
+
     // V1
     // IDEA: BFS + Priority Queue
     // https://leetcode.com/problems/trapping-rain-water-ii/editorial/
@@ -57,22 +138,22 @@ public class TrappingRainWater2 {
         boolean[][] visited = new boolean[numOfRows][numOfCols];
 
         // Priority queue (min-heap) to process boundary cells in increasing height order
-        PriorityQueue<Cell> boundary = new PriorityQueue<>();
+        PriorityQueue<Cell_1> boundary = new PriorityQueue<>();
 
         // Add the first and last column cells to the boundary and mark them as visited
         for (int i = 0; i < numOfRows; i++) {
-            boundary.offer(new Cell(heightMap[i][0], i, 0));
+            boundary.offer(new Cell_1(heightMap[i][0], i, 0));
             boundary.offer(
-                    new Cell(heightMap[i][numOfCols - 1], i, numOfCols - 1));
+                    new Cell_1(heightMap[i][numOfCols - 1], i, numOfCols - 1));
             // Mark left and right boundary cells as visited
             visited[i][0] = visited[i][numOfCols - 1] = true;
         }
 
         // Add the first and last row cells to the boundary and mark them as visited
         for (int i = 0; i < numOfCols; i++) {
-            boundary.offer(new Cell(heightMap[0][i], 0, i));
+            boundary.offer(new Cell_1(heightMap[0][i], 0, i));
             boundary.offer(
-                    new Cell(heightMap[numOfRows - 1][i], numOfRows - 1, i));
+                    new Cell_1(heightMap[numOfRows - 1][i], numOfRows - 1, i));
             // Mark top and bottom boundary cells as visited
             visited[0][i] = visited[numOfRows - 1][i] = true;
         }
@@ -83,7 +164,7 @@ public class TrappingRainWater2 {
         // Process cells in the boundary (min-heap will always pop the smallest height)
         while (!boundary.isEmpty()) {
             // Pop the cell with the smallest height from the boundary
-            Cell currentCell = boundary.poll();
+            Cell_1 currentCell = boundary.poll();
 
             int currentRow = currentCell.row;
             int currentCol = currentCell.col;
@@ -113,7 +194,7 @@ public class TrappingRainWater2 {
 
                     // Push the neighbor into the boundary with updated height (to prevent water leakage)
                     boundary.offer(
-                            new Cell(
+                            new Cell_1(
                                     Math.max(neighborHeight, minBoundaryHeight),
                                     neighborRow,
                                     neighborCol));
@@ -127,14 +208,14 @@ public class TrappingRainWater2 {
     }
 
     // Class to store the height and coordinates of a cell in the grid
-    private static class Cell implements Comparable<Cell> {
+    private static class Cell_1 implements Comparable<Cell_1> {
 
         int height;
         int row;
         int col;
 
         // Constructor to initialize a cell
-        public Cell(int height, int row, int col) {
+        public Cell_1(int height, int row, int col) {
             this.height = height;
             this.row = row;
             this.col = col;
@@ -142,7 +223,7 @@ public class TrappingRainWater2 {
 
         // Overload the compareTo method to make the priority queue a min-heap based on height
         @Override
-        public int compareTo(Cell other) {
+        public int compareTo(Cell_1 other) {
             // Min-heap comparison
             return Integer.compare(this.height, other.height);
         }
