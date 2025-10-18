@@ -8,7 +8,6 @@
 		- 621
 	- LC 271 – Encode and Decode Strings
 	- LC 128 - Longest Consecutive Sequence
-	 	- 594
 	 	- 149
 	 - LC 125 - Valid Palindrome
 	 - LC 11 - Container With Most Water
