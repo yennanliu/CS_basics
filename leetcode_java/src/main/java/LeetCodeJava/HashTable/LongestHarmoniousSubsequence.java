@@ -2,9 +2,7 @@ package LeetCodeJava.HashTable;
 
 // https://leetcode.com/problems/longest-harmonious-subsequence/description/
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 594. Longest Harmonious Subsequence
@@ -60,9 +58,50 @@ import java.util.Map;
 public class LongestHarmoniousSubsequence {
 
     // V0
-//    public int findLHS(int[] nums) {
-//
-//    }
+    // IDEA: HASHMAP
+    public int findLHS(int[] nums) {
+        // edge
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
+
+        HashSet<Integer> set = new HashSet<>();
+        // map: { val: [idx1, idx2,...]}
+        Map<Integer, List<Integer>> map = new HashMap<>();
+
+        for (int i = 0; i < nums.length; i++) {
+            int k = nums[i];
+            set.add(k);
+            List<Integer> list = new ArrayList<>();
+            if (map.containsKey(k)) {
+                list = map.get(k);
+            }
+            list.add(i);
+            map.put(k, list);
+        }
+
+        int maxSubLen = 0;
+
+        //System.out.println(">>> map = " + map);
+
+        if (map.keySet().size() <= 1) {
+            return 0;
+        }
+
+        for (Integer x : set) {
+            int bigger = x + 1;
+            int smaller = x - 1;
+            if (map.containsKey(bigger)) {
+                maxSubLen = Math.max(maxSubLen, map.get(bigger).size() + map.get(x).size());
+            }
+            if (map.containsKey(smaller)) {
+                maxSubLen = Math.max(maxSubLen, map.get(smaller).size() + map.get(x).size());
+            }
+        }
+
+        return maxSubLen;
+    }
+
 
     // V1
     // IDEA: HASH MAP

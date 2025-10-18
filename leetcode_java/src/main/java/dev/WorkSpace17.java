@@ -3399,10 +3399,134 @@ public class WorkSpace17 {
 
 
     // LC 594
+    // 16.37 - 47 pm
+    /**
+     *
+     *
+     *  -> return the length of its `longest harmonious subsequence`
+     *  among all its possible subsequences.
+     *
+     *  - We define a `harmonious array `as an array where the difference
+     *    between its `maximum value and its minimum value is exactly 1.`
+     *
+     *
+     *  -> return `LONGEST of harmonious subsequence`
+     *    - harmonious: diff(max, min) == 1
+     *    - A subsequence is an array that can
+     *       be derived from another array by deleting some or no elements
+     *       `without changing the order of` the remaining elements.
+     *
+     *
+     *  IDEA 1) HASHMAP
+     *
+     *   -> map : { val : [idx1, idx2,...] }
+     *   -> record min, max idx
+     *   -> given a val, we know that the `possible max or min` val compared to that val
+     *     -> so we can get the subsequence len based on that
+     *
+     *  IDEA 2) ARRAY + SORT ???
+     *
+     *
+     *  --------
+     *
+     *  Example 1:
+     *
+     *    Input: nums = [1,3,2,2,5,2,3,7]
+     *
+     *     Output: 5
+     *
+     *     Explanation:  The longest harmonious subsequence is [3,2,2,2,3].
+     *
+     *
+     *  -> map:  { 1: [0], 2: [2, 3, 5], 3: [1, 6], 7: [7] }
+     *
+     *  ->
+     *     [1,3,2,2,5,2,3,7]    ->  1222, ans = 4
+     *      x
+     *
+     *    [1,3,2,2,5,2,3,7]    ->  32223, ans = 5
+     *       x
+     *
+     *    [1,3,2,2,5,2,3,7]    ->  32223, ans = 5
+     *         x
+     *
+     *   [1,3,2,2,5,2,3,7]  -> ans = 5
+     *            x
+     *   ..
+     *
+     *   [1,3,2,2,5,2,3,7]   -> ans = 5
+     *                  x
+     *
+     *
+     *
+     *  exp 2)
+     *
+     *  Input: nums = [1,2,3,4]
+     *
+     * Output: 2
+     *
+     *  map: {1: [0], 2:[1], 3:[2], 4: [3] }
+     *
+     *
+     *   [1,2,3,4]   -> 12, ans = 2
+     *    x
+     *  ...
+     *
+     *  exp 3)
+     *
+     *  Input: nums = [1,1,1,1]
+     *
+     *
+     * -> map : {1: [0,1,2,3] }  -> ans = 0
+     *
+     *
+     *
+     */
     public int findLHS(int[] nums) {
+        // edge
+        if(nums == null || nums.length == 0){
+            return 0;
+        }
 
-        return 0;
+        HashSet<Integer> set = new HashSet<>();
+        // map: { val: [idx1, idx2,...]}
+        Map<Integer, List<Integer>> map = new HashMap<>();
+
+        for(int i = 0; i < nums.length; i++){
+            int k = nums[i];
+            set.add(k);
+            List<Integer> list = new ArrayList<>();
+            if(map.containsKey(k)){
+                list = map.get(k);
+            }
+            list.add(i);
+            map.put(k, list);
+        }
+
+        int maxSubLen = 0;
+
+        System.out.println(">>> map = " + map);
+
+        if(map.keySet().size() <= 1){
+            return 0;
+        }
+
+        for(Integer x: set){
+            int bigger = x + 1;
+            int smaller = x - 1;
+            if(map.containsKey(bigger)){
+                maxSubLen = Math.max(maxSubLen, map.get(bigger).size() + map.get(x).size());
+            }
+            if(map.containsKey(smaller)){
+                maxSubLen = Math.max(maxSubLen, map.get(smaller).size() + map.get(x).size());
+            }
+        }
+
+        return maxSubLen;
     }
+
+
+
 
 
 }
