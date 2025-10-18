@@ -3643,8 +3643,8 @@ public class WorkSpace17 {
             System.out.println(">>> (outside while) r = " + r + ", l = " + l + ", curSum = " + curSum);
             while (r > l && curSum > target){
                 System.out.println(">>> (inside while) r = " + r + ", l = " + l + ", curSum = " + curSum);
-                l += 1;
                 curSum -= nums[l]; // ???
+                l += 1;
             }
 
             if(curSum == target){
