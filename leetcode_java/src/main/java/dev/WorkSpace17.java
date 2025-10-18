@@ -3528,6 +3528,35 @@ public class WorkSpace17 {
 
 
     // LC 407
+    // 17.04 - 14 pm
+    /**
+     *
+     * -> Given an m x n integer matrix heightMap representing
+     *   the height of each unit cell in a 2D elevation map,
+     *
+     *
+     *   -> return the `volume of water` it can trap after raining.
+     *
+     *
+     *   IDEA 1) BFS + PQ ????
+     *
+     *
+     *   exp 1)
+     *
+     *   Input: heightMap = [[1,4,3,1,3,2],[3,2,1,3,2,4],[2,3,3,2,3,1]]
+     *   Output: 4
+     *
+     *
+     *  ->
+     *
+     *  [
+     *   [1,4,3,1,3,2],
+     *   [3,2,1,3,2,4],
+     *   [2,3,3,2,3,1]
+     * ]
+     *      1 2   1
+     *
+     */
     public int trapRainWater(int[][] heightMap) {
 
         return 0;
