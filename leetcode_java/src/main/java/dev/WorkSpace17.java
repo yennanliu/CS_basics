@@ -3398,5 +3398,11 @@ public class WorkSpace17 {
     }
 
 
+    // LC 594
+    public int findLHS(int[] nums) {
+
+        return 0;
+    }
+
 
 }
