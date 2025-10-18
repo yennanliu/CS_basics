@@ -62,9 +62,9 @@ public class MinimumSizeSubarraySum {
 
             // Shrink the window from the left as long as the current sum is >= target
             /**
-             * NOTE !!!  below condition
+             * NOTE !!!   shrink window from the left while `sum >= target`
              *
-             *   -> while (curSum >= target)
+             *  -> shrink while sum >= target
              */
             while (curSum >= target) {
                 /**
@@ -93,6 +93,11 @@ public class MinimumSizeSubarraySum {
         }
 
         int n = nums.length;
+        /**
+         * NOTE !!!
+         *
+         *   use max val as default minLen (instead of nums len)
+         */
         int minLen = Integer.MAX_VALUE; // start with MAX
         int l = 0;
         int curSum = 0;
@@ -115,9 +120,20 @@ public class MinimumSizeSubarraySum {
         for (int r = 0; r < n; r++) {
             curSum += nums[r]; // expand window to the right
 
+            /**
+             * NOTE !!!   shrink window from the left while `sum >= target`
+             *
+             *  -> shrink while sum >= target
+             */
             // shrink window from the left while sum >= target
             while (curSum >= target) {
                 minLen = Math.min(minLen, r - l + 1);
+                /**
+                 * NOTE !!!
+                 *
+                 *   `adjust` (curSum -= nums[l]) curSum first, then move left pointer
+                 *
+                 */
                 curSum -= nums[l];
                 l++;
             }
