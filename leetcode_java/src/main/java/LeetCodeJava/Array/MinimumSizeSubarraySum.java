@@ -84,6 +84,48 @@ public class MinimumSizeSubarraySum {
         return res == Integer.MAX_VALUE ? 0 : res;
     }
 
+    // V0-1
+    // IDEA: SLIDE WINDOW (fixed by gpt)
+    public int minSubArrayLen_0_1(int target, int[] nums) {
+        // edge
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
+
+        int n = nums.length;
+        int minLen = Integer.MAX_VALUE; // start with MAX
+        int l = 0;
+        int curSum = 0;
+
+        /**
+         *  slide window pattern:
+         *
+         *  int l = 0;
+         *
+         *  for(int r = 0; r < len; r++){
+         *      while(condition){
+         *          // ..
+         *          l += 1;
+         *      }
+         *      ans = min(ans, r - l + 1);
+         *      // ...
+         *  }
+         *
+         */
+        for (int r = 0; r < n; r++) {
+            curSum += nums[r]; // expand window to the right
+
+            // shrink window from the left while sum >= target
+            while (curSum >= target) {
+                minLen = Math.min(minLen, r - l + 1);
+                curSum -= nums[l];
+                l++;
+            }
+        }
+
+        return minLen == Integer.MAX_VALUE ? 0 : minLen;
+    }
+
     // V1
     // https://leetcode.com/problems/minimum-size-subarray-sum/editorial/
     // IDEA: SLIDING WINDOW
