@@ -45,20 +45,38 @@ public class TrappingRainWater2 {
 //    }
 
     // V0-1
-    // IDEA: (gpt)
+    // IDEA: custom class + PQ (gpt)
+    /** NOTE !!!
+     *
+     *  we define custom class: cell
+     *
+     *  -> so we can save r, c, h (row, column, height) info at once
+     */
+    private static class Cell {
+        int r, c, h;
+
+        Cell(int r, int c, int h) {
+            this.r = r;
+            this.c = c;
+            this.h = h;
+        }
+    }
+
     public int trapRainWater_0_1(int[][] heightMap) {
         if (heightMap == null || heightMap.length == 0 || heightMap[0].length == 0)
             return 0;
 
         int rows = heightMap.length;
         int cols = heightMap[0].length;
-        // A grid with fewer than 3 rows or cols can't trap water.
-        if (rows < 3 || cols < 3)
+        // A grid with fewer than 3 rows or cols CAN NOT trap water.
+        if (rows < 3 || cols < 3){
             return 0;
+        }
 
+        /** NOTE !!! we define visited grid to avoid duplicated visit */
         boolean[][] visited = new boolean[rows][cols];
 
-        // Min-heap ordered by cell height
+        // Min-heap (PQ) ordered by `cell height`
         //PriorityQueue<Cell> pq = new PriorityQueue<>(Comparator.comparingInt(c -> c.h));
         PriorityQueue<Cell> pq = new PriorityQueue<>(new Comparator<Cell>() {
             @Override
@@ -69,6 +87,14 @@ public class TrappingRainWater2 {
         });
 
 
+        /** NOTE !!!
+         *
+         *  1. Push all border cells
+         *  2. mark above as VISITED
+         *  3. we do `push` op on
+         *     - cols
+         *     - rows
+         */
         // Push all border cells into the PQ and mark visited
         for (int c = 0; c < cols; c++) {
             pq.offer(new Cell(0, c, heightMap[0][c]));
@@ -76,6 +102,14 @@ public class TrappingRainWater2 {
             visited[0][c] = true;
             visited[rows - 1][c] = true;
         }
+        /** NOTE !!!
+         *
+         *  1. Push all border cells
+         *  2. mark above as VISITED
+         *  3. we do `push` op on
+         *     - cols
+         *     - rows
+         */
         for (int r = 1; r < rows - 1; r++) {
             pq.offer(new Cell(r, 0, heightMap[r][0]));
             pq.offer(new Cell(r, cols - 1, heightMap[r][cols - 1]));
@@ -84,21 +118,27 @@ public class TrappingRainWater2 {
         }
 
         int totalWater = 0;
+
+        /** NOTE !!! we can move 4 dirs */
         int[][] dirs = { { -1, 0 }, { 1, 0 }, { 0, -1 }, { 0, 1 } };
 
         // Expand from the lowest boundary inward
         while (!pq.isEmpty()) {
             Cell cell = pq.poll(); // current lowest boundary cell
+
+            /** NOTE !!! BFS:  move 4 dirs */
             for (int[] d : dirs) {
                 int nr = cell.r + d[0];
                 int nc = cell.c + d[1];
 
+                /** NOTE !!! validate should proceed with NEW x, y  */
                 if (nr < 0 || nr >= rows || nc < 0 || nc >= cols || visited[nr][nc])
                     continue;
 
                 visited[nr][nc] = true;
                 int neighborHeight = heightMap[nr][nc];
 
+                /** NOTE !!! the `can trap water` condition  */
                 // If neighbor is lower than current boundary -> it traps water
                 if (neighborHeight < cell.h) {
                     totalWater += cell.h - neighborHeight;
@@ -112,16 +152,6 @@ public class TrappingRainWater2 {
         }
 
         return totalWater;
-    }
-
-    private static class Cell {
-        int r, c, h;
-
-        Cell(int r, int c, int h) {
-            this.r = r;
-            this.c = c;
-            this.h = h;
-        }
     }
 
     // V1
