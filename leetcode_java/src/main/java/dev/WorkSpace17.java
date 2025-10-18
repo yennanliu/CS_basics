@@ -3391,6 +3391,12 @@ public class WorkSpace17 {
         cur.remove(cur.size() - 1); // ???
     }
 
+    // LC 640
+    public String solveEquation(String equation) {
+
+        return null;
+    }
+
 
 
 }
