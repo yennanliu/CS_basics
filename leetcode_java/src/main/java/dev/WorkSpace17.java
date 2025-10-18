@@ -3527,6 +3527,11 @@ public class WorkSpace17 {
 
 
 
+    // LC 407
+    public int trapRainWater(int[][] heightMap) {
+
+        return 0;
+    }
 
 
 }
