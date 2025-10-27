@@ -543,6 +543,18 @@ public class Weekly100 {
      *
      *
      */
+    /**
+     *  TODO: note below (to dp, general strategy cheatsheet)
+     *
+     *  https://leetcode.com/problems/minimum-time-to-repair-cars/editorial/
+     *
+     *  Takeaway Tip: When deciding on an approach,
+     *  always check the constraints first.
+     *  If n and cars are large (in the range of 10^5 ~ 10^6)
+     *  -> DP is usually NOT feasible.
+     *  Instead, binary search, greedy,
+     *  or two pointers are more likely to work in such cases.
+     */
     // https://leetcode.com/problems/minimum-time-to-repair-cars/editorial/
     public long repairCars(int[] ranks, int cars) {
 
