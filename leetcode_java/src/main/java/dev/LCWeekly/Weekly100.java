@@ -516,8 +516,38 @@ public class Weekly100 {
 
 
     // Q4
+    // LC 2594
+    // 20.26 - 36 PM
     // https://leetcode.com/problems/minimum-time-to-repair-cars/description/
+    /**
+     *  -> Return the `min` time taken to repair ALL the cars.
+     *
+     *
+     *  - All the mechanics can repair the cars `simultaneously.`
+     *  - ranks: `level` of mechanics
+     *    - rank_i: rank of mechanics_i
+     *  - cars: total # of cars need to be repaired
+     *  - A mechanic with a rank r can repair n cars in `r * n2 minutes.`
+     *       - it takes `r * n2` minutes to repair n cars with rank r
+     *
+     *
+     *
+     *   IDEA 1) BRUTE FORCE
+     *
+     *   IDEA 2) DP ????
+     *
+     *   IDEA 3) MATH ????
+     *
+     *   -> time cost = r1 * n1 * n1 + r2 * n2 * n2 + ...
+     *   -> a * (n1^2) +  b * (n2 ^ 2) + .... <= ???
+     *
+     *
+     */
+    // https://leetcode.com/problems/minimum-time-to-repair-cars/editorial/
+    public long repairCars(int[] ranks, int cars) {
 
+        return 0L;
+    }
 
 
 }
