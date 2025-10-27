@@ -277,7 +277,7 @@ public class Weekly100 {
     }
 
     // Q3
-    // LC 2592
+    // LC 2593
     // 19.29 - 46 pm
     // https://leetcode.com/problems/find-score-of-an-array-after-marking-all-elements/description/
     /**
@@ -396,6 +396,12 @@ public class Weekly100 {
         int n = nums.length;
         long ans = 0L;
 
+        /**
+         * We use a min-heap (PriorityQueue) that always
+         * gives us the smallest value, breaking ties by index.
+         * Each element is stored as [value, index].
+         *
+         */
         // min-PQ: (value, index)
         PriorityQueue<int[]> pq = new PriorityQueue<>(
                 (a, b) -> a[0] == b[0] ? a[1] - b[1] : a[0] - b[0]);
@@ -428,6 +434,9 @@ public class Weekly100 {
 
         return ans;
     }
+
+
+
 
     // V2 (fixed by gemini)
     public long findScore_2(int[] nums) {
@@ -505,7 +514,7 @@ public class Weekly100 {
     }
 
 
-    
+
     // Q4
     // https://leetcode.com/problems/minimum-time-to-repair-cars/description/
 
