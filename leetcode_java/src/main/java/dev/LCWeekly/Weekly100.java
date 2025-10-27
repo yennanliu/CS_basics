@@ -278,19 +278,237 @@ public class Weekly100 {
 
     // Q3
     // LC 2592
-    // 19.29 - 39 pm
+    // 19.29 - 46 pm
     // https://leetcode.com/problems/find-score-of-an-array-after-marking-all-elements/description/
-    public long findScore(int[] nums) {
+    /**
+     *
+     *  -> Return the `score` you get
+     *     after applying the above algorithm.
+     *
+     *    - start from score = 0
+     *    - choose the `smallest` int that is NOT marked
+     *       - if a tie, get the one with smallest idx
+     *    - score += val (chosen num)
+     *    - Mark the chosen element and its two adjacent elements
+     *      if they exist.
+     *    - Repeat until ALL the array elements are MARKED.
+     *
+     *
+     *  IDEA 1) TREE MAP  + pointers ???
+     *
+     *   map: { val: [idx_1, idx_2,...] }
+     *
+     *   marked: [false, true, ...]
+     *
+     *  1.  go through the key (small -> big)
+     *  2.  mark `chosen` to the idx and its adjacent
+     *  3.  find the `next candidate`
+     *  4.  repeat above, till the end
+     *
+     *
+     *
+     *  exp 1)  nums = [2,1,3,4,5,2], ans = 7
+     *
+     *  -> map: { 2:[0, 5], 1: [1], 3: [2], 4: [3], 5: [4] }
+     *
+     *  nums = [2,1,3,4,5,2], { 2:[5], 4: [3], 5: [4] }
+     *          x x x
+     *
+     *   nums = [2,1,3,4,5,2], { 4: [3] }
+     *           x x x   x  x
+     *
+     *
+     *
+     *  exp 2) nums = [2,3,5,1,3,2], ans = 5
+     *
+     *  -> map: { 2: [0, 5], 1: [3], 3:[1, 4], 5: [2] }
+     *
+     *
+     *   nums = [2,3,5,1,3,2], map: { 2: [0, 5], 3:[1] }
+     *               x x x
+     *
+     *  nums = [2,3,5,1,3,2], map: { 2: [ 5] }
+     *          x x x x x
+     *
+     */
+//    public long findScore(int[] nums) {
+//        // edge
+//        if(nums == null || nums.length == 0){
+//            return 0;
+//        }
+//        if(nums.length == 1){
+//            return nums[0];
+//        }
+//        long ans = 0L;
+//
+//        // map: { val: small-PQ (idx) } ????
+//        // PQ default is small PQ ??? (small -> big)
+//        PriorityQueue<Integer> smallPQ = new PriorityQueue<>();
+//        Map<Integer, PriorityQueue<Integer>> map = new HashMap<>();
+//        for(int i = 0; i < nums.length; i++){
+//            int x = nums[i];
+//            PriorityQueue<Integer> tmpPQ = new PriorityQueue<>();
+//            if(map.containsKey(x)){
+//                tmpPQ = map.get(x);
+//            }
+//            tmpPQ.add(i);
+//            map.put(x, tmpPQ);
+//        }
+//        System.out.println(">>> map = " + map);
+//
+//        // ??? default is `false` ???
+//        boolean[] visited = new boolean[nums.length]; // ??
+//        int visitedCnt = 0;
+//
+//
+//        while (visitedCnt < nums.length){
+//            int val = smallPQ.poll();
+//            if (map.containsKey(val)) {
+//                int idx = map.get(val).poll();
+//                // mark as visted
+//                int left = idx - 1;
+//                int right = idx + 1;
+//                if(left >= 0){
+//                    visited[left] = true;
+//                    //PriorityQueue<Integer> tmpPQ1 = map.get(left);
+//                    //tmpPQ1
+//                }
+//                if(right < nums.length - 1){
+//                    visited[right] = true;
+//                }
+//                ans += val;
+//            }
+//
+//        }
+//
+//
+//
+//        return ans;
+//    }
 
-        return 0L;
+
+    // V1 (fixed by gpt)
+    public long findScore(int[] nums) {
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
+
+        int n = nums.length;
+        long ans = 0L;
+
+        // min-PQ: (value, index)
+        PriorityQueue<int[]> pq = new PriorityQueue<>(
+                (a, b) -> a[0] == b[0] ? a[1] - b[1] : a[0] - b[0]);
+
+        // push all elements
+        for (int i = 0; i < n; i++) {
+            pq.offer(new int[] { nums[i], i });
+        }
+
+        boolean[] visited = new boolean[n];
+
+        while (!pq.isEmpty()) {
+            int[] cur = pq.poll();
+            int val = cur[0];
+            int idx = cur[1];
+
+            if (visited[idx])
+                continue; // already marked
+
+            // add to score
+            ans += val;
+
+            // mark itself and neighbors
+            visited[idx] = true;
+            if (idx - 1 >= 0)
+                visited[idx - 1] = true;
+            if (idx + 1 < n)
+                visited[idx + 1] = true;
+        }
+
+        return ans;
+    }
+
+    // V2 (fixed by gemini)
+    public long findScore_2(int[] nums) {
+        // edge
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
+
+        long ans = 0L;
+        int n = nums.length;
+
+        // A boolean array to track which elements are marked.
+        // Defaults to false.
+        boolean[] marked = new boolean[n];
+
+        // --- Fix: Use a single Min-Heap (Priority Queue) ---
+        // It will store {value, index} pairs.
+        // We need a custom comparator to sort:
+        // 1. By value (smallest first).
+        // 2. If values are tied, by index (smallest first).
+        PriorityQueue<int[]> minHeap = new PriorityQueue<>(new Comparator<int[]>() {
+            @Override
+            public int compare(int[] a, int[] b) {
+                if (a[0] != b[0]) {
+                    return a[0] - b[0]; // Compare by value
+                } else {
+                    return a[1] - b[1]; // Compare by index if values are tied
+                }
+            }
+        });
+
+        // --- Fix: Populate the heap ---
+        // Add all {value, index} pairs to the heap.
+        for (int i = 0; i < n; i++) {
+            minHeap.offer(new int[] { nums[i], i });
+        }
+
+        // Loop until all elements have been processed from the heap.
+        while (!minHeap.isEmpty()) {
+
+            // 1. Get the smallest element.
+            int[] current = minHeap.poll();
+            int val = current[0];
+            int idx = current[1];
+
+            // 2. --- Fix: Check if already marked ---
+            // If this element was already marked by a neighbor, skip it.
+            if (marked[idx]) {
+                continue;
+            }
+
+            // 3. Process the element:
+            // Add its value to the score.
+            ans += val;
+
+            // Mark the element itself as "visited".
+            marked[idx] = true;
+
+            // 4. Mark its neighbors.
+            int left = idx - 1;
+            int right = idx + 1;
+
+            if (left >= 0) {
+                marked[left] = true;
+            }
+
+            // --- Fix: Correct boundary check ---
+            // Check should be < n (the length), not < n - 1 (the last index).
+            if (right < n) {
+                marked[right] = true;
+            }
+        }
+
+        return ans;
     }
 
 
-
-
+    
     // Q4
     // https://leetcode.com/problems/minimum-time-to-repair-cars/description/
 
 
-    
+
 }
