@@ -1,6 +1,10 @@
 # Progress
 
 # 2025-10-27
+- 1026-live-session-advance
+	- LC weekly 100
+		- https://leetcode.com/contest/biweekly-contest-100/
+		- https://leetcode.cn/contest/biweekly-contest-100/
 - needcode `grind 75` - similar LC by AI
 	- https://neetcode.io/practice?tab=blind75
 	- LC 49 Group Anagrams
