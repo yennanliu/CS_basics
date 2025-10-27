@@ -248,6 +248,10 @@ public class Weekly100 {
             return 0;
 
         // count occurrences
+        /** NOTE !!!
+         *
+         *  use `TreeMap` for using the `higherKey` method
+         */
         TreeMap<Integer, Integer> map = new TreeMap<>();
         for (int x : nums) {
             map.put(x, map.getOrDefault(x, 0) + 1);
@@ -273,9 +277,20 @@ public class Weekly100 {
     }
 
     // Q3
+    // LC 2592
+    // 19.29 - 39 pm
     // https://leetcode.com/problems/find-score-of-an-array-after-marking-all-elements/description/
+    public long findScore(int[] nums) {
+
+        return 0L;
+    }
+
+
+
 
     // Q4
     // https://leetcode.com/problems/minimum-time-to-repair-cars/description/
 
+
+    
 }
