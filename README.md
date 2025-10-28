@@ -416,7 +416,7 @@
 1296| [Divide Array in Sets of K Consecutive Numbers](https://leetcode.com/problems/divide-array-in-sets-of-k-consecutive-numbers/)|[Python ](./leetcode_python/Hash_table/divide-array-in-sets-of-k-consecutive-numbers.py) ||| Medium |LC 846, dict, `google`| AGAIN (not start)
 1923| [Longest Common Subpath](https://leetcode.com/problems/longest-common-subpath/) |  [Python](./leetcode_python/Hash_table/longest-common-subpath.py)  | _O(n)_ | _O(h)_ | Hard|hash, bit,  `amazon`|  AGAIN (not start)
 2506| [Count Pairs Of Similar Strings](https://leetcode.com/problems/count-pairs-of-similar-strings/description/) |  [Java](./leetcode_java/src/main/java/LeetCodeJava/HashTable/CountPairsOfSimilarStrings.java) | _O(n)_ | _O(h)_ | Easy|hashmap, LC weekly|  AGAIN (1)
-2592| [Maximize Greatness of an Array](https://leetcode.com/problems/maximize-greatness-of-an-array) |  [Java](./leetcode_java/src/main/java/LeetCodeJava/HashTable/MaximizeGreatnessOfAnArray.java) | _O(n)_ | _O(h)_ | Easy|Treemap, 2 pointers, LC weekly|  AGAIN (1)
+2592| [Maximize Greatness of an Array](https://leetcode.com/problems/maximize-greatness-of-an-array) |  [Java](./leetcode_java/src/main/java/LeetCodeJava/HashTable/MaximizeGreatnessOfAnArray.java) | _O(n)_ | _O(h)_ | Medium |Treemap, 2 pointers, LC weekly|  AGAIN (1)
 
 
 ## Linked list
