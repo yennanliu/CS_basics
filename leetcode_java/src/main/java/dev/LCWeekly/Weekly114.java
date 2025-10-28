@@ -158,6 +158,17 @@ public class Weekly114 {
 
             // Greedy rule: use as many groups of 3 as possible
             // but if remainder == 1, adjust by converting one 3-group into 2+2
+            /**
+             *  NOTE !!!
+             *
+             *  Now:
+             * 	•	count % 3 == 0 → Perfectly divisible by 3 → just use count / 3 operations.
+             * 	•	count % 3 == 1 or count % 3 == 2 → There’s a leftover (1 or 2 items).
+             *
+             *  -> So we’ll need one extra operation to handle the remainder.
+             *
+             *
+             */
             if (count % 3 == 0) {
                 ops += count / 3;
             } else {
