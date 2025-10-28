@@ -184,6 +184,107 @@ public class Weekly114 {
     // Q3
     // LC 2871
     // https://leetcode.com/problems/split-array-into-maximum-number-of-subarrays/
+    // 6.47 - 57 am
+    /**
+     *  -> Return the `max` number of subarrays
+     *    in a split that satisfies the conditions above.
+     *
+     *
+     *  - A subarray is a `contiguous`  sub arr
+     *  - score of sub arr:  in nums[l...r] ( r >= l ),
+     *
+     *        nums[l] AND nums[l+1]...... AND nums[r]
+     *
+     *        AND is the `bitwise` op
+     *
+     *   splitting the array into one or more subarrays  fit below all conditions:
+     *          - Each element of the array belongs to exactly one subarray.
+     *          - The sum of scores of the subarrays is the minimum possible.
+     *
+     *
+     *   IDEA 1) BRUTE FORCE
+     *
+     *   IDEA 2) SLIDE WINDOW
+     *
+     *    int l = 0;
+     *    for(int r = 0; r < nums.len; r++){
+     *        while(condition){
+     *            // ..
+     *            l += 1;
+     *        }
+     *        // ...
+     *    }
+     *
+     */
+//    public int maxSubarrays(int[] nums) {
+//        // edge
+//        if(nums == null || nums.length == 0){
+//            return 0;
+//        }
+//        if(nums.length == 1){
+//            return 1;
+//        }
+//        int res = 0;
+//        int l = 0;
+//        // ???
+//        for(int r = 0; r < nums.length; r++){
+//            while(getAndOp(1,2) == 1){
+//                l += 1;
+//            }
+//            res += 1;
+//        }
+//
+//
+//        return res;
+//    }
+//
+//    private int getbinaryVal(int x){
+//        return 0;
+//    }
+//
+//    private int getAndOp(int x, int y){
+//        return 0;
+//    }
+
+    // fix by gpt
+    public int maxSubarrays(int[] nums) {
+        // edge
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
+        int res = 0;
+        int cur = -1; // bitmask all 1s for 32-bit integers
+
+        for (int num : nums) {
+            // bitwise AND
+            cur &= num;
+            /**
+             *  NOTE !!!
+             *
+             *  - 💡 Why check cur == 0 (and not cur == 1, etc.)
+             *
+             *   -> Because 0 is the only value that’s guaranteed to stay 0 forever when ANDed with any next number.
+             *
+             *
+             *   If cur == 1, it’s not yet 0 —
+             * → That means some bits (like the least significant bit) are still 1,
+             * → and further AND with some future numbers could still turn that 1 into 0.
+             *
+             * So we cannot split yet, because we haven’t reached a guaranteed all-zero condition.
+             *
+             *
+             */
+            if (cur == 0) {
+                res++;
+                cur = -1; // reset for next subarray
+            }
+        }
+
+        // if never found cur == 0, means only 1 possible subarray
+        return Math.max(res, 1);
+    }
+
+
 
     // Q4
     // LC 2872
