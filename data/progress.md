@@ -2,7 +2,7 @@
 
 # 2025-10-28
 - 1026-live-session-advance
-	- LC weekly 100
+	- LC weekly 114
 		- https://leetcode.com/contest/biweekly-contest-100/
 		- https://leetcode.cn/contest/biweekly-contest-100/
 - needcode `grind 75` - similar LC by AI
