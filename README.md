@@ -943,8 +943,7 @@
 1889| [ Minimum Space Wasted From Packaging](https://leetcode.com/problems/minimum-space-wasted-from-packaging/) |  [Python](./leetcode_python/Binary_Search/minimum-space-wasted-from-packaging.py)| || Hard| heap, prefix sum, binary search, amazon|  AGAIN (not start)
 2009| [Minimum Number of Operations to Make Array Continuous](https://leetcode.com/problems/minimum-number-of-operations-to-make-array-continuous/) |  [Python](./leetcode_python/Binary_Search/minimum-number-of-operations-to-make-array-continuous.py)| || Hard |binary search, sliding window, dequeue, bisect.bisect_right, amazon|  AGAIN (not start)
 2554| [Maximum Number of Integers to Choose From a Range I](https://leetcode.com/problems/maximum-number-of-integers-to-choose-from-a-range-i) | [Java](./leetcode_java/src/main/java/LeetCodeJava/BinarySearch/MaximumNumberOfIntegersToChooseFromARange1.java)  | ||Medium |binary search, hash set, hashmap, weekly 97|  AGAIN (not start)
-
-
+2594| [Minimum Time to Repair Cars](https://leetcode.com/problems/minimum-time-to-repair-cars) | [Java](./leetcode_java/src/main/java/LeetCodeJava/BinarySearch/MinimumTimeToRepairCars.java)  | ||Medium |binary search, PQ, weekly 100|  AGAIN (not start)
 
 
 ## Binary Search Tree
