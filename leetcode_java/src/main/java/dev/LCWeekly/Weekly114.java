@@ -1,8 +1,6 @@
 package dev.LCWeekly;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 /**
  * Leetcode weekly contest 114
@@ -65,11 +63,109 @@ public class Weekly114 {
 
     // Q2
     // LC 2870
-    // 23.19 - 23.29 pm
+    // 23.19 - 23.31 pm
+    // Note: This question is the same as 2244: Minimum Rounds to Complete All Tasks.
     // https://leetcode.com/problems/minimum-number-of-operations-to-make-array-empty/
-    public int minOperations(int[] nums) {
+    /**
+     *
+     *  -> Return the `min` number of op required to
+     *    make the array empty, or -1 if it is NOT possible.
+     *
+     *    - 0-indexed array nums with positive integers.
+     *    - two op can apply on array ANY number of times
+     *       - Choose 2 elements with `equal values` and `delete` them
+     *       - Choose 3 elements with `equal values` and `delete` them
+     *
+     *
+     *  IDEA 1) HASH MAP
+     *
+     *   -> map : { val : cnt }
+     *   -> loop over val in map, to see if there op1 or op2
+     *      can `eliminate the val with cnt` in map
+     *   -> if yes, keep updating the total op cnt
+     *
+     *  IDEA 2) BRUTE FORCE
+     *
+     *
+     *  ----------
+     *
+     *
+     *  exp 1) nums = [2,3,3,2,2,4,2,3,4], ans = 4
+     *
+     *  -> map: {2: 4, 3: 3, 4: 2}
+     *
+     *
+     *  exp 2) nums = [2,3,3,2,2,4,2,3,4,2,2,2], ans = 5
+     *
+     *    -> map: {2: 7, 3: 3, 4: 2}
+     *
+     */
+//    public int minOperations(int[] nums) {
+//        // edge
+//        if(nums == null || nums.length == 0){
+//            return -1;
+//        }
+//        // map: { val: cnt}
+//        Map<Integer, Integer> map = new HashMap<>();
+//        for(int x: nums){
+//            map.put(x, map.getOrDefault(x, 0) + 1);
+//        }
+//        System.out.println(">>> (before 1st update) map = " + map);
+//        int cnt = 0;
+//
+//
+//        for(int k: map.keySet()){
+//            int valCnt = map.get(k);
+//            // edge
+//            if(valCnt == 1){
+//                return -1;
+//            }
+//            if(valCnt / 3 == 0){
+//                cnt +=  (valCnt / 3);
+//                // remove val from map
+//                map.remove(k);
+//            }
+//            else if(valCnt / 2 == 0){
+//                cnt +=  (valCnt / 2);
+//                // remove val from map
+//                map.remove(k);
+//            }
+//            else{
+//                map.put(k, (valCnt % 3)); // ???
+//            }
+//        }
+//        System.out.println(">>> (after 1st update) map = " + map);
+//
+//        return cnt; // ???
+//    }
 
-        return 0;
+    // FIX BY gpt
+    public int minOperations(int[] nums) {
+        if (nums == null || nums.length == 0) {
+            return -1;
+        }
+
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int x : nums) {
+            map.put(x, map.getOrDefault(x, 0) + 1);
+        }
+
+        int ops = 0;
+
+        for (int count : map.values()) {
+            if (count == 1)
+                return -1; // cannot remove a single element
+
+            // Greedy rule: use as many groups of 3 as possible
+            // but if remainder == 1, adjust by converting one 3-group into 2+2
+            if (count % 3 == 0) {
+                ops += count / 3;
+            } else {
+                ops += count / 3 + 1;
+            }
+        }
+
+        return ops;
     }
 
 
