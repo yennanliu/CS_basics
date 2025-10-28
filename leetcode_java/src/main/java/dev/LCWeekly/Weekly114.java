@@ -289,5 +289,26 @@ public class Weekly114 {
     // Q4
     // LC 2872
     // https://leetcode.com/problems/maximum-number-of-k-divisible-components/description/
+    // 7.19 - 29 am
+    /**
+     *
+     * -> Return the MAX number of components in ANY valid split.
+     *
+     *
+     *  - edges[i] = [ai, bi] : edge between nodes ai and bi in the tree.
+     *   -  0-indexed integer array values of length n,
+     *        values[i] is the value associated with the ith node, and an integer k.
+     *
+     *   - A valid split : removing any set of edges, possibly empty,
+     *      such that the resulting components all have `values` that are `divisible by k, `
+     *       -  value of a connected component is the sum of the values of its nodes.
+     *
+     */
+    public int maxKDivisibleComponents(int n, int[][] edges, int[] values, int k) {
+
+        return 0;
+    }
+
+
 
 }
