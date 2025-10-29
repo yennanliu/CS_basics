@@ -51,9 +51,47 @@ package LeetCodeJava.BitManipulation;
 public class SplitArrayIntoMaximumNumberOfSubarrays {
 
     // V0
-//    public int maxSubarrays(int[] nums) {
-//
-//    }
+    // IDEA: BIT OP + BRUTE FORCE
+    /**
+     *  NOTE !!!
+     *
+     *  - 💡 Why check cur == 0 (and not cur == 1, etc.)
+     *
+     *   -> Because 0 is the only value that’s guaranteed to stay 0 forever when ANDed with any next number.
+     *
+     *
+     *   If cur == 1, it’s not yet 0 —
+     * → That means some bits (like the least significant bit) are still 1,
+     * → and further AND with some future numbers could still turn that 1 into 0.
+     *
+     * So we cannot split yet, because we haven’t reached a guaranteed all-zero condition.
+     *
+     *
+     */
+    public int maxSubarrays(int[] nums) {
+        // edge
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
+
+        int cnt = 0;
+        int cur = -1; // ???? // nums[0];
+
+        for (int i = 0; i < nums.length; i++) {
+            if (cur == -1) {
+                cur = nums[i];
+            } else {
+                cur = cur & nums[i];
+            }
+            if (cur == 0) {
+                cnt += 1;
+                // reset cur
+                cur = -1;
+            }
+        }
+
+        return cnt == 0 ? 1 : cnt;
+    }
 
     // V1
     // IDEA: BIT OP + BRUTE FORCE (fixed by gpt)
