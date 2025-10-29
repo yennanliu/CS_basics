@@ -109,8 +109,13 @@ public class MaximumNumberOfKDivisibleComponents {
     private long dfs_0_1(int node, int parent) {
         long sum = values[node]; // start from node value
         for (int nei : graph[node]) {
-            if (nei == parent)
+            /** NOTE !!!
+             *
+             * Skip the neighbor if it's the parent node
+             */
+            if (nei == parent){
                 continue;
+            }
             /** NOTE !!!!
              *
              *  add sum up via dfs recursively call
@@ -192,7 +197,10 @@ public class MaximumNumberOfKDivisibleComponents {
 
         // Iterate over all neighbors of the current node
         for (int v : adj.get(u)) {
-            // Skip the neighbor if it's the parent node
+            /** NOTE !!!
+             *
+             * Skip the neighbor if it's the parent node
+             */
             if (v == parent) {
                 continue;
             }
@@ -299,6 +307,12 @@ public class MaximumNumberOfKDivisibleComponents {
             return 1;
 
         int componentCount = 0;
+        /** NOTE !!!
+         *
+         *  graph is a map structure
+         *
+         *  -> { node : set(neighbor_1, neighbor_2, ...) }
+         */
         Map<Integer, Set<Integer>> graph = new HashMap<>();
 
         // Step 1: Build the graph
@@ -317,6 +331,10 @@ public class MaximumNumberOfKDivisibleComponents {
         // Step 2: Initialize the BFS queue with leaf nodes
         // (nodes with only one connection)
         Queue<Integer> queue = new LinkedList<>();
+        /** NOTE !!!
+         *
+         *  add node saved in graph to BFS queue
+         */
         for (Map.Entry<Integer, Set<Integer>> entry : graph.entrySet()) {
             if (entry.getValue().size() == 1) {
                 queue.add(entry.getKey());
