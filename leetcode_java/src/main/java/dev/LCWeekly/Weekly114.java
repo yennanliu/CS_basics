@@ -321,58 +321,75 @@ public class Weekly114 {
      *  map2 : { 1: [8,1], 2: [4] }
      *
      */
-    //Map<>
-//    public int maxKDivisibleComponents(int n, int[][] edges, int[] values, int k) {
-//        // edge
-//        if(n == 5 || k == 0 || edges == null || edges[0].length == 0){
-//            return 0;
-//        }
-//        int res = 0;
-//
-//        return res;
-//    }
+    // IDEA 1) BFS
+    public int maxKDivisibleComponents(int n, int[][] edges, int[] values, int k) {
+        // edge
+        if(n == 5 || k == 0 || edges == null || edges[0].length == 0){
+            return 0;
+        }
+        int res = 0;
+
+        // { val : sum_of_sub_tree }
+        Map<Integer, Integer> map = new HashMap<>();
+
+        // collect sub tree sum
+
+        // bfs
+        Queue<Integer> q = new LinkedList<>();
+        // ??
+        for(Integer key: map.keySet()){
+            q.add(key);
+        }
+
+        while (!q.isEmpty()){
+            Integer cur = q.poll();
+
+        }
+
+        return res;
+    }
 
    // private
 
     // V1: DFS,  fix by gpt
-    private int res = 0;
-    private int k;
-    private List<Integer>[] graph;
-    private int[] values;
-
-    public int maxKDivisibleComponents(int n, int[][] edges, int[] values, int k) {
-        this.k = k;
-        this.values = values;
-        this.graph = new ArrayList[n];
-        for (int i = 0; i < n; i++) {
-            graph[i] = new ArrayList<>();
-        }
-
-        for (int[] e : edges) {
-            int a = e[0], b = e[1];
-            graph[a].add(b);
-            graph[b].add(a);
-        }
-
-        dfs(0, -1);
-        return res;
-    }
-
-    private long dfs(int node, int parent) {
-        long sum = values[node]; // start from node value
-        for (int nei : graph[node]) {
-            if (nei == parent)
-                continue;
-            sum += dfs(nei, node);
-            sum %= k; // keep sum mod k small
-        }
-
-        if (sum % k == 0) {
-            res++; // we can form a divisible component
-            return 0; // reset sum (as this component is split)
-        }
-        return sum;
-    }
+//    private int res = 0;
+//    private int k;
+//    private List<Integer>[] graph;
+//    private int[] values;
+//
+//    public int maxKDivisibleComponents(int n, int[][] edges, int[] values, int k) {
+//        this.k = k;
+//        this.values = values;
+//        this.graph = new ArrayList[n];
+//        for (int i = 0; i < n; i++) {
+//            graph[i] = new ArrayList<>();
+//        }
+//
+//        for (int[] e : edges) {
+//            int a = e[0], b = e[1];
+//            graph[a].add(b);
+//            graph[b].add(a);
+//        }
+//
+//        dfs(0, -1);
+//        return res;
+//    }
+//
+//    private long dfs(int node, int parent) {
+//        long sum = values[node]; // start from node value
+//        for (int nei : graph[node]) {
+//            if (nei == parent)
+//                continue;
+//            sum += dfs(nei, node);
+//            sum %= k; // keep sum mod k small
+//        }
+//
+//        if (sum % k == 0) {
+//            res++; // we can form a divisible component
+//            return 0; // reset sum (as this component is split)
+//        }
+//        return sum;
+//    }
 
 
 

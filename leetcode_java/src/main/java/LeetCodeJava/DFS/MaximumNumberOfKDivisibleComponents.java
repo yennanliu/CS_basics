@@ -67,23 +67,41 @@ public class MaximumNumberOfKDivisibleComponents {
     // IDEA: DFS (fixed by gpt)
     private int res = 0;
     private int k;
+    /** NOTE !!! define graph as  List<Integer>[]
+     *
+     *  -> 	graph[i] → a List that stores all the neighbors of node i.
+     */
     private List<Integer>[] graph;
+    /**  NOTE !!!
+     *
+     * values: each node’s assigned integer value
+     *
+     *  — e.g., node i has value values[i].
+     */
     private int[] values;
 
     public int maxKDivisibleComponents_0_1(int n, int[][] edges, int[] values, int k) {
         this.k = k;
+        // init values
         this.values = values;
         this.graph = new ArrayList[n];
+        // init graph
         for (int i = 0; i < n; i++) {
             graph[i] = new ArrayList<>();
         }
 
+        /**
+         * NOTE !!! update graph with the node's neighbors
+         */
         for (int[] e : edges) {
             int a = e[0], b = e[1];
             graph[a].add(b);
             graph[b].add(a);
         }
 
+        /**
+         * run DFS
+         */
         dfs_0_1(0, -1);
         return res;
     }
@@ -93,10 +111,24 @@ public class MaximumNumberOfKDivisibleComponents {
         for (int nei : graph[node]) {
             if (nei == parent)
                 continue;
+            /** NOTE !!!!
+             *
+             *  add sum up via dfs recursively call
+             */
             sum += dfs_0_1(nei, node);
+            /**
+             *  use `sum mod k`, make val smaller
+             */
             sum %= k; // keep sum mod k small
         }
 
+        /** NOTE !!!!
+         *
+         *  if `sum % k == 0` mean we find a divisible way,
+         *  so we
+         *     1. update result
+         *     2. reset current sum
+         */
         if (sum % k == 0) {
             res++; // we can form a divisible component
             return 0; // reset sum (as this component is split)
