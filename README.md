@@ -417,6 +417,7 @@
 1923| [Longest Common Subpath](https://leetcode.com/problems/longest-common-subpath/) |  [Python](./leetcode_python/Hash_table/longest-common-subpath.py)  | _O(n)_ | _O(h)_ | Hard|hash, bit,  `amazon`|  AGAIN (not start)
 2506| [Count Pairs Of Similar Strings](https://leetcode.com/problems/count-pairs-of-similar-strings/description/) |  [Java](./leetcode_java/src/main/java/LeetCodeJava/HashTable/CountPairsOfSimilarStrings.java) | _O(n)_ | _O(h)_ | Easy|hashmap, LC weekly|  AGAIN (1)
 2592| [Maximize Greatness of an Array](https://leetcode.com/problems/maximize-greatness-of-an-array) |  [Java](./leetcode_java/src/main/java/LeetCodeJava/HashTable/MaximizeGreatnessOfAnArray.java) | _O(n)_ | _O(h)_ | Medium |Treemap, 2 pointers, LC weekly|  AGAIN (1)
+2870| [Minimum Number of Operations to Make Array Empty](https://leetcode.com/problems/minimum-number-of-operations-to-make-array-empty) |  [Java](./leetcode_java/src/main/java/LeetCodeJava/HashTable/MinimumNumberOfOperationsToMakeArrayEmpty.java) | _O(n)_ | _O(h)_ | Medium |LC 2244, hashmap, count, LC weekly|  AGAIN (1)
 
 
 ## Linked list
