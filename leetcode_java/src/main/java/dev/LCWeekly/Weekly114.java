@@ -289,10 +289,10 @@ public class Weekly114 {
     // Q4
     // LC 2872
     // https://leetcode.com/problems/maximum-number-of-k-divisible-components/description/
-    // 7.19 - 29 am
+    // 8.09 - 19 am
     /**
      *
-     * -> Return the MAX number of components in ANY valid split.
+     * -> Return the MAX number of `components` in ANY valid split.
      *
      *
      *  - edges[i] = [ai, bi] : edge between nodes ai and bi in the tree.
@@ -303,11 +303,77 @@ public class Weekly114 {
      *      such that the resulting components all have `values` that are `divisible by k, `
      *       -  value of a connected component is the sum of the values of its nodes.
      *
+     *
+     *     IDEA 1) TREE get sub node sum + dfs ????
+     *
+     *     IDEA 2) map + split ????
+     *
+     *     IDEA 3) brute force ???
+     *
+     *     IDEA 4) dfs + backtrack
+     *
+     *
+     *  exp 1)  Input: n = 5, edges = [[0,2],[1,2],[1,3],[2,4]], values = [1,8,1,4,4], k = 6
+     *
+     *  { val : [neighbor_1, neighbor_2,...] }
+     *  map : { 0: [2], 1: [2,3], 2: [0,4], 4: [2] }
+     *
+     *  map2 : { 1: [8,1], 2: [4] }
+     *
      */
-    public int maxKDivisibleComponents(int n, int[][] edges, int[] values, int k) {
+    //Map<>
+//    public int maxKDivisibleComponents(int n, int[][] edges, int[] values, int k) {
+//        // edge
+//        if(n == 5 || k == 0 || edges == null || edges[0].length == 0){
+//            return 0;
+//        }
+//        int res = 0;
+//
+//        return res;
+//    }
 
-        return 0;
+   // private
+
+    // V1: DFS,  fix by gpt
+    private int res = 0;
+    private int k;
+    private List<Integer>[] graph;
+    private int[] values;
+
+    public int maxKDivisibleComponents(int n, int[][] edges, int[] values, int k) {
+        this.k = k;
+        this.values = values;
+        this.graph = new ArrayList[n];
+        for (int i = 0; i < n; i++) {
+            graph[i] = new ArrayList<>();
+        }
+
+        for (int[] e : edges) {
+            int a = e[0], b = e[1];
+            graph[a].add(b);
+            graph[b].add(a);
+        }
+
+        dfs(0, -1);
+        return res;
     }
+
+    private long dfs(int node, int parent) {
+        long sum = values[node]; // start from node value
+        for (int nei : graph[node]) {
+            if (nei == parent)
+                continue;
+            sum += dfs(nei, node);
+            sum %= k; // keep sum mod k small
+        }
+
+        if (sum % k == 0) {
+            res++; // we can form a divisible component
+            return 0; // reset sum (as this component is split)
+        }
+        return sum;
+    }
+
 
 
 
