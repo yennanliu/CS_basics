@@ -3,7 +3,9 @@ package dev;
 import LeetCodeJava.DataStructure.TreeNode;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
+import java.util.Queue;
 
 public class Workspace18 {
 
@@ -110,7 +112,46 @@ public class Workspace18 {
 
 
     // LC 653
+    /**
+     *
+     * Given the root of a BST and an integer k, r
+     * -> return true if there exist two elements in the BST such that
+     * their sum is equal to k, or false otherwise.
+     *
+     *  -> return true if ANY node in BST sum equals as k, otherwise return false
+     *
+     *
+     *
+     */
     public boolean findTarget(TreeNode root, int k) {
+        // edge
+        if(root == null){
+            return false;
+        }
+        if(root.left == null && root.right == null){
+            return false;
+        }
+        // map : { val : cnt }
+        Map<Integer, Integer> map = new HashMap<>();
+        // bfs
+        Queue<TreeNode> q = new LinkedList<>();
+        q.add(root);
+        while(!q.isEmpty()){
+            TreeNode cur = q.poll();
+            map.put(cur.val, 1);  // node val should be unique
+            // x + y = k
+            // -> x = k - y
+            // node val should be unique
+            if(map.containsKey(k - cur.val) && k - cur.val != cur.val){
+                return true;
+            }
+            if(cur.left != null){
+                q.add(cur.left);
+            }
+            if(cur.right != null){
+                q.add(cur.right);
+            }
+        }
 
         return false;
     }
