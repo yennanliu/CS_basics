@@ -307,6 +307,17 @@ public class Workspace18 {
 //    }
 
 
+    // LC 2872
+    // 11.07 - 17 am
+    /**
+     *
+     *
+     *
+     */
+    public int maxKDivisibleComponents(int n, int[][] edges, int[] values, int k) {
+
+        return 0;
+    }
 
 
 
