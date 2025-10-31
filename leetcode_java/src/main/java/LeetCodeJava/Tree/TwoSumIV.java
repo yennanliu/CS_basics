@@ -75,7 +75,7 @@ public class TwoSumIV {
              *    2   null
              *
              *    k = 6
-             *  
+             *
              *
              */
             if (map.containsKey(k - cur.val) && k - cur.val != cur.val) {
