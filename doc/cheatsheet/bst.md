@@ -50,9 +50,9 @@ void traverse(TreeNode root) {
 - **Template**: Use Inorder Template
 
 ### **Pattern 4: BST Construction**
-- **Description**: Build BST from various inputs
-- **Recognition**: "Construct", "build", "generate", "serialize"
-- **Examples**: LC 108, LC 109, LC 95, LC 96, LC 449
+- **Description**: Build BST from various inputs or rebuild/balance existing BST
+- **Recognition**: "Construct", "build", "generate", "serialize", "balance"
+- **Examples**: LC 108, LC 109, LC 95, LC 96, LC 449, LC 1008, LC 1382
 - **Template**: Use Construction Template
 
 ### **Pattern 5: BST Properties & Optimization**
@@ -324,7 +324,87 @@ def bst_from_preorder(preorder):
     return build(float('-inf'), float('inf'))
 ```
 
-##### **Pattern 6.4: Generate All Unique BSTs** (LC 95)
+##### **Pattern 6.4: Balance a BST** (LC 1382)
+```python
+def balance_bst(root):
+    """
+    Balance an existing BST by rebuilding it
+    Approach: Inorder traversal + rebuild from sorted nodes
+    Time: O(n), Space: O(n)
+
+    Key Steps:
+    1. Inorder traversal to get sorted node list
+    2. Use middle element as root (like sorted array to BST)
+    3. Recursively build left and right subtrees
+    """
+    # Step 1: Get sorted nodes via inorder traversal
+    nodes = []
+    def inorder(node):
+        if not node:
+            return
+        inorder(node.left)
+        nodes.append(node)
+        inorder(node.right)
+
+    inorder(root)
+
+    # Step 2: Rebuild balanced BST from sorted nodes
+    def build_balanced(left, right):
+        if left > right:
+            return None
+
+        # Pick middle as root to ensure balance
+        mid = (left + right) // 2
+        root = nodes[mid]
+
+        # Recursively build left and right subtrees
+        root.left = build_balanced(left, mid - 1)
+        root.right = build_balanced(mid + 1, right)
+
+        return root
+
+    return build_balanced(0, len(nodes) - 1)
+```
+
+```java
+// Java implementation
+public TreeNode balanceBST(TreeNode root) {
+    List<TreeNode> nodes = new ArrayList<>();
+
+    // Step 1: Inorder traversal to get sorted nodes
+    inorderTraversal(root, nodes);
+
+    // Step 2: Rebuild balanced BST
+    return buildBalancedBST(nodes, 0, nodes.size() - 1);
+}
+
+private void inorderTraversal(TreeNode root, List<TreeNode> nodes) {
+    if (root == null) {
+        return;
+    }
+    inorderTraversal(root.left, nodes);
+    nodes.add(root);
+    inorderTraversal(root.right, nodes);
+}
+
+private TreeNode buildBalancedBST(List<TreeNode> nodes, int left, int right) {
+    if (left > right) {
+        return null;
+    }
+
+    // Pick middle as root for balance
+    int mid = (left + right) / 2;
+    TreeNode root = nodes.get(mid);
+
+    // Recursively build subtrees
+    root.left = buildBalancedBST(nodes, left, mid - 1);
+    root.right = buildBalancedBST(nodes, mid + 1, right);
+
+    return root;
+}
+```
+
+##### **Pattern 6.5: Generate All Unique BSTs** (LC 95)
 ```python
 def generate_trees(n):
     """
@@ -356,7 +436,7 @@ def generate_trees(n):
     return generate(1, n)
 ```
 
-##### **Pattern 6.5: Count Unique BSTs** (LC 96)
+##### **Pattern 6.6: Count Unique BSTs** (LC 96)
 ```python
 def num_trees(n):
     """
@@ -420,6 +500,7 @@ private TreeNode build(int[] preorder, int min, int max) {
 | **Sorted Array** | Binary search | Pick mid as root | O(n) | O(n) | 108 |
 | **Sorted List** | Two pointers | Find mid node | O(n log n) | O(log n) | 109 |
 | **Preorder** | Bounds checking | Use min/max | O(n) | O(h) | 1008 |
+| **Balance BST** | Inorder + Rebuild | Collect sorted nodes | O(n) | O(n) | 1382 |
 | **Generate All** | Combinatorial | Try each as root | O(4^n/n^1.5) | O(4^n/n^1.5) | 95 |
 | **Count Unique** | Dynamic programming | Catalan numbers | O(n²) | O(n) | 96 |
 | **Serialize** | Preorder encoding | BST property | O(n) | O(n) | 449 |
@@ -951,6 +1032,7 @@ mid = left + (right - left) // 2
 | Unique Binary Search Trees II | 95 | Medium | Generate all | Template 6 |
 | Serialize and Deserialize BST | 449 | Medium | Preorder encoding | Special |
 | Construct BST from Preorder | 1008 | Medium | Stack/Recursion | Template 6 |
+| Balance a Binary Search Tree | 1382 | Medium | Inorder + rebuild | Template 6 |
 
 #### **Pattern 5: BST Properties & Range Problems**
 | Problem | LC # | Difficulty | Key Technique | Template |
@@ -961,7 +1043,6 @@ mid = left + (right - left) // 2
 | Range Sum of BST | 938 | Easy | DFS with pruning | Template 1 |
 | Split BST | 776 | Medium | Recursive split | Special |
 | Largest BST Subtree | 333 | Medium | Bottom-up validation | Template 4 |
-| Balance a Binary Search Tree | 1382 | Medium | Inorder + rebuild | Template 6 |
 
 #### **Pattern 6: Path Problems**
 | Problem | LC # | Difficulty | Key Technique | Template |
@@ -1007,7 +1088,7 @@ mid = left + (right - left) // 2
 - LC 333: Largest BST Subtree - Subtree validation
 - LC 1008: Construct BST from Preorder - Stack approach
 - LC 1038: Binary Search Tree to Greater Sum Tree - Accumulation
-- LC 1382: Balance a Binary Search Tree - Tree balancing
+- LC 1382: Balance a Binary Search Tree - Inorder + rebuild balanced BST
 - LC 426: Convert BST to Sorted Doubly Linked List - In-place conversion
 - LC 113: Path Sum II - All root-to-leaf paths with target sum
 - LC 129: Sum Root to Leaf Numbers - DFS accumulation
@@ -1941,6 +2022,6 @@ def inorder_generator(root):
 ```
 
 ---
-**Must-Know Problems for Interviews**: LC 98, 108, 112, 113, 124, 173, 230, 235, 450, 700, 701
-**Advanced Problems**: LC 99, 124, 298, 333, 437, 776, 1373, 1382
-**Keywords**: BST, binary search tree, inorder, sorted, validation, search tree, path sum, DFS, backtracking
+**Must-Know Problems for Interviews**: LC 98, 108, 112, 113, 124, 173, 230, 235, 450, 700, 701, 1382
+**Advanced Problems**: LC 99, 124, 298, 333, 437, 776, 1373
+**Keywords**: BST, binary search tree, inorder, sorted, validation, search tree, path sum, DFS, backtracking, balance, construction
