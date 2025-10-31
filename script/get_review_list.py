@@ -54,7 +54,7 @@ class GetReviewList:
         fib_seq=self.get_fib_10()
         with open(self.progress, 'r') as f:
             for line in f:
-                if line:
+                if line and ':' in line:
                     date, lc_ids= line.split(":")[0], str(line.split(":")[1].strip())
                     date_fix=self.process_datetime(date)
                     sequence_date= [(date_fix + timedelta(days=day)).strftime('%Y-%m-%d') for day in fib_seq]
