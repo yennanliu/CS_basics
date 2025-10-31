@@ -172,51 +172,92 @@ public class Workspace18 {
      *          can make it balanced
      *
      */
-    // IDEA 3) cut `BST` directly, check how to cut, and add cut node back to BST
-    //     *          can make it balanced
+    // IDEA 1) BFS -> reconstruct tree ???
     public TreeNode balanceBST(TreeNode root) {
+
+        List<TreeNode> nodes = new ArrayList<>();
+        inorder(root, nodes);
+
+        // ???
+        return rebuildBST(nodes, 0, nodes.size() - 1);
+    }
+
+    private void inorder(TreeNode root, List<TreeNode> nodes) {
+        if (root == null){
+            return;
+        }
+        inorder(root.left, nodes);
+        nodes.add(root);
+        inorder(root.right, nodes);
+    }
+
+    private TreeNode rebuildBST(List<TreeNode> nodes, int l, int r){
         // edge
-        if(root == null){
-            return root;
+        if(nodes == null || nodes.size() == 0){
+            return null; // ???
         }
-        if(root.left == null && root.right == null){
-            return root;
+        if(l > r){
+            return null; // ?????
         }
-        if(isBalanced(root)){
-            return root;
-        }
-
         // ??
-        while(!isBalanced(root)){
-            modifyTree(root);
-        }
+        int mid = (l + r) / 2; // radius ???
+        TreeNode root = nodes.get((mid));
+        root.left = rebuildBST(nodes, l, mid - 1); // ???
+        root.right = rebuildBST(nodes, mid + 1, r);
 
+        // ???
         return root;
     }
 
-    private void modifyTree(TreeNode root){
 
-    }
 
-    // max depth <= 2 ??????
-    // or diff (left, right) <= 2 ???
-    private boolean isBalanced(TreeNode root){
-        if(root == null){
-            return true;
-        }
-        return Math.abs(getDepth(root.left) - getDepth(root.right)) <= 2;
-    }
 
-    int maxDepth = 0;
-    private int getDepth(TreeNode root){
-        if(root == null){
-            return 0;
-        }
-        int leftDepth = getDepth(root.left);
-        int rightDepth = getDepth(root.right);
-        maxDepth = Math.max(leftDepth, rightDepth);
-        return Math.max(getDepth(root.left), getDepth(root.right)) + 1;
-    }
+
+    // IDEA 3) cut `BST` directly, check how to cut, and add cut node back to BST
+    //     *          can make it balanced
+//    public TreeNode balanceBST(TreeNode root) {
+//        // edge
+//        if(root == null){
+//            return root;
+//        }
+//        if(root.left == null && root.right == null){
+//            return root;
+//        }
+//        if(isBalanced(root)){
+//            return root;
+//        }
+//
+//        // ??
+//        while(!isBalanced(root)){
+//            modifyTree(root);
+//        }
+//
+//        return root;
+//    }
+//
+//    private void modifyTree(TreeNode root){
+//
+//    }
+//
+//    // max depth <= 2 ??????
+//    // or diff (left, right) <= 2 ???
+//    private boolean isBalanced(TreeNode root){
+//        if(root == null){
+//            return true;
+//        }
+//        return Math.abs(getDepth(root.left) - getDepth(root.right)) <= 2;
+//    }
+//
+//    int maxDepth = 0;
+//    private int getDepth(TreeNode root){
+//        if(root == null){
+//            return 0;
+//        }
+//        int leftDepth = getDepth(root.left);
+//        int rightDepth = getDepth(root.right);
+//        maxDepth = Math.max(leftDepth, rightDepth);
+//        return Math.max(getDepth(root.left), getDepth(root.right)) + 1;
+//    }
 
 
 
