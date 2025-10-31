@@ -51,9 +51,66 @@ import java.util.List;
 public class BalanceABinarySearchTree {
 
     // V0
-//    public TreeNode balanceBST(TreeNode root) {
-//
-//    }
+    // IDEA: BST + `mid point` built BST + DFS
+    // LC 105, 106
+    public TreeNode balanceBST(TreeNode root) {
+
+        List<TreeNode> nodes = new ArrayList<>();
+        /**  NOTE !!!
+         *
+         *  we want to get increasing order to list of node
+         *  and since it's a BST, so we can do above
+         *  by `in order traverse`. e.g. left -> root -> right
+         */
+        inorder_0(root, nodes);
+        /** build tree */
+        return rebuildBST(nodes, 0, nodes.size() - 1);
+    }
+
+    /**
+     * help func get list of node via inrder traverse
+     */
+    private void inorder_0(TreeNode root, List<TreeNode> nodes) {
+        if (root == null) {
+            return;
+        }
+        inorder_0(root.left, nodes);
+        nodes.add(root);
+        inorder_0(root.right, nodes);
+    }
+
+    /**
+     *  NOTE !!! the param of this helper func:
+     *
+     * @nodes: list of nodes (increase order)
+     * @l: left boundary of list
+     * @r: right boundary of list
+     */
+    private TreeNode rebuildBST(List<TreeNode> nodes, int l, int r) {
+        // edge
+        if (nodes == null || nodes.size() == 0) {
+            return null;
+        }
+        if (l > r) {
+            return null;
+        }
+        /**
+         *  NOTE !!! core of the problem: Rebuild balanced BST
+         *
+         *  •	Pick the middle node as root.
+         * 	•	Recursively build left and right subtrees from halves.
+         * 	•	This ensures each subtree size differs by ≤ 1 ⇒ balanced.
+         *
+         *  refer LC 105, 106
+         */
+        int mid = (l + r) / 2; // radius
+        TreeNode root = nodes.get((mid));
+        root.left = rebuildBST(nodes, l, mid - 1); // ???
+        root.right = rebuildBST(nodes, mid + 1, r);
+
+        // ???
+        return root;
+    }
 
     // V0-1
     // IDEA: BST + DFS (fixed by gpt)
