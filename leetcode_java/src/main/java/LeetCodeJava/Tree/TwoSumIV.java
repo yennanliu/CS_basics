@@ -40,55 +40,61 @@ import java.util.*;
 public class TwoSumIV {
 
     // V0
-//    public boolean findTarget(TreeNode root, int k) {
-//
-//        if (root == null) {
-//            return false;
-//        }
-//
-//        if (root.equals(null)){
-//            return false;
-//        }
-//
-//        if (root.left == null && root.right == null) {
-//            return false;
-//        }
-//
-//        //HashMap<Integer, Integer> dict = new HashMap<>();
-//        HashSet<Integer> set = new HashSet<>();
-//        Queue<TreeNode> queue = new LinkedList<>();
-//        queue.add(root);
-//
-//        while (!queue.isEmpty()) {
-//
-//            while (!queue.isEmpty()) {
-//
-//                System.out.println("set = " + set.toString());
-//
-//                TreeNode cur = queue.poll();
-//                if (set.contains(k - cur.val)) {
-//                    return true;
-//                }
-//
-//                set.add(cur.val);
-//
-//                if (cur.left != null) {
-//                    queue.add(cur.left);
-//                }
-//
-//                if (cur.right != null) {
-//                    queue.add(cur.right);
-//                }
-//            }
-//        }
-//
-//        return false;
-//    }
+    // IDEA : BFS + HASHMAP + 2 SUM
+    public boolean findTarget(TreeNode root, int k) {
+        // edge
+        if (root == null) {
+            return false;
+        }
+        if (root.left == null && root.right == null) {
+            return false;
+        }
+        // map : { val : cnt }
+        Map<Integer, Integer> map = new HashMap<>();
+        // bfs
+        Queue<TreeNode> q = new LinkedList<>();
+        q.add(root);
+        while (!q.isEmpty()) {
+            TreeNode cur = q.poll();
+            map.put(cur.val, 1); // node val should be unique
+            // x + y = k
+            // -> x = k - y
+            // node val should be unique
+            /** NOTE !!!! below condition
+             *
+             *  1. it's a valid BST, so  root > root.left and root < root.right
+             *     -> ALL node val in BST MUST be UNIQUE
+             *
+             *  2. so `to avoid duplicated count`, we need to make sure
+             *     we DON'T re-compute current node.
+             *     e.g. k - cur.val != cur.val
+             *
+             *     example:
+             *
+             *      3
+             *    2   null
+             *
+             *    k = 6
+             *  
+             *
+             */
+            if (map.containsKey(k - cur.val) && k - cur.val != cur.val) {
+                return true;
+            }
+            if (cur.left != null) {
+                q.add(cur.left);
+            }
+            if (cur.right != null) {
+                q.add(cur.right);
+            }
+        }
 
+        return false;
+    }
     // V1
     // IDEA : SET + RECURSIVE
     // https://leetcode.com/problems/two-sum-iv-input-is-a-bst/editorial/
-    public boolean findTarget(TreeNode root, int k) {
+    public boolean findTarget_1(TreeNode root, int k) {
         Set< Integer > set = new HashSet();
         return find(root, k, set);
     }
