@@ -55,6 +55,89 @@ public class BalanceABinarySearchTree {
 //
 //    }
 
+    // V0-1
+    // IDEA: BST + DFS (fixed by gpt)
+    // Step 1: collect inorder traversal (sorted values)
+    public TreeNode balanceBST_0_1(TreeNode root) {
+        List<TreeNode> nodes = new ArrayList<>();
+        inorder(root, nodes);
+        // Step 2: rebuild balanced BST
+        return buildBalanced(nodes, 0, nodes.size() - 1);
+    }
+
+    private void inorder(TreeNode root, List<TreeNode> nodes) {
+        if (root == null)
+            return;
+        inorder(root.left, nodes);
+        nodes.add(root);
+        inorder(root.right, nodes);
+    }
+
+    private TreeNode buildBalanced(List<TreeNode> nodes, int l, int r) {
+        if (l > r)
+            return null;
+        int mid = (l + r) / 2;
+        TreeNode root = nodes.get(mid);
+        root.left = buildBalanced(nodes, l, mid - 1);
+        root.right = buildBalanced(nodes, mid + 1, r);
+        return root;
+    }
+
+    // V0-2
+    // IDEA: in-order traversal + BST + DFS (gemini)
+    // List to store the node values in sorted order
+    private List<Integer> sortedValues = new ArrayList<>();
+
+    public TreeNode balanceBST_0_2(TreeNode root) {
+        if (root == null) {
+            return null;
+        }
+
+        // 1. Perform in-order traversal to get all values in a sorted list.
+        inOrderTraversal(root);
+
+        // 2. Build a new, balanced BST from the sorted list.
+        return buildBalancedBST(0, sortedValues.size() - 1);
+    }
+
+    /**
+     * Helper 1: Performs in-order traversal (Left, Root, Right)
+     * to populate the sortedValues list.
+     */
+    private void inOrderTraversal(TreeNode node) {
+        if (node == null) {
+            return;
+        }
+        inOrderTraversal(node.left);
+        sortedValues.add(node.val); // Add the current node's value
+        inOrderTraversal(node.right);
+    }
+
+    /**
+     * Helper 2: Recursively builds a balanced BST from the sorted list
+     * using the indices [start...end].
+     */
+    private TreeNode buildBalancedBST(int start, int end) {
+        // Base case: If the pointers cross, we have no nodes to create.
+        if (start > end) {
+            return null;
+        }
+
+        // Find the middle element of the current list segment.
+        // This will become the root of this subtree.
+        int mid = start + (end - start) / 2;
+
+        // Create the new root node
+        TreeNode root = new TreeNode(sortedValues.get(mid));
+
+        // Recursively build the left subtree from the left half (start to mid-1)
+        root.left = buildBalancedBST(start, mid - 1);
+
+        // Recursively build the right subtree from the right half (mid+1 to end)
+        root.right = buildBalancedBST(mid + 1, end);
+
+        return root;
+    }
 
     // V1-1
     // IDEA: Inorder Traversal + Recursive Construction

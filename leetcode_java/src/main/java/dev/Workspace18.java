@@ -2,10 +2,7 @@ package dev;
 
 import LeetCodeJava.DataStructure.TreeNode;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.Queue;
+import java.util.*;
 
 public class Workspace18 {
 
@@ -158,10 +155,118 @@ public class Workspace18 {
 
 
     // LC 1382
+    // 10.09 - 19 am
+    /**
+     *  -> return a `balanced` BST with the same node values.
+     *
+     *    -  balanced: if the depth of the two subtrees of every node never differs by more than 1.
+     *    - NOTE: the returned tree still has to be BST
+     *
+     *
+     *   IDEA 1) DFS -> reconstruct tree ???  + keep `depth diff` <= 1
+     *     BST property:  left < root < right
+     *
+     *  IDEA 2) BFS -> reconstruct tree ??? + keep `depth diff` <= 1
+     *
+     *  IDEA 3) cut `BST` directly, check how to cut, and add cut node back to BST
+     *          can make it balanced
+     *
+     */
+    // IDEA 3) cut `BST` directly, check how to cut, and add cut node back to BST
+    //     *          can make it balanced
     public TreeNode balanceBST(TreeNode root) {
+        // edge
+        if(root == null){
+            return root;
+        }
+        if(root.left == null && root.right == null){
+            return root;
+        }
+        if(isBalanced(root)){
+            return root;
+        }
 
-        return null;
+        // ??
+        while(!isBalanced(root)){
+            modifyTree(root);
+        }
+
+        return root;
     }
+
+    private void modifyTree(TreeNode root){
+
+    }
+
+    // max depth <= 2 ??????
+    // or diff (left, right) <= 2 ???
+    private boolean isBalanced(TreeNode root){
+        if(root == null){
+            return true;
+        }
+        return Math.abs(getDepth(root.left) - getDepth(root.right)) <= 2;
+    }
+
+    int maxDepth = 0;
+    private int getDepth(TreeNode root){
+        if(root == null){
+            return 0;
+        }
+        int leftDepth = getDepth(root.left);
+        int rightDepth = getDepth(root.right);
+        maxDepth = Math.max(leftDepth, rightDepth);
+        return Math.max(getDepth(root.left), getDepth(root.right)) + 1;
+    }
+
+
+
+
+    //  IDEA 1) BFS -> reconstruct tree ??? + keep `depth diff` <= 1
+//    public TreeNode balanceBST(TreeNode root) {
+//        // edge
+//        if(root == null){
+//            return root;
+//        }
+//        if(root.left == null && root.right == null){
+//            return root;
+//        }
+//        // BFS collect tree (in order: left -> root -> right)
+//        Queue<TreeNode> q = new LinkedList<>();
+//        q.add(root);
+//        List<TreeNode> list = new ArrayList<>();
+//        while(!q.isEmpty()){
+//            // (in order: left -> root -> right) ?????
+//            TreeNode cur = q.poll();
+//            // ???
+//            if(cur.left != null){
+//                q.add(cur.left);
+//            }
+//            // ???
+//            list.add(cur);
+//            if(cur.right != null){
+//                q.add(cur.right);
+//            }
+//        }
+//
+//        System.out.println(">>> list = " + list);
+//        TreeNode newRoot = list.get(list.size() / 2); // ???
+//        // DFS build tree
+//
+//        return buildBalancedBST(newRoot, list);
+//    }
+//
+//    /**   ???
+//     *
+//     *  1. find mid point of list
+//     *  2. set mid point as root
+//     *  3. build tree
+//     */
+//    private TreeNode buildBalancedBST(TreeNode root, List<TreeNode> list){
+//        return null;
+//    }
+
+
+
 
 
 }
