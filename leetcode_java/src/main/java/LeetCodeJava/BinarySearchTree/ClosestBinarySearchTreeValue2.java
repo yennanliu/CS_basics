@@ -83,6 +83,13 @@ public class ClosestBinarySearchTreeValue2 {
     }
 
     // ✅ Proper binary search to find closest index
+    /** NOTE !!!
+     *
+     *
+     *  the binary search for `finding close val`
+     *
+     *  - LC 35 Search Insert Position
+     */
     private int findClosest(List<TreeNode> list, double target) {
         int l = 0, r = list.size() - 1;
         while (l < r) {
