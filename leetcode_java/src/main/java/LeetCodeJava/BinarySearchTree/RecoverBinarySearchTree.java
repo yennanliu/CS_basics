@@ -61,7 +61,7 @@ public class RecoverBinarySearchTree {
      *  - first: The first node where order is violated
      *  - second: The second node where order is violated
      *  - prev: The last visited node in inorder traversal
-     *  
+     *
      */
     private TreeNode first = null;
     private TreeNode second = null;
@@ -93,20 +93,38 @@ public class RecoverBinarySearchTree {
         }
     }
 
+    /** NOTE !!!! Inorder traversal
+     *
+     */
+    /**
+     * Performs a standard in-order traversal (Left, Root, Right)
+     * to find the two nodes that violate the sorted order.
+     */
     private void inorder_0_1(TreeNode root) {
         if (root == null)
             return;
 
+        // 1. Go Left
         inorder_0_1(root.left);
 
         // Violation: current node’s value < previous node’s value
+        // If prevNode is null, this is the first (smallest) node.
         if (prev != null && root.val < prev.val) {
-            // First time violation → mark prev
+
+            /** First time violation → mark prev */
+            // If this is the *first* violation we've seen,
+            // the 'prevNode' is the first node of the swapped pair.
             if (first == null)
                 first = prev;
-            // Second time (or same if adjacent swap) → mark current node
+
+            /** Second time (or same if adjacent swap) → mark current node */
+            // The 'currentNode' is the second node of the swapped pair.
+            // If there's a second, non-adjacent violation, this will
+            // correctly update 'secondViolation' to the new 'currentNode'.
             second = root;
         }
+
+        // Update prevNode to the current node for the next comparison.
         prev = root; // update previous node
 
         inorder_0_1(root.right);
