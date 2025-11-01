@@ -48,6 +48,21 @@ public class RecoverBinarySearchTree {
 
     // V0-1
     // IDEA: BST + find node and swap to fix (fixed by gpt)
+    /**
+     *  Steps:
+     *
+     * → Do an inorder traversal,
+     * → Detect the two nodes that violate ascending order,
+     * → Swap their values once.
+     */
+    /**
+     *  NOTE !!!  we define below vars:
+     *
+     *  - first: The first node where order is violated
+     *  - second: The second node where order is violated
+     *  - prev: The last visited node in inorder traversal
+     *  
+     */
     private TreeNode first = null;
     private TreeNode second = null;
     private TreeNode prev = new TreeNode(Integer.MIN_VALUE);
@@ -57,9 +72,20 @@ public class RecoverBinarySearchTree {
             return;
 
         // 1️⃣ Inorder traversal to find the two swapped nodes
+        /** NOTE !!!
+         *
+         *  we run the inorder_0_1, and update first, second,
+         *  which are the to-swap nodes
+         */
         inorder_0_1(root);
 
         // 2️⃣ Swap the two nodes’ values
+        /** NOTE !!!
+         *
+         *  ONLY if first, and second nodes are NOT null,
+         *  then we have to SWAP. otherwise, it's a valid BST already.
+         *  No need to swap.
+         */
         if (first != null && second != null) {
             int temp = first.val;
             first.val = second.val;
