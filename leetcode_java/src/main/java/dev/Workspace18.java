@@ -365,5 +365,63 @@ public class Workspace18 {
     }
 
 
+    // LC 173
+    // 16.14 -24 PM
+    /**
+     * -> Implement the `BSTIterator` class that represents an `iterator `
+     *    over the IN-ORDER traversal of a binary search tree (BST):
+     *
+     *    - in-order traversal
+     *
+     *    - boolean hasNext(): Returns true if there
+     *      exists a number in the traversal to the right of the pointer,
+     *      otherwise returns false.
+     *
+     *    - int next() Moves the pointer to the right,
+     *      then returns the number at the pointer.
+     *
+     */
+    class BSTIterator {
+
+        // attr
+        List<TreeNode> list;
+        TreeNode root;
+        int idx;
+
+        public BSTIterator(TreeNode root) {
+            this.root = root;
+            this.list = new ArrayList<>();
+            this.idx = 0;
+
+            buildInorder(root);
+        }
+
+        // helper func: inorder: left -> root -> right
+        private void buildInorder(TreeNode root){
+            if(root == null){
+                return;
+            }
+            buildInorder(root.left);
+            list.add(root);
+            buildInorder(root.right);
+        }
+
+        public int next() {
+            // edge
+            if(this.idx >= this.list.size()){
+                System.out.println("out of boundary");
+                return -1;
+            }
+            TreeNode cur = this.list.get(this.idx);
+            this.idx += 1;
+            return cur.val;
+        }
+
+        public boolean hasNext() {
+            return this.idx < this.list.size();
+        }
+
+    }
+
 
 }

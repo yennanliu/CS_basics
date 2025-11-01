@@ -128,6 +128,55 @@ public class BinarySearchTreeIterator {
         }
     }
 
+    // V0-0-1
+    // IDEA: DFS + INORDER TRAVERSE + INDEX
+    /**
+     *  1. collect nodes as list via inorder traverse
+     *  2. maintain an idx, so we know next(), and hasNext()
+     *  3. do op per input accordingly
+     */
+    class BSTIterator_0_0_1 {
+
+        // attr
+        List<TreeNode> list;
+        TreeNode root;
+        int idx;
+
+        public BSTIterator_0_0_1(TreeNode root) {
+            this.root = root;
+            this.list = new ArrayList<>();
+            this.idx = 0;
+
+            buildInorder(root);
+        }
+
+        // helper func: inorder: left -> root -> right
+        private void buildInorder(TreeNode root) {
+            if (root == null) {
+                return;
+            }
+            buildInorder(root.left);
+            list.add(root);
+            buildInorder(root.right);
+        }
+
+        public int next() {
+            // edge
+            if (this.idx >= this.list.size()) {
+                System.out.println("out of boundary");
+                return -1;
+            }
+            TreeNode cur = this.list.get(this.idx);
+            this.idx += 1;
+            return cur.val;
+        }
+
+        public boolean hasNext() {
+            return this.idx < this.list.size();
+        }
+
+    }
+
     // V0-1
     // IDEA: DFS + BST property (fixed by gpt)
     /**
