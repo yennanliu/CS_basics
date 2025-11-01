@@ -106,8 +106,17 @@ public class MaximumNumberOfKDivisibleComponents {
         return res;
     }
 
+    /** NOTE !!! dfs helper func param
+     *
+     * @node: current node
+     * @parent: node's parent
+     */
     private long dfs_0_1(int node, int parent) {
         long sum = values[node]; // start from node value
+        /** NOTE !!!
+         *
+         *  go through node's neighbors
+         */
         for (int nei : graph[node]) {
             /** NOTE !!!
              *
@@ -129,13 +138,17 @@ public class MaximumNumberOfKDivisibleComponents {
 
         /** NOTE !!!!
          *
-         *  if `sum % k == 0` mean we find a divisible way,
+         *  if `sum % k == 0` -> we find a `divisible way`,
          *  so we
          *     1. update result
          *     2. reset current sum
          */
         if (sum % k == 0) {
             res++; // we can form a divisible component
+            /** NOTE !!!!
+             *
+             *  RESET sum
+             */
             return 0; // reset sum (as this component is split)
         }
         return sum;
