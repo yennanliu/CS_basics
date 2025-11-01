@@ -1,6 +1,7 @@
 package dev;
 
 import LeetCodeJava.DataStructure.TreeNode;
+import jdk.internal.org.objectweb.asm.tree.IincInsnNode;
 
 import java.util.*;
 
@@ -422,6 +423,91 @@ public class Workspace18 {
         }
 
     }
+
+
+    // LC 272
+    // 16.38 - 48 pm
+    /**
+     * ->  find `k values` in the BST that are closest to the target.
+     *
+     *
+     *  - target value is a floating point.
+     *  -  k is always valid, that is: k ≤ total nodes.
+     *  - guaranteed to have ONLY ONE UNIQUE set of k values
+     *    in the BST that are closest to the target.
+     *
+     *
+     *  IDEA 1) inorder traverse + 2 pointers collect k closest values
+     *
+     */
+    public List<Integer> closestKValues(TreeNode root, double target, int k) {
+        List<Integer> res = new ArrayList<>();
+        // edge
+        if(root == null){
+            return res;
+        }
+        if(k == 0){
+            return res;
+        }
+        if(k == 1 && (root.left == null && root.right == null)){
+            res.add(root.val);
+            return res;
+        }
+
+        List<TreeNode> list = new ArrayList<>();
+        buildInorder2(root, list);
+
+        // 2 pointers
+        int closetIdx = findCloset(list, target);
+        int l = closetIdx - 1;
+        int r = closetIdx;
+        while(k > 0){
+            if(l >= 0){
+                res.add(list.get(l).val);
+            }
+            if(r < list.size()){
+                res.add(list.get(r).val);
+            }
+            l -= 1;
+            r += 1;
+            k -= 1;
+        }
+
+        return res;
+    }
+
+    // ??? binary search
+    private int findCloset(List<TreeNode> list, double target){
+        int l = 0;
+        int r = list.size() -1;
+        int idx = -1;
+        int diff = Integer.MAX_VALUE; // ???
+        while(r >= l){
+            int mid = (l + r) / 2;
+            int val = list.get(mid).val;
+            int curDiff = (int) Math.abs(val - target);
+            if(curDiff < diff){
+                idx = mid;
+                diff = curDiff; // ???
+            }
+        }
+        return idx; // ????
+    }
+
+
+    private void buildInorder2(TreeNode root, List<TreeNode> list){
+        if(root == null){
+            return;
+        }
+        buildInorder2(root.left, list);
+        list.add(root);
+        buildInorder2(root.right, list);
+    }
+
+
+
+
+
 
 
 }
