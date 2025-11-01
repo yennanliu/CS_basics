@@ -91,6 +91,9 @@ public class BalanceABinarySearchTree {
         if (nodes == null || nodes.size() == 0) {
             return null;
         }
+        /**
+         *  NOTE !!!  this edge case
+         */
         if (l > r) {
             return null;
         }
