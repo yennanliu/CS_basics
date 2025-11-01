@@ -172,42 +172,87 @@ public class Workspace18 {
      *          can make it balanced
      *
      */
-    // IDEA 1) BFS -> reconstruct tree ???
+    // IDEA 1) INORDER + reconstruct tree
     public TreeNode balanceBST(TreeNode root) {
-
-        List<TreeNode> nodes = new ArrayList<>();
-        inorder(root, nodes);
-
-        // ???
-        return rebuildBST(nodes, 0, nodes.size() - 1);
+        List<TreeNode> list = new ArrayList<>();
+        inorderGetNodes(root, list);
+        return buildTree(list, 0, list.size() - 1);
     }
 
-    private void inorder(TreeNode root, List<TreeNode> nodes) {
-        if (root == null){
+    private void inorderGetNodes(TreeNode root, List<TreeNode> list){
+        // inorder: left -> root -> right
+        if(root == null){
             return;
         }
-        inorder(root.left, nodes);
-        nodes.add(root);
-        inorder(root.right, nodes);
+        inorderGetNodes(root.left, list);
+        list.add(root);
+        inorderGetNodes(root.right, list);
+        //return list;
     }
 
-    private TreeNode rebuildBST(List<TreeNode> nodes, int l, int r){
-        // edge
-        if(nodes == null || nodes.size() == 0){
-            return null; // ???
-        }
-        if(l > r){
-            return null; // ?????
-        }
-        // ??
-        int mid = (l + r) / 2; // radius ???
-        TreeNode root = nodes.get((mid));
-        root.left = rebuildBST(nodes, l, mid - 1); // ???
-        root.right = rebuildBST(nodes, mid + 1, r);
-
+    // l: left boundary, r: right boundary
+    private TreeNode buildTree(List<TreeNode> list, int l, int r){
         // ???
+        if(list == null){
+            return null;
+        }
+        // get mid idx, and radius
+        /**
+         *        int mid = (l + r) / 2; // radius
+         *         TreeNode root = nodes.get((mid));
+         *         root.left = rebuildBST(nodes, l, mid - 1); // ???
+         *         root.right = rebuildBST(nodes, mid + 1, r);
+         */
+        int mid = (l + r) / 2;
+        TreeNode root = list.get(mid); // ???
+        root.left = buildTree(list, l, mid - 1);
+        root.right = buildTree(list, mid + 1, r);
+
         return root;
     }
+
+
+
+
+
+
+
+    // IDEA 1) BFS -> reconstruct tree ???
+//    public TreeNode balanceBST(TreeNode root) {
+//
+//        List<TreeNode> nodes = new ArrayList<>();
+//        inorder(root, nodes);
+//
+//        // ???
+//        return rebuildBST(nodes, 0, nodes.size() - 1);
+//    }
+//
+//    private void inorder(TreeNode root, List<TreeNode> nodes) {
+//        if (root == null){
+//            return;
+//        }
+//        inorder(root.left, nodes);
+//        nodes.add(root);
+//        inorder(root.right, nodes);
+//    }
+//
+//    private TreeNode rebuildBST(List<TreeNode> nodes, int l, int r){
+//        // edge
+//        if(nodes == null || nodes.size() == 0){
+//            return null; // ???
+//        }
+//        if(l > r){
+//            return null; // ?????
+//        }
+//        // ??
+//        int mid = (l + r) / 2; // radius ???
+//        TreeNode root = nodes.get((mid));
+//        root.left = rebuildBST(nodes, l, mid - 1); // ???
+//        root.right = rebuildBST(nodes, mid + 1, r);
+//
+//        // ???
+//        return root;
+//    }
 
 
 
