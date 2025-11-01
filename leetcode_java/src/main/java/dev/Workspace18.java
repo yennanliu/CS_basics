@@ -506,7 +506,64 @@ public class Workspace18 {
 
 
     // LC 99
+    // 17.27 - 37 pm
+    /**
+     *
+     *
+     *
+     */
     public void recoverTree(TreeNode root) {
+        // edge
+        // ???
+        if(isValidBST(root, Integer.MIN_VALUE, Integer.MAX_VALUE)){
+            return;
+        }
+        // swap make as valid BST
+        // step 1) record prev, cur node
+        // step 2) go through BST nodes
+        // step 3) if found a `not valid` node,
+        //         swap that node with prev node ???
+
+        // ????
+        swapBST(null, root, Integer.MIN_VALUE, Integer.MAX_VALUE);
+    }
+
+    private void swapBST(TreeNode prevNode, TreeNode root, int smallest, int biggest){
+        if(root == null){
+           // return true;
+            return;
+        }
+        if(smallest >= root.val){
+            // ???
+            TreeNode tmp = prevNode;
+            prevNode = root;
+            root = tmp;
+        }
+        if(root.val >= biggest){
+            // ???
+            TreeNode tmp = prevNode;
+            prevNode = root;
+            root = tmp;
+        }
+
+        // ???
+        swapBST(root, root.left, smallest, root.val);
+        swapBST(root, root.right, smallest, root.val);
+    }
+
+    //???
+    private boolean isValidBST(TreeNode root, int smallest, int biggest){
+        if(root == null){
+            return true;
+        }
+        if(smallest >= root.val){
+            return false;
+        }
+        if(root.val >= biggest){
+            return false;
+        }
+        return isValidBST(root.left, smallest, root.val) &&
+                isValidBST(root.right, root.val, biggest);
 
     }
 

@@ -46,17 +46,134 @@ public class RecoverBinarySearchTree {
 //
 //    }
 
+    // V0-1
+    // IDEA: BST + find node and swap to fix (fixed by gpt)
+    private TreeNode first = null;
+    private TreeNode second = null;
+    private TreeNode prev = new TreeNode(Integer.MIN_VALUE);
+
+    public void recoverTree_0_1(TreeNode root) {
+        if (root == null)
+            return;
+
+        // 1️⃣ Inorder traversal to find the two swapped nodes
+        inorder_0_1(root);
+
+        // 2️⃣ Swap the two nodes’ values
+        if (first != null && second != null) {
+            int temp = first.val;
+            first.val = second.val;
+            second.val = temp;
+        }
+    }
+
+    private void inorder_0_1(TreeNode root) {
+        if (root == null)
+            return;
+
+        inorder_0_1(root.left);
+
+        // Violation: current node’s value < previous node’s value
+        if (prev != null && root.val < prev.val) {
+            // First time violation → mark prev
+            if (first == null)
+                first = prev;
+            // Second time (or same if adjacent swap) → mark current node
+            second = root;
+        }
+        prev = root; // update previous node
+
+        inorder_0_1(root.right);
+    }
+
+    // V0-2
+    // IDEA: (gemini)
+    // We use instance variables to keep track of the nodes during the
+    // recursive in-order traversal.
+
+    // Tracks the previous node in the in-order sequence.
+    private TreeNode prevNode;
+
+    // Tracks the first node that is out of order.
+    private TreeNode firstViolation;
+
+    // Tracks the second node that is out of order.
+    private TreeNode secondViolation;
+
+    public void recoverTree(TreeNode root) {
+        if (root == null) {
+            return;
+        }
+
+        // Initialize instance variables for this run.
+        prevNode = null;
+        firstViolation = null;
+        secondViolation = null;
+
+        // 1. Traverse the tree in-order to find the two nodes that are swapped.
+        inOrderTraversal(root);
+
+        // 2. After the traversal, swap the values of the two found nodes.
+        // We must check if firstViolation is not null, in case the tree was already valid.
+        if (firstViolation != null && secondViolation != null) {
+            int temp = firstViolation.val;
+            firstViolation.val = secondViolation.val;
+            secondViolation.val = temp;
+        }
+    }
+
+    /**
+     * Performs a standard in-order traversal (Left, Root, Right)
+     * to find the two nodes that violate the sorted order.
+     */
+    private void inOrderTraversal(TreeNode currentNode) {
+        if (currentNode == null) {
+            return;
+        }
+
+        // 1. Go Left
+        inOrderTraversal(currentNode.left);
+
+        // 2. Visit (Process) the current node
+        // This is where we check for the BST violation.
+
+        // If prevNode is null, this is the first (smallest) node.
+        if (prevNode != null && prevNode.val > currentNode.val) {
+            // A violation is found (prev > current)!
+
+            // If this is the *first* violation we've seen,
+            // the 'prevNode' is the first node of the swapped pair.
+            if (firstViolation == null) {
+                firstViolation = prevNode;
+            }
+
+            // The 'currentNode' is the second node of the swapped pair.
+            // If there's a second, non-adjacent violation, this will
+            // correctly update 'secondViolation' to the new 'currentNode'.
+            secondViolation = currentNode;
+        }
+
+        // Update prevNode to the current node for the next comparison.
+        prevNode = currentNode;
+
+        // 3. Go Right
+        inOrderTraversal(currentNode.right);
+    }
+
+    // The original isValidBST and swapBST methods are removed as they are
+    // either redundant or fundamentally flawed.
+
     // V1
     // https://leetcode.com/problems/recover-binary-search-tree/solutions/7021623/beats-100-beginner-friendly-explanation-gjz5a/
-    TreeNode first;
-    TreeNode second;
-    TreeNode prev;
+    TreeNode first_1;
+    TreeNode second_1;
+    TreeNode prev_1;
     public void recoverTree_1(TreeNode root) {
         helper(root);
         // Swap the values of the two misplaced nodes
-        int temp = first.val;
-        first.val = second.val;
-        second.val = temp;
+        int temp = first_1.val;
+        first_1.val = second_1.val;
+        second_1.val = temp;
     }
 
     void helper(TreeNode node) {
@@ -67,14 +184,14 @@ public class RecoverBinarySearchTree {
         helper(node.left);
 
         // Detect swapped nodes
-        if (prev != null && prev.val > node.val) {
-            if (first == null) {
-                first = prev;
+        if (prev_1 != null && prev_1.val > node.val) {
+            if (first_1 == null) {
+                first_1 = prev_1;
             }
-            second = node;
+            second_1 = node;
         }
 
-        prev = node;
+        prev_1 = node;
 
         // Traverse right subtree
         helper(node.right);
