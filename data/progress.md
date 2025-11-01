@@ -86,8 +86,6 @@
 			- 94
 	- LC 230 Kth Smallest Element In a Bst 
 		- gpt
-			- 173
-			- 272
 			- 99
 		- gemini
 			- 450
