@@ -354,16 +354,63 @@ public class Workspace18 {
 
 
     // LC 2872
-    // 11.07 - 17 am
+    // 18.11 - 30 pm
     /**
+     * -> Return the `maximum` number of components in any valid split.
+     *
+     *
+     *   IDEA 1) acc sum + DFS ??
      *
      *
      *
      */
+    ///  ??
+    int maxComCnt = 0;
     public int maxKDivisibleComponents(int n, int[][] edges, int[] values, int k) {
 
-        return 0;
+        Map<Integer, List<Integer>> neighbors = new HashMap<>();
+
+        for(int[] e: edges){
+            int start = e[0];
+            int end = e[1];
+            List<Integer> list1 = new ArrayList<>();
+            if(neighbors.containsKey(start)){
+                list1 = neighbors.get(start);
+            }
+            list1.add(end);
+            neighbors.put(start, list1);
+
+            List<Integer> list2 = new ArrayList<>();
+            if(neighbors.containsKey(end)){
+                list2 = neighbors.get(end);
+            }
+            list2.add(start);
+            neighbors.put(end , list2);
+        }
+
+        System.out.println(">>> neighbors = " + neighbors);
+
+
+        return maxComCnt;
     }
+
+    // ???
+    private int dfsHelper(Map<Integer, List<Integer>> neighbors, int curNode, int[] values, int k){
+        if(neighbors.isEmpty()){
+            return 0; // ???
+        }
+        if(curNode + dfsHelper(neighbors, curNode, values, k) == k){
+
+        }
+
+
+        return 0; // /??
+    }
+
+
+
+
+
 
 
     // LC 173
