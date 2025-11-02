@@ -3,6 +3,8 @@ package LeetCodeJava.DFS;
 // https://leetcode.com/problems/is-graph-bipartite/description/
 
 import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.Queue;
 
 /**
  * 785. Is Graph Bipartite?
@@ -86,6 +88,20 @@ public class IsGraphBipartite {
         return true;
     }
 
+    /**  NOTE !!! DFS helper:
+     *
+     * - int[][] graph:
+     *       This is the adjacency list representation of the graph.
+     *       graph[node] gives you all the neighbors of node.
+     * - color:
+     *   •	Keeps track of the assigned color for each node.
+     * 	   •	color[i] == 0 → not yet colored
+     * 	   •	color[i] == 1 → one color (say, “red”)
+     * 	   •	color[i] == -1 → the opposite color (say, “blue”)
+     * 	   •	This array is shared across recursive calls.
+     * - node: The current node we’re trying to color/check.
+     * - c: The color we want to assign to this node (either 1 or -1).
+     */
     private boolean canSplit(int[][] graph, int[] color, int node, int c) {
         // if already colored, check consistency
         if (color[node] != 0) {
@@ -175,6 +191,47 @@ public class IsGraphBipartite {
         }
 
         // If no conflicts were found for this node and its entire branch, return true.
+        return true;
+    }
+
+    // V0-3
+    // IDEA: BFS (gpt)
+    public boolean isBipartite_0_3(int[][] graph) {
+        int n = graph.length;
+        int[] color = new int[n]; // 0 = uncolored, 1 = red, -1 = blue
+
+        // The graph may have multiple disconnected components
+        for (int i = 0; i < n; i++) {
+            if (color[i] == 0) {
+                if (!canSplitBFS(graph, color, i)) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    private boolean canSplitBFS(int[][] graph, int[] color, int start) {
+        Queue<Integer> q = new LinkedList<>();
+        q.offer(start);
+        color[start] = 1; // assign first color (red)
+
+        while (!q.isEmpty()) {
+            int node = q.poll();
+
+            for (int nei : graph[node]) {
+                if (color[nei] == 0) {
+                    // not colored yet → assign opposite color
+                    color[nei] = -color[node];
+                    q.offer(nei);
+                } else if (color[nei] == color[node]) {
+                    // conflict: adjacent nodes have the same color
+                    return false;
+                }
+            }
+        }
+
         return true;
     }
 
