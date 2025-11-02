@@ -858,7 +858,101 @@ public class Workspace18 {
 
 
     // LC 785
+    /**
+     *
+     *  -> Return true if and only if it is bipartite.
+     *
+     *
+     *
+     *  IDEA 1) DFS
+     *    - 3 states:
+     *      - 0: not visited
+     *      - 1: visiting
+     *      - 2: visited
+     *    -> via DFS, we can check if it's possible to split graph
+     *       into 2 group ???
+     *
+     *
+     *  IDEA 2) BFS ???
+     *
+     *
+     */
     public boolean isBipartite(int[][] graph) {
+        // edge
+        if(graph == null || graph.length == 0 || graph[0].length == 0){
+            return true;
+        }
+        // ???
+        if(graph.length == 1 || graph[0].length == 1){
+            return true;
+        }
+
+        // build graph
+        // { node: [neighbor_1, neighbor_2,...] }
+        Map<Integer, List<Integer>> map = new HashMap<>();
+        for(int[] g: graph){
+            int start = g[0];
+            int end = g[1];
+
+            List<Integer> list1 = new ArrayList<>();
+            List<Integer> list2 = new ArrayList<>();
+
+            if(map.containsKey(start)){
+                list1 = map.get(start);
+            }
+            list1.add(end);
+            map.put(start, list1);
+
+            if(map.containsKey(end)){
+                list2 = map.get(end);
+            }
+            list2.add(start);
+            map.put(end, list2);
+        }
+
+        /**
+         *      *    - 3 states:
+         *      *      - 0: not visited
+         *      *      - 1: visiting
+         *      *      - 2: visited
+         *      *    -> via DFS, we can check if it's possible to split graph
+         *      *       into 2 group ???
+         */
+        //Boolean[] visited = new Boolean[map.keySet().size()]; // ????
+        // ???
+        Integer[] status = new Integer[map.keySet().size()];
+        for(Integer k: map.keySet()){
+            if(!canSplit(map, status, k)){
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private boolean canSplit(Map<Integer, List<Integer>> map, Integer[] status, int node){
+        if(map.isEmpty()){
+            return true; // /??
+        }
+        if(status[node] == 1){
+            return false;
+        }
+        if(status[node] == 2){
+            return true; // ???
+        }
+        // mark as visiting
+        status[node] = 1;
+
+        // loop over neighbors
+        for(Integer x: map.get(node)){
+            // ????
+            if(!canSplit(map, status, x)){
+                return false;
+            }
+        }
+
+        // mark as visited
+        status[node] = 2;
 
         return false;
     }
