@@ -86,6 +86,16 @@
 	- LC 230 Kth Smallest Element In a Bst 
 		- gpt
 		- gemini
+	- LC 105 Construct Binary Tree from Preorder and Inorder Traversal
+		- gpt
+			- 654
+			- 889
+			- 105,106
+			- 297
+		- gemini
+			- 108
+			- 938
+			- 95
 - neetcode 250
 	- https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V6/LC_goog_all.pdf
 		- 27/66
