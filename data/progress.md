@@ -83,7 +83,6 @@
 			- 99
 		- gemini
 			- 108
-			- 94
 	- LC 230 Kth Smallest Element In a Bst 
 		- gpt
 		- gemini
@@ -210,7 +209,6 @@
 			- 99
 		- gemini
 			- 108
-			- 94
 	- LC 230 Kth Smallest Element In a Bst 
 		- gpt
 		- gemini
