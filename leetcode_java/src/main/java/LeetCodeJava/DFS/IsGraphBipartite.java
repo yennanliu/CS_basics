@@ -56,6 +56,128 @@ public class IsGraphBipartite {
 //
 //    }
 
+    // V0-1
+    // IDEA: DFS (fixed by gpt)
+    public boolean isBipartite_0_1(int[][] graph) {
+        // edge
+        if (graph == null || graph.length == 0) {
+            return true;
+        }
+
+        /**
+         * We use 3 states:
+         *   0 -> not colored yet
+         *   1 -> color A
+         *  -1 -> color B
+         */
+        int n = graph.length;
+        int[] color = new int[n];
+
+        // Handle disconnected graph: check every component
+        for (int i = 0; i < n; i++) {
+            if (color[i] == 0) {
+                // Try coloring this component with DFS
+                if (!canSplit(graph, color, i, 1)) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    private boolean canSplit(int[][] graph, int[] color, int node, int c) {
+        // if already colored, check consistency
+        if (color[node] != 0) {
+            return color[node] == c;
+        }
+
+        // color current node
+        color[node] = c;
+
+        // DFS all neighbors
+        for (int nei : graph[node]) {
+            if (!canSplit(graph, color, nei, -c)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    // V0-2
+    // IDEA: DFS (fixed by gemini)
+    /**
+     * Checks if the graph is bipartite using graph coloring (DFS).
+     */
+    public boolean isBipartite_0_2(int[][] graph) {
+        if (graph == null || graph.length == 0) {
+            return true;
+        }
+
+        int n = graph.length;
+
+        // --- Fix 1: Use a 'colors' array for state ---
+        // 0 = Unvisited
+        // 1 = Color A
+        //-1 = Color B
+        int[] colors = new int[n];
+        // Note: Arrays.fill(colors, 0) is redundant as 0 is the default.
+
+        // --- Fix 2: Loop through all nodes (0 to n-1) ---
+        // This is necessary in case the graph is disconnected (has multiple components).
+        for (int i = 0; i < n; i++) {
+            // If this node hasn't been colored yet, start a new DFS.
+            if (colors[i] == 0) {
+                // Start coloring with Color 1.
+                if (!canColor(graph, colors, i, 1)) {
+                    // If the DFS finds a conflict, the graph is not bipartite.
+                    return false;
+                }
+            }
+        }
+
+        // If all components were successfully colored, the graph is bipartite.
+        return true;
+    }
+
+    /**
+     * Recursive DFS helper to color the graph.
+     * @param graph The adjacency list.
+     * @param colors The array tracking node colors.
+     * @param node The current node to visit.
+     * @param color The color (1 or -1) to assign to 'node'.
+     * @return true if this component is bipartite, false if a conflict is found.
+     */
+    private boolean canColor(int[][] graph, int[] colors, int node, int color) {
+        // 1. Color the current node.
+        colors[node] = color;
+
+        // 2. Visit all its neighbors (using the input graph directly).
+        for (int neighbor : graph[node]) {
+
+            // --- Fix 3: Check neighbor's color ---
+            if (colors[neighbor] == 0) {
+                // Case A: Neighbor is unvisited.
+                // Recursively call with the *opposite* color.
+                if (!canColor(graph, colors, neighbor, -color)) {
+                    // If the recursive call found a conflict, propagate failure up.
+                    return false;
+                }
+            } else if (colors[neighbor] == color) {
+                // Case B: Neighbor is already colored... and has the SAME color.
+                // This is a conflict! We found an odd-length cycle.
+                return false;
+            }
+            // Case C: (colors[neighbor] == -color)
+            // Neighbor is already colored with the opposite color. This is good,
+            // so we do nothing and continue the loop.
+        }
+
+        // If no conflicts were found for this node and its entire branch, return true.
+        return true;
+    }
+
     // V1
     // IDEA: DFS
     // https://leetcode.ca/2018-01-23-785-Is-Graph-Bipartite/
