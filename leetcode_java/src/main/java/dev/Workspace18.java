@@ -614,6 +614,103 @@ public class Workspace18 {
 
     }
 
+    // LC 450
+    // 16.37 - 47 pm
+    /**
+     *  - Delete node in BST
+     *
+     *  IDEA 1) dfs + key check + delete BST op
+     *
+     */
+    public TreeNode deleteNode(TreeNode root, int key) {
+        // edge
+        if(root == null){
+            return root;
+        }
+        if(root.left == null && root.right == null){
+            if(root.val == key){
+                return null;
+            }
+            return root;
+        }
+        // collect bst nodes
+        List<Integer> list = new ArrayList<>();
+        inOrderGetBSTNode(root, list);
+        if(!list.contains(key)){
+            return root;
+        }
+
+        //deleteNodeHelper(root, key);
+        return deleteNodeHelper(root, key); // ???
+    }
+
+    // 1. check the node val equals key and cache as `cacheNode`
+    // 2. go to right sub tree
+    // 3. keep going to left sub tree, till reach the end
+    // 4. swap `cacheNode` and the cur node
+    private TreeNode deleteNodeHelper(TreeNode root, int key){
+        if(root == null){
+            return null; // ???
+        }
+        // case 1) root.val > key
+        if(root.val > key){
+            // ???
+            //return deleteNodeHelper(root.left, key);
+            // ????
+            root.left = deleteNodeHelper(root.left, key);
+        }
+        // case 2) root.val < key
+        else if(root.val < key){
+            //return deleteNodeHelper(root.right, key);
+            root.right = deleteNodeHelper(root.right, key); // ?????
+        }
+        // case 3) root.val == key
+        else{
+            // case 3-1) both sub left AND right is null
+            if(root.left == null && root.right == null){
+                return null; // /??
+            }
+            // case 3-1) both sub left AND right is NOT null
+            if(root.left != null && root.right != null){
+                TreeNode cachedRoot = root;
+                TreeNode rightSub = root.right;
+                while(rightSub.left != null){
+                    rightSub = rightSub.left;
+                }
+//                // NOTE !!!
+//                cachedRoot = rightSub;
+//                rightSub = deleteNodeHelper(cachedRoot, rightSub.val); // ????
+
+                /** NOTE BELOW !!! */
+                root.val = rightSub.val; // ?????
+                root.right = deleteNodeHelper(root.right, rightSub.val);
+            }
+
+
+            // case 3-1)  sub left is NOT null
+            if(root.left != null){
+                return root.left; // ????
+            }
+            // case 3-2)  sub right is NOT null
+            if(root.right != null){
+                return root.right;
+            }
+        }
+
+        return root; // ????
+    }
+
+    // ???
+    private void inOrderGetBSTNode(TreeNode root, List<Integer> list){
+        if(root == null){
+            return;
+        }
+        inOrderGetBSTNode(root.left, list);
+        list.add(root.val);
+        inOrderGetBSTNode(root.right, list);
+    }
+
+
 
 
 

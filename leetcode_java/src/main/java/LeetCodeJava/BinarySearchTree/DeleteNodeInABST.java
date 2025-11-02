@@ -62,7 +62,7 @@ public class DeleteNodeInABST {
    *
    *    // Case 2: One child
    *
-   *     // Case 3: Two children
+   *    // Case 3: Two children
    *
    */
     /**
@@ -103,6 +103,9 @@ public class DeleteNodeInABST {
              *      as res directly, since it deleteNodeHelper_0
              *      could NOT be a null val, we need it to assign root.left,
              *      so we can keep `whole BST info`
+             *
+             *
+             *  (instead of `return deleteNodeHelper_0(root.left, key)`)
              */
             root.left = deleteNodeHelper_0(root.left, key);
         } else if (key > root.val) {
@@ -111,6 +114,9 @@ public class DeleteNodeInABST {
              *  NOTE !!!
              *
              *   we assign `right sub tree` as res from deleteNodeHelper_0(root.right, key)
+             *
+             *
+             *  (instead of `return deleteNodeHelper_0(root.right, key)`)
              */
             root.right = deleteNodeHelper_0(root.right, key);
         }
@@ -154,6 +160,11 @@ public class DeleteNodeInABST {
              */
             TreeNode minNode = findMin_0(root.right);
             root.val = minNode.val; // copy value
+            /** NOTE !!!
+             *
+             *  -> reuse the same `deleteNodeHelper` to delete
+             *  the `minNode` from `root.right` sub tree
+             */
             root.right = deleteNodeHelper(root.right, minNode.val); // delete successor
         }
 
