@@ -796,6 +796,66 @@ public class Workspace18 {
     }
 
 
+    // LC 1094
+    // 15.51 - 18.01 pm
+    /**
+     *  -> Return true if it is possible to pick up
+     *    and drop off all passengers for all the given trips,
+     *    or false otherwise.
+     *
+     *
+     *  - There is a car with capacity empty seats.
+     *     The vehicle ONLY drives EAST
+     *
+     *   - trips[i] = [numPassengersi, fromi, toi]
+     *      - i th trip
+     *      - # of passenger
+     *      - start from `from`
+     *      - end at `to`
+     *
+     *
+     * IDEA 1) DIFF ARRAY
+     *
+     *
+     */
+    public boolean carPooling(int[][] trips, int capacity) {
+        if(trips.length == 0 || trips[0].length == 0 || capacity == 0){
+            return true;
+        }
+        if(trips.length == 1){
+            return capacity >= trips[0][0];
+        }
+        // ???
+        int maxEnd = 0;
+        for(int[] t: trips){
+            maxEnd = Math.max(maxEnd, t[2]);
+        }
+        int[] diffArr = new int[maxEnd + 1]; // ??
+
+        for(int i = 0; i < trips.length; i++){
+            int passengers = trips[i][0];
+            int start = trips[i][1];
+            int end = trips[i][2];
+            diffArr[start] += passengers;
+            if(end < diffArr.length){
+                diffArr[end] -= passengers;
+            }
+        }
+
+        for(int i = 1; i < diffArr.length; i++){
+            diffArr[i] = diffArr[i - 1] + diffArr[i]; // ???
+        }
+
+        for(int i = 0; i < diffArr.length; i++){
+            if(diffArr[i] > capacity){
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+
 
 
 

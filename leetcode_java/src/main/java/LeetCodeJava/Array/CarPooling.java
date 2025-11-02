@@ -92,6 +92,59 @@ public class CarPooling {
         return true;
     }
 
+    // V0-0-1
+    // IDEA: PREFIX SUM (fixed by gpt)
+    public boolean carPooling_0_0_1(int[][] trips, int capacity) {
+        // Edge cases
+        if (trips == null || trips.length == 0)
+            return true;
+
+        // 1️⃣ Find the furthest drop-off location (end point)
+        int maxEnd = 0;
+        for (int[] trip : trips) {
+            maxEnd = Math.max(maxEnd, trip[2]);
+        }
+
+        // 2️⃣ Initialize difference array
+        int[] diff = new int[maxEnd + 1]; // +1 to cover endpoint
+
+        // 3️⃣ Apply each trip as a range update
+        for (int[] trip : trips) {
+            int passengers = trip[0];
+            int start = trip[1];
+            int end = trip[2];
+            diff[start] += passengers; // pick up passengers
+            /** NOTE !!!
+             *
+             *  since `DROP OFF` at `end` index
+             *  -> so we should do the `minus op` at `end` index (instead of `end + 1`)
+             */
+            if (end < diff.length) {
+                diff[end] -= passengers; // drop them off before `end`
+            }
+        }
+
+        // 4️⃣ Compute prefix sum (active passengers)
+        int currPassengers = 0;
+        for (int i = 0; i < diff.length; i++) {
+            /** NOTE !!!
+             *
+             *  we do the accumulated sum via currPassengers += diff[i]
+             */
+            currPassengers += diff[i];
+            /** NOTE !!!
+             *
+             *  we check if is a validate trip via `currPassengers > capacity`
+             */
+            if (currPassengers > capacity) {
+                return false; // 🚫 exceeded capacity at some point
+            }
+        }
+
+        return true; // ✅ all trips fit within capacity
+    }
+
+
     // V0-1
     // IDEA: PREFIX SUM
     // time: O(N + M), space: O(M)
@@ -287,5 +340,7 @@ public class CarPooling {
         }
         return true;
     }
+
+
 
 }
