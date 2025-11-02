@@ -724,6 +724,80 @@ public class Workspace18 {
     }
 
 
+    // LC 1109
+    // 17.20 - 30 pm
+    /**
+     *   - Return an array answer of length n,
+     *     where answer[i] is the `total number` of seats
+     *     reserved for flight i.
+     *
+     *  - n flights from 1 to n
+     *  - bookings[i] = [firsti, lasti, seatsi]
+     *
+     *  IDEA 1) DIFF ARRAY
+     *
+     *   -> loop over booking in bookings, update cache with below:
+     *     - for open idx, val += cur_val
+     *     - for close idx, val -= cur_val
+     *
+     *   -> loop over cache with below:
+     *    - do the `accumulated sum`
+     *    - update the cur `accumulated sum` to cur idx
+     *
+     *   -> return cache as final result
+     *
+     */
+    public int[] corpFlightBookings(int[][] bookings, int n) {
+        // edge
+        if(bookings.length == 0 || bookings[0].length == 0 || n == 0){
+            return new int[0]; // ????
+        }
+        if(n == 1){
+            return bookings[0]; // /??
+        }
+        //List<Integer> cache = new ArrayList<>();
+        int[] cache =new int[ n + 1]; // ???? // new int[n]; //???
+
+        for (int[] b: bookings){
+            int start = b[0];
+            int end = b[1];
+            int seat = b[2];
+            // ???
+            //cache.set(start, seat);
+            cache[start - 1] = seat;
+            // ???
+            if(end < cache.length){
+               // cache.set(end+1, -1 * seat);
+                cache[end] = - 1 * seat;
+            }
+        }
+
+        System.out.println(">>> cache = " + cache);
+
+        //List<Integer> tmp = new ArrayList<>();
+        int[] tmp = new int[n]; //???
+        int accSum = 0; // /??
+
+        for(int i = 0; i < cache.length; i++){
+           // accSum += cache.get(i);
+            accSum += cache[i];
+            //tmp.set(i, accSum);
+            tmp[i] = accSum;
+        }
+
+        System.out.println(">>> tmp = " + tmp);
+//
+//        int[] res = new int[tmp.size()];
+//        for(int j = 0; j < tmp.size(); j++){
+//            res[j] = tmp.get(j);
+//        }
+
+        return tmp;
+    }
+
+
+
+
 
 
 }
