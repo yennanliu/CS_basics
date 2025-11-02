@@ -857,6 +857,11 @@ public class Workspace18 {
 
 
 
+    // LC 785
+    public boolean isBipartite(int[][] graph) {
+
+        return false;
+    }
 
 
 
