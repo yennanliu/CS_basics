@@ -711,6 +711,17 @@ public class Workspace18 {
     }
 
 
+    // LC 94
+    List<Integer> list5 = new ArrayList<>();
+    public List<Integer> inorderTraversal(TreeNode root) {
+        if(root == null){
+            return list5;
+        }
+        inorderTraversal(root.left);
+        list5.add(root.val);
+        inorderTraversal(root.right);
+        return list5;
+    }
 
 
 
