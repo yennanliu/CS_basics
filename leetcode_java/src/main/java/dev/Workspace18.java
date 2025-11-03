@@ -957,6 +957,13 @@ public class Workspace18 {
         return false;
     }
 
+    // LC 886
+    public boolean possibleBipartition(int n, int[][] dislikes) {
+
+        return false;
+    }
+
+
 
 
 }
