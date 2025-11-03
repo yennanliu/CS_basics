@@ -60,13 +60,28 @@ public class IsGraphBipartite {
 
     // V0-1
     // IDEA: DFS (fixed by gpt)
+    /**  NOTE !!!
+     *
+     *   this problem is checking `whether neighbors has SAME COLOR`, but NOT check
+     *   is cycled / NOT cycled (e.g. is visited ?)
+     *
+     *   -> e.g.: Incorrect State Model:
+     *
+     *           A bipartite check isn't about "visiting" vs. "visited"
+     *           (which is for cycle detection in directed graphs). It's about "coloring" nodes into two
+     *           groups (e.g., color $1$ and color $-1$). A graph is bipartite if you can color every
+     *           node such that no two adjacent nodes have the same color.
+     *
+     */
     public boolean isBipartite_0_1(int[][] graph) {
         // edge
         if (graph == null || graph.length == 0) {
             return true;
         }
 
-        /**
+        /** NOTE !!!
+         *
+         *
          * We use 3 states:
          *   0 -> not colored yet
          *   1 -> color A
@@ -79,6 +94,11 @@ public class IsGraphBipartite {
         for (int i = 0; i < n; i++) {
             if (color[i] == 0) {
                 // Try coloring this component with DFS
+                // 1: color A
+                /** NOTE !!!
+                 *
+                 *  Start coloring with Color 1.
+                 */
                 if (!canSplit(graph, color, i, 1)) {
                     return false;
                 }
@@ -145,7 +165,10 @@ public class IsGraphBipartite {
         for (int i = 0; i < n; i++) {
             // If this node hasn't been colored yet, start a new DFS.
             if (colors[i] == 0) {
-                // Start coloring with Color 1.
+                /** NOTE !!!
+                 *
+                 *  Start coloring with Color 1.
+                 */
                 if (!canColor(graph, colors, i, 1)) {
                     // If the DFS finds a conflict, the graph is not bipartite.
                     return false;
