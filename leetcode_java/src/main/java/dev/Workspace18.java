@@ -877,9 +877,10 @@ public class Workspace18 {
      *
      *
      */
+    // IDEA 3) DFS + NEIGHBOR COLOR CHECK
     public boolean isBipartite(int[][] graph) {
         // edge
-        if(graph == null || graph.length == 0 || graph[0].length == 0){
+        if (graph == null || graph.length == 0) {
             return true;
         }
         // ???
@@ -887,42 +888,58 @@ public class Workspace18 {
             return true;
         }
 
-        // build graph
-        // { node: [neighbor_1, neighbor_2,...] }
-        Map<Integer, List<Integer>> map = new HashMap<>();
-        for(int[] g: graph){
-            int start = g[0];
-            int end = g[1];
+        /** NOTE !!!
+         *
+         *
+         * We use 3 states:
+         *   0 -> not colored yet
+         *   1 -> color A
+         *  -1 -> color B
+         */
+        int[] colorState = new int[graph.length]; // ???
 
-            List<Integer> list1 = new ArrayList<>();
-            List<Integer> list2 = new ArrayList<>();
-
-            if(map.containsKey(start)){
-                list1 = map.get(start);
+        // ??? apply dfs color check on every node
+        for(int i = 0; i < graph.length; i++){
+            // NOTE !!! ONLY call the dfs if `uncolored`
+            // e.g. if color state = 0
+            if(colorState[i] == 0){
+                // NOTE !!! color as `1` color
+                if(!dfsNeighborColorCheck(graph, colorState, i, 1)){
+                    return false;
+                }
             }
-            list1.add(end);
-            map.put(start, list1);
-
-            if(map.containsKey(end)){
-                list2 = map.get(end);
-            }
-            list2.add(start);
-            map.put(end, list2);
         }
 
-        /**
-         *      *    - 3 states:
-         *      *      - 0: not visited
-         *      *      - 1: visiting
-         *      *      - 2: visited
-         *      *    -> via DFS, we can check if it's possible to split graph
-         *      *       into 2 group ???
-         */
-        //Boolean[] visited = new Boolean[map.keySet().size()]; // ????
-        // ???
-        Integer[] status = new Integer[map.keySet().size()];
-        for(Integer k: map.keySet()){
-            if(!canSplit(map, status, k)){
+        return true;
+    }
+
+    // int[][] graph, int[] color, int node, int c
+    private boolean dfsNeighborColorCheck(int[][] graph, int[] colorState, int node, int c){
+//        if(colorState[node] == c){
+//            return false; // ??? conflict
+//        }
+//        if(colorState[node] == -1 * c){
+//            return true; // ??? OK ? since it's `different color`
+//        }
+        // NOTE !!!! // if already colored, check consistency
+        // NOTE !!! here we are NOT checking neighbor color
+        // but check if the same node has conflict on color
+        // e.g. since the node colored already, we check if
+        // the new color is DIFFERENT from the prev color
+        if (colorState[node] != 0) {
+            // if color conflict, return false
+            return colorState[node] == c;
+        }
+
+        // NOTE !!! we color cur node
+        colorState[node] = c;
+
+        // visit neighbors
+        for(int neighbor: graph[node]){
+            // NOTE !!! since we mark cur node as `1 color`
+            // so we should check if its neighbor node can has `different color`
+            // e.g. `-1 color`
+            if(!dfsNeighborColorCheck(graph, colorState, neighbor, -1 * c)){
                 return false;
             }
         }
@@ -930,32 +947,89 @@ public class Workspace18 {
         return true;
     }
 
-    private boolean canSplit(Map<Integer, List<Integer>> map, Integer[] status, int node){
-        if(map.isEmpty()){
-            return true; // /??
-        }
-        if(status[node] == 1){
-            return false;
-        }
-        if(status[node] == 2){
-            return true; // ???
-        }
-        // mark as visiting
-        status[node] = 1;
 
-        // loop over neighbors
-        for(Integer x: map.get(node)){
-            // ????
-            if(!canSplit(map, status, x)){
-                return false;
-            }
-        }
 
-        // mark as visited
-        status[node] = 2;
 
-        return false;
-    }
+
+//    public boolean isBipartite(int[][] graph) {
+//        // edge
+//        if(graph == null || graph.length == 0 || graph[0].length == 0){
+//            return true;
+//        }
+//        // ???
+//        if(graph.length == 1 || graph[0].length == 1){
+//            return true;
+//        }
+//
+//        // build graph
+//        // { node: [neighbor_1, neighbor_2,...] }
+//        Map<Integer, List<Integer>> map = new HashMap<>();
+//        for(int[] g: graph){
+//            int start = g[0];
+//            int end = g[1];
+//
+//            List<Integer> list1 = new ArrayList<>();
+//            List<Integer> list2 = new ArrayList<>();
+//
+//            if(map.containsKey(start)){
+//                list1 = map.get(start);
+//            }
+//            list1.add(end);
+//            map.put(start, list1);
+//
+//            if(map.containsKey(end)){
+//                list2 = map.get(end);
+//            }
+//            list2.add(start);
+//            map.put(end, list2);
+//        }
+//
+//        /**
+//         *      *    - 3 states:
+//         *      *      - 0: not visited
+//         *      *      - 1: visiting
+//         *      *      - 2: visited
+//         *      *    -> via DFS, we can check if it's possible to split graph
+//         *      *       into 2 group ???
+//         */
+//        //Boolean[] visited = new Boolean[map.keySet().size()]; // ????
+//        // ???
+//        Integer[] status = new Integer[map.keySet().size()];
+//        for(Integer k: map.keySet()){
+//            if(!canSplit(map, status, k)){
+//                return false;
+//            }
+//        }
+//
+//        return true;
+//    }
+//
+//    private boolean canSplit(Map<Integer, List<Integer>> map, Integer[] status, int node){
+//        if(map.isEmpty()){
+//            return true; // /??
+//        }
+//        if(status[node] == 1){
+//            return false;
+//        }
+//        if(status[node] == 2){
+//            return true; // ???
+//        }
+//        // mark as visiting
+//        status[node] = 1;
+//
+//        // loop over neighbors
+//        for(Integer x: map.get(node)){
+//            // ????
+//            if(!canSplit(map, status, x)){
+//                return false;
+//            }
+//        }
+//
+//        // mark as visited
+//        status[node] = 2;
+//
+//        return false;
+//    }
 
     // LC 886
     public boolean possibleBipartition(int n, int[][] dislikes) {
