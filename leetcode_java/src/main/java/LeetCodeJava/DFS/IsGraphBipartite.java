@@ -54,9 +54,67 @@ import java.util.Queue;
 public class IsGraphBipartite {
 
     // V0
-//    public boolean isBipartite(int[][] graph) {
-//
-//    }
+    // IDEA: DFS + COLOR STATE + NEIGHBOR COLOR CHECK (fixed by gpt)
+    public boolean isBipartite(int[][] graph) {
+        // edge
+        if (graph == null || graph.length == 0) {
+            return true;
+        }
+
+        /**
+         * colorState:
+         *   0 -> not colored yet
+         *   1 -> color A
+         *  -1 -> color B
+         */
+        int[] colorState = new int[graph.length];
+
+        // Try DFS on all components (since graph may be disconnected)
+        for (int i = 0; i < graph.length; i++) {
+            /**
+             *
+             * NOTE !!! ONLY call the dfs if `uncolored`
+             * e.g. if color state = 0
+             */
+            if (colorState[i] == 0) { // uncolored node
+                if (!dfsNeighborColorCheck(graph, colorState, i, 1)) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    private boolean dfsNeighborColorCheck(int[][] graph, int[] colorState, int node, int c) {
+
+        /**
+         * // NOTE !!! here we are NOT checking neighbor color
+         * // but check if the same node has conflict on color
+         * // e.g. since the node colored already, we check if
+         * // the new color is DIFFERENT from the prev color
+         */
+        // if node already colored, check consistency
+        if (colorState[node] != 0) {
+            return colorState[node] == c;
+        }
+
+        /** NOTE !!! we color cur node */
+        // assign color
+        colorState[node] = c;
+
+        // visit all neighbors
+        for (int neighbor : graph[node]) {
+            // NOTE !!! since we mark cur node as `1 color`
+            // so we should check if its neighbor node can has `different color`
+            // e.g. `-1 * color`
+            if (!dfsNeighborColorCheck(graph, colorState, neighbor, -c)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 
     // V0-1
     // IDEA: DFS (fixed by gpt)
