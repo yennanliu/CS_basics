@@ -1032,10 +1032,122 @@ public class Workspace18 {
 //    }
 
     // LC 886
+    // 9.16 - 26 am
+    /**
+     *
+     *   -> return true if it;s possible to split to 2 groups
+     *
+     *  - split a group of n people (labeled from 1 to n)
+     *     into TWO groups of ANY size
+     *
+     *   - Each person may dislike some other people,
+     *      -> they should NOT go into the SAME group.
+     *
+     *    - dislikes where dislikes[i] = [ai, bi]
+     *        -> a DISLIKE B
+     *
+     *
+     *   IDEA 1) DFS
+     *
+     *   IDEA 2) BFS
+     *
+     *
+     */
+    // IDEA 1) DFS
     public boolean possibleBipartition(int n, int[][] dislikes) {
+        // edge
+        if(dislikes == null || dislikes.length == 0 || dislikes[0].length == 0){
+            return false;
+        }
+        if(n <= 1){
+            return false;
+        }
 
-        return false;
+        // ???
+        Set<Integer> people = new HashSet<>();
+        /**
+         *
+         *
+         */
+        Map<Integer, List<Integer>> dislikeMap = new HashMap<>();
+        for(int[] d: dislikes){
+            int a = d[0];
+            int b = d[1];
+            List<Integer> list1 = new ArrayList<>();
+            List<Integer> list2 = new ArrayList<>();
+
+            // ???
+            people.add(a);
+            people.add(b);
+
+            if(dislikeMap.containsKey(a)){
+                list1 = dislikeMap.get(a);
+            }
+            list1.add(b);
+            dislikeMap.put(a, list1);
+
+            if(dislikeMap.containsKey(b)){
+                list2 = dislikeMap.get(b);
+            }
+            list2.add(a);
+            dislikeMap.put(b, list2);
+        }
+
+        Map<Integer, List<Integer>> splitGroup = new HashMap<>();
+
+        for(int x: people){
+            // int person, Set<Integer> people, Map<Integer, List<Integer>> dislikeMap, Map<Integer, List<Integer>> splitGroup, int group
+            // assign to group 0 as deafult (e.g. NOT visited yet)
+            if(!canSplitCheck(x, people, dislikeMap, splitGroup, 0)){
+                return false;
+            }
+        }
+        return true;
     }
+
+    /**
+     *  person: cur person
+     *  dislikeMap: this person - dislike list map
+     *  splitGroup:  the group we split people in
+     *  group: the group id:
+     *       - group 0: NOT assigned yet
+     *       - group 1: group #1
+     *       - group 2: group #2
+     */
+    private boolean canSplitCheck(int person, Set<Integer> people, Map<Integer, List<Integer>> dislikeMap, Map<Integer, List<Integer>> splitGroup, int group){
+        // check if conflicts:
+        //if(dislikeMap.get(person))
+        if(group != 0){
+            // if NOT conflict, the `splitGroup` with same group should have such person
+            return splitGroup.get(group).contains(person);
+        }
+
+        // put the person into a group
+        // chose group 1 as default
+        List<Integer> list1 = new ArrayList<>();
+        if(splitGroup.containsKey(1)){
+            list1 = splitGroup.get(1);
+        }
+        list1.add(person);
+        splitGroup.put(person, list1);
+
+
+        // navigate to other person
+        for(int next: people){
+            // if `NOT dislike`, call DFS
+            if(!dislikeMap.get(person).contains(next)){
+                // int person, Set<Integer> people, Map<Integer, List<Integer>> dislikeMap, Map<Integer, List<Integer>> splitGroup, int group
+                // since we assign `group 1` to cur person,
+                // so for next people, we SHOULD assign them to `group 2`
+                if(!canSplitCheck(next, people, dislikeMap, splitGroup, 2)){
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
 
 
 

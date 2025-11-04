@@ -42,6 +42,143 @@ import java.util.*;
 public class PossibleBipartition {
 
     // V0
+    // IDEA: LC 785 + DFS + NEIGHBOR CHECK (fixed by gpt)
+    public boolean possibleBipartition(int n, int[][] dislikes) {
+        // build adjacency list
+        Map<Integer, List<Integer>> graph = new HashMap<>();
+        for (int i = 1; i <= n; i++) {
+            graph.put(i, new ArrayList<>());
+        }
+
+        for (int[] d : dislikes) {
+            graph.get(d[0]).add(d[1]);
+            graph.get(d[1]).add(d[0]);
+        }
+
+        // color array: 0 = unvisited, 1 = group A, -1 = group B
+        int[] color = new int[n + 1];
+
+        // DFS each component
+        for (int i = 1; i <= n; i++) {
+            if (color[i] == 0) {
+                if (!dfs(i, 1, color, graph)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    private boolean dfs(int node, int c, int[] color, Map<Integer, List<Integer>> graph) {
+        color[node] = c;
+
+        for (int nei : graph.get(node)) {
+            if (color[nei] == c) {
+                // same color conflict
+                return false;
+            }
+            if (color[nei] == 0) {
+                if (!dfs(nei, -c, color, graph)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    // V0-1
+    // IDEA: (fixed by gemini)
+    /**
+     * Main function: Checks if the graph can be split into two groups.
+     */
+    public boolean possibleBipartition_0_1(int n, int[][] dislikes) {
+        // --- FIX: Edge Cases ---
+        // If there are no dislikes, it's always possible.
+        if (dislikes == null || dislikes.length == 0) {
+            return true;
+        }
+        // If there's only one person, it's also always possible.
+        if (n <= 1) {
+            return true;
+        }
+
+        // --- 1. Build the Adjacency List (Graph) ---
+        // Your graph-building logic was correct.
+        Map<Integer, List<Integer>> dislikeMap = new HashMap<>();
+        for (int[] d : dislikes) {
+            int a = d[0];
+            int b = d[1];
+
+            // Add edges for both directions
+            dislikeMap.putIfAbsent(a, new ArrayList<>());
+            dislikeMap.get(a).add(b);
+
+            dislikeMap.putIfAbsent(b, new ArrayList<>());
+            dislikeMap.get(b).add(a);
+        }
+
+        // --- 2. Create a "colors" array to track groups ---
+        // People are 1-indexed, so we use n + 1 size.
+        // 0 = Unvisited
+        // 1 = Group 1
+        //-1 = Group 2
+        int[] colors = new int[n + 1];
+
+        // --- 3. Iterate through all people ---
+        // We must loop from 1 to n to handle disconnected components.
+        for (int i = 1; i <= n; i++) {
+            // If this person is uncolored, start a new DFS coloring.
+            if (colors[i] == 0) {
+                // Try to color them with '1'. If it fails, return false.
+                if (!canColor(i, 1, dislikeMap, colors)) {
+                    return false;
+                }
+            }
+        }
+
+        // If all components were colored successfully
+        return true;
+    }
+
+    /**
+     * --- FIX: Correct DFS Graph Coloring Helper ---
+     * * @param person The current person (node) to color.
+     * @param color The color (1 or -1) to assign to 'person'.
+     * @param dislikeMap The adjacency list (graph).
+     * @param colors The array tracking the colors of all people.
+     * @return true if coloring is possible, false if a conflict is found.
+     */
+    private boolean canColor(int person, int color, Map<Integer, List<Integer>> dislikeMap, int[] colors) {
+
+        // 1. Assign the color to the current person.
+        colors[person] = color;
+
+        // 2. Check all neighbors (people they dislike).
+        // If a person dislikes no one, they won't be in the map's keys.
+        if (dislikeMap.containsKey(person)) {
+            for (int neighbor : dislikeMap.get(person)) {
+
+                // Case A: The neighbor is uncolored (0)
+                if (colors[neighbor] == 0) {
+                    // Try to color the neighbor with the *opposite* color (-color).
+                    // If that recursive call fails, propagate the failure.
+                    if (!canColor(neighbor, -color, dislikeMap, colors)) {
+                        return false;
+                    }
+                }
+                // Case B: The neighbor is already colored
+                else if (colors[neighbor] == color) {
+                    // CONFLICT! The neighbor has the *same* color.
+                    // This means bipartition is impossible.
+                    return false;
+                }
+                // (If colors[neighbor] == -color, it's good, so we continue.)
+            }
+        }
+
+        // If we get through all neighbors without a conflict, this path is valid.
+        return true;
+    }
 
 
     // V1
