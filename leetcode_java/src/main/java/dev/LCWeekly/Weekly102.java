@@ -249,7 +249,7 @@ public class Weekly102 {
     // Q3
     // LC 2641
     // https://leetcode.com/problems/cousins-in-binary-tree-ii/
-    // 11.27 - 37 am
+    // 6.40 - 6.50 am
     /**
      *
      *   -> Return the root of the modified tree.
@@ -258,25 +258,260 @@ public class Weekly102 {
      *   - Replace the value of each node in the tree
      *      with the `sum of all its cousins' values.`
      *
-     *   - Two nodes of a binary tree are cousins if
+     *   - Two nodes of a binary tree are ` cousins` if
      *      they have the same depth with DIFFERENT parents.
      *
      *   - Depth of a node is the number of edges in
      *     the path from the root node to it.
      *
      *
+     *
+     *   IDEA 1) DFS + get patent - depth (hashmap)
+     *           check if cousins exists
+     *           update res
+     *
+     *       patent - depth (hashmap):
+     *         { depth : [parent1-node1, parent2-node2, ....] }  ???
+     *
+     *         { depth-1 : [node1, node2,...],  depth-1 : [node4, node5,...]}  ???
+     *         { parent1 : [node1, node2], parent2: [] , ....}
+     *
+     *
      */
-    public TreeNode replaceValueInTree(TreeNode root) {
+//   // TreeNode resultNode;
+//    // { depth-1 : [node1, node2,...],  depth-1 : [node4, node5,...]}  ???
+//    Map<Integer, List<TreeNode>> depthNodeMap;
+//    // { parent1 : [node1, node2], parent2: [] , ....}
+//    Map<TreeNode, List<TreeNode>> parentNodeMap;
+//    public TreeNode replaceValueInTree(TreeNode root) {
+//        // edge
+//        if(root == null){
+//            return null;
+//        }
+//        if(root.left == null && root.right == null){
+//            return null;
+//        }
+//
+//        buildDepthNodeMap(root, 0);
+//        TreeNode resultNode = buildCousinsTree(null, root, 0);
+//
+//        System.out.println(">>> depthNodeMap = " + depthNodeMap);
+//        System.out.println(">>> resultNode = " + resultNode);
+//
+//        //return buildCousinsTree(null, root, 0); // ???
+//        return resultNode;
+//    }
+//
+//    private TreeNode buildCousinsTree(TreeNode parent, TreeNode root, Integer depth){
+//        // ???
+//        if(root == null){
+//            return null;
+//        }
+//        //TreeNode resultNode = new TreeNode(); // ????
+//        TreeNode resultNode = root; // ?????
+//        resultNode.val = 0; // ??? reset node val
+//
+//        // get node with same depth
+//        for(TreeNode node: depthNodeMap.get(depth)){
+//            // check if they are `cousin`.
+//            // e.g. 1) same depth 2) DIFFERENT parent
+//            if(!parentNodeMap.containsKey(root)){
+//                // if is cousin, acc sum to resultNode
+//                resultNode.val += node.val;
+//            }
+//        }
+//
+//        resultNode.left = buildCousinsTree(resultNode, root.left, depth + 1);
+//        resultNode.right = buildCousinsTree(resultNode, root.right,  depth + 1);
+//
+//        return resultNode; // ???
+//    }
+//
+//    private void buildDepthNodeMap(TreeNode root, Integer depth){
+//        if(root == null){
+//            return;
+//        }
+//        // DFS: pre-order traversal ????
+//        List<TreeNode> list1 = new ArrayList<>();
+//        if(depthNodeMap.containsKey(depth)){
+//            list1 = depthNodeMap.get(depth);
+//        }
+//        list1.add(root);
+//        depthNodeMap.put(depth, list1);
+//
+//        // ???
+//        buildDepthNodeMap(root.left, depth + 1);
+//        buildDepthNodeMap(root.right, depth + 1);
+//    }
 
-        return null;
+    // V1: BFS (gpt)
+    public TreeNode replaceValueInTree_1(TreeNode root) {
+        if (root == null)
+            return null;
+
+        // root has no cousins
+        root.val = 0;
+
+        Queue<TreeNode> q = new LinkedList<>();
+        q.offer(root);
+
+        while (!q.isEmpty()) {
+            int size = q.size();
+
+            // Collect children of this level and compute total sum of their original values
+            List<TreeNode> children = new ArrayList<>();
+            Map<TreeNode, Integer> parentChildrenSum = new HashMap<>();
+            int nextLevelSum = 0;
+
+            // iterate current level
+            for (int i = 0; i < size; i++) {
+                TreeNode parent = q.poll();
+                int siblingSum = 0;
+
+                if (parent.left != null) {
+                    siblingSum += parent.left.val;
+                    children.add(parent.left);
+                    nextLevelSum += parent.left.val;
+                }
+                if (parent.right != null) {
+                    siblingSum += parent.right.val;
+                    children.add(parent.right);
+                    nextLevelSum += parent.right.val;
+                }
+
+                parentChildrenSum.put(parent, siblingSum);
+            }
+
+            // assign new values for children (based on nextLevelSum and siblingSum for their parent)
+            // note: we must use parentChildrenSum (keyed by parent) to exclude sibling contributions
+            for (Map.Entry<TreeNode, Integer> entry : parentChildrenSum.entrySet()) {
+                TreeNode parent = entry.getKey();
+                int siblingSum = entry.getValue();
+                if (parent.left != null) {
+                    parent.left.val = nextLevelSum - siblingSum;
+                }
+                if (parent.right != null) {
+                    parent.right.val = nextLevelSum - siblingSum;
+                }
+            }
+
+            // push children into queue for next iteration
+            for (TreeNode child : children) {
+                q.offer(child);
+            }
+        }
+
+        return root;
     }
 
-    //private TreeNode
+
+
+    // V2
+    // BFS (gemini)
+    // Map to store the total sum of node values for each depth.
+    private Map<Integer, Integer> depthSum = new HashMap<>();
+
+    public TreeNode replaceValueInTree_2(TreeNode root) {
+        if (root == null) {
+            return null;
+        }
+
+        // --- Pass 1: Calculate the total sum for each depth using BFS ---
+        calculateDepthSums(root);
+
+        // --- Pass 2: Traverse and Replace Values using BFS ---
+
+        // The root node (depth 0) is a special case: its value is always 0.
+        root.val = 0;
+
+        // Use a queue to store the PARENT nodes of the level being processed.
+        // We will process the children of these nodes.
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+
+        int depth = 1;
+
+        // BFS loop continues as long as there are nodes to process
+        while (!queue.isEmpty()) {
+            int levelSize = queue.size();
+
+            // Get the total sum for the current depth being modified (depth 1, 2, 3, etc.)
+            // We only need to check the depth if it exists in the map (i.e., the level is not empty).
+            if (!depthSum.containsKey(depth)) {
+                break;
+            }
+            int totalLevelSum = depthSum.get(depth);
+
+            // Iterate through all parent nodes from the previous level
+            for (int i = 0; i < levelSize; i++) {
+                TreeNode parent = queue.poll();
+
+                // 1. Calculate the sum of the siblings (children of the current parent)
+                int childrenSum = 0;
+                if (parent.left != null) {
+                    childrenSum += parent.left.val;
+                }
+                if (parent.right != null) {
+                    childrenSum += parent.right.val;
+                }
+
+                // 2. Apply the replacement logic to the left child
+                if (parent.left != null) {
+                    // New Value = (Total Sum at Depth) - (Sibling Sum)
+                    // The sibling sum here is the combined value of the left and right child.
+                    parent.left.val = totalLevelSum - childrenSum;
+
+                    // Add the modified node to the queue for the next iteration (next depth's parents)
+                    queue.add(parent.left);
+                }
+
+                // 3. Apply the replacement logic to the right child
+                if (parent.right != null) {
+                    parent.right.val = totalLevelSum - childrenSum;
+
+                    // Add the modified node to the queue for the next iteration
+                    queue.add(parent.right);
+                }
+            }
+            depth++; // Move to the next depth
+        }
+
+        return root;
+    }
+
+    /**
+     * Pass 1 Helper: Calculates the total sum of all nodes at each depth using BFS.
+     */
+    private void calculateDepthSums(TreeNode root) {
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+        int depth = 0;
+
+        while (!queue.isEmpty()) {
+            int levelSize = queue.size();
+            int currentLevelSum = 0;
+
+            for (int i = 0; i < levelSize; i++) {
+                TreeNode node = queue.poll();
+                currentLevelSum += node.val;
+
+                if (node.left != null)
+                    queue.add(node.left);
+                if (node.right != null)
+                    queue.add(node.right);
+            }
+            // Store the total sum for the current depth
+            depthSum.put(depth, currentLevelSum);
+            depth++;
+        }
+    }
 
 
     // Q4
     // LC 2642
     // https://leetcode.com/problems/design-graph-with-shortest-path-calculator/
+
+
 
 
 
