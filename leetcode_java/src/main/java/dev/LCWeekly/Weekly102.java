@@ -252,6 +252,6 @@ public class Weekly102 {
     // LC 2642
     // https://leetcode.com/problems/design-graph-with-shortest-path-calculator/
 
-    
+
 
 }
