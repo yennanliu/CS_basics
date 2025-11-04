@@ -46,6 +46,35 @@ public class PossibleBipartition {
     public boolean possibleBipartition(int n, int[][] dislikes) {
         // build adjacency list
         Map<Integer, List<Integer>> graph = new HashMap<>();
+
+        /**  NOTE !!! we use below structure, which is more simple, and fast-implement
+         *
+         *   -> Instead of below:
+         *
+         *          Map<Integer, List<Integer>> dislikeMap = new HashMap<>();
+         *         for(int[] d: dislikes){
+         *             int a = d[0];
+         *             int b = d[1];
+         *             List<Integer> list1 = new ArrayList<>();
+         *             List<Integer> list2 = new ArrayList<>();
+         *
+         *             // ???
+         *             people.add(a);
+         *             people.add(b);
+         *
+         *             if(dislikeMap.containsKey(a)){
+         *                 list1 = dislikeMap.get(a);
+         *             }
+         *             list1.add(b);
+         *             dislikeMap.put(a, list1);
+         *
+         *             if(dislikeMap.containsKey(b)){
+         *                 list2 = dislikeMap.get(b);
+         *             }
+         *             list2.add(a);
+         *             dislikeMap.put(b, list2);
+         *         }
+         */
         for (int i = 1; i <= n; i++) {
             graph.put(i, new ArrayList<>());
         }
@@ -55,11 +84,28 @@ public class PossibleBipartition {
             graph.get(d[1]).add(d[0]);
         }
 
+
+        /** NOTE !!!
+         *
+         *  we define color status (as below), use array.
+         *  instead of using hashMap
+         *
+         *  NOTE !!!
+         *
+         *   0 = unvisited
+         *   1 = group A
+         *   -1 = group B
+         */
         // color array: 0 = unvisited, 1 = group A, -1 = group B
         int[] color = new int[n + 1];
 
         // DFS each component
         for (int i = 1; i <= n; i++) {
+            /** NOTE !!!
+             *
+             *  ONLY if the person if NOT grouped yet (color),
+             *  then we call dfs
+             */
             if (color[i] == 0) {
                 if (!dfs(i, 1, color, graph)) {
                     return false;
@@ -70,13 +116,30 @@ public class PossibleBipartition {
     }
 
     private boolean dfs(int node, int c, int[] color, Map<Integer, List<Integer>> graph) {
+        /** NOTE !!!
+         *
+         *  set the people group (`color`)
+         */
         color[node] = c;
 
         for (int nei : graph.get(node)) {
+            /** NOTE !!!
+             *
+             *  ONLY if the person if NOT grouped yet (color),
+             *  then we call dfs
+             */
             if (color[nei] == c) {
                 // same color conflict
                 return false;
             }
+            /** NOTE !!!
+             *
+             *  we check if color (group) conflicted when go over nodes
+             *  and check the color status (with the node).
+             *
+             *
+             *  Instead of checking at beginning (before for loop)
+             */
             if (color[nei] == 0) {
                 if (!dfs(nei, -c, color, graph)) {
                     return false;
@@ -87,7 +150,7 @@ public class PossibleBipartition {
     }
 
     // V0-1
-    // IDEA: (fixed by gemini)
+    // IDEA: LC 785 + HASH SAP + DFS (fixed by gemini)
     /**
      * Main function: Checks if the graph can be split into two groups.
      */
