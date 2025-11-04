@@ -1,5 +1,7 @@
 package dev.LCWeekly;
 
+import LeetCodeJava.DataStructure.TreeNode;
+
 import java.util.*;
 
 /**
@@ -247,6 +249,30 @@ public class Weekly102 {
     // Q3
     // LC 2641
     // https://leetcode.com/problems/cousins-in-binary-tree-ii/
+    // 11.27 - 37 am
+    /**
+     *
+     *   -> Return the root of the modified tree.
+     *
+     *
+     *   - Replace the value of each node in the tree
+     *      with the `sum of all its cousins' values.`
+     *
+     *   - Two nodes of a binary tree are cousins if
+     *      they have the same depth with DIFFERENT parents.
+     *
+     *   - Depth of a node is the number of edges in
+     *     the path from the root node to it.
+     *
+     *
+     */
+    public TreeNode replaceValueInTree(TreeNode root) {
+
+        return null;
+    }
+
+    //private TreeNode
+
 
     // Q4
     // LC 2642
