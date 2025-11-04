@@ -506,6 +506,53 @@ public class Weekly102 {
         }
     }
 
+    // V3
+    // DFS (gpt)
+    Map<Integer, Integer> levelSum = new HashMap<>();
+
+    public TreeNode replaceValueInTree_3(TreeNode root) {
+        if (root == null)
+            return null;
+
+        // 1️⃣ collect sums per depth
+        collectLevelSum(root, 0);
+
+        // 2️⃣ replace values based on cousin logic
+        root.val = 0;
+        dfsReplace(root, 0);
+
+        return root;
+    }
+
+    private void collectLevelSum(TreeNode node, int depth) {
+        if (node == null)
+            return;
+        levelSum.put(depth, levelSum.getOrDefault(depth, 0) + node.val);
+        collectLevelSum(node.left, depth + 1);
+        collectLevelSum(node.right, depth + 1);
+    }
+
+    private void dfsReplace(TreeNode node, int depth) {
+        if (node == null)
+            return;
+
+        int nextDepth = depth + 1;
+        int siblingSum = 0;
+        if (node.left != null)
+            siblingSum += node.left.val;
+        if (node.right != null)
+            siblingSum += node.right.val;
+
+        if (node.left != null) {
+            node.left.val = levelSum.getOrDefault(nextDepth, 0) - siblingSum;
+        }
+        if (node.right != null) {
+            node.right.val = levelSum.getOrDefault(nextDepth, 0) - siblingSum;
+        }
+
+        dfsReplace(node.left, nextDepth);
+        dfsReplace(node.right, nextDepth);
+    }
 
     // Q4
     // LC 2642
