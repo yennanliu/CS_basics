@@ -1365,6 +1365,12 @@ public class Workspace18 {
     }
 
 
+    // LC 2641
+    public TreeNode replaceValueInTree(TreeNode root) {
+
+        return null;
+    }
+
 
 
 
