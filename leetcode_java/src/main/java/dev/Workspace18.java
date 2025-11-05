@@ -1400,6 +1400,25 @@ public class Workspace18 {
         Queue<TreeNode> q = new LinkedList<>();
         q.add(root);
 
+        List<Integer> layerSum = new ArrayList<>();
+        while(!q.isEmpty()){
+            int size = q.size();
+            int tmpSum = 0;
+            for(int i = 0; i < size; i++){
+                TreeNode cur = q.poll();
+                tmpSum += cur.val;
+                if (cur.left != null){
+                    q.add(cur.left);
+                }
+                if (cur.right != null){
+                    q.add(cur.right);
+                }
+            }
+            layerSum.add(tmpSum);
+        }
+
+        System.out.println(">>> layerSum = " + layerSum);
+
         // ??? init root val as 0 (since root MUST has not cousin)
         // NOTE !!! update root val DOES NOT affect its sub node relation
         // e.g. root.left, root.right still unchanged
