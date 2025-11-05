@@ -877,7 +877,7 @@ public class Workspace18 {
      *
      *
      */
-    // IDEA 3) DFS + NEIGHBOR COLOR CHECK
+    // 11.05 - 15 am
     public boolean isBipartite(int[][] graph) {
         // edge
         if (graph == null || graph.length == 0) {
@@ -888,23 +888,39 @@ public class Workspace18 {
             return true;
         }
 
-        /** NOTE !!!
-         *
-         *
-         * We use 3 states:
-         *   0 -> not colored yet
-         *   1 -> color A
-         *  -1 -> color B
-         */
-        int[] colorState = new int[graph.length]; // ???
+        Set<Integer> set = new HashSet<>();
+        for(int[] g: graph){
+            set.add(g[0]);
+            set.add(g[1]);
+        }
 
-        // ??? apply dfs color check on every node
-        for(int i = 0; i < graph.length; i++){
-            // NOTE !!! ONLY call the dfs if `uncolored`
-            // e.g. if color state = 0
-            if(colorState[i] == 0){
-                // NOTE !!! color as `1` color
-                if(!dfsNeighborColorCheck(graph, colorState, i, 1)){
+        /** team status
+         *
+         *  - 0: NOT assigned
+         *  - 1: team A
+         *  - -1: team B
+         */
+        int[] teamStatus = new int[set.size()];
+
+        // neighbor map
+        Map<Integer, List<Integer>> map = new HashMap<>();
+        for(int i = 0; i < set.size(); i++){
+            map.put(i, new ArrayList<>());
+        }
+        // update map
+        for(int[] g: graph){
+            int from = g[0];
+            // ???
+            for(int i = 1; i < g.length; i++){
+                map.get(from).add(g[i]);
+            }
+        }
+
+        System.out.println(">>> map = " + map + ", teamStatus = " + teamStatus);
+
+        for(int i = 0; i < set.size(); i++){
+            if(teamStatus[i] == 0){
+                if(!isBipartiteHelper(i, teamStatus, map, 1)){
                     return false;
                 }
             }
@@ -913,39 +929,97 @@ public class Workspace18 {
         return true;
     }
 
-    // int[][] graph, int[] color, int node, int c
-    private boolean dfsNeighborColorCheck(int[][] graph, int[] colorState, int node, int c){
-//        if(colorState[node] == c){
-//            return false; // ??? conflict
-//        }
-//        if(colorState[node] == -1 * c){
-//            return true; // ??? OK ? since it's `different color`
-//        }
-        // NOTE !!!! // if already colored, check consistency
-        // NOTE !!! here we are NOT checking neighbor color
-        // but check if the same node has conflict on color
-        // e.g. since the node colored already, we check if
-        // the new color is DIFFERENT from the prev color
-        if (colorState[node] != 0) {
-            // if color conflict, return false
-            return colorState[node] == c;
+
+    private boolean isBipartiteHelper(int node, int[] teamStatus, Map<Integer, List<Integer>> map, int team){
+        if(teamStatus[node] != 0){
+            return teamStatus[node] == team;
         }
-
-        // NOTE !!! we color cur node
-        colorState[node] = c;
-
-        // visit neighbors
-        for(int neighbor: graph[node]){
-            // NOTE !!! since we mark cur node as `1 color`
-            // so we should check if its neighbor node can has `different color`
-            // e.g. `-1 color`
-            if(!dfsNeighborColorCheck(graph, colorState, neighbor, -1 * c)){
+        // color (assign to team)
+        teamStatus[node] = team;
+        // loop over neighbors
+        for(int neighbor: map.get(node)){
+            if(!isBipartiteHelper(neighbor, teamStatus, map, -1 * team)){
                 return false;
             }
         }
 
         return true;
     }
+
+
+
+
+
+
+//    // IDEA 3) DFS + NEIGHBOR COLOR CHECK
+//    public boolean isBipartite(int[][] graph) {
+//        // edge
+//        if (graph == null || graph.length == 0) {
+//            return true;
+//        }
+//        // ???
+//        if(graph.length == 1 || graph[0].length == 1){
+//            return true;
+//        }
+//
+//        /** NOTE !!!
+//         *
+//         *
+//         * We use 3 states:
+//         *   0 -> not colored yet
+//         *   1 -> color A
+//         *  -1 -> color B
+//         */
+//        int[] colorState = new int[graph.length]; // ???
+//
+//        // ??? apply dfs color check on every node
+//        for(int i = 0; i < graph.length; i++){
+//            // NOTE !!! ONLY call the dfs if `uncolored`
+//            // e.g. if color state = 0
+//            if(colorState[i] == 0){
+//                // NOTE !!! color as `1` color
+//                if(!dfsNeighborColorCheck(graph, colorState, i, 1)){
+//                    return false;
+//                }
+//            }
+//        }
+//
+//        return true;
+//    }
+//
+//    // int[][] graph, int[] color, int node, int c
+//    private boolean dfsNeighborColorCheck(int[][] graph, int[] colorState, int node, int c){
+////        if(colorState[node] == c){
+////            return false; // ??? conflict
+////        }
+////        if(colorState[node] == -1 * c){
+////            return true; // ??? OK ? since it's `different color`
+////        }
+//        // NOTE !!!! // if already colored, check consistency
+//        // NOTE !!! here we are NOT checking neighbor color
+//        // but check if the same node has conflict on color
+//        // e.g. since the node colored already, we check if
+//        // the new color is DIFFERENT from the prev color
+//        if (colorState[node] != 0) {
+//            // if color conflict, return false
+//            return colorState[node] == c;
+//        }
+//
+//        // NOTE !!! we color cur node
+//        colorState[node] = c;
+//
+//        // visit neighbors
+//        for(int neighbor: graph[node]){
+//            // NOTE !!! since we mark cur node as `1 color`
+//            // so we should check if its neighbor node can has `different color`
+//            // e.g. `-1 color`
+//            if(!dfsNeighborColorCheck(graph, colorState, neighbor, -1 * c)){
+//                return false;
+//            }
+//        }
+//
+//        return true;
+//    }
 
 
 

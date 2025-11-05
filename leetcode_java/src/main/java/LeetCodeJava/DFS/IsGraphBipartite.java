@@ -55,6 +55,30 @@ public class IsGraphBipartite {
 
     // V0
     // IDEA: DFS + COLOR STATE + NEIGHBOR COLOR CHECK (fixed by gpt)
+    /**  NOTE !!!
+     *
+     *  NOT need to build another graph (via hashMap)
+     *  -> since the input (int[][] graph) already a valid graph,
+     *  -> we can use it in DFS directly
+     */
+    /**  NOTE !!!
+     *
+     *  we call DFS with the given graph (int[][] graph) directly
+     *
+     *  since for graph,
+     *
+     *   idx: the node
+     *   int[]: the neighbor
+     *
+     * ----
+     *
+     *   e.g. given  graph = [[1,2,3],[0,2],[0,1,3],[0,2]]
+     *
+     *    -> node 0, has neighbor: [1,2,3]
+     *    -> node 1, has neighbor: [0,2]
+     *    -> node 2, has neighbor: [0,1,3]
+     *    ...
+     */
     public boolean isBipartite(int[][] graph) {
         // edge
         if (graph == null || graph.length == 0) {
@@ -109,6 +133,58 @@ public class IsGraphBipartite {
             // so we should check if its neighbor node can has `different color`
             // e.g. `-1 * color`
             if (!dfsNeighborColorCheck(graph, colorState, neighbor, -c)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    // V0-0-1
+    // IDEA: DFS (fixed by gpt)
+    public boolean isBipartite_0_0_1(int[][] graph) {
+        int n = graph.length;
+        // 0 = uncolored, 1 = color A, -1 = color B
+        int[] color = new int[n];
+
+        for (int i = 0; i < n; i++) {
+            if (color[i] == 0) {
+                // Start DFS with color 1
+                if (!dfs(graph, color, i, 1)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    private boolean dfs(int[][] graph, int[] color, int node, int c) {
+        if (color[node] != 0) {
+            return color[node] == c;
+        }
+
+        // assign team (color) to cur node
+        color[node] = c;
+        /**  NOTE !!!
+         *
+         *  we call DFS with the given graph (int[][] graph) directly
+         *
+         *  since for graph,
+         *
+         *   idx: the node
+         *   int[]: the neighbor
+         *
+         * ----
+         *
+         *   e.g. given  graph = [[1,2,3],[0,2],[0,1,3],[0,2]]
+         *
+         *    -> node 0, has neighbor: [1,2,3]
+         *    -> node 1, has neighbor: [0,2]
+         *    -> node 2, has neighbor: [0,1,3]
+         *    ...
+         */
+        for (int neighbor : graph[node]) {
+            if (!dfs(graph, color, neighbor, -c)) {
                 return false;
             }
         }
