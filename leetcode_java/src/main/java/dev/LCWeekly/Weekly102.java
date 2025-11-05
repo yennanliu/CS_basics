@@ -557,9 +557,291 @@ public class Weekly102 {
     // Q4
     // LC 2642
     // https://leetcode.com/problems/design-graph-with-shortest-path-calculator/
+    // 8.43 - 53 am
+    /**
+     *
+     *   - implement the `Graph` class that
+     *      -  Graph(int n, int[][] edges) initializes the object with n nodes and the given edges.
+     *      -  addEdge(int[] edge):
+     *          - adds an edge to the list of edges
+     *      - shortestPath:
+     *          -  return minimum cost of a path from node1 to node2. If no path exists, return -1
+     *          -  The cost of a path is the sum of the costs of the edges in the path.
+     *
+     *
+     * -  edges[i] = [fromi, toi, edgeCosti]
+     *     -> an edge from fromi to toi with the cost edgeCosti.
+     *     -> `fromi` to `toi` and cost `edgeCosti`
+     *
+     *
+     *
+     *   IDEA 1) Dijkstra algo ???
+     *
+     *   IDEA 2)  BFS + weight at path ????
+     *
+     *
+     */
+    // IDEA 1) Dijkstra algo ???
+//    class Graph {
+//
+//        // attr
+//        // { node: [neighbor_1, neighbor_2, ... }
+//        //Map<Integer, List<Integer>> map;
+//
+//        // { node: [neighbor_1, cost_1], [neighbor_2, cost_2], ... } ????
+//        Map<Integer, List<Integer[]>> map;
+//
+//        // weight ???
+//        Integer[] weights;
+//
+//        // PQ: small PQ, record the `cheapest` cost from node
+//        PriorityQueue<Integer> pq;
+//
+//        public Graph(int n, int[][] edges) {
+//            this.map = new HashMap<>();
+//            // ?? init as 0 ???
+//            this.weights = new Integer[n]; // /??
+//
+//            this.pq = new PriorityQueue<>();
+//        }
+//
+//        public void addEdge(int[] edge) {
+//            int from = edge[0];
+//            int to = edge[1];
+//            int cost = edge[2];
+//
+//            // update map
+//            List<Integer[]> list1 = new ArrayList<>();
+//            if(this.map.containsKey(from)){
+//                list1 = this.map.get(from);
+//            }
+//            Integer[] arr = new Integer[2];
+//            arr[0] = to;
+//            arr[1] = cost;
+//            this.map.put(from, list1);
+//
+//            // update `weight` ???
+//            this.weights[from] = cost; // ????
+//
+//        }
+//
+//        public int shortestPath(int node1, int node2) {
+//            // edge
+//            if(this.map.isEmpty()){
+//                return -1;
+//            }
+//            // check if node1, node2 are connected
+//            if(!isConnected(node1, node2)){
+//                return -1;
+//            }
+//            return runDijkstra(node1, node2);
+//        }
+//
+//        /** Dijkstra:
+//         *
+//         *  BFS + wights ????
+//         */
+//        private int runDijkstra(int node1, int node2){
+//            //Queue<IN>
+//            // ???
+//            // PQ: { [next_node, cost] , [next_node, cost], ....  }
+//            // min PQ: (sort on cost)
+//            PriorityQueue<Integer[]> pq = new PriorityQueue<>(new Comparator<Integer[]>() {
+//                @Override
+//                public int compare(Integer[] o1, Integer[] o2) {
+//                    int diff = o1[1] - o2[1];
+//                    return diff;
+//                }
+//            });
+//            // ????
+//
+//            while(!pq.isEmpty()){
+//                Integer[] curArr = pq.poll();
+//                // check neighbors
+//                for(Integer[] neighbor: this.map.get(curArr[0])){
+//                    //List<Integer> newList = new ArrayList<>();
+//
+//                }
+//            }
+//
+//            return 0;
+//        }
+//
+//        private boolean isConnected(int node1, int node2){
+//            if(this.map.isEmpty()){
+//                return false;
+//            }
+//            // ???
+//            return !this.map.get(node1).contains(node2) &&
+//                    !this.map.get(node2).contains(node1);
+//        }
+//
+//
+//    }
 
 
 
+    // V1
+    // IDEA (fixed by gpt)
+    class Graph_1 {
 
+        private Map<Integer, List<int[]>> graph;
+
+        public Graph_1(int n, int[][] edges) {
+            graph = new HashMap<>();
+            for (int i = 0; i < n; i++) {
+                graph.put(i, new ArrayList<>());
+            }
+
+            for (int[] edge : edges) {
+                addEdge(edge);
+            }
+        }
+
+        public void addEdge(int[] edge) {
+            int from = edge[0];
+            int to = edge[1];
+            int cost = edge[2];
+            graph.get(from).add(new int[]{to, cost});
+        }
+
+        public int shortestPath(int node1, int node2) {
+            // Standard Dijkstra’s Algorithm
+            PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[1] - b[1]);
+            pq.offer(new int[]{node1, 0}); // {node, totalCost}
+
+            Map<Integer, Integer> minDist = new HashMap<>();
+            minDist.put(node1, 0);
+
+            while (!pq.isEmpty()) {
+                int[] cur = pq.poll();
+                int node = cur[0];
+                int cost = cur[1];
+
+                // If we reached target node
+                if (node == node2) return cost;
+
+                // Skip outdated entry
+                if (cost > minDist.getOrDefault(node, Integer.MAX_VALUE)) continue;
+
+                for (int[] nei : graph.getOrDefault(node, new ArrayList<>())) {
+                    int next = nei[0];
+                    int nextCost = cost + nei[1];
+
+                    // Relax edge
+                    if (nextCost < minDist.getOrDefault(next, Integer.MAX_VALUE)) {
+                        minDist.put(next, nextCost);
+                        pq.offer(new int[]{next, nextCost});
+                    }
+                }
+            }
+            return -1; // unreachable
+        }
+
+    }
+
+    // V2
+    // fix by gemini
+    class Graph_2 {
+
+        // Adjacency List: node -> List of {neighbor, cost} pairs
+        // Using List<int[]> is cleaner than List<Integer[]> for primitive arrays.
+        private final Map<Integer, List<int[]>> adj;
+        private final int N; // Number of nodes (0 to N-1)
+
+        /**
+         * Constructor: Builds the initial graph from the edges array.
+         */
+        public Graph_2(int n, int[][] edges) {
+            this.N = n;
+            this.adj = new HashMap<>();
+
+            // Initialize the map to ensure every node is present, even if isolated.
+            for (int i = 0; i < n; i++) {
+                adj.put(i, new ArrayList<>());
+            }
+
+            // Add initial edges
+            for (int[] edge : edges) {
+                addEdge(edge);
+            }
+        }
+
+        /**
+         * Adds a new directed edge to the graph.
+         */
+        public void addEdge(int[] edge) {
+            int from = edge[0];
+            int to = edge[1];
+            int cost = edge[2];
+
+            // --- FIX: Correctly add the neighbor and its cost to the adjacency list ---
+            // We use int[] {to, cost} to represent the edge.
+            this.adj.get(from).add(new int[]{to, cost});
+        }
+
+        /**
+         * Finds the shortest path from node1 to node2 using Dijkstra's algorithm.
+         */
+        public int shortestPath(int node1, int node2) {
+
+            // Array to store the minimum distance from node1 to every other node.
+            // Initialize distances to a very large number (infinity).
+            // Long is safer, but problem constraints allow Integer.MAX_VALUE
+            int[] dist = new int[N];
+            Arrays.fill(dist, Integer.MAX_VALUE);
+
+            // Distance from the source node to itself is 0.
+            dist[node1] = 0;
+
+            // Min-Heap Priority Queue for Dijkstra's. Stores {cost, node}.
+            // We prioritize lower cost.
+            PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(a -> a[0]));
+
+            // Start Dijkstra from node1 with cost 0.
+            pq.offer(new int[]{0, node1}); // {cost, node}
+
+            // --- Standard Dijkstra's Algorithm ---
+            while (!pq.isEmpty()) {
+                int[] current = pq.poll();
+                int currentCost = current[0];
+                int u = current[1];
+
+                // If we found a shorter path to 'u' already, skip this outdated entry.
+                if (currentCost > dist[u]) {
+                    continue;
+                }
+
+                // Optimization: If we reached the target, return its distance.
+                if (u == node2) {
+                    return currentCost;
+                }
+
+                // Iterate through all neighbors (v) of the current node (u)
+                for (int[] neighborEdge : adj.getOrDefault(u, Collections.emptyList())) {
+                    int v = neighborEdge[0];
+                    int edgeCost = neighborEdge[1];
+
+                    // Relaxation step: new path cost = path to u + edge cost u->v
+                    int newPathCost = currentCost + edgeCost;
+
+                    // If a shorter path to 'v' is found
+                    if (newPathCost < dist[v]) {
+                        dist[v] = newPathCost;
+
+                        // Add the neighbor to the PQ with the new, lower cost.
+                        pq.offer(new int[]{newPathCost, v});
+                    }
+                }
+            }
+
+            // After the loop, dist[node2] holds the shortest path cost.
+            // If it's still MAX_VALUE, node2 is unreachable.
+            return dist[node2] == Integer.MAX_VALUE ? -1 : dist[node2];
+        }
+    }
+
+
+    
 
 }
