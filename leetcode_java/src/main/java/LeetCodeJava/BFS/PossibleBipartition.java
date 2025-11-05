@@ -80,8 +80,22 @@ public class PossibleBipartition {
         }
 
         for (int[] d : dislikes) {
+            /** NOTE !!!! below append to map syntax */
+
+
+            /** V1 */
             graph.get(d[0]).add(d[1]);
             graph.get(d[1]).add(d[0]);
+
+            /** V2 */
+//            List<Integer> list1 = dislikeMap.get(a);
+//            List<Integer> list2 = dislikeMap.get(b);
+//
+//            list1.add(b);
+//            list2.add(a);
+//
+//            dislikeMap.put(a, list1);
+//            dislikeMap.put(b, list2);
         }
 
 
@@ -97,6 +111,7 @@ public class PossibleBipartition {
          *   -1 = group B
          */
         // color array: 0 = unvisited, 1 = group A, -1 = group B
+        /** NOTE !!! since n is 1 based, so we use `new int[n + 1]` */
         int[] color = new int[n + 1];
 
         // DFS each component
@@ -105,6 +120,11 @@ public class PossibleBipartition {
              *
              *  ONLY if the person if NOT grouped yet (color),
              *  then we call dfs
+             *
+             *
+             *  NOTE !!!
+             *
+             *   assign to `team 1` by default
              */
             if (color[i] == 0) {
                 if (!dfs(i, 1, color, graph)) {
@@ -122,6 +142,18 @@ public class PossibleBipartition {
          */
         color[node] = c;
 
+        /** NOTE !!!
+         *
+         *  we loop over dislike neighbors (but NOT loop over 1... n)
+         *
+         *  ---
+         *
+         *  reason:
+         *
+         *  // NOTE !!! since the neighbor are the person does NOT like current node
+         *  // so we need to assign them to different team
+         *  // do above via dfs call, (and validate if it's possible)
+         */
         for (int nei : graph.get(node)) {
             /** NOTE !!!
              *
@@ -141,11 +173,61 @@ public class PossibleBipartition {
              *  Instead of checking at beginning (before for loop)
              */
             if (color[nei] == 0) {
+                // NOTE !!! assign to `team -1 * c`
+                // since in the prev call. we assign prev node to `team c`
                 if (!dfs(nei, -c, color, graph)) {
                     return false;
                 }
             }
         }
+        return true;
+    }
+
+    // V0-0-1
+    // IDEA: DFS + LC 785 (fixed by gpt)
+    public boolean possibleBipartition_0_0_1(int n, int[][] dislikes) {
+        // Build adjacency list
+        Map<Integer, List<Integer>> dislikeMap = new HashMap<>();
+        for (int i = 1; i <= n; i++) {
+            dislikeMap.put(i, new ArrayList<>());
+        }
+
+        for (int[] d : dislikes) {
+            int a = d[0], b = d[1];
+            dislikeMap.get(a).add(b);
+            dislikeMap.get(b).add(a);
+        }
+
+        // 0 = unassigned, 1 = group A, -1 = group B
+        int[] groupStatus = new int[n + 1];
+
+        for (int i = 1; i <= n; i++) {
+            if (groupStatus[i] == 0) {
+                if (!dfs_0_0_1(i, 1, groupStatus, dislikeMap)) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    private boolean dfs_0_0_1(int node, int team, int[] groupStatus, Map<Integer, List<Integer>> dislikeMap) {
+        if (groupStatus[node] != 0) {
+            // already assigned, check consistency
+            return groupStatus[node] == team;
+        }
+
+        // assign this node
+        groupStatus[node] = team;
+
+        // assign opposite team to all neighbors
+        for (int nei : dislikeMap.get(node)) {
+            if (!dfs_0_0_1(nei, -team, groupStatus, dislikeMap)) {
+                return false;
+            }
+        }
+
         return true;
     }
 
