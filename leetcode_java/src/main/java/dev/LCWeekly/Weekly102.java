@@ -682,7 +682,7 @@ public class Weekly102 {
 
 
     // V1
-    // IDEA (fixed by gpt)
+    // IDEA: Dijkstra (fixed by gpt)
     class Graph_1 {
 
         private Map<Integer, List<int[]>> graph;
@@ -741,7 +741,7 @@ public class Weekly102 {
     }
 
     // V2
-    // fix by gemini
+    // IDEA: Dijkstra, fixed by gemini
     class Graph_2 {
 
         // Adjacency List: node -> List of {neighbor, cost} pairs
@@ -823,6 +823,108 @@ public class Weekly102 {
                     int edgeCost = neighborEdge[1];
 
                     // Relaxation step: new path cost = path to u + edge cost u->v
+                    /**
+                     *
+                     * Relaxation is the process of checking whether the current
+                     * known shortest path to a vertex can be improved
+                     * by taking a different route through another vertex.
+                     *
+                     * -----
+                     *
+                     *
+                     * Excellent — that’s one of the core ideas in Dijkstra’s algorithm:
+                     * the relaxation step is what progressively updates the shortest known distance to each node.
+                     *
+                     * Let’s unpack that clearly. 👇
+                     *
+                     * ⸻
+                     *
+                     * 🧠 Concept: Relaxation
+                     *
+                     * Definition
+                     *
+                     * Relaxation is the process of checking whether the current known shortest path to a vertex can be improved by taking a different route through another vertex.
+                     *
+                     * ⸻
+                     *
+                     * In Dijkstra’s terms:
+                     *
+                     * Let’s say we are visiting node u (current node),
+                     * and v is one of its neighbors with edge weight w(u, v).
+                     *
+                     * We currently know:
+                     * 	•	dist[u]: shortest distance from start node → u
+                     * 	•	dist[v]: shortest distance from start node → v (may be infinity if not reached yet)
+                     *
+                     * Then we check if:
+                     *
+                     * dist[v] > dist[u] + w(u, v)
+                     *
+                     * If true → we’ve found a shorter path to v through u,
+                     * so we relax that edge by updating:
+                     *
+                     * dist[v] = dist[u] + w(u, v)
+                     *
+                     * and we push v back into the priority queue with the new cost.
+                     *
+                     * ⸻
+                     *
+                     * ✅ Example
+                     *
+                     * Imagine this weighted directed graph:
+                     *
+                     * 0 --(4)--> 1
+                     * 0 --(3)--> 2
+                     * 2 --(1)--> 1
+                     * 1 --(2)--> 3
+                     * 2 --(4)--> 3
+                     *
+                     * Start:
+                     * dist[0]=0, all others = ∞
+                     *
+                     * 1️⃣ Pop (0,0): neighbors
+                     * 	•	For (0→1,4): dist[1] = 4
+                     * 	•	For (0→2,3): dist[2] = 3
+                     *
+                     * PQ = [(2,3), (1,4)]
+                     *
+                     * 2️⃣ Pop (2,3): neighbors
+                     * 	•	For (2→1,1): check dist[1] > dist[2]+1 → 4 > 4 → equal → no update
+                     * 	•	For (2→3,4): dist[3] > 3+4 → ∞ > 7 → ✅ relax → dist[3]=7
+                     *
+                     * PQ = [(1,4), (3,7)]
+                     *
+                     * 3️⃣ Pop (1,4): neighbor (1→3,2)
+                     * 	•	Check dist[3] > 4+2 → 7 > 6 → ✅ relax → dist[3]=6
+                     *
+                     * PQ = [(3,6)]
+                     * → shortest path to node 3 = 6
+                     *
+                     * ⸻
+                     *
+                     * 💡 Code line in your Dijkstra:
+                     *
+                     * int nextCost = cost + nei[1];
+                     * if (nextCost < minDist.getOrDefault(next, Integer.MAX_VALUE)) {
+                     *     minDist.put(next, nextCost);
+                     *     pq.offer(new int[]{next, nextCost});
+                     * }
+                     *
+                     * This is exactly the “relaxation step”:
+                     * 	•	Compute the new possible distance via the current node (cost + edge weight)
+                     * 	•	If it’s shorter → update the record + enqueue it for further exploration.
+                     *
+                     * ⸻
+                     *
+                     * 🔁 In summary
+                     *
+                     * Term	Meaning
+                     * Relaxation	Updating a node’s shortest known distance when a better one is found
+                     * Formula	dist[v] = min(dist[v], dist[u] + w(u, v))
+                     * Purpose	To propagate the shortest path info through the graph
+                     * Used in	Dijkstra, Bellman-Ford, A*, etc.
+                     *
+                     */
                     int newPathCost = currentCost + edgeCost;
 
                     // If a shorter path to 'v' is found
@@ -842,6 +944,6 @@ public class Weekly102 {
     }
 
 
-    
+
 
 }
