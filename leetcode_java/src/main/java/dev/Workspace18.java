@@ -1366,9 +1366,68 @@ public class Workspace18 {
 
 
     // LC 2641
+    // 7.14 - 24 am
+    /**
+     *   IDEA 1) BFS
+     *
+     *   IDEA 2) DFS
+     *
+     *
+     */
+    //  IDEA 1) BFS
+    /**
+     *   1. BFS visit layer by layer
+     *   2. get the `layer sum` list
+     *    e.g. [sum_1, sum_2,...], idx is the layer
+     *   3. check if the cousin exists
+     *      -. if yes, sum val up the other nodes
+     *      NOTE !!! the `cousin sum` = layer_sum - cur node val
+     *      so we can use the layer sum list we got above, with the cur node
+     *      to get the cousin sum
+     *      - set 0 otherwise
+     *   4. repeat above steps
+     *
+     */
     public TreeNode replaceValueInTree(TreeNode root) {
+        // edge
+        if (root == null){
+            return null;
+        }
 
-        return null;
+        // v1: queue: [ [node, layer], ...]
+        // v2: queue: [ node1, node2, ... ]
+        // v3: queue: [ [parent1 node1] ,  [parent2 node2] , ... ]
+        Queue<TreeNode> q = new LinkedList<>();
+        q.add(root);
+
+        // ??? init root val as 0 (since root MUST has not cousin)
+        // NOTE !!! update root val DOES NOT affect its sub node relation
+        // e.g. root.left, root.right still unchanged
+        root.val = 0;
+
+        int layer = 0;
+        while(!q.isEmpty()){
+            int size = q.size();
+            // init tmp list
+            List<Integer> list = new ArrayList<>();
+            for(int i = 0; i < size; i++){
+                TreeNode cur = q.poll();
+                list.add(cur.val);
+                if (cur.left != null){
+                    q.add(cur.left);
+                }
+                if (cur.right != null){
+                    q.add(cur.right);
+                }
+                // op ????
+
+            }
+
+            layer += 1;
+        }
+
+
+        return root; // ?????
     }
 
 
