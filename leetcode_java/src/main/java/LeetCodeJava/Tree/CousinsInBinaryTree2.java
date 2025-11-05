@@ -60,11 +60,129 @@ public class CousinsInBinaryTree2 {
 //
 //    }
 
+    // V0-1
+    // IDEA: BFS (gemini)
+    // Map to store the total sum of node values for each depth.
+    private Map<Integer, Integer> depthSum = new HashMap<>();
+
+    public TreeNode replaceValueInTree_0_1(TreeNode root) {
+        if (root == null) {
+            return null;
+        }
+
+        // --- Pass 1: Calculate the total sum for each depth using BFS ---
+        /**  NOTE !!! call helper func to get depth sum */
+        calculateDepthSums(root);
+
+        // --- Pass 2: Traverse and Replace Values using BFS ---
+
+        // The root node (depth 0) is a special case: its value is always 0.
+        root.val = 0;
+
+        // Use a queue to store the PARENT nodes of the level being processed.
+        // We will process the children of these nodes.
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+
+        int depth = 1;
+
+        // BFS loop continues as long as there are nodes to process
+        /**  NOTE !!! BFS logic */
+        while (!queue.isEmpty()) {
+            int levelSize = queue.size();
+
+            // Get the total sum for the current depth being modified (depth 1, 2, 3, etc.)
+            // We only need to check the depth if it exists in the map (i.e., the level is not empty).
+            /**  NOTE !!! if the `depth` NOT exists in map, we simply neglect it */
+            if (!depthSum.containsKey(depth)) {
+                break;
+            }
+            int totalLevelSum = depthSum.get(depth);
+
+            // Iterate through all parent nodes from the previous level
+            for (int i = 0; i < levelSize; i++) {
+                TreeNode parent = queue.poll();
+
+                // 1. Calculate the sum of the siblings (children of the current parent)
+                /**  NOTE !!!  get node val sum from siblings (brothers)
+                 *
+                 *     e.g. childrenSum
+                 */
+                int childrenSum = 0;
+                if (parent.left != null) {
+                    childrenSum += parent.left.val;
+                }
+                if (parent.right != null) {
+                    childrenSum += parent.right.val;
+                }
+
+                /**  NOTE !!!  replace left child
+                 */
+                // 2. Apply the replacement logic to the left child
+                if (parent.left != null) {
+                    // New Value = (Total Sum at Depth) - (Sibling Sum)
+                    // The sibling sum here is the combined value of the left and right child.
+                    parent.left.val = totalLevelSum - childrenSum;
+
+                    // Add the modified node to the queue for the next iteration (next depth's parents)
+                    queue.add(parent.left);
+                }
+
+                /**  NOTE !!!  replace right child
+                 */
+                // 3. Apply the replacement logic to the right child
+                if (parent.right != null) {
+                    parent.right.val = totalLevelSum - childrenSum;
+
+
+                    /**  NOTE !!!  Add the modified node to the queue for the next iteration ????
+                     */
+                    // Add the modified node to the queue for the next iteration
+                    queue.add(parent.right);
+                }
+            }
+            depth++; // Move to the next depth
+        }
+
+        return root;
+    }
+
+    /** helper func: get node sum by depth */
+    /**
+     * Pass 1 Helper:
+     *
+     *  Calculates the total sum of all nodes at each depth using BFS.
+     */
+    private void calculateDepthSums(TreeNode root) {
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+        int depth = 0;
+
+        while (!queue.isEmpty()) {
+            int levelSize = queue.size();
+            int currentLevelSum = 0;
+
+            for (int i = 0; i < levelSize; i++) {
+                TreeNode node = queue.poll();
+                currentLevelSum += node.val;
+
+                if (node.left != null)
+                    queue.add(node.left);
+                if (node.right != null)
+                    queue.add(node.right);
+            }
+            // Store the total sum for the current depth
+            depthSum.put(depth, currentLevelSum);
+            depth++;
+        }
+    }
+
     // V1
     // IDEA: BFS (gpt)
     public TreeNode replaceValueInTree_1(TreeNode root) {
-        if (root == null)
+        if (root == null){
             return null;
+        }
 
         // root has no cousins
         root.val = 0;
@@ -83,6 +201,7 @@ public class CousinsInBinaryTree2 {
             // iterate current level
             for (int i = 0; i < size; i++) {
                 TreeNode parent = q.poll();
+                // brothers
                 int siblingSum = 0;
 
                 if (parent.left != null) {
@@ -119,106 +238,6 @@ public class CousinsInBinaryTree2 {
         }
 
         return root;
-    }
-
-    // V2
-    // IDEA: BFS (gemini)
-    // Map to store the total sum of node values for each depth.
-    private Map<Integer, Integer> depthSum = new HashMap<>();
-
-    public TreeNode replaceValueInTree_2(TreeNode root) {
-        if (root == null) {
-            return null;
-        }
-
-        // --- Pass 1: Calculate the total sum for each depth using BFS ---
-        calculateDepthSums(root);
-
-        // --- Pass 2: Traverse and Replace Values using BFS ---
-
-        // The root node (depth 0) is a special case: its value is always 0.
-        root.val = 0;
-
-        // Use a queue to store the PARENT nodes of the level being processed.
-        // We will process the children of these nodes.
-        Queue<TreeNode> queue = new LinkedList<>();
-        queue.add(root);
-
-        int depth = 1;
-
-        // BFS loop continues as long as there are nodes to process
-        while (!queue.isEmpty()) {
-            int levelSize = queue.size();
-
-            // Get the total sum for the current depth being modified (depth 1, 2, 3, etc.)
-            // We only need to check the depth if it exists in the map (i.e., the level is not empty).
-            if (!depthSum.containsKey(depth)) {
-                break;
-            }
-            int totalLevelSum = depthSum.get(depth);
-
-            // Iterate through all parent nodes from the previous level
-            for (int i = 0; i < levelSize; i++) {
-                TreeNode parent = queue.poll();
-
-                // 1. Calculate the sum of the siblings (children of the current parent)
-                int childrenSum = 0;
-                if (parent.left != null) {
-                    childrenSum += parent.left.val;
-                }
-                if (parent.right != null) {
-                    childrenSum += parent.right.val;
-                }
-
-                // 2. Apply the replacement logic to the left child
-                if (parent.left != null) {
-                    // New Value = (Total Sum at Depth) - (Sibling Sum)
-                    // The sibling sum here is the combined value of the left and right child.
-                    parent.left.val = totalLevelSum - childrenSum;
-
-                    // Add the modified node to the queue for the next iteration (next depth's parents)
-                    queue.add(parent.left);
-                }
-
-                // 3. Apply the replacement logic to the right child
-                if (parent.right != null) {
-                    parent.right.val = totalLevelSum - childrenSum;
-
-                    // Add the modified node to the queue for the next iteration
-                    queue.add(parent.right);
-                }
-            }
-            depth++; // Move to the next depth
-        }
-
-        return root;
-    }
-
-    /**
-     * Pass 1 Helper: Calculates the total sum of all nodes at each depth using BFS.
-     */
-    private void calculateDepthSums(TreeNode root) {
-        Queue<TreeNode> queue = new LinkedList<>();
-        queue.add(root);
-        int depth = 0;
-
-        while (!queue.isEmpty()) {
-            int levelSize = queue.size();
-            int currentLevelSum = 0;
-
-            for (int i = 0; i < levelSize; i++) {
-                TreeNode node = queue.poll();
-                currentLevelSum += node.val;
-
-                if (node.left != null)
-                    queue.add(node.left);
-                if (node.right != null)
-                    queue.add(node.right);
-            }
-            // Store the total sum for the current depth
-            depthSum.put(depth, currentLevelSum);
-            depth++;
-        }
     }
 
     // V3
