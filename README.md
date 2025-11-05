@@ -324,6 +324,7 @@
 1564 | [Put Boxes Into the Warehouse I](https://leetcode.com/problems/put-boxes-into-the-warehouse-i/) | [Java](./leetcode_java/src/main/java/LeetCodeJava/Array/PutBoxesIntoTheWarehouseI.java)  | | | Medium |`google`| AGAIN (not start)
 1567 | [Maximum Length of Subarray With Positive Product](https://leetcode.com/problems/maximum-length-of-subarray-with-positive-product/) | [Python](./leetcode_python/Array/maximum-length-of-subarray-with-positive-product.py) | | | Medium |good trick, array, dp, 2 pointers, amazon| AGAIN**** (1) (not start)
 1914 | [Cyclically Rotating a Grid](https://leetcode.com/problems/cyclically-rotating-a-grid/) | [Python](./leetcode_python/Array/cyclically-rotating-a-grid.py) | | | Medium |array, brute force, dequeue`amazon`| AGAIN (not start)
+2640 | [Find the Score of All Prefixes of an Array](https://leetcode.com/problems/find-the-score-of-all-prefixes-of-an-array) | [Java](./leetcode_java/src/main/java/LeetCodeJava/Array/FindTheScoreOfAllPrefixesOfAnArray.java) | | | Medium |array, lc weekly 102| OK (1)
 2553 | [Separate the Digits in an Array](https://leetcode.com/problems/separate-the-digits-in-an-array) | [Java](./leetcode_java/src/main/java/LeetCodeJava/Array/SeparateTheDigitsInAnArray.java) | | | Easy |weekly 97| OK
 3195 | [Find the Minimum Area to Cover All Ones I](https://leetcode.com/problems/find-the-minimum-area-to-cover-all-ones-i/description/) | [Java](./leetcode_java/src/main/java/LeetCodeJava/Array/findTheMinimumAreaToCoverAllOnesI.java)  | | | Medium |array, LC weekly| AGAIN (1)
 

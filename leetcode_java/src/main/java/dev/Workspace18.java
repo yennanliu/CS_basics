@@ -1332,5 +1332,40 @@ public class Workspace18 {
     }
 
 
+    // LC 2640
+    // 6.30 - 40 am
+    public long[] findPrefixScore(int[] nums) {
+        // edge
+        if (nums == null || nums.length == 0) {
+            return new long[0];
+        }
+
+        long[] cache = new long[nums.length];
+        long[] res = new long[nums.length];
+        int maxTillNow = 0;
+        for(int i = 0; i < nums.length; i++){
+            //accSum += nums[i];
+            /**
+             * conver[i] = arr[i] + max(arr[0..i])
+             * where max(arr[0..i]) is the maximum
+             * value of arr[j] over 0 <= j <= i.
+             */
+            maxTillNow = Math.max(maxTillNow, nums[i]);
+            cache[i] = (nums[i] + maxTillNow);
+        }
+
+        int accSum = 0;
+        for(int i = 0; i < cache.length; i++){
+            accSum += cache[i];
+            res[i] = accSum;
+        }
+
+
+        return res;
+    }
+
+
+
+
 
 }
