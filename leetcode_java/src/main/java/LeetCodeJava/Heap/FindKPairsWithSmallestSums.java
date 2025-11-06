@@ -49,7 +49,7 @@ public class FindKPairsWithSmallestSums {
 //    }
 
     // V0-1
-    // IDEA: PQ (fixed by gpt)
+    // IDEA: PQ + get first J smallest pair + get extend PQ (fixed by gpt)
     /**
      *  IDEA:
      *
@@ -141,7 +141,7 @@ public class FindKPairsWithSmallestSums {
     }
 
     // V0-2
-    // IDEA: PQ (fixed by gpt)
+    // IDEA: PQ + get first J smallest pair + get extend PQ (fixed by gpt)
     public List<List<Integer>> kSmallestPairs_0_2(int[] nums1, int[] nums2, int k) {
         List<List<Integer>> res = new ArrayList<>();
         if (nums1 == null || nums2 == null || nums1.length == 0 || nums2.length == 0 || k <= 0) {
@@ -153,6 +153,21 @@ public class FindKPairsWithSmallestSums {
                 (a, b) -> (nums1[a[0]] + nums2[a[1]]) - (nums1[b[0]] + nums2[b[1]]));
 
         // push first k pairs (nums1[i], nums2[0])
+        /**  NOTE !!!
+         *
+         *  we init PQ as below:
+         *
+         *  - We insert first k pairs: (nums1[i], nums2[0])
+         *
+         *   - Why nums2[0]?
+         *     -> Because nums2 is sorted,
+         *       so (nums1[i], nums2[0]) is the smallest possible for that row.
+         *
+         *
+         *   -> so, we insert `nums_1[i] + nums_2[0]`  to PQ for now
+         *
+         *
+         */
         for (int i = 0; i < Math.min(nums1.length, k); i++) {
             pq.offer(new int[] { i, 0 });
         }
@@ -171,6 +186,57 @@ public class FindKPairsWithSmallestSums {
         }
 
         return res;
+    }
+
+    // V0-3
+    // IDEA: PQ + get first J smallest pair + get extend PQ (fixed by gemini)
+    public List<List<Integer>> kSmallestPairs_0_3(int[] nums1, int[] nums2, int k) {
+
+        // Final result list
+        List<List<Integer>> result = new ArrayList<>();
+        if (nums1.length == 0 || nums2.length == 0 || k == 0) {
+            return result;
+        }
+
+        // Min-Heap stores: {sum, index_in_nums1, index_in_nums2}
+        PriorityQueue<int[]> minHeap = new PriorityQueue<>(
+                Comparator.comparingInt(a -> a[0]) // Sort by sum (index 0)
+        );
+
+        int m = nums1.length;
+        int n = nums2.length;
+
+        // 1. Initial State: Only add the first element of nums2 (index 0)
+        // combined with every element in nums1.
+        // We only need to start the search from the first column of the conceptual matrix.
+        for (int i = 0; i < m && i < k; i++) {
+            int sum = nums1[i] + nums2[0];
+            // Store {sum, i, 0}
+            minHeap.offer(new int[]{sum, i, 0});
+        }
+
+        // 2. Extract and Explore K times
+        while (k-- > 0 && !minHeap.isEmpty()) {
+            int[] current = minHeap.poll();
+
+            int i = current[1]; // index from nums1
+            int j = current[2]; // index from nums2
+
+            // Add the pair to the result
+            result.add(Arrays.asList(nums1[i], nums2[j]));
+
+            // 3. Explore Successor: Move to the next element in nums2
+            // The only new pair we MUST check is (nums1[i], nums2[j+1]).
+            int next_j = j + 1;
+
+            if (next_j < n) {
+                int sum = nums1[i] + nums2[next_j];
+                // Store {sum, i, next_j}
+                minHeap.offer(new int[]{sum, i, next_j});
+            }
+        }
+
+        return result;
     }
 
     // V0-4
