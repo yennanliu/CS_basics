@@ -119,8 +119,30 @@ public class DesignGraphWithShortestPathCalculator {
 
             /** NOTE !!!
              *
-             *  we define the `minDist[node]` (a hashMap)
+             *   `minDist[node]` (a hashMap)
              *  -> to record the shortest known distance to reach `node`
+             *
+             *  👉 Purpose:
+             * Stores, for every node, the shortest distance from the source found so far.
+             *
+             */
+            /**
+             *  NOTE !!! why `minDist[node]` is needed in Dijkstra ?
+             *
+             *
+             *  ---------
+             *
+             *  ->
+             *  Dijkstra is about finding the shortest path from a starting
+             *  node to all others in a weighted graph with non-negative edges.
+             *
+             * It does so by:
+             * 	•	Always expanding the current cheapest path (via a min-heap or priority queue),
+             * 	•	And keeping track of the shortest known distance to each node (minDist).
+             *
+             * Without minDist, the algorithm CANNOT distinguish whether a newly
+             * discovered path is actually better (cheaper) than a previous one.
+             *
              */
             // minDist[node] = shortest known distance to reach `node`
             Map<Integer, Integer> minDist = new HashMap<>();
@@ -137,6 +159,20 @@ public class DesignGraphWithShortestPathCalculator {
                 }
 
                 // Skip if we've already found a better path
+                /**  NOTE !!!   Skip if we already found a better path
+                 *
+                 *  👉 Purpose:
+                 * If we pull a node from the PQ whose cost is worse than a previously found one, it means:
+                 * 	•	There’s already a cheaper route to reach that node,
+                 * 	•	So continuing from this route would only yield more expensive paths.
+                 *
+                 * ✅ Optimization: This avoids exploring suboptimal routes, keeping complexity around O(E log V).
+                 *
+                 * ❌ Without this:
+                 * You may still get correct results eventually, but it will explore redundant paths
+                 * many times — possibly leading to timeouts on large graphs.
+                 *
+                 */
                 if (curCost > minDist.getOrDefault(curNode, Integer.MAX_VALUE)) {
                     continue;
                 }
@@ -145,6 +181,23 @@ public class DesignGraphWithShortestPathCalculator {
                 for (int[] nei : map.getOrDefault(curNode, new ArrayList<>())) {
                     int nextNode = nei[0];
                     int edgeCost = nei[1];
+
+                    /** NOTE !!! `Relaxation` Step — the heart of Dijkstra
+                     *
+                     *  ---
+                     *
+                     *  👉 Purpose:
+                     * When you find a cheaper way to reach nextNode,
+                     * you update (relax) that node’s best known distance
+                     * and push it into the PQ for further exploration.
+                     *
+                     * This is the “relaxation” principle:
+                     *
+                     * If the path through the current node is cheaper than the known distance, update it.
+                     *
+                     * ❌ Without this:
+                     * You’ll miss potential cheaper routes — the algorithm will output incorrect shortest paths.
+                     */
                     int nextCost = curCost + edgeCost; // <--- RELAXATION STEP
 
                     // If this path is cheaper → update
@@ -152,6 +205,7 @@ public class DesignGraphWithShortestPathCalculator {
                         minDist.put(nextNode, nextCost);
                         pq.offer(new int[] { nextNode, nextCost });
                     }
+
                 }
             }
 
