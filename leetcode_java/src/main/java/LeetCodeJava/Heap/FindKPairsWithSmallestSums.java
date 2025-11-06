@@ -140,10 +140,43 @@ public class FindKPairsWithSmallestSums {
         return res;
     }
 
-    // V0-3
+    // V0-2
+    // IDEA: PQ (fixed by gpt)
+    public List<List<Integer>> kSmallestPairs_0_2(int[] nums1, int[] nums2, int k) {
+        List<List<Integer>> res = new ArrayList<>();
+        if (nums1 == null || nums2 == null || nums1.length == 0 || nums2.length == 0 || k <= 0) {
+            return res;
+        }
+
+        // Min-heap ordered by pair sum
+        PriorityQueue<int[]> pq = new PriorityQueue<>(
+                (a, b) -> (nums1[a[0]] + nums2[a[1]]) - (nums1[b[0]] + nums2[b[1]]));
+
+        // push first k pairs (nums1[i], nums2[0])
+        for (int i = 0; i < Math.min(nums1.length, k); i++) {
+            pq.offer(new int[] { i, 0 });
+        }
+
+        // extract k smallest pairs
+        while (k > 0 && !pq.isEmpty()) {
+            int[] cur = pq.poll();
+            int i = cur[0], j = cur[1];
+            res.add(Arrays.asList(nums1[i], nums2[j]));
+            k--;
+
+            // move to next pair in nums2 for this i
+            if (j + 1 < nums2.length) {
+                pq.offer(new int[] { i, j + 1 });
+            }
+        }
+
+        return res;
+    }
+
+    // V0-4
     // IDEA: BIG + SMALL PQ + BRUTE FORCE (fixed by gpt)
     // TODO: fix TLE
-    public List<List<Integer>> kSmallestPairs_0_3(int[] nums1, int[] nums2, int k) {
+    public List<List<Integer>> kSmallestPairs_0_4(int[] nums1, int[] nums2, int k) {
         // edge
         if (nums1 == null || nums2 == null || nums1.length == 0 || nums2.length == 0 || k <= 0) {
             return new ArrayList<>();
