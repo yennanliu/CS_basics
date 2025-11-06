@@ -73,6 +73,10 @@ public class DesignGraphWithShortestPathCalculator {
     // V0-1
     // IDEA: Dijkstra (fixed by gpt)
     class Graph_0_1 {
+        /** NOTE !!! map structure
+         *
+         *  // map: { node : [ [neighbor_1, cost_1], [neighbor_2, cost_2], .... ] }
+         */
         // Adjacency list: { node -> [ [neighbor, cost], [neighbor, cost], ... ] }
         private Map<Integer, List<int[]>> map;
 
@@ -82,6 +86,7 @@ public class DesignGraphWithShortestPathCalculator {
                 map.put(i, new ArrayList<>());
             }
 
+            /** NOTE !!! we need to init edges */
             // add initial edges
             for (int[] e : edges) {
                 addEdge(e);
@@ -96,10 +101,27 @@ public class DesignGraphWithShortestPathCalculator {
         }
 
         public int shortestPath(int node1, int node2) {
+
+            /** NOTE !!!
+             *
+             *  we set up PQ in `shortestPath` method (when the method is called);
+             *
+             *  -> instead of setting PQ up in the graph constructor
+             */
             // Dijkstra setup
+            /**
+             *  PQ:
+             *  1. // small PQ:  { [node, cost], .... } ???
+             *  2. NOTE !!! this is a small PQ, sort on cost
+             */
             PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[1] - b[1]);
             pq.offer(new int[] { node1, 0 });
 
+            /** NOTE !!!
+             *
+             *  we define the `minDist[node]` (a hashMap)
+             *  -> to record the shortest known distance to reach `node`
+             */
             // minDist[node] = shortest known distance to reach `node`
             Map<Integer, Integer> minDist = new HashMap<>();
             minDist.put(node1, 0);
