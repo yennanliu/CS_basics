@@ -129,7 +129,6 @@
 	- LC 703 Kth Largest Element in a Stream
 		- gpt
 			- 973
-			- 215
 			- 373
 			- 295
 			- 480

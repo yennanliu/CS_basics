@@ -1539,6 +1539,43 @@ public class Workspace18 {
 
     }
 
+    // LC 215
+    public int findKthLargest(int[] nums, int k) {
+        // edge
+        if(nums == null || nums.length == 0){
+            return -1; // ???
+        }
+        if(nums.length == 1){
+           if(k == 1){
+               return nums[0]; // ?????
+           }
+           return -1;
+        }
+        // big PQ
+        PriorityQueue<Integer> pq = new PriorityQueue<>(new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                int diff = o2 - o1;
+                return diff;
+            }
+        });
+
+        for(int x: nums){
+            pq.add(x);
+        }
+
+
+        // pop
+        int j = 0;
+        int res = -1;
+        while(j < k){
+            res = pq.poll();
+            j += 1;
+        }
+
+        return res;
+    }
+
 
 
 
