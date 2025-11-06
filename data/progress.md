@@ -103,6 +103,20 @@
 		- gemini
 			- 687
 			- 865
+	- LC 1325 Delete Leaves With a Given Value
+		- gpt
+			- 145
+			- 872
+			- 1325
+			- 814
+			- 404
+			- 968
+			- 1080
+			- 1123
+		- gemini
+			- 226
+			- 669
+			- 450
 	- others: 1145,
 - neetcode 250
 	- https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V6/LC_goog_all.pdf
