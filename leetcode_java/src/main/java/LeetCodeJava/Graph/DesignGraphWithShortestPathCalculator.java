@@ -70,6 +70,166 @@ public class DesignGraphWithShortestPathCalculator {
 //        }
 //    }
 
+    // V0-1
+    // IDEA: Dijkstra (fixed by gpt)
+    class Graph_0_1 {
+        // Adjacency list: { node -> [ [neighbor, cost], [neighbor, cost], ... ] }
+        private Map<Integer, List<int[]>> map;
+
+        public Graph_0_1(int n, int[][] edges) {
+            map = new HashMap<>();
+            for (int i = 0; i < n; i++) {
+                map.put(i, new ArrayList<>());
+            }
+
+            // add initial edges
+            for (int[] e : edges) {
+                addEdge(e);
+            }
+        }
+
+        public void addEdge(int[] edge) {
+            int from = edge[0];
+            int to = edge[1];
+            int cost = edge[2];
+            map.get(from).add(new int[] { to, cost });
+        }
+
+        public int shortestPath(int node1, int node2) {
+            // Dijkstra setup
+            PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[1] - b[1]);
+            pq.offer(new int[] { node1, 0 });
+
+            // minDist[node] = shortest known distance to reach `node`
+            Map<Integer, Integer> minDist = new HashMap<>();
+            minDist.put(node1, 0);
+
+            while (!pq.isEmpty()) {
+                int[] cur = pq.poll();
+                int curNode = cur[0];
+                int curCost = cur[1];
+
+                // Early exit if we've reached destination
+                if (curNode == node2) {
+                    return curCost;
+                }
+
+                // Skip if we've already found a better path
+                if (curCost > minDist.getOrDefault(curNode, Integer.MAX_VALUE)) {
+                    continue;
+                }
+
+                // Explore neighbors
+                for (int[] nei : map.getOrDefault(curNode, new ArrayList<>())) {
+                    int nextNode = nei[0];
+                    int edgeCost = nei[1];
+                    int nextCost = curCost + edgeCost; // <--- RELAXATION STEP
+
+                    // If this path is cheaper → update
+                    if (nextCost < minDist.getOrDefault(nextNode, Integer.MAX_VALUE)) {
+                        minDist.put(nextNode, nextCost);
+                        pq.offer(new int[] { nextNode, nextCost });
+                    }
+                }
+            }
+
+            return -1; // unreachable
+        }
+    }
+
+    // V0-2
+    // IDEA: Dijkstra (fixed by gemini)
+    class Graph_0_2 {
+
+        // Adjacency List: node -> List of {neighbor, cost} pairs
+        private final Map<Integer, List<int[]>> adj;
+        private final int N; // Number of nodes (0 to N-1)
+
+        // The PriorityQueue is local to shortestPath for correct behavior,
+        // as it needs to be fresh for every path search.
+
+        public Graph_0_2(int n, int[][] edges) {
+            this.N = n;
+            this.adj = new HashMap<>();
+
+            // Initialize the adjacency list for all n nodes (0 to n-1)
+            for (int i = 0; i < n; i++) {
+                this.adj.put(i, new ArrayList<>());
+            }
+
+            // Add initial edges
+            for (int[] edge : edges) {
+                addEdge(edge);
+            }
+        }
+
+        public void addEdge(int[] edge) {
+            int from = edge[0];
+            int to = edge[1];
+            int cost = edge[2];
+
+            // Correctly add the neighbor and its cost to the adjacency list
+            // Note: The graph is mutable, so repeated addEdge calls are possible.
+            this.adj.get(from).add(new int[] { to, cost });
+        }
+
+        public int shortestPath(int node1, int node2) {
+            // --- FIX 1: Initialize Distance Array (dist) ---
+            // Array to store the minimum distance from node1 to every other node.
+            int[] dist = new int[N];
+            // Use a value representing infinity.
+            Arrays.fill(dist, Integer.MAX_VALUE);
+
+            // Min-Heap Priority Queue: Stores {cost, node}
+            // Use a local PQ for each call to shortestPath
+            PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(a -> a[0]));
+
+            // Initialize distance for the start node and add it to the PQ
+            dist[node1] = 0;
+            pq.offer(new int[] { 0, node1 }); // {cost, node}
+
+            // --- FIX 2: Correct Dijkstra's Algorithm implementation ---
+            while (!pq.isEmpty()) {
+                int[] current = pq.poll();
+                int curCost = current[0]; // Cost from node1 to curNode
+                int u = current[1]; // Current node
+
+                // If we found a shorter path to 'u' previously, skip this outdated entry
+                if (curCost > dist[u]) {
+                    continue;
+                }
+
+                // Optimization: If we reached the target, return its distance
+                if (u == node2) {
+                    return curCost;
+                }
+
+                // Iterate through all neighbors (v) of the current node (u)
+                for (int[] neighborEdge : adj.getOrDefault(u, Collections.emptyList())) {
+                    int v = neighborEdge[0]; // Neighbor node
+                    int edgeCost = neighborEdge[1]; // Cost of edge u -> v
+
+                    // Calculate the cost of the path through u to v
+                    int newPathCost = curCost + edgeCost;
+
+                    // --- FIX 3: Correct Relaxation Step ---
+                    // If a shorter path to 'v' is found (compared to dist[v])
+                    if (newPathCost < dist[v]) {
+                        dist[v] = newPathCost;
+
+                        // Add the neighbor to the PQ with the new, lower cost
+                        pq.offer(new int[] { newPathCost, v });
+                    }
+                }
+            }
+
+            // If the loop finishes, dist[node2] holds the shortest path cost.
+            // If it's still MAX_VALUE, node2 is unreachable.
+            return dist[node2] == Integer.MAX_VALUE ? -1 : dist[node2];
+        }
+    }
+
+
     // V1
     // IDEA: Dijkstra (fixed by gpt)
     class Graph_1 {
