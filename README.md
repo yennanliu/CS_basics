@@ -1260,6 +1260,7 @@
 2290 | [Minimum Obstacle Removal to Reach Corner](https://leetcode.com/problems/minimum-obstacle-removal-to-reach-corner/description/)  |  [Java](./leetcode_java/src/main/java/LeetCodeJava/Graph/MinimumObstacleRemovalToReachCorner.java)| _O(n^2)_| _O(n^2)_| Hard |bfs, PQ, Dijkstra classics| AGAIN****** (2)(MUST)
 2392 | [Build a Matrix With Conditions](https://leetcode.com/problems/build-a-matrix-with-conditions)  |  [Java](./leetcode_java/src/main/java/LeetCodeJava/Graph/BuildAMatrixWithConditions.java)| _O(n^2)_| _O(n^2)_| Hard |dfs, bfs, Dijkstra| AGAIN (not start)
 2508 | [Add Edges to Make Degrees of All Nodes Even](https://leetcode.com/problems/add-edges-to-make-degrees-of-all-nodes-even/description/)  |  [Java](./leetcode_java/src/main/java/LeetCodeJava/Graph/AddEdgesToMakeDegreesOfAllNodesEven.java)| _O(n^2)_| _O(n^2)_| Hard |graph, LC weekly| AGAIN (not start)
+2642 | [Design Graph With Shortest Path Calculator](https://leetcode.com/problems/design-graph-with-shortest-path-calculator)  |  [Java](./leetcode_java/src/main/java/LeetCodeJava/Graph/DesignGraphWithShortestPathCalculator.java)| _O(n^2)_| _O(n^2)_| Hard |graph, Dijkstra, LC weekly 102| AGAIN (1) (not start)
 2709 | [Greatest Common Divisor Traversal](https://leetcode.com/problems/greatest-common-divisor-traversal/)  |  [Java](./leetcode_java/src/main/java/LeetCodeJava/Graph/GreatestCommonDivisorTraversal.java)| _O(n^2)_| _O(n^2)_| Hard || AGAIN (not start)
 
 
