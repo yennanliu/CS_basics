@@ -1451,20 +1451,86 @@ public class Workspace18 {
 
 
     // LC 2642
+    // 18.11 - 21 pm
+    /**
+     *   IDEA 1) Dijkstra algo
+     */
     class Graph {
 
-        public Graph(int n, int[][] edges) {
+        // attr
+        // small PQ:  { [node, cost], .... } ???
+        // PQ sort based on `cost`
+        PriorityQueue<int[]> pq;
 
+        // map: { node : [ [neighbor_1, cost_1], [neighbor_2, cost_2], .... ] }
+        Map<Integer, List<int[]>> map;
+
+        public Graph(int n, int[][] edges) {
+            this.pq = new PriorityQueue<>(new Comparator<int[]>() {
+                @Override
+                public int compare(int[] o1, int[] o2) {
+                    int diff = o1[1] - o2[1];
+                    return diff;
+                }
+            });
+
+            // ???
+            this.map = new HashMap<>();
+            for(int i = 0; i < n; i++){
+                this.map.put(i, new ArrayList<>());
+            }
         }
 
         public void addEdge(int[] edge) {
+            int from = edge[0];
+            int to = edge[1];
+            int cost = edge[2];
 
+            // update map
+            int[] tmp = new int[]{to, cost};
+            this.map.get(from).add(tmp); // /????
         }
 
         public int shortestPath(int node1, int node2) {
+            // edge
+            if(this.map.isEmpty()){
+                return 0;
+            }
+            if(node1 == node2){
+                return 0;
+            }
 
-            return 0;
+            // run Dijkstra
+            int cost = 0;
+
+            this.pq.add(new int[]{node1, 0}); // /???
+            // ???
+            while(!pq.isEmpty()){
+                int[] cur = this.pq.poll();
+                int curNode = cur[0];
+                int curCost = cur[1];
+                // if reach `node2`, early exit
+                if(curNode == node2){
+                    return curCost;
+                }
+                // ????
+                if(this.map.containsKey(curNode)){
+                    // loop over cur node neighbor
+                    for(int[] x: this.map.get(curNode)){
+                        int nextNode = x[0];
+                        int nextCost = x[1];
+                        // ???
+                        if(nextCost + cost < cost){
+                            this.pq.add(new int[]{nextNode, nextCost + cost});
+                        }
+                    }
+                }
+
+            }
+
+            return -1; // if CAN'T go from node1 to node2
         }
+
     }
 
 
