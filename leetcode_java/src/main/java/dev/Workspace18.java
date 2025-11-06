@@ -1479,6 +1479,12 @@ public class Workspace18 {
             for(int i = 0; i < n; i++){
                 this.map.put(i, new ArrayList<>());
             }
+
+            // NOTE !!! we need to init edges
+            for(int[] e: edges){
+                addEdge(e);
+            }
+
         }
 
         public void addEdge(int[] edge) {
