@@ -140,6 +140,60 @@ public class FindKPairsWithSmallestSums {
         return res;
     }
 
+    // V0-3
+    // IDEA: BIG + SMALL PQ + BRUTE FORCE (fixed by gpt)
+    // TODO: fix TLE
+    public List<List<Integer>> kSmallestPairs_0_3(int[] nums1, int[] nums2, int k) {
+        // edge
+        if (nums1 == null || nums2 == null || nums1.length == 0 || nums2.length == 0 || k <= 0) {
+            return new ArrayList<>();
+        }
+
+        // Step 1: Big PQ (max heap) to keep smallest k pairs
+        PriorityQueue<Integer[]> bigPQ = new PriorityQueue<>(new Comparator<Integer[]>() {
+            @Override
+            public int compare(Integer[] o1, Integer[] o2) {
+                // Max heap: bigger sum comes first
+                return (o2[0] + o2[1]) - (o1[0] + o1[1]);
+            }
+        });
+
+        // Step 2: Brute force iterate over all pairs
+        for (int i = 0; i < nums1.length; i++) {
+            for (int j = 0; j < nums2.length; j++) {
+                Integer[] pair = new Integer[] { nums1[i], nums2[j] };
+                bigPQ.offer(pair);
+
+                // Keep heap size <= k
+                if (bigPQ.size() > k) {
+                    bigPQ.poll(); // remove largest sum
+                }
+            }
+        }
+
+        // Step 3: Convert bigPQ to smallPQ (ascending order)
+        PriorityQueue<Integer[]> smallPQ = new PriorityQueue<>(new Comparator<Integer[]>() {
+            @Override
+            public int compare(Integer[] o1, Integer[] o2) {
+                return (o1[0] + o1[1]) - (o2[0] + o2[1]);
+            }
+        });
+
+        while (!bigPQ.isEmpty()) {
+            smallPQ.offer(bigPQ.poll());
+        }
+
+        // Step 4: Build result list
+        List<List<Integer>> res = new ArrayList<>();
+        while (!smallPQ.isEmpty() && res.size() < k) {
+            Integer[] arr = smallPQ.poll();
+            res.add(Arrays.asList(arr[0], arr[1]));
+        }
+
+        return res;
+    }
+
+
     // V1
     // https://leetcode.com/problems/find-k-pairs-with-smallest-sums/editorial/
     // IDEA: PQ
@@ -237,6 +291,8 @@ public class FindKPairsWithSmallestSums {
 //
 //        return list;
 //    }
+
+
 
 
 }

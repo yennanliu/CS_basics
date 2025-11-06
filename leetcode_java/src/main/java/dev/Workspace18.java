@@ -1577,6 +1577,106 @@ public class Workspace18 {
     }
 
 
+    // LC 373
+    // 7.05 - 15 am
+    /**
+     *
+     *  -> Return the k pairs (u1, v1), (u2, v2), ..., (uk, vk) with the SMALLEST sums.
+     *
+     *   - Nums1 and nums2 sorted in `non-decreasing `order
+     *     and an integer k.
+     *
+     *   - Define a pair (u, v) which consists of one element
+     *     from the first array and one element from the second array.
+     *
+     *  IDEA 1) PQ
+     *
+     *
+     */
+    public List<List<Integer>> kSmallestPairs(int[] nums1, int[] nums2, int k) {
+        // edge
+        if(nums1 == null && nums2 == null){
+            return null;
+        }
+        // ???
+        if(nums1 == null || nums2 == null){
+            return null;
+        }
+//        if(k > nums1.length || k > nums2.length){
+//            return null; // ????
+//        }
+
+        // PQ: big PQ over int sum
+        PriorityQueue<Integer[]> bigPQ = new PriorityQueue<>(new Comparator<Integer[]>() {
+            @Override
+            public int compare(Integer[] o1, Integer[] o2) {
+                // ???
+                //int diff = (o1[0] + o1[1]) - (o2[0] + o2[1]);
+                int diff = (o2[0] + o2[1]) - (o1[0] + o1[1]);
+                return diff;
+            }
+        });
+
+        // brute force - double loop // TODO: optimize
+        // i: loop over nums1
+        // j: loop over nums2
+        // ???
+
+        // reverse nums1, nums2 ???
+
+        for(int i = 0; i < nums1.length; i++){
+            for(int j = 0; j < nums2.length; j++){
+                System.out.println(">>> i = " + i + ", j = " + j);
+                int val1 = nums1[i];
+                int val2 = nums2[j];
+                bigPQ.add(new Integer[]{val1, val2});
+
+                // if PQ size > k, remove the `top biggest ones`
+                while(bigPQ.size() > k){
+                    bigPQ.poll();
+                }
+
+            }
+        }
+
+
+        // define the other small PQ
+        // that get all values from big PQ
+        // so we can return top K small pairs
+
+        // PQ: small PQ over int sum
+        PriorityQueue<Integer[]> smallPQ = new PriorityQueue<>(new Comparator<Integer[]>() {
+            @Override
+            public int compare(Integer[] o1, Integer[] o2) {
+                // ???
+                int diff = (o1[0] + o1[1]) - (o2[0] + o2[1]);
+                return diff;
+            }
+        });
+
+        while(!bigPQ.isEmpty()){
+            smallPQ.add(bigPQ.poll());
+        }
+
+
+        System.out.println(">>> bigPQ = " + bigPQ + ", smallPQ = " + smallPQ);
+
+        List<List<Integer>> res = new ArrayList<>();
+
+        while(k > 0){
+            Integer[] arr = smallPQ.poll();
+            List<Integer> tmp = new ArrayList<>();
+            tmp.add(arr[0]);
+            tmp.add(arr[1]);
+            res.add(tmp);
+            k -= 1;
+        }
+
+
+
+        return res;
+    }
+
 
 
 
