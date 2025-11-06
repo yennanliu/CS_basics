@@ -126,7 +126,19 @@
 		- gemini
 			- 652
 			- 124
-	- others: 1145,
+	- LC 703 Kth Largest Element in a Stream
+		- gpt
+			- 973
+			- 215
+			- 373
+			- 295
+			- 480
+			- 23
+			- 378
+			- 352
+		- gemini
+			- 239
+	- others: 1145
 - neetcode 250
 	- https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V6/LC_goog_all.pdf
 		- 27/66
