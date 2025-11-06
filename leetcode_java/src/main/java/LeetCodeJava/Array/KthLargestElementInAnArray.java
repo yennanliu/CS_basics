@@ -81,10 +81,49 @@ public class KthLargestElementInAnArray {
         return -1;  // should NOT visit here
     }
 
-    // V0-0-1
+    // V-0-0-1
+    // IDEA: big PQ
+    public int findKthLargest_0_0_1(int[] nums, int k) {
+        // edge
+        if (nums == null || nums.length == 0) {
+            //return -1; // ???
+            throw new RuntimeException("null array");
+        }
+        if (nums.length == 1) {
+            if (k == 1) {
+                return nums[0]; // ?????
+            }
+           // return -1;
+            throw new RuntimeException("null array");
+        }
+        // big PQ
+        PriorityQueue<Integer> pq = new PriorityQueue<>(new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                int diff = o2 - o1;
+                return diff;
+            }
+        });
+
+        for (int x : nums) {
+            pq.add(x);
+        }
+
+        // pop
+        int j = 0;
+        int res = -1;
+        while (j < k) {
+            res = pq.poll();
+            j += 1;
+        }
+
+        return res;
+    }
+
+    // V0-0-2
     // IDEA : PQ (priority queue)
     // time: O(N log N), space: O(N)
-    public int findKthLargest_0_0_1(int[] nums, int k) {
+    public int findKthLargest_0_0_2(int[] nums, int k) {
         if (nums.length == 1){
             if (k == 1){
                 return nums[0];
@@ -232,5 +271,7 @@ public class KthLargestElementInAnArray {
 
         return -1;
     }
+
+
 
 }
