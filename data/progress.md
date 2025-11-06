@@ -117,6 +117,15 @@
 			- 226
 			- 669
 			- 450
+	- LC 297 Serialize and Deserialize Binary Tree
+		- gpt
+			- 297
+			- 449
+			- 431
+			- 1166
+		- gemini
+			- 652
+			- 124
 	- others: 1145,
 - neetcode 250
 	- https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V6/LC_goog_all.pdf
