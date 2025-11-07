@@ -63,12 +63,25 @@ public class KthSmallestElementInASortedMatrix {
         int n = matrix.length;
         int m = matrix[0].length;
 
+        /** NOTE !!!
+         *
+         *  use max PQ
+         *
+         *  since the problem is asking
+         *  `kth smallest element` ~= biggest element from a PQ
+         */
         // Max-heap: largest value at top
         PriorityQueue<Integer> pq = new PriorityQueue<>((a, b) -> b - a);
 
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
                 pq.offer(matrix[i][j]);
+                /** NOTE !!!
+                 *
+                 *  we use `pq.size()` check if reach the `k smallest` status.
+                 *
+                 *  -> NO NEED to use the other param such as size, or cnt to track elements count
+                 */
                 if (pq.size() > k) {
                     pq.poll(); // remove largest, keep only k smallest
                 }
@@ -91,6 +104,7 @@ public class KthSmallestElementInASortedMatrix {
             return 0;
         }
 
+        /** NOTE !!! Max-Heap (Big PQ) to store the K smallest elements. */
         // Max-Heap (Big PQ) to store the K smallest elements.
         // The largest element among the K smallest will be at the root (peek).
         PriorityQueue<Integer> maxHeap = new PriorityQueue<>(new Comparator<Integer>() {
@@ -175,7 +189,7 @@ public class KthSmallestElementInASortedMatrix {
         return count;
     }
 
-    
+
     // V1-1
     // https://leetcode.ca/2016-12-12-378-Kth-Smallest-Element-in-a-Sorted-Matrix/
     class Node {
