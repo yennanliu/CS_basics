@@ -152,6 +152,11 @@ public class KthSmallestElementInASortedMatrix {
         while (low <= high) {
             int mid = low + (high - low) / 2;
 
+            /** NOTE !!!
+             *
+             *  1. the binary search is based on the `# of elements that has value <= mid
+             *  2. `countLessEqual` helper func help ``# of elements that has value <= mid` calculation
+             */
             // Count how many elements are <= mid
             int count = countLessEqual(matrix, mid);
 
@@ -168,6 +173,7 @@ public class KthSmallestElementInASortedMatrix {
         return ans;
     }
 
+    /** NOTE !!! helper func: ``# of elements that has value <= mid` calculation  */
     // Helper function to count how many elements in the matrix are less than or equal to 'target'
     private int countLessEqual(int[][] matrix, int target) {
         int N = matrix.length;

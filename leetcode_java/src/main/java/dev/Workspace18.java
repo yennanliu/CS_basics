@@ -1749,6 +1749,7 @@ public class Workspace18 {
      *
      */
     // BINARY SEARCH
+    // 11.10 - 20 am
     public int kthSmallest(int[][] matrix, int k) {
         // edge
         if(matrix == null || matrix.length == 0 || matrix[0].length == 0){
@@ -1761,6 +1762,8 @@ public class Workspace18 {
         // adjust the k. since the matrix is rows and columns is sorted in ascending order, // /??
         int l = matrix.length;
         int w = matrix[0].length;
+
+
 
 
         return 0;
