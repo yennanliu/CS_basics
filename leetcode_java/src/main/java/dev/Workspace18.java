@@ -1679,9 +1679,54 @@ public class Workspace18 {
 
 
     // LC 973
+    // 10.03 - 13 am
+    /**
+     *
+     *  ->  return the k closest points to the origin (0, 0).
+     *
+     *
+     *  IDEA 1) PQ ??
+     *
+     *  IDEA 2) SORT ???
+     *
+     *
+     */
     public int[][] kClosest(int[][] points, int k) {
-        return null;
+        // edge
+        if(points == null || points.length == 0 || points[0].length == 0){
+            return null;
         }
+        // big PQ
+        // { [x, y, dist] }
+        PriorityQueue<Integer[]> pq = new PriorityQueue<>(new Comparator<Integer[]>() {
+            @Override
+            public int compare(Integer[] o1, Integer[] o2) {
+                int diff = o2[2] - o1[2];
+                return diff;
+            }
+        });
+
+        for(int[] p: points){
+            int x = p[0];
+            int y = p[1];
+            int dist = (x * x) + (y * y);
+            pq.add(new Integer[]{x, y, dist});
+            // pop elements with PQ size > K
+            while(pq.size() > k){
+                pq.poll();
+            }
+        }
+
+        int[][] res = new int[k][2]; // ???
+        for(int i = 0; i < k; i++){
+            Integer[] arr = pq.poll();
+            int x_ = arr[0];
+            int y_ = arr[1];
+            res[i] = new int[]{x_, y_};
+        }
+
+        return res;
+    }
 
 
 
