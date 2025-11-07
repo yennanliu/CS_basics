@@ -3,7 +3,8 @@
 # 2025-11-07
 - weekly video
 	 - LC weekly 100 - done
-	 - LC weekly 102 - ing
+	 - LC weekly 102 - done
+	 - LC weekly 114 - ing
 - to review
 	- LC weekly 100
 - needcode `grind 75` - similar LC by AI
