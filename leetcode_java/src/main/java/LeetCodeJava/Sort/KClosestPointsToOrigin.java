@@ -86,6 +86,56 @@ public class KClosestPointsToOrigin {
         return Math.sqrt(x * x + y * y);
     }
 
+    // V0-0-1
+    // IDEA: BIG PQ
+    public int[][] kClosest_0_0_1(int[][] points, int k) {
+        // edge
+        if (points == null || points.length == 0 || points[0].length == 0) {
+            return null;
+        }
+        // big PQ
+        // { [x, y, dist] }
+        PriorityQueue<Integer[]> pq = new PriorityQueue<>(new Comparator<Integer[]>() {
+            @Override
+            public int compare(Integer[] o1, Integer[] o2) {
+                int diff = o2[2] - o1[2];
+                return diff;
+            }
+        });
+
+        for (int[] p : points) {
+            int x = p[0];
+            int y = p[1];
+            int dist = (x * x) + (y * y);
+            pq.add(new Integer[] { x, y, dist });
+            /** NOTE !!!
+             *
+             *  space optimization:  pop elements with PQ size > K
+             *
+             *  so the remaining elements in PQ is the answer we will return
+             */
+            // pop elements with PQ size > K
+            while (pq.size() > k) {
+                pq.poll();
+            }
+        }
+
+        /** NOTE !!!
+         *
+         *  we define res array as `k * 2` dimension array
+         */
+        int[][] res = new int[k][2]; // ???
+        for (int i = 0; i < k; i++) {
+            Integer[] arr = pq.poll();
+            int x_ = arr[0];
+            int y_ = arr[1];
+            res[i] = new int[] { x_, y_ };
+        }
+
+        return res;
+    }
+
+
     // V0-1
     // IDEA: PriorityQueue (gpt)
     public int[][] kClosest_0_1(int[][] points, int k) {
@@ -235,5 +285,7 @@ public class KClosestPointsToOrigin {
         points[j][0] = t0;
         points[j][1] = t1;
     }
+
+
 
 }
