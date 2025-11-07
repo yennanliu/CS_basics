@@ -53,6 +53,129 @@ public class KthSmallestElementInASortedMatrix {
 //
 //    }
 
+    // V0-1
+    // IDEA: PQ (fixed by gpt)
+    public int kthSmallest_0_1(int[][] matrix, int k) {
+        if (matrix == null || matrix.length == 0 || matrix[0].length == 0) {
+            return 0;
+        }
+
+        int n = matrix.length;
+        int m = matrix[0].length;
+
+        // Max-heap: largest value at top
+        PriorityQueue<Integer> pq = new PriorityQueue<>((a, b) -> b - a);
+
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                pq.offer(matrix[i][j]);
+                if (pq.size() > k) {
+                    pq.poll(); // remove largest, keep only k smallest
+                }
+            }
+        }
+
+        // top of max-heap = kth smallest
+        return pq.peek();
+    }
+
+    // V0-2
+    // IDEA: PQ (fixed by gemini)
+    public int kthSmallest_0_2(int[][] matrix, int k) {
+        // --- FIX 1: Correct Edge Case Handling ---
+        // For an LC problem, return 0 if constraints ensure matrix is non-empty,
+        // otherwise return the requested value from the non-empty matrix.
+        if (matrix == null || matrix.length == 0 || matrix[0].length == 0) {
+            // Given the problem constraints, this case is often guaranteed not to happen,
+            // but we return the requested type.
+            return 0;
+        }
+
+        // Max-Heap (Big PQ) to store the K smallest elements.
+        // The largest element among the K smallest will be at the root (peek).
+        PriorityQueue<Integer> maxHeap = new PriorityQueue<>(new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                // o2 - o1 for descending order (Max-Heap)
+                return o2 - o1;
+            }
+        });
+
+        int l = matrix.length;
+        int w = matrix[0].length;
+
+        // 2. Iterate through ALL elements (N^2 time)
+        for (int i = 0; i < l; i++) {
+            for (int j = 0; j < w; j++) {
+                int val = matrix[i][j];
+
+                if (maxHeap.size() < k) {
+                    // Fill the heap until size k
+                    maxHeap.add(val);
+                } else if (val < maxHeap.peek()) {
+                    // Current element is smaller than the largest element currently in the top K
+                    // Remove the largest (farthest) and add the new smaller element
+                    maxHeap.poll();
+                    maxHeap.add(val);
+                }
+            }
+        }
+
+        // 3. The element at the root of the Max-Heap is the K-th smallest element.
+        // If the heap is empty (should not happen based on constraints), return 0.
+        return maxHeap.isEmpty() ? 0 : maxHeap.peek();
+    }
+
+    // V0-3
+    // IDEA: BINARY SEARCH (gemini)
+    public int kthSmallest_0_3(int[][] matrix, int k) {
+        int N = matrix.length;
+        int low = matrix[0][0]; // Smallest possible answer
+        int high = matrix[N - 1][N - 1]; // Largest possible answer
+        int ans = -1;
+
+        // Binary search on the answer space (the values in the matrix)
+        while (low <= high) {
+            int mid = low + (high - low) / 2;
+
+            // Count how many elements are <= mid
+            int count = countLessEqual(matrix, mid);
+
+            if (count >= k) {
+                // mid is a possible answer. Try to find a smaller one.
+                ans = mid;
+                high = mid - 1;
+            } else {
+                // Not enough elements are <= mid. Need a larger value.
+                low = mid + 1;
+            }
+        }
+
+        return ans;
+    }
+
+    // Helper function to count how many elements in the matrix are less than or equal to 'target'
+    private int countLessEqual(int[][] matrix, int target) {
+        int N = matrix.length;
+        int count = 0;
+        int r = 0; // Start at the first row
+        int c = N - 1; // Start at the last column (similar to search in sorted matrix)
+
+        while (r < N && c >= 0) {
+            if (matrix[r][c] <= target) {
+                // If the current element is <= target, all elements in this row
+                // to its left are also <= target (since the row is sorted).
+                count += (c + 1);
+                r++; // Move to the next row
+            } else {
+                // Current element is > target, so we move one column left
+                c--;
+            }
+        }
+        return count;
+    }
+
+    
     // V1-1
     // https://leetcode.ca/2016-12-12-378-Kth-Smallest-Element-in-a-Sorted-Matrix/
     class Node {
