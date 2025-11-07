@@ -129,10 +129,22 @@ public class HeapSolution {
 ### Specific Pattern Templates
 
 #### **1. Kth Element Template**
+
+**💡 Key Insight:**
+- **`kth smallest element` = biggest element from a Max PQ of size k**
+  - Use **max heap** of size k to find kth smallest
+  - The root (peek) of the max heap is the kth smallest element
+  - Why? Keep only the k smallest elements; the largest among them is the kth smallest overall
+
+- **`kth largest element` = smallest element from a Min PQ of size k**
+  - Use **min heap** of size k to find kth largest
+  - The root (peek) of the min heap is the kth largest element
+  - Why? Keep only the k largest elements; the smallest among them is the kth largest overall
+
 ```python
 def find_kth_largest(nums, k):
     import heapq
-    
+
     # Method 1: Min heap of size k
     heap = []
     for num in nums:
@@ -140,12 +152,12 @@ def find_kth_largest(nums, k):
             heapq.heappush(heap, num)
         elif num > heap[0]:
             heapq.heapreplace(heap, num)
-    
+
     return heap[0]  # kth largest
 
 def find_kth_smallest(nums, k):
     import heapq
-    
+
     # Method 1: Max heap of size k (use negative values)
     heap = []
     for num in nums:
@@ -153,7 +165,7 @@ def find_kth_smallest(nums, k):
             heapq.heappush(heap, -num)
         elif num < -heap[0]:
             heapq.heapreplace(heap, -num)
-    
+
     return -heap[0]  # kth smallest
 ```
 
@@ -1096,6 +1108,68 @@ public List<List<Integer>> kSmallestPairs_0_1(int[] nums1, int[] nums2, int k) {
     }
 
     return res;
+}
+```
+
+### 2-11) Kth Smallest Element in a Sorted Matrix
+
+```java
+// java
+// LC 378
+// Reference: leetcode_java/src/main/java/LeetCodeJava/Heap/KthSmallestElementInASortedMatrix.java
+
+// V0-1
+// IDEA: MAX PQ (Priority Queue)
+/**
+ *  KEY INSIGHT !!!
+ *
+ *  `kth smallest element` ~= biggest element from a Max PQ
+ *
+ *  - Use MAX heap of size k to find kth smallest element
+ *  - Keep only the k smallest elements in the heap
+ *  - The root (peek) of max heap = kth smallest element overall
+ *
+ *  Why?
+ *  - We maintain a max heap of size k
+ *  - This heap contains the k smallest elements seen so far
+ *  - The largest among these k elements is at the root
+ *  - This root element is exactly the kth smallest element
+ */
+public int kthSmallest_0_1(int[][] matrix, int k) {
+    if (matrix == null || matrix.length == 0 || matrix[0].length == 0) {
+        return 0;
+    }
+
+    int n = matrix.length;
+    int m = matrix[0].length;
+
+    /** NOTE !!!
+     *
+     *  Use MAX PQ (max heap)
+     *
+     *  Since the problem asks for `kth smallest element`
+     *  = biggest element from a Max PQ of size k
+     */
+    // Max-heap: largest value at top
+    PriorityQueue<Integer> pq = new PriorityQueue<>((a, b) -> b - a);
+
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < m; j++) {
+            pq.offer(matrix[i][j]);
+            /** NOTE !!!
+             *
+             *  Use `pq.size()` to check if we've reached k elements
+             *
+             *  NO NEED for separate counter variables like size or cnt
+             */
+            if (pq.size() > k) {
+                pq.poll(); // remove largest, keep only k smallest
+            }
+        }
+    }
+
+    // Top of max-heap = kth smallest element
+    return pq.peek();
 }
 ```
 

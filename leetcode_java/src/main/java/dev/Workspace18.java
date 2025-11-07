@@ -1748,7 +1748,7 @@ public class Workspace18 {
      *  IDEA 3) BINARY SEARCH ????
      *
      */
-    // brute force + PQ ???
+    // BINARY SEARCH
     public int kthSmallest(int[][] matrix, int k) {
         // edge
         if(matrix == null || matrix.length == 0 || matrix[0].length == 0){
@@ -1757,40 +1757,59 @@ public class Workspace18 {
         if(k == 1){
             return matrix[0][0];
         }
+
         // adjust the k. since the matrix is rows and columns is sorted in ascending order, // /??
         int l = matrix.length;
         int w = matrix[0].length;
 
-        //int adjustedK = k % l;
 
-        // big PQ
-        PriorityQueue<Integer> pq = new PriorityQueue<>(new Comparator<Integer>() {
-            @Override
-            public int compare(Integer o1, Integer o2) {
-                //int diff = o1 - o2;
-                int diff = o2 - o1;
-                return diff;
-            }
-        });
-
-        // loop over row in matrix
-        // check if the possible answer in in the specific row
-        int size = 0;
-        for(int i = 0; i < l; i++){
-            for(int j = 0; j < w; j++){
-                pq.add(matrix[i][j]);
-                size += 1;
-                System.out.println(">>> pq = " + pq);
-                // early quit
-                if(size == k){
-                    int val = pq.poll();
-                    return val;
-                }
-            }
-        }
-
-        return -1; // SHOULD NOT visit here ???
+        return 0;
     }
+
+    // brute force + PQ ???
+//    public int kthSmallest(int[][] matrix, int k) {
+//        // edge
+//        if(matrix == null || matrix.length == 0 || matrix[0].length == 0){
+//            return 0; // ???
+//        }
+//        if(k == 1){
+//            return matrix[0][0];
+//        }
+//        // adjust the k. since the matrix is rows and columns is sorted in ascending order, // /??
+//        int l = matrix.length;
+//        int w = matrix[0].length;
+//
+//        //int adjustedK = k % l;
+//
+//        // big PQ
+//        PriorityQueue<Integer> pq = new PriorityQueue<>(new Comparator<Integer>() {
+//            @Override
+//            public int compare(Integer o1, Integer o2) {
+//                //int diff = o1 - o2;
+//                int diff = o2 - o1;
+//                return diff;
+//            }
+//        });
+//
+//        // loop over row in matrix
+//        // check if the possible answer in in the specific row
+//        //int size = 0;
+//        for(int i = 0; i < l; i++){
+//            for(int j = 0; j < w; j++){
+//                pq.add(matrix[i][j]);
+//               // size += 1;
+//                System.out.println(">>> pq = " + pq);
+//                // early quit
+//                // NOTE !!! use pq.size() directly
+//                if(pq.size() == k){
+//                    int val = pq.poll();
+//                    return val;
+//                }
+//            }
+//        }
+//
+//        return -1; // SHOULD NOT visit here ???
+//    }
 
 
 
