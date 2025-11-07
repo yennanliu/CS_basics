@@ -1,6 +1,11 @@
 # Progress
 
 # 2025-11-07
+- weekly video
+	 - LC weekly 100 - done
+	 - LC weekly 102 - ing
+- to review
+	- LC weekly 100
 - needcode `grind 75` - similar LC by AI
 	- https://neetcode.io/practice?tab=blind75
 	- LC 49 Group Anagrams
