@@ -1678,6 +1678,12 @@ public class Workspace18 {
     }
 
 
+    // LC 973
+    public int[][] kClosest(int[][] points, int k) {
+        return null;
+        }
+
+
 
 
 }
