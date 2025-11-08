@@ -1815,5 +1815,72 @@ public class Workspace18 {
 //    }
 
 
+    // LC 703
+    // 16.34 - 44 pm
+    /**
+     *
+     *  Implement the KthLargest class:
+     *
+     *  - KthLargest(int k, int[] nums):
+     *      Initializes the object with the integer k
+     *      and the stream of test scores nums.
+     *
+     *
+     *   - int add(int val):
+     *     Adds a new test score val to
+     *     the stream and returns the element representing
+     *     the `kth largest element` in the pool of test scores so far.
+     *
+     *
+     *
+     *  IDEA 1) PQ
+     *
+     *  IDEA 2) BRUTE FORCE
+     *
+     */
+    class KthLargest {
+
+        // attr
+        PriorityQueue<Integer> pq;
+        int size;
+        int k;
+
+        public KthLargest(int k, int[] nums) {
+            this.k = k;
+            this.size = 0; // ??
+
+            // `kth largest element`
+            // so we need `SMALL PQ` and keep max size as `k`
+            // PQ in java is small PQ by default ?????
+            this.pq = new PriorityQueue<>();
+            for(int x: nums){
+                this.size += 1;
+                pq.add(x);
+            }
+//            // pop
+//            while(this.pq.size() > k){
+//                this.size -= 1;
+//                this.pq.poll();
+//            }
+        }
+
+        public int add(int val) {
+            this.pq.add(val);
+            // pop
+            while(this.pq.size() > k){
+                this.size -= 1;
+                this.pq.poll();
+            }
+            if(this.pq.isEmpty()){
+                //return -1; //???
+                throw new RuntimeException("empty PQ");
+            }
+
+            // ???
+            return pq.peek();
+        }
+    }
+
+
 
 }
