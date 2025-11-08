@@ -139,6 +139,16 @@
 			- 352
 		- gemini
 			- 239
+	- LC 1046 Last Stone Weight
+		- gpt
+			- 506
+			- 347
+			- 502
+		- gemini
+			- 703
+			- 264
+			- 767
+			- 2542
 	- others: 1145
 - neetcode 250
 	- https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V6/LC_goog_all.pdf
