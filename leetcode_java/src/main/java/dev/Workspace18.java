@@ -2024,6 +2024,14 @@ public class Workspace18 {
         return 0L;
     }
 
+    // LC 2593
+    // 18.18 - 28 PM
+    
+    public long findScore(int[] nums) {
+
+        return 0L;
+    }
+
 
 
 }
