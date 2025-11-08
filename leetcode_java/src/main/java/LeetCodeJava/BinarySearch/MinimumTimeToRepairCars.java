@@ -91,6 +91,19 @@ public class MinimumTimeToRepairCars {
 
     // V0-2
     // IDEA: PQ (gemini)
+    /**
+     *  IDEA:
+     *
+     *  The Priority Queue will store the state of each mechanic,
+     *  ordered by the completion time of their next car.
+     *
+     * Priority Queue Content
+     * Each element in the PQ represents a mechanic and stores:
+     *
+     *    [0]: next repair time
+     *    [1]: rank of the mechanic
+     *    [2]: Cars Repaired (`c`) by this mechanic so far.
+     */
     public long repairCars_0_2(int[] ranks, int cars) {
 
         // Min-Heap stores: [NextCompletionTime, Rank, CarsRepaired]
