@@ -20,6 +20,8 @@
 ### References
 - [Floyd-Warshall Visualization](https://www.cs.usfca.edu/~galles/visualization/Floyd.html)
 - [CP Algorithms - Floyd-Warshall](https://cp-algorithms.com/graph/all-pair-shortest-path-floyd-warshall.html)
+- [Dijkstra Cheatsheet](./Dijkstra.md) - For single-source comparison
+- [Bellman-Ford Cheatsheet](./Bellman-Ford.md) - For single-source with negative weights
 
 
 ## Problem Categories
@@ -621,8 +623,8 @@ has_neg_cycle = any(dist[i][i] < 0 for i in range(n))
 
 ### Related Algorithms
 
-- **Dijkstra**: Single-source, faster for sparse graphs, no negative weights
-- **Bellman-Ford**: Single-source, handles negative weights, slower
+- **[Dijkstra](./Dijkstra.md)**: Single-source, faster for sparse graphs, no negative weights
+- **[Bellman-Ford](./Bellman-Ford.md)**: Single-source, handles negative weights, slower
 - **Johnson's Algorithm**: All-pairs using reweighting + Dijkstra, O(V²logV + VE)
 - **Warshall's Algorithm**: Boolean version for transitive closure
 - **Path Matrix Multiplication**: Alternative O(V³logV) approach

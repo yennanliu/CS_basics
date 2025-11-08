@@ -19,6 +19,7 @@
 ### References
 - [Dijkstra's Algorithm Visualization](https://www.cs.usfca.edu/~galles/visualization/Dijkstra.html)
 - [CP Algorithms - Dijkstra](https://cp-algorithms.com/graph/dijkstra.html)
+- [Bellman-Ford Cheatsheet](./Bellman-Ford.md) - For negative weight handling comparison
 - [Floyd-Warshall Cheatsheet](./Floyd-Warshall.md) - For all-pairs shortest path comparison
 
 
@@ -828,8 +829,8 @@ path.reverse()
 
 ### Related Topics
 - **BFS**: Unweighted shortest path
-- **Bellman-Ford**: Handles negative weights
+- **[Bellman-Ford](./Bellman-Ford.md)**: Handles negative weights (see detailed comparison above)
 - **[Floyd-Warshall](./Floyd-Warshall.md)**: All-pairs shortest path (see detailed comparison above)
 - **A* Algorithm**: Heuristic-guided search
-- **SPFA**: Queue-optimized Bellman-Ford
+- **SPFA**: Queue-optimized Bellman-Ford variant
 - **Johnson's Algorithm**: All-pairs with reweighting technique
