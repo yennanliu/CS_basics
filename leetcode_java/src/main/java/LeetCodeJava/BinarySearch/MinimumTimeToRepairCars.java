@@ -59,6 +59,85 @@ public class MinimumTimeToRepairCars {
 //
 //    }
 
+    // V0-1
+    // IDEA: PQ (gpt)
+    public long repairCars_0_1(int[] ranks, int cars) {
+        int minRank = Integer.MAX_VALUE;
+        for (int r : ranks) minRank = Math.min(minRank, r);
+
+        long left = 0;
+        long right = (long) minRank * cars * cars; // upper bound
+
+        while (left < right) {
+            long mid = (left + right) / 2;
+            if (canRepair(ranks, cars, mid)) {
+                right = mid;
+            } else {
+                left = mid + 1;
+            }
+        }
+        return left;
+    }
+
+    private boolean canRepair(int[] ranks, int cars, long time) {
+        long total = 0;
+        for (int r : ranks) {
+            long canDo = (long) Math.sqrt((double) time / r);
+            total += canDo;
+            if (total >= cars) return true; // early exit optimization
+        }
+        return total >= cars;
+    }
+
+    // V0-2
+    // IDEA: PQ (gemini)
+    public long repairCars_0_2(int[] ranks, int cars) {
+
+        // Min-Heap stores: [NextCompletionTime, Rank, CarsRepaired]
+        // Ordered by NextCompletionTime (index 0)
+        PriorityQueue<long[]> pq = new PriorityQueue<>((a, b) -> Long.compare(a[0], b[0]));
+
+        // 1. Initialization: Add the first car for every mechanic
+        for (int rank : ranks) {
+            long r = (long) rank;
+            // The first car will take r * 1^2 time. CarsRepaired = 0 initially.
+            // NextCompletionTime is r * (0 + 1)^2 = r.
+            pq.offer(new long[]{r, r, 0});
+        }
+
+        long minRepairTime = 0;
+
+        // 2. Greedy Assignment: Assign N cars one by one
+        // We simulate the repair process for 'cars' number of tasks.
+        for (int c = 0; c < cars; c++) {
+
+            // Extract the mechanic who will finish their *next* car the earliest
+            long[] currentMechanic = pq.poll();
+
+            long time = currentMechanic[0]; // Completion time of the current car (c-th car overall)
+            long rank = currentMechanic[1];
+            long repaired = currentMechanic[2];
+
+            // This time is the minimum total time required to finish all c+1 cars (up to this point).
+            minRepairTime = time;
+
+            // 3. Update Mechanic State and Re-insert into PQ
+
+            // The mechanic has now completed one more car
+            repaired++;
+
+            // Calculate the completion time for the *next* car this mechanic will repair
+            // NewTime = rank * (repaired + 1)^2
+            long nextTime = rank * (repaired + 1) * (repaired + 1);
+
+            // Add the mechanic back to the PQ with their new state
+            pq.offer(new long[]{nextTime, rank, repaired});
+        }
+
+        // The time recorded when the N-th car was extracted/finished is the minimum time.
+        return minRepairTime;
+    }
+
     // V1-1
     // IDEA: BINARY SEARCH
     // https://leetcode.com/problems/minimum-time-to-repair-cars/editorial/
