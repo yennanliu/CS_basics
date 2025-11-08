@@ -1881,6 +1881,12 @@ public class Workspace18 {
         }
     }
 
+    // LC 264
+    public int nthUglyNumber(int n) {
+
+        return 0;
+    }
+
 
 
 }
