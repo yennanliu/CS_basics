@@ -117,6 +117,45 @@ public class KthLargestElementInAStream {
         }
     }
 
+    // V0-0-1
+    // IDEA: SMALL PQ
+    class KthLargest_0_0_1 {
+
+        // attr
+        PriorityQueue<Integer> pq;
+        int size;
+        int k;
+
+        public KthLargest_0_0_1(int k, int[] nums) {
+            this.k = k;
+            this.size = 0; // ??
+
+            // `kth largest element`
+            // so we need `SMALL PQ` and keep max size as `k`
+            // PQ in java is small PQ by default ?????
+            this.pq = new PriorityQueue<>();
+            for(int x: nums){
+                this.size += 1;
+                pq.add(x);
+            }
+        }
+
+        public int add(int val) {
+            this.pq.add(val);
+            // pop
+            while(this.pq.size() > k){
+                this.size -= 1;
+                this.pq.poll();
+            }
+            if(this.pq.isEmpty()){
+                throw new RuntimeException("empty PQ");
+            }
+
+            // ???
+            return pq.peek();
+        }
+    }
+
     // V0-1
     // IDEA: SMALL PQ (fixed by gpt)
     class KthLargest_0_1 {
@@ -233,5 +272,7 @@ public class KthLargestElementInAStream {
 //        if (heap.size() > k) heap.poll();
 //        return heap.peek();
 //    }
+
+
 
 }
