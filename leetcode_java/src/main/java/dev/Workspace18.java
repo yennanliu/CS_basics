@@ -1988,7 +1988,41 @@ public class Workspace18 {
     }
 
 
+    // LC 2594
+    // 17.39 - 53 PM
+    /**
+     *  -> Return the` minimum time` taken to repair ALL the cars.
+     *     (min needed time)
+     *
+     *   - Note: All the mechanics can repair the cars simultaneously
+     *   - ranks : the ranks of some mechanics
+     *   - ranksi: is the rank of the ith mechanic.
+     *       - A mechanic with a rank r can repair n cars in r * n2 minutes.
+     *
+     *
+     *   - IDEA 1) PQ
+     *      - add the `time cost to fix a car with a mechanic`
+     *      - use small PQ
+     *      - / Create a Min-heap storing [time, rank, n, count] ?????
+     *
+     *   - IDEA 2) BINARY SEARCH ???
+     *
+     *
+     *
+     *   ex 1)
+     *   Input: ranks = [4,2,3,1], cars = 10
+     *   Output: 16
+     *
+     *    -> small PQ: [ 4,2,3,1]
+     *
+     *    -> cur
+     *
+     *
+     */
+    public long repairCars(int[] ranks, int cars) {
 
+        return 0L;
+    }
 
 
 
