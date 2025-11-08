@@ -1,16 +1,28 @@
 *.class
-*.pyc 
+*.pyc
 *.DS_Store
 *.ipynb_checkpoints
 *__pycache__
 Leetcode_python_dev.ipynb
 Untitled.ipynb
 .DS_Store
+
+# IDE files
+.idea/
+*.iml
+.project
+.classpath
+.settings/
+*.swp
+*.swo
+*~
+
 # leetcode java
 leetcode_java/.idea/
 leetcode_java/leetcode_java.iml
 leetcode_java/target/
-.idea/
-ref_code/CtCI-6th-Edition-master/.project
-ref_code/crack_code/Cracking-the-Coding-Interview_solutions-master/.project
-ref_code/crack_code/CtCI-6th-Edition-master/.project
+
+# ref_code - ignore Eclipse project files
+ref_code/**/.project
+ref_code/**/.classpath
+ref_code/**/.settings/
