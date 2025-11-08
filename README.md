@@ -580,7 +580,7 @@
 1405| [Longest Happy String](https://leetcode.com/problems/longest-happy-string/)|[Java](./leetcode_java/src/main/java/LeetCodeJava/Heap/LongestHappyString.java) | | | Medium | PQ| AGAIN (not start)
 1481| [Least Number of Unique Integers after K Removals](https://leetcode.com/problems/least-number-of-unique-integers-after-k-removals/)|[Python](./leetcode_python/Heap/least-number-of-unique-integers-after-k-removals.py) | | | Medium | good trick, greedy, Counter, dict, heap,`amazon`| AGAIN******** (3)
 1834| [Single-Threaded CPU](https://leetcode.com/problems/single-threaded-cpu)| [Java](./leetcode_java/src/main/java/LeetCodeJava/Heap/SingleThreadedCPU.java) | | | Medium |good trick, heap, pq| AGAIN***** (1)
-2593| [Find Score of an Array After Marking All Elements](https://leetcode.com/problems/single-threaded-cpu)| [Java](./leetcode_java/src/main/java/LeetCodeJava/Heap/FindScoreOfAnArrayAfterMarkingAllElements.java) | | | Medium |good trick, heap, pq, sort, slide window, LC weekly| AGAIN***** (1)
+2593| [Find Score of an Array After Marking All Elements](https://leetcode.com/problems/find-score-of-an-array-after-marking-all-elements/description/)| [Java](./leetcode_java/src/main/java/LeetCodeJava/Heap/FindScoreOfAnArrayAfterMarkingAllElements.java) | | | Medium |good trick, heap, pq, sort, slide window, LC weekly| AGAIN***** (1)
 
 
 
