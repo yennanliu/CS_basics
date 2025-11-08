@@ -1882,10 +1882,113 @@ public class Workspace18 {
     }
 
     // LC 264
+    // 16.56 - 17.06 pm
+    /**
+     *  -> Given an integer n, return the `nth ugly number.`
+     *
+     *
+     *
+     *  - An ugly number is a positive integer
+     *     whose prime factors are limited to 2, 3, and 5.
+     *
+     *
+     *  IDEA 1) MATH + BRUTE FORCE
+     *
+     *  IDEA 2) PQ ????
+     *
+     *  IDEA 3)  DP ???
+     *
+     *
+     *
+     *  ---------
+     *
+     *
+     *  exp 1)
+     *
+     *   Input: n = 10
+     *   Output: 12
+     *   Explanation: [1, 2, 3, 4, 5, 6, 8, 9, 10, 12]
+     *     is the sequence of the first 10 ugly numbers.
+     *
+     *
+     *
+     *  -> [2,3,5]
+     *
+     *          2          3          5
+     *       2  3 5     2  3 5    2  3 5
+     *
+     * -> 4 , 6, 10      6,9,15     10,15,25
+     *
+     *
+     *
+     * -> loop 2, 3, 5 k times
+     *
+     *
+     */
     public int nthUglyNumber(int n) {
+        // edge
+        if(n <= 1){
+            return n; // ???
+        }
 
-        return 0;
+        // NOTE !! since we want to return n-th ugly number
+        // so it's like `n biggest number` from a list
+        // -> we need a SMALL PQ, and keep the PQ with
+        //    max size = n
+        // NOTE !!! PQ is small PQ in java by default
+
+        // use big PQ ????
+        PriorityQueue<Integer> pq = new PriorityQueue<>(new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                int diff = o2 - o1;
+                return diff;
+            }
+        });
+        // ??
+        for(int i = 1; i < 1700; i++){
+            if(isUgly(i)){
+                pq.add(i);
+            }
+        }
+        System.out.println(">>> (before pop) pq = " + pq);
+        // keep the PQ max size as n
+        while(pq.size() > n){
+            pq.poll();
+        }
+
+        // edge
+        if(pq.isEmpty()){
+            throw new RuntimeException("empty PQ");
+        }
+        System.out.println(">>> (after pop) pq = " + pq);
+
+        return pq.peek();
     }
+
+    private boolean isUgly(int x){
+        if(x == 1){
+            return true;
+        }
+        // ??
+        while(x > 1){
+            if(x % 2 == 0){
+                x = (x / 2);
+            }
+            else if(x % 3 == 0){
+                x = (x / 3);
+            }
+            else if(x % 5 == 0){
+                x = (x / 5);
+            }else{
+                return false; // ???
+            }
+        }
+        return true;
+    }
+
+
+
 
 
 

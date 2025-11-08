@@ -28,9 +28,35 @@ public class hello {
 //        System.out.println("---");
 //        _list.forEach(System.out::println);
 
-        System.out.println(20 / 8);
+       //System.out.println(20 / 8);
+
+        hello h = new hello();
+        System.out.println(">>> isUgly(12) = " + h.isUgly(12));
 
     }
+
+
+    private boolean isUgly(int x){
+        if(x == 1){
+            return true;
+        }
+        // ??
+        while(x > 1){
+            if(x % 2 == 0){
+                x = (x / 2);
+            }
+            else if(x % 3 == 0){
+                x = (x / 3);
+            }
+            else if(x % 5 == 0){
+                x = (x / 5);
+            }else{
+                return false; // ???
+            }
+        }
+        return true;
+    }
+
 
 
 }
