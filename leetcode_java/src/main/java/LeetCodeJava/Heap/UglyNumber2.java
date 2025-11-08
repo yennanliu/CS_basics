@@ -44,6 +44,126 @@ public class UglyNumber2 {
 //
 //    }
 
+    // V0-1
+    // IDEA: PQ (fixed by gpt)
+    public int nthUglyNumber_0_1(int n) {
+        if (n <= 0) {
+            throw new IllegalArgumentException("n must be positive");
+        }
+
+        // Min-heap for ascending order
+        PriorityQueue<Long> pq = new PriorityQueue<>();
+        Set<Long> seen = new HashSet<>();
+
+        pq.offer(1L);
+        seen.add(1L);
+
+        long current = 1;
+        int[] factors = {2, 3, 5};
+
+        for (int i = 0; i < n; i++) {
+            current = pq.poll(); // smallest so far
+
+            for (int f : factors) {
+                long next = current * f;
+                if (!seen.contains(next)) {
+                    pq.offer(next);
+                    seen.add(next);
+                }
+            }
+        }
+
+        return (int) current;
+    }
+
+    // V0-3
+    // IDEA: DP (gemini)
+    /**
+     * Finds the n-th ugly number using Dynamic Programming (Multi-pointer merge).
+     * Time Complexity: O(n)
+     * Space Complexity: O(n)
+     */
+    public int nthUglyNumber_0_3(int n) {
+        // Base case: 1 is the 1st ugly number.
+        if (n <= 0) {
+            return 0; // Or throw an exception, depending on expected input for n <= 0.
+        }
+        if (n == 1) {
+            return 1;
+        }
+
+        // dp[i] will store the i-th ugly number (1-indexed based on logic, but 0-indexed in array)
+        int[] dp = new int[n];
+        dp[0] = 1; // The first ugly number is 1
+
+        // Three pointers for the next multiple of 2, 3, and 5.
+        // They track the index in the 'dp' array.
+        int p2 = 0;
+        int p3 = 0;
+        int p5 = 0;
+
+        // The actual next candidate ugly numbers
+        long next2 = dp[p2] * 2L;
+        long next3 = dp[p3] * 3L;
+        long next5 = dp[p5] * 5L;
+
+        // Generate ugly numbers from the 2nd (index 1) up to the n-th (index n-1)
+        for (int i = 1; i < n; i++) {
+            // Find the minimum of the three candidates. This is the next smallest ugly number.
+            int nextUgly = (int) Math.min(next2, Math.min(next3, next5));
+            dp[i] = nextUgly;
+
+            // Advance the pointer(s) corresponding to the chosen minimum.
+            // Note: We use 'if' instead of 'else if' to handle duplicates (e.g., 6 is 2*3 and 3*2).
+            if (nextUgly == next2) {
+                p2++;
+                next2 = dp[p2] * 2L; // Calculate the new next multiple of 2
+            }
+            if (nextUgly == next3) {
+                p3++;
+                next3 = dp[p3] * 3L; // Calculate the new next multiple of 3
+            }
+            if (nextUgly == next5) {
+                p5++;
+                next5 = dp[p5] * 5L; // Calculate the new next multiple of 5
+            }
+        }
+
+        // The n-th ugly number is at the last position.
+        return dp[n - 1];
+    }
+
+
+    // V0-4
+    // IDEA: DP (fixed by gpt)
+    public int nthUglyNumber_0_4(int n) {
+        if (n <= 0) {
+            throw new IllegalArgumentException("n must be positive");
+        }
+        if (n == 1) {
+            return 1;
+        }
+
+        int[] dp = new int[n];
+        dp[0] = 1;
+        int i2 = 0, i3 = 0, i5 = 0;
+
+        for (int i = 1; i < n; i++) {
+            int next2 = dp[i2] * 2;
+            int next3 = dp[i3] * 3;
+            int next5 = dp[i5] * 5;
+
+            int nextUgly = Math.min(next2, Math.min(next3, next5));
+            dp[i] = nextUgly;
+
+            if (nextUgly == next2) i2++;
+            if (nextUgly == next3) i3++;
+            if (nextUgly == next5) i5++;
+        }
+
+        return dp[n - 1];
+    }
+
     // V1-1
     // IDEA: SET
     // https://leetcode.com/problems/ugly-number-ii/editorial/
