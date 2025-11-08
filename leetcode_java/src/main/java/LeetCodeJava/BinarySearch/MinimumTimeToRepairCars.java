@@ -60,16 +60,25 @@ public class MinimumTimeToRepairCars {
 //    }
 
     // V0-1
-    // IDEA: PQ (gpt)
+    // IDEA: BINARY SEARCH (gpt)
     public long repairCars_0_1(int[] ranks, int cars) {
         int minRank = Integer.MAX_VALUE;
-        for (int r : ranks) minRank = Math.min(minRank, r);
+        for (int r : ranks){
+            // NOTE !!! get min rank
+            minRank = Math.min(minRank, r);
+        }
 
         long left = 0;
+        // NOTE !!! we set right bound via minRank
         long right = (long) minRank * cars * cars; // upper bound
 
+        /** NOTE !!! binary search
+         *
+         *   -> find the `min time` to repair ALL cars
+         */
         while (left < right) {
             long mid = (left + right) / 2;
+            // NOTE !! we call help func here
             if (canRepair(ranks, cars, mid)) {
                 right = mid;
             } else {
@@ -108,6 +117,16 @@ public class MinimumTimeToRepairCars {
 
         // Min-Heap stores: [NextCompletionTime, Rank, CarsRepaired]
         // Ordered by NextCompletionTime (index 0)
+        /**  NOTE !!! PQ definition:
+         *
+         * // Create a Min-heap storing [time, rank, n, count]
+         * // - time: time for the next repair
+         * // - rank: mechanic's rank
+         * // - n: cars repaired by this mechanic
+         * // - count: number of mechanics with this rank
+         * // Initial time = rank (as rank * 1^2 = rank)
+         *
+         */
         PriorityQueue<long[]> pq = new PriorityQueue<>((a, b) -> Long.compare(a[0], b[0]));
 
         // 1. Initialization: Add the first car for every mechanic
