@@ -4,10 +4,7 @@ package LeetCodeJava.Heap;
 
 import DataStructure.Pair;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.PriorityQueue;
+import java.util.*;
 
 /**
  * 506. Relative Ranks
@@ -56,6 +53,61 @@ public class RelativeRanks {
 //    public String[] findRelativeRanks(int[] score) {
 //
 //    }
+
+    // V0-1
+    // IDEA: PQ
+    public String[] findRelativeRanks_0_1(int[] score) {
+        // edge
+        if(score.length == 1){
+            return new String[]{"Gold Medal"};
+        }
+        String GOLD = "Gold Medal";
+        String SILVER = "Silver Medal";
+        String BRONE = "Bronze Medal";
+
+        // PQ: big PQ
+        // NOTE !!! PQ needs to record { idx, val }
+        // PQ: { idx, val }
+        PriorityQueue<Integer[]> pq = new PriorityQueue<>(new Comparator<Integer[]>() {
+            @Override
+            public int compare(Integer[] o1, Integer[] o2) {
+                int diff = o2[1] - o1[1];
+                return diff;
+            }
+        });
+
+        for(int i = 0; i < score.length; i++){
+            int s = score[i];
+            pq.add(new Integer[] {i, s});
+        }
+
+        String[] res = new String[pq.size()];
+        int cnt = 0;
+        while(!pq.isEmpty()){
+
+            Integer[] cur = pq.poll();
+            int idx = cur[0];
+            int val = cur[1];
+
+            if(cnt == 0){
+                res[idx] = GOLD;
+            }
+            else if(cnt == 1){
+                res[idx] = SILVER;
+            }
+            else if(cnt == 2){
+                res[idx] = BRONE;
+            }
+            else{
+                res[idx] = String.valueOf(cnt + 1);
+            }
+            cnt += 1;
+        }
+
+
+        return res;
+    }
+
 
     // V1-1
     // IDEA: Sort & Reverse

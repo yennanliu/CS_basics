@@ -2034,9 +2034,93 @@ public class Workspace18 {
 
 
     // LC 506
+    // 6.41 - 51 am
+    /**
+     *   -> Return an `array` answer of size `n` where
+     *     answer[i] is the rank of the ith athlete.
+     *
+     *
+     *   - score arr with size n
+     *   - score[i[:  score of i-th athlete
+     *   - All scores are unique
+     *   - 1st: highest  score
+     *   - 2nd: 2nd highest score ...
+     *   -
+     *
+     *
+     *
+     *   ex 1)
+     *
+     *   Input: score = [5,4,3,2,1]
+     *   Output: ["Gold Medal","Silver Medal","Bronze Medal","4","5"]
+     *
+     *
+     *   ex 2)
+     *
+     *  Input: score = [10,3,8,9,4]
+     *  Output: ["Gold Medal","5","Bronze Medal","Silver Medal","4"]
+     *
+     *
+     *
+     *   IDEA 1) GET & SORT + HASHMAP
+     *
+     *   IDEA 2) PQ
+     *
+     *
+     *
+     *
+     */
+    // IDEA 2) PQ
     public String[] findRelativeRanks(int[] score) {
+        // edge
+        if(score.length == 1){
+            return new String[]{"Gold Medal"};
+        }
+        String GOLD = "Gold Medal";
+        String SILVER = "Silver Medal";
+        String BRONE = "Bronze Medal";
 
-        return null;
+        // PQ: big PQ
+        // NOTE !!! PQ needs to record { idx, val }
+        // PQ: { idx, val }
+        PriorityQueue<Integer[]> pq = new PriorityQueue<>(new Comparator<Integer[]>() {
+            @Override
+            public int compare(Integer[] o1, Integer[] o2) {
+                int diff = o2[1] - o1[1];
+                return diff;
+            }
+        });
+
+        for(int i = 0; i < score.length; i++){
+            int s = score[i];
+            pq.add(new Integer[] {i, s});
+        }
+
+        String[] res = new String[pq.size()];
+        int cnt = 0;
+        while(!pq.isEmpty()){
+
+            Integer[] cur = pq.poll();
+            int idx = cur[0];
+            int val = cur[1];
+
+            if(cnt == 0){
+                res[idx] = GOLD;
+            }
+            else if(cnt == 1){
+                res[idx] = SILVER;
+            }
+            else if(cnt == 2){
+                res[idx] = BRONE;
+            }
+            else{
+                res[idx] = String.valueOf(cnt);
+            }
+            cnt += 1;
+        }
+
+
+        return res;
     }
 
 
