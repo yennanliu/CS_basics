@@ -2127,12 +2127,106 @@ public class Workspace18 {
     // LC 767
     // 7.08 - 18 am
     /**
+     *  -> Return any `possible rearrangement` of s
+     *     or return "" if not possible.
+     *
+     *     - Given a string s, rearrange the characters of s
+     *       so that `any two adjacent characters` are NOT the same.
+     *
+     *   IDEA 1) HASHMAP + QUEUE ??? (FILO)
+     *       - map record cnt of val
+     *       - queue: a simple FILO mechanisms that can loop over
+     *                possible string candidates and add them to res
+     *
+     *
+     *
+     *       - PQ record the `the cnt of val, from most to least (big -> small)`
+     *
+     *
+     *   IDEA 2) BRUTE FORCE ???
+     *
+     *
+     *
+     *  ----
+     *
+     *   ex 1)
+     *   Input: s = "aab"
+     *   Output: "aba"
+     *
+     *   -> map = { a: 2, b: 1}
+     *
+     *   cur = a,   map = { a: 1, b: 1}
+     *   cur = ab,   map = { a: 1}
+     *   cur = aba
+     *
      *
      *
      *
      *
      */
+    // custom class
+    public class StringCnt{
+        String str;
+        Integer cnt;
+        public StringCnt(String str, Integer cnt){
+            this.str = str;
+            this.cnt = cnt;
+        }
+    }
     public String reorganizeString(String s) {
+        // edge
+        if(s.isEmpty()){
+            return "";
+        }
+        if(s.length() == 1){
+            return "";
+        }
+
+        // map: {val: cnt}
+        Map<Character, Integer> map = new HashMap<>();
+        for(char x: s.toCharArray()){
+            map.put(x, map.getOrDefault(x, 0) + 1);
+        }
+
+        // big PQ: sort on cnt
+        PriorityQueue<StringCnt> pq = new PriorityQueue<>(new Comparator<StringCnt>() {
+            @Override
+            public int compare(StringCnt o1, StringCnt o2) {
+                int diff = o2.cnt - o1.cnt;
+                return diff;
+            }
+        });
+
+        for(Character k: map.keySet()){
+            String k_ = String.valueOf(k);
+            Integer cnt = map.get(k);
+            pq.add(new StringCnt(k_, cnt));
+        }
+
+        String res = ""; // ????
+
+        while(!map.isEmpty()){
+            if(map.keySet().size() == 1){
+                // get the only ket
+                return ""; // ?????
+            }
+
+            StringCnt strCnt = pq.poll();
+            // ???
+            if(!res.isEmpty()){
+                String last = String.valueOf(res.charAt(res.length() - 1));
+                if(last.equals(strCnt.str)){
+                    return "";
+                }
+            }
+
+            res += strCnt.str;
+            // update map
+           // map.put(strCnt)
+
+        }
+
+
 
         return null;
     }
