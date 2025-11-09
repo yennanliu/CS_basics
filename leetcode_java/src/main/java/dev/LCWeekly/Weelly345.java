@@ -310,10 +310,111 @@ public class Weelly345 {
 
 
 
-
     // Q4
     // LC 2685
     // https://leetcode.com/problems/count-the-number-of-complete-components/description/
+    // 12.06 - 32 pm
+    /**
+     *
+     * -> Return the number of complete connected
+     *   components of the graph.
+     *
+     *   - integer n. There is an undirected graph with n vertices,
+     *     numbered from 0 to n - 1
+     *
+     *  - 2 D array: edges[i] = [ai, bi]
+     *      - n undirected edge connecting vertices ai and bi.
+     *
+     *   - NOTE !!!  connected component
+     *       - connected component:
+     *
+     *          subgraph of a graph in which
+     *          there exists a path between any two vertices,
+     *          and NO vertex (頂點) of the subgraph shares
+     *          an edge with a vertex outside of the subgraph.
+     *
+     *
+     *   - A `connected` component is said to be COMPLETE if
+     *      there exists an edge between every pair of its vertices.
+     *
+     *    - vertex: 頂點
+     *
+     *
+     *
+     *    IDEA 1) graph + dfs + check if cycled ????
+     *      - loop over graph, and check if it's cycled
+     *          - use set to check if is cycled
+     *      - record the `number of NOT cycled` graph
+     *      - return above as answer
+     *
+     *    IDEA 2) Quick Union ??? quick find ?? (graph algo)
+     *
+     *
+     */
+    public int countCompleteComponents(int n, int[][] edges) {
+        // edge
+        if(edges == null || edges.length == 0 || edges[0].length == 0 || n == 0){
+            return 0;
+        }
+        if(edges.length == 1 || edges[0].length == 1){
+            return 1; // ????
+        }
+
+        int completeNodeCnt = 0;
+
+        // ??? build graph
+        // { val : [neighbor_1, neighbor_2, ...] }
+        Map<Integer, List<Integer>> graph = new HashMap<>();
+        // init
+        for(int i = 0; i < n; i++){
+            graph.put(i, new ArrayList<>());
+        }
+        // add neighbors
+        for(int[] e: edges){
+            int start = e[0];
+            int end = e[1];
+
+            graph.get(start).add(end); // ???
+            graph.get(end).add(start); // ???
+        }
+
+        System.out.println(">>> graph = " + graph);
+
+        boolean[] visited = new boolean[n];
+
+        // loop over n
+        for(int i = 0; i < n; i++){
+            //graph.put(i, new ArrayList<>());
+            // ???
+            if(isCycled(i, graph, visited, new HashSet<Integer>())){
+                completeNodeCnt += 1;
+            }
+        }
+
+        return completeNodeCnt;
+    }
+
+    private boolean isCycled(int node, Map<Integer, List<Integer>> graph, boolean[] visited, HashSet<Integer> set){
+        // ??
+        if(set.contains(node)){
+            return false;
+        }
+        // mark as visited
+        visited[node] = true;
+        // update set
+        set.add(node);
+
+        // dfs call
+        for(int i: graph.get(node)){
+            if(!isCycled(i, graph, visited, set)){
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+
 
 
 
