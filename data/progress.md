@@ -145,7 +145,6 @@
 		- gpt
 			- 502
 		- gemini
-			- 767
 			- 2542
 	- others: 1145
 - neetcode 250
