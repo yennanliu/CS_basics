@@ -2033,5 +2033,12 @@ public class Workspace18 {
     }
 
 
+    // LC 506
+    public String[] findRelativeRanks(int[] score) {
+
+        return null;
+    }
+
+
 
 }
