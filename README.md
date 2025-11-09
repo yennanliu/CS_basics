@@ -335,6 +335,7 @@
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 2357 | [Make Array Zero by Subtracting Equal Amounts](https://leetcode.com/problems/make-array-zero-by-subtracting-equal-amounts/description/) |  [Java](./leetcode_java/src/main/java/LeetCodeJava/Set/makeArrayZeroBySubtractingEqualAmounts.java)| _O(n^2)_ | _O(1)_  | Medium    | set| Again (1)
 1316 | [Distinct Echo Substrings](https://leetcode.com/problems/distinct-echo-substrings) |  [Java](./leetcode_java/src/main/java/LeetCodeJava/Set/DistinctEchoSubstrings.java)| _O(n^2)_ | _O(1)_  | Hard | set| Again (not start)
+2682 | [Find the Losers of the Circular Game](https://leetcode.com/problems/find-the-losers-of-the-circular-game) |  [Java](./leetcode_java/src/main/java/LeetCodeJava/Set/FindTheLosersOfTheCircularGame.java)| _O(n^2)_ | _O(1)_  | Easy | set, hashmap| Again (1)
 
 
 ## Slide Window
