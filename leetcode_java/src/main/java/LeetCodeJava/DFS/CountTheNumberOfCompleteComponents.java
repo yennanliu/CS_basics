@@ -1,0 +1,362 @@
+package LeetCodeJava.DFS;
+
+// https://leetcode.com/problems/count-the-number-of-complete-components/description
+
+import java.util.*;
+
+/**
+ * 2685. Count the Number of Complete Components
+ * Medium
+ * Topics
+ * premium lock icon
+ * Companies
+ * Hint
+ * You are given an integer n. There is an undirected graph with n vertices, numbered from 0 to n - 1. You are given a 2D integer array edges where edges[i] = [ai, bi] denotes that there exists an undirected edge connecting vertices ai and bi.
+ *
+ * Return the number of complete connected components of the graph.
+ *
+ * A connected component is a subgraph of a graph in which there exists a path between any two vertices, and no vertex of the subgraph shares an edge with a vertex outside of the subgraph.
+ *
+ * A connected component is said to be complete if there exists an edge between every pair of its vertices.
+ *
+ *
+ *
+ * Example 1:
+ *
+ *
+ *
+ * Input: n = 6, edges = [[0,1],[0,2],[1,2],[3,4]]
+ * Output: 3
+ * Explanation: From the picture above, one can see that all of the components of this graph are complete.
+ * Example 2:
+ *
+ *
+ *
+ * Input: n = 6, edges = [[0,1],[0,2],[1,2],[3,4],[3,5]]
+ * Output: 1
+ * Explanation: The component containing vertices 0, 1, and 2 is complete since there is an edge between every pair of two vertices. On the other hand, the component containing vertices 3, 4, and 5 is not complete since there is no edge between vertices 4 and 5. Thus, the number of complete components in this graph is 1.
+ *
+ *
+ * Constraints:
+ *
+ * 1 <= n <= 50
+ * 0 <= edges.length <= n * (n - 1) / 2
+ * edges[i].length == 2
+ * 0 <= ai, bi <= n - 1
+ * ai != bi
+ * There are no repeated edges.
+ *
+ *
+ *
+ */
+public class CountTheNumberOfCompleteComponents {
+
+    // V0
+//    public int countCompleteComponents(int n, int[][] edges) {
+//
+//    }
+
+    // V0-1
+    // TODO: validate
+//    public int countCompleteComponents(int n, int[][] edges) {
+//        // edge
+//        if(edges == null || edges.length == 0 || edges[0].length == 0 || n == 0){
+//            return 0;
+//        }
+//        if(edges.length == 1 || edges[0].length == 1){
+//            return 1; // ????
+//        }
+//
+//        int completeNodeCnt = 0;
+//
+//        // ??? build graph
+//        // { val : [neighbor_1, neighbor_2, ...] }
+//        Map<Integer, List<Integer>> graph = new HashMap<>();
+//        // init
+//        for(int i = 0; i < n; i++){
+//            graph.put(i, new ArrayList<>());
+//        }
+//        // add neighbors
+//        for(int[] e: edges){
+//            int start = e[0];
+//            int end = e[1];
+//
+//            graph.get(start).add(end); // ???
+//            graph.get(end).add(start); // ???
+//        }
+//
+//        System.out.println(">>> graph = " + graph);
+//
+//        boolean[] visited = new boolean[n];
+//
+//        // loop over n
+//        for(int i = 0; i < n; i++){
+//            //graph.put(i, new ArrayList<>());
+//            // ???
+//            if(isCycled(i, graph, visited, new HashSet<Integer>())){
+//                completeNodeCnt += 1;
+//            }
+//        }
+//
+//        return completeNodeCnt;
+//    }
+//
+//    private boolean isCycled(int node, Map<Integer, List<Integer>> graph, boolean[] visited, HashSet<Integer> set){
+//        // ??
+//        if(set.contains(node)){
+//            return false;
+//        }
+//        // mark as visited
+//        visited[node] = true;
+//        // update set
+//        set.add(node);
+//
+//        // dfs call
+//        for(int i: graph.get(node)){
+//            if(!isCycled(i, graph, visited, set)){
+//                return false;
+//            }
+//        }
+//
+//        return true;
+//    }
+
+    // V1-1
+    // IDEA: DFS
+    // https://leetcode.com/problems/count-the-number-of-complete-components/editorial/
+    public int countCompleteComponents_1_1(int n, int[][] edges) {
+        // Adjacency lists for each vertex
+        List<Integer>[] graph = new ArrayList[n];
+
+        // Initialize empty adjacency lists
+        for (int vertex = 0; vertex < n; vertex++) {
+            graph[vertex] = new ArrayList<>();
+        }
+
+        // Build adjacency lists from edges
+        for (int[] edge : edges) {
+            graph[edge[0]].add(edge[1]);
+            graph[edge[1]].add(edge[0]);
+        }
+
+        int completeCount = 0;
+        Set<Integer> visited = new HashSet<>();
+
+        // Process each unvisited vertex
+        for (int vertex = 0; vertex < n; vertex++) {
+            if (visited.contains(vertex))
+                continue;
+
+            // arr[0] = vertices count, arr[1] = total edges count
+            int[] componentInfo = new int[2];
+            dfs(vertex, graph, visited, componentInfo);
+
+            // Check if component is complete - edges should be vertices * (vertices-1)
+            if (componentInfo[0] * (componentInfo[0] - 1) == componentInfo[1]) {
+                completeCount++;
+            }
+        }
+        return completeCount;
+    }
+
+    private void dfs(
+            int curr,
+            List<Integer>[] graph,
+            Set<Integer> visited,
+            int[] componentInfo) {
+        visited.add(curr);
+        componentInfo[0]++; // Increment vertex count
+        componentInfo[1] += graph[curr].size(); // Add edges from current vertex
+
+        // Explore unvisited neighbors
+        for (int next : graph[curr]) {
+            if (!visited.contains(next)) {
+                dfs(next, graph, visited, componentInfo);
+            }
+        }
+    }
+
+
+    // V1-2
+    // IDEA: Adjacency List
+    // https://leetcode.com/problems/count-the-number-of-complete-components/editorial/
+    public int countCompleteComponents_1_2(int n, int[][] edges) {
+        // Adjacency lists for each vertex
+        List<Integer>[] graph = new ArrayList[n];
+        // Map to store frequency of each unique adjacency list
+        Map<List<Integer>, Integer> componentFreq = new HashMap<>();
+
+        // Initialize adjacency lists with self-loops
+        for (int vertex = 0; vertex < n; vertex++) {
+            graph[vertex] = new ArrayList<>();
+            graph[vertex].add(vertex);
+        }
+
+        // Build adjacency lists from edges
+        for (int[] edge : edges) {
+            graph[edge[0]].add(edge[1]);
+            graph[edge[1]].add(edge[0]);
+        }
+
+        // Count frequency of each unique adjacency pattern
+        for (int vertex = 0; vertex < n; vertex++) {
+            List<Integer> neighbors = graph[vertex];
+            Collections.sort(neighbors);
+            componentFreq.put(
+                    neighbors,
+                    componentFreq.getOrDefault(neighbors, 0) + 1
+            );
+        }
+
+        // Count complete components where size equals frequency
+        int completeCount = 0;
+        for (Map.Entry<
+                List<Integer>,
+                Integer
+                > entry : componentFreq.entrySet()) {
+            if (entry.getKey().size() == entry.getValue()) {
+                completeCount++;
+            }
+        }
+
+        return completeCount;
+    }
+
+
+    // V1-3
+    // IDEA: Breadth-First Search (BFS)
+    // https://leetcode.com/problems/count-the-number-of-complete-components/editorial/
+    public int countCompleteComponents_1_3(int n, int[][] edges) {
+        // Create adjacency list representation of the graph
+        List<Integer>[] graph = new ArrayList[n];
+        for (int vertex = 0; vertex < n; vertex++) {
+            graph[vertex] = new ArrayList<>();
+        }
+
+        // Build graph from edges
+        for (int[] edge : edges) {
+            int u = edge[0], v = edge[1];
+            graph[u].add(v);
+            graph[v].add(u);
+        }
+
+        boolean[] visited = new boolean[n];
+        int completeComponents = 0;
+
+        // Process each unvisited vertex
+        for (int vertex = 0; vertex < n; vertex++) {
+            if (!visited[vertex]) {
+                // BFS to find all vertices in the current component
+                List<Integer> component = new ArrayList<>();
+                Queue<Integer> queue = new LinkedList<>();
+                queue.add(vertex);
+                visited[vertex] = true;
+
+                while (!queue.isEmpty()) {
+                    int current = queue.poll();
+                    component.add(current);
+
+                    // Process neighbors
+                    for (int neighbor : graph[current]) {
+                        if (!visited[neighbor]) {
+                            queue.add(neighbor);
+                            visited[neighbor] = true;
+                        }
+                    }
+                }
+
+                // Check if component is complete (all vertices have the right number of edges)
+                boolean isComplete = true;
+                for (int node : component) {
+                    if (graph[node].size() != component.size() - 1) {
+                        isComplete = false;
+                        break;
+                    }
+                }
+
+                if (isComplete) {
+                    completeComponents++;
+                }
+            }
+        }
+
+        return completeComponents;
+    }
+
+
+    // V1-4
+    // IDEA: Disjoint Set Union (Union-Find)
+    // https://leetcode.com/problems/count-the-number-of-complete-components/editorial/
+    public int countCompleteComponents_1_4(int n, int[][] edges) {
+        // Initialize Union Find and edge counter
+        UnionFind dsu = new UnionFind(n);
+        Map<Integer, Integer> edgeCount = new HashMap<>();
+
+        // Connect components using edges
+        for (int[] edge : edges) {
+            dsu.union(edge[0], edge[1]);
+        }
+
+        // Count edges in each component
+        for (int[] edge : edges) {
+            int root = dsu.find(edge[0]);
+            edgeCount.put(root, edgeCount.getOrDefault(root, 0) + 1);
+        }
+
+        // Check if each component is complete
+        int completeCount = 0;
+        for (int vertex = 0; vertex < n; vertex++) {
+            if (dsu.find(vertex) == vertex) { // If vertex is root
+                int nodeCount = dsu.size[vertex];
+                int expectedEdges = (nodeCount * (nodeCount - 1)) / 2;
+                if (edgeCount.getOrDefault(vertex, 0) == expectedEdges) {
+                    completeCount++;
+                }
+            }
+        }
+        return completeCount;
+    }
+
+    class UnionFind {
+
+        int[] parent;
+        int[] size; // Tracks size of each component
+
+        UnionFind(int n) {
+            parent = new int[n];
+            size = new int[n];
+            Arrays.fill(parent, -1);
+            Arrays.fill(size, 1);
+        }
+
+        // Find root of component with path compression
+        int find(int node) {
+            if (parent[node] == -1) {
+                return node;
+            }
+            return parent[node] = find(parent[node]);
+        }
+
+        // Union by size
+        void union(int node1, int node2) {
+            int root1 = find(node1);
+            int root2 = find(node2);
+
+            if (root1 == root2) {
+                return;
+            }
+
+            // Merge smaller component into larger one
+            if (size[root1] > size[root2]) {
+                parent[root2] = root1;
+                size[root1] += size[root2];
+            } else {
+                parent[root1] = root2;
+                size[root2] += size[root1];
+            }
+        }
+    }
+
+
+
+}
