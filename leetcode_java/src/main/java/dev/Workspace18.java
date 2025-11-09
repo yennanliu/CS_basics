@@ -2124,5 +2124,18 @@ public class Workspace18 {
     }
 
 
+    // LC 767
+    // 7.08 - 18 am
+    /**
+     *
+     *
+     *
+     *
+     */
+    public String reorganizeString(String s) {
+
+        return null;
+    }
+
 
 }
