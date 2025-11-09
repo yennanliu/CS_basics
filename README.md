@@ -614,6 +614,7 @@
 898 | [Bitwise ORs of Subarrays](https://leetcode.com/problems/bitwise-ors-of-subarrays/) | [Python](./leetcode_python/Bit_Manipulation/bitwise-ors-of-subarrays.py) | _O(n)_ | _O(1)_ | Medium || AGAIN (not start)
 1573 | [Number of Ways to Split a String](https://leetcode.com/problems/number-of-ways-to-split-a-string/) | [Python](./leetcode_python/Bit_Manipulation/number-of-ways-to-split-a-string.py) | _O(n)_ | _O(1)_ | Medium |`amazon`, binary| AGAIN** (not start)
 1915 | [Number of Wonderful Substrings](https://leetcode.com/problems/number-of-wonderful-substrings/) | [Python](./leetcode_python/Bit_Manipulation/number-of-wonderful-substrings.py) | _O(n)_ | _O(1)_ | Medium |bit mask, bit, prefix sum, dp, `amazon`| AGAIN*** (2) (not start)
+2683 | [Neighboring Bitwise XOR](https://leetcode.com/problems/neighboring-bitwise-xor) | [Java](./leetcode_java/src/main/java/LeetCodeJava/BitManipulation/NeighboringBitwiseXOR.java) | _O(n)_ | _O(1)_ | Medium |bit op, simulation LC weekly 345| AGAIN*** (1)
 2871 | [Split Array Into Maximum Number of Subarrays](https://leetcode.com/problems/split-array-into-maximum-number-of-subarrays) |[Java](./leetcode_java/src/main/java/LeetCodeJava/BitManipulation/SplitArrayIntoMaximumNumberOfSubarrays.java) | _O(n)_ | _O(1)_ | Medium |bit op, LC weekly| AGAIN*** (1)
 3688 | [Bitwise OR of Even Numbers in an Array](https://leetcode.com/problems/number-of-wonderful-substrings/) |[Java](./leetcode_java/src/main/java/LeetCodeJava/BitManipulation/BitwiseOROfEvenNumbersInAnArray.java) | _O(n)_ | _O(1)_ | Medium |bit mask| OK
 
