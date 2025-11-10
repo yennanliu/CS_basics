@@ -200,6 +200,98 @@ public class IPO {
         return w;
     }
 
+
+    // V0-2
+    // IDEA: 2 PQ (fixed by gpt)
+    public int findMaximizedCapital_0_2(int k, int w, int[] profits, int[] capital) {
+        int n = profits.length;
+
+        // min-heap sorted by required capital
+        PriorityQueue<int[]> minCapitalPQ = new PriorityQueue<>(
+                (a, b) -> a[0] - b[0]);
+        // max-heap sorted by profit
+        PriorityQueue<int[]> maxProfitPQ = new PriorityQueue<>(
+                (a, b) -> b[1] - a[1]);
+
+        // load all projects into min-heap
+        for (int i = 0; i < n; i++) {
+            minCapitalPQ.offer(new int[] { capital[i], profits[i] });
+        }
+
+        int curCapital = w;
+
+        // do at most k projects
+        for (int i = 0; i < k; i++) {
+            // move all affordable projects into the max-profit heap
+            while (!minCapitalPQ.isEmpty() && minCapitalPQ.peek()[0] <= curCapital) {
+                maxProfitPQ.offer(minCapitalPQ.poll());
+            }
+
+            // if no project can be afforded, stop early
+            if (maxProfitPQ.isEmpty())
+                break;
+
+            // choose the project with the highest profit
+            curCapital += maxProfitPQ.poll()[1];
+        }
+
+        return curCapital;
+    }
+
+    // V0-3
+    // IDEA: PQ (gemini)
+    public int findMaximizedCapital_0_3(int k, int w, int[] profits, int[] capital) {
+        int n = profits.length;
+
+        // 1. Combine Profits and Capital into a single structure
+        // Project[i] = {capital[i], profits[i]}
+        int[][] projects = new int[n][2];
+        for (int i = 0; i < n; i++) {
+            projects[i][0] = capital[i];
+            projects[i][1] = profits[i];
+        }
+
+        // 2. Sort all projects by Capital requirement in ascending order
+        // This allows us to easily find all newly affordable projects as 'w' increases.
+        // We will only iterate through this array once.
+        Arrays.sort(projects, Comparator.comparingInt(a -> a[0]));
+
+        // 3. Max-Heap (ProfitsPQ): Stores the profit of FEASIBLE projects, sorted by MAX profit.
+        // This allows us to greedily pick the best project we can afford.
+        PriorityQueue<Integer> profitsPQ = new PriorityQueue<>(Comparator.reverseOrder());
+
+        // Index to track which projects we've already moved to the Max-Heap or processed
+        int projectIndex = 0;
+
+        // 4. Main Greedy Loop: Execute up to k projects
+        for (int i = 0; i < k; i++) {
+
+            // A. Move Feasible Projects:
+            // Move all projects we can currently afford (capital <= w)
+            // from the projects array into the profits Max-Heap.
+            while (projectIndex < n && projects[projectIndex][0] <= w) {
+                profitsPQ.offer(projects[projectIndex][1]);
+                projectIndex++;
+            }
+
+            // B. Select Best Project:
+            // If the Max-Heap is empty, we can't afford any remaining projects.
+            if (profitsPQ.isEmpty()) {
+                break;
+            }
+
+            // Greedily select the project with the highest profit
+            int maxProfit = profitsPQ.poll();
+
+            // C. Update Capital:
+            w += maxProfit;
+        }
+
+        // After k iterations (or break), w holds the maximized final capital.
+        return w;
+    }
+
+
     // V1
     // IDEA: GREEDY + PQ
     // https://www.youtube.com/watch?app=desktop&v=1IUzNJ6TPEM
