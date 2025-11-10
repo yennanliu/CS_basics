@@ -2188,7 +2188,7 @@ public class Workspace18 {
             map.put(x, map.getOrDefault(x, 0) + 1);
         }
 
-        // big PQ: sort on cnt
+        // big PQ: sort on cnt (freq)
         PriorityQueue<StringCnt> pq = new PriorityQueue<>(new Comparator<StringCnt>() {
             @Override
             public int compare(StringCnt o1, StringCnt o2) {
@@ -2205,30 +2205,64 @@ public class Workspace18 {
 
         String res = ""; // ????
 
-        while(!map.isEmpty()){
-            if(map.keySet().size() == 1){
-                // get the only ket
-                return ""; // ?????
-            }
+        // NOTE !!! we define prev
+        String prev = null;
 
-            StringCnt strCnt = pq.poll();
-            // ???
-            if(!res.isEmpty()){
-                String last = String.valueOf(res.charAt(res.length() - 1));
-                if(last.equals(strCnt.str)){
-                    return "";
+        // NOTE !!! while PQ is not null
+        while (!pq.isEmpty()){
+
+            StringCnt sc = pq.poll();
+            int cnt = sc.cnt;
+            String str = sc.str;
+
+            // edge
+            if(prev == null || prev.equals(str)){
+                if(pq.isEmpty()){
+                    return null;
                 }
             }
 
-            res += strCnt.str;
-            // update map
-           // map.put(strCnt)
+            StringCnt scNext = pq.poll();
+            res += scNext.str;
+           // map.put(scNext.str, scNext.cnt - 1); // ??
+
+
 
         }
 
 
+//
+//        while(!map.isEmpty()){
+//            if(map.keySet().size() == 1){
+//                // get the only ket
+//                return ""; // ?????
+//            }
+//
+//            StringCnt strCnt = pq.poll();
+//            // ???
+//            if(!res.isEmpty()){
+//                String last = String.valueOf(res.charAt(res.length() - 1));
+//                if(last.equals(strCnt.str)){
+//                    return "";
+//                }
+//            }
+//
+//            res += strCnt.str;
+//            // update map
+//           // map.put(strCnt)
+//
+//        }
+
+
 
         return null;
+    }
+
+
+    // LC 502
+    public int findMaximizedCapital(int k, int w, int[] profits, int[] capital) {
+
+        return 0;
     }
 
 
