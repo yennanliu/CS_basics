@@ -1,6 +1,7 @@
 # Progress
 
-# 2025-11-10
+# 2025-11-11
+
 - LC weekly 345
 - weekly video
 	 - LC weekly 100 - done
@@ -143,7 +144,6 @@
 			- 239
 	- LC 1046 Last Stone Weight
 		- gpt
-			- 502
 		- gemini
 			- 2542
 	- others: 1145
