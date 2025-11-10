@@ -2260,10 +2260,104 @@ public class Workspace18 {
 
 
     // LC 502
+    // 6.54 - 7.04 am
+    /**
+     *
+     *   -> Pick a list of at `most k distinct projects` from given
+     *     projects to `MAXIMIZE` your `final capital, `
+     *     and `return the final maximized capital.`
+     *
+     *
+     *     - n projects where the ith project has a pure profit profits[i]
+     *       and a minimum capital of capital[i] is needed to start it.
+     *
+     *     -   have w capital. When you finish a project, you will obtain its
+     *         pure profit and the profit will be added to your total capital.
+     *
+     *
+     *
+     *   IDEA 1) PQ
+     *
+     *
+     *   IDEA 2) BRUTE FORCE  ??
+     *
+     *
+     *
+     *
+     */
+    // IDEA 1) PQ
     public int findMaximizedCapital(int k, int w, int[] profits, int[] capital) {
+        // edge
+        if(k == 1){
+            if(w < capital[0]){
+                return 0;
+            }
+            return profits[0] - w; // ???
+        }
 
-        return 0;
+        // capital PQ: small PQ
+        // java default is small PQ
+        PriorityQueue<Integer> capPQ = new PriorityQueue<>();
+
+        // profits PQ: big PQ
+        PriorityQueue<Integer> profitsPQ = new PriorityQueue<>(new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                int diff = o2 - o1;
+                return diff;
+            }
+        });
+
+        for(int p: profits){
+            profitsPQ.add(p);
+        }
+
+        for(int c: capital){
+            capPQ.add(c);
+        }
+
+        int prevCap = 0;
+
+        int cnt = 0;
+        int maxCapital = 0;
+
+        // ????
+        int nextCap = -1;
+        int nextProfit = -1;
+
+        while(!capPQ.isEmpty()){
+
+            nextCap = capPQ.poll();
+            maxCapital += nextCap;
+
+            // ???
+            nextProfit = profitsPQ.poll();
+            //while( profitsPQ.peek() )
+
+            System.out.println(">>> cnt = " + cnt +
+                    " nextCap = " + nextCap +
+                    " nextProfit = " + nextProfit +
+                    " maxCapital = " + maxCapital);
+
+            // ??
+            if(nextCap > prevCap){
+                return maxCapital;
+            }
+
+            maxCapital += nextProfit;
+            prevCap = nextCap;
+
+            if(cnt == k){
+                return maxCapital; //???
+            }
+
+            cnt += 1;
+        }
+
+        return maxCapital;
     }
+
+
 
 
 }

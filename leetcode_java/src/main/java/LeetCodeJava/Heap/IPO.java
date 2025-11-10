@@ -70,25 +70,33 @@ public class IPO {
      *
      */
     public int findMaximizedCapital_0_1(int k, int w, int[] profits, int[] capital) {
+        // edge
         if (k <= 0 || profits == null || capital == null ||
                 profits.length != capital.length || profits.length == 0) {
             return w;
         }
 
+        /** capital PQ: small PQ */
+        /** NOTE !!! structure:  [capital, profit] */
         // Min-heap ordered by capital
         //  - structure : { [capital, profit] }  // <---- NOTE this !!!!
         PriorityQueue<int[]> capitalPQ = new PriorityQueue<>((a, b) -> a[0] - b[0]);
 
+
+        /** profit PQ: big PQ */
+        /** NOTE !!! structure:  [profit] */
         // Max-heap ordered by profit
         // - structure : { profit }
         PriorityQueue<Integer> profitPQ = new PriorityQueue<>((a, b) -> b - a);
 
+        /** NOTE !!! add [capital, profits] arr to capitalPQ */
         // NOTE !!! below !!! we fill all [capital, profit] to capitalPQ first
         // Fill capitalPQ with [capital, profit] pairs
         for (int i = 0; i < profits.length; i++) {
             capitalPQ.offer(new int[] { capital[i], profits[i] });
         }
 
+        /** NOTE !!! simply look from 0 to k, so can perform work on k distinct projects */
         // Perform up to k selections
         for (int i = 0; i < k; i++) {
 
@@ -169,13 +177,21 @@ public class IPO {
              *
              *
              */
+            /** NOTE !!!
+             *
+             *   use `while loop` to add ALL validated `profit items` to profitPQ
+             *
+             *   -> reason: so we DON'T miss ANY possible max profit in the iteration
+             *
+             */
             while (!capitalPQ.isEmpty() && capitalPQ.peek()[0] <= w) {
                 profitPQ.offer(capitalPQ.poll()[1]);
             }
 
             // If no affordable projects, stop
-            if (profitPQ.isEmpty())
+            if (profitPQ.isEmpty()){
                 break;
+            }
 
             // Choose the most profitable affordable project
             w += profitPQ.poll();
@@ -411,6 +427,6 @@ public class IPO {
         return w;
     }
 
-    
+
 
 }
