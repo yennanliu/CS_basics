@@ -63,51 +63,40 @@ public class FindTheLosersOfTheCircularGame {
 //
 //    }
 
-    // TODO: validate below
-//    public int[] circularGameLosers(int n, int k) {
-//        // edge
-//        if(n == 1){
-//            return new int[]{0}; // ???
-//        }
-//        // ???
-//        if(k == 0){
-//            return new int[]{}; // ???
-//        }
-//
-//        Set<Integer> set = new HashSet<>();
-//
-//        boolean isVisitTwice = false;
-//        int cnt = 1; // ???
-//        int idx = 1;
-//        //int ken = n;
-//        // ???
-//        while(isVisitTwice){
-//            int val = cnt * k;
-//            // adjust
-//            val = val % n; // /?
-//            idx += val;
-//            if(set.contains(idx)){
-//                isVisitTwice = true;
-//            }
-//            set.add(idx);
-//            cnt += 1;
-//        }
-//
-//        List<Integer> list = new ArrayList<>();
-//        for(int i = 1; i < n; i++){
-//            if(!set.contains(i)){
-//                list.add(i);
-//            }
-//        }
-//
-//        int[] res = new int[list.size()];
-//        for(int i = 0; i < list.size(); i++){
-//            res[i] = list.get(i);
-//        }
-//
-//        return res; // ??? should NOT visit here???
-//    }
+    // V0-1
+    // IDEA: SET + MATH (fixed by gpt)
+    public int[] circularGameLosers_0_1(int n, int k) {
+        boolean[] visited = new boolean[n + 1]; // 1-based indexing
+        int cnt = 1;
+        int idx = 1; // start from player 1
 
+        // simulate the game
+        while (!visited[idx]) {
+            visited[idx] = true;
+            /** NOTE !!!
+             *
+             *  the logic we get new adjusted idx
+             */
+            idx = (idx + cnt * k - 1) % n + 1; // move to next player
+            cnt++;
+        }
+
+        // collect losers
+        List<Integer> losers = new ArrayList<>();
+        for (int i = 1; i <= n; i++) {
+            if (!visited[i]) {
+                losers.add(i);
+            }
+        }
+
+        // convert to array
+        int[] res = new int[losers.size()];
+        for (int i = 0; i < losers.size(); i++) {
+            res[i] = losers.get(i);
+        }
+
+        return res;
+    }
 
     // V1
     // https://leetcode.com/problems/find-the-losers-of-the-circular-game/solutions/3521902/simple-clean-java-solution-by-himanshubh-sd3u/
