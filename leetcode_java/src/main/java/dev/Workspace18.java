@@ -2600,6 +2600,104 @@ public class Workspace18 {
     }
 
 
+    // LC 2684
+//    public int maxMoves(int[][] grid) {
+//
+//        return 0;
+//    }
+
+        public int maxMoves(int[][] grid) {
+        // edge
+        if(grid == null || grid.length == 0 || grid[0].length == 0){
+            return 0;
+        }
+        if(grid[0].length == 1 || grid.length == 1){
+            return 1; // ???
+        }
+
+
+        int maxMove = 0;
+
+        // PQ: {x, y, cost, moves}
+        PriorityQueue<Integer[]> pq = new PriorityQueue<>(new Comparator<Integer[]>() {
+            @Override
+            public int compare(Integer[] o1, Integer[] o2) {
+                int diff = o1[2] - o2[2];
+                return diff;
+            }
+        });
+
+        int l = grid.length;
+        int w = grid[0].length;
+
+        // ???
+        //  can start at ANY cell in the FIRST column,
+        for(int i = 0; i < l; i++){
+            int x = 0;
+            int y = i;
+            // init cost = 0
+            // init move = 0
+            pq.add(new Integer[]{x, y, 0, 0});
+        }
+
+        // 2D array record cost by (x, y) ???
+        // int init as 0 // /????
+        int[][] costStaus = new int[l][w]; // ???
+        for(int i = 0; i < l; i++){
+            for(int j = 0; j < w; j++){
+                // ?? init as max val
+                // so we know that which grid (x,y)
+                // is NOT visited yet
+                costStaus[i][j] = Integer.MAX_VALUE; // ?????
+            }
+        }
+
+        // (row - 1, col + 1), (row, col + 1) and (row + 1, col + 1)
+        int[][] moves = new int[][]{ {-1,1}, {0,1}, {1,1} };
+
+        // ?? dijkstra: BFS + PQ + cost status update ???
+        while (!pq.isEmpty()){
+            // edge: if even CAN'T move from 1st iteration ??
+
+            Integer[] cur = pq.poll();
+            int x = cur[0];
+            int y = cur[1];
+            int cost = cur[2];
+            int movesCnt = cur[3];
+
+            // ???
+            maxMove = Math.max(maxMove, movesCnt);
+
+            for(int[] m: moves){
+                int x_ = x + m[1];
+                int y_ = y + m[0];
+
+                // check 1) if still in grid boundary
+                if(x_ >= 0 && x_ < w && y_ >= 0 && y < l){
+                    // check 2) if next val is bigger than prev val
+                    if(grid[y_][x_] > grid[y][x]){
+
+                        // ???
+                        int cost_ = cost + grid[y_][x_];
+
+                        //  check 3) check if `cost if less the cur status` // ???
+                        if(grid[y_][x_] > grid[y][x] + cost_){
+                            // add to PQ
+                            pq.add(new Integer[]{x_, y_, cost_, movesCnt + 1});
+
+                            // update cost status ???
+                            // relation ???
+                            grid[y_][x_] = cost_; // ???
+                        }
+                    }
+                }
+            }
+        }
+
+        return maxMove;
+    }
+
+
 
 
 }
