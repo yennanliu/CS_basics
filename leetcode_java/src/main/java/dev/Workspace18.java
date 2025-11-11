@@ -2698,6 +2698,25 @@ public class Workspace18 {
     }
 
 
+  // LC 703
+//  class KthLargest {
+//
+//      public KthLargest(int k, int[] nums) {
+//
+//      }
+//
+//      public int add(int val) {
+//
+//      }
+//  }
+
+
+    // LC 414
+    // Third Maximum Number
+    public int thirdMax(int[] nums) {
+
+        return 0;
+    }
 
 
 }
