@@ -2713,9 +2713,47 @@ public class Workspace18 {
 
     // LC 414
     // Third Maximum Number
+    // 7.11 - 21 am
+    /**
+     *
+     *  ->  the third DISTINCT maximum number in this array.
+     *      - If the third maximum does not exist, return the maximum number.
+     *
+     *
+     *   IDEA 1) SORT + SET
+     *
+     *   IDEA 2) PQ + SET
+     *
+     */
     public int thirdMax(int[] nums) {
+        // edge
+        if(nums == null || nums.length == 0){
+            return 0; // ???
+        }
+        if(nums.length == 1){
+            return nums[0]; // ???
+        }
 
-        return 0;
+        List<Integer> list = new ArrayList<>();
+
+        Set<Integer> set = new HashSet<>();
+        for(int x: nums){
+            if(!set.contains(x)){
+                set.add(x);
+                list.add(x);
+            }
+        }
+
+        System.out.println(">>> (before sort) list = " + list);
+        // sort (big -> small)
+        list.sort(Comparator.reverseOrder()); // ????
+        System.out.println(">>> (after sort) list = " + list);
+
+        if(list.size() < 3){
+            return list.get(0);
+        }
+
+        return list.get(2);
     }
 
 
