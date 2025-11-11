@@ -2526,6 +2526,79 @@ public class Workspace18 {
     }
 
 
+    // LC 2683
+    // 10.27 - 37 AM
+    /**
+     *  IDEA 1) BIT OP
+     *
+     *
+     */
+    public boolean doesValidArrayExist(int[] derived) {
+        // edge
+        if(derived == null || derived.length == 0){
+            return true;
+        }
+
+        //  int result = a ^ b; // Binary: 0110 (which is 6 in decimal)
+
+        // cache as original
+        int[] original = derived;
+
+        // ??? op
+        int n = derived.length;
+        // OP
+        for(int i = 0; i < n; i++){
+//            // check if `can form as original`
+//            if(n > 0){
+//                if(isSameBySort(original, derived)){
+//                    return true;
+//                }
+//            }
+            // case 1) i == n - 1
+            if(i == n - 1){
+                derived[i] = (original[i] ^ original[0]); // ???
+            }
+            // case 2) otherwise
+            else{
+                derived[i] = (original[i] ^ original[i + 1]); // ???
+            }
+        }
+
+        // check if can make derived equals to original
+        // after some sorting
+        // check if `can form as original`
+        return isSameBySort(original, derived);
+    }
+
+    private boolean isSameBySort(int[] original, int[] cur){
+        // the correct way to sort array ??
+        // ???
+        System.out.println(">>> (before sort) original = " +
+                Arrays.toString(original) +
+                " cur = " + Arrays.toString(cur));
+
+        Arrays.sort(original);
+        Arrays.sort(cur);
+
+        System.out.println(">>> (after sort) original = " +
+                Arrays.toString(original) +
+                " cur = " + Arrays.toString(cur));
+
+        //????
+        if(original.length != cur.length){
+            return false;
+        }
+        for(int i = 0; i < original.length; i++){
+            if(original[i] != cur[i]){
+                return false;
+            }
+        }
+
+        // ???
+        // return original.equals(cur);
+        return true;
+    }
+
 
 
 
