@@ -2482,6 +2482,50 @@ public class Workspace18 {
         return maxCapital;
     }
 
+    // LC 2682
+    // 10.13 - 23 am
+    /**
+     *  IDEA 1) set ???
+     *
+     */
+    public int[] circularGameLosers(int n, int k) {
+        // edge
+        if(n == 0 || k == 0){
+           return new int[]{}; // ???
+        }
+
+        // set ???
+        Set<Integer> set = new HashSet<>();
+
+        //int cur = -1;
+        int cnt = 1;
+        int idx = 1;
+        List<Integer> list = new ArrayList<>();
+
+        while(!set.contains(idx)){
+            System.out.println(">>> idx = " + idx
+                    + ", set = " + set);
+            idx += (cnt * k);
+            // adjust
+            idx = idx % n;
+            // update
+            set.add(idx);
+            list.add(idx);
+            cnt += 1;
+        }
+
+        // ??? optimize below
+        System.out.println(">>> list = " + list);
+
+        int[] res = new int[list.size()];
+        for(int i = 0; i < list.size(); i++){
+            res[i] = list.get(i);
+        }
+
+        return res;
+    }
+
+
 
 
 
