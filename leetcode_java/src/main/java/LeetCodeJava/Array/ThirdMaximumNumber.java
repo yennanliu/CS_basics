@@ -53,9 +53,37 @@ import java.util.*;
 public class ThirdMaximumNumber {
 
     // V0
-//    public int thirdMax(int[] nums) {
-//
-//    }
+    // IDEA: SET + SORT
+    public int thirdMax(int[] nums) {
+        // edge
+        if (nums == null || nums.length == 0) {
+            return 0; // ???
+        }
+        if (nums.length == 1) {
+            return nums[0]; // ???
+        }
+
+        List<Integer> list = new ArrayList<>();
+
+        Set<Integer> set = new HashSet<>();
+        for (int x : nums) {
+            if (!set.contains(x)) {
+                set.add(x);
+                list.add(x);
+            }
+        }
+
+        //System.out.println(">>> (before sort) list = " + list);
+        // sort (big -> small)
+        list.sort(Comparator.reverseOrder()); // ????
+        //System.out.println(">>> (after sort) list = " + list);
+
+        if (list.size() < 3) {
+            return list.get(0);
+        }
+
+        return list.get(2);
+    }
 
     // V1-1
     // IDEA: SORTING
