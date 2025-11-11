@@ -240,8 +240,84 @@ public class ReorganizeString {
 
 
     // V0-0-2
-    // IDEA: PQ (PriorityQueue<Character>) + HASHMAP (fixed by gpt)
+    // IDEA: PQ sort on map val (fixed by gpt)
+    // NOTE !!! in this code,
+    //          NO NEED to explicitly check if the previous character equals the current one
     public String reorganizeString_0_0_2(String s) {
+        if (s == null || s.length() <= 1) return s;
+
+        // Count frequency of each character
+        Map<Character, Integer> map = new HashMap<>();
+        for (char c : s.toCharArray()) {
+            map.put(c, map.getOrDefault(c, 0) + 1);
+        }
+
+        // Build max heap sorted by frequency
+        PriorityQueue<Map.Entry<Character, Integer>> pq =
+                new PriorityQueue<>((a, b) -> b.getValue() - a.getValue());
+        pq.addAll(map.entrySet());
+
+        StringBuilder sb = new StringBuilder();
+
+        // prev holds one leftover character that can't be placed yet
+        Map.Entry<Character, Integer> prev = null;
+
+        /** NOTE !!!
+         *
+         *   core logic (why NO NEED to check if the prev character equals the cur one)
+         *
+         *   - Key idea:
+         *        prev always holds the previous
+         *        character that still has leftover count.
+         *
+         * 	 - We never push cur into the PQ immediately;
+         * 	    we ONLY push prev back.
+         *
+         * 	 - Because the PQ is a max heap,
+         * 	   the most frequent character is always picked first
+         * 	   — but the previous one is temporarily held out,
+         * 	   so it can’t be picked in two consecutive turns.
+         *
+         */
+        while (!pq.isEmpty()) {
+            // pick most frequent
+            Map.Entry<Character, Integer> cur = pq.poll();
+            sb.append(cur.getKey());
+            cur.setValue(cur.getValue() - 1);
+
+            /** NOTE !!!
+             *
+             *  we NEVER push `cur` to PQ at the cur loop;
+             *  -> we push `prev` instead. so it makes
+             *      - we DON'T need to deal with
+             *          - check if the prev character equals the cur one
+             *      - we're still on track (the string candidate order by cnt)
+             */
+            // if previous still has count, push it back
+            if (prev != null && prev.getValue() > 0) {
+                /** NOTE !!!
+                 *
+                 *  we add `prev`, instead of `cur`
+                 */
+                pq.offer(prev);
+            }
+
+            // update prev to current if it still has count
+            prev = cur.getValue() > 0 ? cur : null;
+        }
+
+        // if we used all characters, return result
+        if (sb.length() == s.length()) {
+            return sb.toString();
+        }
+
+        // impossible to reorganize (e.g., "aaab")
+        return "";
+    }
+
+    // V0-0-3
+    // IDEA: PQ (PriorityQueue<Character>) + HASHMAP (fixed by gpt)
+    public String reorganizeString_0_0_3(String s) {
         // Edge cases
         if (s == null || s.length() == 0) {
             return "";
@@ -411,6 +487,85 @@ public class ReorganizeString {
         // If the length of the reorganized string is not equal to the original length,
         // it means it was not possible to reorganize the string according to the rules.
         return result.length() == s.length() ? result.toString() : "";
+    }
+
+    // V0-3
+    // IDEA: PQ (gemini)
+    public String reorganizeString_0_3(String s) {
+        if (s == null || s.isEmpty()) {
+            return "";
+        }
+        int N = s.length();
+
+        // 1. Count Frequencies and Check for Impossibility
+        // Use an array for O(1) character frequency access (since 'a' through 'z')
+        int[] counts = new int[26];
+        for (char c : s.toCharArray()) {
+            int index = c - 'a';
+            counts[index]++;
+
+            // Check for impossibility: count > ceil((N + 1) / 2)
+            if (counts[index] > (N + 1) / 2) {
+                return "";
+            }
+        }
+
+        // 2. Initialize Max-Heap
+        // Max-Heap stores: [count, character_index ('a'=0, 'b'=1, ...)]
+        // Ordered by descending count (index 0).
+        PriorityQueue<int[]> maxHeap = new PriorityQueue<>((a, b) -> b[0] - a[0]);
+
+        for (int i = 0; i < 26; i++) {
+            if (counts[i] > 0) {
+                // Add [count, index]
+                maxHeap.offer(new int[]{counts[i], i});
+            }
+        }
+
+        // 3. Greedy Construction
+        StringBuilder result = new StringBuilder();
+
+        // Use an array to store the state of the character used in the previous step: [count, index]
+        int[] previous = null;
+
+        while (result.length() < N) {
+
+            // A. Get the most frequent available character
+            // If the heap is empty, but we haven't finished the string, it means the
+            // only remaining character is the one held in 'previous'.
+            if (maxHeap.isEmpty()) {
+                // This case should not be reachable due to the impossibility check (step 1),
+                // but adding it ensures correctness for the last two characters.
+                if (previous != null && previous[0] == 1) {
+                    result.append((char)('a' + previous[1]));
+                    break;
+                }
+                return ""; // Should theoretically not happen if the impossibility check is correct.
+            }
+
+            int[] current = maxHeap.poll();
+
+            // B. Append the character
+            char currentChar = (char)('a' + current[1]);
+            result.append(currentChar);
+            current[0]--; // Decrement count
+
+            // C. Re-add the previous item
+            // If the item from the last iteration has remaining counts, re-add it now.
+            if (previous != null && previous[0] > 0) {
+                maxHeap.offer(previous);
+            }
+
+            // D. Set the current item as the 'previous' for the next iteration
+            // Only set it if it still has remaining counts.
+            if (current[0] > 0) {
+                previous = current;
+            } else {
+                previous = null; // Mark as null if this character is exhausted
+            }
+        }
+
+        return result.toString();
     }
 
     // V1
@@ -754,6 +909,5 @@ public class ReorganizeString {
         return ans.toString();
     }
 
-
-
+    
 }
