@@ -2758,6 +2758,56 @@ public class Workspace18 {
 
 
     // LC 324
+    // 7.30 - 7.40 am
+    /**
+     *  -> Given an integer array nums,
+     *    reorder it such that nums[0] < nums[1] > nums[2] < nums[3]....
+     *
+     *    - NOTE:
+     *      - You may assume the input array always has a valid answer.
+     *
+     *
+     *  IDEA 1) SORT + pick the `most freq` big nums
+     *
+     *
+     *  IDEA 2) BRUTE FORCE
+     *
+     *
+     *  IDEA 3) 2 pointers ????
+     *
+     *
+     *
+     *  ex 1)
+     *
+     *  Input: nums = [1,5,1,1,6,4]
+     *  Output: [1,6,1,5,1,4]
+     *  Explanation: [1,4,1,5,1,6] is also accepted.
+     *
+     *
+     *  -> sort (small -> big)
+     *    [1,1,1,4,5,6]
+     *
+     *  -> res = [1,6], arr = [1,1,4,5]
+     *  -> res = [1,6,1,5], arr = [1,4]
+     *  -> res = [1,6,1,5,1,4], arr = []
+     *
+     *
+     *
+     *  ex 2)
+     *
+     *   Input: nums = [1,3,2,2,3,1]
+     *   Output: [2,3,1,3,1,2]
+     *
+     *   -> sort (small -> big)
+     *   [1,1,2,2,3,3]
+     *
+     *   -> res = [1,3], arr =[1,2,2,3]
+     *   -> res = [1,3,1,3], arr =[2,2]
+     *
+     *
+     *
+     *
+     */
     public void wiggleSort(int[] nums) {
 
     }
