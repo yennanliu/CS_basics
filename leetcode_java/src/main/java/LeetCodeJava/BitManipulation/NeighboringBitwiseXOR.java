@@ -63,60 +63,60 @@ public class NeighboringBitwiseXOR {
 //    }
 
     // V0-1
-    // TODO: validate below
-//    public boolean doesValidArrayExist(int[] derived) {
-//        // edge
-//        if(derived == null || derived.length == 0){
-//            return true;
-//        }
-//
-//        //  int result = a ^ b; // Binary: 0110 (which is 6 in decimal)
-//
-//        // cache as original
-//        int[] original = derived;
-//
-//        // ??? op
-//        int n = derived.length;
-//        for(int i = 0; i < n; i++){
-//            // check if `can form as original`
-//            if(n > 0){
-//                if(isSameBySort(original, derived)){
-//                    return true;
-//                }
-//            }
-//            // case 1) i == n - 1
-//            if(i == n - 1){
-//                derived[i] = (original[i] ^ original[0]); // ???
-//            }
-//            // case 2) otherwise
-//            else{
-//                derived[i] = (original[i] ^ original[i + 1]); // ???
-//            }
-//        }
-//
-//        return false;
-//    }
-//
-//    private boolean isSameBySort(int[] original, int[] cur){
-//        // sort ??
-//        Arrays.sort(original);
-//        Arrays.sort(cur);
-//
-//        //????
-//        if(original.length != cur.length){
-//            return false;
-//        }
-//        for(int i = 0; i < original.length; i++){
-//            if(original[i] != cur[i]){
-//                return false;
-//            }
-//        }
-//
-//        // ???
-//        // return original.equals(cur);
-//        return true;
-//    }
+    // IDEA: BIT OP (gpt)
+    public boolean doesValidArrayExist_0_1(int[] derived) {
+        int xor = 0;
+        for (int val : derived) {
+            xor ^= val;
+        }
+        return xor == 0;
+    }
 
+    // V0-2
+    // IDEA: BIT OP (fixed by gemini)
+    /**
+     * Fix for LC 2683: Does Valid Array Exist?
+     *
+     * The array 'derived' is defined by derived[i] = original[i] ^ original[(i + 1) % n].
+     * The total XOR sum of the derived array is:
+     * (o[0]^o[1]) ^ (o[1]^o[2]) ^ ... ^ (o[n-1]^o[0])
+     * Since every element in 'original' appears twice, the sum must be 0 (A ^ A = 0).
+     * Therefore, a valid 'original' array exists IF AND ONLY IF the XOR sum of 'derived' is 0.
+     *
+     * Time Complexity: O(n)
+     * Space Complexity: O(1)
+     */
+    public boolean doesValidArrayExist_0_2(int[] derived) {
+        // Edge case: If derived is null or empty, we assume a valid (empty) array exists.
+        if (derived == null || derived.length == 0) {
+            return true;
+        }
+
+        int xorSum = 0;
+
+        /**
+         * 🔹 Why This Works
+         * 	 1.	Let original[0] = 0 (or 1, doesn’t matter).
+         * 	 2 .Reconstruct other elements:
+         *
+         * 	    original[1] = original[0] ^ derived[0]
+         *      original[2] = original[1] ^ derived[1]
+         *      ...
+         *      original[n-1] = original[n-2] ^ derived[n-2]
+         *
+         * 	 3.	The last element must satisfy original[n-1] ^ original[0] == derived[n-1].
+         * 	 4.	This reduces to XOR of all derived = 0.
+         *
+         *   -> so, No need to mutate arrays, sort, or compare.
+         */
+        // Calculate the XOR sum of all elements in the derived array.
+        for (int value : derived) {
+            xorSum ^= value;
+        }
+
+        // The condition for existence is that the total XOR sum must be 0.
+        return xorSum == 0;
+    }
 
     // V1-1
     // IDEA: Simulation
