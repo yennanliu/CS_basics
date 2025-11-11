@@ -2164,100 +2164,225 @@ public class Workspace18 {
      *
      *
      */
-    // custom class
-    public class StringCnt{
-        String str;
-        Integer cnt;
-        public StringCnt(String str, Integer cnt){
-            this.str = str;
-            this.cnt = cnt;
-        }
-    }
+    // IDEA: PQ + HASH MAP
     public String reorganizeString(String s) {
         // edge
-        if(s.isEmpty()){
+        if (s == null || s.isEmpty()){
             return "";
         }
-        if(s.length() == 1){
-            return "";
+        if (s.length() <= 2){
+            return s;
         }
 
+        // hashmap
         // map: {val: cnt}
         Map<Character, Integer> map = new HashMap<>();
         for(char x: s.toCharArray()){
             map.put(x, map.getOrDefault(x, 0) + 1);
         }
 
-        // big PQ: sort on cnt (freq)
-        PriorityQueue<StringCnt> pq = new PriorityQueue<>(new Comparator<StringCnt>() {
+        // PQ: big PQ. sort on count (freq)
+        // big PQ:
+        // NOTE !!!  sort on MAP val(freq)
+//        PriorityQueue<Integer> pq = new PriorityQueue<>(new Comparator<Integer>() {
+//            @Override
+//            public int compare(Integer o1, Integer o2) {
+//                int diff = map.get(o2) - map.get(o1);
+//                return diff;
+//            }
+//        });
+        PriorityQueue<Character> pq = new PriorityQueue<>(new Comparator<Character>() {
             @Override
-            public int compare(StringCnt o1, StringCnt o2) {
-                int diff = o2.cnt - o1.cnt;
+            public int compare(Character o1, Character o2) {
+                int diff = map.get(o2) - map.get(o1); // ????
                 return diff;
             }
         });
 
+        // add vals to PQ
         for(Character k: map.keySet()){
-            String k_ = String.valueOf(k);
-            Integer cnt = map.get(k);
-            pq.add(new StringCnt(k_, cnt));
+            pq.add(k);
         }
 
-        String res = ""; // ????
+        // NOTE !!! define prev
+        Character prev = null;
+        String res = "";
 
-        // NOTE !!! we define prev
-        String prev = null;
+        // NOTE !!! while PQ is NOT empty
+        while(!pq.isEmpty()){
 
-        // NOTE !!! while PQ is not null
-        while (!pq.isEmpty()){
+            //Integer cnt = pq.poll();
+            Character cur = pq.poll();
 
-            StringCnt sc = pq.poll();
-            int cnt = sc.cnt;
-            String str = sc.str;
-
-            // edge
-            if(prev == null || prev.equals(str)){
+            // case 1)
+            if(prev != null && prev == cur){
                 if(pq.isEmpty()){
-                    return null;
+                    return "";
                 }
+                char next = pq.poll();
+                res += String.valueOf(next);
+
+                map.put(next, map.get(next) - 1);
+                if(map.get(next) > 0){
+                    pq.add(next);
+                }
+
+                pq.add(cur);
+                prev = next;
+            }else{
+                res += String.valueOf(cur);
+
+                map.put(cur, map.get(cur) - 1);
+                if(map.get(cur) > 0){
+                    pq.add(cur);
+                }
+
+                prev = cur;
             }
 
-            StringCnt scNext = pq.poll();
-            res += scNext.str;
-           // map.put(scNext.str, scNext.cnt - 1); // ??
-
+//            if(pq.isEmpty()){
+//                // case 1-1) PQ is empty and prev == cur
+//                if(prev.equals(curChar)){
+//                    return ""; // ????
+//                }
+//                // case 1-2) PQ is empty and prev != cur
+//                res += curChar; // ???
+//                prev = String.valueOf(curChar); // ???
+//            }else{
+//                // case 2-1) PQ is NOT empty and prev == cur
+//                // ???
+//                if(prev.equals(String.valueOf(curChar))){
+//                    // try `2nd candidates`
+//                    Character nextChar = pq.poll();
+//
+//                    // add to res
+//                    res += nextChar;
+//                    // update map
+//                    map.put(nextChar, map.get(nextChar) - 1);
+//                    // if cnt == 0, remove key
+//                    if(map.get(nextChar) == 0){
+//                        map.remove(nextChar);
+//                    }
+//
+//                    // NOTE !!! add the `1st candidates` back to PQ
+//                    pq.add(curChar);
+//                }
+//                // case 2-1) PQ is NOT empty and prev != cur
+//                else{
+//                    res += curChar;
+//                    // update map
+//                    map.put(curChar, map.get(curChar) - 1);
+//                    // if cnt == 0, remove key
+//                    if(map.get(curChar) == 0){
+//                        map.remove(curChar);
+//                    }
+//                }
+//            }
 
 
         }
 
+        return res;
+    }
 
+
+
+
+
+//    // custom class
+//    public class StringCnt{
+//        String str;
+//        Integer cnt;
+//        public StringCnt(String str, Integer cnt){
+//            this.str = str;
+//            this.cnt = cnt;
+//        }
+//    }
+//    public String reorganizeString(String s) {
+//        // edge
+//        if(s.isEmpty()){
+//            return "";
+//        }
+//        if(s.length() == 1){
+//            return "";
+//        }
 //
-//        while(!map.isEmpty()){
-//            if(map.keySet().size() == 1){
-//                // get the only ket
-//                return ""; // ?????
+//        // map: {val: cnt}
+//        Map<Character, Integer> map = new HashMap<>();
+//        for(char x: s.toCharArray()){
+//            map.put(x, map.getOrDefault(x, 0) + 1);
+//        }
+//
+//        // big PQ: sort on cnt (freq)
+//        PriorityQueue<StringCnt> pq = new PriorityQueue<>(new Comparator<StringCnt>() {
+//            @Override
+//            public int compare(StringCnt o1, StringCnt o2) {
+//                int diff = o2.cnt - o1.cnt;
+//                return diff;
 //            }
+//        });
 //
-//            StringCnt strCnt = pq.poll();
-//            // ???
-//            if(!res.isEmpty()){
-//                String last = String.valueOf(res.charAt(res.length() - 1));
-//                if(last.equals(strCnt.str)){
-//                    return "";
+//        for(Character k: map.keySet()){
+//            String k_ = String.valueOf(k);
+//            Integer cnt = map.get(k);
+//            pq.add(new StringCnt(k_, cnt));
+//        }
+//
+//        String res = ""; // ????
+//
+//        // NOTE !!! we define prev
+//        String prev = null;
+//
+//        // NOTE !!! while PQ is not null
+//        while (!pq.isEmpty()){
+//
+//            StringCnt sc = pq.poll();
+//            int cnt = sc.cnt;
+//            String str = sc.str;
+//
+//            // edge
+//            if(prev == null || prev.equals(str)){
+//                if(pq.isEmpty()){
+//                    return null;
 //                }
 //            }
 //
-//            res += strCnt.str;
-//            // update map
-//           // map.put(strCnt)
+//            StringCnt scNext = pq.poll();
+//            res += scNext.str;
+//           // map.put(scNext.str, scNext.cnt - 1); // ??
+//
+//
 //
 //        }
-
-
-
-        return null;
-    }
-
+//
+//
+////
+////        while(!map.isEmpty()){
+////            if(map.keySet().size() == 1){
+////                // get the only ket
+////                return ""; // ?????
+////            }
+////
+////            StringCnt strCnt = pq.poll();
+////            // ???
+////            if(!res.isEmpty()){
+////                String last = String.valueOf(res.charAt(res.length() - 1));
+////                if(last.equals(strCnt.str)){
+////                    return "";
+////                }
+////            }
+////
+////            res += strCnt.str;
+////            // update map
+////           // map.put(strCnt)
+////
+////        }
+//
+//
+//
+//        return null;
+//    }
+//
 
     // LC 502
     // 6.54 - 7.04 am
