@@ -53,6 +53,153 @@ public class MaximumNumberOfMovesInAGrid {
 //
 //    }
 
+    // V0-1
+    // IDEA: DFS + MEMORIZATION (fixed by gpt)
+    private int[][] grid;
+    private int[][] dp;
+    private int rows, cols;
+    private int[][] directions = { { -1, 1 }, { 0, 1 }, { 1, 1 } }; // right-up, right, right-down
+
+    public int maxMoves_0_1(int[][] grid) {
+        this.grid = grid;
+        this.rows = grid.length;
+        this.cols = grid[0].length;
+        this.dp = new int[rows][cols];
+
+        // initialize dp with -1 (unvisited)
+        for (int i = 0; i < rows; i++) {
+            Arrays.fill(dp[i], -1);
+        }
+
+        int maxMove = 0;
+        // can start at ANY cell in the first column
+        for (int r = 0; r < rows; r++) {
+            maxMove = Math.max(maxMove, dfs(r, 0));
+        }
+
+        return maxMove;
+    }
+
+    private int dfs(int r, int c) {
+        if (c == cols - 1)
+            return 0; // last column, no more moves
+        if (dp[r][c] != -1)
+            return dp[r][c];
+
+        int maxNext = 0;
+        for (int[] d : directions) {
+            int nr = r + d[0];
+            int nc = c + d[1];
+            if (nr >= 0 && nr < rows && nc < cols && grid[nr][nc] > grid[r][c]) {
+                maxNext = Math.max(maxNext, 1 + dfs(nr, nc));
+            }
+        }
+
+        dp[r][c] = maxNext;
+        return maxNext;
+    }
+
+    // V0-2
+    // IDEA: BFS (gpt)
+    public int maxMoves_0_2(int[][] grid) {
+        int rows = grid.length;
+        int cols = grid[0].length;
+
+        // directions: right-up, right, right-down
+        int[][] directions = {{-1, 1}, {0, 1}, {1, 1}};
+
+        // dp[r][c] = max moves to reach cell (r,c)
+        int[][] dp = new int[rows][cols];
+        for (int r = 0; r < rows; r++) {
+            dp[r][0] = 0; // start from first column
+        }
+
+        int maxMove = 0;
+
+        // BFS column by column
+        for (int c = 0; c < cols - 1; c++) {
+            for (int r = 0; r < rows; r++) {
+                if (dp[r][c] == 0 && c != 0) continue; // skip unreachable cells
+
+                for (int[] d : directions) {
+                    int nr = r + d[0];
+                    int nc = c + d[1];
+                    if (nr >= 0 && nr < rows && nc < cols && grid[nr][nc] > grid[r][c]) {
+                        dp[nr][nc] = Math.max(dp[nr][nc], dp[r][c] + 1);
+                        maxMove = Math.max(maxMove, dp[nr][nc]);
+                    }
+                }
+            }
+        }
+
+        return maxMove;
+    }
+
+
+    // V0-3
+    // IDEA: DP (gemini)
+    public int maxMoves_0_3(int[][] grid) {
+        if (grid == null || grid.length == 0 || grid[0].length == 0) {
+            return 0;
+        }
+
+        int R = grid.length;
+        int C = grid[0].length;
+
+        // dp[r][c] stores the maximum moves to reach cell (r, c).
+        // Initialized to 0. A move count of 0 means the cell is unreachable.
+        // We use -1 to clearly mark unreachable cells and avoid confusion with 0 moves.
+        int[][] dp = new int[R][C];
+        for (int[] row : dp) {
+            Arrays.fill(row, -1);
+        }
+
+        // 1. Initialization: The first column is reachable with 0 moves.
+        for (int r = 0; r < R; r++) {
+            dp[r][0] = 0;
+        }
+
+        int maxMoves = 0;
+
+        // 2. DP Traversal: Iterate column by column from c=1 to C-1
+        for (int c = 1; c < C; c++) {
+            for (int r = 0; r < R; r++) {
+
+                int maxPrevMoves = -1;
+
+                // Check all three possible incoming neighbors in column c-1:
+                // (r-1, c-1), (r, c-1), (r+1, c-1)
+
+                // Direction array for r: [-1, 0, 1]
+                for (int dr = -1; dr <= 1; dr++) {
+                    int prevR = r + dr;
+                    int prevC = c - 1;
+
+                    // Check boundaries and reachability
+                    if (prevR >= 0 && prevR < R && dp[prevR][prevC] != -1) {
+
+                        // Check move condition: grid[prevR][prevC] < grid[r][c]
+                        if (grid[prevR][prevC] < grid[r][c]) {
+                            // The maximum moves to reach the current cell (r, c)
+                            // is 1 + max moves to reach any valid predecessor.
+                            maxPrevMoves = Math.max(maxPrevMoves, dp[prevR][prevC]);
+                        }
+                    }
+                }
+
+                // If maxPrevMoves is not -1, it means (r, c) is reachable.
+                if (maxPrevMoves != -1) {
+                    dp[r][c] = maxPrevMoves + 1;
+                    maxMoves = Math.max(maxMoves, dp[r][c]);
+                }
+            }
+        }
+
+        return maxMoves;
+    }
+
+
+
     // TODO: validate below
     // V0-1
     // IDEA 3) dijkstra ???
