@@ -148,7 +148,6 @@
 			- 2542
 	- LC 215 Kth Largest Element in an Array
 		- gpt
-			- 414
 			- 4
 		- gemini
 			- 324
