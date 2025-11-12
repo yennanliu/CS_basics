@@ -58,6 +58,11 @@ public class CountTheNumberOfCompleteComponents {
 
     // V0-1
     // IDEA: DFS + Completeness check (fixed by gpt)
+    /**
+     *  Goal: return how many connected components in
+     *        this graph are complete (fully connected).
+     *
+     */
     public int countCompleteComponents_0_1(int n, int[][] edges) {
         // Build graph
         Map<Integer, List<Integer>> graph = new HashMap<>();
@@ -65,24 +70,98 @@ public class CountTheNumberOfCompleteComponents {
             graph.put(i, new ArrayList<>());
         }
         for (int[] e : edges) {
+            /**
+             *
+             * Since the graph is undirected, we add both directions:
+             *
+             *  - u → v
+             *  - v → u
+             *
+             *  -----
+             *
+             *  example:
+             *
+             *  if edges = [[0,1], [1,2]],
+             *  you’ll get:
+             *
+             *     0 → [1]
+             *     1 → [0,2]
+             *     2 → [1]
+             */
             graph.get(e[0]).add(e[1]);
             graph.get(e[1]).add(e[0]);
         }
 
+        /**  NOTE !!!
+         *
+         * -  visited[i]:
+         *       keeps track of whether node i was already explored.
+         *
+         * - completeCount:
+         *      stores how many `complete components` we find.
+         */
         boolean[] visited = new boolean[n];
         int completeCount = 0;
 
         // Explore each component
         for (int i = 0; i < n; i++) {
+            /**  NOTE !!!
+             *
+             *   ONLY call DFS on `not visited` node
+             */
             if (!visited[i]) {
+
+                /**
+                 *   NOTE !!!
+                 *
+                 *  - nodes: collects all the nodes in this connected component.
+                 *
+                 *   - edgeCount: is an integer array of size 1
+                 *               (used like a mutable integer reference,
+                 *               since Java passes primitives by value).
+                 *
+                 *   - We start DFS at node i to fill both.
+                 *
+                 */
                 List<Integer> nodes = new ArrayList<>();
                 int[] edgeCount = new int[1]; // wrapper for reference
                 dfs(i, graph, visited, nodes, edgeCount);
 
+                /**
+                 *   NOTE !!! After DFS, compute component stats
+                 *
+                 *
+                 *   - nodeCount = how many nodes are in this component.
+                 *   - actualEdges = how many undirected edges (since each was counted twice).
+                 *
+                 *    -> Example:
+                 *      If nodes = [0, 1, 2] and edges = {0-1, 0-2, 1-2},
+                 *      then:
+                 *
+                 *         ```
+                 *         edgeCount[0] = 6  // because we counted both directions
+                 *         actualEdges = 3
+                 *         nodeCount = 3
+                 */
                 int nodeCount = nodes.size();
                 // Each edge counted twice (u->v and v->u)
                 int actualEdges = edgeCount[0] / 2;
 
+                /**
+                 *   NOTE !!! Check if it’s a complete component
+                 *
+                 *
+                 *   A complete graph of k nodes has exactly:
+                 *
+                 *       E =  k * (k-1) / 2
+                 *
+                 *       edges
+                 *
+                 *
+                 *   ->  If this component’s edge count matches that formula →
+                 *       it’s a complete component, so we increment the answer.
+                 *
+                 */
                 if (actualEdges == nodeCount * (nodeCount - 1) / 2) {
                     completeCount++;
                 }
@@ -92,6 +171,20 @@ public class CountTheNumberOfCompleteComponents {
         return completeCount;
     }
 
+    /**  DFS helper func
+     *
+     *  - Mark current node as visited.
+     *  - Add it to the nodes list.
+     *
+     *  - For every neighbor nei:
+     *     - Increase edgeCount[0] by one (we count directed edges).
+     *      - If the neighbor hasn’t been visited, recurse into it.
+     *
+     * - > Note: Since edges are undirected, every edge is counted
+     *           twice (once from each side).
+     *           We’ll divide by 2 later.
+     *
+     */
     private void dfs(int node, Map<Integer, List<Integer>> graph, boolean[] visited,
                      List<Integer> nodes, int[] edgeCount) {
         visited[node] = true;
