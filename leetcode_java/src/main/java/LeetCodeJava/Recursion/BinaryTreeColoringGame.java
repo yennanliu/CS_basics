@@ -176,6 +176,74 @@ public class BinaryTreeColoringGame {
         return findNode_0_1(node.right, x);
     }
 
+    // V0-2
+    // IDEA: DFS (gemini)
+    // Variables to store the sizes of the Left and Right subtrees of Player 1's node (x).
+    private int leftSize;
+    private int rightSize;
+
+    public boolean btreeGameWinningMove_0_2(TreeNode root, int n, int x) {
+        // The game requires n >= 3 for a meaningful game, but we handle constraints.
+        if (root == null) {
+            return false;
+        }
+
+        // Step 1: Compute the sizes of the Left and Right subtrees of node x.
+        // We use the DFS helper function, starting from the root of the tree.
+        // This function will set leftSize and rightSize as a side effect when it hits node x.
+        dfsCount(root, x);
+
+        // Step 2: Calculate the size of the three regions Player 2 can sever and claim.
+
+        // Region 1: The Left Subtree of x (leftSize)
+        int size1 = leftSize;
+
+        // Region 2: The Right Subtree of x (rightSize)
+        int size2 = rightSize;
+
+        // Region 3: The Parent/Upper Region (The rest of the tree)
+        // Total nodes (n) - (Size of Left Subtree + Size of Right Subtree + Node x itself)
+        int size3 = n - (size1 + size2 + 1);
+
+        // Step 3: Player 2 wins if the largest available region is strictly greater than n/2.
+        // Player 2 will greedily choose the region with max size.
+        int maxRegionSize = Math.max(size1, Math.max(size2, size3));
+
+        // Note: Integer division n / 2 computes floor(n/2). We need strictly greater than n/2.
+        return maxRegionSize > n / 2;
+    }
+
+    /**
+     * Recursive DFS to count the size of the subtree rooted at 'node'.
+     * When node 'x' is found, it updates the global leftSize and rightSize variables.
+     * @param node The current node in the traversal.
+     * @param x The target node's value (Player 1's choice).
+     * @return The total size of the subtree rooted at 'node'.
+     */
+    private int dfsCount(TreeNode node, int x) {
+        if (node == null) {
+            return 0;
+        }
+
+        // Recursively calculate the size of the left and right subtrees
+        int L = dfsCount(node.left, x);
+        int R = dfsCount(node.right, x);
+
+        // If the current node is Player 1's chosen node (x), record its subtree sizes.
+        if (node.val == x) {
+            leftSize = L;
+            rightSize = R;
+        }
+
+        // Return the total size of the subtree rooted at 'node' (1 + left + right)
+        return 1 + L + R;
+    }
+
+    // The original getSubNodeCount is now defunct, replaced by the logic in dfsCount.
+    // private void getSubNodeCount() { }
+    // The original can2ndPlayerWin logic is now handled correctly in btreeGameWinningMove.
+    // private boolean can2ndPlayerWin(TreeNode root, TreeNode parant, int n, int x) { }
+
 
     // V1
     // https://leetcode.com/problems/binary-tree-coloring-game/solutions/367682/simple-clean-java-solution/
