@@ -61,6 +61,39 @@ public class BinaryTreeColoringGame {
      * }
      */
 
+    /**
+     *
+     * 🧩 Problem Recap
+     * 	•	There are n nodes labeled 1..n.
+     * 	•	Player 1 colors node x first.
+     * 	•	Player 2 colors any other node y.
+     * 	•	Then players alternate coloring adjacent uncolored nodes.
+     * 	•	The player who colors more nodes wins.
+     *
+     *   -> We need to check if player 2 can pick a node
+     *     so that they can guarantee to win.
+     *
+     */
+    /**
+     * 💡 Core Idea
+     *
+     * When player 1 colors node x, it divides the tree into 3 parts:
+     * 	1.	x’s left subtree
+     * 	2.	x’s right subtree
+     * 	3.	The rest of the tree (the parent side)
+     *
+     * Player 2 can win if they can choose a node
+     * from one of those three parts that has more
+     * than half of all nodes (i.e., > n / 2).
+     *
+     * So the key is:
+     * 	•	Use DFS to count the number of nodes in each subtree.
+     * 	•	Once we find node x, record:
+     * 	•	leftCnt = count(x.left)
+     * 	•	rightCnt = count(x.right)
+     * 	•	parentCnt = n - (leftCnt + rightCnt + 1)
+     * 	•	Player 2 wins if max(leftCnt, rightCnt, parentCnt) > n / 2.
+     */
     // V0
     // IDEA : RECURSION + TREE OP (fixed by GPT)
     public boolean btreeGameWinningMove(TreeNode root, int n, int x) {
@@ -260,5 +293,7 @@ public class BinaryTreeColoringGame {
 //            return max(red_left, red_right) > n / 2;
 //        }
 //    };
+
+
 
 }
