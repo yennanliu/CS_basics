@@ -1325,11 +1325,10 @@ public class Workspace18 {
 
 
     // LC 1145
-    public boolean btreeGameWinningMove(TreeNode root, int n, int x) {
-
-        return false;
-    }
-
+//    public boolean btreeGameWinningMove(TreeNode root, int n, int x) {
+//
+//        return false;
+//    }
 
     // LC 2640
     // 6.30 - 40 am
@@ -2469,15 +2468,15 @@ public class Workspace18 {
         int maxCap = 0;
 
         // ???
-        while(!capitalPQ.isEmpty()){
-            int[] cur = capitalPQ.poll();
-            // ???
-            while(profitPQ.peek() < cur){
-
-            }
-
-
-        }
+//        while(!capitalPQ.isEmpty()){
+//            int[] cur = capitalPQ.poll();
+//            // ???
+//            while(profitPQ.peek() < cur){
+//
+//            }
+//
+//
+//        }
 
 
 
@@ -3100,6 +3099,146 @@ public class Workspace18 {
     }
 
 
+    // LC 1145
+    // 6.43 - 53 am
+    /**
+     *  -> You are the SECOND player.
+     *  If it is `possible` to choose y
+     *  to ensure `you win the game`, return TRUE.
+     *  otherwise, return false
+     *
+     *   -  the winner is the player that colored more nodes.
+     *
+     *
+     *
+     *   - from 1 to n, n is odd
+     *   - each node has a distinct val from 1 to n
+     *   - step 1) 1st player choose x ( 1 <= x <= n)
+     *             - red color
+     *
+     *   - step 2) 2nd player choose y ( 1 <= y <= n)
+     *           - blue color
+     *             NOTE: x != y
+     *
+     *   - if one can't choose such color  -> pass the game
+     *   - if both player can't choose such color  -> game end
+     *
+     *
+     *
+     *  -----
+     *
+     *  •	There are n nodes labeled 1..n.
+     * 	•	Player 1 colors node x first.
+     * 	•	Player 2 colors any other node y.
+     * 	•	Then players alternate coloring adjacent uncolored nodes.
+     * 	•	The player who colors more nodes wins.
+     *
+     * We need to check if player 2 can pick a node so that they can guarantee to win.
+     *
+     * ⸻
+     *
+     *
+     *
+     *   IDEA 1) DFS
+     *
+     *      -> get the `sub root` count
+     *
+     *   IDEA 2) DP
+     *
+     *
+     *
+     */
+    // V1: DFS + `HALF TREE CNT CHECK
+    // ??? { node_val: sub_node_cnt }
+    Map<Integer, Integer> subNodeCntMap = new HashMap<>();
+    public boolean btreeGameWinningMove(TreeNode root, int n, int x) {
+        // edge
+        if(root == null || n == 0){
+            return false;
+        }
+        if((root.left == null && root.right == null) || n == 1){
+            return false;
+        }
+        // build sub node cnt map
+        getSubNodeCount();
+        // dfs check if 2nd player can win
+        return can2ndPlayerWin(root, null, n, x);
+    }
+
+    /**
+     *  1, find a node
+     *  2. check if any if below has sub node cnt >= n/2,
+     *     if yes, return true directly
+     *       - node.left
+     *       - node.right
+     *       - parent
+     *
+     *  3. keep above loop, till  the end
+     *     if still NOT found a node satisfy above,
+     *     return false
+     *
+     */
+    private boolean can2ndPlayerWin(TreeNode root, TreeNode parant, int n, int x){
+        // edge ???
+        if(root == null){
+            return false; // ???
+        }
+        int cnt = subNodeCntMap.get(root.val);
+//        int leftCnt = subNodeCntMap.get(root.left.val);
+//        int rightCnt = subNodeCntMap.get(root.right.val);
+//        int parentCnt = subNodeCntMap.get(parant.val);
+
+        if(cnt >= n / 2){
+            return true; // ????
+        }
+
+
+        return  subNodeCntMap.get(root.left.val) >= 2/n ||
+                subNodeCntMap.get(root.right.val) >= 2/n||
+                subNodeCntMap.get(parant.val)  >= 2/n;
+    }
+
+    private void getSubNodeCount(){
+        // return 0;
+    }
+
+
+
+    // V1: DFS
+//    // ??? { node_val: sub_node_cnt }
+//    Map<Integer, Integer> subNodeCntMap = new HashMap<>();
+//    public boolean btreeGameWinningMove(TreeNode root, int n, int x) {
+//        // edge
+//
+//        getSubNodeCount();
+//
+//        // DFS to check if 2nd player can win the game ????
+//        int firstPlayerCnt = subNodeCntMap.get(x);
+//
+//        return false;
+//    }
+//
+//    private boolean can2ndPlayerWin(TreeNode root, int n, int x){
+//        // edge ???
+//        if(root == null){
+//            return false; // ???
+//        }
+//        int firstPlayerCnt = subNodeCntMap.get(x);
+//        if(subNodeCntMap.get(root.val) > firstPlayerCnt){
+//            return false;
+//        }
+//
+//        //int subLeftCnt =
+//
+//        // ???
+//        return can2ndPlayerWin(root.left, n, x) ||
+//                can2ndPlayerWin(root.right, n, x);
+//    }
+//
+//
+//    private void getSubNodeCount(){
+//       // return 0;
+//    }
 
 
 
