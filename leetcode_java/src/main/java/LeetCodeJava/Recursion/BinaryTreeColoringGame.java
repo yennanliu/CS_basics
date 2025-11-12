@@ -4,6 +4,9 @@ package LeetCodeJava.Recursion;
 
 import LeetCodeJava.DataStructure.TreeNode;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  *
  * 1145. Binary Tree Coloring Game
@@ -129,6 +132,50 @@ public class BinaryTreeColoringGame {
         if (root == null) return 0;
         return 1 + getSubNodeCount(root.left) + getSubNodeCount(root.right);
     }
+
+
+
+    // V0-1
+    // Map to record { node.val : number of nodes in its subtree }
+    Map<Integer, Integer> subNodeCntMap = new HashMap<>();
+
+    public boolean btreeGameWinningMove_0_1(TreeNode root, int n, int x) {
+        if (root == null || n == 0) return false;
+
+        // Step 1: build the map {node_val: subtree_count}
+        getSubNodeCount_0_1(root);
+
+        // Step 2: get leftCnt, rightCnt, parentCnt for node x
+        TreeNode target = findNode_0_1(root, x);
+        if (target == null) return false;
+
+        int leftCnt = target.left == null ? 0 : subNodeCntMap.get(target.left.val);
+        int rightCnt = target.right == null ? 0 : subNodeCntMap.get(target.right.val);
+        int parentCnt = n - (1 + leftCnt + rightCnt);
+
+        // Step 3: if any part > n/2, player 2 can win
+        return Math.max(parentCnt, Math.max(leftCnt, rightCnt)) > n / 2;
+    }
+
+    /** DFS to compute subtree node count for each node */
+    private int getSubNodeCount_0_1(TreeNode node) {
+        if (node == null) return 0;
+        int left = getSubNodeCount_0_1(node.left);
+        int right = getSubNodeCount_0_1(node.right);
+        int total = left + right + 1;
+        subNodeCntMap.put(node.val, total);
+        return total;
+    }
+
+    /** Helper to find the node with value x */
+    private TreeNode findNode_0_1(TreeNode node, int x) {
+        if (node == null) return null;
+        if (node.val == x) return node;
+        TreeNode left = findNode_0_1(node.left, x);
+        if (left != null) return left;
+        return findNode_0_1(node.right, x);
+    }
+
 
     // V1
     // https://leetcode.com/problems/binary-tree-coloring-game/solutions/367682/simple-clean-java-solution/
