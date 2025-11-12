@@ -2954,16 +2954,15 @@ public class Workspace18 {
     }
 
 
-        public int countCompleteComponents_99(int n, int[][] edges) {
+    public int countCompleteComponents_99(int n, int[][] edges) {
         // edge
-        if(edges == null || edges.length == 0 || edges[0].length == 0 || n == 0){
-            return 0;
-        }
-        if(edges.length == 1 || edges[0].length == 1){
-            return 1; // ????
-        }
-
-        int completeNodeCnt = 0;
+        // ????
+//        if(edges == null || edges.length == 0 || edges[0].length == 0 || n == 0){
+//            return 0;
+//        }
+//        if(edges.length == 1 || edges[0].length == 1){
+//            return 1; // ????
+//        }
 
         // ??? build graph
         // { val : [neighbor_1, neighbor_2, ...] }
@@ -2977,6 +2976,7 @@ public class Workspace18 {
             int start = e[0];
             int end = e[1];
 
+            // ok
             graph.get(start).add(end); // ???
             graph.get(end).add(start); // ???
         }
@@ -2984,6 +2984,8 @@ public class Workspace18 {
         System.out.println(">>> graph = " + graph);
 
         boolean[] visited = new boolean[n];
+
+        int completeNodeCnt = 0;
 
         // loop over n
         for(int i = 0; i < n; i++){
