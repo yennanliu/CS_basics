@@ -57,69 +57,146 @@ public class CountTheNumberOfCompleteComponents {
 //    }
 
     // V0-1
-    // TODO: validate
-//    public int countCompleteComponents(int n, int[][] edges) {
-//        // edge
-//        if(edges == null || edges.length == 0 || edges[0].length == 0 || n == 0){
-//            return 0;
-//        }
-//        if(edges.length == 1 || edges[0].length == 1){
-//            return 1; // ????
-//        }
-//
-//        int completeNodeCnt = 0;
-//
-//        // ??? build graph
-//        // { val : [neighbor_1, neighbor_2, ...] }
-//        Map<Integer, List<Integer>> graph = new HashMap<>();
-//        // init
-//        for(int i = 0; i < n; i++){
-//            graph.put(i, new ArrayList<>());
-//        }
-//        // add neighbors
-//        for(int[] e: edges){
-//            int start = e[0];
-//            int end = e[1];
-//
-//            graph.get(start).add(end); // ???
-//            graph.get(end).add(start); // ???
-//        }
-//
-//        System.out.println(">>> graph = " + graph);
-//
-//        boolean[] visited = new boolean[n];
-//
-//        // loop over n
-//        for(int i = 0; i < n; i++){
-//            //graph.put(i, new ArrayList<>());
-//            // ???
-//            if(isCycled(i, graph, visited, new HashSet<Integer>())){
-//                completeNodeCnt += 1;
-//            }
-//        }
-//
-//        return completeNodeCnt;
-//    }
-//
-//    private boolean isCycled(int node, Map<Integer, List<Integer>> graph, boolean[] visited, HashSet<Integer> set){
-//        // ??
-//        if(set.contains(node)){
-//            return false;
-//        }
-//        // mark as visited
-//        visited[node] = true;
-//        // update set
-//        set.add(node);
-//
-//        // dfs call
-//        for(int i: graph.get(node)){
-//            if(!isCycled(i, graph, visited, set)){
-//                return false;
-//            }
-//        }
-//
-//        return true;
-//    }
+    // IDEA: DFS + Completeness check (fixed by gpt)
+    public int countCompleteComponents_0_1(int n, int[][] edges) {
+        // Build graph
+        Map<Integer, List<Integer>> graph = new HashMap<>();
+        for (int i = 0; i < n; i++) {
+            graph.put(i, new ArrayList<>());
+        }
+        for (int[] e : edges) {
+            graph.get(e[0]).add(e[1]);
+            graph.get(e[1]).add(e[0]);
+        }
+
+        boolean[] visited = new boolean[n];
+        int completeCount = 0;
+
+        // Explore each component
+        for (int i = 0; i < n; i++) {
+            if (!visited[i]) {
+                List<Integer> nodes = new ArrayList<>();
+                int[] edgeCount = new int[1]; // wrapper for reference
+                dfs(i, graph, visited, nodes, edgeCount);
+
+                int nodeCount = nodes.size();
+                // Each edge counted twice (u->v and v->u)
+                int actualEdges = edgeCount[0] / 2;
+
+                if (actualEdges == nodeCount * (nodeCount - 1) / 2) {
+                    completeCount++;
+                }
+            }
+        }
+
+        return completeCount;
+    }
+
+    private void dfs(int node, Map<Integer, List<Integer>> graph, boolean[] visited,
+                     List<Integer> nodes, int[] edgeCount) {
+        visited[node] = true;
+        nodes.add(node);
+        for (int nei : graph.get(node)) {
+            edgeCount[0]++; // count every edge direction
+            if (!visited[nei]) {
+                dfs(nei, graph, visited, nodes, edgeCount);
+            }
+        }
+    }
+
+    // V0-2
+    // IDEA: DFS with Completeness Check (gemini)
+    /**
+     * Counts the number of connected components that are complete graphs.
+     * A component with V vertices and E edges is complete if E == V * (V - 1) / 2.
+     */
+    public int countCompleteComponents_0_2(int n, int[][] edges) {
+        // Edge case: If no nodes, no components.
+        if (n == 0) {
+            return 0;
+        }
+
+        // 1. Build the Adjacency List (Graph)
+        // { node : [neighbor_1, neighbor_2, ...] }
+        Map<Integer, List<Integer>> graph = new HashMap<>();
+        for (int i = 0; i < n; i++) {
+            graph.put(i, new ArrayList<>());
+        }
+        // Count total edges, since the input can contain duplicates or self-loops,
+        // though typically LC problems guarantee simple graphs. We'll count edges carefully.
+        int totalEdges = 0;
+
+        // Use a Set to track edges to correctly count E for the entire graph (handling multi-edges)
+        Set<String> edgeSet = new HashSet<>();
+
+        for (int[] e : edges) {
+            int u = e[0];
+            int v = e[1];
+
+            // Assuming no self-loops (u != v), which is standard for simple graphs.
+            if (u != v) {
+                // Add to adjacency list for traversal
+                graph.get(u).add(v);
+                graph.get(v).add(u);
+
+                // Use a canonical representation for the edge (e.g., smaller_node + "_" + larger_node)
+                String edgeKey = (u < v) ? u + "_" + v : v + "_" + u;
+                if (edgeSet.add(edgeKey)) {
+                    totalEdges++; // Count only unique edges
+                }
+            }
+        }
+
+        int completeComponentCount = 0;
+        boolean[] visited = new boolean[n];
+
+        // 2. Traverse Graph to Find Components
+        for (int i = 0; i < n; i++) {
+            if (!visited[i]) {
+
+                // Lists to hold the nodes (V) and edges (E) of the current component
+                List<Integer> componentNodes = new ArrayList<>();
+                int[] componentEdgeCount = {0}; // Use array for pass-by-reference effect
+
+                // Use DFS to find all nodes and edges in the current component
+                DFS(i, graph, visited, componentNodes, componentEdgeCount);
+
+                // 3. Check for Completeness
+                int V = componentNodes.size();
+                int E = componentEdgeCount[0] / 2; // Since each edge was counted twice (u->v and v->u)
+
+                // A component is complete if E == V * (V - 1) / 2
+                long maxEdges = (long)V * (V - 1) / 2;
+
+                if (E == maxEdges) {
+                    completeComponentCount++;
+                }
+            }
+        }
+
+        return completeComponentCount;
+    }
+
+    /**
+     * Standard DFS to find all nodes and count all edges within a connected component.
+     */
+    private void DFS(int u, Map<Integer, List<Integer>> graph, boolean[] visited,
+                     List<Integer> nodes, int[] edgeCount) {
+
+        visited[u] = true;
+        nodes.add(u);
+
+        // Count the degree of the current node u.
+        // Summing degrees (E = sum(degree) / 2) is the easiest way to count E.
+        edgeCount[0] += graph.get(u).size();
+
+        for (int v : graph.get(u)) {
+            if (!visited[v]) {
+                DFS(v, graph, visited, nodes, edgeCount);
+            }
+        }
+    }
+
 
     // V1-1
     // IDEA: DFS

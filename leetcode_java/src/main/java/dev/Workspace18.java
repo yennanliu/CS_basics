@@ -2947,6 +2947,82 @@ public class Workspace18 {
     }
 
 
+    // LC 2685
+    public int countCompleteComponents_1(int n, int[][] edges) {
+
+        return 0;
+    }
+
+
+        public int countCompleteComponents_99(int n, int[][] edges) {
+        // edge
+        if(edges == null || edges.length == 0 || edges[0].length == 0 || n == 0){
+            return 0;
+        }
+        if(edges.length == 1 || edges[0].length == 1){
+            return 1; // ????
+        }
+
+        int completeNodeCnt = 0;
+
+        // ??? build graph
+        // { val : [neighbor_1, neighbor_2, ...] }
+        Map<Integer, List<Integer>> graph = new HashMap<>();
+        // init
+        for(int i = 0; i < n; i++){
+            graph.put(i, new ArrayList<>());
+        }
+        // add neighbors
+        for(int[] e: edges){
+            int start = e[0];
+            int end = e[1];
+
+            graph.get(start).add(end); // ???
+            graph.get(end).add(start); // ???
+        }
+
+        System.out.println(">>> graph = " + graph);
+
+        boolean[] visited = new boolean[n];
+
+        // loop over n
+        for(int i = 0; i < n; i++){
+            //graph.put(i, new ArrayList<>());
+            // ???
+            if(isCycled(i, graph, visited, new HashSet<Integer>())){
+                completeNodeCnt += 1;
+            }
+        }
+
+        return completeNodeCnt;
+    }
+
+    private boolean isCycled(int node, Map<Integer, List<Integer>> graph, boolean[] visited, HashSet<Integer> set){
+        // ??
+        if(set.contains(node)){
+            return false;
+        }
+        // mark as visited
+        visited[node] = true;
+        // update set
+        set.add(node);
+
+        // dfs call
+        for(int i: graph.get(node)){
+            if(!isCycled(i, graph, visited, set)){
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+
+
+
+
+
+
 
 
 }
