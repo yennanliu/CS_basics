@@ -189,6 +189,83 @@ public class MaximumNumberOfMovesInAGrid {
         return maxMoves;
     }
 
+    // V0-0-2
+    // IDEA: DFS (fixed by gpt)
+    // TLE error -> should use `DFS + MEMORIZATION` (as below)
+    int maxMoveCnt = 0;
+    public int maxMoves_0_0_2(int[][] grid) {
+        int m = grid.length;
+        int n = grid[0].length;
+
+        for (int row = 0; row < m; row++) {
+            dfs(grid, row, 0, 0);
+        }
+
+        return maxMoveCnt;
+    }
+
+    private void dfs(int[][] grid, int row, int col, int moves) {
+        int m = grid.length;
+        int n = grid[0].length;
+
+        maxMoveCnt = Math.max(maxMoveCnt, moves);
+
+        // possible moves
+        int[][] dirs = {{-1, 1}, {0, 1}, {1, 1}};
+
+        for (int[] d : dirs) {
+            int nr = row + d[0];
+            int nc = col + d[1];
+            if (nr >= 0 && nr < m && nc < n && grid[nr][nc] > grid[row][col]) {
+                dfs(grid, nr, nc, moves + 1);
+            }
+        }
+    }
+
+    // V0-0-3
+    // IDEA: DFS + MEMORIZATION (fixed by gpt)
+    public int maxMoves(int[][] grid) {
+        int m = grid.length;
+        int n = grid[0].length;
+        /** NOTE !!!
+         *
+         *  the memorization for optimization
+         */
+        int[][] memo = new int[m][n];
+        int res = 0;
+
+        for (int row = 0; row < m; row++) {
+            res = Math.max(res, dfs(grid, row, 0, memo));
+        }
+
+        return res;
+    }
+
+    private int dfs(int[][] grid, int row, int col, int[][] memo) {
+
+        // Already computed
+        /** NOTE !!!
+         *
+         *  the memorization for optimization
+         */
+        if (memo[row][col] != 0) return memo[row][col];
+
+        int m = grid.length, n = grid[0].length;
+        int best = 0;
+        int[][] dirs = {{-1, 1}, {0, 1}, {1, 1}};
+
+        for (int[] d : dirs) {
+            int nr = row + d[0];
+            int nc = col + d[1];
+            if (nr >= 0 && nr < m && nc < n && grid[nr][nc] > grid[row][col]) {
+                best = Math.max(best, 1 + dfs(grid, nr, nc, memo));
+            }
+        }
+
+        memo[row][col] = best;
+        return best;
+    }
+
     // V0-1
     // IDEA: DFS + MEMORIZATION (fixed by gpt)
     private int[][] grid;
