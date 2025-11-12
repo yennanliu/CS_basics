@@ -2410,7 +2410,7 @@ public class Workspace18 {
      *
      *
      */
-    // IDEA 1) PQ
+    // IDEA 1) SMALL + BIG PQ
     public int findMaximizedCapital(int k, int w, int[] profits, int[] capital) {
         // edge
         if(k == 1){
@@ -2420,67 +2420,147 @@ public class Workspace18 {
             return profits[0] - w; // ???
         }
 
-        // capital PQ: small PQ
-        // java default is small PQ
-        PriorityQueue<Integer> capPQ = new PriorityQueue<>();
+//        // 2 PQ:
+//        // 1. profits PQ: (big -> small sorted on profit)
+//        // PQ: { [profit_1, capital_1], [profit_2, capital_2] .... }
+//        PriorityQueue<Integer[]> proPQ = new PriorityQueue<>(new Comparator<Integer[]>() {
+//            @Override
+//            public int compare(Integer[] o1, Integer[] o2) {
+//                int diff = o2[0] - o1[0];
+//                return diff;
+//            }
+//        });
+//
+//        // ???
+////        for(int i = 0; i < capital.length; i++){
+////            proPQ.add(new Integer[]{profits[i], capital[i]});
+////        }
+//
+//        // 2. capital PQ: (small -> big sorted on capital)
+//        // PQ: { [capital_1], [ capital_2] .... }
+//        PriorityQueue<Integer> capitalPQ = new PriorityQueue<>();
+//        capitalPQ.add(w); // ??? init with w capital
+//        //proPQ.add(new Integer[]{0, w}); // ??? init with w capital
 
-        // profits PQ: big PQ
-        PriorityQueue<Integer> profitsPQ = new PriorityQueue<>(new Comparator<Integer>() {
-            @Override
-            public int compare(Integer o1, Integer o2) {
-                int diff = o2 - o1;
-                return diff;
-            }
-        });
 
-        for(int p: profits){
-            profitsPQ.add(p);
+
+        /** capital PQ: small PQ */
+        /** NOTE !!! structure:  [capital, profit] */
+        // Min-heap ordered by capital
+        //  - structure : { [capital, profit] }  // <---- NOTE this !!!!
+        PriorityQueue<int[]> capitalPQ = new PriorityQueue<>((a, b) -> a[0] - b[0]);
+
+        for (int i = 0; i < profits.length; i++) {
+            capitalPQ.offer(new int[] { capital[i], profits[i] });
         }
 
-        for(int c: capital){
-            capPQ.add(c);
-        }
 
-        int prevCap = 0;
+//        // ???
+//        capitalPQ.add(new int[]{w,0});
+//
 
-        int cnt = 0;
-        int maxCapital = 0;
+        /** profit PQ: big PQ */
+        /** NOTE !!! structure:  [profit] */
+        // Max-heap ordered by profit
+        // - structure : { profit }
+        PriorityQueue<Integer> profitPQ = new PriorityQueue<>((a, b) -> b - a);
 
-        // ????
-        int nextCap = -1;
-        int nextProfit = -1;
 
-        while(!capPQ.isEmpty()){
+        int maxCap = 0;
 
-            nextCap = capPQ.poll();
-            maxCapital += nextCap;
-
+        // ???
+        while(!capitalPQ.isEmpty()){
+            int[] cur = capitalPQ.poll();
             // ???
-            nextProfit = profitsPQ.poll();
-            //while( profitsPQ.peek() )
+            while(profitPQ.peek() < cur){
 
-            System.out.println(">>> cnt = " + cnt +
-                    " nextCap = " + nextCap +
-                    " nextProfit = " + nextProfit +
-                    " maxCapital = " + maxCapital);
-
-            // ??
-            if(nextCap > prevCap){
-                return maxCapital;
             }
 
-            maxCapital += nextProfit;
-            prevCap = nextCap;
 
-            if(cnt == k){
-                return maxCapital; //???
-            }
-
-            cnt += 1;
         }
 
-        return maxCapital;
+
+
+
+        return maxCap;
     }
+
+
+
+
+
+
+    // IDEA 1) PQ
+//    public int findMaximizedCapital(int k, int w, int[] profits, int[] capital) {
+//        // edge
+//        if(k == 1){
+//            if(w < capital[0]){
+//                return 0;
+//            }
+//            return profits[0] - w; // ???
+//        }
+//
+//        // capital PQ: small PQ
+//        // java default is small PQ
+//        PriorityQueue<Integer> capPQ = new PriorityQueue<>();
+//
+//        // profits PQ: big PQ
+//        PriorityQueue<Integer> profitsPQ = new PriorityQueue<>(new Comparator<Integer>() {
+//            @Override
+//            public int compare(Integer o1, Integer o2) {
+//                int diff = o2 - o1;
+//                return diff;
+//            }
+//        });
+//
+//        for(int p: profits){
+//            profitsPQ.add(p);
+//        }
+//
+//        for(int c: capital){
+//            capPQ.add(c);
+//        }
+//
+//        int prevCap = 0;
+//
+//        int cnt = 0;
+//        int maxCapital = 0;
+//
+//        // ????
+//        int nextCap = -1;
+//        int nextProfit = -1;
+//
+//        while(!capPQ.isEmpty()){
+//
+//            nextCap = capPQ.poll();
+//            maxCapital += nextCap;
+//
+//            // ???
+//            nextProfit = profitsPQ.poll();
+//            //while( profitsPQ.peek() )
+//
+//            System.out.println(">>> cnt = " + cnt +
+//                    " nextCap = " + nextCap +
+//                    " nextProfit = " + nextProfit +
+//                    " maxCapital = " + maxCapital);
+//
+//            // ??
+//            if(nextCap > prevCap){
+//                return maxCapital;
+//            }
+//
+//            maxCapital += nextProfit;
+//            prevCap = nextCap;
+//
+//            if(cnt == k){
+//                return maxCapital; //???
+//            }
+//
+//            cnt += 1;
+//        }
+//
+//        return maxCapital;
+//    }
 
     // LC 2682
     // 10.13 - 23 am
