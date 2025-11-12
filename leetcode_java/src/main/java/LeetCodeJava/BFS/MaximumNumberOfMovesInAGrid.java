@@ -48,10 +48,146 @@ import java.util.*;
  */
 public class MaximumNumberOfMovesInAGrid {
 
+    /**
+     *  NOTE !!!
+     *
+     *  1. CAN'T use `Dijkstra` for this problem (reason as below)
+     *  2. should use
+     *      - DFS, BFS or DP
+     *
+     *  --------
+     *
+     *  The logic you're attempting to use (Dijkstra's with a Priority Queue)
+     *  is INCORRECT for this problem because you are trying to find the
+     *  maximum number of steps (moves), NOT the minimum cost path.
+     *
+     *  Since the problem has an inherent direction
+     *  ( always moving to the next column (j -> j+1) ),
+     *
+     *  -> it simplifies to a Dynamic Programming (DP)
+     *  problem or a straightforward column-by-column Breadth-First Search (BFS).
+     *
+     */
+
+
     // V0
 //    public int maxMoves(int[][] grid) {
 //
 //    }
+
+
+   // V0-0-1
+   // IDEA: BFS + NOT VISITED (fixed by gemini)
+    public int maxMoves_0_0_1(int[][] grid) {
+        // Edge cases
+        if (grid == null || grid.length == 0 || grid[0].length == 0) {
+            return 0;
+        }
+
+        int R = grid.length;
+        int C = grid[0].length;
+
+        // The problem is about finding the maximum number of steps (max column index reached - 1).
+
+        // Define moves: (row, col) delta.
+        // Moves are: (r-1, c+1), (r, c+1), (r+1, c+1)
+        /**
+         *  NOTE !!!
+         *
+         *   -> format should be (y,x),
+         *   since in the grid, we use [y,x] as the coordination notation as well.
+         *
+         *   It makes implementation simpler by using the same format
+         *
+         */
+        int[][] moves = new int[][]{ {-1, 1}, {0, 1}, {1, 1} };
+
+        // Queue stores the coordinates of reachable cells: [row, col]
+        // We don't need to store moveCnt in the queue element, as the loop structure handles it.
+        Queue<int[]> q = new LinkedList<>();
+
+        /** NOTE !!!
+         *
+         *  we need `visited` to NOT revisit the already-visited grids
+         */
+        /** NOTE !!!
+         *
+         *  why `visited` NOT affect the visiting from the other (x,y)
+         *
+         *  -> in this problem, we can only move as below:
+         *       - (row - 1, col + 1), (row, col + 1) and (row + 1, col + 1)
+         *
+         *     -> That means:
+         * 	     •	BFS moves strictly rightward (never left).
+         * 	     •	Each “layer” represents a specific column index.
+         *
+         *
+         *  ----
+         *
+         *  visited Optimization:
+         *     Added a boolean[][] visited array.
+         *     Since we only care about the existence of a path to a cell
+         *     and the moves are unit-cost (1 step per column),
+         *     once a cell is reached, we don't need to check it again.
+         *     This prevents redundant exploration and ensures O(L * W) complexity.
+         *
+         *
+         * 	 And the reason we use `visited` here is:
+         * 	    - make sure there's No backtracking or cycles
+         *
+         */
+        // Visited array: Tracks cells that have been reached at least once.
+        // This is a crucial optimization in this non-weighted graph.
+        boolean[][] visited = new boolean[R][C];
+
+        // 1. Initialize BFS: Add all cells in the first column
+        for (int r = 0; r < R; r++) {
+            q.add(new int[]{r, 0});
+            visited[r][0] = true;
+        }
+
+        int maxMoves = 0; // Represents the max column index reached (C-1) - 0.
+
+        // 2. BFS Traversal
+        while (!q.isEmpty()) {
+
+            // Loop through the current layer (all cells at the same column index)
+            int size = q.size();
+            for (int i = 0; i < size; i++) {
+                int[] cur = q.poll();
+                int r = cur[0];
+                int c = cur[1];
+
+                // Check the max move count (which is c) at the moment
+                // The number of moves is the column index 'c'.
+                maxMoves = Math.max(maxMoves, c);
+
+                // Try all three possible next moves
+                for (int[] move : moves) {
+                    int nextR = r + move[0];
+                    int nextC = c + move[1];
+
+                    // Validate boundary
+                    if (nextR >= 0 && nextR < R && nextC >= 0 && nextC < C) {
+
+                        // Check 1: Move condition (Strictly greater value)
+                        if (grid[nextR][nextC] > grid[r][c]) {
+
+                            // Check 2: Optimization (If not visited yet)
+                            if (!visited[nextR][nextC]) {
+                                visited[nextR][nextC] = true;
+                                q.add(new int[]{nextR, nextC});
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // Since maxMoves stores the max column index reached (0-indexed),
+        // the number of moves is simply maxMoves.
+        return maxMoves;
+    }
 
     // V0-1
     // IDEA: DFS + MEMORIZATION (fixed by gpt)
