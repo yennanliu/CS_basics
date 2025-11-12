@@ -2611,9 +2611,10 @@ public class Workspace18 {
      *
      *
      */
-
-    // IDEA 2) BFS
+    // IDEA 2) DFS
+    int maxMoveCnt;
     public int maxMoves(int[][] grid) {
+
         // edge
         if(grid == null || grid.length == 0 || grid[0].length == 0){
             return 0;
@@ -2624,6 +2625,65 @@ public class Workspace18 {
 
         int l = grid.length;
         int w = grid[0].length;
+
+        // init value = false ???
+        boolean[][] visited = new boolean[l][w]; // /??
+
+        for(int i = 0; i < l; i++){
+            // NOTE !!! mark cur x,y as visited
+            visited[i][0] = true;
+            //maxMoveCnt = Math.max(maxMoveCnt, getMaxMove(0, i, grid, visited));
+            getMaxMove(0, i, grid, visited, 0);
+        }
+
+        return maxMoveCnt;
+    }
+
+    private void getMaxMove(int x, int y, int[][] grid,  boolean[][] visited, int moveCnt){
+
+        int l = grid.length;
+        int w = grid[0].length;
+
+        // (row - 1, col + 1), (row, col + 1) and (row + 1, col + 1)
+        int[][] moves = new int[][]{ {-1,1}, {0,1}, {1,1} };
+        // ???
+        maxMoveCnt = Math.max(maxMoveCnt, moveCnt);
+
+        for(int[] m: moves){
+            int x_ = x + m[0];
+            int y_ = y + m[1];
+            // validate
+            if(x_ >= 0 && x_ < w && y_ >= 0 && y_ < l){
+                if(grid[y_][x_] > grid[y][x] && !visited[y_][x_]){
+                    visited[y_][x_] = true;
+                    // ???
+                    getMaxMove(x_, y_, grid, visited, moveCnt + 1);
+                }
+            }
+        }
+
+       // return 0; // ???
+    }
+
+
+
+
+
+    // IDEA 2) BFS
+    public int maxMoves_99(int[][] grid) {
+        // edge
+        if(grid == null || grid.length == 0 || grid[0].length == 0){
+            return 0;
+        }
+        if(grid[0].length == 1 || grid.length == 1){
+            return 1; // ???
+        }
+
+        int l = grid.length;
+        int w = grid[0].length;
+
+        boolean[][] vissited = new boolean[l][w]; // /??
+
 
         // do we need this ????
        // boolean[][] vissited = new boolean[l][w]; // /??
