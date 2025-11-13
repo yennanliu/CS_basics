@@ -1,6 +1,6 @@
 # Progress
 
-# 2025-11-13
+# 2025-11-14
 
 - LC weekly 345
 - weekly video
@@ -145,12 +145,10 @@
 	- LC 1046 Last Stone Weight
 		- gpt
 		- gemini
-			- 2542
 	- LC 215 Kth Largest Element in an Array
 		- gpt
 			- 4
 		- gemini
-			- 324
 	- others:
 - neetcode 250
 	- https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V6/LC_goog_all.pdf
