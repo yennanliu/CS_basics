@@ -60,6 +60,98 @@ public class MaximumSubsequenceScore {
 //
 //    }
 
+    // V0-1
+    // IDEA: SORT + PQ (fixed by gpt)
+    public long maxScore_0_1(int[] nums1, int[] nums2, int k) {
+        int n = nums1.length;
+
+        int[][] pairs = new int[n][2];
+        for (int i = 0; i < n; i++) {
+            pairs[i][0] = nums2[i];
+            pairs[i][1] = nums1[i];
+        }
+
+        // Sort by nums2 descending
+        Arrays.sort(pairs, (a, b) -> b[0] - a[0]);
+
+        // min-heap for largest k nums1
+        PriorityQueue<Integer> minHeap = new PriorityQueue<>();
+        long sum = 0;
+        long result = 0;
+
+        for (int i = 0; i < n; i++) {
+            sum += pairs[i][1];
+            minHeap.add(pairs[i][1]);
+
+            if (minHeap.size() > k) {
+                sum -= minHeap.poll(); // remove smallest nums1
+            }
+
+            if (minHeap.size() == k) {
+                long candidate = sum * pairs[i][0]; // pairs[i][0] = nums2 (current min)
+                result = Math.max(result, candidate);
+            }
+        }
+
+        return result;
+    }
+
+    // V0-2
+    // IDEA: PQ (gemini)
+    /**
+     * Finds the maximum score: (Sum of k largest nums1) * (Min of corresponding nums2).
+     * Time Complexity: O(N log N + N log K)
+     * Space Complexity: O(N + K)
+     */
+    public long maxScore_0_2(int[] nums1, int[] nums2, int k) {
+        int n = nums1.length;
+
+        // 1. Combine nums1 and nums2 into pairs (nums1[i], nums2[i])
+        // Use a 2D array: [nums1 value, nums2 value]
+        int[][] pairs = new int[n][2];
+        for (int i = 0; i < n; i++) {
+            pairs[i][0] = nums1[i];
+            pairs[i][1] = nums2[i];
+        }
+
+        // 2. Sort the pairs based on nums2[i] in DESCENDING order.
+        // This greedy step ensures that as we iterate, pairs[i][1] is the minimum
+        // nums2 value for any subset chosen from pairs[0...i].
+        Arrays.sort(pairs, (a, b) -> b[1] - a[1]);
+
+        // 3. Min-Heap (PriorityQueue) to maintain the K largest nums1 values seen so far.
+        // We use a Min-Heap so the smallest element (the one to be replaced) is at the top.
+        PriorityQueue<Integer> topK_nums1 = new PriorityQueue<>(k);
+
+        long currentSum_nums1 = 0;
+        long maxScore = 0;
+
+        // 4. Iterate and calculate the max score
+        for (int i = 0; i < n; i++) {
+            int n1 = pairs[i][0];
+            int n2_min = pairs[i][1];
+
+            // Add the current nums1 value and update the sum
+            topK_nums1.add(n1);
+            currentSum_nums1 += n1;
+
+            // If the heap size exceeds k, remove the smallest nums1 value to maintain the top K sum
+            if (topK_nums1.size() > k) {
+                int smallest_n1 = topK_nums1.poll();
+                currentSum_nums1 -= smallest_n1;
+            }
+
+            // Once the heap has k elements, calculate the potential score
+            if (topK_nums1.size() == k) {
+                // Score = (Sum of top K nums1) * (Current nums2 min, which is pairs[i][1])
+                long currentScore = currentSum_nums1 * n2_min;
+                maxScore = Math.max(maxScore, currentScore);
+            }
+        }
+
+        return maxScore;
+    }
+
     // V1
     // IDEA: PQ
     // https://leetcode.ca/2023-03-10-2542-Maximum-Subsequence-Score/
