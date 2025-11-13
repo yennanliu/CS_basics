@@ -3242,10 +3242,136 @@ public class Workspace18 {
 
 
     // LC 2542
+    // 7.02 - 27 am
+    /**
+     *   -> Return the maximum possible score.
+     *
+     *   - 2 nums ( 0 index ): nums1, nums2,
+     *     has same len (n)
+     *   - a positive int: k
+     *   - must choose a subsequence of indices from nums1
+     *      of length k.
+     *   - GET the max from below:
+     *      - (nums1[i0] + nums1[i1] +...+ nums1[ik - 1]) *
+     *        min(nums2[i0] , nums2[i1], ... ,nums2[ik - 1]).
+     *
+     *     -> NOTE !!!
+     *      the chose index in nums1, nums2 MUST BE same
+     *
+     *
+     *   - NOTE:
+     *       - A subsequence of indices of an array is a
+     *        set that can be derived from the set
+     *       {0, 1, ..., n-1} by deleting some or no elements.
+     *
+     *
+     *   IDEA 1) BRUTE FORCE
+     *
+     *   IDEA 2) PQ ???
+     *
+     *    -> to get max
+     *     ` (nums1[i0] + nums1[i1] +...+ nums1[ik - 1])
+     *      * min(nums2[i0] , nums2[i1], ... ,nums2[ik - 1]).`
+     *
+     *    -> either 1st term is max or 2nd term is max ??
+     *    -> so we have 2 cases
+     *       - case 1: try to get ` 1st term` max, calculate above val
+     *       - case 2: try to get ` 2nd term` max, calculate above val
+     *
+     *    -> then we return the bigger one as final answer
+     *
+     *
+     */
     public long maxScore(int[] nums1, int[] nums2, int k) {
+        // edge
+        if(nums1.length == 1){
+            if(k == 1){
+                return (long) nums1[0] * nums2[0];
+            }
+            return 0L; // ???
+        }
 
-        return 0L;
+       // long res = 0L;
+
+        long res1 = 0L;
+        long res2 = 0L;
+
+        // - case 1: try to get ` 1st term` max, calculate above val
+        // NOTE !!! we want to get max val from nums1
+        // so we need a SMALL PQ
+        // small PQ: pq_1_1: [ [idx_1, val_1] , [idx_2, val_2], ..] ???
+        PriorityQueue<Integer[]> pq_1_1 =  new PriorityQueue<Integer[]>(new Comparator<Integer[]>() {
+            @Override
+            public int compare(Integer[] o1, Integer[] o2) {
+                int diff = o1[1] - o2[1];
+                return diff;
+            }
+        });
+
+        for(int i = 0; i < nums1.length; i++){
+            while(pq_1_1.size() > k){
+                pq_1_1.poll();
+            }
+            // NOTE !!!
+            pq_1_1.add(new Integer[]{i, nums1[i]});
+        }
+
+        int nums1_case1_sum = 0;
+        int nums2_case1_min = Integer.MAX_VALUE;
+
+        while(!pq_1_1.isEmpty()){
+            Integer[] cur = pq_1_1.poll();
+            int idx = cur[0];
+           // int val = cur[1];
+            nums1_case1_sum += nums1[idx];
+            nums2_case1_min = Math.min(nums2_case1_min, nums2[idx]);  // ???
+        }
+
+        res1 = ((long) nums1_case1_sum * nums2_case1_min);
+
+
+        // - case 2: try to get ` 2nd term` max, calculate above val
+        // NOTE !!! we want to get min val from nums2
+        // so we need a BIG PQ
+        // big PQ: pq_2_2: [ [idx_1, val_1] , [idx_2, val_2], ..] ???
+        PriorityQueue<Integer[]> pq_2_2 =  new PriorityQueue<Integer[]>(new Comparator<Integer[]>() {
+            @Override
+            public int compare(Integer[] o1, Integer[] o2) {
+                int diff = o2[1] - o1[1];
+                return diff;
+            }
+        });
+
+
+        for(int i = 0; i < nums2.length; i++){
+            while(pq_2_2.size() > k){
+                pq_2_2.poll();
+            }
+            // NOTE !!!
+            pq_2_2.add(new Integer[]{i, nums2[i]});
+        }
+
+
+        int nums1_case2_sum = 0;
+        int nums2_case2_min = Integer.MAX_VALUE;
+
+        while(!pq_2_2.isEmpty()){
+            Integer[] cur = pq_2_2.poll();
+            int idx = cur[0];
+            //int val = cur[1];
+            nums1_case2_sum += nums1[idx];
+            nums2_case2_min = Math.min(nums2_case2_min, nums2[idx]);  // ???
+        }
+
+        res2 = ((long) nums1_case2_sum * nums2_case2_min);
+
+        System.out.println(">>> res1 = " + res1 + ", res2 = " + res2);
+
+
+        return Math.max(res1, res2);
     }
+
+
 
 
 
