@@ -3241,6 +3241,11 @@ public class Workspace18 {
 //    }
 
 
+    // LC 2542
+    public long maxScore(int[] nums1, int[] nums2, int k) {
+
+        return 0L;
+    }
 
 
 
