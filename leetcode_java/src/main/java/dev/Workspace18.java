@@ -3151,56 +3151,56 @@ public class Workspace18 {
     // 9.52 - 10.10 am
     // V1: DFS +  `sum > n/2` check
     // check `parent + sub left + sub right sum > n / 2 ?`
-    Map<Integer,Integer> colorMap = new HashMap<>();
-    public boolean btreeGameWinningMove(TreeNode root, int n, int x) {
-        // edge
-        if(root == null || n == 0){
-            return false;
-        }
-        if((root.left == null && root.right == null) || n == 1){
-            return false;
-        }
-
-        TreeNode node1 = findNode1(root, x);
-        int player1LeftCnt = getNodeCnt(node1.left);
-        int player1RightCnt = getNodeCnt(node1.right);
-
-        // ???
-        int player1Sum = 1 + player1LeftCnt + player1RightCnt;
-
-        //int player2Sum =
-
-        return player1Sum < n / 2; // ???
-
-
-//        // bfs build map ???
-//        Queue<TreeNode> q = new LinkedList<>();
-//        int nodeSum = 0;
-//        while(!q.isEmpty()){
-//            TreeNode cur = q.poll();
-//            int curColorSum = colorHelper(root, null); // ??
-//            // NOTE !!! all node val in tree is UNIQUE
-//            colorMap.put(cur.val, curColorSum);
-//
-//            nodeSum += cur.val;
-//
-//            if(cur.left != null){
-//                q.add(cur.left);
-//            }
-//            if(cur.right != null){
-//                q.add(cur.right);
-//            }
+//    Map<Integer,Integer> colorMap = new HashMap<>();
+//    public boolean btreeGameWinningMove(TreeNode root, int n, int x) {
+//        // edge
+//        if(root == null || n == 0){
+//            return false;
+//        }
+//        if((root.left == null && root.right == null) || n == 1){
+//            return false;
 //        }
 //
-//        // ??? let's say we already built the `color map`
-//        for(Integer k: colorMap.keySet()){
-//            if(colorMap.get(k) > nodeSum / 2){
-//                return true;
-//            }
-//        }
-
-        return false;
-    }
+//        TreeNode node1 = findNode1(root, x);
+//        int player1LeftCnt = getNodeCnt(node1.left);
+//        int player1RightCnt = getNodeCnt(node1.right);
+//
+//        // ???
+//        int player1Sum = 1 + player1LeftCnt + player1RightCnt;
+//
+//        //int player2Sum =
+//
+//        return player1Sum < n / 2; // ???
+//
+//
+////        // bfs build map ???
+////        Queue<TreeNode> q = new LinkedList<>();
+////        int nodeSum = 0;
+////        while(!q.isEmpty()){
+////            TreeNode cur = q.poll();
+////            int curColorSum = colorHelper(root, null); // ??
+////            // NOTE !!! all node val in tree is UNIQUE
+////            colorMap.put(cur.val, curColorSum);
+////
+////            nodeSum += cur.val;
+////
+////            if(cur.left != null){
+////                q.add(cur.left);
+////            }
+////            if(cur.right != null){
+////                q.add(cur.right);
+////            }
+////        }
+////
+////        // ??? let's say we already built the `color map`
+////        for(Integer k: colorMap.keySet()){
+////            if(colorMap.get(k) > nodeSum / 2){
+////                return true;
+////            }
+////        }
+//
+//        // return false;
+//    }
 
     // helper func: for player1 finds his first to-color node
     private TreeNode findNode1(TreeNode root, int x){
@@ -3554,6 +3554,106 @@ public class Workspace18 {
 //        return false;
 //    }
 
+
+    // LC 1268
+    // 10.52 - 11.02
+    /**
+     *  -> If there are more than three products
+     *    with a common prefix return the three lexicographically minimums products.
+     *
+     *
+     *
+     *  IDEA 1) TRIE (text - dict)
+     *
+     *  IDEA 2) DFS ??
+     *
+     *  IDEA 3) BFS ??
+     *
+     */
+//    class MyNode{
+//        // attr
+//        String val;
+//        Map<String, List<MyNode>> children;
+//        // constructor
+//        // ????
+////        public MyNode(){
+////            this.val = "#"; // ???
+////            this.children = new HashMap<>();
+////        }
+//        public MyNode(String val){
+//            this.val = val;
+//            this.children = new HashMap<>();
+//        }
+//        public MyNode(String val, Map<String, List<MyNode>> children){
+//            this.val = val;
+//            this.children = children;
+//        }
+//    }
+
+    class MyNode99{
+        // attr
+        boolean isEnd;
+        /** NOTE !!!! */
+        Map<Character, MyNode99> child;
+        // constructor
+        MyNode99(){
+            this.isEnd = false;
+            this.child = new HashMap<>();
+        }
+    }
+
+    class MyTrie99{
+        // attr
+        MyNode99 node;
+
+        // constructor
+        MyTrie99(){
+            this.node = new MyNode99();
+            //this.node.child.put('xxx', new MyNode99());
+        }
+
+
+//        // attr
+//        MyNode node;
+//        boolean isEnd;
+//        // constructor
+//        // ???
+//        public MyTrie99(){
+//            this.node = new MyNode("#");
+//            this.isEnd = true; // ???
+//        }
+//        public MyTrie99(MyNode node){
+//            this.node = node;
+//            this.isEnd = true; // ???
+//        }
+//        public MyTrie99(MyNode node, boolean isEnd){
+//            this.node = node;
+//            this.isEnd = isEnd; // ???
+//        }
+//
+//        // method
+//        public void addWord(String word){
+//            if(word == null || word.length() == 0){
+//                return;
+//            }
+//
+//            // /??
+//            MyTrie99 trie = new MyTrie99();
+//
+//            for(char ch: word.toCharArray()){
+//                String str = String.valueOf(ch);
+//                // ???
+//               // if(!trie.node.children)
+//            }
+//        }
+    }
+
+
+    //IDEA 1) TRIE (text - dict)
+    public List<List<String>> suggestedProducts(String[] products, String searchWord) {
+
+        return null;
+    }
 
 
 
