@@ -3372,6 +3372,75 @@ public class Workspace18 {
     }
 
 
+    // LC 124
+    // 9.07 - 17 am
+    /**
+     *  -> return the MAX `path sum` of any non-empty path.
+     *     (give a binary tree)
+     *
+     *    - The path sum of a path is the sum of the node's values in the path.
+     *
+     *
+     *    IDEA 1) DFS + HASHMAP
+     *
+     *    IDEA 1) BFS ???
+     */
+    //Map<Integer, List<Integer>> pathMap = new HashMap<>();
+    // ??? { node.val: path_sum_with_the_node }
+    Map<Integer, Integer> pathMap = new HashMap<>();
+    public int maxPathSum(TreeNode root) {
+        // edge
+        if(root == null){
+            return 0; // ?
+        }
+        if(root.left == null && root.right == null){
+            return root.val;
+        }
+
+        int res = -1 * Integer.MAX_VALUE; // ??
+
+        // run BFS, enrich pathMap // ???
+        Queue<TreeNode> q = new LinkedList<>();
+        q.add(root); // ??
+        while(!q.isEmpty()){
+            int size = q.size();
+            for(int i = 0; i < size; i++){
+                TreeNode cur = q.poll();
+                // edge: if `cur single root` is the max val
+                res = Math.max(cur.val, res);
+                int pathSum = getNodeDepth(cur.left) + getNodeDepth(cur.right);
+                pathMap.put(cur.val, pathSum + cur.val);
+
+                if(cur.left != null){
+                    q.add(cur.left);
+                }
+                if(cur.right != null){
+                    q.add(cur.right);
+                }
+            }
+        }
+
+        System.out.println(">>> pathMap = " + pathMap);
+
+        // loop over map, get the max path sum
+        for(int k: pathMap.keySet()){
+            res = Math.max(pathMap.get(k), res);
+        }
+        return res;
+    }
+
+    // ???
+    private int getNodeDepth(TreeNode root){
+        // edge
+        if(root == null){
+            return 0;
+        }
+        // ???
+        int leftPathSum = getNodeDepth(root.left);
+        int rightPathSum = getNodeDepth(root.right);
+
+        return root.val + Math.max(leftPathSum, rightPathSum); // ???
+    }
 
 
 
