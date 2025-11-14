@@ -134,7 +134,6 @@
 			- 1166
 		- gemini
 			- 652
-			- 124
 	- LC 703 Kth Largest Element in a Stream
 		- gpt
 			- 295
@@ -149,6 +148,17 @@
 		- gpt
 			- 4
 		- gemini
+	- LC 621 Task Scheduler
+		- gpt
+			- 387
+			- 383
+			- 1054
+			- 358
+		- gemini
+			- 2279
+			- 1481
+			- 1647
+			- 1383
 	- others:
 - neetcode 250
 	- https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V6/LC_goog_all.pdf
