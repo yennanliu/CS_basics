@@ -3148,9 +3148,10 @@ public class Workspace18 {
      *
      *
      */
-    // V1: DFS + `HALF TREE CNT CHECK
-    // ??? { node_val: sub_node_cnt }
-    Map<Integer, Integer> subNodeCntMap = new HashMap<>();
+    // 9.52 - 10.10 am
+    // V1: DFS +  `sum > n/2` check
+    // check `parent + sub left + sub right sum > n / 2 ?`
+    Map<Integer,Integer> colorMap = new HashMap<>();
     public boolean btreeGameWinningMove(TreeNode root, int n, int x) {
         // edge
         if(root == null || n == 0){
@@ -3159,48 +3160,139 @@ public class Workspace18 {
         if((root.left == null && root.right == null) || n == 1){
             return false;
         }
-        // build sub node cnt map
-        getSubNodeCount();
-        // dfs check if 2nd player can win
-        return can2ndPlayerWin(root, null, n, x);
+
+        TreeNode node1 = findNode1(root, x);
+        int player1LeftCnt = getNodeCnt(node1.left);
+        int player1RightCnt = getNodeCnt(node1.right);
+
+        // ???
+        int player1Sum = 1 + player1LeftCnt + player1RightCnt;
+
+        //int player2Sum =
+
+        return player1Sum < n / 2; // ???
+
+
+//        // bfs build map ???
+//        Queue<TreeNode> q = new LinkedList<>();
+//        int nodeSum = 0;
+//        while(!q.isEmpty()){
+//            TreeNode cur = q.poll();
+//            int curColorSum = colorHelper(root, null); // ??
+//            // NOTE !!! all node val in tree is UNIQUE
+//            colorMap.put(cur.val, curColorSum);
+//
+//            nodeSum += cur.val;
+//
+//            if(cur.left != null){
+//                q.add(cur.left);
+//            }
+//            if(cur.right != null){
+//                q.add(cur.right);
+//            }
+//        }
+//
+//        // ??? let's say we already built the `color map`
+//        for(Integer k: colorMap.keySet()){
+//            if(colorMap.get(k) > nodeSum / 2){
+//                return true;
+//            }
+//        }
+
+        return false;
     }
 
-    /**
-     *  1, find a node
-     *  2. check if any if below has sub node cnt >= n/2,
-     *     if yes, return true directly
-     *       - node.left
-     *       - node.right
-     *       - parent
-     *
-     *  3. keep above loop, till  the end
-     *     if still NOT found a node satisfy above,
-     *     return false
-     *
-     */
-    private boolean can2ndPlayerWin(TreeNode root, TreeNode parant, int n, int x){
-        // edge ???
+    // helper func: for player1 finds his first to-color node
+    private TreeNode findNode1(TreeNode root, int x){
+        if(root.val == x){
+            return root;
+        }
+        TreeNode left = findNode1(root.left, x);
+        TreeNode right = findNode1(root.right, x);
+        return left == null ? left : right;
+    }
+
+    private int getNodeCnt(TreeNode root){
         if(root == null){
-            return false; // ???
+            return 0;
         }
-        int cnt = subNodeCntMap.get(root.val);
-//        int leftCnt = subNodeCntMap.get(root.left.val);
-//        int rightCnt = subNodeCntMap.get(root.right.val);
-//        int parentCnt = subNodeCntMap.get(parant.val);
-
-        if(cnt >= n / 2){
-            return true; // ????
-        }
-
-
-        return  subNodeCntMap.get(root.left.val) >= 2/n ||
-                subNodeCntMap.get(root.right.val) >= 2/n||
-                subNodeCntMap.get(parant.val)  >= 2/n;
+        return 1 + getNodeCnt(root.left) + getNodeCnt(root.right);
     }
 
-    private void getSubNodeCount(){
-        // return 0;
-    }
+    // ???
+//    private int colorHelper(TreeNode root, TreeNode parent){
+//        if(root == null){
+//            return 0;
+//        }
+//        // ???
+////        return root.val
+////                + Math.max(colorHelper(root.left, root) ,
+////                colorHelper(root.right, root)
+////                );
+//        // ???
+//        return root.val + colorHelper(root.left, root) + colorHelper(root.right, root);
+//    }
+
+
+
+
+
+
+
+
+    // V1: DFS + `HALF TREE CNT CHECK
+    // ??? { node_val: sub_node_cnt }
+//    Map<Integer, Integer> subNodeCntMap = new HashMap<>();
+//    public boolean btreeGameWinningMove(TreeNode root, int n, int x) {
+//        // edge
+//        if(root == null || n == 0){
+//            return false;
+//        }
+//        if((root.left == null && root.right == null) || n == 1){
+//            return false;
+//        }
+//        // build sub node cnt map
+//        getSubNodeCount();
+//        // dfs check if 2nd player can win
+//        return can2ndPlayerWin(root, null, n, x);
+//    }
+//
+//    /**
+//     *  1, find a node
+//     *  2. check if any if below has sub node cnt >= n/2,
+//     *     if yes, return true directly
+//     *       - node.left
+//     *       - node.right
+//     *       - parent
+//     *
+//     *  3. keep above loop, till  the end
+//     *     if still NOT found a node satisfy above,
+//     *     return false
+//     *
+//     */
+//    private boolean can2ndPlayerWin(TreeNode root, TreeNode parant, int n, int x){
+//        // edge ???
+//        if(root == null){
+//            return false; // ???
+//        }
+//        int cnt = subNodeCntMap.get(root.val);
+////        int leftCnt = subNodeCntMap.get(root.left.val);
+////        int rightCnt = subNodeCntMap.get(root.right.val);
+////        int parentCnt = subNodeCntMap.get(parant.val);
+//
+//        if(cnt >= n / 2){
+//            return true; // ????
+//        }
+//
+//
+//        return  subNodeCntMap.get(root.left.val) >= 2/n ||
+//                subNodeCntMap.get(root.right.val) >= 2/n||
+//                subNodeCntMap.get(parant.val)  >= 2/n;
+//    }
+//
+//    private void getSubNodeCount(){
+//        // return 0;
+//    }
 
 
 
@@ -3455,6 +3547,12 @@ public class Workspace18 {
 
         return Math.max(left, right) + root.val; // ????
     }
+
+    // LC 1145
+//    public boolean btreeGameWinningMove(TreeNode root, int n, int x) {
+//
+//        return false;
+//    }
 
 
 
