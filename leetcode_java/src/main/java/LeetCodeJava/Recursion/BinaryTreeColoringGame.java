@@ -117,10 +117,55 @@ public class BinaryTreeColoringGame {
         // NOTE !!! : below code get max val from 3 values (e.g. : leftSubtreeCount, rightSubtreeCount, n - player1Cnt)
         int player2MaxCnt = Math.max(Math.max(leftSubtreeCount, rightSubtreeCount), n - player1Cnt);
 
+        /** NOTE !!!
+         *
+         *   we CAN NOT use `player1MaxCnt < n / 2` to check if player2 can win or not.
+         *
+         *   -------
+         *
+         *   Reason:
+         *
+         *   That's a great question! It highlights the subtle
+         *    but crucial difference between Player 1's
+         *    starting position and Player 2's winning move.
+         *
+         *    -> You cannot simply use player1Cnt < n / 2 because
+         *    Player 1's initial colored region (player1Cnt) is not fixed.
+         *    Player 1's region is whatever remains after Player 2 makes their move.
+         *
+         *
+         *    -> Why player1Cnt < n / 2 is Incorrect ?
+         *       The winning condition for Player 2 is that the size of the
+         *       region Player 2 claims must be strictly greater than n/2.
+         *
+         *       Your proposed condition, player1Cnt < n / 2, i
+         *       s equivalent to checking if the remaining nodes,
+         *       $n - player1Cnt, are greater than n/2.
+         *
+         *   -> this is wrong because:
+         *
+         *      1. Player 1's count is only 1 at the start: At the moment
+         *         Player 2 chooses a node to sever, Player 1 only controls the node $
+         *         x$ itself (size 1). Player 1's region is not the sum of
+         *         $x$ and its subtrees until after Player 2 has chosen their region.
+         *
+         *      2. Player 2 has three choices: Player 2 has the strategic advantage of
+         *          breaking the connection to the largest available uncolored region.
+         *          These regions are:
+         *              -  Left Subtree of $x$ (size: $L$)
+         *              - Right Subtree of $x$ (size: $R$)
+         *              - Parent Region (size: $P = n - L - R - 1$)
+         *
+         *     3. The largest region wins:
+         *        Player 2 will always choose $\max(L, R, P)$.
+         *        Player 2 wins if $\max(L, R, P) > n/2$.
+         *
+         */
         // Player 2 wins if they can control more than half the nodes
         return player2MaxCnt > n / 2;
     }
 
+    /** NOTE !!!  the helper func find the `1st node player to color` */
     private TreeNode findNode(TreeNode root, int x) {
         if (root == null || root.val == x) return root;
         TreeNode left = findNode(root.left, x);
@@ -128,6 +173,7 @@ public class BinaryTreeColoringGame {
         return findNode(root.right, x);
     }
 
+    /** NOTE !!!  the helper func get the total sub node count` */
     private int getSubNodeCount(TreeNode root) {
         if (root == null) return 0;
         return 1 + getSubNodeCount(root.left) + getSubNodeCount(root.right);
