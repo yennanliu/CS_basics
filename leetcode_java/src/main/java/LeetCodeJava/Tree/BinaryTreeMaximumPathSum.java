@@ -77,7 +77,7 @@ public class BinaryTreeMaximumPathSum {
      *   -> e.g.:
      *
      *       (`single` path)
-     *      node_a ---node_1,-- node_2, ...-- node_b
+     *      node_a -- node_1,-- node_2, ...-- node_b
      *
      */
     /**
@@ -86,6 +86,10 @@ public class BinaryTreeMaximumPathSum {
      *   1. maxPathSum = Math.max(maxPathSum, root.val + left + right);
      *
      *   2. (DFS func return) root.val + Math.max(left, right);
+     *
+     *   -> in the dfs helper func, we NOT only track the `max path sum` (root.val + left + right),
+     *      but we return the `cur` local max path ( root.val + max(left, right))
+     *      by recursive dfs call
      *
      */
     int maxPathSum = Integer.MIN_VALUE; // global tracker
@@ -96,8 +100,9 @@ public class BinaryTreeMaximumPathSum {
     }
 
     private int dfs_0(TreeNode root) {
-        if (root == null)
+        if (root == null){
             return 0;
+        }
 
     // compute max sum of left/right branches (ignore negatives)
     /**
@@ -187,7 +192,7 @@ public class BinaryTreeMaximumPathSum {
     }
 
     // V0-0-1
-    // IDEA: DFS + HASHMAP (fixed by gpt)
+    // IDEA: DFS + max depth track (fixed by gpt)
     int maxPath = Integer.MIN_VALUE;
     public int maxPathSum_0_0_1(TreeNode root) {
         if (root == null)
@@ -213,7 +218,7 @@ public class BinaryTreeMaximumPathSum {
         return Math.max(left, right) + root.val;
     }
 
-    // V0-0-2
+    // V0-0-2 (NOTE !!! this is NOT a optimal approach, plz refer V0, V0-0-1 for cleaner logic)
     // IDEA: DFS + HASHMAP (fixed by gpt)
     // Store the "path through this node" values
     Map<TreeNode, Integer> pathMap = new HashMap<>();
@@ -353,7 +358,7 @@ public class BinaryTreeMaximumPathSum {
 
     // V0-2
     // IDEA: DFS + HASHMAP (gpt) (NOT efficient)
-    Map<TreeNode, Integer> pathMap = new HashMap<>();
+    Map<TreeNode, Integer> pathMap_0_2 = new HashMap<>();
     int maxSum_2 = Integer.MIN_VALUE;
 
     public int maxPathSum_0_2(TreeNode root) {
@@ -362,7 +367,7 @@ public class BinaryTreeMaximumPathSum {
 
         getMaxPathSumHelper(root);
 
-        for (int val : pathMap.values()) {
+        for (int val : pathMap_0_2.values()) {
             maxSum_2 = Math.max(maxSum_2, val);
         }
 
@@ -380,7 +385,7 @@ public class BinaryTreeMaximumPathSum {
         int maxOneSide = node.val + Math.max(left, right);
 
         // Store the max *one-sided* path for this node
-        pathMap.put(node, maxOneSide);
+        pathMap_0_2.put(node, maxOneSide);
 
         // Update global maxSum
         maxSum_2 = Math.max(maxSum_2, maxAtNode);

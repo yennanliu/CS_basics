@@ -3388,6 +3388,7 @@ public class Workspace18 {
     //Map<Integer, List<Integer>> pathMap = new HashMap<>();
     // ??? { node.val: path_sum_with_the_node }
     Map<Integer, Integer> pathMap = new HashMap<>();
+    int maxPathSum99 = 0;
     public int maxPathSum(TreeNode root) {
         // edge
         if(root == null){
@@ -3440,6 +3441,19 @@ public class Workspace18 {
         int rightPathSum = getNodeDepth(root.right);
 
         return root.val + Math.max(leftPathSum, rightPathSum); // ???
+    }
+
+    private int dfs_99(TreeNode root){
+        if(root == null){
+            return 0;
+        }
+        int left = Math.max(0, dfs_99(root.left));
+        int right = Math.max(0, dfs_99(root.right));
+
+        maxPathSum99 = Math.max(left + right + root.val, maxPathSum99);
+
+
+        return Math.max(left, right) + root.val; // ????
     }
 
 
