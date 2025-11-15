@@ -3800,6 +3800,11 @@ public class Workspace18 {
         return res;
     }
 
+    // LC 358
+    public String rearrangeString(String s, int k) {
+
+        return null;
+    }
 
 
 
