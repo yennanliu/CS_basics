@@ -3801,9 +3801,138 @@ public class Workspace18 {
     }
 
     // LC 358
+    // 16.54 - 17.04 pm
+    /**
+     *  -> string s, and integer k,
+     *   rearrange the string such that the same characters
+     *    are `AT LEAST distance k from each other.`
+     *
+     *   -  All input strings are given in lowercase letters.
+     *   - If it is not possible to rearrange the string,
+     *     return an empty string "".
+     *
+     *
+     *  IDEA 1) PQ + `last idx for distinct val` + hashmap
+     *
+     *
+     *
+     *
+     *  -----
+     *
+     *  ex 1)
+     *
+     *  Input: s = "aabbcc", k = 3
+     *  Output: "abcabc"
+     *  -> Explanation: The same letters are at least distance 3 from each other.
+     *
+     *
+     *   map: {a: 2, b: 2, c: 2}
+     *   PQ: [2,2,2]
+     *
+     *
+     *   -> abcabc
+     *
+     *
+     *   ex 3)
+     *
+     *   Input: s = "aaadbbcc", k = 2
+     *  Output: "abacabcd"
+     *   Explanation: The same letters are at least distance 2 from each other.
+     *
+     *   map: {a:3, b:2, c:2, d: 1}
+     *
+     *
+     *   -> abcabcd
+     *
+     *
+     *
+     */
     public String rearrangeString(String s, int k) {
+        // edge
+        if(s.isEmpty() || s.length() == 0){
+            return "";
+        }
+        if(s.length() == 1){
+            if(k == 0){
+                return s;
+            }
+            return ""; // ???
+        }
 
-        return null;
+        // map: { val : cnt }
+        Map<String, Integer> map = new HashMap<>();
+        for(char ch: s.toCharArray()){
+            String key = String.valueOf(ch);
+            map.put(key, map.getOrDefault(key, 0) + 1);
+        }
+
+        // PQ: big PQ,
+        // sort on map val
+        PriorityQueue<String> pq = new PriorityQueue<>(new Comparator<String>() {
+            @Override
+            public int compare(String o1, String o2) {
+                int diff = map.get(o2) - map.get(o1);
+                return diff;
+            }
+        });
+
+        // NOTE !!! add DISTINCT val to PQ
+        for(String key: map.keySet()){
+            pq.add(key);
+        }
+
+        // NOTE !!! the map record the `idx for last same value`
+        Map<String, Integer> lastSeenIdx = new HashMap<>();
+
+        String res = "";
+        String prev = "";
+        int idx = 0;
+        // ???
+        while(!pq.isEmpty()){
+            String first = pq.poll();
+            // case 1) prev == "" or
+            //         prev != ""  && the dist(same_prev, cur) > k
+            if(prev.isEmpty() || (!lastSeenIdx.containsKey(first) || idx - lastSeenIdx.get(first) > k) ){
+                res += first;
+                prev = first;
+                // update to last seen
+                lastSeenIdx.put(first, idx);
+                if(map.get(first) == 0){
+                    map.remove(first);
+                }else{
+                    map.put(first, map.get(first) - 1);
+                    pq.add(first);
+                }
+            }else{
+                // ???
+                // case 2) prev != ""  && the dist(same_prev, cur) < k
+                List<String> cache = new ArrayList<>();
+                while(lastSeenIdx.get(pq.peek()) < k){
+                    cache.add(pq.poll());
+                }
+                // add `newFirst` to res
+                String newFirst = pq.poll();
+                res += newFirst;
+                prev = newFirst;
+                // update to last seen
+                lastSeenIdx.put(newFirst, idx);
+                if(map.get(newFirst) == 0){
+                    map.remove(newFirst);
+                }else{
+                    map.put(first, map.get(newFirst) - 1);
+                    pq.add(newFirst);
+                }
+                // add all tmp val back to PQ
+                for(String tmp: cache){
+                    pq.add(tmp);
+                }
+            }
+
+            idx += 1;
+        }
+
+
+        return res.length() == s.length() ? res : "";
     }
 
 
