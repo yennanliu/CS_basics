@@ -3,6 +3,7 @@ package LeetCodeJava.HashTable;
 // https://leetcode.com/problems/first-unique-character-in-a-string/description/
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 387. First Unique Character in a String
@@ -47,10 +48,33 @@ import java.util.HashMap;
  */
 public class FirstUniqueCharacterInAString {
 
-    // LC 387
-//    public int firstUniqChar(String s) {
-//
-//    }
+    // V0
+    // IDEA: HASHMAP
+    public int firstUniqChar(String s) {
+        // edge
+        if(s == null || s.isEmpty()){
+            return -1;
+        }
+        if(s.length() == 1){
+            return 0;
+        }
+        // { val: cnt }
+        Map<String, Integer> map = new HashMap<>();
+        for(char ch: s.toCharArray()){
+            String key = String.valueOf(ch);
+            map.put(key, map.getOrDefault(key, 0) + 1);
+        }
+        
+        for(int i = 0; i < s.length(); i++){
+            char ch = s.charAt(i);
+            String key = String.valueOf(ch);
+            if(map.get(key) == 1){
+                return i;
+            }
+        }
+
+        return -1;
+    }
 
     // V1
     // https://leetcode.com/problems/first-unique-character-in-a-string/editorial/

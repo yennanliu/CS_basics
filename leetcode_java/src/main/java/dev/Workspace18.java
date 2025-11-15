@@ -3656,9 +3656,52 @@ public class Workspace18 {
     }
 
     // LC 387
+    // 15.55 - 16.05
+    /**
+     *  -> Given a string s, find the `first non-repeating
+     *  character` in it and return its index.
+     *  If it does not exist, return -1.
+     *
+     *
+     *  // IDEA 1) HASHMAP
+     *
+     */
     public int firstUniqChar(String s) {
+        // edge
+        if(s == null || s.isEmpty()){
+            return -1;
+        }
+        if(s.length() == 1){
+            return 0;
+        }
+        // { val: cnt }
+        Map<String, Integer> map = new HashMap<>();
+        for(char ch: s.toCharArray()){
+            String key = String.valueOf(ch);
+            map.put(key, map.getOrDefault(key, 0) + 1);
+        }
 
-        return 0;
+        // edge
+//        boolean isFound = false;
+//        for(Integer cnt: map.values()){
+//            if(cnt == 1){
+//                isFound = true;
+//            }
+//        }
+//
+//        if(!isFound){
+//            return -1;
+//        }
+
+        for(int i = 0; i < s.length(); i++){
+            char ch = s.charAt(i);
+            String key = String.valueOf(ch);
+            if(map.get(key) == 1){
+                return i;
+            }
+        }
+
+        return -1;
     }
 
 
