@@ -3727,13 +3727,14 @@ public class Workspace18 {
     // IDEA 1) HASHMAP
     public int[] rearrangeBarcodes(int[] barcodes) {
         // edge
-        if(barcodes == null || barcodes.length == 0){
-            return new int[]{}; // ??
-        }
-        if(barcodes.length <= 2){
-            //return new int[]{barcodes[0]};
-            return barcodes; // ???
-        }
+//        if(barcodes == null || barcodes.length == 0){
+//            return new int[]{}; // ??
+//        }
+//        if(barcodes.length <= 2){
+//            //return new int[]{barcodes[0]};
+//            return barcodes; // ???
+//        }
+        if (barcodes == null || barcodes.length <= 1) return barcodes;
 
         // { val : cnt }
         Map<Integer, Integer> map = new HashMap<>();
@@ -3752,8 +3753,11 @@ public class Workspace18 {
         // add to map, PQ
         for(int x: barcodes){
             map.put(x, map.getOrDefault(x, 0) + 1);
-            pq.add(x);
+            //pq.add(x);
         }
+
+        // NOTE !!! add DISTINCT val to PQ
+        pq.addAll(map.keySet());
 
         //List<Integer> list = new ArrayList<>();
         int[] res = new int[barcodes.length];
