@@ -484,6 +484,90 @@ public class SearchSuggestionsSystem {
         return result;
     }
 
+    // V0-0-1
+    // IDEA: TRIE + RECOMMEND ALGO (fixed by gemini)
+    // --- Trie Node Definition ---
+    class TrieNode001 {
+        // Use Map<Character, ...> for better practice over Map<String, ...>
+        Map<Character, TrieNode001> children;
+
+        // List to store up to 3 lexicographically smallest products
+        // passing through this node. This is the key optimization.
+        List<String> suggestions;
+
+        TrieNode001() {
+            this.children = new HashMap<>();
+            this.suggestions = new ArrayList<>();
+        }
+    }
+
+    private TrieNode001 root;
+
+    public List<List<String>> suggestedProducts_0_0_1(String[] products, String searchWord) {
+
+        // 1. Sort Products Lexicographically
+        // Sorting ensures that when we insert, any products we add to the suggestions
+        // list will be the lexicographically smallest.
+        Arrays.sort(products);
+
+        this.root = new TrieNode001();
+
+        // 2. Build the Trie
+        buildTrie(products);
+
+        // 3. Search and Collect Suggestions
+        return searchTrie(searchWord);
+    }
+
+    /**
+     * Inserts products into the Trie. For each node, it stores up to 3 products
+     * that pass through it.
+     */
+    private void buildTrie(String[] products) {
+        for (String p : products) {
+            TrieNode001 node = root;
+            for (char ch : p.toCharArray()) {
+                // Move to the next node, creating it if it doesn't exist
+                node.children.putIfAbsent(ch, new TrieNode001());
+                node = node.children.get(ch);
+
+                // Add the current product to the suggestions list for this node
+                // Since 'products' is sorted, we only add the first 3 products encountered.
+                if (node.suggestions.size() < 3) {
+                    node.suggestions.add(p);
+                }
+            }
+        }
+    }
+
+    /**
+     * Searches the Trie based on the searchWord prefixes and collects suggestions.
+     */
+    private List<List<String>> searchTrie(String searchWord) {
+        List<List<String>> result = new ArrayList<>();
+        TrieNode001 node = root;
+
+        // Iterate through each prefix of the search word
+        for (char ch : searchWord.toCharArray()) {
+
+            // Move to the next node
+            if (node.children.containsKey(ch)) {
+                node = node.children.get(ch);
+                // Add the pre-calculated list of suggestions stored at this node
+                result.add(node.suggestions);
+            } else {
+                // If a prefix is not found, all subsequent prefixes won't be found either.
+                // We add empty lists for the rest of the prefixes and stop.
+                while (result.size() < searchWord.length()) {
+                    result.add(new ArrayList<>());
+                }
+                return result;
+            }
+        }
+
+        return result;
+    }
+
 
     // V1-1
     // IDEA: TRIE + DFS
