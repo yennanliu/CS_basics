@@ -40,7 +40,7 @@ public class DistantBarcodes {
 //    }
 
     // V0-1
-    // IDEA: PQ (fixed by gpt)
+    // IDEA: PQ, LC 767 (fixed by gpt)
     public int[] rearrangeBarcodes_0_1(int[] barcodes) {
         if (barcodes == null || barcodes.length <= 1) return barcodes;
 
@@ -50,11 +50,21 @@ public class DistantBarcodes {
             freq.put(x, freq.getOrDefault(x, 0) + 1);
         }
 
+        /** NOTE !!!
+         *
+         *   PQ: max PQ
+         *
+         *   -> sort on map val (frequency)
+         */
         // max-heap by frequency
         PriorityQueue<Integer> pq = new PriorityQueue<>(
                 (a, b) -> freq.get(b) - freq.get(a)
         );
 
+        /** NOTE !!!
+         *
+         *   PQ ONLY adds DISTINCT keys
+         */
         // add all distinct keys
         pq.addAll(freq.keySet());
 
@@ -163,7 +173,7 @@ public class DistantBarcodes {
     }
 
     // V1
-    // IDEA: SORT
+    // IDEA: SORT + DOUBLE LOOP
     // https://leetcode.ca/2018-10-19-1054-Distant-Barcodes/
     public int[] rearrangeBarcodes_1(int[] barcodes) {
         int n = barcodes.length;
