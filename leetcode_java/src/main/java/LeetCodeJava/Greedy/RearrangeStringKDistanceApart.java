@@ -40,6 +40,129 @@ public class RearrangeStringKDistanceApart {
 //
 //    }
 
+    // V0-1
+    // IDEA: PQ + LAST IDX CHECK + HASH MAP (fixed by gpt)
+    // TODO: validate
+    public String rearrangeString_0_1(String s, int k) {
+        if (k <= 1) return s;        // no distance constraint
+        if (s == null || s.length() == 0) return "";
+        if (s.length() == 1) return k == 0 ? s : "";
+
+        // frequency map
+        Map<Character, Integer> freq = new HashMap<>();
+        for (char c : s.toCharArray()) {
+            freq.put(c, freq.getOrDefault(c, 0) + 1);
+        }
+
+        // Max heap by remaining count
+        PriorityQueue<Character> pq =
+                new PriorityQueue<>((a, b) -> freq.get(b) - freq.get(a));
+
+        pq.addAll(freq.keySet());
+
+        // Cooldown queue: (char, releaseTime)
+        Queue<int[]> cooldown = new LinkedList<>();
+
+        StringBuilder res = new StringBuilder();
+        int time = 0;
+
+        while (!pq.isEmpty() || !cooldown.isEmpty()) {
+
+            // if empty PQ but cooldown has locked chars → impossible
+            if (pq.isEmpty()) return "";
+
+            char cur = pq.poll();
+            res.append(cur);
+            freq.put(cur, freq.get(cur) - 1);
+
+            // put into cooldown for k steps
+            cooldown.offer(new int[]{cur, time + k});
+
+            time++;
+
+            // release cooldown chars whose time expired
+            if (!cooldown.isEmpty() && cooldown.peek()[1] == time) {
+                int[] entry = cooldown.poll();
+                char ch = (char) entry[0];
+                if (freq.get(ch) > 0) {
+                    pq.offer(ch);
+                }
+            }
+        }
+
+        return res.toString();
+    }
+
+    // V0-2
+    // IDEA: PQ + LAST IDX CHECK + HASH MAP (fixed by gpt)
+    // TODO: validate
+    public String rearrangeString_0_2(String s, int k) {
+        if (k <= 1) {
+            // If k=0 or k=1, no constraint, return original string.
+            return s;
+        }
+
+        int n = s.length();
+
+        // 1. Calculate Frequencies
+        // Array index 0='a', 1='b', ..., 25='z'
+        int[] counts = new int[26];
+        for (char c : s.toCharArray()) {
+            counts[c - 'a']++;
+        }
+
+        // 2. Build Max Heap
+        // Stores character indices (0-25). Prioritize based on count (DESCENDING).
+        // The comparator reads the count from the external 'counts' array.
+        PriorityQueue<Integer> maxHeap = new PriorityQueue<>((a, b) -> counts[b] - counts[a]);
+
+        for (int i = 0; i < 26; i++) {
+            if (counts[i] > 0) {
+                maxHeap.add(i);
+            }
+        }
+
+        // 3. Cooldown Queue (Size k)
+        // Stores [character index, remaining count] pairs that cannot be used yet.
+        // It acts as the k-slot "cooldown" window.
+        // Size k means the item at the front has been sitting there for k steps.
+        Queue<int[]> cooldownQueue = new LinkedList<>();
+
+        // 4. Greedy Rearrangement
+        StringBuilder result = new StringBuilder();
+
+        while (!maxHeap.isEmpty()) {
+            // Get the most frequent available character index
+            int charIndex = maxHeap.poll();
+
+            // Append the character to the result
+            result.append((char) ('a' + charIndex));
+
+            // Decrement its count and add it to the cooldown queue
+            counts[charIndex]--;
+            cooldownQueue.offer(new int[]{charIndex, counts[charIndex]});
+
+            // --- Cooldown Logic ---
+            // If the queue has accumulated k elements, the oldest element (at the front)
+            // has been out of the heap for k steps and is ready to be re-used.
+            if (cooldownQueue.size() == k) {
+                int[] readyChar = cooldownQueue.poll();
+                int readyIndex = readyChar[0];
+                int remainingCount = readyChar[1];
+
+                // If the character still has remaining occurrences, re-add it to the maxHeap
+                if (remainingCount > 0) {
+                    maxHeap.add(readyIndex);
+                }
+            }
+        }
+
+        // 5. Final Check
+        // If the rearrangement failed due to the constraint, the result length will be < n.
+        return result.length() == n ? result.toString() : "";
+    }
+
+
     // V0-3
     // IDEA: PQ (gpt)
     // TODO: validate
@@ -205,5 +328,6 @@ public class RearrangeStringKDistanceApart {
     // V2
 
     // V3
+
 
 }
