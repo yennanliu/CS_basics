@@ -151,7 +151,6 @@
 	- LC 621 Task Scheduler
 		- gpt
 			- 383
-			- 358
 		- gemini
 			- 2279
 			- 1481
