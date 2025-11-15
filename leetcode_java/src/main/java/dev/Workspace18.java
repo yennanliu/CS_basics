@@ -3655,6 +3655,12 @@ public class Workspace18 {
         return null;
     }
 
+    // LC 387
+    public int firstUniqChar(String s) {
+
+        return 0;
+    }
+
 
 
 
