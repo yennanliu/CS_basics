@@ -2,10 +2,7 @@ package LeetCodeJava.Heap;
 
 // https://leetcode.com/problems/distant-barcodes/description/
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.PriorityQueue;
+import java.util.*;
 
 /**
  * 1054. Distant Barcodes
@@ -41,6 +38,129 @@ public class DistantBarcodes {
 //    public int[] rearrangeBarcodes(int[] barcodes) {
 //
 //    }
+
+    // V0-1
+    // IDEA: PQ (fixed by gpt)
+    public int[] rearrangeBarcodes_0_1(int[] barcodes) {
+        if (barcodes == null || barcodes.length <= 1) return barcodes;
+
+        // freq map
+        Map<Integer, Integer> freq = new HashMap<>();
+        for (int x : barcodes) {
+            freq.put(x, freq.getOrDefault(x, 0) + 1);
+        }
+
+        // max-heap by frequency
+        PriorityQueue<Integer> pq = new PriorityQueue<>(
+                (a, b) -> freq.get(b) - freq.get(a)
+        );
+
+        // add all distinct keys
+        pq.addAll(freq.keySet());
+
+        int[] res = new int[barcodes.length];
+        int prev = -1;
+
+        for (int i = 0; i < res.length; i++) {
+
+            int first = pq.poll();
+
+            // case 1: OK to use `first`
+            if (prev != first) {
+
+                res[i] = first;
+                prev = first;
+
+                // update freq
+                freq.put(first, freq.get(first) - 1);
+                if (freq.get(first) == 0) freq.remove(first);
+                else pq.add(first);
+            }
+
+            // case 2: conflict → need second element
+            else {
+                int second = pq.poll();     // must exist because input is valid
+
+                res[i] = second;
+                prev = second;
+
+                // update freq
+                freq.put(second, freq.get(second) - 1);
+                if (freq.get(second) == 0) freq.remove(second);
+                else pq.add(second);
+
+                // push back first
+                pq.add(first);
+            }
+        }
+
+        return res;
+    }
+
+    // V0-2
+    // IDEA: PQ (fixed by gemini)
+    public int[] rearrangeBarcodes_0_2(int[] barcodes) {
+        if (barcodes == null || barcodes.length <= 1) {
+            return barcodes;
+        }
+
+        int n = barcodes.length;
+
+        // 1. Build Frequency Map: { value : count }
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int x : barcodes) {
+            map.put(x, map.getOrDefault(x, 0) + 1);
+        }
+
+        // 2. Build Max Priority Queue (Max Heap)
+        // Stores the barcode values (keys) and sorts based on the frequency stored in the map (value).
+        // Since we are sorting based on an external map, we must ensure all keys are added
+        // after the map is finalized.
+        PriorityQueue<Integer> pq = new PriorityQueue<>((a, b) -> map.get(b) - map.get(a));
+
+        // Add all unique barcode values (map keys) to the PQ
+        pq.addAll(map.keySet());
+
+        // 3. Greedy Rearrangement
+        int[] result = new int[n];
+
+        // We need a variable to temporarily hold the item used in the previous step.
+        // This is crucial for the "never adjacent" rule.
+        Integer prev = null;
+
+        // We use a temporary queue/list to hold the item that was just used
+        // but needs to be re-added later, to maintain the structure.
+        Queue<Integer> temp = new LinkedList<>();
+
+        int index = 0;
+        while (!pq.isEmpty()) {
+            // Get the most frequent item (first)
+            Integer current = pq.poll();
+
+            // Place the current item in the result array
+            result[index++] = current;
+
+            // Reduce its count in the map
+            map.put(current, map.get(current) - 1);
+
+            // --- Logic for Re-insertion ---
+
+            // Check if there was an item used in the previous step (held in prev)
+            if (prev != null) {
+                // If its count is still > 0, re-add it to the Max Heap.
+                // It must be re-added now so it can be considered for the step after the current one.
+                if (map.get(prev) > 0) {
+                    pq.add(prev);
+                }
+            }
+
+            // The item we just used (current) now becomes the "previous" item for the next iteration.
+            // It must *not* be added to the PQ in this iteration.
+            prev = current;
+        }
+
+        return result;
+    }
 
     // V1
     // IDEA: SORT
