@@ -3706,10 +3706,97 @@ public class Workspace18 {
 
 
     // LC 1054
+    // 16.11 - 21 pm
+    /**
+     *
+     *  -> `Rearrange` the barcodes so that `NO two adjacent barcodes are equal.`
+     *    You may return any answer, and it is guaranteed an answer exists.
+     *
+     *   - there is a row of barcodes,
+     *     where the ith barcode is barcodes[i].
+     *
+     *   - NOTE !!!
+     *      - it is guaranteed an answer exists.
+     *
+     *
+     *  IDEA 1) HASHMAP
+     *
+     *  IDEA 2) PQ ????
+     *
+     */
+    // IDEA 1) HASHMAP
     public int[] rearrangeBarcodes(int[] barcodes) {
+        // edge
+        if(barcodes == null || barcodes.length == 0){
+            return new int[]{}; // ??
+        }
+        if(barcodes.length <= 2){
+            //return new int[]{barcodes[0]};
+            return barcodes; // ???
+        }
 
-        return null;
+        // { val : cnt }
+        Map<Integer, Integer> map = new HashMap<>();
+        // NOTE !!!
+        // PQ, sort on map val
+        // a `big pq`
+        PriorityQueue<Integer> pq = new PriorityQueue<>(new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                // ???
+                int diff = map.get(o2) - map.get(o1);
+                return diff;
+            }
+        });
+
+        // add to map, PQ
+        for(int x: barcodes){
+            map.put(x, map.getOrDefault(x, 0) + 1);
+            pq.add(x);
+        }
+
+        //List<Integer> list = new ArrayList<>();
+        int[] res = new int[barcodes.length];
+        Arrays.fill(res, -1); // init all idx with value = -1
+
+        // ???
+        int prev = -1;
+        for(int i = 0; i < res.length; i++){
+            // ???
+            if(!pq.isEmpty()){
+                int first = pq.poll();
+                // case 1) i == 0 || prev != cur
+                if(i == 0 || prev != first){
+                    res[i] = first;
+                    // update map
+                    map.put(first, map.get(first) - 1);
+                    if(map.get(first) == 0){
+                        map.remove(first);
+                    }else{
+                        pq.add(first);
+                    }
+                }
+                // case 2  prev == cur
+                else{
+                    int second = pq.poll();
+                    res[i] = second;
+                    // update map
+                    map.put(second, map.get(second) - 1);
+                    if(map.get(second) == 0){
+                        map.remove(second);
+                    }else{
+                        pq.add(second);
+                    }
+                    // add back to PQ
+                    pq.add(first);
+                }
+            }
+        }
+
+        return res;
     }
+
+
 
 
 
