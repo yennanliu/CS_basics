@@ -41,8 +41,172 @@ public class RearrangeStringKDistanceApart {
 //    }
 
     // V0-1
-    // IDEA: PQ + LAST IDX CHECK + HASH MAP (fixed by gpt)
+    // IDEA: PQ + k-cooldown algorithm + HASHMAP (fixed by gpt)
     // TODO: validate
+    /**  Algo idea: (gpt)
+     *
+     * Here is the clear conceptual
+     * explanation of the algorithm used in the final solution
+     * — what the cooldown queue does, why it’s necessary, and how the whole process works.
+     *
+     * ⸻
+     *
+     * ✅ Core Idea for LC 358 — PQ + Cooldown Queue
+     *
+     * This problem requires:
+     *
+     * Rearrange characters so that
+     * two identical characters are at least k distance apart.
+     *
+     * This is a scheduling problem, similar to:
+     *
+     * Scheduling CPU tasks with cooldown.
+     *
+     * To solve this, we combine:
+     * 	•	A max-heap (priority queue)
+     *     → Always choose the character with the highest
+     *     remaining frequency that is allowed to be used now.
+     *
+     * 	•	A cooldown queue
+     *    → Temporarily lock characters after they are used,
+     *     preventing them from being reused for the next k−1 positions.
+     *
+     * ⸻
+     *
+     * 🌟 High-Level Algorithm Flow
+     *
+     * Step 1 — Count character frequencies
+     *
+     * We want to use the most frequent characters first to avoid dead-ends.
+     *
+     * aabbcc → {a:2, b:2, c:2}
+     *
+     *
+     * ⸻
+     *
+     * Step 2 — Use Max-Heap to pick the next character
+     *
+     * Max-heap always chooses the char with the highest remaining count.
+     *
+     * This helps spread out frequent chars.
+     *
+     * ⸻
+     *
+     * Step 3 — After using a character, put it into a cooldown queue
+     *
+     * When you place a character at position t, mark it unavailable until:
+     *
+     * releaseTime = t + k
+     *
+     * We store in cooldown queue:
+     *
+     * (char c, int releaseTime)
+     *
+     * This ensures the same char cannot be used again before it is sufficiently far.
+     *
+     * ⸻
+     *
+     * Step 4 — At each step, check cooldown
+     *
+     * If the time t reaches a character’s releaseTime,
+     * → remove from cooldown queue
+     * → put it back into PQ so it becomes available again.
+     *
+     * ⸻
+     *
+     * Step 5 — If PQ is ever empty but cooldown still has chars → impossible
+     *
+     * This means:
+     * 	•	Characters are still cooling down
+     * 	•	But we have to place something now
+     * 	•	But no characters are available
+     *
+     * Example: "aaabc", k=3
+     *
+     * At some point, PQ becomes empty while cooldown still holds 'a'.
+     *
+     * So return "".
+     *
+     * ⸻
+     *
+     * 🔥 Why Cooldown Queue is REQUIRED
+     *
+     * Because the PQ alone cannot track “last used position”.
+     *
+     * Example 'aabbcc', k = 3:
+     * 	•	Put 'a' at index 0 → 'a' cannot appear until index 3.
+     * 	•	PQ alone doesn’t tell us when 'a' is reusable.
+     * 	•	We need a cooldown structure to record (char, release time).
+     *
+     * ⸻
+     *
+     * 🧠 Putting It Together — Step-by-Step Simulation
+     *
+     * Example: s = "aabbcc", k = 3
+     *
+     * Initial State
+     * PQ = [a, b, c] (all freq=2)
+     * Cooldown = []
+     * time = 0
+     *
+     * ⸻
+     *
+     * t = 0
+     *
+     * Pick 'a'.
+     *
+     * Cooldown push: ('a', 0 + 3 = 3)
+     * Result = "a"
+     *
+     * ⸻
+     *
+     * t = 1
+     *
+     * Pick 'b'.
+     *
+     * Cooldown push: ('b', 1 + 3 = 4)
+     * Result = "ab"
+     *
+     * ⸻
+     *
+     * t = 2
+     *
+     * Pick 'c'.
+     *
+     * Cooldown push: ('c', 2 + 3 = 5)
+     * Result = "abc"
+     *
+     * ⸻
+     *
+     * t = 3
+     *
+     * Now 'a' is ready (releaseTime=3)
+     *
+     * → remove 'a' from cooldown, push back to PQ
+     *
+     * Pick 'a' again.
+     * Result = "abca"
+     *
+     * ⸻
+     *
+     * …and so on → "abcabc".
+     *
+     * All chars are always at least distance 3.
+     *
+     * ⸻
+     *
+     * 🏆 Final Understanding (Simple Version)
+     *
+     * PQ
+     * 	•	Chooses the best possible character NOW (highest frequency).
+     *
+     * Cooldown queue
+     * 	•	Holds characters that are NOT allowed to be used yet.
+     * 	•	Automatically reactivates them at time = lastUsed + k.
+     *
+     * This guarantees the k-distance rule.
+     *
+     */
     public String rearrangeString_0_1(String s, int k) {
         if (k <= 1) return s;        // no distance constraint
         if (s == null || s.length() == 0) return "";
@@ -60,12 +224,31 @@ public class RearrangeStringKDistanceApart {
 
         pq.addAll(freq.keySet());
 
+        /** NOTE !!!
+         *
+         *  define `Cooldown queue`
+         *
+         *  [ [char_1, releaseTime_1], [char_2, releaseTime_2], ....]
+         *
+         *
+         *   -> Temporarily lock characters after they are used,
+         *   -> preventing them from being reused for the next k−1 positions.
+         */
         // Cooldown queue: (char, releaseTime)
         Queue<int[]> cooldown = new LinkedList<>();
 
         StringBuilder res = new StringBuilder();
+        /** NOTE !!!
+         *
+         *  define time, for `cooldown calculation`
+         */
         int time = 0;
 
+        /** NOTE !!!
+         *
+         *  the while condition,
+         *  either PQ or cooldown is NOT empty
+         */
         while (!pq.isEmpty() || !cooldown.isEmpty()) {
 
             // if empty PQ but cooldown has locked chars → impossible
@@ -94,7 +277,7 @@ public class RearrangeStringKDistanceApart {
     }
 
     // V0-2
-    // IDEA: PQ + LAST IDX CHECK + HASH MAP (fixed by gpt)
+    // IDEA: PQ + simple Queue/Cooldown mechanism + HASH MAP (fixed by gpt)
     // TODO: validate
     public String rearrangeString_0_2(String s, int k) {
         if (k <= 1) {
@@ -122,6 +305,7 @@ public class RearrangeStringKDistanceApart {
             }
         }
 
+        /** NOTE !!! Cooldown Queue (Size k) */
         // 3. Cooldown Queue (Size k)
         // Stores [character index, remaining count] pairs that cannot be used yet.
         // It acts as the k-slot "cooldown" window.
