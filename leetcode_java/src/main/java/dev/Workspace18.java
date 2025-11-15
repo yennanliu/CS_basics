@@ -3648,12 +3648,165 @@ public class Workspace18 {
 //        }
     }
 
+    class MyNode98{
+        // ??
+        Map<String, MyNode98> child;
+        boolean isEnd;
 
+        MyNode98(){
+            this.child = new HashMap<>();
+            this.isEnd = false;
+        }
+
+        MyNode98(Map<String, MyNode98> child, boolean isEnd){
+            this.child = child;
+            this.isEnd = isEnd;
+        }
+
+    }
+
+    class MyTrie98{
+        // attr
+        MyNode98 node;
+        // /???
+        List<List<String>> recommendList;
+
+        // constructor
+        MyTrie98(){
+            this.node = new MyNode98();
+            this.recommendList = new ArrayList<>();
+        }
+
+        // method
+        public void addProducts(List<String> products){
+            if(products.isEmpty() || products.size() == 0){
+                return;
+            }
+
+            //MyTrie98 trie = this.node;
+            MyNode98 node = this.node; // ???
+
+            for(String p: products){
+                // ???
+                for(char ch: p.toCharArray()){
+                    String s = String.valueOf(ch);
+                    if(!node.child.containsKey(s)){
+                        node.child.put(s, new MyNode98()); // ???
+                    }
+                    node = node.child.get(s); // /??
+                }
+            }
+        }
+
+        public boolean isStartWith(String product){
+            if(product.isEmpty() || product.length() == 0){
+                return false;
+            }
+
+            MyNode98 node = this.node; // ???
+
+            for(char ch: product.toCharArray()){
+                String s = String.valueOf(ch);
+                if(!node.child.containsKey(s)){
+                    return false;
+                }
+                node = node.child.get(s);
+            }
+
+            return true;
+        }
+
+        public boolean isContain(String product){
+            if(product.isEmpty()){
+                return false;
+            }
+
+            MyNode98 node = this.node; // ???
+
+            for(char ch: product.toCharArray()){
+                String s = String.valueOf(ch);
+                if(!node.child.containsKey(s)){
+                    return false;
+                }
+                node = node.child.get(s);
+            }
+
+            return node.isEnd; // /??
+        }
+
+        public List<List<String>> recommend(String searchWord){
+            if(searchWord.isEmpty()){
+                return new ArrayList<>(); // ??
+            }
+
+            MyNode98 node = this.node; // ???
+
+            List<String> list = new ArrayList<>();
+            for(char ch: searchWord.toCharArray()){
+                String s = String.valueOf(ch);
+                if(!node.child.containsKey(s)){
+                    break;
+                }
+
+            }
+            return null;
+        }
+
+        private void recommendHelper(String searchWord, MyNode98 node, List<String> list, StringBuilder sb){
+            if(searchWord.isEmpty()){
+                //return new ArrayList<>(); // ??
+                return;
+            }
+
+            for(char ch: searchWord.toCharArray()){
+                String s = String.valueOf(ch);
+                if(!node.child.containsKey(s)){
+                    return;
+                }
+                if(node.isEnd){
+                    // ???
+                    List<String> tmp = new ArrayList<>();
+                    tmp.add(sb.toString());
+                    recommendList.add(tmp);// ???
+                }
+                // NOTE !!! loop over all `possible child`
+                // and process by recursive dfs call ???
+                // ????
+                for(MyNode98 childNode: node.child.values()){
+                    recommendHelper("", childNode, list, sb);
+                }
+
+            }
+
+        }
+
+
+    }
+
+
+    // 17.50 - 18.00 pm
     //IDEA 1) TRIE (text - dict)
     public List<List<String>> suggestedProducts(String[] products, String searchWord) {
+        // edge
+        if(products == null || products.length == 0){
+            return new ArrayList<>(); // /??
+        }
 
-        return null;
+        MyTrie98 trie = new MyTrie98();
+
+        // add all products to system
+        trie.addProducts(Arrays.asList(products)); // ???
+
+        // get recommend
+        // ????
+        return trie.recommend(searchWord);
     }
+
+
+
+    
+
+
 
     // LC 387
     // 15.55 - 16.05
