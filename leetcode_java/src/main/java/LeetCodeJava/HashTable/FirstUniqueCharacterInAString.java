@@ -64,7 +64,7 @@ public class FirstUniqueCharacterInAString {
             String key = String.valueOf(ch);
             map.put(key, map.getOrDefault(key, 0) + 1);
         }
-        
+
         for(int i = 0; i < s.length(); i++){
             char ch = s.charAt(i);
             String key = String.valueOf(ch);
