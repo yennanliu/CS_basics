@@ -4090,5 +4090,12 @@ public class Workspace18 {
 
 
 
+    // LC 383
+    public boolean canConstruct(String ransomNote, String magazine) {
+
+        return false;
+    }
+
+
 
 }
