@@ -3652,6 +3652,7 @@ public class Workspace18 {
         // ??
         Map<String, MyNode98> child;
         boolean isEnd;
+       // List<List<String>> collected = new ArrayList<>();
 
         MyNode98(){
             this.child = new HashMap<>();
@@ -3782,6 +3783,73 @@ public class Workspace18 {
                 // backtrack: undo last op ????
             }
         }
+
+
+        /**
+         *
+         *  RecommendV2 :
+         *
+         *
+         * 1. collect the words with prefix (one alphabet by one)
+         * 2. sort lexicographically (whenever a new word is added)
+         * 2. if collected > 3, STOP, and return top 3 words from collected
+         *
+         */
+//        List<List<String>> res = new ArrayList<>(); // ???
+//        public List<List<String>> recommendV2(String searchWord){
+//            if(searchWord.isEmpty()){
+//                return new ArrayList<>(); // ??
+//            }
+//
+//            MyNode98 node = this.node; // ???
+//
+//            // ???
+//            //List<List<String>> collected = new ArrayList<>();
+//
+//            for(char ch: searchWord.toCharArray()){
+//
+//                if(!node.child.containsKey(ch)){
+//                    return collected; // ???
+//                }
+//
+//                node = node.child.get(ch);
+//
+//            }
+//
+//
+//           // return collected;
+//        }
+
+        private void recommendHelperV2(char ch, int idx, StringBuilder sb, String searchWord){
+            if(idx == searchWord.length()){
+                //return collected; // ???
+                String curStr = sb.toString();
+                List<String> tmp = new ArrayList<>();
+                tmp.add(curStr);
+                if(!this.recommendList.contains(tmp)){
+                    recommendList.add(tmp);
+                }
+                return;
+            }
+            MyNode98 node = this.node; // ???
+
+            if(!node.child.containsKey(ch)){
+                return;
+            }
+
+
+            this.node.child.get("1");
+//            for(MyNode98 node98: this.node.child.get("1")){
+//
+//            }
+
+
+            // ???
+            //return collected;
+            return;
+        }
+
+
 
 
     }
