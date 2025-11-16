@@ -139,7 +139,7 @@ public class DailyTemperatures {
                 st.add(new Integer[]{i, cur});
             }
         }
-        
+
         return ans;
     }
 
