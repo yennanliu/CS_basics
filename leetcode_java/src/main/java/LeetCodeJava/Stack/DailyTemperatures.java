@@ -80,10 +80,74 @@ public class DailyTemperatures {
         return ans;
     }
 
+
     // V0-0-1
+    // IDEA : STACK (MONOTONIC DECREASING STACK)
+    // small stack
+    // mono `decreasing` stack
+    // big -> small
+    // stack: [ [idx, val] ]
+    public int[] dailyTemperatures_0_0_1(int[] temperatures) {
+        // edge
+        if(temperatures == null || temperatures.length == 0){
+            return null;
+        }
+        if(temperatures.length == 1){
+            return new int[]{0};
+        }
+
+        int[] ans = new int[temperatures.length];
+        Arrays.fill(ans, 0);
+
+        /** NOTE !!!
+         *
+         *  CAN NOT use hash map for index check
+         *  -> since it could be duplicated val (e.g. same temperatures)
+         */
+        // NOTE !!! below is WRONG
+        //Map<Integer, Integer> map = new HashMap<>();
+
+        /**
+         *  NOTE !!!
+         *
+         *   we use [ [idx, val] ] stack
+         *   and as `big -> small` based on val
+         *
+         *   e.g. a `mono decreasing stack`
+         *
+         */
+        // small stack
+        // mono `decreasing` stack
+        // big -> small
+        // stack: [ [idx, val] ]
+        Stack<Integer[]> st = new Stack<>();
+
+        for(int i = 0; i < temperatures.length; i++){
+            int cur =  temperatures[i];
+            // System.out.println(">>> i = " + i +
+            //         ", cur = " + cur +
+            //         ", st = " + st);
+            if(st.isEmpty()){
+                st.add(new Integer[]{i, cur});
+            }else{
+                while(!st.isEmpty() && st.peek()[1] < cur){
+                    Integer[] last = st.pop();
+                    int lastIdx = last[0];
+                    int lastVal = last[1];
+                    ans[lastIdx] = (i - lastIdx);
+                }
+                st.add(new Integer[]{i, cur});
+            }
+        }
+        
+        return ans;
+    }
+
+
+    // V0-0-2
     // IDEA : STACK (MONOTONIC STACK)
     // LC 496
-    public int[] dailyTemperatures_0_0_1(int[] temperatures) {
+    public int[] dailyTemperatures_0_0_2(int[] temperatures) {
 
         if (temperatures.length == 1){
             return temperatures;
