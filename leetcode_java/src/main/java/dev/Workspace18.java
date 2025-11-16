@@ -4091,9 +4091,47 @@ public class Workspace18 {
 
 
     // LC 383
+    // 15.22 - 32 pm
+    /**
+     *  ->  true if ransomNote can be
+     *   constructed by using the letters from magazine and false otherwise.
+     *
+     *
+     *   IDEA 1) MAP
+     *
+     */
     public boolean canConstruct(String ransomNote, String magazine) {
+        // edge
+        if(ransomNote == null){
+            return true;
+        }
+        // ???
+        if(magazine == null){
+            return false;
+        }
 
-        return false;
+        Map<Character, Integer> map1 = new HashMap<>();
+        Map<Character, Integer> map2 = new HashMap<>();
+
+        for(char ch: ransomNote.toCharArray()){
+            map1.put(ch, map1.getOrDefault(ch, 0) + 1);
+        }
+
+        for(char ch: magazine.toCharArray()){
+            map2.put(ch, map2.getOrDefault(ch, 0) + 1);
+        }
+
+        System.out.println(">>> map1 = " + map1 +
+                ", map2 = " + map2);
+
+        // if ransomNote can be constructed by using the letters from magazine and false otherwise.
+        for(char ch: map1.keySet()){
+            if(!map2.containsKey(ch) || map2.get(ch) < map1.get(ch)){
+                return false;
+            }
+        }
+
+        return true;
     }
 
 
