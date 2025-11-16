@@ -4224,6 +4224,117 @@ public class Workspace18 {
         return cnt;
     }
 
+    // LC 739
+    // 16.12 - 22 pm
+    /**
+     *  ->  such that answer[i] is the `number of days `
+     *      you have to wait after the ith day to get a WARMER temperature.
+     *        - if NOT possible, keep answer[i] == 0 instead.
+     *
+     *
+     *
+     *  ------
+     *
+     *   IDEA 1) Stack (FILO, first in last out)
+     *
+     *    -> `mono increasing Stack)
+     *    -> e.g. small -> big Stack
+     *
+     *
+     *    ??? `decreasing` ???
+     *
+     *
+     * -----
+     *
+     *  ex 1)
+     *
+     *   Input: temperatures = [73,74,75,71,69,72,76,73]
+     *   Output: [1,1,4,2,1,1,0,0]
+     *
+     *   ->
+     *      [73,74,75,71,69,72,76,73], st = [73], ans = [0,0,0,0,0,0,0]
+     *       x
+     *
+     *      [73,74,75,71,69,72,76,73], st = [73], ans = [0,0,0,0,0,0,0]
+     *          x                      74 > 73, pop, st = [74], and ans = [1,0,0,0,0,0,0]
+     *
+     *      [73,74,75,71,69,72,76,73], st = [74], ans = [0,0,0,0,0,0,0]
+     *             x                  75 > 75, pop, st = [75], and ans = [1,1,0,0,0,0,0]
+     *
+     *
+     *      [73,74,75,71,69,72,76,73], st = [74, 71], ans = [1,1,0,0,0,0,0]
+     *                x         71 < 74
+     *
+     *      [73,74,75,71,69,72,76,73], st = [74, 71, 69], ans = [1,1,0,0,0,0,0]
+     *                   x
+     *
+     *      [73,74,75,71,69,72,76,73], st = [74, 71, 69], ans = [1,1,0,0,0,0,0]
+     *                      x       72 > 69, st = [74, 71], ans = [1,1,0,0,1,0,0]
+     *                              72 > 71, st = [74], ans = [1,1,0,2,1,0,0]
+     *                              st = [74, 72], ans = [1,1,0,2,1,0,0]
+     *
+     *
+     *    [73,74,75,71,69,72,76,73], st = [74, 71, 69], ans = [1,1,0,0,0,0,0]
+     *                       x, st = [76], ans = [1,1,0,2,1,0,0]
+     *
+     *   [73,74,75,71,69,72,76,73], st = [74, 71, 69], ans = [1,1,0,0,0,0,0]
+     *                         x
+     *
+     *
+     */
+    public int[] dailyTemperatures(int[] temperatures) {
+        // edge
+        if(temperatures == null || temperatures.length == 0){
+            return null; // ???
+        }
+        if(temperatures.length == 1){
+            return new int[]{0};
+        }
+
+        int[] ans = new int[temperatures.length];
+        Arrays.fill(ans, 0);
+
+        // hashmap: record val and idx
+        // {val : idx}
+        Map<Integer, Integer> map = new HashMap<>();
+//        for(int i = 0; i < temperatures.length; i++){
+//            map.put(temperatures[i], i);
+//        }
+
+        System.out.println(">>> (init) ans = " + ans);
+        //System.out.println(">>> (init) map = " + map);
+
+        // small stack
+        // mono `decreasing` stack
+        // big -> small
+        // stack: [ [idx, val] ]
+        Stack<Integer[]> st = new Stack<>();
+
+        for(int i = 0; i < temperatures.length; i++){
+            int cur =  temperatures[i];
+            System.out.println(">>> i = " + i +
+                    ", cur = " + cur +
+                    ", st = " + st);
+            if(st.isEmpty()){
+                st.add(new Integer[]{i, cur});
+            }else{
+                while(!st.isEmpty() && st.peek()[1] < cur){
+                    Integer[] last = st.pop();
+                    int lastIdx = last[0];
+                    int lastVal = last[1];
+                   // ans[map.get(last)] = (i - map.get(last));
+                    ans[lastIdx] = (i - lastIdx);
+                }
+                st.add(new Integer[]{i, cur});
+            }
+        }
+
+        System.out.println(">>> (final) ans = " + ans);
+
+        return ans;
+    }
+
+
 
 
 }
