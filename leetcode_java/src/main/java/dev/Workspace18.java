@@ -4402,6 +4402,12 @@ public class Workspace18 {
         return ans;
     }
 
+    // LC 149
+    public int maxPoints(int[][] points) {
+
+        return 0;
+    }
+
 
 
 
