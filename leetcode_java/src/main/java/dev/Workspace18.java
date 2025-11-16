@@ -4134,6 +4134,12 @@ public class Workspace18 {
         return true;
     }
 
+    // LC 2279
+    public int maximumBags(int[] capacity, int[] rocks, int additionalRocks) {
+
+        return 0;
+    }
+
 
 
 }
