@@ -2,7 +2,7 @@ package LeetCodeJava.Greedy;
 
 // https://leetcode.com/problems/maximum-bags-with-full-capacity-of-rocks/description/
 
-import java.util.Arrays;
+import java.util.*;
 
 /**
  *  2279. Maximum Bags With Full Capacity of Rocks
@@ -71,6 +71,145 @@ public class MaximumBagsWithFullCapacityOfRocks {
 //    public int maximumBags(int[] capacity, int[] rocks, int additionalRocks) {
 //
 //    }
+
+    // V0-1
+    // IDEA: SORT + [idx, diff] List
+    public int maximumBags_0_1(int[] capacity, int[] rocks, int additionalRocks) {
+        // edge
+        if(capacity == null || rocks == null){
+            return 0;
+        }
+        if(capacity.length == 1 || rocks.length == 1){
+            if(capacity[0] == rocks[0]){
+                return 1;
+            }
+            return rocks[0] + additionalRocks >= capacity[0] ? 1 : 0;
+        }
+
+        // list: [ [idx, diff] ]
+        List<Integer[]> list = new ArrayList<>();
+        for(int i = 0; i < capacity.length; i++){
+            int cap = capacity[i];
+            int rock = rocks[i];
+            list.add(new Integer[]{i, cap - rock});
+        }
+
+        // sort (small -> big) on diff
+        Collections.sort(list, new Comparator<Integer[]>() {
+            @Override
+            public int compare(Integer[] o1, Integer[] o2) {
+                int diff = o1[1] - o2[1];
+                return diff;
+            }
+        });
+
+        int cnt = 0;
+
+        // ??
+        for(Integer[] cur: list){
+            // NOTE !!! since we sort on diff (samll -> big)
+            // then thr `diff == 0` case should occur first
+            // -> it's Ok to early exit when `additionalRocks == 0`
+            // without missing any `already full capacity case with an index`
+            if(additionalRocks == 0){
+                return cnt;
+                //break;
+            }
+            int diff = cur[1];
+            // case 1) already `full capacity`
+            if(diff == 0){
+                cnt += 1;
+            }else{
+                if(additionalRocks >= diff){
+                    additionalRocks -= diff;
+                    cnt += 1;
+                }else{
+                    additionalRocks = 0; // ???
+                }
+            }
+        }
+
+        return cnt;
+    }
+
+    // V0-2
+    // IDEA: DIFF ARRAY (fixed by gpt)
+    public int maximumBags_0_2(int[] capacity, int[] rocks, int additionalRocks) {
+        // edge
+        if (capacity == null || rocks == null) {
+            return 0;
+        }
+
+        int n = capacity.length;
+        int[] diff = new int[n];
+
+        // diff[i] = how many more rocks needed to fill this bag
+        for (int i = 0; i < n; i++) {
+            diff[i] = capacity[i] - rocks[i];
+        }
+
+        // sort diff ascending
+        Arrays.sort(diff);
+
+        int cnt = 0;
+
+        for (int need : diff) {
+            if (need == 0) {
+                cnt++;       // already full
+            } else if (additionalRocks >= need) {
+                additionalRocks -= need;
+                cnt++;
+            } else {
+                break;       // cannot fill further bags
+            }
+        }
+
+        return cnt;
+    }
+
+    // V0-3
+    // IDEA: SORT + DIFF ARRAY (gemini)
+    public int maximumBags_0_3(int[] capacity, int[] rocks, int additionalRocks) {
+        if (capacity == null || rocks == null || capacity.length == 0) {
+            return 0;
+        }
+
+        int n = capacity.length;
+        // Array to store the number of rocks needed for each bag: capacity[i] - rocks[i].
+        int[] neededRocks = new int[n];
+
+        // 1. Calculate the required rocks for each bag.
+        for (int i = 0; i < n; i++) {
+            neededRocks[i] = capacity[i] - rocks[i];
+        }
+
+        // 2. Apply the Greedy Strategy: Sort the neededRocks array in ascending order.
+        // This ensures we always fill the bags that cost the fewest additional rocks first.
+        Arrays.sort(neededRocks);
+
+        int fullBagsCount = 0;
+
+        // 3. Iterate through the sorted differences and fill the bags.
+        for (int needed : neededRocks) {
+            // Case 1: The bag is already full (needed == 0).
+            if (needed == 0) {
+                fullBagsCount++;
+                continue;
+            }
+
+            // Case 2: The bag requires rocks, and we have enough.
+            if (additionalRocks >= needed) {
+                additionalRocks -= needed;
+                fullBagsCount++;
+            } else {
+                // If we encounter a bag we cannot fill, because the array is sorted,
+                // we cannot fill any subsequent (more costly) bags either.
+                break;
+            }
+        }
+
+        return fullBagsCount;
+    }
 
     // V1-1
     // IDEA: SORT + GREEDY

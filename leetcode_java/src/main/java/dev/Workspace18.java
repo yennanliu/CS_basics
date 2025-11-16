@@ -4135,9 +4135,93 @@ public class Workspace18 {
     }
 
     // LC 2279
+    // 15.39 - 49 pm
+    /**
+     *  -> Return the MAX number of `bags` that
+     *    could have `full capacity` after `placing the
+     *    additional rocks in some bags.`
+     *
+     *
+     *    -  n bags numbered from 0 to n - 1
+     *    -  two 0-indexed integer arrays capacity and rocks.
+     *         - capacity[i]
+     *         - rocks[i]
+     *    -   `additionalRocks`
+     *              - the number of additional `rocks` you can place in ANY of the bags.
+     *
+     *
+     *
+     *   ----------
+     *
+     *   IDEA 1) HASH MAP + SORT ????
+     *
+     *    -> 1. prepare the arr: [ [idx, diff] ]
+     *        - idx: original idx of rock, capacity
+     *        - diff: diff(cap, rock)
+     *       2. sort (small -> big) on diff
+     *       3. check how many `max cap` we can make
+     *          before use all the additionalRocks,
+     *          maintain a `max cap` val as answer as well
+     *
+     */
     public int maximumBags(int[] capacity, int[] rocks, int additionalRocks) {
+        // edge
+        if(capacity == null || rocks == null){
+            return 0;
+        }
+        if(capacity.length == 1 || rocks.length == 1){
+            if(capacity[0] == rocks[0]){
+                return 1;
+            }
+            return rocks[0] + additionalRocks >= capacity[0] ? 1 : 0;
+        }
 
-        return 0;
+        // list: [ [idx, diff] ]
+        List<Integer[]> list = new ArrayList<>();
+        for(int i = 0; i < capacity.length; i++){
+            int cap = capacity[i];
+            int rock = rocks[i];
+            list.add(new Integer[]{i, cap - rock});
+        }
+
+        // sort (small -> big) on diff
+        Collections.sort(list, new Comparator<Integer[]>() {
+            @Override
+            public int compare(Integer[] o1, Integer[] o2) {
+                int diff = o1[1] - o2[1];
+                return diff;
+            }
+        });
+
+        int cnt = 0;
+
+        // ??
+        for(Integer[] cur: list){
+            // NOTE !!! since we sort on diff (samll -> big)
+            // then thr `diff == 0` case should occur first
+            // -> it's Ok to early exit when `additionalRocks == 0`
+            // without missing any `already full capacity case with an index`
+            if(additionalRocks == 0){
+                return cnt;
+                //break;
+            }
+            int diff = cur[1];
+            // case 1) already `full capacity`
+            if(diff == 0){
+                cnt += 1;
+            }else{
+                if(additionalRocks >= diff){
+                    additionalRocks -= diff;
+                    cnt += 1;
+                }else{
+                    additionalRocks = 0; // ???
+                }
+            }
+
+           // cnt += 1;
+        }
+
+        return cnt;
     }
 
 
