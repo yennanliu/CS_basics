@@ -4403,9 +4403,59 @@ public class Workspace18 {
     }
 
     // LC 149
+    // 6.56 - 7.06 am
+    /**
+     *
+     *  -> return the MAX number of points
+     *  that lie on the same straight line.
+     *
+     *   - points:
+     *      -  points[i] = [xi, yi] represents a point on the X-Y plane,
+     *
+     *
+     *   IDEA 1) MATH
+     *
+     *      -> same straight line
+     *          -> same `tangent` (slope)
+     *          ->
+     *
+     *   IDEA 2) HASHMAP
+     *
+     *   IDEA 3) brute force
+     *      - for each point, loop to the other points,
+     *        find the slope, and savw at hashmap
+     *      - get the max value size from above hashmap
+     *
+     *      - NOTE !! 2 points can define a line
+     *
+     *
+     *   --------------
+     *
+     *
+     *
+     */
+    // IDEA 3) brute force
     public int maxPoints(int[][] points) {
+        // edge
+        if(points == null || points.length < 2){
+            return points.length;
+        }
+        if(points.length == 2){
+            return 2;
+        }
+        // map: record start point, and all the other points that on the same line ??
+        // y = ax + b
+        // so we re
 
         return 0;
+    }
+
+    private float[] getLineEquation(int x1, int y1, int x2, int y2){
+        return null;
+    }
+
+    private boolean isSameLine(){
+        return false;
     }
 
 
