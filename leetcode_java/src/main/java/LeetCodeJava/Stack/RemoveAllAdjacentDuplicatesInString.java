@@ -141,6 +141,59 @@ public class RemoveAllAdjacentDuplicatesInString {
         return sb.reverse().toString();
     }
 
+    // V0-3
+    // IDEA: STACK
+    public String removeDuplicates_0_3(String s) {
+        // edge
+        if (s.isEmpty() || s.length() == 0) {
+            return s;
+        }
+        if (s.length() == 1) {
+            return s;
+        }
+        if (s.length() == 2) {
+            // ???
+            if (s.charAt(0) == s.charAt(1)) {
+                return null;
+            }
+            return s;
+        }
+
+        char[] charArr = s.toCharArray();
+        Stack<Character> st = new Stack<>();
+        char prev = '*'; // ???
+        for (char ch : charArr) {
+            // case 1) st is empty
+            if (st.isEmpty()) {
+                st.add(ch);
+            } else {
+                // cast 2) st is NOT empty and prev != cur
+                if (!st.peek().equals(ch)) {
+                    st.add(ch);
+                    prev = ch;
+                }
+                // cast 3) st is NOT empty and prev == cur
+                else {
+                    st.pop();
+                }
+            }
+        }
+
+        //  System.out.println(">>> st = " + st);
+        StringBuilder sb = new StringBuilder();
+        while (!st.isEmpty()) {
+            sb.append(st.pop());
+        }
+
+        /** NOTE !!! even `print` apply the reverse op
+         *           , so we can't do below (or will reverse str unexpectedly)
+         */
+        // System.out.println(">>> (sb to string) sb.toString() =  " + sb.toString());
+        // System.out.println(">>> (inverse vsb to string) sb.reverse().toString() =  " + sb.reverse().toString());
+
+        return sb.reverse().toString();
+    }
+
     // V1
     // https://leetcode.com/problems/remove-all-adjacent-duplicates-in-string/solutions/2800677/java-solution-using-stack-explained-using-diagrams/
     public String removeDuplicates_2(String s) {
