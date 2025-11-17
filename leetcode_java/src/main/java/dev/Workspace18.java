@@ -4459,6 +4459,74 @@ public class Workspace18 {
     }
 
 
+    // LC 1047
+    // 6.53 - 7.03 am
+    /**
+     *
+     * -> Return the FINAL string after all such
+     *    duplicate removals have been made.
+     *    It can be proven that the answer is unique.
+     *
+     *
+     *   - string s
+     *   -  A duplicate removal consists
+     *      of choosing two adjacent and equal letters and removing them
+     *   - repeat above op, till no such adjacent same elements are found.
+     *
+     *
+     *   IDEA 1) STACK ( FILO )
+     *
+     */
+    public String removeDuplicates(String s) {
+        // edge
+        if(s.isEmpty() || s.length() == 0){
+            return s;
+        }
+        if(s.length() == 1){
+            return s;
+        }
+        if(s.length() == 2){
+            // ???
+            if(s.charAt(0) == s.charAt(1)){
+                return null;
+            }
+            return s;
+        }
+
+        char[] charArr = s.toCharArray();
+        Stack<Character> st = new Stack<>();
+        char prev = '*'; // ???
+        for(char ch: charArr){
+            // case 1) st is empty
+            if(st.isEmpty()){
+                st.add(ch);
+            }else{
+                // cast 2) st is NOT empty and prev != cur
+                if(!st.peek().equals(ch)){
+                    st.add(ch);
+                    prev = ch;
+                }
+                // cast 3) st is NOT empty and prev == cur
+                else{
+                    st.pop();
+                }
+            }
+        }
+
+        System.out.println(">>> st = " + st);
+        StringBuilder sb = new StringBuilder();
+        while(!st.isEmpty()){
+            sb.append(st.pop());
+        }
+
+        System.out.println(">>> (sb to string) sb.toString() =  " + sb.toString());
+        System.out.println(">>> (inverse vsb to string) sb.reverse().toString() =  " + sb.reverse().toString());
+
+        return sb.reverse().toString(); // ???
+    }
+
+
+
 
 
 }
