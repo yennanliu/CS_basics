@@ -1,6 +1,6 @@
 # Progress
 
-# 2025-11-17
+# 2025-11-18
 
 - LC weekly 345
 - weekly video
@@ -41,7 +41,6 @@
 			- 713
 	- LC 20 Valid Parentheses
 		- gpt
-			- 1047
 			- 155
 			- 394
 			- 224
