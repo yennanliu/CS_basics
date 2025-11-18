@@ -2,10 +2,7 @@ package LeetCodeJava.String;
 
 // https://leetcode.com/problems/replace-words/description/
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * 648. Replace Words
@@ -50,6 +47,140 @@ public class ReplaceWords {
 //    public String replaceWords(List<String> dictionary, String sentence) {
 //
 //    }
+
+    // V0-1
+    // IDEA: TRIE (fixed by gpt)
+    class MyNode97 {
+        Map<Character, MyNode97> child = new HashMap<>();
+        boolean isEnd = false;
+    }
+
+    class MyTrie97 {
+        MyNode97 root;
+
+        MyTrie97() {
+            this.root = new MyNode97();
+        }
+
+        public void addWord(String word) {
+            MyNode97 node = root;
+            for (char ch : word.toCharArray()) {
+                node.child.putIfAbsent(ch, new MyNode97());
+                node = node.child.get(ch);
+            }
+            node.isEnd = true;
+        }
+
+        // Return the shortest root for the given word
+        public String findShortestRoot(String word) {
+            MyNode97 node = root;
+            StringBuilder sb = new StringBuilder();
+
+            for (char ch : word.toCharArray()) {
+                if (!node.child.containsKey(ch)) {
+                    return word; // no root found
+                }
+                sb.append(ch);
+                node = node.child.get(ch);
+
+                if (node.isEnd) {
+                    return sb.toString(); // shortest root found
+                }
+            }
+
+            return word; // no replacement
+        }
+    }
+
+
+    // V0-2
+    // IDEA: TRIE (fixed by gemini)
+    /** * Represents a single node in the Trie.
+     */
+    class TrieNode_0_2 {
+        // Map to store children: Character -> TrieNode
+        Map<Character, TrieNode_0_2> children;
+        // Flag to mark the end of a complete root word from the dictionary
+        boolean isEndOfWord;
+
+        TrieNode_0_2() {
+            this.children = new HashMap<>();
+            this.isEndOfWord = false;
+        }
+    }
+
+    // The root of the Trie
+    private final TrieNode_0_2 root = new TrieNode_0_2();
+
+    /**
+     * Builds the Trie by inserting all dictionary words.
+     * @param word The root word to insert.
+     */
+    public void insert(String word) {
+        TrieNode_0_2 node = root;
+        for (char ch : word.toCharArray()) {
+            // Use computeIfAbsent for concise creation of new nodes
+            node = node.children.computeIfAbsent(ch, k -> new TrieNode_0_2());
+        }
+        node.isEndOfWord = true;
+    }
+
+    /**
+     * Finds the shortest root word in the Trie that is a prefix of the given word.
+     * @param word The word to check against the Trie.
+     * @return The shortest root, or the original word if no root is found.
+     */
+    public String findShortestRoot(String word) {
+        TrieNode_0_2 node = root;
+        StringBuilder prefixBuilder = new StringBuilder();
+
+        for (char ch : word.toCharArray()) {
+            if (!node.children.containsKey(ch)) {
+                // No further prefix found in the dictionary.
+                // Stop searching and return the original word.
+                return word;
+            }
+
+            // Move to the next node and append the character
+            node = node.children.get(ch);
+            prefixBuilder.append(ch);
+
+            // Crucial: Check if the current prefix is a complete root word.
+            // Since we traverse character by character, the FIRST 'isEndOfWord'
+            // we hit guarantees the SHORTEST possible root (e.g., if "a" and "apple"
+            // are roots, hitting 'a' first is the desired shortest result).
+            if (node.isEndOfWord) {
+                return prefixBuilder.toString();
+            }
+        }
+
+        // If the entire word was traversed but no root was marked (e.g., word="cat"
+        // and "c" and "ca" are roots, but not "cat"), we return the original word
+        // because we haven't hit an 'isEndOfWord' flag yet.
+        // However, in the context of the problem, we should return the original word
+        // if the *entire* word is traversed and no root was found.
+        return word;
+    }
+
+
+    public String replaceWords_0_1(List<String> dictionary, String sentence) {
+
+        // 1. Build the Trie from the dictionary
+        for (String rootWord : dictionary) {
+            insert(rootWord);
+        }
+
+        // 2. Split the sentence into words
+        String[] words = sentence.split(" ");
+
+        // 3. Process each word, replacing it with the shortest root found in the Trie
+        for (int i = 0; i < words.length; i++) {
+            words[i] = findShortestRoot(words[i]);
+        }
+
+        // 4. Join the resulting words back into a sentence
+        return String.join(" ", words);
+    }
 
     // V1-1
     // IDEA: HASHSET

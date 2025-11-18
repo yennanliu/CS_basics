@@ -4783,6 +4783,10 @@ public class Workspace18 {
                 if(dictionary.contains(prefix)){
                     if(trie.isStartWith(prefix)){
                         candidates.add(prefix);
+                        // early quit ???
+                        // since the early form prefix is the shorter one
+                        // and the corresponding root MUST be a shorter one as well
+                        break;
                     }
                 }
             }
