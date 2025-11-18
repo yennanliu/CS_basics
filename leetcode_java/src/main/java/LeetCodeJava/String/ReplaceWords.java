@@ -71,6 +71,12 @@ public class ReplaceWords {
             node.isEnd = true;
         }
 
+        /** NOTE !!!
+         *
+         *  we can do `get the shortest prefix` node
+         *  by implement below trie method directly
+         *  (instead of doing so in the main func)
+         */
         // Return the shortest root for the given word
         public String findShortestRoot(String word) {
             MyNode97 node = root;
@@ -78,6 +84,13 @@ public class ReplaceWords {
 
             for (char ch : word.toCharArray()) {
                 if (!node.child.containsKey(ch)) {
+                    /** NOTE !!!
+                     *
+                     *  if child NOT contains such char,
+                     *  return cur word directly
+                     *
+                     *  -> e.g. NO `root` (per problem definition) is found
+                     */
                     return word; // no root found
                 }
                 sb.append(ch);
@@ -90,6 +103,27 @@ public class ReplaceWords {
 
             return word; // no replacement
         }
+    }
+
+    public String replaceWords_0_1(List<String> dictionary, String sentence) {
+
+        if (sentence == null || sentence.isEmpty()) return sentence;
+
+        // Build trie
+        MyTrie97 trie = new MyTrie97();
+        for (String root : dictionary) {
+            trie.addWord(root);
+        }
+
+        // Process each word
+        String[] words = sentence.split(" ");
+        List<String> result = new ArrayList<>();
+
+        for (String w : words) {
+            result.add(trie.findShortestRoot(w));
+        }
+
+        return String.join(" ", result);
     }
 
 
@@ -163,7 +197,7 @@ public class ReplaceWords {
     }
 
 
-    public String replaceWords_0_1(List<String> dictionary, String sentence) {
+    public String replaceWords_0_2(List<String> dictionary, String sentence) {
 
         // 1. Build the Trie from the dictionary
         for (String rootWord : dictionary) {
@@ -329,5 +363,6 @@ public class ReplaceWords {
 
     // V3
 
+    
 
 }

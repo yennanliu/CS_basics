@@ -4735,6 +4735,12 @@ public class Workspace18 {
             node.isEnd = true; // ???
         }
 
+        /** NOTE !!! should implement below */
+        public String findShortestRoot(String word) {
+            return null;
+        }
+
+
         public boolean isStartWith(String prefix){
             if(prefix.isEmpty()){
                 return false;
