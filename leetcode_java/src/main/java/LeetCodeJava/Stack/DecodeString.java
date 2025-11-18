@@ -167,7 +167,7 @@ public class DecodeString {
 
                 // now get the number (could be multi-digit, but we’ll read digits one by one)
                 StringBuilder numSb = new StringBuilder();
-                String nums = "0123456789";
+                 String nums = "0123456789";
 
                 // below 2 approaches are OK
                 //  while(!stack.isEmpty() && stack.peek().matches("\\d")){} ..
@@ -220,6 +220,16 @@ public class DecodeString {
 
         for (char ch : s.toCharArray()) {
             if (Character.isDigit(ch)) {
+                /** NOTE !!!
+                 * 
+                 *  for `digit` parsing, need to consider `muti-digit` cases.
+                 *  e.g. 
+                 *    10
+                 *    100
+                 *    333
+                 *    
+                 *  -> so below logic for handling this
+                 */
                 // 1. If it's a digit, build the multi-digit repetition count 'k'
                 k = k * 10 + (ch - '0');
 
