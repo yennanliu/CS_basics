@@ -4669,9 +4669,150 @@ public class Workspace18 {
 
 
     // LC 648
-    public String replaceWords(List<String> dictionary, String sentence) {
+    // 10.19 - 29 am
+    /**
+     *  -> Return the sentence after the replacement.
+     *
+     *   - replace ALL the derivatives in the sentence with the ROOT forming i
+     *      - if a tie (more than 1 possible root)
+     *         - choose the shortest root
+     *
+     *   - derivative:
+     *         root = help
+     *         word = ful
+     *         -> derivative = helpful
+     *         - e.g. derivative = root + word
+     *
+     *   - dict: [root1, root2, ...]
+     *   - sentence: "w1 w2 w3 ...."
+     *
+     *
+     *  ---------
+     *
+     *   IDEA 1) TRIE
+     *
+     *   IDEA 2) BRUTE FORCE
+     *
+     *   IDEA 3) HAHSMAP ???
+     *
+     *
+     */
+    class MyNode97{
+        // attr
+        Map<Character, MyNode97> child;
+        // ???
+        boolean isEnd;
+        // constructor
+        MyNode97(){
+            this.child = new HashMap<>();
+            this.isEnd = false;
+        }
+        // ???
+    }
+    class MyTrie97{
+        // attr
+        MyNode97 node;
+        // constructor
+        MyTrie97(){
+            this.node = new MyNode97();
+        }
 
-        return null;
+        // method
+        public void addWord(String word){
+            if(word.isEmpty()){
+                return;
+            }
+
+            // ???
+            MyNode97 node = this.node;
+
+            for(char ch: word.toCharArray()){
+                if(!node.child.containsKey(ch)){
+                    node.child.put(ch, new MyNode97());
+                }
+                node = node.child.get(ch);
+            }
+            node.isEnd = true; // ???
+        }
+
+        public boolean isStartWith(String prefix){
+            if(prefix.isEmpty()){
+                return false;
+            }
+
+            MyNode97 node = this.node;
+
+            for(char ch: prefix.toCharArray()){
+                if(!node.child.containsKey(ch)){
+                    return false;
+                }
+                node = node.child.get(ch);
+            }
+
+            return true;
+        }
+
+    }
+
+    // IDEA 1) TRIE
+    public String replaceWords(List<String> dictionary, String sentence) {
+        // edge
+        if(dictionary.isEmpty() && !sentence.isEmpty()){
+            return sentence;
+        }
+        if(sentence.isEmpty()){
+            return sentence;
+        }
+
+        MyTrie97 trie = new MyTrie97();
+        // init: build trie
+        for(String str: dictionary){
+            trie.addWord(str);
+        }
+
+        List<String> cache = new ArrayList<>();
+
+        for(char ch: sentence.toCharArray()){
+            String str = String.valueOf(ch);
+            // get the candidates with `same prefix`
+            List<String> candidates = new ArrayList<>();
+            // loop over all `possible prefix` with the given word
+            for(int i = 0; i < str.length(); i++){
+                // ???
+                String prefix = String.copyValueOf(str.toCharArray(), 0, i);
+                if(dictionary.contains(prefix)){
+                    if(trie.isStartWith(prefix)){
+                        candidates.add(prefix);
+                    }
+                }
+            }
+            // sort candidates by `least len`
+            // e.g. small len -> big len
+            Collections.sort(candidates, new Comparator<String>() {
+                @Override
+                public int compare(String o1, String o2) {
+                    int diff = o1.length() - o2.length();
+                    return diff;
+                }
+            });
+
+            // get the 1st candidate (shortest one)
+            cache.add(candidates.get(0));
+        }
+
+        // cache to string
+        String res = "";
+        for(int i = 0; i < cache.size(); i++){
+            String s2 = cache.get(i);
+            if(i == cache.size() - 1){
+                res += s2;
+            }else{
+                res += s2;
+                res += " ";
+            }
+        }
+
+        return res;
     }
 
 
