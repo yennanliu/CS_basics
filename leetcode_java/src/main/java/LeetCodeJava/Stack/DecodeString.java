@@ -200,8 +200,74 @@ public class DecodeString {
     }
 
     // V0-1
-    // IDEA: STACK (fixed by gpt)
+    // IDEA: STACK (fixed by gemini)
+    /**
+     * Decodes a string with nested encoded sub-strings (LC 394).
+     * Time Complexity: O(MaxK * N), where MaxK is the largest repetition count and N is the length of the string.
+     * Space Complexity: O(N)
+     *
+     * @param s The encoded string.
+     * @return The decoded string.
+     */
     public String decodeString_0_1(String s) {
+        // Stack to store counts (k)
+        Stack<Integer> countStack = new Stack<>();
+        // Stack to store intermediate decoded strings (the parts *before* the current '[')
+        Stack<String> resultStack = new Stack<>();
+
+        StringBuilder currentResult = new StringBuilder();
+        int k = 0; // Current count being built
+
+        for (char ch : s.toCharArray()) {
+            if (Character.isDigit(ch)) {
+                // 1. If it's a digit, build the multi-digit repetition count 'k'
+                k = k * 10 + (ch - '0');
+
+            } else if (ch == '[') {
+                // 2. If '[', save the current state before descending into the nested structure
+
+                // Push the current count 'k' onto the count stack
+                countStack.push(k);
+
+                // Push the string built so far onto the result stack (e.g., "a" in "3[a2[c]]")
+                resultStack.push(currentResult.toString());
+
+                // Reset the count and the current result to start fresh for the inner structure
+                k = 0;
+                currentResult = new StringBuilder();
+
+            } else if (ch == ']') {
+                // 3. If ']', decode the inner structure
+
+                // Get the repetition count 'k'
+                int repeatTimes = countStack.pop();
+
+                // Get the string segment built so far (e.g., "c" or "cc")
+                String decodedSegment = currentResult.toString();
+
+                // Repeat the segment using a temporary StringBuilder
+                StringBuilder temp = new StringBuilder();
+                for (int i = 0; i < repeatTimes; i++) {
+                    temp.append(decodedSegment);
+                }
+
+                // Combine: Pop the previous string segment (from before the '['), and append the new repeated segment
+                String previousResult = resultStack.pop();
+                currentResult = new StringBuilder(previousResult).append(temp.toString());
+
+            } else {
+                // 4. If it's a letter, just append it to the current result string
+                currentResult.append(ch);
+            }
+        }
+
+        // The final decoded string is in currentResult
+        return currentResult.toString();
+    }
+
+    // V0-2
+    // IDEA: STACK (fixed by gpt)
+    public String decodeString_0_2(String s) {
         if (s == null || s.isEmpty())
             return s;
 

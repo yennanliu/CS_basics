@@ -4581,8 +4581,15 @@ public class Workspace18 {
      */
     public String decodeString(String s) {
         // edge
+        // ????
+        if(s.length() <= 1){
+            return s;
+        }
 
-        // var
+        // shouldAddToSt2: whether should add to stack 2
+        // e.g. when '[' occur, then till ']' is shown,
+        // stack 2 should collect the str as tmp
+        // and do the decode op then add back to stack 1
         boolean shouldAddToSt2 = false;
 
         // st1
@@ -4592,11 +4599,74 @@ public class Workspace18 {
 
         for(char ch: s.toCharArray()){
             String str = String.valueOf(ch);
+            System.out.println(">>> str = " + str +
+                    "st1 =" + st1 +
+                    ", st2 = " + st2);
+
+            // case 1) shouldAddToSt2 == false
+            if(!shouldAddToSt2){
+                if(!str.equals("[") && !str.equals("]")){
+                    st1.add(str);
+                }
+            }else{
+                // case 1) if `[`
+                if(str.equals("[")){
+                    shouldAddToSt2 = true;
+                }
+                // case 2) if `]`
+                else if(str.equals("]")){
+                    // pop all elements from st2
+                    StringBuilder sb = new StringBuilder();
+                    while(!st2.isEmpty()){
+                        sb.append(st2.pop()); // ???
+                    }
+                    // pop last element from st1
+                    // ??
+                    if(!st1.isEmpty()){
+                        String prev = st1.pop();
+                        // NOTE !!! sb needs to reverse ??
+                        // since stack is `FILO` ??
+                        // private String multiplyStr(String str, int multiTimes)
+                        String str1 = sb.reverse().toString();
+                        int times = Integer.parseInt(prev);
+                        String tmp = multiplyStr(str1, times);
+                        System.out.println(">>> str1 = " + str1 +
+                                ", times =" + times +
+                                ", tmp = " + tmp);
+                        // add back to st1
+                        st1.add(tmp);
+                    }
+                    // mark shouldAddToSt2 as false
+                    shouldAddToSt2 = false;
+                }
+                // case 2) shouldAddToSt2 == true && str != ']'
+                else{
+                    st2.add(str);
+                }
+            }
         }
 
+        System.out.println(">>> st1 =" + st1);
 
-        return null;
+        StringBuilder sb = new StringBuilder();
+        while(!st1.isEmpty()){
+            sb.append(st1.pop());
+        }
+
+        // ??? need reverse ???
+        return sb.reverse().toString();
     }
+
+
+    private String multiplyStr(String str, int multiTimes){
+        StringBuilder sb = new StringBuilder();
+        for(int i = 0; i < multiTimes; i++){
+            sb.append(str);
+        }
+        return sb.reverse().toString();
+    }
+
+
 
 
 
