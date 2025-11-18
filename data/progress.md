@@ -151,6 +151,23 @@
 			- 1481
 			- 1647
 			- 1383
+	- LC 355 Design Twitter
+		- gpt
+			- 146
+			- 380
+			- 359
+			- 362
+			- 642
+			- 432
+			- 460
+			- 895
+			- 715
+			- 460,432,588
+		- gemini
+			- 705
+			- 706
+			- 981
+			- 315
 	- others:
 - neetcode 250
 	- https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V6/LC_goog_all.pdf
