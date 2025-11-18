@@ -4668,6 +4668,11 @@ public class Workspace18 {
 
 
 
+    // LC 648
+    public String replaceWords(List<String> dictionary, String sentence) {
+
+        return null;
+    }
 
 
 
