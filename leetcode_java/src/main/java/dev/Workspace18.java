@@ -4525,6 +4525,79 @@ public class Workspace18 {
         return sb.reverse().toString(); // ???
     }
 
+    // LC 394
+    // 7.21 - 31 am
+    /**
+     *  ->  Given an encoded string, return its decoded string.
+     *
+     *   - encode rule:
+     *      - k[encoded_string]
+     *          - encoded_string: repeat k times
+     *
+     *   - input str is always valid
+     *   - NO extra digit, NO input like this form: 3a, 2[4] ....
+     *
+     *
+     *   ------
+     *
+     *   IDEA 1) STACK
+     *
+     *
+     *   -------
+     *
+     *   ex 1)
+     *
+     *    Input: s = "3[a]2[bc]"
+     *    Output: "aaabcbc"
+     *
+     *  ->
+     *   "3[a]2[bc]"     st = [3]
+     *    x
+     *
+     *   "3[a]2[bc]"     st = [3], st2 = []
+     *     x
+     *
+     *   "3[a]2[bc]"     st = [3], st2 = [a]
+     *      x
+     *
+     *   "3[a]2[bc]"     st = [aaa], st2 = []
+     *       x
+     *
+     *   "3[a]2[bc]"     st = [aaa2], st2 = []
+     *        x
+     *
+     *   "3[a]2[bc]"     st = [aaa2], st2 = []
+     *         x
+     *
+     *    "3[a]2[bc]"     st = [aaa2], st2 = [b]
+     *           x
+     *
+     *    "3[a]2[bc]"     st = [aaa2], st2 = [bc]
+     *            x
+     *    "3[a]2[bc]"     st = [aaabcbc], st2 = []
+     *             x
+     *
+     *   -> ans = aaabcbc
+     */
+    public String decodeString(String s) {
+        // edge
+
+        // var
+        boolean shouldAddToSt2 = false;
+
+        // st1
+        Stack<String> st1 = new Stack<>();
+        // st2
+        Stack<String> st2 = new Stack<>();
+
+        for(char ch: s.toCharArray()){
+            String str = String.valueOf(ch);
+        }
+
+
+        return null;
+    }
+
 
 
 

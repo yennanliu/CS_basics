@@ -42,7 +42,6 @@
 	- LC 20 Valid Parentheses
 		- gpt
 			- 155
-			- 394
 			- 224
 			- 301
 		- gemini
