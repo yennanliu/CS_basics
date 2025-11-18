@@ -174,7 +174,7 @@
 ||Binary search|[Python](./algorithm/python/binary_search.py) | [complexity ref](https://www.geeksforgeeks.org/complexity-analysis-of-binary-search/) | `Best : O(1), Avg : O(log N), Worst : O(log N)` | | | AGAIN| 
 ||Linear search|[Python](./algorithm/python/linear_search.py) | | | | | AGAIN| 
 ||Breadth-first search (BFS)| [Python](./algorithm/python/bfs.py)|`FIND SHORTEST PATH`|| | | AGAIN***| 
-||Depth-first search (DFS) |[Python](./algorithm/python/dfs.py)| `TO CHECK IF SOMETHING EXIST`| `inorder`, `postorder`, `postorder (can recreate a tree)`| | | AGAIN***| 
+||Depth-first search (DFS) |[Python](./algorithm/python/dfs.py)| `TO CHECK IF SOMETHING EXIST`| `inorder`, `postorder`, `postorder (can recreate a tree)`|Adjacency List: `O(V+E)`,  Adjacency Matrix: `O(V^2)`| `O(V)`  (V:Vertices, E:Edges)| AGAIN***| 
 ||Bubble sort| [Python](./algorithm/python/bubble_sort.py)| | | | | OK* (3)|  
 ||Insertion sort| [Python](./algorithm/python/insertion_sort.py), [InsertionSort.java](./leetcode_java/src/main/java/AlgorithmJava/InsertionSort.java)|`stable` sort| work very fast for `nearly sorted` array| `Best :O(n), Average : O(n^2), Worst : O(n^2)`| Worst : O(1)| AGAIN| 
 ||Bucket sort| [Python](./algorithm/python/bucket_sort.py), [BucketSort.java](./leetcode_java/src/main/java/AlgorithmJava/BucketSort.java) | | | | | AGAIN| 
