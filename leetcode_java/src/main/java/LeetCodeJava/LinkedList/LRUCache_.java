@@ -87,7 +87,23 @@ public class LRUCache_ {
      */
     class LRUCache {
         int capacity;
+        /**
+         * map — stores { key → value } pairs for O(1) lookup.
+         */
         Map<Integer, Integer> map;
+        /** NOTE !!!!
+         *
+         *  we use `dequeue` as the core data structure
+         *  for handling below:
+         *
+         *   -> remove a specific item (with value) from dequeue
+         *   -> add a element to the `head` of dequeue
+         */
+        /**
+         * 	•	dq — a double-ended queue storing keys only.
+         *  	•	Front (head) → least recently used (LRU)
+         * 	    •	Back (tail) → most recently used (MRU)
+         */
         Deque<Integer> dq;
 
         public LRUCache(int capacity) {
@@ -103,8 +119,18 @@ public class LRUCache_ {
             // Get the value from the map
             int val = this.map.get(key);
 
+            /** NOTE !!!
+             *
+             *   dequeue feature:
+             *    -> remove a specific item (with value) from dequeue
+             */
             // Update the deque: remove and add the key to mark it as recently used
             this.dq.remove(key);
+            /** NOTE !!!
+             *
+             *   dequeue feature:
+             *    ->  add the end
+             */
             // 1) for dequeue, the `most RECENT` used element is at the `END`
             this.dq.addLast(key);
 
