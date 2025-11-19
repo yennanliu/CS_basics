@@ -41,6 +41,98 @@ public class LeastNumberOfUniqueIntegersAfterKRemovals {
 //
 //    }
 
+    // V0-1
+    // IDEA: HASHMAP + PQ (fixed by gpt)
+    public int findLeastNumOfUniqueInts_0_1(int[] arr, int k) {
+        // edge
+        if (arr == null || arr.length == 0) {
+            return 0;
+        }
+
+        // Count frequencies
+        Map<Integer, Integer> freq = new HashMap<>();
+        for (int x : arr) {
+            freq.put(x, freq.getOrDefault(x, 0) + 1);
+        }
+
+        // Min-heap by frequency
+        PriorityQueue<Integer> pq = new PriorityQueue<>(
+                (a, b) -> freq.get(a) - freq.get(b));
+
+        // Add all unique keys
+        pq.addAll(freq.keySet());
+
+        // Consume removals
+        while (k > 0 && !pq.isEmpty()) {
+            int key = pq.poll();
+            int cnt = freq.get(key);
+
+            if (k >= cnt) {
+                // Remove this number completely
+                k -= cnt;
+                freq.remove(key);
+            } else {
+                // Not enough k to erase this entire number
+                break;
+            }
+        }
+
+        return freq.size();
+    }
+
+    // V0-2
+    // IDEA: MAP + PQ (fixed by gemini)
+    public int findLeastNumOfUniqueInts_0_2(int[] arr, int k) {
+        // Edge case: empty array
+        if (arr == null || arr.length == 0) {
+            return 0;
+        }
+
+        // 1. Calculate Frequencies: { value: count }
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int x : arr) {
+            map.put(x, map.getOrDefault(x, 0) + 1);
+        }
+
+        // If k is 0, the number of unique integers is simply the number of map entries.
+        if (k == 0) {
+            return map.keySet().size();
+        }
+
+        // 2. Build Min Heap: Stores the frequencies (counts) directly.
+        // We only care about the frequencies, not the original integer values.
+        PriorityQueue<Integer> minHeap = new PriorityQueue<>();
+
+        // Add all frequencies to the Min Heap.
+        minHeap.addAll(map.values());
+
+        // 3. Greedy Removal
+        // Iterate while we have removals left and the heap is not empty.
+        while (k > 0 && !minHeap.isEmpty()) {
+
+            // Get the smallest frequency (the type to remove first).
+            int currentFreq = minHeap.poll();
+
+            // If we have enough removals (k) to remove ALL instances of this type:
+            if (k >= currentFreq) {
+                k -= currentFreq;
+                // Since we successfully removed all instances, the number of unique integers
+                // in the map is effectively reduced by 1, but we don't need to manually
+                // update the map or its size variable. The answer is calculated at the end.
+            } else {
+                // If k < currentFreq, we cannot remove ALL instances of this type.
+                // We stop here because all remaining types require more removals than we have.
+                // We also need to re-add the current frequency back since it wasn't fully removed.
+                minHeap.add(currentFreq);
+                break;
+            }
+        }
+
+        // 4. Final Answer
+        // The number of remaining unique integers is simply the number of frequencies left in the heap.
+        return minHeap.size();
+    }
+
     // V1-1
     // IDEA: Sorting the Frequencies
     // https://leetcode.com/problems/least-number-of-unique-integers-after-k-removals/
