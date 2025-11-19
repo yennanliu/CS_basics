@@ -57,15 +57,142 @@ public class InsertDeleteGetRandom0_1 {
      */
 
     // V0
-    // TODO : implement
+    // IDEA: MAP + LIST (fixed by gpt)
     class RandomizedSet {
+
+        // value -> index in list
+        private Map<Integer, Integer> map;
+        private List<Integer> list;
+        private Random rand;
+
+        public RandomizedSet() {
+            map = new HashMap<>();
+            list = new ArrayList<>();
+            rand = new Random();
+        }
+
+        public boolean insert(int val) {
+            if (map.containsKey(val)) return false;
+
+            list.add(val);
+            map.put(val, list.size() - 1);
+            return true;
+        }
+
+        public boolean remove(int val) {
+            if (!map.containsKey(val)) return false;
+
+            int idx = map.get(val);            // index of element to remove
+            int lastVal = list.get(list.size() - 1); // last element
+
+            // Move last element into removed position
+            list.set(idx, lastVal);
+            map.put(lastVal, idx);
+
+            // Remove last element
+            list.remove(list.size() - 1);
+            map.remove(val);
+
+            return true;
+        }
+
+        public int getRandom() {
+            int idx = rand.nextInt(list.size());
+            return list.get(idx);
+        }
+    }
+
+    // V0-1
+    // IDEA: MAP + LIST (fixed by gemini)
+    class RandomizedSet_0_1 {
+
+        // Map: Stores the value and its index in the list. { Value : Index in List }
+        private Map<Integer, Integer> valToIndex;
+
+        // List: Stores the actual elements. Provides O(1) for adding to end and O(1) for getRandom.
+        private List<Integer> list;
+
+        // Random object for O(1) random retrieval.
+        private Random random;
+
+        public RandomizedSet_0_1() {
+            this.valToIndex = new HashMap<>();
+            this.list = new ArrayList<>();
+            this.random = new Random();
+        }
+
+        /**
+         * Inserts a value to the set. Returns true if the set did not already contain the specified element.
+         * Time: O(1)
+         */
+        public boolean insert(int val) {
+            if (valToIndex.containsKey(val)) {
+                return false;
+            }
+
+            // Add the value to the end of the list.
+            list.add(val);
+
+            // Store the value's index in the map.
+            valToIndex.put(val, list.size() - 1);
+
+            return true;
+        }
+
+        /**
+         * Removes a value from the set. Returns true if the set contained the specified element.
+         * Time: O(1)
+         */
+        public boolean remove(int val) {
+            if (!valToIndex.containsKey(val)) {
+                return false;
+            }
+
+            // 1. Get the index of the element to be removed.
+            int indexToRemove = valToIndex.get(val);
+
+            // 2. Get the value of the last element in the list.
+            int lastElement = list.get(list.size() - 1);
+
+            // 3. SWAP: Overwrite the element to be removed with the last element.
+            // This is crucial for O(1) list removal.
+            list.set(indexToRemove, lastElement);
+
+            // 4. UPDATE MAP: Update the index of the swapped last element.
+            valToIndex.put(lastElement, indexToRemove);
+
+            // 5. REMOVE: Remove the duplicate element (which is now at the end).
+            // Removing the last element of an ArrayList is an O(1) operation.
+            list.remove(list.size() - 1);
+
+            // 6. Final cleanup: Remove the target value entry from the map.
+            valToIndex.remove(val);
+
+            return true;
+        }
+
+        /**
+         * Get a random element from the set.
+         * Time: O(1)
+         */
+        public int getRandom() {
+            // Generate a random index within the current bounds of the list.
+            int randomIndex = random.nextInt(list.size());
+
+            // Retrieve the element at that index.
+            return list.get(randomIndex);
+        }
+    }
+
+    // V0-3
+    class RandomizedSet_0_3 {
 
         /** NOTE !!! we use map as storage structure */
         Map<Integer, Integer> map;
         int count;
         Random random;
 
-        public RandomizedSet() {
+        public RandomizedSet_0_3() {
             this.map = new HashMap<>();
             this.count = 0;
             this.random = new Random();
@@ -147,4 +274,7 @@ public class InsertDeleteGetRandom0_1 {
     }
 
     // V2
+
+
+
 }
