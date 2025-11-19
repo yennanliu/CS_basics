@@ -5096,27 +5096,78 @@ public class Workspace18 {
 
 
     // LC 380
+    // 6.45 - 55 am
+    /**
+     *  IDEA 1) math + HASHMAP
+     *
+     *
+     */
     class RandomizedSet {
 
-        public RandomizedSet() {
+        // attr
+        int size;
+        // map: { val : cnt }
+        Map<Integer, Integer> map;
+        //Deque<Integer> deque;
+        List<Integer> list;
 
+        public RandomizedSet() {
+            this.size = 0;
+            this.map = new HashMap<>();
+            //this.deque = new ArrayDeque<>();
+            this.list = new ArrayList<>();
         }
 
         public boolean insert(int val) {
-            return false;
+            if(this.map.containsKey(val)){
+                return false;
+            }
+            this.map.put(val, 0);
+            this.size += 1;
+            //this.deque.add(val);
+            this.list.add(val);
+            return true;
         }
 
         public boolean remove(int val) {
-            return false;
+            if(!this.map.containsKey(val)){
+                return false;
+            }
+            int cnt = this.map.get(val);
+            cnt -= 1;
+            if(cnt == 0){
+                this.map.remove(val);
+               // this.deque.remove(val)
+            }else{
+                this.map.put(val, cnt);
+            }
+            // find the 1st idx of element in list
+            int firstIdx = findFirstIdx(this.list, val);
+            this.list.remove(firstIdx);
+            this.size -= 1;
+            return true;
         }
 
         public int getRandom() {
-            return 0;
+            Random random  = new Random();
+            int idx = random.nextInt(this.list.size()); // ???
+            return this.list.get(idx);
         }
+
+        private int findFirstIdx(List<Integer> list, int val){
+            int res = -1;
+            for(int i = 0; i < list.size(); i++){
+                if(list.get(i) == val){
+                    return i;
+                }
+            }
+            return res; // NOT found
+        }
+
     }
 
 
-    
+
 
 
 
