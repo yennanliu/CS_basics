@@ -268,6 +268,6 @@ public class LongestCommonPrefix {
 
     // V2
 
-    
+
 
 }
