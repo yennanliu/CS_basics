@@ -4826,6 +4826,87 @@ public class Workspace18 {
     }
 
 
+    // LC 14
+    // 8.32 - 42 am
+    /**
+     *  -> Write a function to find the
+     *   `longest common prefix` string amongst an array of strings.
+     *     - if NO common prefix, return ""
+     *
+     *   -----
+     *
+     *    IDEA 1) BRUTE FORCE
+     *
+     *    IDEA 2) TRIE ???
+     *
+     *
+     *   -----
+     *
+     *
+     *   ex 1)
+     *   Input: strs = ["flower","flow","flight"]
+     *   Output: "fl"
+     *
+     *
+     *   -> set = [f, fl, flo, flow, flowe, flower]
+     *
+     *
+     *   ex 2)
+     *   Input: strs = ["dog","racecar","car"]
+     *   Output: ""
+     *
+     */
+    // IDEA 1) BRUTE FORCE
+    public String longestCommonPrefix(String[] strs) {
+        // edge
+        if(strs == null | strs.length <= 1){
+            return "";
+        }
+
+        String res = "";
+
+        // BRUTE FORCE ???
+        // time: O(N ^2) ??
+        HashSet<String> prefixSet = new HashSet<>();
+        String str = strs[0];
+        String tmp = "";
+        for(int i = 0; i < str.length(); i++){
+            String cur = String.valueOf(str.charAt(i));
+            tmp += cur;
+            prefixSet.add(tmp);
+        }
+
+        System.out.println(">>> prefixSet = " + prefixSet);
+
+        for(int i = 1; i < strs.length; i++){
+            // ??
+            String curStr = strs[i];
+            String prefixCache = null; // /??
+            for(String prefix: prefixSet){
+                prefixCache = prefix;
+                if(!containsPrefix(curStr, prefix)){
+                    // early quit, since if one prefix DOES NOT work
+                    // (not the prefix of one str), then that prefix
+                    // if NOT possible to be a common prefix, so we
+                    // quit the following checks.
+                    break;
+                }
+            }
+            if(prefixCache.length() > res.length()){
+                res = prefixCache;
+            }
+        }
+
+        return res;
+    }
+
+    private boolean containsPrefix(String str, String prefix){
+        String sub = str.copyValueOf(str.toCharArray(), 0, prefix.length() - 1);
+        System.out.println(">>> str = " + str +
+                ", sub = " + sub +
+                ", prefix = " + prefix);
+        return sub.equals(prefix);
+    }
 
 
 }

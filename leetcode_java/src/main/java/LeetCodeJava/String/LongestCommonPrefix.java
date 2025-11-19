@@ -1,6 +1,10 @@
 package LeetCodeJava.String;
 
 // https://leetcode.com/problems/longest-common-prefix/description/
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 14. Longest Common Prefix
  * Solved
@@ -43,6 +47,92 @@ public class LongestCommonPrefix {
 //    public String longestCommonPrefix(String[] strs) {
 //
 //    }
+
+    // V0-0-1
+    // IDEA: SET + BRUTE FORCE (fixed by gpt)
+    public String longestCommonPrefix_0_0_1(String[] strs) {
+        // edge
+        if (strs == null || strs.length == 0) {
+            return "";
+        }
+        if (strs.length == 1) {
+            return strs[0];
+        }
+
+        String first = strs[0];
+
+        // Build prefix list from shortest → longest
+        List<String> prefixes = new ArrayList<>();
+        String curr = "";
+        for (int i = 0; i < first.length(); i++) {
+            curr += first.charAt(i);
+            prefixes.add(curr);
+        }
+
+        String res = "";
+
+        // Check common prefix for all others
+        for (String prefix : prefixes) {
+            boolean ok = true;
+
+            for (int i = 1; i < strs.length; i++) {
+                // if prefix longer than word → immediately fail
+                if (strs[i].length() < prefix.length() ||
+                        !strs[i].startsWith(prefix)) {
+
+                    ok = false;
+                    break;
+                }
+            }
+
+            if (!ok)
+                break; // no need checking longer prefixes
+            res = prefix; // update longest match so far
+        }
+
+        return res;
+    }
+
+    // V0-0-2
+    // IDEA: SET + BRUTE FORCE (fixed by gemini)
+    /**
+     * Finds the longest common prefix among a set of strings using the Vertical Scanning approach.
+     * Time Complexity: O(S), where S is the sum of all characters in all strings (in the worst case).
+     * In the best/average case, it's O(N * minLen) where N is array length and minLen is length of shortest string.
+     */
+    public String longestCommonPrefix_0_0_2(String[] strs) {
+        // Edge case: Handle null array, empty array, or single element array.
+        if (strs == null || strs.length == 0) {
+            return "";
+        }
+
+        // The first string is the reference point for the maximum possible common prefix length.
+        String firstStr = strs[0];
+
+        // Iterate through each character of the first string (index 'i').
+        for (int i = 0; i < firstStr.length(); i++) {
+            char currentChar = firstStr.charAt(i);
+
+            // Now, check this character against the corresponding position in all other strings.
+            for (int j = 1; j < strs.length; j++) {
+
+                String currentStr = strs[j];
+
+                // Two break conditions:
+                // 1. The current string is shorter than the current index 'i'.
+                // 2. The character at index 'i' in the current string is NOT the same as the reference character.
+                if (i == currentStr.length() || currentStr.charAt(i) != currentChar) {
+
+                    // If we break, the common prefix is the substring of the first string
+                    // up to the character we just checked (index i).
+                    return firstStr.substring(0, i);
+                }
+            }
+        }
+
+        // If the entire first string is a prefix of all other strings, return the first string.
+        return firstStr;
+    }
 
     // V0-1
     // IDEA: STRING OP (fixed by gpt)
@@ -177,5 +267,7 @@ public class LongestCommonPrefix {
 
 
     // V2
+
+    
 
 }
