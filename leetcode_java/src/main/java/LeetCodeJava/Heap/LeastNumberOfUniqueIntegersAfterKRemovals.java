@@ -56,6 +56,10 @@ public class LeastNumberOfUniqueIntegersAfterKRemovals {
         }
 
         // Min-heap by frequency
+        /** NOTE !!!
+         *
+         *  PQ sort on map val (small -> bit)
+         */
         PriorityQueue<Integer> pq = new PriorityQueue<>(
                 (a, b) -> freq.get(a) - freq.get(b));
 
@@ -63,15 +67,33 @@ public class LeastNumberOfUniqueIntegersAfterKRemovals {
         pq.addAll(freq.keySet());
 
         // Consume removals
+        /** NOTE !!!
+         *
+         *  use `!pq.isEmpty()` as while loop active condition as well
+         */
         while (k > 0 && !pq.isEmpty()) {
             int key = pq.poll();
             int cnt = freq.get(key);
 
+            /** NOTE !!!
+             *
+             *   simple & clean logic:
+             *
+             *   -> ONLY check if `k >= cnt`
+             *     then we can decide whether to move forward (in while loop)
+             *     or break the loop
+             */
             if (k >= cnt) {
                 // Remove this number completely
                 k -= cnt;
                 freq.remove(key);
-            } else {
+            }
+            /** NOTE !!!
+             *
+             *   if k < cnt, means it's NOT possible to do any new `removal` op,
+             *   so we should break the while loop and go return final result
+             */
+            else {
                 // Not enough k to erase this entire number
                 break;
             }

@@ -5039,9 +5039,10 @@ public class Workspace18 {
         if(arr == null || arr.length == 0){
             return 0;
         }
-        if(arr.length == 1){
-            return k == 0 ? 1 : 0;
-        }
+        // ???
+//        if(arr.length == 1){
+//            return k == 0 ? 1 : 0;
+//        }
 
         // { val: cnt}
         Map<Integer, Integer> map = new HashMap<>();
@@ -5070,7 +5071,8 @@ public class Workspace18 {
         }
 
         // do the `remove` op
-        while(k > 0){
+        // NOTE !!! !pq.isEmpty()
+        while(k > 0 && !pq.isEmpty()){
             int curKey = pq.poll();
             // ???
             if(map.get(curKey) > k){
