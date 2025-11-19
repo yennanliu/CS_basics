@@ -148,7 +148,6 @@
 	- LC 621 Task Scheduler
 		- gpt
 		- gemini
-			- 1481
 			- 1647
 			- 1383
 	- LC 355 Design Twitter
