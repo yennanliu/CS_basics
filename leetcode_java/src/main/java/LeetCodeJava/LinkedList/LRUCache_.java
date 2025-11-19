@@ -243,6 +243,129 @@ public class LRUCache_ {
         }
     }
 
+    // V0-3
+    // IDEA: LINED LIST, MAP  (fixed by gpt)
+    class LRUCache_0_0_3 {
+
+        class Node {
+            int key, val;
+            Node prev, next;
+
+            Node(int k, int v) {
+                key = k;
+                val = v;
+            }
+        }
+
+        private final int capacity;
+        private Map<Integer, Node> map;
+        private Node head, tail;
+
+        public LRUCache_0_0_3(int capacity) {
+            this.capacity = capacity;
+            this.map = new HashMap<>();
+
+            // dummy head & tail
+            head = new Node(0, 0);
+            tail = new Node(0, 0);
+            head.next = tail;
+            tail.prev = head;
+        }
+
+        public int get(int key) {
+            if (!map.containsKey(key))
+                return -1;
+
+            Node node = map.get(key);
+            remove(node);
+            addFirst(node);
+
+            return node.val;
+        }
+
+        public void put(int key, int value) {
+            if (map.containsKey(key)) {
+                Node node = map.get(key);
+                node.val = value;
+
+                remove(node);
+                addFirst(node);
+                return;
+            }
+
+            // new key
+            if (map.size() == capacity) {
+                // remove LRU = tail.prev
+                Node lru = tail.prev;
+                remove(lru);
+                map.remove(lru.key);
+            }
+
+            Node newNode = new Node(key, value);
+            addFirst(newNode);
+            map.put(key, newNode);
+        }
+
+        // helper: remove node from list
+        private void remove(Node n) {
+            n.prev.next = n.next;
+            n.next.prev = n.prev;
+        }
+
+        // helper: add to head (most recent)
+        private void addFirst(Node n) {
+            n.next = head.next;
+            n.prev = head;
+            head.next.prev = n;
+            head.next = n;
+        }
+    }
+
+    // V0-4
+    // IDEA: LinkedHashMap (gemini)
+    class LRUCache_0_4 {
+
+        // Use LinkedHashMap which provides O(1) time complexity for put, get, and removal.
+        // It maintains insertion order by default, but we will configure it for access order.
+        private LinkedHashMap<Integer, Integer> cache;
+        private int capacity;
+
+        public LRUCache_0_4(int capacity) {
+            this.capacity = capacity;
+
+            // Initialize LinkedHashMap:
+            // 1. initialCapacity: size of the map (can be anything reasonable)
+            // 2. loadFactor: standard 0.75f
+            // 3. accessOrder: TRUE means the linked list part is ordered by access (LRU),
+            //    where accessed/modified entries move to the end (MRU side).
+            this.cache = new LinkedHashMap<Integer, Integer>(capacity, 0.75f, true) {
+
+                // Override this method to remove the oldest entry when the cache exceeds capacity.
+                // This method is called after a put/putAll operation.
+                @Override
+                protected boolean removeEldestEntry(Map.Entry<Integer, Integer> eldest) {
+                    // Return true if the map size is greater than the specified capacity.
+                    return size() > LRUCache_0_4.this.capacity;
+                }
+            };
+        }
+
+        public int get(int key) {
+            // LinkedHashMap's get() method automatically moves the accessed entry
+            // to the MRU end when accessOrder=true.
+            return cache.getOrDefault(key, -1);
+        }
+
+        public void put(int key, int value) {
+            // LinkedHashMap's put() method handles three things:
+            // 1. If key exists, it updates the value AND moves the entry to the MRU end.
+            // 2. If key doesn't exist, it adds the new entry to the MRU end.
+            // 3. It calls removeEldestEntry() to handle capacity overflow.
+            cache.put(key, value);
+        }
+    }
+
+
     // V1-1
     // https://youtu.be/7ABFKPK2hD4?feature=shared
     // https://neetcode.io/problems/lru-cache
@@ -474,5 +597,8 @@ public class LRUCache_ {
         }
 
     }
+
+
+
 
 }

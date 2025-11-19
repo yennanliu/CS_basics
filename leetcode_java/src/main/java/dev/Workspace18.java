@@ -4908,5 +4908,88 @@ public class Workspace18 {
         return sub.equals(prefix);
     }
 
+    // LC 146
+    // 9.07 - 37 am
+    /**
+     *  -> Implement the LRUCache class:
+     *     - (Least Recently Used (LRU) cache.)
+     *
+     *      - capacity: size
+     *      - get(int key) Return the value of the key, otherwise -1
+     *      - void put(int key, int value) Update the value of the key if the key
+     *
+     *    - NOTE
+     *      - get and put must each run in O(1) average time complexity.
+     *
+     *
+     *
+     *  ----------------
+     *
+     *
+     *   IDEA 1) QUEUE (FIFO)
+     *     -> so can make below property
+     *      - least recent used cache (LRU)
+     *
+     *
+     *
+     */
+    class LRUCache {
+
+        // attr
+        int capacity;
+
+        //Queue<Integer> queue;
+        // Queue: { [k1-v1], [k2-v2], ... } ???
+        Queue<String> queue;
+
+        int size;
+        //Map<Integer, Integer>
+        // ??? map : { k1 : queue[v1, v2, ...], k2: queue[v4, v5, ...], ...}
+        Map<Integer, Queue<Integer>> map;
+
+        public LRUCache(int capacity) {
+            this.capacity = capacity;
+            this.size = 0;
+            this.queue = new LinkedList<>();
+        }
+
+        public int get(int key) {
+            if(this.queue.isEmpty()){
+                return -1;
+            }
+            if(!this.map.containsKey(key)){
+                return -1;
+            }
+            Queue<Integer> q = this.map.get(key);
+            if(q.isEmpty()){
+                return -1;
+            }
+            int val = q.poll();
+            // ????
+            String record = String.valueOf(key) + "-" + String.valueOf(val);
+            this.queue.add(record);
+
+            return val;
+        }
+
+        public void put(int key, int value) {
+            while(this.queue.size() > capacity){
+                this.queue.poll();
+            }
+            if(!this.map.containsKey(key)){
+                this.map.put(key, new LinkedList<>());
+            }
+            // update map
+            Queue<Integer> q = this.map.get(key);
+            q.add(value);
+            this.map.put(key, q);
+            this.size += 1;
+        }
+
+
+    }
+
+
+
 
 }
