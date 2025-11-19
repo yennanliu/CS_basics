@@ -57,9 +57,23 @@ public class InsertDeleteGetRandom0_1 {
      */
 
     // V0
-    // IDEA: MAP + LIST (fixed by gpt)
+    // IDEA: MAP + LIST LAST ELEMENT SWAP (fixed by gpt)
+    /**
+     *  NOTE !!!
+     *
+     *   bool insert(int val) Inserts an item val into the set if not present. Returns true if the item was not present, false otherwise.
+     *
+     *   -> so we ONLY insert a val if cur map DOES NOT have it
+     *   -> within the op, the map has AT MOST 1 such val
+     *   -> so that's why we can have such logic in the below delete op
+     */
     class RandomizedSet {
 
+        /**
+         *  NOTE !!!
+         *
+         *   map: { val : idx_in_list }
+         */
         // value -> index in list
         private Map<Integer, Integer> map;
         private List<Integer> list;
@@ -79,6 +93,15 @@ public class InsertDeleteGetRandom0_1 {
             return true;
         }
 
+        /**
+         *  NOTE !!!
+         *
+         *   the remove logic
+         *
+         *   -> 1. find idx of given val
+         *      2. swap with last element
+         *      3. remove from list, update map
+         */
         public boolean remove(int val) {
             if (!map.containsKey(val)) return false;
 
@@ -103,7 +126,16 @@ public class InsertDeleteGetRandom0_1 {
     }
 
     // V0-1
-    // IDEA: MAP + LIST (fixed by gemini)
+    // IDEA: MAP + LIST LAST ELEMENT SWAP  (fixed by gemini)
+    /**
+     *  NOTE !!!
+     *
+     *   bool insert(int val) Inserts an item val into the set if not present. Returns true if the item was not present, false otherwise.
+     *
+     *   -> so we ONLY insert a val if cur map DOES NOT have it
+     *   -> within the op, the map has AT MOST 1 such val
+     *   -> so that's why we can have such logic in the below delete op
+     */
     class RandomizedSet_0_1 {
 
         // Map: Stores the value and its index in the list. { Value : Index in List }
@@ -185,6 +217,7 @@ public class InsertDeleteGetRandom0_1 {
     }
 
     // V0-3
+    // IDEA: MAP + LIST
     class RandomizedSet_0_3 {
 
         /** NOTE !!! we use map as storage structure */
