@@ -4991,10 +4991,109 @@ public class Workspace18 {
 
 
     // LC 1481
+    // 11.08 - 18 am
+    /**
+     *  -> Find the LEAST number of UNIQUE integers
+     *    after removing exactly k elements.
+     *
+     *    - arr: array
+     *    - k: int
+     *
+     *
+     *   ------
+     *
+     *
+     *   IDEA 1) heap + hashmap
+     *      -> sort on cnt
+     *      -> (small -> big)
+     *
+     *  IDEA 2) brute force ????
+     *
+     *  IDEA 3) dp ???
+     *
+     *
+     *   ------
+     *
+     *
+     *   ex 1)
+     *   Input: arr = [5,5,4], k = 1
+     *   Output: 1
+     *
+     *   -> map: {5: 2, 4: 1}
+     *   -> remove, map: { 4: 1}
+     *
+     *  ex 2)
+     *   Input: arr = [4,3,1,1,3,3,2], k = 3
+     *   Output: 2
+     *
+     *   -> map: {4:1, 3:3, 1:2, 2: 1}
+     *   -> remove,   map:     {4:1, 3:3}
+     *                     or {4:1, 1:2, 2: 1}
+     *                     or {3:3, 2: 1}
+     *
+     *
+     */
+    // IDEA 1) heap + hashmap
     public int findLeastNumOfUniqueInts(int[] arr, int k) {
+        // edge
+        if(arr == null || arr.length == 0){
+            return 0;
+        }
+        if(arr.length == 1){
+            return k == 0 ? 1 : 0;
+        }
 
-        return 0;
+        // { val: cnt}
+        Map<Integer, Integer> map = new HashMap<>();
+        for(int x: arr){
+            map.put(x, map.getOrDefault(x, 0) + 1);
+        }
+
+        if(k == 0){
+            return map.keySet().size();
+        }
+
+        // PQ: { k_1, k_2, ... }
+        // sort on map cnt (small -> big)
+        // ???
+        PriorityQueue<Integer> pq = new PriorityQueue<>(new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                int diff = map.get(o1) - map.get(o2);
+                return diff;
+            }
+        });
+
+        // add key to PQ
+        for(Integer key: map.keySet()){
+            pq.add(key);
+        }
+
+        // do the `remove` op
+        while(k > 0){
+            int curKey = pq.poll();
+            // ???
+            if(map.get(curKey) > k){
+                return map.keySet().size();
+            }
+            int val = map.get(curKey);
+            k -= val;
+            if(k <= 0){
+                return map.keySet().size();
+            }else{
+                if(val == 0){
+                    map.remove(curKey);
+                }else{
+                    map.put(curKey, val - k);
+                }
+            }
+        }
+
+        return map.keySet().size(); // ???
     }
+
+
+
 
 
 
