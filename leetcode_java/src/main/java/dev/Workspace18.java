@@ -5167,6 +5167,48 @@ public class Workspace18 {
     }
 
 
+    // LC 359
+    // 6.55 - 7.05 AM
+    /**
+     *  -> implement the Logger class
+     *
+     *   - ach unique message should only be printed at most every 10 seconds
+     *      (i.e. a message printed at timestamp t will prevent other
+     *      identical messages from being printed until timestamp t + 10).
+     *
+     *   - msg comes in chronological order
+     *   - several msg may arrive at THE SAME TIME
+     *
+     *
+     *  --------
+     *
+     *
+     *  IDEA 1) HASHMAP + MATH
+     *
+     *
+     *
+     */
+    class Logger {
+
+        // attr
+        private Map<String, Integer> limiter;
+
+        /** Initialize your data structure here. */
+        public Logger() {
+            // init
+            this.limiter = new HashMap<>();
+        }
+
+        public boolean shouldPrintMessage(int timestamp, String message) {
+            if(this.limiter.isEmpty() || timestamp <= this.limiter.get(message)){
+                this.limiter.put(message, timestamp + 10);
+                return true;
+            }
+            return false;
+        }
+
+
+    }
 
 
 
