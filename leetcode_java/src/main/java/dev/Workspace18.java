@@ -5210,6 +5210,57 @@ public class Workspace18 {
 
     }
 
+    // LC 362
+    // 7.24 - 34 AM
+    /**
+     *  -> Design a hit counter which counts the
+     *     number of hits received in the past 5 minutes
+     *     (i.e., the past 300 seconds).
+     *
+     *
+     *  --------
+     *
+     *    - IDEA: HASHMAP
+     *
+     */
+    class HitCounter {
+
+        // attr
+        private Map<Integer, Integer> counter;
+
+        // constructor
+        /** Initialize your data structure here. */
+        public HitCounter() {
+            this.counter = new HashMap<>();
+        }
+
+        // method
+        /**
+         Record a hit.
+         @param timestamp - The current timestamp (in seconds granularity).
+         */
+        public void hit(int timestamp) {
+            this.counter.put(timestamp,
+                    this.counter.getOrDefault(timestamp, 0) + 1
+            );
+        }
+
+        /**
+         Return the number of hits in the past 5 minutes.
+         @param timestamp - The current timestamp (in seconds granularity).
+         */
+        public int getHits(int timestamp) {
+            int cnt = 0;
+            for(int key: this.counter.keySet()){
+                if(key <= timestamp){
+                    cnt += 1;
+                }
+            }
+            return cnt;
+        }
+
+    }
+
 
 
 

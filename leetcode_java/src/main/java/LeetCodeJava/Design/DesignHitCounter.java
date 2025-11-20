@@ -3,9 +3,7 @@ package LeetCodeJava.Design;
 // https://leetcode.com/problems/design-hit-counter/description/
 // https://leetcode.ca/all/362.html
 
-import java.util.ArrayDeque;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 362. Design Hit Counter
@@ -91,6 +89,78 @@ public class DesignHitCounter {
                 }
             }
             return val;
+        }
+    }
+
+    // V0-1
+    // IDEA: HASHMAP (fixed by gpt)
+    class HitCounter_0_1 {
+
+        private Map<Integer, Integer> counter;
+
+        public HitCounter_0_1() {
+            this.counter = new HashMap<>();
+        }
+
+        public void hit(int timestamp) {
+            counter.put(timestamp, counter.getOrDefault(timestamp, 0) + 1);
+        }
+
+        public int getHits(int timestamp) {
+            int sum = 0;
+
+            // Only count hits in the past 300 seconds
+            for (int t : counter.keySet()) {
+                if (t > timestamp - 300 && t <= timestamp) {
+                    sum += counter.get(t);
+                }
+            }
+
+            return sum;
+        }
+    }
+
+    // V0-2
+    // IDEA: QUEUE (fixed by gemini)
+    class HitCounter_0_2 {
+
+        // attr: Queue to store the timestamp of every single hit recorded.
+        // This forms the basis of the sliding window.
+        private final Queue<Integer> hits;
+
+        // constructor
+        /** Initialize your data structure here. */
+        public HitCounter_0_2() {
+            this.hits = new LinkedList<>();
+        }
+
+        // method
+        /**
+         * Record a hit.
+         * @param timestamp - The current timestamp (in seconds granularity).
+         */
+        public void hit(int timestamp) {
+            // Simple O(1) operation: just record the time of the hit.
+            this.hits.add(timestamp);
+        }
+
+        /**
+         * Return the number of hits in the past 5 minutes (300 seconds).
+         * @param timestamp - The current timestamp (in seconds granularity).
+         */
+        public int getHits(int timestamp) {
+
+            // Remove all outdated timestamps from the front of the queue (sliding window)
+            // The earliest valid time is 300 seconds before the current timestamp.
+            int earliestValidTime = timestamp - 300;
+
+            // O(N) in worst case (if all hits are outdated), but O(1) amortized
+            while (!hits.isEmpty() && hits.peek() <= earliestValidTime) {
+                hits.poll(); // Remove the outdated hit
+            }
+
+            // The size of the remaining queue is the number of hits in the last 300 seconds.
+            return hits.size();
         }
     }
 
@@ -202,4 +272,6 @@ public class DesignHitCounter {
 
 
     // V2
+
+    
 }
