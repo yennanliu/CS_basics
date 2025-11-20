@@ -1,6 +1,6 @@
 # Progress
 
-# 2025-11-20
+# 2025-11-21
 
 - LC weekly 345
 - weekly video
@@ -152,7 +152,6 @@
 			- 1383
 	- LC 355 Design Twitter
 		- gpt
-			- 359
 			- 362
 			- 642
 			- 432
@@ -165,7 +164,7 @@
 			- 706
 			- 981
 			- 315
-	- Backtracking (pass, do `LC similar` later)
+	- Backtracking (not yet, do `LC similar` later)
 	- LC 208 Implement Trie (Prefix Tree)
 		- gpt
 			- 211

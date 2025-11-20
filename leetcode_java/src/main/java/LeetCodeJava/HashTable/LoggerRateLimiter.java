@@ -75,6 +75,90 @@ public class LoggerRateLimiter {
 
     }
 
+    // V0-1
+    // IDEA: HASHMAP (fixed by gemini)
+    class Logger_0_1 {
+
+        // attr: Stores the next allowable timestamp for each message
+        private final Map<String, Integer> limiter;
+
+        /** Initialize your data structure here. */
+        public Logger_0_1() {
+            // init
+            this.limiter = new HashMap<>();
+        }
+
+        /**
+         * Returns true if the message should be printed in the given timestamp, otherwise returns false.
+         * If the message has not been printed before OR the current timestamp is >= its next allowable print time,
+         * update the map and return true.
+         */
+        public boolean shouldPrintMessage(int timestamp, String message) {
+
+            // 1. Check if the message has been seen before
+            if (!this.limiter.containsKey(message)) {
+                // Case A: First time seeing this message
+
+                // Allow printing and set the next allowable timestamp (current + 10)
+                this.limiter.put(message, timestamp + 10);
+                return true;
+
+            } else {
+                // Case B: Message has been seen, check the time limit
+
+                int nextAllowableTime = this.limiter.get(message);
+
+                // Check if the current timestamp is GREATER THAN OR EQUAL TO the next allowable time
+                if (timestamp >= nextAllowableTime) {
+
+                    // Allow printing and update the next allowable timestamp
+                    this.limiter.put(message, timestamp + 10);
+                    return true;
+                } else {
+                    // The message is rate-limited
+                    return false;
+                }
+            }
+        }
+    }
+    /**
+     * Your Logger object will be instantiated and called as such:
+     * Logger obj = new Logger();
+     * boolean param_1 = obj.shouldPrintMessage(timestamp,message);
+     */
+
+    // V0-2
+    // IDEA: HASHMAP (fixed by gpt)
+    class Logger_0_2 {
+
+        private Map<String, Integer> limiter;
+
+        public Logger_0_2() {
+            this.limiter = new HashMap<>();
+        }
+
+        public boolean shouldPrintMessage(int timestamp, String message) {
+            // if message was never logged before
+            if (!this.limiter.containsKey(message)) {
+                this.limiter.put(message, timestamp + 10);
+                return true;
+            }
+
+            // get the next allowed time
+            int nextAllowed = this.limiter.get(message);
+
+            // if current time is >= next allowed time → we can print
+            if (timestamp >= nextAllowed) {
+                this.limiter.put(message, timestamp + 10);
+                return true;
+            }
+
+            // else → cannot print
+            return false;
+        }
+    }
+
+
     // V1
     class Logger_1 {
 
@@ -100,6 +184,9 @@ public class LoggerRateLimiter {
         }
     }
 
+
     // V2
+
+
 
 }
