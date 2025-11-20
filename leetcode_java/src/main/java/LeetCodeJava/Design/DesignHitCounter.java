@@ -164,6 +164,36 @@ public class DesignHitCounter {
         }
     }
 
+    // V0-3
+    // IDEA: HASHMAP
+    class HitCounter_0_3{
+
+        private Map<Integer, Integer> counter;
+
+        public HitCounter_0_3() {
+            this.counter = new HashMap<>();
+        }
+
+        public void hit(int timestamp) {
+            counter.put(timestamp, counter.getOrDefault(timestamp, 0) + 1);
+        }
+
+        public int getHits(int timestamp) {
+            int cnt = 0;
+
+            int start = Math.max(1, timestamp - 299); // inclusive: last 300 sec
+            int end = timestamp;
+
+            for (int key : counter.keySet()) {
+                if (key >= start && key <= end) {
+                    cnt += counter.get(key);
+                }
+            }
+
+            return cnt;
+        }
+    }
+
     // V1-1
     // https://leetcode.ca/2016-11-26-362-Design-Hit-Counter/
     public class HitCounter_1_1 {
@@ -273,5 +303,5 @@ public class DesignHitCounter {
 
     // V2
 
-    
+
 }
