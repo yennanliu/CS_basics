@@ -5252,8 +5252,12 @@ public class Workspace18 {
         public int getHits(int timestamp) {
             int cnt = 0;
             for(int key: this.counter.keySet()){
-                if(key <= timestamp){
-                    cnt += 1;
+                // ???
+                int start = timestamp > 300 ? timestamp - 300 : 0;
+                int end = timestamp;
+                if(key > start && key <= end){
+                    //cnt += 1;
+                    cnt += this.counter.get(key);
                 }
             }
             return cnt;
