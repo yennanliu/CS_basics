@@ -1325,10 +1325,36 @@ public class Workspace18 {
 
 
     // LC 1145
-//    public boolean btreeGameWinningMove(TreeNode root, int n, int x) {
-//
-//        return false;
-//    }
+    // 7.48 - 58 am
+    /**
+     *
+     *  ----
+     *
+     *  IDEA 1) DFS
+     *
+     *
+     **/
+    public boolean btreeGameWinningMove(TreeNode root, int n, int x) {
+
+        return false;
+    }
+
+    private TreeNode getFirstPlayerFirstNode(TreeNode root, int x){
+
+        return null;
+    }
+
+    private int getSubNodeCnt(TreeNode root){
+
+        return 0;
+    }
+
+
+
+
+
+
+
 
     // LC 2640
     // 6.30 - 40 am
