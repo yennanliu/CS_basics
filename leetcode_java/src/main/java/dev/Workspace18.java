@@ -1334,19 +1334,58 @@ public class Workspace18 {
      *
      *
      **/
+    // 9.45 am
     public boolean btreeGameWinningMove(TreeNode root, int n, int x) {
+        // edge
 
-        return false;
+        // get player1 's `first` node
+        TreeNode xNode = getFirstPlayerFirstNode(root, x);
+
+        // ???
+        int leftCnt = getSubNodeCnt(xNode.left);
+        int rightCnt = getSubNodeCnt(xNode.left);
+
+        // ??? same as getSubNodeCnt(xNode) ????
+        int player1Cnt =  leftCnt + rightCnt + 1; // ???
+
+        // ??? player2Cnt ????
+        int player2Cnt = Math.max(
+                Math.max(leftCnt, rightCnt),
+                n - player1Cnt
+        );
+
+        // get the `max color node` that player 1 can make ????
+        //int maxPlayer1NodeCnt = getSubNodeCnt(player1FirstNode);
+
+        // check if there is a possibility that player 2 can win
+        // case 1)
+//        if(n - maxPlayer1NodeCnt > n / 2){
+//            return true;
+//        }
+        //if()
+
+        return player2Cnt > n / 2;
     }
 
     private TreeNode getFirstPlayerFirstNode(TreeNode root, int x){
+        if(root == null){
+            return null; // /??
+        }
+        if(root.val == x){
+            return root;
+        }
+        TreeNode left = getFirstPlayerFirstNode(root.left, x);
+        TreeNode right = getFirstPlayerFirstNode(root.right, x);
 
-        return null;
+        return left != null ? left :right; // ??
     }
 
+    // ??
     private int getSubNodeCnt(TreeNode root){
-
-        return 0;
+        if(root == null){
+            return 0;
+        }
+        return 1 + getSubNodeCnt(root.left) + getSubNodeCnt(root.right);
     }
 
 

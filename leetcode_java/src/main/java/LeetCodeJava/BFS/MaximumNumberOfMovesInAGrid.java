@@ -274,7 +274,7 @@ public class MaximumNumberOfMovesInAGrid {
      *
      *
      *   e.g.:
-     *   
+     *
      *    We through grids, check `layer by layer`
      *
      *    step 1)
