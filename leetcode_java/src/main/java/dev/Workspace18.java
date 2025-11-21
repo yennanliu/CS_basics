@@ -898,10 +898,63 @@ public class Workspace18 {
      *
      *   IDEA 1) DFS
      */
+    // IDEA: DFS
+    public boolean isBipartite(int[][] graph) {
+        int n = graph.length;
+        // 0 = uncolored
+        // 1 = color A
+        // -1 = color B
+
+        int[] colors = new int[n];
+        // init with color = 0
+        Arrays.fill(colors, 0); // ???
+
+        for(int i = 0; i < n; i++){
+            // dfsColor(Map<Integer, int[]> map, Integer node, int[] colors, int color)
+            // NOTE !!! ONLY proceed to dfs if NOT yet colored
+            if(colors[i] == 0){
+                if(!dfsColor(graph, i, colors, 1)){
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    private boolean dfsColor(int[][] graph, Integer node, int[] colors, int newColor){
+
+        if(colors[node] != 0){
+            return colors[node] == newColor;
+        }
+
+        // color node
+        colors[node] = newColor;
+
+        // loop over neighbor
+        //int[] z = graph[node];
+        for(int next: graph[node]){
+//            if(colors[next] != 0){
+//                if(!dfsColor(graph, next, colors, -1 * newColor)){
+//                    return false;
+//                }
+//            }
+            if(!dfsColor(graph, next, colors, -1 * newColor)){
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+
+
+
+
 
     // IDEA: DFS
     // 9.58 - 10.08 am
-    public boolean isBipartite(int[][] graph) {
+    public boolean isBipartite_99(int[][] graph) {
         // edge
 
         // build graph
@@ -921,9 +974,9 @@ public class Workspace18 {
             // dfsColor(Map<Integer, int[]> map, Integer node, Integer[] colors, int color)
             // first color : 1  (color A)
             // 2nd color: -1 (color B)
-            if(!dfsColor(map, node, colors, 1)){
-                return false;
-            }
+//            if(!dfsColor(map, node, colors, 1)){
+//                return false;
+//            }
         }
 
         return true;
@@ -940,25 +993,30 @@ public class Workspace18 {
      *      *       into 2 group ???
      *
      */
-    private boolean dfsColor(Map<Integer, int[]> map, Integer node, Integer[] colors, int color){
+    private boolean dfsColor_99(Map<Integer, int[]> map, Integer node, Integer[] colors, int color){
         // edge
 //        if(node == null){
 //            return true; // ???
 //        }
-        if(color != 0){
-//            if(color != colors[node]){
-//                return false;
-//            }
-            return color == colors[node]; // ??
-        }
+
+        // ???
+//        if(color != 0){
+////            if(color != colors[node]){
+////                return false;
+////            }
+//            return color == colors[node]; // ??
+//        }
 
         // color now
         colors[node] = color;
 
         // visit neighbor
         for(int next: map.get(node)){
-            if(!dfsColor(map, next, colors, -1 * color)){
-                return false;
+            // NOTE !!! ONLY color the `non colored` node
+            if(colors[next] == 0){
+                if(!dfsColor_99(map, next, colors, -1 * color)){
+                    return false;
+                }
             }
         }
 

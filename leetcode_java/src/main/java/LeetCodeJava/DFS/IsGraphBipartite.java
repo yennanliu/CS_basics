@@ -141,8 +141,74 @@ public class IsGraphBipartite {
     }
 
     // V0-0-1
-    // IDEA: DFS (fixed by gpt)
+    // IDEA: DFS
     public boolean isBipartite_0_0_1(int[][] graph) {
+        int n = graph.length;
+        // 0 = uncolored
+        // 1 = color A
+        // -1 = color B
+
+        int[] colors = new int[n];
+        // init with color = 0
+        Arrays.fill(colors, 0);
+
+        for (int i = 0; i < n; i++) {
+            // dfsColor(Map<Integer, int[]> map, Integer node, int[] colors, int color)
+            /** NOTE !!!
+             *
+             * NOTE !!! ONLY proceed to dfs if NOT yet colored
+             */
+            if (colors[i] == 0) {
+                if (!dfsColor(graph, i, colors, 1)) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    private boolean dfsColor(int[][] graph, Integer node, int[] colors, int newColor) {
+
+        /** NOTE !!!
+         *
+         * NOTE !!!  if the node already colored
+         *           -> we check if there a CONFLICTION,
+         *              e.g. if the cur color DOES NOT equal to the newColor
+         */
+        if (colors[node] != 0) {
+            return colors[node] == newColor;
+        }
+
+        // color node
+        colors[node] = newColor;
+
+        // loop over neighbor
+        //int[] z = graph[node];
+        for (int next : graph[node]) {
+            /** NOTE !!!
+             *
+             * NOTE !!! DON'T NEED below if logic.
+             *
+             *   e.g.  below is WRONG:
+             *
+             *    if(colors[next] != 0){....}
+             *
+             *    -> since what we need is coloring the `non color` node
+             *       , which has color = 0,
+             *       the `if logic` block that process
+             */
+            if (!dfsColor(graph, next, colors, -1 * newColor)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    // V0-0-2
+    // IDEA: DFS (fixed by gpt)
+    public boolean isBipartite_0_0_2(int[][] graph) {
         int n = graph.length;
         // 0 = uncolored, 1 = color A, -1 = color B
         int[] color = new int[n];
