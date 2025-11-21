@@ -108,14 +108,39 @@ public class BinaryTreeColoringGame {
         int rightSubtreeCount = getSubNodeCount(xNode.right);
 
         // Player 1's count is the sum of nodes in x's left and right subtrees + x itself
+        // NOTE !!! below code works as well (V1)
+        // V1
+        //int player1Cnt = getSubNodeCount(xNode);
+        // V2
         int player1Cnt = leftSubtreeCount + rightSubtreeCount + 1;
 
-        // Player 2 can choose any one of the three options:
+        /**
+         *  NOTE !!! core of the logic:
+         *
+         *   player 2 can choose either one of below:
+         *
+         *    1.  The left subtree of x
+         *    2.  The right subtree of x
+         *    3.  Everything else (which is n - player1Cnt)
+         *
+         *    -> so for 1, 2, we use `max(leftSubtreeCount, rightSubtreeCount)`
+         *    -> for 3, we use `n - player1Cnt`
+         *
+         *    -> then we get the max val over (1,2) and 3
+         *
+         *    -> finally check if the `max val` can  > n / 2
+         *       (e.g. if player 2 can win)
+         *
+         */
+        // `Player 2` can choose any one of the three options:
         // 1. The left subtree of x
         // 2. The right subtree of x
         // 3. Everything else (which is n - player1Cnt)
         // NOTE !!! : below code get max val from 3 values (e.g. : leftSubtreeCount, rightSubtreeCount, n - player1Cnt)
-        int player2MaxCnt = Math.max(Math.max(leftSubtreeCount, rightSubtreeCount), n - player1Cnt);
+        int player2MaxCnt = Math.max(
+                Math.max(leftSubtreeCount, rightSubtreeCount),
+                n - player1Cnt
+        );
 
         /** NOTE !!!
          *
