@@ -875,75 +875,169 @@ public class Workspace18 {
      *  IDEA 2) BFS ???
      *
      *
+     *
+     *  -> Return true if and only if it is bipartite.
+     *
+     *    - node: 0 to n - 1
+     *    - 2D array: graph
+     *       - graph[u]: adjacent nodes to node u (array of node)
+     *
+     *     - NO self-edges (graph[u] DOES NOT contain u).
+     *     - NO parallel edges (graph[u] DOES NOT contain duplicate values).
+     *     - IF v is in graph[u], then u is in graph[v]
+     *     - there may be two nodes u and v such that
+     *        there is NO path between them.
+     *
+     *
+     *     -  graph is bipartite:
+     *        -> if the node can be partitioned into
+     *           2 dep sets A, B
+     *
+     *
+     *  -----------------
+     *
+     *   IDEA 1) DFS
      */
-    // 11.05 - 15 am
+
+    // IDEA: DFS
+    // 9.58 - 10.08 am
     public boolean isBipartite(int[][] graph) {
         // edge
-        if (graph == null || graph.length == 0) {
-            return true;
-        }
-        // ???
-        if(graph.length == 1 || graph[0].length == 1){
-            return true;
-        }
 
-        Set<Integer> set = new HashSet<>();
-        for(int[] g: graph){
-            set.add(g[0]);
-            set.add(g[1]);
+        // build graph
+        // map : { node1 : [node2, node3, ..] }
+        Map<Integer, int[]> map = new HashMap<>();
+        for(int i = 0; i < graph.length; i++){
+            int[] cur = graph[i];
+            map.put(i, cur); // ???
         }
 
-        /** team status
-         *
-         *  - 0: NOT assigned
-         *  - 1: team A
-         *  - -1: team B
-         */
-        int[] teamStatus = new int[set.size()];
+        Integer[] colors = new Integer[map.keySet().size()];
+        // init with color = 0
+        Arrays.fill(colors, 0); // ???
 
-        // neighbor map
-        Map<Integer, List<Integer>> map = new HashMap<>();
-        for(int i = 0; i < set.size(); i++){
-            map.put(i, new ArrayList<>());
-        }
-        // update map
-        for(int[] g: graph){
-            int from = g[0];
-            // ???
-            for(int i = 1; i < g.length; i++){
-                map.get(from).add(g[i]);
-            }
-        }
-
-        System.out.println(">>> map = " + map + ", teamStatus = " + teamStatus);
-
-        for(int i = 0; i < set.size(); i++){
-            if(teamStatus[i] == 0){
-                if(!isBipartiteHelper(i, teamStatus, map, 1)){
-                    return false;
-                }
-            }
-        }
-
-        return true;
-    }
-
-
-    private boolean isBipartiteHelper(int node, int[] teamStatus, Map<Integer, List<Integer>> map, int team){
-        if(teamStatus[node] != 0){
-            return teamStatus[node] == team;
-        }
-        // color (assign to team)
-        teamStatus[node] = team;
-        // loop over neighbors
-        for(int neighbor: map.get(node)){
-            if(!isBipartiteHelper(neighbor, teamStatus, map, -1 * team)){
+        // ????
+        for(Integer node: map.keySet()){
+            // dfsColor(Map<Integer, int[]> map, Integer node, Integer[] colors, int color)
+            // first color : 1  (color A)
+            // 2nd color: -1 (color B)
+            if(!dfsColor(map, node, colors, 1)){
                 return false;
             }
         }
 
         return true;
     }
+
+    // dfs helper
+    /**
+     *    *  IDEA 1) DFS
+     *      *    - 3 states:
+     *      *      - 0: not visited
+     *      *      - 1: visiting
+     *      *      - 2: visited
+     *      *    -> via DFS, we can check if it's possible to split graph
+     *      *       into 2 group ???
+     *
+     */
+    private boolean dfsColor(Map<Integer, int[]> map, Integer node, Integer[] colors, int color){
+        // edge
+//        if(node == null){
+//            return true; // ???
+//        }
+        if(color != 0){
+//            if(color != colors[node]){
+//                return false;
+//            }
+            return color == colors[node]; // ??
+        }
+
+        // color now
+        colors[node] = color;
+
+        // visit neighbor
+        for(int next: map.get(node)){
+            if(!dfsColor(map, next, colors, -1 * color)){
+                return false;
+            }
+        }
+
+        // ???
+        return true;
+    }
+
+
+
+
+
+    // 11.05 - 15 am
+//    public boolean isBipartite(int[][] graph) {
+//        // edge
+//        if (graph == null || graph.length == 0) {
+//            return true;
+//        }
+//        // ???
+//        if(graph.length == 1 || graph[0].length == 1){
+//            return true;
+//        }
+//
+//        Set<Integer> set = new HashSet<>();
+//        for(int[] g: graph){
+//            set.add(g[0]);
+//            set.add(g[1]);
+//        }
+//
+//        /** team status
+//         *
+//         *  - 0: NOT assigned
+//         *  - 1: team A
+//         *  - -1: team B
+//         */
+//        int[] teamStatus = new int[set.size()];
+//
+//        // neighbor map
+//        Map<Integer, List<Integer>> map = new HashMap<>();
+//        for(int i = 0; i < set.size(); i++){
+//            map.put(i, new ArrayList<>());
+//        }
+//        // update map
+//        for(int[] g: graph){
+//            int from = g[0];
+//            // ???
+//            for(int i = 1; i < g.length; i++){
+//                map.get(from).add(g[i]);
+//            }
+//        }
+//
+//        System.out.println(">>> map = " + map + ", teamStatus = " + teamStatus);
+//
+//        for(int i = 0; i < set.size(); i++){
+//            if(teamStatus[i] == 0){
+//                if(!isBipartiteHelper(i, teamStatus, map, 1)){
+//                    return false;
+//                }
+//            }
+//        }
+//
+//        return true;
+//    }
+//
+//
+//    private boolean isBipartiteHelper(int node, int[] teamStatus, Map<Integer, List<Integer>> map, int team){
+//        if(teamStatus[node] != 0){
+//            return teamStatus[node] == team;
+//        }
+//        // color (assign to team)
+//        teamStatus[node] = team;
+//        // loop over neighbors
+//        for(int neighbor: map.get(node)){
+//            if(!isBipartiteHelper(neighbor, teamStatus, map, -1 * team)){
+//                return false;
+//            }
+//        }
+//
+//        return true;
+//    }
 
 
 
@@ -5330,6 +5424,12 @@ public class Workspace18 {
 
     }
 
+
+
+//    public boolean isBipartite(int[][] graph) {
+//
+//        return false;
+//    }
 
 
 
