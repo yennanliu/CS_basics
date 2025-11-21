@@ -274,22 +274,29 @@ public class MaximumNumberOfMovesInAGrid {
      *
      *
      *   e.g.:
-     *    We go `backward` and check,
+     *   
+     *    We through grids, check `layer by layer`
+     *
      *    step 1)
-     *       for grid[y][x], we just need to check if
+     *       mark all grid[y][0] as 1 (can visit)
+     *    Step 2)
+     *       for each grid[y][0], check if there next moves
      *          - grid[y-1][x]
      *          - grid[y][x-1]
      *          - grid[y+1][x+1]
      *
-     *          satisfy below:
+     *          can satisfy the rules:
      *              - can visit
      *              - prev grid val < cur grid val
      *
+     *        if yes, mark grid[new_y][new_x] as can visit
+     *        then we repeat step 2) for all of the new grid[new_y][new_x]
+     *
      *          ....
      *
-     *     step 2)  get the `valid` (x,y) with max (row idx + col idx)
+     *     step 3)  get the `valid` (x,y) with max (row idx + col idx)
      *              , then return as result
-  
+
      *  ----
      *
      *  The text in the screenshot describes the steps for solving
