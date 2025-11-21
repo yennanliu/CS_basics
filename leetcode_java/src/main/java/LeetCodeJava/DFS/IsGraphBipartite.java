@@ -392,6 +392,121 @@ public class IsGraphBipartite {
         return true;
     }
 
+    // V0-4
+    // IDEA: DFS (fixed by gemini)
+    /**
+     * Checks if the given graph is bipartite using Depth-First Search (DFS) coloring.
+     * * @param graph The input graph represented as an adjacency list, where graph[i]
+     * is an array of neighbors of node i.
+     * @return true if the graph is bipartite, false otherwise.
+     */
+    public boolean isBipartite_0_4(int[][] graph) {
+        if (graph == null || graph.length == 0) {
+            return true;
+        }
+
+        int N = graph.length;
+        // colors array:
+        // 0: Uncolored (Not visited)
+        // 1: Color A (Part of one set)
+        // -1: Color B (Part of the other set)
+        int[] colors = new int[N];
+        // Arrays.fill(colors, 0); // Already initialized to 0 by Java
+
+        // Iterate through all nodes to handle potentially disconnected components.
+        for (int i = 0; i < N; i++) {
+            // Only start DFS if the node has not been colored yet (meaning it's the start of a new component).
+            if (colors[i] == 0) {
+                // Start coloring this component with Color A (1).
+                if (!dfsColor(graph, i, colors, 1)) {
+                    // If the DFS returns false, a conflict was found (non-bipartite).
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Helper function to color the graph using DFS and check for conflicts.
+     * @param graph The adjacency list.
+     * @param node The current node being visited.
+     * @param colors The coloring array.
+     * @param color The color to assign to the current node (1 or -1).
+     * @return true if the subgraph remains bipartite, false if a conflict is found.
+     */
+    private boolean dfsColor(int[][] graph, int node, int[] colors, int color) {
+
+        // 1. Assign the color to the current node
+        colors[node] = color;
+
+        // 2. Visit all neighbors
+        for (int neighbor : graph[node]) {
+
+            // Case A: Neighbor is uncolored (0).
+            if (colors[neighbor] == 0) {
+                // Recursively call DFS, assigning the opposite color (-color).
+                if (!dfsColor(graph, neighbor, colors, -color)) {
+                    return false; // Propagate the conflict upwards
+                }
+
+                // Case B: Neighbor is already colored. Check for conflict.
+            } else if (colors[neighbor] == color) {
+                // Conflict: Neighbor has the SAME color as the current node.
+                // This violates the bipartite definition (adjacent nodes must have different colors).
+                //
+
+                return false;
+            }
+            // Case C: Neighbor is correctly colored (-color). Do nothing and continue.
+        }
+
+        // All neighbors checked without conflict.
+        return true;
+    }
+
+    // V0-5
+    // IDEA: DFS (fixed by gpt)
+    public boolean isBipartite_0_5(int[][] graph) {
+        int n = graph.length;
+
+        // 0 = uncolored
+        // 1 = color A
+        // -1 = color B
+        int[] colors = new int[n];
+
+        for (int i = 0; i < n; i++) {
+            if (colors[i] == 0) {
+                // Start DFS with color 1
+                if (!dfs_0_5(graph, colors, i, 1)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    private boolean dfs_0_5(int[][] graph, int[] colors, int node, int color) {
+        // If already colored
+        if (colors[node] != 0) {
+            return colors[node] == color; // must match expected color
+        }
+
+        // Color current node
+        colors[node] = color;
+
+        // Visit neighbors
+        for (int next : graph[node]) {
+            if (!dfs_0_5(graph, colors, next, -color)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+
     // V1
     // IDEA: DFS
     // https://leetcode.ca/2018-01-23-785-Is-Graph-Bipartite/
