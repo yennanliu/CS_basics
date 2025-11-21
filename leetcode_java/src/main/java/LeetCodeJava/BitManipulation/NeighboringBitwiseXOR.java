@@ -62,6 +62,62 @@ public class NeighboringBitwiseXOR {
 //
 //    }
 
+    // V0-0-1
+    // IDEA: BIT OP + BRUTE FORCE (fixed by gemini)
+    // https://buildmoat.teachable.com/courses/7a7af3/lectures/63789835
+    /**
+     * Checks if a valid original array 'a' exists such that
+     * derived[i] = a[i] XOR a[(i + 1) % n] is true for all i.
+     * * NOTE: This code directly translates the logic structure seen in the screenshot.
+     * The efficient solution only requires checking if the XOR sum of 'derived' is zero.
+     * * @param derived The derived array.
+     * @return true if a valid original array exists, false otherwise.
+     */
+    public boolean doesValidArrayExist_0_0_1(int[] derived) {
+
+        if (derived == null || derived.length == 0) {
+            // An empty derived array corresponds to an empty original array, which is valid.
+            return true;
+        }
+
+        // The outer loop checks the two possible starting values for the first element, a[0]: 0 and 1.
+        // i represents the assumed value of a[0]
+        for (int i = 0; i < 2; i++) {
+
+            // 'now' tracks the XOR sum, starting with the assumed a[0]
+            int now = i;
+
+            // Inner loop calculates the XOR sum of derived[0] through derived[derived.length - 2]
+            // starting from the initial guess 'i'.
+            // The loop runs for j from 0 up to (derived.length - 2).
+            for (int j = 0; j + 1 < derived.length; j++) {
+                // In a valid construction, a[j+1] = a[j] ^ derived[j].
+                // This line accumulates the XOR sum: i ^ derived[0] ^ derived[1] ^ ...
+                now = now ^ derived[j];
+            }
+
+            // After the inner loop, 'now' is equal to (a[0] ^ derived[0] ^ ... ^ derived[n-2]).
+            // This entire term must equal a[n-1] for a valid non-circular chain.
+            //
+            // The check is for the circular condition: a[n-1] ^ a[0] = derived[n-1].
+            // Substitute: (now ^ i) should equal derived[derived.length - 1].
+
+            int lastDerivedElement = derived[derived.length - 1];
+
+            // The expression (now ^ i) is effectively:
+            // (a[0] ^ derived[0] ^ ... ^ derived[n-2]) ^ a[0]
+            // which simplifies to: (derived[0] ^ ... ^ derived[n-2])
+
+            if ((now ^ i) == lastDerivedElement) {
+                // This is mathematically equivalent to checking if the XOR sum of ALL derived elements is zero.
+                return true;
+            }
+        }
+
+        // If the property doesn't hold for starting a[0]=0 nor a[0]=1, no valid array exists.
+        return false;
+    }
+
     // V0-1
     // IDEA: BIT OP (gpt)
     public boolean doesValidArrayExist_0_1(int[] derived) {
@@ -115,6 +171,32 @@ public class NeighboringBitwiseXOR {
         }
 
         // The condition for existence is that the total XOR sum must be 0.
+        return xorSum == 0;
+    }
+
+    // V0-3
+    // IDEA: BIT OP (gemini)
+    /**
+     * Checks if a valid original array 'a' exists such that
+     * derived[i] = a[i] XOR a[(i + 1) % n] is true for all i.
+     * * @param derived The derived array.
+     * @return true if a valid original array exists, false otherwise.
+     */
+    public boolean doesValidArrayExist_0_3(int[] derived) {
+        // Core Principle: For a valid circular array reconstruction (a[i] ^ a[i+1] = derived[i]),
+        // the XOR sum of all elements in the derived array must be zero.
+        // This is because (a[0]^a[1]) ^ (a[1]^a[2]) ^ ... ^ (a[n-1]^a[0]) results in 0,
+        // as every element a[i] appears twice.
+
+        int xorSum = 0;
+
+        // Calculate the XOR sum of all elements in the derived array
+        for (int element : derived) {
+            xorSum ^= element;
+        }
+
+        // If the total XOR sum is 0, a valid original array exists.
+        // If the XOR sum is not 0, it's impossible to satisfy the circular XOR relationship.
         return xorSum == 0;
     }
 
