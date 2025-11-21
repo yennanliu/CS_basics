@@ -572,6 +572,64 @@ public class IsGraphBipartite {
         return true;
     }
 
+    // V0-6
+    // IDEA: BFS (gemini)
+    /**
+     * Checks if the given graph is bipartite using Breadth-First Search (BFS) coloring.
+     * @param graph The input graph represented as an adjacency list.
+     * @return true if the graph is bipartite, false otherwise.
+     */
+    public boolean isBipartite_0_6(int[][] graph) {
+        if (graph == null || graph.length == 0) {
+            return true;
+        }
+
+        int N = graph.length;
+        // colors array:
+        // 0: Uncolored (Not visited)
+        // 1: Color A
+        // -1: Color B
+        int[] colors = new int[N];
+
+        // Iterate through all nodes to handle potentially disconnected components.
+        for (int i = 0; i < N; i++) {
+            // Only start BFS if the node has not been colored yet (i.e., it's the start of a new component).
+            if (colors[i] == 0) {
+
+                // Initialize the queue and set the starting node's color.
+                Queue<Integer> queue = new LinkedList<>();
+                queue.add(i);
+                colors[i] = 1; // Start with Color A
+
+                // Perform BFS on the current component
+                while (!queue.isEmpty()) {
+                    int u = queue.poll(); // Current node
+                    int currentColor = colors[u];
+                    int nextColor = -currentColor; // The required color for neighbors
+
+                    // Visit all neighbors of u
+                    for (int v : graph[u]) {
+
+                        if (colors[v] == 0) {
+                            // Case 1: Neighbor is uncolored -> Color it and add to the queue.
+                            colors[v] = nextColor;
+                            queue.add(v);
+
+                        } else if (colors[v] == currentColor) {
+                            // Case 2: Conflict detected! Neighbor has the SAME color as the current node.
+                            //
+
+                            return false;
+                        }
+                        // Case 3: Neighbor is correctly colored (colors[v] == nextColor). Do nothing.
+                    }
+                }
+            }
+        }
+
+        return true;
+    }
+
 
     // V1
     // IDEA: DFS
@@ -671,6 +729,7 @@ public class IsGraphBipartite {
 
         return true;
     }
+    
 
 
 }
