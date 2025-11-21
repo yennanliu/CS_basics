@@ -266,6 +266,139 @@ public class MaximumNumberOfMovesInAGrid {
         return best;
     }
 
+    // V0-4
+    // IDEA: DP (gemini)
+    // https://buildmoat.teachable.com/courses/7a7af3/lectures/63789835
+    /**
+     *  IDEA:
+     *
+     *
+     *   e.g.:
+     *    We go `backward` and check,
+     *    step 1)
+     *       for grid[y][x], we just need to check if
+     *          - grid[y-1][x]
+     *          - grid[y][x-1]
+     *          - grid[y+1][x+1]
+     *
+     *          satisfy below:
+     *              - can visit
+     *              - prev grid val < cur grid val
+     *
+     *          ....
+     *
+     *     step 2)  get the `valid` (x,y) with max (row idx + col idx)
+     *              , then return as result
+  
+     *  ----
+     *
+     *  The text in the screenshot describes the steps for solving
+     *  a dynamic programming problem on a grid, specifically corresponding
+     *  to the logic of LeetCode 2684, **Maximum Number of Moves in a Grid**.
+     *
+     * Here is the translation of the Chinese text:
+     *
+     * ---
+     *
+     * ## 📝 English Translation of the Steps
+     *
+     * * You can create an array the same size as the grid to record
+     *   whether each cell can be **reached**.
+     *
+     * * If a cell is in **column 0**, then the cell is reachable.
+     *
+     * * If a cell is at **(row, column)**,
+     *    then check **(row-1, column-1), (row, column-1), (row+1, column-1)**.
+     *    The cell is marked as reachable if **ALL** of the following conditions are met
+     *    (for at least one of the previous cells):
+     *       * The checked cell (the previous cell) is **reachable**.
+     *       * The value of the checked cell (the previous cell) is **strictly less than** `grid[row][column]`.
+     */
+    /**
+     * Calculates the maximum number of moves possible starting from any cell in the first column.
+     * The move must be to the right, right-up, or right-down to a cell with a strictly greater value.
+     * This implementation uses Dynamic Programming.
+     * * @param grid The input grid.
+     * @return The maximum number of moves.
+     */
+    public int maxMoves_0_0_4(int[][] grid) {
+        if (grid == null || grid.length == 0 || grid[0].length == 0) {
+            return 0;
+        }
+
+        int R = grid.length; // Number of rows
+        int C = grid[0].length; // Number of columns
+
+        // DP table: visited[r][c] stores a value indicating reachability from column 0.
+        // We will use 1 for reachable, 0 for unreachable.
+        int[][] visited = new int[R][C];
+
+        // Step 1: Initialize the first column (col 0) as reachable (visited[r][0] = 1).
+        for (int r = 0; r < R; r++) {
+            visited[r][0] = 1;
+        }
+
+        int maxMoves = 0;
+
+        // Step 2: Iterate through columns from the second column (c=1) onwards.
+        // NOTE: The C++ code's outer loop uses 'i' for column index (c) and 'j' for row index (r).
+        // C++: for (int i = 1; i < grid[0].size(); i++) // i is column (c)
+        // C++:   for (int j = 0; j < grid.size(); j++) // j is row (r)
+
+        // i: current column index (c), from 1 to C-1
+        for (int c = 1; c < C; c++) {
+            // j: current row index (r), from 0 to R-1
+            for (int r = 0; r < R; r++) {
+
+                // k iterates over the relative row changes {-1, 0, 1}
+                for (int k = -1; k <= 1; k++) {
+
+                    // The C++ logic:
+                    // ty = i - 1  -> previous column index (c - 1)
+                    // tx = j + k  -> previous row index (r + k)
+
+                    int prev_c = c - 1;
+                    int prev_r = r + k;
+
+                    // Check bounds for the previous cell (prev_r, prev_c)
+                    // NOTE: The C++ code's bounds check is confusing due to mixed row/column names.
+                    // The translation below uses standard Java indexing (row, col) = (r, c).
+
+                    // C++ check: if (ty >= 0 && ty < grid[0].size() && tx >= 0 && tx < grid.size()
+                    // Translation:
+
+                    if (prev_r >= 0 && prev_r < R) { // Check row bounds (prev_r)
+
+                        // Check value and reachability condition:
+                        // C++ check: grid[tx][ty] < grid[j][i] && visited[tx][ty]
+                        // Translation: grid[prev_r][prev_c] < grid[r][c] AND visited[prev_r][prev_c] == 1
+
+                        if (grid[prev_r][prev_c] < grid[r][c] && visited[prev_r][prev_c] == 1) {
+
+                            // If we can reach the current cell (r, c) from the previous column,
+                            // mark it as reachable (visited[r][c] = 1).
+                            // C++: visited[j][i] = 1;
+                            visited[r][c] = 1;
+
+                            // Optimization: Once the cell is marked as reachable,
+                            // we can break the inner loop (k) since we only care if it's reachable, not how.
+                            break;
+                        }
+                    }
+                }
+
+                // If the current cell is reachable, update maxMoves.
+                if (visited[r][c] == 1) {
+                    // maxMoves is simply the current column index (c) because the number of moves is C - 1.
+                    maxMoves = Math.max(maxMoves, c);
+                }
+            }
+        }
+
+        // The maximum number of moves is the highest column index reached.
+        return maxMoves;
+    }
+
     // V0-1
     // IDEA: DFS + MEMORIZATION (fixed by gpt)
     private int[][] grid;
