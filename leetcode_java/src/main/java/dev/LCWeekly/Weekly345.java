@@ -8,7 +8,7 @@ import java.util.*;
  * 中文題目
  * https://leetcode.cn/contest/weekly-contest-345/
  */
-public class Weelly345 {
+public class Weekly345 {
 
     // Q1
     // LC 2682
