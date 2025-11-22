@@ -1,5 +1,5 @@
 # LeetCode Problems with MUST marker
-# Generated on: Sat 22 Nov 2025 15:35:53 CST
+# Generated on: Sat 22 Nov 2025 15:36:47 CST
 # Total count:       89
 
 026 | [Remove Duplicates from Sorted Array](https://leetcode.com/problems/remove-duplicates-from-sorted-array/)|  [Python](./leetcode_python/Array/remove-duplicates-from-sorted-array.py), [Scala](./leetcode_scala/Array/removeDuplicates.scala), [Java](./leetcode_java/src/main/java/LeetCodeJava/Array/RemoveDuplicatesFromSortedArray.java) | _O(n)_ | _O(1)_| Easy | MUST, `Two Pointers`, `basic`, `good trick`,`M$` ,`fb` |  AGAIN************** (11)
