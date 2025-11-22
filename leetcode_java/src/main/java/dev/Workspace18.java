@@ -5541,4 +5541,99 @@ public class Workspace18 {
 
     }
 
+    // LC 981
+    // 16.21 - 40 pm
+    /**
+     *  -> design a time-based key-value
+     *      - can store `multiple values for the same key at different time stamps
+     *      - retrieve the key's value at a certain timestamp.
+     *
+     *
+     *  ------
+     *
+     *   IDEA 1) HASHMAP V1
+     *
+     *    map_1 : { k1-t1: v1, k1-t2: v2, k2-t2: v3, .... }
+     *
+     *   IDEA 2) HASHMAP V2
+     *
+     *    map_1: {k1: PQ[[t1, t2, t2 ...]], }
+     *
+     *    map_2: { k1-t1: v1, k1-t2: v2, k2-t2: v3, .... }
+     *
+     *    ->
+     *      1. so via map_1, we can get the `most recent` prev time
+     *      with key,
+     *      2. and with map_2, we can get the actual value
+     *      via the `k1-t1: v1` mapping.
+     *
+     */
+    class TimeMap {
+
+        // attr
+        Map<String, PriorityQueue<Integer>> map1;
+        Map<String, String> map2;
+
+        public TimeMap() {
+            this.map1 = new HashMap<>();
+            this.map2 = new HashMap<>();
+        }
+
+        public void set(String key, String value, int timestamp) {
+            if(!this.map1.containsKey(key)){
+                PriorityQueue<Integer> pq = new PriorityQueue<>(new Comparator<Integer>() {
+                    @Override
+                    public int compare(Integer o1, Integer o2) {
+                        int diff = o1 - o2;
+                        return diff;
+                    }
+                });
+
+                pq.add(timestamp);
+                this.map1.put(key, pq);
+            }else{
+                PriorityQueue<Integer> pq = this.map1.get(key);
+                pq.add(timestamp);
+                this.map1.put(key, pq);
+            }
+
+            // update map2
+            String map2Key = key + "-" + timestamp;
+            this.map2.put(map2Key, value);
+        }
+
+        public String get(String key, int timestamp) {
+
+            if(!this.map1.containsKey(key)){
+                return "";
+            }
+
+            // get `prev timestamp`
+            PriorityQueue<Integer> pq = this.map1.get(key);
+            PriorityQueue<Integer> pqCopied = pq; // ????
+            //int prevTimeStamp = pq.peek();
+            //String map2Key = key + "-" + timestamp;
+            List<Integer> cache = new ArrayList<>();
+            while(!pqCopied.isEmpty() && pqCopied.peek() > timestamp){
+                cache.add(pqCopied.poll());
+            }
+            // add cached timestamp back to PQ
+//            for(int x: cache){
+//                pq.add(x);
+//            }
+//            this.map1.put(key, pq);
+
+            String map2Key = key + "-" + pqCopied.peek();
+
+            if(!this.map2.containsKey(map2Key)){
+                return "";
+            }
+
+            return this.map2.get(map2Key);
+        }
+
+    }
+
+
+
 }

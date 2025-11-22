@@ -166,6 +166,114 @@ public class TimeBasedKeyValueStore {
         }
     }
 
+    // V0-0-1
+    // IDEA: 2 HASHMAP + PQ (fixed by gpt)
+    class TimeMap_0_0_1 {
+
+        Map<String, List<Integer>> map1; // key -> sorted timestamps
+        Map<String, String> map2; // key-timestamp -> value
+
+        public TimeMap_0_0_1() {
+            this.map1 = new HashMap<>();
+            this.map2 = new HashMap<>();
+        }
+
+        public void set(String key, String value, int timestamp) {
+            map1.putIfAbsent(key, new ArrayList<>());
+            map1.get(key).add(timestamp); // timestamps are naturally increasing
+
+            map2.put(key + "-" + timestamp, value);
+        }
+
+        public String get(String key, int timestamp) {
+            if (!map1.containsKey(key)) {
+                return "";
+            }
+
+            List<Integer> list = map1.get(key);
+
+            // binary search
+            int idx = Collections.binarySearch(list, timestamp);
+
+            if (idx >= 0) {
+                // found exact timestamp
+                return map2.get(key + "-" + list.get(idx));
+            }
+
+            // not exact match → compute floor index
+            int insertPoint = -idx - 1;
+            int floorIdx = insertPoint - 1;
+
+            if (floorIdx < 0) {
+                return "";
+            }
+
+            int floorTs = list.get(floorIdx);
+            return map2.get(key + "-" + floorTs);
+        }
+    }
+
+    // V0-0-2
+    // IDEA: HASHMAP + PQ (fixed by gemini)
+    class TimeMap_0_0_2 {
+
+        /**
+         * Data Structure: Map<Key (String), TreeMap<Timestamp (int), Value (String)>>
+         * - HashMap provides O(1) lookup for the key.
+         * - TreeMap automatically sorts timestamps and provides O(log N) lookup (floorKey).
+         */
+        private Map<String, TreeMap<Integer, String>> store;
+
+        public TimeMap_0_0_2() {
+            // Initialize the main data structure
+            this.store = new HashMap<>();
+        }
+
+        /**
+         * Stores the key, value, and timestamp.
+         * Time Complexity: O(log N) for TreeMap insertion.
+         */
+        public void set(String key, String value, int timestamp) {
+            // 1. Ensure the TreeMap exists for the key.
+            // If the key is new, putIfAbsent creates a new TreeMap.
+            this.store.putIfAbsent(key, new TreeMap<>());
+
+            // 2. Get the TreeMap and insert the (timestamp, value) pair.
+            // TreeMap handles the sorting and insertion in O(log N).
+            this.store.get(key).put(timestamp, value);
+        }
+
+        /**
+         * Retrieves the value associated with the largest timestamp less than or equal to the given timestamp.
+         * Time Complexity: O(log N) using TreeMap's floorKey().
+         */
+        public String get(String key, int timestamp) {
+
+            // 1. Check if the key exists in the outer map.
+            if (!this.store.containsKey(key)) {
+                return "";
+            }
+
+            // 2. Get the TreeMap of timestamps for the key.
+            TreeMap<Integer, String> timeMap = this.store.get(key);
+
+            // 3. Find the largest timestamp <= the given timestamp using floorKey().
+            // This is the O(log N) operation that replaces the slow PriorityQueue logic.
+            Integer floorTimestamp = timeMap.floorKey(timestamp);
+
+            // 4. Check if a valid timestamp was found.
+            if (floorTimestamp == null) {
+                // floorKey returns null if no key is less than or equal to the target.
+                return "";
+            }
+
+            // 5. Return the value associated with the found timestamp.
+            return timeMap.get(floorTimestamp);
+        }
+    }
+
+
+
     // V0_1
     // IDEA : HASHMAP + BINARY SEARCH (fixed by GPT)
     class TimeMap_0_1 {
@@ -709,5 +817,8 @@ public class TimeBasedKeyValueStore {
 //            return keyTimeMap.get(key).get(right - 1).getValue();
 //        }
 //    }
+
+
+
 
 }
