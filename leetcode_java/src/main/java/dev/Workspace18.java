@@ -5636,6 +5636,37 @@ public class Workspace18 {
 
 
     // LC 1647
+    // 17.26 - 36 pm
+    /**
+     *   -> return the MINIMUM number
+     *      of characters you need to DELETE to make s `good.`
+     *
+     *      - NOTE:
+     *          - A string s is called `good`
+     *           if there are NO two different characters
+     *           in s that have the SAME frequency.
+     *
+     *   -------
+     *
+     *   IDEA 1) GREEDY
+     *
+     *   IDEA 2) PQ ???
+     *
+     *
+     *   ------
+     *
+     *
+     *   ex 2)
+     *
+     *   Input: s = "aaabbbcc"
+     *   Output: 2
+     *
+     *   -> map:  {a: 3, b:3:, c:2}
+     *
+     *   -> freq [3,3,2]
+     *
+     *
+     */
     public int minDeletions(String s) {
 
         return 0;
