@@ -5492,24 +5492,53 @@ public class Workspace18 {
 
 
     // LC 705
+    // 16.05 - 15 pm
+    /**
+     *  -> Design a HashSet without using any built-in hash table libraries.
+     *
+     *
+     *  ----
+     *
+     *  IDEA 1) HASH ???
+     *
+     */
     class MyHashSet {
 
+        // attr
+        int[] cache;
         public MyHashSet() {
-
+            this.cache = new int[10^6]; // ???
+            // fill with 0
+            // 0: `not added`
+            Arrays.fill(this.cache, 0); // ??
         }
 
-        public void add(int key) {
+//        private int hash(int input){
+////            // ??
+////            if(input == 0){
+////                return 0; // ???
+////            }
+////            int res = 0;
+////           // res = (this.cache % input);
+//            return input; // ???
+//        }
 
+        public void add(int key) {
+            if(this.cache[key] != 0){
+                this.cache[key] = key;
+            }
         }
 
         public void remove(int key) {
-
+            if(this.cache[key] != 0){
+                this.cache[key] = 0;
+            }
         }
 
         public boolean contains(int key) {
-
-            return false;
+            return this.cache[key] != 0;
         }
+
     }
 
 }

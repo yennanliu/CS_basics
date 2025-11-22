@@ -49,24 +49,48 @@ import java.util.Arrays;
 public class DesignHashSet {
 
     // V0
-//    class MyHashSet {
-//
-//        public MyHashSet() {
-//
-//        }
-//
-//        public void add(int key) {
-//
-//        }
-//
-//        public void remove(int key) {
-//
-//        }
-//
-//        public boolean contains(int key) {
-//
-//        }
-//    }
+    // IDEA: ARRAY (fixed by gemini)
+    class MyHashSet {
+
+        // The maximum possible key is 1,000,000.
+        // We need an array size of 1,000,001 to address indices 0 through 1,000,000.
+        private static final int MAX_KEY_VALUE = 1000000;
+
+        // A boolean array is the most direct way to represent a set:
+        // cache[i] = true means key i is present.
+        /** NOTE !!!
+         *
+         *  we use boolean array (boolean[])
+         */
+        private boolean[] cache;
+
+        public MyHashSet() {
+            /** NOTE !!!
+             *
+             *  this size is `MAX_KEY_VALUE + 1`
+             */
+            // Initialize the boolean array. Java automatically initializes booleans to false.
+            this.cache = new boolean[MAX_KEY_VALUE + 1];
+        }
+
+        // Since we are using a direct address array where the index IS the key,
+        // no separate hash function is needed.
+
+        public void add(int key) {
+            // We simply mark the key's index as true (present).
+            this.cache[key] = true;
+        }
+
+        public void remove(int key) {
+            // We mark the key's index as false (not present).
+            this.cache[key] = false;
+        }
+
+        public boolean contains(int key) {
+            // The key is present if the value at its index is true.
+            return this.cache[key];
+        }
+    }
 
     /**
      * Your MyHashSet object will be instantiated and called as such:
