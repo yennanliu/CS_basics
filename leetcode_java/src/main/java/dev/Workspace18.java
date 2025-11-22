@@ -5635,5 +5635,11 @@ public class Workspace18 {
     }
 
 
+    // LC 1647
+    public int minDeletions(String s) {
+
+        return 0;
+    }
+
 
 }
