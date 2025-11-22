@@ -47,6 +47,25 @@ import java.util.*;
 
 public class TimeBasedKeyValueStore {
 
+    /**
+     *  NOTE !!!
+     *
+     *   DON'T use PQ (priority queue) as the map value data structure.
+     *   e.g.
+     *    DON'T use below:
+     *       - map_1: {k1: PQ[[t1, t2, t2 ...]], }
+     *
+     *
+     *   -> use below instead:
+     *
+     *    - map_1: {k1: list(t1, t2,...) , }
+     *    - map_2: { k1-t1: v1, k1-t2: v2, k2-t2: v3, .... }
+     *
+     *    -> since timestamp is added by increasing order by default
+     *      (per this LC problem's description)
+     *
+     */
+
     // V0
     // IDEA : HASHMAP + BINARY SEARCH
     /**
@@ -193,6 +212,11 @@ public class TimeBasedKeyValueStore {
             List<Integer> list = map1.get(key);
 
             // binary search
+            /** NOTE !!!
+             *
+             *  `Collections.binarySearch` offer the default binary search algo
+             *   implemented by java, we can just import and use it
+             */
             int idx = Collections.binarySearch(list, timestamp);
 
             if (idx >= 0) {
