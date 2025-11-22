@@ -55,17 +55,51 @@ public class MinimumDeletionsToMakeCharacterFrequenciesUnique {
     // IDEA: GREEDY
     // https://leetcode.com/problems/minimum-deletions-to-make-character-frequencies-unique/solutions/4033214/9932greedyheapbeginner-friendlyfull-expl-gdkl/
     public int minDeletions_1_1(String s) {
+        /** NOTE !!!
+         *
+         * init an array setting freq with all English alphabets (26 counts)
+         */
         int[] freq = new int[26]; // Create an array to store character frequencies
 
         for (char c : s.toCharArray()) {
             freq[c - 'a']++; // Count the frequency of each character
         }
 
+        /** NOTE !!!
+         *
+         *  Sort the freq in ascending order (small -> big)
+         */
         Arrays.sort(freq); // Sort frequencies in ascending order
 
         int del = 0; // Initialize the deletion count
 
         for (int i = 24; i >= 0; i--) {
+            /** NOTE !!!
+             *
+             *  why we can break the while loop per below condition ?
+             *
+             *  ----
+             *
+             *  1. When the loop reaches an index $i$ where freq[i] is $0$, it means
+             *   that all subsequent frequencies
+             *    (at indices $i-1, i-2, \dots, 0$) must also be $0$.
+             *
+             *
+             *  2. We are only interested in frequencies
+             *     greater than zero because those are the characters
+             *     that still exist and need their frequency to be made unique.
+             *
+             *
+             *   -> when `freq[i] == 0`
+             *
+             *     1. There are no characters remaining (at or below this index)
+             *        that contribute to the count of unique frequencies.
+             *
+             *     2. Continuing the loop to check freq[i-1], freq[i-2], etc.,
+             *       is useless, -> as we know they are
+             *       all 0 and will not trigger any reduction/deletion logic.
+             *
+             */
             if (freq[i] == 0) {
                 break; // No more characters with this frequency
             }
