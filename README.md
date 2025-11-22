@@ -1308,7 +1308,7 @@
 635| [Design Log Storage System](https://leetcode.com/problems/design-log-storage-system/) | [C++](./C++/design-log-storage-system.cpp) [Python](./leetcode_python/Design/design-log-storage-system.py) | put: _O(1)_<br> retrieve: _O(n + dlogd)_ | _O(n)_ | Medium |🔒|
 641| [Design Circular Deque](https://leetcode.com/problems/design-circular-deque/) | [Python](./leetcode_python/Design/design-circular-dequeue.py) | | | Medium |🔒| 
 642| [Design Search Autocomplete System](https://leetcode.com/problems/design-search-autocomplete-system/) | [Python](./leetcode_python/Design/design_search_autocomplete_system.py) | _O(p^2)_ | _O(p * t + s)_ | Hard |🔒, `amazon`| AGAIN**** (not start) (5)
-705| [Design HashSet](https://leetcode.com/problems/design-hashset/) | [Python](./leetcode_python/Design/design_hashset.py) | | | Easy || 
+705| [Design HashSet](https://leetcode.com/problems/design-hashset/) | [Java](./leetcode_java/src/main/java/LeetCodeJava/Design/DesignHashSet.java) | | | Easy || 
 706| [Design HashMap](https://leetcode.com/problems/design-hashmap/) | [Python](./leetcode_python/Design/design_hashmap.py) | | | Easy || 
 0715| [Range Module](https://leetcode.com/problems/range-module/) | [C++](./C++/range-module.cpp) [Python](./leetcode_python/Design/range-module.py) | add: _O(n)_<br> remove: _O(n)_<br> query: _O(logn)_ | _O(n)_ | Hard || 
 716| [Max Stack](https://leetcode.com/problems/max-stack/) | [Python](./leetcode_python/Design/max-stack.py) | push: _O(logn)_<br> pop: _O(logn)_<br> popMax: _O(logn)_<br> top: _O(1)_<br> peekMax: _O(1)_ | _O(n)_ | Easy |basic, stack, `amazon`| again*
