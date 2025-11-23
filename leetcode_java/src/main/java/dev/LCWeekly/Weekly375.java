@@ -1,5 +1,8 @@
 package dev.LCWeekly;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * LeetCode weekly contest 375
  * https://leetcode.com/contest/weekly-contest-375/
@@ -115,6 +118,78 @@ public class Weekly375 {
     // Q2
     // LC 2961
     // https://leetcode.com/problems/double-modular-exponentiation/description/
+    // 15.26 - 40 pm
+    /**
+     *  -> Return an array consisting
+     *     of `good indices` in ANY order.
+     *
+     *
+     *   - 0 idx 2D array
+     *      - variables[i] = [ai, bi, ci, mi]
+     *   - target
+     *
+     *   - An idx `i` is good if below is TRUE
+     *
+     *      - 0  <= I < variables len
+     *      -  ( (ai^bi % 10)^ci ) % mi = target
+     *
+     *  ----------
+     *
+     *   IDEA 1) brute force ???
+     *
+     *   IDEA 2) math ???
+     *
+     *
+     * ----------
+     *
+     */
+    public List<Integer> getGoodIndices(int[][] variables, int target) {
+        List<Integer> ans = new ArrayList<>();
+        // edge
+        if(variables == null || variables.length == 0){
+            return ans;
+        }
+//        if(variables.length == 1){
+//            int ai = variables[0][0];
+//            int bi = variables[0][1];
+//            int ci = variables[0][2];
+//            int mi = variables[0][3];
+//            if(compute(ai, bi, ci, mi) == target){
+//                ans.add(0);
+//            }
+//            return ans;
+//        }
+
+        for(int i = 0; i < variables.length; i++){
+            int ai = variables[i][0];
+            int bi = variables[i][1];
+            int ci = variables[i][2];
+            int mi = variables[i][3];
+            if(compute(ai, bi, ci, mi) == target){
+                ans.add(i);
+            }
+        }
+
+        return ans;
+    }
+
+    //  ( (ai^bi % 10)^ci ) % mi = target
+    private int compute(int ai, int bi, int ci, int mi){
+        // edge
+        if(mi == 0){
+            return -1; // ???
+        }
+
+        //  ( (ai^bi % 10)^ci ) % mi = target
+
+        // double resultDouble = Math.pow(base, exponent);
+        // ???
+        int x1 = (int) Math.pow(ai, bi);
+        int x2 = x1 % 10;
+        int x3 =  (int) Math.pow(x2, ci);
+
+        return x3 % mi;
+    }
 
 
     // Q3
