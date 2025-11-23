@@ -335,7 +335,31 @@ public class Weekly375 {
     // Q4
     // LC 2963
     // https://leetcode.com/problems/count-the-number-of-good-partitions/description/
+    // 16.26 - 36 pm
+    /**
+     *  -> Return the `total number` of
+     *  `good partitions` of nums.
+     *
+     *   - nums: arr with 0 index
+     *
+     *   - `good`:
+     *      -  split the arr into 1 or more continuous subarrays
+     *          - if no two subarrays contain the same number.
+     *               -> it's `GOOD`
+     *
+     *  ---------------
+     *
+     *  IDEA 1) BRUTE FORCE
+     *
+     *  IDEA 1) DP ???
+     *
+     *  ---------------
+     *
+     */
+    public int numberOfGoodPartitions(int[] nums) {
 
+        return 0;
+    }
 
 
 }
