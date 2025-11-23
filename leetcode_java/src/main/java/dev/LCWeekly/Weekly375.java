@@ -292,17 +292,26 @@ public class Weekly375 {
         int l = 0;
 
         // slide window
+        /**
+         *      *     -> when the sub array meet the condition (e.g. cnt >= k)
+         *      *        -> move left pointer to right, till it NOT meet the condition
+         *      *        -> then move right pointer again
+         *      *        -> repeat above ...
+         *      *
+         */
         for(int r = 0; r < nums.length; r++){
+            // cnt nums[r] (e.g. add nums[r] to map)
             Map<Integer, Integer> cntMap = new HashMap<>();
             int curVal = nums[r];
             cntMap.put(curVal, cntMap.getOrDefault(curVal, 0) + 1);
-            while(!isValid(cntMap, k)){
+            // move left pointer while the sub array is still VALID
+            while(isValid(cntMap, k)){
                 int toReduce = nums[l];
                 cntMap.put(toReduce, cntMap.get(toReduce) - 1);
                 l += 1;
+                cnt += 1;
             }
-
-            cnt += 1;
+           // cnt += 1;
         }
 
         return cnt;
