@@ -5674,25 +5674,42 @@ public class Workspace18 {
 
 
     // LC 706
+    // 6.36 - 46 am
+    /**
+     * Design a HashMap without using any built-in hash table libraries.
+     *
+     *
+     *  IDEA 1) ARRAY + HASH (?
+     *
+     */
     class MyHashMap {
 
-        public MyHashMap() {
+        int[] arr;
 
+        public MyHashMap() {
+            this.arr = new int[1000000 + 1]; // ???
+            Arrays.fill(this.arr, 0);
         }
 
         public void put(int key, int value) {
-
+            this.arr[key] = value;
         }
 
         public int get(int key) {
+            if(this.arr[key] == 0){
+                return -1;
+            }
 
-            return 0;
+            return this.arr[key];
         }
 
         public void remove(int key) {
-
+            this.arr[key] = 0;
         }
+
     }
+
+
 
 
 }
