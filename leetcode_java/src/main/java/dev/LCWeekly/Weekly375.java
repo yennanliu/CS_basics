@@ -1,7 +1,9 @@
 package dev.LCWeekly;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * LeetCode weekly contest 375
@@ -195,6 +197,131 @@ public class Weekly375 {
     // Q3
     // LC 2962
     // https://leetcode.com/problems/count-subarrays-where-max-element-appears-at-least-k-times/description/
+    // 15.49 - 59 PM
+    /**
+     * -> Return the number of subarrays where
+     *    the MAXIMUM element of nums appears
+     *     `AT LEAST k times` in that subarray.
+     *
+     *
+     *     - nums: int array
+     *     - k: positive int
+     *
+     *     - NOTE:
+     *       - A subarray is a contiguous
+     *         sequence of elements within an array.
+     *
+     * ----------------
+     *
+     *  IDEA 1) HASHMAP + SLIDE WINDOW
+     *
+     *    slide window template:
+     *
+     *    i : right pointer
+     *    j: left pointer
+     *
+     *    for(int i = 0; i < nums.len; i++){
+     *        while(condition){
+     *            // do sth
+     *        }
+     *        j += 1;
+     *    }
+     *
+     *    -> get the element cnt via hashmap
+     *    -> if cnt > k, collect the cur sub array
+     *
+     *    ... (repeat above)
+     *
+     *
+     *  IDEA 2) HASHMAP + BRUTE FORCE
+     *
+     * ----------------
+     *
+     *  ex 1)
+     *
+     *  Input: nums = [1,3,2,3,3], k = 2
+     *  Output: 6
+     *
+     *  ->
+     *
+     *   [1,3,2,3,3], k = 2
+     *    r
+     *    l
+     *
+     *   [1,3,2,3,3], k = 2
+     *    l   r
+     *
+     *   [1,3,2,3,3], k = 2 , cache = [ [1,3,2,3] ] , ans = 1
+     *    l     r
+     *
+     *   [1,3,2,3,3], k = 2 , cache = [ [1,3,2,3], [1,3,2,3,3] ] , ans = 2
+     *    l       r
+     *
+     *  [1,3,2,3,3], k = 2 , cache = [ [1,3,2,3], [1,3,2,3,3], [3,2,3,3] ] , ans = 3
+     *     l     r
+     *
+     *  [1,3,2,3,3], k = 2 , cache = [ [1,3,2,3], [1,3,2,3,3], [3,2,3,3], [2,3,3] ] , ans = 4
+     *       l   r
+     *
+     *  [1,3,2,3,3], k = 2 , cache = [ [1,3,2,3], [1,3,2,3,3], [3,2,3,3], [2,3,3], [3,3] ] , ans = 5
+     *         l  r
+     *
+     *
+     *    // TODO: check how to get `[3,2,3]` case ???
+     *
+     *     -> when the sub array meet the condition (e.g. cnt >= k)
+     *        -> move left pointer to right, till it NOT meet the condition
+     *        -> then move right pointer again
+     *        -> repeat above ...
+     *
+     */
+    public long countSubarrays(int[] nums, int k) {
+        // edge
+        if(nums == null || nums.length == 0){
+            return 0L; // ???
+        }
+        if(nums.length == 1){
+//            if(k == 1){
+//                return 1;
+//            }
+//            return 0;
+            return k;
+        }
+
+        int cnt = 0;
+        int l = 0;
+
+        // slide window
+        for(int r = 0; r < nums.length; r++){
+            Map<Integer, Integer> cntMap = new HashMap<>();
+            int curVal = nums[r];
+            cntMap.put(curVal, cntMap.getOrDefault(curVal, 0) + 1);
+            while(!isValid(cntMap, k)){
+                int toReduce = nums[l];
+                cntMap.put(toReduce, cntMap.get(toReduce) - 1);
+                l += 1;
+            }
+
+            cnt += 1;
+        }
+
+        return cnt;
+    }
+
+    private boolean isValid(Map<Integer, Integer> cntMap, int k){
+        // edge
+        if(cntMap.isEmpty() || k == 0){
+            return false; // ???
+        }
+        for(int valCnt: cntMap.values()){
+            if(valCnt >= k){
+                return true;
+            }
+        }
+
+        return false;
+    }
+
 
     // Q4
     // LC 2963
