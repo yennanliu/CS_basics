@@ -5710,6 +5710,75 @@ public class Workspace18 {
     }
 
 
+    // LC 004
+    // 6.45 -56 am
+    /**
+     *  ->  return the `median` of the two sorted arrays.
+     *
+     *  - Given two `sorted` arrays nums1 and nums2
+     *    of size m and n respectively,
+     *
+     *  - The overall run time complexity should be O(log (m+n)).
+     *
+     *  ---------------
+     *
+     *  IDEA 1)  BRUTE FORCE
+     *
+     *  IDEA 2) pq ???
+     *    -> get total size = n + m
+     *    -> so the median idx could be:
+     *       if n + m is odd :  nums[(n + m)] / 2
+     *       if  n + m is even :  ( nums1[n-1] + nums2[m+1] ) / 2
+     *
+     *
+     *  ---------------
+     *
+     *  ex 1)
+     *
+     *  Input: nums1 = [1,3], nums2 = [2]
+     *  Output: 2.00000
+     *  Explanation: merged array = [1,2,3] and median is 2.
+     *
+     *
+     *
+     */
+    public double findMedianSortedArrays(int[] nums1, int[] nums2) {
+        // edge
+
+        // get total size
+        int n = nums1.length;
+        int m = nums2.length;
+
+        int totalSize = (n + m);
+
+        double res = 0.0;
+
+        if(totalSize % 2 == 1){
+            // case 1)  totalSize % 2 < nums1 size
+            if(totalSize % 2 < n){
+                return nums1[totalSize / 2]; // ???
+            }
+            // case 2)  totalSize % 2 > nums1 size
+            else{
+                int idx2 = totalSize / 2 - n;
+                return nums2[idx2]; // ???
+            }
+        }else{
+            // case 3)  totalSize % 2 < nums1 size
+            if(totalSize % 2 < n){
+                return (double) (nums1[totalSize / 2 - 1] + nums1[totalSize / 2 + 1]) / 2; // ???
+            }
+            // case 4)  totalSize % 2 > nums1 size
+            else{
+                int idx2 = totalSize % 2 - n;
+                return (double) (nums2[idx2 - 1] + nums2[idx2 + 1]) / 2; // ???
+            }
+        }
+
+       // return res; // SHOULD NOT visit here ????
+    }
+
+
 
 
 }

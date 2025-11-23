@@ -143,7 +143,6 @@
 		- gemini
 	- LC 215 Kth Largest Element in an Array
 		- gpt
-			- 4
 		- gemini
 	- LC 621 Task Scheduler
 		- gpt
