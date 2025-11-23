@@ -50,24 +50,33 @@ import java.util.Arrays;
 public class DesignHashMap {
 
     // V0
-//    class MyHashMap {
-//
-//        public MyHashMap() {
-//
-//        }
-//
-//        public void put(int key, int value) {
-//
-//        }
-//
-//        public int get(int key) {
-//
-//        }
-//
-//        public void remove(int key) {
-//
-//        }
-//    }
+    // IDEA: ARRAY
+    class MyHashMap {
+
+        int[] arr;
+
+        public MyHashMap() {
+            this.arr = new int[1000000 + 1]; // ???
+            Arrays.fill(this.arr, -1);
+        }
+
+        public void put(int key, int value) {
+            this.arr[key] = value;
+        }
+
+        public int get(int key) {
+            if (this.arr[key] == -1) {
+                return -1;
+            }
+
+            return this.arr[key];
+        }
+
+        public void remove(int key) {
+            this.arr[key] = -1;
+        }
+
+    }
 
     // V1-1
     // IDEA: ARRAY
@@ -90,6 +99,52 @@ public class DesignHashMap {
 
         public void remove(int key) {
             data[key] = -1;
+        }
+    }
+
+    // V0-1
+    // IDEA: ARRAY (gemini)
+    class MyHashMap_0_1 {
+
+        // Sentinel value used to signify that a key is NOT present in the map.
+        // Since all valid input values are >= 0, we can use -1.
+        private static final int EMPTY_SLOT = -1;
+
+        // The problem constraints state key/value are up to 1,000,000.
+        // We need an array size of 1,000,001 to address indices 0 through 1,000,000.
+        private static final int MAX_KEY = 1000000;
+
+        private int[] arr;
+
+        public MyHashMap_0_1() {
+            this.arr = new int[MAX_KEY + 1];
+
+            // Initialize all slots to the sentinel value, meaning they are empty.
+            Arrays.fill(this.arr, EMPTY_SLOT);
+        }
+
+        /**
+         * Time: O(1)
+         */
+        public void put(int key, int value) {
+            // Store the value directly at the key's index.
+            this.arr[key] = value;
+        }
+
+        /**
+         * Time: O(1)
+         */
+        public int get(int key) {
+            // Check if the slot contains the sentinel value.
+            return this.arr[key];
+        }
+
+        /**
+         * Time: O(1)
+         */
+        public void remove(int key) {
+            // To remove, set the slot back to the sentinel value.
+            this.arr[key] = EMPTY_SLOT;
         }
     }
 
