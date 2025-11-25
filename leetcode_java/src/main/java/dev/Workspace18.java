@@ -5944,9 +5944,65 @@ public class Workspace18 {
 
 
     // LC 733
+    // 7.14 - 24 am
+    /**
+     *  -> Your task is to perform a `flood fill` on
+     *   the image starting from the pixel `image[sr][sc].`
+     *
+     *   OP:
+     *      1. change the start (x,y) grid color
+     *      2. move `directly adjacent ` and change new grid (x_new, y_new) color
+     *      3. repeat above ... till NO new grid can color
+     *      4. return the final matrix as ans
+     *
+     *   --------
+     *
+     *   IDEA 1) DFS
+     *
+     *
+     *
+     *
+     *
+     */
     public int[][] floodFill(int[][] image, int sr, int sc, int color) {
+        // edge
+        if(image == null || image.length == 0 || image[0].length == 0){
+            return image;
+        }
+        if(sc == color){
+            return image;
+        }
 
-        return null;
+        if(image[sr][sc] != color){
+            dfsHelper(sc, sr, image, image[sr][sc], color);
+        }
+
+        return image;
+    }
+
+    private void dfsHelper(int x, int y, int[][] image, int originalColor, int color){
+
+        // ????
+        int[][] moves = new int[][]{ {1,0}, {-1,0}, {0,1}, {0,-1} };
+
+        // color
+        image[y][x] = color;
+
+        int l = image.length;
+        int w = image[0].length;
+
+        // move to neighbors
+        for(int[] m: moves){
+            int x_ = x + m[1];
+            int y_ = y + m[0];
+            // check still in boundary
+            if(x_ >= 0 && x_ < l && y_ >= 0 && y_ < w){
+                // check if need `move`
+                if(image[y_][x_] == originalColor){
+                    dfsHelper(x_, y_, image, originalColor, color);
+                }
+            }
+        }
     }
 
 
