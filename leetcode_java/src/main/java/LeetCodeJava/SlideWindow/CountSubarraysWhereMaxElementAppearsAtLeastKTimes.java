@@ -45,6 +45,40 @@ public class CountSubarraysWhereMaxElementAppearsAtLeastKTimes {
 //
 //    }
 
+    // V0-1
+    // IDEA: SLIDE WINDOW (fixed by gpt)
+    public long countSubarrays_0_1(int[] nums, int k) {
+        int n = nums.length;
+        int maxNum = 0;
+
+        // find the max element
+        for (int v : nums) {
+            maxNum = Math.max(maxNum, v);
+        }
+
+        long ans = 0;
+        int l = 0;
+        int cnt = 0; // count of maxNum in window
+
+        for (int r = 0; r < n; r++) {
+            if (nums[r] == maxNum) {
+                cnt++;
+            }
+
+            // window becomes valid when cnt >= k
+            while (cnt >= k) {
+                ans += (n - r); // all future subarrays including r are valid
+                if (nums[l] == maxNum) {
+                    cnt--;
+                }
+                l++;
+            }
+        }
+
+        return ans;
+    }
+
+
     // V1-1
     // IDEA: SLIDE WINDOW
     // https://leetcode.com/problems/count-subarrays-where-max-element-appears-at-least-k-times/editorial/
