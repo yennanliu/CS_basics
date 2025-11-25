@@ -57,6 +57,66 @@ public class CountTestedDevicesAfterTestOperations {
 //
 //    }
 
+    // V0-1
+    // IDEA: BRUTE FORCE (fixed by gemini)
+    /**
+     * Counts the number of devices tested based on the sequential testing rules.
+     * * @param batteryPercentages Array of device battery percentages.
+     * @return The total count of tested devices.
+     */
+    public int countTestedDevices_0_1(int[] batteryPercentages) {
+        int testedCount = 0;
+
+        // Edge cases are implicitly handled by the loop and the initial check.
+        if (batteryPercentages == null || batteryPercentages.length == 0) {
+            return 0;
+        }
+
+        // Iterate through each device starting from the first one (index i=0).
+        for (int i = 0; i < batteryPercentages.length; i++) {
+
+            // The condition to test device 'i' is based on its *current* effective percentage.
+            // The current effective percentage is the original percentage minus the total number
+            // of devices tested *before* index i.
+
+            int effectivePercentage = batteryPercentages[i] - testedCount;
+
+            // Op Trigger Condition: Check if the effective battery percentage is > 0.
+            if (effectivePercentage > 0) {
+
+                // Op 1: Test the device and increment the count.
+                testedCount++;
+
+                // Op 2: In the original problem, testing device 'i' reduces the battery
+                // of ALL subsequent devices (j > i) by 1.
+                //
+                // By incrementing 'testedCount' here, we are implicitly and correctly applying
+                // this reduction to all future devices (j > i).
+                //
+                // We do NOT need the inner loop (for j = i+1; ...) that was in the original code,
+                // as that leads to O(N^2) complexity and complex in-place modification.
+                // This O(N) approach is more efficient.
+            }
+        }
+
+        return testedCount;
+    }
+
+    // V0-2
+    public int countTestedDevices_0_2(int[] batteryPercentages) {
+        int tested = 0;
+
+        // Each tested device reduces all future device battery by 1
+        for (int i = 0; i < batteryPercentages.length; i++) {
+            if (batteryPercentages[i] - tested > 0) {
+                tested++;
+            }
+        }
+
+        return tested;
+    }
+
+
     // V1
     // https://leetcode.com/problems/count-tested-devices-after-test-operations/solutions/4384489/javacpython-easy-and-concise-by-lee215-7bx1/
     public int countTestedDevices_1(int[] A) {
