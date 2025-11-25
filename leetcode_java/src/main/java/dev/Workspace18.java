@@ -5780,19 +5780,76 @@ public class Workspace18 {
 
 
     // LC 677
+    // 8.17 - 27 am
+    /**
+     *
+     *  - Design a map that can do below:
+     *      - map str to a val
+     *      - Returns the sum of the values that have
+     *        a key with a prefix equal to a given string.
+     *
+     *
+     *   - e.g. implement the mapSum class
+     *
+     *   --------
+     *
+     *   IDEA 1) BRUTE FORCE
+     *
+     *   IDEA 2) PREFIX SUM MAP ????
+     *
+     *   IDEA 3) TRIE
+     *
+     */
     class MapSum {
 
-        public MapSum() {
+        // { string : val }
+        Map<String, Integer> map;
 
+        public MapSum() {
+            this.map = new HashMap<>();
         }
 
         public void insert(String key, int val) {
-
+            this.map.put(key, val);
+            System.out.println(">>> this.map " + this.map);
         }
 
         public int sum(String prefix) {
+            // ?? brute force
+            int res = 0;
+            String tmp = "";
+//            for(char ch: prefix.toCharArray()){
+//                tmp += ch;
+//                if(this.map.containsKey(tmp)){
+//                    res += this.map.get(tmp);
+//                }
+//                System.out.println(">>> tmp " + tmp +
+//                        ", res = "  + res);
+//            }
 
-            return 0;
+            for(String k: this.map.keySet()){
+                // get sub str of the key
+                //String sub = "";
+                for(int i = 0; i < k.length(); i++){
+                    // ???
+                    String sub = String.copyValueOf(k.toCharArray(), 0, i);
+
+                    System.out.println(
+                            " k = " + k +
+                                    " i = " + i +
+                                    " sub = " + sub +
+                                    ", res = " + res);
+
+                    if(sub.equals(prefix)){
+                        res += this.map.get(k);
+                        // already add to res per cur key,
+                        // break, move to next key
+                        break;
+                    }
+                }
+            }
+
+            return res;
         }
 
     }
