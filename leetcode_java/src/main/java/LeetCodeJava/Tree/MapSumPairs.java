@@ -71,6 +71,177 @@ public class MapSumPairs {
      * int param_2 = obj.sum(prefix);
      */
 
+    // V0-1
+    // IDEA: BRUTE FORCE
+    class MapSum_0_1 {
+
+        // { string : val }
+        Map<String, Integer> map;
+
+        public MapSum_0_1() {
+            this.map = new HashMap<>();
+        }
+
+        public void insert(String key, int val) {
+            this.map.put(key, val);
+            System.out.println(">>> this.map " + this.map);
+        }
+
+        /** BRUTE FORCE */
+        public int sum(String prefix) {
+            int res = 0;
+            /**  NOTE !!!
+             *
+             *  we loop over key of hashmap
+             *  and loop get the sub string of cur key
+             *
+             *  -> so we'll have double loop (brute force),
+             *
+             *  within the double loop. we check if the cur sub string
+             *  equal to the prefix, if so, we add the cur map val to res,
+             *  and break cur loop (2nd loop),
+             *
+             *  since the cur key already
+             *  `count` as the prefixSum res, we should STOP and check the next
+             *  brand new hashMap key
+             */
+            for (String k : this.map.keySet()) {
+                for (int i = 0; i < k.length(); i++) {
+                    /**  NOTE !!!
+                     *
+                     *  we can do below via string.startsWith() method
+                     *  (V0-3)
+                     *
+                     *
+                     *  e.g.:
+                     *
+                     *       if (key.startsWith(prefix)) {
+                     *                     res += this.map.get(key);
+                     *       }
+                     */
+                    String sub = String.copyValueOf(k.toCharArray(), 0, i + 1);
+                    // System.out.println(
+                    //         " k = " + k +
+                    //                 " i = " + i +
+                    //                 " sub = " + sub +
+                    //                 ", res = " + res);
+
+                    if (sub.equals(prefix)) {
+                        res += this.map.get(k);
+                        // already add to res per cur key,
+                        // break, move to next key
+                        break;
+                    }
+                }
+            }
+
+            return res;
+        }
+
+    }
+
+    // V0-2
+    // IDEA: TRIE (gemini)
+    class MapSum_0_2 {
+
+        // --- Trie Node Class ---
+        private class TrieNode {
+            Map<Character, TrieNode> children;
+            // Stores the sum of values of all keys passing through this node.
+            // This is necessary for the brute-force/Trie-search approach.
+            // For the optimized approach, this can store the final value of the key,
+            // or for the *summation* optimization, it stores the delta value.
+            int val;
+
+            TrieNode() {
+                this.children = new HashMap<>();
+                this.val = 0;
+            }
+        }
+
+        private final TrieNode root;
+        // Map to store the original key-value pairs to calculate the delta upon update/re-insertion.
+        private final Map<String, Integer> map;
+
+        public MapSum_0_2() {
+            this.root = new TrieNode();
+            this.map = new HashMap<>();
+        }
+
+        /**
+         * Inserts the key-value pair, updating the Trie with the delta value.
+         * Time: O(L), where L is the length of the key.
+         */
+        public void insert(String key, int val) {
+            // Calculate the difference between the new value and the old value (0 if new key).
+            // This is the delta we must apply to all nodes along the path.
+            int delta = val - this.map.getOrDefault(key, 0);
+
+            // Update the key-value map
+            this.map.put(key, val);
+
+            TrieNode current = root;
+
+            // Traverse the Trie and update the cumulative sum (val field) using the delta
+            for (char ch : key.toCharArray()) {
+                current.children.putIfAbsent(ch, new TrieNode());
+                current = current.children.get(ch);
+                current.val += delta; // Update the sum for all nodes in the path
+            }
+        }
+
+        /**
+         * Returns the sum of values of all keys starting with the given prefix.
+         * Time: O(L), where L is the length of the prefix.
+         */
+        public int sum(String prefix) {
+            TrieNode current = root;
+
+            // Traverse the Trie to find the node corresponding to the end of the prefix
+            for (char ch : prefix.toCharArray()) {
+                if (!current.children.containsKey(ch)) {
+                    return 0; // Prefix not found
+                }
+                current = current.children.get(ch);
+            }
+
+            // The value stored at the prefix node is the pre-calculated sum of all keys
+            // that extend from this point (due to the insert logic).
+            return current.val;
+        }
+    }
+
+
+    // V0-3
+    // IDEA: BRUTE FORCE (gpt)
+    class MapSum_0_3 {
+
+        // { key : value }
+        Map<String, Integer> map;
+
+        public MapSum_0_3() {
+            this.map = new HashMap<>();
+        }
+
+        public void insert(String key, int val) {
+            this.map.put(key, val);
+        }
+
+        public int sum(String prefix) {
+            int res = 0;
+
+            for (String key : this.map.keySet()) {
+                /** NOTE !!! `startsWith` trick */
+                if (key.startsWith(prefix)) {
+                    res += this.map.get(key);
+                }
+            }
+
+            return res;
+        }
+    }
+
+
     // V1-1
     // IDEA: BRUTE FORCE
     // https://leetcode.com/problems/map-sum-pairs/editorial/
