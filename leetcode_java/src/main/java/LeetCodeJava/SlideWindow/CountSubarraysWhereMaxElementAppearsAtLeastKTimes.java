@@ -140,6 +140,10 @@ public class CountSubarraysWhereMaxElementAppearsAtLeastKTimes {
         int n = nums.length;
         int maxNum = 0;
 
+        /** NOTE !!!
+         *
+         *  need to find `max element` from nums first
+         */
         // find the max element
         for (int v : nums) {
             maxNum = Math.max(maxNum, v);
@@ -147,6 +151,10 @@ public class CountSubarraysWhereMaxElementAppearsAtLeastKTimes {
 
         long ans = 0;
         int l = 0;
+        /** NOTE !!!
+         *
+         * cnt: count of maxNum in window
+         */
         int cnt = 0; // count of maxNum in window
 
         for (int r = 0; r < n; r++) {
@@ -154,9 +162,36 @@ public class CountSubarraysWhereMaxElementAppearsAtLeastKTimes {
                 cnt++;
             }
 
+            /** NOTE !!!
+             *
+             * slide window template:
+             *
+             *   for(int r = 0; r < nums.len; r++){
+             *      while(condition){
+             *           // do sth
+             *           l += 1;
+             *        }
+             *      // do sth
+             *   }
+             */
             // window becomes valid when cnt >= k
             while (cnt >= k) {
+                /**
+                 *  NOTE !!!
+                 *
+                 *  // all future subarrays including r are valid
+                 *
+                 */
                 ans += (n - r); // all future subarrays including r are valid
+                /**
+                 *  NOTE !!!
+                 *
+                 *    if the `left pointer` val == maxNum,
+                 *    we will move left pointer (shrink the left boundary)
+                 *    and since we shrink left boundary, we NEED to deduct the cnt by 1
+                 *    (e.g. cnt -= 1)
+                 *
+                 */
                 if (nums[l] == maxNum) {
                     cnt--;
                 }
