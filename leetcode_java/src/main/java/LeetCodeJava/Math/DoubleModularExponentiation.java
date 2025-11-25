@@ -59,6 +59,19 @@ public class DoubleModularExponentiation {
     // TODO: fix below
     // NOTE !!! below is WRONG
     // since we need to apply the `modulo operation` in the algorithm
+    /**
+     *  Your current code is incorrect because:
+     *
+     * ❌ Issues
+     * 	1.	Math.pow(ai, bi) overflows immediately for large bi.
+     * 	2.	The problem requires modular exponentiation, not raw pow().
+     * 	3.	The expression must be computed as:
+     *
+     * 	  `((ai^bi mod 10)^ci) mod mi`
+     *
+     * 	4. You must use fast power (modular exponentiation).
+     *
+     */
 //    public List<Integer> getGoodIndices_0_1(int[][] variables, int target) {
 //        List<Integer> ans = new ArrayList<>();
 //        // edge
@@ -97,7 +110,7 @@ public class DoubleModularExponentiation {
 //        return x3 % mi;
 //    }
 
-    
+
     // V0-2
     // IDEA: MATH (fixed by gpt)
     public List<Integer> getGoodIndices_0_2(int[][] variables, int target) {
