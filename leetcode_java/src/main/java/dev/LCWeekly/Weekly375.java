@@ -14,7 +14,7 @@ import java.util.Map;
 public class Weekly375 {
 
     // Q1
-    // LC 2960
+    // LC 2960 -> done
     // https://leetcode.com/problems/count-tested-devices-after-test-operations/
     // 15.08 - 18 pm
     /**
