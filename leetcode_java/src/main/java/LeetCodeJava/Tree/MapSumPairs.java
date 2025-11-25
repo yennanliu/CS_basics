@@ -241,6 +241,49 @@ public class MapSumPairs {
         }
     }
 
+    // V0-4
+    // IDEA: PREFIX MAP (gpt)
+    class MapSum_0_4 {
+
+        // real key → value
+        Map<String, Integer> values;
+
+        // prefix → sum of all keys having that prefix
+        Map<String, Integer> prefixSum;
+
+        public MapSum_0_4() {
+            this.values = new HashMap<>();
+            this.prefixSum = new HashMap<>();
+        }
+
+        public void insert(String key, int val) {
+            int oldVal = values.getOrDefault(key, 0);
+            /** NOTE !!!
+             *
+             *  below trick
+             */
+            int diff = val - oldVal; // important: adjust previous value
+
+            // store new value
+            values.put(key, val);
+
+            // update all prefixes
+            String prefix = "";
+            for (char ch : key.toCharArray()) {
+                /** NOTE !!!
+                 *
+                 *  below trick
+                 */
+                prefix += ch;
+                prefixSum.put(prefix, prefixSum.getOrDefault(prefix, 0) + diff);
+            }
+        }
+
+        public int sum(String prefix) {
+            return prefixSum.getOrDefault(prefix, 0);
+        }
+    }
+
 
     // V1-1
     // IDEA: BRUTE FORCE

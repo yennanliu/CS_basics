@@ -5800,12 +5800,59 @@ public class Workspace18 {
      *   IDEA 3) TRIE
      *
      */
+    // IDEA: PREFIX SUM MAP
     class MapSum {
+
+        /**
+         *
+         * prefix sum map
+         *
+         *  { prefix : sum_of_prefix }
+         */
+        Map<String, Integer> map;
+        public MapSum() {
+            this.map = new HashMap<>();
+        }
+
+        // update val to prefix sum map
+        public void insert(String key, int val) {
+            // add to map if NOT existed
+            this.map.put(key, val);
+
+            // loop over existing map
+            // and update val with prefix sum logic
+            for(String k: map.keySet()){
+                // NOT double count cur added key
+                if(!k.equals(key)){
+                    if(k.startsWith(key)){
+                        // ???
+                        this.map.put(k, this.map.get(k) + val);
+                    }
+                }
+            }
+        }
+
+        public int sum(String prefix) {
+            if(!this.map.containsKey(prefix)){
+                return 0;
+            }
+
+            return this.map.get(prefix);
+        }
+
+    }
+
+
+
+
+
+    // IDEA: BRUTE FROCE
+    class MapSum_99{
 
         // { string : val }
         Map<String, Integer> map;
 
-        public MapSum() {
+        public MapSum_99() {
             this.map = new HashMap<>();
         }
 
