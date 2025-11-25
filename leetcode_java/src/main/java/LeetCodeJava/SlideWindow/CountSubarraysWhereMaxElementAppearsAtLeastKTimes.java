@@ -4,6 +4,8 @@ package LeetCodeJava.SlideWindow;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 2962. Count Subarrays Where Max Element Appears at Least K Times
@@ -44,6 +46,93 @@ public class CountSubarraysWhereMaxElementAppearsAtLeastKTimes {
 //    public long countSubarrays(int[] nums, int k) {
 //
 //    }
+
+    // V0-0-1
+    // TODO: fix below
+    /**  NOTE !!! below code is WRONG
+     *
+     * ---
+     *
+     *  Reason:
+     *
+     *
+     * Your current code is incorrect because:
+     *
+     * ❌ Issues in your attempt
+     * 	•	You rebuild cntMap from scratch in every iteration, so you never track the real window.
+     * 	•	isValid() checks “any value count ≥ k” → but LC 2962 requires:
+     *
+     * ✔ Count subarrays where the maximum element in the entire array appears ≥ k times
+     *
+     * The max element is fixed:
+     *
+     *        `maxNum = max(nums)`
+     *
+     *
+     * We only count how many times maxNum appears in the sliding window.
+     *
+     *
+     */
+//    public long countSubarrays(int[] nums, int k) {
+//        // edge
+//        if(nums == null || nums.length == 0){
+//            return 0L; // ???
+//        }
+//        if(nums.length == 1){
+////            if(k == 1){
+////                return 1;
+////            }
+////            return 0;
+//            return k;
+//        }
+//
+//        int cnt = 0;
+//        int l = 0;
+//
+//        // slide window
+//        /**
+//         *      *     -> when the sub array meet the condition (e.g. cnt >= k)
+//         *      *        -> move left pointer to right, till it NOT meet the condition
+//         *      *        -> then move right pointer again
+//         *      *        -> repeat above ...
+//         *      *
+//         */
+//        Map<Integer, Integer> cntMap = new HashMap<>();
+//        for(int r = 0; r < nums.length; r++){
+//            // cnt nums[r] (e.g. add nums[r] to map)
+//            //Map<Integer, Integer> cntMap = new HashMap<>();
+//            int curVal = nums[r];
+//            cntMap.put(curVal, cntMap.getOrDefault(curVal, 0) + 1);
+//            // move left pointer while the sub array is still VALID
+//            while(isValid(cntMap, k)){
+//                int toReduce = nums[l];
+//                cntMap.put(toReduce, cntMap.get(toReduce) - 1);
+//                l += 1;
+//                cnt += 1;
+//            }
+//            // cnt += 1;
+//        }
+//
+//        return cnt;
+//    }
+//
+//    private boolean isValid(Map<Integer, Integer> cntMap, int k){
+//        // edge
+//        if(cntMap.isEmpty() || k == 0){
+//            return false; // ???
+//        }
+//        int max = 0;
+//        for(int valCnt: cntMap.values()){
+////            if(valCnt < k){
+////                return false;
+////            }
+//            max = Math.max(max, valCnt);
+//        }
+//
+//        return max >= k;
+//    }
+
+
 
     // V0-1
     // IDEA: SLIDE WINDOW (fixed by gpt)
