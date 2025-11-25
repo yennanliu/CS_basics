@@ -59,9 +59,88 @@ package LeetCodeJava.DFS;
 public class FloodFill {
 
     // V0
-//    public int[][] floodFill(int[][] image, int sr, int sc, int color) {
-//
-//    }
+    // IDEA: DFS
+    public int[][] floodFill(int[][] image, int sr, int sc, int color) {
+        // edge
+        if (image == null || image.length == 0 || image[0].length == 0) {
+            return image;
+        }
+
+        if (image[sr][sc] != color) {
+            dfsHelper(sc, sr, image, image[sr][sc], color);
+        }
+
+        return image;
+    }
+
+    private void dfsHelper(int x, int y, int[][] image, int originalColor, int color) {
+
+        // all possible moves
+        int[][] moves = new int[][] { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 } };
+
+        // color
+        image[y][x] = color;
+
+        int l = image.length;
+        int w = image[0].length;
+
+        // move to neighbors
+        for (int[] m : moves) {
+            int x_ = x + m[1];
+            int y_ = y + m[0];
+            // check still in boundary
+            if (x_ >= 0 && x_ < w && y_ >= 0 && y_ < l) {
+                /** NOTE !!!
+                 *
+                 *    the condition to check if `can move` to next grid
+                 */
+                if (image[y_][x_] == originalColor) {
+                    dfsHelper(x_, y_, image, originalColor, color);
+                }
+            }
+        }
+    }
+
+    // V0-1
+    // IDEA: DFS (gpt)
+    public int[][] floodFill_0_1(int[][] image, int sr, int sc, int color) {
+        // edge
+        if (image == null || image.length == 0 || image[0].length == 0) {
+            return image;
+        }
+
+        int originalColor = image[sr][sc];
+        if (originalColor == color)
+            return image; // correct early stop
+
+        // keep your (x=sc, y=sr) coordinate style
+        dfsHelper_0_1(sc, sr, image, originalColor, color);
+
+        return image;
+    }
+
+    private void dfsHelper_0_1(int x, int y, int[][] image, int originalColor, int color) {
+
+        // out of bounds
+        int l = image.length; // rows (y-axis)
+        int w = image[0].length; // cols (x-axis)
+        if (x < 0 || x >= w || y < 0 || y >= l)
+            return;
+
+        // only fill same original color
+        if (image[y][x] != originalColor)
+            return;
+
+        // fill
+        image[y][x] = color;
+
+        // 4-direction DFS
+        dfsHelper_0_1(x + 1, y, image, originalColor, color);
+        dfsHelper_0_1(x - 1, y, image, originalColor, color);
+        dfsHelper_0_1(x, y + 1, image, originalColor, color);
+        dfsHelper_0_1(x, y - 1, image, originalColor, color);
+    }
+
 
     // V1
     // IDEA: DFS
@@ -142,7 +221,6 @@ public class FloodFill {
         dfsHelper(img, i, j - 1, origColor, newColor);
         dfsHelper(img, i, j + 1, origColor, newColor);
     }
-
 
 
 
