@@ -118,7 +118,7 @@ public class Weekly375 {
 
 
     // Q2
-    // LC 2961
+    // LC 2961 -> ok
     // https://leetcode.com/problems/double-modular-exponentiation/description/
     // 15.26 - 40 pm
     /**
@@ -195,7 +195,7 @@ public class Weekly375 {
 
 
     // Q3
-    // LC 2962
+    // LC 2962 -> ok
     // https://leetcode.com/problems/count-subarrays-where-max-element-appears-at-least-k-times/description/
     // 15.49 - 59 PM
     /**
@@ -299,9 +299,10 @@ public class Weekly375 {
          *      *        -> repeat above ...
          *      *
          */
+        Map<Integer, Integer> cntMap = new HashMap<>();
         for(int r = 0; r < nums.length; r++){
             // cnt nums[r] (e.g. add nums[r] to map)
-            Map<Integer, Integer> cntMap = new HashMap<>();
+            //Map<Integer, Integer> cntMap = new HashMap<>();
             int curVal = nums[r];
             cntMap.put(curVal, cntMap.getOrDefault(curVal, 0) + 1);
             // move left pointer while the sub array is still VALID
@@ -322,14 +323,18 @@ public class Weekly375 {
         if(cntMap.isEmpty() || k == 0){
             return false; // ???
         }
+        int max = 0;
         for(int valCnt: cntMap.values()){
-            if(valCnt >= k){
-                return true;
-            }
+//            if(valCnt < k){
+//                return false;
+//            }
+            max = Math.max(max, valCnt);
         }
 
-        return false;
+        return max >= k;
     }
+
+
 
 
     // Q4
