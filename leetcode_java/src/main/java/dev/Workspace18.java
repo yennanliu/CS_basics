@@ -5903,6 +5903,20 @@ public class Workspace18 {
 
 
     // LC 432
+    // 9.36 - 46 am
+    /**
+     *
+     *  -> Design a `data structure` to
+     *     - store the strings' count
+     *        - return the strings with minimum and maximum counts.
+     *
+     *
+     *  - e.g. implment class with below functions:
+     *
+     *
+     *
+     *
+     */
     class AllOne {
 
         public AllOne() {
