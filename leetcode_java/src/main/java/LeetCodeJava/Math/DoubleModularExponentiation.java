@@ -55,6 +55,173 @@ public class DoubleModularExponentiation {
 //
 //    }
 
+    // VO-1
+    // TODO: fix below
+    // NOTE !!! below is WRONG
+    // since we need to apply the `modulo operation` in the algorithm
+//    public List<Integer> getGoodIndices_0_1(int[][] variables, int target) {
+//        List<Integer> ans = new ArrayList<>();
+//        // edge
+//        if(variables == null || variables.length == 0){
+//            return ans;
+//        }
+//
+//        for(int i = 0; i < variables.length; i++){
+//            int ai = variables[i][0];
+//            int bi = variables[i][1];
+//            int ci = variables[i][2];
+//            int mi = variables[i][3];
+//            if(compute(ai, bi, ci, mi) == target){
+//                ans.add(i);
+//            }
+//        }
+//
+//        return ans;
+//    }
+//
+//    //  ( (ai^bi % 10)^ci ) % mi = target
+//    private int compute(int ai, int bi, int ci, int mi){
+//        // edge
+//        if(mi == 0){
+//            return -1; // ???
+//        }
+//
+//        //  ( (ai^bi % 10)^ci ) % mi = target
+//
+//        // double resultDouble = Math.pow(base, exponent);
+//        // ???
+//        int x1 = (int) Math.pow(ai, bi);
+//        int x2 = x1 % 10;
+//        int x3 =  (int) Math.pow(x2, ci);
+//
+//        return x3 % mi;
+//    }
+
+    
+    // V0-2
+    // IDEA: MATH (fixed by gpt)
+    public List<Integer> getGoodIndices_0_2(int[][] variables, int target) {
+        List<Integer> ans = new ArrayList<>();
+
+        for (int i = 0; i < variables.length; i++) {
+            int a = variables[i][0];
+            int b = variables[i][1];
+            int c = variables[i][2];
+            int m = variables[i][3];
+
+            if (compute_0_2(a, b, c, m) == target) {
+                ans.add(i);
+            }
+        }
+
+        return ans;
+    }
+
+    // Computes: ((a^b % 10)^c) % m
+    private int compute_0_2(int a, int b, int c, int m) {
+        if (m == 0)
+            return -1;
+
+        // Step 1: x1 = a^b % 10
+        int x1 = modPow(a, b, 10);
+
+        // Step 2: x2 = (x1^c) % m
+        return modPow(x1, c, m);
+    }
+
+    // Fast modular exponentiation
+    private int modPow(int base, int exp, int mod) {
+        long result = 1;
+        long cur = base % mod;
+
+        while (exp > 0) {
+            if ((exp & 1) == 1) {
+                result = (result * cur) % mod;
+            }
+            cur = (cur * cur) % mod;
+            exp >>= 1;
+        }
+
+        return (int) result;
+    }
+
+
+    // V0-3
+    // IDEA: MATH (fixed by gemini)
+    public List<Integer> getGoodIndices_0_3(int[][] variables, int target) {
+        List<Integer> ans = new ArrayList<>();
+
+        // Edge case check is fine, though the loop handles it robustly.
+        if (variables == null || variables.length == 0) {
+            return ans;
+        }
+
+        for (int i = 0; i < variables.length; i++) {
+            int ai = variables[i][0];
+            int bi = variables[i][1];
+            int ci = variables[i][2];
+            int mi = variables[i][3];
+
+            if (compute(ai, bi, ci, mi) == target) {
+                ans.add(i);
+            }
+        }
+
+        return ans;
+    }
+
+    /**
+     * Calculates: ( (ai^bi % 10)^ci ) % mi
+     * Requires modular exponentiation to avoid overflow.
+     */
+    private int compute(int ai, int bi, int ci, int mi) {
+        // Step 1: Calculate (ai^bi) % 10
+        // We use modularExponentiation(base, exponent, modulus)
+        int innerResult = modularExponentiation(ai, bi, 10); // innerResult = (ai^bi) % 10
+
+        // Step 2: Calculate (innerResult^ci) % mi
+        // innerResult is now the base, ci is the exponent, and mi is the modulus.
+        int finalResult = modularExponentiation(innerResult, ci, mi); // finalResult = (innerResult^ci) % mi
+
+        return finalResult;
+    }
+
+    /**
+     * Helper method to calculate (base^exponent) % modulus efficiently and safely.
+     * Uses the principle of exponentiation by squaring (or binary exponentiation).
+     * * @param base The base (a, or innerResult)
+     * @param exponent The exponent (b, or c)
+     * @param modulus The modulus (10, or m)
+     * @return (base^exponent) % modulus
+     */
+    private int modularExponentiation(int base, int exponent, int modulus) {
+        if (modulus == 1)
+            return 0; // Trivial case (any number mod 1 is 0)
+
+        long result = 1;
+        // Convert base to long to prevent overflow during multiplication
+        long b = base % modulus;
+        int e = exponent;
+
+        while (e > 0) {
+            // If the current exponent bit is 1 (e is odd), multiply the result by the current base.
+            if (e % 2 == 1) {
+                result = (result * b) % modulus;
+            }
+
+            // Square the base for the next iteration, applying modulus.
+            b = (b * b) % modulus;
+
+            // Move to the next bit (divide exponent by 2).
+            e /= 2;
+        }
+
+        return (int) result;
+    }
+
+    // V0-3
+
+
 
     // V1
     // https://leetcode.com/problems/double-modular-exponentiation/solutions/4384819/mastering-modular-exponentiation-beginne-rsfw/
