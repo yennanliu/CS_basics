@@ -1,6 +1,6 @@
 # Progress
 
-# 2025-11-24
+# 2025-11-25
 
 - LC weekly 375
 - weekly video
@@ -157,6 +157,7 @@
 			- 715
 			- 460,432,588
 		- gemini
+			- 706
 			- 315
 	- Backtracking (not yet, do `LC similar` later)
 	- LC 208 Implement Trie (Prefix Tree)
