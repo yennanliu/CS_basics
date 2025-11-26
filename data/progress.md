@@ -379,7 +379,6 @@
 	- LC 200 Number of Islands
 		- gpt
 			- 463
-			- 1254
 			- 130
 			- 1020
 			- 694
