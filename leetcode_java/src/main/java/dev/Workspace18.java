@@ -6090,6 +6090,12 @@ public class Workspace18 {
     }
 
 
+    // LC 1254
+    public int closedIsland(int[][] grid) {
+
+        return 0;
+    }
+
 
 
 
