@@ -43,6 +43,32 @@ public class MaxAreaOfIsland {
 
     // V0
     // IDEA : DFS (modified by gpt)
+    /**  NOTE !!! DFS pattern:
+     *
+     * 1) (as VO)
+     *
+     *     for(move){
+     *         if(condition){
+     *              // ...
+     *             area = dfs(..)
+     *         }
+     *         // ...
+     *     }
+     *
+     *     return area
+     *
+     *
+     *  2) (as VO-0-1)
+     *
+     *   // validation logic
+     *   // ...
+     *
+     *   return 1 + dfs(x+1, y,..) +
+     *          dfs(x+-1, y,..) +
+     *          dfs(x, y - 1,..) +
+     *          dfs(x, y + 1,..);
+     *
+     */
     int biggestArea = 0;
 
     public int maxAreaOfIsland(int[][] grid) {
@@ -145,6 +171,12 @@ public class MaxAreaOfIsland {
         // loop over (y,x)
         for (int y = 0; y < l; y++) {
             for (int x = 0; x < w; x++) {
+                /** NOTE !!!
+                 *
+                 *   when we should call DFS
+                 *   1. NOT visited
+                 *   2. (x,y) is island
+                 */
                 if (!visited[y][x] && grid[y][x] == 1) { // must be land
                     maxArea = Math.max(maxArea, dfsGetArea(x, y, grid, visited));
                 }
@@ -157,6 +189,12 @@ public class MaxAreaOfIsland {
         int l = grid.length;
         int w = grid[0].length;
 
+        /** NOTE !!!
+         *
+         *   in this DFS, we do `validation` first, then do dfs
+         *   since we want to return local area as result
+         */
+        /** NOTE !!! NOT visited as well if it's `water` at (x,y) */
         // boundary OR water OR already visited → stop
         if (x < 0 || x >= w || y < 0 || y >= l || grid[y][x] == 0 || visited[y][x]) {
             return 0;
@@ -164,6 +202,10 @@ public class MaxAreaOfIsland {
 
         visited[y][x] = true;
 
+        /** NOTE !!!
+         *
+         *  below pattern
+         */
         return 1 +
                 dfsGetArea(x + 1, y, grid, visited) +
                 dfsGetArea(x - 1, y, grid, visited) +
@@ -358,9 +400,8 @@ public class MaxAreaOfIsland {
     // V1-2
     // https://neetcode.io/problems/max-area-of-island
     // IDEA: BFS
-//    private static final int[][] directions = {{1, 0}, {-1, 0},
-//            {0, 1}, {0, -1}};
-
+    //    private static final int[][] directions = {{1, 0}, {-1, 0},
+    //            {0, 1}, {0, -1}};
     public int maxAreaOfIsland_1_2(int[][] grid) {
         int ROWS = grid.length, COLS = grid[0].length;
         int area = 0;
