@@ -6091,6 +6091,37 @@ public class Workspace18 {
 
 
     // LC 1254
+    // 9.11 - 21 am
+    /**
+     *
+     *  -> Return the number of closed islands.
+     *
+     *   - 0: LAND
+     *   - 1: WATER
+     *
+     *   - An island is a conn group of `0`
+     *     and a closed island is TOTALLY
+     *     surrounded by `1`
+     *
+     *
+     *  --------
+     *
+     *
+     *  IDEA 1) DFS
+     *    - dfs over the `0` group, and validate below
+     *       1. if surrounded by `1` in 4 dir (up, down, left, right)
+     *             - e.g. if any (x,y) meets the `boundary`, EXIT the dfs directly
+     *                    and the `0 group` is NOT considered as closed island
+     *       2. all point are `0`
+     *
+     *       if yes, count as `closed island`
+     *
+     *    .. repeat above and visit all points in grid
+     *
+     *  IDEA 1) BFS
+     *
+     *
+     */
     public int closedIsland(int[][] grid) {
 
         return 0;
