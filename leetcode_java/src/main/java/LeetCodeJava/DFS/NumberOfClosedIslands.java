@@ -69,21 +69,6 @@ public class NumberOfClosedIslands {
      * @param r Row index.
      * @param c Column index.
      */
-    private void flood(int[][] grid, int r, int c) {
-        // Base Case: Check bounds, check if current cell is already water (1), or out of bounds.
-        if (r < 0 || r >= rows || c < 0 || c >= cols || grid[r][c] == 1) {
-            return;
-        }
-
-        // Change land (0) to water (1) to mark it as visited/eliminated.
-        grid[r][c] = 1;
-
-        // Visit neighbors
-        for (int[] move : MOVES) {
-            flood(grid, r + move[0], c + move[1]);
-        }
-    }
-
     public int closedIsland_0_1(int[][] grid) {
         if (grid == null || grid.length == 0) {
             return 0;
@@ -92,14 +77,38 @@ public class NumberOfClosedIslands {
         this.rows = grid.length;
         this.cols = grid[0].length;
 
+        /** NOTE !!!
+         *
+         *    we use `2 pass` approach
+         *
+         *    step 1)
+         *    in the 1st round, we start from boundary,
+         *    and do the `flood` op, e.g. mark ALL visited (x,y) as visited
+         *    but NOT count as `closed island`, since any boundary connected
+         *    island is NOT a `closed island`
+         *
+         *
+         *    step 2)
+         *    we then visit the remaining grids (x,y), via the same
+         *    DFS func (flood). but this time, we check if the remaining grids
+         *    are closed island`, ans update the cnt as final answer
+         */
         // --- PASS 1: Eliminate Border Islands ---
         // Flood any land (0) touching the top and bottom borders.
+        /** NOTE !!!
+         *
+         *   Flood any land (0) touching the top and bottom borders.
+         */
         for (int c = 0; c < cols; c++) {
             flood(grid, 0, c); // Top border (r=0)
             flood(grid, rows - 1, c); // Bottom border (r=rows-1)
         }
 
         // Flood any land (0) touching the left and right borders.
+        /** NOTE !!!
+         *
+         *   Flood any land (0) touching the left and right borders.
+         */
         for (int r = 0; r < rows; r++) {
             flood(grid, r, 0); // Left border (c=0)
             flood(grid, r, cols - 1); // Right border (c=cols-1)
@@ -122,6 +131,22 @@ public class NumberOfClosedIslands {
         }
 
         return closedIslandCount;
+    }
+
+    // dfs help func
+    private void flood(int[][] grid, int r, int c) {
+        // Base Case: Check bounds, check if current cell is already water (1), or out of bounds.
+        if (r < 0 || r >= rows || c < 0 || c >= cols || grid[r][c] == 1) {
+            return;
+        }
+
+        // Change land (0) to water (1) to mark it as visited/eliminated.
+        grid[r][c] = 1;
+
+        // Visit neighbors
+        for (int[] move : MOVES) {
+            flood(grid, r + move[0], c + move[1]);
+        }
     }
 
     // V0-2
