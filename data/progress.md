@@ -1,6 +1,6 @@
 # Progress
 
-# 2025-11-26
+# 2025-11-27
 
 - LC weekly 375
 - weekly video
@@ -169,6 +169,21 @@
 		- gemini
 			- 211
 			- 642
+	- LC 200 Number of Islands
+		- gpt
+			- 130
+			- 1020
+			- 694
+			- 547 (Number of Provinces)
+			- 305
+			- 127
+			- 529
+		- gemini
+			- 286
+			- 323
+			- 675
+			- 218
+			- 1697
 	- others:
 - neetcode 250
 	- https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V6/LC_goog_all.pdf
