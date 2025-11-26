@@ -6140,8 +6140,11 @@ public class Workspace18 {
         for(int y = 0; y < l; y++){
             for(int x = 0; x < w; x++){
                 if(!visited[y][x] && grid[y][x] == 0){
-                    if(isClosedIsland(x, y, grid, visited)){
-                        cnt += 1;
+                    // NOT visit boundary ??
+                    if(x == 0 || x == w - 1 || y == 0 || y == l - 1){
+                        if(isClosedIsland(x, y, grid, visited)){
+                            cnt += 1;
+                        }
                     }
                 }
             }
