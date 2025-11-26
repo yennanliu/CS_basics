@@ -57,6 +57,74 @@ public class NumberOfClosedIslands {
 //
 //    }
 
+    // V0-1
+    // IDEA: DFS (fixed by gemini)
+    private int rows;
+    private int cols;
+    private final int[][] MOVES = new int[][] { { -1, 0 }, { 1, 0 }, { 0, -1 }, { 0, 1 } };
+
+    /**
+     * Performs DFS to change all connected land (0) to water (1).
+     * @param grid The grid.
+     * @param r Row index.
+     * @param c Column index.
+     */
+    private void flood(int[][] grid, int r, int c) {
+        // Base Case: Check bounds, check if current cell is already water (1), or out of bounds.
+        if (r < 0 || r >= rows || c < 0 || c >= cols || grid[r][c] == 1) {
+            return;
+        }
+
+        // Change land (0) to water (1) to mark it as visited/eliminated.
+        grid[r][c] = 1;
+
+        // Visit neighbors
+        for (int[] move : MOVES) {
+            flood(grid, r + move[0], c + move[1]);
+        }
+    }
+
+    public int closedIsland_0_1(int[][] grid) {
+        if (grid == null || grid.length == 0) {
+            return 0;
+        }
+
+        this.rows = grid.length;
+        this.cols = grid[0].length;
+
+        // --- PASS 1: Eliminate Border Islands ---
+        // Flood any land (0) touching the top and bottom borders.
+        for (int c = 0; c < cols; c++) {
+            flood(grid, 0, c); // Top border (r=0)
+            flood(grid, rows - 1, c); // Bottom border (r=rows-1)
+        }
+
+        // Flood any land (0) touching the left and right borders.
+        for (int r = 0; r < rows; r++) {
+            flood(grid, r, 0); // Left border (c=0)
+            flood(grid, r, cols - 1); // Right border (c=cols-1)
+        }
+
+        // --- PASS 2: Count Remaining Closed Islands ---
+        int closedIslandCount = 0;
+
+        // Iterate through the interior of the grid (excluding the border, though checking border cells is fine now)
+        for (int r = 1; r < rows - 1; r++) {
+            for (int c = 1; c < cols - 1; c++) {
+
+                // If we find remaining land (0), it must be a closed island.
+                if (grid[r][c] == 0) {
+                    closedIslandCount++;
+                    // Flood the entire remaining island so we don't count it again.
+                    flood(grid, r, c);
+                }
+            }
+        }
+
+        return closedIslandCount;
+    }
+
+
     // V1-1
     // IDEA: BFS
     // https://leetcode.com/problems/number-of-closed-islands/editorial/

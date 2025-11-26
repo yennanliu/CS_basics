@@ -6123,9 +6123,66 @@ public class Workspace18 {
      *
      */
     public int closedIsland(int[][] grid) {
+        // edge
+        if(grid == null || grid.length == 0 || grid[0].length == 0){
+            return 0;
+        }
 
-        return 0;
+        int l = grid.length;
+        int w = grid[0].length;
+
+        int cnt = 0;
+
+        // init val is `false` ???
+        boolean[][] visited = new boolean[l][w];
+
+        // loop over (x,y)
+        for(int y = 0; y < l; y++){
+            for(int x = 0; x < w; x++){
+                if(!visited[y][x] && grid[y][x] == 0){
+                    if(isClosedIsland(x, y, grid, visited)){
+                        cnt += 1;
+                    }
+                }
+            }
+        }
+
+        return cnt;
     }
+
+
+    private boolean isClosedIsland(int x, int y, int[][] grid, boolean[][] visited){
+        int l = grid.length;
+        int w = grid[0].length;
+
+        int[][] moves = new int[][]{ {1,0}, {-1,0}, {0,1}, {0,-1} };
+
+        // validate
+        // NOTE !!! check if it's in `boundary
+        if(x == 0 || x == w - 1 || y == 0 || y == l - 1){
+            return false;
+        }
+
+        // mark as visited
+        visited[y][x] = true;
+
+        // ???
+        // move to neighbors
+        for(int[] m: moves){
+            int x_ = x + m[1];
+            int y_ = y + m[0];
+            // check still in boundary
+            if(x_ >= 0 && x_ < l && y_ >= 0 && y_ < w){
+                // check if need `move`
+                if(!visited[y_][x_]){
+                    return isClosedIsland(x_, y_, grid, visited);
+                }
+            }
+        }
+
+        return true;
+    }
+
 
 
 
