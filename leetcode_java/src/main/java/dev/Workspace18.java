@@ -6006,4 +6006,90 @@ public class Workspace18 {
     }
 
 
+    // LC 695
+    // 7.42 - 52 am
+    /**
+     *
+     *   -> Return the maximum area of an island in grid.
+     *   If there is no island, return 0.
+     *
+     *
+     *   ------------------
+     *
+     *   IDEA 1) DFS
+     *
+     *
+     *
+     */
+    public int maxAreaOfIsland(int[][] grid) {
+        // edge
+        if(grid == null || grid.length == 0 || grid[0].length == 0){
+            return 0;
+        }
+
+        int maxArea = 0;
+
+        int l = grid.length;
+        int w = grid[0].length;
+
+        // init val is `false` ???
+        boolean[][] visited = new boolean[l][w];
+
+        // loop over (x,y)
+        for(int i = 0; i < l; i++){
+            for(int j = 0; j < w; j++){
+                if(!visited[i][j] && grid[i][j] == 1){
+                    maxArea = Math.max(
+                            maxArea,
+                            dfsGetArea(j, i, grid, visited)
+                    );
+                }
+            }
+        }
+
+        return maxArea;
+    }
+
+    private int dfsGetArea(int x, int y, int[][] grid, boolean[][] visited){
+        int l = grid.length;
+        int w = grid[0].length;
+
+        //int[][] moves = new int[][]{ {1,0}, {-1,0}, {0,1}, {0,-1} };
+
+        // validate here instead
+        if(x < 0 || x >= w || y < 0 || y >= l || visited[y][x]){
+            // ???
+            return 0;
+        }
+
+        // mark as visited
+        visited[y][x] = true;
+
+        // ???
+        // move to neighbors
+//        for(int[] m: moves){
+//            int x_ = x + m[1];
+//            int y_ = y + m[0];
+//            // check still in boundary
+//            if(x_ >= 0 && x_ < l && y_ >= 0 && y_ < w){
+//                // check if need `move`
+//                if(!visited[y_][x_]){
+//                    //dfsGetArea(x_, y_, image, originalColor, color);
+//                    // ???
+//                    return dfsGetArea(x_, y_, grid, visited);
+//                }
+//            }
+//        }
+
+        // ???
+        return 1 + dfsGetArea(x + 1, y,  grid, visited) +
+                dfsGetArea(x - 1, y,  grid, visited) +
+                dfsGetArea(x, y + 1,  grid, visited) +
+                dfsGetArea(x, y - 1,  grid, visited);
+    }
+
+
+
+
+
 }

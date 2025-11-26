@@ -129,6 +129,48 @@ public class MaxAreaOfIsland {
         return area;
     }
 
+    // V0-0-1
+    // IDEA: DFS (fixed by gpt)
+    public int maxAreaOfIsland_0_0_1(int[][] grid) {
+        // edge
+        if (grid == null || grid.length == 0 || grid[0].length == 0)
+            return 0;
+
+        int l = grid.length;
+        int w = grid[0].length;
+        boolean[][] visited = new boolean[l][w];
+
+        int maxArea = 0;
+
+        // loop over (y,x)
+        for (int y = 0; y < l; y++) {
+            for (int x = 0; x < w; x++) {
+                if (!visited[y][x] && grid[y][x] == 1) { // must be land
+                    maxArea = Math.max(maxArea, dfsGetArea(x, y, grid, visited));
+                }
+            }
+        }
+        return maxArea;
+    }
+
+    private int dfsGetArea(int x, int y, int[][] grid, boolean[][] visited) {
+        int l = grid.length;
+        int w = grid[0].length;
+
+        // boundary OR water OR already visited → stop
+        if (x < 0 || x >= w || y < 0 || y >= l || grid[y][x] == 0 || visited[y][x]) {
+            return 0;
+        }
+
+        visited[y][x] = true;
+
+        return 1 +
+                dfsGetArea(x + 1, y, grid, visited) +
+                dfsGetArea(x - 1, y, grid, visited) +
+                dfsGetArea(x, y + 1, grid, visited) +
+                dfsGetArea(x, y - 1, grid, visited);
+    }
+
     // V0-1
     // IDEA : DFS
     int maxArea = 0;
@@ -422,5 +464,7 @@ public class MaxAreaOfIsland {
         }
         return ans;
     }
+
+
 
 }
