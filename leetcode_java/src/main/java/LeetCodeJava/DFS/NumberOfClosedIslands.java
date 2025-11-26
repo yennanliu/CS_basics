@@ -124,6 +124,109 @@ public class NumberOfClosedIslands {
         return closedIslandCount;
     }
 
+    // V0-2
+    // IDEA: DFS (gpt)
+    public int closedIsland_0_2(int[][] grid) {
+        int m = grid.length, n = grid[0].length;
+
+        // 1. Eliminate all island parts touching the border
+        for (int i = 0; i < m; i++) {
+            dfs(grid, i, 0);
+            dfs(grid, i, n - 1);
+        }
+        for (int j = 0; j < n; j++) {
+            dfs(grid, 0, j);
+            dfs(grid, m - 1, j);
+        }
+
+        // 2. Count closed islands inside the grid
+        int count = 0;
+        for (int i = 1; i < m - 1; i++) {
+            for (int j = 1; j < n - 1; j++) {
+                if (grid[i][j] == 0) {
+                    count++;
+                    dfs(grid, i, j);
+                }
+            }
+        }
+
+        return count;
+    }
+
+    // DFS to flood-fill land (0) to water (1)
+    private void dfs(int[][] grid, int r, int c) {
+        int m = grid.length, n = grid[0].length;
+
+        if (r < 0 || c < 0 || r >= m || c >= n || grid[r][c] == 1)
+            return;
+
+        grid[r][c] = 1; // mark as visited / water
+
+        dfs(grid, r + 1, c);
+        dfs(grid, r - 1, c);
+        dfs(grid, r, c + 1);
+        dfs(grid, r, c - 1);
+    }
+
+    // V0-3
+    // IDEA: BFS (gpt)
+    public int closedIsland_0_3(int[][] grid) {
+        int m = grid.length, n = grid[0].length;
+
+        // 1. Flood-fill all border-touching land using BFS
+        for (int i = 0; i < m; i++) {
+            bfs(grid, i, 0);
+            bfs(grid, i, n - 1);
+        }
+        for (int j = 0; j < n; j++) {
+            bfs(grid, 0, j);
+            bfs(grid, m - 1, j);
+        }
+
+        // 2. Count closed islands inside the grid
+        int count = 0;
+        for (int i = 1; i < m - 1; i++) {
+            for (int j = 1; j < n - 1; j++) {
+                if (grid[i][j] == 0) {
+                    count++;
+                    bfs(grid, i, j);
+                }
+            }
+        }
+
+        return count;
+    }
+
+    // BFS flood-fill: Converts connected land (0) to water (1)
+    private void bfs(int[][] grid, int r, int c) {
+        int m = grid.length, n = grid[0].length;
+
+        if (grid[r][c] == 1)
+            return;
+
+        Queue<int[]> queue = new LinkedList<>();
+        queue.offer(new int[] { r, c });
+        grid[r][c] = 1; // mark as visited/water
+
+        int[][] dirs = { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 } };
+
+        while (!queue.isEmpty()) {
+            int[] cell = queue.poll();
+            int x = cell[0], y = cell[1];
+
+            for (int[] d : dirs) {
+                int nx = x + d[0];
+                int ny = y + d[1];
+
+                if (nx >= 0 && ny >= 0 && nx < m && ny < n && grid[nx][ny] == 0) {
+                    grid[nx][ny] = 1;
+                    queue.offer(new int[] { nx, ny });
+                }
+            }
+        }
+    }
+
+
 
     // V1-1
     // IDEA: BFS
