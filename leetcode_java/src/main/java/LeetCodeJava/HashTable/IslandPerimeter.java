@@ -113,6 +113,111 @@ public class IslandPerimeter {
         return grid[y][x] == 0;
     }
 
+    // V0-1
+    // IDEA: BRUTE FORCE (gpt)
+    public int islandPerimeter_0_1(int[][] grid) {
+        int rows = grid.length;
+        int cols = grid[0].length;
+
+        int perimeter = 0;
+
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < cols; c++) {
+                if (grid[r][c] == 1) {
+
+                    // start with 4
+                    perimeter += 4;
+
+                    /**
+                     *  NOTE !!!!
+                     *
+                     *   below subtract logic
+                     */
+                    // subtract shared edges
+                    if (r > 0 && grid[r - 1][c] == 1)
+                        perimeter -= 2; // top
+                    if (c > 0 && grid[r][c - 1] == 1)
+                        perimeter -= 2; // left
+                }
+            }
+        }
+
+        return perimeter;
+    }
+
+    // V0-2
+    // IDEA: BRUTE FORCE (gemini)
+    /**
+     * Calculates the perimeter of the single island in the grid.
+     * The island is guaranteed to be a single connected component.
+     * * Time Complexity: O(R * C), where R is rows and C is columns (single pass over the grid).
+     * Space Complexity: O(1)
+     */
+    public int islandPerimeter_0_2(int[][] grid) {
+        // Edge case check (already mostly correct)
+        if (grid == null || grid.length == 0 || grid[0].length == 0) {
+            return 0;
+        }
+
+        int rows = grid.length;
+        int cols = grid[0].length;
+        int perimeter = 0;
+
+        // Define directions for neighbors: Up, Down, Left, Right
+        // We only need to check two directions (e.g., Right and Down) to count each shared edge once.
+        // For simplicity, checking all four neighbors and subtracting 1 for each shared neighbor is often cleaner.
+        int[][] directions = { { 0, 1 }, { 0, -1 }, { 1, 0 }, { -1, 0 } };
+
+        // Iterate through every cell in the grid
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < cols; c++) {
+
+                // If the current cell is land (1)
+                if (grid[r][c] == 1) {
+
+                    // Start by assuming this cell contributes 4 to the perimeter
+                    perimeter += 4;
+
+                    // Check its neighbors to see if any perimeter sides are shared
+                    // Only checking 'Right' and 'Down' is sufficient to subtract 2 for each shared border,
+                    // but checking all 4 works if we count the shared border as subtracting 1 side per cell.
+
+                    // Check neighbor to the RIGHT (c + 1)
+                    if (c + 1 < cols && grid[r][c + 1] == 1) {
+                        // If the right neighbor is land, subtract 2 from the total perimeter (1 from current, 1 from neighbor)
+                        perimeter -= 2;
+                    }
+
+                    // Check neighbor DOWN (r + 1)
+                    if (r + 1 < rows && grid[r + 1][c] == 1) {
+                        // If the down neighbor is land, subtract 2 from the total perimeter
+                        perimeter -= 2;
+                    }
+
+                    // --- ALTERNATIVE LOGIC (More common pattern): Check ALL four neighbors ---
+                    /* // This pattern is simpler to write but conceptually equivalent:
+                    for (int[] dir : directions) {
+                        int nr = r + dir[0];
+                        int nc = c + dir[1];
+
+                        // Check if neighbor is within bounds
+                        if (nr >= 0 && nr < rows && nc >= 0 && nc < cols) {
+                            // If neighbor is land, it shares a border. Subtract 1 from the 4 original sides.
+                            if (grid[nr][nc] == 1) {
+                                perimeter -= 1;
+                            }
+                        }
+                    }
+                    */
+                }
+            }
+        }
+
+        return perimeter;
+    }
+
+
+
     // V1
     // https://github.com/neetcode-gh/leetcode/blob/main/java%2F0463-island-perimeter.java
     class RecursiveBiFunction<A, B, C> {
@@ -258,6 +363,7 @@ public class IslandPerimeter {
 
         return perimeter;
     }
+
 
 
 }
