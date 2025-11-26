@@ -6267,6 +6267,70 @@ public class Workspace18 {
         return cnt;
     }
 
+    // LC 463
+    // 6.57 - 7.07 AM
+    /**
+     *  -> Determine the perimeter (週長) of the island.
+     *
+     *    - grid[i][j] = 1 : land
+     *    - grid[i][j] = 0: water
+     *
+     *
+     *  ---------------
+     *
+     *   IDEA 1) BRUTE FORCE + MATH
+     *    -> loop over all grid, get its (x,y),
+     *    then calculate the perimeter within looping as well
+     *
+     *   IDEA 2) DFS ???
+     *
+     *   IDEA 3) BFS ???
+     *
+     *
+     */
+    public int islandPerimeter(int[][] grid) {
+        // edge
+        if(grid == null || grid.length == 0 || grid[0].length == 0){
+            return 0;
+        }
+        if(grid.length == 1 && grid[0].length == 1){
+            return grid[0][0] == 1 ? 1: 0;
+        }
+
+        int len = 0;
+
+        int l = grid.length;
+        int w = grid[0].length;
+
+        // land grid:  { [x, y] }
+        List<Integer[]> list = new ArrayList<>();
+        int xStart = w;
+        int xEnd = 0;
+        int yStart = l;
+        int yEnd = 0;
+
+        for(int y = 0; y < l; y++){
+            for(int x = 0; x < w; x++){
+                if(grid[y][x] == 0){
+                    // update
+                    xStart = Math.min(xStart, x);
+                    xEnd = Math.max(xEnd, x);
+                    yStart = Math.min(yStart, y);
+                    yEnd = Math.max(yEnd, y);
+                }
+            }
+        }
+
+        System.out.println(">>> xStart = " + xStart +
+                " xEnd = " + xEnd  +
+                " yStart = " + yStart  +
+                " yEnd = " + yEnd );
+
+        len = (xEnd - xStart + 1) + (yEnd - yStart + 1);
+        return len;
+    }
+
+
 
 
 
