@@ -5742,7 +5742,38 @@ public class Workspace18 {
      *
      *
      */
+
+    // IDEA: BINARY SEARCH ???
+    // Binary Search Partition ???
+    // 11.09 -19 am
+    /**
+     *
+     *
+     *
+     */
     public double findMedianSortedArrays(int[] nums1, int[] nums2) {
+        // edge
+
+        // NOTE !! trick
+        // assume n > m
+        // otherwise, we swap nums1, nums2 as param and call the same func
+        // (as below)
+        int n = nums1.length;
+        int m = nums2.length;
+        if(m > n){
+            return findMedianSortedArrays(nums2, nums1);
+        }
+
+        int totalSize = n + m;
+
+
+
+
+        return 0.0; // /??
+    }
+
+    // math
+    public double findMedianSortedArrays_99(int[] nums1, int[] nums2) {
         // edge
 
         // get total size
