@@ -6036,12 +6036,12 @@ public class Workspace18 {
         boolean[][] visited = new boolean[l][w];
 
         // loop over (x,y)
-        for(int i = 0; i < l; i++){
-            for(int j = 0; j < w; j++){
-                if(!visited[i][j] && grid[i][j] == 1){
+        for(int y = 0; y < l; y++){
+            for(int x = 0; x < w; x++){
+                if(!visited[y][x] && grid[y][x] == 1){
                     maxArea = Math.max(
                             maxArea,
-                            dfsGetArea(j, i, grid, visited)
+                            dfsGetArea(x, y, grid, visited)
                     );
                 }
             }
@@ -6057,7 +6057,8 @@ public class Workspace18 {
         //int[][] moves = new int[][]{ {1,0}, {-1,0}, {0,1}, {0,-1} };
 
         // validate here instead
-        if(x < 0 || x >= w || y < 0 || y >= l || visited[y][x]){
+        // NOTE !!! NOT visited as well if it's `water` at (x,y)
+        if(x < 0 || x >= w || y < 0 || y >= l || grid[y][x] == 0 || visited[y][x]){
             // ???
             return 0;
         }
