@@ -54,6 +54,12 @@
 - **Examples**: LC 508, LC 652, LC 236, LC 663
 - **Template**: Use Bottom-up Template
 
+### **Pattern 7: Boundary Elimination (2-Pass DFS)**
+- **Description**: Eliminate boundary-connected cells first, then process interior
+- **Recognition**: "Closed islands", "surrounded regions", "captured pieces"
+- **Examples**: LC 1254, LC 130, LC 417
+- **Template**: Use 2-Pass DFS Template
+
 ## Templates & Algorithms
 
 ### Template Comparison Table
@@ -65,6 +71,7 @@
 | **Path Finding** | Find specific paths | Track path | O(n) | O(h) | Path problems |
 | **Modification** | Change structure | Update nodes | O(n) | O(h) | Tree editing |
 | **Bottom-up** | Aggregate info | Post-order | O(n) | O(h) | Subtree problems |
+| **2-Pass DFS** | Boundary elimination | Two-phase flood | O(m×n) | O(m×n) | Closed/surrounded regions |
 
 ### Universal DFS Template
 ```python
@@ -278,22 +285,122 @@ def bottom_up_dfs(root):
     def dfs(node):
         if not node:
             return 0  # or base value
-        
+
         # Process subtrees first
         left_result = dfs(node.left)
         right_result = dfs(node.right)
-        
+
         # Process current node using subtree results
         current_result = process(node, left_result, right_result)
-        
+
         # Update global result if needed
         self.global_result = max(self.global_result, current_result)
-        
+
         return current_result
-    
+
     self.global_result = 0
     dfs(root)
     return self.global_result
+```
+
+### Template 7: 2-Pass DFS (Boundary Elimination)
+```python
+def two_pass_dfs(grid):
+    """
+    Two-pass approach for grid problems
+    Pass 1: Eliminate boundary-connected cells
+    Pass 2: Count/process remaining valid cells
+    Common for "closed" or "surrounded" problems
+    """
+    if not grid or not grid[0]:
+        return 0
+
+    rows, cols = len(grid), len(grid[0])
+
+    def flood(r, c):
+        """Mark cell and all connected cells as visited"""
+        if r < 0 or r >= rows or c < 0 or c >= cols or grid[r][c] != target:
+            return
+        grid[r][c] = marked  # Mark as visited
+        # Visit 4 neighbors
+        flood(r + 1, c)
+        flood(r - 1, c)
+        flood(r, c + 1)
+        flood(r, c - 1)
+
+    # Pass 1: Eliminate boundary-connected cells
+    # Top and bottom borders
+    for c in range(cols):
+        flood(0, c)
+        flood(rows - 1, c)
+
+    # Left and right borders
+    for r in range(rows):
+        flood(r, 0)
+        flood(r, cols - 1)
+
+    # Pass 2: Count/process remaining valid cells
+    count = 0
+    for r in range(rows):
+        for c in range(cols):
+            if grid[r][c] == target:
+                count += 1
+                flood(r, c)  # Mark to avoid double counting
+
+    return count
+```
+
+```java
+// Java implementation
+public int twoPassDFS(int[][] grid) {
+    if (grid == null || grid.length == 0) {
+        return 0;
+    }
+
+    int rows = grid.length;
+    int cols = grid[0].length;
+
+    // Pass 1: Eliminate boundary-connected cells
+    for (int c = 0; c < cols; c++) {
+        flood(grid, 0, c);           // Top border
+        flood(grid, rows - 1, c);    // Bottom border
+    }
+
+    for (int r = 0; r < rows; r++) {
+        flood(grid, r, 0);           // Left border
+        flood(grid, r, cols - 1);    // Right border
+    }
+
+    // Pass 2: Count remaining valid cells
+    int count = 0;
+    for (int r = 1; r < rows - 1; r++) {
+        for (int c = 1; c < cols - 1; c++) {
+            if (grid[r][c] == 0) {
+                count++;
+                flood(grid, r, c);
+            }
+        }
+    }
+
+    return count;
+}
+
+private void flood(int[][] grid, int r, int c) {
+    int rows = grid.length;
+    int cols = grid[0].length;
+
+    if (r < 0 || r >= rows || c < 0 || c >= cols || grid[r][c] == 1) {
+        return;
+    }
+
+    grid[r][c] = 1;  // Mark as visited
+
+    // Visit 4 neighbors
+    int[][] dirs = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+    for (int[] dir : dirs) {
+        flood(grid, r + dir[0], c + dir[1]);
+    }
+}
 ```
 
 #### 0-2-2) Basic Tricks
@@ -576,6 +683,14 @@ print (z)
 | Validate Binary Search Tree | 98 | Medium | Min/Max bounds | Template 1 |
 | Split BST | 776 | Medium | Recursive split | Template 5 |
 
+#### **Pattern 7: Boundary Elimination (2-Pass DFS)**
+| Problem | LC # | Difficulty | Key Technique | Template |
+|---------|------|------------|---------------|----------|
+| Number of Closed Islands | 1254 | Medium | Boundary flood | Template 7 |
+| Surrounded Regions | 130 | Medium | Border elimination | Template 7 |
+| Pacific Atlantic Water Flow | 417 | Medium | Two oceans | Template 7 |
+| Number of Enclaves | 1020 | Medium | Border-connected | Template 7 |
+
 ### Complete Problem List by Difficulty
 
 #### Easy Problems (Foundation)
@@ -594,6 +709,7 @@ print (z)
 #### Medium Problems (Core)
 - LC 98: Validate BST - Bounds checking
 - LC 113: Path Sum II - Backtracking paths
+- LC 130: Surrounded Regions - Boundary elimination
 - LC 133: Clone Graph - HashMap + DFS
 - LC 200: Number of Islands - Grid DFS
 - LC 207: Course Schedule - Cycle detection
@@ -615,6 +731,8 @@ print (z)
 - LC 701: Insert into BST - BST insertion
 - LC 737: Sentence Similarity II - Graph connectivity
 - LC 776: Split BST - Advanced manipulation
+- LC 1020: Number of Enclaves - Boundary elimination
+- LC 1254: Number of Closed Islands - 2-Pass DFS
 - LC 1339: Maximum Product of Splitted Tree - All subtree sums
 
 #### Hard Problems (Advanced)
@@ -2011,7 +2129,116 @@ class Codec:
             return None
 ```
 
-### 2-12) Pacific Atlantic Water Flow
+### 2-12) Number of Closed Islands (2-Pass DFS)
+```java
+// java
+// LC 1254
+// V0
+// IDEA: 2-Pass DFS (Boundary Elimination)
+/**
+ * Algorithm:
+ * Pass 1: Start from all boundary cells and flood-fill to eliminate
+ *         all islands connected to the boundary (these cannot be closed)
+ * Pass 2: Count remaining land cells as closed islands
+ *
+ * Time: O(m×n), Space: O(m×n) for recursion stack
+ */
+public int closedIsland(int[][] grid) {
+    if (grid == null || grid.length == 0) {
+        return 0;
+    }
+
+    int rows = grid.length;
+    int cols = grid[0].length;
+
+    // Pass 1: Eliminate boundary-connected islands
+    // Flood top and bottom borders
+    for (int c = 0; c < cols; c++) {
+        flood(grid, 0, c);           // Top border
+        flood(grid, rows - 1, c);    // Bottom border
+    }
+
+    // Flood left and right borders
+    for (int r = 0; r < rows; r++) {
+        flood(grid, r, 0);           // Left border
+        flood(grid, r, cols - 1);    // Right border
+    }
+
+    // Pass 2: Count closed islands
+    int count = 0;
+    for (int r = 1; r < rows - 1; r++) {
+        for (int c = 1; c < cols - 1; c++) {
+            if (grid[r][c] == 0) {
+                count++;
+                flood(grid, r, c);  // Mark entire island
+            }
+        }
+    }
+
+    return count;
+}
+
+private void flood(int[][] grid, int r, int c) {
+    int rows = grid.length;
+    int cols = grid[0].length;
+
+    // Base case: out of bounds or water
+    if (r < 0 || r >= rows || c < 0 || c >= cols || grid[r][c] == 1) {
+        return;
+    }
+
+    grid[r][c] = 1;  // Mark land as water (visited)
+
+    // Flood 4-directionally
+    flood(grid, r + 1, c);
+    flood(grid, r - 1, c);
+    flood(grid, r, c + 1);
+    flood(grid, r, c - 1);
+}
+```
+
+```python
+# python
+# LC 1254
+def closedIsland(grid):
+    """
+    2-Pass DFS approach
+    """
+    if not grid or not grid[0]:
+        return 0
+
+    rows, cols = len(grid), len(grid[0])
+
+    def flood(r, c):
+        if r < 0 or r >= rows or c < 0 or c >= cols or grid[r][c] == 1:
+            return
+        grid[r][c] = 1
+        flood(r + 1, c)
+        flood(r - 1, c)
+        flood(r, c + 1)
+        flood(r, c - 1)
+
+    # Pass 1: Eliminate boundary islands
+    for c in range(cols):
+        flood(0, c)
+        flood(rows - 1, c)
+
+    for r in range(rows):
+        flood(r, 0)
+        flood(r, cols - 1)
+
+    # Pass 2: Count closed islands
+    count = 0
+    for r in range(1, rows - 1):
+        for c in range(1, cols - 1):
+            if grid[r][c] == 0:
+                count += 1
+                flood(r, c)
+
+    return count
+```
+
+### 2-13) Pacific Atlantic Water Flow
 
 ```java
 // java
