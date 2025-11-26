@@ -6186,6 +6186,56 @@ public class Workspace18 {
         return true;
     }
 
+    // LC 2962
+    public long countSubarrays(int[] nums, int k) {
+        // edge
+
+        // get max val
+        int maxVal = 0;
+        for(int x: nums){
+            maxVal = Math.max(x, maxVal);
+        }
+
+        long cnt = 0L;
+
+        // slide window
+        /**
+         *  for(r = 0; r < nums.len; r++){
+         *      while(){
+         *
+         *          l += 1;
+         *      }
+         *  }
+         */
+        int l = 0;
+        int maxValCnt = 0;
+
+        for(int r = 0; r < nums.length; r++){
+            // ???
+            if(nums[r] == maxValCnt){
+                maxValCnt += 1;
+            }
+            // ???
+            while(maxValCnt >= k && l < r){
+                //l == 1
+
+                // ??? add on `all combination`
+                //cnt += (r - l + 1);
+                //cnt += 1; // ???
+                cnt += (nums.length - r);
+
+                // check if left pointer val is same as max val
+                if(nums[l] == maxValCnt){
+                    maxValCnt -= 1;
+                }
+                // move left pointer
+                l += 1;
+            }
+        }
+
+        return cnt;
+    }
+
 
 
 

@@ -43,9 +43,88 @@ import java.util.Map;
 public class CountSubarraysWhereMaxElementAppearsAtLeastKTimes {
 
     // V0
-//    public long countSubarrays(int[] nums, int k) {
-//
-//    }
+    // IDEA: SLIDE WINDOW (fixed by gemini)
+    /**
+     * Counts the number of subarrays where the maximum element appears at least k times.
+     * Time Complexity: O(N)
+     * @param nums The input array.
+     * @param k The minimum required count for the maximum element.
+     * @return The total number of valid subarrays.
+     */
+    public long countSubarrays(int[] nums, int k) {
+        if (nums == null || nums.length == 0 || k <= 0) {
+            return 0L;
+        }
+
+        // 1. Correctly find the maximum element in the entire array.
+        // The original loop was missing the comparison logic.
+        int maxVal = 0;
+        for (int x : nums) {
+            maxVal = Math.max(x, maxVal);
+        }
+
+        long resultCount = 0;
+        int maxValCnt = 0; // Current count of maxVal in the window [l, r]
+        int l = 0; // Left pointer of the sliding window
+
+        // 2. Slide the right pointer (r) to expand the window.
+        for (int r = 0; r < nums.length; r++) {
+
+            /** NOTE !!!
+             *
+             *   if right pointer val == maxVal,
+             *   we update the maxValCnt at beginning of for loop
+             */
+            // --- FIX 1: Correctly update maxValCnt ---
+            // Check if the element at 'r' is the maximum value.
+            if (nums[r] == maxVal) {
+                maxValCnt++;
+            }
+
+            /** NOTE !!! slide window pattern:
+             *
+             *  for(r = 0; r < nums.len; r++){
+             *      while(condition){
+             *
+             *          l += 1;
+             *      }
+             *  }
+             */
+            // 3. Shrink the window from the left (l) as long as the condition is met (maxValCnt >= k).
+            while (maxValCnt >= k) {
+
+                // --- FIX 2: Correct Subarray Counting ---
+                // If the window [l...r] is valid, then every subarray starting from
+                // index 0 up to index l and ending at nums.len - 1 is also valid.
+                /** NOTE !!!
+                 *
+                 *   if cur sub array is valid, then its `future sub array` is VALID as well.
+                 *
+                 *   e.g. if [l..r] is valid, then [l... num.len-1] is valid
+                 *   -> so we need to add the `future count` to ans
+                 *   ->  resultCount += (nums.length - r);
+                 */
+                resultCount += (nums.length - r);
+
+                /** NOTE !!!
+                 *
+                 *  we check if cur left pointer val == maxVal,
+                 *  if yes. we reduce the maxValCnt FIRST !!!
+                 *  then we move left pointer
+                 */
+                // Try to shrink the window by moving 'l' one step to the right.
+                if (nums[l] == maxVal) {
+                    // Decrease maxValCnt only if the maximum element is removed from the left.
+                    maxValCnt--;
+                }
+
+                // Move left pointer
+                l++;
+            }
+        }
+
+        return resultCount;
+    }
 
     // V0-0-1
     // TODO: fix below
