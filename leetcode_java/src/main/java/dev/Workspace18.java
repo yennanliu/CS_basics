@@ -6303,7 +6303,7 @@ public class Workspace18 {
         int w = grid[0].length;
 
         // land grid:  { [x, y] }
-        List<Integer[]> list = new ArrayList<>();
+       // List<Integer[]> list = new ArrayList<>();
         int xStart = w;
         int xEnd = 0;
         int yStart = l;
