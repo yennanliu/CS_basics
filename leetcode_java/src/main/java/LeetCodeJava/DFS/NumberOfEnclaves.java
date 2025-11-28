@@ -49,6 +49,139 @@ public class NumberOfEnclaves {
 //
 //    }
 
+    // V0-1
+    // IDEA: LC 130, DFS (fixed by gpt)
+    public int numEnclaves_0_1(int[][] grid) {
+
+        if (grid == null || grid.length == 0 || grid[0].length == 0)
+            return 0;
+
+        int l = grid.length;
+        int w = grid[0].length;
+
+        // Step 1: Flood fill from boundary "1" → mark as -1 (can't be enclave)
+        for (int y = 0; y < l; y++) {
+            if (grid[y][0] == 1)
+                dfsColorHelper2(0, y, grid, 1, -1);
+            if (grid[y][w - 1] == 1)
+                dfsColorHelper2(w - 1, y, grid, 1, -1);
+        }
+        for (int x = 0; x < w; x++) { // FIXED (was w++)
+            if (grid[0][x] == 1)
+                dfsColorHelper2(x, 0, grid, 1, -1);
+            if (grid[l - 1][x] == 1)
+                dfsColorHelper2(x, l - 1, grid, 1, -1);
+        }
+
+        // Step 2: Count remaining 1’s (these are enclaves)
+        int cnt = 0;
+        for (int y = 0; y < l; y++) {
+            for (int x = 0; x < w; x++) {
+                if (grid[y][x] == 1)
+                    cnt++;
+            }
+        }
+
+        return cnt;
+    }
+
+    // DFS - recolor oldColor → newColor
+    private void dfsColorHelper2(int x, int y, int[][] grid, int oldColor, int newColor) {
+        int l = grid.length, w = grid[0].length;
+
+        grid[y][x] = newColor; // mark visited
+
+        int[][] moves = { { 0, 1 }, { 0, -1 }, { 1, 0 }, { -1, 0 } }; // (dy, dx)
+
+        for (int[] m : moves) {
+            int x_ = x + m[1];
+            int y_ = y + m[0];
+
+            if (x_ >= 0 && x_ < w && y_ >= 0 && y_ < l && grid[y_][x_] == oldColor) {
+                dfsColorHelper2(x_, y_, grid, oldColor, newColor);
+            }
+        }
+    }
+
+
+    // V0-2
+    // IDEA: LC 130, DFS (fixed by gemini)
+    private int rows;
+    private int cols;
+    private final int LAND = 1;
+    private final int ESCAPED_LAND = 2; // Temporary marker for land connected to the boundary
+    private final int[][] MOVES = new int[][] { { 0, 1 }, { 0, -1 }, { 1, 0 }, { -1, 0 } };
+
+    public int numEnclaves_0_2(int[][] grid) {
+        if (grid == null || grid.length == 0 || grid[0].length == 0) {
+            return 0;
+        }
+
+        this.rows = grid.length;
+        this.cols = grid[0].length;
+
+        // --- Step 1: Flood Fill Land Connected to the Boundary (Mark '1' -> 'ESCAPED_LAND') ---
+
+        // 1. Traverse Top (r=0) and Bottom (r=rows-1) rows
+        for (int c = 0; c < cols; c++) {
+            // Top row
+            if (grid[0][c] == LAND) {
+                dfsFlood(grid, 0, c);
+            }
+            // Bottom row
+            if (grid[rows - 1][c] == LAND) {
+                dfsFlood(grid, rows - 1, c);
+            }
+        }
+
+        // 2. Traverse Left (c=0) and Right (c=cols-1) columns
+        for (int r = 0; r < rows; r++) {
+            // Left column
+            if (grid[r][0] == LAND) {
+                dfsFlood(grid, r, 0);
+            }
+            // Right column
+            if (grid[r][cols - 1] == LAND) {
+                dfsFlood(grid, r, cols - 1);
+            }
+        }
+
+        // --- Step 2: Count the Remaining Unmarked Land ('1's) ---
+        int enclaveCount = 0;
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < cols; c++) {
+                if (grid[r][c] == LAND) {
+                    enclaveCount++;
+                }
+            }
+        }
+
+        return enclaveCount;
+    }
+
+    /**
+     * DFS helper to mark connected land (oldColor=1) with a new color (ESCAPED_LAND=2).
+     */
+    private void dfsFlood(int[][] grid, int r, int c) {
+        // Base Case: Check bounds or if already visited/water.
+        if (r < 0 || r >= rows || c < 0 || c >= cols || grid[r][c] != LAND) {
+            return;
+        }
+
+        // Mark the current land cell as escaped/visited
+        grid[r][c] = ESCAPED_LAND;
+
+        // Visit neighbors
+        for (int[] move : MOVES) {
+            int nextR = r + move[0];
+            int nextC = c + move[1];
+
+            // Note: Bounds check is handled by the base case in the recursive call.
+            dfsFlood(grid, nextR, nextC);
+        }
+    }
+
+
     // V1
     // IDEA: DFS
     // https://leetcode.ca/2018-09-15-1020-Number-of-Enclaves/

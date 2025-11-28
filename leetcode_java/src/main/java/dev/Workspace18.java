@@ -6420,9 +6420,85 @@ public class Workspace18 {
 
 
     // LC 1020
+    // 10.27 - 37 am
+    /**
+     *
+     *  -> Return the number of land cells in grid for
+     *     which we cannot walk off the boundary of the grid in any number of moves.
+     *
+     *
+     *     -> e.g. return the land (1) NOT connected to `boundary` (0)
+     *
+     *
+     *  - 0 : sea
+     *  - 1 : land
+     *
+     *  ----
+     *
+     *   IDEA 1) DFS
+     *
+     *
+     *
+     */
     public int numEnclaves(int[][] grid) {
+        // edge
+        if(grid == null || grid.length == 0 || grid[0].length == 0){
+            return 0;
+        }
+        if(grid.length == 1 && grid[0].length == 1){
+            return grid[0][0] == 1 ? 1: 0;
+        }
 
-        return 0;
+        int l = grid.length;
+        int w = grid[0].length;
+
+        // step 1) mark all boundary 1 to '#'
+        for(int y = 0; y < l; y++){
+            if(grid[y][0] == 1){
+                dfsColorHelper2(0, y, grid, 1, -1);
+            }
+            if(grid[y][w-1] == 1){
+                dfsColorHelper2(w-1, y, grid, 1, -1);
+            }
+        }
+        for(int x = 0; x < w; w++){
+            if(grid[0][x] == 1){
+                dfsColorHelper2(x, 0, grid, 1, -1);
+            }
+            if(grid[l-1][x] == 1){
+                dfsColorHelper2(x, l-1, grid, 1, -1);
+            }
+        }
+
+        // step 2) mark all remaining '1' to '?' and cnt
+        int cnt = 0;
+        for(int y = 0; y < l; y++){
+            for(int x = 0; x < w; x++){
+                if(grid[y][x] == 1){
+                    cnt += 1;
+                }
+            }
+        }
+
+        return cnt;
+    }
+
+    // dfs helper
+    private void dfsColorHelper2(int x, int y, int[][] grid, int oldColor, int newColor){
+        int l = grid.length;
+        int w = grid[0].length;
+        int[][] moves = new int[][] { {0,1}, {0,-1}, {1,0}, {-1,0} };
+
+        // mark
+        grid[y][x] = newColor;
+
+        for(int[] m: moves){
+            int x_ = x + m[1];
+            int y_ = y + m[0];
+            if(x_ >= 0 && x_ < w && y_ >= 0 && y_ < l && grid[y_][x_] == oldColor){
+                dfsColorHelper2(x_, y_, grid, oldColor, newColor);
+            }
+        }
     }
 
 
