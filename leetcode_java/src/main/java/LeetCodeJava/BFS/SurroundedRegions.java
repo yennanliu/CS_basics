@@ -138,6 +138,13 @@ public class SurroundedRegions {
 
     // V0-0-1
     // IDEA: DFS (fixed by gpt)
+    /**
+     * Approach Used (Standard 3-step DFS solution)
+     *
+     * 	1.	DFS from boundary 'O' → mark as '#' (they should NOT flip)
+     * 	2.	Convert all remaining 'O' → 'X' (they are enclosed)
+     * 	3.	Convert all '#' back → 'O'
+     */
     public void solve_0_0_1(char[][] board) {
         if (board == null || board.length == 0)
             return;
@@ -145,6 +152,12 @@ public class SurroundedRegions {
         int l = board.length;
         int w = board[0].length;
 
+        /** NOTE !!!
+         *
+         *  we need to color `4 boundary` !!!
+         *
+         *   e.g. x ==0, x==w, y==0, y==l
+         */
         // Step 1 — Mark all boundary 'O' as '#'
         for (int x = 0; x < w; x++) {
             if (board[0][x] == 'O')
@@ -159,6 +172,12 @@ public class SurroundedRegions {
                 dfsMark_0_0_1(y, w - 1, board);
         }
 
+        /** NOTE !!!
+         *
+         *   For the `remaining flip`, we DON'T need DFS,
+         *   just a simple double loop over all grid,
+         *   that's it, don't over engineering. keep things simple.
+         */
         // Step 2 — Flip remaining 'O' → 'X'
         for (int y = 0; y < l; y++) {
             for (int x = 0; x < w; x++) {
@@ -167,6 +186,12 @@ public class SurroundedRegions {
             }
         }
 
+        /** NOTE !!!
+         *
+         *   For the `restore`, we DON'T need DFS,
+         *   just a simple double loop over all grid,
+         *   that's it, don't over engineering. keep things simple.
+         */
         // Step 3 — Restore '#' → 'O'
         for (int y = 0; y < l; y++) {
             for (int x = 0; x < w; x++) {
@@ -176,6 +201,13 @@ public class SurroundedRegions {
         }
     }
 
+    /** NOTE !!!
+     *
+     *  we DON'T need `visited` param in below DFS
+     *
+     *  -> since when a grid marked as '#'
+     *     it CAN'T be visited again
+     */
     // DFS to mark connected boundary area
     private void dfsMark_0_0_1(int y, int x, char[][] board) {
         int l = board.length, w = board[0].length;
