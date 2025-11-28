@@ -6530,6 +6530,18 @@ public class Workspace18 {
      */
     class FreqStack {
 
+        // attr V2:
+        int maxCnt;
+
+        // Map to track the frequency of each element
+        Map<Integer, Integer> cntMap;
+
+        // Map to track the elements for each frequency count
+        Map<Integer, Stack<Integer>> freqMap;
+
+
+        // ------------------
+
         // attr
         // - hashmap : { val : freq }
         Map<Integer, Integer> map;
