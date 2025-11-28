@@ -1,6 +1,6 @@
 # Progress
 
-# 2025-11-27
+# 2025-11-28
 
 - LC weekly 375
 - weekly video
@@ -171,7 +171,6 @@
 			- 642
 	- LC 200 Number of Islands
 		- gpt
-			- 130
 			- 1020
 			- 694
 			- 547 (Number of Provinces)
