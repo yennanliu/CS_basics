@@ -6419,7 +6419,11 @@ public class Workspace18 {
     }
 
 
+    // LC 1020
+    public int numEnclaves(int[][] grid) {
 
+        return 0;
+    }
 
 
 }

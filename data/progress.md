@@ -171,7 +171,6 @@
 			- 642
 	- LC 200 Number of Islands
 		- gpt
-			- 1020
 			- 694
 			- 547 (Number of Provinces)
 			- 305
