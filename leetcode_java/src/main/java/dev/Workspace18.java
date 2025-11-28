@@ -6461,7 +6461,8 @@ public class Workspace18 {
                 dfsColorHelper2(w-1, y, grid, 1, -1);
             }
         }
-        for(int x = 0; x < w; w++){
+        // !!!!
+        for(int x = 0; x < w; x++){
             if(grid[0][x] == 1){
                 dfsColorHelper2(x, 0, grid, 1, -1);
             }
@@ -6500,6 +6501,92 @@ public class Workspace18 {
             }
         }
     }
+
+
+    // LC 895
+    // 10.57 - 11.07 am
+    /**
+     *
+     *
+     *  -> Implement the FreqStack class:
+     *
+     *    - push, pop on the most freq element from stack
+     *
+     *    - NOTE:
+     *      - If there is a `tie` for the most frequent element,
+     *        the element closest to the stack's TOP is removed and returned.
+     *
+     *  ---------------
+     *
+     *   IDEA 1) DEQUEUE ? + HASHMAP ???
+     *
+     *     - hashmap : { val : freq }
+     *     - dqueue: node1-node-2- ...
+     *         - in the `decreasing order`, e.g. the most freq and top
+     *     -
+     *
+     *   IDEA 2) BRUTE FORCE ???
+     *
+     */
+    class FreqStack {
+
+        // attr
+        // - hashmap : { val : freq }
+        Map<Integer, Integer> map;
+        // - dqueue: node1-node-2- ...
+        // - in the `decreasing order`, e.g. the most freq and top
+        Deque<Integer> deque;
+
+        // PQ ??
+        // big PQ: big -> small
+        // NOTE !! sort on hashmap freq
+        //PriorityQueue<Map.Entry<Integer, Integer>> pq = new PriorityQueue<>();
+        PriorityQueue<Integer> pq = new PriorityQueue<>();
+
+        public FreqStack() {
+            this.map = new HashMap<>();
+            this.deque = new ArrayDeque<>();
+            // NOTE !! sort on hashmap freq
+            // ???
+//            this.pq = new PriorityQueue<Map.Entry<Integer, Integer>>(new Comparator<Map.Entry<Integer, Integer>>() {
+//                @Override
+//                public int compare(Map.Entry<Integer, Integer> o1, Map.Entry<Integer, Integer> o2) {
+//                    int diff = o2.getValue() - o1.getValue();
+//                    return diff;
+//                }
+//            });
+
+            // ???
+            this.pq = new PriorityQueue<>(new Comparator<Integer>() {
+                @Override
+                public int compare(Integer o1, Integer o2) {
+                    int diff = o2 -o1;
+                    return diff;
+                }
+            });
+
+
+        }
+
+        public void push(int val) {
+            // ??
+            if(!this.map.containsKey(val)){
+                this.map.put(val, this.map.getOrDefault(val, 0) + 1);
+            }else{
+                this.map.put(val, this.map.getOrDefault(val, 0) + 1);
+                this.deque.removeFirstOccurrence(val);
+                this.deque.addFirst(val + 1);
+            }
+        }
+
+        public int pop() {
+
+            return 0;
+        }
+
+    }
+
+
 
 
 }
