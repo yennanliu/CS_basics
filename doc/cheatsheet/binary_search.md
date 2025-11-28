@@ -1,3 +1,20 @@
+---
+layout: cheatsheet
+title: "Binary Search"
+description: "Binary search algorithm for efficiently finding elements in sorted arrays and search spaces"
+category: "Algorithm"
+difficulty: "Medium"
+tags: ["binary-search", "divide-conquer", "sorted-array", "search", "two-pointers"]
+patterns:
+  - Basic binary search
+  - Search in rotated array
+  - Find boundaries
+  - Search in 2D matrix
+  - Optimization problems
+time_complexity: "O(log n)"
+space_complexity: "O(1) iterative, O(log n) recursive"
+---
+
 # Binary Search
 
 ## Overview
@@ -985,7 +1002,7 @@ class Solution:
 // V0
 // IDEA: BINARY SEARCH (fixed by gpt)
 public int[] searchRange(int[] nums, int target) {
-    int[] res = new int[]{-1, -1}; // Default result
+    int[] res = new int[]{% raw %}{-1, -1}{% endraw %}; // Default result
 
     if (nums == null || nums.length == 0) {
         return res;
@@ -1000,7 +1017,7 @@ public int[] searchRange(int[] nums, int target) {
     // Find the last occurrence of target
     int right = findBound(nums, target, false);
 
-    return new int[]{left, right};
+    return new int[]{% raw %}{left, right}{% endraw %};
 }
 
 private int findBound(int[] nums, int target, boolean isFirst) {

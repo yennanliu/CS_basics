@@ -1,3 +1,16 @@
+---
+layout: cheatsheet
+title: "Bit Manipulation"
+description: "Binary operations and bitwise algorithms for efficient computation"
+category: "Technique"
+difficulty: "Medium"
+tags: ["bit-manipulation", "binary", "bitwise", "optimization"]
+patterns:
+  - Bitwise operations
+  - Binary representation
+  - Bit masking
+---
+
 # Bit Manipulation 
 
 ## 0) Concept

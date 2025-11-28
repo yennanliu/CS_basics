@@ -1,3 +1,20 @@
+---
+layout: cheatsheet
+title: "Two Pointers"
+description: "Two pointers technique for solving array and string problems efficiently"
+category: "Algorithm"
+difficulty: "Medium"
+tags: ["two-pointers", "array", "string", "sliding-window", "binary-search"]
+patterns:
+  - Fast-slow pointers
+  - Left-right pointers
+  - Sliding window
+  - Binary search
+  - Array manipulation
+time_complexity: "O(n)"
+space_complexity: "O(1)"
+---
+
 # Two pointers
 
 - Ref

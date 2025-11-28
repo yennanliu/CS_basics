@@ -1,3 +1,16 @@
+---
+layout: cheatsheet
+title: "Recursion"
+description: "Problem-solving technique using self-calling functions"
+category: "Algorithm"
+difficulty: "Medium"
+tags: ["recursion", "divide-and-conquer", "base-case", "recursive-call"]
+patterns:
+  - Base case definition
+  - Recursive case breakdown
+  - Function call stack
+---
+
 # Recursion
 
 For a problem, if there exists a recursive solution, we can follow the guidelines below to implement it. 

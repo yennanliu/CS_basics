@@ -1,3 +1,16 @@
+---
+layout: cheatsheet
+title: "Tree Data Structure"
+description: "Hierarchical data structure with nodes connected by edges"
+category: "Data Structure"
+difficulty: "Medium"
+tags: ["tree", "hierarchical", "nodes", "traversal"]
+patterns:
+  - Tree traversal
+  - Hierarchical relationships
+  - Recursive processing
+---
+
 # Tree Data Structure
 
 ## Overview

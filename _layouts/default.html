@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% if page.title %}{{ page.title }} | {% endif %}{{ site.title }}</title>
+    <meta name="description" content="{{ site.description }}">
+    <link rel="stylesheet" href="{{ '/assets/css/style.css' | prepend: site.baseurl | prepend: site.url }}">
+    <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@300;400;500;700&family=Google+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <a href="{{ site.baseurl }}/" class="logo-link">
+                        <span class="logo-text">CS_BASICS</span>
+                    </a>
+                </div>
+                <nav class="nav">
+                    <a href="{{ site.baseurl }}/" class="nav-link">Home</a>
+                    <a href="{{ site.baseurl }}/cheatsheets/" class="nav-link">Cheatsheets</a>
+                    <a href="https://github.com/yennanliu/CS_basics" class="nav-link" target="_blank">GitHub</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="container">
+            {% if page.layout == 'cheatsheet-index' %}
+                <div class="hero">
+                    <h1 class="hero-title">{{ page.title }}</h1>
+                    <p class="hero-subtitle">{{ page.description | default: site.description }}</p>
+                </div>
+            {% endif %}
+
+            <div class="content">
+                {{ content }}
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <p class="footer-text">
+                    &copy; {{ "now" | date: "%Y" }} {{ site.author }}. 
+                    <a href="https://github.com/yennanliu/CS_basics" target="_blank">View on GitHub</a>
+                </p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
