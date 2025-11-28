@@ -6331,6 +6331,93 @@ public class Workspace18 {
     }
 
 
+    // LC 130
+    // 9.18 - 35 am
+    /**
+     *
+     *  -> To capture a surrounded region, replace all 'O's with 'X'
+     *     s in-place within the original board. You do not need to return anything.
+     *
+     *  e.g. replace all '0' surrounded by 'X' to 'X'
+     *
+     * ----
+     *
+     *
+     *  IDEA 1) DFS
+     *     - 1. find all '0' surrounded by 'X'
+     *     - 2. replace all of them to 'X'
+     *
+     *  IDEA 2) BFS
+     *
+     *
+     */
+    // IDEA 1) DFS
+    //List<Integer[]> collected = new ArrayList<>();
+    public void solve(char[][] board) {
+        // edge
+        if(board == null || board.length == 0 || board[0].length == 0){
+            return;
+        }
+        if(board.length == 1 && board[0].length == 1){
+            if(board[0][0] == '0'){
+                board[0][0] = 'X';
+            }
+            return;
+        }
+
+
+        int l = board.length;
+        int w = board[0].length;
+        boolean[][] visited = new boolean[l][w];
+
+       // System.out.println(">>> collected = " + collected);
+
+        // step 1) mark all `boundary` '0' grid as '?'
+        for(int y = 0; y < l; y++){
+            dfsMarker(0, y, '?', '0', board, new boolean[l][w]);
+        }
+        for(int x = 0; x < w; x++){
+            dfsMarker(x, 0, '?', '0', board, new boolean[l][w]);
+        }
+
+        // step 2) mark all remaining '0' grid as 'X'
+        for(int y = 0; y < l; y++){
+            for(int x = 0; x < w; x++){
+                dfsMarker(x, y, 'X', '0', board, new boolean[l][w]);
+            }
+        }
+
+        // step 4) mark all '?' grid as '0'
+        for(int y = 0; y < l; y++){
+            for(int x = 0; x < w; x++){
+                dfsMarker(x, y, '0', '?', board, new boolean[l][w]);
+            }
+        }
+
+        return;
+    }
+
+    ///  ???
+    private void dfsMarker(int x, int y, char newColor,  char oldColor, char[][] board, boolean[][] visited){
+        int l = board.length;
+        int w = board[0].length;
+
+        int[][] moves = new int[][] { {0,1}, {0,-1}, {1,0}, {-1,0} };
+
+        // mark
+        board[y][x] = newColor;
+        // mark as visited
+        visited[y][x] = true;
+
+        for(int[] m: moves){
+            int x_ = x + m[1];
+            int y_ = y + m[1];
+            if(x_ >= 0 && x_ < w && y_ >= 0 && y_ < l && !visited[y_][x_] && board[y_][x_] == oldColor){
+                dfsMarker(x_, y_, newColor, oldColor, board, visited);
+            }
+        }
+    }
+
 
 
 

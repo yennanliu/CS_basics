@@ -136,6 +136,133 @@ public class SurroundedRegions {
         markAsNotAffected(board, x, y - 1);
     }
 
+    // V0-0-1
+    // IDEA: DFS (fixed by gpt)
+    public void solve_0_0_1(char[][] board) {
+        if (board == null || board.length == 0)
+            return;
+
+        int l = board.length;
+        int w = board[0].length;
+
+        // Step 1 — Mark all boundary 'O' as '#'
+        for (int x = 0; x < w; x++) {
+            if (board[0][x] == 'O')
+                dfsMark_0_0_1(0, x, board);
+            if (board[l - 1][x] == 'O')
+                dfsMark_0_0_1(l - 1, x, board);
+        }
+        for (int y = 0; y < l; y++) {
+            if (board[y][0] == 'O')
+                dfsMark_0_0_1(y, 0, board);
+            if (board[y][w - 1] == 'O')
+                dfsMark_0_0_1(y, w - 1, board);
+        }
+
+        // Step 2 — Flip remaining 'O' → 'X'
+        for (int y = 0; y < l; y++) {
+            for (int x = 0; x < w; x++) {
+                if (board[y][x] == 'O')
+                    board[y][x] = 'X';
+            }
+        }
+
+        // Step 3 — Restore '#' → 'O'
+        for (int y = 0; y < l; y++) {
+            for (int x = 0; x < w; x++) {
+                if (board[y][x] == '#')
+                    board[y][x] = 'O';
+            }
+        }
+    }
+
+    // DFS to mark connected boundary area
+    private void dfsMark_0_0_1(int y, int x, char[][] board) {
+        int l = board.length, w = board[0].length;
+        if (y < 0 || y >= l || x < 0 || x >= w || board[y][x] != 'O')
+            return;
+
+        board[y][x] = '#'; // mark as safe region
+
+        dfsMark_0_0_1(y + 1, x, board);
+        dfsMark_0_0_1(y - 1, x, board);
+        dfsMark_0_0_1(y, x + 1, board);
+        dfsMark_0_0_1(y, x - 1, board);
+    }
+
+    // V0-0-2
+    // IDEA: DFS (fixed by gemini)
+    private int rows;
+    private int cols;
+    // Moves are (dr, dc)
+    private final int[][] MOVES = new int[][] { { 0, 1 }, { 0, -1 }, { 1, 0 }, { -1, 0 } };
+
+    public void solve_0_0_2(char[][] board) {
+        if (board == null || board.length == 0 || board[0].length == 0) {
+            return;
+        }
+
+        this.rows = board.length;
+        this.cols = board[0].length;
+
+        // --- Step 1: Mark all border 'O's and their connected components as 'E' (Exempt) ---
+
+        // 1. Traverse top (r=0) and bottom (r=rows-1) rows
+        for (int c = 0; c < cols; c++) {
+            // Start DFS only if the border cell is 'O'
+            if (board[0][c] == 'O') {
+                dfs(board, 0, c);
+            }
+            if (board[rows - 1][c] == 'O') {
+                dfs(board, rows - 1, c);
+            }
+        }
+
+        // 2. Traverse left (c=0) and right (c=cols-1) columns
+        // NOTE: Corners (0, 0), (0, cols-1), etc., are handled by the previous loops, but re-checking is fine.
+        for (int r = 0; r < rows; r++) {
+            if (board[r][0] == 'O') {
+                dfs(board, r, 0);
+            }
+            if (board[r][cols - 1] == 'O') {
+                dfs(board, r, cols - 1);
+            }
+        }
+
+        // --- Step 2: Finalize the Board ---
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < cols; c++) {
+                if (board[r][c] == 'O') {
+                    // This 'O' was not reached from the border, so it is surrounded. Flip it to 'X'.
+                    board[r][c] = 'X';
+                } else if (board[r][c] == 'E') {
+                    // This 'E' was reached from the border (Exempt). Flip it back to 'O'.
+                    board[r][c] = 'O';
+                }
+            }
+        }
+    }
+
+    /**
+     * DFS helper to mark connected 'O' cells as 'E'.
+     */
+    private void dfs(char[][] board, int r, int c) {
+        // Base Case: Check bounds and check if already visited or not land ('O').
+        if (r < 0 || r >= rows || c < 0 || c >= cols || board[r][c] != 'O') {
+            return;
+        }
+
+        // Mark the current cell as exempt
+        board[r][c] = 'E';
+
+        // Move to 4 neighbors
+        for (int[] move : MOVES) {
+            dfs(board, r + move[0], c + move[1]);
+        }
+    }
+
+
+
     // V0-1
     // IDEA: DFS (fixed by gpt)
     public void solve_0_1(char[][] board) {
@@ -592,6 +719,8 @@ public class SurroundedRegions {
             }
         }
     }
+
+
 
 }
 
