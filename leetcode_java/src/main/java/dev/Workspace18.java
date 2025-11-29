@@ -6599,9 +6599,121 @@ public class Workspace18 {
     }
 
     // LC 694
+    // 14.59 - 15.10 pm
+    /**
+     *
+     *  -> Return the number of `distinct` islands.
+     *
+     *   - m x n matrix
+     *   - 1 : land
+     *   - An island is considered to be the SAME as another
+     *     `if and only if one island can be translated `
+     *     (and NOT rotated or reflected) to equal the other.
+     *
+     *
+     *
+     *  ----
+     *
+     *
+     *  IDEA 1) DFS + HASHMAP ???
+     *   -> + sorting ???
+     *
+     *
+     *   ----
+     *
+     *   ex 1)
+     *
+     *   Input: grid = [[1,1,0,0,0],[1,1,0,0,0],[0,0,0,1,1],[0,0,0,1,1]]
+     *   Output: 1
+     *
+     *   -> lands =
+     *     [
+     *     [0,0], [0,1],
+     *     [1,0,], [1,1]
+     *     ]
+     *
+     *     [
+     *      [2,3], [2,4],
+     *      [3,3], [3,3]
+     *     ]
+     *
+     *
+     *
+     *
+     *
+     */
     public int numDistinctIslands_2(int[][] grid) {
+        // edge
+        if(grid == null || grid.length == 0 || grid[0].length == 0){
+            return 0;
+        }
+        // ??
+        if(grid.length == 1 && grid[0].length == 1){
+            return grid[0][0];
+        }
 
-        return 0;
+        int l = grid.length;
+        int w = grid[0].length;
+
+        boolean[][] visited = new boolean[l][w];
+
+        // ???
+        List<List<Integer[]>> lands = new ArrayList<>();
+        // dfs get `lands`
+        for(int y = 0; y < l; y++){
+            for(int x = 0; x < w; x++){
+                if(grid[y][x] == 1){
+                    lands.add(dfsCollectLands(x, y, grid, visited, new ArrayList<>()));
+                }
+            }
+        }
+
+        System.out.println(">>> lands = " + lands);
+
+        /**
+         * NOTE !!! we sort lands on
+         *
+         *  1. # of points
+         *  2. small -> big (both x, and y)
+         *
+         */
+        Collections.sort(lands, new Comparator<List<Integer[]>>() {
+            @Override
+            public int compare(List<Integer[]> o1, List<Integer[]> o2) {
+                int diff1 = o1.size() - o2.size();
+                //int diff2 = o1.g - o2[0];
+                return 0;
+            }
+        });
+
+        int distinctCnt = 0;
+
+
+        return distinctCnt;
+    }
+
+    private List<Integer[]> dfsCollectLands(int x, int y, int[][] grid, boolean[][] visited, List<Integer[]> list){
+
+        int l = grid.length;
+        int w = grid[0].length;
+
+        int[][] moves = new int[][] { {0,1}, {0,-1}, {1,0}, {-1,0} };
+
+        // add
+        list.add(new Integer[]{x, y});
+
+        // mark as visited
+        visited[y][x] = true;
+
+        for(int[] m: moves){
+            int x_ = x + m[1];
+            int y_ = y + m[0];
+            if(x_ >= 0 && x_ < w && y_ >= 0 && y_ < l && !visited[y_][x_] && grid[y_][x_] == 1){
+                dfsCollectLands(x_, y_, grid, visited, list);
+            }
+        }
+
+        return list; // ???
     }
 
 

@@ -98,6 +98,87 @@ public class NumberOfDistinctIslands {
     // IDEA: DFS (gemini)
     // TODO: validate
     // Set to store the unique string representations (signatures) of the island shapes.
+    /**
+     *   NOTE !!!  KEY IDEAS & QUESTIONS:
+     *
+     *    -> per your first code, how can we ensure that the DFS and ALWAYS
+     *      get the same `path signature `
+     *      for the same land comparison ?
+     *
+     *
+     *   -> answer:
+     *
+     *   it's `possible` to get different path signatures for the same land
+     *   set if the DFS traversal order is NOT strictly defined.
+     *
+     *
+     *   However, the dfs code provided below ensure the `order of path signatures`
+     *
+     *   ->
+     *
+     *      1. Starting Point Normalization
+     *
+     *         The main loop is responsible for starting the DFS on every island.
+     *
+     *         ```
+     *         // Main loop structure
+     *        for (int r = 0; r < rows; r++) {
+     *          for (int c = 0; c < cols; c++) {
+     *              if (grid[r][c] == 1) { // Start DFS only on unvisited land cells
+     *             // ...
+     *             dfs(grid, r, c, pathSignature, 'S');
+     *             // ...
+     *            }
+     *          }
+     *         }
+     *         ```
+     *
+     *
+     *     -> Implicit Start Point: The search iterates through the grid
+     *        in a fixed order (top-to-bottom, left-to-right).
+     *
+     *     -> Guaranteed Consistency: For any given island shape,
+     *        the DFS will always be triggered by the top-most,
+     *         left-most land cell of that island, because that cell will be
+     *        the first one reached in the grid traversal.
+     *
+     *
+     *     -> Result: This ensures that all identical island shapes are traversed
+     *         starting from the same relative origin
+     *
+     *
+     *    2. Canonical Traversal Order
+     *
+     *
+     *     -> it must always check the four neighbor directions in
+     *        the exact same sequence.
+     *
+     *     -> the order is fixed as: Down (D), Up (U), Right (R), Left (L):
+     *
+     *     ```
+     *     // Fixed, canonical order of recursive calls
+     *     dfs(grid, r + 1, c, path, 'D'); // Down (D)
+     *    dfs(grid, r - 1, c, path, 'U'); // Up (U)
+     *    dfs(grid, r, c + 1, path, 'R'); // Right (R)
+     *    dfs(grid, r, c - 1, path, 'L'); // Left (L)
+     *     ```
+     *
+     *
+     *  So,
+     *
+     *  Summary
+     *
+     *   1. The DFS approach guarantees a consistent path signature
+     *      for identical shapes through the combination of:
+     *      Guaranteed Starting Point (top-most, left-most cell).
+     *
+     *   2. Canonical Traversal Order (fixed D, U, R, L sequence in the recursive calls).
+     *
+     *   3. Relative Path Encoding (using directional characters and 'O' delimiters)
+     *
+     *
+     *
+     */
     private Set<String> uniqueIslandShapes = new HashSet<>();
 
     // Grid dimensions
