@@ -6717,5 +6717,14 @@ public class Workspace18 {
     }
 
 
+    // LC 547
+    public int findCircleNum(int[][] isConnected) {
+
+        return 0;
+    }
+
+
+
+
 
 }
