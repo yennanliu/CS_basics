@@ -57,6 +57,137 @@ public class PrefixAndSuffixSearch {
 //        }
 //    }
 
+    // V0-1
+    // IDEA: (fixed by gemini)
+    // --- Trie Node Class ---
+    class TrieNode_0_1 {
+        // Store the largest weight (index) of the word that passes through this node.
+        int maxWeight;
+        Map<Character, TrieNode_0_1> children;
+
+        TrieNode_0_1() {
+            this.maxWeight = 0;
+            this.children = new HashMap<>();
+        }
+    }
+
+    // --- WordFilter Class ---
+    class WordFilter_0_1 {
+
+        private final TrieNode_0_1 root;
+
+        /**
+         * Constructor: Preprocessing step to build the Trie.
+         * Inserts all combinations of (suffix + "#" + word) for every word.
+         * Time Complexity: O(N * L^2), where N is number of words, L is max word length.
+         */
+        public WordFilter_0_1(String[] words) {
+            this.root = new TrieNode_0_1();
+
+            for (int weight = 0; weight < words.length; weight++) {
+                String word = words[weight];
+                int length = word.length();
+
+                // Loop through all possible suffixes of the current word
+                // The combined key is: suffix + "#" + word
+                for (int i = 0; i <= length; i++) {
+                    String combinedKey = word.substring(i) + "#" + word;
+                    insert(combinedKey, weight);
+                }
+            }
+        }
+
+        // Helper method to insert a string into the Trie and update maxWeight along the path.
+        private void insert(String key, int weight) {
+            TrieNode_0_1 node = root;
+
+            for (char ch : key.toCharArray()) {
+                node.children.putIfAbsent(ch, new TrieNode_0_1());
+                node = node.children.get(ch);
+
+                // Update the maxWeight at the current node
+                node.maxWeight = Math.max(node.maxWeight, weight);
+            }
+        }
+
+        /**
+         * Query method: Finds the word with the largest weight that matches pref and suff.
+         * Time Complexity: O(L), where L is the length of the query string.
+         */
+        public int f(String pref, String suff) {
+            // Search for the combined key: suff + "#" + pref
+            String query = suff + "#" + pref;
+            TrieNode_0_1 node = root;
+
+            for (char ch : query.toCharArray()) {
+                if (!node.children.containsKey(ch)) {
+                    // If any character in the query path is missing, no matching word exists.
+                    return -1;
+                }
+                node = node.children.get(ch);
+            }
+
+            // The maxWeight at the final node represents the largest index (weight)
+            // of a word that contains the required suffix and prefix.
+            return node.maxWeight;
+        }
+    }
+
+    /**
+     * Your MyNode101, MyTrie101 classes are not needed in this fixed solution,
+     * as the logic is integrated directly into the final WordFilter class.
+     */
+
+
+    // V0-2
+    // IDEA: (gpt)
+    class WordFilter_0_2 {
+
+        class TrieNode {
+            TrieNode[] child = new TrieNode[27]; // 26 chars + '{'
+            int weight = -1;
+        }
+
+        TrieNode root = new TrieNode();
+
+        public WordFilter_0_2(String[] words) {
+            for (int weight = 0; weight < words.length; weight++) {
+                String w = words[weight] + "{"; // add separator
+
+                // For suffix-prefix combinations
+                for (int i = 0; i < w.length(); i++) {
+                    insert(w.substring(i) + words[weight], weight);
+                }
+            }
+        }
+
+        private void insert(String word, int weight) {
+            TrieNode node = root;
+            for (char c : word.toCharArray()) {
+                int idx = (c == '{') ? 26 : c - 'a';
+                if (node.child[idx] == null)
+                    node.child[idx] = new TrieNode();
+                node = node.child[idx];
+                node.weight = weight;
+            }
+        }
+
+        public int f(String pref, String suff) {
+            String query = suff + "{" + pref;
+            TrieNode node = root;
+
+            for (char c : query.toCharArray()) {
+                int idx = (c == '{') ? 26 : c - 'a';
+                if (node.child[idx] == null)
+                    return -1;
+                node = node.child[idx];
+            }
+
+            return node.weight;
+        }
+    }
+
+
     // V1-1
     // IDEA: Trie + Set Intersection [Time Limit Exceeded] (TLE)
     // https://leetcode.com/problems/prefix-and-suffix-search/editorial/
