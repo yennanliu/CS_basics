@@ -59,6 +59,77 @@ public class PrefixAndSuffixSearch {
 
     // V0-1
     // IDEA: (fixed by gemini)
+    /**
+     *  IDEA:
+     *
+     *  The code you provided is a complete and optimized solution for **LC 745: Prefix and Suffix Search**. It uses a specialized **Trie (Prefix Tree)** data structure to achieve $O(L)$ search time, where $L$ is the maximum length of a word.
+     *
+     * This approach overcomes the standard $O(L \cdot N)$ complexity of checking every word in a list by cleverly combining the prefix and suffix requirements into a single searchable key.
+     *
+     * Here is a detailed explanation of the logic and the two main components:
+     *
+     * ---
+     *
+     * ## 1. The Trie Structure (`TrieNode`)
+     *
+     * The `TrieNode` is the fundamental building block of the tree. Unlike a standard Trie that might store a simple `boolean isEnd`, this one stores an integer:
+     *
+     * * **`maxWeight` (int):** This is the crucial element. It stores the **highest index (weight)** of any word in the original `words` array that passes through that specific node. Since the problem asks for the word with the *largest* index, storing the maximum weight at every node allows the final search to instantly retrieve the correct answer without further checking.
+     * * **`children` (Map<Character, TrieNode>):** A map to store pointers to the next nodes, keyed by the character of the next segment of the string.
+     *
+     * ---
+     *
+     * ## 2. The `WordFilter` Constructor (Preprocessing)
+     *
+     * The constructor performs the time-consuming but essential preprocessing step. For every original word $W$ at index $i$ (its weight), it generates and inserts *multiple* augmented strings into the Trie.
+     *
+     * The core idea is to combine the **suffix** and the **prefix** into a single string that can be searched sequentially.
+     *
+     * ### The Combined Key: `suffix + "#" + word`
+     *
+     * For every word, the code iterates through all possible suffixes and creates a key in the format: `[suffix] # [full word]`.
+     *
+     * **Example:** For the word **`"apple"`** (Weight: 3), the constructor inserts the following keys:
+     *
+     * | Loop Index ($i$) | Suffix | Combined Key | Action (Weight: 3) |
+     * | :---: | :--- | :--- | :--- |
+     * | 0 | `"apple"` | `"apple#apple"` | Insert into Trie |
+     * | 1 | `"pple"` | `"pple#apple"` | Insert into Trie |
+     * | 2 | `"ple"` | `"ple#apple"` | Insert into Trie |
+     * | 3 | `"le"` | `"le#apple"` | Insert into Trie |
+     * | 4 | `"e"` | `"e#apple"` | Insert into Trie |
+     * | 5 | `""` | `"#apple"` | Insert into Trie |
+     *
+     * ### The `insert` Method
+     *
+     * When inserting a key (e.g., `"le#apple"`) for a word with a certain `weight`, the `insert` method does two things for every character along the path:
+     *
+     * 1.  It creates a new node if one doesn't exist.
+     * 2.  It updates the `maxWeight` of that node: `node.maxWeight = Math.max(node.maxWeight, weight);`. This ensures that any subsequent search passing through that node will know the highest possible index found so far.
+     *
+     * ---
+     *
+     * ## 3. The `f(pref, suff)` Query Method
+     *
+     * The query becomes a simple and fast search operation in the pre-built Trie.
+     *
+     * 1.  **Form the Query String:** The method constructs the search key by putting the requested suffix first, followed by the delimiter (`#`), and then the requested prefix: **`suff + "#" + pref`**.
+     *
+     *     * *Example:* If `pref="ap"` and `suff="le"`, the query string is **`"le#ap"`**.
+     *
+     * 2.  **Trie Traversal:** The method traverses the Trie using the query string. It effectively checks:
+     *     * Does a path exist starting with the suffix (`"le"`)...
+     *     * ...followed by the delimiter (`#`)...
+     *     * ...followed by the prefix (`"ap"`)...
+     *     * ...which means it is searching for the string `"le#ap"`.
+     *
+     * 3.  **Result Retrieval:**
+     *     * If the traversal reaches the end of the query string, the `maxWeight` stored at the final node is the answer. Since the Trie stored the highest index at every node, this value is guaranteed to be the largest weight matching the criteria.
+     *     * If the traversal fails (a character is missing), it means no word matches both criteria, and it returns **`-1`**.
+     *
+     * By using the combined key and storing the max weight, the search is reduced to a single linear traversal of the query string's length ($O(L)$), fulfilling the performance requirements of the problem.
+     * 
+     */
     // --- Trie Node Class ---
     class TrieNode_0_1 {
         // Store the largest weight (index) of the word that passes through this node.
@@ -141,6 +212,118 @@ public class PrefixAndSuffixSearch {
 
     // V0-2
     // IDEA: (gpt)
+    /**
+     *    IDEA:
+     *
+     *    Absolutely — here is a full visual breakdown of how the Trie works for LC 745.
+     *
+     * We use one Trie, storing every rotation of suffix + ‘{’ + word, so that:
+     *
+     * Query = suffix + '{' + prefix
+     *
+     * If this path exists → it maps directly to the highest-indexed matching word.
+     *
+     * ⸻
+     *
+     * Word = "apple"
+     *
+     * We insert:
+     *
+     * i	Inserted into Trie
+     * 0	"apple{apple"
+     * 1	"pple{apple"
+     * 2	"ple{apple"
+     * 3	"le{apple"
+     * 4	"e{apple"
+     * 5	"{apple"
+     *
+     * So searches for:
+     *
+     * ("ap", "le")  → "le{ap"
+     *
+     * will follow nodes:
+     *
+     *  l → e → { → a → p
+     *
+     * and land on a node with weight = index of "apple"
+     *
+     * ⸻
+     *
+     * 📍 VISUAL TRIE (Partial)
+     *
+     * (root)
+     *  ├── '{'
+     *  │    └── a
+     *  │         └── p
+     *  │              └── p
+     *  │                   └── l
+     *  │                        └── e      (weight = idx)
+     *  │
+     *  ├── a
+     *  │   └── p
+     *  │       └── p
+     *  │           └── l
+     *  │               └── e
+     *  │                    └── {
+     *  │                        └── a
+     *  │                            └── p
+     *  │                                └── ...
+     *  │
+     *  ├── p
+     *  │   └── p
+     *  │       └── l
+     *  │           └── e
+     *  │               └── {
+     *  │                   └── a
+     *  │                       └── p
+     *  │                           └── ...
+     *  │
+     *  ├── l
+     *  │   └── e
+     *  │       └── {
+     *  │           └── a
+     *  │               └── p
+     *  │                   └── ...
+     *  │
+     *  └── e
+     *      └── {
+     *          └── a
+     *              └── p
+     *                  └── ...
+     *
+     * Every branch eventually stores the full rotated pattern, all pointing to the same weight index.
+     *
+     * ⸻
+     *
+     * 🔍 Example Query Walkthrough
+     *
+     * Query:
+     *
+     * prefix = "ap"
+     * suffix = "le"
+     * → query = "le{ap"
+     *
+     * Walk the Trie:
+     *
+     * root
+     *  ↓
+     * 'l'
+     *  ↓
+     * 'e'
+     *  ↓
+     * '{'
+     *  ↓
+     * 'a'
+     *  ↓
+     * 'p'
+     *  ✔ FOUND — return node.weight (largest index)
+     *
+     * No searching lists
+     * No filtering words
+     * Just a direct pointer lookup 💡
+     *
+     *
+     */
     class WordFilter_0_2 {
 
         class TrieNode {
@@ -161,6 +344,23 @@ public class PrefixAndSuffixSearch {
             }
         }
 
+        /**
+         *
+         *  NOTE !!!
+         *
+         *   we encode word like below:
+         *
+         *   apple → "apple{"
+         *
+         *   Insert patterns:
+         *
+         *     {apple + "apple"
+         *     "pple{apple"
+         *     "ple{apple"
+         *     "le{apple"
+         *     "e{apple"
+         *
+         */
         private void insert(String word, int weight) {
             TrieNode node = root;
             for (char c : word.toCharArray()) {
