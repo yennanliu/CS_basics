@@ -6853,6 +6853,18 @@ public class Workspace18 {
     }
 
 
+    // LC 745
+    class WordFilter {
+
+        public WordFilter(String[] words) {
+
+        }
+
+        public int f(String pref, String suff) {
+
+            return 0;
+        }
+    }
 
 
 
