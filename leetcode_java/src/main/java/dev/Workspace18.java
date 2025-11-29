@@ -6718,9 +6718,138 @@ public class Workspace18 {
 
 
     // LC 547
+    // 15.57 - 16.07 pm
+    /**
+     *   -> Return the total number of provinces.
+     *
+     *   - if A is connected to b, b is connected to c
+     *      -> a is connected to c
+     *
+     *
+     *   - A province is a group of directly or indirectly
+     *     connected cities and no other cities outside of the group.
+     *
+     *
+     *   - n x n matrix
+     *   - isConnected[i][j] = 1
+     *       -> i is connected to j
+     *
+     *   - isConnected[i][j] = 0
+     *       -> i is NOT connected to j
+     *
+     *
+     *  ----------------
+     *
+     *    IDEA 1) DFS
+     *
+     *     -> loop over grids,
+     *       mark visited, and count
+     *       the `isolated grid set`
+     *
+     *    IDEA 2) BFS
+     *
+     *
+     * ----------------
+     *
+     *  ex1)
+     *  Input: isConnected = [[1,1,0],[1,1,0],[0,0,1]]
+     *  Output: 2
+     *
+     *
+     *   [
+     *    [1,1,0],
+     *    [1,1,0],
+     *    [0,0,1]
+     *  ]
+     *
+     *
+     *  ex 2)
+     *
+     *  Input: isConnected = [[1,0,0],[0,1,0],[0,0,1]]
+     *  Output: 3
+     *
+     *
+     *   [
+     *     [1,0,0]
+     *    ,[0,1,0],
+     *     [0,0,1]
+     *  ]
+     *
+     *
+     *
+     *
+     */
+    // IDEA 1) DFS
     public int findCircleNum(int[][] isConnected) {
+        // edge
+        if(isConnected == null || isConnected.length == 0 || isConnected[0].length == 0){
+            return 0;
+        }
+        if(isConnected.length == 1 && isConnected[0].length == 1){
+            return isConnected[0][0];
+        }
 
-        return 0;
+        // build graph
+        // { val : [neighbor_1, neighbor_2, ...] }
+        Map<Integer, Set<Integer>> map = new HashMap<>();
+        // ???
+        int l = isConnected.length;
+        int w = isConnected[0].length;
+        // ???
+        // since the `node is from 1 to N`
+        // for any row in int[][] isConnected
+        for(int y = 0; y < l; y++){
+            map.put(y+1, new HashSet<>());
+        }
+
+        // ???
+        for(int y = 0; y < l; y++){
+            for(int x = 0; x < w; x++){
+                // NOTE !!
+                // no need to add itself (e.g. (0,0), (1,1),...)
+                if(x != y){
+                    if(isConnected[y][x] == 1){
+                        // /??
+                        map.get(y + 1).add(x + 1);
+                        map.get(x + 1).add(y + 1);
+                    }
+                }
+            }
+        }
+
+        System.out.println(">>> map = " + map);
+
+        boolean[] visited = new boolean[l + 1]; // ???
+
+        int landCnt = 0;
+
+        // run the dfs
+        for(int k: map.keySet()){
+            if(!visited[k]){
+                dfsIslandHelper(k, map, visited);
+                landCnt += 1;
+            }
+
+        }
+
+        return landCnt;
+    }
+
+    private boolean dfsIslandHelper(int node, Map<Integer, Set<Integer>> map, boolean[] visited){
+
+        // mark as `visited`
+        visited[node] = true;
+
+        for(Integer x: map.get(node)){
+//            if(x_ >= 0 && x_ < w && y_ >= 0 && y_ < l && !visited[y_][x_] && grid[y_][x_] == 1){
+//                dfsCollectLands(x_, y_, grid, visited, list);
+//            }
+            if(!visited[x]){
+                dfsIslandHelper(x, map, visited);
+            }
+        }
+
+        return false;
     }
 
 

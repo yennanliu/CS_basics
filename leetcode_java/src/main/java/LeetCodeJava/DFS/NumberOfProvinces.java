@@ -2,8 +2,7 @@ package LeetCodeJava.DFS;
 
 // https://leetcode.com/problems/number-of-provinces/description/
 
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.*;
 
 /**
  * 547. Number of Provinces
@@ -50,6 +49,204 @@ public class NumberOfProvinces {
 //    public int findCircleNum(int[][] isConnected) {
 //
 //    }
+
+    // V0-1
+    // IDEA: DFS + HASHMAP
+    public int findCircleNum_0_1(int[][] isConnected) {
+        // edge
+        if (isConnected == null || isConnected.length == 0 || isConnected[0].length == 0) {
+            return 0;
+        }
+        if (isConnected.length == 1 && isConnected[0].length == 1) {
+            return isConnected[0][0];
+        }
+
+        // build graph
+        // { val : Set(neighbor_1, neighbor_2, ...) }
+        Map<Integer, Set<Integer>> map = new HashMap<>();
+
+
+        int l = isConnected.length;
+        int w = isConnected[0].length;
+        /** NOTE !!!
+         *
+         * // since the `node is from 1 to N`
+         * // for any row in int[][] isConnected
+         *
+         */
+        for (int y = 0; y < l; y++) {
+            map.put(y + 1, new HashSet<>());
+        }
+
+        // ???
+        for (int y = 0; y < l; y++) {
+            for (int x = 0; x < w; x++) {
+                // NOTE !!
+                /** NOTE !!!
+                 *
+                 *   no need to add itself (e.g. (0,0), (1,1),...)
+                 */
+                if (x != y) {
+                    if (isConnected[y][x] == 1) {
+                        // /??
+                        map.get(y + 1).add(x + 1);
+                        map.get(x + 1).add(y + 1);
+                    }
+                }
+            }
+        }
+
+        //System.out.println(">>> map = " + map);
+
+        boolean[] visited = new boolean[l + 1]; // ???
+
+        int landCnt = 0;
+
+        // run the dfs
+        for (int k : map.keySet()) {
+            if (!visited[k]) {
+                dfsIslandHelper(k, map, visited);
+                landCnt += 1;
+            }
+
+        }
+
+        return landCnt;
+    }
+
+    private boolean dfsIslandHelper(int node, Map<Integer, Set<Integer>> map, boolean[] visited) {
+
+        /** NOTE !!!
+         *
+         *   mark as `visited`
+         */
+        visited[node] = true;
+
+        /** NOTE !!!
+         *
+         *   visit neighbors
+         */
+        for (Integer x : map.get(node)) {
+            if (!visited[x]) {
+                dfsIslandHelper(x, map, visited);
+            }
+        }
+
+        return false;
+    }
+
+    // V0-2
+    // IDEA: DFS (gemini)
+    /**
+     * Finds the number of provinces (connected components) using DFS directly on the adjacency matrix.
+     * @param isConnected The adjacency matrix where isConnected[i][j] = 1 means provinces i and j are connected.
+     * @return The total number of provinces.
+     * Time Complexity: O(N^2), where N is the number of cities/provinces.
+     */
+    public int findCircleNum_0_2(int[][] isConnected) {
+        // Edge case checks
+        if (isConnected == null || isConnected.length == 0) {
+            return 0;
+        }
+
+        int N = isConnected.length; // Number of cities/provinces
+
+        // visited array tracks which cities have already been included in a province.
+        // We use 0-based indexing (0 to N-1).
+        boolean[] visited = new boolean[N];
+
+        int provinceCount = 0;
+
+        // Iterate through every city to find the starting point of a new province.
+        for (int i = 0; i < N; i++) {
+            // If the city 'i' hasn't been visited, it means we found a new province.
+            if (!visited[i]) {
+                // Start DFS to explore all connected cities in this new province.
+                dfs(isConnected, visited, i, N);
+
+                // Increment the count of provinces found.
+                provinceCount++;
+            }
+        }
+
+        return provinceCount;
+    }
+
+    /**
+     * Helper function to perform DFS and mark all cities in the current province as visited.
+     * @param isConnected The adjacency matrix.
+     * @param visited The boolean array tracking visited cities.
+     * @param currentCity The current city index (0 to N-1).
+     * @param N Total number of cities.
+     */
+    private void dfs(int[][] isConnected, boolean[] visited, int currentCity, int N) {
+
+        // Mark the current city as visited.
+        visited[currentCity] = true;
+
+        // Look at all possible connections (j) from the current city (currentCity).
+        for (int j = 0; j < N; j++) {
+            // Check if there is a connection AND the neighbor city 'j' hasn't been visited.
+            if (isConnected[currentCity][j] == 1 && !visited[j]) {
+                // Recursively visit the connected, unvisited city 'j'.
+                dfs(isConnected, visited, j, N);
+            }
+        }
+        // Note: The DFS simply marks the visited status and doesn't need to return a value.
+    }
+
+
+    // V0-3
+    // IDEA: DFS (gpt)
+    public int findCircleNum_0_3(int[][] isConnected) {
+
+        // edge
+        if (isConnected == null || isConnected.length == 0)
+            return 0;
+        if (isConnected.length == 1)
+            return 1;
+
+        int n = isConnected.length;
+
+        // build graph as adjacency list (0-based)
+        Map<Integer, List<Integer>> map = new HashMap<>();
+        for (int i = 0; i < n; i++) {
+            map.put(i, new ArrayList<>());
+        }
+
+        // fill adjacency list
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                if (i != j && isConnected[i][j] == 1) {
+                    map.get(i).add(j);
+                    map.get(j).add(i);
+                }
+            }
+        }
+
+        boolean[] visited = new boolean[n];
+        int provinces = 0;
+
+        // DFS count connected components
+        for (int i = 0; i < n; i++) {
+            if (!visited[i]) {
+                dfs(i, map, visited);
+                provinces++;
+            }
+        }
+
+        return provinces;
+    }
+
+    private void dfs(int node, Map<Integer, List<Integer>> map, boolean[] visited) {
+        visited[node] = true;
+        for (int nei : map.get(node)) {
+            if (!visited[nei]) {
+                dfs(nei, map, visited);
+            }
+        }
+    }
+
 
     // V1-1
     // IDEA: DFS
