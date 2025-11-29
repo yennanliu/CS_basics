@@ -198,6 +198,18 @@ public class NumberOfDistinctIslands {
         this.rows = grid.length;
         this.cols = grid[0].length;
 
+        /**
+         *  NOTE !!!
+         *
+         *   we iterate from
+         *     up to down,
+         *     left to right
+         *
+         *  -> so it make sure that
+         *    we ALWAYS pick the `SAME relative starting point` of land
+         *    when build the `path signature`
+         *
+         */
         // Iterate through every cell in the grid
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < cols; c++) {
@@ -252,6 +264,17 @@ public class NumberOfDistinctIslands {
 
         // 3. Recurse into neighbors and record the new direction taken.
 
+        /**
+         *  NOTE !!!
+         *
+         *   we ALWAYS iterate on below ordering:
+         *
+         *     down -> up -> right -> left
+         *
+         *  -> so it make sure that
+         *    we ALWAYS `move the same way` of land
+         *    when build the `path signature`
+         */
         // Down (D)
         dfs(grid, r + 1, c, path, 'D');
 
