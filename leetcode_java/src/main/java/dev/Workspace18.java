@@ -6854,15 +6854,176 @@ public class Workspace18 {
 
 
     // LC 745
+    // 16.49 - 17.10 pm
+    /**
+     *
+     *  ->  searches the words in it by a prefix and a suffix.
+     *
+     *   - implement WordFilter class
+     *
+     *   - f(string pref, string suff)
+     *      - Returns the index of the word in the dictionary,
+     *        - which has
+     *          - prefix pref
+     *          and
+     *          - suffix suff
+     *
+     *       - if there are more than one valid idx,
+     *         return the largest one
+     *
+     *       - if no such word, return -1
+     *
+     * ------------
+     *
+     *  IDEA 1) BRUTE FORCE
+     *
+     *  IDEA 2) TRIE ???
+     *
+     *  IDEA 3) HASHMAP that save prefix and suffix  ???
+     *
+     *  IDEA 2) TRIE  + hashmap ???
+     *
+     *
+     *
+     *  ------------
+     *
+     *  ex 1)
+     *
+     * Input
+        ["WordFilter", "f"]
+     *  [[["apple"]], ["a", "e"]]
+     * Output
+     * [null, 0]
+     *
+     *
+     *
+     *  -> map
+     *
+     *
+     *
+     */
+    class MyNode101{
+        boolean isEnd;
+        Map<String, MyNode101> child;
+
+        MyNode101(){
+            this.isEnd = false;
+            this.child = new HashMap<>();
+        }
+
+    }
+    class MyTrie101{
+
+        // attr
+        MyNode101 myNode101;
+
+        // constructor
+        MyTrie101(){
+            this.myNode101 = new MyNode101();
+        }
+
+        // method
+        public void add(String word){
+
+            MyNode101 node = this.myNode101;
+
+            for(char ch: word.toCharArray()){
+                String s = String.valueOf(ch);
+                if(node.child.containsKey(s)){
+                    node.child.put(s, new MyNode101());
+                }
+                node = node.child.get(s);
+            }
+
+            node.isEnd = true;
+
+        }
+
+        public boolean isStartWith(String word){
+
+            return false;
+        }
+
+        public boolean contain(String word){
+
+            return false;
+        }
+
+        public List<String> wordWithPrefix(String word){
+
+            MyNode101 node = this.myNode101;
+
+            List<String> res = new ArrayList<>();
+
+            StringBuilder sb = new StringBuilder();
+
+            for(char ch: word.toCharArray()){
+                String s = String.valueOf(ch);
+                // ???
+                if(!node.child.containsKey(s)){
+                    //node.child.put(s, new MyNode101());
+                    return res; // ???
+                }
+                // ???
+                sb.append(s);
+                res.add(s.toString());
+                node = node.child.get(s);
+            }
+
+            return res;
+        }
+
+    }
     class WordFilter {
+
+        MyTrie101 myTrie101;
 
         public WordFilter(String[] words) {
 
+            this.myTrie101 = new MyTrie101();
+
+            //myTrie101.
+
+            // add words to trie
+            for(String word: words){
+                this.myTrie101.add(word);
+            }
         }
 
         public int f(String pref, String suff) {
 
-            return 0;
+            List<String> list =  this.myTrie101.wordWithPrefix(pref);
+            List<String> list2 = new ArrayList<>();
+
+            for(String x: list){
+
+                // example:
+                // word: apple
+                // suffix: le
+                // -> so,
+                // reversed word: elppa
+                // reversed suffix: el
+                StringBuilder sb = new StringBuilder(x);
+                String x2 = sb.reverse().toString();
+
+                StringBuilder sb2 = new StringBuilder(suff);
+                String suff2 = sb2.reverse().toString();
+
+                if(x2.startsWith(suff2)){
+                    list2.add(x); // ???
+                }
+            }
+
+            // sort on len
+            Collections.sort(list2, new Comparator<String>() {
+                @Override
+                public int compare(String o1, String o2) {
+                    int diff = o1.length() - o2.length();
+                    return diff;
+                }
+            });
+
+            return list2.isEmpty() ? -1: list2.get(0).length();
         }
     }
 
