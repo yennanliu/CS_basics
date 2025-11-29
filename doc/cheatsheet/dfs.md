@@ -60,6 +60,18 @@
 - **Examples**: LC 1254, LC 130, LC 417
 - **Template**: Use 2-Pass DFS Template
 
+### **Pattern 8: Path Signatures (Shape Encoding)**
+- **Description**: Encode the shape/structure of islands or subtrees using unique path signatures
+- **Recognition**: "Distinct islands", "unique shapes", "count different structures", "same shape after translation"
+- **Key Technique**: Record directional movements during DFS traversal to create a canonical signature
+- **Examples**: LC 694, LC 711, LC 652
+- **Template**: Use Path Signature Template
+- **Important Notes**:
+  - **Canonical Traversal Order**: Always visit neighbors in the same fixed order (e.g., Down, Up, Right, Left)
+  - **Starting Point Normalization**: Start DFS from top-left-most cell to ensure consistent signatures
+  - **Delimiter Usage**: Use delimiters (like 'O' for "Out") when backtracking to distinguish different shapes
+  - **Relative Encoding**: Record relative positions or directional movements, not absolute coordinates
+
 ## Templates & Algorithms
 
 ### Template Comparison Table
@@ -72,6 +84,7 @@
 | **Modification** | Change structure | Update nodes | O(n) | O(h) | Tree editing |
 | **Bottom-up** | Aggregate info | Post-order | O(n) | O(h) | Subtree problems |
 | **2-Pass DFS** | Boundary elimination | Two-phase flood | O(m×n) | O(m×n) | Closed/surrounded regions |
+| **Path Signature** | Encode shapes | Directional tracking | O(m×n) | O(m×n) | Distinct shape counting |
 
 ### Universal DFS Template
 ```python
@@ -403,6 +416,180 @@ private void flood(int[][] grid, int r, int c) {
 }
 ```
 
+### Template 8: Path Signature (Shape Encoding)
+```python
+def count_distinct_shapes(grid):
+    """
+    Count distinct island shapes using path signatures
+    Key: Encode each island's shape as a unique string
+    """
+    if not grid or not grid[0]:
+        return 0
+
+    rows, cols = len(grid), len(grid[0])
+    unique_shapes = set()
+
+    def dfs(r, c, r0, c0, path):
+        """
+        DFS with path signature encoding
+        r0, c0: Starting position for relative encoding
+        path: StringBuilder to record the shape signature
+        """
+        if r < 0 or r >= rows or c < 0 or c >= cols or grid[r][c] != 1:
+            return
+
+        # Mark as visited
+        grid[r][c] = 0
+
+        # Encode relative position
+        path.append(f"({r - r0},{c - c0})")
+
+        # Visit neighbors in FIXED order (critical for consistency)
+        dfs(r + 1, c, r0, c0, path)  # Down
+        dfs(r - 1, c, r0, c0, path)  # Up
+        dfs(r, c + 1, r0, c0, path)  # Right
+        dfs(r, c - 1, r0, c0, path)  # Left
+
+    # Iterate through grid in fixed order (top-left to bottom-right)
+    for r in range(rows):
+        for c in range(cols):
+            if grid[r][c] == 1:
+                path = []
+                dfs(r, c, r, c, path)  # Start with (r, c) as origin
+                unique_shapes.add(tuple(path))
+
+    return len(unique_shapes)
+```
+
+```java
+// Java implementation with directional encoding
+public int numDistinctIslands(int[][] grid) {
+    if (grid == null || grid.length == 0 || grid[0].length == 0) {
+        return 0;
+    }
+
+    Set<String> uniqueIslandShapes = new HashSet<>();
+    int rows = grid.length;
+    int cols = grid[0].length;
+
+    // Iterate through every cell in the grid
+    for (int r = 0; r < rows; r++) {
+        for (int c = 0; c < cols; c++) {
+            // Start DFS only on unvisited land cells
+            if (grid[r][c] == 1) {
+                StringBuilder pathSignature = new StringBuilder();
+                // Start DFS from (r, c). 'S' marks the start
+                dfs(grid, r, c, pathSignature, 'S');
+
+                if (pathSignature.length() > 0) {
+                    uniqueIslandShapes.add(pathSignature.toString());
+                }
+            }
+        }
+    }
+
+    return uniqueIslandShapes.size();
+}
+
+/**
+ * DFS with directional encoding
+ * Records the direction taken to reach each cell
+ * Uses 'O' delimiter when backtracking
+ */
+private void dfs(int[][] grid, int r, int c, StringBuilder path, char direction) {
+    int rows = grid.length;
+    int cols = grid[0].length;
+
+    // Base cases: Out of bounds or water/visited
+    if (r < 0 || r >= rows || c < 0 || c >= cols || grid[r][c] == 0) {
+        return;
+    }
+
+    // 1. Mark as visited by setting to 0
+    grid[r][c] = 0;
+
+    // 2. Record the direction taken to reach this cell
+    path.append(direction);
+
+    // 3. Recurse in FIXED order (Down, Up, Right, Left)
+    dfs(grid, r + 1, c, path, 'D');  // Down
+    dfs(grid, r - 1, c, path, 'U');  // Up
+    dfs(grid, r, c + 1, path, 'R');  // Right
+    dfs(grid, r, c - 1, path, 'L');  // Left
+
+    // 4. Add delimiter when backtracking
+    // This distinguishes different branch structures
+    path.append('O');
+}
+```
+
+```java
+// Alternative: Relative coordinate encoding
+public int numDistinctIslands_v2(int[][] grid) {
+    if (grid == null || grid.length == 0) return 0;
+    int rows = grid.length, cols = grid[0].length;
+    boolean[][] seen = new boolean[rows][cols];
+    Set<String> shapes = new HashSet<>();
+
+    for (int r = 0; r < rows; r++) {
+        for (int c = 0; c < cols; c++) {
+            if (!seen[r][c] && grid[r][c] == 1) {
+                StringBuilder sb = new StringBuilder();
+                dfs(grid, seen, r, c, r, c, sb);
+                shapes.add(sb.toString());
+            }
+        }
+    }
+    return shapes.size();
+}
+
+/**
+ * DFS with relative coordinate encoding
+ * Records relative positions from starting point
+ */
+private void dfs(int[][] grid, boolean[][] seen, int r0, int c0, int r, int c, StringBuilder sb) {
+    int rows = grid.length, cols = grid[0].length;
+    if (r < 0 || r >= rows || c < 0 || c >= cols) return;
+    if (seen[r][c] || grid[r][c] != 1) return;
+
+    seen[r][c] = true;
+    // Record relative position from origin (r0, c0)
+    sb.append((r - r0)).append('_').append((c - c0)).append(',');
+
+    // Visit in fixed order
+    dfs(grid, seen, r0, c0, r + 1, c, sb);
+    dfs(grid, seen, r0, c0, r - 1, c, sb);
+    dfs(grid, seen, r0, c0, r, c + 1, sb);
+    dfs(grid, seen, r0, c0, r, c - 1, sb);
+}
+```
+
+**Key Concepts for Path Signatures:**
+
+1. **Canonical Traversal Order**
+   - Always check neighbors in the same fixed sequence (e.g., D, U, R, L)
+   - This ensures identical shapes produce identical signatures
+
+2. **Starting Point Normalization**
+   - Grid traversal in fixed order (top-to-bottom, left-to-right)
+   - The first land cell encountered becomes the origin
+   - All coordinates are relative to this origin
+
+3. **Why Delimiters Matter**
+   ```
+   Shape 1:  11      Shape 2:   1
+              1                11
+
+   Without delimiter: "SDRO"  vs "SDRO"  (Same - Wrong!)
+   With delimiter:    "SDOO"  vs "SDRO"  (Different - Correct!)
+   ```
+
+4. **Consistency Guarantees**
+   - Same shape → Same signature (always)
+   - Different shapes → Different signatures
+   - Translation invariant (position doesn't matter)
+   - Rotation/reflection sensitive (as required)
+
 #### 0-2-2) Basic Tricks
 
 
@@ -690,6 +877,14 @@ print (z)
 | Surrounded Regions | 130 | Medium | Border elimination | Template 7 |
 | Pacific Atlantic Water Flow | 417 | Medium | Two oceans | Template 7 |
 | Number of Enclaves | 1020 | Medium | Border-connected | Template 7 |
+
+#### **Pattern 8: Path Signatures (Shape Encoding)**
+| Problem | LC # | Difficulty | Key Technique | Template |
+|---------|------|------------|---------------|----------|
+| Number of Distinct Islands | 694 | Medium | Directional encoding | Template 8 |
+| Number of Distinct Islands II | 711 | Hard | Handle rotations/reflections | Template 8 |
+| Find Duplicate Subtrees | 652 | Medium | Tree serialization | Template 8 |
+| Most Frequent Subtree Sum | 508 | Medium | Subtree signature | Template 8 |
 
 ### Complete Problem List by Difficulty
 
@@ -2753,6 +2948,232 @@ def grid_dfs(grid, x, y, visited):
 - **Union Find**: Alternative for connectivity
 - **Topological Sort**: DFS application for dependencies
 
+### 2-14) Number of Distinct Islands
+
+```java
+// java
+// LC 694
+// V0
+// IDEA: DFS + Path Signatures (Directional Encoding)
+/**
+ * Problem: Count distinct island shapes (translation-invariant)
+ *
+ * Key Insight: Two islands are the same if one can be translated (NOT rotated/reflected) to match the other
+ *
+ * Solution Approach:
+ * 1. For each island, generate a unique "path signature" encoding its shape
+ * 2. Use a HashSet to count distinct signatures
+ * 3. Signature must be translation-invariant but rotation/reflection-sensitive
+ *
+ * Critical Implementation Details:
+ * - Canonical traversal order (always D, U, R, L)
+ * - Starting point normalization (top-left via grid iteration order)
+ * - Backtracking delimiter ('O') to distinguish shapes
+ */
+public int numDistinctIslands(int[][] grid) {
+    if (grid == null || grid.length == 0 || grid[0].length == 0) {
+        return 0;
+    }
+
+    Set<String> uniqueIslandShapes = new HashSet<>();
+    int rows = grid.length;
+    int cols = grid[0].length;
+
+    // Iterate through grid in fixed order (top-to-bottom, left-to-right)
+    // This ensures the starting point for each island is always the top-left-most cell
+    for (int r = 0; r < rows; r++) {
+        for (int c = 0; c < cols; c++) {
+            // Start DFS only on unvisited land cells
+            if (grid[r][c] == 1) {
+                StringBuilder pathSignature = new StringBuilder();
+                // 'S' marks the start position
+                dfs(grid, r, c, pathSignature, 'S');
+
+                if (pathSignature.length() > 0) {
+                    uniqueIslandShapes.add(pathSignature.toString());
+                }
+            }
+        }
+    }
+
+    return uniqueIslandShapes.size();
+}
+
+/**
+ * DFS with directional encoding
+ *
+ * @param grid The grid, modified in-place (cells set to 0 when visited)
+ * @param r Current row
+ * @param c Current column
+ * @param path StringBuilder to build the signature
+ * @param direction Direction taken to arrive at (r, c)
+ */
+private void dfs(int[][] grid, int r, int c, StringBuilder path, char direction) {
+    int rows = grid.length;
+    int cols = grid[0].length;
+
+    // Base Case 1: Out of bounds
+    if (r < 0 || r >= rows || c < 0 || c >= cols) {
+        return;
+    }
+
+    // Base Case 2: Water (0) or already visited land (already marked as 0)
+    if (grid[r][c] == 0) {
+        return;
+    }
+
+    // 1. Mark the current cell as visited by setting it to water (0)
+    // This prevents double counting and replaces the need for a separate visited array
+    grid[r][c] = 0;
+
+    // 2. Record the direction of movement into this cell
+    path.append(direction);
+
+    // 3. Recurse into neighbors in FIXED order (critical for consistency!)
+    // The order must always be the same to ensure identical islands produce identical signatures
+    dfs(grid, r + 1, c, path, 'D');  // Down
+    dfs(grid, r - 1, c, path, 'U');  // Up
+    dfs(grid, r, c + 1, path, 'R');  // Right
+    dfs(grid, r, c - 1, path, 'L');  // Left
+
+    // 4. Crucial Step: Add an "Out" (O) delimiter when returning from this cell
+    // This marks the end of a branch and distinguishes shapes that follow different paths
+    // Without this, different shapes could produce the same signature!
+    path.append('O');
+}
+```
+
+```java
+// V1
+// IDEA: Alternative approach using relative coordinates
+/**
+ * Instead of directional encoding, record relative positions from the starting point
+ */
+public int numDistinctIslands_v2(int[][] grid) {
+    if (grid == null || grid.length == 0) return 0;
+    int rows = grid.length, cols = grid[0].length;
+    boolean[][] seen = new boolean[rows][cols];
+    Set<String> shapes = new HashSet<>();
+
+    for (int r = 0; r < rows; r++) {
+        for (int c = 0; c < cols; c++) {
+            if (!seen[r][c] && grid[r][c] == 1) {
+                StringBuilder sb = new StringBuilder();
+                // Pass starting coordinates (r, c) as origin
+                dfsRelative(grid, seen, r, c, r, c, sb);
+                shapes.add(sb.toString());
+            }
+        }
+    }
+    return shapes.size();
+}
+
+/**
+ * DFS that records relative coordinates from origin (r0, c0)
+ */
+private void dfsRelative(int[][] grid, boolean[][] seen, int r0, int c0, int r, int c, StringBuilder sb) {
+    int rows = grid.length, cols = grid[0].length;
+    if (r < 0 || r >= rows || c < 0 || c >= cols) return;
+    if (seen[r][c] || grid[r][c] != 1) return;
+
+    seen[r][c] = true;
+    // Record relative position: (r - r0, c - c0)
+    // This makes the signature translation-invariant
+    sb.append((r - r0)).append('_').append((c - c0)).append(',');
+
+    // Visit in fixed order (critical!)
+    dfsRelative(grid, seen, r0, c0, r + 1, c, sb);
+    dfsRelative(grid, seen, r0, c0, r - 1, c, sb);
+    dfsRelative(grid, seen, r0, c0, r, c + 1, sb);
+    dfsRelative(grid, seen, r0, c0, r, c - 1, sb);
+}
+```
+
+```python
+# python
+# LC 694
+# V0
+# IDEA: DFS + Path Signatures
+def numDistinctIslands(grid):
+    """
+    Count distinct island shapes using directional path encoding
+
+    Example:
+    Input: grid = [[1,1,0,0,0],
+                   [1,1,0,0,0],
+                   [0,0,0,1,1],
+                   [0,0,0,1,1]]
+    Output: 1
+    Explanation: Both islands have the same shape
+
+    The path signature for both islands would be: "SDROO" or similar
+    """
+    if not grid or not grid[0]:
+        return 0
+
+    rows, cols = len(grid), len(grid[0])
+    unique_shapes = set()
+
+    def dfs(r, c, direction, path):
+        # Out of bounds or water/visited
+        if r < 0 or r >= rows or c < 0 or c >= cols or grid[r][c] != 1:
+            return
+
+        # Mark as visited
+        grid[r][c] = 0
+
+        # Record direction
+        path.append(direction)
+
+        # Visit in fixed order: Down, Up, Right, Left
+        dfs(r + 1, c, 'D', path)
+        dfs(r - 1, c, 'U', path)
+        dfs(r, c + 1, 'R', path)
+        dfs(r, c - 1, 'L', path)
+
+        # Add backtrack delimiter
+        path.append('O')
+
+    # Process each island
+    for r in range(rows):
+        for c in range(cols):
+            if grid[r][c] == 1:
+                path = []
+                dfs(r, c, 'S', path)  # 'S' for start
+                unique_shapes.add(tuple(path))
+
+    return len(unique_shapes)
+```
+
+**Why This Works:**
+
+1. **Starting Point Normalization**
+   - Grid iteration is top-to-bottom, left-to-right
+   - First land cell encountered is always the top-left-most cell of the island
+   - This guarantees the same starting point for identical shapes
+
+2. **Canonical Traversal Order**
+   - Always check: Down (D), Up (U), Right (R), Left (L) in that order
+   - Same shape always produces same sequence of directions
+
+3. **Backtrack Delimiter ('O')**
+   ```
+   Example showing why delimiter is needed:
+
+   Shape A:  11     Path without 'O': SDRO
+              1     Path with 'O':    SDROO
+
+   Shape B:   1     Path without 'O': SDRO (Same as A - WRONG!)
+             11     Path with 'O':    SDORO (Different - CORRECT!)
+   ```
+
+4. **Translation Invariance**
+   - Only records directions/relative positions, not absolute coordinates
+   - Islands with same shape but different positions → same signature
+
+**Time Complexity:** O(m × n) where m = rows, n = cols
+**Space Complexity:** O(m × n) for recursion stack and HashSet
+
 ### Java Implementation Notes
 ```java
 // Java DFS with Stack
@@ -2795,6 +3216,7 @@ sys.setrecursionlimit(10000)
 ```
 
 ---
-**Must-Know Problems for Interviews**: LC 94, 104, 112, 113, 124, 200, 236, 297, 399
-**Advanced Problems**: LC 124, 297, 329, 472, 652
-**Keywords**: DFS, depth-first search, recursion, tree traversal, graph traversal, backtracking
+**Must-Know Problems for Interviews**: LC 94, 104, 112, 113, 124, 200, 236, 297, 399, 694
+**Advanced Problems**: LC 124, 297, 329, 472, 652, 694, 711
+**Path Signature Pattern**: LC 694 (Distinct Islands), LC 711 (Distinct Islands II), LC 652 (Find Duplicate Subtrees)
+**Keywords**: DFS, depth-first search, recursion, tree traversal, graph traversal, backtracking, path signatures, shape encoding
