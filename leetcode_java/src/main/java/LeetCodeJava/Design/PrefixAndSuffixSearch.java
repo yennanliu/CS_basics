@@ -57,6 +57,119 @@ public class PrefixAndSuffixSearch {
 //        }
 //    }
 
+    // V0-0-1
+    // IDEA: CUSTOM NODE + TRIE (fixed by gemini)
+    // NOTE !!! below may NOT be a most elegant, efficient approach
+    //          ; but just as a note for future reference
+    //          . Also shows how we try to use `same basic pattern/foundation`
+    //          on different LCs
+    class MyNode101 {
+        // Stores the largest weight (index) of the word passing through this node.
+        int maxWeight;
+        // Child map changed to use Character key for better consistency.
+        Map<Character, MyNode101> child;
+
+        MyNode101() {
+            // We use 0 as the default, non-functional weight.
+            this.maxWeight = 0;
+            this.child = new HashMap<>();
+        }
+    }
+
+    class MyTrie101 {
+
+        // attr
+        MyNode101 root; // Renamed to root for clarity
+
+        // constructor
+        MyTrie101() {
+            this.root = new MyNode101();
+        }
+
+        /**
+         * Corrected add method to update the maxWeight along the path.
+         * Time: O(L)
+         */
+        public void add(String key, int weight) { // Added 'weight' parameter
+            MyNode101 node = this.root;
+
+            for (char ch : key.toCharArray()) {
+                if (!node.child.containsKey(ch)) {
+                    node.child.put(ch, new MyNode101());
+                }
+                node = node.child.get(ch);
+
+                // Crucially, update the maxWeight at the current node
+                node.maxWeight = Math.max(node.maxWeight, weight);
+            }
+            // node.isEnd is not strictly needed since maxWeight > 0 implies a word passes through.
+        }
+
+        /**
+         * New search method optimized for the combined key.
+         * Time: O(L)
+         */
+        public int searchMaxWeight(String key) {
+            MyNode101 node = this.root;
+
+            for (char ch : key.toCharArray()) {
+                if (!node.child.containsKey(ch)) {
+                    // Path does not exist
+                    return -1;
+                }
+                node = node.child.get(ch);
+            }
+
+            // Return the max weight stored at the end of the path
+            return node.maxWeight;
+        }
+
+        // The methods isStartWith, contain, and wordWithPrefix are no longer needed
+        // for the optimized solution.
+    }
+
+    class WordFilter_0_0_1 {
+
+        MyTrie101 myTrie;
+
+        /**
+         * Preprocessing: Inserts all combinations of (suffix + "#" + word) for every word.
+         * Time Complexity: O(N * L^2)
+         */
+        public WordFilter_0_0_1(String[] words) {
+            this.myTrie = new MyTrie101();
+
+            for (int weight = 0; weight < words.length; weight++) {
+                String word = words[weight];
+                int length = word.length();
+
+                // Iterate through all possible suffixes (i=0 gives the full word as suffix)
+                for (int i = 0; i <= length; i++) {
+                    String suffix = word.substring(i);
+
+                    // Form the combined key: suffix + "#" + word
+                    String combinedKey = suffix + "#" + word;
+
+                    // Use the corrected add method
+                    this.myTrie.add(combinedKey, weight);
+                }
+            }
+        }
+
+        /**
+         * Query method: Searches for the single combined key (suff + "#" + pref).
+         * Time Complexity: O(L)
+         */
+        public int f(String pref, String suff) {
+            // The query string is formed by putting the requested suffix, delimiter, and prefix.
+            String query = suff + "#" + pref;
+
+            // The searchMaxWeight method handles the traversal and returns the highest index found.
+            return this.myTrie.searchMaxWeight(query);
+        }
+    }
+
+
     // V0-1
     // IDEA: (fixed by gemini)
     /**
@@ -128,7 +241,7 @@ public class PrefixAndSuffixSearch {
      *     * If the traversal fails (a character is missing), it means no word matches both criteria, and it returns **`-1`**.
      *
      * By using the combined key and storing the max weight, the search is reduced to a single linear traversal of the query string's length ($O(L)$), fulfilling the performance requirements of the problem.
-     * 
+     *
      */
     // --- Trie Node Class ---
     class TrieNode_0_1 {
