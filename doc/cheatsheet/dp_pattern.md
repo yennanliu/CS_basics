@@ -162,7 +162,7 @@ public int lengthOfLIS(int[] nums) {
 - LC 1964: Find the Longest Valid Obstacle Course at Each Position
 - LC 2111: Minimum Number of Removals to Make Mountain Array
 - Maximum Sum Increasing Subsequence
-- Print LIS
+- Print LIS (`Longest Increasing Subsequence`)
 - LIS having sum almost K
 
 

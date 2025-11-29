@@ -6598,6 +6598,11 @@ public class Workspace18 {
 
     }
 
+    // LC 694
+    public int numDistinctIslands_2(int[][] grid) {
+
+        return 0;
+    }
 
 
 
