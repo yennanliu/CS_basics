@@ -57,6 +57,85 @@ public class NumberOfDistinctIslands {
 
     // V0-1
     // IDEA: DFS + PATH SIGNATURE (fixed by gemini)
+    /** NOTE !!!
+     *
+     *   WE need to implement below, so be able to collect the `distinct` poth
+     *
+     *    1. record `direction` ; instead of grid (x,y) as path within DFS
+     *      -> e.g. record (up, down, left,...) in path
+     *      (Directional Encoding)
+     *
+     *    2. correct recursive call
+     *
+     *    3.`Backtrack Marker`
+     *        - The mechanism to mark the return from a DFS branch is missing.
+     *        - A unique delimiter (like 'O' for "Out" or 'X' for "Exit") is crucial to record when the DFS call returns from exploring a neighbor.
+     */
+    /**  NOTE !!!  backtrack marker'
+     *
+     *
+     * That's an excellent point! The **backtrack marker** is perhaps the most crucial element in ensuring the path signature correctly captures the island's unique shape in LC 694.
+     *
+     * Here's a detailed explanation of why it's necessary and how it works, using a clear example.
+     *
+     * ---
+     *
+     * ## 🧭 Why the Backtrack Marker is Crucial
+     *
+     * The purpose of the path signature is to record the **relative movement** and the **structure** of the island. Without a marker when the recursion returns (backtracks), two topologically different shapes can produce the exact same path string, leading to an incorrect count of distinct islands.
+     *
+     * ### The Mechanism
+     *
+     * The DFS records two events for every land cell it visits:
+     *
+     * 1.  **Entry/Movement:** The directional character ('R', 'D', 'L', 'U') is recorded **before** the recursive call. This tells you *where* the island extends.
+     * 2.  **Exit/Backtrack:** The delimiter ('O', 'X', or some other unique character) is recorded **after** the recursive call returns. This tells you *when* a branch of the island terminates.
+     *
+     * ### Example: L-Shape vs. T-Shape
+     *
+     * Consider the following two small islands (where '1' is land and 'S' is the starting cell), both starting at the top-left cell:
+     *
+     * | Island A: Simple L-Shape | Island B: T-Shape (with a dead-end) |
+     * | :---: | :---: |
+     * | S 1 0 0 | S 1 1 0 |
+     * | 0 1 0 0 | 0 1 0 0 |
+     * | 0 0 0 0 | 0 0 0 0 |
+     *
+     * ---
+     *
+     * ### Scenario 1: **Without** a Backtrack Marker
+     *
+     * If we only record the directional movements (D, R, U, L) but **omit the 'X' delimiter**:
+     *
+     * | Island | Path Sequence | Resulting Signature (Incorrect) |
+     * | :--- | :--- | :--- |
+     * | **A (L-Shape)** | Start at S $\rightarrow$ Go Right (R) $\rightarrow$ Go Down (D) $\rightarrow$ End | **`S R D`** |
+     * | **B (T-Shape)** | Start at S $\rightarrow$ Go Right (R) $\rightarrow$ Go Right again (R) $\rightarrow$ Dead-end, backtrack $\rightarrow$ Go Down (D) $\rightarrow$ End | **`S R D`** |
+     *
+     * **Conclusion:** Without the 'X' marker, both islands result in the same signature, `S R D`, even though they are clearly different shapes. This is a false positive for similarity.
+     *
+     * ---
+     *
+     * ### Scenario 2: **With** the Backtrack Marker ('X' for Exit)
+     *
+     * Now, let's include the marker **`path.append('X');`** after *all* recursive calls return for a cell:
+     *
+     * | Island | Path Sequence | Resulting Signature (Correct) |
+     * | :--- | :--- | :--- |
+     * | **A (L-Shape)** | S $\rightarrow$ R (to first 1) $\rightarrow$ **D** (to second 1) $\rightarrow$ (returns) $\rightarrow$ **X** (exit second 1) $\rightarrow$ (returns) $\rightarrow$ **X** (exit first 1) $\rightarrow$ (returns) $\rightarrow$ **X** (exit S) | **`S R D X X X`** |
+     * | **B (T-Shape)** | S $\rightarrow$ **R** (to first 1) $\rightarrow$ **R** (to second 1) $\rightarrow$ (dead-end) $\rightarrow$ **X** (exit second 1) $\rightarrow$ (returns) $\rightarrow$ **D** (to third 1) $\rightarrow$ (returns) $\rightarrow$ **X** (exit third 1) $\rightarrow$ (returns) $\rightarrow$ **X** (exit first 1) $\rightarrow$ (returns) $\rightarrow$ **X** (exit S) | **`S R R X D X X X`** |
+     *
+     * **Conclusion:**
+     *
+     * The unique pattern of directional moves and 'X'
+     * markers now correctly distinguishes the two shapes
+     * (`S R D X X X` vs. `S R R X D X X X`).
+     * The markers precisely encode the moment a path branch terminates
+     * and the traversal backtracks to a previous cell.
+     *
+     *
+     *
+     */
     private int rows_0_1;
     private int cols_0_1;
 
@@ -190,6 +269,146 @@ public class NumberOfDistinctIslands {
             }
         }
     }
+
+    // V0-3
+    // IDEA: DFS + PATH SIGNATURE
+    // NOTE !!! below is WRONG
+    // just for reference
+    /**  Issue of code below:
+     *
+     *   Here are the critical issues:
+     *
+     *   ## 🛑 Critical Issues in Island Encoding (LC 694)
+     *
+     * The provided approach for encoding island shape using
+     * absolute coordinates fails due to the following critical flaws:
+     *
+     * ---
+     *
+     * ### 1. Absolute Coordinate Encoding Fails Normalization
+     *
+     *  **Issue:** Appending the absolute coordinates
+     *             $(x, y)$ to the string (e.g., `sb.append(x + "-" + y)`)
+     *             fails the core requirement of the problem.
+     *
+     *  * **Problem:** Two identical island shapes in different grid locations
+     *                  will produce different signature strings (e.g., `"1-1"` vs. `"5-5"`).
+     *
+     *  * **Result:** This causes them to be **incorrectly counted as
+     *                distinct** islands. **Normalization**
+     *                (encoding the path relative to the starting cell) is required.
+     *
+     * ---
+     *
+     * ### 2. Missing Directional Encoding
+     *
+     * * **Issue:** The path string encoding is missing the
+     *              **direction** of the movement that was just
+     *              taken (e.g., 'U', 'D', 'L', 'R').
+     *
+     *
+     * * **Problem:** The string must record the sequence
+     *                of **relative steps** from one land cell
+     *                to the next to capture the shape.
+     *
+     * ---
+     *
+     * ### 3. Incorrect Recursive Call
+     *
+     * * **Issue:** The recursive call is fundamentally broken:
+     *               `dfsDistinctHelper(x, y, grid, sb)` uses the
+     *               **same coordinates** $(x, y)$ inside the loop.
+     *
+     *
+     * * **Problem:** It fails to pass the calculated
+     *                **new neighbor coordinates**
+     *                $(x\_, y\_)$ to the next DFS call.
+     *
+     *
+     * * **Result:** This inevitably leads to an **infinite loop**
+     *               or a traversal that never moves off the starting cell.
+     *
+     * ---
+     *
+     * ### 4. Missing Backtrack Marker (Delimiter)
+     *
+     * * **Issue:** The mechanism to mark the return from a DFS branch is missing.
+     *
+     * * **Problem:** A unique delimiter (like 'O' for "Out" or 'X' for "Exit")
+     *                 is crucial to record when the DFS call
+     *                 *returns* from exploring a neighbor.
+     *
+     * * **Result:** Without this marker, the resulting string cannot
+     *               distinguish between different branching structures
+     *               (e.g., an L-shape that immediately dead-ends vs. a T-shape that continues).
+     *
+     */
+//    public int numDistinctIslands(int[][] grid) {
+//        // edge
+//        if(grid == null || grid.length == 0 || grid[0].length == 0){
+//            return 0;
+//        }
+//        // ??
+//        if(grid.length == 1 && grid[0].length == 1){
+//            return grid[0][0];
+//        }
+//
+//        int l = grid.length;
+//        int w = grid[0].length;
+//
+//        // int cnt = 0;
+//        // boolean[][] visited = new boolean[l][w];
+//
+//        // ????
+//        Set<String> set = new HashSet<>();
+//
+//        // NOTE !!!
+//        // we ALWAYS take the `start point`
+//        // start from smallest y, smallest x
+//        for(int y = 0; y < l; y++){
+//            for(int x = 0; x < w; x++){
+//                if(grid[y][x] == 1){
+//                    String path = dfsDistinctHelper(x, y, grid, new StringBuilder());
+//                    // ????
+//                    if(!path.isEmpty()){
+//                        set.add(path);
+//                    }
+//                }
+//            }
+//        }
+//
+//
+//        System.out.println(">>>> set = " + set);
+//
+//        return set.size();
+//    }
+//
+//    private String dfsDistinctHelper(int x, int y, int[][] grid, StringBuilder sb){
+//        int l = grid.length;
+//        int w = grid[0].length;
+//
+//        int[][] moves = new int[][] { {0,1}, {0,-1}, {1,0}, {-1,0} };
+//
+//        // add to set
+//        sb.append(x + "-" + y); /// ????
+//        // mark as visited
+//        grid[y][x] = -1;
+//
+//        // NOTE !!!
+//        // we ALWAYS move the `path`
+//        // in `{ {0,1}, {0,-1}, {1,0}, {-1,0} }` ordering
+//        for(int[] m: moves){
+//            int x_ = x + m[1];
+//            int y_ = y + m[0];
+//            if(x_ >= 0 && x_ < w && y_ >= 0 && y_ < l && grid[y_][x_] == 1){
+//                dfsDistinctHelper(x, y, grid, sb);
+//            }
+//        }
+//
+//        // ???
+//        return sb.toString();
+//    }
+
 
 
     // V1
