@@ -1,9 +1,6 @@
 package dev.LCWeekly;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * LeetCode weekly contest 394
@@ -94,10 +91,26 @@ public class Weekly394 {
      *   IDEA 1)  HASHMAP + SLIDE WINDOW ???
      *
      *   // map: record all idx of occurrence of a letter c
+     *
+     *   // V1
      *   HASHMAP: { val : [idx1, idx2, ...] }
      *   -> and for each val,
      *       we check if it's special
      *
+     *  // V2
+     *   HASHMAP: { val : [ [lower_idx1, lower_idx2, ...], [upper_idx1, upper_idx2] ], ... }
+     *
+     *
+     *  // V3
+     *
+     *  map_1: { val : [lower_idx1, lower_idx2, ...] }
+     *
+     *  map_2:  { val : [upper_idx1, upper_idx2, ....]  }
+     *
+     *
+     *  -> and within build map1, map2,
+     *     check if `EVERY lower case c appears BEFORE upper case`
+     *     if NOT, quit the map build for that alphabet directly
      *
      *   ---------------
      *
@@ -106,8 +119,71 @@ public class Weekly394 {
      *
      */
     public int numberOfSpecialChars(String word) {
+        // edge
+        if(word == null || word.isEmpty()){
+            return 0;
+        }
+        if(word.length() == 1){
+            return 0;
+        }
 
-        return 0;
+        // map_1: { val : [lower_idx1, lower_idx2, ...] }
+        Map<Character, List<Integer>> map1 = new HashMap<>();
+        // map_2:  { val : [upper_idx1, upper_idx2, ....]  }
+        Map<Character, List<Integer>> map2 = new HashMap<>();
+
+        String lowerAlpha = "abcdefghijklmnopqrstuvwxyz";
+
+        // build map
+        for(int i = 0; i < word.length(); i++){
+            char ch = word.charAt(i);
+            if(!map1.containsKey(ch)){
+                map1.put(ch, new ArrayList<>());
+            }
+
+            if(!map2.containsKey(ch)){
+                map2.put(ch, new ArrayList<>());
+            }
+
+            String s = String.valueOf(ch);
+
+            // add idx
+            if(lowerAlpha.contains(s)){
+                map1.get(ch).add(i);
+            }else{
+                map2.get(ch).add(i);
+            }
+        }
+
+        System.out.println(">>> map1 = " + map1 +
+                ", map2 = " + map2);
+
+        int cnt = 0;
+        for(char ch: map1.keySet()){
+            if(map1.get(ch).isEmpty()){
+                continue;
+            }
+            if(!map2.containsKey(ch) || map2.get(ch).isEmpty()){
+                continue;
+            }
+            /**  // validate if is `special` */
+            // check if `EVERY lower case c appears BEFORE upper case`
+            // since we go through word element in order
+            // e.g. idx start from small -> big
+            // the collected idx in map
+            // SHOULD be in INCREASING order as well (small->big)
+            // -> so ALL we need to check is:
+            // check if `last idx in map1` <   `1st idx in map2`
+            // ???
+            int map1IdxSize =  map1.get(ch).size();
+            //int map2IdxSize =  map2.get(ch).size();
+            if(map1.get(ch).get(map1IdxSize - 1) < map2.get(ch).get(0)){
+                cnt += 1;
+            }
+
+        }
+
+        return cnt;
     }
 
 
