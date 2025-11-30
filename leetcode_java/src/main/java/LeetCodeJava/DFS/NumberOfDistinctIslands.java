@@ -2,6 +2,7 @@ package LeetCodeJava.DFS;
 
 // https://leetcode.com/problems/number-of-distinct-islands/
 // https://leetcode.ca/all/694.html
+// https://leetcode.ca/2017-10-24-694-Number-of-Distinct-Islands/
 
 import java.util.HashSet;
 import java.util.Set;
@@ -50,9 +51,146 @@ import java.util.Set;
 public class NumberOfDistinctIslands {
 
     // V0
-//    public int numDistinctIslands_2(int[][] grid) {
+//    public int numDistinctIslands(int[][] grid) {
 //
 //    }
+
+    // V0-1
+    // IDEA: DFS + PATH SIGNATURE (fixed by gemini)
+    private int rows_0_1;
+    private int cols_0_1;
+
+    /**
+     * Finds the number of distinct island shapes using DFS and path encoding.
+     * Time Complexity: O(R * C)
+     */
+    public int numDistinctIslands_0_1(int[][] grid) {
+        if (grid == null || grid.length == 0 || grid[0].length == 0) {
+            return 0;
+        }
+
+        this.rows_0_1 = grid.length;
+        this.cols_0_1 = grid[0].length;
+
+        // Set to store the unique string representations (signatures) of the island shapes.
+        Set<String> uniqueIslandShapes = new HashSet<>();
+
+        for (int r = 0; r < rows_0_1; r++) {
+            for (int c = 0; c < cols_0_1; c++) {
+
+                // Start DFS only on unvisited land cells (grid[r][c] == 1)
+                if (grid[r][c] == 1) {
+
+                    StringBuilder pathSignature = new StringBuilder();
+
+                    // Start DFS. 'O' marks the beginning of the traversal (Origin).
+                    // The traversal order is fixed to ensure the signature is canonical.
+                    dfsDistinctHelper(grid, r, c, pathSignature, 'O');
+
+                    if (pathSignature.length() > 0) {
+                        uniqueIslandShapes.add(pathSignature.toString());
+                    }
+                }
+            }
+        }
+
+        return uniqueIslandShapes.size();
+    }
+
+    /**
+     * Helper function for DFS to traverse the island and build its shape signature.
+     * @param grid The grid (used to check land/water and mark visited cells by setting to 0).
+     * @param r The current row index.
+     * @param c The current column index.
+     * @param path The StringBuilder to record the path.
+     * @param direction The direction taken to arrive at (r, c).
+     */
+    private void dfsDistinctHelper(int[][] grid, int r, int c, StringBuilder path, char direction) {
+
+        // --- Base Case 1: Out of bounds ---
+        if (r < 0 || r >= rows_0_1 || c < 0 || c >= cols_0_1) {
+            return;
+        }
+
+        // --- Base Case 2: Water (0) or already visited land (already marked as 0) ---
+        if (grid[r][c] == 0) {
+            return;
+        }
+
+        // 1. Mark the current cell as visited by setting it to water (0).
+        grid[r][c] = 0;
+
+        // 2. Record the direction of movement into this cell (Normalization).
+        path.append(direction);
+
+        // 3. Recurse into neighbors in a fixed, canonical order (D, U, R, L) to ensure consistent signatures.
+
+        // Down (D)
+        dfsDistinctHelper(grid, r + 1, c, path, 'D');
+
+        // Up (U)
+        dfsDistinctHelper(grid, r - 1, c, path, 'U');
+
+        // Right (R)
+        dfsDistinctHelper(grid, r, c + 1, path, 'R');
+
+        // Left (L)
+        dfsDistinctHelper(grid, r, c - 1, path, 'L');
+
+        // 4. Crucial Step: Add an "Out" (X) delimiter when the function returns from this cell.
+        // This marks the end of a branch and ensures shapes with different branch structures
+        // are correctly distinguished (e.g., L vs. T).
+        path.append('X');
+    }
+
+    // V0-2
+    // IDEA: DFS + PATH SIGNATURE (fixed by gpt)
+    public int numDistinctIslands_0_2(int[][] grid) {
+        if (grid == null || grid.length == 0 || grid[0].length == 0) {
+            return 0;
+        }
+
+        int rows = grid.length;
+        int cols = grid[0].length;
+
+        Set<String> shapes = new HashSet<>();
+
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < cols; c++) {
+                if (grid[r][c] == 1) {
+                    StringBuilder sb = new StringBuilder();
+                    dfs(grid, r, c, r, c, sb);
+                    shapes.add(sb.toString());
+                }
+            }
+        }
+
+        return shapes.size();
+    }
+
+    private void dfs(int[][] grid, int r0, int c0, int r, int c, StringBuilder sb) {
+        int rows = grid.length;
+        int cols = grid[0].length;
+
+        // Mark visited
+        grid[r][c] = -1;
+
+        // Record relative coordinate
+        sb.append((r - r0) + "," + (c - c0) + ";");
+
+        // directions: up, down, left, right
+        int[][] dirs = {{1,0},{-1,0},{0,1},{0,-1}};
+
+        for (int[] d : dirs) {
+            int nr = r + d[0];
+            int nc = c + d[1];
+
+            if (nr >= 0 && nr < rows && nc >= 0 && nc < cols && grid[nr][nc] == 1) {
+                dfs(grid, r0, c0, nr, nc, sb);
+            }
+        }
+    }
+
 
     // V1
     // IDEA: DFS
