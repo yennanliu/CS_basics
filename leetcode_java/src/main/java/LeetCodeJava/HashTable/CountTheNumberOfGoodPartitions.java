@@ -53,6 +53,105 @@ public class CountTheNumberOfGoodPartitions {
 //
 //    }
 
+    // V0-1
+    // IDEA: PREFIX SUM (gpt)
+    // https://buildmoat.teachable.com/courses/7a7af3/lectures/63954646
+    public int numberOfGoodPartitions_0_1(int[] nums) {
+        final int MOD = 1_000_000_007;
+        int n = nums.length;
+
+        Map<Integer, Integer> first = new HashMap<>();
+        Map<Integer, Integer> last = new HashMap<>();
+
+        // 記錄 first/last 出現位置
+        for (int i = 0; i < n; i++) {
+            last.put(nums[i], i);
+            if (!first.containsKey(nums[i])) {
+                first.put(nums[i], i);
+            }
+        }
+
+        // 差分陣列
+        int[] diff = new int[n + 1];
+
+        // 建立覆蓋區間
+        for (int v : first.keySet()) {
+            int L = first.get(v);
+            int R = last.get(v);
+
+            diff[L]++; // 區間開始
+            diff[R]--; // 區間結束（不包含 R 位置）
+        }
+
+        // prefix sum 計算覆蓋數
+        int cover = 0;
+        int segments = 0;
+
+        for (int i = 0; i < n; i++) {
+            cover += diff[i];
+            if (cover == 0) {
+                segments++;
+            }
+        }
+
+        // 共有 segments 個段落 ⇒ 回傳 2^(segments - 1)
+        long ans = 1;
+        for (int i = 1; i < segments; i++) {
+            ans = (ans * 2) % MOD;
+        }
+
+        return (int) ans;
+    }
+
+
+    // V0-2
+    // IDEA: (gemini)
+    /**
+     * Counts the total number of good partitions.
+     * Time Complexity: O(N)
+     * Space Complexity: O(N)
+     */
+    public int numberOfGoodPartitions_0_2(int[] nums) {
+        final int MOD = 1_000_000_007;
+
+        // --- Step 1: Build the Last Occurrence Map (Dependency Table) ---
+        // lastSeen[num] := the index of the last time 'num' appeared.
+        Map<Integer, Integer> lastSeen = new HashMap<>();
+        for (int i = 0; i < nums.length; ++i) {
+            lastSeen.put(nums[i], i);
+        }
+
+        // --- Step 2: O(N) Sweep to Count Mandatory Segments ---
+
+        // 'ans' will store 2^(number of free cuts)
+        int ans = 1;
+
+        // maxRight: The furthest index the current partition MUST reach to cover all
+        // occurrences of numbers seen so far in this segment.
+        int maxRight = 0;
+
+        for (int i = 0; i < nums.length; ++i) {
+
+            // Core Logic:
+            // If the current index 'i' has moved past the max required boundary 'maxRight',
+            // it means the previous mandatory segment is complete, and a new, independent
+            // segment must start at 'i'.
+            if (i > maxRight) {
+                // We've found a new mandatory segment boundary. This boundary is a
+                // "free cut" that we can choose to use or merge with the next segment.
+                // Each new free cut doubles the total number of good partitions.
+                ans = (int) ((ans * 2L) % MOD);
+            }
+
+            // Update the max right boundary required by the current number.
+            // This is the "prefix maximum" update for the current segment's dependency.
+            maxRight = Math.max(maxRight, lastSeen.get(nums[i]));
+        }
+
+        return ans;
+    }
+
+
     // V1
     // https://leetcode.com/problems/count-the-number-of-good-partitions/solutions/4384415/javacpython-two-passes-by-lee215-8cju/
     /** IDEA:
