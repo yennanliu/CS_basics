@@ -192,6 +192,119 @@ public class Weekly394 {
     // Q3
     // LC 3122
     // https://leetcode.com/problems/minimum-number-of-operations-to-satisfy-conditions/
+    // 15.56 - 16.18 pm
+    /**
+     *  -> Return the `minimum` number
+     *     of operations needed.
+     *
+     *    - m x n matrix
+     *
+     *
+     *   - NEED to do the op if:
+     *
+     *   -  Equals to the cell BELOW
+     *      - e.g. grid[i][j] == grid[i + 1][j]
+     *          - (if existed)
+     *
+     *   - Different from the cell at RIGHT
+     *      - e.g. grid[i][j] != grid[i][j + 1]
+     *          - (if existed)
+     *
+     *
+     * -----------------
+     *
+     *   IDEA 1) dp ?????,
+     *
+     *  IDEA 2)  brute force ???
+     *
+     *
+     * -----------------
+     *
+     *  ex 1)
+     *   Input: grid = [[1,1,1],[0,0,0]]
+     *   Output: 3
+     *
+     *  ->
+     *
+     *  [
+     *   [1,1,1],
+     *  [0,0,0]
+     *  ]
+     *
+     *  ->
+     *
+     *   [
+     *    [1,1,1],
+     *   [1,0,0]
+     *   ]
+     *
+     *
+     *
+     *
+     */
+    // IDEA 2)  brute force ???
+    public int minimumOperations(int[][] grid) {
+        // edge
+        if(grid == null || grid.length == 0 || grid[0].length == 0){
+            return 0;
+        }
+        if(grid.length == 1 && grid[0].length == 1){
+            return 0;
+        }
+
+        int cnt = 0;
+
+        int l = grid.length;
+        int w = grid[0].length;
+        /**
+         *      *
+         *      *   - NEED to do the op if:
+         *      *
+         *      *   -  Equals to the cell BELOW
+         *      *      - e.g. grid[i][j] == grid[i + 1][j]
+         *      *          - (if existed)
+         *      *
+         *      *   - Different from the cell at RIGHT
+         *      *      - e.g. grid[i][j] != grid[i][j + 1]
+         *      *          - (if existed)
+         *
+         */
+        for(int y = 0; y < l; y++){
+            for(int x = 0; x < w; x++){
+
+                boolean condition1 = false;
+                boolean condition2 = false;
+
+                // step 1) check `grid[i][j] == grid[i + 1][j]`
+                if(y + 1 < l){
+                    if(grid[y][x] == grid[y + 1][x]){
+                        condition1 = true;
+                    }
+                }
+
+                // step 2) check `grid[i][j] != grid[i][j + 1]`
+                if(x + 1 < w){
+                    if(grid[y][x] != grid[y][x + 1]){
+                        condition2 = true;
+                    }
+                }
+
+                // if BOTH condition1 and condition2
+                // do the op
+                if(condition1 && condition2){
+
+                    // ??? TODO: check what op to do
+                    //           can minimize the total op
+                    
+                    cnt += 1;
+                }
+
+            }
+        }
+
+
+        return cnt;
+    }
 
 
     // Q4
