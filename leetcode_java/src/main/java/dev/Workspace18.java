@@ -6218,7 +6218,7 @@ public class Workspace18 {
     }
 
     // LC 2962
-    public long countSubarrays(int[] nums, int k) {
+    public long countSubarrays_99(int[] nums, int k) {
         // edge
 
         // get max val
@@ -7043,6 +7043,18 @@ public class Workspace18 {
     public List<Integer> getGoodIndices(int[][] variables, int target) {
 
         return null;
+    }
+
+    // LC 2962
+    public long countSubarrays(int[] nums, int k) {
+
+        return 0L;
+    }
+
+    // LC 2963
+    public int numberOfGoodPartitions(int[] nums) {
+
+        return 0;
     }
 
 
