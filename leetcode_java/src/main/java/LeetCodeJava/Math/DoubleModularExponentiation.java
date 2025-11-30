@@ -137,6 +137,7 @@ public class DoubleModularExponentiation {
     }
 
     // Helper function for modular exponentiation (optional, but good practice)
+    /** NOTE !!! below help func is NOT necessary, just optional */
     private long power(long base, int exponent, int modulus) {
         long result = 1;
         base %= modulus;
