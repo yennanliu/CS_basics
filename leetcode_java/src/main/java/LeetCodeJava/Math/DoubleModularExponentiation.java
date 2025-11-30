@@ -55,6 +55,103 @@ public class DoubleModularExponentiation {
 //
 //    }
 
+    // V0-1
+    // IDEA: mod + math
+    // https://buildmoat.teachable.com/courses/7a7af3/lectures/63954646
+    /**
+     * Finds the indices i such that (variables[i][0]^variables[i][1] % 10)^variables[i][2] % variables[i][3] == target.
+     * The input 'variables' is a 2D array where each row is [a, b, c, m].
+     */
+    /**
+     *  NOTE !!!
+     *
+     *   we do `mod op` in each multiply
+     */
+    public List<Integer> getGoodIndices_0_1(int[][] variables, int target) {
+        List<Integer> ans = new ArrayList<>();
+
+        // Loop through each set of variables [a, b, c, m]
+        for (int i = 0; i < variables.length; i++) {
+            // Unpack variables for clarity
+            int a = variables[i][0];
+            int b = variables[i][1];
+            int c = variables[i][2];
+            int m = variables[i][3];
+
+            // --- Step 1: Calculate (a^b) % 10 ---
+            // This is equivalent to the first inner loop in the C++ code
+            // temp = (a^b) % 10
+
+            // The C++ code's first loop computes (a^b) % 10.
+            // temp = temp * a % 10;
+            // The iteration is from j=0 to j<b.
+            // We can use a helper function for modular exponentiation for cleaner code
+            // and better performance/correctness, or translate the loop directly.
+
+            // Let's implement the direct modular exponentiation (a^b) % 10.
+            long temp = 1;
+            // The base in the exponentiation is 'a', but since we only care about
+            // modulo 10, we can take the base 'a' modulo 10 first.
+            int baseA = a % 10;
+
+            for (int j = 0; j < b; j++) {
+                // The C++ code snippet uses 'temp = temp * a % 10' for 'b' iterations.
+                // This calculates a^b % 10 (incorrectly if 'a' is not taken mod 10 first,
+                // but the intended logic for (a^b) % 10 is usually to use modular exponentiation).
+                // Assuming the C++ logic shown is a simple loop for (a^b) % 10:
+                temp = (temp * baseA) % 10;
+            }
+
+            // After the loop, temp now holds (a^b) % 10.
+            // Note: The C++ code shown has:
+            // for(int j=0; j<c; j++){ temp = temp * a % 10; } <-- This appears to be a bug in the C++ snippet,
+            // as it should be j<b based on the standard problem. We'll use the correct exponent 'b'.
+            // The variable 'temp' is also used as the intermediate result (a^b % 10).
+
+            // --- Step 2: Calculate (temp^c) % m ---
+            // This is equivalent to the second inner loop in the C++ code
+            // res = (temp^c) % m
+
+            long res = 1;
+            // The base for the second exponentiation is the result from the first step: temp.
+            // The exponent is 'c'. The modulus is 'm'.
+
+            // The C++ code's second loop:
+            // for(int j=0; j<c; j++){ res = res * temp % m; }
+            int baseTemp = (int) temp; // temp is at most 9, so casting to int is safe.
+
+            for (int j = 0; j < c; j++) {
+                res = (res * baseTemp) % m;
+            }
+
+            // After the loop, res now holds ((a^b) % 10)^c % m.
+
+            // --- Step 3: Check and Record ---
+            if (res == target) {
+                //ans.push_back(i); // C++ equivalent
+                ans.add(i); // Java equivalent
+            }
+        }
+
+        return ans;
+    }
+
+    // Helper function for modular exponentiation (optional, but good practice)
+    private long power(long base, int exponent, int modulus) {
+        long result = 1;
+        base %= modulus;
+        while (exponent > 0) {
+            if (exponent % 2 == 1) {
+                result = (result * base) % modulus;
+            }
+            base = (base * base) % modulus;
+            exponent /= 2;
+        }
+        return result;
+    }
+
+
+
     // VO-1
     // TODO: fix below
     // NOTE !!! below is WRONG
