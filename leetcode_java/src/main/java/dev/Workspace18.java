@@ -6642,6 +6642,81 @@ public class Workspace18 {
      *
      *
      */
+    // 6.35 - 45 am
+    // IDEA: DFS + PATH SIGNATURE
+    public int numDistinctIslands(int[][] grid) {
+        // edge
+        if(grid == null || grid.length == 0 || grid[0].length == 0){
+            return 0;
+        }
+        // ??
+        if(grid.length == 1 && grid[0].length == 1){
+            return grid[0][0];
+        }
+
+        int l = grid.length;
+        int w = grid[0].length;
+
+       // int cnt = 0;
+       // boolean[][] visited = new boolean[l][w];
+
+        // ????
+        Set<String> set = new HashSet<>();
+
+        // NOTE !!!
+        // we ALWAYS take the `start point`
+        // start from smallest y, smallest x
+        for(int y = 0; y < l; y++){
+            for(int x = 0; x < w; x++){
+                if(grid[y][x] == 1){
+                    String path = dfsDistinctHelper(x, y, grid, new StringBuilder());
+                    // ????
+                    if(!path.isEmpty()){
+                        set.add(path);
+                    }
+                }
+            }
+        }
+
+
+        System.out.println(">>>> set = " + set);
+
+        return set.size();
+    }
+
+    private String dfsDistinctHelper(int x, int y, int[][] grid, StringBuilder sb){
+        int l = grid.length;
+        int w = grid[0].length;
+
+        int[][] moves = new int[][] { {0,1}, {0,-1}, {1,0}, {-1,0} };
+
+        // add to set
+        sb.append(x + "-" + y); /// ????
+        // mark as visited
+        grid[y][x] = -1;
+
+        // NOTE !!!
+        // we ALWAYS move the `path`
+        // in `{ {0,1}, {0,-1}, {1,0}, {-1,0} }` ordering
+        for(int[] m: moves){
+            int x_ = x + m[1];
+            int y_ = y + m[0];
+            if(x_ >= 0 && x_ < w && y_ >= 0 && y_ < l && grid[y_][x_] == 1){
+                dfsDistinctHelper(x, y, grid, sb);
+            }
+        }
+
+        // ???
+        return sb.toString();
+    }
+
+
+
+
+
+
+
+
     public int numDistinctIslands_2(int[][] grid) {
         // edge
         if(grid == null || grid.length == 0 || grid[0].length == 0){
