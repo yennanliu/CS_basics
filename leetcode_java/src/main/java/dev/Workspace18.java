@@ -7027,7 +7027,7 @@ public class Workspace18 {
         }
     }
 
-    // LC 2698
+    // LC 2960
     public int countTestedDevices(int[] batteryPercentages) {
         int testedDeviceCnt = 0;
         for(int i = 0; i < batteryPercentages.length; i++){
@@ -7037,6 +7037,12 @@ public class Workspace18 {
         }
 
         return testedDeviceCnt;
+    }
+
+    // LC 2961
+    public List<Integer> getGoodIndices(int[][] variables, int target) {
+
+        return null;
     }
 
 
