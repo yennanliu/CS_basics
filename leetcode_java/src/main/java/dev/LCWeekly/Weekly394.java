@@ -295,7 +295,7 @@ public class Weekly394 {
 
                     // ??? TODO: check what op to do
                     //           can minimize the total op
-                    
+
                     cnt += 1;
                 }
 
@@ -310,6 +310,129 @@ public class Weekly394 {
     // Q4
     // LC 3123
     // https://leetcode.com/problems/find-edges-in-shortest-paths/description/
+    // 16.20 - 52 pm
+    /**
+     *   -> Return the array answer.
+     *
+     *   - n nodes, from 0 to n -1
+     *   - m edges
+     *   - edges[i] = [ai, bi, wi]
+     *      - ai: start node
+     *      - bi: end node
+     *      - wi: weight
+     *
+     *   - find the `boolean arr` array
+     *     - array[i] == true
+     *         - edges[i] is part of the at least one shortest path
+     *     - otherwise, false
+     *
+     *
+     *
+     *  ------------------------
+     *
+     *   IDEA 1) Dijkstra's algo ????
+     *     -> find ALL OF the shortest path (node `0` -> node `n-1`)
+     *     and check if the point (0 = n- 1)
+     *     is in the path ???
+     *
+     *
+     *   IDEA 2)  BFS with wight ??
+     *      -> simply collect all paths (with cost)
+     *      and get the mini cost
+     *      and get the paths with same cost
+     *      then check if node 0 - node n - 1
+     *      exists AT LEAST ONCE in the paths
+     *
+     *   IDEA 3) Bellman-Ford algo ???
+     *
+     *
+     *  IDEA 4) BFS
+     *
+     *
+     *
+     *
+     *
+     *  ------------------------
+     *
+     */
+    // IDEA 2)  BFS with wight ?? ???
+    public boolean[] findAnswer(int n, int[][] edges) {
+        // edge
+
+        // map : build neighbors
+        Map<Integer, List<Integer>> neighborMap = new HashMap<>();
+        for(int[] e: edges){
+            int start = e[0];
+            int end = e[1];
+            //int cost = e[2];
+
+            // ???
+            neighborMap.get(start).add(end);
+            neighborMap.get(end).add(start);
+        }
+
+
+        // map:
+        // { path : cost }
+        // { node1-node-2-....node-k: cost-1, ...}
+        Map<String, Integer> pathMap = new HashMap<>();
+
+
+        // bfs get paths ???
+        // queue: [ [ node, cost_till_now, path] ] // ???
+        // ???
+        Queue<String[]> q = new LinkedList<>();
+        /** NOTE !!
+         *
+         *  target: node `0` -> node `n-1`
+         */
+        q.add(new String[]{"0", "0", ""});
+
+        while(!q.isEmpty()){
+            int size = q.size();
+            for(int i = 0; i < size; i++){
+                // ??
+                String[] cur = q.poll();
+                int node = Integer.parseInt(cur[0]);
+                int cost = Integer.parseInt(cur[1]);
+                String path = cur[2];
+
+                // NOTE !!! if reach the destination (e.g. `n-1` node)
+                if(node == n - 1){
+                    pathMap.put(path, cost);
+                }
+
+                for(int next: neighborMap.get(node)){
+                    // ??? ???
+                    q.add(new String[]{String.valueOf(next), "0", path + "-"});
+                }
+            }
+        }
+
+        int minCost = Integer.MAX_VALUE;
+        for(int x: pathMap.values()){
+            minCost = Math.min(minCost, x);
+        }
+
+        List<String> minCostPaths = new ArrayList<>();
+        for(String path: pathMap.keySet()){
+            if(pathMap.get(path) == minCost){
+                minCostPaths.add(path);
+            }
+        }
+
+        boolean[] res = new boolean[edges.length];
+        for(String p: minCostPaths){
+            String[] list = p.split("-");
+            // ???
+            for(String x: list){
+                int node = Integer.parseInt(x);
+                res[node] = true;
+            }
+        }
+
+        return res;
+    }
 
 
 }
