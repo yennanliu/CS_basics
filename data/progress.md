@@ -180,6 +180,8 @@
 			- 218
 			- 1697
 	- others:
+		- Path Signatures
+			- 694,711,652,508
 - neetcode 250
 	- https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V6/LC_goog_all.pdf
 		- 27/66
