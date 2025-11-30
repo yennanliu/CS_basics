@@ -7027,6 +7027,17 @@ public class Workspace18 {
         }
     }
 
+    // LC 2698
+    public int countTestedDevices(int[] batteryPercentages) {
+        int testedDeviceCnt = 0;
+        for(int i = 0; i < batteryPercentages.length; i++){
+            if(batteryPercentages[i] > testedDeviceCnt){
+                testedDeviceCnt += 1;
+            }
+        }
+
+        return testedDeviceCnt;
+    }
 
 
 }

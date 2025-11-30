@@ -53,9 +53,35 @@ package LeetCodeJava.Greedy;
 public class CountTestedDevicesAfterTestOperations {
 
     // V0
-//    public int countTestedDevices(int[] batteryPercentages) {
-//
-//    }
+    /**
+     *
+     *  KEY !!
+     *
+     * ## 📱 Q1
+     *
+     *  - https://buildmoat.teachable.com/courses/7a7af3/lectures/63954646
+     *
+     * - Record how many phones have been tested so far.
+     * - If the phone's **battery level > number of phones already tested**,
+     *    then this phone can be tested.
+     *
+     *
+     *  -> e.g.
+     *   everytime when we test a device, ALL the remaining device battery - 1
+     *   so IF we can test the cur device
+     *      -> its battery MUST >= already_test_device_cnt
+     *
+     */
+    public int countTestedDevices(int[] batteryPercentages) {
+        int testedDeviceCnt = 0;
+        for (int i = 0; i < batteryPercentages.length; i++) {
+            if (batteryPercentages[i] > testedDeviceCnt) {
+                testedDeviceCnt += 1;
+            }
+        }
+
+        return testedDeviceCnt;
+    }
 
     // V0-1
     // IDEA: BRUTE FORCE (fixed by gemini)
