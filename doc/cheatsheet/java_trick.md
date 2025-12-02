@@ -92,6 +92,24 @@ for ( Character c: x.toCharArray()){
 
 **Performance Note**: `charAt(i)` is O(1) for strings, making it efficient for character-by-character processing.
 
+
+### 1.3) Replace chat as idx in String
+
+```java
+// LC 127
+
+String s = "abcd";
+
+char[] arr = s.toCharArray();
+
+arr[0] = 'z';
+
+String newS = new String(arr);
+
+//System.out.println("s =  "  + new String());
+```
+
+
 ## 2) Array and Collection Operations
 
 ### 2.1) Arrays vs Collections Key Differences

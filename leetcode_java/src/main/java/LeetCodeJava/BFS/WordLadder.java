@@ -127,6 +127,13 @@ public class WordLadder {
                 if (cur.equals(endWord))
                     return steps;
 
+                /** NOTE !!!
+                 *
+                 *
+                 *  trick:  transform string to char array,
+                 *          then we can replace idx element
+                 *          by arr[i] = new_val
+                 */
                 char[] arr = cur.toCharArray();
 
                 // try all 26 letters on all positions
@@ -138,10 +145,24 @@ public class WordLadder {
                         if (c == old)
                             continue;
 
+                        /** NOTE !!!
+                         *
+                         *
+                         *  we can replace idx element in char array
+                         *  by arr[i] = new_val
+                         */
                         arr[j] = c;
                         String newStr = new String(arr);
 
                         if (dict.contains(newStr) && !visited.contains(newStr)) {
+
+                            /** NOTE !!!
+                             *
+                             *  we add newStr to `visited` right before
+                             *  the newStr is added to queue
+                             *
+                             *  (but NOT within the newStr is poll from queue)
+                             */
                             visited.add(newStr);
                             q.add(newStr);
                         }
