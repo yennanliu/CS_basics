@@ -1203,6 +1203,7 @@
 1335| [Minimum Difficulty of a Job Schedule](https://leetcode.com/problems/minimum-difficulty-of-a-job-schedule/) | [Python](./leetcode_python/Dynamic_Programming/minimum-difficulty-of-a-job-schedule.py) | _O(logn)_ | _O(1)_ | Medium |`dp`, `amazon`| not start
 1406| [Stone Game III](https://leetcode.com/problems/stone-game-iii) | [Java](./leetcode_java/src/main/java/LeetCodeJava/DynamicProgramming/StoneGame3.java) | _O(logn)_ | _O(1)_ | Medium |`dp`, `amazon`| AGAIN (not start)
 1799| [Maximize Score After N Operations](https://leetcode.com/problems/maximize-score-after-n-operations/) | [Python](./leetcode_python/Dynamic_Programming/maximize-score-after-n-operations.py) | _O(logn)_ | _O(1)_ | Medium |`dp`, `amazon`| not start
+3122| [Minimum Number of Operations to Satisfy Conditions](https://leetcode.com/problems/minimum-number-of-operations-to-satisfy-conditions) | [Java](./leetcode_java/src/main/java/LeetCodeJava/DynamicProgramming/MinimumNumberOfOperationsToSatisfyConditions.java)  | _O(logn)_ | _O(1)_ | Medium |`dp`, LC weekly, PQ| Again (1)
 3196| [ Maximize Total Cost of Alternating Subarrays](https://leetcode.com/problems/maximize-total-cost-of-alternating-subarrays/description/) | [Java](./leetcode_java/src/main/java/LeetCodeJava/DynamicProgramming/maximizeTotalCostOfAlternatingSubarrays.java)  | _O(logn)_ | _O(1)_ | Medium |`dp`, LC weekly| Again
  
 
