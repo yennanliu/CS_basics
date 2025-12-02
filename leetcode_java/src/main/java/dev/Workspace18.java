@@ -7133,9 +7133,198 @@ public class Workspace18 {
     }
 
     // LC 305
-    public List<Integer> numIslands2(int m, int n, int[][] positions) {
+    // 9.19 - 29 am
+    /**
+     *
+     *  ->  an array of integers answer where answer[i] is
+     *      the number of islands after turning the cell
+     *      (ri, ci) into a land.
+     *
+     *  m x n grid
+     *  0: water
+     *  1: land
+     *
+     *   -  add land operation:
+     *       - turn water -> land
+     *
+     *   - positions[i] = [ri, ci]
+     *      - position (ri, ci) with ith op
+     *
+     *
+     *   ----------------
+     *
+     *  IDEA 1) DFS + LAND count ???
+     *
+     *
+     *
+     * IDEA 2) BFS + LAND count ???
+     *
+     *
+     * IDEA 3) UNION FIND ???
+     *
+     *
+     *  ----------------
+     *
+     *
+     */
+    // IDEA 3) UNION FIND ???
+    public class MyUF{
+        // attr
+        int[] parents;
+        int[] rank;  // ???
+        int groupCnt; // ??
 
-        return null;
+        // constructor
+        MyUF(int size){
+            this.parents = new int[size];
+            this.rank = new int[size];   // ???
+            this.groupCnt = size;
+
+            // init parent as itself
+            for(int i = 0; i < size; i++){
+                this.parents[i] = i;
+            }
+
+            // init rank ????
+
+        }
+        // method
+        public void union(int x, int y){
+            int xParent = getParent(x); //this.parents[x];
+            int yParent = getParent(y); //this.parents[y];
+            if(xParent == yParent){
+                return; // ???
+            }
+
+          //  xParent = this.
+          // update rank ???
+          this.parents[x] = yParent; // ????
+
+          this.groupCnt -= 1;
+        }
+
+        public int getParent(int x){
+            if(this.parents[x] == x){
+                return x;
+            }
+
+            this.parents[x] = getParent(x);
+            return this.parents[x]; // ???
+        }
+
+        public boolean isUnion(int x, int y){
+            return this.getParent(x) == this.getParent(y); // ???
+        }
+
+    }
+
+    public List<Integer> numIslands2(int m, int n, int[][] positions) {
+        List<Integer> res = new ArrayList<>();
+        // edge
+        if(positions == null || positions.length == 0 || positions[0].length == 0){
+            return res;
+        }
+        if(positions.length == 1 && positions[0].length == 1){
+            res.add(1); // ???
+            return res;
+        }
+
+        //UNION FIND
+        int size = m * n;
+        MyUF myUF = new MyUF(size);
+
+        // do the `land` op
+        for(int i = 0; i < positions.length; i++){
+            int[] p = positions[i];
+            // dfs union
+            // ???
+            // get the cur group cnt
+            res.add(myUF.groupCnt);
+        }
+
+
+        return res;
+    }
+
+    // ????
+    public void dfsUnion(int x, int y){
+
+    }
+
+
+
+
+
+    // -----------------------------------------------------
+
+
+
+    //  IDEA 1) DFS + LAND count ???
+    public List<Integer> numIslands2_99(int m, int n, int[][] positions) {
+        List<Integer> res = new ArrayList<>();
+        // edge
+        if(positions == null || positions.length == 0 || positions[0].length == 0){
+            return res;
+        }
+        if(positions.length == 1 && positions[0].length == 1){
+            res.add(1); // ???
+            return res;
+        }
+
+        // NOTE !! we do the `land op` (water->land) and calculate the `land` in every iteration
+
+        int l = positions.length;
+        int w = positions[0].length;
+
+       // boolean[][] visited = new boolean[l][w];
+
+        for(int i = 0; i < positions.length; i++){
+            int[] p = positions[i];
+            int x_ = p[1];
+            int y_ = p[0];
+            // land op
+            positions[y_][x_] = 1;
+
+            // NOTE !!! we reset cur cnt in every `land op`
+            int curCnt = 0; // ????
+
+            // ????
+           // res.add(getCurLandCnt(y, x, positions));
+            for(int y = 0; y < l; y++){
+                for(int x = 0; x < w; x++){
+                    // ???
+                    if(positions[y][x] == 1){
+                        if(getCurLandCnt(x, y, positions, new boolean[l][w])){
+                            curCnt += 1;
+                        }
+                    }
+                }
+            }
+            res.add(curCnt); // ???
+        }
+
+        return res;
+    }
+
+    private boolean getCurLandCnt(int x, int y, int[][] positions, boolean[][] visited){
+        // ???
+
+        int[][] moves = new int[][]{ {1,0}, {-1,0}, {0,1}, {0,-1} };
+        // mark as visit
+        visited[y][x] = true;
+
+        int l = positions.length;
+        int w = positions[0].length;
+
+        for(int[] m: moves){
+            int x_ = x + m[1];
+            int y_ = y + m[0];
+            if(x_ >= 0 && x_ < w && y_ >= 0 && y_ < l && positions[y_][x_] == 1 && !visited[y_][x_]){
+                getCurLandCnt(x_, y_, positions, visited);
+            }
+        }
+
+        return true;
     }
 
 
