@@ -61,6 +61,7 @@ public class NumberOfIslands2 {
 //    }
 
     // V0-0-1
+    // TODO: validate
     // IDEA: UNION FIND (fixed by gemini)
     class MyUF {
         // Array to store the parent of each element.
@@ -74,6 +75,10 @@ public class NumberOfIslands2 {
         MyUF(int size) {
             this.parent = new int[size];
             this.rank = new int[size];
+            /** NOTE !!
+             *
+             *   we init parent as `-1`
+             */
             // Initialize all cells as water (not land) by setting parent to -1.
             Arrays.fill(parent, -1);
             this.count = 0;
@@ -93,6 +98,12 @@ public class NumberOfIslands2 {
         // Unite the sets containing elements i and j, using Union by Rank.
         // Returns true if a merge occurred.
         public boolean union(int i, int j) {
+            /** NOTE !!!
+             *
+             *  we first check if any of the nodes
+             *  has `water` as parent.
+             *  if so, return false directly (NO possible to find `land` parent)
+             */
             // Check if both cells are valid land cells before finding roots
             if (parent[i] == -1 || parent[j] == -1) {
                 return false;
@@ -120,6 +131,11 @@ public class NumberOfIslands2 {
 
         // --- Island Specific Helpers ---
 
+        /** NOTE !!!
+         *
+         *  we add below custom init method (NOT the regular Union find method),
+         *  specifically for this LC 305 problem.
+         */
         // Initializes a new cell as a distinct island.
         public boolean initializeLand(int i) {
             // Only initialize if it was previously water (parent[i] == -1).
@@ -129,6 +145,10 @@ public class NumberOfIslands2 {
                 count++;
                 return true;
             }
+            /** NOTE !!!
+             *
+             *  if already land, do NOTHING
+             */
             // If it was already land, do nothing.
             return false;
         }
@@ -154,6 +174,12 @@ public class NumberOfIslands2 {
             int r = pos[0];
             int c = pos[1];
 
+            /** NOTE !!!
+             *
+             *  we map the m x n grid
+             *  to an 1D array,
+             *  so make the MyUF application easier
+             */
             // 1D index mapping: r * N + c
             int currentId = r * n + c;
 
