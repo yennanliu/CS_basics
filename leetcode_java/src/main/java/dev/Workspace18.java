@@ -7132,5 +7132,11 @@ public class Workspace18 {
         return 0;
     }
 
+    // LC 305
+    public List<Integer> numIslands2(int m, int n, int[][] positions) {
+
+        return null;
+    }
+
 
 }
