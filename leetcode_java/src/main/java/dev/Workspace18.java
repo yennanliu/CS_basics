@@ -7204,11 +7204,16 @@ public class Workspace18 {
         }
 
         public int getParent(int x){
-            if(this.parents[x] == x){
-                return x;
+//            if(this.parents[x] == x){
+//                return x;
+//            }
+//
+//            this.parents[x] = getParent(x);
+//            return this.parents[x]; // ???
+            if(this.parents[x] != x){
+                //return getParent(x);
+                this.parents[x] = getParent(x);
             }
-
-            this.parents[x] = getParent(x);
             return this.parents[x]; // ???
         }
 
