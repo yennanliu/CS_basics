@@ -169,6 +169,12 @@ public class NumberOfIslands2 {
         int size = m * n;
         MyUF myUF = new MyUF(size);
 
+        /** NOTE !!!
+         *
+         *   with the help from UF, `we DON'T need a DFS iteration`
+         *   on 4 directions for the land count op.
+         *   instead, a brute force (double loop) looping can work.
+         */
         // --- Core Logic: Process each land addition ---
         for (int[] pos : positions) {
             int r = pos[0];
@@ -199,6 +205,18 @@ public class NumberOfIslands2 {
                 if (nr >= 0 && nr < m && nc >= 0 && nc < n) {
                     int neighborId = nr * n + nc;
 
+                    /** NOTE !!!
+                     *
+                     *  we pass 2 param to the union op
+                     *
+                     *  1. currentId
+                     *  2. neighborId
+                     *
+                     *  and also NOTE how we get above val
+                     *
+                     *    - int currentId = r * n + c;
+                     *    - int neighborId = nr * n + nc;
+                     */
                     // Attempt to union the current cell with the neighbor.
                     // The union method handles checking if the neighbor is also land
                     // and whether a distinct merge occurs (updating count).
@@ -212,8 +230,6 @@ public class NumberOfIslands2 {
 
         return res;
     }
-
-
 
 
 
