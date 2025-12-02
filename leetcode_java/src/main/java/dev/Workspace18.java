@@ -7332,5 +7332,97 @@ public class Workspace18 {
         return true;
     }
 
+    // LC 127
+    // 10.29 - 39 am
+    /**
+     *  ->  return the number of words in the `shortest` transformation sequence
+     *      from beginWord to endWord, or 0 if no such sequence exists.
+     *
+     *       - beginWord
+     *       - endword
+     *       - dict
+     *
+     *       - min transform from beginWord -> endword
+     *
+     *
+     *  ----------------------------
+     *
+     *   IDEA 1) BFS
+     *
+     *
+     *
+     *   ----------------------------
+     *
+     *
+     *   ex 1)
+     *
+     *   Input: beginWord = "hit", endWord = "cog",
+     *   wordList = ["hot","dot","dog","lot","log","cog"]
+     *   Output: 5
+     *
+     *  -> use BFS
+     *  -> for a character (in idx) in beginword, replace the character by  loop over 26 alpahebet
+     *     and check if the updated word is in wordList, if yes, add it to BFS queue,
+     *     continue,
+     *
+     *     and repeat above for next idx.
+     *
+     *     whenever the cur word == endWord,
+     *     means we already found a `shortest path`
+     *     so we should return the cnt of op directly and terminate the BFS
+     */
+    public int ladderLength(String beginWord, String endWord, List<String> wordList) {
+        // edge
+        if(!wordList.contains(endWord)){
+            return 0;
+        }
+        if(beginWord.equals(endWord)){
+            return 0;
+        }
+//        if(wordList.isEmpty()){
+//            return 0; // ???
+//        }
+
+        String alpha = "abcedfghiklmonpqrstuvwxyz";
+
+        Queue<String> q = new LinkedList<>();
+        q.add(beginWord);
+
+        Set<String> visited = new HashSet<>();
+
+        int opCnt = 0;
+
+        while(!q.isEmpty()){
+            int size = q.size();
+            for(int i = 0; i < size; i++){
+                String cur = q.poll();
+                visited.add(cur);
+                // early quit
+                if(cur.equals(endWord)){
+                    return opCnt;
+                }
+                // NOTE !!!! loop over every idx in beginWord
+                for(int j = 0; j < beginWord.length(); i++){
+                    // replace with a new alphabet
+                    // NOTE !!!! loop over 26 alphabet
+                    for(String s: alpha.split("")){
+                        // ???
+                        String newStr = beginWord.substring(0, j) +
+                                s + beginWord.substring(j+1, beginWord.length() - 1);
+                        if(wordList.contains(s) && !visited.contains(newStr)){
+                            q.add(newStr);
+                        }
+                    }
+                }
+            }
+            opCnt += 1;
+        }
+
+
+        return opCnt;
+    }
+
+
+
 
 }

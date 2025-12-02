@@ -170,7 +170,6 @@
 			- 642
 	- LC 200 Number of Islands
 		- gpt
-			- 127
 			- 529
 		- gemini
 			- 286

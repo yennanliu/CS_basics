@@ -98,10 +98,155 @@ public class WordLadder {
         }
     }
 
-    // V0-1-1
+    // V0-0-1
+    // IDEA: BFS (fixed by gpt)
+    public int ladderLength_0_0_1(String beginWord, String endWord, List<String> wordList) {
+
+        if (!wordList.contains(endWord))
+            return 0;
+
+        Set<String> dict = new HashSet<>(wordList);
+        Set<String> visited = new HashSet<>();
+
+        Queue<String> q = new LinkedList<>();
+        q.add(beginWord);
+        visited.add(beginWord);
+
+        int steps = 1; // beginWord counts as step 1
+
+        String alpha = "abcdefghijklmnopqrstuvwxyz";
+
+        while (!q.isEmpty()) {
+
+            int size = q.size();
+            for (int i = 0; i < size; i++) {
+
+                String cur = q.poll();
+
+                // reached end
+                if (cur.equals(endWord))
+                    return steps;
+
+                char[] arr = cur.toCharArray();
+
+                // try all 26 letters on all positions
+                for (int j = 0; j < arr.length; j++) {
+
+                    char old = arr[j];
+
+                    for (char c : alpha.toCharArray()) {
+                        if (c == old)
+                            continue;
+
+                        arr[j] = c;
+                        String newStr = new String(arr);
+
+                        if (dict.contains(newStr) && !visited.contains(newStr)) {
+                            visited.add(newStr);
+                            q.add(newStr);
+                        }
+                    }
+
+                    arr[j] = old; // restore
+                }
+            }
+
+            steps++;
+        }
+
+        return 0; // unreachable
+    }
+
+
+    // V0-0-2
+    // IDEA: BFS (fixed by gemini)
+    public int ladderLength_0_0_2(String beginWord, String endWord, List<String> wordList) {
+
+        // 1. Convert wordList to a Set for O(1) lookup, which is essential for performance.
+        Set<String> wordSet = new HashSet<>(wordList);
+
+        // Edge case: If the endWord is not in the dictionary, no path exists.
+        if (!wordSet.contains(endWord)) {
+            return 0;
+        }
+
+        // BFS initialization
+        Queue<String> queue = new LinkedList<>();
+        queue.offer(beginWord);
+
+        // Use the wordSet itself to track visited nodes by removing them.
+        // This is a common space optimization since we don't need them anymore.
+        // If beginWord is in the wordSet, remove it to avoid loops.
+        // wordSet.remove(beginWord); // Optional, but simplifies logic if beginWord != endWord.
+
+        // opCnt represents the number of words in the sequence (the ladder length).
+        int ladderLength = 1;
+
+        // The alphabet characters
+        char[] alphabet = "abcdefghijklmnopqrstuvwxyz".toCharArray();
+
+        while (!queue.isEmpty()) {
+
+            // Increment length at the start of the new level
+            ladderLength++;
+
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
+                String currentWord = queue.poll();
+
+                // --- Generate Neighbors ---
+
+                // NOTE: We should process 'currentWord', not 'beginWord'
+                char[] currentChars = currentWord.toCharArray();
+                int wordLen = currentWord.length();
+
+                // Loop over every position in the word
+                for (int j = 0; j < wordLen; j++) {
+                    char originalChar = currentChars[j]; // Store original character
+
+                    // Loop over 26 possible replacement characters
+                    for (char c : alphabet) {
+
+                        // Skip if the replacement is the same as the original
+                        if (c == originalChar)
+                            continue;
+
+                        // Create the new potential word
+                        currentChars[j] = c;
+                        String nextWord = new String(currentChars);
+
+                        // 3. Check and Process Neighbor
+                        if (wordSet.contains(nextWord)) {
+
+                            // Check for early exit *before* adding to the queue
+                            if (nextWord.equals(endWord)) {
+                                return ladderLength;
+                            }
+
+                            // Add the valid neighbor to the queue and mark as visited
+                            // by removing it from the wordSet (O(1) operation).
+                            queue.offer(nextWord);
+                            wordSet.remove(nextWord);
+                        }
+                    }
+
+                    // IMPORTANT: Reset the character back to its original state
+                    // for the next position iteration (j+1).
+                    currentChars[j] = originalChar;
+                }
+            }
+        }
+
+        // If the queue empties without finding endWord, no path exists.
+        return 0;
+    }
+
+
+
+    // V0-0-3
     // IDEA: BFS (fixed by gpt) (TLE)
     // TODO: optimize
-    public int ladderLength_0_1_1(String beginWord, String endWord, List<String> wordList) {
+    public int ladderLength_0_0_3(String beginWord, String endWord, List<String> wordList) {
 
         // edge case: if the endWord is not in the wordList, return 0
         if (!wordList.contains(endWord)) {
