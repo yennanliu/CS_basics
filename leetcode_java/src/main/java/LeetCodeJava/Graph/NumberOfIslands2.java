@@ -360,6 +360,83 @@ public class NumberOfIslands2 {
         return result;
     }
 
+    // V0-2
+    // IDEA: DFS + count land every time (fixed by gemini)
+    // TODO: validate and fix
+    // Grid dimensions (to be set in the main method)
+    private int M;
+    private int N;
+
+    // Directions for neighbors: Up, Down, Left, Right
+    private final int[][] directions_0_2 = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+
+    /**
+     * Finds the number of islands after each land operation using full DFS simulation.
+     * Time Complexity: O(K * M * N), where K is the number of positions.
+     */
+    public List<Integer> numIslands2_0_2(int m, int n, int[][] positions) {
+        this.M = m;
+        this.N = n;
+
+        List<Integer> res = new ArrayList<>();
+
+        // Use a separate grid to track current land status (0=water, 1=land).
+        int[][] currentOceanGrid = new int[m][n];
+
+        // Iterate through each operation
+        for (int[] pos : positions) {
+            int r = pos[0]; // Row index (y)
+            int c = pos[1]; // Column index (x)
+
+            // 1. Land Operation: Turn the cell into land
+            currentOceanGrid[r][c] = 1;
+
+            // 2. Perform full grid sweep to count islands
+            int islandCount = 0;
+            // A separate visited grid is required for the DFS sweep
+            boolean[][] visited = new boolean[m][n];
+
+            for (int i = 0; i < m; i++) {
+                for (int j = 0; j < n; j++) {
+
+                    // Start DFS only on unvisited land cells
+                    if (currentOceanGrid[i][j] == 1 && !visited[i][j]) {
+                        islandCount++;
+                        // Explore and mark the entire connected component as visited
+                        dfsExploreIsland(currentOceanGrid, visited, i, j);
+                    }
+                }
+            }
+
+            // 3. Record result
+            res.add(islandCount);
+        }
+
+        return res;
+    }
+
+    /**
+     * Helper function to perform DFS and mark all connected land cells as visited.
+     * This replaces your flawed getCurLandCnt.
+     */
+    private void dfsExploreIsland(int[][] grid, boolean[][] visited, int r, int c) {
+
+        // Base cases: Out of bounds, already visited, or water
+        if (r < 0 || r >= M || c < 0 || c >= N || visited[r][c] || grid[r][c] == 0) {
+            return;
+        }
+
+        // Mark current cell as visited
+        visited[r][c] = true;
+
+        // Recursive calls for neighbors
+        for(int[] dir : directions_0_2) {
+            int nr = r + dir[0];
+            int nc = c + dir[1];
+            dfsExploreIsland(grid, visited, nr, nc);
+        }
+    }
+
 
     // V0-2
     // IDEA: DFS + count land every time
