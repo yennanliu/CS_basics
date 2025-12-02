@@ -1281,6 +1281,7 @@
 2508 | [Add Edges to Make Degrees of All Nodes Even](https://leetcode.com/problems/add-edges-to-make-degrees-of-all-nodes-even/description/)  |  [Java](./leetcode_java/src/main/java/LeetCodeJava/Graph/AddEdgesToMakeDegreesOfAllNodesEven.java)| _O(n^2)_| _O(n^2)_| Hard |graph, LC weekly| AGAIN (not start)
 2642 | [Design Graph With Shortest Path Calculator](https://leetcode.com/problems/design-graph-with-shortest-path-calculator)  |  [Java](./leetcode_java/src/main/java/LeetCodeJava/Graph/DesignGraphWithShortestPathCalculator.java)| _O(n^2)_| _O(n^2)_| Hard |graph, Dijkstra, floyd warshall, LC weekly 102| AGAIN******** (2)
 2709 | [Greatest Common Divisor Traversal](https://leetcode.com/problems/greatest-common-divisor-traversal/)  |  [Java](./leetcode_java/src/main/java/LeetCodeJava/Graph/GreatestCommonDivisorTraversal.java)| _O(n^2)_| _O(n^2)_| Hard || AGAIN (not start)
+3123 | [Find Edges in Shortest Paths](https://leetcode.com/problems/find-edges-in-shortest-paths)  |  [Java](./leetcode_java/src/main/java/LeetCodeJava/Graph/FindEdgesInShortestPaths.java)| _O(n^2)_| _O(n^2)_| Hard || AGAIN (1) (not start)
 
 
 
