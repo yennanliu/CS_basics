@@ -60,6 +60,137 @@ public class NumberOfIslands2 {
 //
 //    }
 
+    // V0-0-1
+    // IDEA: UNION FIND (fixed by gemini)
+    class MyUF {
+        // Array to store the parent of each element.
+        int[] parent;
+        // Array for rank optimization.
+        int[] rank;
+        // Current total number of connected components (islands).
+        int count;
+
+        // We use a fixed size for the grid: M * N
+        MyUF(int size) {
+            this.parent = new int[size];
+            this.rank = new int[size];
+            // Initialize all cells as water (not land) by setting parent to -1.
+            Arrays.fill(parent, -1);
+            this.count = 0;
+        }
+
+        // --- Core Operations ---
+
+        // Find the representative (root) of the set containing element i, with Path Compression.
+        public int find(int i) {
+            // Find only works if the cell is land (parent[i] != -1)
+            if (parent[i] != i) {
+                parent[i] = find(parent[i]); // Path Compression
+            }
+            return parent[i];
+        }
+
+        // Unite the sets containing elements i and j, using Union by Rank.
+        // Returns true if a merge occurred.
+        public boolean union(int i, int j) {
+            // Check if both cells are valid land cells before finding roots
+            if (parent[i] == -1 || parent[j] == -1) {
+                return false;
+            }
+
+            int rootI = find(i);
+            int rootJ = find(j);
+
+            if (rootI != rootJ) {
+                // Union by Rank
+                if (rank[rootI] < rank[rootJ]) {
+                    parent[rootI] = rootJ;
+                } else if (rank[rootI] > rank[rootJ]) {
+                    parent[rootJ] = rootI;
+                } else {
+                    parent[rootJ] = rootI;
+                    rank[rootI]++;
+                }
+                // A merge occurred, so the number of distinct islands decreases by 1.
+                count--;
+                return true;
+            }
+            return false;
+        }
+
+        // --- Island Specific Helpers ---
+
+        // Initializes a new cell as a distinct island.
+        public boolean initializeLand(int i) {
+            // Only initialize if it was previously water (parent[i] == -1).
+            if (parent[i] == -1) {
+                parent[i] = i;
+                // The new land cell is a new distinct island.
+                count++;
+                return true;
+            }
+            // If it was already land, do nothing.
+            return false;
+        }
+
+        public int getCount() {
+            return count;
+        }
+    }
+
+    // Directions for neighbors: Right, Left, Down, Up
+    private final int[][] directions = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+
+    public List<Integer> numIslands2_0_0_1(int m, int n, int[][] positions) {
+        List<Integer> res = new ArrayList<>();
+
+        if (m <= 0 || n <= 0) return res;
+
+        int size = m * n;
+        MyUF myUF = new MyUF(size);
+
+        // --- Core Logic: Process each land addition ---
+        for (int[] pos : positions) {
+            int r = pos[0];
+            int c = pos[1];
+
+            // 1D index mapping: r * N + c
+            int currentId = r * n + c;
+
+            // 1. Initialize the new land cell (Increments count if it was water)
+            // If the cell was already land, we skip merging and count update below.
+            if (!myUF.initializeLand(currentId)) {
+                res.add(myUF.getCount());
+                continue;
+            }
+
+            // 2. Union with Neighbors
+            for (int[] dir : directions) {
+                int nr = r + dir[0];
+                int nc = c + dir[1];
+
+                // Check bounds
+                if (nr >= 0 && nr < m && nc >= 0 && nc < n) {
+                    int neighborId = nr * n + nc;
+
+                    // Attempt to union the current cell with the neighbor.
+                    // The union method handles checking if the neighbor is also land
+                    // and whether a distinct merge occurs (updating count).
+                    myUF.union(currentId, neighborId);
+                }
+            }
+
+            // 3. Record the current island count
+            res.add(myUF.getCount());
+        }
+
+        return res;
+    }
+
+
+
+
+
     // V0-1
     // IDEA: UNION FIND (gemini)
     class UnionFind_0_1 {
@@ -186,6 +317,77 @@ public class NumberOfIslands2 {
 
         return result;
     }
+
+
+    // V0-2
+    // IDEA: DFS + count land every time
+    // TODO: validate and fix
+//    public List<Integer> numIslands2(int m, int n, int[][] positions) {
+//        List<Integer> res = new ArrayList<>();
+//        // edge
+//        if(positions == null || positions.length == 0 || positions[0].length == 0){
+//            return res;
+//        }
+//        if(positions.length == 1 && positions[0].length == 1){
+//            res.add(1); // ???
+//            return res;
+//        }
+//
+//        // NOTE !! we do the `land op` (water->land) and calculate the `land` in every iteration
+//
+//        int l = positions.length;
+//        int w = positions[0].length;
+//
+//        // boolean[][] visited = new boolean[l][w];
+//
+//        for(int i = 0; i < positions.length; i++){
+//            int[] p = positions[i];
+//            int x_ = p[1];
+//            int y_ = p[0];
+//            // land op
+//            positions[y_][x_] = 1;
+//
+//            // NOTE !!! we reset cur cnt in every `land op`
+//            int curCnt = 0; // ????
+//
+//            // ????
+//            // res.add(getCurLandCnt(y, x, positions));
+//            for(int y = 0; y < l; y++){
+//                for(int x = 0; x < w; x++){
+//                    // ???
+//                    if(positions[y][x] == 1){
+//                        if(getCurLandCnt(x, y, positions, new boolean[l][w])){
+//                            curCnt += 1;
+//                        }
+//                    }
+//                }
+//            }
+//            res.add(curCnt); // ???
+//        }
+//
+//        return res;
+//    }
+//
+//    private boolean getCurLandCnt(int x, int y, int[][] positions, boolean[][] visited){
+//        // ???
+//
+//        int[][] moves = new int[][]{ {1,0}, {-1,0}, {0,1}, {0,-1} };
+//        // mark as visit
+//        visited[y][x] = true;
+//
+//        int l = positions.length;
+//        int w = positions[0].length;
+//
+//        for(int[] m: moves){
+//            int x_ = x + m[1];
+//            int y_ = y + m[0];
+//            if(x_ >= 0 && x_ < w && y_ >= 0 && y_ < l && positions[y_][x_] == 1 && !visited[y_][x_]){
+//                getCurLandCnt(x_, y_, positions, visited);
+//            }
+//        }
+//
+//        return true;
+//    }
 
 
     // V1
