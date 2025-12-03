@@ -517,6 +517,133 @@ public class CutOffTreesForGolfEvent {
     // IDEA: BFS + MIN HEAP
     // https://leetcode.com/problems/cut-off-trees-for-golf-event/solutions/1033258/python-bfs-priorityqueue-w-comments-and-qcyqs/
 
+    // V5
+    // IDEA: A* Search algorithm (gemini)
+//    private int rows;
+//    private int cols;
+//    private final int[][] MOVES = new int[][] { { 0, 1 }, { 0, -1 }, { 1, 0 }, { -1, 0 } };
 
+    public int cutOffTree_5(List<List<Integer>> forest) {
+        if (forest == null || forest.isEmpty() || forest.get(0).isEmpty()) {
+            return 0;
+        }
+
+        this.rows = forest.size();
+        this.cols = forest.get(0).size();
+
+        // 1. Collect and Sort trees by height
+        List<int[]> trees = new ArrayList<>();
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < cols; c++) {
+                if (forest.get(r).get(c) > 1) {
+                    trees.add(new int[] { forest.get(r).get(c), r, c });
+                }
+            }
+        }
+        Collections.sort(trees, Comparator.comparingInt(a -> a[0]));
+
+        int totalSteps = 0;
+        int startR = 0;
+        int startC = 0;
+
+        // 2. Iterate and find distance using A* Search
+        for (int[] tree : trees) {
+            int targetR = tree[1];
+            int targetC = tree[2];
+
+            int steps = aStarSearch(forest, startR, startC, targetR, targetC);
+
+            if (steps == -1) {
+                return -1;
+            }
+
+            totalSteps += steps;
+            startR = targetR;
+            startC = targetC;
+        }
+
+        return totalSteps;
+    }
+
+    /**
+     * Heuristic function: Manhattan Distance (estimated cost h(n))
+     * @return |r1 - r2| + |c1 - c2|
+     */
+    private int heuristic(int r1, int c1, int r2, int c2) {
+        return Math.abs(r1 - r2) + Math.abs(c1 - c2);
+    }
+
+    /**
+     * A* Search to find the minimum steps from (sr, sc) to (tr, tc).
+     * Uses a PriorityQueue (PQ) ordered by f(n) = g(n) + h(n).
+     * @return Minimum steps, or -1 if the target is unreachable.
+     */
+    private int aStarSearch(List<List<Integer>> forest, int startR, int startC, int targetR, int targetC) {
+        if (startR == targetR && startC == targetC) {
+            return 0;
+        }
+
+        // PQ stores: [f_cost, g_cost, row, col]
+        // Sorted by f_cost (g + h) ascending.
+        PriorityQueue<int[]> pq = new PriorityQueue<>(
+                (a, b) -> a[0] - b[0] // Compare by f_cost
+        );
+
+        // Distance matrix to store the actual shortest distance from the start (g_cost)
+        // This is crucial for A* to determine if a shorter path to a cell is found.
+        int[][] dist = new int[rows][cols];
+        for (int[] row : dist) {
+            java.util.Arrays.fill(row, Integer.MAX_VALUE);
+        }
+
+        // Initial node: f = h, g = 0
+        int h = heuristic(startR, startC, targetR, targetC);
+        pq.offer(new int[] { h, 0, startR, startC }); // [f, g, r, c]
+        dist[startR][startC] = 0; // g_cost at start is 0
+
+        while (!pq.isEmpty()) {
+            int[] current = pq.poll();
+            int fCost = current[0];
+            int gCost = current[1];
+            int r = current[2];
+            int c = current[3];
+
+            // If we found a shorter path previously (due to better heuristics), skip this.
+            if (gCost > dist[r][c]) {
+                continue;
+            }
+
+            // Target Reached
+            if (r == targetR && c == targetC) {
+                return gCost; // gCost is the minimum distance (steps)
+            }
+
+            for (int[] move : MOVES) {
+                int nextR = r + move[0];
+                int nextC = c + move[1];
+
+                // Check bounds and ensure it's not water (value > 0)
+                if (nextR >= 0 && nextR < rows && nextC >= 0 && nextC < cols && forest.get(nextR).get(nextC) > 0) {
+
+                    int newGCost = gCost + 1; // Cost to move is 1
+
+                    // Found a shorter path to nextR, nextC
+                    if (newGCost < dist[nextR][nextC]) {
+
+                        dist[nextR][nextC] = newGCost;
+
+                        // f = g + h
+                        int newHCost = heuristic(nextR, nextC, targetR, targetC);
+                        int newFCost = newGCost + newHCost;
+
+                        pq.offer(new int[] { newFCost, newGCost, nextR, nextC });
+                    }
+                }
+            }
+        }
+
+        // Target unreachable
+        return -1;
+    }
 
 }
