@@ -38,8 +38,71 @@ import java.util.*;
 public class WallsAndGates {
 
     // V0
-    // IDEA : BFS
+    // IDEA: BFS (fixed by gemini)
+    // TODO: validate
+    // Constant for the 'empty room' (INF). Defined in the problem as 2^31 - 1.
+    private static final int INF = 2147483647;
+
+    // Moves: (dr, dc)
+    private final int[][] MOVES = new int[][]{ {1, 0}, {-1, 0}, {0, 1}, {0, -1} };
+
     public void wallsAndGates(int[][] rooms) {
+        if (rooms == null || rooms.length == 0 || rooms[0].length == 0) {
+            return;
+        }
+
+        int R = rooms.length;
+        int C = rooms[0].length;
+
+        // Queue for BFS. Stores only the coordinates [row, col].
+        Queue<int[]> queue = new LinkedList<>();
+
+        // 1. Initialize the Queue with ALL Gates (Multi-Source BFS)
+        for (int r = 0; r < R; r++) {
+            for (int c = 0; c < C; c++) {
+                // Find a gate (value 0)
+                if (rooms[r][c] == 0) {
+                    queue.add(new int[]{r, c});
+                }
+            }
+        }
+
+        // 2. Perform BFS
+        // The BFS processes nodes layer by layer, guaranteeing the shortest path.
+        while (!queue.isEmpty()) {
+            int[] current = queue.poll();
+            int r = current[0];
+            int c = current[1];
+
+            // The distance of the current gate/room from the nearest gate
+            int distance = rooms[r][c];
+
+            // Explore neighbors
+            for (int[] move : MOVES) {
+                int nextR = r + move[0];
+                int nextC = c + move[1];
+
+                // Check bounds: FIXES the error y <= l
+                if (nextR >= 0 && nextR < R && nextC >= 0 && nextC < C) {
+
+                    // Check if the neighbor is an empty room (INF)
+                    if (rooms[nextR][nextC] == INF) {
+
+                        // Update the room distance: The first time we reach it is the shortest path.
+                        rooms[nextR][nextC] = distance + 1;
+
+                        // Add the newly updated room to the queue
+                        queue.add(new int[]{nextR, nextC});
+                    }
+                    // Note: We skip walls (-1) and already-processed/updated rooms (< INF).
+                }
+            }
+        }
+    }
+
+    // V0-0-3
+    // IDEA : BFS
+    public void wallsAndGates_0_0_3(int[][] rooms) {
 
         class Pair<U, V, W> {
             U key;
@@ -225,7 +288,7 @@ public class WallsAndGates {
     // IDEA: Brute Force (Backtracking)
     private int[][] directions = {{1, 0}, {-1, 0},
             {0, 1}, {0, -1}};
-    private int INF = 2147483647;
+    //private int INF = 2147483647;
     private boolean[][] visit;
     private int ROWS, COLS;
 
@@ -462,5 +525,7 @@ public class WallsAndGates {
 //        }
 //        return Integer.MAX_VALUE;
 //    }
+
+
 
 }
