@@ -7528,6 +7528,84 @@ public class Workspace18 {
     }
 
 
+    // LC 323
+    // 9.33 am - 43
+    /**
+     *
+     *  -> write a function to find the
+     *   `number of connected components` in an undirected graph.
+     *
+     *   - node: 0  to n-1
+     *   - in pair
+     *
+     *
+     * --------------
+     *
+     *  IDEA 1) UNION FIND
+     *
+     *
+     *
+     *
+     * --------------
+     *
+     */
+    class MyUF2{
+        // attr
+        int[] parents;
+        int[] ranks;
+        int groupCnt;
+
+        // constructor
+        MyUF2(int size){
+            this.parents = new int[size];
+            // ???
+            for(int i = 0; i < size; i++){
+                this.parents[i] = i;
+            }
+
+            //this.ranks = new int[size];
+            this.groupCnt = size; // ???
+        }
+
+        // method
+        // ???
+        public int findParent(int x){
+            if(this.parents[x] != x){
+               // return this.findParent(x);
+                this.parents[x] = this.findParent(x);
+            }
+            return this.parents[x];
+        }
+
+        public void union(int x, int y){
+            int parentX = this.findParent(x);
+            int parentY = this.findParent(y);
+            if(parentX == parentY){
+                return;
+            }
+            this.parents[x] = parentY; // ???
+            this.groupCnt -= 1;
+        }
+
+        public int getGroupCnt(){
+            return this.groupCnt;
+        }
+    }
+
+    public int countComponents(int n, int[][] edges) {
+        // edge
+
+        // init
+        MyUF2 uf2 = new MyUF2(n);
+        // union
+        for(int[] e: edges){
+            uf2.union(e[0], e[1]);
+        }
+
+        return uf2.getGroupCnt();
+    }
+
+
 
 
 
