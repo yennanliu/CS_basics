@@ -7802,6 +7802,11 @@ public class Workspace18 {
      *      *               and repeat 1), 2)
      */
     public TreeNode bfsBalanceBuilder(int[] nums, int leftIdx, int rightIdx){
+        // NOTE !!!
+        if (leftIdx > rightIdx) {
+            return null;
+        }
+
         if(nums == null || nums.length == 0){
             return null;
         }
