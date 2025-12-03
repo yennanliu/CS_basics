@@ -7563,7 +7563,9 @@ public class Workspace18 {
                 this.parents[i] = i;
             }
 
-            //this.ranks = new int[size];
+            // // Ranks are initialized to 0 (all trees have height 0 initially).
+            this.ranks = new int[size];
+
             this.groupCnt = size; // ???
         }
 
@@ -7572,7 +7574,7 @@ public class Workspace18 {
         public int findParent(int x){
             if(this.parents[x] != x){
                // return this.findParent(x);
-                this.parents[x] = this.findParent(x);
+                this.parents[x] = this.findParent(this.parents[x]);
             }
             return this.parents[x];
         }
@@ -7583,7 +7585,25 @@ public class Workspace18 {
             if(parentX == parentY){
                 return;
             }
-            this.parents[x] = parentY; // ???
+
+            // V1: without rank
+            //this.parents[x] = parentY; // ???
+
+
+            // V2: with rank
+            if(this.ranks[parentX] < this.ranks[parentY]){
+                // Attach X to Y
+                this.parents[parentX] = parentY;
+            }else if(this.ranks[parentX] > this.ranks[parentY]){
+                // Attach Y to X
+                this.parents[parentY] = parentX;
+            }else{
+                // Ranks are equal: Attach X to Y and increment Y's rank.
+                this.parents[parentX] = parentY;
+                this.ranks[parentY] -= 1; // ????
+            }
+
+
             this.groupCnt -= 1;
         }
 

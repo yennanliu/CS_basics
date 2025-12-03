@@ -115,7 +115,7 @@ public class NumberOfConnectedComponentsUndirectedGraph {
         }
     }
 
-    // v0-0-1
+    // V0-0-1
     // IDEA: UNION FIND (fixed by gemini)
     class MyUF2 {
         // attr
@@ -147,6 +147,13 @@ public class NumberOfConnectedComponentsUndirectedGraph {
         public int findParent(int x) {
             // Base case: x is the root of its set.
             if (this.parents[x] != x) {
+                /**
+                 *  NOTE !!!
+                 *
+                 *  we should update parent as `getParent(this.parents[x])`,
+                 *  e.g. -> use `this.parents[x]` as parameter, send into getParent method,
+                 *       -> then assign result to this.parents[x]
+                 */
                 // Path Compression: Set the parent of x directly to the root.
                 this.parents[x] = this.findParent(this.parents[x]);
             }
@@ -169,6 +176,13 @@ public class NumberOfConnectedComponentsUndirectedGraph {
                 return;
             }
 
+            /** V1: without Rank */
+            // do NOTHING with rank
+            // just attach either x to y; or y to x
+            //  this.parents[parentX] = parentY;
+
+
+            /** V2: with Rank (route compression) */
             // Union by Rank: Attach the smaller rank tree to the root of the larger rank tree.
             if (this.ranks[parentX] < this.ranks[parentY]) {
                 // Attach X's tree to Y.
