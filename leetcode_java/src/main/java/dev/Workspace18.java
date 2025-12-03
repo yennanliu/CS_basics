@@ -7755,6 +7755,70 @@ public class Workspace18 {
     }
 
 
+    // LC 108
+    // 6.39 - 49 AM
+    /**
+     *
+     *  -> Given an integer array nums where the
+     *  elements are sorted in ascending order,
+     *  convert it to a `height-balanced` binary search tree.
+     *
+     *    -> convert sorted arr (small -> big)
+     *       to `height-balanced` BST
+     *
+     *
+     *  ----------------------------
+     *
+     *   IDEA 1) DFS + BST property
+     *
+     *    -> BST `inorder` traverse
+     *       -> is (small -> big) array
+     *
+     *    -> step 1) find the root (mid off array)
+     *    ->      2) split to sub left, right tree
+     *    ->      3) from each sub tree, find its root
+     *               and repeat 1), 2)
+     *
+     *
+     *   ----------------------------
+     *
+     */
+    public TreeNode sortedArrayToBST(int[] nums) {
+        // edge
+        if(nums == null || nums.length == 0){
+            return null;
+        }
+
+        //TreeNode root = new TreeNode(nums[0]);
+        TreeNode root = bfsBalanceBuilder(nums, 0, nums.length - 1);
+
+        return root; // ???
+    }
+
+    /**
+     *      *    -> step 1) find the root (mid off array)
+     *      *    ->      2) split to sub left, right tree
+     *      *    ->      3) from each sub tree, find its root
+     *      *               and repeat 1), 2)
+     */
+    public TreeNode bfsBalanceBuilder(int[] nums, int leftIdx, int rightIdx){
+        if(nums == null || nums.length == 0){
+            return null;
+        }
+        // find idx of root
+        //int mid = nums.length / 2;
+        int mid = (rightIdx - leftIdx) / 2; // ???
+        TreeNode root = new TreeNode(nums[mid]);
+
+        int radius = mid;
+
+        // build left, right sub tree via dfs
+        root.left = bfsBalanceBuilder(nums, leftIdx, leftIdx + radius); // ????
+        root.right = bfsBalanceBuilder(nums, leftIdx + radius + 1, rightIdx - 1);
+
+        return root;  // ???
+    }
+
 
 
 }

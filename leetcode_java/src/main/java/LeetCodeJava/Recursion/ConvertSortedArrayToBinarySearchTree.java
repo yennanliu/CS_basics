@@ -47,6 +47,51 @@ public class ConvertSortedArrayToBinarySearchTree {
 //
 //    }
 
+    // V0-0-1
+    // IDEA: DFS build tree + BST property (fixed by gemini)
+    public TreeNode sortedArrayToBST_0_0_1(int[] nums) {
+        // Corrected edge case handling
+        if (nums == null || nums.length == 0) {
+            return null;
+        }
+
+        // Start the recursive process covering the entire array from index 0 to length - 1.
+        return buildBST(nums, 0, nums.length - 1);
+    }
+
+    /**
+     * Recursive helper function to build the Balanced BST (Correctly named buildBST).
+     * * Strategy: Divide and Conquer
+     * 1. Find the middle element (root).
+     * 2. Recursively build the left subtree from the left half.
+     * 3. Recursively build the right subtree from the right half.
+     */
+    public TreeNode buildBST(int[] nums, int leftIdx, int rightIdx) {
+
+        // Base Case: If the subarray is invalid (left pointer crosses right pointer), return null.
+        if (leftIdx > rightIdx) {
+            return null;
+        }
+
+        // 1. Find the correct index of the root (middle element).
+        // This standard formula prevents integer overflow and correctly finds the midpoint.
+        int midIdx = leftIdx + (rightIdx - leftIdx) / 2;
+
+        // 2. Create the root node with the value at the middle index.
+        TreeNode root = new TreeNode(nums[midIdx]);
+
+        // 3. Recursively build the left subtree.
+        // The left child covers the range from leftIdx up to (midIdx - 1).
+        root.left = buildBST(nums, leftIdx, midIdx - 1);
+
+        // 4. Recursively build the right subtree.
+        // The right child covers the range from (midIdx + 1) up to rightIdx.
+        root.right = buildBST(nums, midIdx + 1, rightIdx);
+
+        return root;
+    }
+
+
     // V0-1
     // IDEA: DFS build tree + BST property (fixed by gpt)
     /**
@@ -280,6 +325,31 @@ public class ConvertSortedArrayToBinarySearchTree {
         return root;
     }
 
+    // V0-3
+    // IDEA: DFS build tree + BST property (gpt)
+    public TreeNode sortedArrayToBST_0_3(int[] nums) {
+        if (nums == null || nums.length == 0) {
+            return null;
+        }
+
+        return build(nums, 0, nums.length - 1);
+    }
+
+    private TreeNode build(int[] nums, int leftIdx, int rightIdx) {
+        if (leftIdx > rightIdx) {
+            return null;
+        }
+
+        int mid = leftIdx + (rightIdx - leftIdx) / 2;
+        TreeNode root = new TreeNode(nums[mid]);
+
+        root.left = build(nums, leftIdx, mid - 1);
+        root.right = build(nums, mid + 1, rightIdx);
+
+        return root;
+    }
+
+
     // V1
     // https://leetcode.com/problems/convert-sorted-array-to-binary-search-tree/solutions/6892739/video-find-middle-of-tree-or-subtree-by-94thd/
     public TreeNode sortedArrayToBST_1(int[] nums) {
@@ -342,6 +412,7 @@ public class ConvertSortedArrayToBinarySearchTree {
         node.right = insert(nums, mid + 1, end);
         return node;
     }
+    
 
 
 }
