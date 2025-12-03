@@ -184,7 +184,7 @@ public class NumberOfConnectedComponentsUndirectedGraph {
 
             /** V2: with Rank (route compression) */
             /**  NOTE !!
-             * 
+             *
              * Always attach smaller tree to larger tree's root
              */
             // Union by Rank: Attach the smaller rank tree to the root of the larger rank tree.

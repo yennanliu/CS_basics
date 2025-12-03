@@ -62,6 +62,120 @@ public class CutOffTreesForGolfEvent {
 //        return 0;
 //    }
 
+    // V0-0-1
+    // IDEA: BFD + PQ (fixed by gemini)
+    private int rows;
+    private int cols;
+    private final int[][] MOVES = new int[][] { { 0, 1 }, { 0, -1 }, { 1, 0 }, { -1, 0 } };
+
+    public int cutOffTree_0_0_1(List<List<Integer>> forest) {
+        if (forest == null || forest.isEmpty() || forest.get(0).isEmpty()) {
+            return 0;
+        }
+
+        this.rows = forest.size();
+        this.cols = forest.get(0).size();
+
+        // 1. Collect and Sort all trees by height
+        // List stores: [height, row, col]
+        List<int[]> trees = new ArrayList<>();
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < cols; c++) {
+                // Only consider trees with height > 1
+                if (forest.get(r).get(c) > 1) {
+                    trees.add(new int[] { forest.get(r).get(c), r, c });
+                }
+            }
+        }
+
+        // Sort trees by height (ascending). This defines the order of travel.
+        // [0] is height, [1] is row, [2] is col
+        Collections.sort(trees, Comparator.comparingInt(a -> a[0]));
+
+        int totalSteps = 0;
+        // Start position is always (0, 0).
+        int startR = 0;
+        int startC = 0;
+
+        // 2. Iterate through sorted trees and find the distance (BFS) between each pair.
+        for (int[] tree : trees) {
+            int targetR = tree[1];
+            int targetC = tree[2];
+
+            // Find the shortest path distance from current start point to the next tree.
+            int steps = bfs_0_0_1(forest, startR, startC, targetR, targetC);
+
+            // If steps is -1, the target tree is unreachable.
+            if (steps == -1) {
+                return -1;
+            }
+
+            totalSteps += steps;
+
+            // The target tree now becomes the starting point for the next path.
+            startR = targetR;
+            startC = targetC;
+        }
+
+        return totalSteps;
+    }
+
+    /**
+     * Performs BFS to find the minimum steps from (sr, sc) to (tr, tc).
+     * @return Minimum steps, or -1 if the target is unreachable.
+     */
+    private int bfs_0_0_1(List<List<Integer>> forest, int startR, int startC, int targetR, int targetC) {
+        if (startR == targetR && startC == targetC) {
+            return 0; // Already at the target.
+        }
+
+        // Queue stores coordinates [row, col]
+        Queue<int[]> queue = new LinkedList<>();
+        queue.offer(new int[] { startR, startC });
+
+        // Visited array to prevent cycles and redundant visits.
+        boolean[][] visited = new boolean[rows][cols];
+        visited[startR][startC] = true;
+
+        int steps = 0;
+
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            steps++; // Increment steps for the next layer
+
+            for (int i = 0; i < size; i++) {
+                int[] current = queue.poll();
+                int r = current[0];
+                int c = current[1];
+
+                for (int[] move : MOVES) {
+                    int nextR = r + move[0];
+                    int nextC = c + move[1];
+
+                    // Check bounds
+                    if (nextR >= 0 && nextR < rows && nextC >= 0 && nextC < cols) {
+
+                        // Check if unvisited AND the cell is not water (value > 0)
+                        if (!visited[nextR][nextC] && forest.get(nextR).get(nextC) > 0) {
+
+                            // Reached the target
+                            if (nextR == targetR && nextC == targetC) {
+                                return steps;
+                            }
+
+                            visited[nextR][nextC] = true;
+                            queue.offer(new int[] { nextR, nextC });
+                        }
+                    }
+                }
+            }
+        }
+
+        // Target tree was unreachable
+        return -1;
+    }
+
+
     // V0-1
     // IDEA: BFS + PQ (fixed by gpt)
     public int cutOffTree_0_1(List<List<Integer>> forest) {
