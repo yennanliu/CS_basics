@@ -47,7 +47,6 @@ public class UnionFind3 {
        *  we should update parent as `getParent(this.parents[x])`,
        *  e.g. -> use `this.parents[x]` as parameter, send into getParent method,
        *       -> then assign result to this.parents[x]
-       *
        */
       this.parents[x] = getParent(this.parents[x]);
     }

@@ -93,6 +93,13 @@ public class UnionFind2 {
        *
        *  (instead of `x`)
        */
+      /**
+       *  NOTE !!!
+       *
+       *  we should update parent as `getParent(this.parents[x])`,
+       *  e.g. -> use `this.parents[x]` as parameter, send into getParent method,
+       *       -> then assign result to this.parents[x]
+       */
       parent[x] = find(parent[x]); // Path compression
     }
     return parent[x];
