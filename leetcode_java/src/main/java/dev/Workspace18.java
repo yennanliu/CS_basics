@@ -7685,7 +7685,99 @@ public class Workspace18 {
      *
      *
      */
+
+    // 7.06 - 16 am
+    /**
+     *   step 1) get all tree
+     *        2) sort tree (small cost -> big)
+     *        3) visit tree via BFS, and update cost
+     *
+     */
     public int cutOffTree(List<List<Integer>> forest) {
+
+        int l = forest.size();
+        int w = forest.get(0).size();
+
+        int[][] moves = new int[][]{ {1,0}, {-1,0}, {0,1}, {0,-1} };
+
+        // [x, y, cost]
+        List<Integer[]> treeList = new ArrayList<>();
+
+        for(int y = 0; y < l; y++){
+            for(int x = 0; x < w; x++){
+                if(forest.get(y).get(x) > 0){
+                    treeList.add(new Integer[]{x, y, forest.get(y).get(x)});
+                }
+            }
+        }
+
+        // sort (cost : small -> big)
+        Collections.sort(treeList, new Comparator<Integer[]>() {
+            @Override
+            public int compare(Integer[] o1, Integer[] o2) {
+                int diff = o1[2] - o2[2];
+                return diff;
+            }
+        });
+
+        int opCnt = 0;
+
+        int initX = 0;
+        int initY = 0;
+
+
+        // BFS, loop over tree by its sorted order
+        // update forest grid, and cnt
+        for(Integer[] tree: treeList){
+            //int moveCnt =
+            if(bfsTreeCutter(forest, initX, initY, tree[0], tree[1], 0) == -1){
+                return -1;
+            }
+            // update initX, initY
+            initX = tree[0];
+            initY = tree[1];
+        }
+
+        return opCnt;  // ???
+    }
+
+    public int bfsTreeCutter(List<List<Integer>> forest, int x, int y, int targetX, int targetY, int moveCnt){
+
+        int l = forest.size();
+        int w = forest.get(0).size();
+
+        int[][] moves = new int[][]{ {1,0}, {-1,0}, {0,1}, {0,-1} };
+
+        if(x == targetX && y == targetY){
+            // update forest grid as 0 (cut off)
+           //forest.get(y).get(y) = 0; // /??
+            return moveCnt; // ???
+        }
+
+        for(int[] m: moves){
+            int x_ = x + m[1];
+            int y_ = y + m[0];
+            if(x_ >= 0 && x_ < w && y_ >= 0 && y_ < l){
+                // ???
+                bfsTreeCutter(forest, x_, y_, targetX, targetY, moveCnt + 1);
+            }
+        }
+
+
+        return -1; // ????
+    }
+
+
+
+
+
+
+
+
+
+
+
+    public int cutOffTree_99(List<List<Integer>> forest) {
         // edge
 
         int l = forest.size();
