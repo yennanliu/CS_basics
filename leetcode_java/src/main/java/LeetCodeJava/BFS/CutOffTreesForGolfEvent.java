@@ -63,7 +63,7 @@ public class CutOffTreesForGolfEvent {
 //    }
 
     // V0-0-1
-    // IDEA: BFD + PQ (fixed by gemini)
+    // IDEA: val Sort + Loop & call BFS (fixed by gemini)
     private int rows;
     private int cols;
     private final int[][] MOVES = new int[][] { { 0, 1 }, { 0, -1 }, { 1, 0 }, { -1, 0 } };
@@ -177,7 +177,7 @@ public class CutOffTreesForGolfEvent {
 
 
     // V0-1
-    // IDEA: BFS + PQ (fixed by gpt)
+    // IDEA: val Sort + Loop & call BFS (fixed by gpt)
     public int cutOffTree_0_1(List<List<Integer>> forest) {
         if (forest == null || forest.size() == 0 || forest.get(0).size() == 0) {
             return -1;
@@ -263,7 +263,7 @@ public class CutOffTreesForGolfEvent {
     }
 
     // V0-2
-    // IDEA: BFS + PQ (fixed by gemini)
+    // IDEA: val Sort + Loop & call BFS (fixed by gemini)
     // Global variables for grid dimensions
     private int R, C;
     public int cutOffTree_0_2(List<List<Integer>> forest) {
