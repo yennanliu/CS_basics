@@ -68,6 +68,10 @@ public class ConvertSortedArrayToBinarySearchTree {
      */
     public TreeNode buildBST(int[] nums, int leftIdx, int rightIdx) {
 
+        /** NOTE !!!
+         *
+         *  edge case
+         */
         // Base Case: If the subarray is invalid (left pointer crosses right pointer), return null.
         if (leftIdx > rightIdx) {
             return null;
@@ -80,10 +84,18 @@ public class ConvertSortedArrayToBinarySearchTree {
         // 2. Create the root node with the value at the middle index.
         TreeNode root = new TreeNode(nums[midIdx]);
 
+        /** NOTE !!!
+         *
+         *  left sub root:  [leftIdx, midIdx - 1]
+         */
         // 3. Recursively build the left subtree.
         // The left child covers the range from leftIdx up to (midIdx - 1).
         root.left = buildBST(nums, leftIdx, midIdx - 1);
 
+        /** NOTE !!!
+         *
+         *  right sub root:  [midIdx + 1, rightIdx]
+         */
         // 4. Recursively build the right subtree.
         // The right child covers the range from (midIdx + 1) up to rightIdx.
         root.right = buildBST(nums, midIdx + 1, rightIdx);
@@ -412,7 +424,7 @@ public class ConvertSortedArrayToBinarySearchTree {
         node.right = insert(nums, mid + 1, end);
         return node;
     }
-    
+
 
 
 }
