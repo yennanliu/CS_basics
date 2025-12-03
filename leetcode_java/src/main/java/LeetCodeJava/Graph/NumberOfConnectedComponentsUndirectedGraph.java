@@ -115,6 +115,99 @@ public class NumberOfConnectedComponentsUndirectedGraph {
         }
     }
 
+    // v0-0-1
+    // IDEA: UNION FIND (fixed by gemini)
+    class MyUF2 {
+        // attr
+        int[] parents;
+        int[] ranks; // Used to maintain tree balance
+        int groupCnt;
+
+        // constructor
+        MyUF2(int size) {
+            this.parents = new int[size];
+            this.ranks = new int[size]; // Initialize ranks array
+
+            // Initialize: Each element is its own parent.
+            for (int i = 0; i < size; i++) {
+                this.parents[i] = i;
+            }
+
+            // Ranks are initialized to 0 (all trees have height 0 initially).
+            // Arrays.fill(this.ranks, 0); // Optional, as Java defaults ints to 0
+            this.groupCnt = size; // Initially, there are 'size' separate groups.
+        }
+
+        /**
+         * Finds the root parent of set x and performs Path Compression.
+         * Time: O(α(N)), near constant time.
+         * @param x The element whose root is sought.
+         * @return The root parent of x.
+         */
+        public int findParent(int x) {
+            // Base case: x is the root of its set.
+            if (this.parents[x] != x) {
+                // Path Compression: Set the parent of x directly to the root.
+                this.parents[x] = this.findParent(this.parents[x]);
+            }
+            // Return the final root parent (either x or the compressed parent).
+            return this.parents[x];
+        }
+
+        /**
+         * Merges the sets containing x and y, using Union by Rank for balance.
+         * Time: O(α(N)), near constant time.
+         * @param x Element in the first set.
+         * @param y Element in the second set.
+         */
+        public void union(int x, int y) {
+            int parentX = this.findParent(x);
+            int parentY = this.findParent(y);
+
+            // They are already in the same set/component.
+            if (parentX == parentY) {
+                return;
+            }
+
+            // Union by Rank: Attach the smaller rank tree to the root of the larger rank tree.
+            if (this.ranks[parentX] < this.ranks[parentY]) {
+                // Attach X's tree to Y.
+                this.parents[parentX] = parentY;
+            } else if (this.ranks[parentX] > this.ranks[parentY]) {
+                // Attach Y's tree to X.
+                this.parents[parentY] = parentX;
+            } else {
+                // Ranks are equal: Attach X to Y and increment Y's rank.
+                this.parents[parentX] = parentY;
+                this.ranks[parentY]++;
+            }
+
+            // One group has been merged, so the total count decreases.
+            this.groupCnt--;
+        }
+
+        public int getGroupCnt() {
+            return this.groupCnt;
+        }
+    }
+
+    public int countComponents_0_0_1(int n, int[][] edges) {
+        // n is the number of nodes (0 to n-1).
+
+        // 1. Initialize Union-Find structure with n elements.
+        MyUF2 uf2 = new MyUF2(n);
+
+        // 2. Perform union operation for every edge.
+        for (int[] e : edges) {
+            // Union the two nodes connected by the edge.
+            uf2.union(e[0], e[1]);
+        }
+
+        // 3. The number of remaining groups is the number of connected components.
+        return uf2.getGroupCnt();
+    }
+
+
     // V0-1
     // IDEA: UNION FIND (without RANK) (gpt)
     // TODO: validate
@@ -689,5 +782,7 @@ public class NumberOfConnectedComponentsUndirectedGraph {
         }
         return count;
     }
+
+
 
 }
