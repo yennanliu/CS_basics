@@ -125,20 +125,168 @@ def multi_source_bfs(grid, sources):
 def bfs_with_path(start, target):
     queue = deque([(start, [start])])
     visited = {start}
-    
+
     while queue:
         node, path = queue.popleft()
-        
+
         if node == target:
             return path
-            
+
         for neighbor in get_neighbors(node):
             if neighbor not in visited:
                 visited.add(neighbor)
                 queue.append((neighbor, path + [neighbor]))
-    
+
     return None
 ```
+
+### Pattern 6: Sort + Repeated BFS (Sequential Shortest Paths)
+```java
+/**
+ * Pattern: Sort targets by priority, then repeatedly call BFS to find shortest paths
+ * Use case: Visit multiple targets in specific order, minimize total travel distance
+ * Key insight: BFS guarantees shortest path between each pair of consecutive targets
+ *
+ * Time: O(k × m × n) where k = number of targets, m×n = grid size
+ * Space: O(m × n) for visited array in each BFS call
+ */
+public int sortAndBFS(List<List<Integer>> grid) {
+    int rows = grid.size();
+    int cols = grid.get(0).size();
+
+    // Step 1: Collect all targets and sort by priority (e.g., value)
+    List<int[]> targets = new ArrayList<>();
+    for (int r = 0; r < rows; r++) {
+        for (int c = 0; c < cols; c++) {
+            if (grid.get(r).get(c) > 1) {
+                // Store [value, row, col]
+                targets.add(new int[]{grid.get(r).get(c), r, c});
+            }
+        }
+    }
+
+    // Sort by value (ascending) - defines visit order
+    targets.sort(Comparator.comparingInt(a -> a[0]));
+
+    // Step 2: Sequentially visit each target using BFS
+    int totalSteps = 0;
+    int startR = 0, startC = 0; // Starting position
+
+    for (int[] target : targets) {
+        int targetR = target[1];
+        int targetC = target[2];
+
+        // Find shortest path from current position to next target
+        int steps = bfs(grid, startR, startC, targetR, targetC);
+
+        if (steps == -1) {
+            return -1; // Target unreachable
+        }
+
+        totalSteps += steps;
+
+        // Update starting position for next iteration
+        startR = targetR;
+        startC = targetC;
+    }
+
+    return totalSteps;
+}
+
+/**
+ * Standard BFS to find shortest path in grid
+ * Returns minimum steps from (sr, sc) to (tr, tc), or -1 if unreachable
+ */
+private int bfs(List<List<Integer>> grid, int sr, int sc, int tr, int tc) {
+    if (sr == tr && sc == tc) return 0;
+
+    int rows = grid.size();
+    int cols = grid.get(0).size();
+
+    Queue<int[]> queue = new LinkedList<>();
+    queue.offer(new int[]{sr, sc});
+
+    boolean[][] visited = new boolean[rows][cols];
+    visited[sr][sc] = true;
+
+    int[][] dirs = {{0,1}, {0,-1}, {1,0}, {-1,0}};
+    int steps = 0;
+
+    while (!queue.isEmpty()) {
+        int size = queue.size();
+        steps++;
+
+        for (int i = 0; i < size; i++) {
+            int[] cur = queue.poll();
+            int r = cur[0], c = cur[1];
+
+            for (int[] dir : dirs) {
+                int nr = r + dir[0];
+                int nc = c + dir[1];
+
+                // Check bounds and obstacles
+                if (nr < 0 || nr >= rows || nc < 0 || nc >= cols
+                    || visited[nr][nc] || grid.get(nr).get(nc) == 0) {
+                    continue;
+                }
+
+                // Found target
+                if (nr == tr && nc == tc) {
+                    return steps;
+                }
+
+                visited[nr][nc] = true;
+                queue.offer(new int[]{nr, nc});
+            }
+        }
+    }
+
+    return -1; // Unreachable
+}
+```
+
+**Concrete Example: LC 675 - Cut Off Trees for Golf Event**
+```
+Problem: Cut trees in forest from shortest to tallest, return minimum steps
+Grid: [[1,2,3],    Trees: (0,1)=2, (0,2)=3, (1,2)=4, (2,0)=7, (2,1)=6, (2,2)=5
+       [0,0,4],    Sorted: 2→3→4→5→6→7
+       [7,6,5]]
+
+Path: (0,0) →[1 step]→ (0,1) cut 2
+      (0,1) →[2 steps]→ (0,2) cut 3
+      (0,2) →[1 step]→ (1,2) cut 4
+      (1,2) →[1 step]→ (2,2) cut 5
+      (2,2) →[1 step]→ (2,1) cut 6
+      (2,1) →[1 step]→ (2,0) cut 7
+Total: 1+2+1+1+1+1 = 7 steps (Note: Problem statement has different expected output)
+
+Key insight: Must cut in sorted order, BFS finds shortest path between each pair
+```
+
+**Pattern Characteristics:**
+- **Sort Phase**: O(k log k) where k = number of targets
+- **BFS Phase**: O(k) iterations, each BFS is O(m×n) for grid
+- **Total Time**: O(k log k + k×m×n) ≈ O(k×m×n) when k << m×n
+- **Space**: O(m×n) for visited array (created fresh each BFS)
+
+**When to Use This Pattern:**
+- Must visit targets in specific order (sorted by value, priority, etc.)
+- Need shortest path between consecutive targets
+- Targets are sparse in the space
+- Cannot use dynamic programming due to order constraints
+
+**Key Variations:**
+1. **Different Sort Criteria**: Sort by distance, value, custom priority
+2. **Modified Grid**: Update grid after visiting target (set to 1, remove obstacle)
+3. **Early Termination**: Return immediately if any target unreachable
+4. **Optimization**: Use A* instead of BFS for large grids
+
+**Similar Problems:**
+- LC 675: Cut Off Trees for Golf Event (sort trees by height)
+- LC 1293: Shortest Path with Obstacles Elimination (BFS with state)
+- LC 864: Shortest Path to Get All Keys (BFS with key collection state)
+- LC 1091: Shortest Path in Binary Matrix (basic BFS shortest path)
+- LC 317: Shortest Distance from All Buildings (multi-source BFS)
 
 ## Problem Categories
 
@@ -150,8 +298,10 @@ def bfs_with_path(start, target):
 
 ### 2. Shortest Path Problems
 - **Unweighted Graphs**: LC 127 (Word Ladder)
-- **Grid Navigation**: LC 1730 (Shortest Path to Food)
-- **Multi-source**: LC 542 (01 Matrix), LC 1162 (As Far from Land)
+- **Grid Navigation**: LC 1730 (Shortest Path to Food), LC 1091 (Shortest Path in Binary Matrix)
+- **Multi-source**: LC 542 (01 Matrix), LC 1162 (As Far from Land), LC 317 (Shortest Distance from All Buildings)
+- **Sequential Targets**: LC 675 (Cut Off Trees for Golf Event - Sort + Repeated BFS)
+- **State-Based BFS**: LC 864 (Shortest Path to Get All Keys), LC 1293 (Shortest Path with Obstacles Elimination)
 
 ### 3. Graph Structure Problems
 - **Cycle Detection**: LC 207 (Course Schedule)
@@ -337,3 +487,6 @@ def weighted_bfs(start, end, graph):
 | Medium | LC 200 | Connected components |
 | Medium | LC 542 | Multi-source BFS |
 | Hard | LC 317 | Multi-source optimization |
+| Hard | LC 675 | Sort + Repeated BFS (sequential targets) |
+| Hard | LC 864 | BFS with state (key collection) |
+| Hard | LC 1293 | BFS with state (obstacle elimination) |
