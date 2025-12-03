@@ -7626,6 +7626,134 @@ public class Workspace18 {
     }
 
 
+    // LC 675
+    // 10.19 - 29 AM
+    /**
+     *
+     *  -> Starting from the point (0, 0), return the `minimum` steps you
+     *    need to walk to `cut off ALL the trees.`
+     *    If you cannot cut off all the trees, return -1.
+     *
+     *
+     *    - 0: CAN'T walk through
+     *    - 1: CAN walk through
+     *    - any int > 1:
+     *       - can be walked through,
+     *         the number is tree height
+     *
+     *
+     *     - can work north, east, south, and west.
+     *     - if reach a tree, can choose whether cut or NOT cut if off
+     *     -  must cut off the trees in order from small -> big
+     *      - When you cut off a tree, the value at its cell becomes 1 (an empty cell).
+     *
+     *
+     *      NOTE !!!
+     *
+     *       - Heights of all trees are distinct.
+     *
+     *
+     *
+     *
+     *  -----------------------
+     *
+     *   IDEA 1) PQ ???
+     *
+     *   IDEA 2) SHORTEST PATH ALGO ??
+     *       - Dijkstra's Algorithm
+     *
+     *
+     *   IDEA 3)  Bellman-Ford algorithm,
+     *
+     *
+     *  ----------------------
+     *
+     *
+     *
+     *  ex 3)
+     *
+     *   Input: forest = [[2,3,4],[0,0,5],[8,7,6]]
+     *   Output: 6
+     *
+     *
+     *   [
+     *    [2,3,4],
+     *    [0,0,5],
+     *    [8,7,6]
+     *  ]
+     *
+     *
+     *
+     */
+    public int cutOffTree(List<List<Integer>> forest) {
+        // edge
+
+        int l = forest.size();
+        int w = forest.get(0).size();
+
+        int[][] moves = new int[][]{ {1,0}, {-1,0}, {0,1}, {0,-1} };
+
+        int totalTree = 0;
+        // Step 1) get `tree cnt`
+        for(int y = 0; y < l; y++){
+            for(int x = 0; x < w; x++){
+                if(forest.get(y).get(x) > 0){
+                    totalTree += 1;
+                }
+            }
+        }
+
+        int treeCut = 0;
+
+        // Step 2) setup PQ (small PQ)
+        // PQ: [x, y, treeHeight[
+        PriorityQueue<Integer[]> pq = new PriorityQueue<>(new Comparator<Integer[]>() {
+            @Override
+            public int compare(Integer[] o1, Integer[] o2) {
+                int diff = o1[2] - o2[2];
+                return diff;
+            }
+        });
+
+        // Starting from the point (0, 0)
+        pq.add(new Integer[]{0, 0, forest.get(0).get(0)}); // ???
+
+        while(!pq.isEmpty()){
+            int size = pq.size();
+            for(int i = 0; i < size; i++){
+                // pop the `min height next tree`
+                Integer[] cur = pq.poll();
+                int x = cur[0];
+                int y = cur[1];
+                int curHeight = cur[2]; // ???
+                // ??? move to 4 dirs
+                for(int[] m: moves){
+                    int x_ = x + m[1];
+                    int y_ = y + m[0];
+                    if(x_ >= 0 && x_ < w && y_ >= 0 && y_ < l){
+                        System.out.println(">>> x = " + x +
+                                ", y = " + y +
+                                ", curHeight = " + curHeight +
+                                ", x_ = " + x_ +
+                                ", y_ =" + y_ +
+                                "forest.get(y_).get(x_) = " + forest.get(y_).get(x_)
+                        );
+                        if(forest.get(y_).get(x_) == curHeight + 1){
+                            pq.add(new Integer[]{x_, y_, forest.get(y_).get(x_)});
+                            treeCut += 1;
+                        }
+                    }
+                }
+            }
+        }
+
+        System.out.println(">>> totalTree =  " + totalTree +
+                ", treeCut = " + treeCut);
+
+        // ???
+        return totalTree - 1 == treeCut ? treeCut : -1;
+    }
+
 
 
 
