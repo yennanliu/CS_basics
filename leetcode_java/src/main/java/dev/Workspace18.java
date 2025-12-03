@@ -7423,6 +7423,112 @@ public class Workspace18 {
     }
 
 
+    // LC 286
+    // 8.27 - 37 am
+    /**
+     *
+     *  -> Fill each empty room with the `distance` to its nearest gate.
+     *       - If it is impossible to reach a gate,
+     *          -> INF.
+     *
+     *
+     *   - m x n matrix
+     *   - -1 : wall or obstacle
+     *   - 0 : gate
+     *   - INF - Infinity means an empty room
+     *
+     *  ----------------
+     *
+     *  IDEA 1) BFS
+     *
+     *   -> start from 0 (gate),
+     *      and visit ALL of the INF (empty room)
+     *      calculate the path, if reach a smaller one, update it.
+     *
+     *      repeat above...
+     *
+     *
+     *
+     *  ----------------
+     *
+     *  ex 1)
+     *
+     *  INF  -1  0  INF
+     *  INF INF INF  -1
+     *  INF  -1 INF  -1
+     *   0  -1 INF INF
+     *
+     *
+     *   -> after op:
+     *
+     *   3  -1   0   1
+     *   2   2   1  -1
+     *   1  -1   2  -1
+     *   0  -1   3   4
+     *
+     *
+     *
+     *
+     */
+    public void wallsAndGates(int[][] rooms) {
+        // edge
+
+        int[][] moves = new int[][]{ {1,0}, {-1,0}, {0,1}, {0,-1} };
+
+        int l = rooms.length;
+        int w = rooms[0].length;
+
+        // get all `gate` grid
+        // [x, y, path]
+        List<Integer[]> list = new ArrayList<>();
+
+        for(int y = 0; y < l; y++){
+            for(int x = 0; x < w; x++){
+                if(rooms[y][x] == 0){
+                    list.add(new Integer[]{x, y, 0});
+                }
+            }
+        }
+
+        // bfs
+        // queue: [x, y, path]
+        Queue<Integer[]> q = new LinkedList<>();
+        // add get to queue
+        for(Integer[] x: list){
+            q.add(x);
+        }
+
+        while(!q.isEmpty()){
+            int size = q.size();
+            for(int i = 0; i < size; i++){
+                Integer[] cur = q.poll();
+                int x = cur[0];
+                int y = cur[1];
+                int curPath =  cur[2];
+                // move
+                for(int[] m: moves){
+                    int x_ = x + m[1];
+                    int y_ = y + m[0];
+                    //int path_ =
+                    // ????
+                    if(x_ >= 0 && x_ < w && y_ >= 0 && y <= l){
+                        if(rooms[y_][x_] == Math.pow(2, 31) - 1){
+                            if(curPath + 1 < rooms[y_][x_]){
+                                rooms[y_][x_] = curPath + 1;
+                            }
+                            // add to queue
+                            q.add(new Integer[]{x_, y_, curPath + 1});
+                        }
+                    }
+                }
+            }
+        }
+
+        return;
+    }
+
+
+
 
 
 }
