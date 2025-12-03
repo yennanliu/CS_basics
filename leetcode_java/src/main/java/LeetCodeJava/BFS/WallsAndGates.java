@@ -38,7 +38,7 @@ import java.util.*;
 public class WallsAndGates {
 
     // V0
-    // IDEA: BFS (fixed by gemini)
+    // IDEA: Multi-Source BFS approach (fixed by gemini)
     // TODO: validate
     // Constant for the 'empty room' (INF). Defined in the problem as 2^31 - 1.
     private static final int INF = 2147483647;
@@ -95,6 +95,54 @@ public class WallsAndGates {
                         queue.add(new int[]{nextR, nextC});
                     }
                     // Note: We skip walls (-1) and already-processed/updated rooms (< INF).
+                }
+            }
+        }
+    }
+
+    // V0-0-1
+    // IDEA: BFS (fixed by gpt)
+    public void wallsAndGates_0_0_1(int[][] rooms) {
+
+        if (rooms == null || rooms.length == 0 || rooms[0].length == 0) {
+            return;
+        }
+
+        int m = rooms.length;
+        int n = rooms[0].length;
+
+        int[][] dirs = new int[][]{
+                {1, 0}, {-1, 0}, {0, 1}, {0, -1}
+        };
+
+        Queue<int[]> q = new LinkedList<>();
+
+        // 1) Add all gates (value = 0) to queue
+        for (int y = 0; y < m; y++) {
+            for (int x = 0; x < n; x++) {
+                if (rooms[y][x] == 0) {
+                    q.add(new int[]{y, x});
+                }
+            }
+        }
+
+        // 2) Multi-source BFS from all gates
+        while (!q.isEmpty()) {
+            int[] cur = q.poll();
+            int cy = cur[0];
+            int cx = cur[1];
+
+            for (int[] d : dirs) {
+                int ny = cy + d[0];
+                int nx = cx + d[1];
+
+                // boundary check
+                if (ny < 0 || ny >= m || nx < 0 || nx >= n) continue;
+
+                // Only fill INF rooms
+                if (rooms[ny][nx] == Integer.MAX_VALUE) {
+                    rooms[ny][nx] = rooms[cy][cx] + 1;   // update distance
+                    q.add(new int[]{ny, nx});
                 }
             }
         }
