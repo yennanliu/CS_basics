@@ -7917,5 +7917,48 @@ public class Workspace18 {
     }
 
 
+    // LC 529
+    // 6.51 - 7.01 am
+    /**
+     *    -> Return the board when no more squares will be revealed.
+     *
+     *    - m x n board
+     *    - N:  non-revealed mine
+     *    - E:  non-revealed empty grid
+     *    - N:  revealed mine with NO neighbor mines
+     *
+     *    - 1 to 8: # of neighbor mines of this revealed grid
+     *
+     *    - X: revealed mine
+     *
+     *    - Rules:
+     *
+     *      - if `mine` is revealed, GAME OVER, change cur grid to `X`
+     *      - if `empty grid` `E` is revealed,
+     *        change it and ALL of its neighbor to `B` (recursively)
+     *
+     *     - if `empty grid` `E` is revealed with at least one adjacent mine is revealed,
+     *        change it to a digit ('1' to '8') representing the number of adjacent mines.
+     *
+     *
+     *  ---------------------------
+     *
+     *   IDEA 1) BFS  ???
+     *
+     *
+     *   IDEA 2) other graph algo  ???
+     *
+     *  ---------------------------
+     *
+     *
+     */
+    public char[][] updateBoard(char[][] board, int[] click) {
+
+        return null;
+    }
+
+
+
+
 
 }
