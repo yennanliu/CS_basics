@@ -7953,8 +7953,68 @@ public class Workspace18 {
      *
      */
     public char[][] updateBoard(char[][] board, int[] click) {
+        // edge
 
-        return null;
+        int initX = click[1];
+        int initY = click[0];
+        if(board[initY][initX] == 'N'){
+            board[initY][initX] = 'X';
+            return board;
+        }
+
+        int l = board.length;
+        int w = board[0].length;
+
+        int[][] moves = new int[][]{ {1,0}, {-1,0}, {0,1}, {0,-1} };
+
+        // 1. get all `mines` grid
+        List<Integer[]> mineList = new ArrayList<>();
+        for(int y = 0; y < l; y++){
+            for(int x = 0; x < w; x++){
+                if(board[y][x] == 'N'){
+                    mineList.add(new Integer[]{y, x});
+                }
+            }
+        }
+
+        // 2. BFS
+        boolean[][] visited = new boolean[l][w];
+        Queue<Integer[]> q = new LinkedList<>();
+        q.add(new Integer[]{initY, initX});
+        visited[initY][initX] = true;
+
+        while(!q.isEmpty()){
+            int size = q.size();
+            for(int i = 0; i < size; i++){
+                Integer[] cur = q.poll();
+                int x = cur[1];
+                int y = cur[0];
+                // case 1) if click a `mine`
+                if(board[y][x] == 'N'){
+                    board[y][x] = 'X';
+                    return board;
+                }
+                // case 2) if click an empty and NO neighbor mine is revealed
+
+                // case 3) if click an empty and AT LEAST ONE  neighbor mine is revealed
+
+                // loop over dir and add to queue
+                for(int[] m: moves){
+                    int x_ = x + m[1];
+                    int y_ = y + m[0];
+                    if(x_ >= 0 && x_ < w && y_ >= 0 && y_ < l){
+                        if(board[y_][x_] == 'E' && !visited[y_][x_]){
+                            q.add(new Integer[]{y_ , x_});
+
+                            visited[y_][x_] = true;
+                        }
+                    }
+                }
+            }
+        }
+
+
+        return board;
     }
 
 

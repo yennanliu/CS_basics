@@ -63,6 +63,183 @@ public class Minesweeper {
 //
 //    }
 
+    // V0-1
+    // IDEA: DFS (fixed by gemini)
+    private int rows;
+    private int cols;
+
+    /** NOTE !!!
+     *
+     *  we have the `8-dir` moves (per mining game)
+     */
+    // 8 directions for neighbors (including diagonals)
+    private final int[][] MOVES = new int[][] {
+            { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 },
+            { 1, 1 }, { 1, -1 }, { -1, 1 }, { -1, -1 }
+    };
+
+    public char[][] updateBoard_0_1(char[][] board, int[] click) {
+        this.rows = board.length;
+        this.cols = board[0].length;
+        int r = click[0];
+        int c = click[1];
+
+        // --- Case 1: Clicked a Mine ('M') ---
+        if (board[r][c] == 'M') {
+            board[r][c] = 'X'; // Mark the mine as exploded
+            return board;
+        }
+
+        /** NOTE !!!
+         *
+         *  we use DFS to update board recursively
+         */
+        // --- Case 2 & 3: Clicked an Unrevealed Empty ('E') ---
+        // Use DFS to reveal the connected area starting from the clicked cell
+        dfsReveal(board, r, c);
+
+        return board;
+    }
+
+    /** NOTE !!!
+     *
+     *  DFS help func to do board update via recursive
+     */
+    private void dfsReveal(char[][] board, int r, int c) {
+
+        /** NOTE !!!
+         *
+         *  do `validation` first (before recursive dfs call)
+         */
+        // Base case: Out of bounds or already revealed/processed cell
+        if (r < 0 || r >= rows || c < 0 || c >= cols || board[r][c] != 'E') {
+            return;
+        }
+
+        /** NOTE !!!
+         *
+         *  Count adjacent mines first
+         */
+        // 1. Count adjacent mines
+        int adjacentMines = countAdjacentMines(board, r, c);
+
+        /** NOTE !!!
+         *
+         *  if adjacentMines > 0, simply update cur mine cnt,
+         *  NOT do dfs call in this case
+         */
+        if (adjacentMines > 0) {
+            // --- Case 3: Empty cell with adjacent mines (1 to 8) ---
+            // Reveal the cell with the digit and STOP the DFS propagation.
+            board[r][c] = (char) (adjacentMines + '0');
+            return;
+        } else {
+            /** NOTE !!!
+             *
+             *  if adjacentMines == 0, move all dirs,
+             *  and do DFS call (recursively update)
+             */
+            // --- Case 2: Empty cell with NO adjacent mines (0) ---
+            // Mark the cell as revealed Blank ('B') and continue propagation (DFS).
+            board[r][c] = 'B';
+
+            // Recurse into all 8 neighbors
+            for (int[] move : MOVES) {
+                int nr = r + move[0];
+                int nc = c + move[1];
+
+                // Recursion will check bounds and stop if it hits a digit or a boundary.
+                dfsReveal(board, nr, nc);
+            }
+        }
+    }
+
+    /**
+     * Counts how many mines ('M') are in the 8 adjacent cells.
+     */
+    private int countAdjacentMines(char[][] board, int r, int c) {
+        int count = 0;
+        for (int[] move : MOVES) {
+            int nr = r + move[0];
+            int nc = c + move[1];
+
+            // Check bounds
+            if (nr >= 0 && nr < rows && nc >= 0 && nc < cols) {
+                // Check if the neighbor is an unrevealed mine
+                if (board[nr][nc] == 'M') {
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+
+
+    // V0-2
+    // IDEA: BFS (fixed by gpt)
+    public char[][] updateBoard_0_2(char[][] board, int[] click) {
+        int y = click[0];
+        int x = click[1];
+
+        int l = board.length;
+        int w = board[0].length;
+
+        // If clicking on a mine
+        if (board[y][x] == 'M') {
+            board[y][x] = 'X';
+            return board;
+        }
+
+        // 8 directions
+        int[][] dirs = new int[][] {
+                { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 },
+                { 1, 1 }, { 1, -1 }, { -1, 1 }, { -1, -1 }
+        };
+
+        Queue<int[]> q = new LinkedList<>();
+        boolean[][] visited = new boolean[l][w];
+
+        q.add(new int[] { y, x });
+        visited[y][x] = true;
+
+        while (!q.isEmpty()) {
+            int[] cur = q.poll();
+            int cy = cur[0], cx = cur[1];
+
+            // Count adjacent mines
+            int mines = 0;
+            for (int[] d : dirs) {
+                int ny = cy + d[0];
+                int nx = cx + d[1];
+                if (ny >= 0 && ny < l && nx >= 0 && nx < w && board[ny][nx] == 'M') {
+                    mines++;
+                }
+            }
+
+            // Case 1: zero mines around -> update to B and continue expanding
+            if (mines == 0) {
+                board[cy][cx] = 'B';
+                for (int[] d : dirs) {
+                    int ny = cy + d[0];
+                    int nx = cx + d[1];
+                    if (ny >= 0 && ny < l && nx >= 0 && nx < w &&
+                            board[ny][nx] == 'E' && !visited[ny][nx]) {
+
+                        visited[ny][nx] = true;
+                        q.add(new int[] { ny, nx });
+                    }
+                }
+            }
+            // Case 2: one or more mines around -> show number and STOP expanding
+            else {
+                board[cy][cx] = (char) ('0' + mines);
+            }
+        }
+
+        return board;
+    }
+
+
     // V1
     // IDEA: DFS + ARRAY OP (GPT)
     public char[][] updateBoard_1(char[][] board, int[] click) {
