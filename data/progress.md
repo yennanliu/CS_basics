@@ -1,6 +1,6 @@
 # Progress
 
-# 2025-12-04
+# 2025-12-05
 
 - LC weekly 394
 - weekly video
@@ -174,6 +174,17 @@
 			- 675
 			- 218
 			- 1697
+	- LC 695 Max Area of Island
+		- gpt
+			- 733
+			- 695
+			- 827
+			- 329
+			- 711 (Number of Distinct Islands II)
+			- 1905
+		- gemini
+			- 934
+			- 212
 	- others:
 		- Path Signatures
 			- 694,711,652,508
