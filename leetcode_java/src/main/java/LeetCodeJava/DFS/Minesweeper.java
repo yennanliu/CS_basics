@@ -190,6 +190,10 @@ public class Minesweeper {
             return board;
         }
 
+        /** NOTE !!!
+         *
+         *  we have the `8-dir` moves (per mining game)
+         */
         // 8 directions
         int[][] dirs = new int[][] {
                 { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 },
@@ -206,6 +210,10 @@ public class Minesweeper {
             int[] cur = q.poll();
             int cy = cur[0], cx = cur[1];
 
+            /** NOTE !!!
+             *
+             *  Count adjacent mines for cur grid (x, y)
+             */
             // Count adjacent mines
             int mines = 0;
             for (int[] d : dirs) {
@@ -216,6 +224,11 @@ public class Minesweeper {
                 }
             }
 
+            /** NOTE !!!
+             *
+             *  if ` zero mines around`, we need to update ALL
+             *  neighbors via BFS
+             */
             // Case 1: zero mines around -> update to B and continue expanding
             if (mines == 0) {
                 board[cy][cx] = 'B';
@@ -230,6 +243,11 @@ public class Minesweeper {
                     }
                 }
             }
+            /** NOTE !!!
+             *
+             *  if ` one or more mines around`,
+             *  simply update the mine cnt
+             */
             // Case 2: one or more mines around -> show number and STOP expanding
             else {
                 board[cy][cx] = (char) ('0' + mines);
