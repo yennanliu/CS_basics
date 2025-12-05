@@ -7705,7 +7705,8 @@ public class Workspace18 {
 
         for(int y = 0; y < l; y++){
             for(int x = 0; x < w; x++){
-                if(forest.get(y).get(x) > 0){
+                // // Only consider trees with height > 1 ?????
+                if(forest.get(y).get(x) > 1){
                     treeList.add(new Integer[]{x, y, forest.get(y).get(x)});
                 }
             }
@@ -7729,10 +7730,21 @@ public class Workspace18 {
         // BFS, loop over tree by its sorted order
         // update forest grid, and cnt
         for(Integer[] tree: treeList){
-            //int moveCnt =
-            if(bfsTreeCutter(forest, initX, initY, tree[0], tree[1], 0) == -1){
+
+            // ???
+            int steps = bfsTreeCutter(forest, initX, initY, tree[0], tree[1], 0);
+            if(steps == -1){
                 return -1;
             }
+//            //int moveCnt =
+//            if(bfsTreeCutter(forest, initX, initY, tree[0], tree[1], 0) == -1){
+//                return -1;
+//            }
+
+            // ?? update total op cnt
+            opCnt += steps;
+
+
             // update initX, initY
             initX = tree[0];
             initY = tree[1];
@@ -7741,6 +7753,7 @@ public class Workspace18 {
         return opCnt;  // ???
     }
 
+    // /???? should use BFS ????
     public int bfsTreeCutter(List<List<Integer>> forest, int x, int y, int targetX, int targetY, int moveCnt){
 
         int l = forest.size();
