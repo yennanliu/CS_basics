@@ -47,7 +47,7 @@ public class Weekly394 {
         int cnt = 0;
         for(char ch: word.toCharArray()){
             if(!map.containsKey(ch)){
-                map.put(ch, new Integer[2]);
+                map.put(ch, new Integer[]{0, 0});
             }
             String s = String.valueOf(ch);
             Integer[] arr = map.get(ch);

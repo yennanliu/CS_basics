@@ -2,7 +2,9 @@ package LeetCodeJava.Greedy;
 
 // https://leetcode.com/problems/count-the-number-of-special-characters-i/description/
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -106,6 +108,40 @@ public class CountTheNumberOfSpecialCharacters1 {
 
         return specialCount;
     }
+
+    // V0-2
+    // IDEA: hashmap (fixed by gpt)
+    public int numberOfSpecialChars_0_2(String word) {
+        if (word == null || word.isEmpty())
+            return 0;
+        if (word.length() == 1)
+            return 0;
+
+        // Map each letter to [lowerSeen, upperSeen]
+        Map<Character, int[]> map = new HashMap<>();
+        int cnt = 0;
+
+        for (char ch : word.toCharArray()) {
+            char base = Character.toLowerCase(ch); // Normalize key
+            map.putIfAbsent(base, new int[2]); // index 0 = lowercase, 1 = uppercase
+
+            if (Character.isLowerCase(ch)) {
+                map.get(base)[0] = 1;
+            } else {
+                map.get(base)[1] = 1;
+            }
+        }
+
+        // Count special characters
+        for (int[] arr : map.values()) {
+            if (arr[0] == 1 && arr[1] == 1) {
+                cnt++;
+            }
+        }
+
+        return cnt;
+    }
+
 
     // V1
     // https://leetcode.com/problems/count-the-number-of-special-characters-i/solutions/7378008/beats-100-on-time-by-hanyuuuuu-cr82/
