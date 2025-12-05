@@ -66,6 +66,148 @@ public class FindEdgesInShortestPaths {
 //
 //    }
 
+    // V0-1
+    // IDEA: Double Dijkstra's (fixed by gemini)
+    /**
+     *   IDEA:
+     *
+     *    Core Strategy:
+     *
+     *  1. Forward Dijkstra ($D_0$): Calculate the
+     *    shortest distance from the source node (0) to all other nodes ($D_0[i]$).
+     *
+     *
+     *  2. Backward Dijkstra ($D_{n-1}$): Calculate the shortest distance
+     *     from the destination node ($n-1$)
+     *     to all other nodes ($D_{n-1}[i]$).
+     *
+     *  3. Validation:
+     *     An edge $(u, v)$ with weight $w$ belongs to a shortest path if and only if:
+     *         $$D_0[u] + w + D_{n-1}[v] = D_0[n-1]$$
+     *
+     *    This formula verifies that the path length via that
+     *    specific edge equals the global minimum shortest path length.
+     *
+     */
+    /**
+     * Finds all edges that belong to at least one shortest path between 0 and n-1.
+     * Time Complexity: O(E log V) due to Dijkstra's algorithm.
+     * Space Complexity: O(V + E)
+     */
+    public boolean[] findAnswer_0_1(int n, int[][] edges) {
+        // --- Step 1: Build the Adjacency List (Graph) ---
+        // Adjacency List: Map<Node, List<[Neighbor, Weight, Edge_Index]>>
+        // We need the edge index to map back to the result array.
+        List<int[]>[] adj = new ArrayList[n];
+        for (int i = 0; i < n; i++) {
+            adj[i] = new ArrayList<>();
+        }
+
+        for (int i = 0; i < edges.length; i++) {
+            int u = edges[i][0];
+            int v = edges[i][1];
+            int w = edges[i][2];
+
+            // Add edge from u to v
+            adj[u].add(new int[] { v, w, i });
+            // Add edge from v to u (undirected graph)
+            adj[v].add(new int[] { u, w, i });
+        }
+
+        // --- Step 2: Run Dijkstra's Algorithm Twice ---
+
+        // D_0: Shortest distance from node 0 to all other nodes.
+        long[] distFromStart = dijkstra(n, adj, 0);
+
+        // D_{n-1}: Shortest distance from node n-1 to all other nodes.
+        // We use the reverse graph implicitly by running Dijkstra from the end node.
+        long[] distToEnd = dijkstra(n, adj, n - 1);
+
+        // If the destination is unreachable, the array is all false (which is the default).
+        if (distFromStart[n - 1] == Long.MAX_VALUE) {
+            return new boolean[edges.length];
+        }
+
+        long minTotalDist = distFromStart[n - 1];
+        boolean[] result = new boolean[edges.length];
+
+        // --- Step 3: Validate Edges ---
+        for (int i = 0; i < edges.length; i++) {
+            int u = edges[i][0];
+            int v = edges[i][1];
+            int w = edges[i][2];
+
+            // An edge (u, v) with weight w is part of a shortest path if:
+            // distFromStart[u] + w + distToEnd[v] == minTotalDist
+            // OR (for the reverse direction):
+            // distFromStart[v] + w + distToEnd[u] == minTotalDist
+
+            // We only need to check one direction of the edge (u->v) since the other direction
+            // (v->u) is symmetric due to the undirected graph, and both checks cover all shortest paths.
+
+            if (distFromStart[u] != Long.MAX_VALUE && distToEnd[v] != Long.MAX_VALUE) {
+                if (distFromStart[u] + w + distToEnd[v] == minTotalDist) {
+                    result[i] = true;
+                }
+            }
+
+            // Check the reverse path (u->v is the same edge index i)
+            if (distFromStart[v] != Long.MAX_VALUE && distToEnd[u] != Long.MAX_VALUE) {
+                if (distFromStart[v] + w + distToEnd[u] == minTotalDist) {
+                    result[i] = true;
+                }
+            }
+        }
+
+        return result;
+    }
+
+    /**
+     * Standard Dijkstra's Algorithm implementation.
+     * @param n Number of nodes
+     * @param adj Adjacency list
+     * @param startNode The source node for distance calculation
+     * @return Array of shortest distances from startNode to all other nodes.
+     */
+    private long[] dijkstra(int n, List<int[]>[] adj, int startNode) {
+        // Use long for distances to prevent overflow (weights up to 10^9)
+        long[] dist = new long[n];
+        Arrays.fill(dist, Long.MAX_VALUE);
+
+        // PriorityQueue stores [distance, node]
+        // Prioritize nodes with the smallest distance.
+        PriorityQueue<long[]> pq = new PriorityQueue<>(Comparator.comparingLong(a -> a[0]));
+
+        dist[startNode] = 0;
+        pq.offer(new long[] { 0, startNode });
+
+        while (!pq.isEmpty()) {
+            long d = pq.peek()[0];
+            int u = (int) pq.poll()[1];
+
+            // If we found a shorter path to u already, skip this entry
+            if (d > dist[u]) {
+                continue;
+            }
+
+            for (int[] edge : adj[u]) {
+                int v = edge[0]; // neighbor
+                int w = edge[2]; // weight (index 2 is weight, index 3 is edge index)
+
+                // Correctly use the weight from the edge array (index 1 is the weight in the adj list)
+                // The input edges array has weight at index 2, but the adj list stores it at index 1.
+                int weightInAdj = edge[1];
+
+                if (dist[u] + weightInAdj < dist[v]) {
+                    dist[v] = dist[u] + weightInAdj;
+                    pq.offer(new long[] { dist[v], v });
+                }
+            }
+        }
+        return dist;
+    }
+
+
     // V1
     // IDEA:  Dijkstra's Algorithm + Set
     // https://leetcode.com/problems/find-edges-in-shortest-paths/solutions/5052485/java-dijstras-algorithm-set-by-makubex74-qg0u/
