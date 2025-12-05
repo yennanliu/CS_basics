@@ -105,6 +105,12 @@ public class CutOffTreesForGolfEvent {
             // Find the shortest path distance from current start point to the next tree.
             int steps = bfs_0_0_1(forest, startR, startC, targetR, targetC);
 
+            /** NOTE !!!
+             *
+             *  if Target is NOT unreachable,
+             *  BFS return -1, in the main code (here)
+             *  we know the node is NOT unreachable, and can exit earlier
+             */
             // If steps is -1, the target tree is unreachable.
             if (steps == -1) {
                 return -1;
@@ -120,11 +126,19 @@ public class CutOffTreesForGolfEvent {
         return totalSteps;
     }
 
+    /** NOTE !!!
+     *
+     *  use BFS to find the minimum stpes from (sr, sc) to (tr, tc).
+     */
     /**
      * Performs BFS to find the minimum steps from (sr, sc) to (tr, tc).
      * @return Minimum steps, or -1 if the target is unreachable.
      */
     private int bfs_0_0_1(List<List<Integer>> forest, int startR, int startC, int targetR, int targetC) {
+        /** NOTE !!!
+         *
+         *  edge, early exit
+         */
         if (startR == targetR && startC == targetC) {
             return 0; // Already at the target.
         }
@@ -152,17 +166,35 @@ public class CutOffTreesForGolfEvent {
                     int nextR = r + move[0];
                     int nextC = c + move[1];
 
+                    /** NOTE !!!
+                     *
+                     *  Check if still in boundary
+                     */
                     // Check bounds
                     if (nextR >= 0 && nextR < rows && nextC >= 0 && nextC < cols) {
 
+                        /** NOTE !!!
+                         *
+                         *  ONLY proceed if
+                         *    1. unvisited
+                         *    2. is NOT water
+                         */
                         // Check if unvisited AND the cell is not water (value > 0)
                         if (!visited[nextR][nextC] && forest.get(nextR).get(nextC) > 0) {
 
+                            /** NOTE !!!
+                             *
+                             *  if reach the target, early exit
+                             */
                             // Reached the target
                             if (nextR == targetR && nextC == targetC) {
                                 return steps;
                             }
 
+                            /** NOTE !!!
+                             *
+                             *  update visited
+                             */
                             visited[nextR][nextC] = true;
                             queue.offer(new int[] { nextR, nextC });
                         }
@@ -171,6 +203,12 @@ public class CutOffTreesForGolfEvent {
             }
         }
 
+        /** NOTE !!!
+         *
+         *  if Target is NOT unreachable,
+         *  return -1, then in the main code,
+         *  we can know the node is NOT unreachable, and can exit earlier
+         */
         // Target tree was unreachable
         return -1;
     }
