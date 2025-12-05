@@ -67,11 +67,25 @@ public class FindEdgesInShortestPaths {
 //    }
 
     // V0-1
-    // IDEA: Double Dijkstra's (fixed by gemini)
+    // IDEA: Double Dijkstra's (Forward + Backward) (fixed by gemini)
     /**
      *   IDEA:
      *
      *    Core Strategy:
+     *
+     *     Forward Dijkstra + Backward Dijkstra
+     *
+     *
+     *   - Forward Dijkstra (D0):
+     *       Find the shortest distance from the
+     *       source (node 0) to every other node.
+     *
+     *   - Backward Dijkstra (D1):
+     *      Find the shortest distance from the destination
+     *      (node $n-1$) to every other node.
+     *
+     *  --------------------------------------
+     *
      *
      *  1. Forward Dijkstra ($D_0$): Calculate the
      *    shortest distance from the source node (0) to all other nodes ($D_0[i]$).
@@ -87,6 +101,46 @@ public class FindEdgesInShortestPaths {
      *
      *    This formula verifies that the path length via that
      *    specific edge equals the global minimum shortest path length.
+     *
+     */
+    /**
+     *   NOTE !!!
+     *
+     *    why BFS and a single Dijkstra is NOT working ?
+     *
+     *    ## 🛑 Analysis of the Original Approach for LC 3123
+     *
+     * The problem **LC 3123: Find Edges in Shortest Paths** requires identifying all edges that lie on *any* shortest path between a source (node 0) and a destination (node $n-1$) in a **weighted undirected graph**.
+     *
+     * Your original code, which uses standard **Breadth-First Search (BFS)** and attempts to store all paths, is fundamentally flawed for the following reasons:
+     *
+     * ---
+     *
+     * ### 1. BFS is Unsuitable for Weighted Graphs
+     *
+     * * **Issue:** You attempted to use **BFS**, an algorithm designed to find the shortest path by the **number of edges** (unweighted graph).
+     * * **Problem:** Since this is a **weighted graph** (edges have costs), BFS cannot guarantee finding the path with the minimum total cost. A path with fewer edges might have a higher total weight than a path with more edges.
+     * * **Correction:** The problem requires a shortest path algorithm for weighted graphs, such as **Dijkstra's Algorithm** (since weights are non-negative) or the Bellman-Ford algorithm.
+     *
+     * ---
+     *
+     * ### 2. Path Tracking is Inefficient and Excessive
+     *
+     * * **Issue:** The code tries to store every calculated path as a string key with its cost in a map (`pathMap`).
+     * * **Problem:** This is highly **inefficient** and **memory-intensive**. The number of possible paths in a graph can be exponential. Furthermore, string manipulation for path keys is slow.
+     * * **Correction:** The goal is not to find *all* paths, but to find the single **minimum distance** (total shortest path cost) and then check which edges satisfy that minimum distance.
+     *
+     * ---
+     *
+     * ## ✅ Correct Approach: Double Dijkstra's Algorithm
+     *
+     * The standard, efficient solution uses **Dijkstra's Algorithm** twice, followed by a validation step:
+     *
+     * 1.  **Forward Dijkstra ($D_0$):** Find the shortest distance from the source (node 0) to every other node.
+     * 2.  **Backward Dijkstra ($D_{n-1}$):** Find the shortest distance from the destination (node $n-1$) to every other node.
+     * 3.  **Validation:** An edge $(u, v)$ with weight $w$ is on a shortest path if:
+     *     $$D_0[u] + w + D_{n-1}[v] = D_0[n-1]$$
+     *     This confirms the path length via that edge equals the global minimum shortest path length.
      *
      */
     /**
