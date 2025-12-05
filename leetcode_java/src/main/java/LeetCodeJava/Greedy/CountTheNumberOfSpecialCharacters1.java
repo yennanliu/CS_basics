@@ -66,7 +66,7 @@ public class CountTheNumberOfSpecialCharacters1 {
 //    }
 
     // V0-1
-    // IDEA:  (fixed by gemini)
+    // IDEA: 2 HASHSET (fixed by gemini)
     /**
      * Counts the number of letters that appear as both lowercase and uppercase.
      * Time Complexity: O(N) where N is the length of the word.
@@ -110,7 +110,7 @@ public class CountTheNumberOfSpecialCharacters1 {
     }
 
     // V0-2
-    // IDEA: hashmap (fixed by gpt)
+    // IDEA: HASHMAP (fixed by gpt)
     public int numberOfSpecialChars_0_2(String word) {
         if (word == null || word.isEmpty())
             return 0;
@@ -126,8 +126,10 @@ public class CountTheNumberOfSpecialCharacters1 {
             map.putIfAbsent(base, new int[2]); // index 0 = lowercase, 1 = uppercase
 
             if (Character.isLowerCase(ch)) {
+                /** NOTE !!!  need to update the val back to hashmap */
                 map.get(base)[0] = 1;
             } else {
+                /** NOTE !!!  need to update the val back to hashmap */
                 map.get(base)[1] = 1;
             }
         }
