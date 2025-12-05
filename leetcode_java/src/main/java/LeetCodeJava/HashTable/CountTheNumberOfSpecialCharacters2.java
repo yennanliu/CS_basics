@@ -82,6 +82,12 @@ public class CountTheNumberOfSpecialCharacters2 {
         // Value: Integer[2] array: [Index of last lowercase, Index of first uppercase]
         // We use -1 for indices that haven't been found yet.
         // We can use a map to store pairs of indices: Map<Character, int[]>
+        /**
+         *  NOTE !!!
+         *
+         *   map val:   [last_lowercase_idx, first_uppercase_idx]
+         *
+         */
         Map<Character, int[]> indexMap = new HashMap<>();
 
         // 1. Traverse the word and record indices (O(N))
@@ -89,15 +95,29 @@ public class CountTheNumberOfSpecialCharacters2 {
             char ch = word.charAt(i);
             char canonicalKey = Character.toLowerCase(ch);
 
+            /** NOTE !!!
+             *
+             *  init map val with [-1, -1]
+             */
             // Get or initialize the index array for the canonical letter
             indexMap.putIfAbsent(canonicalKey, new int[] { -1, -1 });
             int[] indices = indexMap.get(canonicalKey);
 
+            /** NOTE !!!
+             *
+             * Update last_lowercase_idx
+             */
             if (ch >= 'a' && ch <= 'z') {
                 // Update the last seen index for the lowercase character (index 0)
                 indices[0] = i;
-            } else { // Uppercase
-                // Only set the first seen index for the uppercase character (index 1)
+            } else {
+                /** NOTE !!!
+                 * 
+                 * ONLY when the uppercase haven't been seen yet
+                 *   -> Update first_uppercase_idx (
+                 */
+                // Uppercase
+                // ONLY set the first seen index for the uppercase character (index 1)
                 // If it's -1, it means we haven't seen it yet.
                 if (indices[1] == -1) {
                     indices[1] = i;
@@ -105,6 +125,10 @@ public class CountTheNumberOfSpecialCharacters2 {
             }
         }
 
+        /**  NOTE !!!
+         *
+         * Validate & Count Special Characters
+         */
         // 2. Validate and Count Special Characters (O(1) - max 26 iterations)
         int specialCount = 0;
 
