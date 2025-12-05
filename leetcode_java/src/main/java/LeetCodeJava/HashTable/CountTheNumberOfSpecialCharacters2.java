@@ -152,7 +152,7 @@ public class CountTheNumberOfSpecialCharacters2 {
 
 
     // V0-2
-    // IDEA: HASHMAP (fixed by gpt)
+    // IDEA: 2 ARRAY (fixed by gpt)
     public int numberOfSpecialChars_0_2(String word) {
         if (word == null || word.isEmpty())
             return 0;
