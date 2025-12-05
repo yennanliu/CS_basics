@@ -75,6 +75,139 @@ public class MinimumNumberOfOperationsToSatisfyConditions {
 //
 //    }
 
+    // V0-1
+    // IDEA: DP (fixed by gemini)
+    /**
+     * Solves LC 3122: Minimum Operations to Satisfy Conditions using Dynamic Programming.
+     * Time Complexity: O(W * 10 * 10 + W * L) = O(W * (100 + L)), where W=columns, L=rows.
+     * Space Complexity: O(W * 10)
+     */
+    public int minimumOperations_0_1(int[][] grid) {
+        if (grid == null || grid.length == 0 || grid[0].length == 0) {
+            return 0;
+        }
+
+        int L = grid.length; // Rows (Height)
+        int W = grid[0].length; // Columns (Width)
+
+        // The maximum value is 9, so we only need to consider digits 0 through 9.
+        final int MAX_DIGIT = 10;
+
+        // --- Step 1: Pre-calculate the cost matrix ---
+        // cost[j][d]: Minimum operations (changes) required to make column j consist entirely of digit d.
+        int[][] cost = new int[W][MAX_DIGIT];
+
+        for (int j = 0; j < W; j++) {
+            // Count frequencies of each number in the current column j
+            int[] frequency = new int[MAX_DIGIT];
+            for (int i = 0; i < L; i++) {
+                frequency[grid[i][j]]++;
+            }
+
+            // Calculate the cost to change column j to digit d
+            for (int d = 0; d < MAX_DIGIT; d++) {
+                // Cost = Total cells in column - Number of cells already equal to d
+                cost[j][d] = L - frequency[d];
+            }
+        }
+
+        // --- Step 2: Initialize DP for the first column (j=0) ---
+        // DP[j][d]: Minimum total operations for columns 0 to j, where column j is set to d.
+        // We only need to store the previous column's DP values, so we use DP[W][MAX_DIGIT].
+        int[][] dp = new int[W][MAX_DIGIT];
+
+        for (int d = 0; d < MAX_DIGIT; d++) {
+            // The cost for the first column is simply the pre-calculated cost.
+            dp[0][d] = cost[0][d];
+        }
+
+        // --- Step 3: DP Transition (Iterate columns j=1 to W-1) ---
+        for (int j = 1; j < W; j++) {
+            for (int d = 0; d < MAX_DIGIT; d++) {
+                // Find the minimum possible cost from the previous column (j-1)
+                // such that the digit p is NOT equal to the current digit d.
+                int minPrevCost = Integer.MAX_VALUE;
+
+                for (int p = 0; p < MAX_DIGIT; p++) {
+                    // Condition: Adjacent columns must have different values (p != d)
+                    if (p != d) {
+                        minPrevCost = Math.min(minPrevCost, dp[j - 1][p]);
+                    }
+                }
+
+                // If minPrevCost is still MAX_VALUE, it means something went wrong,
+                // but given the constraints (0-9), this shouldn't happen.
+                if (minPrevCost == Integer.MAX_VALUE)
+                    continue;
+
+                // DP[j][d] = (Cost to fix current column j to d) + (Minimum cost to satisfy column j-1)
+                dp[j][d] = cost[j][d] + minPrevCost;
+            }
+        }
+
+        // --- Step 4: Find the Minimum Result ---
+        int minTotalOperations = Integer.MAX_VALUE;
+        // The final answer is the minimum cost among all possible digits in the last column (W-1).
+        for (int d = 0; d < MAX_DIGIT; d++) {
+            minTotalOperations = Math.min(minTotalOperations, dp[W - 1][d]);
+        }
+
+        return minTotalOperations;
+    }
+
+
+    // V0-2
+    // IDEA: DP (fixed by gpt)
+    public int minimumOperations_0_2(int[][] grid) {
+        int n = grid.length;
+        int m = grid[0].length;
+
+        // count occurrences of digits in each column
+        int[][] freq = new int[m][10];
+        for (int r = 0; r < n; r++) {
+            for (int c = 0; c < m; c++) {
+                freq[c][grid[r][c]]++;
+            }
+        }
+
+        // cost[c][d]: cost to convert column c to digit d
+        int[][] cost = new int[m][10];
+        for (int c = 0; c < m; c++) {
+            for (int d = 0; d < 10; d++) {
+                cost[c][d] = n - freq[c][d];
+            }
+        }
+
+        // dp[c][d]: min cost to fix columns[0..c], column c uses digit d
+        int[][] dp = new int[m][10];
+
+        // base case
+        for (int d = 0; d < 10; d++) {
+            dp[0][d] = cost[0][d];
+        }
+
+        // fill dp
+        for (int c = 1; c < m; c++) {
+            for (int d = 0; d < 10; d++) {
+                int bestPrev = Integer.MAX_VALUE;
+                for (int prev = 0; prev < 10; prev++) {
+                    if (prev == d)
+                        continue; // must be different
+                    bestPrev = Math.min(bestPrev, dp[c - 1][prev]);
+                }
+                dp[c][d] = cost[c][d] + bestPrev;
+            }
+        }
+
+        // result = min dp[m-1][d]
+        int ans = Integer.MAX_VALUE;
+        for (int d = 0; d < 10; d++) {
+            ans = Math.min(ans, dp[m - 1][d]);
+        }
+        return ans;
+    }
+
+
     // V1
     // IDEA: DP
     // https://leetcode.com/problems/minimum-number-of-operations-to-satisfy-conditions/solutions/5052842/java-python-dp-optimized-solution-with-e-9bzi/
