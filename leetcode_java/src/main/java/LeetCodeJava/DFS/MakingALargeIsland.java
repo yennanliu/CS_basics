@@ -307,11 +307,122 @@ public class MakingALargeIsland {
         return area;
     }
 
+    // V0-3
+    // IDEA: UNION FIND (DSU) (gemini)
+    public int largestIsland_0_3(int[][] grid) {
+        int l = grid.length;
+        int w = grid[0].length;
+        int N = l * w;
+
+        UnionFind uf = new UnionFind(N);
+
+        // 1) Build DSU for all islands
+        for (int y = 0; y < l; y++) {
+            for (int x = 0; x < w; x++) {
+                if (grid[y][x] == 1) {
+                    int id = y * w + x;
+
+                    // union 4 directions (only need right/down to avoid dup)
+                    if (x + 1 < w && grid[y][x + 1] == 1) {
+                        uf.union(id, y * w + (x + 1));
+                    }
+                    if (y + 1 < l && grid[y + 1][x] == 1) {
+                        uf.union(id, (y + 1) * w + x);
+                    }
+                }
+            }
+        }
+
+        int maxArea = 0;
+
+        // 2) If no zero at all → whole grid
+        boolean hasZero = false;
+
+        for (int y = 0; y < l; y++) {
+            for (int x = 0; x < w; x++) {
+                if (grid[y][x] == 0) {
+                    hasZero = true;
+
+                    HashSet<Integer> neighborRoots = new HashSet<>();
+
+                    // up
+                    if (y - 1 >= 0 && grid[y - 1][x] == 1)
+                        neighborRoots.add(uf.find((y - 1) * w + x));
+
+                    // down
+                    if (y + 1 < l && grid[y + 1][x] == 1)
+                        neighborRoots.add(uf.find((y + 1) * w + x));
+
+                    // left
+                    if (x - 1 >= 0 && grid[y][x - 1] == 1)
+                        neighborRoots.add(uf.find(y * w + (x - 1)));
+
+                    // right
+                    if (x + 1 < w && grid[y][x + 1] == 1)
+                        neighborRoots.add(uf.find(y * w + (x + 1)));
+
+                    int newArea = 1; // flip this zero to 1
+                    for (int root : neighborRoots) {
+                        newArea += uf.size[root]; // add distinct component sizes
+                    }
+
+                    maxArea = Math.max(maxArea, newArea);
+                }
+            }
+        }
+
+        if (!hasZero) {
+            return uf.size[uf.find(0)]; // entire grid is island
+        }
+
+        return maxArea;
+    }
+
+    // =========================
+    // Union Find (Disjoint Set)
+    // =========================
+    static class UnionFind {
+        int[] parent;
+        int[] size;
+
+        UnionFind(int n) {
+            parent = new int[n];
+            size = new int[n];
+            for (int i = 0; i < n; i++) {
+                parent[i] = i;
+                size[i] = 1;
+            }
+        }
+
+        int find(int x) {
+            if (x != parent[x]) {
+                parent[x] = find(parent[x]);
+            }
+            return parent[x];
+        }
+
+        void union(int a, int b) {
+            int ra = find(a);
+            int rb = find(b);
+            if (ra == rb)
+                return;
+
+            // union by size
+            if (size[ra] < size[rb]) {
+                parent[ra] = rb;
+                size[rb] += size[ra];
+            } else {
+                parent[rb] = ra;
+                size[ra] += size[rb];
+            }
+        }
+    }
+
+
 
     // V1-1
     // IDEA: DFS
     // https://leetcode.com/problems/making-a-large-island/editorial/
-
     public int largestIsland_1_1(int[][] grid) {
         Map<Integer, Integer> islandSizes = new HashMap<>();
         int islandId = 2;
