@@ -52,6 +52,25 @@ public class MakingALargeIsland {
 
     // V0-1
     // IDEA: 2 PASS DFS  (fixed by gemini)
+    /**  NOTE !!!
+     *
+     *  Fixed & Optimized Java Solution (Two-Pass Approach)
+     *
+     *   The optimal solution uses a two-pass approach with DFS/BFS and a HashMap
+     *   to achieve O(N^2) time complexity:
+     *
+     *   Pass 1 (Pre-calculate Areas):
+     *       Run DFS over the entire grid to label each distinct island
+     *       with a unique ID (e.g., 2, 3, 4, ...), and store
+     *       the area of each ID in a HashMap.
+     *
+     *
+     *   Pass 2 (Check Flips):
+     *       Iterate over every zero cell (0). For each zero,
+     *       check its four neighbors. Sum the areas of all unique neighboring
+     *       islands (using the stored IDs) and add 1 (for the flipped cell).
+     *
+     */
     private int rows;
     private int cols;
     // Moves: (dr, dc)
