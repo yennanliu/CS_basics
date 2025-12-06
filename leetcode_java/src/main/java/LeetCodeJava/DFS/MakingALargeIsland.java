@@ -2,10 +2,7 @@ package LeetCodeJava.DFS;
 
 // https://leetcode.com/problems/making-a-large-island/description/
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * 827. Making A Large Island
@@ -52,6 +49,206 @@ public class MakingALargeIsland {
 //    public int largestIsland(int[][] grid) {
 //
 //    }
+
+    // V0-1
+    // IDEA: 2 PASS DFS  (fixed by gemini)
+    private int rows;
+    private int cols;
+    // Moves: (dr, dc)
+    private final int[][] MOVES = new int[][] { { 0, 1 }, { 0, -1 }, { 1, 0 }, { -1, 0 } };
+
+    public int largestIsland_0_1(int[][] grid) {
+        if (grid == null || grid.length == 0 || grid[0].length == 0) {
+            return 0;
+        }
+
+        this.rows = grid.length;
+        this.cols = grid[0].length;
+
+        // Map to store: { Island ID : Area }
+        Map<Integer, Integer> islandAreas = new HashMap<>();
+
+        // Start ID for the first island (using 2, since 0=water, 1=land)
+        int currentIslandId = 2;
+        int maxArea = 0;
+
+        // --- Pass 1: Label Islands and Pre-calculate Areas (O(N^2)) ---
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < cols; c++) {
+                if (grid[r][c] == 1) {
+                    // DFS returns the area and simultaneously labels the island with currentIslandId
+                    int area = dfsLabel(grid, r, c, currentIslandId);
+                    islandAreas.put(currentIslandId, area);
+                    maxArea = Math.max(maxArea, area);
+                    currentIslandId++;
+                }
+            }
+        }
+
+        // Edge Case: If the entire grid is land (no zeros to flip), maxArea is the answer.
+        if (maxArea == rows * cols) {
+            return maxArea;
+        }
+
+        // --- Pass 2: Check Every Zero Cell and Calculate Max Combined Area (O(N^2)) ---
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < cols; c++) {
+
+                if (grid[r][c] == 0) { // Found a cell to potentially flip
+
+                    int combinedArea = 1; // Start with 1 for the cell being flipped (0 -> 1)
+
+                    // Use a Set to avoid double-counting islands that neighbor the zero cell multiple times.
+                    Set<Integer> neighborIslandIds = new HashSet<>();
+
+                    for (int[] move : MOVES) {
+                        int nextR = r + move[0];
+                        int nextC = c + move[1];
+
+                        // Check bounds and ensure the neighbor is land (ID >= 2)
+                        if (nextR >= 0 && nextR < rows && nextC >= 0 && nextC < cols && grid[nextR][nextC] >= 2) {
+
+                            int neighborId = grid[nextR][nextC];
+
+                            if (neighborIslandIds.add(neighborId)) { // Add only if unique ID
+                                combinedArea += islandAreas.get(neighborId);
+                            }
+                        }
+                    }
+
+                    maxArea = Math.max(maxArea, combinedArea);
+                }
+            }
+        }
+
+        return maxArea;
+    }
+
+    /**
+     * DFS helper to calculate the area and label the island.
+     * @return The area of the island component found.
+     */
+    private int dfsLabel(int[][] grid, int r, int c, int id) {
+        // Base Case: Check bounds or if already visited/water/already labeled.
+        if (r < 0 || r >= rows || c < 0 || c >= cols || grid[r][c] != 1) {
+            return 0;
+        }
+
+        // Mark the current cell with the unique island ID
+        grid[r][c] = id;
+
+        // Recursive sum: 1 (for current cell) + area from neighbors
+        return 1
+                + dfsLabel(grid, r + 1, c, id)
+                + dfsLabel(grid, r - 1, c, id)
+                + dfsLabel(grid, r, c + 1, id)
+                + dfsLabel(grid, r, c - 1, id);
+    }
+
+
+    // V0-2
+    // IDEA: 2 PASS BFS (gemini)
+//
+//    private int rows;
+//    private int cols;
+//    private final int[][] MOVES = new int[][] { { 0, 1 }, { 0, -1 }, { 1, 0 }, { -1, 0 } };
+
+    public int largestIsland_0_2(int[][] grid) {
+        if (grid == null || grid.length == 0 || grid[0].length == 0) {
+            return 0;
+        }
+
+        this.rows = grid.length;
+        this.cols = grid[0].length;
+
+        Map<Integer, Integer> islandAreas = new HashMap<>();
+        int currentIslandId = 2; // Start IDs from 2 (0=water, 1=initial land)
+        int maxArea = 0;
+
+        // --- Pass 1: Label Islands and Pre-calculate Areas (BFS) ---
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < cols; c++) {
+                if (grid[r][c] == 1) {
+                    // BFS returns the area and simultaneously labels the island with currentIslandId
+                    int area = bfsLabel(grid, r, c, currentIslandId);
+                    islandAreas.put(currentIslandId, area);
+                    maxArea = Math.max(maxArea, area);
+                    currentIslandId++;
+                }
+            }
+        }
+
+        // Edge Case: If the entire grid is land (no zeros to flip), maxArea is the answer.
+        if (maxArea == rows * cols) {
+            return maxArea;
+        }
+
+        // --- Pass 2: Check Every Zero Cell and Calculate Max Combined Area (Iterative) ---
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < cols; c++) {
+
+                if (grid[r][c] == 0) { // Found a cell to potentially flip
+
+                    int combinedArea = 1; // Start with 1 for the cell being flipped (0 -> 1)
+                    Set<Integer> neighborIslandIds = new HashSet<>();
+
+                    for (int[] move : MOVES) {
+                        int nextR = r + move[0];
+                        int nextC = c + move[1];
+
+                        // Check bounds and ensure the neighbor is a labeled island (ID >= 2)
+                        if (nextR >= 0 && nextR < rows && nextC >= 0 && nextC < cols && grid[nextR][nextC] >= 2) {
+
+                            int neighborId = grid[nextR][nextC];
+
+                            // Only add the area if this island hasn't been counted yet for this '0' cell
+                            if (neighborIslandIds.add(neighborId)) {
+                                combinedArea += islandAreas.get(neighborId);
+                            }
+                        }
+                    }
+
+                    maxArea = Math.max(maxArea, combinedArea);
+                }
+            }
+        }
+
+        return maxArea;
+    }
+
+    /**
+     * BFS helper to calculate the area and label the island with a unique ID.
+     * @return The area of the island component found.
+     */
+    private int bfsLabel(int[][] grid, int r, int c, int id) {
+        Queue<int[]> queue = new LinkedList<>();
+        queue.offer(new int[] { r, c });
+        grid[r][c] = id; // Mark start cell immediately
+        int area = 0;
+
+        while (!queue.isEmpty()) {
+            int[] current = queue.poll();
+            int curR = current[0];
+            int curC = current[1];
+            area++; // Count the current cell toward the total area
+
+            for (int[] move : MOVES) {
+                int nextR = curR + move[0];
+                int nextC = curC + move[1];
+
+                // Check bounds and ensure it's unvisited land (grid[r][c] == 1)
+                if (nextR >= 0 && nextR < rows && nextC >= 0 && nextC < cols && grid[nextR][nextC] == 1) {
+
+                    // Label the cell with the new ID and add to queue
+                    grid[nextR][nextC] = id;
+                    queue.offer(new int[] { nextR, nextC });
+                }
+            }
+        }
+
+        return area;
+    }
+
 
     // V1-1
     // IDEA: DFS

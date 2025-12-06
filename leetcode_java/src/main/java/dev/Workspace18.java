@@ -8134,10 +8134,156 @@ public class Workspace18 {
 
 
     // LC 827
+    // 16.11 - 21 pm
+    /**
+     *
+     *  -> Return the `size `of the `largest island` in grid
+     *    after applying this operation.
+     *
+     *
+     *   - n x n grid
+     *   - can change `AT MOST ONE` 0 to be 1
+     *   - island : connected `1`
+     *
+     *
+     *  -----------------------------
+     *
+     *   IDEA 1) DFS v1
+     *
+     *    ->
+     *      1. get 0 grid
+     *      2. loop over 0, and get the max area
+     *         when CHANGE every single 0
+     *       3. return result
+     *
+     *
+     *   IDEA 2) DFS v2
+     *
+     *   IDEA 3) UNION FIND ???
+     *     - 1. merge cur 1 s
+     *       2. loop over each `cluster`
+     *       3. try if can `connect / merge` with neighbor by a SINGLE change
+     *          and maintain the max area
+     *       4. return result     *
+     *
+     *  -----------------------------
+     *
+     *   ex 1)
+     *
+     *   Input: grid = [[1,0],[0,1]]
+     *   Output: 3
+     *
+     *   ->
+     *
+     *   [
+     *     [1,0],
+     *     [0,1]
+     *   ]
+     *
+     *   -> change (0,1) or (1,0), can get max area = 3
+     *
+     *
+     *  ex 2)
+     *
+     *   Input: grid = [[1,1],[1,0]]
+     *   Output: 4
+     *
+     *   [
+     *     [1,1],
+     *     [1,0]
+     *   ]
+     *
+     *
+     */
+    // IDEA 1) DFS v1
     public int largestIsland(int[][] grid) {
+        // edge
+        if(grid == null || grid.length == 0 || grid[0].length == 0){
+            return 0;
+        }
+        if(grid.length == 1 && grid[0].length == 1){
+            return 1;
+        }
 
-        return 0;
+        int l = grid.length;
+        int w = grid[0].length;
+
+        // get all 0 s
+        List<Integer[]> listZero = new ArrayList<>();
+        for(int y = 0; y < l; y++){
+            for(int x = 0; x < w; x++){
+                if(grid[y][x] == 0){
+                    listZero.add(new Integer[]{x, y});
+                }
+            }
+        }
+
+        // edge if NO 0
+        boolean noZeroGrid = listZero.isEmpty();
+        int maxArea = 0;
+
+        // case 1) NO `0` grid
+        if(noZeroGrid){
+            boolean[][] visited = new boolean[l][w]; // ???
+            // ??
+            for(int y = 0; y < l; y++){
+                for(int x = 0; x < w; x++){
+                    if(grid[y][x] == 1){
+                        //listZero.add(new Integer[]{x, y});
+                        maxArea = Math.max(maxArea, dfsFlipHelper(x, y, grid, visited));
+                    }
+                }
+            }
+            return maxArea;
+        }
+
+        // case 2) has at least 1 `0` grid
+        for(Integer[] cur: listZero){
+
+            int xZero = cur[0];
+            int yZero = cur[1];
+            // NOTE !!! make the op
+            grid[yZero][xZero] = 1;
+            for(int y = 0; y < l; y++){
+                for(int x = 0; x < w; x++){
+                    if(grid[y][x] == 1){
+                        //listZero.add(new Integer[]{x, y});
+                        maxArea = Math.max(maxArea, dfsFlipHelper(x, y, grid, new boolean[l][w]));
+                    }
+                }
+            }
+
+            // NOTE !!! backtrack
+            // -> undo the op
+            grid[yZero][xZero] = 0;
+        }
+
+
+        return maxArea;
     }
+
+
+    private int dfsFlipHelper(int x, int y, int[][] grid, boolean[][] visited){
+
+        int l = grid.length;
+        int w = grid[0].length;
+
+
+        // NOTE !!! validate first
+        if(x < 0 || x >= w || y < 0 || y > l || grid[y][x] != 1 || visited[y][x]){
+            return 0; // ???
+        }
+
+        // mark as visited
+        visited[y][x] = true;
+
+        return 1 + dfsFlipHelper(x + 1, y, grid, visited) +
+                dfsFlipHelper(x - 1, y, grid, visited) +
+                dfsFlipHelper(x, y + 1, grid, visited) +
+                dfsFlipHelper(x, y - 1, grid, visited);
+    }
+
+
 
 
 
