@@ -84,19 +84,39 @@ public class MakingALargeIsland {
         this.rows = grid.length;
         this.cols = grid[0].length;
 
+        /** NOTE !!!
+         *
+         *   use hashMap save island
+         *
+         *    { Island ID : Area }
+         */
         // Map to store: { Island ID : Area }
         Map<Integer, Integer> islandAreas = new HashMap<>();
 
+        /** NOTE !!!
+         *
+         *   island ID starts from 2.
+         *   e.g. 2, 3, 4 .....
+         */
         // Start ID for the first island (using 2, since 0=water, 1=land)
         int currentIslandId = 2;
         int maxArea = 0;
 
+        /** NOTE !!!
+         *
+         *   pass 1
+         */
         // --- Pass 1: Label Islands and Pre-calculate Areas (O(N^2)) ---
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < cols; c++) {
                 if (grid[r][c] == 1) {
+                    /** NOTE !!!
+                     *
+                     *  the ONLY place dfs helper func is called
+                     */
                     // DFS returns the area and simultaneously labels the island with currentIslandId
                     int area = dfsLabel(grid, r, c, currentIslandId);
+                    // add to hashMap
                     islandAreas.put(currentIslandId, area);
                     maxArea = Math.max(maxArea, area);
                     currentIslandId++;
@@ -109,6 +129,10 @@ public class MakingALargeIsland {
             return maxArea;
         }
 
+        /** NOTE !!!
+         *
+         *   pass 2
+         */
         // --- Pass 2: Check Every Zero Cell and Calculate Max Combined Area (O(N^2)) ---
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < cols; c++) {
@@ -124,6 +148,17 @@ public class MakingALargeIsland {
                         int nextR = r + move[0];
                         int nextC = c + move[1];
 
+                        /** NOTE !!!
+                         *
+                         *  we check if island id >= 2
+                         *  ( grid[nextR][nextC] >= 2 )
+                         *
+                         *  -> we mark grid with island in the dfs func (dfsLabel)
+                         *
+                         *       // Mark the current cell with the unique island ID
+                         *       grid[r][c] = id;
+                         *
+                         */
                         // Check bounds and ensure the neighbor is land (ID >= 2)
                         if (nextR >= 0 && nextR < rows && nextC >= 0 && nextC < cols && grid[nextR][nextC] >= 2) {
 
@@ -153,6 +188,10 @@ public class MakingALargeIsland {
             return 0;
         }
 
+        /** NOTE !!!
+         *
+         *  we Mark the current cell with the unique island ID
+         */
         // Mark the current cell with the unique island ID
         grid[r][c] = id;
 
