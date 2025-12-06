@@ -175,7 +175,6 @@
 			- 1697
 	- LC 695 Max Area of Island
 		- gpt
-			- 827
 			- 329
 			- 711 (Number of Distinct Islands II)
 			- 1905
