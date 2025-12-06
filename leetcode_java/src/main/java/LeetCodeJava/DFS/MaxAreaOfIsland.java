@@ -42,6 +42,64 @@ import java.util.Stack;
 public class MaxAreaOfIsland {
 
     // V0
+    // IDEA: DFS
+    /**  NOTE !!! with below DFS pattern:
+     *
+     *  2) (as VO-0-1)
+     *
+     *   // validation logic
+     *   // ...
+     *
+     *   return 1 + dfs(x+1, y,..) +
+     *          dfs(x+-1, y,..) +
+     *          dfs(x, y - 1,..) +
+     *          dfs(x, y + 1,..);
+     *
+     */
+    public int maxAreaOfIsland(int[][] grid) {
+        // edge
+        if (grid == null || grid.length == 0 || grid[0].length == 0) {
+            return 0;
+        }
+
+        int maxArea = 0;
+
+        int l = grid.length;
+        int w = grid[0].length;
+
+        for (int y = 0; y < l; y++) {
+            for (int x = 0; x < w; x++) {
+                if (grid[y][x] == 1) {
+                    maxArea = Math.max(maxArea, areaHelper(x, y, grid));
+                }
+            }
+        }
+
+        return maxArea;
+    }
+
+    private int areaHelper(int x, int y, int[][] grid) {
+        int l = grid.length;
+        int w = grid[0].length;
+
+        // NOTE !!! validate ????
+        if (x < 0 || x >= w || y < 0 || y >= l || grid[y][x] != 1) {
+            return 0;
+        }
+
+        // mark as visited  ??
+        grid[y][x] = -1;
+
+        // NOTE !!! we use below DFS pattern
+        //          for area accumulation
+        return 1 + areaHelper(x + 1, y, grid) +
+                areaHelper(x - 1, y, grid) +
+                areaHelper(x, y + 1, grid) +
+                areaHelper(x, y - 1, grid);
+    }
+
+
+    // V0-0-1
     // IDEA : DFS (modified by gpt)
     /**  NOTE !!! DFS pattern:
      *
@@ -71,7 +129,7 @@ public class MaxAreaOfIsland {
      */
     int biggestArea = 0;
 
-    public int maxAreaOfIsland(int[][] grid) {
+    public int maxAreaOfIsland_0_0_1(int[][] grid) {
         int l = grid.length;
         int w = grid[0].length;
 
@@ -155,9 +213,9 @@ public class MaxAreaOfIsland {
         return area;
     }
 
-    // V0-0-1
+    // V0-0-2
     // IDEA: DFS (fixed by gpt)
-    public int maxAreaOfIsland_0_0_1(int[][] grid) {
+    public int maxAreaOfIsland_0_0_2(int[][] grid) {
         // edge
         if (grid == null || grid.length == 0 || grid[0].length == 0)
             return 0;

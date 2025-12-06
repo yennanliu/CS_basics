@@ -5995,6 +5995,7 @@ public class Workspace18 {
      *
      *
      */
+    // IDEA 1) DFS
     public int[][] floodFill(int[][] image, int sr, int sc, int color) {
         // edge
         if(image == null || image.length == 0 || image[0].length == 0){
@@ -6004,14 +6005,58 @@ public class Workspace18 {
             return image;
         }
 
+
         if(image[sr][sc] != color){
             dfsHelper(sc, sr, image, image[sr][sc], color);
         }
+
 
         return image;
     }
 
     private void dfsHelper(int x, int y, int[][] image, int originalColor, int color){
+        int[][] moves = new int[][]{ {1,0}, {-1,0}, {0,1}, {0,-1} };
+
+        // color
+        image[y][x] = color;
+
+        int l = image.length;
+        int w = image[0].length;
+
+        for(int[] m: moves) {
+            int x_ = x + m[1];
+            int y_ = y + m[0];
+            if(x_ >= 0 && x_ < l && y_ >= 0 && y_ < w){
+                // check if need `move`
+                if(image[y_][x_] == originalColor){
+                    dfsHelper(x_, y_, image, originalColor, color);
+                }
+            }
+        }
+
+
+    }
+
+
+
+
+    public int[][] floodFill_99(int[][] image, int sr, int sc, int color) {
+        // edge
+        if(image == null || image.length == 0 || image[0].length == 0){
+            return image;
+        }
+        if(sc == color){
+            return image;
+        }
+
+        if(image[sr][sc] != color){
+            dfsHelper_99(sc, sr, image, image[sr][sc], color);
+        }
+
+        return image;
+    }
+
+    private void dfsHelper_99(int x, int y, int[][] image, int originalColor, int color){
 
         // ????
         int[][] moves = new int[][]{ {1,0}, {-1,0}, {0,1}, {0,-1} };
@@ -6052,7 +6097,63 @@ public class Workspace18 {
      *
      *
      */
+    // 15.52 - 16.02  pm
+    // IDEA 1) DFS
     public int maxAreaOfIsland(int[][] grid) {
+        // edge
+        if(grid == null || grid.length == 0 || grid[0].length == 0){
+            return 0;
+        }
+
+        int maxArea = 0;
+
+        int l = grid.length;
+        int w = grid[0].length;
+
+        for(int y = 0; y < l; y++){
+            for(int x = 0; x < w; x++){
+                if(grid[y][x] == 1){
+                    // ??
+                    //int newArea = areaHelper(x, y, grid);
+                    maxArea = Math.max(maxArea, areaHelper(x, y, grid));
+                }
+            }
+        }
+
+        return maxArea;
+    }
+
+
+    private int areaHelper(int x, int y, int[][] grid){
+        int l = grid.length;
+        int w = grid[0].length;
+
+        // NOTE !!! validate ????
+        if(x < 0 || x >= w || y < 0 || y >= l || grid[y][x] != 1){
+            return 0;
+        }
+
+        // mark as visited  ??
+        grid[y][x] = -1;
+
+        //int[][] moves = new int[][]{ {1,0}, {-1,0}, {0,1}, {0,-1} };
+
+        // ???
+        return 1 + areaHelper(x + 1, y, grid) +
+                areaHelper(x - 1, y, grid) +
+                areaHelper(x, y + 1, grid) +
+                areaHelper(x, y - 1, grid);
+    }
+
+
+
+
+
+    // ------------
+
+
+
+    public int maxAreaOfIsland_99(int[][] grid) {
         // edge
         if(grid == null || grid.length == 0 || grid[0].length == 0){
             return 0;
