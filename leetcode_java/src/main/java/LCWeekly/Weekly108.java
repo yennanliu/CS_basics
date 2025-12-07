@@ -131,7 +131,7 @@ public class Weekly108 {
     // Q2
     // LC 2766
     // https://leetcode.com/problems/relocate-marbles/description/
-    // 12.56 - 1.06 pm
+    // 2.06 - 16 pm
     /**
      *
      * -> After completing all the steps,
@@ -251,7 +251,7 @@ public class Weekly108 {
     // Q3
     // LC 2767
     // https://leetcode.com/problems/partition-string-into-minimum-beautiful-substrings/description/
-    // 13.27 - 37 pm
+    //  2.06 - 16 pm
     /**
      *
      *  -> Return the `minimum` number of substrings in such partition.
@@ -281,10 +281,69 @@ public class Weekly108 {
      *
      *
      */
+    ///  IDEA 1) BIT OP + GREEDY ??? + slide window ??????
     public int minimumBeautifulSubstrings(String s) {
+        // edge
+        if(s.isEmpty()){
+            return -1;
+        }
+        if(s.length() == 1){
+            return s.equals("1") ? 1: -1;
+        }
+        // ????
+        if(s.startsWith("0", 1)){
+            return -1;
+        }
 
-        return 0;
+        int minCnt = 100; // ????
+        StringBuilder sb = new StringBuilder();
+        int l = 0;
+        for(int r = 0; r < s.length(); r++){
+            String x = String.valueOf(s.charAt(r));
+            sb.append(x);
+            while(!sb.toString().startsWith("0") && isBinaryPowerOfFive(sb)){
+                //minCnt += 1;
+                sb.delete(l, l+1); // ??
+                l += 1;
+            }
+            minCnt += 1;
+        }
+
+
+        return minCnt;
     }
+
+    private boolean isBinaryPowerOfFive(StringBuilder sb){
+        int intVal = Integer.parseInt(sb.toString());
+        // Integer.toBinaryString(num2)
+        // ???
+        if(intVal < 0){
+            return false;
+        }
+        if(intVal <= 1){
+            return true;
+        }
+        String binaryStr = Integer.toBinaryString(intVal);
+        System.out.println(">>> binaryStr = " + binaryStr);
+        // ???
+        int binarySum = 0;
+        int len = binaryStr.length();
+        for(int i = len - 1; i > 0; i++){
+            binarySum += (Math.pow(2, i)); //???
+        }
+
+        // /???
+        System.out.println(">>> binarySum = " + binarySum);
+        int binaryInt = Integer.parseInt(String.valueOf(binarySum));
+        while(binaryInt > 0){
+            binaryInt = binaryInt % 5;
+        }
+
+        return binaryInt == 0; // /???
+    }
+
+
+
 
 
     // Q4 ??????
