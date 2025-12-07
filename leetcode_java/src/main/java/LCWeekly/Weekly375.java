@@ -1,4 +1,4 @@
-package dev.LCWeekly;
+package LCWeekly;
 
 import java.util.ArrayList;
 import java.util.HashMap;
