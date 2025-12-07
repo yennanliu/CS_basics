@@ -287,9 +287,28 @@ public class Weekly108 {
     }
 
 
-    // Q4
+    // Q4 ??????
     // LC 2768
     // https://leetcode.com/problems/number-of-black-blocks/description/
+    // https://leetcode.cn/problems/number-of-black-blocks/
+    // 13.49 - 59 pm
+    /**
+     *  -> Return a 0-indexed integer array arr of size 5 such that arr[i]
+     *     is the number of blocks that contains exactly i black cells.
+     *
+     *   ??????
+     *
+     *  --------------------------
+     *
+     *
+     *
+     *  --------------------------
+     *
+     *
+     */
+    public long[] countBlackBlocks(int m, int n, int[][] coordinates) {
 
+        return null;
+    }
 
 }
