@@ -236,7 +236,7 @@ public class Weekly108 {
 
         //Integer[]
         List<Integer> res = new ArrayList<>(nums.length); // /??
- 
+
         System.out.println(">>> (after OP) map = " + map);
         // ???
         for(int key: map.keySet()){
@@ -251,6 +251,41 @@ public class Weekly108 {
     // Q3
     // LC 2767
     // https://leetcode.com/problems/partition-string-into-minimum-beautiful-substrings/description/
+    // 13.27 - 37 pm
+    /**
+     *
+     *  -> Return the `minimum` number of substrings in such partition.
+     *    If it is impossible to partition the string s into beautiful substrings,
+     *    return -1.
+     *
+     *    - String s,  do the op that make the substring is `beautiful`
+     *    - A string is `beautiful` if:
+     *       - It doesn't contain leading zeros.
+     *       - It's the binary representation of a number that is a power of 5.
+     *
+     *
+     *   NOTE:
+     *      - A substring is a contiguous sequence of characters in a string.
+     *
+     *
+     *
+     *  ---------------------
+     *
+     *
+     *  IDEA 1) BIT OP + GREEDY ???
+     *
+     *  IDEA 2) DP ???
+     *
+     *
+     *   ---------------------
+     *
+     *
+     */
+    public int minimumBeautifulSubstrings(String s) {
+
+        return 0;
+    }
+
 
     // Q4
     // LC 2768
