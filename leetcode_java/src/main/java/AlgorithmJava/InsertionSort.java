@@ -16,15 +16,28 @@ package AlgorithmJava;
  *
  */
 public class InsertionSort {
+
+    // V1
     public static void insertionSort(int[] arr) {
+        /**
+         * Iterating Through the Unsorted Elements
+         */
         for (int i = 1; i < arr.length; i++) {
             int key = arr[i];
             int j = i - 1;
+            /**
+             * Finding the Insertion Point and Shifting Elements
+             *
+             */
             while (j >= 0 && arr[j] > key) {
                 arr[j + 1] = arr[j];
                 j--;
             }
+            /**
+             * Placing the Key in the Correct Position
+             */
             arr[j + 1] = key;
         }
     }
+
 }
