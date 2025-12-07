@@ -1,4 +1,4 @@
-package dev.LCWeekly;
+package LCWeekly;
 
 // https://leetcode.com/contest/weekly-contest-324/
 

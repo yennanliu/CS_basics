@@ -1,4 +1,4 @@
-package dev.LCWeekly;
+package LCWeekly;
 
 import LeetCodeJava.DataStructure.TreeNode;
 
