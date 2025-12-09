@@ -49,6 +49,46 @@ public class ShortestBridge {
 //
 //    }
 
+    /** NOTE !!! why NOT use UF (union find) ?
+     *
+     *  The problem LC 934: Shortest Bridge asks for
+     *  the minimum number of steps (flipping water '0' to land '1')
+     *  to connect two separate islands. This is a classic problem solved
+     *  by combining Island Identification (DFS/BFS) with Multi-Source BFS
+     *  (for shortest path/distance).
+     *
+     * Your code attempts to use Union-Find (UF) for island identification,
+     * but this is a complex way to approach it and is incorrectly implemented.
+     *
+     * NOTE !!!
+     *
+     *  -> UF is typically used for problems where islands are `growing dynamically`
+     *    (like LC 305). For a static grid, DFS or standard BFS is simpler.
+     *
+     *
+     *  ->
+     *
+     *  The approach should be:
+     *
+     *   1. Identify First Island:
+     *       Use DFS or BFS to find and mark all cells
+     *       of the first island (e.g., change '1' to '2'). Simultaneously,
+     *       add all boundary cells of this island to a queue for the next step.
+     *
+     *   2. Multi-Source BFS:
+     *      Perform a BFS starting simultaneously from all cells of
+     *      the first island's boundary. The BFS expands outward,
+     *      counting levels (the bridge length) until it hits a cell
+     *      belonging to the second island ('1').
+     *
+     *
+     */
+    // V0-0-1
+    //    public int shortestBridge_0_0_1(int[][] grid) {
+//
+//    }
+
+
     // V0-1
     // IDEA: DFS + BFS (gpt)
     public int shortestBridge_0_1(int[][] grid) {
