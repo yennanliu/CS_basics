@@ -8284,6 +8284,20 @@ public class Workspace18 {
     }
 
 
+    // LC 934
+    // 8.19 - 9.19 am
+    /**
+     * -> Return the smallest number of 0's you must
+     *   flip to connect the two islands.
+     *
+     *
+     *
+     *
+     */
+    public int shortestBridge(int[][] grid) {
+
+        return 0;
+    }
 
 
 
