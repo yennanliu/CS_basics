@@ -91,6 +91,39 @@ public class ShortestBridge {
 
     // V0-1
     // IDEA: DFS + BFS (gpt)
+    /**
+     *  ---------
+     *
+     *  Question:
+     *
+     *   it seems that in the code you offered, we ONLY choose 1 group of island (mark as 2) by DFS
+     *   then we use BFS find the min dist from that island 1 to the other island.
+     *
+     *   -> is it correct ?  don't we need to redo step 1) on the other island as well,
+     *    since it may also have smaller distance ?
+     *
+     *
+     *  ---------
+     *
+     *  Answer (gpt):
+     *
+     *   ->  and yes, the approach is correct,
+     *       and no, we do NOT need to redo DFS on the second island.
+     *       This is a very common point of confusion in LC 934 Shortest Bridge.
+     *
+     *
+     *   -> ✅ Why we only DFS one island, not both
+     *
+     *    Correct strategy (standard solution):
+     * 	   1.	Find the `first island`, DFS mark it as 2. (as `first island`)
+     * 	   2.	Push all its boundary cells into a BFS queue.
+     *     3.	Run BFS, expanding layer by layer until we reach any cell of the second island (1).
+     *
+     *          -> !!! e.g. we run BFS on ALL THE REMAINING "1" grid
+     *             so we are comparing ALL the grid in `the other island` VS  `first island`
+     *             so the BFS can help us find the min dist.
+     *
+     */
     public int shortestBridge_0_1(int[][] grid) {
         int n = grid.length;
         boolean found = false;
