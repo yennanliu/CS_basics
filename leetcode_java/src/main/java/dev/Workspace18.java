@@ -8287,15 +8287,158 @@ public class Workspace18 {
     // LC 934
     // 8.19 - 9.19 am
     /**
-     * -> Return the smallest number of 0's you must
-     *   flip to connect the two islands.
+     * -> Return the `smallest` number of 0's you MUST
+     *   `flip` to connect the `two islands`.
      *
+     *
+     *   - n x n matrix
+     *   - 1:  island
+     *   - 0: water
+     *   -
+     *
+     *  ----------------------------
+     *
+     *  IDEA 1) BFS
+     *
+     *  IDEA 2) DFS
+     *
+     *  IDEA 3) union find ?????
+     *
+     *     -> 1. build the UF, union
+     *        2. start from every 0
+     *           and try to connect "two" 1,
+     *           and if the "two" 1 are in DIFFERENT group,
+     *           we get the min dist from them.
+     *
+     *        3. repeat above, find the global min dist
+     *
+     *
+     *  ----------------------------
+     *
+     *   ex 1)
+     *
+     *   Input: grid = [[0,1],[1,0]]
+     *   Output: 1
+     *
+     *   ->
+     *
+     *   [
+     *    [0,1],
+     *    [1,0]
+     *   ]
+     *
+     *
+     *  ex 2)
+     *
+     *   Input: grid = [[0,1,0],[0,0,0],[0,0,1]]
+     *   Output: 2
+     *
+     *   ->
+     *
+     *   [
+     *     [0,1,0],
+     *     [0,0,0],
+     *     [0,0,1]
+     *   ]
+     *
+     *  ex 3)
+     *
+     *  Input: grid = [[1,1,1,1,1],[1,0,0,0,1],[1,0,1,0,1],[1,0,0,0,1],[1,1,1,1,1]]
+     *  Output: 1
+     *
+     *  ->
+     *
+     *   [
+     *     [1,1,1,1,1],
+     *     [1,0,0,0,1],
+     *     [1,0,1,0,1],
+     *     [1,0,0,0,1],
+     *     [1,1,1,1,1]
+     *  ]
      *
      *
      *
      */
-    public int shortestBridge(int[][] grid) {
+    // ??
+    class MyUF4{
+        // attr
+        int[] parents;
+        int[] degrees; // ??
+        int groupCnt;
 
+        // constructor
+        MyUF4(int n){
+            this.parents = new int[n];
+            Arrays.fill(this.parents, 0);
+
+            // ???
+            this.degrees = new int[n];
+            Arrays.fill(this.parents, 0); // ??? 0 or -1 ???
+
+            this.groupCnt = n;
+        }
+
+        // method
+        public void merge(int x, int y){
+
+        }
+
+        public int getParent(int x){
+            return -1;
+        }
+
+        public int getGroupCnt(){
+            return this.groupCnt;
+        }
+
+    }
+    public int shortestBridge(int[][] grid) {
+        // edge
+
+        int n = grid.length;
+        MyUF4 uf  = new MyUF4(n);
+
+        int l = grid.length;
+        int w = grid[0].length;
+
+        // collect 1 grid
+        List<Integer[]> list = new ArrayList<>();
+        for(int y = 0; y < l; y++){
+            for(int x = 0; x < w; x++){
+                if(grid[y][x] == 1){
+                    list.add(new Integer[]{x, y});
+                }
+            }
+        }
+
+        int[][] moves = new int[][] { {0,1},{0,-1},{1,0},{-1,0} };
+
+        Map<Integer, List<Integer>> map = new HashMap<>();
+
+        // start from 2, since 1, 0 already used
+        int groupId = 2;
+        int initX = -1;
+        int initY = -1;
+        List<Integer[]> tmp = new ArrayList<>();
+        for(int y = 0; y < l; y++){
+            for(int x = 0; x < w; x++){
+                if(grid[y][x] == 1){
+                    // get the 1st `1` point as the parent
+                    if(initX == -1){
+                        initX = x;
+                        initY = y;
+                    }
+                    // merge
+                    else{
+                        // NOTE !!! we `flatten` 2D array to 1D array,
+                        //          so can use the merge(int x, int y) func
+                        // ???
+                        uf.merge(initX + initY, x+y);
+                    }
+                    tmp.add(new Integer[]{x, y});
+                }
+            }
+        }
         return 0;
     }
 
