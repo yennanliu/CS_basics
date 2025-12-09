@@ -72,6 +72,18 @@
   - **Delimiter Usage**: Use delimiters (like 'O' for "Out") when backtracking to distinguish different shapes
   - **Relative Encoding**: Record relative positions or directional movements, not absolute coordinates
 
+### **Pattern 9: DFS with Validation (Sub-Component Detection)**
+- **Description**: Traverse one grid/graph structure while validating against another reference structure
+- **Recognition**: "Sub-islands", "subset validation", "component matching", "inclusion checking"
+- **Key Technique**: DFS traversal with boolean flag that tracks whether ALL cells satisfy a condition
+- **Examples**: LC 1905 (Count Sub Islands)
+- **Template**: Use DFS Validation Template
+- **Important Notes**:
+  - **Boolean Flag Propagation**: Use `res = dfs(...) && res` pattern to accumulate validation results
+  - **Mark Visited**: Mark visited cells in the traversal grid to avoid revisiting
+  - **Short-circuit Optimization**: Can optimize by returning early if validation fails
+  - **Two-Grid Comparison**: One grid for traversal structure, another for validation condition
+
 ## Templates & Algorithms
 
 ### Template Comparison Table
@@ -85,6 +97,7 @@
 | **Bottom-up** | Aggregate info | Post-order | O(n) | O(h) | Subtree problems |
 | **2-Pass DFS** | Boundary elimination | Two-phase flood | O(m×n) | O(m×n) | Closed/surrounded regions |
 | **Path Signature** | Encode shapes | Directional tracking | O(m×n) | O(m×n) | Distinct shape counting |
+| **DFS Validation** | Component validation | Boolean flag propagation | O(m×n) | O(m×n) | Sub-component detection |
 
 ### Universal DFS Template
 ```python
@@ -590,7 +603,197 @@ private void dfs(int[][] grid, boolean[][] seen, int r0, int c0, int r, int c, S
    - Translation invariant (position doesn't matter)
    - Rotation/reflection sensitive (as required)
 
-#### 0-2-2) Basic Tricks
+### Template 9: DFS with Validation (Sub-Component Detection)
+```java
+/**
+ * Pattern: DFS traversal on one grid while validating against another grid
+ * Use case: Count sub-islands, validate subset components, inclusion checking
+ * Key insight: Use boolean flag propagation to track whether ALL cells satisfy condition
+ *
+ * Time: O(m × n) - visit each cell once
+ * Space: O(m × n) - recursion stack + visited set
+ */
+public int countSubComponents(int[][] grid1, int[][] grid2) {
+    if (grid2 == null || grid2.length == 0) {
+        return 0;
+    }
+
+    int rows = grid2.length;
+    int cols = grid2[0].length;
+    Set<Integer> visited = new HashSet<>();
+    int count = 0;
+
+    // Iterate through grid2 to find all components
+    for (int r = 0; r < rows; r++) {
+        for (int c = 0; c < cols; c++) {
+            int flatCoord = r * cols + c;
+
+            // Start DFS on unvisited land cells in grid2
+            if (grid2[r][c] == 1 && !visited.contains(flatCoord)) {
+                // DFS returns true if ALL cells in this component exist in grid1
+                if (dfsValidate(grid1, grid2, r, c, visited)) {
+                    count++;
+                }
+            }
+        }
+    }
+
+    return count;
+}
+
+/**
+ * DFS with validation: Check if entire component in grid2 is subset of grid1
+ * Returns true only if ALL cells in the component satisfy the condition
+ */
+private boolean dfsValidate(int[][] grid1, int[][] grid2, int r, int c, Set<Integer> visited) {
+    int rows = grid2.length;
+    int cols = grid2[0].length;
+    int flatCoord = r * cols + c;
+
+    // Base cases
+    if (r < 0 || r >= rows || c < 0 || c >= cols
+        || grid2[r][c] == 0 || visited.contains(flatCoord)) {
+        return true; // Empty/visited cells don't violate the condition
+    }
+
+    // Mark as visited
+    visited.add(flatCoord);
+
+    // Initialize result as true
+    boolean isValid = true;
+
+    // Check condition: Does this cell exist in grid1?
+    if (grid1[r][c] == 0) {
+        isValid = false; // Found a cell in grid2 that's NOT in grid1
+    }
+
+    // CRITICAL: Use && with res to propagate validation through entire component
+    // Must visit ALL neighbors even if isValid is false (to mark them as visited)
+    isValid = dfsValidate(grid1, grid2, r - 1, c, visited) && isValid;
+    isValid = dfsValidate(grid1, grid2, r + 1, c, visited) && isValid;
+    isValid = dfsValidate(grid1, grid2, r, c - 1, visited) && isValid;
+    isValid = dfsValidate(grid1, grid2, r, c + 1, visited) && isValid;
+
+    return isValid;
+}
+```
+
+**Python Implementation:**
+```python
+def count_sub_components(grid1, grid2):
+    """
+    Count components in grid2 that are completely contained in grid1
+    """
+    if not grid2 or not grid2[0]:
+        return 0
+
+    rows, cols = len(grid2), len(grid2[0])
+    visited = set()
+    count = 0
+
+    def dfs(r, c):
+        """
+        DFS with validation
+        Returns True if entire component is valid
+        """
+        # Base cases
+        if (r < 0 or r >= rows or c < 0 or c >= cols
+            or grid2[r][c] == 0 or (r, c) in visited):
+            return True
+
+        visited.add((r, c))
+
+        # Check condition
+        is_valid = True
+        if grid1[r][c] == 0:
+            is_valid = False
+
+        # Visit all neighbors (must visit ALL even if invalid)
+        is_valid = dfs(r - 1, c) and is_valid
+        is_valid = dfs(r + 1, c) and is_valid
+        is_valid = dfs(r, c - 1) and is_valid
+        is_valid = dfs(r, c + 1) and is_valid
+
+        return is_valid
+
+    # Main loop
+    for r in range(rows):
+        for c in range(cols):
+            if grid2[r][c] == 1 and (r, c) not in visited:
+                if dfs(r, c):
+                    count += 1
+
+    return count
+```
+
+**Concrete Example: LC 1905 - Count Sub Islands**
+```
+Problem: Count islands in grid2 that are completely contained in grid1
+
+grid1: [[1,1,1,0,0],    grid2: [[1,1,1,0,0],
+        [0,1,1,1,1],            [0,0,1,0,0],
+        [0,0,0,0,0],            [0,1,0,0,0],
+        [1,0,0,0,0],            [1,0,1,1,0],
+        [1,1,0,1,1]]            [0,1,0,1,0]]
+
+Analysis:
+- Island 1 in grid2 (top-left): Cells (0,0), (0,1), (0,2), (1,2)
+  → Check grid1: All exist? YES → Count it ✓
+
+- Island 2 in grid2 (middle): Cells (2,1)
+  → Check grid1: (2,1) = 0 → NOT a sub-island ✗
+
+- Island 3 in grid2 (bottom): Cells (3,0), (3,2), (3,3), (4,1), (4,3)
+  → Check grid1: (3,0) = 1, but (4,1) = 1... complex shape
+  → Some cells don't match → NOT a sub-island ✗
+
+Result: 1 sub-island (only the first one)
+
+Key Insight:
+- Must traverse ENTIRE island in grid2
+- Check EVERY cell against grid1
+- Return true only if ALL cells pass validation
+```
+
+**Why Boolean Propagation Works:**
+
+```java
+// CORRECT: Visit all neighbors, accumulate results
+res = dfs(r - 1, c) && res;
+res = dfs(r + 1, c) && res;
+res = dfs(r, c - 1) && res;
+res = dfs(r, c + 1) && res;
+
+// WRONG: Short-circuits, doesn't visit all cells
+if (!dfs(r - 1, c)) return false;  // Stops early, leaves cells unvisited!
+```
+
+**Pattern Characteristics:**
+- **Two Data Sources**: One for structure (grid2), one for validation (grid1)
+- **Complete Traversal**: Must visit entire component, cannot short-circuit
+- **Boolean Accumulation**: Use `res = dfs(...) && res` pattern
+- **Visited Tracking**: Essential to avoid infinite loops and double-counting
+- **Total Time**: O(m × n) - each cell visited once
+- **Total Space**: O(m × n) - recursion stack + visited set
+
+**When to Use This Pattern:**
+- Validate that one component is subset of another
+- Check if structure A is completely contained in structure B
+- Count valid sub-components with specific properties
+- Two-grid comparison problems
+
+**Key Variations:**
+1. **Early Termination**: Mark entire component as invalid if one cell fails
+2. **Flip Validation**: Check grid2 cells DON'T exist in grid1 (inverse problem)
+3. **Multiple Grids**: Validate against multiple reference grids
+4. **Weighted Validation**: Sum values during traversal, check threshold
+
+**Similar Problems:**
+- LC 1905: Count Sub Islands (two grids, subset validation)
+- LC 200: Number of Islands (single grid, basic DFS)
+- LC 695: Max Area of Island (single grid, count cells)
+- LC 463: Island Perimeter (single grid, count edges)
+- LC 827: Making A Large Island (grid modification, max area)
 
 
 - Assign sub tree to node, then return updated node at final stage (Important !!!!)
@@ -886,6 +1089,15 @@ print (z)
 | Find Duplicate Subtrees | 652 | Medium | Tree serialization | Template 8 |
 | Most Frequent Subtree Sum | 508 | Medium | Subtree signature | Template 8 |
 
+#### **Pattern 9: DFS with Validation (Sub-Component Detection)**
+| Problem | LC # | Difficulty | Key Technique | Template |
+|---------|------|------------|---------------|----------|
+| Count Sub Islands | 1905 | Medium | Boolean flag propagation | Template 9 |
+| Number of Islands | 200 | Medium | Basic component counting | Template 2 |
+| Max Area of Island | 695 | Medium | Component size tracking | Template 2 |
+| Island Perimeter | 463 | Easy | Edge counting | Template 2 |
+| Making A Large Island | 827 | Hard | Component merging | Template 2 |
+
 ### Complete Problem List by Difficulty
 
 #### Easy Problems (Foundation)
@@ -924,6 +1136,7 @@ print (z)
 - LC 669: Trim BST - Conditional modification
 - LC 695: Max Area of Island - Connected component
 - LC 701: Insert into BST - BST insertion
+- LC 1905: Count Sub Islands - DFS with validation
 - LC 737: Sentence Similarity II - Graph connectivity
 - LC 776: Split BST - Advanced manipulation
 - LC 1020: Number of Enclaves - Boundary elimination
