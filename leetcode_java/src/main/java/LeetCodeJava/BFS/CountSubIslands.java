@@ -52,6 +52,127 @@ public class CountSubIslands {
 //
 //    }
 
+    // V0-1
+    // IDEA: DFS (gemini)
+    private int R;
+    private int C;
+    private final int[][] MOVES = new int[][] { { 0, 1 }, { 0, -1 }, { 1, 0 }, { -1, 0 } };
+
+    /**
+     * Counts the number of islands in grid2 that are entirely contained in land of grid1.
+     * Time Complexity: O(R * C)
+     */
+    public int countSubIslands_0_1(int[][] grid1, int[][] grid2) {
+        this.R = grid1.length;
+        this.C = grid1[0].length;
+
+        // --- Phase 1: Sink invalid islands in grid2 ---
+        // An island in grid2 is invalid if any of its cells (r, c) corresponds to water (0) in grid1.
+        for (int r = 0; r < R; r++) {
+            for (int c = 0; c < C; c++) {
+
+                // If a cell is land in grid2 BUT water in grid1,
+                // the entire island connected to this cell in grid2 must be eliminated (sunk).
+                if (grid2[r][c] == 1 && grid1[r][c] == 0) {
+                    sinkIsland(grid2, r, c); // Sinks the whole connected component in grid2
+                }
+            }
+        }
+
+        // --- Phase 2: Count the remaining islands in grid2 ---
+        // The remaining islands are guaranteed to be sub-islands.
+        int subIslandCount = 0;
+        for (int r = 0; r < R; r++) {
+            for (int c = 0; c < C; c++) {
+
+                if (grid2[r][c] == 1) {
+                    subIslandCount++;
+                    // Sinks the remaining valid island to prevent recounting
+                    sinkIsland(grid2, r, c);
+                }
+            }
+        }
+
+        return subIslandCount;
+    }
+
+    /**
+     * DFS function to "sink" (change '1' to '0') an entire connected component in the grid.
+     */
+    private void sinkIsland(int[][] grid, int r, int c) {
+        // Base case: Out of bounds or already water ('0')
+        if (!isValid(r, c) || grid[r][c] == 0) {
+            return;
+        }
+
+        // Mark current cell as water (sunk)
+        grid[r][c] = 0;
+
+        // Recurse into neighbors
+        for (int[] move : MOVES) {
+            sinkIsland(grid, r + move[0], c + move[1]);
+        }
+    }
+
+    private boolean isValid(int r, int c) {
+        return r >= 0 && r < R && c >= 0 && c < C;
+    }
+
+
+    // V0-2
+    // IDEA: DFS (gpt)
+    public int countSubIslands_0_2(int[][] grid1, int[][] grid2) {
+        int l = grid1.length;
+        int w = grid1[0].length;
+
+        int count = 0;
+
+        for (int y = 0; y < l; y++) {
+            for (int x = 0; x < w; x++) {
+                if (grid2[y][x] == 1) {
+                    // DFS collect and check if this island in grid2 is fully inside grid1
+                    boolean isSub = dfsCheck(grid1, grid2, x, y);
+                    if (isSub)
+                        count++;
+                }
+            }
+        }
+        return count;
+    }
+
+    // DFS: returns true if island in grid2 is a sub-island of grid1
+    private boolean dfsCheck(int[][] grid1, int[][] grid2, int x, int y) {
+        int l = grid1.length;
+        int w = grid1[0].length;
+
+        // out of boundary
+        if (x < 0 || x >= w || y < 0 || y >= l)
+            return true;
+
+        // if water or visited in grid2
+        if (grid2[y][x] != 1)
+            return true;
+
+        // mark grid2 as visited
+        grid2[y][x] = -1;
+
+        // This cell must be land in grid1 to be a sub-island
+        boolean valid = (grid1[y][x] == 1);
+
+        int[][] moves = { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 } };
+
+        for (int[] m : moves) {
+            int nx = x + m[0];
+            int ny = y + m[1];
+            boolean child = dfsCheck(grid1, grid2, nx, ny);
+
+            // if any child is invalid, whole island invalid
+            valid = valid && child;
+        }
+        return valid;
+    }
+
+
     // V1-1
     // IDEA: BFS
     // https://leetcode.com/problems/count-sub-islands/editorial/
