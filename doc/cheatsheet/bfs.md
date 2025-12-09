@@ -107,18 +107,159 @@ def multi_source_bfs(grid, sources):
     """Start BFS from multiple sources simultaneously"""
     queue = deque(sources)  # All sources at once
     visited = set(sources)
-    
+
     while queue:
         x, y = queue.popleft()
-        
+
         for dx, dy in [(0,1), (0,-1), (1,0), (-1,0)]:
             nx, ny = x + dx, y + dy
-            
-            if (0 <= nx < len(grid) and 0 <= ny < len(grid[0]) 
+
+            if (0 <= nx < len(grid) and 0 <= ny < len(grid[0])
                 and (nx, ny) not in visited):
                 visited.add((nx, ny))
                 queue.append((nx, ny))
 ```
+
+### Pattern 4.5: DFS + Multi-Source BFS (Island Expansion)
+```java
+/**
+ * Pattern: DFS to identify first component, then Multi-Source BFS to find shortest distance to second component
+ * Use case: Find shortest bridge between two islands, connect two separate regions
+ * Key insight: DFS marks entire first island, BFS expands from ALL cells of first island simultaneously
+ *
+ * Time: O(m × n) - each cell visited at most once by DFS + once by BFS
+ * Space: O(m × n) - queue can hold entire island boundary
+ */
+public int dfsMarkThenMultiSourceBFS(int[][] grid) {
+    int n = grid.length;
+    Queue<int[]> queue = new LinkedList<>();
+    boolean found = false;
+
+    // Step 1: DFS to find and mark first island (change 1 → 2)
+    // Add ALL cells of first island to queue for multi-source BFS
+    for (int y = 0; y < n && !found; y++) {
+        for (int x = 0; x < n && !found; x++) {
+            if (grid[y][x] == 1) {
+                dfsMarkIsland(grid, x, y, queue);
+                found = true;
+            }
+        }
+    }
+
+    // Step 2: Multi-Source BFS from entire first island
+    // Expand outward layer by layer until reaching second island
+    int[][] dirs = {{1,0}, {-1,0}, {0,1}, {0,-1}};
+    int steps = 0;
+    boolean[][] visited = new boolean[n][n];
+
+    while (!queue.isEmpty()) {
+        int size = queue.size();
+
+        for (int i = 0; i < size; i++) {
+            int[] cur = queue.poll();
+            int x = cur[0], y = cur[1];
+
+            for (int[] d : dirs) {
+                int nx = x + d[0];
+                int ny = y + d[1];
+
+                if (nx >= 0 && nx < n && ny >= 0 && ny < n && !visited[ny][nx]) {
+                    visited[ny][nx] = true;
+
+                    if (grid[ny][nx] == 1) {
+                        return steps; // Reached second island
+                    }
+
+                    if (grid[ny][nx] == 0) {
+                        queue.add(new int[]{nx, ny});
+                    }
+                }
+            }
+        }
+        steps++;
+    }
+
+    return -1;
+}
+
+// DFS helper: Mark all cells of first island and add to queue
+void dfsMarkIsland(int[][] grid, int x, int y, Queue<int[]> queue) {
+    int n = grid.length;
+    if (x < 0 || x >= n || y < 0 || y >= n || grid[y][x] != 1) {
+        return;
+    }
+
+    grid[y][x] = 2; // Mark as visited (part of first island)
+    queue.add(new int[]{x, y}); // Add to BFS queue
+
+    // Recursively mark all connected cells
+    dfsMarkIsland(grid, x + 1, y, queue);
+    dfsMarkIsland(grid, x - 1, y, queue);
+    dfsMarkIsland(grid, x, y + 1, queue);
+    dfsMarkIsland(grid, x, y - 1, queue);
+}
+```
+
+**Concrete Example: LC 934 - Shortest Bridge**
+```
+Problem: Connect two islands with minimum number of flips (0→1)
+Grid: [[0,1],     Two islands: Island A at (0,1), Island B at (1,0)
+       [1,0]]     Need to flip 1 cell to connect them
+
+Step 1 - DFS marks Island A:
+Original: [0,1]  →  After DFS: [0,2]  (2 = marked as first island)
+          [1,0]                [1,0]
+Queue: [(1,0)] - all cells of first island
+
+Step 2 - BFS Layer 0 (from first island):
+Check neighbors of (1,0):
+- (0,0): water, add to queue → Queue: [(0,0)]
+- (1,1): water, add to queue → Queue: [(0,0), (1,1)]
+After Layer 0: steps = 0
+
+Step 3 - BFS Layer 1:
+Process (0,0):
+  - (1,0): already visited (marked as 2)
+  - (0,1): FOUND Island B (value = 1)! Return steps = 0
+
+Result: 1 flip needed (but we count layers, answer may vary based on problem definition)
+
+Key insight:
+- DFS ensures we mark ENTIRE first island (not just one cell)
+- Multi-source BFS expands from ALL boundary cells simultaneously
+- This guarantees we find the absolute shortest bridge
+```
+
+**Why This Pattern Works:**
+1. **Complete Coverage**: DFS ensures we find the entire first island, not just part of it
+2. **Optimal Distance**: Multi-source BFS from all island cells guarantees shortest path
+3. **No Redundant Work**: Each cell visited at most once in DFS + once in BFS
+4. **Natural Layering**: BFS level corresponds to bridge length
+
+**Pattern Characteristics:**
+- **DFS Phase**: O(m × n) worst case - mark entire first island
+- **BFS Phase**: O(m × n) worst case - expand to entire grid
+- **Total Time**: O(m × n) - each cell visited constant times
+- **Space**: O(m × n) - recursion stack + queue + visited array
+
+**When to Use This Pattern:**
+- Find shortest connection between two separate components
+- One component needs complete identification before distance calculation
+- Problem requires expanding from entire boundary of a region
+- Grid has exactly two distinct regions/islands
+
+**Key Variations:**
+1. **Boundary-Only BFS**: Only add island boundary cells to queue (optimization)
+2. **Bidirectional BFS**: Expand from both islands simultaneously (faster)
+3. **Modified Grid**: Mark visited cells in original grid (space optimization)
+4. **Different Marking**: Use different values (2, -1) based on problem requirements
+
+**Similar Problems:**
+- LC 934: Shortest Bridge (connect two islands)
+- LC 1162: As Far from Land as Possible (distance from any land cell)
+- LC 542: 01 Matrix (distance to nearest 0 from each 1)
+- LC 286: Walls and Gates (distance from gates to rooms)
+- LC 1020: Number of Enclaves (count land cells not connected to boundary)
 
 ### Pattern 5: BFS with Path Tracking
 ```python
@@ -300,6 +441,7 @@ Key insight: Must cut in sorted order, BFS finds shortest path between each pair
 - **Unweighted Graphs**: LC 127 (Word Ladder)
 - **Grid Navigation**: LC 1730 (Shortest Path to Food), LC 1091 (Shortest Path in Binary Matrix)
 - **Multi-source**: LC 542 (01 Matrix), LC 1162 (As Far from Land), LC 317 (Shortest Distance from All Buildings)
+- **DFS + Multi-source BFS**: LC 934 (Shortest Bridge - mark one component, expand to find other)
 - **Sequential Targets**: LC 675 (Cut Off Trees for Golf Event - Sort + Repeated BFS)
 - **State-Based BFS**: LC 864 (Shortest Path to Get All Keys), LC 1293 (Shortest Path with Obstacles Elimination)
 
@@ -486,6 +628,7 @@ def weighted_bfs(start, end, graph):
 | Medium | LC 127 | Shortest path transformation |
 | Medium | LC 200 | Connected components |
 | Medium | LC 542 | Multi-source BFS |
+| Medium | LC 934 | DFS + Multi-source BFS (island expansion) |
 | Hard | LC 317 | Multi-source optimization |
 | Hard | LC 675 | Sort + Repeated BFS (sequential targets) |
 | Hard | LC 864 | BFS with state (key collection) |
