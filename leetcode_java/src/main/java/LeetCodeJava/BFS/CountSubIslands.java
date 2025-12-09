@@ -53,7 +53,41 @@ public class CountSubIslands {
 //    }
 
     // V0-1
-    // IDEA: DFS (gemini)
+    // IDEA: 2 pass DFS + pruning (gemini)
+    /** IDEA:
+     *
+     *
+     * 1. Eliminate Invalid Islands:
+     *    In grid2, any island that touches a water cell ('0')
+     *    in grid1 cannot be a sub-island.
+     *    We can iterate through grid2 and sink/remove
+     *    any island that violates this rule.
+     *
+     *  2. Count Remaining Islands:
+     *     After sinking the invalid islands,
+     *     the remaining islands in grid2 are guaranteed to
+     *     be sub-islands.
+     *     We simply count them using a standard
+     *     island counting technique (DFS/BFS).
+     *
+     *
+     *  ---------------
+     *
+     *  Further explanation on `Eliminate Invalid Islands`:
+     *
+     *   1. is the core optimization for solving the Sub Islands problem without tedious set comparisons.
+     *   2. It leverages the problem's definition to efficiently prune the search space.
+     *
+     *
+     *   -> the violation condition for grid2 island NOT the island in grid1:
+     *
+     *    1.  if found cell (x,y) that
+     *      - grid2[y][x] = 1, but
+     *        grid1[y][x] = 0
+     *
+     *        -> (x,y) in grid2 is land, BUT is water in grid1
+     *
+     */
     private int R;
     private int C;
     private final int[][] MOVES = new int[][] { { 0, 1 }, { 0, -1 }, { 1, 0 }, { -1, 0 } };
@@ -66,6 +100,11 @@ public class CountSubIslands {
         this.R = grid1.length;
         this.C = grid1[0].length;
 
+        /** NOTE !!!
+         *
+         *   Step 1) find `invalid cell` in grid2 and `disable` them
+         *
+         */
         // --- Phase 1: Sink invalid islands in grid2 ---
         // An island in grid2 is invalid if any of its cells (r, c) corresponds to water (0) in grid1.
         for (int r = 0; r < R; r++) {
@@ -74,11 +113,22 @@ public class CountSubIslands {
                 // If a cell is land in grid2 BUT water in grid1,
                 // the entire island connected to this cell in grid2 must be eliminated (sunk).
                 if (grid2[r][c] == 1 && grid1[r][c] == 0) {
+                    /** NOTE !!!
+                     *
+                     *   we `disable` the cells in grid2 via DFS call
+                     *
+                     *   (1st call of DFS)
+                     */
                     sinkIsland(grid2, r, c); // Sinks the whole connected component in grid2
                 }
             }
         }
 
+        /** NOTE !!!
+         *
+         *   Step 2) count the remaining islands in grid2
+         *
+         */
         // --- Phase 2: Count the remaining islands in grid2 ---
         // The remaining islands are guaranteed to be sub-islands.
         int subIslandCount = 0;
@@ -88,6 +138,12 @@ public class CountSubIslands {
                 if (grid2[r][c] == 1) {
                     subIslandCount++;
                     // Sinks the remaining valid island to prevent recounting
+                    /** NOTE !!!
+                     *
+                     *   we `disable` the remaining cells in grid2 via DFS call
+                     *
+                     *   (2nd call of DFS)
+                     */
                     sinkIsland(grid2, r, c);
                 }
             }
