@@ -1,6 +1,7 @@
 package dev;
 
 import LeetCodeJava.DataStructure.TreeNode;
+import LeetCodeJava.Tree.OnlineMajorityElementInSubarray;
 
 import java.util.*;
 
@@ -8443,11 +8444,148 @@ public class Workspace18 {
     }
 
     // LC 1905
+    // 9.42 - 52 am
+    /**
+     *  -> Return the n`umber of islands`
+     *   in grid2 that are considered sub-islands.
+     *
+     *   - m x n grid
+     *      - grid 1
+     *      - grid 2
+     *   - 1 : island
+     *   - 0 : water
+     *
+     *   -> grid2 is `sub-islands` if ALL OF its grid
+     *      is COVERED an island in grid1
+     *
+     *
+     *  ---------------
+     *
+     *  IDEA 1) BFS  + HASHMAP
+     *    ->
+     *    1. collect all island in grid 1,
+     *       save to hashmap ?
+     *    2. go to grid 2, get the island
+     *       and check ONE BY ONE,
+     *       to see if the island (grid2) is FULLY COVERED by
+     *       island in grid 1
+     *
+     *    or
+     *
+     *    1. start from grid 2, ....
+     *
+     *
+     *  IDEA 2) DFS
+     *
+     *
+     *  ---------------
+     *
+     *
+     */
     public int countSubIslands(int[][] grid1, int[][] grid2) {
+        // edge
 
-        return 0;
+        int l = grid1.length;
+        int w = grid1[0].length;
+
+        // get island in grid 1
+        List<List<Integer[]>> list1 = new ArrayList<>();
+        //List<Integer[]> tmp1 = new ArrayList<>();
+        for(int y = 0; y < l; y++){
+            for(int x = 0; x < w; x++){
+                if(grid1[y][x] == 1){
+                   // ????
+                    list1.add(isLandCollector(grid1, x, y, new ArrayList<>()));
+                }
+            }
+        }
+
+        // sort list1 ?? needed ????
+//        Collections.sort(list1, new Comparator<List<Integer[]>>() {
+//            @Override
+//            public int compare(List<Integer[]> o1, List<Integer[]> o2) {
+//                return 0;
+//            }
+//        });
+
+        // get island in grid 2
+        List<List<Integer[]>> list2 = new ArrayList<>();
+        //List<Integer[]> tmp1 = new ArrayList<>();
+        for(int y = 0; y < l; y++){
+            for(int x = 0; x < w; x++){
+                if(grid2[y][x] == 1){
+                    // ????
+                    list2.add(isLandCollector(grid2, x, y, new ArrayList<>()));
+                }
+            }
+        }
+
+        System.out.println(">>>> list1 = " + list1);
+        System.out.println(">>>> list2 = " + list2);
+
+        int cnt = 0;
+
+        //for()
+        for(int i = 0; i < list2.size(); i++){
+            // ???
+            List<Integer[]> subList1 = list1.get(i);
+            List<Integer[]> subList2 = list2.get(i);
+            if(isCovered(subList1, subList2)){
+                cnt += 1;
+            }
+        }
+
+        return cnt;
     }
 
+    private boolean isCovered(List<Integer[]> list1, List<Integer[]> list2){
+        if(list1 == null || list2 == null){
+            return false;
+        }
+        if(list1.size() < list2.size()){
+            return false;
+        }
+        for(Integer[] grid2: list2){
+            // ???
+            int x = grid2[0];
+            int y = grid2[1];
+            // ???
+//            if(!list1.contains(grid2)){
+//                return false;
+//            }
+            if(!list1.contains(grid2)){
+                return false;
+            }
+        }
+        return true;
+    }
+
+
+    // ??? should return val ?
+    // e.g. private List<Integer[]>  isLandCollector ???
+    private List<Integer[]> isLandCollector(int[][] grid, int x, int y, List<Integer[]> list){
+        int l = grid.length;
+        int w = grid[0].length;
+
+        // add to list
+        list.add(new Integer[]{x, y}); // ???
+        // mark as visited
+        grid[y][x] = -1;
+
+        int[][] moves = new int[][] { {0,1},{0,-1},{1,0},{-1,0} };
+
+        for(int[] m: moves){
+            int x_ = x + m[1];
+            int y_ = y + m[0];
+            if(x_ >= 0 && x_ < w && y_ >= 0 && y_ < l){
+                if(grid[y_][x_] == 1){
+                    isLandCollector(grid, x_, y_, list);
+                }
+            }
+        }
+
+        return list; // ???
+    }
 
 
 
