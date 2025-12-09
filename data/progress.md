@@ -180,7 +180,6 @@
 			- 711 (Number of Distinct Islands II)
 			- 1905
 		- gemini
-			- 934
 			- 212
 	- others:
 		- Path Signatures
