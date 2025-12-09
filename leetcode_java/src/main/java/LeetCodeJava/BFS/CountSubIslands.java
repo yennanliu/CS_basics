@@ -229,6 +229,66 @@ public class CountSubIslands {
     }
 
 
+    // V0-3
+    // IDEA: BFS (gpt)
+    public int countSubIslands_0_3(int[][] grid1, int[][] grid2) {
+        int l = grid1.length;
+        int w = grid1[0].length;
+
+        int count = 0;
+
+        for (int y = 0; y < l; y++) {
+            for (int x = 0; x < w; x++) {
+                if (grid2[y][x] == 1) {
+                    if (bfsCheck(grid1, grid2, x, y)) {
+                        count++;
+                    }
+                }
+            }
+        }
+        return count;
+    }
+
+    private boolean bfsCheck(int[][] grid1, int[][] grid2, int startX, int startY) {
+        int l = grid1.length;
+        int w = grid1[0].length;
+
+        int[][] moves = { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 } };
+
+        Queue<int[]> q = new LinkedList<>();
+        q.offer(new int[] { startX, startY });
+
+        // Mark as visited in grid2
+        grid2[startY][startX] = -1;
+
+        boolean isSubIsland = true;
+
+        while (!q.isEmpty()) {
+            int[] cur = q.poll();
+            int x = cur[0], y = cur[1];
+
+            // Check if grid1 is also land
+            if (grid1[y][x] != 1) {
+                isSubIsland = false; // grid2 has land where grid1 does NOT
+            }
+
+            // explore 4 directions
+            for (int[] m : moves) {
+                int nx = x + m[0];
+                int ny = y + m[1];
+
+                if (nx >= 0 && nx < w && ny >= 0 && ny < l &&
+                        grid2[ny][nx] == 1) {
+
+                    grid2[ny][nx] = -1; // mark visited
+                    q.offer(new int[] { nx, ny });
+                }
+            }
+        }
+        return isSubIsland;
+    }
+
+
     // V1-1
     // IDEA: BFS
     // https://leetcode.com/problems/count-sub-islands/editorial/
