@@ -1025,6 +1025,7 @@
 1162| [As Far from Land as Possible](https://leetcode.com/problems/as-far-from-land-as-possible/) | [Python](./leetcode_python/Breadth-First-Search/as-far-from-land-as-possible.py) | | | Medium | dfs, bfs, good basic, `amazon`| AGAIN**** (3)
 1197|[Minimum Knight Moves](https://leetcode.com/problems/minimum-knight-moves/description/)| [Java](./leetcode_java/src/main/java/LeetCodeJava/BFS/MinimumKnightMoves.java) ||| Medium |BFS, `google` | OK (1)
 1730| [Shortest Path to Get Food](https://leetcode.com/problems/shortest-path-to-get-food/) | [Python](./leetcode_python/Breadth-First-Search/shortest-path-to-get-food.py) | | | Medium |shortest path, bfs, `amazon`| OK (2)
+1905| [Count Sub Islands](https://leetcode.com/problems/count-sub-islands) | [Java](./leetcode_java/src/main/java/LeetCodeJava/BFS/CountSubIslands.java) | | | Medium |dfs, bfs|AGAIN (1)
 2115| [Find All Possible Recipes from Given Supplies](https://leetcode.com/problems/find-all-possible-recipes-from-given-supplies) | [Java](./leetcode_java/src/main/java/LeetCodeJava/BFS/FindAllPossibleRecipesFromGivenSupplies.java) | | | Medium |bfs, dfs, topological sort, `google`| OK (2)
 2684| [Maximum Number of Moves in a Grid](https://leetcode.com/problems/maximum-number-of-moves-in-a-grid) | [Java](./leetcode_java/src/main/java/LeetCodeJava/BFS/MaximumNumberOfMovesInAGrid.java) | | | Medium |bfs, top-down dp, bottom-up dp, LC weekly 345| again (1)
 
