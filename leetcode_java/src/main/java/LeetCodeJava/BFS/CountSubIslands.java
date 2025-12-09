@@ -269,6 +269,21 @@ public class CountSubIslands {
 
             // Check if grid1 is also land
             if (grid1[y][x] != 1) {
+                /**  NOTE !!!
+                 *
+                 *  CAN'T return (quit) immediately
+                 *  when we discover a cell in grid2 is NOT land in grid1.
+                 *
+                 *  -> e.g.: Even though the island is already disqualified from being a sub-island,
+                 * you still must finish the BFS traversal to:
+                 *
+                 *
+                 *  Reason:
+                 *
+                 *   1.  Mark every cell of this island in grid2 as visited
+                 *   2.  Prevent re-visiting / re-counting the same island
+                 *
+                 */
                 isSubIsland = false; // grid2 has land where grid1 does NOT
             }
 
