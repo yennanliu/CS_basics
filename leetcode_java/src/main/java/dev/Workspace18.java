@@ -8722,5 +8722,45 @@ public class Workspace18 {
     }
 
 
+    // LC 3120
+    // 6.52 - 7.02 AM
+    // IDEA: 2d array record if meet upper, lower case alphabet
+    public int numberOfSpecialChars(String word) {
+        // edge
+        if (word == null || word.isEmpty()) {
+            return 0;
+        }
+
+        Integer[][] arr = new Integer[26][2]; // ??
+        for(int i = 0; i < arr.length; i++){
+            arr[i] = new Integer[]{0,0};
+        }
+
+
+        String lowerCase = "abcdefghijklmnopqrstuvwxyz";
+
+        for(char ch: word.toCharArray()){
+            String s = String.valueOf(ch);
+            int idx = ch - 'a';  // ????
+            if(lowerCase.contains(s)){
+                arr[idx][0] = 1 + arr[idx][0];
+            }else{
+                arr[idx][1] = 1 + arr[idx][1]; // ???
+            }
+        }
+
+        int cnt = 0;
+
+        for(Integer[] x: arr){
+            if(x[0] > 0 && x[1] > 0){
+                cnt += 1;
+            }
+        }
+
+        return cnt;
+    }
+
+
+
 
 }

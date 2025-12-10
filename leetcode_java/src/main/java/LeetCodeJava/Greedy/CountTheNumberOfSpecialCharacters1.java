@@ -65,6 +65,52 @@ public class CountTheNumberOfSpecialCharacters1 {
 //
 //    }
 
+    // V0-0-1
+    // IDEA: 2D array + x - 'a' (fixed by gemini)
+    /**
+     * Counts the number of letters that appear as both lowercase and uppercase.
+     * Time Complexity: O(N) where N is the length of the word.
+     * Space Complexity: O(1) since the array size is fixed at 26x2.
+     */
+    public int numberOfSpecialChars_0_0_1(String word) {
+        if (word == null || word.isEmpty()) {
+            return 0;
+        }
+
+        // Initialize a 26x2 array of primitive ints (default value is 0).
+        // Row 0: A/a, Row 25: Z/z.
+        // Col 0: Lowercase count, Col 1: Uppercase count.
+        int[][] counts = new int[26][2];
+
+        for (char ch : word.toCharArray()) {
+
+            if (ch >= 'a' && ch <= 'z') {
+                // Lowercase mapping: 'a' -> 0, 'b' -> 1, ...
+                int idx = ch - 'a';
+                counts[idx][0]++;
+
+            } else if (ch >= 'A' && ch <= 'Z') {
+                // Uppercase mapping: 'A' -> 0, 'B' -> 1, ...
+                int idx = ch - 'A'; // Crucial fix: Map uppercase to the correct lowercase base index
+                counts[idx][1]++;
+            }
+            // Note: Any non-alphabetic characters are simply ignored.
+        }
+
+        int specialCount = 0;
+
+        // Final check: Iterate through the 26 rows (letters)
+        for (int i = 0; i < 26; i++) {
+            // A special character is found if both the lowercase and uppercase versions were seen.
+            if (counts[i][0] > 0 && counts[i][1] > 0) {
+                specialCount++;
+            }
+        }
+
+        return specialCount;
+    }
+
+
     // V0-1
     // IDEA: 2 HASHSET (fixed by gemini)
     /**
