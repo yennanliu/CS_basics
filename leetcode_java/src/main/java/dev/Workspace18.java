@@ -8725,7 +8725,7 @@ public class Workspace18 {
     // LC 3120
     // 6.52 - 7.02 AM
     // IDEA: 2d array record if meet upper, lower case alphabet
-    public int numberOfSpecialChars(String word) {
+    public int numberOfSpecialChars_99(String word) {
         // edge
         if (word == null || word.isEmpty()) {
             return 0;
@@ -8760,6 +8760,50 @@ public class Workspace18 {
         return cnt;
     }
 
+
+    // LC 3121
+    public int numberOfSpecialChars(String word) {
+
+        // edge
+        if (word == null || word.isEmpty()) {
+            return 0;
+        }
+
+        // [ [last_lower_case_idx, first_upper_case_idx, all_of_the_upper_later_lower] ]
+        // 0: all_of_the_upper_later_lower == true
+        // 1: all_of_the_upper_later_lower == false
+        Integer[][] arr = new Integer[26][3]; // ??
+        for(int i = 0; i < arr.length; i++){
+            arr[i] = new Integer[]{-1, -1, 0};  // ???
+        }
+
+        for(int i = 0; i < word.length(); i++){
+            char ch = word.charAt(i);
+           // NOTE !!! Character.isLowerCase(ch)
+            if(Character.isLowerCase(ch)){
+                //int idx =
+                arr[i][0] = Math.max(arr[i][0], i);
+            }else{
+                arr[i][1] = Math.min(arr[i][1], i);
+            }
+            // NOTE !!! check if valid
+            if(arr[i][1] > arr[i][0]){
+                arr[i][2] = 1;
+            }
+        }
+
+        int cnt = 0;
+
+        System.out.println(">>> arr = " + Arrays.toString(arr));
+
+        for(Integer[] x: arr){
+            if(x[0] > 0 && x[1] > 0 &&  x[2] == 0){
+                cnt += 1;
+            }
+        }
+
+        return cnt;
+    }
 
 
 

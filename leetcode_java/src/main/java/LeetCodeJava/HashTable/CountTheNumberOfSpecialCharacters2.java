@@ -64,6 +64,72 @@ public class CountTheNumberOfSpecialCharacters2 {
 //
 //    }
 
+    // V0-0-1
+    // IDEA:  2D array, LC 3120 (fixed by gemini)
+    /**
+     * Counts the number of special characters where all lowercase occurrences
+     * appear strictly before the first uppercase occurrence.
+     * Time Complexity: O(N) where N is the length of the word.
+     * Space Complexity: O(1) due to the fixed-size 26x2 array.
+     */
+    public int numberOfSpecialChars_0_0_1(String word) {
+        if (word == null || word.isEmpty()) {
+            return 0;
+        }
+
+        // arr[i][0]: Last seen index of lowercase version ('a', 'b', ...)
+        // arr[i][1]: First seen index of uppercase version ('A', 'B', ...)
+        // Size is 26 for the alphabet.
+        int[][] indices = new int[26][2];
+
+        // Initialize:
+        // last_lower_idx to -1 (never seen)
+        // first_upper_idx to word.length() (a value larger than any possible index)
+        for (int i = 0; i < 26; i++) {
+            indices[i][0] = -1;
+            indices[i][1] = word.length();
+        }
+
+        // 1. Traverse the word and update the indices
+        for (int i = 0; i < word.length(); i++) {
+            char ch = word.charAt(i);
+
+            if (ch >= 'a' && ch <= 'z') {
+                int idx = ch - 'a';
+                // Always update the index to the current one to track the *LAST* occurrence
+                indices[idx][0] = i;
+
+            } else if (ch >= 'A' && ch <= 'Z') {
+                int idx = ch - 'A';
+                // Only update the index if it hasn't been set yet (to track the *FIRST* occurrence)
+                // Since we initialized it to word.length(), any index < word.length() is the first seen index.
+                indices[idx][1] = Math.min(indices[idx][1], i);
+            }
+        }
+
+        // 2. Validate and Count Special Characters
+        int specialCount = 0;
+
+        for (int i = 0; i < 26; i++) {
+            int lastLowerIdx = indices[i][0];
+            int firstUpperIdx = indices[i][1];
+
+            // Condition 1: Must appear as both lower AND upper.
+            // If firstUpperIdx is still word.length(), the uppercase was never found.
+            if (lastLowerIdx != -1 && firstUpperIdx != word.length()) {
+
+                // Condition 2: Last lowercase index must be STRICTLY less than the first uppercase index.
+                // E.g., word = "aAcC", lastLower(a)=0, firstUpper(A)=1. 0 < 1. (Valid)
+                // E.g., word = "Aa", lastLower(a)=1, firstUpper(A)=0. 1 < 0 is false. (Invalid)
+                if (lastLowerIdx < firstUpperIdx) {
+                    specialCount++;
+                }
+            }
+        }
+
+        return specialCount;
+    }
+
     // V0-1
     // IDEA: HASHMAP (fixed by gemini)
     /**
