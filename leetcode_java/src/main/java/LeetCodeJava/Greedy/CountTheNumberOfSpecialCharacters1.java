@@ -77,6 +77,11 @@ public class CountTheNumberOfSpecialCharacters1 {
             return 0;
         }
 
+        /** NOTE !!!
+         *
+         *  we init 26 x 2 D array
+         *  to check if lower, upper case exist
+         */
         // Initialize a 26x2 array of primitive ints (default value is 0).
         // Row 0: A/a, Row 25: Z/z.
         // Col 0: Lowercase count, Col 1: Uppercase count.
@@ -84,12 +89,32 @@ public class CountTheNumberOfSpecialCharacters1 {
 
         for (char ch : word.toCharArray()) {
 
+            /** NOTE !!!
+             *
+             *  we use below to check if the str
+             *  is lower case
+             *
+             *   ch >= 'a' && ch <= 'z'
+             *
+             *
+             *   or can use below as well: (V0-1)
+             *
+             *   Character.isLowerCase(ch)
+             */
             if (ch >= 'a' && ch <= 'z') {
                 // Lowercase mapping: 'a' -> 0, 'b' -> 1, ...
                 int idx = ch - 'a';
                 counts[idx][0]++;
 
-            } else if (ch >= 'A' && ch <= 'Z') {
+            }
+            /** NOTE !!!
+             *
+             *  we use below to check if the str
+             *  is upper case
+             *
+             *  ch >= 'A' && ch <= 'Z'
+             */
+            else if (ch >= 'A' && ch <= 'Z') {
                 // Uppercase mapping: 'A' -> 0, 'B' -> 1, ...
                 int idx = ch - 'A'; // Crucial fix: Map uppercase to the correct lowercase base index
                 counts[idx][1]++;
