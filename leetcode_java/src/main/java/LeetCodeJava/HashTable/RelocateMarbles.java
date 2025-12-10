@@ -60,6 +60,81 @@ public class RelocateMarbles {
 //
 //    }
 
+    // V0-1
+    // IDEA: SET (gemini)
+    /**
+     * Finds the final unique positions of the marbles after all move operations.
+     * @param nums Initial positions of the marbles.
+     * @param moveFrom Array of starting positions for moves.
+     * @param moveTo Array of destination positions for moves.
+     * @return A sorted list of the final unique positions.
+     */
+    public List<Integer> relocateMarbles_0_1(int[] nums, int[] moveFrom, int[] moveTo) {
+
+        // Use a HashSet to track the unique current positions of all marbles.
+        Set<Integer> positions = new HashSet<>();
+
+        // 1. Initialize the set with all unique starting positions.
+        for (int position : nums) {
+            positions.add(position);
+        }
+
+        // 2. Process all move operations.
+        // The move is conceptual: all marbles at 'start' move to 'end'.
+        for (int i = 0; i < moveFrom.length; i++) {
+            int start = moveFrom[i];
+            int end = moveTo[i];
+
+            // Check if there are any marbles at the starting position to move.
+            // This is O(1) due to the HashSet.
+            if (positions.contains(start)) {
+
+                // Remove the starting position.
+                positions.remove(start);
+
+                // Add the new ending position.
+                // If 'end' already existed, the set operation does nothing, which is correct.
+                positions.add(end);
+            }
+            // If 'start' doesn't contain a marble, the operation is skipped, which is correct.
+        }
+
+        // 3. Format and return the result.
+        // The problem requires the result to be a sorted list.
+        List<Integer> result = new ArrayList<>(positions);
+        Collections.sort(result);
+
+        return result;
+    }
+
+    // V0-2
+    // IDEA: SET (gpt)
+    public List<Integer> relocateMarbles_0_2(int[] nums, int[] moveFrom, int[] moveTo) {
+
+        // Use a set because only unique positions matter
+        Set<Integer> set = new HashSet<>();
+        for (int num : nums) {
+            set.add(num);
+        }
+
+        // Apply moves
+        for (int i = 0; i < moveFrom.length; i++) {
+            int start = moveFrom[i];
+            int end = moveTo[i];
+            if (set.contains(start)) {
+                set.remove(start);
+                set.add(end);
+            }
+        }
+
+        // Convert to sorted list
+        List<Integer> res = new ArrayList<>(set);
+        Collections.sort(res);
+
+        return res;
+    }
+    
+
     // V1
     // IDEA: HASHMAP
     // https://leetcode.com/problems/relocate-marbles/solutions/3737295/cjavapython-clean-code-using-map-by-adit-5oxa/
