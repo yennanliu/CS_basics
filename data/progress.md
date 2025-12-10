@@ -171,7 +171,6 @@
 	- LC 200 Number of Islands
 		- gpt
 		- gemini
-			- 675
 			- 218
 			- 1697
 	- LC 695 Max Area of Island
