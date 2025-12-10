@@ -1,3 +1,16 @@
+---
+layout: cheatsheet
+title: "Intervals"
+description: "Problems involving ranges and interval operations like merging and scheduling"
+category: "Technique"
+difficulty: "Medium"
+tags: ["intervals", "ranges", "merging", "scheduling", "overlap"]
+patterns:
+  - Interval merging
+  - Overlap detection
+  - Meeting scheduling
+---
+
 # Intervals
 
 ## Overview

@@ -1,3 +1,16 @@
+---
+layout: cheatsheet
+title: "Difference Array"
+description: "Efficient range update technique using difference arrays"
+category: "Technique"
+difficulty: "Medium"
+tags: ["difference-array", "range-update", "prefix-sum", "optimization"]
+patterns:
+  - Range updates
+  - Batch processing
+  - Array reconstruction
+---
+
 # Difference Array
 
 ## Overview

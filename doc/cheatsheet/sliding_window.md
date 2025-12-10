@@ -1,3 +1,16 @@
+---
+layout: cheatsheet
+title: "Sliding Window"
+description: "Two-pointer technique for maintaining a window over arrays or strings"
+category: "Technique"
+difficulty: "Medium"
+tags: ["sliding-window", "two-pointers", "window", "optimization"]
+patterns:
+  - Variable window size
+  - Fixed window size
+  - Optimal subarray/substring
+---
+
 # Sliding Window 
 
 ## Overview

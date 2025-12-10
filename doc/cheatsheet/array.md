@@ -1,3 +1,21 @@
+---
+layout: cheatsheet
+title: "Array"
+description: "Array data structure and common operations for solving linear data problems"
+category: "Data Structure"
+difficulty: "Easy"
+tags: ["array", "data-structure", "indexing", "sorting", "searching", "two-pointers"]
+patterns:
+  - Index manipulation
+  - Sorting algorithms
+  - Two pointers
+  - Sliding window
+  - Prefix sum
+  - Array rotation
+time_complexity: "O(1) access, O(n) search/insert/delete"
+space_complexity: "O(1) for operations, O(n) for storage"
+---
+
 # Array
 > Basic linear data structure
 

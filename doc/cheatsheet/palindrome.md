@@ -1,3 +1,16 @@
+---
+layout: cheatsheet
+title: "Palindrome"
+description: "Sequence that reads the same forward and backward"
+category: "Technique"
+difficulty: "Medium"
+tags: ["palindrome", "string", "two-pointers", "validation"]
+patterns:
+  - Two-pointer validation
+  - Substring generation
+  - Character comparison
+---
+
 # Palindrome (回文)
 
 ## Overview
