@@ -1,6 +1,7 @@
 package dev;
 
 import LeetCodeJava.DataStructure.TreeNode;
+import LeetCodeJava.Design.DesignInMemoryFileSystem;
 import LeetCodeJava.Tree.OnlineMajorityElementInSubarray;
 
 import java.util.*;
@@ -8588,6 +8589,29 @@ public class Workspace18 {
     }
 
 
+
+    // LC 588
+    class FileSystem {
+       // private DesignInMemoryFileSystem.Trie root = new DesignInMemoryFileSystem.Trie();
+
+        public FileSystem() {
+        }
+
+        public List<String> ls(String path) {
+            return null;
+        }
+
+        public void mkdir(String path) {
+        }
+
+        public void addContentToFile(String filePath, String content) {
+        }
+
+        public String readContentFromFile(String filePath) {
+            return null;
+        }
+
+    }
 
 
 
