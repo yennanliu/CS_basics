@@ -63,6 +63,24 @@ public class RelocateMarbles {
     // V0-1
     // IDEA: SET (gemini)
     /**
+     *  NOTE !!!
+     *
+     *   the op:
+     *
+     *     you will change the positions of the marbles. On the ith step,
+     *     you will move all marbles at position moveFrom[i] to position moveTo[i].
+     *
+     *
+     *     -> so when move from i to j (moveFrom[i] -> moveTo[i]),
+     *      ALL the marbles will be moved.
+     *
+     *
+     *
+     * -> so what we care if: tracking the `hole` over indexes,
+     *    NOT the actual position (idx) of every single marble
+     *
+     */
+    /**
      * Finds the final unique positions of the marbles after all move operations.
      * @param nums Initial positions of the marbles.
      * @param moveFrom Array of starting positions for moves.
@@ -71,6 +89,12 @@ public class RelocateMarbles {
      */
     public List<Integer> relocateMarbles_0_1(int[] nums, int[] moveFrom, int[] moveTo) {
 
+        /**
+         *  NOTE !!!
+         *
+         *  we use set to track the `unique` idx of marbles.
+         *
+         */
         // Use a HashSet to track the unique current positions of all marbles.
         Set<Integer> positions = new HashSet<>();
 
@@ -79,6 +103,13 @@ public class RelocateMarbles {
             positions.add(position);
         }
 
+        /**
+         *  NOTE !!!
+         *
+         * -> so what we care if: tracking the `hole` over indexes,
+         *    NOT the actual position (idx) of every single marble
+         *
+         */
         // 2. Process all move operations.
         // The move is conceptual: all marbles at 'start' move to 'end'.
         for (int i = 0; i < moveFrom.length; i++) {
@@ -133,7 +164,7 @@ public class RelocateMarbles {
 
         return res;
     }
-    
+
 
     // V1
     // IDEA: HASHMAP
