@@ -11,7 +11,7 @@ import java.util.*;
  */
 public class Weekly108 {
 
-    // Q1
+    // Q1 -> ok, but again
     // LC 2765
     // https://leetcode.com/problems/longest-alternating-subarray/
     // 12.31 - 41 PM
@@ -128,7 +128,7 @@ public class Weekly108 {
     }
 
 
-    // Q2
+    // Q2 -> ok
     // LC 2766
     // https://leetcode.com/problems/relocate-marbles/description/
     // 2.06 - 16 pm
