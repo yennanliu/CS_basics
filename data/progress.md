@@ -1,6 +1,6 @@
 # Progress
 
-# 2025-12-11
+# 2025-12-12
 
 - LC weekly 108
 - weekly video
@@ -181,6 +181,23 @@
 			- 1905
 		- gemini
 			- 212
+	- LC 133 Clone Graph
+		- gpt
+			- 733
+			- 997
+			- 841
+			- 207
+			- 133
+			- 785
+			- 1466
+			- 332
+			- 269
+			- 1617
+		- gemini
+			- 138
+			- 323
+			- 1091
+			- 1584
 	- others:
 		- Path Signatures
 			- 694,711,652,508
