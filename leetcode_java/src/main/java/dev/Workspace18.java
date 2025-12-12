@@ -1,5 +1,6 @@
 package dev;
 
+import DataStructure.Trie;
 import LeetCodeJava.DataStructure.TreeNode;
 import LeetCodeJava.Design.DesignInMemoryFileSystem;
 import LeetCodeJava.Tree.OnlineMajorityElementInSubarray;
@@ -8609,117 +8610,134 @@ public class Workspace18 {
      *
      *
      */
-    class MyNode96{
-        // attr
+    class MyTrieNode96{
+
+        MyTrieNode96[] children;
         boolean isEnd;
-        String content; // ???
-        Map<String, MyNode96> child;
 
-        // constructor
-        MyNode96(){
-            this.isEnd = true; // ??
-            this.content = null;
-            this.child = new HashMap<>();// ???
+        public MyTrieNode96(){
+            children = new MyTrieNode96[26]; // NOTE !!! this
+            isEnd = false;
         }
-        // method
-
     }
-    class MyTrie96{
-        // attr
-        MyNode96 node;
 
-        // constructor
-        MyTrie96(){
-            this.node = new MyNode96();
-        }
-        // method
-        public String addChild(String input){
-            return null;
-        }
 
-    }
-    class FileSystem {
-       // private DesignInMemoryFileSystem.Trie root = new DesignInMemoryFileSystem.Trie();
-        // attr;
-        MyTrie96 trie;
-        List<String> dirs;
-        // { path: content }
-        Map<String, String> contentMap;
 
-        public FileSystem() {
-            this.trie = new MyTrie96();
-            this.dirs = new ArrayList<>();
-        }
+    // attr
+   // MyTrieNode96 root;
 
-        public List<String> ls(String path) {
-            // edge
-            if(path.isEmpty()){
-                return new ArrayList<>();
-            }
 
-            MyTrie96 trie = this.trie;
-            List<String> res = new ArrayList<>();
-
-            // check if path is `file path` or `dir`
-
-            // case 1) `file path`
-            // ???
-            if(path.contains(".")){
-               // List<String> res = new ArrayList<>();
-                if(this.contentMap.containsKey(path)){
-                    res.add(this.contentMap.get(path));
-                }
-                return res;
-            }
-
-            // case 2) `dir` // ???
-            // If path is a directory path,
-            // returns the list of file and directory names in this directory.
-            // 1. collect file
-            for(String x: path.split(".")){
-                // ???
-                if(this.trie.node.child.containsKey(x)){
-                //    this.trie = this.trie.node.child.get(x);
-                }
-            }
-
-            // 2. collect dirs
-
-            return null;
-        }
-
-        public void mkdir(String path) {
-            // edge
-            if(path.isEmpty()){
-               return;
-            }
-            MyTrie96 trie = this.trie;
-            // path example: /a/b/c/d/....
-            for(String x: path.split(".")){
-                trie.addChild(x);
-                //trie = trie.c
-            }
-        }
-
-        public void addContentToFile(String filePath, String content) {
-            if(filePath.isEmpty()){
-                return;
-            }
-            this.contentMap.put(filePath, content);
-            // update trie ???
-        }
-
-        public String readContentFromFile(String filePath) {
-            if(filePath.isEmpty()){
-                return null;
-            }
-            if(!this.contentMap.containsKey(filePath)){
-                return null;
-            }
-            return this.contentMap.get(filePath);
-        }
-
-    }
+//    class MyNode96{
+//        // attr
+//        boolean isEnd;
+//        String content; // ???
+//        Map<String, MyNode96> child;
+//
+//        // constructor
+//        MyNode96(){
+//            this.isEnd = true; // ??
+//            this.content = null;
+//            this.child = new HashMap<>();// ???
+//        }
+//        // method
+//
+//    }
+//    class MyTrie96{
+//        // attr
+//        MyNode96 node;
+//
+//        // constructor
+//        MyTrie96(){
+//            this.node = new MyNode96();
+//        }
+//        // method
+//        public String addChild(String input){
+//            return null;
+//        }
+//
+//    }
+//    class FileSystem {
+//       // private DesignInMemoryFileSystem.Trie root = new DesignInMemoryFileSystem.Trie();
+//        // attr;
+//        MyTrie96 trie;
+//        List<String> dirs;
+//        // { path: content }
+//        Map<String, String> contentMap;
+//
+//        public FileSystem() {
+//            this.trie = new MyTrie96();
+//            this.dirs = new ArrayList<>();
+//        }
+//
+//        public List<String> ls(String path) {
+//            // edge
+//            if(path.isEmpty()){
+//                return new ArrayList<>();
+//            }
+//
+//            MyTrie96 trie = this.trie;
+//            List<String> res = new ArrayList<>();
+//
+//            // check if path is `file path` or `dir`
+//
+//            // case 1) `file path`
+//            // ???
+//            if(path.contains(".")){
+//               // List<String> res = new ArrayList<>();
+//                if(this.contentMap.containsKey(path)){
+//                    res.add(this.contentMap.get(path));
+//                }
+//                return res;
+//            }
+//
+//            // case 2) `dir` // ???
+//            // If path is a directory path,
+//            // returns the list of file and directory names in this directory.
+//            // 1. collect file
+//            for(String x: path.split(".")){
+//                // ???
+//                if(this.trie.node.child.containsKey(x)){
+//                //    this.trie = this.trie.node.child.get(x);
+//                }
+//            }
+//
+//            // 2. collect dirs
+//
+//            return null;
+//        }
+//
+//        public void mkdir(String path) {
+//            // edge
+//            if(path.isEmpty()){
+//               return;
+//            }
+//            MyTrie96 trie = this.trie;
+//            // path example: /a/b/c/d/....
+//            for(String x: path.split(".")){
+//                trie.addChild(x);
+//                //trie = trie.c
+//            }
+//        }
+//
+//        public void addContentToFile(String filePath, String content) {
+//            if(filePath.isEmpty()){
+//                return;
+//            }
+//            this.contentMap.put(filePath, content);
+//            // update trie ???
+//        }
+//
+//        public String readContentFromFile(String filePath) {
+//            if(filePath.isEmpty()){
+//                return null;
+//            }
+//            if(!this.contentMap.containsKey(filePath)){
+//                return null;
+//            }
+//            return this.contentMap.get(filePath);
+//        }
+//
+//    }
 
 
     // LC 3120
