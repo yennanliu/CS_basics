@@ -51,6 +51,55 @@ public class FindTheTownJudge {
 
     // V0
     // IDEA: 2 ARRAY (fixed by gpt)
+    /** NOTE: how do we handle `exactly ONLY 1 judge` in below code ?
+     *
+     *  e.g. `There is exactly one person that satisfies properties 1 and 2`
+     *
+     * ---
+     *
+     *
+     * That is an excellent question that gets to the core of why the **Net Degree** approach is so efficient for this problem\!
+     *
+     * The short answer is: **Yes, the code implicitly checks and satisfies the uniqueness requirement without needing an explicit counter.**
+     *
+     * Here is the explanation:
+     *
+     * ### 1\. The Judge Condition is Unique
+     *
+     * The criteria for the Town Judge is that their **Net Degree must be exactly $N-1$**.
+     *
+     * Let's assume there are two different people, Person $X$ and Person $Y$, who both satisfy the Judge conditions (Net Degree $= N-1$).
+     *
+     *   * **Condition 1:** Judge $X$ must be trusted by everyone else. This includes Person $Y$.
+     *       * $Y \to X$ (Y trusts X)
+     *   * **Condition 2:** Judge $Y$ must be trusted by everyone else. This includes Person $X$.
+     *       * $X \to Y$ (X trusts Y)
+     *
+     * If $X$ and $Y$ trust each other ($X \to Y$ and $Y \to X$):
+     *
+     *   * **$X$'s Out-Degree:** $X$ trusts $Y$, so $X$ has an Out-Degree of at least 1.
+     *   * **$X$'s Net Degree:** $X$'s Net Degree would be $(N-1) - (\text{Out-Degree} \ge 1) \le N-2$.
+     *   * **Conclusion:** If $X$ trusts $Y$, $X$'s net degree cannot be $N-1$. This violates the condition for being the Judge.
+     *
+     * Therefore, it is **impossible** for two distinct individuals to both satisfy the Judge conditions simultaneously.
+     *
+     * ### 2\. How the Code Handles Uniqueness
+     *
+     * The fixed code iterates through the `degree` array and returns the first person it finds whose `degree[i]` is equal to `N - 1`:
+     *
+     * ```java
+     * // ...
+     * for (int i = 1; i <= n; i++) {
+     *     if (degree[i] == n - 1) {
+     *         return i; // Returns the first (and only possible) match.
+     *     }
+     * }
+     * return -1;
+     * ```
+     *
+     * Since the logic proves that **at most one** person can possibly satisfy the Net Degree of $N-1$, the moment the `if (degree[i] == n - 1)` condition is met, we know we have found the unique Judge, and we can immediately return their ID. If the loop completes without finding anyone, we return $-1$.
+     *
+     */
     public int findJudge(int n, int[][] trust) {
         // edge
         // NOTE !!! edge case below
@@ -90,7 +139,7 @@ public class FindTheTownJudge {
     }
 
     // V0-0-1
-    // IDEA: HASHMAP (fixed by gemini)
+    // IDEA: HA2 ARRAY (fixed by gemini)
     /**
      * Finds the Town Judge by tracking the net degree of trust for each person.
      * * Time Complexity: O(E + N), where E is the number of trust relationships.
