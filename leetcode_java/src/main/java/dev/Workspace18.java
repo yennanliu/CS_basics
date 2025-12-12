@@ -8955,6 +8955,64 @@ public class Workspace18 {
         return judgeCnt == 1? judgeId : -1;
     }
 
+    // LC 2766
+    // 9.29 am - 39
+    /**
+     *  -> After completing all the steps,
+     *  return the sorted list of occupied positions.
+     *
+     *
+     *  ----------
+     *
+     *
+     *  IDEA 1) HASHSET -> record unique idx (place) of marble
+     *
+     *
+     *  ----------
+     *
+     *
+     */
+    public List<Integer> relocateMarbles(int[] nums, int[] moveFrom, int[] moveTo) {
+        // edge
+        List<Integer> res = new ArrayList<>();
+        if(nums == null || nums.length == 0){
+            return res;
+        }
+
+        Set<Integer> set = new HashSet<>();
+        for(int x: nums){
+            set.add(x);
+        }
+
+        for(int i = 0; i < moveFrom.length; i++){
+            int from = moveFrom[i];
+            int to = moveTo[i];
+            // ???
+            if(set.contains(from)){
+                set.remove(from);
+                set.add(to);
+            }
+        }
+
+        //List<Integer> res = new ArrayList<>();
+        for(int x: set){
+            res.add(x);
+        }
+
+        // sort
+        Collections.sort(res, new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                int diff = o1 - o2;
+                return diff;
+            }
+        });
+
+        return res;
+    }
+
+
+
 
 
 }
