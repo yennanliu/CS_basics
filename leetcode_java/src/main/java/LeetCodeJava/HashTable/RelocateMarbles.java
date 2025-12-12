@@ -60,6 +60,65 @@ public class RelocateMarbles {
 //
 //    }
 
+    // V0-0-1
+    // IDEA: SET + SORT
+    /**
+     *  NOTE !!!
+     *
+     *   the op:
+     *
+     *     you will change the positions of the marbles. On the ith step,
+     *     you will move all marbles at position moveFrom[i] to position moveTo[i].
+     *
+     *
+     *     -> so when move from i to j (moveFrom[i] -> moveTo[i]),
+     *      ALL the marbles will be moved.
+     *
+     *
+     *
+     * -> so what we care if: tracking the `hole` over indexes,
+     *    NOT the actual position (idx) of every single marble
+     *
+     */
+    public List<Integer> relocateMarbles_0_0_1(int[] nums, int[] moveFrom, int[] moveTo) {
+        // edge
+        List<Integer> res = new ArrayList<>();
+        if (nums == null || nums.length == 0) {
+            return res;
+        }
+
+        Set<Integer> set = new HashSet<>();
+        for (int x : nums) {
+            set.add(x);
+        }
+
+        for (int i = 0; i < moveFrom.length; i++) {
+            int from = moveFrom[i];
+            int to = moveTo[i];
+            // NOTE !!! below op
+            if (set.contains(from)) {
+                set.remove(from);
+                set.add(to);
+            }
+        }
+
+        for (int x : set) {
+            res.add(x);
+        }
+
+        // sort
+        Collections.sort(res, new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                int diff = o1 - o2;
+                return diff;
+            }
+        });
+
+        return res;
+    }
+
+
     // V0-1
     // IDEA: SET (gemini)
     /**
