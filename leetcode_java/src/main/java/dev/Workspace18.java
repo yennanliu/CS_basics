@@ -5998,7 +5998,7 @@ public class Workspace18 {
      *
      */
     // IDEA 1) DFS
-    public int[][] floodFill(int[][] image, int sr, int sc, int color) {
+    public int[][] floodFill_98(int[][] image, int sr, int sc, int color) {
         // edge
         if(image == null || image.length == 0 || image[0].length == 0){
             return image;
@@ -8803,6 +8803,156 @@ public class Workspace18 {
         }
 
         return cnt;
+    }
+
+//    // LC 733
+//    // 7.02 -12 AM
+    // IDEA: DFS
+    public int[][] floodFill(int[][] image, int sr, int sc, int color) {
+        // edge
+        if (image == null || image.length == 0 || image[0].length == 0) {
+            return image;
+        }
+
+//        int l = image.length;
+//        int w = image[0].length;
+
+//        for(int y = 0; y < l; y++){
+//            for(int )
+//        }
+        // color init cell
+        //image[sr][sc] = color;
+        // NOTE !!! below
+        if(image[sr][sc] != color){
+            dfsColorHelper(image, sr, sc, image[sr][sc], color);
+        }
+
+        return image;
+    }
+
+    private void dfsColorHelper(int[][] image, int x, int y, int oldColor, int newColor){
+        int l = image.length;
+        int w = image[0].length;
+
+        // color
+//        if(image[y][x] == oldColor){
+//            image[y][x] = newColor;
+//        }
+        image[y][x] = newColor;
+
+        int[][] moves = new int[][] { {0,1},{0,-1},{1,0},{-1,0} };
+
+        for(int[] m: moves){
+            int x_ = x + m[1];
+            int y_ = y + m[0];
+            if(x_ >= 0 && x_ < w && y_ >= 0 && y_ < l){
+                if(image[y_][x_] == oldColor){
+                    dfsColorHelper(image, x_, y_, oldColor, newColor);
+                }
+            }
+        }
+
+    }
+
+    // LC 997
+    // 7.38 - 48 am
+    /**
+     *  -> Return the label of the town judge if the town judge
+     *   exists and can be identified, or return -1 otherwise.
+     *
+     *
+     *   - n people: 1 to n
+     *   - town judge
+     *      - town judge trust NOBODY
+     *      - EVERY BODY (except judge) trusts judge
+     *      - Exactly ONLY 1 person satisfies #1, and #2
+     *
+     *   - trust[i] = [ai, bi]
+     *       -> ai trust bi
+     *       ( trust[i] = [ai, bi] representing that the person
+     *       labeled ai trusts the person labeled bi)
+     *
+     *
+     *
+     * ---------------------
+     *
+     *  IDEA 1) DFS + HASHMAP
+     *     - { personA: [person1_trust_personA, person2_trust_personA, ...], ...}
+     *
+     *  IDEA 2) BFS
+     *
+     *  IDEA 3)
+     *
+     *
+     *
+     * ---------------------
+     *
+     *   ex 1)
+     *   Input: n = 2, trust = [[1,2]]
+     *   Output: 2
+     *
+     *   -> map = { 1: [], 2: [1] }
+     *   -> 2 is the judge
+     *
+     *
+     *   ex 2)
+     *   Input: n = 3, trust = [[1,3],[2,3]]
+     *   Output: 3
+     *
+     *   -> map: { 1:[], 2:[], 3:[1,2] }
+     *
+     *
+     *   ex 3)
+     *   Input: n = 3, trust = [[1,3],[2,3],[3,1]]
+     *   Output: -1
+     *
+     *   -> map: { 1:[3], 2:[], 3:[1,2] }
+     *
+     *
+     */
+    public int findJudge(int n, int[][] trust) {
+        // edge
+        Map<Integer, List<Integer>> map = new HashMap<>();
+        for(int i = 0; i < n+1; i++){
+            map.put(i, new ArrayList<>());
+        }
+        for(int[] t: trust){
+            int ai = t[0];
+            int bi = t[1];
+
+            ///??
+            map.get(bi).add(ai);
+        }
+
+        System.out.println(">>> map = " + map);
+
+        boolean[] isJudge = new boolean[n+1]; // ???
+        Arrays.fill(isJudge, true);
+
+        // ???
+        for(List<Integer> list: map.values()){
+            for(int x : list){
+                isJudge[x] = false; // ???
+            }
+        }
+        for(int k: map.keySet()){
+            if(map.get(k).isEmpty()){
+                isJudge[k] = false; // ???
+            }
+        }
+
+        System.out.println(">>> isJudge = " + isJudge);
+
+        int judgeCnt = 0;
+        int judgeId = -1;
+        for(int i=1; i < isJudge.length; i++){
+            if(isJudge[i]){
+                judgeCnt += 1;
+                judgeId = i;
+            }
+        }
+
+        return judgeCnt == 1? judgeId : -1;
     }
 
 

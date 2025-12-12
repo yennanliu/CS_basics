@@ -88,6 +88,53 @@ public class FindTheTownJudge {
 
         return -1;
     }
+
+    // V0-0-1
+    // IDEA: HASHMAP (fixed by gemini)
+    /**
+     * Finds the Town Judge by tracking the net degree of trust for each person.
+     * * Time Complexity: O(E + N), where E is the number of trust relationships.
+     * Space Complexity: O(N) for the degree array.
+     */
+    public int findJudge_0_0_1(int n, int[][] trust) {
+
+        // Edge case: If N=1 and no trust relationships, person 1 is trivially the Judge.
+        if (n == 1 && trust.length == 0) {
+            return 1;
+        }
+
+        // degree[i] tracks the net trust degree for person i (using 1-based indexing).
+        // Size N+1 is used for people 1 to N.
+        // A person is the Judge if degree[i] == N - 1.
+        int[] degree = new int[n + 1];
+
+        // --- Step 1: Calculate Net Trust Degree ---
+        for (int[] t : trust) {
+            int a = t[0]; // Person A (trusts -> Out-degree)
+            int b = t[1]; // Person B (is trusted -> In-degree)
+
+            // Condition 2 Check: A trusts someone, so A cannot be the Judge.
+            degree[a]--;
+
+            // Condition 1 Check: B is trusted by someone.
+            degree[b]++;
+        }
+
+        // --- Step 2: Check for the Judge Condition ---
+        // Iterate through all people from 1 to N.
+        for (int i = 1; i <= n; i++) {
+            // Check if the net degree equals N - 1.
+            // (N-1) is the only score that satisfies both:
+            //   In-degree (N-1) + Out-degree (0) = N-1.
+            if (degree[i] == n - 1) {
+                return i;
+            }
+        }
+
+        // If no one meets the degree requirement, no Judge exists.
+        return -1;
+    }
+
     // V0-1
     // IDEA: BRUTE FORCE (fixed by gpt)
     /**
