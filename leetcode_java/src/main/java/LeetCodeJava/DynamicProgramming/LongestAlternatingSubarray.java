@@ -64,6 +64,11 @@ public class LongestAlternatingSubarray {
             if (nums[i + 1] - nums[i] != 1)
                 continue;
 
+            /** NOTE !!!
+             *
+             *  we track the `1, -1, -1, ...` difference
+             *  simply by multiply -1 in each loop
+             */
             int expected = -1; // after +1, we expect -1
 
             /**  NOTE !!!
@@ -90,7 +95,7 @@ public class LongestAlternatingSubarray {
              *  ----
              *
              *   Step by step demo:
-             *   
+             *
              * ## Step-by-Step Breakdown
              *
              * ### 1️⃣ What the outer loop guarantees
@@ -237,6 +242,11 @@ public class LongestAlternatingSubarray {
                 if (diff != expected)
                     break;
 
+                /** NOTE !!!
+                 *
+                 *  we track the `1, -1, -1, ...` difference
+                 *  simply by multiply -1 in each loop
+                 */
                 expected *= -1;
                 res = Math.max(res, j - i + 1);
             }
