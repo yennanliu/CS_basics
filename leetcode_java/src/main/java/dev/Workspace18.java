@@ -9012,6 +9012,48 @@ public class Workspace18 {
     }
 
 
+    // LC 2765
+    // 9.46 - 56 am
+    /**
+     *  -> Return the maximum length of all alternating
+     *    subarrays present in nums or -1 if no such subarray exists.
+     *
+     *
+     *  --------------
+     *
+     *   IDEA: BRUTE FORCE (double loop)
+     *
+     *
+     *  --------------
+     *
+     */
+    public int alternatingSubarray(int[] nums) {
+        // edge
+
+        int res = 0;
+
+        for(int i = 0; i < nums.length; i++){
+            for(int j = i+1; j < nums.length; j++){
+                if((j-i) % 2 == 1){
+                    if(nums[j] - nums[j-1] != 1){
+                        //cnt += 1;
+                        break; // ??
+                    }
+                }else{
+                    if(nums[j] - nums[j-1] == -1){
+                        //cnt += 1;
+                        break; // ???
+                    }
+                }
+                // /??
+                res = Math.max(res, j - i + 1);
+                //cnt += 1;
+            }
+        }
+
+        return res;
+    }
+
 
 
 

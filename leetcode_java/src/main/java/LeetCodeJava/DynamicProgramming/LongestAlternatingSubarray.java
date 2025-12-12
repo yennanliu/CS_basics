@@ -54,6 +54,34 @@ public class LongestAlternatingSubarray {
 //
 //    }
 
+    // V0-1
+    // IDEA: BRUTE FORCE (double loop) (fixed by gpt)
+    public int alternatingSubarray(int[] nums) {
+        int n = nums.length;
+        int res = -1;
+
+        for (int i = 0; i < n - 1; i++) {
+            if (nums[i + 1] - nums[i] != 1)
+                continue;
+
+            int expected = -1; // after +1, we expect -1
+
+            for (int j = i + 2; j < n; j++) {
+                int diff = nums[j] - nums[j - 1];
+
+                if (diff != expected)
+                    break;
+
+                expected *= -1;
+                res = Math.max(res, j - i + 1);
+            }
+
+            res = Math.max(res, 2); // at least [i, i+1] is valid
+        }
+
+        return res;
+    }
+
     // V1-1
     // IDEA: BRUTE FORCE
     public int alternatingSubarray_1_1(int[] A) {
