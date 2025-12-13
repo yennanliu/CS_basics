@@ -9096,6 +9096,95 @@ public class Workspace18 {
         return res;
     }
 
+    // LC 1091
+    // 15.06 - 16 pm
+    /**
+     *  ->  return the length of the `shortest clear path ` in the matrix.
+     *     If there is no clear path, return -1.
+     *
+     *
+     *     - clear path:  from `top-left` to `bottom-right`
+     *                   (0,0) to (n-1,n-1), such that:
+     *
+     *          - ALL visited cells are 0 (path)
+     *          - All the adjacent cells of the path
+     *            are 8-directionally connected
+     *
+     *
+     *    - The length of a clear path is the number of visited cells of this path.
+     *
+     *
+     *
+     *  ----------------------
+     *
+     *   IDEA 1) BFS
+     *
+     *
+     *
+     *  ----------------------
+     *
+     *   ex 3)
+     *    Input: grid = [[1,0,0],[1,1,0],[1,1,0]]
+     *    Output: -1
+     *
+     *    ->  [
+     *         [1,0,0],
+     *         [1,1,0],
+     *         [1,1,0]
+     *      ]
+     *
+     *
+     */
+    public int shortestPathBinaryMatrix(int[][] grid) {
+        // edge
+        if(grid == null || grid.length == 0 || grid[0].length == 0){
+            return -1;
+        }
+        int l = grid.length;
+        int w = grid[0].length;
+
+        // ???
+        if(grid[0][0] == 1 || grid[l-1][w-1] == 1){
+            return -1;
+        }
+
+        // NOTE !!! 8 directions
+        int[][] moves = new int[][] { {0,1}, {0,-1}, {1,0},{-1,0}, {1,1}, {-1,-1}, {-1,1}, {1,-1} };
+
+        Queue<Integer[]> q = new LinkedList<>();
+        q.add(new Integer[]{0,0});
+        int step = 1;
+
+        while(!q.isEmpty()){
+            int size = q.size();
+            for(int i = 0; i < size; i++){
+                // NOTE !!!
+                Integer[] cur = q.poll();
+                int x = cur[1];
+                int y = cur[0];
+                // if already arrived dest
+                if(x == w - 1 && y == l - 1){
+                    return step;
+                }
+
+                // mark as visited
+                grid[y][x] = 2; // ??
+                for(int[] m : moves){
+                    int x_ = x + m[1];
+                    int y_ = y + m[0];
+                    if(x_ >= 0 && x_ < w && y_ >= 0 && y_ < l){
+                        if(grid[y_][x_] == 0){
+                            q.add(new Integer[]{y_, x_});
+                        }
+                    }
+                }
+            }
+            step += 1;
+        }
+
+        return 0;
+    }
+
 
 
 
