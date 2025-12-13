@@ -6101,31 +6101,75 @@ public class Workspace18 {
      *
      *
      */
-    // 15.52 - 16.02  pm
-    // IDEA 1) DFS
+    // 16.24 - 34 pm
+    // IDEA: DFS
     public int maxAreaOfIsland(int[][] grid) {
         // edge
         if(grid == null || grid.length == 0 || grid[0].length == 0){
             return 0;
         }
 
-        int maxArea = 0;
-
         int l = grid.length;
         int w = grid[0].length;
+        int maxArea = 0;
 
         for(int y = 0; y < l; y++){
             for(int x = 0; x < w; x++){
                 if(grid[y][x] == 1){
-                    // ??
-                    //int newArea = areaHelper(x, y, grid);
-                    maxArea = Math.max(maxArea, areaHelper(x, y, grid));
+                    maxArea = Math.max(maxArea, getAreaHelper(grid, x, y));
                 }
             }
         }
 
         return maxArea;
     }
+
+    public int getAreaHelper(int[][] grid, int x, int y){
+        int l = grid.length;
+        int w = grid[0].length;
+
+        // NOTE !!! validate
+        if(x < 0 || x >= w || y < 0 || y >= l || grid[y][x] != 1){
+            return 0;
+        }
+
+        // mark as visited
+        grid[y][x] = 2;
+
+        return 1 + getAreaHelper(grid, x+1, y) +
+                getAreaHelper(grid, x-1, y) +
+                getAreaHelper(grid, x, y+1) +
+                getAreaHelper(grid, x, y-1);
+    }
+
+
+
+
+    // 15.52 - 16.02  pm
+    // IDEA 1) DFS
+//    public int maxAreaOfIsland(int[][] grid) {
+//        // edge
+//        if(grid == null || grid.length == 0 || grid[0].length == 0){
+//            return 0;
+//        }
+//
+//        int maxArea = 0;
+//
+//        int l = grid.length;
+//        int w = grid[0].length;
+//
+//        for(int y = 0; y < l; y++){
+//            for(int x = 0; x < w; x++){
+//                if(grid[y][x] == 1){
+//                    // ??
+//                    //int newArea = areaHelper(x, y, grid);
+//                    maxArea = Math.max(maxArea, areaHelper(x, y, grid));
+//                }
+//            }
+//        }
+//
+//        return maxArea;
+//    }
 
 
     private int areaHelper(int x, int y, int[][] grid){
