@@ -51,6 +51,10 @@ public class NumberOfConnectedComponentsUndirectedGraph {
         for (int[] e : edges) {
             int x = e[0];
             int y = e[1];
+            /** NOTE !!!
+             *
+             *  need to handle `cycle` case
+             */
             // If union returns false, it means we encountered a cycle
             if (!myUF2.union(x, y)) {
                 // If you want to return 0 when a cycle is detected, keep this line
@@ -80,6 +84,13 @@ public class NumberOfConnectedComponentsUndirectedGraph {
             this.clusterCnt = n;
         }
 
+        /** NOTE !!!
+         *
+         *  need to handle `cycle` case
+         *  -> so if
+         *           true, NO cycle is detected
+         *           false, cycle is detected
+         */
         public boolean union(int x, int y) {
             int xRoot = findParent(x);
             int yRoot = findParent(y);
