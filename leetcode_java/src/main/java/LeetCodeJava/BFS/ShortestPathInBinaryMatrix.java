@@ -92,6 +92,22 @@ public class ShortestPathInBinaryMatrix {
                 if (newX >= 0 && newX < n && newY >= 0 && newY < n
                         && grid[newX][newY] == 0 && !visited[newX][newY]) {
                     queue.offer(new int[] { newX, newY, distance + 1 });
+                    /** NOTE !!! mark as visited
+                     *
+                     *  below is the CRITICAL OPTIMIZATION
+                     *  -> we mark cell `visited` RIGHT AFTER
+                     *     it added to queue
+                     *
+                     *  -> by doing so, we can reduce the redundant
+                     *     enqueueing (e.g. if the cell already enqueued,
+                     *     the SAME cell should NOT enqueued AGAIN
+                     *     within the same while loop)
+                     *
+                     *
+                     * -> if we put `mark as visited outside for loop,
+                     *    such issue will happen, and cause TLE error)
+                     *
+                     */
                     visited[newX][newY] = true;
                 }
             }
@@ -102,8 +118,84 @@ public class ShortestPathInBinaryMatrix {
     }
 
     // V0-0-1
-    // IDEA: BFS (fixed by gpt)
+    // IDEA: BFS (fixed by gemini)
     public int shortestPathBinaryMatrix_0_0_1(int[][] grid) {
+        // edge
+        if (grid == null || grid.length == 0 || grid[0].length == 0) {
+            return -1;
+        }
+        int l = grid.length;
+        int w = grid[0].length;
+
+        // ???
+        if (grid[0][0] == 1 || grid[l - 1][w - 1] == 1) {
+            return -1;
+        }
+
+        // NOTE !!! 8 directions
+        int[][] moves = new int[][] { { 0, 1 }, { 0, -1 }, { 1, 0 }, { -1, 0 }, { 1, 1 }, { -1, -1 }, { -1, 1 },
+                { 1, -1 } };
+
+        Queue<Integer[]> q = new LinkedList<>();
+        q.add(new Integer[] { 0, 0 });
+        int step = 1;
+
+        while (!q.isEmpty()) {
+            int size = q.size();
+            for (int i = 0; i < size; i++) {
+                // NOTE !!!
+                Integer[] cur = q.poll();
+                int x = cur[1];
+                int y = cur[0];
+                // if already arrived dest
+                if (x == w - 1 && y == l - 1) {
+                    return step;
+                }
+
+                /**  NOTE !!!
+                 *
+                 *  DON'T put `grid[y][x] = 2; ` at below,
+                 *  -> should do the `mark visited`  RIGHT AFTER
+                 *  the element is added to queue
+                 */
+                // mark as visited
+                //grid[y][x] = 2; // ??
+                for (int[] m : moves) {
+                    int x_ = x + m[1];
+                    int y_ = y + m[0];
+                    if (x_ >= 0 && x_ < w && y_ >= 0 && y_ < l) {
+                        if (grid[y_][x_] == 0) {
+                            q.add(new Integer[] { y_, x_ });
+                            /** NOTE !!! mark as visited
+                             *
+                             *  below is the CRITICAL OPTIMIZATION
+                             *  -> we mark cell `visited` RIGHT AFTER
+                             *     it added to queue
+                             *
+                             *  -> by doing so, we can reduce the redundant
+                             *     enqueueing (e.g. if the cell already enqueued,
+                             *     the SAME cell should NOT enqueued AGAIN
+                             *     within the same while loop)
+                             *
+                             *
+                             * -> if we put `mark as visited outside for loop,
+                             *    such issue will happen, and cause TLE error)
+                             *
+                             */
+                            grid[y_][x_] = 2; // ??
+                        }
+                    }
+                }
+            }
+            step += 1;
+        }
+
+        return -1;
+    }
+
+    // V0-0-2
+    // IDEA: BFS (fixed by gpt)
+    public int shortestPathBinaryMatrix_0_0_2(int[][] grid) {
         // edge
         if (grid == null || grid.length == 0 || grid[0].length == 0) {
             return -1;
@@ -225,6 +317,7 @@ public class ShortestPathInBinaryMatrix {
         // If no path is found
         return -1;
     }
+
 
     // V1
     // https://leetcode.com/problems/shortest-path-in-binary-matrix/solutions/2043319/why-use-bfs-search-every-possible-path-v-aaov/
@@ -407,5 +500,7 @@ public class ShortestPathInBinaryMatrix {
         grow(grid, dist, 0, 0);
         return (dist[m - 1][n - 1] != Integer.MAX_VALUE ? dist[m - 1][n - 1] : -1);
     }
+
+
 
 }
