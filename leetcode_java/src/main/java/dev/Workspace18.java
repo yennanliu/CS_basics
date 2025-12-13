@@ -3,6 +3,7 @@ package dev;
 import DataStructure.Trie;
 import LeetCodeJava.DataStructure.TreeNode;
 import LeetCodeJava.Design.DesignInMemoryFileSystem;
+import LeetCodeJava.Graph.NumberOfConnectedComponentsUndirectedGraph;
 import LeetCodeJava.Tree.OnlineMajorityElementInSubarray;
 
 import java.util.*;
@@ -7653,6 +7654,26 @@ public class Workspace18 {
      * --------------
      *
      */
+    // 14.51 - 15.00
+    public int countComponents(int n, int[][] edges) {
+        // edge
+        MyUF2 uf = new MyUF2(n);
+        for(int[] e: edges){
+            // NOTE !!! need to detect `cycle node`
+            if(!uf.union(e[0], e[1])){
+                return 0;
+            };
+        }
+
+        return uf.groupCnt; // ???
+    }
+
+
+
+
+
+
+
     class MyUF2{
         // attr
         int[] parents;
@@ -7683,11 +7704,11 @@ public class Workspace18 {
             return this.parents[x];
         }
 
-        public void union(int x, int y){
+        public boolean union(int x, int y){
             int parentX = this.findParent(x);
             int parentY = this.findParent(y);
             if(parentX == parentY){
-                return;
+                return false; // /??
             }
 
             // V1: without rank
@@ -7709,6 +7730,7 @@ public class Workspace18 {
 
 
             this.groupCnt -= 1;
+            return true;
         }
 
         public int getGroupCnt(){
@@ -7716,18 +7738,20 @@ public class Workspace18 {
         }
     }
 
-    public int countComponents(int n, int[][] edges) {
-        // edge
+//    public int countComponents(int n, int[][] edges) {
+//        // edge
+//
+//        // init
+//        MyUF2 uf2 = new MyUF2(n);
+//        // union
+//        for(int[] e: edges){
+//            uf2.union(e[0], e[1]);
+//        }
+//
+//        return uf2.getGroupCnt();
+//    }
 
-        // init
-        MyUF2 uf2 = new MyUF2(n);
-        // union
-        for(int[] e: edges){
-            uf2.union(e[0], e[1]);
-        }
 
-        return uf2.getGroupCnt();
-    }
 
 
     // LC 675
