@@ -271,6 +271,54 @@ public class MaxAreaOfIsland {
                 dfsGetArea(x, y - 1, grid, visited);
     }
 
+    // V0-0-3
+    // IDEA: DFS
+    public int maxAreaOfIsland_0_0_3(int[][] grid) {
+        // edge
+        if (grid == null || grid.length == 0 || grid[0].length == 0) {
+            return 0;
+        }
+
+        int l = grid.length;
+        int w = grid[0].length;
+        int maxArea = 0;
+
+        for (int y = 0; y < l; y++) {
+            for (int x = 0; x < w; x++) {
+                if (grid[y][x] == 1) {
+                    maxArea = Math.max(maxArea, getAreaHelper(grid, x, y));
+                }
+            }
+        }
+
+        return maxArea;
+    }
+
+    public int getAreaHelper(int[][] grid, int x, int y) {
+        int l = grid.length;
+        int w = grid[0].length;
+
+        // NOTE !!! validate
+        /** NOTE !!!
+         *
+         * grid[y][x] != 1
+         *
+         *   - the non-validated cell val could be 0, 2 ....
+         */
+        if (x < 0 || x >= w || y < 0 || y >= l || grid[y][x] != 1) {
+            return 0;
+        }
+
+        // mark as visited
+        grid[y][x] = 2;
+
+        return 1 + getAreaHelper(grid, x + 1, y) +
+                getAreaHelper(grid, x - 1, y) +
+                getAreaHelper(grid, x, y + 1) +
+                getAreaHelper(grid, x, y - 1);
+    }
+
+
     // V0-1
     // IDEA : DFS
     int maxArea = 0;
