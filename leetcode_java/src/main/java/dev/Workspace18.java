@@ -8386,6 +8386,80 @@ public class Workspace18 {
      *
      *
      */
+    // 15.39 - 49 pm
+    /**
+     *   IDEA 1)
+     *     1. get the 1st island
+     *        (mark it as 2)
+     *     2. go to ALL the other islands cell
+     *     3. find the path to `1st island` (e.g. `2` cell)
+     *        (BFS)
+     *
+     *     4. maintain the shortest path on the same time
+     *
+     *   --------------------
+     *
+     */
+    public int shortestBridge(int[][] grid) {
+        // edge
+
+        int l = grid.length;
+        int w = grid[0].length;
+
+        int initX = -1;
+        int initY = -1;
+        // get cell from 1st island
+        for(int y = 0; y < l; y++){
+            for(int x = 0; x < w; x++){
+                if(grid[y][x] == 1){
+                    initX = x;
+                    initY = y;
+                    break;
+                }
+            }
+        }
+
+        // edge
+        if(initX == -1 && initY == -1){
+            return -1; // ???
+        }
+
+        // dfs mark
+        dfsMark(grid, initX, initY, 1);
+
+
+        int shortestPath = l * w;
+        // bfs find shortest path ???
+
+
+        return shortestPath;
+    }
+
+    // /??
+    public int[][] dfsMark(int[][] grid, int x, int y, int target){
+
+        int l = grid.length;
+        int w = grid[0].length;
+
+        // NOTE !!! validate
+        if(x < 0 || x >= w || y < 0 || y >= l || grid[y][x] != target){
+            return null; // ???
+        }
+
+        //int[][] moves = new int[][] { {0,1},{0,-1},{1,0},{-1,0} };
+        dfsMark(grid, x + 1, y, target);
+        dfsMark(grid, x - 1, y, target);
+        dfsMark(grid, x, y + 1, target);
+        dfsMark(grid, x, y - 1, target);
+
+        // /??
+        return grid;
+    }
+
+
+
+    // ////////
+
     // ??
     class MyUF4{
         // attr
@@ -8419,55 +8493,55 @@ public class Workspace18 {
         }
 
     }
-    public int shortestBridge(int[][] grid) {
-        // edge
-
-        int n = grid.length;
-        MyUF4 uf  = new MyUF4(n);
-
-        int l = grid.length;
-        int w = grid[0].length;
-
-        // collect 1 grid
-        List<Integer[]> list = new ArrayList<>();
-        for(int y = 0; y < l; y++){
-            for(int x = 0; x < w; x++){
-                if(grid[y][x] == 1){
-                    list.add(new Integer[]{x, y});
-                }
-            }
-        }
-
-        int[][] moves = new int[][] { {0,1},{0,-1},{1,0},{-1,0} };
-
-        Map<Integer, List<Integer>> map = new HashMap<>();
-
-        // start from 2, since 1, 0 already used
-        int groupId = 2;
-        int initX = -1;
-        int initY = -1;
-        List<Integer[]> tmp = new ArrayList<>();
-        for(int y = 0; y < l; y++){
-            for(int x = 0; x < w; x++){
-                if(grid[y][x] == 1){
-                    // get the 1st `1` point as the parent
-                    if(initX == -1){
-                        initX = x;
-                        initY = y;
-                    }
-                    // merge
-                    else{
-                        // NOTE !!! we `flatten` 2D array to 1D array,
-                        //          so can use the merge(int x, int y) func
-                        // ???
-                        uf.merge(initX + initY, x+y);
-                    }
-                    tmp.add(new Integer[]{x, y});
-                }
-            }
-        }
-        return 0;
-    }
+//    public int shortestBridge(int[][] grid) {
+//        // edge
+//
+//        int n = grid.length;
+//        MyUF4 uf  = new MyUF4(n);
+//
+//        int l = grid.length;
+//        int w = grid[0].length;
+//
+//        // collect 1 grid
+//        List<Integer[]> list = new ArrayList<>();
+//        for(int y = 0; y < l; y++){
+//            for(int x = 0; x < w; x++){
+//                if(grid[y][x] == 1){
+//                    list.add(new Integer[]{x, y});
+//                }
+//            }
+//        }
+//
+//        int[][] moves = new int[][] { {0,1},{0,-1},{1,0},{-1,0} };
+//
+//        Map<Integer, List<Integer>> map = new HashMap<>();
+//
+//        // start from 2, since 1, 0 already used
+//        int groupId = 2;
+//        int initX = -1;
+//        int initY = -1;
+//        List<Integer[]> tmp = new ArrayList<>();
+//        for(int y = 0; y < l; y++){
+//            for(int x = 0; x < w; x++){
+//                if(grid[y][x] == 1){
+//                    // get the 1st `1` point as the parent
+//                    if(initX == -1){
+//                        initX = x;
+//                        initY = y;
+//                    }
+//                    // merge
+//                    else{
+//                        // NOTE !!! we `flatten` 2D array to 1D array,
+//                        //          so can use the merge(int x, int y) func
+//                        // ???
+//                        uf.merge(initX + initY, x+y);
+//                    }
+//                    tmp.add(new Integer[]{x, y});
+//                }
+//            }
+//        }
+//        return 0;
+//    }
 
     // LC 1905
     // 9.42 - 52 am

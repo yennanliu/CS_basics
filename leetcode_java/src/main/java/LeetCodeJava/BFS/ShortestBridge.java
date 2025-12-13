@@ -133,12 +133,24 @@ public class ShortestBridge {
         for (int y = 0; y < n && !found; y++) {
             for (int x = 0; x < n && !found; x++) {
                 if (grid[y][x] == 1) {
+                    /** NOTE !!!
+                     *
+                     *   via the dfs call
+                     *
+                     *    1. mark first island cell as `2`
+                     *    2. add its (first island) cell to queue
+                     */
                     dfsMark(grid, x, y, queue);
                     found = true;
                 }
             }
         }
 
+        /** NOTE !!!
+         *
+         *   use BFS, so we can start ALL the cell from `first island`,
+         *   and expand (4 dirs) and reach second island
+         */
         // 2) BFS expand until we reach second island
         int[][] dirs = { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 } };
         int steps = 0;
@@ -157,6 +169,10 @@ public class ShortestBridge {
                     if (nx >= 0 && nx < n && ny >= 0 && ny < n && !visited[ny][nx]) {
                         visited[ny][nx] = true;
 
+                        /** NOTE !!!
+                         *
+                         *   if 2nd island is reached, we return steps directly
+                         */
                         if (grid[ny][nx] == 1) {
                             return steps; // reached second island
                         }
@@ -174,12 +190,20 @@ public class ShortestBridge {
     }
 
     // DFS to mark the first island
+    /** NOTE !!!
+     *
+     *   need to add `visited island cell` to queue on the same time
+     */
     void dfsMark(int[][] grid, int x, int y, Queue<int[]> queue) {
         int n = grid.length;
         if (x < 0 || x >= n || y < 0 || y >= n || grid[y][x] != 1)
             return;
 
         grid[y][x] = 2; // mark first island
+        /** NOTE !!!
+         *
+         *   add `visited island cell` to queue
+         */
         queue.add(new int[] { x, y });
 
         dfsMark(grid, x + 1, y, queue);
