@@ -1,6 +1,6 @@
 package LCWeekly;
 
-import java.util.HashMap;
+import java.util.*;
 
 /**
  * LeetCode weekly contest 341
@@ -70,6 +70,74 @@ public class Weekly341 {
     // Q2
     // https://leetcode.com/problems/find-the-maximum-divisibility-score/
     // LC 2644
+    // 14.55- 15.05 pm
+    /**
+     *
+     *  -> Return the integer divisors[i] with the maximum divisibility score.
+     *    If multiple integers have the maximum score, return the smallest one.
+     *
+     *
+     *   - The divisibility score of divisors[i] is the number of
+     *     indices j such that nums[j] is divisible by divisors[i].
+     *
+     *  -----------------
+     *
+     *  IDEA 1) ARRAY OP + hashmap
+     *
+     *
+     *  -----------------
+     *
+     *  ex 1)
+     *   Input: nums = [2,9,15,50], divisors = [5,3,7,2]
+     *   -> ans  = 2
+     *
+     *   -> divisors[0] = 2
+     *   since divisors[0] = 5
+     *   and 15, 50 from nums are divisible by  (divisors[0] = 5)
+     *   -> so ans = 2
+     *
+     */
+    public int maxDivScore(int[] nums, int[] divisors) {
+        // edge
+        if(nums == null || nums.length == 0){
+            return 0;
+        }
+        // { divisible_cnt : [divisors_1, divisors_2, ....] }
+        Map<Integer, List<Integer>> map = new HashMap<>();
+
+        int maxCnt = 0;
+
+        for(int i = 0; i < nums.length; i++){
+            int x = nums[i];
+            int cnt = getDivisibleCnt(nums, x);
+            if(!map.containsKey(cnt)){
+                map.put(cnt, new ArrayList<>());
+            }
+            map.get(cnt).add(x); // ???
+            maxCnt = Math.max(maxCnt, cnt);
+        }
+
+        List<Integer> list = map.get(maxCnt);
+        Collections.sort(list, new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                int diff = o1 - o2;
+                return diff;
+            }
+        });
+
+        return list.get(0); // ??
+    }
+
+    private int getDivisibleCnt(int[] nums, int x){
+        int res = 0;
+        for(int n: nums){
+            if(n % x == 0){
+                res += 1;
+            }
+        }
+        return res;
+    }
 
     // Q3
     // LC 2645
