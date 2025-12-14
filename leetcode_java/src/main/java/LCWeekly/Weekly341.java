@@ -220,30 +220,61 @@ public class Weekly341 {
         if(word.isEmpty()){
             return 3; // ??
         }
+        if(word.length() == 1){
+            return 2;
+        }
         // ???
         if(word.equals("abc")){
             return 0;
         }
 
-        int opCnt = 0;
-        int l = 0; // ??
-        for(int r = 0; r < word.length(); r++){
-            //  ??
-            StringBuilder sb = new StringBuilder();
-            // /?
-            String cur = String.valueOf(word.charAt(r));
-            if(cur.equals("b")){
 
+        int opCnt = 0;
+        //int l = 0; // ??
+        // ??
+        boolean lastAlphabetHandled = false;
+
+        for(int l = 0; l < word.length(); l++){
+            StringBuilder sb = new StringBuilder();
+            char prev = '\0';  // ???
+            // ???
+            for(int r = l + 1; r < word.length(); r++){
+                char cur = word.charAt(r);
+                // case 1)
+//                if(sb.toString().equals("abc")){
+//                    break;
+//                }
+                // case 2) the `cur` alphabet is before prev alphabet
+                if(cur - prev <= 0){
+                    // 3 - (0-0 + 1) = 2
+                    opCnt += (3 - (r-l+1));
+
+                    // ??? check if the `last alphabet` already made as valid string
+                    if(r == word.length() - 1){
+                        lastAlphabetHandled = true;
+                    }
+                    break;
+                }
+                // case 3) the `cur` alphabet is after alphabet
+//                else{
+//
+//                }
+                prev = cur;
             }
 
+        }
+
+        // ???
+        if(!lastAlphabetHandled){
+            opCnt += 2;
         }
 
         return opCnt;
     }
 
-    private boolean equalToAbc(StringBuilder sb){
-        return false;
-    }
+//    private boolean equalToAbc(StringBuilder sb){
+//        return false;
+//    }
 
     // Q4
     // LC 2646
