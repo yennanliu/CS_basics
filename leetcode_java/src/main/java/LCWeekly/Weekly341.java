@@ -250,7 +250,14 @@ public class Weekly341 {
     // https://leetcode.com/problems/minimize-the-total-price-of-the-trips/
     // 15.54 - 16.04 pm
     /**
+     *  -> Return the minimum total price sum
+     *  to perform all the given trips.
      *
+     *
+     *  -----------------------
+     *
+     *
+     *   -----------------------
      *
      *
      */
