@@ -108,12 +108,12 @@ public class Weekly341 {
         int maxCnt = 0;
 
         for(int i = 0; i < nums.length; i++){
-            int x = nums[i];
-            int cnt = getDivisibleCnt(nums, x);
+            //int x = divisors[i];
+            int cnt = getDivisibleCnt(nums, divisors[i]);
             if(!map.containsKey(cnt)){
                 map.put(cnt, new ArrayList<>());
             }
-            map.get(cnt).add(x); // ???
+            map.get(cnt).add(divisors[i]); // ???
             maxCnt = Math.max(maxCnt, cnt);
         }
 
@@ -141,12 +141,123 @@ public class Weekly341 {
 
     // Q3
     // LC 2645
+    // 15.30 - 40 pm
     // https://leetcode.com/problems/minimum-additions-to-make-valid-string/
+    /**
+     *
+     *  -> return the `minimum` number of letters
+     *    that must be `inserted` so that word becomes `valid`.
+     *
+     *    - valid" if it can be formed by
+     *      concatenating the string "abc" several times.
+     *
+     *   - word, we can insert a, b, c ANYWHERE, ANY NUM OF TIMES
+     *
+     *
+     *
+     *
+     *
+     * ---------------
+     *
+     *  IDEA 1) GREEDY V1
+     *
+     *    -> 1. split by "a"
+     *       2. loop over every group
+     *       3. add the needed alphabet, and update the action cnt
+     *
+     *
+     *   IDEA 1) GREEDY V2 + slide window (fixed window size)
+     *
+     *     -> s
+     *
+     *
+     * ---------------
+     *
+     *  ex 1)
+     *
+     *  Input: word = "b"
+     *  Output: 2
+     *
+     *   ->  a "b" c
+     *
+     *
+     *   ex 2)
+     *
+     *   Input: word = "aaa"
+     *   Output: 6
+     *
+     *   -> a "bc" a "bc" a "bc"
+     *
+     *
+     *  ex 3)
+     *
+     *   Input: word = "abc"
+     *   Output: 0
+     *
+     *
+     *  ex 4)
+     *
+     *   input : bca
+     *
+     * ->  "a" bc a
+     *     "a" bc a "bc"
+     *
+     *
+     *  ex 5)
+     *
+     *   cba
+     *
+     *   -> "ab" c ba
+     *       "ab" c "a"b"c" a
+     *        "ab" c "a"b"c" a "bc"
+     *
+     *
+     *
+     */
+    // ????
+    public int addMinimum(String word) {
+        // edge
+        if(word.isEmpty()){
+            return 3; // ??
+        }
+        // ???
+        if(word.equals("abc")){
+            return 0;
+        }
+
+        int opCnt = 0;
+        int l = 0; // ??
+        for(int r = 0; r < word.length(); r++){
+            //  ??
+            StringBuilder sb = new StringBuilder();
+            // /?
+            String cur = String.valueOf(word.charAt(r));
+            if(cur.equals("b")){
+
+            }
+
+        }
+
+        return opCnt;
+    }
+
+    private boolean equalToAbc(StringBuilder sb){
+        return false;
+    }
 
     // Q4
     // LC 2646
     // https://leetcode.com/problems/minimize-the-total-price-of-the-trips/
+    // 15.54 - 16.04 pm
+    /**
+     *
+     *
+     *
+     */
+    public int minimumTotalPrice(int n, int[][] edges, int[] price, int[][] trips) {
 
+        return 0;
+    }
 
 
 }
