@@ -7316,60 +7316,52 @@ public class Workspace18 {
      *
      *
      */
-    // IDEA 3) UNION FIND ???
-    public class MyUF{
-        // attr
-        int[] parents;
-        int[] rank;  // ???
-        int groupCnt; // ??
 
-        // constructor
-        MyUF(int size){
-            this.parents = new int[size];
-            this.rank = new int[size];   // ???
-            this.groupCnt = size;
+    // 7.15 -25 am
+    /**
+     *
+     *  -> Return an array of integers answer where answer[i] is the number
+     *  of islands after turning the cell (ri, ci) into a land.
+     *
+     *
+     *  -----------------
+     *
+     *  IDEA 1) UF
+     *
+     */
+    class MyUf99{
+       // attr
+       int groupCnt;
+       int[] parents;
+       int[] rank;
 
-            // init parent as itself
-            for(int i = 0; i < size; i++){
+       // constructor
+        MyUf99(int n){
+            this.groupCnt = n;
+            this.parents = new int[n];
+            for(int i = 0; i < n; i++){
                 this.parents[i] = i;
             }
 
-            // init rank ????
-
+            this.rank = new int[n];
         }
+
         // method
-        public void union(int x, int y){
-            int xParent = getParent(x); //this.parents[x];
-            int yParent = getParent(y); //this.parents[y];
-            if(xParent == yParent){
-                return; // ???
-            }
+        public boolean initializeLand(int i) {
+            return false;
+        }
 
-          //  xParent = this.
-          // update rank ???
-          this.parents[x] = yParent; // ????
+        public void merge(int i, int j){
 
-          this.groupCnt -= 1;
         }
 
         public int getParent(int x){
-//            if(this.parents[x] == x){
-//                return x;
-//            }
-//
-//            this.parents[x] = getParent(x);
-//            return this.parents[x]; // ???
-            if(this.parents[x] != x){
-                //return getParent(x);
-                this.parents[x] = getParent(x);
-            }
-            return this.parents[x]; // ???
+            return 0;
         }
 
-        public boolean isUnion(int x, int y){
-            return this.getParent(x) == this.getParent(y); // ???
+        public int getGroupCnt(int x){
+            return this.groupCnt;
         }
-
     }
 
     public List<Integer> numIslands2(int m, int n, int[][] positions) {
@@ -7383,27 +7375,137 @@ public class Workspace18 {
             return res;
         }
 
-        //UNION FIND
-        int size = m * n;
-        MyUF myUF = new MyUF(size);
+        int[][] moves = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
 
-        // do the `land` op
-        for(int i = 0; i < positions.length; i++){
-            int[] p = positions[i];
-            // dfs union
+        //List<Integer> res = new ArrayList<>();
+        MyUf99 uf = new MyUf99(m * n); // ??
+
+        for(int[] p: positions){
+            int x = p[1];
+            int y = p[0];
+            // ??
+            int adjustedIdx = y * n + x; // ???
+
+            if(!uf.initializeLand(adjustedIdx)){
+                continue; // ???
+            }
+
             // ???
-            // get the cur group cnt
-            res.add(myUF.groupCnt);
+            for(int[] move: moves){
+                int x_ = x + move[1];
+                int y_ = y + move[0];
+                if(x_ >= 0 && x_ < m && y_ >= 0 && y_ < n){
+                    if(positions[y_][x_] == 1){
+                        
+                    }
+                }
+            }
+
+
+
         }
+
+
 
 
         return res;
     }
 
-    // ????
-    public void dfsUnion(int x, int y){
 
-    }
+
+
+
+
+
+
+    // IDEA 3) UNION FIND ???
+//    public class MyUF{
+//        // attr
+//        int[] parents;
+//        int[] rank;  // ???
+//        int groupCnt; // ??
+//
+//        // constructor
+//        MyUF(int size){
+//            this.parents = new int[size];
+//            this.rank = new int[size];   // ???
+//            this.groupCnt = size;
+//
+//            // init parent as itself
+//            for(int i = 0; i < size; i++){
+//                this.parents[i] = i;
+//            }
+//
+//            // init rank ????
+//
+//        }
+//        // method
+//        public void union(int x, int y){
+//            int xParent = getParent(x); //this.parents[x];
+//            int yParent = getParent(y); //this.parents[y];
+//            if(xParent == yParent){
+//                return; // ???
+//            }
+//
+//          //  xParent = this.
+//          // update rank ???
+//          this.parents[x] = yParent; // ????
+//
+//          this.groupCnt -= 1;
+//        }
+//
+//        public int getParent(int x){
+////            if(this.parents[x] == x){
+////                return x;
+////            }
+////
+////            this.parents[x] = getParent(x);
+////            return this.parents[x]; // ???
+//            if(this.parents[x] != x){
+//                //return getParent(x);
+//                this.parents[x] = getParent(x);
+//            }
+//            return this.parents[x]; // ???
+//        }
+//
+//        public boolean isUnion(int x, int y){
+//            return this.getParent(x) == this.getParent(y); // ???
+//        }
+//
+//    }
+//
+//    public List<Integer> numIslands2(int m, int n, int[][] positions) {
+//        List<Integer> res = new ArrayList<>();
+//        // edge
+//        if(positions == null || positions.length == 0 || positions[0].length == 0){
+//            return res;
+//        }
+//        if(positions.length == 1 && positions[0].length == 1){
+//            res.add(1); // ???
+//            return res;
+//        }
+//
+//        //UNION FIND
+//        int size = m * n;
+//        MyUF myUF = new MyUF(size);
+//
+//        // do the `land` op
+//        for(int i = 0; i < positions.length; i++){
+//            int[] p = positions[i];
+//            // dfs union
+//            // ???
+//            // get the cur group cnt
+//            res.add(myUF.groupCnt);
+//        }
+//
+//
+//        return res;
+//    }
+//
+//    // ????
+//    public void dfsUnion(int x, int y){
+//
+//    }
 
 
 
