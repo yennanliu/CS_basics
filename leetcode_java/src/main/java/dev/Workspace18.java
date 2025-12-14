@@ -8060,46 +8060,81 @@ public class Workspace18 {
      *   ----------------------------
      *
      */
+    // 6.45 - 55 am
     public TreeNode sortedArrayToBST(int[] nums) {
-        // edge
+//        // edge
         if(nums == null || nums.length == 0){
             return null;
         }
 
-        //TreeNode root = new TreeNode(nums[0]);
-        TreeNode root = bfsBalanceBuilder(nums, 0, nums.length - 1);
-
-        return root; // ???
+        // ???
+        return bstTreeBuilder(nums, 0, nums.length - 1);
     }
 
-    /**
-     *      *    -> step 1) find the root (mid off array)
-     *      *    ->      2) split to sub left, right tree
-     *      *    ->      3) from each sub tree, find its root
-     *      *               and repeat 1), 2)
-     */
-    public TreeNode bfsBalanceBuilder(int[] nums, int leftIdx, int rightIdx){
+    private TreeNode bstTreeBuilder(int[] nums, int left, int right){
+//        // edge ??
+        if(nums == null || nums.length == 0){
+            return null;
+        }
+        // ??? < or <=
+        if(right < left){
+            return null;
+        }
+
+        int mid = (left + right) / 2 ; // ??
+        TreeNode node = new TreeNode(nums[mid]); // ???
+
         // NOTE !!!
-        if (leftIdx > rightIdx) {
-            return null;
-        }
+        node.left = bstTreeBuilder(nums, left, mid - 1);
+        node.right = bstTreeBuilder(nums, mid + 1, right);
 
-        if(nums == null || nums.length == 0){
-            return null;
-        }
-        // find idx of root
-        //int mid = nums.length / 2;
-        int mid = (rightIdx - leftIdx) / 2; // ???
-        TreeNode root = new TreeNode(nums[mid]);
-
-        int radius = mid;
-
-        // build left, right sub tree via dfs
-        root.left = bfsBalanceBuilder(nums, leftIdx, leftIdx + radius); // ????
-        root.right = bfsBalanceBuilder(nums, leftIdx + radius + 1, rightIdx - 1);
-
-        return root;  // ???
+        return node;
     }
+
+
+
+
+
+//    public TreeNode sortedArrayToBST(int[] nums) {
+//        // edge
+//        if(nums == null || nums.length == 0){
+//            return null;
+//        }
+//
+//        //TreeNode root = new TreeNode(nums[0]);
+//        TreeNode root = bfsBalanceBuilder(nums, 0, nums.length - 1);
+//
+//        return root; // ???
+//    }
+//
+//    /**
+//     *      *    -> step 1) find the root (mid off array)
+//     *      *    ->      2) split to sub left, right tree
+//     *      *    ->      3) from each sub tree, find its root
+//     *      *               and repeat 1), 2)
+//     */
+//    public TreeNode bfsBalanceBuilder(int[] nums, int leftIdx, int rightIdx){
+//        // NOTE !!!
+//        if (leftIdx > rightIdx) {
+//            return null;
+//        }
+//
+//        if(nums == null || nums.length == 0){
+//            return null;
+//        }
+//        // find idx of root
+//        //int mid = nums.length / 2;
+//        int mid = (rightIdx - leftIdx) / 2; // ???
+//        TreeNode root = new TreeNode(nums[mid]);
+//
+//        int radius = mid;
+//
+//        // build left, right sub tree via dfs
+//        root.left = bfsBalanceBuilder(nums, leftIdx, leftIdx + radius); // ????
+//        root.right = bfsBalanceBuilder(nums, leftIdx + radius + 1, rightIdx - 1);
+//
+//        return root;  // ???
+//    }
 
 
     // LC 529
