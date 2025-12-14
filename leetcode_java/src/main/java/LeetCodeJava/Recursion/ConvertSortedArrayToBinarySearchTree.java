@@ -70,9 +70,25 @@ public class ConvertSortedArrayToBinarySearchTree {
 
         /** NOTE !!!
          *
-         *  edge case
+         *  edge case :  leftIdx > rightIdx
+         *
+         *  NOTE !! ( >, but NOT >=)
+         *
+         *  ----
+         *
+         *   why `>` ?
+         *
+         *   -> example:
+         *
+         *    [5, 5]
+         *
+         *    -> [nums[5]] (1 element)
+         *    -> Valid Subarray: We must process this one element
+         *       (select it as the root, then recurse left and right).
+         *
          */
-        // Base Case: If the subarray is invalid (left pointer crosses right pointer), return null.
+        // Base Case: If the subarray is invalid
+        // (left pointer crosses right pointer), return null.
         if (leftIdx > rightIdx) {
             return null;
         }
