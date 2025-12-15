@@ -7455,12 +7455,12 @@ public class Workspace18 {
 //        }
 //
 //        public int getParent(int x){
-////            if(this.parents[x] == x){
-////                return x;
-////            }
-////
-////            this.parents[x] = getParent(x);
-////            return this.parents[x]; // ???
+//            if(this.parents[x] == x){
+//                return x;
+//            }
+//
+//            this.parents[x] = getParent(x);
+//            return this.parents[x]; // ???
 //            if(this.parents[x] != x){
 //                //return getParent(x);
 //                this.parents[x] = getParent(x);
@@ -9438,6 +9438,12 @@ public class Workspace18 {
         }
 
         return 0;
+    }
+
+    // LC 841
+    public boolean canVisitAllRooms(List<List<Integer>> rooms) {
+
+        return false;
     }
 
 
