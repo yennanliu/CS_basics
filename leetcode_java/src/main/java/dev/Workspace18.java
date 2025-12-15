@@ -9441,9 +9441,70 @@ public class Workspace18 {
     }
 
     // LC 841
+    // 7.01 - 11 am
+    /**
+     *  -> return true if you can visit all the rooms, or false otherwise.
+     *
+     *   - room: 0 - n-1
+     *   - goal: visit ALL rooms
+     *   - except room 0, ALL room are locked
+     *   - rooms[i]: set of keys we can get when visit room i
+     *
+     *
+     *  ---------------------
+     *
+     *  IDEA 1) DFS
+     *
+     *  IDEA 2) BFS ???
+     *
+     *
+     *  ---------------------
+     *
+     */
+    // IDEA 2) BFS ???
     public boolean canVisitAllRooms(List<List<Integer>> rooms) {
+        // edge
+        if(rooms.isEmpty()){
+            return true;
+        }
+        if(rooms.size() == 1){
+            return true;
+        }
+        Set<Integer> visited = new HashSet();
+        Map<Integer, List<Integer>> map = new HashMap<>();
+        for(int i = 0; i < rooms.size(); i++){
+            map.putIfAbsent(i, new ArrayList<>());
+            map.get(i).addAll(rooms.get(i)); // ??
+        }
 
-        return false;
+        System.out.println(">>> map = " + map);
+
+        // bfs ???
+        // q: { room_1_id, ... }
+        Queue<Integer> q = new LinkedList<>();
+        q.add(0);
+        visited.add(0);
+
+        while(!q.isEmpty()){
+            int size = q.size();
+            for(int i = 0; i < size; i++){
+                int cur = q.poll();
+                // if already visited all room
+                if(visited.size() == rooms.size()){
+                    return true;
+                }
+                for(int next: map.get(cur)){
+                    if(!visited.contains(next)){
+                        visited.add(next);
+                        q.add(next);
+                    }
+                }
+            }
+        }
+
+        System.out.println(">>> visited = " + visited);
+
+        return visited.size() == rooms.size(); // ???
     }
 
 
