@@ -2,10 +2,7 @@ package LeetCodeJava.DFS;
 
 // https://leetcode.com/problems/keys-and-rooms/description/
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.Stack;
+import java.util.*;
 
 /**
  *  841. Keys and Rooms
@@ -54,6 +51,51 @@ public class KeysAndRooms {
 //    public boolean canVisitAllRooms(List<List<Integer>> rooms) {
 //
 //    }
+
+    // V0-1
+    // IDEA: BFS
+    public boolean canVisitAllRooms_0_1(List<List<Integer>> rooms) {
+        // edge
+        if (rooms.isEmpty()) {
+            return true;
+        }
+        if (rooms.size() == 1) {
+            return true;
+        }
+        Set<Integer> visited = new HashSet();
+        Map<Integer, List<Integer>> map = new HashMap<>();
+        for (int i = 0; i < rooms.size(); i++) {
+            map.putIfAbsent(i, new ArrayList<>());
+            map.get(i).addAll(rooms.get(i)); // ??
+        }
+
+        //System.out.println(">>> map = " + map);
+        // q: { room_1_id, ... }
+        Queue<Integer> q = new LinkedList<>();
+        q.add(0);
+        visited.add(0);
+
+        while (!q.isEmpty()) {
+            int size = q.size();
+            for (int i = 0; i < size; i++) {
+                int cur = q.poll();
+                // if already visited all room
+                if (visited.size() == rooms.size()) {
+                    return true;
+                }
+                for (int next : map.get(cur)) {
+                    if (!visited.contains(next)) {
+                        visited.add(next);
+                        q.add(next);
+                    }
+                }
+            }
+        }
+
+        //System.out.println(">>> visited = " + visited);
+        return visited.size() == rooms.size(); // ???
+    }
+
 
     // V1
     // IDEA: DFS
