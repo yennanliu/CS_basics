@@ -7396,7 +7396,7 @@ public class Workspace18 {
                 int y_ = y + move[0];
                 if(x_ >= 0 && x_ < m && y_ >= 0 && y_ < n){
                     if(positions[y_][x_] == 1){
-                        
+
                     }
                 }
             }
