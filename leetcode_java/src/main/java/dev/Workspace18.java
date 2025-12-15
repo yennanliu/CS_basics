@@ -9461,8 +9461,51 @@ public class Workspace18 {
      *  ---------------------
      *
      */
-    // IDEA 2) BFS ???
+    // IDEA 1) DFS
     public boolean canVisitAllRooms(List<List<Integer>> rooms) {
+        // edge
+        if(rooms.isEmpty()){
+            return true;
+        }
+        if(rooms.size() == 1){
+            return true;
+        }
+        Set<Integer> visited = new HashSet();
+        Map<Integer, List<Integer>> map = new HashMap<>();
+        for(int i = 0; i < rooms.size(); i++){
+            map.putIfAbsent(i, new ArrayList<>());
+            map.get(i).addAll(rooms.get(i)); // ??
+        }
+
+        System.out.println(">>> map = " + map);
+
+        // bfs ???
+        // q: { room_1_id, ... }
+        visited.add(0); // ?? can add before dfs ?
+        dfsHelper(0, map, visited);
+
+        System.out.println(">>> visited = " + visited);
+
+        return visited.size() == rooms.size(); // ???
+    }
+
+    private void dfsHelper(int room, Map<Integer, List<Integer>> map, Set<Integer> visited){
+        // add to visited
+        //visited.add(room);
+        // visit next
+        for(int next: map.get(room)){
+            if(!visited.contains(next)){
+                visited.add(room);
+                dfsHelper(next, map, visited);
+            }
+        }
+       // return true;
+    }
+
+
+
+    // IDEA 2) BFS ???
+    public boolean canVisitAllRooms_99(List<List<Integer>> rooms) {
         // edge
         if(rooms.isEmpty()){
             return true;
