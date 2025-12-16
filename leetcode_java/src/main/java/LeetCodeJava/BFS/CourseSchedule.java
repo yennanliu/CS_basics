@@ -178,6 +178,85 @@ public class CourseSchedule {
         return topologicalOrder;
     }
 
+    // V0-0-1
+    // IDEA: DFS (fixed by gemini)
+    // Map to store the prerequisites: { course : [pre_course_1, pre_course_2, ...] }
+    // This defines the directed graph: pre_course -> course
+    private Map<Integer, List<Integer>> preMap;
+    // Status array: 0=Unvisited, 1=Visiting, 2=Finished
+    private int[] statusList;
+    public boolean canFinish_0_0_1(int numCourses, int[][] prerequisites) {
+
+        // Edge case: If there are no prerequisites, we can always finish.
+        if (prerequisites == null) {
+            return true;
+        }
+
+        this.preMap = new HashMap<>();
+        this.statusList = new int[numCourses];
+
+        // Initialize the adjacency list (preMap)
+        for (int i = 0; i < numCourses; i++) {
+            preMap.put(i, new ArrayList<>());
+        }
+
+        // Build the dependency map (which course requires which prerequisite)
+        for (int[] p : prerequisites) {
+            int course = p[0]; // Course to take (current)
+            int prerequisite = p[1]; // Course required (pre)
+
+            // Map stores: course -> [prerequisites]
+            preMap.get(course).add(prerequisite);
+        }
+
+        // --- Execute DFS on all courses ---
+        // We must check every course because the graph may not be fully connected.
+        for (int i = 0; i < numCourses; i++) {
+            // If any DFS call finds a cycle, return false immediately.
+            if (!courseHelper(i)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * DFS function to check for cycles starting from the given course.
+     * @param course The course ID to check.
+     * @return true if no cycle is found in this path, false otherwise.
+     */
+    private boolean courseHelper(int course) {
+
+        // Base Case 1: Cycle detected! (We hit a node currently in the recursion stack)
+        if (statusList[course] == 1) {
+            return false;
+        }
+
+        // Base Case 2: Already processed and found to be safe (no cycle in this branch)
+        if (statusList[course] == 2) {
+            return true;
+        }
+
+        // 1. Mark current course as Visiting (State 1)
+        statusList[course] = 1;
+
+        // 2. Visit all prerequisites recursively
+        for (int pre : preMap.get(course)) {
+            // CRITICAL FIX: Propagate the return value of the recursive call.
+            if (!courseHelper(pre)) {
+                return false; // Cycle found in a prerequisite path
+            }
+        }
+
+        // 3. Mark current course as Finished (State 2)
+        // This signifies that the course and all its prerequisites can be safely taken.
+        statusList[course] = 2;
+
+        return true;
+    }
+
+
     // V0-1
     // LC 210 (NOTE !, we can use same approach for LC 207, LC 210)
     // IDEA : TOPOLOGICAL SORT (cur - pre map) (fixed by gpt)
@@ -672,16 +751,16 @@ public class CourseSchedule {
     // https://neetcode.io/problems/course-schedule
     // IDEA: Cycle Detection (DFS)
     // Map each course to its prerequisites
-    private Map<Integer, List<Integer>> preMap = new HashMap<>();
+    private Map<Integer, List<Integer>> preMap_1_1 = new HashMap<>();
     // Store all courses along the current DFS path
     private Set<Integer> visiting = new HashSet<>();
 
     public boolean canFinish_1_1(int numCourses, int[][] prerequisites) {
         for (int i = 0; i < numCourses; i++) {
-            preMap.put(i, new ArrayList<>());
+            preMap_1_1.put(i, new ArrayList<>());
         }
         for (int[] prereq : prerequisites) {
-            preMap.get(prereq[0]).add(prereq[1]);
+            preMap_1_1.get(prereq[0]).add(prereq[1]);
         }
 
         for (int c = 0; c < numCourses; c++) {
@@ -697,18 +776,18 @@ public class CourseSchedule {
             // Cycle detected
             return false;
         }
-        if (preMap.get(crs).isEmpty()) {
+        if (preMap_1_1.get(crs).isEmpty()) {
             return true;
         }
 
         visiting.add(crs);
-        for (int pre : preMap.get(crs)) {
+        for (int pre : preMap_1_1.get(crs)) {
             if (!dfs(pre)) {
                 return false;
             }
         }
         visiting.remove(crs);
-        preMap.put(crs, new ArrayList<>());
+        preMap_1_1.put(crs, new ArrayList<>());
         return true;
     }
 
