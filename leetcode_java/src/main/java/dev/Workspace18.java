@@ -9551,6 +9551,108 @@ public class Workspace18 {
     }
 
 
+    // LC 207
+    // 8.35 - 45 am
+    /**
+     *  -> Return true if you can finish all courses.
+     *  Otherwise, return false.
+     *
+     *   - courses: 0 to numCourses - 1
+     *   - prerequisites:  [ai, bi]
+     *       - bi first, then ai
+     *
+     *
+     *  ----------------------
+     *
+     *
+     *
+     *  ----------------------
+     *
+     */
+    public boolean canFinish(int numCourses, int[][] prerequisites) {
+        // edge
+        if(prerequisites.length == 0){
+            return true;
+        }
+        if(prerequisites.length == 1){
+            return true;
+        }
+
+        // map:
+        // { course :  [pre_course_1, pre_course_2, ...] }
+        Map<Integer, List<Integer>> preMap = new HashMap<>();
+        for(int i = 0; i < numCourses; i++){
+            preMap.put(i, new ArrayList<>());
+        }
+
+        for(int[] p: prerequisites){
+            /**
+             *      *   - prerequisites:  [ai, bi]
+             *      *       - bi first, then ai
+             */
+            int cur = p[0];
+            int pre = p[1];
+            preMap.get(cur).add(pre);
+        }
+
+        System.out.println(">>> preMap = " + preMap);
+        /**  NOTE !!!
+         *
+         *  0: NOT visited
+         *  1: visiting
+         *  2: visited
+         */
+        int[] statusList = new int[numCourses];
+        Arrays.fill(statusList, 0);
+
+        for(int[] p: prerequisites){
+            /**
+             *      *   - prerequisites:  [ai, bi]
+             *      *       - bi first, then ai
+             */
+            int cur = p[0];
+            int pre = p[1];
+
+            // ???
+//            if(statusList[cur] == 0){
+//                if(!courseHelper(cur, statusList, statusList[cur], preMap)){
+//                    return false;
+//                }
+//            }
+            if(!courseHelper(cur, statusList, statusList[cur], preMap)){
+                return false;
+            }
+
+        }
+
+        return true;
+    }
+
+    private boolean courseHelper(int course, int[] statusList, int status, Map<Integer, List<Integer>> preMap){
+        // if already visited ??
+        if(status == 2){
+            return true;
+        }
+        // check status
+        if(status == 1){
+            return false; // ???
+        }
+        // update status
+        statusList[course] = 1;
+
+        // visit pre courses
+        for(int pre: preMap.get(course)){
+            if(statusList[pre] == 0){
+                courseHelper(pre, statusList, status, preMap);
+            }
+        }
+
+        // mark as visited
+        statusList[course] = 2; // ??
+
+        // ???
+        return true;
+    }
 
 
 }
