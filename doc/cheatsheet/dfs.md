@@ -84,6 +84,19 @@
   - **Short-circuit Optimization**: Can optimize by returning early if validation fails
   - **Two-Grid Comparison**: One grid for traversal structure, another for validation condition
 
+### **Pattern 10: Bidirectional Graph with Direction Tracking**
+- **Description**: Build undirected graph representation of a directed graph, track original edge directions during DFS traversal
+- **Recognition**: "Reorder edges", "reverse routes", "make paths lead to", "minimum edge reversals", "orient edges"
+- **Key Technique**: Store direction metadata (flag) for each edge in bidirectional adjacency list, count edges needing reversal during DFS
+- **Examples**: LC 1466 (Reorder Routes to Make All Paths Lead to the City Zero)
+- **Template**: Use Bidirectional Direction Tracking Template
+- **Important Notes**:
+  - **Bidirectional Graph Construction**: Add both directions for each edge, but mark original direction with flag
+  - **Direction Flag**: Use 1 for edges in original direction, 0 for reverse direction
+  - **Count During Traversal**: Increment counter when traversing an edge with flag=1 (wrong direction)
+  - **Tree Property**: Works well with tree structures (n-1 edges for n nodes)
+  - **From Root**: Always start DFS from the target node (the node all paths should lead to)
+
 ## Templates & Algorithms
 
 ### Template Comparison Table
@@ -98,6 +111,7 @@
 | **2-Pass DFS** | Boundary elimination | Two-phase flood | O(m×n) | O(m×n) | Closed/surrounded regions |
 | **Path Signature** | Encode shapes | Directional tracking | O(m×n) | O(m×n) | Distinct shape counting |
 | **DFS Validation** | Component validation | Boolean flag propagation | O(m×n) | O(m×n) | Sub-component detection |
+| **Bidirectional Direction** | Track edge direction | Bidirectional + flags | O(V+E) | O(V+E) | Edge reorientation/reversal |
 
 ### Universal DFS Template
 ```python
@@ -795,6 +809,162 @@ if (!dfs(r - 1, c)) return false;  // Stops early, leaves cells unvisited!
 - LC 463: Island Perimeter (single grid, count edges)
 - LC 827: Making A Large Island (grid modification, max area)
 
+### Template 10: Bidirectional Graph with Direction Tracking
+```java
+/**
+ * Pattern: Build bidirectional graph with direction flags, count edge reversals via DFS
+ * Use case: Reorder edges, reverse routes, make all paths lead to a target node
+ * Key insight: Treat directed graph as undirected for traversal, but track original directions
+ *
+ * Time: O(V + E) - visit each node and edge once
+ * Space: O(V + E) - adjacency list + visited array
+ */
+public int minReorder(int n, int[][] connections) {
+    // Build bidirectional adjacency list with direction flags
+    // Map: city -> List of [neighbor, direction_flag]
+    // direction_flag: 1 if original direction (needs reversal)
+    // direction_flag: 0 if reverse direction (correct direction)
+    Map<Integer, List<int[]>> adj = new HashMap<>();
+    for (int i = 0; i < n; i++) {
+        adj.put(i, new ArrayList<>());
+    }
+
+    for (int[] c : connections) {
+        int from = c[0];
+        int to = c[1];
+
+        // Original direction: from -> to (flag = 1, needs reversal)
+        adj.get(from).add(new int[]{to, 1});
+
+        // Reverse direction: to -> from (flag = 0, correct direction)
+        adj.get(to).add(new int[]{from, 0});
+    }
+
+    boolean[] visited = new boolean[n];
+    int[] count = {0}; // Use array to pass by reference
+
+    // Start DFS from target node (city 0)
+    dfsCountReversals(0, adj, visited, count);
+
+    return count[0];
+}
+
+/**
+ * DFS to count edges that need reversal
+ * Increment count when traversing edge with flag=1 (wrong direction)
+ */
+private void dfsCountReversals(int node, Map<Integer, List<int[]>> adj,
+                                boolean[] visited, int[] count) {
+    visited[node] = true;
+
+    for (int[] edge : adj.get(node)) {
+        int neighbor = edge[0];
+        int directionFlag = edge[1];
+
+        if (!visited[neighbor]) {
+            // If flag = 1, edge points away from target (needs reversal)
+            if (directionFlag == 1) {
+                count[0]++;
+            }
+            dfsCountReversals(neighbor, adj, visited, count);
+        }
+    }
+}
+```
+
+**Python Implementation:**
+```python
+def min_reorder(n, connections):
+    """
+    Count minimum edge reversals to make all paths lead to node 0
+    """
+    # Build bidirectional graph with direction flags
+    adj = {i: [] for i in range(n)}
+
+    for src, dst in connections:
+        # Original direction: src -> dst (flag=1, needs reversal)
+        adj[src].append((dst, 1))
+        # Reverse direction: dst -> src (flag=0, correct)
+        adj[dst].append((src, 0))
+
+    visited = set()
+    count = [0]
+
+    def dfs(node):
+        visited.add(node)
+
+        for neighbor, flag in adj[node]:
+            if neighbor not in visited:
+                # If flag=1, edge points away from 0 (needs reversal)
+                if flag == 1:
+                    count[0] += 1
+                dfs(neighbor)
+
+    dfs(0)  # Start from target node
+    return count[0]
+```
+
+**Key Concepts:**
+
+1. **Bidirectional Graph Construction**
+   - Add both directions for each edge
+   - Original direction gets flag=1 (needs reversal)
+   - Reverse direction gets flag=0 (already correct)
+
+2. **Why This Works**
+   ```
+   Example: connections = [[0,1],[1,3],[2,3],[4,0],[4,5]]
+
+   Original directed graph (edges point away from 0):
+   0 -> 1 -> 3
+   2 -> 3
+   4 -> 0, 4 -> 5
+
+   Need to reverse: 0->1, 1->3, 4->5 (3 reversals)
+
+   During DFS from 0:
+   - Visit 1: used edge 0->1 (flag=1) → count++
+   - Visit 3: used edge 1->3 (flag=1) → count++
+   - Visit 2: used edge 2->3 (flag=0) → no count
+   - Visit 4: used edge 4->0 (flag=0) → no count
+   - Visit 5: used edge 4->5 (flag=1) → count++
+   Total = 3
+   ```
+
+3. **Direction Flag Logic**
+   - Flag=1: Edge in original direction (current->neighbor)
+     - Means we're using an edge pointing away from root
+     - Must be reversed
+   - Flag=0: Edge in reverse direction (neighbor->current)
+     - Means original edge pointed toward root
+     - Already correct
+
+4. **Tree Property**
+   - Works perfectly for tree structures (n-1 edges)
+   - Every node reachable from root
+   - No cycles to worry about
+
+**Pattern Characteristics:**
+- **Graph Type**: Tree or directed graph
+- **Key Technique**: Bidirectional representation with metadata
+- **DFS Start**: Always from target node
+- **Count Condition**: Edges with flag=1 need reversal
+- **Visited Tracking**: Essential for tree traversal
+- **Time Complexity**: O(V + E) - linear
+- **Space Complexity**: O(V + E) - adjacency list
+
+**When to Use This Pattern:**
+- "Reorder routes/edges to make all paths lead to X"
+- "Minimum edge reversals to connect all nodes to root"
+- "Orient edges so all nodes can reach target"
+- Tree/graph problems requiring edge direction changes
+- Counting necessary modifications to edge directions
+
+**Similar Problems:**
+- LC 1466: Reorder Routes to Make All Paths Lead to the City Zero
+- LC 1568: Minimum Number of Days to Disconnect Island (related graph modification)
+- LC 1579: Remove Max Number of Edges to Keep Graph Fully Traversable (edge orientation)
+
 
 - Assign sub tree to node, then return updated node at final stage (Important !!!!)
 
@@ -1098,6 +1268,13 @@ print (z)
 | Island Perimeter | 463 | Easy | Edge counting | Template 2 |
 | Making A Large Island | 827 | Hard | Component merging | Template 2 |
 
+#### **Pattern 10: Bidirectional Graph with Direction Tracking**
+| Problem | LC # | Difficulty | Key Technique | Template |
+|---------|------|------------|---------------|----------|
+| Reorder Routes to Make All Paths Lead to the City Zero | 1466 | Medium | Bidirectional graph + direction flags | Template 10 |
+| Minimum Number of Days to Disconnect Island | 1568 | Hard | Graph modification (related) | - |
+| Remove Max Number of Edges to Keep Graph Fully Traversable | 1579 | Hard | Edge orientation (related) | - |
+
 ### Complete Problem List by Difficulty
 
 #### Easy Problems (Foundation)
@@ -1136,6 +1313,7 @@ print (z)
 - LC 669: Trim BST - Conditional modification
 - LC 695: Max Area of Island - Connected component
 - LC 701: Insert into BST - BST insertion
+- LC 1466: Reorder Routes to Make All Paths Lead to the City Zero - Bidirectional graph with direction tracking
 - LC 1905: Count Sub Islands - DFS with validation
 - LC 737: Sentence Similarity II - Graph connectivity
 - LC 776: Split BST - Advanced manipulation
