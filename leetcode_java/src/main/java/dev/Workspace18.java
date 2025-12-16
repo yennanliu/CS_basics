@@ -9642,8 +9642,11 @@ public class Workspace18 {
 
         // visit pre courses
         for(int pre: preMap.get(course)){
-            if(statusList[pre] == 0){
-                courseHelper(pre, statusList, status, preMap);
+//            if(statusList[pre] == 0){
+//                courseHelper(pre, statusList, status, preMap);
+//            }
+            if(!courseHelper(pre, statusList, status, preMap)){
+                return false;
             }
         }
 
