@@ -160,6 +160,74 @@ public class ReorderRoutesToMakeAllPathsLeadToTheCityZero {
     }
 
 
+    // V0-2
+    // IDEA: BFS (gemini)
+    /**
+     * Finds the minimum number of roads to reorder so all paths lead to city 0 using BFS.
+     * Time Complexity: O(N + E), where N is cities, E is connections.
+     * Space Complexity: O(N + E) for the adjacency list, queue, and visited array.
+     */
+    public int minReorder_0_2(int n, int[][] connections) {
+
+        // --- 1. Build Adjacency List (Undirected with Direction Info) ---
+        // Map: city -> List of [neighbor, direction_flag]
+        // flag = 1: Original road was city -> neighbor (Outbound from city)
+        // flag = 0: Original road was city <- neighbor (Inbound to city)
+        Map<Integer, List<int[]>> adj = new HashMap<>();
+        for (int i = 0; i < n; i++) {
+            adj.put(i, new ArrayList<>());
+        }
+
+        for (int[] c : connections) {
+            int u = c[0]; // Start city
+            int v = c[1]; // End city
+
+            // Road u -> v (Original direction)
+            adj.get(u).add(new int[] { v, 1 }); // [neighbor, flag=1 (outbound from u)]
+
+            // Road v <- u (Undirected link for traversal)
+            adj.get(v).add(new int[] { u, 0 }); // [neighbor, flag=0 (inbound to v)]
+        }
+
+        int reorderCount = 0;
+        boolean[] visited = new boolean[n];
+        Queue<Integer> q = new LinkedList<>();
+
+        // --- 2. Start BFS from city 0 ---
+        q.add(0);
+        visited[0] = true;
+
+        while (!q.isEmpty()) {
+            int current = q.poll();
+
+            // Check all neighbors of the current city
+            for (int[] edge : adj.get(current)) {
+                int neighbor = edge[0];
+                int directionFlag = edge[1];
+
+                if (!visited[neighbor]) {
+
+                    // The core logic is the same as in DFS: we are traversing from the center (0) outwards.
+                    // We only care about the original direction of the edge we just crossed.
+
+                    // If the original road was CURRENT -> NEIGHBOR (flag == 1),
+                    // this road is pointing AWAY from the path leading to city 0.
+                    // It must be reversed to point towards 0.
+                    if (directionFlag == 1) {
+                        reorderCount++;
+                    }
+
+                    // Mark as visited and enqueue for the next level
+                    visited[neighbor] = true;
+                    q.add(neighbor);
+                }
+            }
+        }
+
+        return reorderCount;
+    }
+
+
     // V1-1
     // IDEA: DFS
     // https://leetcode.com/problems/reorder-routes-to-make-all-paths-lead-to-the-city-zero/editorial/
