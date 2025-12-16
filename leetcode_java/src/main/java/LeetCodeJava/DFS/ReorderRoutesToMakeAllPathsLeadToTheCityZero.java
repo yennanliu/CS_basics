@@ -60,6 +60,38 @@ public class ReorderRoutesToMakeAllPathsLeadToTheCityZero {
     // V0-1
     // IDEA: DFS (fixed by gemini)
     // Global counter for the minimum number of reorders required
+    /**
+     * The fix uses DFS to traverse the graph starting from city 0,
+     * treating it as an undirected graph, and checking the direction
+     * of each edge as it is traversed.
+     *
+     *
+     * ----
+     *
+     * Core Strategy (DFS on Undirected Graph)
+     *
+     * 1. Build Adjacency List (Undirected):
+     *    Create a map where each key $i$ holds a list
+     *    of its neighbors. Store a Pair or a custom object
+     *    for each edge indicating the neighbor and the original direction of the road
+     *    (e.g., $1$ for $i \to \text{neighbor}$, $-1$ for $i \leftarrow \text{neighbor}$).
+     *
+     *
+     *  2.  Traverse from 0: Start a DFS from city 0.
+     *
+     *  3. Count Reversals:
+     *
+     *     When moving from the current city to the neighbor:
+     *
+     *      - If the original direction was current -> neighbor
+     *         (i.e., you are traveling against the required path to 0),
+     *         you must reverse this edge. Increment the count.
+     *
+     *     - If the original direction was current <- neighbor
+     *        no reversal is needed.
+     *
+     *
+     */
     private int reorderCount = 0;
 
     /**
