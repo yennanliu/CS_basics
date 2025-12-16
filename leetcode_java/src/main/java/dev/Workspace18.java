@@ -9658,4 +9658,12 @@ public class Workspace18 {
     }
 
 
+
+    // LC 1466
+    public int minReorder(int n, int[][] connections) {
+
+        return 0;
+    }
+
+
 }
