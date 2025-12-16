@@ -282,7 +282,7 @@ public class LongestAlternatingSubarray {
      * * **Handling Mismatches:** When a number fails to fit the pattern,
      * we can categorize the situation into the following cases to decide where
      * to start the next search:
-     * 
+     *
      *
      * ###Case 1: Increasing Pair (a+1 \rightarrow a+2)* **Logic:** If the sequence breaks because it goes from a+1 to a+2, this pair (a+1, a+2) can be treated as the **new starting point** for a potential alternating subarray.
      *
