@@ -209,9 +209,33 @@ public class CourseSchedule {
             preMap.get(course).add(prerequisite);
         }
 
+        /**
+         * NOTE !!!
+         *
+         *  we should loop over ALL course id
+         *  (from 0 to numCourses - 1).
+         *
+         *  instead of looping over prerequisites
+         *
+         *  e.g. below is WRONG:
+         *   for(int[] p: prerequisites){
+         *       // DFS call...
+         *   }
+         *
+         */
         // --- Execute DFS on all courses ---
         // We must check every course because the graph may not be fully connected.
         for (int i = 0; i < numCourses; i++) {
+            /**
+             * NOTE !!!
+             *
+             *  it's possible to pass course id to DFS
+             *
+             *  or, we could pass below params as well:
+             *
+             *  private boolean courseHelper(int course, int[] statusList, int status, Map<Integer, List<Integer>> preMap)
+             *
+             */
             // If any DFS call finds a cycle, return false immediately.
             if (!courseHelper(i)) {
                 return false;
@@ -243,6 +267,14 @@ public class CourseSchedule {
 
         // 2. Visit all prerequisites recursively
         for (int pre : preMap.get(course)) {
+            /**
+             * NOTE !!!
+             *
+             *  if NOT conflict (Cycle found) / impossible to visit
+             *  -> return false directly
+             *
+             *  -> or we may get wrong results
+             */
             // CRITICAL FIX: Propagate the return value of the recursive call.
             if (!courseHelper(pre)) {
                 return false; // Cycle found in a prerequisite path
