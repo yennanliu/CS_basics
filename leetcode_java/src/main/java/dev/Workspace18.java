@@ -9660,9 +9660,87 @@ public class Workspace18 {
 
 
     // LC 1466
+    // 9.53 - 10.03 am
+    /**
+     *  -> Return the minimum number of edges changed.
+     *    ( each city can visit the city )
+     *
+     *   - city: 0 - n-1
+     *   - road: in one direction
+     *   - connections[i] = [ai, bi]
+     *        - from ai to bi
+     *   -
+     *
+     *
+     *
+     *  ----------------------
+     *
+     *  IDEA 1) DFS ???
+     *
+     *  IDEA 1) BFS ???
+     *
+     *
+     *  ----------------------
+     *
+     *
+     *
+     */
+    // IDEA 1) DFS ???
+    int opCnt = 0;
     public int minReorder(int n, int[][] connections) {
+        // edge
 
-        return 0;
+        // map
+        // {start : [next_1, next_2, ...] }
+        Map<Integer, List<Integer>> map = new HashMap<>();
+        for(int i = 0; i < n; i++){
+            map.put(n, new ArrayList<>());
+        }
+
+        for(int[] c: connections){
+            /**
+             *
+             *  connections[i] = [ai, bi]
+             *     represents a road from city ai to city bi.
+             */
+            int ai = c[0];
+            int bi = c[1];
+            map.get(ai).add(bi); // ??
+        }
+
+        System.out.println(">>> map = " + map);
+
+        boolean[] visited = new boolean[n];
+
+        // bfs ???
+        //Queue<Integer> q = new LinkedList<>();
+        //q.add()
+
+        // visit all nodes (except 0 ???)
+        for(int i = 1; i < n; i++){
+           // q.add(i); // ???
+        }
+
+
+        return opCnt; // ???
+    }
+
+    private void visitDFS(int node, Map<Integer, List<Integer>> map, boolean[] visited){
+        // mark as visited ???
+        for(int next: map.get(node)){
+            // ???
+            if(next == 0){
+                // mark as visited
+                visited[node] = true;
+                return;
+            }
+            // NOTE !!! if can visit 0
+            if(map.get(next).contains(0)){
+                visitDFS(next, map, visited);
+            }
+        }
+
+
     }
 
 

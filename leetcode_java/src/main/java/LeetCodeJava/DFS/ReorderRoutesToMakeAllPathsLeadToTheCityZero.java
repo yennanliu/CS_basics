@@ -57,6 +57,77 @@ public class ReorderRoutesToMakeAllPathsLeadToTheCityZero {
 //
 //    }
 
+    // V0-1
+    // IDEA: DFS (fixed by gemini)
+    // Global counter for the minimum number of reorders required
+    private int reorderCount = 0;
+
+    /**
+     * Finds the minimum number of roads to reorder so all paths lead to city 0.
+     * Time Complexity: O(N + E), where N is cities, E is connections.
+     * Space Complexity: O(N + E) for the adjacency list and visited array.
+     */
+    public int minReorder_0_1(int n, int[][] connections) {
+
+        // --- 1. Build Adjacency List (Undirected with Direction Info) ---
+        // Map: city -> List of [neighbor, direction_flag]
+        // direction_flag: 1 if city -> neighbor (original direction)
+        // direction_flag: 0 if city <- neighbor (reverse direction)
+        Map<Integer, List<int[]>> adj = new HashMap<>();
+        for (int i = 0; i < n; i++) {
+            adj.put(i, new ArrayList<>());
+        }
+
+        for (int[] c : connections) {
+            int u = c[0]; // Start city
+            int v = c[1]; // End city
+
+            // Road u -> v (Original direction, requires reversal for path v -> u)
+            adj.get(u).add(new int[] { v, 1 }); // [neighbor, flag=1 (outbound)]
+
+            // Road v <- u (Treat as undirected for traversal)
+            adj.get(v).add(new int[] { u, 0 }); // [neighbor, flag=0 (inbound)]
+        }
+
+        boolean[] visited = new boolean[n];
+        this.reorderCount = 0; // Reset counter
+
+        // --- 2. Start DFS from city 0 ---
+        dfsTraverse(0, adj, visited);
+
+        return reorderCount;
+    }
+
+    /**
+     * DFS function to traverse the graph and count necessary reorders.
+     * @param current The current city node.
+     * @param adj The adjacency list.
+     * @param visited The visited array.
+     */
+    private void dfsTraverse(int current, Map<Integer, List<int[]>> adj, boolean[] visited) {
+        visited[current] = true;
+
+        for (int[] edge : adj.get(current)) {
+            int neighbor = edge[0];
+            int directionFlag = edge[1]; // 1 for current -> neighbor, 0 for current <- neighbor
+
+            if (!visited[neighbor]) {
+
+                // If the original road was CURRENT -> NEIGHBOR (flag == 1),
+                // it means we are trying to use an edge that points AWAY from city 0
+                // (since we are traversing away from 0).
+                // To make the path lead TO 0, this edge must be reversed.
+                if (directionFlag == 1) {
+                    this.reorderCount++;
+                }
+
+                // Continue DFS traversal
+                dfsTraverse(neighbor, adj, visited);
+            }
+        }
+    }
+
+
     // V1-1
     // IDEA: DFS
     // https://leetcode.com/problems/reorder-routes-to-make-all-paths-lead-to-the-city-zero/editorial/
