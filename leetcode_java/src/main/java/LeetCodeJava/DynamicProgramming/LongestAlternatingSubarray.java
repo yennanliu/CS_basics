@@ -258,13 +258,83 @@ public class LongestAlternatingSubarray {
     }
 
     // V0-2
+    // IDEA: GREEDY (teachable)
+    // https://buildmoat.teachable.com/courses/7a7af3/lectures/64103646
+    /**
+     *  IDEA:
+     *
+     *  LeetCode 2765: Longest Alternating Subarray**.
+     *
+     *  The core idea is that once you establish the
+     *  first two numbers of a valid subarray,
+     *  the rest of the sequence is mathematically determined.
+     *
+     * Here is the English translation of the logic presented in the image:
+     *
+     * ---
+     *
+     * ##Q1 Logic: Alternating Subarrays* **Fixed Patterns:**
+     *
+     * If we know the first two numbers of the "answer array"
+     * (the candidate subarray), every subsequent number is already determined.
+     * We can directly compare the following numbers to see if they fit
+     * the expected alternating pattern (a, a+1, a, a+1 \dots).
+     * * **Handling Mismatches:** When a number fails to fit the pattern,
+     * we can categorize the situation into the following cases to decide where
+     * to start the next search:
+     * 
+     *
+     * ###Case 1: Increasing Pair (a+1 \rightarrow a+2)* **Logic:** If the sequence breaks because it goes from a+1 to a+2, this pair (a+1, a+2) can be treated as the **new starting point** for a potential alternating subarray.
+     *
+     * ###Case 2: Decreasing Pair (a \rightarrow a-1)* **Logic:** Since a valid subarray **must** start with the pattern a \rightarrow a+1 (an increase of 1), a sequence like a \rightarrow a-1 is invalid. Therefore, we should discard the current sequence and start calculating fresh from the next possible position.
+     *
+     * ###Case 3: Other* **Logic:** In any other case where the numbers cannot be linked into a valid alternating sequence, the current sequence is completely broken. We can immediately start calculating a brand-new sequence.
+     *
+     * ---
+     *
+     * ###Key Takeaway for the AlgorithmInstead of checking every possible starting index (which would be O(n^2)), this logic allows for a **Linear Scan O(n)**. When the alternating condition is violated, you don't necessarily reset to the very next index; you jump to the last valid "starting" transition you found.
+     *
+     * Would you like me to provide a **Python or C++ implementation** based on this specific logic?
+     *
+     */
+    public int alternatingSubarray_0_2(int[] nums) {
+        int ans = 0;
+        int cnt = 0;
+        int last = nums[0];
+        int flag = 1;
+
+        for (int it : nums) {
+            if (it == last + flag) {
+                cnt++;
+                flag = -flag;
+                last = it;
+            } else {
+                if (it == last + 1) {
+                    flag = -1;
+                    cnt = 2;
+                } else {
+                    flag = 1;
+                    cnt = 1;
+                }
+                last = it;
+            }
+            ans = Math.max(cnt, ans);
+        }
+
+        if (ans <= 1) {
+            return -1;
+        }
+        return ans;
+    }
+
+    // V0-3
     // IDEA: SLIDE WINDOW (gemini)
     /**
      * Fix for LC 2765: Longest Alternating Subarray.
      * Handles the case where the expected output for 'no valid subarray' is -1.
      * Time Complexity: O(N)
      */
-    public int alternatingSubarray_0_2(int[] nums) {
+    public int alternatingSubarray_0_3(int[] nums) {
         if (nums == null || nums.length < 2) {
             // If the platform expects -1 when no valid subarray exists,
             // we must initialize the result to -1.
