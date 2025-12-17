@@ -44,6 +44,7 @@ public class CountSubarraysWhereMaxElementAppearsAtLeastKTimes {
 
     // V0
     // IDEA: SLIDE WINDOW + `right sub array calculate` (fixed by gemini)
+    // (for ... while (maxValCnt >= k) )
     /**
      * Counts the number of subarrays where the maximum element appears at least k times.
      * Time Complexity: O(N)
@@ -295,7 +296,7 @@ public class CountSubarraysWhereMaxElementAppearsAtLeastKTimes {
 
 
     // V1-1
-    // IDEA: SLIDE WINDOW
+    // IDEA: SLIDE WINDOW (for ... while (maxElementsInWindow == k) )
     // https://leetcode.com/problems/count-subarrays-where-max-element-appears-at-least-k-times/editorial/
     public long countSubarrays_1_1(int[] nums, int k) {
         int maxElement = Arrays.stream(nums).max().getAsInt();
@@ -335,7 +336,6 @@ public class CountSubarraysWhereMaxElementAppearsAtLeastKTimes {
         long ans = 0;
 
         // Iterating through the array
-
         for (int index = 0; index < nums.length; index++) {
             if (nums[index] == maxElement) {
                 indexesOfMaxElements.add(index);
