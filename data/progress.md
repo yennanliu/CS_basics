@@ -179,7 +179,6 @@
 		- gpt
 			- 329
 			- 711 (Number of Distinct Islands II)
-			- 1905
 		- gemini
 			- 212
 	- LC 133 Clone Graph
