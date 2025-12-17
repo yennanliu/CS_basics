@@ -110,6 +110,15 @@ public class CountSubIslands {
         for (int r = 0; r < R; r++) {
             for (int c = 0; c < C; c++) {
 
+                /** NOTE !!!
+                 *
+                 *  we ONLY do 1st DFS (flip non-valid grid2 cell)
+                 *  when `grid2[r][c] == 1 && grid1[r][c] == 0`
+                 *
+                 *   e.g. ONLY flip when
+                 *      - grid2 cell is land
+                 *      - and grid1 cell is water
+                 */
                 // If a cell is land in grid2 BUT water in grid1,
                 // the entire island connected to this cell in grid2 must be eliminated (sunk).
                 if (grid2[r][c] == 1 && grid1[r][c] == 0) {
@@ -154,8 +163,23 @@ public class CountSubIslands {
 
     /**
      * DFS function to "sink" (change '1' to '0') an entire connected component in the grid.
+     *
+     * NOTE !!!
+     *
+     *  we ONLY need to pass 1 grid as param
      */
     private void sinkIsland(int[][] grid, int r, int c) {
+        /**
+         *  NOTE !!!
+         *
+         *   validation
+         *
+         *   1. if still in boundary
+         *   2. if grid2 cell is water (NOTE !!!)
+         *       - we are NOT proceed if grid2 cell is water,
+         *         since the purpose of dfs if to `flip` in-valid grid2 cell
+         *         (e.g. grid2 cell is land, but grid1 cell is water)
+         */
         // Base case: Out of bounds or already water ('0')
         if (!isValid(r, c) || grid[r][c] == 0) {
             return;
@@ -304,7 +328,7 @@ public class CountSubIslands {
     }
 
     // V0-4
-    // IDEA: DFS (fixed by gemini)
+    // IDEA: 1 pass DFS (fixed by gemini)
     /**
      * Counts how many islands in grid2 are sub-islands of grid1.
      * Time Complexity: O(R * C) where R is rows and C is columns.
