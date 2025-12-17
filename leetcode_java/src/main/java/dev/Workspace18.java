@@ -7330,11 +7330,70 @@ public class Workspace18 {
         return null;
     }
 
+
     // LC 2962
+    // 9.49 - 59 am
+    /**
+     *
+     *  -> Return the `number` of subarrays
+     *    where the `maximum element` of
+     *    nums appears at least k times in that subarray.
+     *
+     *    - int k
+     *    - nums: array
+     *
+     *    - sub array: contiguous sequence of elements within an array.
+     *
+     *
+     *
+     * -------------------
+     *
+     *   IDEA 1) BRUTE FORCE (double loop)
+     *
+     *   IDEA 2) SLIDE WINDOW V1
+     *      - manually move, maintain window
+     *
+     *   IDEA 2) SLIDE WINDOW V2 + hashmap ???
+     *      - use trick to calculate valid sub array directly
+     *         -  nums += (r - l + 1)
+     *
+     *
+     *     - hashmap : {idx:  total_cnt_of_val_at_idx }  ???
+     *
+     *
+     *
+     * -------------------
+     *
+     *  ex 1)
+     *
+     *  Input: nums = [1,3,2,3,3], k = 2
+     *  Output: 6
+     *
+     *  -> map : {0: 1, 1: 1, 2: 1, 3: 2, 4: 3}
+     *  or
+     *   [0,1,1,2,3]
+     *
+     *
+     *  -> [1,3,2,3,3]     res = [ [1,3,2,3],  [1,3,2,3,3] ]
+     *      i j j j j
+     *
+     *  -> [1,3,2,3,3]     res = [ [1,3,2,3],  [1,3,2,3,3], [3,2,3,3], [2,3,3], [3,3] ]
+     *      i       j
+     *        i i i
+     *
+     *
+     *
+     *
+     *
+     */
     public long countSubarrays(int[] nums, int k) {
 
         return 0L;
     }
+
+
+
+
 
     // LC 2963
     public int numberOfGoodPartitions(int[] nums) {
