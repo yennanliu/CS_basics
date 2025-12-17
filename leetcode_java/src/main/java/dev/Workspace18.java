@@ -902,8 +902,72 @@ public class Workspace18 {
      *
      *   IDEA 1) DFS
      */
-    // IDEA: DFS
+    // 8.17 - 27 am
+    /**   IDEA 1) DFS
+     *
+     *   -> Return true if and only if it is bipartite.
+     *
+     *
+     *    bipartite if the nodes can be partitioned into
+     *    two independent sets A and B
+     *    such that every edge in the graph connects
+     *    a node in set A and a node in set B.
+     *
+     *
+     */
     public boolean isBipartite(int[][] graph) {
+
+        int n = graph.length;
+        // 0 = uncolored
+        // 1 = color A
+        // -1 = color B
+
+        int[] colorList = new int[n];
+        Arrays.fill(colorList, 0); // ??
+
+        // ?? loop over 0 to n-1
+        // color each of the node
+        // and check if it violates the `Bipartite rule`
+        for(int i = 0; i < n; i++){
+            if(!dfsColor(graph, i, colorList, 1)){
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private boolean dfsColor(int[][] graph, int node, int[] colorList, int newColor){
+        // NOTE!!! validate ?
+        if(colorList[node] != 0){
+            if(colorList[node] != newColor){
+                return false;
+            }
+        }
+
+        // color cur
+        colorList[node] = newColor;
+
+        // color next
+        for(int next: graph[node]){
+            if(colorList[node] == 0){
+
+            }
+            if(!dfsColor(graph, next, colorList, -1 * colorList[node])){
+                return false;
+            }
+        }
+
+        return true; // ???
+    }
+
+
+    //----------------------------
+
+
+
+    // IDEA: DFS
+    public boolean isBipartite_98(int[][] graph) {
         int n = graph.length;
         // 0 = uncolored
         // 1 = color A
