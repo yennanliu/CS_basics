@@ -303,6 +303,56 @@ public class CountSubIslands {
         return isSubIsland;
     }
 
+    // V0-4
+    // IDEA: DFS (fixed by gemini)
+    /**
+     * Counts how many islands in grid2 are sub-islands of grid1.
+     * Time Complexity: O(R * C) where R is rows and C is columns.
+     * Space Complexity: O(R * C) for the recursion stack in the worst case.
+     */
+    public int countSubIslands_0_4(int[][] grid1, int[][] grid2) {
+        int rows = grid2.length;
+        int cols = grid2[0].length;
+        int subIslandCount = 0;
+
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < cols; c++) {
+                // If we find land in grid2, it's a potential sub-island
+                if (grid2[r][c] == 1) {
+                    // We use a flag to track if the entire island is valid
+                    if (isSubIslandDFS(grid1, grid2, r, c)) {
+                        subIslandCount++;
+                    }
+                }
+            }
+        }
+        return subIslandCount;
+    }
+
+    private boolean isSubIslandDFS(int[][] grid1, int[][] grid2, int r, int c) {
+        // Base case: out of bounds or water in grid2
+        if (r < 0 || r >= grid1.length || c < 0 || c >= grid1[0].length || grid2[r][c] == 0) {
+            return true;
+        }
+
+        // Mark current land in grid2 as visited by turning it to water (0)
+        grid2[r][c] = 0;
+
+        // Check if current cell is valid: it must be land (1) in grid1
+        boolean currentIsMatch = (grid1[r][c] == 1);
+
+        // Continue DFS in all 4 directions
+        // Note: Use the non-short-circuiting '&' to ensure we visit all land
+        // cells of the island in grid2, even if we already found an invalid part.
+        boolean res1 = isSubIslandDFS(grid1, grid2, r + 1, c);
+        boolean res2 = isSubIslandDFS(grid1, grid2, r - 1, c);
+        boolean res3 = isSubIslandDFS(grid1, grid2, r, c + 1);
+        boolean res4 = isSubIslandDFS(grid1, grid2, r, c - 1);
+
+        return currentIsMatch && res1 && res2 && res3 && res4;
+    }
+
+
 
     // V1-1
     // IDEA: BFS

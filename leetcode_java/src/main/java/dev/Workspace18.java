@@ -8824,7 +8824,109 @@ public class Workspace18 {
      *
      *
      */
+    // LC 1905
+    /**
+     *  -> Return the number of islands
+     *   in grid2 that are considered sub-islands.
+     *
+     *
+     * ---------------------
+     *
+     *  IDEA 1)  2 pass DFS
+     *
+     *   1. loop over grid2, and check if there are cells that
+     *      - 0 in grid2, but 1 in grid1
+     *      -> if so, mark that cell in grid2 as `-1`.
+     *         e.g. NOT possible to become sub island (VS grid1)
+     *
+     *   2. revisit cells in grid2, collect the island
+     *      as cluster
+     *
+     *   3. return above cnt as ans
+     *
+     *
+     * ---------------------
+     *
+     */
     public int countSubIslands(int[][] grid1, int[][] grid2) {
+        // edge
+
+        int l = grid1.length;
+        int w = grid1[0].length;
+
+        boolean[][] visited = new boolean[l][w]; // ???
+
+        // ?? 1st DFS
+        for(int y = 0; y < l; y++){
+            for(int x = 0; x < w; x++){
+                // ???
+                if(grid2[y][x] == 1){
+                    dfsMarkerHelper(grid1, grid2, x, y, visited, true);
+                }
+            }
+        }
+
+        int subIslandCnt = 0;
+        // ?? 2nd DFS
+        // ??? we re-init visited ?
+        // so it can visit again the `remaining` cell in grid2
+        visited = new boolean[l][w]; // ???
+        for(int y = 0; y < l; y++){
+            for(int x = 0; x < w; x++){
+                // ???
+                if(grid2[y][x] == 1){
+                    dfsMarkerHelper(grid1, grid2, x, y, visited, false);
+                    subIslandCnt += 1;
+                }
+            }
+        }
+
+        return subIslandCnt;
+    }
+
+    private void dfsMarkerHelper(int[][] grid1, int[][] grid2, int x, int y, boolean[][] visited, boolean shouldFlip){
+        int l = grid1.length;
+        int w = grid1[0].length;
+
+        int[][] moves = new int[][]{ {0,1}, {0,-1}, {1,0},{-1,0} };
+
+        // mark as visited
+        visited[y][x] = true;
+
+        // NOTE !!! check if the cell is `valid` in grid2
+        /**
+         *      *   1. loop over grid2, and check if there are cells that
+         *      *      - 0 in grid2, but 1 in grid1
+         *      *      -> if so, mark that cell in grid2 as `-1`.
+         *      *         e.g. NOT possible to become sub island (VS grid1)
+         */
+        // ???
+        if(shouldFlip){
+            if(grid2[y][x] == 1 && grid1[y][x] == 0){
+                grid2[y][x] = -1;
+            }
+        }
+
+        // visit neighbors
+        for(int[] m: moves){
+            int x_ = x + m[1];
+            int y_ = y + m[0];
+            if(x_ >= 0 && x_ < w && y_ >= 0 && y_ < l){
+                if(!visited[y_][x_]){
+                    dfsMarkerHelper(grid1, grid2, x_, y_, visited, shouldFlip);
+                }
+            }
+        }
+
+    }
+
+
+
+    /// ////////
+
+
+
+    public int countSubIslands_99(int[][] grid1, int[][] grid2) {
         // edge
 
         int l = grid1.length;
