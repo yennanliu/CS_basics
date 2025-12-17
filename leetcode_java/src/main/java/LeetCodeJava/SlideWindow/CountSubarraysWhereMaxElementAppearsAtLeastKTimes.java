@@ -131,6 +131,11 @@ public class CountSubarraysWhereMaxElementAppearsAtLeastKTimes {
                     maxValCnt--;
                 }
 
+                /** NOTE !!!
+                 *
+                 *  move left pointer to RIGHT direction
+                 *  (l += 1)
+                 */
                 // Move left pointer
                 l++;
             }
@@ -140,7 +145,44 @@ public class CountSubarraysWhereMaxElementAppearsAtLeastKTimes {
     }
 
     // V0-0-1
-    // TODO: fix below
+    // IDEA: SLIDE WINDOW:
+    public long countSubarrays_0_0_1(int[] nums, int k) {
+        if (nums == null || nums.length == 0 || k <= 0) {
+            return 0L;
+        }
+        // get max
+        int maxVal = 0;
+        for (int x : nums) {
+            maxVal = Math.max(maxVal, x);
+        }
+
+        long res = 0L;
+        int l = 0;
+        int maxValCnt = 0;
+        // slide window
+        for (int r = 0; r < nums.length; r++) {
+            // ??? should add right val cnt before while loop ???
+            if (nums[r] == maxVal) {
+                maxValCnt += 1;
+            }
+            while (maxValCnt >= k) {
+                // ????
+                res += (nums.length - r);
+                // note !! before move left pointer
+                // ???
+                if (nums[l] == maxVal) {
+                    maxValCnt -= 1;
+                }
+                l += 1;
+            }
+
+        }
+
+        return res;
+    }
+
+
+    // V0-0-2
     /**  NOTE !!! below code is WRONG
      *
      * ---
@@ -223,7 +265,6 @@ public class CountSubarraysWhereMaxElementAppearsAtLeastKTimes {
 //
 //        return max >= k;
 //    }
-
 
 
     // V0-1

@@ -7386,10 +7386,55 @@ public class Workspace18 {
      *
      *
      */
+    /**   IDEA : SLIDE WINDOW + `right combination cnt`
+     *
+     *    for(int r = 0; r < len; r++){
+     *        while(condition){
+     *            // ...
+     *            l += 1;
+     *        }
+     *        // ...
+     *    }
+     *
+     *
+     */
     public long countSubarrays(int[] nums, int k) {
+        if (nums == null || nums.length == 0 || k <= 0) {
+            return 0L;
+        }
+        // get max
+        int maxVal = 0;
+        for(int x: nums){
+            maxVal = Math.max(maxVal, x);
+        }
 
-        return 0L;
+        long res = 0L;
+        int l = 0;
+        int maxValCnt = 0;
+        // slide window
+        for(int r = 0; r < nums.length; r++){
+            // ??? should add right val cnt before while loop ???
+            if(nums[r] == maxVal){
+                maxValCnt += 1;
+            }
+            while(maxValCnt >= k){
+                // ????
+                res += (nums.length - r);
+                // note !! before move left pointer
+                // ???
+                if(nums[l] == maxVal){
+                    maxValCnt -= 1;
+                }
+                l += 1;
+            }
+
+        }
+
+        return res;
     }
+
+
+    /// ///////////////
 
 
 
