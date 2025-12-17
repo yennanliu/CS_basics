@@ -43,7 +43,7 @@ import java.util.Map;
 public class CountSubarraysWhereMaxElementAppearsAtLeastKTimes {
 
     // V0
-    // IDEA: SLIDE WINDOW (fixed by gemini)
+    // IDEA: SLIDE WINDOW + `right sub array calculate` (fixed by gemini)
     /**
      * Counts the number of subarrays where the maximum element appears at least k times.
      * Time Complexity: O(N)
@@ -103,6 +103,18 @@ public class CountSubarraysWhereMaxElementAppearsAtLeastKTimes {
                  *   e.g. if [l..r] is valid, then [l... num.len-1] is valid
                  *   -> so we need to add the `future count` to ans
                  *   ->  resultCount += (nums.length - r);
+                 *
+                 *
+                 *  ---------
+                 *
+                 *  NOTE !!!
+                 *
+                 *   instead of `consider sub array combination at left hand side`
+                 *   -> we consider right hand side instead.
+                 *
+                 *   e.g. when cur sub array is valid ([left_pointer, right_pointer]),
+                 *        we get ALL sub array count at right_pointer right
+                 *        via `nums.length - r`
                  */
                 resultCount += (nums.length - r);
 
