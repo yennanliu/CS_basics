@@ -258,6 +258,58 @@ public class IsGraphBipartite {
         return true;
     }
 
+    // V0-0-3
+    // IDEA: DFS (fixed by gemini)
+    /**
+     * Determines if the graph is bipartite using DFS 2-coloring.
+     * Time Complexity: O(V + E) - we visit every node and edge once.
+     * Space Complexity: O(V) for the color array and recursion stack.
+     */
+    public boolean isBipartite_0_0_3(int[][] graph) {
+        int n = graph.length;
+
+        // 0  = uncolored
+        // 1  = Color A
+        // -1 = Color B
+        int[] colorList = new int[n];
+
+        // We must loop through all nodes because the graph might be disconnected.
+        for (int i = 0; i < n; i++) {
+            // CRITICAL FIX: Only start DFS if the node hasn't been colored yet.
+            if (colorList[i] == 0) {
+                // Try to color this new component starting with color 1.
+                if (!dfsColor_0_0_3(graph, i, colorList, 1)) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    private boolean dfsColor_0_0_3(int[][] graph, int node, int[] colorList, int newColor) {
+        // Base Case: If the node is already colored
+        if (colorList[node] != 0) {
+            // Check if the existing color matches the color we are trying to assign.
+            // If it doesn't match, the graph is NOT bipartite.
+            return colorList[node] == newColor;
+        }
+
+        // 1. Assign the new color to the current node
+        colorList[node] = newColor;
+
+        // 2. Visit all neighbors and try to color them with the OPPOSITE color.
+        for (int next : graph[node]) {
+            // The opposite color of 1 is -1; the opposite of -1 is 1.
+            if (!dfsColor_0_0_3(graph, next, colorList, -newColor)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+
     // V0-1
     // IDEA: DFS (fixed by gpt)
     /**  NOTE !!!
