@@ -8860,8 +8860,14 @@ public class Workspace18 {
         for(int y = 0; y < l; y++){
             for(int x = 0; x < w; x++){
                 // ???
-                if(grid2[y][x] == 1){
-                    dfsMarkerHelper(grid1, grid2, x, y, visited, true);
+                /** NOTE !!!
+                 *
+                 *  // If a cell is land in grid2 BUT water in grid1,
+                 * // the entire island connected to this cell in grid2 must be eliminated (sunk).
+                 *
+                 */
+                if(grid2[y][x] == 1 && grid1[y][x] == 0){
+                    dfsMarkerHelper(grid1, grid2, x, y, visited, -1);
                 }
             }
         }
@@ -8875,7 +8881,7 @@ public class Workspace18 {
             for(int x = 0; x < w; x++){
                 // ???
                 if(grid2[y][x] == 1){
-                    dfsMarkerHelper(grid1, grid2, x, y, visited, false);
+                    dfsMarkerHelper(grid1, grid2, x, y, visited, -1);
                     subIslandCnt += 1;
                 }
             }
@@ -8884,7 +8890,7 @@ public class Workspace18 {
         return subIslandCnt;
     }
 
-    private void dfsMarkerHelper(int[][] grid1, int[][] grid2, int x, int y, boolean[][] visited, boolean shouldFlip){
+    private void dfsMarkerHelper(int[][] grid1, int[][] grid2, int x, int y, boolean[][] visited, int newColor){
         int l = grid1.length;
         int w = grid1[0].length;
 
@@ -8892,6 +8898,7 @@ public class Workspace18 {
 
         // mark as visited
         visited[y][x] = true;
+        grid2[y][x] = newColor;
 
         // NOTE !!! check if the cell is `valid` in grid2
         /**
@@ -8900,12 +8907,12 @@ public class Workspace18 {
          *      *      -> if so, mark that cell in grid2 as `-1`.
          *      *         e.g. NOT possible to become sub island (VS grid1)
          */
-        // ???
-        if(shouldFlip){
-            if(grid2[y][x] == 1 && grid1[y][x] == 0){
-                grid2[y][x] = -1;
-            }
-        }
+//        // ???
+//        if(shouldFlip){
+//            if(grid2[y][x] == 1 && grid1[y][x] == 0){
+//                grid2[y][x] = -1;
+//            }
+//        }
 
         // visit neighbors
         for(int[] m: moves){
@@ -8913,7 +8920,7 @@ public class Workspace18 {
             int y_ = y + m[0];
             if(x_ >= 0 && x_ < w && y_ >= 0 && y_ < l){
                 if(!visited[y_][x_]){
-                    dfsMarkerHelper(grid1, grid2, x_, y_, visited, shouldFlip);
+                    dfsMarkerHelper(grid1, grid2, x_, y_, visited, newColor);
                 }
             }
         }
