@@ -950,10 +950,7 @@ public class Workspace18 {
 
         // color next
         for(int next: graph[node]){
-            if(colorList[node] == 0){
-
-            }
-            if(!dfsColor(graph, next, colorList, -1 * colorList[node])){
+            if(!dfsColor(graph, next, colorList, -1 * newColor)){
                 return false;
             }
         }
