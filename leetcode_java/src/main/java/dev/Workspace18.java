@@ -6359,11 +6359,35 @@ public class Workspace18 {
      *
      *    .. repeat above and visit all points in grid
      *
-     *  IDEA 1) BFS
+     *  IDEA 2) BFS
      *
      *
+     *  IDEA 3) 2 PASS DFS ???
+     *
+     *
+     *   NOTE !!!  `0` is island in this problem
+     *
+     *   1. 1st dfs: mark `all `0` cell` that
+     *               can connect to boundary
+     *               as `-1`. since it's NOT possible
+     *               to form a closed island from
+     *               those cells
+     *
+     *  2. 2nd dfs: loop over remaining `0`  cell,
+     *              and count the distinct island
+     *              return final cnt as the answer
      */
     public int closedIsland(int[][] grid) {
+
+        return 0;
+    }
+
+
+    // ------------------------
+
+
+
+    public int closedIsland_99(int[][] grid) {
         // edge
         if(grid == null || grid.length == 0 || grid[0].length == 0){
             return 0;
