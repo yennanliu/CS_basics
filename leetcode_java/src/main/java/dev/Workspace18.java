@@ -9913,5 +9913,11 @@ public class Workspace18 {
 
     }
 
+    // LC 1617
+    public int[] countSubgraphsForEachDiameter(int n, int[][] edges) {
+
+        return null;
+    }
+
 
 }
