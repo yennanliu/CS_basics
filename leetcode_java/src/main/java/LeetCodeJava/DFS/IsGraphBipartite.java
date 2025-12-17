@@ -275,8 +275,18 @@ public class IsGraphBipartite {
 
         // We must loop through all nodes because the graph might be disconnected.
         for (int i = 0; i < n; i++) {
+            /** NOTE !!
+             *
+             *  ONLY color the node which is NOT colored yet,
+             *  or will get stackoverflow error
+             */
             // CRITICAL FIX: Only start DFS if the node hasn't been colored yet.
             if (colorList[i] == 0) {
+                /** NOTE !!
+                 *
+                 *  ALWAYS use `1` as new color
+                 *  when call dfs from node looping
+                 */
                 // Try to color this new component starting with color 1.
                 if (!dfsColor_0_0_3(graph, i, colorList, 1)) {
                     return false;
@@ -301,6 +311,11 @@ public class IsGraphBipartite {
         // 2. Visit all neighbors and try to color them with the OPPOSITE color.
         for (int next : graph[node]) {
             // The opposite color of 1 is -1; the opposite of -1 is 1.
+            /** NOTE !!
+             *
+             *  should use `-1 * newColor` as the new color
+             *  within DFS call
+             */
             if (!dfsColor_0_0_3(graph, next, colorList, -newColor)) {
                 return false;
             }
