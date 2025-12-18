@@ -1,6 +1,6 @@
 # Progress
 
-# 2025-12-18
+# 2025-12-19
 
 - LC weekly 341
 - weekly video
@@ -191,7 +191,6 @@
 			- 1584
 	- LC 286 Walls And Gates
 		- gpt
-			- 542
 			- 994
 			- 1162
 			- 864

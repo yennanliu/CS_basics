@@ -6378,8 +6378,31 @@ public class Workspace18 {
      *              return final cnt as the answer
      */
     public int closedIsland(int[][] grid) {
+        if (grid == null || grid.length == 0) {
+            return 0;
+        }
 
-        return 0;
+        int l = grid.length;
+        int w = grid[0].length;
+
+        int closedIslandCnt = 0;
+
+        // 1st dfs
+//        for(int y = 0; y < l; y++){
+//            for(int x = 0; x < w; x++){
+//                // NOTE!!!
+//                if(grid[y][x] == )
+//            }
+//        }
+
+        // 2nd dfs
+
+
+        return closedIslandCnt;
+    }
+
+    private void dfsIslandFlipper(int x, int y, int[][] grid, int newColor){
+
     }
 
 
@@ -10046,6 +10069,132 @@ public class Workspace18 {
 
         return null;
     }
+
+
+    // LC 542
+    // 7.05 - 15 am
+    /**
+     *  -> return the distance
+     *  of the nearest 0 for each cell.
+     *
+     *   - m x n matrix
+     *   - distance between two cells sharing a common edge is 1.
+     *
+     *
+     *   ------------------
+     *
+     *   IDEA 1) multi source BFS ???
+     *
+     *    -> 1. loop over all `0` and find the nearest 1 by BFS,
+     *       (mark visited 0 as -1 to avoid revisit ???)
+     *
+     *       update dist to matrix if found a smaller one
+     *
+     *       2. continue above process
+     *
+     *
+     *
+     *   ------------------
+     *
+     *
+     *   ex 1)
+     *
+     *
+     *
+     *   ex 2)
+     *
+     *  Input: mat =
+     *  [
+     *    [0,0,0],
+     *    [0,1,0],
+     *    [1,1,1]
+     *  ]
+     *
+     *
+     *  Output:
+     *
+     *  [
+     *  [0,0,0],
+     *  [0,1,0],
+     *  [1,2,1]
+     *  ]
+     *
+     *
+     *
+     */
+    // IDEA 1) multi source BFS ???
+    public int[][] updateMatrix(int[][] mat) {
+        // edge
+        if (mat == null || mat.length == 0 || mat[0].length == 0) {
+            return new int[0][0];
+        }
+
+        int l = mat.length;
+        int w = mat[0].length;
+
+        // get all 0
+        List<Integer[]> zeroList = new ArrayList<>();
+        for(int y = 0; y < l; y++){
+            for(int x = 0; x < w; x++){
+                if(mat[y][x] == 0){
+                    // ???
+                    zeroList.add(new Integer[]{x, y, 0});
+                }
+            }
+        }
+
+        int[][] moves = new int[][]{ {1,0}, {-1,0}, {0,1}, {0,-1} };
+
+        // queue: { [x,y,dist], ..}
+        Queue<Integer[]> q = new LinkedList<>();
+        // add all 0 to queue
+        for(Integer[] x: zeroList){
+            q.add(x);
+        }
+
+        System.out.println(">>> q = " + q);
+
+        // bfs
+        while(!q.isEmpty()){
+            int size = q.size();
+            for(int i = 0; i < size; i++){
+                Integer[] cur = q.poll();
+                int x = cur[0];
+                int y = cur[1];
+                int dist = cur[2];
+                // ??? mark 0 as visited ???
+//                if(mat[y][x] == 0){
+//                    mat[y][x] = -1;
+//                }
+
+                // NOTE !!! check whether update cell val
+//                if(dist < mat[y][x]){
+//                    mat[y][x] =
+//                }
+                if(mat[y][x] == 1){
+                    mat[y][x] = Math.min(mat[y][x], dist); // ??
+                }
+                // ???
+                for(int[] m: moves){
+                    int x_ = x + m[1];
+                    int y_ = y + m[0];
+                    if(x_ >= 0 && x_ < w && y_ >= 0 && y_ < l){
+//                        if(mat[y_][x_] > 0){
+//                            // ???
+//                            q.add(new Integer[]{x_, y_, dist + 1});
+//                        }
+                        q.add(new Integer[]{x_, y_, dist + 1});
+                    }
+                }
+            }
+        }
+
+
+        return mat;
+    }
+
+
+
 
 
 }
