@@ -46,65 +46,100 @@ import java.util.*;
 public class ZeroOneMatrix {
 
     // V0
-    // IDEA: BFS
-    // TODO : fix below
-//    public int[][] updateMatrix(int[][] mat) {
-//        // edge
-//        if(mat == null || mat.length == 0 || mat[0].length == 0){
-//            return null;
-//        }
-//
-//        int l = mat.length;
-//        int w = mat[0].length;
-//
-//        int[][] res = mat;
-//
-//        List<int[]> candidates = new ArrayList<>();
-//        for(int i = 0; i < l; i++){
-//            for(int j = 0; j < w; j++){
-//                if(mat[i][j] == 1){
-//                    candidates.add(new int[] {i, j});
-//                }
-//            }
-//        }
-//
-//
-//        // Queue : [x, y, steps]
-//        Queue<int[]> q = new LinkedList<>();
-//        boolean[][] visited = new boolean[l][w];
-//
-//        for(int[] c: candidates){
-//            q.add(new int[] {c[0], c[1], 0});
-//        }
-//
-//        int[][] dirs = new int[][] { {1,0}, {-1,0}, {0,1}, {0,-1} };
-//
-//        while (!q.isEmpty()){
-//            int[] cur = q.poll();
-//            int x = cur[0];
-//            int y = cur[1];
-//            int steps = cur[2];
-//            visited[y][x] = true;
-//            res[y][x] = steps;
-//
-//            for(int[] d: dirs){
-//                int x_ = x + d[0];
-//                int y_ = y + d[1];
-//
-//                if(x_ < 0 || x_ >= w || y_ < 0 || y >= l || visited[y_][x_] || mat[y_][x_] != 0){
-//                    continue;
-//                }
-//
-//                //res[y_][x_ ] = steps;
-//                // add to queue
-//                q.add(new int[] {x_, y_, steps + 1});
-//            }
-//
-//        }
-//
-//
-//        return res;
-//    }
+    // IDEA: BFS (fixed by gemini)
+    /**
+     * Logic:
+     * 1. Treat all 0s as sources of a BFS and add them to the queue.
+     * 2. Initialize all 1s to -1 (meaning "not yet reached").
+     * 3. Expand outwards. The first time we reach a -1, we know it's the shortest path.
+     */
+    public int[][] updateMatrix(int[][] mat) {
+        int rows = mat.length;
+        int cols = mat[0].length;
+        Queue<int[]> queue = new LinkedList<>();
+
+        // 1. Initialize the grid and queue
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < cols; c++) {
+                if (mat[r][c] == 0) {
+                    // Start points for BFS
+                    queue.offer(new int[] { r, c });
+                } else {
+                    // Mark 1s as -1 to indicate they haven't been visited
+                    mat[r][c] = -1;
+                }
+            }
+        }
+
+        int[][] directions = { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 } };
+
+        // 2. Perform Multi-source BFS
+        while (!queue.isEmpty()) {
+            int[] curr = queue.poll();
+            int r = curr[0];
+            int c = curr[1];
+
+            for (int[] dir : directions) {
+                int nr = r + dir[0];
+                int nc = c + dir[1];
+
+                // Check boundaries and if the cell is unvisited (-1)
+                if (nr >= 0 && nr < rows && nc >= 0 && nc < cols && mat[nr][nc] == -1) {
+                    // The distance to neighbor is current distance + 1
+                    mat[nr][nc] = mat[r][c] + 1;
+                    queue.offer(new int[] { nr, nc });
+                }
+            }
+        }
+
+        return mat;
+    }
+
+    // V0-0-1
+    // IDEA:  multi-source BFS (fixed by gpt)
+    public int[][] updateMatrix_0_0_1(int[][] mat) {
+
+        int l = mat.length;
+        int w = mat[0].length;
+
+        Queue<int[]> q = new LinkedList<>();
+
+        // 1️⃣ 初始化
+        for (int y = 0; y < l; y++) {
+            for (int x = 0; x < w; x++) {
+                if (mat[y][x] == 0) {
+                    q.offer(new int[] { y, x }); // multi-source
+                } else {
+                    mat[y][x] = Integer.MAX_VALUE; // 當作 INF
+                }
+            }
+        }
+
+        int[][] dirs = { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 } };
+
+        // 2️⃣ BFS
+        while (!q.isEmpty()) {
+            int[] cur = q.poll();
+            int y = cur[0];
+            int x = cur[1];
+
+            for (int[] d : dirs) {
+                int ny = y + d[0];
+                int nx = x + d[1];
+
+                if (ny < 0 || ny >= l || nx < 0 || nx >= w)
+                    continue;
+
+                // 只在能「變更為更小距離」時才更新
+                if (mat[ny][nx] > mat[y][x] + 1) {
+                    mat[ny][nx] = mat[y][x] + 1;
+                    q.offer(new int[] { ny, nx });
+                }
+            }
+        }
+
+        return mat;
+    }
 
     // V0-1
     // IDEA:  multi-source BFS (fixed by gpt)
@@ -332,6 +367,7 @@ public class ZeroOneMatrix {
 
         return result;
     }
+
 
 
 }
