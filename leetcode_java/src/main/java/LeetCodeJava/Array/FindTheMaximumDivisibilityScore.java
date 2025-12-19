@@ -80,6 +80,71 @@ public class FindTheMaximumDivisibilityScore {
 //
 //    }
 
+    // V0-1
+    // IDEA: BRUTE FORCE (fixed by gemini)
+    /**
+     * Finds the divisor with the maximum divisibility score.
+     * Time Complexity: O(D * N), where D is divisors.length and N is nums.length.
+     * Space Complexity: O(1).
+     */
+    public int maxDivScore_0_1(int[] nums, int[] divisors) {
+        int maxScore = -1;
+        int bestDivisor = Integer.MAX_VALUE;
+
+        // 1. Iterate through each divisor in the divisors array
+        for (int d : divisors) {
+            int currentScore = getDivisibleCnt(nums, d);
+
+            // 2. Tie-breaking logic:
+            // - If the current score is higher, update both maxScore and bestDivisor.
+            // - If the score is equal, update bestDivisor only if the current divisor is smaller.
+            if (currentScore > maxScore) {
+                maxScore = currentScore;
+                bestDivisor = d;
+            } else if (currentScore == maxScore) {
+                if (d < bestDivisor) {
+                    bestDivisor = d;
+                }
+            }
+        }
+
+        return bestDivisor;
+    }
+
+    private int getDivisibleCnt(int[] nums, int x) {
+        int res = 0;
+        for (int n : nums) {
+            if (n % x == 0) {
+                res++;
+            }
+        }
+        return res;
+    }
+
+    // V0-2
+    // IDEA: BRUTE FORCE (fixed by GPT)
+    public int maxDivScore_0_2(int[] nums, int[] divisors) {
+        int bestScore = -1;
+        int bestDiv = Integer.MAX_VALUE;
+
+        for (int d : divisors) {
+            int cnt = 0;
+
+            for (int n : nums) {
+                if (n % d == 0)
+                    cnt++;
+            }
+
+            if (cnt > bestScore || (cnt == bestScore && d < bestDiv)) {
+                bestScore = cnt;
+                bestDiv = d;
+            }
+        }
+
+        return bestDiv;
+    }
+
+
     // V1
     // https://leetcode.ca/2023-02-25-2644-Find-the-Maximum-Divisibility-Score/
     public int maxDivScore_1(int[] nums, int[] divisors) {

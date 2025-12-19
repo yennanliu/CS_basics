@@ -12,7 +12,7 @@ import java.util.*;
 public class Weekly341 {
 
     // Q1
-    // LC 2643
+    // LC 2643 -> OK
     // https://leetcode.com/problems/row-with-maximum-ones/description/
     // 14.44 - 54 pm
     /**
@@ -119,6 +119,8 @@ public class Weekly341 {
 
         for(int i = 0; i < nums.length; i++){
             //int x = divisors[i];
+            System.out.println(">>> i = " + i +
+                    ", divisors[i] = " + divisors[i]);
             int cnt = getDivisibleCnt(nums, divisors[i]);
             if(!map.containsKey(cnt)){
                 map.put(cnt, new ArrayList<>());
