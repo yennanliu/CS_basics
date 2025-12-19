@@ -325,6 +325,7 @@
 1567 | [Maximum Length of Subarray With Positive Product](https://leetcode.com/problems/maximum-length-of-subarray-with-positive-product/) | [Python](./leetcode_python/Array/maximum-length-of-subarray-with-positive-product.py) | | | Medium |good trick, array, dp, 2 pointers, amazon| AGAIN**** (1) (not start)
 1914 | [Cyclically Rotating a Grid](https://leetcode.com/problems/cyclically-rotating-a-grid/) | [Python](./leetcode_python/Array/cyclically-rotating-a-grid.py) | | | Medium |array, brute force, dequeue`amazon`| AGAIN (not start)
 2640 | [Find the Score of All Prefixes of an Array](https://leetcode.com/problems/find-the-score-of-all-prefixes-of-an-array) | [Java](./leetcode_java/src/main/java/LeetCodeJava/Array/FindTheScoreOfAllPrefixesOfAnArray.java) | | | Medium |array, lc weekly 102| OK (1)
+2644 | [Find the Maximum Divisibility Score](https://leetcode.com/problems/find-the-maximum-divisibility-score) |  [Java](./leetcode_java/src/main/java/LeetCodeJava/Array/FindTheMaximumDivisibilityScore.java)| _O(n^2)_ | _O(1)_  | Easy | array, sort| Again (1)
 2553 | [Separate the Digits in an Array](https://leetcode.com/problems/separate-the-digits-in-an-array) | [Java](./leetcode_java/src/main/java/LeetCodeJava/Array/SeparateTheDigitsInAnArray.java) | | | Easy |weekly 97| OK
 3195 | [Find the Minimum Area to Cover All Ones I](https://leetcode.com/problems/find-the-minimum-area-to-cover-all-ones-i/description/) | [Java](./leetcode_java/src/main/java/LeetCodeJava/Array/findTheMinimumAreaToCoverAllOnesI.java)  | | | Medium |array, LC weekly| AGAIN (1)
 
@@ -335,9 +336,6 @@
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
 2357 | [Make Array Zero by Subtracting Equal Amounts](https://leetcode.com/problems/make-array-zero-by-subtracting-equal-amounts/description/) |  [Java](./leetcode_java/src/main/java/LeetCodeJava/Set/makeArrayZeroBySubtractingEqualAmounts.java)| _O(n^2)_ | _O(1)_  | Medium    | set| Again (1)
 1316 | [Distinct Echo Substrings](https://leetcode.com/problems/distinct-echo-substrings) |  [Java](./leetcode_java/src/main/java/LeetCodeJava/Set/DistinctEchoSubstrings.java)| _O(n^2)_ | _O(1)_  | Hard | set| Again (not start)
-2644 | [Find the Maximum Divisibility Score](https://leetcode.com/problems/find-the-maximum-divisibility-score) |  [Java](./leetcode_java/src/main/java/LeetCodeJava/Set/FindTheMaximumDivisibilityScore.java)| _O(n^2)_ | _O(1)_  | Easy | array, sort| Again (1)
-
-
 2682 | [Find the Losers of the Circular Game](https://leetcode.com/problems/find-the-losers-of-the-circular-game) |  [Java](./leetcode_java/src/main/java/LeetCodeJava/Set/FindTheLosersOfTheCircularGame.java)| _O(n^2)_ | _O(1)_  | Easy | set, hashmap| Again (1)
 
 
