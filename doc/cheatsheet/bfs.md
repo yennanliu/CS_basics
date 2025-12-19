@@ -101,7 +101,7 @@ def bfs_graph(start, graph):
     return result
 ```
 
-### Pattern 4: Multi-Source BFS
+### Pattern 4: Multi-Source BFS (Distance Calculation)
 ```python
 def multi_source_bfs(grid, sources):
     """Start BFS from multiple sources simultaneously"""
@@ -119,6 +119,153 @@ def multi_source_bfs(grid, sources):
                 visited.add((nx, ny))
                 queue.append((nx, ny))
 ```
+
+**Java Implementation (LC 542 - 01 Matrix Pattern):**
+```java
+/**
+ * Pattern: Multi-Source BFS for Distance Calculation
+ * Use case: Calculate shortest distance from each cell to any source cell
+ * Key insight: Start BFS from ALL sources simultaneously - first visit guarantees shortest path
+ *
+ * Time: O(m × n) - each cell visited at most once
+ * Space: O(m × n) - queue can hold entire grid in worst case
+ */
+public int[][] multiSourceBFS(int[][] mat) {
+    int rows = mat.length;
+    int cols = mat[0].length;
+    Queue<int[]> queue = new LinkedList<>();
+
+    // Step 1: Initialize - Add all sources (0s) to queue, mark others as unvisited
+    for (int r = 0; r < rows; r++) {
+        for (int c = 0; c < cols; c++) {
+            if (mat[r][c] == 0) {
+                queue.offer(new int[]{r, c});  // Multi-source starting points
+            } else {
+                // Mark as unvisited - two common approaches:
+                // Option A: mat[r][c] = -1 (easier to check)
+                // Option B: mat[r][c] = Integer.MAX_VALUE (easier for min comparison)
+                mat[r][c] = -1;
+            }
+        }
+    }
+
+    int[][] dirs = {{1,0}, {-1,0}, {0,1}, {0,-1}};
+
+    // Step 2: BFS expansion from all sources
+    while (!queue.isEmpty()) {
+        int[] cur = queue.poll();
+        int r = cur[0], c = cur[1];
+
+        for (int[] d : dirs) {
+            int nr = r + d[0];
+            int nc = c + d[1];
+
+            // Only process unvisited cells
+            if (nr >= 0 && nr < rows && nc >= 0 && nc < cols && mat[nr][nc] == -1) {
+                // KEY: Distance = parent's distance + 1
+                mat[nr][nc] = mat[r][c] + 1;
+                queue.offer(new int[]{nr, nc});
+            }
+        }
+    }
+
+    return mat;
+}
+```
+
+**Alternative: Using MAX_VALUE for initialization (allows for optimization)**
+```java
+public int[][] multiSourceBFS_optimized(int[][] mat) {
+    int rows = mat.length;
+    int cols = mat[0].length;
+    Queue<int[]> queue = new LinkedList<>();
+
+    // Initialize with MAX_VALUE for non-sources
+    for (int r = 0; r < rows; r++) {
+        for (int c = 0; c < cols; c++) {
+            if (mat[r][c] == 0) {
+                queue.offer(new int[]{r, c});
+            } else {
+                mat[r][c] = Integer.MAX_VALUE;  // Treat as infinity
+            }
+        }
+    }
+
+    int[][] dirs = {{1,0}, {-1,0}, {0,1}, {0,-1}};
+
+    while (!queue.isEmpty()) {
+        int[] cur = queue.poll();
+        int r = cur[0], c = cur[1];
+
+        for (int[] d : dirs) {
+            int nr = r + d[0];
+            int nc = c + d[1];
+
+            if (nr < 0 || nr >= rows || nc < 0 || nc >= cols) continue;
+
+            /**
+             * KEY OPTIMIZATION: Only update when new distance is shorter
+             * Why this works:
+             * - In unweighted BFS, first visit = shortest distance
+             * - If mat[nr][nc] <= mat[r][c] + 1, cell already has better/equal path
+             * - No need to re-process cells that won't improve
+             *
+             * This prevents redundant enqueuing and guarantees O(m×n) time
+             */
+            if (mat[nr][nc] > mat[r][c] + 1) {
+                mat[nr][nc] = mat[r][c] + 1;
+                queue.offer(new int[]{nr, nc});
+            }
+        }
+    }
+
+    return mat;
+}
+```
+
+**Concrete Example: LC 542 - 01 Matrix**
+```
+Problem: Find distance to nearest 0 for each cell
+Input:  [[0,0,0],     Output: [[0,0,0],
+         [0,1,0],              [0,1,0],
+         [1,1,1]]              [1,2,1]]
+
+Execution trace:
+Step 1 - Initialize:
+  Queue: [(0,0), (0,1), (0,2), (1,0), (1,2)]  ← All 0s
+  Grid:  [[0, 0, 0],
+          [0, -1, 0],
+          [-1, -1, -1]]
+
+Step 2 - BFS Layer 1 (distance = 1):
+  Process (0,0): Check (1,0) - already 0, skip
+  Process (0,1): Check (1,1) - is -1, update to 1, enqueue
+  Process (1,0): Check (2,0) - is -1, update to 1, enqueue
+
+  Grid:  [[0, 0, 0],
+          [0, 1, 0],
+          [1, -1, -1]]
+  Queue: [(1,1), (2,0), ...]
+
+Step 3 - BFS Layer 2 (distance = 2):
+  Process (1,1): Check (2,1) - is -1, update to 2, enqueue
+  Process (2,0): Check (2,1) - is -1, update to 2, enqueue (redundant)
+
+  Final: [[0, 0, 0],
+          [0, 1, 0],
+          [1, 2, 1]]
+```
+
+**Why This Pattern Works:**
+1. **Simultaneous Expansion**: All sources expand at same rate → layer by layer
+2. **First Visit = Shortest**: In unweighted BFS, first arrival guarantees shortest path
+3. **No Backtracking**: Once a cell is visited, we've found its shortest distance
+4. **Linear Time**: Each cell visited exactly once → O(m×n) total
+
+**Key Insight - Why Start from 0s, Not 1s?**
+- ❌ Starting from each 1 → O(m×n) BFS calls → O(m²×n²) total time
+- ✅ Starting from all 0s → Single BFS pass → O(m×n) total time
+- **Principle**: Flip the problem - instead of "how far is this 1 from any 0?", ask "how far can all 0s reach?"
 
 ### Pattern 4.5: DFS + Multi-Source BFS (Island Expansion)
 ```java
@@ -440,9 +587,13 @@ Key insight: Must cut in sorted order, BFS finds shortest path between each pair
 ### 2. Shortest Path Problems
 - **Unweighted Graphs**: LC 127 (Word Ladder)
 - **Grid Navigation**: LC 1730 (Shortest Path to Food), LC 1091 (Shortest Path in Binary Matrix)
-- **Multi-source**: LC 542 (01 Matrix), LC 1162 (As Far from Land), LC 317 (Shortest Distance from All Buildings)
-- **DFS + Multi-source BFS**: LC 934 (Shortest Bridge - mark one component, expand to find other)
-- **Sequential Targets**: LC 675 (Cut Off Trees for Golf Event - Sort + Repeated BFS)
+- **Multi-source Distance (Pattern 4)**:
+  - **LC 542 (01 Matrix)** - Distance to nearest 0 from each cell
+  - LC 1162 (As Far from Land) - Distance to nearest land from each water cell
+  - LC 286 (Walls and Gates) - Distance from gates to rooms
+  - LC 317 (Shortest Distance from All Buildings) - Optimal meeting point
+- **DFS + Multi-source BFS (Pattern 4.5)**: LC 934 (Shortest Bridge - mark one component, expand to find other)
+- **Sequential Targets (Pattern 6)**: LC 675 (Cut Off Trees for Golf Event - Sort + Repeated BFS)
 - **State-Based BFS**: LC 864 (Shortest Path to Get All Keys), LC 1293 (Shortest Path with Obstacles Elimination)
 
 ### 3. Graph Structure Problems
@@ -606,6 +757,75 @@ def weighted_bfs(start, end, graph):
     return -1
 ```
 
+## Core Concepts Summary
+
+### Multi-Source BFS Distance Calculation (LC 542 Pattern)
+
+**The Problem Type:**
+Calculate shortest distance from each cell to ANY source cell in a grid.
+
+**Why Multi-Source BFS?**
+```
+❌ Naive Approach: Start BFS from each target cell
+   - For each 1, run BFS to find nearest 0
+   - Time: O(m×n) targets × O(m×n) BFS = O(m²×n²) ❌
+
+✅ Multi-Source Approach: Start BFS from ALL sources simultaneously
+   - Add all 0s to queue initially
+   - Run single BFS that expands from all sources
+   - Time: O(m×n) - each cell visited once ✅
+```
+
+**Key Implementation Details:**
+
+1. **Initialization Strategy:**
+   ```java
+   // Option A: Use sentinel value -1
+   mat[r][c] = -1;  // Easier to check: if (mat[nr][nc] == -1)
+
+   // Option B: Use MAX_VALUE
+   mat[r][c] = Integer.MAX_VALUE;  // Easier for comparison: if (mat[nr][nc] > mat[r][c] + 1)
+   ```
+
+2. **The Update Condition:**
+   ```java
+   // Why only update when new distance is shorter?
+   if (mat[nr][nc] > mat[r][c] + 1) {
+       mat[nr][nc] = mat[r][c] + 1;
+       queue.offer(new int[]{nr, nc});
+   }
+
+   // Explanation:
+   // - In unweighted BFS, first visit = shortest path
+   // - If cell already has distance ≤ current + 1, it has a better path
+   // - Prevents redundant re-processing and ensures O(m×n) time
+   ```
+
+3. **Why First Visit = Shortest Distance:**
+   ```
+   BFS expands in layers (level-by-level):
+   Layer 0: All sources (distance = 0)
+   Layer 1: All cells 1 step away (distance = 1)
+   Layer 2: All cells 2 steps away (distance = 2)
+   ...
+
+   When BFS first reaches a cell, it MUST be via the shortest path
+   because all shorter paths were explored in earlier layers.
+   ```
+
+**Pattern Recognition - Use Multi-Source BFS When:**
+- Need distance from each cell to ANY source (not a specific source)
+- Multiple sources exist naturally in the problem
+- Problem asks for "nearest/closest" among multiple options
+- Can "flip" the problem (start from targets instead of sources)
+
+**Similar Problems Using This Pattern:**
+- LC 542: 01 Matrix (distance to nearest 0)
+- LC 1162: As Far from Land as Possible (distance to nearest land)
+- LC 286: Walls and Gates (distance from gates to rooms)
+- LC 994: Rotting Oranges (time for all oranges to rot)
+- LC 1765: Map of Highest Peak (assign heights with constraints)
+
 ## Quick Reference
 
 ### When to Use BFS
@@ -614,6 +834,7 @@ def weighted_bfs(start, end, graph):
 - Finding connected components
 - Checking if graph is bipartite
 - Web crawling (breadth-first exploration)
+- **Multi-source distance calculations** (Pattern 4)
 
 ### When NOT to Use BFS
 - Deep trees/graphs with limited memory
@@ -622,14 +843,16 @@ def weighted_bfs(start, end, graph):
 - Need to explore all paths (use DFS)
 
 ### Key LeetCode Problems
-| Difficulty | Problem | Key Concept |
-|------------|---------|-------------|
-| Easy | LC 102 | Level-order traversal |
-| Medium | LC 127 | Shortest path transformation |
-| Medium | LC 200 | Connected components |
-| Medium | LC 542 | Multi-source BFS |
-| Medium | LC 934 | DFS + Multi-source BFS (island expansion) |
-| Hard | LC 317 | Multi-source optimization |
-| Hard | LC 675 | Sort + Repeated BFS (sequential targets) |
-| Hard | LC 864 | BFS with state (key collection) |
-| Hard | LC 1293 | BFS with state (obstacle elimination) |
+| Difficulty | Problem | Key Concept | Core Pattern |
+|------------|---------|-------------|--------------|
+| Easy | LC 102 | Level-order traversal | Pattern 2 (Level-by-Level) |
+| Medium | LC 127 | Shortest path transformation | Pattern 3 (Graph BFS) |
+| Medium | LC 200 | Connected components | Pattern 3 (Graph BFS) |
+| **Medium** | **LC 542** | **Multi-source BFS - 01 Matrix** | **Pattern 4 (Multi-Source Distance)** |
+| Medium | LC 934 | DFS + Multi-source BFS (island expansion) | Pattern 4.5 (DFS + Multi-Source) |
+| Medium | LC 1162 | As Far from Land as Possible | Pattern 4 (Multi-Source Distance) |
+| Hard | LC 286 | Walls and Gates | Pattern 4 (Multi-Source Distance) |
+| Hard | LC 317 | Multi-source optimization | Pattern 4 (Multi-Source Distance) |
+| Hard | LC 675 | Sort + Repeated BFS (sequential targets) | Pattern 6 (Sort + Repeated BFS) |
+| Hard | LC 864 | BFS with state (key collection) | Pattern 3 + State |
+| Hard | LC 1293 | BFS with state (obstacle elimination) | Pattern 3 + State |
