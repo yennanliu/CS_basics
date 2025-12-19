@@ -92,6 +92,10 @@ public class FindTheMaximumDivisibilityScore {
         int bestDivisor = Integer.MAX_VALUE;
 
         // 1. Iterate through each divisor in the divisors array
+        /**  NOTE !!!
+         *
+         *  can simply loop over every divisor
+         */
         for (int d : divisors) {
             int currentScore = getDivisibleCnt(nums, d);
 
@@ -101,7 +105,16 @@ public class FindTheMaximumDivisibilityScore {
             if (currentScore > maxScore) {
                 maxScore = currentScore;
                 bestDivisor = d;
-            } else if (currentScore == maxScore) {
+            }
+            /**  NOTE !!!
+             *
+             *  if there is a tie, we should keep the one
+             *  with SMALLER value (but not small index)
+             *
+             *  e.g. If multiple integers have the maximum score, return the smallest one.
+             *
+             */
+            else if (currentScore == maxScore) {
                 if (d < bestDivisor) {
                     bestDivisor = d;
                 }
