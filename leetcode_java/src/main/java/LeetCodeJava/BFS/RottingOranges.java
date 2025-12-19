@@ -46,89 +46,120 @@ import java.util.*;
 
 public class RottingOranges {
 
-    // TODO : fix below
     // VO
-    // IDEA : BFS
-//    public int orangesRotting(int[][] grid) {
-//
-//        // edge
-//        if(grid.length == 0 || grid[0].length == 0){
-//            return 0;
-//        }
-//
-//        if(grid.length == 1 && grid[0].length == 1){
-//            if(grid[0][0] == 2){
-//                return -1;
-//            }
-//            return 0; // ??
-//        }
-//
-//        int l = grid.length;
-//        int w = grid[0].length;
-//
-//        int freshCnt = 0;
-//        int rottenCnt = 0;
-//
-//        List<List<Integer>> rottenList = new ArrayList<>();
-//
-//        // get cnt of `fresh` orange
-//        for(int i = 0; i < l; i++){
-//            for(int j = 0; j < w; j++){
-//                if(grid[i][j] == 1){
-//                    freshCnt += 1;
-//                }else if (grid[i][j] == 2){
-//                    rottenCnt += 1;
-//                    List<Integer> tmp = new ArrayList<>();
-//                    tmp.add(j);
-//                    tmp.add(i);
-//                    rottenList.add(tmp);
-//                }
-//            }
-//        }
-//
-//        if(freshCnt == 0){
-//            return 0;
-//        }
-//
-//        int minutes = 0;
-//
-//        Queue<List<Integer>> q = new LinkedList<>();
-//        for(List<Integer> x: rottenList){
-//            q.add(x);
-//        }
-//
-//        while(!q.isEmpty() || freshCnt <= 0){
-//            List<Integer> cur = q.poll();
-//            int x = cur.get(0);
-//            int y = cur.get(1);
-//
-//            //grid[y][x] = 2; // make as `rotten`
-//
-//            int[][] dirs = new int[][] { {0,1}, {0,-1}, {1,0}, {-1,0} };
-//
-//            for(int[] d: dirs){
-//                int x_ = x + d[0];
-//                int y_ = y + d[1];
-//                if(x_ < 0 || x_ >= w || y < 0 || y_ >= l || grid[y_][x_] == 0){
-//                    continue;
-//                }
-//                List<Integer> cur2 = new ArrayList<>();
-//                cur2.add(x_);
-//                cur2.add(y_);
-//
-//                q.add(cur2);
-//
-//                if(grid[y_][x_] == 1){
-//                    grid[y_][x_] = 2; // make as `rotten`
-//                    freshCnt -= 1;
-//                }
-//            }
-//
-//            minutes += 1;
-//        }
-//
-//        return minutes;
-//    }
+    // IDEA : multi source - BFS, LC 542 (fixed by gemini)
+    public int orangesRotting(int[][] grid) {
+        if (grid == null || grid.length == 0 || grid[0].length == 0) {
+            return 0;
+        }
+
+        int rows = grid.length;
+        int cols = grid[0].length;
+        int freshOrange = 0;
+        Queue<int[]> q = new LinkedList<>();
+
+        // 1. Initial scan: Find all rotten oranges and count fresh ones
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < cols; c++) {
+                if (grid[r][c] == 2) {
+                    q.add(new int[] { r, c });
+                } else if (grid[r][c] == 1) {
+                    freshOrange++;
+                }
+            }
+        }
+
+        // If there are no fresh oranges, it takes 0 minutes
+        if (freshOrange == 0)
+            return 0;
+
+        int time = 0;
+        int[][] moves = { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 } };
+
+        // 2. BFS: Spread the rot level by level
+        while (!q.isEmpty() && freshOrange > 0) {
+            int size = q.size();
+            time++; // Increment time as we are about to process a "minute" level
+
+            for (int i = 0; i < size; i++) {
+                int[] cur = q.poll();
+                int r = cur[0];
+                int c = cur[1];
+
+                for (int[] m : moves) {
+                    int nr = r + m[0];
+                    int nc = c + m[1];
+
+                    // Check bounds and if it is a fresh orange
+                    if (nr >= 0 && nr < rows && nc >= 0 && nc < cols && grid[nr][nc] == 1) {
+                        // CRITICAL FIX: Mark the neighbor as rotten immediately
+                        grid[nr][nc] = 2;
+                        freshOrange--;
+                        q.add(new int[] { nr, nc });
+                    }
+                }
+            }
+        }
+
+        // 3. Final check: Can we reach all oranges?
+        return freshOrange == 0 ? time : -1;
+    }
+
+    // V0-0-1
+    // IDEA: BFS (gpt)
+    public int orangesRotting_0_0_1(int[][] grid) {
+        int rows = grid.length;
+        int cols = grid[0].length;
+
+        Queue<int[]> q = new LinkedList<>();
+        int fresh = 0;
+
+        // Initialize
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < cols; c++) {
+                if (grid[r][c] == 2) {
+                    q.offer(new int[] { r, c });
+                } else if (grid[r][c] == 1) {
+                    fresh++;
+                }
+            }
+        }
+
+        if (fresh == 0)
+            return 0;
+
+        int[][] dirs = { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 } };
+        int minutes = 0;
+
+        while (!q.isEmpty()) {
+            int size = q.size();
+            boolean rottedThisMinute = false;
+
+            for (int i = 0; i < size; i++) {
+                int[] cur = q.poll();
+                int r = cur[0], c = cur[1];
+
+                for (int[] d : dirs) {
+                    int nr = r + d[0];
+                    int nc = c + d[1];
+
+                    if (nr >= 0 && nr < rows && nc >= 0 && nc < cols
+                            && grid[nr][nc] == 1) {
+                        grid[nr][nc] = 2; // ✅ correct cell
+                        fresh--; // ✅ decrement fresh
+                        q.offer(new int[] { nr, nc });
+                        rottedThisMinute = true;
+                    }
+                }
+            }
+
+            if (rottedThisMinute)
+                minutes++;
+        }
+
+        return fresh == 0 ? minutes : -1;
+    }
+
 
     // TODO : fix below
     // V0-1
@@ -405,5 +436,7 @@ public class RottingOranges {
         // return elapsed minutes if no fresh orange left
         return timestamp - 2;
     }
+
+
 
 }

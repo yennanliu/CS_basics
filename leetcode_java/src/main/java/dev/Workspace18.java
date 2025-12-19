@@ -10194,6 +10194,112 @@ public class Workspace18 {
     }
 
 
+    // LC 994
+    // 8.55 - 9.05 am
+    /**
+     *
+     * Return the minimum number of minutes that must
+     *  elapse until no cell has a fresh orange.
+     *  If this is impossible, return -1.
+     *
+     *  - 0: empty
+     *  - 1: fresh
+     *  - 2: rotten
+     *
+     *
+     *   Every minute, any fresh orange that
+     *   is 4-directionally adjacent to a
+     *   rotten orange becomes rotten.
+     *
+     *
+     * ------------------
+     *
+     *  IDEA 1) BFS
+     *
+     *
+     * ------------------
+     *
+     *
+     */
+    public int orangesRotting(int[][] grid) {
+
+        // edge
+        if (grid == null || grid.length == 0 || grid[0].length == 0) {
+            return 0; // ???
+        }
+
+        int l = grid.length;
+        int w = grid[0].length;
+
+        int freshOrange = 0;
+
+        // get all rotten orange
+        List<Integer[]> zeroList = new ArrayList<>();
+        for(int y = 0; y < l; y++){
+            for(int x = 0; x < w; x++){
+                if(grid[y][x] == 2){
+                    zeroList.add(new Integer[]{x, y});
+                }
+                if(grid[y][x] == 1){
+                    freshOrange += 1;
+                }
+
+            }
+        }
+
+        // edge
+        if(freshOrange == 0){
+            return 0;
+        }
+
+        int[][] moves = new int[][]{ {1,0}, {-1,0}, {0,1}, {0,-1} };
+
+        // queue: { [x,y], ..}
+        Queue<Integer[]> q = new LinkedList<>();
+        // add all rotten to queue
+        for(Integer[] x: zeroList){
+            q.add(x);
+        }
+
+        System.out.println(">>> q = " + q);
+        int time = 0;
+
+        // bfs
+        while(!q.isEmpty()){
+            int size = q.size();
+            for(int i = 0; i < size; i++){
+                Integer[] cur = q.poll();
+                int x = cur[0];
+                int y = cur[1];
+
+                // mark as rotten
+//                if(grid[y][x] == 1){
+//                    grid[y][x] = 2;
+//                }
+
+                for(int[] m: moves){
+                    int x_ = x + m[0];
+                    int y_ = y + m[1];
+                    if(x_ >= 0 && x_ < w && y_ >= 0 && y_ < l){
+                        if(grid[y_][x_] == 1){
+                            // mark as rotten ???
+                            freshOrange -= 1;
+                            grid[y][x] = 2;
+                            q.add(new Integer[]{x_, y_});
+                        }
+                    }
+                }
+            }
+            time += 1;
+        }
+
+        System.out.println(">>> freshOrange = " + freshOrange +
+                ", time " + time);
+
+        return freshOrange == 0 ? time : -1;
+    }
+
+
 
 
 
