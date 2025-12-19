@@ -106,8 +106,106 @@ public class RottingOranges {
     }
 
     // V0-0-1
-    // IDEA: BFS (gpt)
+    // IDEA: muti-source BFS
     public int orangesRotting_0_0_1(int[][] grid) {
+
+        // edge
+        if (grid == null || grid.length == 0 || grid[0].length == 0) {
+            return 0;
+        }
+
+        int l = grid.length;
+        int w = grid[0].length;
+
+        int freshOrange = 0;
+
+        // get all rotten orange
+        List<Integer[]> zeroList = new ArrayList<>();
+        for (int y = 0; y < l; y++) {
+            for (int x = 0; x < w; x++) {
+                if (grid[y][x] == 2) {
+                    zeroList.add(new Integer[] { x, y });
+                } else if (grid[y][x] == 1) {
+                    freshOrange += 1;
+                }
+
+            }
+        }
+
+        // edge
+        if (freshOrange == 0) {
+            return 0;
+        }
+
+        int[][] moves = new int[][] { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 } };
+
+        // queue: { [x,y], ..}
+        Queue<Integer[]> q = new LinkedList<>();
+        // add all rotten to queue
+        for (Integer[] x : zeroList) {
+            q.add(x);
+        }
+
+        int time = 0;
+
+        // BFS
+        /**
+         *   // NOTE !!! `freshOrange > 0` as while loop
+         *   //           condition as well
+         *
+         */
+        while (!q.isEmpty() && freshOrange > 0) {
+            int size = q.size();
+            /**
+             *   // NOTE !!!
+             *
+             *     we do `time += 1` at first,
+             *     since it may ALL fresh orange `rotten` in
+             *     the next loop (then we quit while loop directly)
+             *
+             *
+             *     or, we keep doing `time += 1` after for loop,
+             *     but we need to remove `freshOrange > 0` from while loop
+             */
+            time += 1;
+            for (int i = 0; i < size; i++) {
+                Integer[] cur = q.poll();
+                int x = cur[0];
+                int y = cur[1];
+
+                for (int[] m : moves) {
+                    int x_ = x + m[0];
+                    int y_ = y + m[1];
+                    if (x_ >= 0 && x_ < w && y_ >= 0 && y_ < l) {
+                        if (grid[y_][x_] == 1) {
+                            /**
+                             *  NOTE !!! freshOrange -= 1
+                             *
+                             */
+                            freshOrange -= 1;
+                            /**
+                             *   NOTE !!! mark as rotten
+                             *
+                             */
+                            grid[y_][x_] = 2; // NOTE !!!
+                            q.add(new Integer[] { x_, y_ });
+                        }
+                    }
+                }
+            }
+            // time += 1;
+        }
+
+//        System.out.println(">>> freshOrange = " + freshOrange +
+//                ", time " + time);
+
+        return freshOrange == 0 ? time : -1;
+    }
+
+
+    // V0-0-2
+    // IDEA: muti-source BFS (gpt)
+    public int orangesRotting_0_0_2(int[][] grid) {
         int rows = grid.length;
         int cols = grid[0].length;
 
