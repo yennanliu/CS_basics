@@ -10240,7 +10240,7 @@ public class Workspace18 {
                 if(grid[y][x] == 2){
                     zeroList.add(new Integer[]{x, y});
                 }
-                if(grid[y][x] == 1){
+                else if(grid[y][x] == 1){
                     freshOrange += 1;
                 }
 
@@ -10265,8 +10265,11 @@ public class Workspace18 {
         int time = 0;
 
         // bfs
-        while(!q.isEmpty()){
+        // NOTE !!! `freshOrange > 0` as while loop
+        //           condition as well
+        while(!q.isEmpty() && freshOrange > 0){
             int size = q.size();
+            time += 1;
             for(int i = 0; i < size; i++){
                 Integer[] cur = q.poll();
                 int x = cur[0];
@@ -10284,13 +10287,13 @@ public class Workspace18 {
                         if(grid[y_][x_] == 1){
                             // mark as rotten ???
                             freshOrange -= 1;
-                            grid[y][x] = 2;
+                            grid[y_][x_] = 2; // NOTE !!!
                             q.add(new Integer[]{x_, y_});
                         }
                     }
                 }
             }
-            time += 1;
+           // time += 1;
         }
 
         System.out.println(">>> freshOrange = " + freshOrange +
