@@ -45,9 +45,21 @@ public class Weekly341 {
         //int max
         int maxCnt = 0;
         int[] res = new int[2];
+        // ??
+        for(int i = mat.length - 1; i >= 0; i--){
+            int cnt = 0;
+            for(int x: mat[i]){
+                if(x == 1){
+                    cnt += 1;
+                }
+            }
+            maxCnt = Math.max(cnt, maxCnt);
+        }
+
+        System.out.println(">>> maxCnt = " + maxCnt);
 
         // ???
-        for(int i = mat.length - 1; i > 0; i--){
+        for(int i = mat.length - 1; i >= 0; i--){
             int cnt = 0;
             for(int x: mat[i]){
                 if(x == 1){
@@ -57,15 +69,13 @@ public class Weekly341 {
             if(cnt > maxCnt){
                 res = new int[]{i, cnt};
             }
-//            maxCnt = Math.max(maxCnt, cnt);
-//            map.put(i, cnt);
         }
-
-        //int[] res = new int[2];
-        //for(int k: ma)
 
         return res;
     }
+
+
+
 
     // Q2
     // https://leetcode.com/problems/find-the-maximum-divisibility-score/

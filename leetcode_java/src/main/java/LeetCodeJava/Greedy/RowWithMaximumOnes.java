@@ -50,6 +50,86 @@ public class RowWithMaximumOnes {
 //
 //    }
 
+    // V0-1
+    // IDEA: BRUTE FORCE
+    public int[] rowAndMaximumOnes_0_1(int[][] mat) {
+        // edge
+        if (mat == null || mat.length == 0 || mat[0].length == 0) {
+            return new int[] {};
+        }
+
+        int maxCnt = 0;
+        int[] res = new int[2];
+
+        // 1. get global max `1` count in row
+        for (int i = mat.length - 1; i >= 0; i--) {
+            int cnt = 0;
+            for (int x : mat[i]) {
+                if (x == 1) {
+                    cnt += 1;
+                }
+            }
+            maxCnt = Math.max(cnt, maxCnt);
+        }
+
+        System.out.println(">>> maxCnt = " + maxCnt);
+
+        // 2. get result pair (idx, 1_cnt)
+        for (int i = mat.length - 1; i >= 0; i--) {
+            int cnt = 0;
+            for (int x : mat[i]) {
+                if (x == 1) {
+                    cnt += 1;
+                }
+            }
+            if (cnt == maxCnt) {
+                res = new int[] { i, cnt };
+            }
+        }
+
+        return res;
+    }
+
+
+    // V0-2
+    // IDEA: BRUTE FORCE (fixed by gemini)
+    /**
+     * Finds the row with the maximum number of ones.
+     * Time Complexity: O(M * N)
+     * Space Complexity: O(1)
+     */
+    public int[] rowAndMaximumOnes_0_2(int[][] mat) {
+        // 1. Handle edge case
+        if (mat == null || mat.length == 0) {
+            return new int[] { 0, 0 };
+        }
+
+        int maxRowIndex = 0;
+        int maxCount = -1; // Initialize to -1 to ensure the first row (index 0) is captured
+
+        // 2. Iterate forward through rows to handle the "smallest index" tie-breaker
+        for (int i = 0; i < mat.length; i++) {
+            int currentCount = 0;
+
+            // Count ones in current row
+            for (int val : mat[i]) {
+                if (val == 1) {
+                    currentCount++;
+                }
+            }
+
+            // 3. Update result if we find a STRICTLY greater count
+            // This ensures if row 1 and row 2 both have 3 ones, we keep row 1.
+            if (currentCount > maxCount) {
+                maxCount = currentCount;
+                maxRowIndex = i;
+            }
+        }
+
+        return new int[] { maxRowIndex, maxCount };
+    }
+
+
     // V1
     // https://leetcode.ca/2023-02-24-2643-Row-With-Maximum-Ones/
     public int[] rowAndMaximumOnes_1(int[][] mat) {
