@@ -10304,9 +10304,132 @@ public class Workspace18 {
 
 
     // LC 1162
+    // 15.53 - 16.03 pm
+    /**
+     *  ->   find a `WATER cell` such that its distance to the
+     *       nearest` LAND cell is `maximized`,
+     *       and return the `distance`.
+     *
+     *       If no land or water exists in the grid, return -1.
+     *
+     *
+     *     - n x n grid
+     *     - 0 : water
+     *     - 1 : island
+     *
+     *     - dist: Manhattan dist
+     *       -> |x0 - x1| + |y0 - y1|.
+     *
+     *
+     *  ------------------
+     *
+     *   IDEA 1) BFS
+     *
+     *    ->
+     *      step 0) collect all `0` cells
+     *
+     *      step 1)
+     *       loop over 0, find the dist from 0 to 1,
+     *       repeat above, and update the dist if meet a bigger one
+     *       and maintain the global max dist
+     *
+     *      step 2)
+     *       return `global max dist` as ans
+     *
+     *
+     *  ------------------
+     *
+     *   ex 1)
+     *
+     *    Input: grid = [[1,0,1],[0,0,0],[1,0,1]]
+     *    Output: 2
+     *
+     *    ->
+     *    [
+     *    [1,0,1],
+     *    [0,0,0],
+     *    [1,0,1]
+     *   ]
+     *
+     *
+     *   ex 2)
+     *
+     *   Input: grid = [[1,0,0],[0,0,0],[0,0,0]]
+     *   Output: 4
+     *
+     *   ->
+     *
+     *   [
+     *   [1,0,0],
+     *   [0,0,0],
+     *   [0,0,0]
+     *  ]
+     *
+     *
+     *
+     */
     public int maxDistance(int[][] grid) {
+        // edge
 
-        return 0;
+        int l = grid.length;
+        int w = grid[0].length;
+
+        // get all `0` cells
+        List<Integer[]> zeroList = new ArrayList<>();
+        for(int y = 0; y < l; y++){
+            for(int x = 0; x < w; x++){
+                if(grid[y][x] == 0){
+                    zeroList.add(new Integer[]{x, y});
+                }
+            }
+        }
+
+        int[][] moves = new int[][] { {0,1}, {0,-1}, {1,0}, {-1,0} };
+
+        int maxDist = -1; // ??
+
+        // { [x,y, dist] } // ???
+        Queue<Integer[]> q = new LinkedList<>();
+        // ??
+        for(Integer[] z: zeroList){
+            q.add(new Integer[]{z[1], z[0], 0});
+        }
+
+        // edge: if NO zero cell
+        if(q.isEmpty()){
+            return -1;
+        }
+
+        while(!q.isEmpty()){
+            int size = q.size();
+            for(int i = 0; i < size; i++){
+                Integer[] cur = q.poll();
+                int x = cur[0];
+                int y = cur[1];
+                int dist = cur[2];
+                // ???
+                if(grid[y][x] == 1){
+                    // ??
+                    grid[y][x] = Math.max(grid[y][x], dist);
+                    // ???
+                    maxDist = Math.max(grid[y][x], maxDist);
+                }
+                // move to neighbor
+                for(int[] m: moves){
+                    int x_ = x + m[1];
+                    int y_ = y + m[0];
+                    if(x_ >= 0 && x_ < w && y_ >= 0 && y_ < l){
+                        // /???
+                       // if(grid[y_][x_] )
+                        q.add(new Integer[]{x_, y_, dist + 1});
+                    }
+
+                }
+            }
+        }
+
+
+        return maxDist;
     }
 
 

@@ -51,6 +51,114 @@ public class AsFarFromLandAsPossible {
 //
 //    }
 
+    // V0-1
+    // IDEA: BFS (fixed by gemini)
+    /**
+     * Logic:
+     * 1. Add all land cells (1) to the queue as starting points.
+     * 2. Traverse outwards into water cells (0).
+     * 3. The distance of the last water cell reached is the maximum distance.
+     */
+    public int maxDistance_0_1(int[][] grid) {
+        int n = grid.length;
+        Queue<int[]> q = new LinkedList<>();
+
+        // 1. Add all land cells to the queue
+        for (int r = 0; r < n; r++) {
+            for (int c = 0; c < n; c++) {
+                if (grid[r][c] == 1) {
+                    q.offer(new int[] { r, c });
+                }
+            }
+        }
+
+        // Edge Case: If no water or no land, return -1
+        if (q.isEmpty() || q.size() == n * n) {
+            return -1;
+        }
+
+        int maxDist = -1;
+        int[][] moves = { { 0, 1 }, { 0, -1 }, { 1, 0 }, { -1, 0 } };
+
+        // 2. Multi-source BFS
+        while (!q.isEmpty()) {
+            int size = q.size();
+            maxDist++; // Each level of BFS represents 1 unit of distance
+
+            for (int i = 0; i < size; i++) {
+                int[] cur = q.poll();
+                int r = cur[0];
+                int c = cur[1];
+
+                for (int[] m : moves) {
+                    int nr = r + m[0];
+                    int nc = c + m[1];
+
+                    // If neighbor is water, mark as visited (turn to land) and enqueue
+                    if (nr >= 0 && nr < n && nc >= 0 && nc < n && grid[nr][nc] == 0) {
+                        grid[nr][nc] = 1; // Mark as visited
+                        q.offer(new int[] { nr, nc });
+                    }
+                }
+            }
+        }
+
+        return maxDist;
+    }
+
+    // V0-2
+    // IDEA: BFS (fixed by gpt)
+    public int maxDistance_0_2(int[][] grid) {
+        int n = grid.length;
+        int m = grid[0].length;
+
+        Queue<int[]> q = new LinkedList<>();
+        boolean hasWater = false;
+
+        // Push all land cells into queue
+        for (int y = 0; y < n; y++) {
+            for (int x = 0; x < m; x++) {
+                if (grid[y][x] == 1) {
+                    q.offer(new int[] { y, x });
+                } else {
+                    hasWater = true;
+                }
+            }
+        }
+
+        // Edge cases
+        if (q.isEmpty() || !hasWater)
+            return -1;
+
+        int[][] dirs = { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 } };
+        int dist = -1;
+
+        // BFS level by level
+        while (!q.isEmpty()) {
+            int size = q.size();
+            dist++;
+
+            for (int i = 0; i < size; i++) {
+                int[] cur = q.poll();
+                int y = cur[0];
+                int x = cur[1];
+
+                for (int[] d : dirs) {
+                    int ny = y + d[0];
+                    int nx = x + d[1];
+
+                    if (ny >= 0 && ny < n && nx >= 0 && nx < m && grid[ny][nx] == 0) {
+                        grid[ny][nx] = 1; // mark visited
+                        q.offer(new int[] { ny, nx });
+                    }
+                }
+            }
+        }
+
+        return dist;
+    }
+    
+
     // V1
     // IDEA: BFS
     // https://leetcode.ca/2019-02-04-1162-As-Far-from-Land-as-Possible/
