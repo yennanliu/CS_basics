@@ -10303,6 +10303,12 @@ public class Workspace18 {
     }
 
 
+    // LC 1162
+    public int maxDistance(int[][] grid) {
+
+        return 0;
+    }
+
 
 
 
