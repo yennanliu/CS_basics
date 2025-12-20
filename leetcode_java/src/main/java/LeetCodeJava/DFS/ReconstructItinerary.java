@@ -48,6 +48,135 @@ public class ReconstructItinerary {
 //
 //    }
 
+    // V0-1
+    // IDEA: TOPOLOGICAL SORT
+    /**  NOTE !!!  `TOPOLOGICAL SORT` is NOT WORKING for this LC problem:
+     *
+     *   Strictly speaking, **LC 332. Reconstruct Itinerary**
+     *   CAN NOT be solved using a standard **Topological Sort** (Kahn's algorithm).
+     *
+     * ### Why Topological Sort doesn't work:
+     *
+     * 1. **Cycles:** Topological sort ONLY works on
+           Directed Acyclic Graphs (DAGs).
+
+     *     The flight itinerary problem frequently contains
+     *     cycles (e.g., JFK → SFO → JFK).
+     *     A standard topological sort would get stuck in
+     *     a cycle and fail to process the nodes.
+     *
+     *
+     * 2. **Edge-based vs. Node-based:**
+     *
+     *     Topological sort
+     *     orders **nodes** based on dependencies. This problem is
+     *     about using every **edge** (ticket) exactly once.
+     *
+     *
+     *
+     *
+     * ### The Correct Approach: Hierholzer's Algorithm
+     *
+     * This problem is actually a quest for an **Eulerian Path** in a directed graph. An Eulerian Path is a trail that visits every edge exactly once.
+     *
+     * While it isn't "Topological Sort," the algorithm used (Hierholzer’s) looks very similar to a **Post-Order DFS** (which is how you implement Topological Sort using DFS). The main difference is that you "consume" the edges as you go to handle the cycles.
+     *
+     * ---
+     *
+     * ### 🛠️ Java Solution (Hierholzer's Algorithm)
+     *
+     * ```java
+     * import java.util.*;
+     *
+     * class Solution {
+     *     // We use a Map to store the adjacency list.
+     *     // A PriorityQueue is used for neighbors to ensure lexical order (as required by LC).
+     *     Map<String, PriorityQueue<String>> adj = new HashMap<>();
+     *     LinkedList<String> result = new LinkedList<>();
+     *
+     *     public List<String> findItinerary(List<List<String>> tickets) {
+     *         // 1. Build the graph
+     *         for (List<String> ticket : tickets) {
+     *             adj.computeIfAbsent(ticket.get(0), k -> new PriorityQueue<>()).add(ticket.get(1));
+     *         }
+     *
+     *         // 2. Start DFS from JFK
+     *         visit("JFK");
+     *
+     *         return result;
+     *     }
+     *
+     *     private void visit(String airport) {
+     *         PriorityQueue<String> neighbors = adj.get(airport);
+     *
+     *         // 3. Greedy DFS: Always pick the lexically smallest destination first.
+     *         // Crucially, we POLL (remove) the edge so it's only used once.
+     *         while (neighbors != null && !neighbors.isEmpty()) {
+     *             String next = neighbors.poll();
+     *             visit(next);
+     *         }
+     *
+     *         // 4. Post-order: Add the airport to the front of the list
+     *         // after all its outgoing edges are consumed.
+     *         result.addFirst(airport);
+     *     }
+     * }
+     *
+     * ```
+     *
+     * ---
+     *
+     * ### 💡 Key Differences to Keep in Mind
+     *
+     * | Feature | Topological Sort (DFS) | Hierholzer's (Eulerian Path) |
+     * | --- | --- | --- |
+     * | **Graph Type** | Must be a DAG (No cycles). | Can have cycles. |
+     * | **Usage** | Orders nodes by dependency. | Uses every **edge** exactly once. |
+     * | **Mechanism** | Mark **node** as visited. | Remove/consume the **edge** after use. |
+     * | **Result** | Linear ordering of tasks. | A continuous path/circuit. |
+     *
+     * ### Why `addFirst`?
+     *
+     * In Hierholzer's algorithm, if you get stuck at a node (no more outgoing edges), it means that node must be the **end** of the itinerary (or part of the end). By adding it to the front of a linked list at the end of the recursive call, you are effectively reversing the "stuck" order to produce the correct path from start to finish.
+     *
+     *
+     */
+
+    // V0-2
+    // IDEA: Hierholzer's algorithm (gemini)
+    // We use a Map to store the adjacency list.
+    // A PriorityQueue is used for neighbors to ensure lexical order (as required by LC).
+    Map<String, PriorityQueue<String>> adj = new HashMap<>();
+    LinkedList<String> result = new LinkedList<>();
+
+    public List<String> findItinerary_0_2(List<List<String>> tickets) {
+        // 1. Build the graph
+        for (List<String> ticket : tickets) {
+            adj.computeIfAbsent(ticket.get(0), k -> new PriorityQueue<>()).add(ticket.get(1));
+        }
+
+        // 2. Start DFS from JFK
+        visit("JFK");
+
+        return result;
+    }
+
+    private void visit(String airport) {
+        PriorityQueue<String> neighbors = adj.get(airport);
+
+        // 3. Greedy DFS: Always pick the lexically smallest destination first.
+        // Crucially, we POLL (remove) the edge so it's only used once.
+        while (neighbors != null && !neighbors.isEmpty()) {
+            String next = neighbors.poll();
+            visit(next);
+        }
+
+        // 4. Post-order: Add the airport to the front of the list
+        // after all its outgoing edges are consumed.
+        result.addFirst(airport);
+    }
+
+
     // V1-1
     // https://neetcode.io/problems/reconstruct-flight-path
     // IDEA: DFS

@@ -184,7 +184,6 @@
 	- LC 133 Clone Graph
 		- gpt
 			- 133
-			- 332
 			- 269
 		- gemini
 			- 138
