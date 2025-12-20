@@ -10433,6 +10433,90 @@ public class Workspace18 {
     }
 
 
+    // LC 332
+    // 16.30 - 40 pm
+    /**
+     *  -> Reconstruct the itinerary
+     *     in `order` and return it.
+     *
+     *   - MUST begin with "JFK"
+     *
+     *   - tickets[i]
+     *      - from i -> to i
+     *
+     *   - If there are multiple valid itineraries,
+     *     you should return the itinerary that has the
+     *     `smallest lexical` order when read as a single string.
+     *
+     *    - You must use all the tickets once and only once.
+     *
+     *
+     *
+     *  -----------------
+     *
+     *   IDEA 1) TOPOLOGICAL SORT
+     *
+     *   IDEA 2) DFS ??
+     *
+     *
+     *  -----------------
+     *
+     *
+     *
+     *
+     */
+    class MyTopo1{
+        // attr
+        int size;
+        int[] degree;
+        List<Integer> q;
+        List<Integer> res;
+
+        // constructor
+        MyTopo1(int n){
+            this.size = n;
+            this.degree = new int[this.size];
+            // ???
+            Arrays.fill(this.degree, 0); // ??
+            this.q = new ArrayList<>();
+
+            // ??
+            this.res = new ArrayList<>();
+        }
+
+        // method
+        public void add(String from, String to){
+            //nthis.q.add(x);
+        }
+
+        public void sort(){
+
+        }
+
+        // ???
+        public void sortUtil(){
+
+        }
+
+        public List<Integer> getResult(){
+            return this.res;
+        }
+
+
+
+
+    }
+    public List<String> findItinerary(List<List<String>> tickets) {
+        // ???
+        // edge
+        List<String> res = new ArrayList<>();
+
+
+        return null;
+    }
+
+
+
 
 
 }
