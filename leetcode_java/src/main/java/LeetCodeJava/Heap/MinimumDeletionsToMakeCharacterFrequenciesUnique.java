@@ -51,6 +51,75 @@ public class MinimumDeletionsToMakeCharacterFrequenciesUnique {
 //
 //    }
 
+    // V0-1
+    // IDEA: PQ (fixed by gemini)
+    public int minDeletions_0_1(String s) {
+        // 1. Map character to frequency
+        int[] counts = new int[26];
+        for (char c : s.toCharArray()) {
+            counts[c - 'a']++;
+        }
+
+        // 2. Max-Heap (stores frequencies in descending order)
+        PriorityQueue<Integer> pq = new PriorityQueue<>(Collections.reverseOrder());
+        for (int f : counts) {
+            if (f > 0)
+                pq.add(f);
+        }
+
+        int opCnt = 0;
+        while (pq.size() > 1) {
+            int top = pq.poll();
+
+            // If the top frequency is equal to the next one, we have a duplicate
+            if (top == pq.peek()) {
+                opCnt++;
+                // Decrement the frequency and put it back if it's still > 0
+                if (top - 1 > 0) {
+                    pq.add(top - 1);
+                }
+            }
+        }
+
+        return opCnt;
+    }
+
+    // V0-2
+    // IDEA: PQ (gpt)
+    public int minDeletions_0_2(String s) {
+
+        int[] freq = new int[26];
+        for (char c : s.toCharArray()) {
+            freq[c - 'a']++;
+        }
+
+        // Max heap of frequencies
+        PriorityQueue<Integer> pq = new PriorityQueue<>(Collections.reverseOrder());
+
+        for (int f : freq) {
+            if (f > 0)
+                pq.add(f);
+        }
+
+        int deletions = 0;
+
+        while (pq.size() > 1) {
+            int top = pq.poll();
+            int next = pq.peek();
+
+            if (top == next) {
+                // Decrement top to make it unique
+                top--;
+                deletions++;
+                if (top > 0)
+                    pq.add(top);
+            }
+        }
+
+        return deletions;
+    }
+
+    
     // V1-1
     // IDEA: GREEDY
     // https://leetcode.com/problems/minimum-deletions-to-make-character-frequencies-unique/solutions/4033214/9932greedyheapbeginner-friendlyfull-expl-gdkl/
