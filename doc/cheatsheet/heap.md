@@ -35,10 +35,12 @@
 - **Examples**: LC 215, 703, 1492 - Kth Largest Element, Kth Largest in Stream, Kth Factor
 - **Pattern**: Use min/max heap of size k, maintain heap property
 
-#### **Pattern 2: Top K Problems** 
-- **Description**: Find top k elements with highest/lowest frequency or value
-- **Examples**: LC 347, 692, 973 - Top K Frequent Elements, Top K Words, K Closest Points
-- **Pattern**: Count frequency, use heap to maintain top k results
+#### **Pattern 2: Top K Problems**
+- **Description**: Find top k elements with highest/lowest frequency or value, or make frequencies unique
+- **Examples**:
+  - Top K: LC 347, 692, 973 - Top K Frequent Elements, Top K Words, K Closest Points
+  - Frequency Uniqueness: LC 1647, 1481 - Make Frequencies Unique, Least Unique After K Removals
+- **Pattern**: Count frequency, use heap to maintain top k results or ensure unique frequencies
 
 #### **Pattern 3: Merge Problems**
 - **Description**: Merge multiple sorted arrays/lists efficiently
@@ -75,6 +77,7 @@
 | **Merge K Sources** | Merge sorted arrays/lists | O(N log k) | Multiple sorted inputs |
 | **Two Heap System** | Maintain median/balance | O(log N) | Data stream with median |
 | **Heap + HashSet** | Duplicate handling | O(log N) | Need uniqueness constraint |
+| **Frequency Uniqueness** | Make frequencies unique | O(N + K log K) | Ensure all frequencies distinct |
 
 ### Universal Heap Template
 ```python
@@ -246,16 +249,112 @@ class MedianFinder:
 ```python
 def solve_with_unique_heap(nums):
     import heapq
-    
+
     heap = []
     seen = set()
-    
+
     for num in nums:
         if num not in seen:
             heapq.heappush(heap, num)
             seen.add(num)
-    
+
     return heap
+```
+
+#### **6. Frequency Uniqueness Template (Greedy + Heap/HashSet)**
+```python
+def make_frequencies_unique(s):
+    """
+    Pattern: Make all character frequencies unique with minimum deletions
+    Used in: LC 1647, LC 1481
+    """
+    from collections import Counter
+    import heapq
+
+    # Approach 1: Max Heap (process high to low)
+    def heap_approach():
+        freq_count = Counter(s)
+        max_heap = [-f for f in freq_count.values()]
+        heapq.heapify(max_heap)
+
+        deletions = 0
+        while len(max_heap) > 1:
+            top = -heapq.heappop(max_heap)
+            next_val = -max_heap[0]
+
+            if top == next_val:
+                top -= 1
+                deletions += 1
+                if top > 0:
+                    heapq.heappush(max_heap, -top)
+
+        return deletions
+
+    # Approach 2: HashSet (track used frequencies)
+    def hashset_approach():
+        freq_count = Counter(s)
+        used_freq = set()
+        deletions = 0
+
+        for freq in freq_count.values():
+            # Decrement until finding unused frequency
+            while freq > 0 and freq in used_freq:
+                freq -= 1
+                deletions += 1
+            used_freq.add(freq)
+
+        return deletions
+
+    # Approach 3: Sorting (ensure strictly decreasing)
+    def sort_approach():
+        freq = [0] * 26
+        for c in s:
+            freq[ord(c) - ord('a')] += 1
+
+        freq.sort(reverse=True)
+        deletions = 0
+
+        for i in range(len(freq) - 1):
+            if freq[i] == 0:
+                break
+            if freq[i] <= freq[i + 1]:
+                prev = freq[i + 1]
+                freq[i + 1] = max(0, freq[i] - 1)
+                deletions += prev - freq[i + 1]
+
+        return deletions
+
+    # Best approach depends on constraints
+    return hashset_approach()  # Generally most intuitive
+```
+
+```java
+// Java Version - Frequency Uniqueness
+public int makeFrequenciesUnique(String s) {
+    // Count frequencies
+    int[] freq = new int[26];
+    for (char c : s.toCharArray()) {
+        freq[c - 'a']++;
+    }
+
+    // Max heap approach
+    PriorityQueue<Integer> pq = new PriorityQueue<>(Collections.reverseOrder());
+    for (int f : freq) {
+        if (f > 0) pq.add(f);
+    }
+
+    int deletions = 0;
+    while (pq.size() > 1) {
+        int top = pq.poll();
+        if (top == pq.peek()) {
+            top--;
+            deletions++;
+            if (top > 0) pq.add(top);
+        }
+    }
+
+    return deletions;
+}
 ```
 
 ### Python heapq API Reference
@@ -1173,6 +1272,144 @@ public int kthSmallest_0_1(int[][] matrix, int k) {
 }
 ```
 
+### 2-12) Minimum Deletions to Make Character Frequencies Unique
+
+```java
+// java
+// LC 1647
+// Reference: leetcode_java/src/main/java/LeetCodeJava/Heap/MinimumDeletionsToMakeCharacterFrequenciesUnique.java
+
+/**
+ * Problem: Return minimum number of character deletions to make all frequencies unique
+ *
+ * Example 1:
+ * Input: s = "aab"
+ * Output: 0 (already unique: 'a':2, 'b':1)
+ *
+ * Example 2:
+ * Input: s = "aaabbbcc"
+ * Output: 2 (can delete 2 'b's to get 'a':3, 'b':1, 'c':2)
+ */
+
+// APPROACH 1: GREEDY + MAX HEAP
+// IDEA: Process frequencies from high to low, decrement duplicates
+public int minDeletions_heap(String s) {
+    // Step 1: Count character frequencies
+    int[] freq = new int[26];
+    for (char c : s.toCharArray()) {
+        freq[c - 'a']++;
+    }
+
+    // Step 2: Build max heap with all frequencies
+    PriorityQueue<Integer> pq = new PriorityQueue<>(Collections.reverseOrder());
+    for (int f : freq) {
+        if (f > 0) {
+            pq.add(f);
+        }
+    }
+
+    // Step 3: Process frequencies, decrement duplicates
+    int deletions = 0;
+    while (pq.size() > 1) {
+        int top = pq.poll();
+        int next = pq.peek();
+
+        // If duplicate frequency found
+        if (top == next) {
+            top--;      // Decrement to make unique
+            deletions++;
+            if (top > 0) {
+                pq.add(top);  // Re-add if still positive
+            }
+        }
+    }
+
+    return deletions;
+}
+
+// APPROACH 2: GREEDY + SORTING
+// IDEA: Sort frequencies, ensure strictly decreasing sequence
+public int minDeletions_sort(String s) {
+    // Step 1: Count frequencies
+    int[] freq = new int[26];
+    for (char c : s.toCharArray()) {
+        freq[c - 'a']++;
+    }
+
+    // Step 2: Sort frequencies in ascending order
+    Arrays.sort(freq);
+
+    int deletions = 0;
+
+    // Step 3: Process from high to low (right to left)
+    for (int i = 24; i >= 0; i--) {
+        if (freq[i] == 0) {
+            break;  // No more characters
+        }
+
+        // If current freq >= next freq, adjust it
+        if (freq[i] >= freq[i + 1]) {
+            int prev = freq[i];
+            freq[i] = Math.max(0, freq[i + 1] - 1);  // Make it strictly less
+            deletions += prev - freq[i];
+        }
+    }
+
+    return deletions;
+}
+
+// APPROACH 3: GREEDY + HASHSET
+// IDEA: Track used frequencies, decrement until unique
+public int minDeletions_hashset(String s) {
+    // Step 1: Count frequencies
+    HashMap<Character, Integer> cnt = new HashMap<>();
+    for (char c : s.toCharArray()) {
+        cnt.put(c, cnt.getOrDefault(c, 0) + 1);
+    }
+
+    // Step 2: Track used frequencies and process
+    HashSet<Integer> usedFreq = new HashSet<>();
+    int deletions = 0;
+
+    for (int freq : cnt.values()) {
+        // Decrement until we find an unused frequency
+        while (freq > 0 && usedFreq.contains(freq)) {
+            freq--;
+            deletions++;
+        }
+        usedFreq.add(freq);  // Mark this frequency as used
+    }
+
+    return deletions;
+}
+
+/**
+ * KEY INSIGHTS:
+ *
+ * 1. Max Heap Approach:
+ *    - Process frequencies from largest to smallest
+ *    - When duplicate found, decrement and re-insert
+ *    - Time: O(N + K log K) where K = unique chars
+ *    - Space: O(K)
+ *
+ * 2. Sorting Approach:
+ *    - Sort frequencies, then ensure strictly decreasing
+ *    - Adjust each freq to be max(0, next_freq - 1)
+ *    - Time: O(N + 26 log 26) = O(N)
+ *    - Space: O(1) - only 26 letters
+ *
+ * 3. HashSet Approach:
+ *    - Track all used frequencies
+ *    - Decrement duplicates until finding unused frequency
+ *    - Time: O(N + K * max_freq) worst case
+ *    - Space: O(K)
+ *
+ * Best Choice: Sorting approach for best time complexity O(N)
+ *
+ * Pattern: Frequency Uniqueness with Greedy + Heap/Sort
+ */
+```
+
 ## Problems by Pattern
 
 ### Pattern-Based Problem Classification
@@ -1198,6 +1435,7 @@ public int kthSmallest_0_1(int[][] matrix, int k) {
 | Least Number of Unique Integers after K Removals | 1481 | Counter + min heap | Medium | Top K Frequency |
 | Reorganize String | 767 | Frequency + max heap | Medium | Top K Frequency |
 | Task Scheduler | 621 | Frequency + max heap + queue | Medium | Top K Frequency |
+| Minimum Deletions to Make Character Frequencies Unique | 1647 | Greedy + heap/sorting + HashSet | Medium | Heap + HashSet |
 
 #### **Pattern 3: Merge Problems**
 | Problem | LC # | Key Technique | Difficulty | Template |
@@ -1371,6 +1609,7 @@ conditions = [
 | **Merge K Sources** | Multi-source merge | `heappush(heap, (val, src_idx, elem_idx))` |
 | **Two Heap System** | Balanced structure | `small_heap (max) + large_heap (min)` |
 | **Heap + HashSet** | Deduplication | `seen = set(); heappush if not in seen` |
+| **Frequency Uniqueness** | Greedy + heap/hashset | `while freq in used: freq -= 1; deletions += 1` |
 
 ### Common Patterns & Tricks
 
