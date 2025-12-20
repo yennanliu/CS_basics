@@ -5807,7 +5807,59 @@ public class Workspace18 {
      *
      *
      */
+    // PQ
     public int minDeletions(String s) {
+        // edge
+
+        // init array as freq storage
+        int[] count = new int[26]; // ??
+        for(char ch: s.toCharArray()){
+            // ????
+            count[ch - 'a'] += 1; // ????
+        }
+        System.out.println(">>> count = " + count);
+
+        // NOTE !!! BIG PQ
+        // [freq_1, freq_2, ...]
+        PriorityQueue<Integer> pq = new PriorityQueue<>(new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                int diff = o2 - o1;
+                return diff;
+            }
+        });
+
+        // add ALL to PQ ???
+        for(int x: count){
+            if(x > 0){
+                pq.add(x); // ?????
+            }
+        }
+
+        int opCnt = 0;
+
+        // ???
+        while(pq.size() > 1){
+            int cur = pq.poll();
+            // NOTE !!!
+            if(cur == pq.peek()){
+                // ???
+                opCnt += 1;
+                cur -= 1;
+                // ??
+                if(cur > 0){
+                    pq.add(cur);
+                }
+            }
+        }
+
+
+        return opCnt;
+    }
+
+
+
+    public int minDeletions_99(String s) {
         // edge
 
         // ????

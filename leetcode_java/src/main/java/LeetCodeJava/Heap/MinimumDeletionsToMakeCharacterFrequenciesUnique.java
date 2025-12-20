@@ -47,9 +47,77 @@ import java.util.*;
 public class MinimumDeletionsToMakeCharacterFrequenciesUnique {
 
     // V0
-//    public int minDeletions(String s) {
-//
-//    }
+    // IDEA: PQ
+    /**
+     * Logic:
+     * 1. Count frequencies of all characters.
+     * 2. Put frequencies into a Max-Heap (PriorityQueue).
+     * 3. While the top two frequencies are the same, decrement one and put it back.
+     * * Time Complexity: O(N + K^2 log K) where N is string length and K is alphabet size (26).
+     * Space Complexity: O(K) for the frequency array and PQ.
+     */
+    public int minDeletions(String s) {
+        /** NOTE !!!
+         *
+         *  use array as `freq` storage
+         */
+        int[] freq = new int[26];
+        for (char ch : s.toCharArray()) {
+            freq[ch - 'a']++;
+        }
+
+        /** NOTE !!!
+         *
+         *  Max-Heap
+         */
+        // Use a Max-Heap (Collections.reverseOrder())
+        PriorityQueue<Integer> pq = new PriorityQueue<>(Collections.reverseOrder());
+        for (int f : freq) {
+            if (f > 0) {
+                pq.add(f);
+            }
+        }
+
+        int deletions = 0;
+
+        /** NOTE !!!
+         *
+         *  pq.size() > 1,
+         *
+         *  since we need to
+         *   1. poll
+         *   2. peek compare with the poll val
+         *
+         *   so the PQ needs to have AT LEAST 2 elements
+         *   (e.g. pq.size () > 1 or pq.size() >= 2)
+         */
+        while (pq.size() > 1) {
+            int top = pq.poll();
+
+            /** NOTE !!!  CORE LOGIC
+             *
+             *   if prev count == cur count,
+             *   we do  `top -= 1`
+             */
+            // If the next frequency is the same as the current top
+            if (top == pq.peek()) {
+                deletions++;
+                top--; // Delete one character
+
+                /** NOTE !!!
+                 *
+                 *  if still a `valid freq` (freq > 0),
+                 *  we add it back to PQ
+                 */
+                // If it's still a valid frequency (> 0), put it back in to be re-evaluated
+                if (top > 0) {
+                    pq.add(top);
+                }
+            }
+        }
+
+        return deletions;
+    }
 
     // V0-1
     // IDEA: PQ (fixed by gemini)
@@ -119,7 +187,7 @@ public class MinimumDeletionsToMakeCharacterFrequenciesUnique {
         return deletions;
     }
 
-    
+
     // V1-1
     // IDEA: GREEDY
     // https://leetcode.com/problems/minimum-deletions-to-make-character-frequencies-unique/solutions/4033214/9932greedyheapbeginner-friendlyfull-expl-gdkl/
