@@ -5732,10 +5732,134 @@ public class Workspace18 {
      *
      *
      */
+    // 17.05 - 15 pm
+    /**
+     *
+     * -> Given a string s,
+     *   return the ` minimum number` of characters
+     *   you need to `delete` to make s good.
+     *
+     *
+     *   - A string s is called good if there are
+     *     NO two different characters in
+     *     s that have the same frequency.
+     *
+     *
+     * ---------------
+     *
+     *  IDEA 1)  HASHMAP + SLIDE WINDOW ??
+     *
+     *  IDEA 2)  GREEDY ??
+     *
+     *  IDEA 3)  PQ ???
+     *
+     *     -> freq cnt, sort in `increasing order`
+     *        e.g.  `SMALL PQ`
+     *
+     *     -> while prev == cur,
+     *        pop prev, prev -=1, add back to PQ
+     *
+     *     -> repeat ...
+     *
+     *
+     * ---------------
+     *
+     *  ex 2)
+     *
+     *   Input: s = "aaabbbcc"
+     *   Output: 2
+     *
+     *   ->
+     *
+     *    map: {a: 3, b: 3, c: 2}
+     *    cnt = 0;
+     *
+     *    PQ = [c],  map: {a: 3, b: 3, c: 2}, cnt = 0
+     *    PQ = [c, b],  map: {a: 3, b: 3, c: 2}, cnt = 0
+     *
+     *    PQ = [c]  b  map: {a: 3, b: 2, c: 2}, cnt = 1
+     *    PQ = [c]  b   map: {a: 3, b: 1, c: 2}, cnt = 2
+     *    PQ = [c, b]     map: {a: 3, b: 1, c: 2},  cnt = 2
+     *    PQ = [c, b, a]     map: {a: 3, b: 1, c: 2},  cnt = 2
+     *
+     *
+     *  ex 3)
+     *
+     *  Input: s = "ceabaacb"
+     *  Output: 2
+     *
+     *  ->
+     *
+     *   map: {a: 3, b: 2, c: 2, e: 1}
+     *
+     *   PQ = [e, c], map: {a: 3, b: 2, c: 2, e: 1}, cnt = 0
+     *   PQ = [e] c, map: {a: 3, b: 2, c: 1, e: 1}, cnt = 1
+     *   PQ = [e] , map: {a: 3, b: 2, e: 1}, cnt = 2
+     *   PQ = [e, b] , map: {a: 3, b: 2, e: 1}, cnt = 2
+     *   PQ = [e, b, a] , map: {a: 3, b: 2, e: 1}, cnt = 2
+     *
+     *
+     *   abce
+     *     11
+     *
+     *
+     *
+     *
+     *
+     */
     public int minDeletions(String s) {
+        // edge
 
-        return 0;
+        // ????
+        TreeMap<String, Integer> map = new TreeMap<>();
+        for(char ch: s.toCharArray()){
+            map.put(String.valueOf(ch), map.getOrDefault(String.valueOf(ch), 0) + 1);
+        }
+        System.out.println(">>> map = " + map);
+
+        int opCnt = 0;
+
+        // PQ: SMALL PQ
+        PriorityQueue<String> pq = new PriorityQueue<>(new Comparator<String>() {
+            @Override
+            public int compare(String o1, String o2) {
+                // NOTE !!!
+                int diff = map.get(o1) - map.get(o2);
+                return diff;
+            }
+        });
+
+        // ?? add all key to PQ
+        for(String k: map.keySet()){
+            pq.add(k);
+        }
+
+        //PriorityQueue<String> pq2 = new PriorityQueue<>(); // ??
+        Queue<String> q = new LinkedList<>();
+
+        while(!pq.isEmpty()){
+            String cur = q.poll();
+
+            if(q.isEmpty()){
+                q.add(cur);
+            }
+
+            // ??
+            while(!pq.isEmpty() && map.get(pq.peek()) == map.get(cur)){
+                opCnt += 1;
+                map.put(cur, map.get(cur) - 1);
+            }
+
+            // NOTE !!! check if cur
+            q.add(cur);
+        }
+
+
+        return opCnt;
     }
+
+
+
 
 
     // LC 706
