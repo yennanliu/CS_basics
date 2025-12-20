@@ -52,7 +52,7 @@ public class AsFarFromLandAsPossible {
 //    }
 
     // V0-1
-    // IDEA: BFS (fixed by gemini)
+    // IDEA: Multi-source BFS (fixed by gemini)
     /**
      * Logic:
      * 1. Add all land cells (1) to the queue as starting points.
@@ -63,6 +63,11 @@ public class AsFarFromLandAsPossible {
         int n = grid.length;
         Queue<int[]> q = new LinkedList<>();
 
+        /** NOTE !!!
+         *
+         *   we add LAND to queue (cell val = 1),
+         *   instead of adding water
+         */
         // 1. Add all land cells to the queue
         for (int r = 0; r < n; r++) {
             for (int c = 0; c < n; c++) {
@@ -72,6 +77,10 @@ public class AsFarFromLandAsPossible {
             }
         }
 
+        /** NOTE !!!
+         *
+         *   Edge Case
+         */
         // Edge Case: If no water or no land, return -1
         if (q.isEmpty() || q.size() == n * n) {
             return -1;
@@ -94,6 +103,14 @@ public class AsFarFromLandAsPossible {
                     int nr = r + m[0];
                     int nc = c + m[1];
 
+                    /** NOTE !!!
+                     *
+                     *  1. ONLY enqueue if visit `water` cell (grid[nr][nc] == 0)
+                     *
+                     *  2. mark visited cell as 1 (land, visited)
+                     *     -> so we DON'T revisit the visited cell
+                     *
+                     */
                     // If neighbor is water, mark as visited (turn to land) and enqueue
                     if (nr >= 0 && nr < n && nc >= 0 && nc < n && grid[nr][nc] == 0) {
                         grid[nr][nc] = 1; // Mark as visited
@@ -107,7 +124,7 @@ public class AsFarFromLandAsPossible {
     }
 
     // V0-2
-    // IDEA: BFS (fixed by gpt)
+    // IDEA: Multi-source BFS (fixed by gpt)
     public int maxDistance_0_2(int[][] grid) {
         int n = grid.length;
         int m = grid[0].length;
@@ -157,7 +174,7 @@ public class AsFarFromLandAsPossible {
 
         return dist;
     }
-    
+
 
     // V1
     // IDEA: BFS
