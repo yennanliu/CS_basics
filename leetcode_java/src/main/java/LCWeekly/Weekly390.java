@@ -2,6 +2,7 @@ package LCWeekly;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * LeetCode weekly contest 390
@@ -182,10 +183,78 @@ public class Weekly390 {
 
 
 
-
     // Q3
     // LC 3092
     // https://leetcode.com/problems/most-frequent-ids/description/
+    // https://leetcode.cn/problems/most-frequent-ids/
+    // 14.37 - 47 pm
+    /**
+     *  -> Return an array ans of length n, where ans[i]
+     *     represents the `count` of the `most frequent ID` in the
+     *     collection after the ith step.
+     *
+     *
+     *    NOTE: If the collection is empty at any step, ans[i] should be 0 for that step.
+     *
+     *
+     *  -----------
+     *
+     *
+     *  -----------
+     *
+     *   ex 1)
+     *
+     *   Input: nums = [2,3,2,1], freq = [3,2,-3,1]
+     *   Output: [3,3,2,2]
+     *
+     *   ->
+     *    idx = 0,  [2,2,2]
+     *    idx = 1, [2,2,2,3,3]
+     *    idx = 2, [3,3]
+     *    idx = 3, [3,3,1]
+     *
+     *
+     */
+    public long[] mostFrequentIDs(int[] nums, int[] freq) {
+        // edge
+
+        long[] res = new long[nums.length];
+
+        // { val : cnt }
+        Map<Integer, Integer> map = new HashMap<>();
+        //TreeMap<Integer, Integer> map = new TreeMap<>();
+        //map.
+
+        for(int i = 0; i < nums.length; i++){
+            if(freq[i] > 0){
+                map.put(nums[i], freq[i]);
+            }else{
+                if(map.containsKey(nums[i])){
+                    // ??
+                    map.put(nums[i],  map.get(nums[i]) - freq[i]);
+                }
+            }
+            // TODO: optimize below, via PQ ??? or maintain a global max cnt
+            // get max cnt of cur values
+            res[i] = getMaxCnt(map);
+        }
+
+        return res;
+    }
+
+    private int getMaxCnt(Map<Integer, Integer> map){
+        // edge
+        if(map.isEmpty()){
+            return -1; // ???
+        }
+        int res = 0;
+        for(int x: map.values()){
+            res = Math.max(x, res);
+        }
+        return res;
+    }
+
+
 
     // Q4
     // LC 3093
