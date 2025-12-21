@@ -282,6 +282,61 @@ public class Weekly390 {
      *
      *
      */
+    // IDEA 2) TRIE ???
+    class MyTrieNode99{
+        // attr
+
+        // constructor
+
+        // method
+        public void add(String word){
+
+        }
+
+        public boolean isStartWith(String prefix){
+            return false;
+        }
+
+
+
+    }
+    class MyTrie99{
+
+    }
+    public int[] stringIndices(String[] wordsContainer, String[] wordsQuery) {
+        // edge
+
+        // NOTE !!! we reverse BOTH wordsContainer, wordsQuery
+        String[] wordsContainer2 = new String[wordsContainer.length];
+        String[] wordsQuery2 = new String[wordsQuery.length];
+
+        // ??
+        for(int i = 0; i < wordsContainer.length; i++){
+            StringBuilder sb1 = new StringBuilder(wordsContainer[i]);
+            StringBuilder sb2 = new StringBuilder(wordsQuery2[i]);
+
+            wordsContainer2[i] = sb1.reverse().toString();
+            wordsQuery2[i] = sb2.reverse().toString();
+        }
+
+        MyTrieNode99 node = new MyTrieNode99(); // ??
+        // build
+        for(String s: wordsContainer2){
+            // ????
+            node.add(s);
+        }
+
+        int[] res = new int[wordsQuery.length];
+        for(int i = 0; i < wordsQuery2.length; i++){
+            String query = wordsQuery2[i];
+            // ???
+//            if(node.isStartWith(query)){
+//
+//            }
+        }
+        
+        return res;
+    }
 
 
 
