@@ -259,6 +259,29 @@ public class Weekly390 {
     // Q4
     // LC 3093
     // https://leetcode.com/problems/longest-common-suffix-queries/description/
+    // 15.10 - 20 pm
+    /**
+     *
+     * Return an array of integers ans,
+     * where ans[i] is the index of the string
+     * in wordsContainer that has the longest common
+     * suffix with wordsQuery[i].
+     *
+     *
+     * ----------
+     *
+     *  IDEA 1) BRUTE FORCE ???
+     *
+     *  IDEA 2) TRIE ???
+     *
+     *
+     *
+     *
+     * ----------
+     *
+     *
+     *
+     */
 
 
 
