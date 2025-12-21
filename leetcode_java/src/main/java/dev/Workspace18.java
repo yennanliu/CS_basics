@@ -6857,7 +6857,8 @@ public class Workspace18 {
     /**
      *
      *  -> Return the number of land cells in grid for
-     *     which we cannot walk off the boundary of the grid in any number of moves.
+     *     which we cannot walk off the boundary of
+     *     the grid in any number of moves.
      *
      *
      *     -> e.g. return the land (1) NOT connected to `boundary` (0)
@@ -6870,10 +6871,93 @@ public class Workspace18 {
      *
      *   IDEA 1) DFS
      *
+     *   IDEA 2) BFS
+     *     1. start from boundary (4) (0),
+     *        visit 4 dirs, mark the visited 1 as -1.
+     *     2. loop over the remaining 1, cnt the total cnt
+     *     3. return above as ans
+     *
      *
      *
      */
+    // 6.45 - 55 am
+    // IDEA 2) 2 pass DFS
     public int numEnclaves(int[][] grid) {
+        // edge
+        if (grid == null || grid.length == 0 || grid[0].length == 0) {
+            return 0;
+        }
+
+        int l = grid.length;
+        int w = grid[0].length;
+
+        // 1st DFS pass
+        for(int x = 0; x < w; x++){
+            if(grid[0][x] == 0){
+                dfsColor(x, 0, grid, -1);
+            }
+            if(grid[l-1][x] == 0){
+                dfsColor(x, l-1, grid, -1);
+            }
+        }
+
+        for(int y = 0; y < l; y++){
+            if(grid[y][0] == 0){
+                dfsColor(0, y, grid, -1);
+            }
+            if(grid[y][w-1] == 0){
+                dfsColor(w-1, y, grid, -1);
+            }
+        }
+
+        System.out.println(">>> ==== (updated) grid ");
+        for(int y = 0; y < l; y++){
+//            for(int x = 0; x < w; x++){
+//                System.out.println(grid[y][x]);
+//            }
+            System.out.println(Arrays.toString(grid[y]));
+        }
+        System.out.println(">>> ==== (updated) grid");
+
+        // 2nd DFS pass
+        int enclaveCnt = 0;
+        for(int y = 0; y < l; y++){
+            for(int x = 0; x < w; x++){
+                // note !!!
+                if(grid[y][x] == 1){
+                    enclaveCnt += 1;
+                }
+            }
+        }
+
+        return enclaveCnt;
+    }
+
+    private void dfsColor(int x, int y, int[][] grid, int newColor){
+        // edge
+        int l = grid.length;
+        int w = grid[0].length;
+        int[][] moves = new int[][] { {0,1}, {0,-1}, {1,0}, {-1,0} };
+
+        for(int[] m: moves){
+            int x_ = x + m[1];
+            int y_ = y + m[0];
+            if(x_ >= 0 && x_ < w && y_ >= 0 && y_ < l){
+                if(grid[y_][x_] == 1){
+                    // NOTE !!! color now
+                    grid[y_][x_] = newColor;
+                    dfsColor(x_, y_, grid, newColor);
+                }
+            }
+        }
+
+    }
+
+
+
+
+
+    public int numEnclaves_99(int[][] grid) {
         // edge
         if(grid == null || grid.length == 0 || grid[0].length == 0){
             return 0;
@@ -10690,6 +10774,15 @@ public class Workspace18 {
 
         return null;
     }
+
+
+    // LC 407
+    public int trapRainWater(int[][] heightMap) {
+
+        return 0;
+    }
+
+
 
 
 

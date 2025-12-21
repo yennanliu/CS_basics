@@ -181,6 +181,130 @@ public class NumberOfEnclaves {
         }
     }
 
+    // V0-3
+    // IDEA: DFS (fixed by gemini)
+    public int numEnclaves_0_3(int[][] grid) {
+        if (grid == null || grid.length == 0)
+            return 0;
+
+        int rows = grid.length;
+        int cols = grid[0].length;
+
+        // 1. Traverse boundaries. If we find land (1),
+        // use DFS to mark it and all connected land as "visited" (0).
+
+        // Left and Right boundaries
+        for (int i = 0; i < rows; i++) {
+            if (grid[i][0] == 1)
+                dfs(i, 0, grid);
+            if (grid[i][cols - 1] == 1)
+                dfs(i, cols - 1, grid);
+        }
+
+        // Top and Bottom boundaries
+        for (int j = 0; j < cols; j++) {
+            if (grid[0][j] == 1)
+                dfs(0, j, grid);
+            if (grid[rows - 1][j] == 1)
+                dfs(rows - 1, j, grid);
+        }
+
+        // 2. Count the remaining land cells (1s).
+        // These are the enclaves because they couldn't reach the boundary.
+        int enclaveCnt = 0;
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                if (grid[i][j] == 1) {
+                    enclaveCnt++;
+                }
+            }
+        }
+
+        return enclaveCnt;
+    }
+
+    private void dfs(int r, int c, int[][] grid) {
+        // Base case: out of bounds or not land
+        if (r < 0 || r >= grid.length || c < 0 || c >= grid[0].length || grid[r][c] != 1) {
+            return;
+        }
+
+        // CRITICAL FIX: Mark the current cell immediately so it's not processed again
+        grid[r][c] = 0;
+
+        // Visit all 4 neighbors
+        dfs(r + 1, c, grid);
+        dfs(r - 1, c, grid);
+        dfs(r, c + 1, grid);
+        dfs(r, c - 1, grid);
+    }
+
+    // V0-4
+    // IDEA: DFS (fixed by gpt)
+    public int numEnclaves_0_4(int[][] grid) {
+
+        // edge case
+        if (grid == null || grid.length == 0 || grid[0].length == 0) {
+            return 0;
+        }
+
+        int l = grid.length;
+        int w = grid[0].length;
+
+        // 1️⃣ Flood fill all boundary-connected land (value = 1)
+        // Top & Bottom rows
+        for (int x = 0; x < w; x++) {
+            if (grid[0][x] == 1) {
+                dfsColor(x, 0, grid);
+            }
+            if (grid[l - 1][x] == 1) {
+                dfsColor(x, l - 1, grid);
+            }
+        }
+
+        // Left & Right columns
+        for (int y = 0; y < l; y++) {
+            if (grid[y][0] == 1) {
+                dfsColor(0, y, grid);
+            }
+            if (grid[y][w - 1] == 1) {
+                dfsColor(w - 1, y, grid);
+            }
+        }
+
+        // 2️⃣ Count remaining land cells (enclaves)
+        int enclaveCnt = 0;
+        for (int y = 0; y < l; y++) {
+            for (int x = 0; x < w; x++) {
+                if (grid[y][x] == 1) {
+                    enclaveCnt++;
+                }
+            }
+        }
+
+        return enclaveCnt;
+    }
+
+    // DFS to remove land connected to boundary
+    private void dfsColor(int x, int y, int[][] grid) {
+
+        int l = grid.length;
+        int w = grid[0].length;
+
+        // base case
+        if (x < 0 || x >= w || y < 0 || y >= l || grid[y][x] != 1) {
+            return;
+        }
+
+        // mark as visited (remove land)
+        grid[y][x] = -1;
+
+        // explore neighbors
+        dfsColor(x + 1, y, grid);
+        dfsColor(x - 1, y, grid);
+        dfsColor(x, y + 1, grid);
+        dfsColor(x, y - 1, grid);
+    }
 
     // V1
     // IDEA: DFS
@@ -294,7 +418,6 @@ public class NumberOfEnclaves {
         }
     }
 
-
-
+    
 
 }
