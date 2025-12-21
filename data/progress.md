@@ -1,6 +1,6 @@
 # Progress
 
-# 2025-12-21
+# 2025-12-22
 
 - LC weekly 390
 - weekly video
@@ -197,7 +197,6 @@
 			- 127
 	- LC 417 Pacific Atlantic Water Flow
 		- gpt
-			- 407
 			- 329
 			- 909
 		- gemini
