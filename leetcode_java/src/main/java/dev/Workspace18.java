@@ -9788,7 +9788,7 @@ public class Workspace18 {
      *
      *
      */
-    public int findJudge(int n, int[][] trust) {
+    public int findJudge_99(int n, int[][] trust) {
         // edge
         Map<Integer, List<Integer>> map = new HashMap<>();
         for(int i = 0; i < n+1; i++){
@@ -10782,6 +10782,83 @@ public class Workspace18 {
         return 0;
     }
 
+
+    // LC 997
+    // 7.17 - 27 am
+    /**
+     * -> Return the label of the town judge if the town judge
+     *    exists and can be identified, or return -1 otherwise.
+     *
+     *    - trust[i] = [ai, bi]
+     *       -> ai trusts bi
+     *
+     *    - n people: 1 to n
+     *    - judge trusts NOBODY
+     *    - everyone (except judge) trusts the judge
+     *    - There is exactly one judge ONLY
+     *
+     *
+     * ------------------
+     *
+     *  IDEA 1) DFS
+     *
+     *  IDEA 2) BFS
+     *
+     *
+     * ------------------
+     *
+     *
+     */
+    // IDEA: SET + HASHMAP ???
+    public int findJudge(int n, int[][] trust) {
+        // edge
+        // NOTE !!! edge case below
+        if (n == 1) {
+            return 1;
+        }
+
+        // build map
+        // { person_a : [person_1_trust_a, person_2_trust_a .. ] }
+        Map<Integer, List<Integer>> map = new HashMap<>();
+        for(int i = 1; i <= n+1; i++){
+            map.put(i, new ArrayList<>());
+        }
+
+        Set<Integer> trustSet = new HashSet<>();
+
+        for(int[] x: trust){
+            int ai = x[0];
+            int bi = x[1];
+            map.get(bi).add(ai);
+
+            trustSet.add(ai);
+        }
+
+        System.out.println(">>> map = " + map);
+        System.out.println(">>> trustSet = " + trustSet);
+
+        // 1: could be judge, 0: CAN'T be judge
+        //Integer[] judgeCandidates = new Integer[n+1];
+        Set<Integer> judgeCandidates = new HashSet<>();
+        for(int k: map.keySet()){
+            if(map.get(k).isEmpty()){
+                //judgeCandidates[k] = 1; // ??
+                judgeCandidates.add(k); // ???
+            }
+        }
+
+        int judgeCnt = 0;
+        for(int x: judgeCandidates){
+            if(!trustSet.contains(x)){
+                //judgeCnt += 1;
+                judgeCandidates.remove(x); // ??
+            }
+        }
+
+       /// Object o = judgeCandidates.toArray()[0];//
+
+        return judgeCandidates.size() == 1 ? 1: -1;
+    }
 
 
 
