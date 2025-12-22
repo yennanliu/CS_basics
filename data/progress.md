@@ -1,6 +1,6 @@
 # Progress
 
-# 2025-12-22
+# 2025-12-23
 
 - LC weekly 390
 - weekly video
@@ -202,6 +202,11 @@
 		- gemini
 			- 827
 			- 980
+	- LC 130 Surrounded Regions
+		- gpt
+			- 329
+		- gemini
+			- 864
 	- others:
 		- Path Signatures
 			- 694,711,652,508
