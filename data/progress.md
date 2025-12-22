@@ -207,6 +207,9 @@
 			- 329
 		- gemini
 			- 864
+	- LC 207 Course Schedule
+		- gpt
+		- gemini
 	- others:
 		- Path Signatures
 			- 694,711,652,508
