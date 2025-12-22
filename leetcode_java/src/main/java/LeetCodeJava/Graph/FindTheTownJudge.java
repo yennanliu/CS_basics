@@ -50,6 +50,42 @@ import java.util.Arrays;
 public class FindTheTownJudge {
 
     // V0
+    // IDEA: ARRAY OP (fixed by gemini)
+    /**
+     * Logic:
+     * - A judge gains 1 point for every person who trusts them.
+     * - A judge loses 1 point for every person they trust.
+     * - The judge must have exactly n - 1 points.
+     */
+    public int findJudge(int n, int[][] trust) {
+        // If there is only one person and no trust relationship, they are the judge
+        if (n == 1 && trust.length == 0)
+            return 1;
+
+        // Array to store net trust score for each person (1 to n)
+        int[] netTrust = new int[n + 1];
+
+        for (int[] relation : trust) {
+            int a = relation[0]; // Truster
+            int b = relation[1]; // Trustee
+
+            // a trusts b, so a cannot be judge
+            netTrust[a]--;
+            // b is trusted by a, b is a candidate
+            netTrust[b]++;
+        }
+
+        for (int i = 1; i <= n; i++) {
+            // The judge is trusted by everyone (n-1) and trusts no one (0)
+            if (netTrust[i] == n - 1) {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
+    // V0-0-1
     // IDEA: 2 ARRAY (fixed by gpt)
     /** NOTE: how do we handle `exactly ONLY 1 judge` in below code ?
      *
@@ -100,7 +136,7 @@ public class FindTheTownJudge {
      * Since the logic proves that **at most one** person can possibly satisfy the Net Degree of $N-1$, the moment the `if (degree[i] == n - 1)` condition is met, we know we have found the unique Judge, and we can immediately return their ID. If the loop completes without finding anyone, we return $-1$.
      *
      */
-    public int findJudge(int n, int[][] trust) {
+    public int findJudge_0_0_1(int n, int[][] trust) {
         // edge
         // NOTE !!! edge case below
         if (n == 1) {
@@ -138,14 +174,14 @@ public class FindTheTownJudge {
         return -1;
     }
 
-    // V0-0-1
+    // V0-0-2
     // IDEA: HA2 ARRAY (fixed by gemini)
     /**
      * Finds the Town Judge by tracking the net degree of trust for each person.
      * * Time Complexity: O(E + N), where E is the number of trust relationships.
      * Space Complexity: O(N) for the degree array.
      */
-    public int findJudge_0_0_1(int n, int[][] trust) {
+    public int findJudge_0_0_2(int n, int[][] trust) {
 
         // Edge case: If N=1 and no trust relationships, person 1 is trivially the Judge.
         if (n == 1 && trust.length == 0) {
