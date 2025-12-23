@@ -348,6 +348,7 @@
 1838 | [Frequency of the Most Frequent Element](https://leetcode.com/problems/frequency-of-the-most-frequent-element/description/) |  [Java](./leetcode_java/src/main/java/LeetCodeJava/SlideWindow/FrequencyOfTheMostFrequentElement.java)| _O(n^2)_ | _O(1)_  | Medium  | slide window, binary search| AGAIN******** (1)(good)
 2555 | [Maximize Win From Two Segments](https://leetcode.com/problems/maximize-win-from-two-segments) |  [Java](./leetcode_java/src/main/java/LeetCodeJava/SlideWindow/MaximizeWinFromTwoSegments.java)| _O(n^2)_ | _O(1)_  | Medium  | slide window, dp, prefix sum, weekly 97| AGAIN (not start)
 2962 | [Count Subarrays Where Max Element Appears at Least K Times](https://leetcode.com/problems/count-subarrays-where-max-element-appears-at-least-k-times) |  [Java](./leetcode_java/src/main/java/LeetCodeJava/SlideWindow/CountSubarraysWhereMaxElementAppearsAtLeastKTimes.java)| _O(n^2)_ | _O(1)_  | Medium  | slide window, good trick, weekly 375| AGAIN************ (3)
+3090 | [Maximum Length Substring With Two Occurrences](https://leetcode.com/problems/maximum-length-substring-with-two-occurrences) |  [Java](./leetcode_java/src/main/java/LeetCodeJava/SlideWindow/MaximumLengthSubstringWithTwoOccurrences.java)| _O(n^2)_ | _O(1)_  | Easy  | slide window, weekly 390| AGAIN (1)
 
 
 
