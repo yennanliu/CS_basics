@@ -10861,6 +10861,93 @@ public class Workspace18 {
     }
 
 
+    // LC 1971
+    // 8.51 - 9.00 am
+    /**
+     * ->  Given edges and the integers n, source, and destination,
+     *      -> return true
+     *         - if there is a valid path from source to destination
+     *      -> false otherwise.
+     *
+     *
+     *   - n vertices
+     *     -  0 to n - 1
+     *
+     *   - edges[i] = [ui, vi]
+     *      - bi-directional edge between vertex
+     *       ui and vertex vi
+     *
+     *   - Every vertex pair is connected by AT MOST one edge,
+     *     and no vertex has an edge to itself.
+     *
+     *
+     *   -----------------
+     *
+     *    IDEA 1) DFS
+     *
+     *
+     *
+     *   -----------------
+     *
+     *
+     */
+    public boolean validPath(int n, int[][] edges, int source, int destination) {
+        // edge
+
+        // map
+        // { node : [neighbor_1, neighbor_2, ... ] }
+        Map<Integer, List<Integer>> map = new HashMap<>();
+        for(int i = 0; i < n; i++){
+            map.put(i, new ArrayList<>());
+        }
+
+        for(int[] e: edges){
+            int ui = e[0];
+            int vi = e[1];
+
+            map.get(ui).add(vi);
+            map.get(vi).add(ui);
+        }
+
+        System.out.println(">>> map = " + map);
+
+        Set<Integer> visited = new HashSet<>();
+
+        boolean found = false;
+        // ???
+        return dfsPathVisitor(source, destination, map, visited, found);
+    }
+
+    private boolean dfsPathVisitor(int node, int destination, Map<Integer, List<Integer>> map, Set<Integer> visited, boolean found){
+        System.out.println(">>> node = " + node +
+                ", destination = " + destination +
+                ", node == destination = " + (node == destination));
+        // edge
+        if(node == destination){
+            found = true;
+            return true;
+        }
+        // ??
+//        if(visited.contains(node)){
+//            return
+//        }
+        // visit neighbors
+        for(int next: map.get(node)){
+            if(!visited.contains(next)){
+                // ???
+                // update visited
+                visited.add(next);
+//                if(!dfsPathVisitor(next, destination, map, visited)){
+//                    return false;
+//                }
+                dfsPathVisitor(next, destination, map, visited, found);
+            }
+        }
+
+        //return false;
+        return found;
+    }
+
 
 
 

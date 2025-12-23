@@ -48,9 +48,50 @@ import java.util.*;
 public class FindIfPathExistsInGraph {
 
     // V0
-//    public boolean validPath(int n, int[][] edges, int source, int destination) {
-//
-//    }
+    // IDEA: DFS (fixed by gemini)
+    public boolean validPath(int n, int[][] edges, int source, int destination) {
+        // 1. Quick check: If source is destination, a path exists.
+        if (source == destination)
+            return true;
+
+        // 2. Build Adjacency List
+        Map<Integer, List<Integer>> map = new HashMap<>();
+        for (int i = 0; i < n; i++) {
+            map.put(i, new ArrayList<>());
+        }
+        for (int[] e : edges) {
+            map.get(e[0]).add(e[1]);
+            map.get(e[1]).add(e[0]);
+        }
+
+        // 3. Use a boolean array for 'visited' for better performance than a Set
+        boolean[] visited = new boolean[n];
+
+        // Start DFS
+        return dfsPathVisitor(source, destination, map, visited);
+    }
+
+    private boolean dfsPathVisitor(int node, int destination, Map<Integer, List<Integer>> map, boolean[] visited) {
+        // Base case: destination reached
+        if (node == destination)
+            return true;
+
+        // Mark current node as visited
+        visited[node] = true;
+
+        // Visit neighbors
+        for (int next : map.get(node)) {
+            if (!visited[next]) {
+                // CRITICAL FIX: If a path is found through this neighbor, return true.
+                // If not, DO NOT return false; keep checking other neighbors.
+                if (dfsPathVisitor(next, destination, map, visited)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
 
     // V1-1
     // IDEA: BFS
