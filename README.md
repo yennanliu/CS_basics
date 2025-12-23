@@ -564,6 +564,8 @@
 2509| [Cycle Length Queries in a Tree](https://leetcode.com/problems/cycle-length-queries-in-a-tree) | [Java](./leetcode_java/src/main/java/LeetCodeJava/Tree/CycleLengthQueriesInATree.java) ||| Hard |LC weekly, tree| AGAIN (not start)
 2641| [Cousins in Binary Tree II](https://leetcode.com/problems/cousins-in-binary-tree-ii) | [Java](./leetcode_java/src/main/java/LeetCodeJava/Tree/CousinsInBinaryTree2.java) ||| medium |LC weekly, LC 993,tree| AGAIN (1)
 2707| [Extra Characters in a String](https://leetcode.com/problems/extra-characters-in-a-string/) |  [Java](./leetcode_java/src/main/java/LeetCodeJava/Trie/ExtraCharactersInAString.java) ||| Medium |dp, Trie| AGAIN (not start)
+3093| [Longest Common Suffix Queries](https://leetcode.com/problems/longest-common-suffix-queries) |  [Java](./leetcode_java/src/main/java/LeetCodeJava/Trie/LongestCommonSuffixQueries.java) ||| Hard |Trie| AGAIN (not start)
+
 
 
 ## Heap
