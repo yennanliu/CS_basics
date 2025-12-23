@@ -11015,6 +11015,19 @@ public class Workspace18 {
     }
 
 
+    // LC 3091
+    public int minOperations(int k) {
+        // edge
+
+        // ???
+        //int opCnt = 0;
+        int firstCnt = (int) Math.sqrt(k); // ???
+        int secondCnt = k % firstCnt == 0 ?  k / firstCnt  : k / firstCnt + 1;
+
+        return firstCnt + secondCnt;
+    }
+
+
 
 
 }
