@@ -1,6 +1,10 @@
 package LeetCodeJava.SlideWindow;
 
 // https://leetcode.com/problems/maximum-length-substring-with-two-occurrences/description/
+
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * 3090. Maximum Length Substring With Two Occurrences
  * Easy
@@ -40,9 +44,124 @@ package LeetCodeJava.SlideWindow;
 public class MaximumLengthSubstringWithTwoOccurrences {
 
     // V0
-//    public int maximumLengthSubstring(String s) {
-//
-//    }
+    // IDEA: SLIDE WINDOW + HASHMAP
+    public int maximumLengthSubstring(String s) {
+        // edge
+        if (s.isEmpty()) {
+            return 0;
+        }
+        if (s.length() == 1) {
+            return 1;
+        }
+
+        int maxLen = 1;
+        int l = 0;
+
+        // { val : cnt }
+        Map<String, Integer> map = new HashMap<>();
+        for (int r = 0; r < s.length(); r++) {
+
+            String rightVal = String.valueOf(s.charAt(r));
+            map.put(rightVal, map.getOrDefault(rightVal, 0) + 1);
+
+            /**
+             *  NOTE !!!
+             *
+             *   l < r condition
+             *
+             *   ---
+             *
+             *  Slide window pattern:
+             *
+             *  for(int r = 0; r < nums.len; r++){
+             *      while(condition){
+             *          // ...
+             *          l += 1;
+             *      }
+             *      // ...
+             *  }
+             */
+            while (!isValid(map) && l < r) {
+                String leftVal = String.valueOf(s.charAt(l));
+                if (map.containsKey(leftVal)) {
+                    map.put(leftVal, map.get(leftVal) - 1);
+                    if (map.get(leftVal) == 0) {
+                        map.remove(leftVal);
+                    }
+                }
+                l += 1;
+            }
+            maxLen = Math.max(maxLen, r - l + 1);
+        }
+
+        return maxLen;
+    }
+
+    private boolean isValid(Map<String, Integer> map) {
+        if (map.isEmpty()) {
+            return true;
+        }
+        for (int val : map.values()) {
+            if (val > 2) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    // V0-1
+    // IDEA: SLIDE WINDOW (gemini)
+    /**
+     * Logic:
+     * 1. Use two pointers (l, r) to represent a sliding window.
+     * 2. Use an int[26] array to track character frequencies.
+     * 3. Expand 'r'. If the frequency of s[r] exceeds 2, shrink 'l'
+     * until the frequency of s[r] is back to 2.
+     * * Time Complexity: O(N) - Each pointer moves at most N times.
+     * Space Complexity: O(1) - Fixed size frequency array.
+     */
+    public int maximumLengthSubstring_0_1(String s) {
+        int n = s.length();
+        if (n <= 2)
+            return n;
+
+        int[] counts = new int[26];
+        int maxLen = 0;
+        int l = 0;
+
+        /**
+         *  NOTE !!!
+         *
+         *  Slide window pattern:
+         *
+         *  for(int r = 0; r < nums.len; r++){
+         *      while(condition){
+         *          // ...
+         *          l += 1;
+         *      }
+         *      // ...
+         *  }
+         */
+        for (int r = 0; r < n; r++) {
+            int rightIdx = s.charAt(r) - 'a';
+            counts[rightIdx]++;
+
+            // Instead of checking the whole map, only check the character
+            // we just added. If it's > 2, the window is invalid.
+            while (counts[rightIdx] > 2) {
+                int leftIdx = s.charAt(l) - 'a';
+                counts[leftIdx]--;
+                l++;
+            }
+
+            // Calculate current window length
+            maxLen = Math.max(maxLen, r - l + 1);
+        }
+
+        return maxLen;
+    }
+
 
     // V1
     // IDEA:  Sliding Window

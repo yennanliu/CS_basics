@@ -10953,6 +10953,67 @@ public class Workspace18 {
     }
 
 
+    // LC 3090
+    // 10.30 - 40 am
+    // idea: slide window
+//    public int[] stringIndices(String[] wordsContainer, String[] wordsQuery) {
+//        // edge
+//
+//        int[] res = new int[26]; // ???
+//
+//        return null;
+//    }
+
+
+    public int maximumLengthSubstring(String s) {
+        // edge
+        if (s.isEmpty()) {
+            return 0;
+        }
+        if (s.length() == 1) {
+            return 1;
+        }
+
+        int maxLen = 1;
+        int l = 0;
+        // ??
+        // { val : cnt }
+        Map<String, Integer> map = new HashMap<>();
+        for (int r = 0; r < s.length(); r++) {
+
+            String rightVal = String.valueOf(s.charAt(r));
+            map.put(rightVal, map.getOrDefault(rightVal, 0) + 1);
+
+            // ??? l < r
+            while (!isValid(map) && l < r) {
+                String leftVal = String.valueOf(s.charAt(l));
+                if(map.containsKey(leftVal)){
+                    map.put(leftVal, map.get(leftVal) - 1);
+                    if (map.get(leftVal) == 0) {
+                        map.remove(leftVal);
+                    }
+                }
+                l += 1;
+            }
+            maxLen = Math.max(maxLen, r - l + 1);
+        }
+
+        return maxLen;
+    }
+
+    private boolean isValid(Map<String, Integer> map) {
+        if (map.isEmpty()) {
+            return true;
+        }
+        for (int val : map.values()) {
+            if (val > 2) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
 
 
 
