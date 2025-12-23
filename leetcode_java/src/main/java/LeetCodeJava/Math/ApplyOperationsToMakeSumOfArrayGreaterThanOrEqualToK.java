@@ -81,9 +81,71 @@ public class ApplyOperationsToMakeSumOfArrayGreaterThanOrEqualToK {
 
             // Calculate duplication operations: ceil(k / x) - 1
             // A trick for ceil(a/b) is (a + b - 1) / b
+            /** NOTE !!!  trick for `ceil` calculation:
+             *
+             * This is a common "trick" in programming to perform **Integer Ceiling Division**.
+             *
+             * In integer division, most languages (like Java, C++, and Python) automatically **truncate** the result (round down). However, when calculating something like "how many elements do I need to reach a sum," you often need to **round up** (the ceiling).
+             *
+             * ---
+             *
+             * ### 1. The Goal:
+             *
+             * If you have a sum  and each element is , you need  elements.
+             *
+             * * If  (Exactly 2 elements).
+             * * If  (You need **3** elements to reach 11).
+             *
+             * Standard integer division `11 / 5` gives you `2`. You need a way to get `3`.
+             *
+             * ---
+             *
+             * ### 2. How the Formula Works
+             *
+             * The formula `(a + b - 1) / b` ensures that if there is any remainder at all, it pushes the result to the next whole number.
+             *
+             * **Case A: Perfectly Divisible**
+             * Let :
+             *
+             *
+             *
+             * *The "-1" prevents it from jumping to the next number (3) when it's already a perfect fit.*
+             *
+             * **Case B: Not Perfectly Divisible**
+             * Let :
+             *
+             *
+             *
+             * *The "+ (x - 1)" adds just enough to the numerator so that any remainder  pushes the division to the next integer.*
+             *
+             * ---
+             *
+             * ### 3. Comparison with other methods
+             *
+             * While you could use floating-point math, it is generally discouraged in competitive programming due to speed and precision issues.
+             *
+             * | Method | Code | Pros/Cons |
+             * | --- | --- | --- |
+             * | **Double Cast** | `(int)Math.ceil((double)k / x)` | Slower; risk of precision errors with very large numbers. |
+             * | **Manual If** | `(k / x) + (k % x == 0 ? 0 : 1)` | Correct, but more verbose. |
+             * | **Integer Trick** | `(k + x - 1) / x` | **Fastest and most concise.** |
+             *
+             * ---
+             *
+             * ### Summary Table for `(k + x - 1) / x`
+             *
+             * |  (Target) |  (Value) | Addition  | Result |
+             * | --- | --- | --- | --- |
+             * | 12 | 4 | 15 |  |
+             * | 13 | 4 | 16 |  |
+             * | 16 | 4 | 19 |  |
+             *
+             *
+             */
             int totalElementsNeeded = (k + x - 1) / x;
             int dupOps = totalElementsNeeded - 1;
 
+            /** NOTE here */
             int totalOps = addOps + dupOps;
 
             // If the total operations start increasing, we've passed the optimal point

@@ -146,9 +146,11 @@ public class Weekly390 {
 //        if(k == 3){
 //            return 2;
 //        }
-        if(k <= 3){
-            return k - 1; // ???
-        }
+//        if(k <= 3){
+//            return k - 1; // ???
+//        }
+        if (k <= 1)
+            return 0;
 
         int minOp = Integer.MAX_VALUE; // ???
 
