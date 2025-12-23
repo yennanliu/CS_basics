@@ -591,6 +591,7 @@
 1834| [Single-Threaded CPU](https://leetcode.com/problems/single-threaded-cpu)| [Java](./leetcode_java/src/main/java/LeetCodeJava/Heap/SingleThreadedCPU.java) | | | Medium |good trick, heap, pq| AGAIN***** (1)
 2542| [Maximum Subsequence Score](https://leetcode.com/problems/maximum-subsequence-score)| [Java](./leetcode_java/src/main/java/LeetCodeJava/Heap/MaximumSubsequenceScore.java) | | | Medium |heap, pq with pair, good trick, sort| AGAIN (1)
 2593| [Find Score of an Array After Marking All Elements](https://leetcode.com/problems/find-score-of-an-array-after-marking-all-elements/description/)| [Java](./leetcode_java/src/main/java/LeetCodeJava/Heap/FindScoreOfAnArrayAfterMarkingAllElements.java) | | | Medium |good trick, heap, pq, sort, slide window, LC weekly| AGAIN***** (1)
+3092| [Most Frequent IDs](https://leetcode.com/problems/most-frequent-ids)| [Java](./leetcode_java/src/main/java/LeetCodeJava/Heap/MostFrequentIDs.java) | | | Medium |PQ, LC weekly| AGAIN (1)
 
 
 
