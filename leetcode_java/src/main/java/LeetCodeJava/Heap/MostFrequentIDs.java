@@ -120,6 +120,13 @@ public class MostFrequentIDs {
         Map<Integer, Long> map = new HashMap<>();
 
         for (int i = 0; i < nums.length; i++) {
+            /** NOTE !!! below logic:
+             *
+             *  -> we calculate the updated cnt first,
+             *     if the cnt <= 0,
+             *     remove the key from map directly.
+             *     else, put the updated val back to map
+             */
             long newCnt = map.getOrDefault(nums[i], 0L) + freq[i];
 
             if (newCnt <= 0) {
@@ -180,7 +187,7 @@ public class MostFrequentIDs {
         return res;
     }
 
-    
+
     // V1-1
     // IDEA: TREEMAP, HASHMAP, without max heap
     // https://leetcode.com/problems/most-frequent-ids/solutions/4916730/c-java-explained-using-heap-and-without-10on0/
