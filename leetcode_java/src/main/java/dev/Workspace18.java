@@ -11028,6 +11028,53 @@ public class Workspace18 {
     }
 
 
+    // LC 3092
+    public long[] mostFrequentIDs(int[] nums, int[] freq) {
+        // edge
+
+        long[] res = new long[nums.length];
+
+        // { val : cnt }
+        Map<Integer, Integer> map = new HashMap<>();
+        //TreeMap<Integer, Integer> map = new TreeMap<>();
+        //map.
+
+        for(int i = 0; i < nums.length; i++){
+            if(freq[i] > 0){
+                map.put(nums[i], freq[i]);
+            }else{
+                if(map.containsKey(nums[i])){
+                    // ??
+                    map.put(nums[i],  map.get(nums[i]) - freq[i]);
+                }
+            }
+            // TODO: optimize below, via PQ ??? or maintain a global max cnt
+            // get max cnt of cur values
+            res[i] = getMaxCnt(map);
+        }
+
+        return res;
+    }
+
+    private int getMaxCnt(Map<Integer, Integer> map){
+        // edge
+        if(map.isEmpty()){
+            return -1; // ???
+        }
+        int res = 0;
+        for(int x: map.values()){
+            res = Math.max(x, res);
+        }
+        return res;
+    }
+
+
+
+    //    public long[] mostFrequentIDs(int[] nums, int[] freq) {
+//
+//    }
+
+
 
 
 }

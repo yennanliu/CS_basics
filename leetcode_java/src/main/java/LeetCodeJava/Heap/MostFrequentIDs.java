@@ -1,6 +1,7 @@
 package LeetCodeJava.Heap;
 
 // https://leetcode.com/problems/most-frequent-ids/description/
+// https://leetcode.cn/problems/most-frequent-ids/
 
 import DataStructure.Pair;
 
@@ -64,6 +65,122 @@ public class MostFrequentIDs {
 //
 //    }
 
+
+    // V0-1
+    // IDEA: PQ (fixed by gemini)
+    /**
+     * Logic:
+     * 1. Use a HashMap to store the actual current frequency of each ID.
+     * 2. Use a PriorityQueue (Max-Heap) to store {frequency, ID}.
+     * 3. For each update, update the Map and push the new frequency into the Heap.
+     * 4. "Lazy Removal": Before taking the max from the Heap, check if the frequency
+     * at the top matches the Map. If not, poll it and move to the next.
+     * * Time Complexity: O(N log N)
+     * Space Complexity: O(N)
+     */
+    public long[] mostFrequentIDs_0_1(int[] nums, int[] freq) {
+        int n = nums.length;
+        long[] res = new long[n];
+
+        // Maps ID -> Current total frequency
+        Map<Integer, Long> idToFreq = new HashMap<>();
+
+        // Max-Heap stores: long[]{frequency, id}
+        // Sorted descending by frequency (long[0])
+        PriorityQueue<long[]> pq = new PriorityQueue<>((a, b) -> Long.compare(b[0], a[0]));
+
+        for (int i = 0; i < n; i++) {
+            int id = nums[i];
+            int fChange = freq[i];
+
+            // 1. Update the true frequency in the Map
+            long newFreq = idToFreq.getOrDefault(id, 0L) + fChange;
+            idToFreq.put(id, newFreq);
+
+            // 2. Push the updated state into the PriorityQueue
+            pq.offer(new long[] { newFreq, (long) id });
+
+            // 3. Lazy Removal: Clear the top of the heap until it's valid
+            // Valid means the frequency in PQ matches the Map
+            while (!pq.isEmpty() && pq.peek()[0] != idToFreq.get((int) pq.peek()[1])) {
+                pq.poll();
+            }
+
+            // 4. The top of the heap is now the guaranteed maximum
+            res[i] = pq.isEmpty() ? 0 : pq.peek()[0];
+        }
+
+        return res;
+    }
+
+    // V0-2
+    // IDEA: HASHMAP + DOUBLE LOOP (TLE) (GPT)
+    public long[] mostFrequentIDs_0_2(int[] nums, int[] freq) {
+        long[] res = new long[nums.length];
+        Map<Integer, Long> map = new HashMap<>();
+
+        for (int i = 0; i < nums.length; i++) {
+            long newCnt = map.getOrDefault(nums[i], 0L) + freq[i];
+
+            if (newCnt <= 0) {
+                map.remove(nums[i]);
+            } else {
+                map.put(nums[i], newCnt);
+            }
+
+            res[i] = getMaxCnt(map);
+        }
+
+        return res;
+    }
+
+    private long getMaxCnt(Map<Integer, Long> map) {
+        long max = 0;
+        for (long v : map.values()) {
+            max = Math.max(max, v);
+        }
+        return max;
+    }
+
+    // V0-3
+    // IDEA: TREEMAP (gpt)
+    public long[] mostFrequentIDs_0_3(int[] nums, int[] freq) {
+        int n = nums.length;
+        long[] res = new long[n];
+
+        Map<Integer, Long> idToFreq = new HashMap<>();
+        TreeMap<Long, Integer> freqCount = new TreeMap<>();
+
+        for (int i = 0; i < n; i++) {
+            int id = nums[i];
+            long delta = freq[i];
+
+            long oldFreq = idToFreq.getOrDefault(id, 0L);
+
+            // remove old frequency
+            if (oldFreq > 0) {
+                freqCount.put(oldFreq, freqCount.get(oldFreq) - 1);
+                if (freqCount.get(oldFreq) == 0) {
+                    freqCount.remove(oldFreq);
+                }
+            }
+
+            long newFreq = oldFreq + delta;
+
+            if (newFreq > 0) {
+                idToFreq.put(id, newFreq);
+                freqCount.put(newFreq, freqCount.getOrDefault(newFreq, 0) + 1);
+            } else {
+                idToFreq.remove(id);
+            }
+
+            res[i] = freqCount.isEmpty() ? 0 : freqCount.lastKey();
+        }
+
+        return res;
+    }
+
+    
     // V1-1
     // IDEA: TREEMAP, HASHMAP, without max heap
     // https://leetcode.com/problems/most-frequent-ids/solutions/4916730/c-java-explained-using-heap-and-without-10on0/
