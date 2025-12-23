@@ -64,6 +64,16 @@ public class FindIfPathExistsInGraph {
             map.get(e[1]).add(e[0]);
         }
 
+        /** NOTE !!
+         *
+         *  we cloud either do `mark visited` op here,
+         *  or before the recursive call in dfs help func
+         *  (see below in dfsPathVisitor)
+         *
+         *  e.g.:
+         *
+         *   visited[next] = true;
+         */
         // 3. Use a boolean array for 'visited' for better performance than a Set
         boolean[] visited = new boolean[n];
 
@@ -84,6 +94,19 @@ public class FindIfPathExistsInGraph {
             if (!visited[next]) {
                 // CRITICAL FIX: If a path is found through this neighbor, return true.
                 // If not, DO NOT return false; keep checking other neighbors.
+                /**  e.g. below is WRONG, we should keep checking other neighbors.
+                 *
+                 *    if (!dfsPathVisitor(next, destination, map, visited)) {
+                 *                     return false;
+                 *   }
+                 *
+                 */
+                /** NOTE !!
+                 *
+                 *  we cloud either do `mark visited` op here,
+                 *  or before the recursive call in dfs help func
+                 */
+                //visited[next] = true;
                 if (dfsPathVisitor(next, destination, map, visited)) {
                     return true;
                 }

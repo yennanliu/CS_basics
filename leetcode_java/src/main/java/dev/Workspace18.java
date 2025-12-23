@@ -10893,8 +10893,12 @@ public class Workspace18 {
      */
     public boolean validPath(int n, int[][] edges, int source, int destination) {
         // edge
+        // 1. Quick check: If source is destination, a path exists.
+        if (source == destination)
+            return true;
 
-        // map
+
+        // map - Build Adjacency List
         // { node : [neighbor_1, neighbor_2, ... ] }
         Map<Integer, List<Integer>> map = new HashMap<>();
         for(int i = 0; i < n; i++){

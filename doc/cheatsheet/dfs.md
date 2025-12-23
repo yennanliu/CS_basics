@@ -3317,6 +3317,7 @@ def grid_dfs(grid, x, y, visited):
 - **Wrong traversal order**: Using preorder when postorder needed
 - **Modifying while traversing**: Can break iteration
 - **Not handling null**: NullPointerException
+- **⚠️ CRITICAL: Not returning immediately when path found**: When searching for a path in DFS, must return true immediately when found (see detailed explanation below)
 
 **✅ Best Practices:**
 - **Use visited set for graphs**: Prevent cycles
@@ -3331,6 +3332,233 @@ def grid_dfs(grid, x, y, visited):
 3. **Discuss complexity**: Time and space analysis
 4. **Handle edge cases**: Empty, single element, cycles
 5. **Optimize if needed**: Memoization, pruning
+
+---
+
+### ⚠️ CRITICAL: DFS Early Return Pattern (Path Finding)
+
+**Problem**: When searching for a path in DFS, what's the difference between these two approaches?
+
+#### ❌ WRONG Approach: Not Checking Return Value
+```java
+private boolean dfsPathVisitor(int node, int destination, Map<Integer, List<Integer>> map, boolean[] visited) {
+    if (node == destination) return true;
+
+    visited[node] = true;
+
+    for (int next : map.get(node)) {
+        if (!visited[next]) {
+            // ❌ WRONG: Ignoring return value - continues searching even after path found!
+            dfsPathVisitor(next, destination, map, visited);
+        }
+    }
+
+    return false;  // Will ALWAYS return false (except for direct hits)
+}
+```
+
+#### ✅ CORRECT Approach: Early Return on Success
+```java
+private boolean dfsPathVisitor(int node, int destination, Map<Integer, List<Integer>> map, boolean[] visited) {
+    if (node == destination) return true;
+
+    visited[node] = true;
+
+    for (int next : map.get(node)) {
+        if (!visited[next]) {
+            // ✅ CORRECT: Return immediately when path found!
+            if (dfsPathVisitor(next, destination, map, visited)) {
+                return true;
+            }
+        }
+    }
+
+    return false;  // Only return false if ALL paths explored
+}
+```
+
+---
+
+### 📊 Concrete Example: Why Early Return Matters
+
+**Test Case:**
+```
+Graph: 0 -- 1 -- 2 -- 3
+       |         |
+       4 -------- 5
+
+Adjacency List:
+0: [1, 4]
+1: [0, 2]
+2: [1, 3, 5]
+3: [2]
+4: [0, 5]
+5: [2, 4]
+
+Task: Find path from 0 to 3
+```
+
+---
+
+#### Scenario 1: ❌ WRONG (Without Early Return)
+
+**Call Stack Trace:**
+```
+1. dfsPathVisitor(0, 3, ..., visited=[])
+   → visited = [0]
+   → Loop neighbors: [1, 4]
+
+   2. dfsPathVisitor(1, 3, ..., visited=[0])  // First neighbor
+      → visited = [0, 1]
+      → Loop neighbors: [0, 2]  (skip 0, already visited)
+
+      3. dfsPathVisitor(2, 3, ..., visited=[0,1])
+         → visited = [0, 1, 2]
+         → Loop neighbors: [1, 3, 5]  (skip 1)
+
+         4. dfsPathVisitor(3, 3, ..., visited=[0,1,2])
+            → ✅ Found! Returns TRUE
+
+         ← Returns TRUE to level 3
+
+      ← But level 2 IGNORES the return value!
+      ← Continues checking neighbor 5
+
+      5. dfsPathVisitor(5, 3, ..., visited=[0,1,2])
+         → visited = [0, 1, 2, 5]
+         → Loop neighbors: [2, 4]  (both visited)
+         ← Returns FALSE
+
+      ← Level 2 finishes loop, returns FALSE
+
+   ← Level 1 receives FALSE from neighbor 1
+
+   6. dfsPathVisitor(4, 3, ..., visited=[0,1,2,5])  // Second neighbor
+      → visited = [0, 1, 2, 5, 4]
+      → Loop neighbors: [0, 5]  (both visited)
+      ← Returns FALSE
+
+   ← Level 0 finishes loop, returns FALSE
+
+❌ FINAL RESULT: FALSE (Path exists but not detected!)
+```
+
+**Why it fails:**
+- Found destination at step 4 (returned TRUE)
+- But parent call at step 3 **ignored** the TRUE result
+- Continued exploring other neighbors unnecessarily
+- Eventually returned FALSE because other paths didn't reach destination
+
+---
+
+#### Scenario 2: ✅ CORRECT (With Early Return)
+
+**Call Stack Trace:**
+```
+1. dfsPathVisitor(0, 3, ..., visited=[])
+   → visited = [0]
+   → Loop neighbors: [1, 4]
+
+   2. dfsPathVisitor(1, 3, ..., visited=[0])  // First neighbor
+      → visited = [0, 1]
+      → Loop neighbors: [0, 2]  (skip 0)
+
+      3. dfsPathVisitor(2, 3, ..., visited=[0,1])
+         → visited = [0, 1, 2]
+         → Loop neighbors: [1, 3, 5]  (skip 1)
+
+         4. dfsPathVisitor(3, 3, ..., visited=[0,1,2])
+            → ✅ Found! Returns TRUE
+
+         ← Returns TRUE to level 3
+
+      ← Level 2 checks: if (TRUE) return true;  ✅
+      ← Returns TRUE immediately (skips remaining neighbors!)
+
+   ← Level 1 checks: if (TRUE) return true;  ✅
+   ← Returns TRUE immediately (skips neighbor 4!)
+
+✅ FINAL RESULT: TRUE (Correct!)
+```
+
+**Why it works:**
+- Found destination at step 4 (returned TRUE)
+- Parent call at step 3 **checked** the return value
+- Immediately returned TRUE without exploring other paths
+- Propagated TRUE all the way back to the root
+
+---
+
+### 🎯 Key Insights
+
+| Aspect | ❌ Without Early Return | ✅ With Early Return |
+|--------|------------------------|---------------------|
+| **Correctness** | ❌ Returns FALSE even when path exists | ✅ Returns TRUE when path found |
+| **Efficiency** | Explores ALL paths unnecessarily | Stops immediately upon finding path |
+| **Time Complexity** | O(V + E) always (full traversal) | O(V + E) worst case, but often much better |
+| **Use Case** | Collecting ALL paths/results | Finding ANY path (exists/not exists) |
+
+---
+
+### 📝 When to Use Each Pattern
+
+#### Pattern 1: Early Return (Path Existence Check)
+```java
+// Use when: "Does path exist?" "Can we reach?" "Is there a route?"
+if (dfs(next)) {
+    return true;  // Found one path - that's enough!
+}
+```
+**Examples:** LC 1971 (Path Exists), LC 797 (All Paths), LC 79 (Word Search)
+
+#### Pattern 2: Continue Without Return (Collecting All Results)
+```java
+// Use when: "Find ALL paths" "Count all solutions" "Collect all combinations"
+dfs(next);  // Don't return early - need to explore all branches
+```
+**Examples:** LC 257 (All Root-to-Leaf Paths), LC 113 (Path Sum II), LC 22 (Generate Parentheses)
+
+---
+
+### 🔍 Real Implementation Reference
+
+From **LC 1971 - Find if Path Exists in Graph**:
+
+```java
+private boolean dfsPathVisitor(int node, int destination,
+                                Map<Integer, List<Integer>> map,
+                                boolean[] visited) {
+    // Base case: destination reached
+    if (node == destination)
+        return true;
+
+    // Mark current node as visited
+    visited[node] = true;
+
+    // Visit neighbors
+    for (int next : map.get(node)) {
+        if (!visited[next]) {
+            // ✅ CRITICAL: Check return value and return immediately if path found
+            if (dfsPathVisitor(next, destination, map, visited)) {
+                return true;
+            }
+
+            // ❌ WRONG PATTERN (commented out):
+            // if (!dfsPathVisitor(next, destination, map, visited)) {
+            //     return false;  // This would fail for graphs with multiple paths!
+            // }
+        }
+    }
+
+    return false;  // Only return false if ALL neighbors failed
+}
+```
+
+**Key Rule:**
+- **Return TRUE eagerly** (as soon as found)
+- **Return FALSE lazily** (only after exhausting all options)
+
+---
 
 ### Related Topics
 - **BFS**: When shortest path needed
