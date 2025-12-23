@@ -62,6 +62,7 @@ public class MaximumLengthSubstringWithTwoOccurrences {
         for (int r = 0; r < s.length(); r++) {
 
             String rightVal = String.valueOf(s.charAt(r));
+            // NOTE !! handle case if rightVal key NOT existed yet
             map.put(rightVal, map.getOrDefault(rightVal, 0) + 1);
 
             /**
@@ -83,6 +84,7 @@ public class MaximumLengthSubstringWithTwoOccurrences {
              */
             while (!isValid(map) && l < r) {
                 String leftVal = String.valueOf(s.charAt(l));
+                // NOTE !! handle case if leftVal key NOT existed yet
                 if (map.containsKey(leftVal)) {
                     map.put(leftVal, map.get(leftVal) - 1);
                     if (map.get(leftVal) == 0) {
@@ -147,6 +149,14 @@ public class MaximumLengthSubstringWithTwoOccurrences {
             int rightIdx = s.charAt(r) - 'a';
             counts[rightIdx]++;
 
+            /** NOTE !!!
+             *
+             *  the critical optimized idea:
+             *
+             *   -> ONLY check the `right pointer` idx,
+             *     to see if the sub string is still valid (max cnt <= 2)
+             *
+             */
             // Instead of checking the whole map, only check the character
             // we just added. If it's > 2, the window is invalid.
             while (counts[rightIdx] > 2) {
