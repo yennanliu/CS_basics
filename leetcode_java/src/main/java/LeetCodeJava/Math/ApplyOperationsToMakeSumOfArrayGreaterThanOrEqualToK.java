@@ -56,6 +56,47 @@ public class ApplyOperationsToMakeSumOfArrayGreaterThanOrEqualToK {
 //
 //    }
 
+    // V0-1
+    // IDEA: BRUTE FORCE (fixed by gemini)
+    /**
+     * Logic:
+     * 1. Try every possible "target value" x for the first element.
+     * 2. To reach value x from 1, we need (x - 1) additions.
+     * 3. Once we have a value x, we need enough copies to reach sum k.
+     * 4. Number of copies needed = ceil(k / x).
+     * 5. Number of duplication operations = ceil(k / x) - 1.
+     * * Time Complexity: O(sqrt(K)) or O(K). O(K) is safe given K <= 10^5.
+     * Space Complexity: O(1).
+     */
+    public int minOperations_0_1(int k) {
+        if (k <= 1)
+            return 0;
+
+        int minOp = Integer.MAX_VALUE;
+
+        // x is the value we increase the first element to
+        // We only need to check up to k, but theoretically up to sqrt(k) is enough
+        for (int x = 1; x <= k; x++) {
+            int addOps = x - 1;
+
+            // Calculate duplication operations: ceil(k / x) - 1
+            // A trick for ceil(a/b) is (a + b - 1) / b
+            int totalElementsNeeded = (k + x - 1) / x;
+            int dupOps = totalElementsNeeded - 1;
+
+            int totalOps = addOps + dupOps;
+
+            // If the total operations start increasing, we've passed the optimal point
+            if (totalOps > minOp && x > Math.sqrt(k))
+                break;
+
+            minOp = Math.min(minOp, totalOps);
+        }
+
+        return minOp;
+    }
+
+
     // V1
     // IDEA: MATH
     // https://leetcode.com/problems/apply-operations-to-make-sum-of-array-greater-than-or-equal-to-k/solutions/4916808/javacpython-o1-solution-by-lee215-iapp/
