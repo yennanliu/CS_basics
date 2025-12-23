@@ -418,6 +418,6 @@ public class NumberOfEnclaves {
         }
     }
 
-    
+
 
 }
