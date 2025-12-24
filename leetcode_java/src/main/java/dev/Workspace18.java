@@ -6,6 +6,7 @@ import LeetCodeJava.Design.DesignInMemoryFileSystem;
 import LeetCodeJava.Graph.NumberOfConnectedComponentsUndirectedGraph;
 import LeetCodeJava.Tree.OnlineMajorityElementInSubarray;
 
+import javax.swing.text.Style;
 import java.util.*;
 
 public class Workspace18 {
@@ -11140,6 +11141,113 @@ public class Workspace18 {
 
         return -1;
     }
+
+
+    // LC 310
+    // 9.50 - 10.00 AM
+    /**
+     *  -> Return a list of all MHTs' root labels.
+     *  You can return the answer in any order.
+     *
+     *
+     *    - n nodes: 0 to n-1
+     *    - edges[i] = [ai, bi]
+     *        - edge between ai, bi
+     *
+     *    - When you select a node x as the root,
+     *      the result tree has height h
+     *
+     *    - Among all possible rooted trees, those with
+     *       `minimum height` (i.e. min(h))
+     *       are called minimum height trees (MHTs).
+     *
+     *
+     *   - NOTE:
+     *      - The height of a rooted tree is the number of edges on the
+     *        longest downward (向下) path between the root and a leaf.
+     *
+     *
+     *
+     *  -----------------
+     *
+     *   IDEA 1) DFS
+     *            - loop over node in set, then
+     *            - build tree
+     *         DFS get min `height` ???
+     *
+     *   IDEA 2) UNION FIND ???
+     *
+     *
+     *  -----------------
+     *
+     *
+     */
+    public List<Integer> findMinHeightTrees(int n, int[][] edges) {
+        // edge ???
+
+        // { node : {neighbor_1, neighbor_2, ...] }
+        Map<Integer, List<Integer>> map = new HashMap<>();
+        for(int i = 0; i < n; i++){
+            map.put(i, new ArrayList<>());
+        }
+
+        for(int[] e: edges){
+            int ai = e[0];
+            int bi = e[1];
+
+            map.get(ai).add(bi);
+            map.get(bi).add(ai);
+        }
+        System.out.println(">>> map = " + map);
+
+        // { height : [root_1, root_2, ...] }
+        Map<Integer, List<Integer>> heightMap = new HashMap<>();
+
+        // loop over all nodes, build tree (?)
+        // and get the min height
+        int minDepth = Integer.MAX_VALUE;
+        for(int i = 0; i < n; i++){
+            if(heightMap.containsKey(i)){
+                heightMap.put(i, new ArrayList<>());
+            }
+            int depth = getMinDepth(i, map);
+            minDepth = Math.min(minDepth, depth);
+            heightMap.get(i).add(depth);
+        }
+
+        // ???
+        return heightMap.get(minDepth);
+    }
+
+    // bfs ???
+    private int getMinDepth(int rootNode, Map<Integer, List<Integer>> map){
+        // edge ???
+        if(!map.containsKey(rootNode) || map.get(rootNode).isEmpty()){
+            return 1;
+        }
+        int dist = 0;
+        Queue<Integer> q = new LinkedList<>();
+        q.add(rootNode);
+
+        while(!q.isEmpty()){
+            int size = q.size();
+            for(int i = 0; i < size; i++){
+                int cur = q.poll();
+                // ??? if already reach one of the `end`
+                if(!map.containsKey(cur)){
+                    return dist; // ???
+                }
+                // loop over neighbors ???
+                for(int next: map.get(cur)){
+                    q.add(next);
+                }
+            }
+            dist += 1;
+        }
+
+        return dist;
+    }
+
 
 
 
