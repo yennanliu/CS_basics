@@ -1,6 +1,7 @@
 package LeetCodeJava.HashTable;
 
 // https://leetcode.com/problems/number-of-black-blocks/
+// https://leetcode.cn/problems/number-of-black-blocks/
 
 import java.util.ArrayList;
 import java.util.HashMap;
