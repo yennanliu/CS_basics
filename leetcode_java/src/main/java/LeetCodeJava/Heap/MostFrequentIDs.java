@@ -65,7 +65,97 @@ public class MostFrequentIDs {
 //
 //    }
 
+    // V0-0-1
+    // IDEA: PQ (fixed by gemini)
+    /**
+     * Logic:
+     * 1. Use a HashMap to store the actual current total frequency of each ID.
+     * 2. Use a Max-Heap (PriorityQueue) to store pairs of {frequency, id}.
+     * 3. When a frequency changes, push the NEW state into the PQ.
+     * 4. Before getting the result, "Lazy Remove" stale entries from the top of the PQ.
+     */
+    public long[] mostFrequentIDs_0_0_1(int[] nums, int[] freq) {
+        int n = nums.length;
+        long[] res = new long[n];
 
+        // Map: ID -> Current total frequency (must be Long)
+        Map<Integer, Long> idToFreq = new HashMap<>();
+
+        // PriorityQueue: {frequency, ID}
+        // We use a custom comparator to sort by frequency descending.
+        PriorityQueue<long[]> pq = new PriorityQueue<>((a, b) -> Long.compare(b[0], a[0]));
+
+        for (int i = 0; i < n; i++) {
+            int id = nums[i];
+            long delta = freq[i];
+
+            // 1. Update the actual frequency in the Map
+            long currentTotal = idToFreq.getOrDefault(id, 0L) + delta;
+            idToFreq.put(id, currentTotal);
+
+            // 2. Add the new state to the PQ (we don't remove the old one)
+            pq.offer(new long[] { currentTotal, (long) id });
+
+            // 3. Lazy Removal: If the top of the heap is outdated, throw it away.
+            // An entry is stale if its frequency != current frequency in our Map.
+            while (!pq.isEmpty() && pq.peek()[0] != idToFreq.get((int) pq.peek()[1])) {
+                pq.poll();
+            }
+
+            // 4. The top of the heap is now guaranteed to be the current maximum.
+            res[i] = pq.isEmpty() ? 0 : pq.peek()[0];
+        }
+
+        return res;
+    }
+
+    // V0-0-2
+    // IDEA: PQ (fixed by gpt)
+    public long[] mostFrequentIDs_0_0_2(int[] nums, int[] freq) {
+        int n = nums.length;
+        long[] res = new long[n];
+
+        Map<Integer, Long> idToFreq = new HashMap<>();
+
+        // max-heap by freq
+        PriorityQueue<long[]> pq = new PriorityQueue<>(
+                (a, b) -> Long.compare(b[0], a[0]) // b.freq - a.freq
+        );
+        // entry: [frequency, id]
+
+        for (int i = 0; i < n; i++) {
+            int id = nums[i];
+            long delta = freq[i];
+
+            long newFreq = idToFreq.getOrDefault(id, 0L) + delta;
+
+            if (newFreq <= 0) {
+                idToFreq.remove(id);
+                // we don't push (0,id); just remove from map
+            } else {
+                idToFreq.put(id, newFreq);
+                pq.offer(new long[] { newFreq, id }); // snapshot
+            }
+
+            // lazy cleanup: discard stale heap tops
+            while (!pq.isEmpty()) {
+                long topFreq = pq.peek()[0];
+                int topId = (int) pq.peek()[1];
+                long curFreq = idToFreq.getOrDefault(topId, 0L);
+
+                if (curFreq == topFreq)
+                    break; // valid top
+                pq.poll(); // stale
+            }
+
+            res[i] = pq.isEmpty() ? 0L : pq.peek()[0];
+        }
+
+        return res;
+    }
+
+
+    
     // V0-1
     // IDEA: PQ (fixed by gemini)
     /**
@@ -112,6 +202,7 @@ public class MostFrequentIDs {
 
         return res;
     }
+
 
     // V0-2
     // IDEA: HASHMAP + DOUBLE LOOP (TLE) (GPT)

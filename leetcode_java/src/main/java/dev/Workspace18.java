@@ -11032,15 +11032,68 @@ public class Workspace18 {
     // LC 3092
     // 10.41 - 51 am
     /**
-     *  IDEA 1) PQ
+     *
+     *  -> Return an array ans of length n,
+     *    where ans[i] represents the count of the most
+     *    frequent ID in the collection after the ith step.
+     *    If the collection is empty at any step,
+     *    ans[i] should be 0 for that step.
+     *
+     *
+     *
+     *
+     *  -------------------
+     *
+     * IDEA 1) PQ
+     *
+     *
+     *  -------------------
+     *
      *
      */
     public long[] mostFrequentIDs(int[] nums, int[] freq) {
-        return null;
+        // edge
+
+        int n = nums.length;
+
+        // map: { val : cnt }
+        Map<Integer, Integer> map = new HashMap<>();
+
+        // max PQ ??
+        // [ cnt1, cnt2, .... ]
+        PriorityQueue<Integer> pq = new PriorityQueue<>(new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                //int diff = o2 - o1;
+                int diff = map.get(o2) - map.get(o1); // ????
+                return diff;
+            }
+        });
+
+        long[] res = new long[n];
+
+        // loop over op
+        for(int i = 0; i < nums.length; i++){
+            // get cnt
+            int diff = freq[i] >= 0 ? freq[i] : -1 * freq[i];
+            int newVal = map.getOrDefault(nums[i], 0) + diff;
+            // ??? update map
+            if(newVal >= 0){
+                map.put(nums[i], newVal);
+            }else{
+                map.put(nums[i], 0); // /??
+            }
+            // ?? poll the max element from PQ
+            //int cur = pq.poll();
+            res[i] = map.get(pq.peek()); // ???
+        }
+
+
+        return res;
     }
 
 
-    
+
 
     public long[] mostFrequentIDs_99(int[] nums, int[] freq) {
         // edge
