@@ -3,10 +3,7 @@ package LeetCodeJava.HashTable;
 // https://leetcode.com/problems/number-of-black-blocks/
 // https://leetcode.cn/problems/number-of-black-blocks/
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 2768. Number of Black Blocks
@@ -166,6 +163,52 @@ public class NumberOfBlackBlocks {
         }
 
         return resultArray; // Return the final result array
+    }
+
+    // V4
+    // IDEA: SET, DP
+    // https://buildmoat.teachable.com/courses/7a7af3/lectures/64103646
+    public long[] countBlackBlocks_4(int n, int m, int[][] coordinates) {
+        long[] ans = new long[5];
+        Set<String> vis = new HashSet<>();
+        Set<String> black = new HashSet<>();
+        for (int[] it : coordinates) {
+            black.add(it[0] + "," + it[1]);
+        }
+
+        int[] X = { 0, 0, 1, 1 };
+        int[] Y = { 0, 1, 0, 1 };
+
+        for (String s : black) {
+            String[] parts = s.split(",");
+            int bx = Integer.parseInt(parts[0]);
+            int by = Integer.parseInt(parts[1]);
+
+            for (int j = -1; j <= 0; j++) {
+                for (int k = -1; k <= 0; k++) {
+                    int x = bx + j;
+                    int y = by + k;
+                    if (x >= 0 && x < n - 1 && y >= 0 && y < m - 1 && !vis.contains(x + "," + y)) {
+                        vis.add(x + "," + y);
+
+                        int cnt = 0;
+                        for (int a = 0; a < 4; a++) {
+                            int xx = x + X[a];
+                            int yy = y + Y[a];
+                            if (black.contains(xx + "," + yy))
+                                cnt++;
+                        }
+
+                        ans[cnt]++;
+                    }
+                }
+            }
+        }
+
+        ans[0] += (long) (n - 1) * (m - 1)
+                - ans[0] - ans[1] - ans[2] - ans[3] - ans[4];
+
+        return ans;
     }
 
 
