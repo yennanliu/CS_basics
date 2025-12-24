@@ -3,7 +3,9 @@ package LeetCodeJava.Greedy;
 // https://leetcode.com/problems/find-center-of-star-graph/description/
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * 1791. Find Center of Star Graph
@@ -44,9 +46,47 @@ import java.util.Map;
 public class FindCenterOfStarGraph {
 
     // V0
-//    public int findCenter(int[][] edges) {
-//
-//    }
+    // IDEA: HASHMAP + HASHSET
+    public int findCenter(int[][] edges) {
+        // edge
+
+        Set<Integer> set = new HashSet<>();
+
+        // { val : cnt}
+        Map<Integer, Set<Integer>> map = new HashMap<>();
+        for (int[] e : edges) {
+            int ui = e[0];
+            int vi = e[1];
+            if (!map.containsKey(ui)) {
+                map.put(ui, new HashSet<>());
+            }
+            if (!map.containsKey(vi)) {
+                map.put(vi, new HashSet<>());
+            }
+
+            Set<Integer> set1 = map.get(ui);
+            Set<Integer> set2 = map.get(vi);
+
+            set1.add(vi);
+            set2.add(ui);
+
+            map.put(ui, set1);
+            map.put(vi, set2);
+
+            set.add(ui);
+            set.add(vi);
+        }
+
+        //System.out.println(">>> map = " + map);
+        int n = set.size();
+        for (int k : map.keySet()) {
+            if (map.get(k).size() == n - 1) {
+                return k;
+            }
+        }
+
+        return -1;
+    }
 
     // V1-1
     // https://leetcode.com/problems/find-center-of-star-graph/editorial/
