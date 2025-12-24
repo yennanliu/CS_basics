@@ -76,7 +76,7 @@ public class NumberOfBlackBlocks {
      * sub-grids that contain exactly 0, 1, 2, 3, or 4 black cells.
      *
      */
-    
+
     // V0
 //    public long[] countBlackBlocks(int m, int n, int[][] coordinates) {
 //
@@ -190,6 +190,32 @@ public class NumberOfBlackBlocks {
     // V4
     // IDEA: SET, DP
     // https://buildmoat.teachable.com/courses/7a7af3/lectures/64103646
+    /**  IDEA:
+     *
+     * Here is the content of the screenshot in both Traditional Chinese and English.
+     *
+     * ### **Traditional Chinese (原文)**
+     *
+     * **Q4**
+     *
+     * * 只需要考慮所有黑色格子，左邊，上面，左上，及他自己做為 2*2 矩陣的左上角即可
+     * * 對於每個要考慮的 2*2 矩陣，去檢查每格是不是 black
+     * * 另外還要記錄已經考慮過的 2*2 矩陣
+     * * 全白的 2*2 矩陣就是由  減去有黑色的矩陣
+     *
+     * ---
+     *
+     * ### **English (Translation)**
+     *
+     * **Q4**
+     *
+     * * You only need to consider all black cells, specifically the cell to the left, the cell above, the cell to the top-left, and the cell itself as the top-left corner of a  matrix.
+     * * For each  matrix being considered, check whether each cell is black.
+     * * Additionally, you need to keep track of the  matrices that have already been considered.
+     * * The number of all-white  matrices is calculated by subtracting the number of matrices containing black cells from .
+     *
+     *
+     */
     public long[] countBlackBlocks_4(int n, int m, int[][] coordinates) {
         long[] ans = new long[5];
         Set<String> vis = new HashSet<>();
