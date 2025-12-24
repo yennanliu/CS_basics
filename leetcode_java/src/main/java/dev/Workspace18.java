@@ -11030,7 +11030,19 @@ public class Workspace18 {
 
 
     // LC 3092
+    // 10.41 - 51 am
+    /**
+     *  IDEA 1) PQ
+     *
+     */
     public long[] mostFrequentIDs(int[] nums, int[] freq) {
+        return null;
+    }
+
+
+    
+
+    public long[] mostFrequentIDs_99(int[] nums, int[] freq) {
         // edge
 
         long[] res = new long[nums.length];
