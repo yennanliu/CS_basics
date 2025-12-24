@@ -65,6 +65,115 @@ public class MostFrequentIDs {
 //
 //    }
 
+    // V0-0-0-1
+    // IDEA: PQ track freq from hashmap + hashmap (WRONG !!!)
+    // TODO: double check and validate & compare other LC use same tricks
+    /**  NOTE !!! below is WRONG
+     *
+     * ---
+     *
+     * Q: CAN't we use below approach?
+     *
+     * - using same map definition, but make PQ track the most freq val in hashmap ?
+     *
+     *
+     * ---
+     *
+     *
+     *
+     * // map: { val : cnt }
+     * Map<Integer, Integer> map = new HashMap<>();
+     *
+     * // max PQ ??
+     * // [ cnt1, cnt2, .... ]
+     * PriorityQueue<Integer> pq = new PriorityQueue<>(new Comparator<Integer>() {
+     *     @Override
+     *     public int compare(Integer o1, Integer o2) {
+     *         //int diff = o2 - o1;
+     *         int diff = map.get(o2) - map.get(o1); // ????
+     *         return diff;
+     *     }
+     * });
+     *
+     *  Reason:
+     *
+     *  The short answer is:
+     *
+     *   -> NO !!!!, you cannot use that approach in Java.**
+     *   While it looks logically sound on paper, it violates a
+     *   fundamental rule of how the `PriorityQueue`
+     *   (and most collection-based heaps) works in Java.
+     *
+     * ### 1. The "Broken Heap" Problem
+     *
+     * A `PriorityQueue` only sorts elements **once**,
+     * at the moment they are inserted (`add` or `offer`).
+     * It does **not** re-sort itself or re-adjust its internal
+     * tree structure if the values inside your `Map` change later.
+     *
+     * **Here is what happens in memory:**
+     *
+     * 1. You add `ID: 1` (frequency 10) to the PQ. The PQ places it at the top because it's the largest.
+     * 2. You update the Map so `ID: 1` now has a frequency of **2**.
+     * 3. The PQ **does not know** the value changed. `ID: 1` stays at the top of the heap.
+     * 4. When you call `pq.peek()`, it still gives you `ID: 1` as the "maximum," even though there might be another ID with a frequency of 5 that should now be the winner.
+     *
+     * ---
+     *
+     * ### 2. Why it leads to wrong answers
+     *
+     * To make a `PriorityQueue` recognize a change, you would have to:
+     *
+     * * `pq.remove(id);` ( - very slow)
+     * * `pq.add(id);` ()
+     *
+     * Doing this inside your loop would turn your  algorithm into an  algorithm, which will **Time Limit Exceeded (TLE)** on LeetCode for .
+     *
+     * ---
+     *
+     * ### 3. The Solution: Lazy Update
+     *
+     * The "Lazy Update" pattern I showed previously is the standard way to fix this. Instead of trying to update the existing ID in the PQ, you **leave the old one there** and just add a **new** entry with the updated frequency.
+     *
+     * When you look at the top of the PQ:
+     *
+     * 1. You check: *"Is the frequency of this ID at the top of the heap the same as the current frequency in my Map?"*
+     * 2. If **yes**: This is the true current maximum.
+     * 3. If **no**: This is an "old version" (a ghost). Delete it (`poll`) and check the next one.
+     *
+     * ---
+     *
+     * ### 4. Comparison of Approaches
+     *
+     * | Approach | Logic | Complexity | Result |
+     * | --- | --- | --- | --- |
+     * | **Your Approach** | Comparator linked to Map |  | **Wrong Answer** (Heap becomes unsorted) |
+     * | **Remove/Add** | Remove old ID, add new |  | **TLE** (Too slow) |
+     * | **Lazy Removal** | Add new `{freq, id}` pair |  | **Accepted** (Fast & Correct) |
+     *
+     *
+     */
+    // NOTE !!! below is WRONG !!!!
+//    public long[] mostFrequentIDs(int[] nums, int[] freq) {
+//        int n = nums.length;
+//
+//        // map: { val : cnt }
+//        Map<Integer, Integer> map = new HashMap<>();
+//
+//        // max PQ ??
+//        // [ cnt1, cnt2, .... ]
+//        PriorityQueue<Integer> pq = new PriorityQueue<>(new Comparator<Integer>() {
+//            @Override
+//            public int compare(Integer o1, Integer o2) {
+//                //int diff = o2 - o1;
+//                int diff = map.get(o2) - map.get(o1); // ????
+//                return diff;
+//            }
+//        });
+//        // ...
+//    }
+
+
     // V0-0-1
     // IDEA: PQ (fixed by gemini)
     /**
@@ -155,7 +264,7 @@ public class MostFrequentIDs {
     }
 
 
-    
+
     // V0-1
     // IDEA: PQ (fixed by gemini)
     /**
