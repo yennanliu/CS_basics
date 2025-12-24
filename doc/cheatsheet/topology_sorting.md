@@ -15,6 +15,7 @@ Topological sorting is a linear ordering of vertices in a Directed Acyclic Graph
 |----------|----------------|------------------|----------|
 | DFS (Kahn's Algorithm) | O(V + E) | O(V) | General purpose, cycle detection |
 | BFS (In-degree) | O(V + E) | O(V) | Finding all orderings, level-by-level |
+| Tree Centroid Finding | O(V + E) | O(V) | Undirected trees, find center/minimize height |
 | All Topological Sorts | O(V! × (V + E)) | O(V) | Small graphs, all permutations |
 
 ### References
@@ -22,6 +23,7 @@ Topological sorting is a linear ordering of vertices in a Directed Acyclic Graph
 - [DFS-based topological sort](https://alrightchiu.github.io/SecondRound/graph-li-yong-dfsxun-zhao-dagde-topological-sorttuo-pu-pai-xu.html)
 - [topological_sort.py](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/topological_sort.py)
 - [TopologicalSort.java](https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/AlgorithmJava/TopologicalSort.java)
+- [MinimumHeightTrees.java](https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/BFS/MinimumHeightTrees.java) (Tree Centroid Finding)
 
 ## Problem Categories
 
@@ -54,6 +56,11 @@ Problems involving level-by-level processing in DAGs.
 Problems focused on detecting cycles and finding safe nodes.
 - **Pattern**: Three-color DFS, safe states identification
 - **Key Problems**: LC 802, 207, 1059
+
+### 7. Tree Centroid Finding
+Problems involving finding the center/centroid of undirected trees.
+- **Pattern**: Leaf trimming layer by layer, similar to topological sort for undirected trees
+- **Key Problems**: LC 310, Tree diameter, Tree center
 
 ## Core Templates
 
@@ -471,6 +478,113 @@ public int parallelTaskScheduling(int numTasks, int[][] edges, int[] times) {
 }
 ```
 
+### Template 7: Tree Centroid Finding (Leaf Trimming for Undirected Trees)
+```python
+def findMinHeightTrees(n, edges):
+    """
+    Find tree centroids using leaf trimming (similar to Kahn's Algorithm for undirected trees).
+    Time: O(V + E), Space: O(V)
+
+    Key Insight:
+    - For undirected trees, leaves are nodes with degree = 1
+    - Remove leaves layer by layer until 1-2 nodes remain
+    - These remaining nodes are the centroids (MHT roots)
+    - Different from standard topological sort: works on undirected trees, not DAGs
+    """
+    from collections import deque
+
+    # Edge case: single node
+    if n == 1:
+        return [0]
+
+    # Build adjacency list and track degrees
+    graph = [[] for _ in range(n)]
+    degree = [0] * n
+
+    for u, v in edges:
+        graph[u].append(v)
+        graph[v].append(u)
+        degree[u] += 1
+        degree[v] += 1
+
+    # Initialize queue with all leaf nodes (degree = 1)
+    leaves = deque([i for i in range(n) if degree[i] == 1])
+
+    # Trim leaves layer by layer
+    remaining = n
+    while remaining > 2:
+        leaf_count = len(leaves)
+        remaining -= leaf_count
+
+        for _ in range(leaf_count):
+            leaf = leaves.popleft()
+
+            # Process neighbors of current leaf
+            for neighbor in graph[leaf]:
+                degree[neighbor] -= 1
+                # If neighbor becomes a leaf, add to queue
+                if degree[neighbor] == 1:
+                    leaves.append(neighbor)
+
+    # The remaining nodes (1 or 2) are the centroids
+    return list(leaves)
+
+# Java version
+public List<Integer> findMinHeightTrees(int n, int[][] edges) {
+    // Edge case: single node
+    if (n == 1) {
+        return Collections.singletonList(0);
+    }
+
+    // Build adjacency list and track degrees
+    List<List<Integer>> graph = new ArrayList<>();
+    for (int i = 0; i < n; i++) {
+        graph.add(new ArrayList<>());
+    }
+
+    int[] degree = new int[n];
+
+    for (int[] edge : edges) {
+        int u = edge[0], v = edge[1];
+        graph.get(u).add(v);
+        graph.get(v).add(u);
+        degree[u]++;
+        degree[v]++;
+    }
+
+    // Initialize queue with all leaf nodes (degree = 1)
+    Queue<Integer> leaves = new LinkedList<>();
+    for (int i = 0; i < n; i++) {
+        if (degree[i] == 1) {
+            leaves.offer(i);
+        }
+    }
+
+    // Trim leaves layer by layer
+    int remaining = n;
+    while (remaining > 2) {
+        int leafCount = leaves.size();
+        remaining -= leafCount;
+
+        for (int i = 0; i < leafCount; i++) {
+            int leaf = leaves.poll();
+
+            // Process neighbors of current leaf
+            for (int neighbor : graph.get(leaf)) {
+                degree[neighbor]--;
+                // If neighbor becomes a leaf, add to queue
+                if (degree[neighbor] == 1) {
+                    leaves.offer(neighbor);
+                }
+            }
+        }
+    }
+
+    // The remaining nodes (1 or 2) are the centroids
+    return new ArrayList<>(leaves);
+}
+```
+
 ## Problem Classification
 
 | Problem | Difficulty | Category | Key Technique |
@@ -478,6 +592,7 @@ public int parallelTaskScheduling(int numTasks, int[][] edges, int[] times) {
 | [207. Course Schedule](https://leetcode.com/problems/course-schedule/) | Medium | Course Scheduling | Cycle Detection |
 | [210. Course Schedule II](https://leetcode.com/problems/course-schedule-ii/) | Medium | Course Scheduling | BFS/DFS |
 | [269. Alien Dictionary](https://leetcode.com/problems/alien-dictionary/) | Hard | Lexicographical | Character Ordering |
+| [310. Minimum Height Trees](https://leetcode.com/problems/minimum-height-trees/) | Medium | Tree Centroid | Leaf Trimming |
 | [444. Sequence Reconstruction](https://leetcode.com/problems/sequence-reconstruction/) | Medium | Build Order | Unique Ordering |
 | [630. Course Schedule III](https://leetcode.com/problems/course-schedule-iii/) | Hard | Course Scheduling | Greedy + Heap |
 | [802. Find Eventual Safe States](https://leetcode.com/problems/find-eventual-safe-states/) | Medium | Cycle Detection | Reverse Graph |
@@ -537,10 +652,27 @@ public int parallelTaskScheduling(int numTasks, int[][] edges, int[] times) {
 | All Paths Safe | 1059 | DFS with path tracking |
 | Detect Any Cycle | 207 | Three-color DFS |
 
+#### Tree Centroid Finding
+| Pattern | Problems | Key Insight |
+|---------|----------|-------------|
+| Find Tree Centers | 310 | Leaf trimming layer by layer |
+| Minimum Height Trees | 310 | BFS from leaves, stop at 1-2 nodes |
+| Tree Diameter Related | 310 | Centroid is at diameter midpoint |
+
 ## Decision Framework
 
 ```
 START: Topological Sort Problem
+│
+├── Working with undirected tree?
+│   │
+│   ├── YES → Finding tree center/centroid?
+│   │   │
+│   │   ├── YES → Use Template 7 (Tree Centroid Finding)
+│   │   │
+│   │   └── NO → Continue
+│   │
+│   └── NO → Continue
 │
 ├── Need all valid orderings?
 │   │
@@ -1381,6 +1513,219 @@ def eventualSafeNodes(graph):
     return sorted(safe)
 ```
 
+### 2-7) Minimum Height Trees (LC 310)
+
+```java
+// java
+// LC 310
+// IDEA: Tree Centroid Finding - Leaf Trimming (Topological Sort for Undirected Trees)
+public class MinimumHeightTrees {
+
+    /**
+     * Core Concept: Tree Centroid Finding via Leaf Trimming
+     *
+     * This is a special application of topological sort to UNDIRECTED TREES:
+     *
+     * Key Differences from Standard Topological Sort:
+     * 1. Works on UNDIRECTED trees (not DAGs)
+     * 2. Uses degree (not in-degree) - count all edges
+     * 3. Leaves are nodes with degree = 1 (not in-degree = 0)
+     * 4. Goal: Find centroid(s), not linear ordering
+     * 5. Result: 1 or 2 nodes (tree centers), not all nodes
+     *
+     * Algorithm (Leaf Trimming):
+     * 1. Build adjacency list + track degrees for undirected edges
+     * 2. Put all leaves (degree = 1) into queue
+     * 3. Remove leaves layer by layer (like peeling an onion)
+     * 4. When neighbors' degree becomes 1, they become new leaves
+     * 5. Stop when ≤ 2 nodes remain - these are the centroids
+     *
+     * Why it works:
+     * - The centroid(s) of a tree minimize the maximum distance to any leaf
+     * - By removing outer layers, we converge to the center
+     * - A tree can have at most 2 centroids (if diameter is even: 2, if odd: 1)
+     *
+     * Time: O(N) - Each node and edge processed once
+     * Space: O(N) - Adjacency list and queue storage
+     */
+    public List<Integer> findMinHeightTrees(int n, int[][] edges) {
+        // Edge case: single node tree
+        if (n == 1) {
+            return Collections.singletonList(0);
+        }
+
+        // Step 1: Build adjacency list and track degrees
+        List<List<Integer>> graph = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            graph.add(new ArrayList<>());
+        }
+
+        int[] degree = new int[n];
+
+        // For undirected tree: add edges in both directions
+        for (int[] edge : edges) {
+            int u = edge[0], v = edge[1];
+            graph.get(u).add(v);
+            graph.get(v).add(u);
+            degree[u]++;
+            degree[v]++;
+        }
+
+        // Step 2: Initialize queue with all leaf nodes (degree = 1)
+        Queue<Integer> leaves = new LinkedList<>();
+        for (int i = 0; i < n; i++) {
+            if (degree[i] == 1) {
+                leaves.offer(i);
+            }
+        }
+
+        // Step 3: Trim leaves layer by layer
+        int remaining = n;
+
+        // Continue until only 1 or 2 nodes remain
+        while (remaining > 2) {
+            int leafCount = leaves.size();
+            remaining -= leafCount;
+
+            // Process all leaves in current layer
+            for (int i = 0; i < leafCount; i++) {
+                int leaf = leaves.poll();
+
+                // Update degrees of neighbors
+                for (int neighbor : graph.get(leaf)) {
+                    degree[neighbor]--;
+
+                    // If neighbor becomes a leaf, add to queue for next layer
+                    if (degree[neighbor] == 1) {
+                        leaves.offer(neighbor);
+                    }
+                }
+            }
+        }
+
+        // Step 4: The remaining nodes (1 or 2) are the centroids
+        return new ArrayList<>(leaves);
+    }
+}
+```
+
+```python
+# python
+# LC 310
+# V0 - Tree Centroid Finding (Leaf Trimming for Undirected Trees)
+from collections import deque
+
+class Solution:
+    def findMinHeightTrees(self, n: int, edges: List[List[int]]) -> List[int]:
+        """
+        Find tree centroids using leaf trimming.
+
+        Key Pattern: Similar to Kahn's Algorithm but for undirected trees
+        - Use degree (not in-degree)
+        - Leaves are nodes with degree = 1
+        - Trim layers until 1-2 nodes remain
+
+        Time: O(N), Space: O(N)
+        """
+        # Edge case
+        if n == 1:
+            return [0]
+
+        # Build adjacency list and track degrees
+        graph = [[] for _ in range(n)]
+        degree = [0] * n
+
+        for u, v in edges:
+            graph[u].append(v)
+            graph[v].append(u)
+            degree[u] += 1
+            degree[v] += 1
+
+        # Initialize queue with all leaves (degree = 1)
+        leaves = deque([i for i in range(n) if degree[i] == 1])
+
+        # Trim leaves layer by layer
+        remaining = n
+        while remaining > 2:
+            leaf_count = len(leaves)
+            remaining -= leaf_count
+
+            for _ in range(leaf_count):
+                leaf = leaves.popleft()
+
+                # Decrease degree of neighbors
+                for neighbor in graph[leaf]:
+                    degree[neighbor] -= 1
+                    # If neighbor becomes leaf, add to queue
+                    if degree[neighbor] == 1:
+                        leaves.append(neighbor)
+
+        # Return remaining centroids (1 or 2 nodes)
+        return list(leaves)
+
+
+# V1 - Alternative: Using Set for adjacency (faster removal)
+class Solution:
+    def findMinHeightTrees(self, n: int, edges: List[List[int]]) -> List[int]:
+        if n == 1:
+            return [0]
+
+        # Build graph with sets for O(1) removal
+        graph = [set() for _ in range(n)]
+
+        for u, v in edges:
+            graph[u].add(v)
+            graph[v].add(u)
+
+        # Find initial leaves
+        leaves = [i for i in range(n) if len(graph[i]) == 1]
+
+        # Trim leaves until 1-2 nodes remain
+        while n > 2:
+            n -= len(leaves)
+            new_leaves = []
+
+            for leaf in leaves:
+                # Get the only neighbor
+                neighbor = graph[leaf].pop()
+                # Remove leaf from neighbor's adjacency set
+                graph[neighbor].remove(leaf)
+
+                # If neighbor becomes leaf, add to next layer
+                if len(graph[neighbor]) == 1:
+                    new_leaves.append(neighbor)
+
+            leaves = new_leaves
+
+        return leaves
+```
+
+**Core Logic Explanation:**
+
+1. **Why Leaf Trimming Works:**
+   - Tree centroids minimize the height when used as roots
+   - By removing outer layers (leaves), we converge to the center
+   - Like peeling an onion from outside to inside
+
+2. **Key Differences from Standard Topological Sort:**
+   - **Graph Type**: Undirected tree vs Directed Acyclic Graph (DAG)
+   - **Degree Tracking**: Total degree vs in-degree
+   - **Leaf Definition**: degree = 1 vs in-degree = 0
+   - **Goal**: Find center(s) vs Find linear ordering
+   - **Result**: 1-2 nodes vs All nodes in order
+
+3. **Why At Most 2 Centroids:**
+   - If tree diameter is even → 2 center nodes
+   - If tree diameter is odd → 1 center node
+   - These nodes minimize the maximum distance to any leaf
+
+**Similar LC Problems:**
+- LC 310: Minimum Height Trees (this problem)
+- Tree diameter problems
+- Finding tree radius
+- Graph center finding
+- Balanced tree problems
+
 ## Summary & Interview Tips
 
 ### Common Pitfalls
@@ -1389,6 +1734,8 @@ def eventualSafeNodes(graph):
 3. **Not Handling Disconnected Components**: Process all unvisited nodes
 4. **Incorrect In-degree Initialization**: Ensure all nodes are included
 5. **Missing Edge Cases**: Empty graph, single node, self-loops
+6. **Confusing Degree vs In-degree**: For undirected trees use total degree, for DAGs use in-degree
+7. **Wrong Stopping Condition**: For tree centroids, stop at ≤2 nodes (not when queue is empty)
 
 ### Key Insights
 1. **BFS vs DFS**: BFS is easier for finding one order, DFS for all orders
@@ -1396,6 +1743,8 @@ def eventualSafeNodes(graph):
 3. **Three-Color DFS**: White (unvisited), Gray (visiting), Black (visited)
 4. **Reverse Graph**: Useful for problems like safe states
 5. **Level Processing**: For parallel execution and minimum time
+6. **Tree Centroid Finding**: For undirected trees, use degree (not in-degree), trim leaves layer by layer until 1-2 nodes remain
+7. **Undirected vs Directed**: Undirected trees need bidirectional edges and degree tracking, while DAGs use in-degree
 
 ### Interview Approach
 1. **Clarify Requirements**:
