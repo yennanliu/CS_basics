@@ -111,6 +111,150 @@ public class MinimumHeightTrees {
         return height;
     }
 
+    // V0-2
+    // IDEA: similar to `Kahn's Algorithm`, Topological Leaf Removal (fixed by gemini)
+    /**
+     * Time Complexity: O(N) - Each node and edge is processed once.
+     * Space Complexity: O(N) - Adjacency list and queue storage.
+     */
+    /**  IDEA:
+     *
+     *
+     * The Core Strategy: `Topological Leaf Removal`
+     *
+     * The logic is similar to Kahn's Algorithm for topological sort,
+     * but applied to an undirected tree:
+     *
+     * Identify Leaves: Nodes with only one neighbor are "leaves."
+     *
+     * Trim Layers: Remove all leaves simultaneously. As you remove them,
+     * their neighbors might become new leaves.
+     *
+     * Find the Center: Continue trimming layer by layer until only 1 or 2 nodes remain.
+     * These are the centers of the tree and the roots of the Minimum Height Trees.
+     *
+     *
+     */
+    public List<Integer> findMinHeightTrees_0_2(int n, int[][] edges) {
+        // Edge cases
+        if (n <= 0)
+            return new ArrayList<>();
+        if (n == 1)
+            return Collections.singletonList(0);
+
+        // 1. Build Adjacency List and track degrees
+        List<Set<Integer>> adj = new ArrayList<>();
+        for (int i = 0; i < n; i++)
+            adj.add(new HashSet<>());
+        int[] degree = new int[n];
+
+        for (int[] e : edges) {
+            adj.get(e[0]).add(e[1]);
+            adj.get(e[1]).add(e[0]);
+            degree[e[0]]++;
+            degree[e[1]]++;
+        }
+
+        // 2. Initialize Queue with all leaf nodes
+        Queue<Integer> leaves = new LinkedList<>();
+        for (int i = 0; i < n; i++) {
+            if (degree[i] == 1) {
+                leaves.offer(i);
+            }
+        }
+
+        // 3. Trim leaves layer by layer
+        int remainingNodes = n;
+        while (remainingNodes > 2) {
+            int leafCount = leaves.size();
+            remainingNodes -= leafCount;
+
+            for (int i = 0; i < leafCount; i++) {
+                int leaf = leaves.poll();
+
+                // Find the only neighbor of this leaf
+                for (int neighbor : adj.get(leaf)) {
+                    // Remove the leaf from neighbor's set and decrement degree
+                    adj.get(neighbor).remove(leaf);
+                    degree[neighbor]--;
+
+                    // If neighbor becomes a leaf, add to queue for next layer
+                    if (degree[neighbor] == 1) {
+                        leaves.offer(neighbor);
+                    }
+                }
+            }
+        }
+
+        // 4. The remaining nodes in the queue are the centers
+        return new ArrayList<>(leaves);
+    }
+
+
+    // V0-3
+    // IDEA: (Leaf Trimming / Topological BFS) (fixed by gpt)
+    /**
+     * Algorithm (Leaf Trimming / Topological BFS)
+     *
+     * Build adjacency list + degree count
+     *
+     * Put all leaves (degree = 1) into queue
+     *
+     * Remove leaves layer by layer
+     *
+     * The last remaining nodes are the answer
+     *
+     */
+    public List<Integer> findMinHeightTrees_0_3(int n, int[][] edges) {
+        if (n == 1){
+            List<Integer> res = new ArrayList<>();
+            res.add(0);
+            return res; // ??
+            //return List.of(0);
+        }
+
+        List<List<Integer>> graph = new ArrayList<>();
+        for (int i = 0; i < n; i++)
+            graph.add(new ArrayList<>());
+
+        int[] degree = new int[n];
+
+        for (int[] e : edges) {
+            int u = e[0], v = e[1];
+            graph.get(u).add(v);
+            graph.get(v).add(u);
+            degree[u]++;
+            degree[v]++;
+        }
+
+        Queue<Integer> q = new LinkedList<>();
+        for (int i = 0; i < n; i++) {
+            if (degree[i] == 1)
+                q.offer(i);
+        }
+
+        int remaining = n;
+
+        while (remaining > 2) {
+            int size = q.size();
+            remaining -= size;
+
+            for (int i = 0; i < size; i++) {
+                int leaf = q.poll();
+                for (int nei : graph.get(leaf)) {
+                    degree[nei]--;
+                    if (degree[nei] == 1) {
+                        q.offer(nei);
+                    }
+                }
+            }
+        }
+
+        return new ArrayList<>(q);
+    }
+
+
+
     // V1
     // IDEA:  topological sorting with a BFS (Breadth-First Search) (GPT)
     public List<Integer> findMinHeightTrees_1(int n, int[][] edges) {
@@ -397,5 +541,7 @@ public class MinimumHeightTrees {
 
         return new ArrayList<>(queue);
     }
+
+    
 
 }
