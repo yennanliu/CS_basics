@@ -10,8 +10,9 @@
 	 - LC weekly 345 - done
 	 - LC weekly 375 - done
 	 - LC weekly 394 - done
-	 - LC weekly 108 - ing
+	 - LC weekly 108 - done
 	 - LC weekly 341 - todo
+	 - LC weekly 390 - todo
 - to review
 	- LC weekly 100
 - needcode `grind 75` - similar LC by AI
