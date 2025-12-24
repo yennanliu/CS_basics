@@ -112,7 +112,7 @@ public class MinimumHeightTrees {
     }
 
     // V0-2
-    // IDEA: similar to `Kahn's Algorithm`, Topological Leaf Removal (fixed by gemini)
+    // IDEA: similar to `Kahn's Algorithm`, Topological Leaf Removal. Topological Sort like (fixed by gemini)
     /**
      * Time Complexity: O(N) - Each node and edge is processed once.
      * Space Complexity: O(N) - Adjacency list and queue storage.
@@ -133,6 +133,27 @@ public class MinimumHeightTrees {
      * Find the Center: Continue trimming layer by layer until only 1 or 2 nodes remain.
      * These are the centers of the tree and the roots of the Minimum Height Trees.
      *
+     *
+     */
+    /**
+     * Q: can we use `Topological Sort` approach ?
+     *
+     *
+     * Yes, as discussed in the previous response,
+     * the optimal solution for LC 310: Minimum Height Trees is
+     * fundamentally a `Topological Sort` approach,
+     * specifically a variation known as "Leaf Trimming" or "Onion Peeling."
+     *
+     * While standard Topological Sort (Kahn's Algorithm)
+     * is used on Directed Acyclic Graphs (DAGs) to find a linear
+     * ordering of nodes based on dependencies, this approach
+     * uses the same principle of in-degrees to find the center
+     * of an undirected tree.
+     *
+     * 🧠 How Topological Sort applies here
+     * In a tree, "leaves" are nodes with a degree of 1.
+     * If we remove all leaves simultaneously, we are left with a smaller tree.
+     * By repeating this process, we eventually converge on the "centroid(s)" of the tree.
      *
      */
     public List<Integer> findMinHeightTrees_0_2(int n, int[][] edges) {
@@ -542,6 +563,6 @@ public class MinimumHeightTrees {
         return new ArrayList<>(queue);
     }
 
-    
+
 
 }
