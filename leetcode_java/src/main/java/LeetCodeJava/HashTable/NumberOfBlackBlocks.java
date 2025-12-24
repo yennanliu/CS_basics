@@ -2,7 +2,7 @@ package LeetCodeJava.HashTable;
 
 // https://leetcode.com/problems/number-of-black-blocks/
 // https://leetcode.cn/problems/number-of-black-blocks/
-
+// https://github.com/yennanliu/CS_basics/blob/master/doc/pic/lc_2768.png
 import java.util.*;
 
 /**
@@ -55,6 +55,28 @@ import java.util.*;
  */
 public class NumberOfBlackBlocks {
 
+    /**
+     * Here is the transcription and translation of the text in the image:
+     *
+     * ### **Traditional Chinese (原文)**
+     *
+     * **Q4 題目**
+     *
+     * * 有一個很大的 grid，裡面有一些黑色格子，問這個很大的 grid 中，所有
+     * 的子 grid，黑色格子數量為 0 1 2 3 4 的各有幾個
+     *
+     * ---
+     *
+     * ### **English (Translation)**
+     *
+     * **Q4 Problem Statement**
+     *
+     * * There is a very large grid containing some black cells.
+     * In this large grid, find the count of all
+     * sub-grids that contain exactly 0, 1, 2, 3, or 4 black cells.
+     *
+     */
+    
     // V0
 //    public long[] countBlackBlocks(int m, int n, int[][] coordinates) {
 //
