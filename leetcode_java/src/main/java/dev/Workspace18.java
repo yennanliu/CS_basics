@@ -10146,12 +10146,103 @@ public class Workspace18 {
      *
      *  ----------------------
      *
+     *   IDEA 1)  DFS ?
+     *
+     *   IDEA 2)  BFS ?
      *
      *
      *  ----------------------
      *
      */
     public boolean canFinish(int numCourses, int[][] prerequisites) {
+        // edge ??
+        if (prerequisites.length == 0){
+            return true;
+        }
+
+        // ???
+        // map: { course_1 : [pre_course_1, pre_course_2, ...] }
+        Map<Integer, List<Integer>> map = new HashMap<>();
+        for(int[] p: prerequisites){
+            // prerequisites[i] = [ai, bi] take bi first if want to take ai.
+            // e.g.  [ai, bi]: bi -> ai
+            int ai = p[0];
+            int bi = p[1];
+            // ???
+            if(!map.containsKey(ai)){
+                map.put(ai, new ArrayList<>());
+            }
+            map.get(ai).add(bi); // ??
+        }
+
+        System.out.println(">>> map = " + map);
+
+        // BFS ?
+        Queue<Integer> q = new LinkedList<>();
+
+        // ???
+        // get node without `pre course` as the starting point ???
+//        for(int k: map.keySet()){
+//            if(map.get(k).isEmpty()){
+//                q.add(k);
+//            }
+//            q.add(k);
+//        }
+        for(int i = 0; i < numCourses; i++){
+            q.add(i);
+        }
+
+
+        // ??
+        Set<Integer> visited = new HashSet<>();
+        // ?? state arr
+        // 0: NOT visited, 1: visiting, 2: visited
+        Integer[] states = new Integer[numCourses];
+
+        while(!q.isEmpty()){
+            int size = q.size();
+            for(int i = 0; i < size; i++){
+                // if already visited all courses, return true directly
+                if(visited.size() == numCourses){
+                    return true;
+                }
+                // if `conflicts`, e.g. visiting node A, but the other
+                // progress try to visit node A as well
+                int cur = q.poll();
+                if(states[cur] == 1){
+                    return false;
+                }
+
+                // set as `visiting`
+                states[cur] = 1;
+
+                visited.add(cur);
+
+                // visit next
+                for(int next: map.get(cur)){
+                    if(!visited.contains(next)){
+                        // ?? should do below here or at the beginning of while loop ??
+                        // set as `visiting`
+                        //states[next] = 1;
+                        q.add(next);
+                    }
+                }
+                // set as `visited`
+                states[cur] = 2;
+            }
+        }
+
+
+        return false;
+    }
+
+
+
+
+
+
+
+    public boolean canFinish_99(int numCourses, int[][] prerequisites) {
         // edge
         if(prerequisites.length == 0){
             return true;
@@ -11312,6 +11403,13 @@ public class Workspace18 {
 
         return dist;
     }
+
+
+//    // LC 207
+//    public boolean canFinish(int numCourses, int[][] prerequisites) {
+//
+//        return false;
+//    }
 
 
 
