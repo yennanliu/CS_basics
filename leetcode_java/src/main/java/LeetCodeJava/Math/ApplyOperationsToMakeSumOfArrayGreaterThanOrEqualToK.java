@@ -180,14 +180,19 @@ public class ApplyOperationsToMakeSumOfArrayGreaterThanOrEqualToK {
      *
      * * 一定會想先做完第一個操作再做第二個操作，這樣才會讓元素總和成長幅度最大
      * * 窮舉第一個操作要做幾次，再來看第二個操作需要做幾次才能
-     * * 因為最後出來的答案會是 ，只要窮舉到 (k)^(1/2) 就可以了
+     * * 因為最後出來的答案會是 (op1 + 1) * (op2 + 1) ，只要窮舉到 (k)^(1/2) 就可以了
      *
      *
+     *   -> NOTE !!!
+     *     - op1: how many 1 to add  (# of op1)
+     *     - op2: how many max num to add  (# of op2)
      */
     public int minOperations_0_2(int k) {
         int ans = k;
 
+        // i: biggest element in array
         for (int i = 1; i * i <= k; i++) {
+            // j:  # of element in array
             int j = (k - 1) / i + 1;
             ans = Math.min(ans, i + j - 2);
         }
