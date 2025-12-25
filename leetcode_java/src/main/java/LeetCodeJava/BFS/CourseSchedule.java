@@ -53,12 +53,80 @@ public class CourseSchedule {
      */
 
     // V0
+    // IDEA: DFS + 3-state coloring (cycle detection) (gpt)
+    public boolean canFinish(int numCourses, int[][] prerequisites) {
+
+        // adjacency list: pre -> course
+        /** NOTE !!!
+         *
+         *  // map: { pre_course : [next_course_1, next_course_2, ...] }
+         */
+        Map<Integer, List<Integer>> graph = new HashMap<>();
+        for (int i = 0; i < numCourses; i++) {
+            graph.put(i, new ArrayList<>());
+        }
+
+        for (int[] p : prerequisites) {
+            int course = p[0];
+            int pre = p[1];
+            /** NOTE !!!
+             *
+             *  // map: { pre_course : [next_course_1, next_course_2, ...] }
+             */
+            graph.get(pre).add(course);
+        }
+
+        /** NOTE !!!
+         *
+         *  3 states:
+         *
+         *     0 = unvisited
+         *     1 = visiting
+         *     2 = visited
+         */
+        // 0 = unvisited, 1 = visiting, 2 = visited
+        int[] state = new int[numCourses];
+
+        // NOTE !! we visit from course id = `0`  to `numCourses - 1`
+        for (int i = 0; i < numCourses; i++) {
+            if (state[i] == 0) {
+                if (!dfs(i, graph, state)) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    private boolean dfs(int cur, Map<Integer, List<Integer>> graph, int[] state) {
+
+        // cycle detected
+        if (state[cur] == 1) return false;
+
+        // already processed
+        if (state[cur] == 2) return true;
+
+        state[cur] = 1; // mark as visiting
+
+        for (int next : graph.get(cur)) {
+            if (!dfs(next, graph, state)) {
+                return false;
+            }
+        }
+
+        state[cur] = 2; // mark as visited
+        return true;
+    }
+
+
+    // V0-0-0-1
     // IDEA : TOPOLOGICAL SORT
     // LC 210
     // https://github.com/yennanliu/CS_basics/blob/master/doc/pic/lc_207_1.png
     // https://github.com/yennanliu/CS_basics/blob/master/doc/pic/lc_207_1.png
     /** NOTE !!! we CAN'T use `quick union` for this problem */
-    public boolean canFinish(int numCourses, int[][] prerequisites) {
+    public boolean canFinish_0_0_0_1(int numCourses, int[][] prerequisites) {
         if (prerequisites.length == 0){
             return true;
         }
