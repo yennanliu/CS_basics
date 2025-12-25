@@ -159,6 +159,43 @@ public class ApplyOperationsToMakeSumOfArrayGreaterThanOrEqualToK {
     }
 
 
+    // V0-2
+    // IDEA: MATH
+    // https://buildmoat.teachable.com/courses/7a7af3/lectures/64243726
+    /** IDEA:
+     *
+     * ## 1. English Translation
+     *
+     * **Q2**
+     *
+     * * You will definitely want to complete the first operation before starting the second; this is the only way to maximize the growth of the total sum of the elements.
+     * * Enumerate how many times the first operation should be performed, then determine how many times the second operation is needed to reach .
+     * * Because the final answer will be , you only need to enumerate up to .
+     *
+     * ---
+     *
+     * ## 2. Traditional Chinese Transcription
+     *
+     * **Q2**
+     *
+     * * 一定會想先做完第一個操作再做第二個操作，這樣才會讓元素總和成長幅度最大
+     * * 窮舉第一個操作要做幾次，再來看第二個操作需要做幾次才能
+     * * 因為最後出來的答案會是 ，只要窮舉到 (k)^(1/2) 就可以了
+     *
+     *
+     */
+    public int minOperations_0_2(int k) {
+        int ans = k;
+
+        for (int i = 1; i * i <= k; i++) {
+            int j = (k - 1) / i + 1;
+            ans = Math.min(ans, i + j - 2);
+        }
+
+        return ans;
+    }
+
+
     // V1
     // IDEA: MATH
     // https://leetcode.com/problems/apply-operations-to-make-sum-of-array-greater-than-or-equal-to-k/solutions/4916808/javacpython-o1-solution-by-lee215-iapp/
@@ -228,20 +265,5 @@ public class ApplyOperationsToMakeSumOfArrayGreaterThanOrEqualToK {
     }
 
 
-    // V4
-    // IDEA: MATH
-    // https://buildmoat.teachable.com/courses/7a7af3/lectures/64243726
-    public int minOperations_4(int k) {
-        int ans = k;
 
-        for (int i = 1; i * i <= k; i++) {
-            int j = (k - 1) / i + 1;
-            ans = Math.min(ans, i + j - 2);
-        }
-
-        return ans;
-    }
-
-
-    
 }
