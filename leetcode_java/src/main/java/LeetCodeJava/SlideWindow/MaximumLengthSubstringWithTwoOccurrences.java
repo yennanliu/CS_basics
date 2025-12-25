@@ -238,5 +238,28 @@ public class MaximumLengthSubstringWithTwoOccurrences {
         return ans;
     }
 
+    // V4
+    // IDEA: SLIDE WINDOW
+    // https://buildmoat.teachable.com/courses/7a7af3/lectures/64243726
+    public int maximumLengthSubstring_4(String s) {
+        int[] cnt = new int[26];
+        int ans = 0;
+        int l = 0;
+
+        for (int i = 0; i < s.length(); i++) {
+            cnt[s.charAt(i) - 'a']++;
+
+            while (cnt[s.charAt(i) - 'a'] > 2) {
+                cnt[s.charAt(l) - 'a']--;
+                l++;
+            }
+
+            ans = Math.max(ans, i - l + 1);
+        }
+
+        return ans;
+    }
+
+
 
 }
