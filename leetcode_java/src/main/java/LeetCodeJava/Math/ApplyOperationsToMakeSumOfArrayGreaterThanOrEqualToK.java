@@ -229,6 +229,19 @@ public class ApplyOperationsToMakeSumOfArrayGreaterThanOrEqualToK {
 
 
     // V4
+    // IDEA: MATH
+    // https://buildmoat.teachable.com/courses/7a7af3/lectures/64243726
+    public int minOperations_4(int k) {
+        int ans = k;
+
+        for (int i = 1; i * i <= k; i++) {
+            int j = (k - 1) / i + 1;
+            ans = Math.min(ans, i + j - 2);
+        }
+
+        return ans;
+    }
 
 
+    
 }
