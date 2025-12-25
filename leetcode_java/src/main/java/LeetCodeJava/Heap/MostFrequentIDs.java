@@ -387,6 +387,43 @@ public class MostFrequentIDs {
         return res;
     }
 
+    // V0-4
+    // https://buildmoat.teachable.com/courses/7a7af3/lectures/64243726
+    public long[] mostFrequentIDs_0_4(int[] nums, int[] freq) {
+        Map<Integer, Long> m = new HashMap<>();
+        TreeMap<Long, Integer> s = new TreeMap<>();
+        long[] ans = new long[nums.length];
+
+        for (int i = 0; i < nums.length; i++) {
+            int num = nums[i];
+            long add = freq[i];
+
+            if (m.containsKey(num)) {
+                long oldVal = m.get(num);
+                s.put(oldVal, s.get(oldVal) - 1);
+                if (s.get(oldVal) == 0) {
+                    s.remove(oldVal);
+                }
+            }
+
+            long newVal = m.getOrDefault(num, 0L) + add;
+            if (newVal != 0) {
+                m.put(num, newVal);
+                s.put(newVal, s.getOrDefault(newVal, 0) + 1);
+            } else {
+                m.remove(num);
+            }
+
+            if (m.isEmpty()) {
+                ans[i] = 0L;
+            } else {
+                ans[i] = s.lastKey();
+            }
+        }
+
+        return ans;
+    }
+
 
     // V1-1
     // IDEA: TREEMAP, HASHMAP, without max heap

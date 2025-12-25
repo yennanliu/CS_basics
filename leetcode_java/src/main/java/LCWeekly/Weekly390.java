@@ -84,7 +84,7 @@ public class Weekly390 {
     }
 
 
-    // Q2
+    // Q2 -> ok ? (again)
     // LC 3091
     // https://leetcode.com/problems/apply-operations-to-make-sum-of-array-greater-than-or-equal-to-k/
     // 14.09 - 19 pm
