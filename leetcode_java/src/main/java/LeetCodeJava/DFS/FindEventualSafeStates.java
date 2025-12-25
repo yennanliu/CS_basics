@@ -65,13 +65,131 @@ public class FindEventualSafeStates {
 //
 //    }
 
-    // V1-0
+    // V0-1
+    // IDEA: DFS WITH COLORING (fixed by gemini)
+    public List<Integer> eventualSafeNodes_0_1(int[][] graph) {
+        int n = graph.length;
+        int[] state = new int[n]; // 0: unvisited, 1: visiting, 2: safe
+        List<Integer> res = new ArrayList<>();
+
+        for (int i = 0; i < n; i++) {
+            if (isSafe(i, graph, state)) {
+                res.add(i);
+            }
+        }
+        return res;
+    }
+
+    private boolean isSafe(int node, int[][] graph, int[] state) {
+        if (state[node] > 0) {
+            return state[node] == 2; // Return true if already confirmed safe
+        }
+
+        state[node] = 1; // Mark as "visiting" (potential cycle)
+        for (int neighbor : graph[node]) {
+            // If neighbor is currently visiting, or leads to a cycle
+            if (!isSafe(neighbor, graph, state)) {
+                return false;
+            }
+        }
+
+        state[node] = 2; // Mark as "safe"
+        return true;
+    }
+
+
+    // V0-2
+    // IDEA: Topological Sort (Kahn's on Reversed Graph) (gemini)
+    public List<Integer> eventualSafeNodes_0_2(int[][] graph) {
+        int n = graph.length;
+        List<List<Integer>> reverseGraph = new ArrayList<>();
+        int[] outDegree = new int[n];
+
+        for (int i = 0; i < n; i++)
+            reverseGraph.add(new ArrayList<>());
+
+        for (int i = 0; i < n; i++) {
+            for (int neighbor : graph[i]) {
+                // Reverse the direction: neighbor -> i
+                reverseGraph.get(neighbor).add(i);
+                outDegree[i]++;
+            }
+        }
+
+        Queue<Integer> q = new LinkedList<>();
+        for (int i = 0; i < n; i++) {
+            if (outDegree[i] == 0)
+                q.offer(i);
+        }
+
+        boolean[] safe = new boolean[n];
+        while (!q.isEmpty()) {
+            int cur = q.poll();
+            safe[cur] = true;
+            for (int prev : reverseGraph.get(cur)) {
+                outDegree[prev]--;
+                if (outDegree[prev] == 0)
+                    q.offer(prev);
+            }
+        }
+
+        List<Integer> res = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            if (safe[i])
+                res.add(i);
+        }
+        return res;
+    }
+
+    // V0-3
+    // IDEA: DFS + COLORING (fixed by gpt)
+    public List<Integer> eventualSafeNodes_0_3(int[][] graph) {
+
+        int n = graph.length;
+        int[] state = new int[n];
+        // 0 = unvisited, 1 = visiting, 2 = safe
+
+        List<Integer> res = new ArrayList<>();
+
+        for (int i = 0; i < n; i++) {
+            if (dfs(i, graph, state)) {
+                res.add(i);
+            }
+        }
+
+        return res;
+    }
+
+    private boolean dfs(int node, int[][] graph, int[] state) {
+
+        // If already processed
+        if (state[node] != 0) {
+            return state[node] == 2;
+        }
+
+        // Mark as visiting
+        state[node] = 1;
+
+        for (int next : graph[node]) {
+            // If next leads to cycle or unsafe node
+            if (!dfs(next, graph, state)) {
+                return false;
+            }
+        }
+
+        // All paths are safe
+        state[node] = 2;
+        return true;
+    }
+
+
+    // V1
     // IDEA : DFS
     // KEY : check if there is a "cycle" on a node
     // https://www.youtube.com/watch?v=v5Ni_3bHjzk
     // https://zxi.mytechroad.com/blog/graph/leetcode-802-find-eventual-safe-states/
     // https://github.com/yennanliu/CS_basics/tree/master/doc/pic/lc_802.png
-    public List<Integer> eventualSafeNodes(int[][] graph) {
+    public List<Integer> eventualSafeNodes_1(int[][] graph) {
         // init
         int n = graph.length;
         /**
@@ -334,4 +452,7 @@ public class FindEventualSafeStates {
     }
 
     // V4
+
+
+
 }

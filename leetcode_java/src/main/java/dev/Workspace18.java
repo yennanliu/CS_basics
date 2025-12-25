@@ -11412,6 +11412,124 @@ public class Workspace18 {
 //    }
 
 
+    // LC 802
+    // 15.24 - 34 pm
+    /**
+     *  -> Return an array containing all the `safe nodes`
+     *     of the graph.
+     *    The answer should be sorted in `ascending` order.
+     *
+     *    - node: 0 to n-1
+     *
+     *    - graph[i]:
+     *        - 0-indexed 2D integer array
+     *        - an edge from node i to each node in graph[i]
+     *        - e.g. graph[0] = [1,2,3]
+     *           -> edge between
+     *              - [0,1]
+     *              - [0,2]
+     *              - [0,3]
+     *
+     *    - safe node
+     *       - every possible path starting from
+     *         that node leads to a terminal node
+     *         (or another safe node).
+     *
+     *
+     *    - terminal node
+     *       - if there are NO `outgoing` edges.
+     *
+     *
+     *
+     *  ----------------
+     *
+     *   IDEA 1) DFS
+     *
+     *   IDES 2) TOPO SORT ???
+     *
+     *   IDES 3) BFS ???
+     *
+     *
+     *
+     *  ----------------
+     *
+     */
+    //  IDEA 1) DFS ????
+    public List<Integer> eventualSafeNodes(int[][] graph) {
+        // edge
+
+        int maxNode = 0;
+        // map: { node : [next_node_1, next_node_2, ..] }
+        Map<Integer, List<Integer>> map = new HashMap<>();
+        for(int[] g: graph){
+            int ai = g[0];
+            int bi = g[1];
+
+            map.putIfAbsent(ai, new ArrayList<>());
+            map.putIfAbsent(bi, new ArrayList<>());
+
+            map.get(ai).add(bi);
+            map.get(bi).add(ai);
+
+            maxNode = Math.max(maxNode, Math.max(ai, bi));
+        }
+
+        System.out.println(">>> map = " + map);
+
+        List<Integer> res = new ArrayList<>();
+        for(int i = 0; i < maxNode; i++){
+            if(isValid(i, new HashSet<>(), map)){
+                res.add(i);
+            }
+        }
+
+        //sort:  ascending order
+        Collections.sort(res, new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                int diff = o1 - o2;
+                return diff;
+            }
+        });
+
+        return res;
+    }
+
+    private boolean isValid(int node, Set<Integer> visited, Map<Integer, List<Integer>> map){
+        // edge ??
+        // mark as visited
+        visited.add(node);
+
+        // validate if is `safe` node
+        /**
+         *      *    - safe node
+         *      *       - every possible path starting from
+         *      *         that node leads to a terminal node
+         *      *         (or another safe node).
+         *      *
+         *      *
+         *      *    - terminal node
+         *      *       - if there are NO `outgoing` edges.
+         */
+        if(map.containsKey(node)){
+            if(map.get(node).isEmpty()){
+                return true; // ???
+            }
+            // visit `next` nodes
+            for(int next: map.get(node)){
+                // NOTE !!!
+                // if NOT valid, return false directly
+                if(!isValid(next, visited, map)){
+                    return false;
+                }
+            }
+        }
+
+
+        return true;
+    }
+
+
 
 
 
