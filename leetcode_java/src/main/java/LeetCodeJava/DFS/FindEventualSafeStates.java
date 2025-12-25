@@ -59,14 +59,28 @@ import java.util.Queue;
  */
 public class FindEventualSafeStates {
 
+    /**  NOTE !!
+     *
+     *  this LC is accidentally a `cycle detection` problem.
+     *
+     *   -> check if a node is `cycle` or NOT
+     *    (visit itself again via recursive call)
+     */
+
     // V0
-    // TODO : implement
 //    public List<Integer> eventualSafeNodes(int[][] graph) {
 //
 //    }
 
     // V0-1
     // IDEA: DFS WITH COLORING (fixed by gemini)
+    /**  NOTE !!
+     *
+     *  this LC is accidentally a `cycle detection` problem.
+     *
+     *   -> check if a node is `cycle` or NOT
+     *    (visit itself again via recursive call)
+     */
     public List<Integer> eventualSafeNodes_0_1(int[][] graph) {
         int n = graph.length;
         int[] state = new int[n]; // 0: unvisited, 1: visiting, 2: safe
