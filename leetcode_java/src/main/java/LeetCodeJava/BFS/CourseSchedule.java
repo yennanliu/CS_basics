@@ -42,6 +42,16 @@ import java.util.*;
 
 public class CourseSchedule {
 
+    /**  NOTE !!!  For LC 207,
+     *
+     * we ONLY have below 3 main approaches, DON'T mix them up
+     *
+          1. DFS + 3-state coloring (cycle detection)
+     *    2. BFS (Kahn’s algorithm with indegrees)
+     *    3. TOPOLOGICAL SORT
+     *
+     */
+
     // V0
     // IDEA : TOPOLOGICAL SORT
     // LC 210
@@ -719,6 +729,51 @@ public class CourseSchedule {
         return count == 0;
     }
 
+
+    // V0-5
+    // IDEA: BFS (Kahn's Algorithm - Recommended) (fixed by gemini)
+    public boolean canFinish_0_5(int numCourses, int[][] prerequisites) {
+        // 1. Build Adjacency List and In-Degree array
+        List<List<Integer>> adj = new ArrayList<>();
+        for (int i = 0; i < numCourses; i++)
+            adj.add(new ArrayList<>());
+
+        int[] inDegree = new int[numCourses];
+
+        for (int[] p : prerequisites) {
+            int course = p[0];
+            int pre = p[1];
+            adj.get(pre).add(course); // pre -> course
+            inDegree[course]++; // course now has one more prerequisite
+        }
+
+        // 2. Add all courses with NO prerequisites (in-degree 0) to the queue
+        Queue<Integer> q = new LinkedList<>();
+        for (int i = 0; i < numCourses; i++) {
+            if (inDegree[i] == 0) {
+                q.offer(i);
+            }
+        }
+
+        // 3. Process the queue
+        int count = 0;
+        while (!q.isEmpty()) {
+            int cur = q.poll();
+            count++; // This course is finished
+
+            for (int next : adj.get(cur)) {
+                inDegree[next]--; // One prerequisite is cleared
+                if (inDegree[next] == 0) {
+                    q.offer(next); // All prerequisites cleared, add to queue
+                }
+            }
+        }
+
+        // 4. If we finished all courses, there was no cycle
+        return count == numCourses;
+    }
+
+
     // V0-6
     // IDEA: TOPOLOGICAL SORT (fixed by gpt)
     public boolean canFinish_0_6(int numCourses, int[][] prerequisites) {
@@ -995,5 +1050,7 @@ public class CourseSchedule {
         visited[cur] = Status.VISITED;
         return false;
     }
+
+
 
 }
