@@ -388,6 +388,7 @@ public class MostFrequentIDs {
     }
 
     // V0-4
+    // IDEA: MAP, TREEMAP, ARRAY OP
     // https://buildmoat.teachable.com/courses/7a7af3/lectures/64243726
     public long[] mostFrequentIDs_0_4(int[] nums, int[] freq) {
         Map<Integer, Long> m = new HashMap<>();
