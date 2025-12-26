@@ -1,6 +1,7 @@
 package LeetCodeJava.Array;
 
 // https://leetcode.com/problems/snakes-and-ladders/description/
+// https://leetcode.cn/problems/snakes-and-ladders/description/
 
 import java.util.*;
 
