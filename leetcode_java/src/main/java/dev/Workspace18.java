@@ -11531,12 +11531,28 @@ public class Workspace18 {
 
 
     // LC 909
+    // 10.00 - 10.10 am
+    /**
+     *  -> Return the least number of dice rolls required to reach the
+     *    square n2. If it is not possible to reach the square, return -1.
+     *
+     *  -----------------
+     *
+     *
+     *  -----------------
+     *
+     */
     public int snakesAndLadders(int[][] board) {
 
         return 0;
     }
 
 
+    // LC 317
+    public int shortestDistance(int[][] grid) {
+
+        return 0;
+    }
 
 
 }
