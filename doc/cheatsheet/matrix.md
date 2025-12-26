@@ -1,3 +1,16 @@
+---
+layout: cheatsheet
+title: "Matrix Data Structure"
+description: "2-dimensional array for grid-based problems and mathematical computations"
+category: "Data Structure"
+difficulty: "Medium"
+tags: ["matrix", "2d-array", "grid", "traversal"]
+patterns:
+  - Matrix traversal
+  - Grid-based problems
+  - 2D dynamic programming
+---
+
 # Matrix Data Structure
 
 ## Overview

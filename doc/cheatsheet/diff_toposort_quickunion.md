@@ -1,3 +1,16 @@
+---
+layout: cheatsheet
+title: "Topological Sort vs Quick Union Comparison"
+description: "Quick comparison between topological sorting and union-find algorithms"
+category: "Algorithm"
+difficulty: "Medium"
+tags: ["topological-sort", "union-find", "graph", "comparison"]
+patterns:
+  - Algorithm comparison
+  - Use case analysis
+  - Graph processing
+---
+
 # Quick Comparison: Topological Sort vs Quick Union
 
 | Feature | Topological Sort | Quick Union (Disjoint Set Union) |

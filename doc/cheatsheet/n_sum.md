@@ -1,3 +1,16 @@
+---
+layout: cheatsheet
+title: "N Sum"
+description: "Techniques for solving N-sum problems with various approaches"
+category: "Technique"
+difficulty: "Medium"
+tags: ["n-sum", "two-pointers", "hash-map", "target-sum"]
+patterns:
+  - Two-pointer approach
+  - Hash map lookup
+  - Nested sum problems
+---
+
 # N Sum
 
 ## 0) Concept  

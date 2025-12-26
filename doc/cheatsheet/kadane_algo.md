@@ -1,3 +1,16 @@
+---
+layout: cheatsheet
+title: "Kadane Algorithm"
+description: "Dynamic programming algorithm for maximum subarray sum problems"
+category: "Algorithm"
+difficulty: "Medium"
+tags: ["kadane", "dynamic-programming", "subarray", "maximum-sum"]
+patterns:
+  - Maximum subarray sum
+  - Single-pass optimization
+  - Dynamic programming
+---
+
 # Kadane Algorithm
 
 

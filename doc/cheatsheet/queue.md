@@ -1,3 +1,16 @@
+---
+layout: cheatsheet
+title: "Queue Data Structure"
+description: "Linear data structure following FIFO (First In First Out) principle"
+category: "Data Structure"
+difficulty: "Easy"
+tags: ["queue", "fifo", "linear", "enqueue", "dequeue"]
+patterns:
+  - FIFO processing
+  - Level-order traversal
+  - Buffer management
+---
+
 # Queue Data Structure
 
 <img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/queue2.png"></p>
