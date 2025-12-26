@@ -11142,7 +11142,71 @@ public class Workspace18 {
      *
      *
      */
+    // 11.00 - 10 am
+    // IDEA: PQ
     public long[] mostFrequentIDs(int[] nums, int[] freq) {
+        int n = nums.length;
+        long[] res = new long[n];
+
+        // Map: ID -> Current total frequency (must be Long)
+        // { val : cnt }
+        Map<Integer, Integer> map = new HashMap<>();
+
+        // max PQ
+        PriorityQueue<Integer> pq = new PriorityQueue<>(new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                int diff = o2 - o1;
+                return diff;
+            }
+        });
+
+        List<Integer> toRemove = new ArrayList<>();
+
+        for(int i = 0; i < nums.length; i++){
+            // ???
+            map.put(nums[i], map.getOrDefault(nums[i], 0));
+            int change = freq[i];
+            int newCnt = map.get(nums[i]) - change;
+
+            // ??? add to remove list
+            toRemove.add(map.get(nums[i]));
+
+            if(newCnt >= 0){
+                map.put(nums[i], newCnt);
+            }else{
+                map.put(nums[i], 0);
+            }
+
+
+            // update new cnt to PQ ???
+            if(newCnt > 0){
+                pq.add(newCnt);
+            }
+
+            // pop (remove old cnt ???)
+            // ???
+            while(!pq.isEmpty() && toRemove.contains(pq.peek())){
+                pq.poll();
+            }
+
+            // ??? poll the cur max cnt
+            //int curMaxCnt = pq.peek();
+            res[i] = !pq.isEmpty() ? pq.peek() : 0;
+        }
+
+        return res;
+    }
+
+
+
+
+
+
+
+
+
+    public long[] mostFrequentIDs_97(int[] nums, int[] freq) {
         // edge
 
         int n = nums.length;
