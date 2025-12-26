@@ -61,9 +61,50 @@ import java.util.*;
 public class MostFrequentIDs {
 
     // V0
-//    public long[] mostFrequentIDs(int[] nums, int[] freq) {
-//
-//    }
+    // IDEA: PQ + HASHMAP (gemini)
+    public long[] mostFrequentIDs(int[] nums, int[] freq) {
+        int n = nums.length;
+        long[] res = new long[n];
+
+        // Map: ID -> Current total frequency (Long to avoid overflow)
+        Map<Integer, Long> idToFreq = new HashMap<>();
+
+        // Max-PQ: Stores [Frequency, ID] sorted by Frequency descending
+        PriorityQueue<long[]> pq = new PriorityQueue<>((a, b) -> Long.compare(b[0], a[0]));
+
+        for (int i = 0; i < n; i++) {
+            int id = nums[i];
+            long change = freq[i];
+
+            // 1. Update the map with the new frequency
+            long newFreq = idToFreq.getOrDefault(id, 0L) + change;
+            idToFreq.put(id, newFreq);
+
+            // 2. Push the new frequency and the ID into the PQ
+            // Note: We don't remove the old frequency yet (Lazy Deletion)
+            pq.add(new long[] { newFreq, (long) id });
+
+            // 3. Clean the top of the PQ (Lazy Deletion)
+            // If the frequency at the top doesn't match the actual current freq in the map,
+            // it means this is an old, outdated record.
+            while (!pq.isEmpty()) {
+                long[] top = pq.peek();
+                long topFreq = top[0];
+                int topId = (int) top[1];
+
+                if (idToFreq.get(topId) != topFreq) {
+                    pq.poll(); // Discard stale entry
+                } else {
+                    break; // The top entry is valid and up-to-date
+                }
+            }
+
+            // 4. The current maximum frequency is now at the top
+            res[i] = pq.isEmpty() ? 0L : pq.peek()[0];
+        }
+
+        return res;
+    }
 
     // V0-0-0-1
     // IDEA: PQ track freq from hashmap + hashmap (WRONG !!!)
@@ -258,6 +299,50 @@ public class MostFrequentIDs {
             }
 
             res[i] = pq.isEmpty() ? 0L : pq.peek()[0];
+        }
+
+        return res;
+    }
+
+
+    // V0-0-3
+    // IDEA: PQ (gpt)
+    public long[] mostFrequentIDs_0_0_3(int[] nums, int[] freq) {
+        int n = nums.length;
+        long[] res = new long[n];
+
+        // ID -> current frequency
+        Map<Integer, Long> idToFreq = new HashMap<>();
+
+        // max-heap: [frequency, id]
+        PriorityQueue<long[]> pq = new PriorityQueue<>(
+                (a, b) -> Long.compare(b[0], a[0]));
+
+        for (int i = 0; i < n; i++) {
+            int id = nums[i];
+            long delta = freq[i];
+
+            long newFreq = idToFreq.getOrDefault(id, 0L) + delta;
+
+            if (newFreq <= 0) {
+                idToFreq.remove(id);
+            } else {
+                idToFreq.put(id, newFreq);
+                pq.offer(new long[] { newFreq, id }); // snapshot
+            }
+
+            // lazy deletion
+            while (!pq.isEmpty()) {
+                long topFreq = pq.peek()[0];
+                int topId = (int) pq.peek()[1];
+
+                if (idToFreq.getOrDefault(topId, 0L) == topFreq) {
+                    break;
+                }
+                pq.poll(); // stale
+            }
+
+            res[i] = pq.isEmpty() ? 0 : pq.peek()[0];
         }
 
         return res;
