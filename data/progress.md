@@ -2,7 +2,6 @@
 
 # 2025-12-26
 
-- LC weekly 390
 - weekly video
 	 - LC weekly 100 - done
 	 - LC weekly 102 - done
@@ -11,8 +10,8 @@
 	 - LC weekly 375 - done
 	 - LC weekly 394 - done
 	 - LC weekly 108 - done
-	 - LC weekly 341 - todo
-	 - LC weekly 390 - todo
+	 - LC weekly 341 - done
+	 - LC weekly 390 - done
 - to review
 	- LC weekly 100
 - needcode `grind 75` - similar LC by AI
