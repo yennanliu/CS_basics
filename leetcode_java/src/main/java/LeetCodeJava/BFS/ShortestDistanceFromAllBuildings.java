@@ -50,7 +50,7 @@ public class ShortestDistanceFromAllBuildings {
 //    }
 
     // V0-1
-    // IDEA: BFS (gemini)
+    // IDEA: multi-source BFS  + count, dist matrix (gemini)
     // TODO: validate
     /**  IDEA:
      *
@@ -156,8 +156,28 @@ public class ShortestDistanceFromAllBuildings {
     }
 
     // V0-2
-    // IDEA: BFS (GPT)
+    // IDEA: multi-source BFS  + count, dist matrix (GPT)
     // TODO: validate
+    /**  IDEA:
+     *
+     * 🧠 How It Works
+     *
+     * 1. Multi-source BFS from each building:
+     * 	•	For every building (1) run BFS
+     * 	•	Accumulate:
+     * 	•	dist[r][c] — total distance from all buildings
+     * 	•	reachCount[r][c] — how many buildings can reach that empty land
+     *
+     * 2. After all BFS runs:
+     *
+     * We check each empty cell (grid[r][c] == 0):
+     * 	•	If reachCount[r][c] == buildingCount, then all buildings can reach here.
+     * 	•	Pick the minimum dist[r][c].
+     *
+     * 3. If no such cell → return -1.
+     *
+     *
+     */
     public int shortestDistance_0_2(int[][] grid) {
         int m = grid.length;
         if (m == 0) return -1;
@@ -192,10 +212,74 @@ public class ShortestDistanceFromAllBuildings {
         return result == Integer.MAX_VALUE ? -1 : result;
     }
 
+    /**  NOTE !!!
+     *
+     *  Question: Why can we use the same `dist, reachCount`
+     *            track all distance, reached count from all different buildings ?
+     *            isn't the value being `overwritten` when another cell 1 running BFS ?
+     *
+     *
+     *  ->
+     * That is an excellent question! Understanding how the accumulation works is the key to this problem. The values are **not overwritten**; instead, they are **summed up** or **incremented**.
+     *
+     * Think of the `totalDistance` and `reachCount` matrices as "global scoreboards" that every building contributes to.
+     *
+     * ### 1. The `totalDistance` Matrix (Accumulation)
+     *
+     *   - When Building A performs its BFS, it finds every reachable empty land cell `(r, c)`
+     *     and calculates the distance. It then **adds** that distance to `totalDistance[r, c]`.
+     *
+     *   - When Building B starts its BFS, it does the same.
+     *     If it reaches the same cell `(r, c)`, it **adds its own
+     *     distance** to the value already stored there.
+     *
+     * * **Building A BFS:** finds `(r, c)` at distance 3. `totalDistance[r, c]` becomes `0 + 3 = 3`.
+     * * **Building B BFS:** finds `(r, c)` at distance 5. `totalDistance[r, c]` becomes `3 + 5 = 8`.
+     *
+     * By the time all buildings have finished their BFS, `totalDistance[r, c]`
+     * contains the sum of distances from **all** buildings to that specific piece of land.
+     *
+     *
+     *
+     * ### 2. The `reachCount` Matrix (Validation)
+     *
+     * This matrix tracks how many buildings can "see" a specific cell.
+     * Each time a building's BFS reaches an empty cell, it performs `reachCount[r][c]++`.
+     *
+     * If you have 3 buildings in total, and at the end of the process `reachCount[r][c]`
+     * is only `2`, it means one building was blocked by walls or other buildings and
+     * could never reach that spot. We use this to filter out invalid landing spots.
+     *
+     * ### 3. Why the values don't get messed up
+     *
+     * The only thing that gets "overwritten" or reset is the `visited` array
+     * (or the `visited` state). Each building needs its own fresh `visited`
+     * check to ensure it calculates the shortest path from *its* specific
+     * starting position.
+     *
+     * However, `totalDistance` and `reachCount` must persist throughout the
+     * entire execution because their goal is to provide the **aggregate data**
+     * for all buildings.
+     *
+     * ---
+     *
+     * **Summary Table of Matrix Roles**
+     *
+     * | Matrix | Action during BFS | Final Purpose |
+     * | --- | --- | --- |
+     * | `visited` | Reset for **every** building | Prevents cycles and ensures shortest path for current BFS. |
+     * | `reachCount` | **Incremented** (+1) | Ensures the land is reachable by **all** buildings. |
+     * | `totalDistance` | **Summed** (+ dist) | Provides the total travel cost for that specific land. |
+     *
+     */
     private void bfs(int[][] grid, int sr, int sc, int[][] dist, int[][] reachCount) {
         int m = grid.length;
         int n = grid[0].length;
 
+        /** NOTE !!
+         *
+         *  we `fresh` (init a new one) visited in every BFS call
+         */
         boolean[][] visited = new boolean[m][n];
         Queue<int[]> queue = new LinkedList<>();
         queue.add(new int[]{sr, sc});
@@ -228,8 +312,6 @@ public class ShortestDistanceFromAllBuildings {
             }
         }
     }
-
-
 
 
     // V1
