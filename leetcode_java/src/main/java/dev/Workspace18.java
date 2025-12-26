@@ -11530,6 +11530,12 @@ public class Workspace18 {
     }
 
 
+    // LC 909
+    public int snakesAndLadders(int[][] board) {
+
+        return 0;
+    }
+
 
 
 
