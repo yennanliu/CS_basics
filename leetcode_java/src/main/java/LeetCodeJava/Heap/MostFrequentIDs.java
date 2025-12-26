@@ -264,7 +264,6 @@ public class MostFrequentIDs {
     }
 
 
-
     // V0-1
     // IDEA: PQ (fixed by gemini)
     /**
@@ -423,6 +422,86 @@ public class MostFrequentIDs {
         }
 
         return ans;
+    }
+
+
+    // V0-5
+    // IDEA: Balanced BST (gemini)
+    /**
+     *
+     *   To solve LC 3092: Most Frequent IDs using a Balanced BST approach,
+     *   we use a TreeMap in Java. While a PriorityQueue handles
+     *   "Lazy Removal," a TreeMap allows us to maintain an
+     *   explicitly sorted collection of frequencies in real-time.
+     * ---
+     *
+     * ## 🧠 The Logic
+     *
+     * ### 1. ID-to-Frequency Map
+     *
+     * We need a `Map<Integer, Long>` to keep track of the current total frequency for each specific ID.
+     *
+     * ### 2. Frequency-to-Count Map (The Balanced BST)
+     *
+     * We use a `TreeMap<Long, Integer>` to act as our Balanced BST.
+     *
+     * * **The Key:** The frequency value.
+     * * **The Value:** The count of IDs that currently have that exact frequency.
+     *
+     * ### 3. The Update Cycle
+     *
+     * When an ID's frequency changes, we perform the following steps:
+     *
+     * 1. **Remove Old Frequency:** Find the ID's old frequency and decrement its count in the `TreeMap`. If the count reaches 0, remove that frequency key entirely.
+     * 2. **Add New Frequency:** Calculate the new frequency and increment its count in the `TreeMap`.
+     * 3. **Get Max:** The `TreeMap.lastKey()` method will always provide the maximum frequency in  time.
+     *
+     */
+    public long[] mostFrequentIDs_0_5(int[] nums, int[] freq) {
+        int n = nums.length;
+        long[] res = new long[n];
+
+        // Tracks: ID -> Current Frequency
+        Map<Integer, Long> idToFreq = new HashMap<>();
+
+        // Balanced BST (TreeMap) Tracks: Frequency -> How many IDs have this frequency
+        // We use this to get the maximum frequency currently in existence.
+        TreeMap<Long, Integer> freqCountBST = new TreeMap<>();
+
+        for (int i = 0; i < n; i++) {
+            int id = nums[i];
+            long delta = freq[i];
+
+            // 1. Handle the OLD frequency of this ID
+            long oldFreq = idToFreq.getOrDefault(id, 0L);
+            if (oldFreq > 0) {
+                int count = freqCountBST.get(oldFreq);
+                if (count == 1) {
+                    freqCountBST.remove(oldFreq); // No more IDs have this frequency
+                } else {
+                    freqCountBST.put(oldFreq, count - 1);
+                }
+            }
+
+            // 2. Update the ID to its NEW frequency
+            long newFreq = oldFreq + delta;
+            idToFreq.put(id, newFreq);
+
+            // 3. Update the BST with the NEW frequency
+            if (newFreq > 0) {
+                freqCountBST.put(newFreq, freqCountBST.getOrDefault(newFreq, 0) + 1);
+            }
+
+            // 4. Get the max frequency from the BST
+            if (freqCountBST.isEmpty()) {
+                res[i] = 0;
+            } else {
+                // lastKey() returns the highest key in the TreeMap (O(log M) where M is unique freqs)
+                res[i] = freqCountBST.lastKey();
+            }
+        }
+
+        return res;
     }
 
 
