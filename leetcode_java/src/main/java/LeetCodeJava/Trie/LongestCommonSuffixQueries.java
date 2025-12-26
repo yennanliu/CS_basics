@@ -68,6 +68,75 @@ public class LongestCommonSuffixQueries {
 //
 //    }
 
+    // V0-1
+    // IDEA: TRIE (gemini)
+    class TrieNode_0_1 {
+        TrieNode_0_1[] children = new TrieNode_0_1[26];
+        int bestIndex = -1; // Stores the index of the best word passing through here
+        int minLength = Integer.MAX_VALUE;
+    }
+
+    public int[] stringIndices(String[] wordsContainer, String[] wordsQuery) {
+        TrieNode_0_1 root = new TrieNode_0_1();
+
+        // Default best for the root (for when no suffix matches at all)
+        int globalBestIndex = 0;
+        for (int i = 0; i < wordsContainer.length; i++) {
+            if (wordsContainer[i].length() < wordsContainer[globalBestIndex].length()) {
+                globalBestIndex = i;
+            }
+        }
+        root.bestIndex = globalBestIndex;
+        root.minLength = wordsContainer[globalBestIndex].length();
+
+        // 1. Build the Trie with words from wordsContainer
+        for (int i = 0; i < wordsContainer.length; i++) {
+            String word = wordsContainer[i];
+            int n = word.length();
+            TrieNode_0_1 curr = root;
+
+            // Traverse word from back to front (Suffix -> Prefix)
+            for (int j = n - 1; j >= 0; j--) {
+                int charIdx = word.charAt(j) - 'a';
+                if (curr.children[charIdx] == null) {
+                    curr.children[charIdx] = new TrieNode_0_1();
+                }
+                curr = curr.children[charIdx];
+
+                // Update the best candidate at this node
+                // Tie-breaking: smaller length, then smaller index
+                if (n < curr.minLength) {
+                    curr.minLength = n;
+                    curr.bestIndex = i;
+                }
+                // (Index tie-break is implicit because we process in order
+                // and only update if n is strictly LESS than minLength)
+            }
+        }
+
+        // 2. Query the Trie
+        int[] result = new int[wordsQuery.length];
+        for (int i = 0; i < wordsQuery.length; i++) {
+            String query = wordsQuery[i];
+            TrieNode_0_1 curr = root;
+            int bestSoFar = root.bestIndex;
+
+            for (int j = query.length() - 1; j >= 0; j--) {
+                int charIdx = query.charAt(j) - 'a';
+                if (curr.children[charIdx] != null) {
+                    curr = curr.children[charIdx];
+                    bestSoFar = curr.bestIndex;
+                } else {
+                    break; // No deeper suffix match possible
+                }
+            }
+            result[i] = bestSoFar;
+        }
+
+        return result;
+    }
+
+
     // V0-3
     // IDEA: TRIE
     // https://buildmoat.teachable.com/courses/7a7af3/lectures/64243726
