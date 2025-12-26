@@ -11549,10 +11549,68 @@ public class Workspace18 {
 
 
     // LC 317
+    // 10.16 - 26 pm
+    /**
+     *  -> build a house on an `empty` land which reaches
+     *     ALL buildings in the  `shortest` amount of distance.
+     *
+     *
+     *     - NOTE:
+     *       - There will be at least one building.
+     *         If it is not possible to build such house according to
+     *         the above rules, return -1.
+     *
+     *
+     *  ---------------------
+     *
+     *   IDEA 1) MULTI SOURCE BFS ???
+     *
+     *      ->
+     *        1. get all 0 cell
+     *        2. calculate all dist between such 0 to 1
+     *        3. return the min dist
+     *
+     *   IDEA 2)
+     *
+     *
+     *   ---------------------
+     *
+     *
+     */
     public int shortestDistance(int[][] grid) {
+        // edge
 
+        int l = grid.length;
+        int w = grid[0].length;
+
+        List<Integer[]> buildList = new ArrayList<>();
+        for(int y = 0; y < l; y++){
+            for(int x = 0; x < w; x++){
+                if(grid[y][x] == 1){
+                    buildList.add(new Integer[]{x, y});
+                }
+            }
+        }
+
+        int minDist = l * w;
+        for(int y = 0; y < l; y++){
+            for(int x = 0; x < w; x++){
+                if(grid[y][x] == 1){
+                    //buildList.add(new Integer[]{x, y});
+                    int dist = getMinTotalDist(x, y, grid, new boolean[l][w]);
+                    minDist = Math.min(minDist, dist);
+                }
+            }
+        }
+
+
+        return minDist;
+    }
+
+    private int getMinTotalDist(int x, int y, int[][] grid, boolean[][] visited){
         return 0;
     }
+
 
 
 }
