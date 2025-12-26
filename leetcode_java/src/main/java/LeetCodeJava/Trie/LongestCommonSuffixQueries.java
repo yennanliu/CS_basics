@@ -1,6 +1,12 @@
 package LeetCodeJava.Trie;
 
 // https://leetcode.com/problems/longest-common-suffix-queries/description/
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * 3093. Longest Common Suffix Queries
  * Hard
@@ -61,6 +67,112 @@ public class LongestCommonSuffixQueries {
 //    public int[] stringIndices(String[] wordsContainer, String[] wordsQuery) {
 //
 //    }
+
+    // V0-3
+    // IDEA: TRIE
+    // https://buildmoat.teachable.com/courses/7a7af3/lectures/64243726
+    /**  IDEA:
+     *
+     * ## 1. English Translation
+     *
+     * **Q4**
+     *
+     * * You can refer to session 11; this problem is an application of a **Trie** (Prefix Tree).
+     * * Each node in the Trie represents a **prefix**. Each edge represents a **letter**; traversing an edge means adding that letter to the prefix.
+     * * "abc" --a--> "abca"
+     * * The problem asks about **suffixes**, but after **reversing** them, they actually become prefixes.
+     * * On each node of the Trie, record the **smallest index** and the **shortest string** that reaches that node.
+     * * Queries involve traversing this Trie until the required edge does not exist or you reach the end.
+     *
+     * ---
+     *
+     * ## 2. Traditional Chinese Transcription
+     *
+     * **Q4**
+     *
+     * * 可以參考 session 11，這題是有關字典樹（Trie）的應用
+     * * 字典樹每個節點代表一個前綴，每一條邊代表一個字母，走過那條邊代表在前綴上加上該字母
+     * * "abc" --a--> "abca"
+     * * 題目是問後綴，但 reverse 後其實就變前綴了
+     * * 字典樹上每個節點就去紀錄，走到這個節點最小的 index，跟最短的字串
+     * * 詢問就在這個字典樹上走，直到要走的邊不存在，或是走到底了
+     *
+     */
+    class Node_0_3 {
+        Map<Character, Node_0_3> children = new HashMap<>();
+        int index;
+        int length;
+
+        Node_0_3() {
+            index = 0;
+            length = 0;
+        }
+    }
+
+    Node_0_3 root = new Node_0_3();
+
+    private void add(Node_0_3 node, String s, int idx, int len, int pos) {
+        if (node == null)
+            return;
+        if (pos == s.length())
+            return;
+
+        char c = s.charAt(pos);
+        Node_0_3 next = node.children.get(c);
+        if (next == null) {
+            next = new Node_0_3();
+            next.index = idx;
+            next.length = len;
+            node.children.put(c, next);
+        } else {
+            if (len < next.length || (len == next.length && idx < next.index)) {
+                next.index = idx;
+                next.length = len;
+            }
+        }
+
+        add(next, s, idx, len, pos + 1);
+    }
+
+    private int query(Node_0_3 node, String s, int pos) {
+        if (pos == s.length())
+            return node.index;
+
+        char c = s.charAt(pos);
+        Node_0_3 next = node.children.get(c);
+        if (next == null)
+            return node.index;
+
+        return query(next, s, pos + 1);
+    }
+
+    public int[] stringIndices_0_3(String[] wordsContainer, String[] wordsQuery) {
+        List<String> reversedContainer = new ArrayList<>();
+        for (String w : wordsContainer) {
+            reversedContainer.add(new StringBuilder(w).reverse().toString());
+        }
+
+        root.index = 0;
+        root.length = reversedContainer.get(0).length();
+        for (int i = 0; i < reversedContainer.size(); i++) {
+            if (reversedContainer.get(i).length() < root.length
+                    || (reversedContainer.get(i).length() == root.length && i < root.index)) {
+                root.index = i;
+                root.length = reversedContainer.get(i).length();
+            }
+            add(root, reversedContainer.get(i), i, reversedContainer.get(i).length(), 0);
+        }
+
+        int[] result = new int[wordsQuery.length];
+        int index = 0;
+        for (String w : wordsQuery) {
+            String rev = new StringBuilder(w).reverse().toString();
+            result[index++] = query(root, rev, 0);
+        }
+
+        return result;
+    }
+
 
     // V1-1
     // IDEA: TRIE
@@ -260,6 +372,7 @@ public class LongestCommonSuffixQueries {
             ans[i] = search(head, wordsQuery[i]);
         return ans;
     }
+
 
 
 }
