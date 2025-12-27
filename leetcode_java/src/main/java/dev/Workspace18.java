@@ -8056,6 +8056,102 @@ public class Workspace18 {
         return true;
     }
 
+    // LC 126
+    // 3.21 - 31 pm
+    /**
+     *  ->  return all the shortest transformation sequences
+     *      from beginWord to endWord,
+     *
+     *
+     *  ------------------
+     *
+     *
+     *  ------------------
+     *
+     *
+     */
+    public List<List<String>> findLadders(String beginWord, String endWord, List<String> wordList) {
+        // edge
+
+
+        List<List<String>> res = new ArrayList<>();
+        List<String> collected = new ArrayList<>();
+
+        Set<String> dict = new HashSet<>(wordList);
+        Set<String> visited = new HashSet<>();
+
+        // queue:  [ [cur_str, trans_history], ....]
+        Queue<String[]> q = new LinkedList<>();
+        q.add(new String[]{beginWord, ""});
+        visited.add(beginWord);
+
+        int steps = 1; // beginWord counts as step 1
+
+        String alpha = "abcdefghijklmnopqrstuvwxyz";
+
+        while (!q.isEmpty()) {
+
+            int size = q.size();
+            for (int i = 0; i < size; i++) {
+
+                String[] curArr = q.poll();
+                String cur = curArr[0];
+                String history = curArr[1];
+
+                // reached end
+                if (cur.equals(endWord)){
+                    // ???
+                    collected.add(history);
+                }
+
+                char[] arr = cur.toCharArray();
+
+                // try all 26 letters on all positions
+                for (int j = 0; j < arr.length; j++) {
+
+                    char old = arr[j];
+
+                    for (char c : alpha.toCharArray()) {
+                        if (c == old){
+                            continue;
+                        }
+
+                        arr[j] = c;
+                        String newStr = new String(arr);
+
+                        if (dict.contains(newStr) && !visited.contains(newStr)) {
+                            visited.add(newStr);
+                            String tmpHistory = history;
+                            tmpHistory += ( "," + newStr);
+                            q.add(new String[]{newStr, tmpHistory});
+                        }
+                    }
+
+                    arr[j] = old; // restore
+                }
+            }
+
+            steps++;
+        }
+
+        System.out.println(">>> collected = " + collected);
+        // ??
+        for(String x: collected){
+            //String[] tmp = x.split(",");
+            // ???
+            List<String> tmp2 = new ArrayList<>();
+            Collections.addAll(tmp2, x.split(","));
+            res.add(tmp2);
+        }
+
+        return res;
+    }
+
+
+
+
+
+
     // LC 127
     // 10.29 - 39 am
     /**
