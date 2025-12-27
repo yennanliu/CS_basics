@@ -11711,6 +11711,12 @@ public class Workspace18 {
 
 
 
+    // LC 864
+    public int shortestPathAllKeys(String[] grid) {
+
+        return 0;
+    }
+
 
 
 
