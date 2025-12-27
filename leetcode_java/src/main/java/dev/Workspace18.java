@@ -11676,5 +11676,42 @@ public class Workspace18 {
     }
 
 
+    // LC 444
+    // 2.23 - 33 pm
+    /**
+     *
+     *  ->  Determine whether there is only one sequence that
+     *      can be reconstructed from seqs and
+     *      it is the org sequence.
+     *
+     *      - permutation: 排列
+     *      - org sequence is a permutation of the integers
+     *         - from 1 to n,
+     *
+     *      - Reconstruction : building a `shortest` common
+     *                    supersequence of the sequences in seqs
+     *
+     *
+     *
+     *  --------------
+     *
+     *
+     *   IDEA 1) BFS ??
+     *
+     *   IDEA 2) UNION FIND ???
+     *
+     *
+     *  --------------
+     *
+     *
+     */
+    public boolean sequenceReconstruction(int[] nums, List<List<Integer>> sequences){
+        return false;
+    }
+
+
+
+
+
 
 }
