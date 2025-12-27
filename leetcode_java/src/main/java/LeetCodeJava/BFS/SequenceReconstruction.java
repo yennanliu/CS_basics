@@ -232,6 +232,16 @@ public class SequenceReconstruction {
 
     // V0-2
     // IDEA: Kahn's Algorithm (Topological Sort)  (gpt)
+    /**  IDEA:
+     *
+     * ✅ 解題思路（關鍵）
+     * 	1.	將所有序列中的相鄰關係建成有向圖。
+     * 	2.	計算每個節點的入度（indegree）。
+     * 	3.	用 BFS 拓撲排序：
+     * 	•	每一次 queue 裡只能有 唯一一個入度為 0 的節點，否則就表示不是唯一序列。
+     * 	•	確保 BFS 過程生成的序列和 org 一致。
+     * 	4.	如果整個排序合法且唯一，即返回 true，否則返回 false。
+     */
     public boolean sequenceReconstruction_0_2(int[] org, List<List<Integer>> seqs) {
         int n = org.length;
         // 邊界條件
