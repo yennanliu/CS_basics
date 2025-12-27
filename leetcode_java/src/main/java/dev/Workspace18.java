@@ -8095,7 +8095,68 @@ public class Workspace18 {
      *     means we already found a `shortest path`
      *     so we should return the cnt of op directly and terminate the BFS
      */
+     // IDEA 1) BFS
+     // 2.50 - 3 pm
+
     public int ladderLength(String beginWord, String endWord, List<String> wordList) {
+        // edge
+        Set<String> set = new HashSet<>();
+        for(String x: wordList){
+            set.add(x);
+        }
+        if (!set.contains(endWord)){
+            return 0;
+        }
+        if (beginWord.equals(endWord)) {
+            return 0;
+        }
+
+        int minOpCnt = 0;
+        int idx = 0;
+        String alpha = "abcdefghijklmopqrstuvwxyz";
+        String tmpStr = ""; // ???
+
+
+        // bfs
+        Queue<String> q = new LinkedList<>();
+        q.add(beginWord);
+
+        Set<String> visited = new HashSet<>();
+
+        while(!q.isEmpty()){
+            int size = q.size();
+            for(int i = 0; i < size; i++){
+                String cur = q.poll();
+                // early exit
+                if (cur.equals(endWord)) {
+                    return minOpCnt;
+                }
+                visited.add(cur);
+
+                // NOTE !!! update element at idx // ???
+                for(char ch: alpha.toCharArray()){
+                    char[] tmp = cur.toCharArray();
+                    tmp[idx] = ch;
+                    tmpStr = String.valueOf(tmp);
+                    if(set.contains(tmpStr)){
+                        q.add(tmpStr);
+                    }
+                }
+            }
+            minOpCnt += 1;
+            idx += 1;
+        }
+
+
+        return tmpStr.equals(endWord) ? minOpCnt : 0;
+    }
+
+
+
+
+
+
+    public int ladderLength_999(String beginWord, String endWord, List<String> wordList) {
         // edge
         if(!wordList.contains(endWord)){
             return 0;
@@ -11712,10 +11773,22 @@ public class Workspace18 {
 
 
     // LC 864
+    // 2.47 - 57 pm
+    /**
+     *
+     *
+     */
     public int shortestPathAllKeys(String[] grid) {
 
         return 0;
     }
+
+
+    // LC 127
+//    public int ladderLength(String beginWord, String endWord, List<String> wordList) {
+//
+//        return 0;
+//    }
 
 
 
