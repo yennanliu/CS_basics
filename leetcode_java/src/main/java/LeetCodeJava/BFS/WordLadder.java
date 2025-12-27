@@ -45,10 +45,101 @@ import java.util.*;
 
 public class WordLadder {
 
-
     // V0
-    // IDEA: BFS + CUSTOM CLASS
+    // IDEA: BFS (gpt)
     public int ladderLength(String beginWord, String endWord, List<String> wordList) {
+
+        if (!wordList.contains(endWord))
+            return 0;
+
+        Set<String> dict = new HashSet<>(wordList);
+        Set<String> visited = new HashSet<>();
+
+        Queue<String> q = new LinkedList<>();
+        q.add(beginWord);
+        visited.add(beginWord);
+
+        int steps = 1; // beginWord counts as step 1
+
+        String alpha = "abcdefghijklmnopqrstuvwxyz";
+
+        while (!q.isEmpty()) {
+
+            int size = q.size();
+            for (int i = 0; i < size; i++) {
+
+                String cur = q.poll();
+
+                // reached end
+                if (cur.equals(endWord))
+                    return steps;
+
+                /** NOTE !!!
+                 *
+                 *
+                 *  trick:  transform string to char array,
+                 *          then we can replace idx element
+                 *          by arr[i] = new_val
+                 */
+                char[] arr = cur.toCharArray();
+
+                /**  NOTE !!
+                 *
+                 *  we can change any element at any idx
+                 *  at a time (NO NEED to change in sequence order)
+                 *
+                 *  and we can change element in same idx
+                 *  multiple times if needed.
+                 *
+                 *  So that's why for every idx, we need to loop
+                 *  over 26 alphabet for covering all possible cases.
+                 */
+                // try all 26 letters on all positions
+                for (int j = 0; j < arr.length; j++) {
+
+                    char old = arr[j];
+
+                    for (char c : alpha.toCharArray()) {
+                        if (c == old)
+                            continue;
+
+                        /** NOTE !!!
+                         *
+                         *
+                         *  we can replace idx element in char array
+                         *  by arr[i] = new_val
+                         */
+                        arr[j] = c;
+                        String newStr = new String(arr);
+
+                        if (dict.contains(newStr) && !visited.contains(newStr)) {
+
+                            /** NOTE !!!
+                             *
+                             *  we add newStr to `visited` right before
+                             *  the newStr is added to queue
+                             *
+                             *  (but NOT within the newStr is poll from queue)
+                             */
+                            visited.add(newStr);
+                            q.add(newStr);
+                        }
+                    }
+
+                    arr[j] = old; // restore
+                }
+            }
+
+            steps++;
+        }
+
+        return 0; // unreachable
+    }
+
+
+    // V0-0-1
+    // IDEA: BFS + CUSTOM CLASS
+    public int ladderLength_0_0_1(String beginWord, String endWord, List<String> wordList) {
         Set<String> wordSet = new HashSet<>(wordList);
         if (!wordSet.contains(endWord))
             return 0;
@@ -97,87 +188,6 @@ public class WordLadder {
             this.count = count;
         }
     }
-
-    // V0-0-1
-    // IDEA: BFS (fixed by gpt)
-    public int ladderLength_0_0_1(String beginWord, String endWord, List<String> wordList) {
-
-        if (!wordList.contains(endWord))
-            return 0;
-
-        Set<String> dict = new HashSet<>(wordList);
-        Set<String> visited = new HashSet<>();
-
-        Queue<String> q = new LinkedList<>();
-        q.add(beginWord);
-        visited.add(beginWord);
-
-        int steps = 1; // beginWord counts as step 1
-
-        String alpha = "abcdefghijklmnopqrstuvwxyz";
-
-        while (!q.isEmpty()) {
-
-            int size = q.size();
-            for (int i = 0; i < size; i++) {
-
-                String cur = q.poll();
-
-                // reached end
-                if (cur.equals(endWord))
-                    return steps;
-
-                /** NOTE !!!
-                 *
-                 *
-                 *  trick:  transform string to char array,
-                 *          then we can replace idx element
-                 *          by arr[i] = new_val
-                 */
-                char[] arr = cur.toCharArray();
-
-                // try all 26 letters on all positions
-                for (int j = 0; j < arr.length; j++) {
-
-                    char old = arr[j];
-
-                    for (char c : alpha.toCharArray()) {
-                        if (c == old)
-                            continue;
-
-                        /** NOTE !!!
-                         *
-                         *
-                         *  we can replace idx element in char array
-                         *  by arr[i] = new_val
-                         */
-                        arr[j] = c;
-                        String newStr = new String(arr);
-
-                        if (dict.contains(newStr) && !visited.contains(newStr)) {
-
-                            /** NOTE !!!
-                             *
-                             *  we add newStr to `visited` right before
-                             *  the newStr is added to queue
-                             *
-                             *  (but NOT within the newStr is poll from queue)
-                             */
-                            visited.add(newStr);
-                            q.add(newStr);
-                        }
-                    }
-
-                    arr[j] = old; // restore
-                }
-            }
-
-            steps++;
-        }
-
-        return 0; // unreachable
-    }
-
 
     // V0-0-2
     // IDEA: BFS (fixed by gemini)
