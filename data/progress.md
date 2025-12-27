@@ -191,7 +191,6 @@
 		- gpt
 			- 1293
 		- gemini
-			- 127
 	- LC 417 Pacific Atlantic Water Flow
 		- gpt
 			- 329

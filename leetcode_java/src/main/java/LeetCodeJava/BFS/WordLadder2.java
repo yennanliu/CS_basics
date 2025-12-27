@@ -204,6 +204,105 @@ public class WordLadder2 {
         }
     }
 
+    // V0-3
+    // IDEA: BFS + DFS + BACKTRACK (gemini)
+    public List<List<String>> findLadders_0_3(String beginWord, String endWord, List<String> wordList) {
+        List<List<String>> result = new ArrayList<>();
+        Set<String> dict = new HashSet<>(wordList);
+        if (!dict.contains(endWord))
+            return result;
+
+        // Map to store: word -> shortest distance from beginWord
+        Map<String, Integer> distances = new HashMap<>();
+        // Map to store: word -> list of its "predecessors" in the shortest path
+        Map<String, List<String>> adj = new HashMap<>();
+
+        dict.add(beginWord);
+
+        // 1. BFS to find distances and build the adjacency structure
+        bfs(beginWord, endWord, dict, distances, adj);
+
+        // 2. DFS (Backtracking) to reconstruct paths from endWord back to beginWord
+        if (distances.containsKey(endWord)) {
+            List<String> path = new LinkedList<>();
+            path.add(endWord);
+            backtrack(endWord, beginWord, adj, path, result);
+        }
+
+        return result;
+    }
+
+    private void bfs(String begin, String end, Set<String> dict,
+                     Map<String, Integer> distances, Map<String, List<String>> adj) {
+        Queue<String> q = new LinkedList<>();
+        q.offer(begin);
+        distances.put(begin, 0);
+
+        boolean found = false;
+        while (!q.isEmpty() && !found) {
+            int size = q.size();
+            // Process level by level to ensure we find all shortest paths
+            for (int i = 0; i < size; i++) {
+                String cur = q.poll();
+                int curDist = distances.get(cur);
+
+                List<String> neighbors = getNeighbors(cur, dict);
+                for (String next : neighbors) {
+                    // Case 1: We found this word for the first time
+                    if (!distances.containsKey(next)) {
+                        distances.put(next, curDist + 1);
+                        q.offer(next);
+                        adj.computeIfAbsent(next, k -> new ArrayList<>()).add(cur);
+                    }
+                    // Case 2: We found this word at the same shortest level from another path
+                    else if (distances.get(next) == curDist + 1) {
+                        adj.computeIfAbsent(next, k -> new ArrayList<>()).add(cur);
+                    }
+
+                    if (next.equals(end))
+                        found = true;
+                }
+            }
+        }
+    }
+
+    private List<String> getNeighbors(String word, Set<String> dict) {
+        List<String> neighbors = new ArrayList<>();
+        char[] chars = word.toCharArray();
+        for (int i = 0; i < chars.length; i++) {
+            char old = chars[i];
+            for (char c = 'a'; c <= 'z'; c++) {
+                if (c == old)
+                    continue;
+                chars[i] = c;
+                String next = new String(chars);
+                if (dict.contains(next))
+                    neighbors.add(next);
+            }
+            chars[i] = old;
+        }
+        return neighbors;
+    }
+
+    private void backtrack(String cur, String begin, Map<String, List<String>> adj,
+                           List<String> path, List<List<String>> result) {
+        if (cur.equals(begin)) {
+            List<String> copy = new ArrayList<>(path);
+            Collections.reverse(copy);
+            result.add(copy);
+            return;
+        }
+
+        if (adj.containsKey(cur)) {
+            for (String pre : adj.get(cur)) {
+                path.add(pre);
+                backtrack(pre, begin, adj, path, result);
+                path.remove(path.size() - 1); // Backtrack step
+            }
+        }
+    }
+
+
     // V1
     // https://www.youtube.com/watch?v=rWd4wScVYxc
 
@@ -215,4 +314,6 @@ public class WordLadder2 {
     // V3
     // https://leetcode.com/problems/word-ladder-ii/solutions/2424910/explanation-with-animation-accepted-with-zlxi/
 
+
+    
 }
