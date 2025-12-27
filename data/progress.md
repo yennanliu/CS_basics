@@ -189,7 +189,6 @@
 			- 138
 	- LC 286 Walls And Gates
 		- gpt
-			- 864
 			- 1293
 		- gemini
 			- 127
