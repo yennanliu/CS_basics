@@ -159,6 +159,138 @@ public class SequenceReconstruction {
 //        return true;
 //    }
 
+
+    // V0-1
+    // IDEA: Kahn's Algorithm (Topological Sort) (gemini)
+    /**
+     * Logic:
+     * 1. Build a directed graph where an edge u -> v exists if u appears before v in any sequence.
+     * 2. Use Kahn's Algorithm (Topological Sort).
+     * 3. Key constraint: To ensure uniqueness, the queue must always have EXACTLY one element.
+     * 4. Verify the resulting order matches 'org'.
+     *
+     * Time Complexity: O(V + E), where V is num of elements and E is total length of sequences.
+     * Space Complexity: O(V + E) for the adjacency list.
+     */
+    public boolean sequenceReconstruction_0_1(int[] org, List<List<Integer>> seqs) {
+        Map<Integer, List<Integer>> adj = new HashMap<>();
+        Map<Integer, Integer> inDegree = new HashMap<>();
+
+        // 1. Initialize maps with all elements found in seqs
+        for (List<Integer> seq : seqs) {
+            for (int val : seq) {
+                adj.putIfAbsent(val, new ArrayList<>());
+                inDegree.putIfAbsent(val, 0);
+            }
+        }
+
+        // Validate that all elements in 'org' exist in the graph and vice-versa
+        if (inDegree.size() != org.length) return false;
+
+        // 2. Build the graph and calculate in-degrees
+        for (List<Integer> seq : seqs) {
+            for (int i = 0; i < seq.size() - 1; i++) {
+                int u = seq.get(i);
+                int v = seq.get(i + 1);
+                adj.get(u).add(v);
+                inDegree.put(v, inDegree.get(v) + 1);
+            }
+        }
+
+        // 3. Initialize queue with nodes having in-degree 0
+        Queue<Integer> queue = new LinkedList<>();
+        for (int node : inDegree.keySet()) {
+            if (inDegree.get(node) == 0) {
+                queue.offer(node);
+            }
+        }
+
+        // 4. Perform Topological Sort
+        int index = 0;
+        while (!queue.isEmpty()) {
+            // Uniqueness Check: If more than one node is available, the sequence isn't unique
+            if (queue.size() > 1) return false;
+
+            int curr = queue.poll();
+
+            // Verify order matches org
+            if (index >= org.length || curr != org[index]) return false;
+            index++;
+
+            for (int neighbor : adj.getOrDefault(curr, new ArrayList<>())) {
+                inDegree.put(neighbor, inDegree.get(neighbor) - 1);
+                if (inDegree.get(neighbor) == 0) {
+                    queue.offer(neighbor);
+                }
+            }
+        }
+
+        // Ensure all elements of org were processed
+        return index == org.length;
+    }
+
+
+    // V0-2
+    // IDEA: Kahn's Algorithm (Topological Sort)  (gpt)
+    public boolean sequenceReconstruction_0_2(int[] org, List<List<Integer>> seqs) {
+        int n = org.length;
+        // 邊界條件
+        if (seqs == null || seqs.isEmpty()) {
+            return false;
+        }
+
+        // 建圖 + 計算 indegree
+        List<List<Integer>> graph = new ArrayList<>();
+        int[] indeg = new int[n];
+        for (int i = 0; i < n; i++) {
+            graph.add(new ArrayList<>());
+        }
+
+        for (List<Integer> seq : seqs) {
+            for (int i = 1; i < seq.size(); ++i) {
+                int a = seq.get(i - 1) - 1; // 轉為 0-base
+                int b = seq.get(i) - 1;
+                graph.get(a).add(b);
+                indeg[b]++;
+            }
+        }
+
+        // 拓撲排序 + 唯一性檢查
+        Queue<Integer> queue = new LinkedList<>();
+        for (int i = 0; i < n; i++) {
+            if (indeg[i] == 0) {
+                queue.offer(i);
+            }
+        }
+
+        int idx = 0;
+        while (!queue.isEmpty()) {
+            // 有超過一個入度為 0 => 不唯一
+            if (queue.size() > 1) {
+                return false;
+            }
+            int u = queue.poll();
+
+            // 與 org 序列比較
+            if (org[idx] - 1 != u) {
+                return false;
+            }
+            idx++;
+
+            for (int v : graph.get(u)) {
+                if (--indeg[v] == 0) {
+                    queue.offer(v);
+                }
+            }
+        }
+
+        // 是否全部比對完
+        return idx == n;
+    }
+
+
+
+
     // V1
     // https://www.youtube.com/watch?v=FHY1q1h9gq0
     // https://www.jiakaobo.com/leetcode/444.%20Sequence%20Reconstruction.html
@@ -325,4 +457,6 @@ public class SequenceReconstruction {
 
     // V4
     // https://blog.csdn.net/qq_46105170/article/details/105727262
+
+
 }
