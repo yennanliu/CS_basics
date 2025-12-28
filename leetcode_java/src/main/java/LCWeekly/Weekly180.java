@@ -297,7 +297,104 @@ public class Weekly180 {
 
     // LC 1383
     // https://leetcode.com/problems/maximum-performance-of-a-team/
+    // 16.43 - 53 pm
+    /**
+     *
+     * -> Return the `maximum` performance of this team.
+     *    Since the answer can be a huge number,
+     *    return it modulo 109 + 7.
+     *
+     *    - Choose at most `k different engineers` out of the n engineers
+     *      to form a team with the `maximum` performance.
+     *
+     *   performance = sum(speed)  * minimum efficiency
+     *
+     *
+     *   -  engineers numbered from 1 to n
+     *      -  1 to n (ID)
+     *
+     *
+     *  -------------------
+     *
+     *   IDEA 1) MATH
+     *
+     *    -> per = (s1 + s2 + .. sk) * min(e1, e2, ... ek)
+     *
+     *    -> how to find max `per` ???
+     *
+     *    ->
+     *
+     *
+     *   IDEA 2) PQ
+     *
+     *    -> per = (s1 + s2 + .. sk) * min(e1, e2, ... ek)
+     *    -> max per if either ???
+     *       - max (s1 + s2 + .. sk)
+     *       or
+     *       - max min(e1, e2, ... ek)
+     *
+     *
+     *   IDEA 3) BRUTE FORCE ???
+     *
+     *
+     *
+     *  -------------------
+     *
+     *   ex 1)
+     *
+     *   Input: n = 6, speed = [2,10,3,1,5,8], efficiency = [5,4,3,9,7,2], k = 2
+     *   Output: 60
+     *
+     *   ->
+     *   speed = [2,10,3,1,5,8]
+     *   efficiency = [5,4,3,9,7,2]
+     *
+     *   speed * eff = [10, 40, 9, 9, 35, 16]
+     *
+     *   -> id = 2 ,5
+     *
+     *   -> performance =  (10 + 5) * min(4, 7)
+     *                  = 15 * 4 =  60
+     *
+     *
+     *   ex 2)
+     *    Input: n = 6, speed = [2,10,3,1,5,8], efficiency = [5,4,3,9,7,2], k = 3
+     *    Output: 68
+     *
+     *    ->
+     *
+     *    speed = [2,10,3,1,5,8]
+     *    efficiency = [5,4,3,9,7,2]
+     *
+     *,
+     *    speed * eff = [10, 40, 9, 9, 35, 16]
+     *
+     *
+     *    -> id = 1,2,5
+     *
+     *    -> performance = (2+10+5) * min(5,4,7)
+     *                   = 17 * 4 = 68
+     *
+     *
+     *
+     *  ex 3)
+     *  Input: n = 6, speed = [2,10,3,1,5,8], efficiency = [5,4,3,9,7,2], k = 4
+     *  Output: 72
+     *
+     *
+     *  ->
+     *    speed = [2,10,3,1,5,8]
+     *    efficiency = [5,4,3,9,7,2]
+     *
+     *
+     *
+     *
+     *
+     */
+    public int maxPerformance(int n, int[] speed, int[] efficiency, int k) {
 
+        return 0;
+    }
 
 
 
