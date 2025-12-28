@@ -1,5 +1,7 @@
 package LCWeekly;
 
+import LeetCodeJava.DataStructure.TreeNode;
+
 import java.util.*;
 
 /**
@@ -206,10 +208,97 @@ public class Weekly180 {
 
     // LC 1382
     // https://leetcode.com/problems/balance-a-binary-search-tree/
+    // 16.19 - 35 pm
+    /**
+     *  ->  return a balanced binary search tree with the same node values.
+     *    If there is more than one answer, return any of them.
+     *
+     *      - given `root` of BST
+     *         - return balanced BST
+     *
+     *
+     *
+     *    - NOTE:
+     *       - A binary search tree
+     *          is balanced if the depth of
+     *          the two subtrees of every node never differs by more than 1.
+     *
+     *
+     *  ------------------
+     *
+     *   IDEA 1) DFS
+     *       -> build BST tree ???
+     *
+     *   IDEA 2) BFS ???
+     *
+     *
+     *  ------------------
+     *
+     *
+     */
+    List<Integer> nodeList = new ArrayList<>(); //new ArrayList<>();
+    public TreeNode balanceBST(TreeNode root) {
+        // edge
+        if(root == null){
+            return root; // ???
+        }
+        if(root.left == null && root.right == null){
+            return null;
+        }
+
+        // ?? get node list (in-order traversal)
+        //List<Integer> list = getTreeNode(); //new ArrayList<>();
+        getTreeNode(root);
+
+        // ???
+        return buildBSTHelper(root,
+                nodeList,
+                Integer.MAX_VALUE,
+                -1 * Integer.MAX_VALUE);
+    }
+
+    // BST:  left < root < right
+    // so, in-order traversal is already `ascending` order
+    //
+    private TreeNode buildBSTHelper(TreeNode root, List<Integer> list, int minVal, int maxVal){
+        // edge
+        if(root == null){
+            return root; // ???
+        }
+
+        // ???
+        int rootIdx = list.indexOf(root.val); // /???
+
+        root.left = buildBSTHelper(root,
+                list.subList(0, rootIdx),
+                minVal,
+                root.val);
+
+        root.right = buildBSTHelper(root,
+                list.subList(rootIdx + 1, list.size() - 1),
+                root.val,
+                maxVal);
+
+        // /??
+        return root;
+    }
+
+    // in-order traverse
+    private void getTreeNode(TreeNode root){
+        if(root == null){
+            return;
+        }
+        getTreeNode(root.left);
+        nodeList.add(root.val);
+        getTreeNode(root.right);
+       // return null;
+    }
 
 
     // LC 1383
     // https://leetcode.com/problems/maximum-performance-of-a-team/
+
+
 
 
 }
