@@ -1,7 +1,6 @@
 package LCWeekly;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * LeetCode biweekly contest 180
@@ -121,6 +120,88 @@ public class Weekly180 {
 
     // LC 1381
     // https://leetcode.com/problems/design-a-stack-with-increment-operation/
+    // 16.08 - 18 pm
+    /**
+     *  -> Design a stack that supports increment operations on its elements.
+     *
+     *  void inc(int k, int val):
+     *      Increments the `bottom` `k elements` of
+     *      the stack by val.
+     *        - If there are less than k elements
+     *            -> in the stack, increment all the elements in the stack.
+     *
+     *
+     *  ---------------
+     *
+     *   IDEA 1) DEQUEUE  ???
+     *
+     *
+     *
+     *   ---------------
+     *
+     *
+     *
+     */
+    class CustomStack {
+        // attr
+        int maxSize;
+        Deque<Integer> deque;
+        //int size;
+
+        public CustomStack(int maxSize) {
+            this.maxSize = maxSize;
+            this.deque = new ArrayDeque<>();
+            //this.deque.size();
+        }
+
+        public void push(int x) {
+            // ?? add VS push ??
+            //this.deque.add(x);
+            this.deque.push(x);
+
+        }
+
+        public int pop() {
+            if(!this.deque.isEmpty()){
+                return this.deque.pop();
+            }
+            return -1; // ???
+
+        }
+
+        public void increment(int k, int val) {
+            //boolean lessEqualsThanK = (getSize() <= k);
+            // FIFO
+            Queue<Integer> tmpQ = new LinkedList<>();
+
+            // case 1) size <= k
+            if(getSize() <= k){
+                while(!this.deque.isEmpty()){
+                    int x = this.deque.poll();
+                    tmpQ.add(x + 1);
+                }
+            }
+            // case 1) size > k
+            else{
+                for(int i = 0; i < k; i++){
+                    int x = this.deque.poll();
+                    tmpQ.add(x + 1);
+                }
+            }
+
+            // add back to dequeue
+            while(!tmpQ.isEmpty()){
+                this.deque.add(tmpQ.poll());
+            }
+
+        }
+
+        public int getSize(){
+            return this.deque.size();
+        }
+
+    }
+
 
 
     // LC 1382
