@@ -116,6 +116,54 @@ public class FindIfPathExistsInGraph {
         return false;
     }
 
+    // V0-2
+    // IDEA: DFS
+    public boolean validPath_0_2(int n, int[][] edges, int source, int destination) {
+        if (source == destination) {
+            return true;
+        }
+        
+        // { node: [neighbor_1, neighbor_2, ..] }
+        Map<Integer, List<Integer>> map = new HashMap<>();
+        for (int i = 0; i < n; i++) {
+            map.put(i, new ArrayList<>());
+        }
+        for (int[] e : edges) {
+            int ui = e[0];
+            int vi = e[1];
+
+            map.get(ui).add(vi);
+            map.get(vi).add(ui);
+        }
+
+        // NOTE !!! visit from `source`
+        return dfsHelper99(map, source, destination, new boolean[n]);
+    }
+
+    private boolean dfsHelper99(Map<Integer, List<Integer>> map, int node, int destination, boolean[] visited) {
+        // edge
+        if (node == destination) {
+            return true;
+        }
+
+        // mark as visited
+        visited[node] = true;
+
+        // visit neighbors
+        for (int next : map.get(node)) {
+            if (!visited[next]) {
+                // ??? early exit ?? if found a `working` path,
+                //     return true directly
+                if (dfsHelper99(map, next, destination, visited)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+
     // V1-1
     // IDEA: BFS
     // https://leetcode.ca/2021-08-17-1971-Find-if-Path-Exists-in-Graph/
