@@ -1,6 +1,6 @@
 # Progress
 
-# 2025-12-29
+# 2025-12-30
 
 - LC weekly 180
 
@@ -215,6 +215,15 @@
 		- gemini
 			- 329
 			- 2050
+	- LC 261 Graph Valid Tree
+		- gpt
+			- 2316
+			- 261
+			- 323
+			- 684
+			- 310
+			- 1192
+		- gemini
 	- others:
 		- Path Signatures
 			- 694,711,652,508
