@@ -11134,13 +11134,72 @@ public class Workspace18 {
      *
      *    IDEA 1) DFS
      *
+     *    IDEA 2) BFS
+     *
+     *    IDEA 3) UNION FIND
+     *
      *
      *
      *   -----------------
      *
      *
      */
+    // 7.01 - 11 am
+    // dfs ???
     public boolean validPath(int n, int[][] edges, int source, int destination) {
+        if (source == destination){
+            return true;
+        }
+
+        // ??
+        //boolean[] visited = new boolean[n];
+        // { node: [neighbor_1, neighbor_2, ..] }
+        Map<Integer, List<Integer>> map = new HashMap<>();
+        for(int i = 0; i < n; i++){
+            map.put(i, new ArrayList<>());
+        }
+        for(int[] e: edges){
+            int ui = e[0];
+            int vi = e[1];
+
+            map.get(ui).add(vi);
+            map.get(vi).add(ui);
+        }
+
+        // NOTE !!! visit from `source`
+        return dfsHelper99(map, source, destination, new boolean[n]);
+    }
+
+    private boolean dfsHelper99(Map<Integer, List<Integer>> map, int node, int destination, boolean[] visited){
+        // edge
+        if (node == destination){
+            return true;
+        }
+
+        // mark as visited
+        visited[node] = true;
+
+        // visit neighbors
+        for(int next: map.get(node)){
+            if(!visited[next]){
+                // ??? early exit ?? if found a `working` path,
+                //     return true directly
+                if(dfsHelper99(map, next, destination, visited)){
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+
+
+
+
+
+
+    public boolean validPath_99(int n, int[][] edges, int source, int destination) {
         // edge
         // 1. Quick check: If source is destination, a path exists.
         if (source == destination)
