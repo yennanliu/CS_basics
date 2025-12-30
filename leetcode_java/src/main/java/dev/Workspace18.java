@@ -11905,6 +11905,10 @@ public class Workspace18 {
      *
      */
     public int shortestDistance(int[][] grid) {
+
+        return 0;
+    }
+    public int shortestDistance_99(int[][] grid) {
         // edge
 
         int l = grid.length;

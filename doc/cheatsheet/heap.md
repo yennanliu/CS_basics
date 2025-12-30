@@ -1410,6 +1410,153 @@ public int minDeletions_hashset(String s) {
  */
 ```
 
+### 2-13) Maximum Performance of a Team
+
+```java
+// java
+// LC 1383
+// Reference: leetcode_java/src/main/java/LeetCodeJava/Heap/MaximumPerformanceOfAeam.java
+
+/**
+ * Problem: Choose at most k engineers to maximize team performance
+ * Performance = (sum of speeds) * (minimum efficiency among chosen engineers)
+ *
+ * Example 1:
+ * Input: n = 6, speed = [2,10,3,1,5,8], efficiency = [5,4,3,9,7,2], k = 2
+ * Output: 60
+ * Explanation: Select engineer 2 (speed=10, eff=4) and engineer 5 (speed=5, eff=7)
+ *              Performance = (10 + 5) * min(4, 7) = 60
+ *
+ * Example 2:
+ * Input: n = 6, speed = [2,10,3,1,5,8], efficiency = [5,4,3,9,7,2], k = 3
+ * Output: 68
+ * Explanation: Select engineers 1,2,5 → (2+10+5) * min(5,4,7) = 68
+ *
+ * Constraints:
+ * - 1 <= k <= n <= 10^5
+ * - speed.length == efficiency.length == n
+ * - 1 <= speed[i] <= 10^5
+ * - 1 <= efficiency[i] <= 10^8
+ */
+
+// APPROACH: GREEDY + SORTING + MIN HEAP
+/**
+ * KEY INSIGHT:
+ *
+ * 1. Sort engineers by efficiency in DESCENDING order
+ *    - This way, when we process engineer i, all previously considered engineers
+ *      have efficiency >= current engineer's efficiency
+ *    - So current engineer's efficiency becomes the bottleneck (minimum)
+ *
+ * 2. Use MIN HEAP to track the k largest speeds
+ *    - As we iterate, maintain at most k engineers
+ *    - Always remove the engineer with lowest speed when exceeding k
+ *    - This maximizes the speed sum while respecting the constraint
+ *
+ * 3. Calculate performance at each step
+ *    - performance = (sum of speeds in heap) * (current engineer's efficiency)
+ *    - Current efficiency is guaranteed to be the minimum (due to sorting)
+ *
+ * Time Complexity: O(N log N) for sorting + O(N log k) for heap operations = O(N log N)
+ * Space Complexity: O(N) for storing engineers + O(k) for heap = O(N)
+ */
+public int maxPerformance(int n, int[] speed, int[] efficiency, int k) {
+    final int MOD = 1_000_000_007;
+
+    // Step 1: Pair engineers with [efficiency, speed]
+    int[][] engineers = new int[n][2];
+    for (int i = 0; i < n; i++) {
+        engineers[i] = new int[] { efficiency[i], speed[i] };
+    }
+
+    // Step 2: Sort by efficiency in DESCENDING order
+    // This ensures current engineer has minimum efficiency among all considered
+    Arrays.sort(engineers, (a, b) -> b[0] - a[0]);
+
+    // Step 3: Min heap to maintain k largest speeds
+    // We use min heap so we can easily remove the smallest speed when size > k
+    PriorityQueue<Integer> minHeap = new PriorityQueue<>();
+
+    long speedSum = 0;      // Sum of speeds in current team
+    long maxPerf = 0;       // Maximum performance found so far
+
+    // Step 4: Process each engineer in order of decreasing efficiency
+    for (int[] eng : engineers) {
+        int eff = eng[0];   // Current engineer's efficiency (minimum so far)
+        int spd = eng[1];   // Current engineer's speed
+
+        // Add current engineer to the team
+        minHeap.offer(spd);
+        speedSum += spd;
+
+        // If team exceeds k engineers, remove the one with lowest speed
+        if (minHeap.size() > k) {
+            speedSum -= minHeap.poll();
+        }
+
+        // Calculate performance with current engineer as efficiency bottleneck
+        // Since engineers are sorted by efficiency DESC, current eff is the minimum
+        long performance = speedSum * eff;
+        maxPerf = Math.max(maxPerf, performance);
+    }
+
+    // Return result modulo 10^9 + 7
+    return (int) (maxPerf % MOD);
+}
+
+/**
+ * STEP-BY-STEP EXAMPLE:
+ *
+ * Input: speed = [2,10,3,1,5,8], efficiency = [5,4,3,9,7,2], k = 2
+ *
+ * After sorting by efficiency DESC:
+ * [(9,1), (7,5), (5,2), (4,10), (3,3), (2,8)]
+ *
+ * Iteration 1: eng = (9,1)
+ *   - Add speed=1, speedSum=1, heap=[1]
+ *   - performance = 1 * 9 = 9, maxPerf = 9
+ *
+ * Iteration 2: eng = (7,5)
+ *   - Add speed=5, speedSum=6, heap=[1,5]
+ *   - performance = 6 * 7 = 42, maxPerf = 42
+ *
+ * Iteration 3: eng = (5,2)
+ *   - Add speed=2, speedSum=8, heap=[1,2,5]
+ *   - Size > k, remove min=1, speedSum=7, heap=[2,5]
+ *   - performance = 7 * 5 = 35, maxPerf = 42
+ *
+ * Iteration 4: eng = (4,10)
+ *   - Add speed=10, speedSum=17, heap=[2,5,10]
+ *   - Size > k, remove min=2, speedSum=15, heap=[5,10]
+ *   - performance = 15 * 4 = 60, maxPerf = 60 ✓
+ *
+ * Continue for remaining engineers...
+ * Final answer: 60
+ */
+
+/**
+ * WHY THIS WORKS:
+ *
+ * 1. Greedy Choice: By sorting by efficiency descending, we ensure that
+ *    when considering engineer i, all previous engineers have >= efficiency.
+ *    So engineer i's efficiency is the bottleneck (minimum).
+ *
+ * 2. Optimal Substructure: To maximize performance with current efficiency,
+ *    we want to maximize the speed sum. The min heap ensures we keep only
+ *    the k engineers with highest speeds among those considered so far.
+ *
+ * 3. Why Min Heap for "k largest"?
+ *    - We want to maintain k largest speeds (maximize sum)
+ *    - Min heap lets us easily identify and remove the smallest speed
+ *      when we need to make room for a potentially larger speed
+ *    - The root of min heap = smallest speed in our selection
+ *      → if new speed > root, we should replace it
+ *
+ * Pattern: Greedy + Sorting + Top K with Heap
+ * Similar to: LC 857 (Minimum Cost to Hire K Workers)
+ */
+```
+
 ## Problems by Pattern
 
 ### Pattern-Based Problem Classification
