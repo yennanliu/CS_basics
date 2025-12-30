@@ -160,6 +160,9 @@ public class Weekly180 {
             // ?? add VS push ??
             //this.deque.add(x);
             this.deque.push(x);
+            while(getSize() > maxSize){
+                this.deque.poll();
+            }
 
         }
 
@@ -179,7 +182,8 @@ public class Weekly180 {
             // case 1) size <= k
             if(getSize() <= k){
                 while(!this.deque.isEmpty()){
-                    int x = this.deque.poll();
+                    // ?? poll from the `bottom`, so poll first ???
+                    int x = this.deque.pollFirst();
                     tmpQ.add(x + 1);
                 }
             }
@@ -187,7 +191,7 @@ public class Weekly180 {
             else{
                 for(int i = 0; i < k; i++){
                     int x = this.deque.poll();
-                    tmpQ.add(x + 1);
+                    tmpQ.add(x + val);
                 }
             }
 

@@ -84,6 +84,61 @@ public class DesignAStackWithIncrementOperation {
 //    }
 
 
+    // V0-3
+    // IDEA: DEQUEUE (fixed by gpt)
+    class CustomStack_0_3 {
+        private int maxSize;
+        private Deque<Integer> deque;
+
+        public CustomStack_0_3(int maxSize) {
+            this.maxSize = maxSize;
+            this.deque = new ArrayDeque<>();
+        }
+
+        public void push(int x) {
+            // Only push if stack hasn't reached maxSize
+            if (deque.size() < maxSize) {
+                deque.push(x); // Adds to the FRONT (Top)
+            }
+        }
+
+        public int pop() {
+            if (deque.isEmpty()) {
+                return -1;
+            }
+            return deque.pop(); // Removes from the FRONT (Top)
+        }
+
+        public void increment(int k, int val) {
+            // ArrayDeque doesn't allow indexed access, so we have to use an Iterator.
+            // We use descendingIterator() because it starts from the BACK (Bottom).
+
+            // However, ArrayDeque iterators don't allow modifying elements while iterating.
+            // To stick with Deque and satisfy the "bottom k" rule efficiently,
+            // it is actually better to use a LinkedList as the Deque implementation
+            // or temporarily move elements.
+
+            // Since we MUST stay with Deque, we'll use a temporary list to update.
+            List<Integer> list = new ArrayList<>(deque);
+            int n = list.size();
+
+            // In a Deque push/pop stack, the BACK of the list is the BOTTOM of the stack.
+            // If stack is [3, 2, 1] (Top is 3), list is [3, 2, 1]. Bottom is index n-1.
+            int start = Math.max(0, n - k);
+            for (int i = start; i < n; i++) {
+                list.set(i, list.get(i) + val);
+            }
+
+            // Rebuild the deque
+            deque.clear();
+            for (int num : list) {
+                deque.addLast(num);
+            }
+        }
+    }
+
+
+
     // V1-1
     // IDEA: ARRAY
     // https://leetcode.com/problems/design-a-stack-with-increment-operation/editorial/
