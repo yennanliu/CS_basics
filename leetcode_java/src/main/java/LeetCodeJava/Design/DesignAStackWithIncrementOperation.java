@@ -83,6 +83,113 @@ public class DesignAStackWithIncrementOperation {
 //        }
 //    }
 
+    // V0-1
+    // IDEA: ARRAY (fixed by gemini)
+    /**  IDEA:
+     *
+     * Using an array is the intended way to solve this.
+     * It allows you to access the bottom k
+     * elements directly using indices 0 to k - 1
+     *
+     */
+    class CustomStack_0_1 {
+        private int[] stack;
+        private int top; // Points to the next available position (size of stack)
+
+        public CustomStack_0_1(int maxSize) {
+            stack = new int[maxSize];
+            top = 0;
+        }
+
+        public void push(int x) {
+            // Only push if there is space; otherwise, do nothing
+            if (top < stack.length) {
+                stack[top] = x;
+                top++;
+            }
+        }
+
+        public int pop() {
+            // If empty, return -1
+            if (top == 0) {
+                return -1;
+            }
+            // Decrement top and return the value
+            top--;
+            return stack[top];
+        }
+
+        public void increment(int k, int val) {
+            // Increment the bottom k elements (index 0 up to k-1)
+            // If the stack has fewer than k elements, increment all of them
+            int limit = Math.min(k, top);
+            for (int i = 0; i < limit; i++) {
+                stack[i] += val;
+            }
+        }
+    }
+
+
+    // V0-2
+    // IDEA: ARRAY (fixed by gemini)
+    /**
+     * Optimized "Lazy Propagation" Approach ($O(1)$ Increment)
+     *
+     *
+     * If you want the most efficient solution
+     * (often expected in interviews),
+     * you can make increment run in O(1) time by storing
+     * the increment values in a separate array and only applying
+     * them during pop().
+     *
+     *
+     */
+    class CustomStack_0_2 {
+        private int[] stack;
+        private int[] lazyInc;
+        private int top;
+
+        public CustomStack_0_2(int maxSize) {
+            stack = new int[maxSize];
+            lazyInc = new int[maxSize];
+            top = -1; // Using index for top
+        }
+
+        public void push(int x) {
+            if (top < stack.length - 1) {
+                top++;
+                stack[top] = x;
+                lazyInc[top] = 0;
+            }
+        }
+
+        public int pop() {
+            if (top == -1)
+                return -1;
+
+            // The real value is stack value + its lazy increment
+            int res = stack[top] + lazyInc[top];
+
+            // Pass the increment down to the element below (lazy propagation)
+            if (top > 0) {
+                lazyInc[top - 1] += lazyInc[top];
+            }
+
+            top--;
+            return res;
+        }
+
+        public void increment(int k, int val) {
+            // We only mark the (k-1)-th element.
+            // Any pop above this index won't see this 'val' until it reaches this index.
+            int idx = Math.min(k - 1, top);
+            if (idx >= 0) {
+                lazyInc[idx] += val;
+            }
+        }
+    }
+
+
 
     // V0-3
     // IDEA: DEQUEUE (fixed by gpt)

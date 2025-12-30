@@ -157,11 +157,15 @@ public class Weekly180 {
         }
 
         public void push(int x) {
-            // ?? add VS push ??
-            //this.deque.add(x);
-            this.deque.push(x);
-            while(getSize() > maxSize){
-                this.deque.poll();
+//            // ?? add VS push ??
+//            //this.deque.add(x);
+//            this.deque.push(x);
+//            while(getSize() > maxSize){
+//                this.deque.poll();
+//            }
+            // Only push if stack hasn't reached maxSize
+            if (deque.size() < maxSize) {
+                deque.push(x); // Adds to the FRONT (Top)
             }
 
         }
