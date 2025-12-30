@@ -408,6 +408,273 @@ Key insight:
 - LC 286: Walls and Gates (distance from gates to rooms)
 - LC 1020: Number of Enclaves (count land cells not connected to boundary)
 
+### Pattern 4.6: Multi-Source BFS vs Independent BFS Runs (Critical Distinction)
+
+**🚨 IMPORTANT: This is the #1 source of confusion in multi-source BFS problems!**
+
+Many students confuse these two fundamentally different patterns:
+
+#### **Type 1: Simultaneous Multi-Source BFS** (Patterns 4, 4.5)
+- **Goal**: Find distance to the **NEAREST** source from each cell
+- **Setup**: Add ALL sources to queue at `time = 0`
+- **Visited**: ONE shared `visited` array/set for entire BFS
+- **Logic**: All sources expand simultaneously, layer by layer
+- **Result**: Each cell knows its distance to the **closest** source
+
+**Example Problems:**
+- LC 542 (01 Matrix): Distance to nearest 0
+- LC 994 (Rotting Oranges): Time for infection to spread
+- LC 1162 (As Far from Land): Distance to nearest land
+
+```java
+// Simultaneous Multi-Source BFS Template
+public int[][] simultaneousMultiSourceBFS(int[][] grid) {
+    Queue<int[]> queue = new LinkedList<>();
+    boolean[][] visited = new boolean[rows][cols];
+
+    // Add ALL sources to queue at once
+    for (int r = 0; r < rows; r++) {
+        for (int c = 0; c < cols; c++) {
+            if (grid[r][c] == SOURCE) {
+                queue.offer(new int[]{r, c});
+                visited[r][c] = true;  // ONE shared visited array
+            }
+        }
+    }
+
+    // Single BFS run - all sources expand together
+    while (!queue.isEmpty()) {
+        int[] cur = queue.poll();
+        // Process neighbors...
+        // First visit to any cell = shortest distance from ANY source
+    }
+}
+```
+
+#### **Type 2: Independent BFS Runs** (One BFS per source)
+- **Goal**: Find **SUM of distances** or **aggregate metric** across ALL sources
+- **Setup**: Run separate BFS for EACH source, one at a time
+- **Visited**: FRESH `visited` array for EACH BFS run
+- **Logic**: Each source independently explores the entire reachable space
+- **Result**: Each cell accumulates distances/metrics from ALL sources
+
+**Example Problem:**
+- LC 317 (Shortest Distance from All Buildings): Sum of distances to all buildings
+
+```java
+// Independent BFS Runs Template - LC 317 Pattern
+public int independentBFSRuns(int[][] grid) {
+    int rows = grid.length;
+    int cols = grid[0].length;
+
+    // Global accumulator - each BFS adds to this
+    int[][] totalDist = new int[rows][cols];
+    int[][] reachCount = new int[rows][cols];
+
+    int buildingCount = 0;
+
+    // Run SEPARATE BFS for each source
+    for (int r = 0; r < rows; r++) {
+        for (int c = 0; c < cols; c++) {
+            if (grid[r][c] == 1) {  // Found a building (source)
+                buildingCount++;
+
+                // FRESH visited array for this building's BFS
+                boolean[][] visited = new boolean[rows][cols];
+
+                bfsSingleSource(grid, r, c, visited, totalDist, reachCount);
+            }
+        }
+    }
+
+    // Find best cell that was reached by ALL buildings
+    int minDist = Integer.MAX_VALUE;
+    for (int r = 0; r < rows; r++) {
+        for (int c = 0; c < cols; c++) {
+            if (grid[r][c] == 0 && reachCount[r][c] == buildingCount) {
+                minDist = Math.min(minDist, totalDist[r][c]);
+            }
+        }
+    }
+
+    return minDist == Integer.MAX_VALUE ? -1 : minDist;
+}
+
+// BFS from single source - accumulates distances
+private void bfsSingleSource(int[][] grid, int sr, int sc,
+                             boolean[][] visited,
+                             int[][] totalDist,
+                             int[][] reachCount) {
+    Queue<int[]> queue = new LinkedList<>();
+    queue.offer(new int[]{sr, sc});
+    visited[sr][sc] = true;
+
+    int[][] dirs = {{0,1}, {0,-1}, {1,0}, {-1,0}};
+    int dist = 0;
+
+    while (!queue.isEmpty()) {
+        int size = queue.size();
+        dist++;
+
+        for (int i = 0; i < size; i++) {
+            int[] cur = queue.poll();
+            int r = cur[0], c = cur[1];
+
+            for (int[] d : dirs) {
+                int nr = r + d[0];
+                int nc = c + d[1];
+
+                if (nr >= 0 && nr < grid.length && nc >= 0 && nc < grid[0].length
+                    && !visited[nr][nc] && grid[nr][nc] == 0) {
+
+                    visited[nr][nc] = true;
+
+                    // Accumulate distance from this building
+                    totalDist[nr][nc] += dist;
+                    reachCount[nr][nc]++;
+
+                    queue.offer(new int[]{nr, nc});
+                }
+            }
+        }
+    }
+}
+```
+
+#### **Comparison Table**
+
+| Aspect | Simultaneous Multi-Source | Independent BFS Runs |
+|--------|---------------------------|----------------------|
+| **Queue Init** | Add ALL sources at once | Each source starts its own BFS |
+| **Visited Array** | ONE shared across entire BFS | FRESH for each BFS run |
+| **Time Complexity** | O(m×n) - single pass | O(k × m×n) where k = # sources |
+| **First Visit Means** | Distance to NEAREST source | Distance from CURRENT source |
+| **Use Case** | Find nearest/closest | Find sum/aggregate across all |
+| **Example** | LC 542, 994, 1162 | LC 317 |
+
+#### **Why Fresh Visited Arrays in Independent BFS?**
+
+**The Key Question:** *"Why can't we reuse the visited array across different buildings in LC 317?"*
+
+**The Answer:**
+```
+Building A runs BFS:
+  - Visits land cell (2,3) and marks it visited ✓
+  - Calculates: distance from A to (2,3) = 5 steps
+
+Building B runs BFS:
+  - If we reuse visited array, cell (2,3) is still marked as visited!
+  - We would SKIP (2,3) and never calculate distance from B to (2,3) ❌
+
+But we NEED both distances because:
+  - totalDist[2][3] = distFromA + distFromB + distFromC + ...
+```
+
+**Each building needs to "see" every empty cell independently** to contribute its distance.
+
+#### **Common Mistake Example**
+
+```java
+// ❌ WRONG - Reusing visited array
+boolean[][] visited = new boolean[rows][cols];  // Created ONCE
+
+for (Building b : allBuildings) {
+    bfs(b, visited);  // All buildings share same visited array
+    // Later buildings can't visit cells that earlier buildings marked!
+}
+
+// ✅ CORRECT - Fresh visited array
+for (Building b : allBuildings) {
+    boolean[][] visited = new boolean[rows][cols];  // Fresh each time
+    bfs(b, visited);  // Each building can visit all reachable cells
+}
+```
+
+#### **Optimization: Grid Value Trick** (Space-efficient alternative)
+
+Instead of creating fresh `boolean[][] visited` arrays, modify the grid itself:
+
+```java
+// LC 317 Optimization: Decrement empty cells for each building
+public int shortestDistance(int[][] grid) {
+    int[][] totalDist = new int[rows][cols];
+    int emptyValue = 0;  // Changes with each BFS: 0 → -1 → -2 → -3...
+    int buildingCount = 0;
+
+    for (int r = 0; r < rows; r++) {
+        for (int c = 0; c < cols; c++) {
+            if (grid[r][c] == 1) {
+                buildingCount++;
+
+                // BFS from this building, only visit cells with value = emptyValue
+                bfsWithGridMarking(grid, r, c, emptyValue, totalDist);
+
+                emptyValue--;  // Next building looks for different value
+            }
+        }
+    }
+
+    // Find best cell with value = (emptyValue + 1)
+    // That cell was reached by ALL buildings
+}
+
+private void bfsWithGridMarking(int[][] grid, int sr, int sc,
+                               int targetValue, int[][] totalDist) {
+    // Only process cells with grid[r][c] == targetValue
+    // After processing, change to (targetValue - 1)
+    // This ensures cell must be reached by ALL previous buildings
+}
+```
+
+**How Grid Trick Works:**
+```
+Initial grid: All empty cells = 0
+
+Building 1 BFS:
+  - Visit cells with value 0
+  - Change them to -1 after visiting
+  - Now empty cells = -1
+
+Building 2 BFS:
+  - Only visit cells with value -1
+  - Change them to -2 after visiting
+  - Now only cells reachable by BOTH buildings = -2
+
+Building 3 BFS:
+  - Only visit cells with value -2
+  - Change them to -3
+  - Only cells reachable by ALL 3 buildings = -3
+```
+
+**Benefits:**
+- ✅ No need for `boolean[][] visited` arrays (saves space)
+- ✅ Automatically filters cells unreachable by earlier buildings
+- ✅ Final value indicates how many buildings reached that cell
+
+#### **When to Use Which Pattern?**
+
+**Use Simultaneous Multi-Source (Pattern 4) when:**
+- ✅ Need distance to **nearest** source
+- ✅ Only care about the **closest** one
+- ✅ Problem asks: "minimum distance to ANY..."
+- ✅ Want O(m×n) time complexity
+
+**Use Independent BFS Runs (Pattern 4.6) when:**
+- ✅ Need **sum** of distances to **all** sources
+- ✅ Need to know if cell is reachable from **every** source
+- ✅ Problem asks: "find position that minimizes total distance..."
+- ✅ Willing to accept O(k × m×n) time complexity
+
+#### **Quick Recognition Guide**
+
+| Problem Statement Contains... | Pattern to Use |
+|-------------------------------|----------------|
+| "distance to **nearest** building" | Simultaneous Multi-Source |
+| "**sum** of distances to all buildings" | Independent BFS Runs |
+| "infection spreads from all sources" | Simultaneous Multi-Source |
+| "all friends can reach in **minimum total** time" | Independent BFS Runs |
+| "find the cell **closest** to any land" | Simultaneous Multi-Source |
+
 ### Pattern 5: BFS with Path Tracking
 ```python
 def bfs_with_path(start, target):
@@ -587,11 +854,13 @@ Key insight: Must cut in sorted order, BFS finds shortest path between each pair
 ### 2. Shortest Path Problems
 - **Unweighted Graphs**: LC 127 (Word Ladder)
 - **Grid Navigation**: LC 1730 (Shortest Path to Food), LC 1091 (Shortest Path in Binary Matrix)
-- **Multi-source Distance (Pattern 4)**:
+- **Simultaneous Multi-source Distance (Pattern 4)**:
   - **LC 542 (01 Matrix)** - Distance to nearest 0 from each cell
   - LC 1162 (As Far from Land) - Distance to nearest land from each water cell
   - LC 286 (Walls and Gates) - Distance from gates to rooms
-  - LC 317 (Shortest Distance from All Buildings) - Optimal meeting point
+  - LC 994 (Rotting Oranges) - Time for infection to spread
+- **Independent BFS Runs (Pattern 4.6)**:
+  - **LC 317 (Shortest Distance from All Buildings)** - Sum of distances to all buildings (use fresh visited for each)
 - **DFS + Multi-source BFS (Pattern 4.5)**: LC 934 (Shortest Bridge - mark one component, expand to find other)
 - **Sequential Targets (Pattern 6)**: LC 675 (Cut Off Trees for Golf Event - Sort + Repeated BFS)
 - **State-Based BFS**: LC 864 (Shortest Path to Get All Keys), LC 1293 (Shortest Path with Obstacles Elimination)
@@ -834,7 +1103,8 @@ Calculate shortest distance from each cell to ANY source cell in a grid.
 - Finding connected components
 - Checking if graph is bipartite
 - Web crawling (breadth-first exploration)
-- **Multi-source distance calculations** (Pattern 4)
+- **Simultaneous multi-source distance calculations** (Pattern 4) - distance to nearest source
+- **Independent BFS runs from multiple sources** (Pattern 4.6) - sum of distances to all sources
 
 ### When NOT to Use BFS
 - Deep trees/graphs with limited memory
@@ -848,11 +1118,11 @@ Calculate shortest distance from each cell to ANY source cell in a grid.
 | Easy | LC 102 | Level-order traversal | Pattern 2 (Level-by-Level) |
 | Medium | LC 127 | Shortest path transformation | Pattern 3 (Graph BFS) |
 | Medium | LC 200 | Connected components | Pattern 3 (Graph BFS) |
-| **Medium** | **LC 542** | **Multi-source BFS - 01 Matrix** | **Pattern 4 (Multi-Source Distance)** |
+| **Medium** | **LC 542** | **Simultaneous multi-source - 01 Matrix** | **Pattern 4 (Simultaneous Multi-Source)** |
 | Medium | LC 934 | DFS + Multi-source BFS (island expansion) | Pattern 4.5 (DFS + Multi-Source) |
-| Medium | LC 1162 | As Far from Land as Possible | Pattern 4 (Multi-Source Distance) |
-| Hard | LC 286 | Walls and Gates | Pattern 4 (Multi-Source Distance) |
-| Hard | LC 317 | Multi-source optimization | Pattern 4 (Multi-Source Distance) |
+| Medium | LC 1162 | As Far from Land as Possible | Pattern 4 (Simultaneous Multi-Source) |
+| Hard | LC 286 | Walls and Gates | Pattern 4 (Simultaneous Multi-Source) |
+| **Hard** | **LC 317** | **Independent BFS runs (sum of distances)** | **Pattern 4.6 (Independent BFS Runs)** |
 | Hard | LC 675 | Sort + Repeated BFS (sequential targets) | Pattern 6 (Sort + Repeated BFS) |
 | Hard | LC 864 | BFS with state (key collection) | Pattern 3 + State |
 | Hard | LC 1293 | BFS with state (obstacle elimination) | Pattern 3 + State |
