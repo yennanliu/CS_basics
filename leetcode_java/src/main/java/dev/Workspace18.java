@@ -11904,10 +11904,125 @@ public class Workspace18 {
      *
      *
      */
+    // 10.09 - 19 am
+    // IDEA 1) MULTI SOURCE BFS ???
     public int shortestDistance(int[][] grid) {
+        // edge
+        if (grid == null || grid.length == 0 || grid[0].length == 0){
+            return -1;
+        }
 
-        return 0;
+        int l = grid.length;
+        int w = grid[0].length;
+
+        // 1) get all `1` cell (building)
+        List<Integer[]> buildList = new ArrayList<>();
+        for(int y = 0; y < l; y++){
+            for(int x = 0; x < w; x++){
+                if(grid[y][x] == 1){
+                    buildList.add(new Integer[]{x, y});
+                }
+            }
+        }
+
+        //int buildCnt = buildList.size();
+
+        // queue: [ [x, y, move] ]
+        //Queue<Integer[]> q = new LinkedList<>();
+        // ???
+        //List<Integer[]> buildList = new ArrayList<>();
+        int minDist = l * w;
+
+        // ???
+        int[][] costGrid = new int[l][w];
+        Arrays.fill(costGrid, Integer.MAX_VALUE);
+
+        for(int y = 0; y < l; y++){
+            for(int x = 0; x < w; x++){
+                if(grid[y][x] == 0){
+                    int curDist = bfsGetShortestDist(grid, costGrid, x, y, buildList, 0);
+                    if(curDist > 0){
+                        minDist = Math.min(curDist, minDist);
+                    }
+                }
+            }
+        }
+
+
+        return minDist < l * w ? minDist : -1;
     }
+
+    private int bfsGetShortestDist(int[][] grid, int[][] costGrid, int x, int y, List<Integer[]> buildList, int visitedCnt){
+
+        int l = grid.length;
+        int w = grid[0].length;
+
+        int[][] moves = new int[][]{ {1,0}, {-1,0}, {0,1}, {0,-1} };
+
+        // queue: [ [x, y, move, visited] ]
+        // queue V2: [ [x, y] ]
+        Queue<Integer[]> q = new LinkedList<>();
+        // ??
+        //q.add(new Integer[]{x, y, 0, 0});
+        q.add(new Integer[]{x, y});
+
+        while(!q.isEmpty()){
+            int size = q.size();
+            for(int i = 0; i < size; i++){
+                Integer[] cur = q.poll();
+                int curX = cur[0];
+                int curY = cur[1];
+//                int curCost = cur[2];
+//                int curVisitedCnt = cur[3];
+
+                // ??? below is needed
+                // mark as visited
+                //grid[curY][curX] = -1;
+                // ???
+                if(visitedCnt == buildList.size()){
+                    return costGrid[curY][curX]; // ????
+                }
+                // move to next
+                for(int[] m: moves){
+                    int x_ = curX + m[1];
+                    int y_ = curY + m[0];
+                    //int x_ = curX + m[1];
+                    // boundary check
+                    if(x_ >= 0 && x_ < w && y_ >= 0 && y_ < l){
+
+                        // V1
+//                        // ???
+//                        if(grid[y_][x_] != -1){
+//                            // ???
+//                            if(grid[y_][x_] == 1){
+//                                curVisitedCnt += 1;
+//                            }
+//                            q.add(new Integer[]{x_, y_, curCost + 1, curVisitedCnt});
+//                        }
+
+                        // V2
+                        // ?? ONLY move, enqueue if the new path cost < prev / cur cost
+                        if(costGrid[curY][curX] + 1 < costGrid[y_][x_]){
+                            if(grid[y_][x_] == 1){
+                                visitedCnt += 1;
+                            }
+                            q.add(new Integer[]{x_, y_});
+                        }
+                    }
+                }
+
+            }
+        }
+
+        return -1;
+    }
+
+
+
+
+
+
+
     public int shortestDistance_99(int[][] grid) {
         // edge
 
