@@ -348,6 +348,43 @@ public class MostFrequentIDs {
         return res;
     }
 
+    // V0-0-4
+    // IDEA: PQ (fixed by gemini)
+    public long[] mostFrequentIDs_0_0_4(int[] nums, int[] freq) {
+        int n = nums.length;
+        long[] res = new long[n];
+
+        // Map: ID -> Current total frequency
+        Map<Integer, Long> countMap = new HashMap<>();
+
+        // Max-Heap: [frequency, ID]
+        // We sort by frequency descending.
+        PriorityQueue<long[]> pq = new PriorityQueue<>((a, b) -> Long.compare(b[0], a[0]));
+
+        for (int i = 0; i < n; i++) {
+            int id = nums[i];
+            long delta = freq[i];
+
+            // 1. Update the current frequency for the ID
+            long newFreq = countMap.getOrDefault(id, 0L) + delta;
+            countMap.put(id, newFreq);
+
+            // 2. Add the updated entry to the PQ (Lazy Update)
+            pq.add(new long[] { newFreq, id });
+
+            // 3. Lazy Removal: While the top of the PQ is outdated, remove it
+            // An entry is outdated if its frequency doesn't match the current frequency in countMap
+            while (!pq.isEmpty() && pq.peek()[0] != countMap.get((int) pq.peek()[1])) {
+                pq.poll();
+            }
+
+            // 4. The top of the PQ is now guaranteed to be the current max frequency
+            res[i] = pq.isEmpty() ? 0 : pq.peek()[0];
+        }
+
+        return res;
+    }
+
 
     // V0-1
     // IDEA: PQ (fixed by gemini)

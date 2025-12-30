@@ -11405,9 +11405,68 @@ public class Workspace18 {
      *
      *
      */
-    // 11.00 - 10 am
+    // 11.01 - 11 am
     // IDEA: PQ
     public long[] mostFrequentIDs(int[] nums, int[] freq) {
+        // edge
+
+        int n = nums.length;
+        long[] res = new long[n];
+
+        // Map: ID -> Current total frequency (must be Long)
+        // { val : cnt }
+        Map<Integer, Integer> map = new HashMap<>();
+
+
+        // max PQ -> sort on cnt
+        // [ [val, cnt], ... ]
+        PriorityQueue<Integer[]> pq = new PriorityQueue<>(new Comparator<Integer[]>() {
+            @Override
+            public int compare(Integer[] o1, Integer[] o2) {
+                int diff = o2[1] - o1[1];
+                return diff;
+            }
+        });
+
+        for(int i = 0; i < nums.length; i++){
+            // ???
+            int val = nums[i];
+            map.putIfAbsent(val, 0);
+
+            int freqVal = freq[i];
+            int diff = map.get(val) - freqVal;
+            if(diff < 0){
+                map.put(val, 0);
+            }else{
+                map.put(val, diff);
+            }
+
+            // ??? lazy update
+            // ??
+            if(!pq.isEmpty()){
+                //int val = pq.peek
+                Integer[] topElement = pq.peek();
+                if(topElement[1] != map.get(topElement[1])){
+                    pq.poll();
+                    pq.add(new Integer[]{topElement[1], map.get(topElement[1])});
+                }
+            }
+
+            res[i] = pq.isEmpty() ? 0 : pq.peek()[1];
+
+        }
+
+
+        return res;
+    }
+
+
+
+
+
+    // 11.00 - 10 am
+    // IDEA: PQ
+    public long[] mostFrequentIDs_96(int[] nums, int[] freq) {
         int n = nums.length;
         long[] res = new long[n];
 
