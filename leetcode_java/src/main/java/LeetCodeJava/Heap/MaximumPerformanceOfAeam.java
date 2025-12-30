@@ -55,6 +55,86 @@ public class MaximumPerformanceOfAeam {
 //
 //    }
 
+    // V0-1
+    // IDEA: PQ (gemini)
+    public int maxPerformance_0_1(int n, int[] speed, int[] efficiency, int k) {
+        int[][] engineers = new int[n][2];
+        for (int i = 0; i < n; i++) {
+            engineers[i] = new int[] { efficiency[i], speed[i] };
+        }
+
+        // 1. Sort engineers by efficiency in descending order
+        Arrays.sort(engineers, (a, b) -> b[0] - a[0]);
+
+        // 2. Min-Heap to keep track of the highest speeds
+        PriorityQueue<Integer> pq = new PriorityQueue<>(k);
+
+        long totalSpeed = 0;
+        long maxPerformance = 0;
+
+        for (int[] engineer : engineers) {
+            int currEff = engineer[0];
+            int currSpeed = engineer[1];
+
+            // Add current engineer to the team
+            totalSpeed += currSpeed;
+            pq.add(currSpeed);
+
+            // If team size exceeds k, remove the engineer with the lowest speed
+            if (pq.size() > k) {
+                totalSpeed -= pq.poll();
+            }
+
+            // Calculate performance with current engineer as the efficiency bottleneck
+            maxPerformance = Math.max(maxPerformance, totalSpeed * currEff);
+        }
+
+        // The problem asks for the result modulo 10^9 + 7
+        return (int) (maxPerformance % 1000000007);
+    }
+
+    // V0-2
+    // IDEA: PQ (gpt)
+    public int maxPerformance_0_2(int n, int[] speed, int[] efficiency, int k) {
+        final int MOD = 1_000_000_007;
+
+        // Pair up engineers [efficiency, speed]
+        int[][] engineers = new int[n][2];
+        for (int i = 0; i < n; i++) {
+            engineers[i] = new int[] { efficiency[i], speed[i] };
+        }
+
+        // Sort by efficiency in descending order
+        Arrays.sort(engineers, (a, b) -> b[0] - a[0]);
+
+        // Min-heap to keep 'k' largest speeds
+        PriorityQueue<Integer> minHeap = new PriorityQueue<>();
+
+        long speedSum = 0;
+        long maxPerf = 0;
+
+        for (int[] eng : engineers) {
+            int eff = eng[0];
+            int spd = eng[1];
+
+            // Add this speed
+            minHeap.offer(spd);
+            speedSum += spd;
+
+            // If more than k, remove smallest speed
+            if (minHeap.size() > k) {
+                speedSum -= minHeap.poll();
+            }
+
+            // Performance = speed sum * current min efficiency
+            long performance = speedSum * eff;
+            maxPerf = Math.max(maxPerf, performance);
+        }
+
+        return (int) (maxPerf % MOD);
+    }
+
+    
     // V1
     // IDEA: PQ
     // https://leetcode.com/problems/maximum-performance-of-a-team/solutions/2559857/java-easy-solution-with-explanation-99-f-3wul/
