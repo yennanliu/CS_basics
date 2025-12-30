@@ -69,6 +69,16 @@ public class MostFrequentIDs {
         // Map: ID -> Current total frequency (Long to avoid overflow)
         Map<Integer, Long> idToFreq = new HashMap<>();
 
+        /** NOTE !!
+         *
+         *   the structure of PQ:
+         *
+         *    [ cnt, key_in_hashMap]
+         *
+         *    -> so we can
+         *      1. maintain and sort by count
+         *      2. compare with map via `key_in_hashMap` and remove the `outdated` cnt from PQ
+         */
         // Max-PQ: Stores [Frequency, ID] sorted by Frequency descending
         PriorityQueue<long[]> pq = new PriorityQueue<>((a, b) -> Long.compare(b[0], a[0]));
 
@@ -84,6 +94,13 @@ public class MostFrequentIDs {
             // Note: We don't remove the old frequency yet (Lazy Deletion)
             pq.add(new long[] { newFreq, (long) id });
 
+            /** NOTE !!
+             *
+             *  we use `while` loop,
+             *  so we can remove ALL `outdated cnt` from PQ at once
+             *
+             *  also NOTE that need to handle `null PQ` case.
+             */
             // 3. Clean the top of the PQ (Lazy Deletion)
             // If the frequency at the top doesn't match the actual current freq in the map,
             // it means this is an old, outdated record.
@@ -357,6 +374,16 @@ public class MostFrequentIDs {
         // Map: ID -> Current total frequency
         Map<Integer, Long> countMap = new HashMap<>();
 
+        /** NOTE !!
+         *
+         *   the structure of PQ:
+         *
+         *    [ cnt, key_in_hashMap]
+         *
+         *    -> so we can
+         *      1. maintain and sort by count
+         *      2. compare with map via `key_in_hashMap` and remove the `outdated` cnt from PQ
+         */
         // Max-Heap: [frequency, ID]
         // We sort by frequency descending.
         PriorityQueue<long[]> pq = new PriorityQueue<>((a, b) -> Long.compare(b[0], a[0]));
@@ -372,6 +399,13 @@ public class MostFrequentIDs {
             // 2. Add the updated entry to the PQ (Lazy Update)
             pq.add(new long[] { newFreq, id });
 
+            /** NOTE !!
+             *
+             *  we use `while` loop,
+             *  so we can remove ALL `outdated cnt` from PQ at once
+             *
+             *  also NOTE that need to handle `null PQ` case.
+             */
             // 3. Lazy Removal: While the top of the PQ is outdated, remove it
             // An entry is outdated if its frequency doesn't match the current frequency in countMap
             while (!pq.isEmpty() && pq.peek()[0] != countMap.get((int) pq.peek()[1])) {
