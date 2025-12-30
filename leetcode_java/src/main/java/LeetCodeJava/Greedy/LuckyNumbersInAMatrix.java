@@ -52,6 +52,86 @@ public class LuckyNumbersInAMatrix {
 //
 //    }
 
+    // V0-1
+    // IDEA: ARRAY OP (fixed by gemini)
+    public List<Integer> luckyNumbers_0_1(int[][] matrix) {
+        int rows = matrix.length;
+        int cols = matrix[0].length;
+
+        // 1. Find the maximum value for each column
+        int[] colMax = new int[cols];
+        for (int j = 0; j < cols; j++) {
+            int maxVal = Integer.MIN_VALUE;
+            for (int i = 0; i < rows; i++) {
+                maxVal = Math.max(maxVal, matrix[i][j]);
+            }
+            colMax[j] = maxVal;
+        }
+
+        // 2. Find the minimum value for each row
+        int[] rowMin = new int[rows];
+        for (int i = 0; i < rows; i++) {
+            int minVal = Integer.MAX_VALUE;
+            for (int j = 0; j < cols; j++) {
+                minVal = Math.min(minVal, matrix[i][j]);
+            }
+            rowMin[i] = minVal;
+        }
+
+        // 3. A number is "lucky" if it is both a row minimum and a column maximum
+        List<Integer> res = new ArrayList<>();
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                if (matrix[i][j] == rowMin[i] && matrix[i][j] == colMax[j]) {
+                    res.add(matrix[i][j]);
+                }
+            }
+        }
+
+        return res;
+    }
+
+
+    // V0-2
+    // IDEA: ARRAY OP (gpt)
+    public List<Integer> luckyNumbers_0_2(int[][] matrix) {
+        int l = matrix.length;
+        int w = matrix[0].length;
+
+        List<Integer> res = new ArrayList<>();
+
+        // max of each column
+        int[] colMax = new int[w];
+        Arrays.fill(colMax, Integer.MIN_VALUE);
+
+        for (int x = 0; x < w; x++) {
+            for (int y = 0; y < l; y++) {
+                colMax[x] = Math.max(colMax[x], matrix[y][x]);
+            }
+        }
+
+        // for each row, find min and its column
+        for (int y = 0; y < l; y++) {
+            int rowMin = Integer.MAX_VALUE;
+            int colIdx = -1;
+
+            for (int x = 0; x < w; x++) {
+                if (matrix[y][x] < rowMin) {
+                    rowMin = matrix[y][x];
+                    colIdx = x;
+                }
+            }
+
+            // check lucky number condition
+            if (rowMin == colMax[colIdx]) {
+                res.add(rowMin);
+            }
+        }
+
+        return res;
+    }
+
+
     // V1-1
     // IDEA: SIMULATION
     // https://leetcode.com/problems/lucky-numbers-in-a-matrix/editorial/

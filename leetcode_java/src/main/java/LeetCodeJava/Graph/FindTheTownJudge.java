@@ -347,5 +347,5 @@ public class FindTheTownJudge {
     }
 
 
-    
+
 }
