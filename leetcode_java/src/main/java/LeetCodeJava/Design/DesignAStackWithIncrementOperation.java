@@ -133,7 +133,7 @@ public class DesignAStackWithIncrementOperation {
     // V0-2
     // IDEA: ARRAY (fixed by gemini)
     /**
-     * Optimized "Lazy Propagation" Approach ($O(1)$ Increment)
+     * Optimized "Lazy Propagation" Approach (O(1) Increment)
      *
      *
      * If you want the most efficient solution
