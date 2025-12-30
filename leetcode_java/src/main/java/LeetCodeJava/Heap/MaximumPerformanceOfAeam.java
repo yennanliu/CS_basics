@@ -134,7 +134,7 @@ public class MaximumPerformanceOfAeam {
         return (int) (maxPerf % MOD);
     }
 
-    
+
     // V1
     // IDEA: PQ
     // https://leetcode.com/problems/maximum-performance-of-a-team/solutions/2559857/java-easy-solution-with-explanation-99-f-3wul/
