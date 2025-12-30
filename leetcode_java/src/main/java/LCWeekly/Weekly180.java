@@ -120,7 +120,7 @@ public class Weekly180 {
     }
 
 
-    // LC 1381
+    // LC 1381 -> ok
     // https://leetcode.com/problems/design-a-stack-with-increment-operation/
     // 16.08 - 18 pm
     /**
@@ -214,7 +214,7 @@ public class Weekly180 {
 
 
 
-    // LC 1382
+    // LC 1382 -> ok (again)
     // https://leetcode.com/problems/balance-a-binary-search-tree/
     // 16.19 - 35 pm
     /**
