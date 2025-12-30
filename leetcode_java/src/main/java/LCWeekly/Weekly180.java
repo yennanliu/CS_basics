@@ -13,7 +13,7 @@ import java.util.*;
  */
 public class Weekly180 {
 
-    // LC 1380
+    // LC 1380 -> ok (again)
     // https://leetcode.com/problems/lucky-numbers-in-a-matrix/
     // 15.49 - 59 pm
     /**
