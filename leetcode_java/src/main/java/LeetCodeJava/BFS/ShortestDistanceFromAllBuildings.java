@@ -44,6 +44,90 @@ import java.util.Queue;
  */
 public class ShortestDistanceFromAllBuildings {
 
+    /** NOTE !!!
+     *
+     * Q:
+     *  -------------
+     *
+     *   how does `visited`  work  in Multi-source BFS ?
+     *
+     *    -> given the LC 317 as an example:
+     *         Input: grid = [[1,0,2,0,1],[0,0,0,0,0],[0,0,1,0,0]]
+     *
+     *    -> if we start from `1` grid, since we use visited
+     *    -> can the BFS visit all  `0` ?
+     *       since some 0 already marked as visited,
+     *       and they may at the path to visit other `0`  ?
+     *
+     * -------------
+     *
+     * Answer:
+     *
+     *
+     * # Understanding BFS Visitation in LC 317
+     *
+     * To solve **LC 317: Shortest Distance from All Buildings**,
+     * we must distinguish between a **Simultaneous Multi-source BFS**
+     * and performing **Multiple Independent BFS runs**.
+     *
+     * ---
+     *
+     * ## 1. The Core Logic
+     * In this problem, we need the **sum of distances** from a
+     * land cell (`0`) to **ALL** buildings (`1`). Because of this requirement,
+     * we cannot run one single multi-source BFS. Instead, we run a separate BFS
+     * starting from every building.
+     *
+     * ### Why each building needs its own "view" of the 0s:
+     * * **Building A** needs to know its shortest distance to every `0`.
+     * * **Building B** needs to know its shortest distance to every `0`.
+     *
+     * * If Building A and Building B shared a `visited` array,
+     * the first building to "claim" a `0` would prevent the second building
+     * from ever calculating its distance to that spot.
+     *
+     * ---
+     *
+     * ## 2. How `visited` works inside one BFS
+     * When we are running BFS for **one specific building**:
+     *
+     * 1.  **The Ripple Effect:** Imagine dropping a stone in water. The "visited" cells are the ones the ripple has already passed. The ripple doesn't stop; it continues to expand to the neighbors of the visited cell.
+     * 2.  **Shortest Path Guarantee:** The `visited` array ensures that when we reach a `0` for the first time, we have found the **absolute shortest path** from the starting building to that land.
+     * 3.  **Preventing Infinite Loops:** Without `visited`, the BFS would bounce back and forth between two `0` cells forever.
+     *
+     *
+     *
+     * ---
+     *
+     * ## 3. "Can we visit all 0s if some are already marked?"
+     * **Yes.** Within a single BFS run, the fact that a `0` is marked as `visited` doesn't block the search; it simply means that specific cell is now part of the "already processed" group.
+     *
+     * * Before a cell is marked `visited`, it **adds its neighbors to the queue**.
+     * * This ensures the "flow" of the BFS reaches every reachable corner of the grid.
+     *
+     * ---
+     *
+     * ## 4. Multi-source vs. Many Single-sources
+     *
+     * | Strategy | Queue Initialization | Visited Logic | Result |
+     * | :--- | :--- | :--- | :--- |
+     * | **Simultaneous Multi-source** | All buildings added to queue at `dist = 0`. | One shared `visited` array. | Distance to the **nearest** building. |
+     * | **Independent BFS (LC 317)** | One building at a time. | **Fresh** `visited` per building. | Sum of distances to **all** buildings. |
+     *
+     *
+     *
+     * ---
+     *
+     * ## 5. Optimized "Visited" Trick (No extra memory)
+     * To avoid creating a new `boolean[][]` array for every building, we can use the `grid` values to track which cells are reachable.
+     *
+     * * **Building 1:** Only walks on `0`s. After visiting, it changes them to `-1`.
+     * * **Building 2:** Only walks on `-1`s. After visiting, it changes them to `-2`.
+     * * **Building 3:** Only walks on `-2`s.
+     *
+     * This ensures that if a land cell is blocked and cannot be reached by Building 1, it will never be `-1`, and Building 2 will skip it entirely. This automatically filters out land that cannot reach all buildings.
+     *
+     */
     // V0
 //    public int shortestDistance(int[][] grid) {
 //
@@ -52,6 +136,14 @@ public class ShortestDistanceFromAllBuildings {
     // V0-1
     // IDEA: multi-source BFS  + count, dist matrix (gemini)
     // TODO: validate
+    /**  NOTE !!!
+     *
+     *   we define below:
+     *
+     *   - totalDistance matrix
+     *   - reachCount matrix
+     *
+     */
     /**  IDEA:
      *
      * To solve LeetCode 317: Shortest Distance from All Buildings,
