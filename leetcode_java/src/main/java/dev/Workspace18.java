@@ -11058,8 +11058,55 @@ public class Workspace18 {
      *
      *
      */
-    // IDEA: SET + HASHMAP ???
+    // 7.39 - 49 am
+    // idea: array op
     public int findJudge(int n, int[][] trust) {
+        // edge
+        // NOTE !!! edge case below
+//        if (n == 1) {
+//            return 1;
+//        }
+        if (n == 1 && trust.length == 0)
+            return 1;
+
+        // ???
+        // how many ppl the cur ppl (ppl with idx) trust
+        int[] trustArr = new int[n+1];
+        // how many ppl the cur ppl (ppl with idx) is trusted
+        int[] trustedArr = new int[n+1];
+
+        for(int[] t: trust){
+            /**
+             *      *    - trust[i] = [ai, bi]
+             *      *       -> ai trusts bi
+             */
+            int ai = t[0];
+            int bi = t[1];
+
+            // ??
+            trustArr[ai] += 1;
+            trustedArr[bi] += 1;
+        }
+
+        for(int i = 1; i < n + 1; i++){
+            if(trustArr[i] == 0 && trustedArr[i] == n - 1){
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
+
+
+
+
+
+
+
+
+    // IDEA: SET + HASHMAP ???
+    public int findJudge_98(int n, int[][] trust) {
         // edge
         // NOTE !!! edge case below
         if (n == 1) {
