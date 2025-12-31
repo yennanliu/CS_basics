@@ -12310,6 +12310,35 @@ public class Workspace18 {
     }
 
 
+    // LC 70
+    // 10.30 - 40 am
+    // dp
+    // dp equation:
+    // dp[0] = 0
+    // dp[1] = 1
+    // dp[2] = 2
+    // dp[n] = dp[n-2] + dp[n-1]
+    public int climbStairs(int n) {
+        // edge
+        if(n <= 2){
+            return n;
+        }
+        int[] dp = new int[n+1]; // ??
+        dp[0] = 0;
+        dp[1] = 1;
+        dp[2] = 2;
+        // dp[n] = dp[n-2] + dp[n-1]
+        for(int i = 3; i < n+1; i++){
+            dp[i] = dp[i-2] + dp[i-1];
+        }
+
+        System.out.println(">>> dp = " + Arrays.toString(dp));
+
+        return dp[n]; // ???
+    }
+
+
+
 
 
 
