@@ -72,9 +72,61 @@ public class CountingBits {
         return count;
     }
 
-    // V0
+    // V0-1
+    // IDEA: BRUTE FORCE
+    public int[] countBits_0_1(int n) {
+        // edge
+        if (n == 0) {
+            return new int[] { 0 };
+        }
+        if (n == 1) {
+            return new int[] { 0, 1 };
+        }
+        if (n == 2) {
+            return new int[] { 0, 1, 1 };
+        }
+
+        int[] res = new int[n + 1]; //???
+        // ????
+        for (int i = 0; i < n + 1; i++) {
+            String binary = Integer.toBinaryString(i);
+            System.out.println(">>> i = " + i +
+                    ", binary = " + binary);
+            res[i] = getOneCnt(binary);
+        }
+
+        return res;
+    }
+
+    private int getOneCnt(String input) {
+        int cnt = 0;
+        for (String x : input.split("")) {
+            if (x.equals("1")) {
+                cnt += 1;
+            }
+        }
+        return cnt;
+    }
+
+    // V0-2
+    // IDEA: BIT DP (gemini)
+    public int[] countBits_0_2(int n) {
+        int[] res = new int[n + 1];
+
+        // We start from 1 because res[0] is already 0
+        for (int i = 1; i <= n; i++) {
+            // i >> 1 is the same as i / 2
+            // i & 1 is the same as i % 2 (checks if the last bit is 1)
+            res[i] = res[i >> 1] + (i & 1);
+        }
+
+        return res;
+    }
+    
+
+    // V0-3
     // IDEA : java default
-    public int[] countBits_0(int n) {
+    public int[] countBits_0_3(int n) {
 
         if (n == 0){
             return new int[]{0};
