@@ -2,10 +2,7 @@ package LeetCodeJava.DFS;
 
 // https://leetcode.com/problems/count-unreachable-pairs-of-nodes-in-an-undirected-graph/description/
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 
 /**
  * 2316. Count Unreachable Pairs of Nodes in an Undirected Graph
@@ -55,6 +52,62 @@ public class CountUnreachablePairsOfNodesInAnUndirectedGraph {
 
     // V0-1
     // IDEA: DFS (gemini)
+    /**  IDEA:
+     *
+     * # Depth-First Search (DFS): A Comprehensive Guide
+     *
+     * **Depth-First Search (DFS)** is a
+     * fundamental graph traversal algorithm.
+     * It starts at a source node and explores as far as possible
+     * along each branch before backtracking.
+     *
+     * Think of it like exploring a maze: you follow one path until you hit a wall,
+     * then turn back to the last junction and try a different direction.
+     *
+     * ---
+     *
+     * ## 1. How It Works
+     * DFS uses a **Stack** data structure
+     * (either explicitly or via the call stack in recursion) t
+     * o keep track of the path.
+     *
+     * 1.  **Mark** the current node as visited.
+     * 2.  **Traverse** each unvisited neighbor of the current node.
+     * 3.  **Repeat** the process recursively for each neighbor.
+     * 4.  **Backtrack** when a node has no more unvisited neighbors.
+     *
+     *
+     *
+     * ---
+     *
+     * ## 2. Key Characteristics
+     * * **Data Structure:** Stack (Recursive or Iterative).
+     * * **Completeness:** DFS is "deep" before it is "wide."
+     * * **Pathfinding:** It finds *a* path, but not necessarily the *shortest* path (unlike BFS).
+     *
+     * ---
+     *
+     * ## 3. Implementation (Java)
+     *
+     * ### A. Recursive Approach
+     * This is the most common and concise way to implement DFS.
+     *
+     * ```java
+     * public void dfs(int node, List<Integer>[] adj, boolean[] visited) {
+     *     // 1. Mark the node as visited
+     *     visited[node] = true;
+     *     System.out.println("Visited: " + node);
+     *
+     *     // 2. Explore all neighbors
+     *     for (int neighbor : adj[node]) {
+     *         if (!visited[neighbor]) {
+     *             dfs(neighbor, adj, visited);
+     *         }
+     *     }
+     * }
+     *
+     *
+     */
     public long countPairs_0_1(int n, int[][] edges) {
         // 1. Build Adjacency List
         List<Integer>[] adj = new ArrayList[n];
@@ -72,8 +125,42 @@ public class CountUnreachablePairsOfNodesInAnUndirectedGraph {
         // 2. Traverse each component
         for (int i = 0; i < n; i++) {
             if (!visited[i]) {
+
+                /**
+                 *  long componentSize = dfs_0_1(i, adj, visited);
+                 *
+                 *
+                 * We launch a DFS starting at node i.
+                 * This DFS will traverse every node reachable from i and mark them all as visited.
+                 * The function returns the `total number` of nodes found in this
+                 * specific component (let's call this S).
+                 *
+                 */
                 long componentSize = dfs_0_1(i, adj, visited);
 
+
+                /**
+                 * totalUnreachablePairs += componentSize * nodesProcessed;
+                 *
+                 *
+                 *  This is the mathematical "trick" to avoid O(N^2) calculations.
+                 *
+                 *    -> componentSize:
+                 *        The number of nodes in the "New Island" we just found.
+                 *
+                 *    -> nodesProcessed:
+                 *       The total number of nodes in all the "Previous Islands"
+                 *       we already finished exploring.
+                 *
+                 *
+                 *   Logic:
+                 *
+                 *     Every single node in the new island is
+                 *     unreachable from every single node in the previous islands.
+                 *     By multiplying these two numbers, we get the count of all
+                 *     new unreachable pairs formed between the current island
+                 *     and everything we've seen before.
+                 */
                 // Each node in the current component is unreachable from
                 // all nodes processed in previous components.
                 totalUnreachablePairs += componentSize * nodesProcessed;
@@ -149,7 +236,74 @@ public class CountUnreachablePairsOfNodesInAnUndirectedGraph {
         }
     }
 
-    
+
+    // V0-3
+    // IDEA: UNION FIND (gpt)
+    public long countPairs_0_3(int n, int[][] edges) {
+        DisjointSet dsu = new DisjointSet(n);
+
+        // Union all edges
+        for (int[] e : edges) {
+            dsu.union(e[0], e[1]);
+        }
+
+        // Count nodes per component
+        Map<Integer, Integer> sizeMap = new HashMap<>();
+        for (int i = 0; i < n; i++) {
+            int root = dsu.find(i);
+            sizeMap.put(root, sizeMap.getOrDefault(root, 0) + 1);
+        }
+
+        long result = 0;
+        long processed = 0;
+
+        for (int size : sizeMap.values()) {
+            result += size * (n - size - processed);
+            processed += size;
+        }
+
+        return result;
+    }
+
+    // Union-Find structure
+    private static class DisjointSet {
+        int[] parent;
+        int[] rank;
+
+        public DisjointSet(int n) {
+            parent = new int[n];
+            rank = new int[n];
+            for (int i = 0; i < n; i++) {
+                parent[i] = i;
+            }
+        }
+
+        public int find(int x) {
+            if (parent[x] != x) {
+                parent[x] = find(parent[x]);
+            }
+            return parent[x];
+        }
+
+        public void union(int a, int b) {
+            int ra = find(a);
+            int rb = find(b);
+            if (ra == rb)
+                return;
+
+            if (rank[ra] < rank[rb]) {
+                parent[ra] = rb;
+            } else if (rank[ra] > rank[rb]) {
+                parent[rb] = ra;
+            } else {
+                parent[rb] = ra;
+                rank[ra]++;
+            }
+        }
+    }
+
+
+
     // V1
     // IDEA: DFS
     // https://leetcode.com/problems/count-unreachable-pairs-of-nodes-in-an-undirected-graph/solutions/3337487/python-java-csimple-solution-easy-to-und-mu31/
