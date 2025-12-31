@@ -12339,9 +12339,22 @@ public class Workspace18 {
 
 
     // LC 509
+    // 10.54 - 11.04 am
+    // dp
+    // F(n) = F(n - 1) + F(n - 2)
     public int fib(int n) {
+        // edge
+        if(n <= 1){
+            return n;
+        }
+        int[] dp = new int[n+1];
+        dp[0] = 0;
+        dp[1] = 1;
+        for(int i = 2; i < n+1; i++){
+            dp[i] = dp[i-1] + dp[i-2];
+        }
 
-        return 0;
+        return dp[n];
     }
 
 
