@@ -210,6 +210,71 @@ public class GraphValidTree {
 
     }
 
+    // V0-0-1
+    // IDEA: UNION FIND (fixed by gemini)
+    // TODO: validate
+    public boolean validTree_0_0_1(int n, int[][] edges) {
+        // A tree with n nodes MUST have exactly n - 1 edges.
+        // Condition 1: If edges != n - 1, it's either disconnected or has a cycle.
+        if (edges.length != n - 1) {
+            return false;
+        }
+
+        MyUF_0_0_1 uf = new MyUF_0_0_1(n);
+        for (int[] e : edges) {
+            // Condition 2: If we try to union two nodes already in the same set,
+            // a cycle exists.
+            if (!uf.union(e[0], e[1])) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public class MyUF_0_0_1 {
+        int[] parents;
+        int[] rank; // Used for "Union by Rank" to keep tree flat
+
+        MyUF_0_0_1(int n) {
+            this.parents = new int[n];
+            this.rank = new int[n];
+            for (int i = 0; i < n; i++) {
+                this.parents[i] = i;
+                this.rank[i] = 1;
+            }
+        }
+
+        public int find(int x) {
+            if (parents[x] == x) {
+                return x;
+            }
+            // Path Compression
+            return parents[x] = find(parents[x]);
+        }
+
+        public boolean union(int x, int y) {
+            int rootX = find(x);
+            int rootY = find(y);
+
+            if (rootX == rootY) {
+                return false; // Cycle detected
+            }
+
+            // Union by Rank
+            if (rank[rootX] > rank[rootY]) {
+                parents[rootY] = rootX;
+            } else if (rank[rootX] < rank[rootY]) {
+                parents[rootX] = rootY;
+            } else {
+                parents[rootX] = rootY;
+                rank[rootY]++;
+            }
+            return true;
+        }
+    }
+
+
     // V0-1
     // IDEA : QUICK FIND (gpt)
     public boolean validTree_0_1(int n, int[][] edges) {
@@ -791,5 +856,7 @@ public class GraphValidTree {
             return true;
         }
     }
+
+    
 
 }

@@ -12223,12 +12223,88 @@ public class Workspace18 {
     // LC 261
     // 9.57 - 10.07
     /**
+     * -> write a function to check whether these edges make up a `valid tree.`
      *
+     *
+     *  Given n nodes labeled from 0 to n-1 and a list
+     *  of undirected edges (each edge is a pair of nodes),
+     *
+     * -------------
+     *
+     *   IDEA 1) DFS
+     *    -> check if there is a cycle
+     *
+     *   IDEA 2) UNION FIND
+     *     -> do union find and check if a conflicts in the process
+     *        -> return false if meet a conflicts
+     *
+     * -------------
      *
      *
      */
+    // IDEA 2) UNION FIND
     public boolean validTree(int n, int[][] edges) {
-        return false;
+        // edge
+
+        MyUF uf = new MyUF(n);
+        for(int[] e: edges){
+            int a = e[0];
+            int b = e[1];
+            // ???
+            if(!uf.union(a,b)){
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public class MyUF{
+        // attr
+        int n;
+        int[] parents;
+        int[] degrees;  // rack ??? -> route compression
+        //int
+
+        // constructor
+        MyUF(int n){
+            this.n = n;
+            this.parents = new int[this.n];
+            // ?? init node's parent as itself
+            for(int i = 0; i < this.n; i++){
+                this.parents[i] = i;
+            }
+            this.degrees = new int[this.n];
+        }
+
+        public boolean union(int x, int y){
+            // edge
+            // ???
+            if(x == y){
+                return true;
+            }
+            int parentX = getParent(x);
+            int parentY = getParent(y);
+
+            // NOTE !!! if conflicts
+            if(parentX == parentY){
+                return false;
+            }
+
+            // ???
+            this.parents[x] = parentY;
+            return true;
+        }
+
+        public int getParent(int x){
+            if(this.parents[x] == x){
+                return x;
+            }
+            // ???
+            this.parents[x] = getParent(x);
+            return this.parents[x] ;
+        }
+
     }
 
 
