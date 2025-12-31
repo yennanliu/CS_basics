@@ -40,8 +40,29 @@ import java.util.*;
 public class ClimbingStairs {
 
     // V0
-    // IDEA : DP
+    // IDEA: DP
     public int climbStairs(int n) {
+        // edge
+        if (n <= 2) {
+            return n;
+        }
+        int[] dp = new int[n + 1]; // ??
+        dp[0] = 0;
+        dp[1] = 1;
+        dp[2] = 2;
+        // dp[n] = dp[n-2] + dp[n-1]
+        for (int i = 3; i < n + 1; i++) {
+            dp[i] = dp[i - 2] + dp[i - 1];
+        }
+
+        //System.out.println(">>> dp = " + Arrays.toString(dp));
+
+        return dp[n]; // ???
+    }
+
+    // V0-1
+    // IDEA : DP
+    public int climbStairs_0_1(int n) {
 
         if (n <= 2){
             if (n == 1){
@@ -70,9 +91,9 @@ public class ClimbingStairs {
         return dp[n-1];
     }
 
-    // V0
+    // V0-2
     // IDEA : DP
-    public int climbStairs_0(int n) {
+    public int climbStairs_0_2(int n) {
 
         // null check
         if (n <= 0){
@@ -148,5 +169,7 @@ public class ClimbingStairs {
         }
         return curr;
     }
+
+    
 
 }
