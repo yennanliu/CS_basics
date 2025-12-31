@@ -257,6 +257,7 @@ public class CountUnreachablePairsOfNodesInAnUndirectedGraph {
         long result = 0;
         long processed = 0;
 
+        /** NOTE !!! below trick  */
         for (int size : sizeMap.values()) {
             result += size * (n - size - processed);
             processed += size;

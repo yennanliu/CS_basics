@@ -12220,5 +12220,19 @@ public class Workspace18 {
     }
 
 
+    // LC 261
+    // 9.57 - 10.07
+    /**
+     *
+     *
+     *
+     */
+    public boolean validTree(int n, int[][] edges) {
+        return false;
+    }
+
+
+
+
 
 }

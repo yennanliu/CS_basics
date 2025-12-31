@@ -97,6 +97,21 @@
   - **Tree Property**: Works well with tree structures (n-1 edges for n nodes)
   - **From Root**: Always start DFS from the target node (the node all paths should lead to)
 
+### **Pattern 11: Component Pair Counting (Unreachable Pairs)**
+- **Description**: Count pairs of nodes that cannot reach each other in a graph with multiple disconnected components
+- **Recognition**: "Unreachable pairs", "count disconnected pairs", "pairs in different components", "isolated node pairs"
+- **Key Technique**: Find all components using DFS/Union-Find, then count pairs between different components using cumulative multiplication
+- **Examples**: LC 2316 (Count Unreachable Pairs of Nodes in an Undirected Graph)
+- **Template**: Use Component Pair Counting Template
+- **Important Notes**:
+  - **Two Counting Approaches**:
+    - Forward: `componentSize × nodesProcessed` (nodes already seen)
+    - Backward: `componentSize × (n - componentSize - processed)` (remaining nodes)
+  - **Avoid Double Counting**: Only count pairs between different components once
+  - **Mathematical Optimization**: O(components) instead of O(n²) brute force
+  - **Component Discovery**: Use DFS or Union-Find to identify all components
+  - **Cumulative Tracking**: Keep running sum of processed nodes to calculate pairs efficiently
+
 ## Templates & Algorithms
 
 ### Template Comparison Table
@@ -112,6 +127,7 @@
 | **Path Signature** | Encode shapes | Directional tracking | O(m×n) | O(m×n) | Distinct shape counting |
 | **DFS Validation** | Component validation | Boolean flag propagation | O(m×n) | O(m×n) | Sub-component detection |
 | **Bidirectional Direction** | Track edge direction | Bidirectional + flags | O(V+E) | O(V+E) | Edge reorientation/reversal |
+| **Component Pair Counting** | Count unreachable pairs | Cumulative multiplication | O(V+E) | O(V) | Disconnected component pairs |
 
 ### Universal DFS Template
 ```python
@@ -965,6 +981,336 @@ def min_reorder(n, connections):
 - LC 1568: Minimum Number of Days to Disconnect Island (related graph modification)
 - LC 1579: Remove Max Number of Edges to Keep Graph Fully Traversable (edge orientation)
 
+### Template 11: Component Pair Counting (Unreachable Pairs)
+
+```java
+/**
+ * Pattern: Count pairs of nodes that cannot reach each other across different components
+ * Use case: Count unreachable/disconnected pairs, isolated node pairs
+ * Key insight: For each component, multiply its size by nodes in OTHER components
+ *
+ * Time: O(V + E) - DFS to find all components
+ * Space: O(V) - visited array + adjacency list
+ */
+
+// Approach 1: DFS with Forward Counting (count against already processed)
+public long countUnreachablePairs_DFS_Forward(int n, int[][] edges) {
+    // Build adjacency list
+    List<Integer>[] adj = new ArrayList[n];
+    for (int i = 0; i < n; i++) {
+        adj[i] = new ArrayList<>();
+    }
+    for (int[] edge : edges) {
+        adj[edge[0]].add(edge[1]);
+        adj[edge[1]].add(edge[0]);
+    }
+
+    boolean[] visited = new boolean[n];
+    long totalUnreachablePairs = 0;
+    long nodesProcessed = 0; // Track nodes in components already processed
+
+    // Find each component and count pairs
+    for (int i = 0; i < n; i++) {
+        if (!visited[i]) {
+            // DFS to find component size
+            long componentSize = dfs(i, adj, visited);
+
+            /**
+             * KEY TRICK: Forward counting
+             * Each node in current component is unreachable from
+             * ALL nodes in previous components
+             *
+             * Formula: componentSize × nodesProcessed
+             * - componentSize: nodes in current component
+             * - nodesProcessed: nodes in all previous components
+             */
+            totalUnreachablePairs += componentSize * nodesProcessed;
+
+            // Update processed count
+            nodesProcessed += componentSize;
+        }
+    }
+
+    return totalUnreachablePairs;
+}
+
+private long dfs(int node, List<Integer>[] adj, boolean[] visited) {
+    visited[node] = true;
+    long count = 1;
+
+    for (int neighbor : adj[node]) {
+        if (!visited[neighbor]) {
+            count += dfs(neighbor, adj, visited);
+        }
+    }
+
+    return count;
+}
+
+// Approach 2: Union-Find with Backward Counting (count against remaining unprocessed)
+public long countUnreachablePairs_UnionFind_Backward(int n, int[][] edges) {
+    // Initialize Union-Find
+    int[] parent = new int[n];
+    int[] rank = new int[n];
+    for (int i = 0; i < n; i++) {
+        parent[i] = i;
+    }
+
+    // Union all edges
+    for (int[] edge : edges) {
+        union(edge[0], edge[1], parent, rank);
+    }
+
+    // Count component sizes
+    Map<Integer, Integer> sizeMap = new HashMap<>();
+    for (int i = 0; i < n; i++) {
+        int root = find(i, parent);
+        sizeMap.put(root, sizeMap.getOrDefault(root, 0) + 1);
+    }
+
+    long result = 0;
+    long processed = 0;
+
+    /**
+     * KEY TRICK: Backward counting
+     * For each component, count pairs with ALL remaining unprocessed nodes
+     *
+     * Formula: size × (n - size - processed)
+     * - size: nodes in current component
+     * - n: total nodes
+     * - processed: nodes in components already counted
+     * - (n - size - processed): nodes in OTHER components not yet counted
+     *
+     * This avoids double counting by only counting forward to remaining components
+     */
+    for (int size : sizeMap.values()) {
+        result += size * (n - size - processed);
+        processed += size;
+    }
+
+    return result;
+}
+
+private int find(int x, int[] parent) {
+    if (parent[x] != x) {
+        parent[x] = find(parent[x], parent); // Path compression
+    }
+    return parent[x];
+}
+
+private void union(int x, int y, int[] parent, int[] rank) {
+    int rootX = find(x, parent);
+    int rootY = find(y, parent);
+
+    if (rootX != rootY) {
+        // Union by rank
+        if (rank[rootX] < rank[rootY]) {
+            parent[rootX] = rootY;
+        } else if (rank[rootX] > rank[rootY]) {
+            parent[rootY] = rootX;
+        } else {
+            parent[rootY] = rootX;
+            rank[rootX]++;
+        }
+    }
+}
+
+// Approach 3: Alternative - Count total pairs minus reachable pairs
+public long countUnreachablePairs_Alternative(int n, int[][] edges) {
+    // Build adjacency list
+    List<List<Integer>> adj = new ArrayList<>();
+    for (int i = 0; i < n; i++) {
+        adj.add(new ArrayList<>());
+    }
+    for (int[] edge : edges) {
+        adj.get(edge[0]).add(edge[1]);
+        adj.get(edge[1]).add(edge[0]);
+    }
+
+    /**
+     * Total possible pairs = n × (n-1) / 2
+     * Reachable pairs = sum of (componentSize × (componentSize-1) / 2) for each component
+     * Unreachable pairs = Total - Reachable
+     */
+    long totalPairs = (long) n * (n - 1) / 2;
+    boolean[] visited = new boolean[n];
+
+    for (int i = 0; i < n; i++) {
+        if (!visited[i]) {
+            long size = dfsCount(i, adj, visited);
+            // Subtract reachable pairs within this component
+            totalPairs -= (size * (size - 1)) / 2;
+        }
+    }
+
+    return totalPairs;
+}
+
+private long dfsCount(int node, List<List<Integer>> adj, boolean[] visited) {
+    visited[node] = true;
+    long count = 1;
+
+    for (int neighbor : adj.get(node)) {
+        if (!visited[neighbor]) {
+            count += dfsCount(neighbor, adj, visited);
+        }
+    }
+
+    return count;
+}
+```
+
+**Python Implementation:**
+```python
+def count_unreachable_pairs_dfs(n, edges):
+    """
+    Count unreachable pairs using DFS with forward counting
+    """
+    # Build adjacency list
+    adj = [[] for _ in range(n)]
+    for u, v in edges:
+        adj[u].append(v)
+        adj[v].append(u)
+
+    visited = [False] * n
+    total_pairs = 0
+    processed = 0
+
+    def dfs(node):
+        """DFS to count component size"""
+        visited[node] = True
+        count = 1
+        for neighbor in adj[node]:
+            if not visited[neighbor]:
+                count += dfs(neighbor)
+        return count
+
+    # Find each component
+    for i in range(n):
+        if not visited[i]:
+            component_size = dfs(i)
+
+            # Key trick: multiply by already processed nodes
+            total_pairs += component_size * processed
+            processed += component_size
+
+    return total_pairs
+
+
+def count_unreachable_pairs_uf(n, edges):
+    """
+    Count unreachable pairs using Union-Find with backward counting
+    """
+    # Initialize Union-Find
+    parent = list(range(n))
+
+    def find(x):
+        if parent[x] != x:
+            parent[x] = find(parent[x])
+        return parent[x]
+
+    def union(x, y):
+        root_x, root_y = find(x), find(y)
+        if root_x != root_y:
+            parent[root_x] = root_y
+
+    # Union all edges
+    for u, v in edges:
+        union(u, v)
+
+    # Count component sizes
+    from collections import Counter
+    size_map = Counter(find(i) for i in range(n))
+
+    result = 0
+    processed = 0
+
+    # Key trick: count against remaining unprocessed nodes
+    for size in size_map.values():
+        result += size * (n - size - processed)
+        processed += size
+
+    return result
+```
+
+**Key Concepts:**
+
+1. **Two Counting Approaches**
+   ```
+   Forward Counting (Approach 1):
+   - Component 1 (size=3): 3 × 0 = 0
+   - Component 2 (size=2): 2 × 3 = 6
+   - Component 3 (size=4): 4 × 5 = 20
+   - Total: 26
+
+   Backward Counting (Approach 2):
+   - Component 1 (size=3): 3 × (9-3-0) = 18
+   - Component 2 (size=2): 2 × (9-2-3) = 8
+   - Component 3 (size=4): 4 × (9-4-5) = 0
+   - Total: 26
+
+   Both give same result, different order of calculation
+   ```
+
+2. **Why This Works**
+   - Nodes in different components CANNOT reach each other
+   - Each pair of nodes from different components = 1 unreachable pair
+   - Multiplication counts all such cross-component pairs efficiently
+   - Avoid O(n²) brute force by tracking cumulative counts
+
+3. **Visualization**
+   ```
+   Example: n=7, components=[3,2,2]
+
+   Component A: {0,1,2}  (size=3)
+   Component B: {3,4}     (size=2)
+   Component C: {5,6}     (size=2)
+
+   Unreachable pairs:
+   - A-B: 3×2 = 6 pairs
+   - A-C: 3×2 = 6 pairs
+   - B-C: 2×2 = 4 pairs
+   Total: 16 pairs
+
+   Forward: 3×0 + 2×3 + 2×5 = 0+6+10 = 16 ✓
+   Backward: 3×4 + 2×2 + 2×0 = 12+4+0 = 16 ✓
+   ```
+
+4. **Common Pitfalls**
+   - **Double Counting**: Must only count each pair once
+   - **Component Discovery**: Must visit ALL nodes to find all components
+   - **Overflow**: Use `long` for large n (up to 10^5 nodes → ~10^10 pairs)
+   - **Edge Cases**: Single component (return 0), no edges (return n×(n-1)/2)
+
+**Pattern Characteristics:**
+- **Graph Type**: Undirected graph with multiple components
+- **Key Insight**: Unreachable = different components
+- **Optimization**: Cumulative multiplication instead of nested loops
+- **Component Finding**: DFS, BFS, or Union-Find all work
+- **Time Complexity**: O(V + E) - linear in graph size
+- **Space Complexity**: O(V) - visited tracking or parent array
+
+**When to Use This Pattern:**
+- "Count pairs of nodes that cannot reach each other"
+- "Number of unreachable/disconnected node pairs"
+- "Pairs from different components"
+- "Isolated groups" with pair counting
+- Graph connectivity with counting requirement
+
+**Similar Problems:**
+- LC 2316: Count Unreachable Pairs of Nodes in an Undirected Graph
+- LC 323: Number of Connected Components in an Undirected Graph (component counting)
+- LC 547: Number of Provinces (similar component detection)
+- LC 684: Redundant Connection (Union-Find with components)
+- LC 1135: Connecting Cities With Minimum Cost (MST with component awareness)
+
+**Variations:**
+1. **Weighted Pairs**: Count with node weights instead of simple counting
+2. **Conditional Pairs**: Only count pairs satisfying additional constraints
+3. **Dynamic Components**: Add/remove edges and update count incrementally
+4. **K-Component Pairs**: Count pairs from components of specific size k
+
+---
 
 - Assign sub tree to node, then return updated node at final stage (Important !!!!)
 
@@ -1275,6 +1621,13 @@ print (z)
 | Minimum Number of Days to Disconnect Island | 1568 | Hard | Graph modification (related) | - |
 | Remove Max Number of Edges to Keep Graph Fully Traversable | 1579 | Hard | Edge orientation (related) | - |
 
+#### **Pattern 11: Component Pair Counting (Unreachable Pairs)**
+| Problem | LC # | Difficulty | Key Technique | Template |
+|---------|------|------------|---------------|----------|
+| Count Unreachable Pairs of Nodes in an Undirected Graph | 2316 | Medium | Component counting + cumulative multiplication | Template 11 |
+| Number of Connected Components in an Undirected Graph | 323 | Medium | Basic component counting | Template 2 |
+| Number of Provinces | 547 | Medium | Component detection | Template 2 |
+
 ### Complete Problem List by Difficulty
 
 #### Easy Problems (Foundation)
@@ -1315,6 +1668,7 @@ print (z)
 - LC 701: Insert into BST - BST insertion
 - LC 1466: Reorder Routes to Make All Paths Lead to the City Zero - Bidirectional graph with direction tracking
 - LC 1905: Count Sub Islands - DFS with validation
+- LC 2316: Count Unreachable Pairs of Nodes in an Undirected Graph - Component pair counting
 - LC 737: Sentence Similarity II - Graph connectivity
 - LC 776: Split BST - Advanced manipulation
 - LC 1020: Number of Enclaves - Boundary elimination
