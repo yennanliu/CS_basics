@@ -224,7 +224,6 @@
 		- gemini
 	- LC 70 Climbing Stairs
 		- gpt
-			- 509
 			- 746
 			- 1137
 			- 338
