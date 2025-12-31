@@ -12338,7 +12338,11 @@ public class Workspace18 {
     }
 
 
+    // LC 509
+    public int fib(int n) {
 
+        return 0;
+    }
 
 
 
