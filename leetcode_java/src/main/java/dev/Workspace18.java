@@ -12171,6 +12171,54 @@ public class Workspace18 {
 //    }
 
 
+    // LC 2316
+    // 9.12 - 22 AM
+    /**
+     *  -> Return the `number of pairs` of different
+     *   nodes that are `unreachable` from each other.
+     *
+     *
+     * --------------
+     *
+     *  IDEA 1) DFS
+     *     ->
+     *      1. split to group via dfs
+     *      2. for node in group a, the `unreachable node` is the node in other groups
+     *
+     *  IDEA 2) BFS
+     *
+     *
+     * --------------
+     *
+     *
+     */
+    public long countPairs(int n, int[][] edges) {
+        // edge
+
+        // dfs get node group
+        // { group_id: [node_1, node_2, ...[ }
+        Map<Integer, List<Integer>> map = new HashMap<>();
+        List<Integer> keys = new ArrayList<>();
+        // ??
+        for(Integer k: map.keySet()){
+            keys.add(k);
+        }
+
+        // count `unreachable pair`
+        // ???
+        List<List<Integer>> unreachablePairs = new ArrayList<>();
+
+//        for(int i = 0; i < keys.size(); i++){
+//            for(int k = i + 1; k < keys.size(); k++){
+//                // ???
+//                List<Integer> tmp = new ArrayList<>();
+//                tmp.add(keys.get(i));
+//            }
+//        }
+
+        return 0L;
+    }
+
 
 
 }

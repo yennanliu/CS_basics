@@ -53,7 +53,103 @@ public class CountUnreachablePairsOfNodesInAnUndirectedGraph {
 //
 //    }
 
+    // V0-1
+    // IDEA: DFS (gemini)
+    public long countPairs_0_1(int n, int[][] edges) {
+        // 1. Build Adjacency List
+        List<Integer>[] adj = new ArrayList[n];
+        for (int i = 0; i < n; i++)
+            adj[i] = new ArrayList<>();
+        for (int[] edge : edges) {
+            adj[edge[0]].add(edge[1]);
+            adj[edge[1]].add(edge[0]);
+        }
 
+        boolean[] visited = new boolean[n];
+        long totalUnreachablePairs = 0;
+        long nodesProcessed = 0;
+
+        // 2. Traverse each component
+        for (int i = 0; i < n; i++) {
+            if (!visited[i]) {
+                long componentSize = dfs_0_1(i, adj, visited);
+
+                // Each node in the current component is unreachable from
+                // all nodes processed in previous components.
+                totalUnreachablePairs += componentSize * nodesProcessed;
+
+                // Update the count of processed nodes
+                nodesProcessed += componentSize;
+            }
+        }
+
+        return totalUnreachablePairs;
+    }
+
+    private long dfs_0_1(int u, List<Integer>[] adj, boolean[] visited) {
+        visited[u] = true;
+        long count = 1;
+        for (int v : adj[u]) {
+            if (!visited[v]) {
+                count += dfs_0_1(v, adj, visited);
+            }
+        }
+        return count;
+    }
+
+    // V0-2
+    // IDEA: UNION FIND (gemini)
+    int[] parent_0_2;
+    int[] size_0_2;
+
+    public long countPairs_0_2(int n, int[][] edges) {
+        parent_0_2 = new int[n];
+        size_0_2 = new int[n];
+        for (int i = 0; i < n; i++) {
+            parent_0_2[i] = i;
+            size_0_2[i] = 1;
+        }
+
+        for (int[] edge : edges) {
+            union_0_2(edge[0], edge[1]);
+        }
+
+        long totalPairs = 0;
+        long nodesProcessed = 0;
+
+        // Iterate through all nodes to find roots and their component sizes
+        for (int i = 0; i < n; i++) {
+            if (parent_0_2[i] == i) { // This node is a root
+                long s = size_0_2[i];
+                totalPairs += s * nodesProcessed;
+                nodesProcessed += s;
+            }
+        }
+        return totalPairs;
+    }
+
+    private int find_0_2(int i) {
+        if (parent_0_2[i] == i)
+            return i;
+        return parent_0_2[i] = find_0_2(parent_0_2[i]); // Path compression
+    }
+
+    private void union_0_2(int i, int j) {
+        int rootI = find(i);
+        int rootJ = find(j);
+        if (rootI != rootJ) {
+            // Union by size
+            if (size_0_2[rootI] < size_0_2[rootJ]) {
+                parent_0_2[rootI] = rootJ;
+                size_0_2[rootJ] += size_0_2[rootI];
+            } else {
+                parent_0_2[rootJ] = rootI;
+                size_0_2[rootI] += size_0_2[rootJ];
+            }
+        }
+    }
+
+    
     // V1
     // IDEA: DFS
     // https://leetcode.com/problems/count-unreachable-pairs-of-nodes-in-an-undirected-graph/solutions/3337487/python-java-csimple-solution-easy-to-und-mu31/
