@@ -1,0 +1,284 @@
+package LeetCodeJava.DFS;
+
+// https://leetcode.com/problems/count-unreachable-pairs-of-nodes-in-an-undirected-graph/description/
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
+
+/**
+ * 2316. Count Unreachable Pairs of Nodes in an Undirected Graph
+ * Medium
+ * Topics
+ * premium lock icon
+ * Companies
+ * Hint
+ * You are given an integer n. There is an undirected graph with n nodes, numbered from 0 to n - 1. You are given a 2D integer array edges where edges[i] = [ai, bi] denotes that there exists an undirected edge connecting nodes ai and bi.
+ *
+ * Return the number of pairs of different nodes that are unreachable from each other.
+ *
+ *
+ *
+ * Example 1:
+ *
+ *
+ * Input: n = 3, edges = [[0,1],[0,2],[1,2]]
+ * Output: 0
+ * Explanation: There are no pairs of nodes that are unreachable from each other. Therefore, we return 0.
+ * Example 2:
+ *
+ *
+ * Input: n = 7, edges = [[0,2],[0,5],[2,4],[1,6],[5,4]]
+ * Output: 14
+ * Explanation: There are 14 pairs of nodes that are unreachable from each other:
+ * [[0,1],[0,3],[0,6],[1,2],[1,3],[1,4],[1,5],[2,3],[2,6],[3,4],[3,5],[3,6],[4,6],[5,6]].
+ * Therefore, we return 14.
+ *
+ *
+ * Constraints:
+ *
+ * 1 <= n <= 105
+ * 0 <= edges.length <= 2 * 105
+ * edges[i].length == 2
+ * 0 <= ai, bi < n
+ * ai != bi
+ * There are no repeated edges.
+ *
+ */
+public class CountUnreachablePairsOfNodesInAnUndirectedGraph {
+
+    // V0
+//    public long countPairs(int n, int[][] edges) {
+//
+//    }
+
+
+    // V1
+    // IDEA: DFS
+    // https://leetcode.com/problems/count-unreachable-pairs-of-nodes-in-an-undirected-graph/solutions/3337487/python-java-csimple-solution-easy-to-und-mu31/
+    private List<Integer>[] graph;
+
+    public long countPairs_1(int n, int[][] edges) {
+        createGraph(n, edges);
+        boolean[] visited = new boolean[n];
+        int numVisitedNodes = 0;
+        long numUnreachablePairsOfNodes = 0;
+
+        for (int node = 0; node < n; ++node) {
+            if (!visited[node]) {
+                int numNodesInCurrentGroup = depthFirstSearch_countConnectedNodesInCurrentGroup(node, visited);
+                numUnreachablePairsOfNodes += (long) numNodesInCurrentGroup * numVisitedNodes;
+                numVisitedNodes += numNodesInCurrentGroup;
+            }
+        }
+        return numUnreachablePairsOfNodes;
+    }
+
+    private int depthFirstSearch_countConnectedNodesInCurrentGroup(int node, boolean[] visited) {
+        visited[node] = true;
+        int numConnectedNodes = 1;
+
+        for (int neighbor : graph[node]) {
+            if (!visited[neighbor]) {
+                numConnectedNodes += depthFirstSearch_countConnectedNodesInCurrentGroup(neighbor, visited);
+            }
+        }
+        return numConnectedNodes;
+    }
+
+    private void createGraph(int n, int[][] edges) {
+        graph = new List[n];
+        for (int node = 0; node < n; ++node) {
+            graph[node] = new ArrayList<>();
+        }
+        for (int i = 0; i < edges.length; ++i) {
+            graph[edges[i][0]].add(edges[i][1]);
+            graph[edges[i][1]].add(edges[i][0]);
+        }
+    }
+
+
+    // V2
+    // IDEA: DFS
+    // https://leetcode.com/problems/count-unreachable-pairs-of-nodes-in-an-undirected-graph/solutions/3337574/image-explanation-3-approaches-dfs-cjava-5csg/
+    List<List<Integer>> x = new ArrayList<>();
+
+    public long countPairs_2(int n, int[][] edges) {
+        for (int i = 0; i < n; i++)
+            x.add(new ArrayList<>());
+        for (int[] edge : edges) {
+            x.get(edge[0]).add(edge[1]);
+            x.get(edge[1]).add(edge[0]);
+        }
+
+        long sum = (Long.valueOf(n) * (n - 1)) / 2;
+        boolean[] visited = new boolean[n];
+        for (int i = 0; i < n; i++)
+            if (!visited[i]) {
+                int cnt = dfs(i, visited, new int[1]);
+                sum -= (Long.valueOf(cnt) * (cnt - 1)) / 2;
+            }
+        return sum;
+    }
+
+    int dfs(int node, boolean[] visited, int[] count) {
+        if (visited[node])
+            return count[0];
+        visited[node] = true;
+        count[0]++;
+        for (int curr : x.get(node))
+            dfs(curr, visited, count);
+        return count[0];
+    }
+
+    // V3
+    // IDEA: BFS
+    // https://leetcode.com/problems/count-unreachable-pairs-of-nodes-in-an-undirected-graph/solutions/3337954/java-easy-bfs-by-kalinga-lb4f/
+    public long countPairs_3(int n, int[][] edges) {
+        List<List<Integer>> adj = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            adj.add(new ArrayList<>());
+        }
+        for (int i = 0; i < edges.length; i++) {
+            adj.get(edges[i][0]).add(edges[i][1]);
+            adj.get(edges[i][1]).add(edges[i][0]);
+        }
+        long sum = n;
+        long res = 0;
+        boolean vis[] = new boolean[n];
+        for (int i = 0; i < n; i++) {
+            if (!vis[i]) {
+                vis[i] = true;
+                int count = bfs(i, vis, adj, 0);
+                sum -= count;
+                res += (sum * count);
+            }
+        }
+        return res;
+    }
+
+    public int bfs(int i, boolean[] vis, List<List<Integer>> adj, int count) {
+        Queue<Integer> qu = new LinkedList<>();
+        qu.add(i);
+        count++;
+        while (!qu.isEmpty()) {
+            int curr = qu.poll();
+            for (int adjnode : adj.get(curr)) {
+                if (!vis[adjnode]) {
+                    qu.add(adjnode);
+                    count++;
+                    vis[adjnode] = true;
+                }
+            }
+        }
+        return count;
+    }
+
+    // V4
+    // IDEA: UNION FIND
+    // https://leetcode.com/problems/count-unreachable-pairs-of-nodes-in-an-undirected-graph/solutions/3339777/image-explanation-from-tle-to-100-union-8x4nb/
+    int[] parent;
+    int[] rank;
+
+    int find(int x) {
+        while (parent[x] != x) {
+            x = parent[parent[x]];
+        }
+        return x;
+    }
+
+    void makeUnion(int x, int y) {
+        int xPar = find(x);
+        int yPar = find(y);
+        if (xPar == yPar) {
+            return;
+        } else if (rank[xPar] < rank[yPar]) {
+            parent[xPar] = yPar;
+        } else if (rank[xPar] > rank[yPar]) {
+            parent[yPar] = xPar;
+        } else {
+            parent[yPar] = xPar;
+            rank[xPar]++;
+        }
+        return;
+    }
+
+    public long countPairs_4(int n, int[][] edges) {
+        parent = new int[n];
+        rank = new int[n];
+        for (int i = 0; i < n; i++) {
+            parent[i] = i;
+        }
+        for (int[] edge : edges) {
+            makeUnion(edge[0], edge[1]);
+        }
+        long[] componentMembers = new long[n];
+        for (int i = 0; i < n; i++) {
+            int par = find(i);
+            componentMembers[par]++;
+        }
+        long pairs = 0;
+        long remainingMemebers = n;
+        for (int i = 0; i < n; i++) {
+            if (componentMembers[i] == 0) {
+                continue;
+            }
+            long currentComponents = componentMembers[i];
+            remainingMemebers -= currentComponents;
+            long currentPairs = currentComponents * remainingMemebers;
+            pairs += currentPairs;
+        }
+        return pairs;
+    }
+
+
+
+    // V5
+    // IDEA: DFS
+    // https://leetcode.com/problems/count-unreachable-pairs-of-nodes-in-an-undirected-graph/solutions/3337653/easy-solutions-with-exaplanation-in-java-sny5/
+    public long countPairs_5(int n, int[][] edges) {
+        // Build the adjacency list of the graph
+        List<Integer>[] adjList = new ArrayList[n];
+        for (int i = 0; i < n; i++) {
+            adjList[i] = new ArrayList<>();
+        }
+        for (int[] edge : edges) {
+            int u = edge[0];
+            int v = edge[1];
+            adjList[u].add(v);
+            adjList[v].add(u);
+        }
+
+        boolean[] visited = new boolean[n];
+        int[] sizes = new int[n];
+        for (int i = 0; i < n; i++) {
+            if (!visited[i]) {
+                sizes[i] = dfs(i, adjList, visited);
+            }
+        }
+
+        long ans = 0;
+        long sum = 0;
+        for (int size : sizes) {
+            ans += sum * size;
+            sum += size;
+        }
+
+        return ans;
+    }
+
+    private int dfs(int u, List<Integer>[] adjList, boolean[] visited) {
+        visited[u] = true;
+        int size = 1;
+        for (int v : adjList[u]) {
+            if (!visited[v]) {
+                size += dfs(v, adjList, visited);
+            }
+        }
+        return size;
+    }
+
+
+
+}
