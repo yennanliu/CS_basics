@@ -12292,7 +12292,9 @@ public class Workspace18 {
             }
 
             // ???
-            this.parents[x] = parentY;
+            // NOTE !!!
+            //this.parents[x] = parentY;
+            this.parents[parentX] = parentY;
             return true;
         }
 

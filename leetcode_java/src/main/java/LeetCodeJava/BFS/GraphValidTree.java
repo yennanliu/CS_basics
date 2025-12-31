@@ -214,6 +214,11 @@ public class GraphValidTree {
     // IDEA: UNION FIND (fixed by gemini)
     // TODO: validate
     public boolean validTree_0_0_1(int n, int[][] edges) {
+        /** NOTE !!!
+         *
+         * edge case - node  VS edges counts
+         *
+         */
         // A tree with n nodes MUST have exactly n - 1 edges.
         // Condition 1: If edges != n - 1, it's either disconnected or has a cycle.
         if (edges.length != n - 1) {
@@ -265,6 +270,12 @@ public class GraphValidTree {
             if (rank[rootX] > rank[rootY]) {
                 parents[rootY] = rootX;
             } else if (rank[rootX] < rank[rootY]) {
+                /** NOTE !!!
+                 *
+                 *  should use `parents[rootX] = rootY;`
+                 *
+                 *  (instead of `parents[x] = rootY;`)
+                 */
                 parents[rootX] = rootY;
             } else {
                 parents[rootX] = rootY;
@@ -857,6 +868,6 @@ public class GraphValidTree {
         }
     }
 
-    
+
 
 }
