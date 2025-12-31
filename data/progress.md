@@ -217,7 +217,6 @@
 			- 2050
 	- LC 261 Graph Valid Tree
 		- gpt
-			- 261
 			- 323
 			- 684
 			- 310
