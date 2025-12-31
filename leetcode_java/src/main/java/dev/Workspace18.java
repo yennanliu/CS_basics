@@ -12358,9 +12358,53 @@ public class Workspace18 {
     }
 
     // LC 338
+    // 11.02 - 12 am
+    /**
+     * Given an integer n,
+     * return an array ans of length n + 1
+     * such that for each i (0 <= i <= n), ans[i]
+     * is the number of 1's in the binary representation of i.
+     *
+     * ------------
+     * IDEA 1) DP
+     *
+     * IDEA 2) BRUTE FORCE
+     *
+     * ------------
+     *
+     */
     public int[] countBits(int n) {
+        // edge
+        if(n == 0){
+            return new int[]{0};
+        }
+        if(n == 1){
+            return new int[]{0,1};
+        }
+        if(n == 2){
+            return new int[]{0,1,1};
+        }
 
-        return null;
+        int[] res = new int[n+1]; //???
+        // ????
+        for(int i = 0; i < n+1; i++){
+            String binary = Integer.toBinaryString(i);
+            System.out.println(">>> i = " + i +
+                    ", binary = " + binary);
+            res[i] = getOneCnt(binary);
+        }
+
+        return res;
+    }
+
+    private int getOneCnt(String input){
+        int cnt = 0;
+        for(String x: input.split("")){
+            if(x.equals("1")){
+                cnt += 1;
+            }
+        }
+        return cnt;
     }
 
 
