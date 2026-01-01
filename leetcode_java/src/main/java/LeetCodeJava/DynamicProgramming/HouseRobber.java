@@ -51,8 +51,20 @@ public class HouseRobber {
 
         // Base cases
         dp[0] = nums[0];
+        /**  NOTE !!!
+         *
+         *  this dp[1] should be MAX of nums[0], nums[1].
+         *
+         *  (but NOT nums[1])
+         */
         dp[1] = Math.max(nums[0], nums[1]);
 
+        /**  NOTE !!!
+         *
+         *  we end at `n idx`
+         *
+         *  (but NOT `n+1` idx)
+         */
         for (int i = 2; i < n; i++) {
             // Choice 1: Rob current house (must add money from 2 houses ago)
             // Choice 2: Skip current house (carry over money from 1 house ago)

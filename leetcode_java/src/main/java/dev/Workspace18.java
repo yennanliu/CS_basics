@@ -12562,7 +12562,7 @@ public class Workspace18 {
      *   ->
      *
      *     [2,1,1,2]
-     * dp: [2,1,3, 3]
+     * dp: [2,2,3, 4]
      *
      *
      *
@@ -12580,10 +12580,13 @@ public class Workspace18 {
             return Math.max(nums[0], nums[1]);
         }
 
+        // dp[i] represents the max money robbed up to house i
         int[] dp = new int[nums.length + 1];
 
         dp[0] = nums[0];
-        dp[1] = nums[1];
+        // NOTE !!!
+        //dp[1] = nums[1];
+        dp[1] = Math.max(dp[0], dp[1]);
 
         // ???
         for(int i = 2; i < nums.length + 1; i++){
