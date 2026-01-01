@@ -12504,6 +12504,111 @@ public class Workspace18 {
         return dp[size]; // ???
     }
 
+    // LC 198
+    // 14.12 - 22 pm
+    /**
+     *  -> return the `maximum` amount of `money `
+     *      you can rob tonight `without alerting` the police.
+     *
+     *   - `adjacent` houses have security systems
+     *      connected and it will automatically contact the police
+     *       if `two adjacent houses` were broken into on the same night.
+     *
+     *  ---------------
+     *
+     *   IDEA 1) DP
+     *
+     *      dp equation:
+     *
+     *        dp[i]: max money can get at cur idx
+     *
+     *        dp[i] = max( dp[i-2] + nums[i], dp[i-1] )
+     *
+     *   IDEA 2) BRUTE FORCE
+     *
+     *
+     *  ---------------
+     *
+     *   ex 1)
+     *
+     *   Input: nums = [1,2,3,1]
+     *   Output: 4
+     *
+     *   ->
+     *
+     *      [1,2,3,1]
+     *
+     * dp:  [1,2, 4, 4]
+     *
+     *
+     *
+     *  ex 2)
+     *
+     *  Input: nums = [2,7,9,3,1]
+     *  Output: 12
+     *
+     *
+     *  ->
+     *
+     *     [2,7,9,3,1]
+     *
+     * dp: [2,7,11,11, 12]
+     *
+     *
+     *  ex 3)
+     *
+     *   Input: nums = [2,1,1,2]
+     *
+     *   ->
+     *
+     *     [2,1,1,2]
+     * dp: [2,1,3, 3]
+     *
+     *
+     *
+     *
+     */
+    public int rob(int[] nums) {
+        // edge
+        if(nums == null || nums.length == 0){
+            return 0;
+        }
+        if(nums.length == 1){
+            return nums[0];
+        }
+        if(nums.length == 2){
+            return Math.max(nums[0], nums[1]);
+        }
+
+        int[] dp = new int[nums.length + 1];
+
+        dp[0] = nums[0];
+        dp[1] = nums[1];
+
+        // ???
+        for(int i = 2; i < nums.length + 1; i++){
+            /**
+             *      *   IDEA 1) DP
+             *      *
+             *      *      dp equation:
+             *      *
+             *      *        dp[i]: max money can get at cur idx
+             *      *
+             *      *        dp[i] = max( dp[i-2] + nums[i], dp[i-1] )
+             */
+            if(i == nums.length){
+                dp[i] = Math.max(dp[i-2] + nums[i], dp[i-1]);
+            }else{
+                dp[i] = Math.max(dp[i-2] + nums[i], dp[i-1]);
+            }
+        }
+
+        // ??? calculate the `nums.length idx`  val
+        //dp[]
+
+        return dp[nums.length - 1];
+    }
+
 
 
 

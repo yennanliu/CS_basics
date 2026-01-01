@@ -36,9 +36,37 @@ package LeetCodeJava.DynamicProgramming;
 public class HouseRobber {
 
     // V0
+    // IDEA: DP (fixed by gemini)
+    public int rob(int[] nums) {
+        if (nums == null || nums.length == 0)
+            return 0;
+        int n = nums.length;
+        if (n == 1)
+            return nums[0];
+        if (n == 2)
+            return Math.max(nums[0], nums[1]);
+
+        // dp[i] represents the max money robbed up to house i
+        int[] dp = new int[n];
+
+        // Base cases
+        dp[0] = nums[0];
+        dp[1] = Math.max(nums[0], nums[1]);
+
+        for (int i = 2; i < n; i++) {
+            // Choice 1: Rob current house (must add money from 2 houses ago)
+            // Choice 2: Skip current house (carry over money from 1 house ago)
+            dp[i] = Math.max(dp[i - 2] + nums[i], dp[i - 1]);
+        }
+
+        return dp[n - 1];
+    }
+
+
+    // V0-1
     // IDEA : DP
     // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Dynamic_Programming/house-robber.py
-    public int rob(int[] nums) {
+    public int rob_0_1(int[] nums) {
 
         if (nums == null || nums.length == 0){
             return 0;
@@ -55,7 +83,8 @@ public class HouseRobber {
          *  DP Logic
          *
          *   nums[i-2] + nums[i] : rob nums[i]
-         *   nums[i-1] : not rob nums[i]
+         *
+         *   nums[i-1] : NOT rob at nums[i]
          *
          */
         for (int i = 2; i < nums.length; i++){
@@ -65,9 +94,9 @@ public class HouseRobber {
         return nums[nums.length-1];
     }
 
-    // V0-1
+    // V0-2
     // IDEA: DP (GPT)
-    public int rob_0_1(int[] nums) {
+    public int rob_0_2(int[] nums) {
         // Edge cases
         if (nums.length == 0)
             return 0;
@@ -91,9 +120,9 @@ public class HouseRobber {
         return dp[nums.length - 1]; // Return the last computed value
     }
 
-    // V0-2
+    // V0-3
     // IDEA : DP
-    public int rob_2(int[] nums) {
+    public int rob_0_3(int[] nums) {
 
         if (nums.length <= 3){
 
@@ -151,5 +180,8 @@ public class HouseRobber {
         }
         return Math.max(rob, norob);
     }
+
+
+
 
 }
