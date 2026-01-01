@@ -104,18 +104,179 @@ def linear_dp(nums):
     n = len(nums)
     if n == 0:
         return 0
-    
+
     # State: dp[i] = optimal value at position i
     dp = [0] * n
     dp[0] = nums[0]
-    
+
     for i in range(1, n):
         # Transition: current vs previous
         dp[i] = max(dp[i-1], nums[i])
         # Or with skip: dp[i] = max(dp[i-1], dp[i-2] + nums[i])
-    
+
     return dp[n-1]
 ```
+
+### 1D DP: Array Sizing and Loop Bounds (`n` vs `n+1`)
+
+**Key Question**: Why do some 1D DP problems loop from `0 to n`, while others loop from `0 to n+1`?
+
+The difference comes down to **what a single index in your DP array represents**. Here are the three main reasons:
+
+#### **1. "Indices" vs "Count" (The Offset)**
+
+This is the most frequent reason for the difference.
+
+- **Loop to `n` (Array size = `n`)**: You are treating the index as a **specific element** in the input array
+  - `dp[i]` means "the best result using the i-th element"
+  - Example: `dp[3]` represents "result at element index 3"
+
+- **Loop to `n+1` (Array size = `n+1`)**: You are treating the index as a **quantity** or **length**
+  - `dp[i]` means "the best result using the first i elements"
+  - Example: `dp[3]` represents "result using first 3 elements"
+
+**Example: LC 198 (House Robber)**
+```python
+# Approach 1: Array size = n (index-based)
+def rob_v1(nums):
+    n = len(nums)
+    if n == 0: return 0
+    if n == 1: return nums[0]
+
+    dp = [0] * n
+    dp[0] = nums[0]
+    dp[1] = max(nums[0], nums[1])
+
+    for i in range(2, n):  # Loop to n
+        dp[i] = max(dp[i-1], dp[i-2] + nums[i])
+
+    return dp[n-1]  # Answer at last index
+
+# Approach 2: Array size = n+1 (count-based)
+def rob_v2(nums):
+    n = len(nums)
+    dp = [0] * (n + 1)  # Extra space for "0 houses"
+    dp[0] = 0  # Robbing 0 houses = 0
+    dp[1] = nums[0] if n > 0 else 0
+
+    for i in range(2, n + 1):  # Loop to n+1
+        dp[i] = max(dp[i-1], dp[i-2] + nums[i-1])  # Note: nums[i-1]
+
+    return dp[n]  # Answer at position n
+```
+
+#### **2. Physical "Steps" vs "Goals"**
+
+In problems involving movement (stairs, paths), the "goal" is one step **past** the last index.
+
+**Example: LC 70 (Climbing Stairs) / LC 746 (Min Cost Climbing Stairs)**
+
+If `cost = [10, 15, 20]` (indices 0, 1, 2):
+- These are the steps you can stand on
+- The "Floor" (goal) is at index **3**
+- Therefore, `dp` array needs size `n + 1` to include the landing
+
+```python
+# LC 746: Min Cost Climbing Stairs
+def minCostClimbingStairs(cost):
+    n = len(cost)
+    dp = [0] * (n + 1)  # Need n+1 for the "top floor"
+
+    # You can start from step 0 or step 1
+    dp[0] = 0
+    dp[1] = 0
+
+    for i in range(2, n + 1):  # Loop to n+1
+        # You can arrive from i-1 or i-2
+        dp[i] = min(dp[i-1] + cost[i-1], dp[i-2] + cost[i-2])
+
+    return dp[n]  # The top floor is at position n
+```
+
+#### **3. Handling the "Empty" Base Case**
+
+Many DP problems need a base case representing "nothing" (target sum = 0, empty string, etc.).
+
+**Examples**:
+- **Knapsack/Coin Change**: Need `dp[target + 1]` because `dp[0]` represents sum = 0
+- **Longest Common Subsequence**: Use `(n+1) x (m+1)` matrix where first row/column = empty string
+
+```python
+# LC 322: Coin Change
+def coinChange(coins, amount):
+    dp = [float('inf')] * (amount + 1)  # Need amount+1
+    dp[0] = 0  # Base case: 0 coins needed for amount 0
+
+    for i in range(1, amount + 1):  # Loop to amount+1
+        for coin in coins:
+            if i >= coin:
+                dp[i] = min(dp[i], dp[i - coin] + 1)
+
+    return dp[amount] if dp[amount] != float('inf') else -1
+```
+
+#### **Comparison Summary**
+
+| Feature | Loop `0` to `n` | Loop `0` to `n+1` |
+|---------|-----------------|-------------------|
+| **Array Size** | `new int[n]` | `new int[n + 1]` |
+| **`dp[i]` meaning** | Result at element `i` | Result considering first `i` items |
+| **Typical Base Case** | `dp[0]` and `dp[1]` | `dp[0]` is the "empty" state |
+| **Access Pattern** | `dp[i]` ↔ `nums[i]` | `dp[i]` ↔ `nums[i-1]` |
+| **Final Answer** | `dp[n - 1]` | `dp[n]` |
+| **Use Case** | Direct element mapping | Count/quantity problems, "goal" beyond array |
+
+#### **💡 Pro Tips**
+
+1. **Struggling with off-by-one errors?** Try the `n+1` approach
+   - It allows index `i` to represent the i-th item
+   - Keeps `dp[0]` as a "safe" dummy value for base case
+   - Cleaner alignment between problem size and array index
+
+2. **When to use which?**
+   - Use `n+1` when: Problem describes "first i items", "i steps", or needs "empty" base case
+   - Use `n` when: Direct element-to-index mapping makes more sense
+
+3. **Rewriting between styles**:
+   - `n` → `n+1`: Add 1 to array size, shift base cases, adjust `nums[i]` to `nums[i-1]`
+   - `n+1` → `n`: Remove dummy index, handle base cases explicitly, use direct indexing
+
+#### **Side-by-Side Example: LC 70 (Climbing Stairs)**
+
+```python
+# Style 1: Array size = n+1 (RECOMMENDED for this problem)
+def climbStairs_v1(n):
+    if n <= 2:
+        return n
+
+    dp = [0] * (n + 1)
+    dp[1] = 1
+    dp[2] = 2
+
+    for i in range(3, n + 1):
+        dp[i] = dp[i-1] + dp[i-2]
+
+    return dp[n]
+
+# Style 2: Array size = n (requires careful handling)
+def climbStairs_v2(n):
+    if n <= 2:
+        return n
+
+    dp = [0] * n
+    dp[0] = 1  # 1 way to reach step 1
+    dp[1] = 2  # 2 ways to reach step 2
+
+    for i in range(2, n):
+        dp[i] = dp[i-1] + dp[i-2]
+
+    return dp[n-1]
+```
+
+**Note**: For Climbing Stairs, the `n+1` style is more intuitive because:
+- `dp[i]` naturally represents "number of ways to reach step i"
+- Step `n` is the goal, so `dp[n]` is the answer
+- Avoids the mental overhead of mapping "step i" to "index i-1"
 
 ### Template 2: 2D Grid DP
 ```python

@@ -12568,7 +12568,7 @@ public class Workspace18 {
      *
      *
      */
-    public int rob(int[] nums) {
+    public int rob_99(int[] nums) {
         // edge
         if(nums == null || nums.length == 0){
             return 0;
@@ -12611,6 +12611,14 @@ public class Workspace18 {
 
         return dp[nums.length - 1];
     }
+
+
+    // LC 213
+    public int rob(int[] nums) {
+
+        return 0;
+    }
+
 
 
 
