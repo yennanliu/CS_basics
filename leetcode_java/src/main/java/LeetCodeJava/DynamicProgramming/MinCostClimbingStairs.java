@@ -53,6 +53,54 @@ public class MinCostClimbingStairs {
 //
 //    }
 
+    // V0-1
+    // IDEA: DP (fixed by gemini)
+    public int minCostClimbingStairs_0_1(int[] cost) {
+        int n = cost.length;
+        // dp[i] is the minimum cost to reach step i
+        int[] dp = new int[n + 1];
+
+        // Base cases: You can start at index 0 or index 1 for free
+        dp[0] = 0;
+        dp[1] = 0;
+
+        for (int i = 2; i <= n; i++) {
+            // To reach step i, you either come from i-1 or i-2
+            // You must pay the cost of the step you are jumping FROM
+            int option1 = dp[i - 1] + cost[i - 1];
+            int option2 = dp[i - 2] + cost[i - 2];
+            dp[i] = Math.min(option1, option2);
+        }
+
+        return dp[n];
+    }
+
+    // V0-2
+    // IDEA: DP (gpt)
+    public int minCostClimbingStairs_0_2(int[] cost) {
+        if (cost == null || cost.length == 0) {
+            return 0;
+        }
+
+        int n = cost.length;
+        int[] dp = new int[n + 1];
+
+        // Base cases:
+        // Cost to reach step 0 or 1 is 0 (you start before paying any cost)
+        dp[0] = 0;
+        dp[1] = 0;
+
+        for (int i = 2; i <= n; i++) {
+            dp[i] = Math.min(
+                    dp[i - 1] + cost[i - 1],
+                    dp[i - 2] + cost[i - 2]);
+        }
+
+        return dp[n];
+    }
+
+
+
     // V1-1
     // https://neetcode.io/problems/min-cost-climbing-stairs
     // IDEA: Recursion
@@ -120,5 +168,7 @@ public class MinCostClimbingStairs {
         }
         return g;
     }
+
+
 
 }

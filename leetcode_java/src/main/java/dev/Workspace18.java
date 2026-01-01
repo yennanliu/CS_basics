@@ -12408,6 +12408,105 @@ public class Workspace18 {
     }
 
 
+    // LC 746
+    // 13.45 - 58 pm
+    /**
+     *  -> Return the minimum cost to reach the top of the floor.
+     *
+     *  - cost[i]: cost of ith step on a staircase (樓梯)
+     *
+     *  - can either start from the step with index 0,
+     *    - or the step with index 1.
+     *
+     *  ----------
+     *
+     *   IDEA 1) DP
+     *
+     *    -> dp equation =
+     *
+     *       dp[0] = costs[0]
+     *       dp[1] = costs[1]
+     *
+     *       // ???
+     *       dp[i] += min(dp[i-1], dp[i-2])
+     *
+     *
+     *   IDEA 2) BRUTE FORCE
+     *
+     *
+     *  ----------
+     *
+     *   ex 1)
+     *
+     *   Input: cost = [10,15,20]
+     *   Output: 15
+     *
+     *
+     *   ex 2)
+     *
+     *   Input: cost = [1,100,1,1,1,100,1,1,100,1]
+     *   Output: 6
+     *
+     *
+     *  -> [1,100,1,1,1,100,1,1,100,1]
+     *            x
+     *
+     *    dp[0] = 1
+     *    dp[1] = 100
+     *
+     *    dp[2] = 1
+     *
+     *    -> dp[2] = min(dp[0], dp[1]) + cost[2] = 2
+     *
+     *
+     *    -> [1,100,1,1,1,100,1,1,100,1]
+     *                x
+     *
+     *   -> dp[3] = min(dp[1], dp[2]) + cost[3] = 3
+     *
+     *   -> dp[4] = min(dp[2], dp[3]) + cost[4] = 5
+     *
+     *   -> dp[5] = min(dp[3], dp[4]) + cost[5] = 5
+     *
+     *
+     *  ---------
+     *
+     *  ->    [1,100,1,1,1,100,1,1,100,1]
+     *                           x
+     *
+     *
+     *  dp:   [1,100, 1, 2, 3 ,4, 5, 6]
+     *
+     *
+     *
+     *
+     */
+    public int minCostClimbingStairs(int[] cost) {
+        // edge
+        if(cost == null || cost.length == 0){
+            return 0;
+        }
+        if(cost.length < 2){
+            return 0;
+        }
+
+        int size = cost.length;
+
+        int[] dp = new int[size + 1]; // ???
+        dp[0] = cost[0];
+        dp[1] = cost[1];
+
+        // ??
+        for(int i = 2; i < size + 1; i++){
+            dp[i] += Math.min(dp[i-2], dp[i-1]);
+        }
+
+        return dp[size]; // ???
+    }
+
+
+
+
 
 
 }
