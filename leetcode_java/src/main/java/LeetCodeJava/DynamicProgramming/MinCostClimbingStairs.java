@@ -57,6 +57,12 @@ public class MinCostClimbingStairs {
     // IDEA: DP (fixed by gemini)
     public int minCostClimbingStairs_0_1(int[] cost) {
         int n = cost.length;
+        /**  NOTE !!!
+         *
+         *  DP definition:
+         *
+         *   -> dp[i] is the minimum cost to reach step i
+         */
         // dp[i] is the minimum cost to reach step i
         int[] dp = new int[n + 1];
 
@@ -65,6 +71,16 @@ public class MinCostClimbingStairs {
         dp[1] = 0;
 
         for (int i = 2; i <= n; i++) {
+            /**  NOTE !!!
+             *
+             *  DP equation:
+             *
+             *    op1 = dp[i-2] + cost[i-2]
+             *    op2 = dp[i-1] + cost[i-1]
+             *
+             *    dp[i] = min(op1, op2)
+             *
+             */
             // To reach step i, you either come from i-1 or i-2
             // You must pay the cost of the step you are jumping FROM
             int option1 = dp[i - 1] + cost[i - 1];
@@ -83,6 +99,12 @@ public class MinCostClimbingStairs {
         }
 
         int n = cost.length;
+        /**  NOTE !!!
+         *
+         *  DP definition:
+         *
+         *   -> dp[i] is the minimum cost to reach step i
+         */
         int[] dp = new int[n + 1];
 
         // Base cases:
@@ -91,6 +113,16 @@ public class MinCostClimbingStairs {
         dp[1] = 0;
 
         for (int i = 2; i <= n; i++) {
+            /**  NOTE !!!
+             *
+             *  DP equation:
+             *
+             *    op1 = dp[i-2] + cost[i-2]
+             *    op2 = dp[i-1] + cost[i-1]
+             *
+             *    dp[i] = min(op1, op2)
+             *
+             */
             dp[i] = Math.min(
                     dp[i - 1] + cost[i - 1],
                     dp[i - 2] + cost[i - 2]);
