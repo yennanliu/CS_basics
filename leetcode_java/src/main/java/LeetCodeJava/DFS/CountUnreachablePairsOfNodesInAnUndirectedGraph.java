@@ -52,6 +52,18 @@ public class CountUnreachablePairsOfNodesInAnUndirectedGraph {
 
     // V0-0-1
     // IDEA: DFS (fixed by gemini)
+    /**  NOTE !!!
+     *
+     *  We need to define below var:
+     *
+     *   1. total unreachable pair
+     *   2. node processed so far
+     *
+     *
+     *   ---
+     *
+     *   3. cur node cnt (derived from DFS)
+     */
     public long countPairs_0_0_1(int n, int[][] edges) {
         // 1. Build Adjacency List
         List<List<Integer>> adj = new ArrayList<>();
@@ -62,16 +74,56 @@ public class CountUnreachablePairsOfNodesInAnUndirectedGraph {
             adj.get(e[1]).add(e[0]);
         }
 
+        /**  NOTE !!!
+         *
+         *  `visited` is needed, to avoid revisiting
+         */
         boolean[] visited = new boolean[n];
+        /**  NOTE !!!
+         *
+         *  We need to define below var:
+         *
+         *   1. total unreachable pair
+         *   2. node processed so far
+         */
         long totalUnreachablePairs = 0;
         long nodesProcessedSoFar = 0;
 
         // 2. Iterate through all nodes to find each "island" (component)
         for (int i = 0; i < n; i++) {
+            /**  NOTE !!!
+             *
+             *  ONLY proceed the `NOT visited` node
+             */
             if (!visited[i]) {
                 // Get the size of this specific component
+                /**
+                 *  NOTE !!!
+                 *
+                 *  `componentSize` is the result from DFS call
+                 */
                 long componentSize = dfsGetNodeCnt(i, adj, visited);
 
+                /**  NOTE !!! core idea
+                 *
+                 * -> we SHOULD get `cur unreachable pair` by
+                 *
+                 *   (cur_node_cnt) * (node_process_so_far)
+                 *
+                 *   -> node_process_so_far:
+                 *      `TOTAL node processed till prev` loop
+                 *
+                 *  -> cur_node_cnt:
+                 *      `cur node cnt` by calling dfs
+                 *
+                 *
+                 *  ----
+                 *
+                 *  (below is WRONG !!!)
+                 *  instead of calculating by this:
+                 *     (node_process_so_far) * (n)
+                 *
+                 */
                 // Every node in this new island is unreachable from
                 // every node we have already finished processing.
                 totalUnreachablePairs += componentSize * nodesProcessedSoFar;
