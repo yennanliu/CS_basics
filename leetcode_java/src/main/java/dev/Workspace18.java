@@ -12183,16 +12183,90 @@ public class Workspace18 {
      *  IDEA 1) DFS
      *     ->
      *      1. split to group via dfs
-     *      2. for node in group a, the `unreachable node` is the node in other groups
+     *      2. for node in group a, the `unreachable node`
+     *      is the node in other groups
      *
-     *  IDEA 2) BFS
+     *
+     *  IDEA 2) union find
      *
      *
      * --------------
      *
      *
      */
+    // 15.29 - 44 pm
+    // IDEA 1) DFS
     public long countPairs(int n, int[][] edges) {
+        // edge
+
+
+        // { node: [neighbor_1, neighbor_2, ...] }
+        Map<Integer, List<Integer>> map = new HashMap<>();
+        for(int i = 0; i < n; i++){
+            // ??
+            map.put(i, new ArrayList<>());
+        }
+
+        for(int[] e: edges){
+            int ai = e[0];
+            int bi = e[1];
+
+            // ??
+            map.get(ai).add(bi);
+            map.get(bi).add(ai);
+        }
+
+        int unReachPair = 0;
+
+        // ???
+        int visitedPair = 0;
+
+        boolean[] visited = new boolean[n];
+
+        // ???
+        for(int i = 0; i < n; i++){
+            int curNodeCnt = dfsGetNodeCnt(n, i, map, visited);
+
+            // ???
+            int curUnReached = (n-1) * visitedPair;
+
+            // ??
+            visitedPair += curNodeCnt;
+
+            //???
+            unReachPair += curUnReached;
+        }
+
+
+        return unReachPair;
+    }
+
+    // ???
+    private int dfsGetNodeCnt(int nodeCnt, int node, Map<Integer, List<Integer>> map, boolean[] visited){
+        // edge ???
+
+        // mark as visited
+        visited[node] = true;
+
+        nodeCnt += 1;
+
+        // loop over neighbor
+        for(int next: map.get(node)){
+            if(!visited[next]){
+                dfsGetNodeCnt(nodeCnt, node, map, visited);
+            }
+        }
+
+        return nodeCnt;
+    }
+
+
+
+
+    // --------------
+
+
+    public long countPairs_99(int n, int[][] edges) {
         // edge
 
         // dfs get node group

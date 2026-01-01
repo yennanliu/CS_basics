@@ -50,6 +50,54 @@ public class CountUnreachablePairsOfNodesInAnUndirectedGraph {
 //
 //    }
 
+    // V0-0-1
+    // IDEA: DFS (fixed by gemini)
+    public long countPairs_0_0_1(int n, int[][] edges) {
+        // 1. Build Adjacency List
+        List<List<Integer>> adj = new ArrayList<>();
+        for (int i = 0; i < n; i++)
+            adj.add(new ArrayList<>());
+        for (int[] e : edges) {
+            adj.get(e[0]).add(e[1]);
+            adj.get(e[1]).add(e[0]);
+        }
+
+        boolean[] visited = new boolean[n];
+        long totalUnreachablePairs = 0;
+        long nodesProcessedSoFar = 0;
+
+        // 2. Iterate through all nodes to find each "island" (component)
+        for (int i = 0; i < n; i++) {
+            if (!visited[i]) {
+                // Get the size of this specific component
+                long componentSize = dfsGetNodeCnt(i, adj, visited);
+
+                // Every node in this new island is unreachable from
+                // every node we have already finished processing.
+                totalUnreachablePairs += componentSize * nodesProcessedSoFar;
+
+                // Add current island nodes to the total seen pool
+                nodesProcessedSoFar += componentSize;
+            }
+        }
+
+        return totalUnreachablePairs;
+    }
+
+    private long dfsGetNodeCnt(int node, List<List<Integer>> adj, boolean[] visited) {
+        visited[node] = true;
+        long count = 1; // Count current node
+
+        for (int neighbor : adj.get(node)) {
+            if (!visited[neighbor]) {
+                // Add the count of nodes found deeper in the branch
+                count += dfsGetNodeCnt(neighbor, adj, visited);
+            }
+        }
+        return count;
+    }
+
+
     // V0-1
     // IDEA: DFS (gemini)
     /**  IDEA:
