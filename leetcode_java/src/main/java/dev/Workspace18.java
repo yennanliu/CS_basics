@@ -12614,9 +12614,96 @@ public class Workspace18 {
 
 
     // LC 213
+    // 15.02 - 15 pm
+    /**
+     *  -> return the `maximum` amount of `money `
+     *      you can rob tonight `without alerting` the police.
+     *
+     *   - `adjacent` houses have security systems
+     *      connected and it will automatically contact the police
+     *       if `two adjacent houses` were broken into on the same night.
+     *
+     *
+     *    - NOTE !!
+     *
+     *      -> All houses at this place are arranged in a circle.
+     *
+     *  ---------------
+     *
+     *   IDEA 1) DP
+     *
+     *      dp equation:
+     *
+     *        dp[i]: max money can get at cur idx
+     *        n = nums.len
+     *
+     *        if i == n
+     *          dp[i] = max( max( dp[i], dp[0] ), dp[i-1] ) // /??
+     *        else:
+     *           dp[i] = max( dp[i-2] + nums[i], dp[i-1] )
+     *
+     *
+     *   IDEA 2) BRUTE FORCE
+     *
+     *
+     *  ---------------
+     *
+     *
+     *
+     *
+     */
     public int rob(int[] nums) {
+        // edge
+        if(nums == null || nums.length == 0){
+            return 0;
+        }
+        if(nums.length == 1){
+            return nums[0];
+        }
+        if(nums.length == 2){
+            return Math.max(nums[0], nums[1]);
+        }
 
-        return 0;
+
+        int n = nums.length - 1; // ???
+
+        // dp[i] represents the max money robbed up to house i
+        int[] dp = new int[n]; // ???
+
+        dp[0] = nums[0];
+        // NOTE !!!
+        //dp[1] = nums[1];
+        dp[1] = Math.max(dp[0], dp[1]);
+
+        int maxVal = 0;
+
+        for(int i = 0; i < n; i++){
+            // ???
+            /**
+             *      *   IDEA 1) DP
+             *      *
+             *      *      dp equation:
+             *      *
+             *      *        dp[i]: max money can get at cur idx
+             *      *        n = nums.len
+             *      *
+             *      *        if i == n
+             *      *          dp[i] = max( max( dp[i], dp[0] ), dp[i-1] ) // /??
+             *      *        else:
+             *      *           dp[i] = max( dp[i-2] + nums[i], dp[i-1] )
+             *
+             */
+            if(i == n){
+                dp[i] = Math.max(Math.max( dp[i], dp[0] ), dp[i-1] );
+            }else{
+                dp[i] = Math.max( dp[i-2] + nums[i], dp[i-1] );
+            }
+
+            // ??
+            maxVal = Math.max(maxVal, dp[i]);
+        }
+
+        return maxVal;
     }
 
 

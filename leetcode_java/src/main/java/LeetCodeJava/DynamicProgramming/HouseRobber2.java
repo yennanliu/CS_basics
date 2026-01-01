@@ -85,10 +85,80 @@ public class HouseRobber2 {
         return dp[end];
     }
 
-    // V0'
+    // V0-1
+    // IDEA: 1D DP (fixed by gemini)
+    public int rob_0_1(int[] nums) {
+        if (nums == null || nums.length == 0)
+            return 0;
+        int n = nums.length;
+        if (n == 1)
+            return nums[0];
+        if (n == 2)
+            return Math.max(nums[0], nums[1]);
+
+        // Scenario 1: Rob houses [0, n-2] (Ignore the last house)
+        int robFirst = robLinear(nums, 0, n - 2);
+
+        // Scenario 2: Rob houses [1, n-1] (Ignore the first house)
+        int robLast = robLinear(nums, 1, n - 1);
+
+        return Math.max(robFirst, robLast);
+    }
+
+    // Standard House Robber I logic
+    private int robLinear(int[] nums, int start, int end) {
+        int prev2 = 0;
+        int prev1 = 0;
+
+        for (int i = start; i <= end; i++) {
+            int current = Math.max(prev2 + nums[i], prev1);
+            prev2 = prev1;
+            prev1 = current;
+        }
+
+        return prev1;
+    }
+
+    // V0-2
+    // IDEA: DP (fixed by gpt)
+    public int rob_0_2(int[] nums) {
+
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
+
+        if (nums.length == 1) {
+            return nums[0];
+        }
+
+        // Case 1: rob houses [0 .. n-2]
+        int money1 = robLinear_0_2(nums, 0, nums.length - 2);
+
+        // Case 2: rob houses [1 .. n-1]
+        int money2 = robLinear_0_2(nums, 1, nums.length - 1);
+
+        return Math.max(money1, money2);
+    }
+
+    private int robLinear_0_2(int[] nums, int start, int end) {
+        int prev2 = 0; // dp[i-2]
+        int prev1 = 0; // dp[i-1]
+
+        for (int i = start; i <= end; i++) {
+            int curr = Math.max(prev1, prev2 + nums[i]);
+            prev2 = prev1;
+            prev1 = curr;
+        }
+
+        return prev1;
+    }
+
+
+
+    // V0-3
     // IDEA : BRUTE FORCE (MODIFIED BY GPT)
     // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Dynamic_Programming/house-robber-ii.py
-    public int rob_(int[] nums) {
+    public int rob_0_3(int[] nums) {
         if (nums == null || nums.length == 0) {
             return 0;
         }
@@ -177,5 +247,8 @@ public class HouseRobber2 {
 //        map.put(key,Math.max(take,nottake));
 //        return Math.max(take,nottake);
 //    }
+
+
+
 
 }
