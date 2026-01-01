@@ -86,7 +86,7 @@ public class HouseRobber2 {
     }
 
     // V0-1
-    // IDEA: 1D DP (fixed by gemini)
+    // IDEA: 1D DP + LC 198 (fixed by gemini)
     public int rob_0_1(int[] nums) {
         if (nums == null || nums.length == 0)
             return 0;
@@ -96,6 +96,21 @@ public class HouseRobber2 {
         if (n == 2)
             return Math.max(nums[0], nums[1]);
 
+        /**  CORE IDEA:
+         *
+         * -> by splitting to Scenario 1, and 2.
+         *    we can reuse LC 198 logic
+         *    and get the max from the 2 Scenario result
+         *    as the final answer
+         *
+         *
+         *    - Scenario 1: Rob houses [0, n-2] (NOT rob `the last` house)
+         *                  (rob first, and n-1 house)
+         *
+         *
+         *    - Scenario 2: Rob houses [1, n-1] (NOT rob `the first` house)
+         *                   (rob second, and last house)
+         */
         // Scenario 1: Rob houses [0, n-2] (Ignore the last house)
         int robFirst = robLinear(nums, 0, n - 2);
 
