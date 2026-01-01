@@ -261,9 +261,6 @@
 		- binary search problems:
 	- again:
 	- todo:
-		- List when to use `greedy` VS `bfs/dfs` in graph
-			- e.g. size > 10^5, should use greedy?
-				- list the checkpoints and consideration
 		- (337 similar)
 			- 1770
 			- 1931
