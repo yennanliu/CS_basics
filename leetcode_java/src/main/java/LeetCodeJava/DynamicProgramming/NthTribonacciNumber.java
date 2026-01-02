@@ -43,8 +43,55 @@ import java.util.Map;
 public class NthTribonacciNumber {
 
     // V0
-    // IDEA: DP (fixed by gpt)
+    // IDEA: DP
     public int tribonacci(int n) {
+        // edge
+        if (n == 0) {
+            return 0;
+        }
+        if (n <= 2) {
+            return 1;
+        }
+
+        /**  NOTE !!! should be
+         *
+         *  1. int[n+1]
+         *  2. for (int i = 3; i < n + 1; i++)
+         *
+         * ---
+         *
+         *  The Problems
+         *
+         *  1. Array Size: If you want to find the $n$-th number, your array needs to be size n + 1. If $n=3$ and you initialize new int[3], the indices are $0, 1, 2$. Accessing dp[3] will cause an ArrayIndexOutOfBoundsException.
+         *
+         *  2.  Loop Boundary: The loop should run up to and including $n$ (i <= n).
+         *
+         *  3. Return Value: You should return dp[n], not dp[n-1].
+         *
+         */
+        int[] dp = new int[n + 1];
+        dp[0] = 0;
+        dp[1] = 1;
+        dp[2] = 1;
+
+        for (int i = 3; i < n + 1; i++) {
+            /**
+             * Tn+3 = Tn + Tn+1 + Tn+2
+             *
+             * -> Tn = Tn-3 + Tn-2 + Tn-1
+             *
+             */
+            dp[i] = (dp[i - 3] + dp[i - 1] + dp[i - 2]);
+        }
+
+        return dp[n]; // ??
+    }
+
+
+
+    // V0-1
+    // IDEA: DP (fixed by gpt)
+    public int tribonacci_0_1(int n) {
         if (n == 0)
             return 0;
         if (n == 1 || n == 2)
@@ -64,9 +111,9 @@ public class NthTribonacciNumber {
         return dp[n];
     }
 
-    // V0-1
+    // V0-2
     // IDEA: RECURSION (TLE)
-    public int tribonacci_0_1(int n) {
+    public int tribonacci_0_2(int n) {
         // edge
         if(n == 0){
             return 0;
@@ -85,9 +132,9 @@ public class NthTribonacciNumber {
         return tribonacci_0_1(n-3) + tribonacci_0_1(n-2) + tribonacci_0_1(n-1);
     }
 
-    // V0-2
+    // V0-3
     // IDEA: DP (via hashmap)
-    public int tribonacci_0_2(int n) {
+    public int tribonacci_0_3(int n) {
         if (n == 0)
             return 0;
         if (n == 1 || n == 2)
