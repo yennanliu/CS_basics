@@ -12825,6 +12825,79 @@ public class Workspace18 {
     }
 
 
+    // LC 91
+    // 9.08 - 18 AM
+    /**
+     *  -> Given a string s containing only digits,
+     *
+     *     -> return the `number of ways to decode it. `
+     *
+     *     - If the entire string cannot be decoded in any valid way,
+     *       return 0.
+     *
+     *
+     *    -----------------
+     *
+     *    IDEA 1) BRUTE FORCE ??
+     *
+     *    IDEA 2) BACKTRACK ??
+     *
+     *    IDEA 3) DP ???
+     *
+     *
+     *    -----------------
+     *
+     *   ex 1)
+     *
+     *   Input: s = "12"
+     *   Output: 2
+     *
+     *  ->
+     *    s = "12"
+     *
+     *    [1,2], [12]
+     *
+     *
+     *  ex 2)
+     *
+     *  Input: s = "226"
+     *  Output: 3
+     *
+     *  ->
+     *
+     *   [2,26],  [2,2,6]  [226]
+     *
+     *
+     *
+     */
+    // IDEA 3) DP ???
+    public int numDecodings(String s) {
+        // edge
+        if(s == null){
+            return 0;
+        }
+        if(s.startsWith("0")){
+            return 0; // ??
+        }
+
+        Map<String, String> map = new HashMap<>();
+        // ??
+        int cnt = 0;
+        for(char x = 'a'; x <= 'z'; x++){
+            // ??
+            String key = String.valueOf(x);
+            String val = String.valueOf(cnt);
+            System.out.println("key = " + key +
+                    "val = " + val);
+            map.put(val, key);
+            cnt += 1;
+        }
+
+        System.out.println(">>> map = " + map);
+        // ???
+
+        return 0;
+    }
 
 
 
