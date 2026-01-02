@@ -88,12 +88,225 @@ public class DecodeWays {
 
     // V0-0-1 (same as V0-6)
     // IDEA: DP (fixed by gemini)
+    /**  Core idea:
+     *
+     *  The core idea is that at any position i in the string,
+     *  we can decode the message in two ways:
+     *
+     *    1. Single Digit:
+     *         Use the current character s[i] (if it's not '0').
+     *
+     *    2. Double Digit:
+     *         Use the current character and the previous one s[i-1...i]
+     *         (if it forms a number between 10 and 26).
+     *
+     */
+    /**  Logic:
+     *
+     *   We define dp[i] as the number of ways to decode
+     *   the string of length i
+     *   (using the first i characters).
+     *
+     *   1. base case:
+     *      - dp[0] = 1 (An empty string has one way to be decoded: by doing nothing).
+     *      - dp[1] = 1 (If the first character isn't '0').
+     *
+     *   2. DP equation:
+     *
+     *      - Single Digit:
+     *           - One-digit jump: If s[i-1] is between '1' and '9',
+     *             we can add all the ways we could decode the
+     *             string up to i-1
+     *
+     *           - dp[i] += dp[i-1]
+     *
+     *      - Double Digit:
+     *           - If the substring s[i-2...i-1] forms a number
+     *             between 10 and 26, we can add all the ways
+     *             we could decode the string up to i-2
+     *
+     *           - dp[i] += dp[i-2]
+     *
+     *    ----------
+     *
+     *    NOTE:
+     *
+     *
+     *    - Leading Zeros:
+     *         If the string starts with '0', it is impossible to decode,
+     *         so we return 0
+     *
+     *    - immediately.Intermediate Zeros:
+     *         A '0' can only exist if it's preceded by a '1' or '2'
+     *         (to form "10" or "20"). If you encounter a '0' that
+     *         cannot form "10" or "20" (like "30" or "00"),
+     *         the entire decoding path becomes invalid.
+     *
+     *    - Space Optimization:
+     *         Like Fibonacci, dp[i] only depends on dp[i-1] and dp[i-2].
+     *         You can solve this in $O(1)$ space using
+     *         two variables (prev1, prev2).
+     */
+    /**  Examples:
+     *
+     *  ex 1)  input = `"226"`.
+     *
+     * To get to `"22"`, you have **2 ways**:
+     * - `[2, 2]`
+     * - `[22]`
+     *
+     * Now look at the next character, `'6'`:
+     *
+     * **Option 1: 1-digit decode**
+     * - Take the 2 ways to get to `"22"` and tack a `'6'` onto each:
+     *   - `[2, 2, 6]`
+     *   - `[22, 6]`
+     * - Count = **2**
+     *
+     * **Option 2: 2-digit decode**
+     * - Take the ways to get to the first `"2"` (there is only **1** way: `[2]`)
+     * - Tack `'26'` onto the end:
+     *   - `[2, 26]`
+     * - Count = **1**
+     *
+     * **Total ways for `"226"`:**
+     *
+     *    -> 2 + 1= 3
+     *
+     *
+     *  ex 2)
+     *
+     *  ### 3. Visualizing the Logic (More Examples)
+     *
+     * ---
+     *
+     * #### Example 1: `"12"`
+     *
+     * Ways to decode:
+     * - `[1, 2]` → `"AB"`
+     * - `[12]` → `"L"`
+     *
+     * **Explanation**
+     * - At `"1"` → 1 way
+     * - At `"12"`:
+     *   - 1-digit: extend `[1]` with `2`
+     *   - 2-digit: use `[12]`
+     *
+     * **Total ways:**
+     * \[
+     * 2
+     * \]
+     *
+     * ---
+     *
+     * #### Example 2: `"226"`
+     *
+     * Ways to decode:
+     * - `[2, 2, 6]`
+     * - `[22, 6]`
+     * - `[2, 26]`
+     *
+     * **Explanation**
+     * - `"2"` → 1 way
+     * - `"22"` → 2 ways (`[2,2]`, `[22]`)
+     * - `"226"`:
+     *   - 1-digit: extend 2 ways with `6`
+     *   - 2-digit: extend 1 way with `26`
+     *
+     * **Total ways:**
+     * \[
+     * 3
+     * \]
+     *
+     * ---
+     *
+     * #### Example 3: `"101"`
+     *
+     * Ways to decode:
+     * - `[10, 1]` → `"JA"`
+     *
+     * **Explanation**
+     * - `"1"` → 1 way
+     * - `"10"` → 1 way (`"J"`)
+     * - `"101"`:
+     *   - 1-digit: `1` is valid → extend `"10"`
+     *   - 2-digit: `01` is invalid
+     *
+     * **Total ways:**
+     * \[
+     * 1
+     * \]
+     *
+     * ---
+     *
+     * #### Example 4: `"111"`
+     *
+     * Ways to decode:
+     * - `[1, 1, 1]`
+     * - `[11, 1]`
+     * - `[1, 11]`
+     *
+     * **Explanation**
+     * - `"1"` → 1 way
+     * - `"11"` → 2 ways
+     * - `"111"`:
+     *   - 1-digit: extend 2 ways with `1`
+     *   - 2-digit: extend 1 way with `11`
+     *
+     * **Total ways:**
+     * \[
+     * 3
+     * \]
+     *
+     * ---
+     *
+     * #### Example 5: `"100"`
+     *
+     * Ways to decode:
+     * - ❌ No valid decodings
+     *
+     * **Explanation**
+     * - `"1"` → 1 way
+     * - `"10"` → 1 way
+     * - `"100"`:
+     *   - 1-digit: `0` is invalid
+     *   - 2-digit: `00` is invalid
+     *
+     * **Total ways:**
+     * \[
+     * 0
+     * \]
+     *
+     * ---
+     *
+     * ### Key Pattern to Notice
+     *
+     * At each position:
+     * - **1-digit choice** → depends on previous state
+     * - **2-digit choice** → depends on state two steps back
+     * - Invalid `0` immediately blocks paths
+     *
+     * This is why the DP recurrence works:
+     *
+     * \[
+     * dp[i] =
+     * \begin{cases}
+     * dp[i-1] & \text{if 1-digit valid} \\
+     * + \ dp[i-2] & \text{if 2-digit valid}
+     * \end{cases}
+     * \]
+     */
     public int numDecodings_0_0_1(String s) {
         if (s == null || s.length() == 0 || s.charAt(0) == '0') {
             return 0;
         }
 
         int n = s.length();
+        /**  NOTE !!!
+         *
+         *   dp[i]: `number of ways` to `decode` the `first i characters`
+         *
+         */
         // dp[i] stores the number of ways to decode the first i characters
         int[] dp = new int[n + 1];
 
@@ -278,8 +491,6 @@ public class DecodeWays {
      *         Like Fibonacci, dp[i] only depends on dp[i-1] and dp[i-2].
      *         You can solve this in $O(1)$ space using
      *         two variables (prev1, prev2).
-     *
-     *
      */
     public int numDecodings_0_6(String s) {
         if (s == null || s.length() == 0 || s.charAt(0) == '0') {
