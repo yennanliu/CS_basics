@@ -58,6 +58,48 @@ public class CombinationSumIV {
 //
 //    }
 
+    // V0-0-1
+    // IDEA: DP (gemini)
+    public int combinationSum4_0_0_1(int[] nums, int target) {
+        // dp[i] will store the number of ways to reach sum i
+        int[] dp = new int[target + 1];
+
+        // Base case: There is exactly one way to reach sum 0 (by picking nothing)
+        dp[0] = 1;
+
+        // Iterate through all possible sums from 1 to target
+        for (int i = 1; i <= target; i++) {
+            // Check every number in the input array
+            for (int num : nums) {
+                // If the current sum 'i' is greater than or equal to 'num'
+                if (i >= num) {
+                    // Add the number of ways we could reach the remainder
+                    dp[i] += dp[i - num];
+                }
+            }
+        }
+
+        return dp[target];
+    }
+
+    // V0-0-2
+    // IDEA: DP (gpt)
+    public int combinationSum4_0_0_2(int[] nums, int target) {
+        long[] dp = new long[target + 1];
+        dp[0] = 1; // one way to make sum 0
+
+        for (int sum = 1; sum <= target; sum++) {
+            for (int num : nums) {
+                if (sum - num >= 0) {
+                    dp[sum] += dp[sum - num];
+                }
+            }
+        }
+
+        return (int) dp[target];
+    }
+
+
     // V0-1
     // IDEA: BACKTRACK (gpt) (TLE)
     int count = 0;
@@ -257,4 +299,5 @@ public class CombinationSumIV {
     // https://leetcode.com/problems/combination-sum-iv/solutions/4020218/9822-dynamic-programming-recursion-with-bw1jh/
 
 
+    
 }

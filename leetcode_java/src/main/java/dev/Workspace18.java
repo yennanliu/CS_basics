@@ -12899,6 +12899,42 @@ public class Workspace18 {
         return 0;
     }
 
+    // LC 377
+    // 10.11 - 25 am
+    /**
+     *  -> Given an array of distinct integers nums
+     *     and a target integer target,
+     *     - return the `number of possible combinations`  that add up to `target`.
+     *
+     *   - nums
+     *   - target
+     *
+     *   -> get all combinations cnt sum up as target
+     *
+     *
+     * -------------
+     *
+     *  IDEA 1) DP
+     *
+     *  IDEA 2) backtrack ???
+     *
+     *
+     * -------------
+     *
+     *  ex 1)
+     *
+     *  Input: nums = [1,2,3], target = 4
+     *  Output: 7
+     *
+     *
+     *
+     *
+     */
+    public int combinationSum4(int[] nums, int target) {
+        // edge
+
+        return 0;
+    }
 
 
 }
