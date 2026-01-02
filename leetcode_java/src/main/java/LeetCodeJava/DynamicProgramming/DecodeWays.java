@@ -86,6 +86,39 @@ public class DecodeWays {
 //
 //    }
 
+    // V0-0-1 (same as V0-6)
+    // IDEA: DP (fixed by gemini)
+    public int numDecodings_0_0_1(String s) {
+        if (s == null || s.length() == 0 || s.charAt(0) == '0') {
+            return 0;
+        }
+
+        int n = s.length();
+        // dp[i] stores the number of ways to decode the first i characters
+        int[] dp = new int[n + 1];
+
+        // Base cases
+        dp[0] = 1;
+        dp[1] = 1; // We already checked s.charAt(0) != '0'
+
+        for (int i = 2; i <= n; i++) {
+            // Check one-digit decoding
+            int oneDigit = Integer.parseInt(s.substring(i - 1, i));
+            if (oneDigit >= 1 && oneDigit <= 9) {
+                dp[i] += dp[i - 1];
+            }
+
+            // Check two-digit decoding
+            int twoDigits = Integer.parseInt(s.substring(i - 2, i));
+            if (twoDigits >= 10 && twoDigits <= 26) {
+                dp[i] += dp[i - 2];
+            }
+        }
+
+        return dp[n];
+    }
+
+
     // V0-1
     // IDEA:  Dynamic Programming (Top-Down)
     // https://neetcode.io/problems/decode-ways/solution
@@ -186,6 +219,68 @@ public class DecodeWays {
 
     // V0-6
     // IDEA: DP (fixed by gemini)
+    /**  Core idea:
+     *
+     *  The core idea is that at any position i in the string,
+     *  we can decode the message in two ways:
+     *
+     *    1. Single Digit:
+     *         Use the current character s[i] (if it's not '0').
+     *
+     *    2. Double Digit:
+     *         Use the current character and the previous one s[i-1...i]
+     *         (if it forms a number between 10 and 26).
+     *
+     */
+    /**  Logic:
+     *
+     *   We define dp[i] as the number of ways to decode
+     *   the string of length i
+     *   (using the first i characters).
+     *
+     *   1. base case:
+     *      - dp[0] = 1 (An empty string has one way to be decoded: by doing nothing).
+     *      - dp[1] = 1 (If the first character isn't '0').
+     *
+     *   2. DP equation:
+     *
+     *      - Single Digit:
+     *           - One-digit jump: If s[i-1] is between '1' and '9',
+     *             we can add all the ways we could decode the
+     *             string up to i-1$
+     *
+     *           - dp[i] += dp[i-1]
+     *
+     *      - Double Digit:
+     *           - If the substring s[i-2...i-1] forms a number
+     *             between 10 and 26, we can add all the ways
+     *             we could decode the string up to i-2
+     *
+     *           - dp[i] += dp[i-2]
+     *
+     *
+     *    ----------
+     *
+     *    NOTE:
+     *
+     *
+     *    - Leading Zeros:
+     *         If the string starts with '0', it is impossible to decode,
+     *         so we return 0
+     *
+     *    - immediately.Intermediate Zeros:
+     *         A '0' can only exist if it's preceded by a '1' or '2'
+     *         (to form "10" or "20"). If you encounter a '0' that
+     *         cannot form "10" or "20" (like "30" or "00"),
+     *         the entire decoding path becomes invalid.
+     *
+     *    - Space Optimization:
+     *         Like Fibonacci, dp[i] only depends on dp[i-1] and dp[i-2].
+     *         You can solve this in $O(1)$ space using
+     *         two variables (prev1, prev2).
+     *
+     *
+     */
     public int numDecodings_0_6(String s) {
         if (s == null || s.length() == 0 || s.charAt(0) == '0') {
             return 0;
