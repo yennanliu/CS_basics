@@ -86,10 +86,107 @@ public class DecodeWays {
 //
 //    }
 
-
     // V0-1
-    // IDEA: DP (fixed by gemini)
+    // IDEA:  Dynamic Programming (Top-Down)
+    // https://neetcode.io/problems/decode-ways/solution
+    // https://youtu.be/6aEyTjOwlJU?si=mtcvm7xJNjoNLILY
     public int numDecodings_0_1(String s) {
+        Map<Integer, Integer> dp = new HashMap<>();
+        dp.put(s.length(), 1);
+
+        return dfs_0_1(s, 0, dp);
+    }
+
+    private int dfs_0_1(String s, int i, Map<Integer, Integer> dp) {
+        if (dp.containsKey(i)) {
+            return dp.get(i);
+        }
+        if (s.charAt(i) == '0') {
+            return 0;
+        }
+
+        int res = dfs_0_1(s, i + 1, dp);
+        if (i + 1 < s.length() && (s.charAt(i) == '1' ||
+                s.charAt(i) == '2' && s.charAt(i + 1) < '7')) {
+            res += dfs(s, i + 2, dp);
+        }
+        dp.put(i, res);
+        return res;
+    }
+
+
+    // V0-2
+    // IDEA: Dynamic Programming (Bottom-Up)
+    // https://neetcode.io/problems/decode-ways/solution
+    // https://youtu.be/6aEyTjOwlJU?si=mtcvm7xJNjoNLILY
+    public int numDecodings_0_2(String s) {
+        int[] dp = new int[s.length() + 1];
+        dp[s.length()] = 1;
+        for (int i = s.length() - 1; i >= 0; i--) {
+            if (s.charAt(i) == '0') {
+                dp[i] = 0;
+            } else {
+                dp[i] = dp[i + 1];
+                if (i + 1 < s.length() && (s.charAt(i) == '1' ||
+                        s.charAt(i) == '2' && s.charAt(i + 1) < '7')) {
+                    dp[i] += dp[i + 2];
+                }
+            }
+        }
+        return dp[0];
+    }
+
+    // V0-3
+    // IDEA: Dynamic Programming (Space Optimized)
+    // https://neetcode.io/problems/decode-ways/solution
+    // https://youtu.be/6aEyTjOwlJU?si=mtcvm7xJNjoNLILY
+    public int numDecodings_0_3(String s) {
+        int dp = 0, dp2 = 0;
+        int dp1 = 1;
+        for (int i = s.length() - 1; i >= 0; i--) {
+            if (s.charAt(i) == '0') {
+                dp = 0;
+            } else {
+                dp = dp1;
+                if (i + 1 < s.length() && (s.charAt(i) == '1' ||
+                        s.charAt(i) == '2' && s.charAt(i + 1) < '7')) {
+                    dp += dp2;
+                }
+            }
+            dp2 = dp1;
+            dp1 = dp;
+            dp = 0;
+        }
+        return dp1;
+    }
+
+
+    // V0-5
+    // IDEA: RECURSION
+    // https://neetcode.io/problems/decode-ways/solution
+    // https://youtu.be/6aEyTjOwlJU?si=mtcvm7xJNjoNLILY
+    private int dfs_0_5(int i, String s) {
+        if (i == s.length()) return 1;
+        if (s.charAt(i) == '0') return 0;
+
+        int res = dfs_0_5(i + 1, s);
+        if (i < s.length() - 1) {
+            if (s.charAt(i) == '1' ||
+                    (s.charAt(i) == '2' && s.charAt(i + 1) < '7')) {
+                res += dfs_0_5(i + 2, s);
+            }
+        }
+        return res;
+    }
+
+    public int numDecodings_0_5(String s) {
+        return dfs_0_5(0, s);
+    }
+
+
+    // V0-6
+    // IDEA: DP (fixed by gemini)
+    public int numDecodings_0_6(String s) {
         if (s == null || s.length() == 0 || s.charAt(0) == '0') {
             return 0;
         }
@@ -120,9 +217,9 @@ public class DecodeWays {
     }
 
 
-    // V0-2
+    // V0-7
     // IDEA: DP (gpt)
-    public int numDecodings_0_2(String s) {
+    public int numDecodings_0_7(String s) {
         if (s == null || s.length() == 0)
             return 0;
 
@@ -399,6 +496,6 @@ public class DecodeWays {
     }
 
 
-    
+
 
 }
