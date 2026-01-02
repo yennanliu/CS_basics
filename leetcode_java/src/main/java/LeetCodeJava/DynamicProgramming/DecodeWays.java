@@ -86,6 +86,82 @@ public class DecodeWays {
 //
 //    }
 
+
+    // V0-1
+    // IDEA: DP (fixed by gemini)
+    public int numDecodings_0_1(String s) {
+        if (s == null || s.length() == 0 || s.charAt(0) == '0') {
+            return 0;
+        }
+
+        int n = s.length();
+        // dp[i] stores the number of ways to decode the first i characters
+        int[] dp = new int[n + 1];
+
+        // Base cases
+        dp[0] = 1;
+        dp[1] = 1; // We already checked s.charAt(0) != '0'
+
+        for (int i = 2; i <= n; i++) {
+            // Check one-digit decoding
+            int oneDigit = Integer.parseInt(s.substring(i - 1, i));
+            if (oneDigit >= 1 && oneDigit <= 9) {
+                dp[i] += dp[i - 1];
+            }
+
+            // Check two-digit decoding
+            int twoDigits = Integer.parseInt(s.substring(i - 2, i));
+            if (twoDigits >= 10 && twoDigits <= 26) {
+                dp[i] += dp[i - 2];
+            }
+        }
+
+        return dp[n];
+    }
+
+
+    // V0-2
+    // IDEA: DP (gpt)
+    public int numDecodings_0_2(String s) {
+        if (s == null || s.length() == 0)
+            return 0;
+
+        int n = s.length();
+
+        int prev2 = 1; // dp[i-2], base
+        int prev1 = 0; // dp[i-1]
+
+        // first char
+        if (s.charAt(0) != '0') {
+            prev1 = 1;
+        } else {
+            return 0;
+        }
+
+        for (int i = 2; i <= n; i++) {
+            int curr = 0;
+
+            // single digit decode
+            char c1 = s.charAt(i - 1);
+            if (c1 != '0') {
+                curr += prev1;
+            }
+
+            // two digit decode
+            char c2 = s.charAt(i - 2);
+            int twoDigit = (c2 - '0') * 10 + (c1 - '0');
+            if (twoDigit >= 10 && twoDigit <= 26) {
+                curr += prev2;
+            }
+
+            prev2 = prev1;
+            prev1 = curr;
+        }
+
+        return prev1;
+    }
+
+
     // V1-1
     // https://neetcode.io/problems/decode-ways
     // IDEA: RECURSION
@@ -321,5 +397,8 @@ public class DecodeWays {
 
         return dp[0];
     }
+
+
+    
 
 }
