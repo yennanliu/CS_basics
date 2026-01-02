@@ -12781,6 +12781,48 @@ public class Workspace18 {
     }
 
 
+    // LC 1137
+    // 7.50 - 8.00 am
+    /**
+     *  -> Given n, return the value of Tn.
+     *
+     *   - T0 = 0, T1 = 1, T2 = 1,
+     *     Tn+3 = Tn + Tn+1 + Tn+2 for n >= 0.
+     *
+     *  -------------
+     *
+     *   IDEA 1) DP
+     *
+     *
+     *  -------------
+     *
+     */
+    public int tribonacci(int n) {
+        // edge
+        if(n == 0){
+            return 0;
+        }
+        if(n <= 2){
+            return 1;
+        }
+
+        int[] dp = new int[n+1];
+        dp[0] = 0;
+        dp[1] = 1;
+        dp[2] = 1;
+
+        for(int i = 3; i < n+1; i++){
+            /**
+             * Tn+3 = Tn + Tn+1 + Tn+2
+             *
+             * -> Tn = Tn-3 + Tn-2 + Tn-1
+             *
+             */
+            dp[i] =  ( dp[i-3] + dp[i-1] + dp[i-2] );
+        }
+
+        return dp[n]; // ??
+    }
 
 
 
