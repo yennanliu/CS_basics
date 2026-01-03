@@ -54,9 +54,53 @@ public class StudentAttendanceRecord2 {
 
     // V1
     // IDEA: DP (gemini)
+    /**  IDEA:
+     *
+     * `LC 552: Student Attendance Record II`
+     * is a much more difficult version of the
+     * previous problem. Since  can be up to , we must use **Dynamic Programming**.
+     *
+     * ### 🧠 The Logic: State Definition
+     *
+     * A record is valid if:
+     *
+     * 1. It contains **fewer than 2** 'A's (Absences).
+     * 2. It does **not** contain **3 or more consecutive** 'L's (Lates).
+     *
+     * To track this, our DP state must keep track of two things:
+     *
+     * 1. **Total count of 'A'** seen so far ( or ).
+     * 2. **Current streak of 'L'** ending at the current day (, , or ).
+     *
+     * We define `dp[n][countA][streakL]` as the number of valid sequences of length `n`.
+     *
+     * ### 🔑 Logic Explanation
+     *
+     * 1. **State Transitions**:
+     * * **If we add 'P'**: We can always do this. It "breaks" any existing streak of 'L', resetting it to .
+     * * **If we add 'A'**: We can only do this if we haven't used an 'A' before (). This also resets the 'L' streak to .
+     * * **If we add 'L'**: We can only do this if the current streak is less than  (). This increments the 'L' streak.
+     *
+     *
+     * 2. **Modular Arithmetic**: Because the answer can be very large, we use `long` for calculations and take `% 10^9 + 7` at every addition to prevent overflow.
+     * 3. **Space Optimization**: By using `prevDp` and `nextDp`, we reduce the space complexity from  to , which is essentially ** constant space**.
+     *
+     * ---
+     *
+     * ### 📊 Complexity Analysis
+     *
+     * * **Time Complexity**: . We iterate from  to . Inside the loop, we perform a constant number of operations ( states).
+     * * **Space Complexity**: . We only maintain two small 2D arrays regardless of the size of .
+     *
+     * **Note**: If  was extremely large (e.g., ), this problem would require **Matrix Exponentiation** to solve in  time. For , this DP approach is optimal.
+     */
     public int checkRecord_1(int n) {
         long MOD = 1_000_000_007;
 
+        /**
+         * dp[n][countA][streakL]: number of valid sequences of length n.
+         *
+         */
         // dp[countA][streakL]
         // countA: 0, 1
         // streakL: 0, 1, 2
@@ -106,6 +150,96 @@ public class StudentAttendanceRecord2 {
 
     // V1-1
     // IDEA: DP (GPT)
+    /**  IDEA:
+     *
+     * Here’s a **clean, efficient Java DP solution** for **LeetCode 552 — Student Attendance Record II**.
+     *
+     * ### ✅ Problem Summary
+     *
+     * You want to count **all rewardable attendance records** of length `n`, where a record:
+     *
+     * * Has **fewer than 2 ‘A’** (absent) total
+     * * Has **no 3 consecutive ‘L’** (late)
+     *
+     * Return the count modulo **1_000_000_007**. ([Leetcode][1])
+     *
+     * ---
+     *
+     * ## 🧠 DP Approach (Bottom-Up, State Tracking)
+     *
+     * We define:
+     *
+     * ```
+     * dp[a][l] = number of sequences built so far
+     *            with 'a' total A’s and ending with 'l' consecutive L’s
+     * ```
+     *
+     * Where:
+     *
+     * * `a ∈ {0,1}` (0 or 1 absences so far)
+     * * `l ∈ {0,1,2}` (last consecutive L’s)
+     *
+     * At each step, we transition by appending:
+     *
+     * * `'P'`: resets late count
+     * * `'L'`: increases late count (if < 2)
+     * * `'A'`: increases absence count (if 0)
+     *
+     * ---
+     *
+     * ## 📌 Explanation (High-Level)
+     *
+     * Let `dp[a][l]` represent:
+     * ✔ number of sequences of current length
+     * ✔ with **a** Absences used so far
+     * ✔ and **l** consecutive Lates at the end.
+     *
+     * For each added day:
+     *
+     * * If we add **P** → `l` becomes 0 (late streak ends)
+     * * If we add **A** → only valid if we have *not* used an A yet
+     * * If we add **L** → only if `l < 2` (to avoid 3 in a row)
+     *
+     * The answer is the sum of all `dp[a][l]` after `n` days. ([WalkCCC][2])
+     *
+     * ---
+     *
+     * ## ⏱ Time and Space
+     *
+     * | Metric | Value                    |
+     * | ------ | ------------------------ |
+     * | Time   | **O(n)**                 |
+     * | Space  | **O(1)** (only 6 states) |
+     *
+     * This passes constraints up to **n = 100000**. ([Leetcode][1])
+     *
+     * ---
+     *
+     * ## 🧠 Alternative (Optimized with rolling states)
+     *
+     * This solution already uses two rolling 2×3 buffers, so it’s space-optimized compared to a full 3D DP array. If you want further mathematical or matrix exponentiation optimizations for extremely large `n`, let me know!
+     *
+     * ---
+     *
+     * ### Example
+     *
+     * ```
+     * Input: n = 2
+     * Valid rewardable records:
+     * "PP","AP","PA","LP","PL","AL","LA","LL"
+     * Output: 8
+     * ```
+     *
+     * Explanation: Only `"AA"` is invalid because it has 2 Absences. ([Leetcode][1])
+     *
+     * ---
+     *
+     * If you want, I can also show a **top-down memoized DP solution** or explain how this DP works with a **state diagram/table**.
+     *
+     * [1]: https://leetcode.ca/all/552.html?utm_source=chatgpt.com "Leetcode 552. Student Attendance Record II"
+     * [2]: https://walkccc.me/LeetCode/problems/552/?utm_source=chatgpt.com "552. Student Attendance Record II - LeetCode Solutions"
+     *
+     */
     public int checkRecord_1_2(int n) {
         final int MOD = 1_000_000_007;
 
@@ -333,7 +467,7 @@ public class StudentAttendanceRecord2 {
         }
         return count;
     }
-    
+
 
 
 }
