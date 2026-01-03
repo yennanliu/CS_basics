@@ -98,6 +98,40 @@ public class WordBreak {
         return false;
     }
 
+    // V0-0-1
+    // IDEA: BFS (fixed by gemini)
+    public boolean wordBreak_0_0_1(String s, List<String> wordDict) {
+        Set<String> wordSet = new HashSet<>(wordDict); // Faster lookups
+        Queue<Integer> q = new LinkedList<>();
+        boolean[] visited = new boolean[s.length() + 1];
+
+        q.add(0);
+        visited[0] = true;
+
+        while (!q.isEmpty()) {
+            int start = q.poll();
+
+            // If we reached the end of the string
+            if (start == s.length()) {
+                return true;
+            }
+
+            // Try all possible end positions for the next word
+            for (int end = start + 1; end <= s.length(); end++) {
+                if (visited[end])
+                    continue; // Optimization: skip if index already reached
+
+                if (wordSet.contains(s.substring(start, end))) {
+                    q.add(end);
+                    visited[end] = true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+
     // V0-1
     // IDEA : BFS
     // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Backtracking/word-break.py
@@ -440,5 +474,7 @@ public class WordBreak {
         }
         return dp[0];
     }
+
+
 
 }

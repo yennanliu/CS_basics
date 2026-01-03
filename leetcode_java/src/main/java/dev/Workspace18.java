@@ -12936,5 +12936,88 @@ public class Workspace18 {
         return 0;
     }
 
+    // LC 139
+    // 16.00 - 10 pm
+    /**
+     * -> return true
+     *      - if s can be segmented into a space-separated
+     *        sequence of one or more dictionary words.
+     *
+     *
+     *   given string `s` and a dict `wordDict`
+     *
+     *
+     *   -> NOTE:
+     *      - Note that the same word in the dictionary may
+     *        be reused multiple times in the segmentation.
+     *
+     *
+     *
+     * ------------
+     *
+     *    IDEA 1) HASHMAP + SLIDE WINDOW
+     *
+     *    IDEA 2) HASHMAP + BRUTE FORCE
+     *
+     *    IDEA 3) DP ???
+     *
+     *    IDEA 4) BFS ???
+     *
+     *    IDEA 5) DFS ??
+     *
+     *
+     * ------------
+     *
+     */
+    // IDEA 4) BFS ???
+    public boolean wordBreak(String s, List<String> wordDict) {
+        // edge
+        if(s.isEmpty()){
+            return true;
+        }
+        if(wordDict.contains(s)){
+            return true;
+        }
+
+        // queue: { cur_str }
+        Queue<String> q = new LinkedList<>();
+        // ??? add all of the str in dict, as start points
+        for(String x: wordDict){
+            q.add(x);
+        }
+
+        while(!q.isEmpty()){
+            int size = q.size();
+            for(int i = 0; i < size; i++){
+                String cur = q.poll();
+                // early exit
+                if(cur.equals(s)){
+                    return true;
+                }
+                // ??
+                for(String next: wordDict){
+                    String tmp = cur + next;
+                    if(cur.equals(s)){
+                        return true;
+                    }
+                    // NOTE !! below validation
+                    if(tmp.length() < s.length()){
+                        if(isEqual(cur.length() -1, next, s)){
+                            q.add(tmp);
+                        }
+                    }
+                }
+            }
+        }
+
+        return true;
+    }
+
+    private boolean isEqual(int curIdx, String next, String s){
+        //return next.equals(s.substring(curIdx+1, next.length()));
+        return next.equals(s.substring(curIdx+1, next.length() - 1)); // ???
+    }
+
+
 
 }
