@@ -12969,8 +12969,29 @@ public class Workspace18 {
      * ------------
      *
      */
-    // IDEA 4) BFS ???
+    // DP ??
+    // dp equation ??
+    // dp [i] : the # of combinations at idx
+    //
     public boolean wordBreak(String s, List<String> wordDict) {
+        // edge
+        if(s.isEmpty()){
+            return true;
+        }
+        if(wordDict.contains(s)){
+            return true;
+        }
+
+
+        return false;
+    }
+
+
+
+
+
+    // IDEA 4) BFS ???
+    public boolean wordBreak_98(String s, List<String> wordDict) {
         // edge
         if(s.isEmpty()){
             return true;

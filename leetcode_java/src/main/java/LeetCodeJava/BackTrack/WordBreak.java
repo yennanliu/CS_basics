@@ -178,7 +178,7 @@ public class WordBreak {
         return false;
     }
 
-    
+
     // V0-1
     // IDEA : BFS
     // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Backtracking/word-break.py
@@ -454,6 +454,66 @@ public class WordBreak {
         // No valid word break found
         return false;
     }
+
+    // V0-8
+    // IDEA: DP (gemini)
+    /**
+
+     * ### 🚀 Comparison: BFS vs. DP
+     *
+     * While you used BFS,
+     * this problem is most famously solved with **1D Dynamic Programming**.
+     * The logic is nearly identical, but it avoids the overhead of a Queue.
+     *
+     * **Why use DP here?**
+     *
+     * * **BFS:** Focuses on "Where can I go from here?" (Forward-looking).
+     *
+     * * **DP:** Focuses on "Is the current position reachable
+     * from any previous valid spot?" (Backward-looking).
+     *
+     * ---
+     *
+     * ### 🔑 Logic Breakdown
+     *
+     * * **The `visited` array:**
+     *     This is your most important fix.
+     *     In a string like `s = "aaaaaaaaa"` and `wordDict = ["a", "aa", "aaa"]`,
+     *     there are dozens of ways to reach the middle of the string.
+     *     Without `visited`, your queue would explode in size (Exponential Complexity).
+     *     With it, you only process each index once.
+     *
+     *
+     * * **The Target:**
+     *     You want to see if index `s.length()` is reachable.
+     *     By using `start` indices, you avoid the "off-by-one" errors
+     *     common when working with `length() - 1`.
+     *
+     */
+    public boolean wordBreak_0_8(String s, List<String> wordDict) {
+        // 1. Use a HashSet for O(1) lookups
+        Set<String> wordSet = new HashSet<>(wordDict);
+
+        // 2. dp[i] means the first i characters of s can be segmented
+        boolean[] dp = new boolean[s.length() + 1];
+
+        // 3. Base case: an empty string is always segmentable
+        dp[0] = true;
+
+        // 4. Fill the DP array
+        for (int i = 1; i <= s.length(); i++) {
+            for (int j = 0; j < i; j++) {
+                // If the prefix s[0...j] is valid AND the suffix s[j...i] is a word
+                if (dp[j] && wordSet.contains(s.substring(j, i))) {
+                    dp[i] = true;
+                    break; // Move to the next i once we find one valid split
+                }
+            }
+        }
+
+        return dp[s.length()];
+    }
+
 
 
     // V1
