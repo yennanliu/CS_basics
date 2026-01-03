@@ -13094,6 +13094,12 @@ public class Workspace18 {
         return next.equals(s.substring(curIdx+1, next.length() - 1)); // ???
     }
 
+    // LC 551
+    public boolean checkRecord(String s) {
+
+        return false;
+    }
+
 
 
 }
