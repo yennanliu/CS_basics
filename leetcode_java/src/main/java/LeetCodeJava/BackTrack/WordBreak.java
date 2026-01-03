@@ -494,6 +494,11 @@ public class WordBreak {
         // 1. Use a HashSet for O(1) lookups
         Set<String> wordSet = new HashSet<>(wordDict);
 
+        /**  NOTE !!
+         *
+         * dp[i] means the first i characters of s can be segmented
+         *
+         */
         // 2. dp[i] means the first i characters of s can be segmented
         boolean[] dp = new boolean[s.length() + 1];
 
@@ -513,7 +518,6 @@ public class WordBreak {
 
         return dp[s.length()];
     }
-
 
 
     // V1
