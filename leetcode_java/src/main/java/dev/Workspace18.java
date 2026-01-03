@@ -13172,6 +13172,60 @@ public class Workspace18 {
     }
 
 
+    // LC 552
+    // 17.15 - 25 pm
+    /**
+     *
+     * -> Given an integer n,
+     *   return the number of possible attendance records of
+     *   length n that make a student eligible for an attendance award.
+     *
+     *    'A': Absent.
+     *    'L': Late.
+     *    'P': Present.
+     *
+     *
+     *
+     *  -------------
+     *
+     *   IDEA 1) DP
+     *      - dp [i] : # of combination at idx = i
+     *
+     *      -> DP equation:
+     *
+     *        if `A` count < 2:
+     *            dp[i] = 3 ^ (i+1) - (combinations_with_aa)
+     *                    - (combinations_with_3_consecutive_ll)
+     *
+     *
+     *   IDEA 2) BRUTE FORCE
+     *
+     *
+     *   -------------
+     *
+     */
+    // IDEA 1) DP
+    public int checkRecord(int n) {
+        // edge
+        if(n == 0){
+            return 0;
+        }
+        if(n == 1){
+            return 3;
+        }
+        if(n == 2){
+            return 8;
+        }
+
+        // dp [i] : # of combination at idx = i
+        int[] dp = new int[n+1];
+
+
+
+
+        return dp[n]; // ??
+    }
+
 
 
 
