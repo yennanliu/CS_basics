@@ -48,14 +48,113 @@ import java.util.Arrays;
 public class StudentAttendanceRecord2 {
 
     // V0
-    // TODO : implement
+//    public int checkRecord(int n) {
+//
+//    }
 
     // V1
+    // IDEA: DP (gemini)
+    public int checkRecord_1(int n) {
+        long MOD = 1_000_000_007;
+
+        // dp[countA][streakL]
+        // countA: 0, 1
+        // streakL: 0, 1, 2
+        long[][] prevDp = new long[2][3];
+
+        // Base case: day 0 (an empty string is 1 valid way)
+        prevDp[0][0] = 1;
+
+        for (int i = 1; i <= n; i++) {
+            long[][] nextDp = new long[2][3];
+
+            for (int a = 0; a < 2; a++) {
+                for (int l = 0; l < 3; l++) {
+                    if (prevDp[a][l] == 0)
+                        continue;
+
+                    // 1. Add 'P' (Present)
+                    // Resets Late streak to 0, A count stays same
+                    nextDp[a][0] = (nextDp[a][0] + prevDp[a][l]) % MOD;
+
+                    // 2. Add 'A' (Absent)
+                    // Resets Late streak to 0, A count increases
+                    if (a == 0) {
+                        nextDp[1][0] = (nextDp[1][0] + prevDp[a][l]) % MOD;
+                    }
+
+                    // 3. Add 'L' (Late)
+                    // Increases Late streak by 1, A count stays same
+                    if (l < 2) {
+                        nextDp[a][l + 1] = (nextDp[a][l + 1] + prevDp[a][l]) % MOD;
+                    }
+                }
+            }
+            prevDp = nextDp;
+        }
+
+        // The answer is the sum of all valid states after n days
+        long total = 0;
+        for (int a = 0; a < 2; a++) {
+            for (int l = 0; l < 3; l++) {
+                total = (total + prevDp[a][l]) % MOD;
+            }
+        }
+
+        return (int) total;
+    }
+
+    // V1-1
+    // IDEA: DP (GPT)
+    public int checkRecord_1_2(int n) {
+        final int MOD = 1_000_000_007;
+
+        // dp[a][l]: number of ways with a A's and l consecutive L's
+        long[][] dp = new long[2][3];
+        dp[0][0] = 1; // start with empty prefix: 0 A's, 0 L's
+
+        for (int day = 0; day < n; day++) {
+            long[][] next = new long[2][3];
+
+            for (int a = 0; a <= 1; a++) {
+                for (int l = 0; l <= 2; l++) {
+                    long count = dp[a][l];
+                    if (count == 0)
+                        continue;
+
+                    // Append 'P': resets L count
+                    next[a][0] = (next[a][0] + count) % MOD;
+
+                    // Append 'A': only if no A used yet
+                    if (a == 0) {
+                        next[1][0] = (next[1][0] + count) % MOD;
+                    }
+
+                    // Append 'L': only if < 2 consecutive L's so far
+                    if (l < 2) {
+                        next[a][l + 1] = (next[a][l + 1] + count) % MOD;
+                    }
+                }
+            }
+
+            dp = next;
+        }
+
+        long ans = 0;
+        // sum all states
+        for (int a = 0; a <= 1; a++) {
+            for (int l = 0; l <= 2; l++) {
+                ans = (ans + dp[a][l]) % MOD;
+            }
+        }
+        return (int) ans;
+    }
+
+
 
     // V2_1
     // IDEA : Top-Down Dynamic Programming with Memoization
     // https://leetcode.com/problems/student-attendance-record-ii/editorial/
-
     private final int MOD = 1000000007;
     // Cache to store sub-problem results.
     private int[][][] memo;
@@ -64,8 +163,7 @@ public class StudentAttendanceRecord2 {
     private int eligibleCombinations(
             int n,
             int totalAbsences,
-            int consecutiveLates
-    ) {
+            int consecutiveLates) {
         // If the combination has become not eligible for the award,
         // then we will not count any combinations that can be made using it.
         if (totalAbsences >= 2 || consecutiveLates >= 3) {
@@ -235,5 +333,7 @@ public class StudentAttendanceRecord2 {
         }
         return count;
     }
+    
+
 
 }
