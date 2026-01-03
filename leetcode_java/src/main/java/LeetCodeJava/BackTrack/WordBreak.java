@@ -49,8 +49,19 @@ public class WordBreak {
         // Convert wordDict to a HashSet for O(1) lookups
         Set<String> wordSet = new HashSet<>(wordDict);
 
+        /** NOTE !!!
+         *
+         *  the QUEUE stores indices where words `end`
+         */
         // BFS queue (stores indices where words end)
         Queue<Integer> queue = new LinkedList<>();
+
+        /** NOTE !!!
+         *
+         *  we record the first idx (idx=0)
+         *  as the start point, so in the BFS,
+         *  we can move forward based on the init idx
+         */
         queue.add(0); // Start from index 0
 
         // Track visited indices to avoid reprocessing
@@ -72,6 +83,10 @@ public class WordBreak {
             }
             visited.add(start);
 
+            /** NOTE !!!
+             *
+             *  loop over all words in the dictionary
+             */
             // Try all words in the dictionary
             for (String word : wordSet) {
 
@@ -99,7 +114,7 @@ public class WordBreak {
     }
 
     // V0-0-1
-    // IDEA: BFS (fixed by gemini)
+    // IDEA: BFS (loop over idx) (fixed by gemini)
     public boolean wordBreak_0_0_1(String s, List<String> wordDict) {
         Set<String> wordSet = new HashSet<>(wordDict); // Faster lookups
         Queue<Integer> q = new LinkedList<>();
@@ -163,9 +178,7 @@ public class WordBreak {
         return false;
     }
 
-
-
-
+    
     // V0-1
     // IDEA : BFS
     // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Backtracking/word-break.py
