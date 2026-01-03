@@ -13095,10 +13095,84 @@ public class Workspace18 {
     }
 
     // LC 551
+    // 16.56 - 16.07
+    /**
+     *  -> Return true if the student is
+     *  eligible for an attendance award,
+     *  or false otherwise.
+     *
+     *  s: attendance record
+     *
+     *   'A': Absent.
+     *   'L': Late.
+     *   'P': Present.
+     *
+     *
+     *   NOTE:
+     *
+     *    eligible for an attendance if meet BOTH of below:
+     *
+     *      - 'A' < 2
+     *      - NEVER 'L' > 3 or more consecutive days
+     *
+     *
+     *
+     *  ------------------
+     *
+     *   IDEA 1) BRUTE FORCE
+     *
+     *
+     *
+     *  ------------------
+     *
+     *
+     *
+     *
+     */
     public boolean checkRecord(String s) {
+        // edge
+        if(s.isEmpty()){
+            return true;
+        }
+        if(s.length() <= 1){
+            return true;
+        }
 
-        return false;
+        int absentCnt = 0;
+        String prevPrev = null; // ??
+        String prev = null; // ??
+
+        for(int i = 0; i < s.length(); i++){
+            String status = String.valueOf(s.charAt(i));
+
+            if(status.equals("A")){
+                absentCnt += 1;
+            }else if(status.equals("L")){
+                if(i > 1){
+                    if(prevPrev.equals("L") && prev.equals("L")){
+                        return false;
+                    }
+                }
+            }
+
+            if(absentCnt >= 2){
+                return false;
+            }
+
+            if(i > 0){
+                prev = String.valueOf(s.charAt(i-1));
+            }
+            if(i > 1){
+                prevPrev = String.valueOf(s.charAt(i-2));
+            }
+
+        }
+
+        return true;
     }
+
+
+
 
 
 

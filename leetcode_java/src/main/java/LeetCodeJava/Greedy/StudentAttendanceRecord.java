@@ -46,6 +46,58 @@ public class StudentAttendanceRecord {
 //
 //    }
 
+    // V0-1
+    // IDEA: BRUTE FORCE (fixed by gemini)
+    public boolean checkRecord_0_1(String s) {
+        int absentCount = 0;
+
+        // Condition 1: Check total Absent count
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i) == 'A') {
+                absentCount++;
+            }
+        }
+
+        // Condition 2: Check for 3 or more consecutive Late days
+        // Condition 1 check: Strictly fewer than 2 Absences
+        return absentCount < 2 && !s.contains("LLL");
+    }
+
+    // V0-2
+    // IDEA: BRUTE FORCE (fixed by GPT)
+    public boolean checkRecord_0_2(String s) {
+        if (s.length() <= 1)
+            return true;
+
+        int absentCnt = 0;
+        char prev = '\0';
+        char prevPrev = '\0';
+
+        for (int i = 0; i < s.length(); i++) {
+            char status = s.charAt(i);
+
+            if (status == 'A') {
+                absentCnt++;
+                if (absentCnt >= 2)
+                    return false;
+            }
+
+            if (status == 'L') {
+                if (prev == 'L' && prevPrev == 'L') {
+                    return false;
+                }
+            }
+
+            // update previous characters
+            prevPrev = prev;
+            prev = status;
+        }
+
+        return true;
+    }
+
+
+
     // V1
     // https://leetcode.com/problems/student-attendance-record-i/solutions/2826653/java-100-easiest-solution-by-sharforaz_r-x2ra/
     public boolean checkRecord_1(String s) {
