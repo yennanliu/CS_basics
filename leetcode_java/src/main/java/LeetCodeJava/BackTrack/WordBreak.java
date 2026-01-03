@@ -132,6 +132,40 @@ public class WordBreak {
     }
 
 
+    // V0-0-2
+    // IDEA: BFS (gpt)
+    public boolean wordBreak_0_0_2(String s, List<String> wordDict) {
+        Set<String> dict = new HashSet<>(wordDict);
+        Queue<Integer> q = new LinkedList<>();
+        boolean[] visited = new boolean[s.length()];
+
+        q.add(0); // start index
+
+        while (!q.isEmpty()) {
+            int start = q.poll();
+
+            if (visited[start]) continue;
+            visited[start] = true;
+
+            for (String word : dict) {
+                int end = start + word.length();
+
+                if (end > s.length()) continue;
+
+                if (s.substring(start, end).equals(word)) {
+                    if (end == s.length()) {
+                        return true;
+                    }
+                    q.add(end);
+                }
+            }
+        }
+        return false;
+    }
+
+
+
+
     // V0-1
     // IDEA : BFS
     // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Backtracking/word-break.py

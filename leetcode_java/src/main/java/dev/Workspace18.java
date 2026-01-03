@@ -12979,6 +12979,61 @@ public class Workspace18 {
             return true;
         }
 
+        // NOTE !! need visited to avoid `duplicated visiting`
+        //Set<String> visited = new HashSet<>();
+        Set<Integer> visited = new HashSet<>();
+
+        // NOTE !!! q : {idx}
+        Queue<Integer> q = new LinkedList<>();
+
+        for(String x: wordDict){
+            if(s.startsWith(x)){
+                int idx = x.length() - 1;
+                q.add(idx); // ???
+                // NOTE !!
+                visited.add(idx);
+            }
+        }
+
+        while(!q.isEmpty()){
+            int size = q.size();
+            for(int i = 0; i < size; i++){
+                int idx = q.poll();
+                // early exit
+                if(idx == s.length() - 1){
+                    return true;
+                }
+                // ??
+                for(String next: wordDict){
+                    int newIdx = idx + next.length();
+                    if(newIdx < s.length() - 1 && !visited.contains(newIdx)){
+                        if(s.substring(idx+1, newIdx).equals(next)){
+                            q.add(newIdx);
+                            visited.add(newIdx);
+                        }
+                    }
+                }
+            }
+        }
+
+
+        return false;
+    }
+
+
+
+
+
+
+    public boolean wordBreak_99(String s, List<String> wordDict) {
+        // edge
+        if(s.isEmpty()){
+            return true;
+        }
+        if(wordDict.contains(s)){
+            return true;
+        }
+
         // queue: { cur_str }
         Queue<String> q = new LinkedList<>();
         // ??? add all of the str in dict, as start points
