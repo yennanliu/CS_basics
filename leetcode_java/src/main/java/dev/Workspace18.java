@@ -13272,6 +13272,13 @@ public class Workspace18 {
     }
 
 
+    // LC 403
+    public boolean canCross(int[] stones) {
+
+        return false;
+    }
+
+
 
 
 }

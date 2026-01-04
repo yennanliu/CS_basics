@@ -231,8 +231,6 @@
 			- 691
 	- LC 746 Min Cost Climbing Stairs
 		- gpt
-			- 139
-			- 403
 			- 312
 			- 552
 		- gemini
