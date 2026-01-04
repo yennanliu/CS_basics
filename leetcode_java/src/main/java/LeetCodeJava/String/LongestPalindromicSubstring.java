@@ -190,6 +190,89 @@ public class LongestPalindromicSubstring {
         return s.substring(left + 1, right);
     }
 
+    // V0-2
+    // IDEA: DP (gemini)
+    public String longestPalindrome_0_2(String s) {
+        if (s == null || s.length() == 0)
+            return "";
+
+        int n = s.length();
+        // dp[i][j] indicates if s[i...j] is a palindrome
+        boolean[][] dp = new boolean[n][n];
+        int start = 0;
+        int maxLen = 1;
+
+        // All substrings of length 1 are palindromes
+        for (int i = 0; i < n; i++) {
+            dp[i][i] = true;
+        }
+
+        // Check for lengths from 2 up to n
+        for (int len = 2; len <= n; len++) {
+            for (int i = 0; i <= n - len; i++) {
+                int j = i + len - 1; // Ending index
+
+                if (s.charAt(i) == s.charAt(j)) {
+                    // Case 1: Substring length is 2 (e.g., "aa")
+                    if (len == 2) {
+                        dp[i][j] = true;
+                    }
+                    // Case 2: Substring length > 2, check if inner part is a palindrome
+                    else {
+                        dp[i][j] = dp[i + 1][j - 1];
+                    }
+                }
+
+                // If s[i...j] is a palindrome, update max substring info
+                if (dp[i][j] && len > maxLen) {
+                    maxLen = len;
+                    start = i;
+                }
+            }
+        }
+
+        return s.substring(start, start + maxLen);
+    }
+
+    // V0-3
+    // IDEA: DP (GPT)
+    public String longestPalindrome_0_3(String s) {
+        if (s == null || s.length() < 2) {
+            return s;
+        }
+
+        int n = s.length();
+        boolean[][] dp = new boolean[n][n];
+
+        int start = 0;
+        int maxLen = 1;
+
+        // length 1 substrings
+        for (int i = 0; i < n; i++) {
+            dp[i][i] = true;
+        }
+
+        // fill dp table
+        for (int i = n - 1; i >= 0; i--) {
+            for (int j = i + 1; j < n; j++) {
+                if (s.charAt(i) == s.charAt(j)) {
+                    if (j - i <= 2 || dp[i + 1][j - 1]) {
+                        dp[i][j] = true;
+
+                        int len = j - i + 1;
+                        if (len > maxLen) {
+                            maxLen = len;
+                            start = i;
+                        }
+                    }
+                }
+            }
+        }
+
+        return s.substring(start, start + maxLen);
+    }
+
+
 
     // V1
     // IDEA : BRUTE FORCE + isPalindrome check

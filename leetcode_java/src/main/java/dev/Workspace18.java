@@ -13247,11 +13247,26 @@ public class Workspace18 {
      *
      *   IDEA 3) DP ???
      *
+     *    - dp [i]: longest palindrome at idx i
+     *
      *  ---------------
+     *
+     *   ex 1)
+     *
+     *   Input: s = "babad"
+     *   Output: "bab"
+     *
+     *
+     *  ->
+     *
+     *   "babad"
+     *
      *
      *
      */
+    // IDEA 3) DP ???
     public String longestPalindrome(String s) {
+        // edge
 
         return null;
     }
