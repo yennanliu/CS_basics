@@ -48,13 +48,74 @@ public class FrogJump {
 
     // V0-1
     // IDEA: DP (gemini)
+    /**  CORE IDEA:
+     *
+     * To solve **LC 403: Frog Jump** using Dynamic Programming,
+     * we need to track two things at each stone: the **position** of
+     * the stone and the **jump sizes** that allowed the frog to reach it.
+     *
+     * ### 🧠 The Logic: DP with a HashMap
+     *
+     * Since the stone positions are sparse
+     * (e.g., stone 1 is at pos 1, but stone 2 could be at pos 100),
+     * a simple array `dp[pos]` won't work. Instead, we use a **Map** where:
+     *
+     * * **Key**: The position of the stone.
+     * * **Value**: A **Set** of jump sizes () that can be made *from* this stone.
+     *
+     * #### The Transitions:
+     *
+     * If a frog reaches a stone at position `stone` with a jump of size `k`,
+     * it can make three possible next jumps:
+     *
+     * 1.  k-1 ( if k-1 > 0)
+     * 2.  k
+     * 3.  k +1
+     *
+     * For each jump, if the resulting position
+     * (`stone + nextJump`) exists in the `stones` array,
+     * we add `nextJump` to the set of that stone.
+     *
+     *
+     * ---
+     *
+     * ### 🔍 Detailed Explanation
+     *
+     * 1. **Initialization**: We populate the map with every stone's position. The values are empty sets because we don't know which jumps are possible yet.
+     * 2. **The First Jump**: The problem states the first jump must be  unit. So, we add `1` to the set of the stone at position `0`.
+     * 3. **Nested Loops**:
+     * * The outer loop moves through each stone.
+     * * The inner loop looks at every "incoming" jump  that reached that stone.
+     *
+     *
+     * 4. **Why ?**: The frog's last jump was . To maintain the rules, the next jump must be within that range. We only add  if it's greater than 0, as a jump of 0 or less doesn't move the frog forward.
+     * 5. **Early Exit**: As soon as we calculate a `nextPosition` that equals the last element of the input array, we return `true`.
+     *
+     * ### 📊 Complexity Analysis
+     *
+     * * **Time Complexity**:  in the worst case. For each of the  stones, there could be up to  different jump sizes stored in the set.
+     * * **Space Complexity**:  to store the map and the sets of jump sizes.
+     *
+     */
     public boolean canCross_0_1(int[] stones) {
+        /**  NOTE !!!
+         *
+         *  map:  Set of jump sizes that can be made FROM this stone
+         *
+         *  { stone: set(size_1, size_2, ..) }
+         */
         // Map: Stone Position -> Set of jump sizes that can be made FROM this stone
         Map<Integer, Set<Integer>> map = new HashMap<>();
         for (int stone : stones) {
             map.put(stone, new HashSet<>());
         }
 
+        /**  NOTE !!!
+         *
+         *  Base case
+         *
+         *  stone=0, can only jump size=1
+         */
         // Base case: At the first stone (position 0), the only allowed first jump is 1
         map.get(0).add(1);
 
@@ -72,6 +133,13 @@ public class FrogJump {
 
                 // If there is a stone at the next position
                 if (map.containsKey(nextPosition)) {
+                    /**  NOTE !!!
+                     *
+                     * From next stone, we can jump
+                     *   - k-1
+                     *   - k
+                     *   - k+1
+                     */
                     // From the next stone, we can jump k-1, k, or k+1
                     if (k - 1 > 0)
                         map.get(nextPosition).add(k - 1);
