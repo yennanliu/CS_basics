@@ -492,6 +492,25 @@ def palindrome_dp(s):
     return dp
 ```
 
+**Key Palindrome DP Pattern:**
+```
+Core Transition Equation:
+    dp[i][j] = true
+       if:
+           s[i] == s[j] AND
+           (j - i <= 2 OR dp[i + 1][j - 1])
+
+Explanation:
+    - dp[i][j] represents whether substring s[i...j] is a palindrome
+    - s[i] == s[j]: Characters at both ends must match
+    - j - i <= 2: Handles base cases (length 1, 2, or 3 substrings)
+    - dp[i + 1][j - 1]: Inner substring must also be a palindrome
+
+Example: For "babad"
+    - dp[0][2] = true because s[0]='b' == s[2]='b' AND j-i=2 (length 3)
+    - dp[1][3] = true because s[1]='a' == s[3]='a' AND dp[2][2]=true
+```
+
 ### Template 11: Fibonacci-like Patterns
 ```python
 def fibonacci_variants():
