@@ -488,6 +488,20 @@ public class LongestPalindromicSubstring {
         for (int i = n - 1; i >= 0; i--) {
             for (int j = i + 1; j < n; j++) {
                 if (s.charAt(i) == s.charAt(j)) {
+                    /**  NOTE !!!   why `dp[i + 1][j - 1]` ?
+                     *
+                     *  1.  dp[i][j]: "Is the substring starting at [i,j] a palindrome?"
+                     *
+                     *  2. based on 1), given input s = "LEVEL"
+                     *    -> if want to know if substring between
+                     *        - "L" at idx = 0 and  "L" at idx = 4
+                     *           is palindrome
+                     *
+                     *      -> we need to check substring within idx=1 and idx=3
+                     *
+                     *        -> e.g. dp[0+1][4-1] = dp[1][3]
+                     *
+                     */
                     if (j - i <= 2 || dp[i + 1][j - 1]) {
                         dp[i][j] = true;
 
@@ -507,6 +521,11 @@ public class LongestPalindromicSubstring {
 
     // V0-3
     // IDEA: DP (gemini)
+    /**  NOTE !!!
+     *
+     *   dp[i][j]: "Is the substring starting at [i,j] a palindrome?"
+     *
+     */
     public String longestPalindrome_0_3(String s) {
         // 1. Handle empty strings
         if (s == null || s.length() == 0)
@@ -538,6 +557,20 @@ public class LongestPalindromicSubstring {
                     }
                     // 9. If length > 2, check if the inner string is a palindrome.
                     // This looks up the result we already calculated for a smaller length.
+                    /**  NOTE !!!   why `dp[i + 1][j - 1]` ?
+                     *
+                     *  1.  dp[i][j]: "Is the substring starting at [i,j] a palindrome?"
+                     *
+                     *  2. based on 1), given input s = "LEVEL"
+                     *    -> if want to know if substring between
+                     *        - "L" at idx = 0 and  "L" at idx = 4
+                     *           is palindrome
+                     *
+                     *      -> we need to check substring within idx=1 and idx=3
+                     *
+                     *        -> e.g. dp[0+1][4-1] = dp[1][3]
+                     *
+                     */
                     else {
                         dp[i][j] = dp[i + 1][j - 1];
                     }
@@ -653,7 +686,7 @@ public class LongestPalindromicSubstring {
 
         return s.substring(start, end + 1);
     }
-    
+
 
 
 }
