@@ -46,6 +46,86 @@ public class FrogJump {
 //
 //    }
 
+    // V0-1
+    // IDEA: DP (gemini)
+    public boolean canCross_0_1(int[] stones) {
+        // Map: Stone Position -> Set of jump sizes that can be made FROM this stone
+        Map<Integer, Set<Integer>> map = new HashMap<>();
+        for (int stone : stones) {
+            map.put(stone, new HashSet<>());
+        }
+
+        // Base case: At the first stone (position 0), the only allowed first jump is 1
+        map.get(0).add(1);
+
+        for (int i = 0; i < stones.length; i++) {
+            int currentStone = stones[i];
+            Set<Integer> jumps = map.get(currentStone);
+
+            for (int k : jumps) {
+                int nextPosition = currentStone + k;
+
+                // If we reached the last stone
+                if (nextPosition == stones[stones.length - 1]) {
+                    return true;
+                }
+
+                // If there is a stone at the next position
+                if (map.containsKey(nextPosition)) {
+                    // From the next stone, we can jump k-1, k, or k+1
+                    if (k - 1 > 0)
+                        map.get(nextPosition).add(k - 1);
+                    map.get(nextPosition).add(k);
+                    map.get(nextPosition).add(k + 1);
+                }
+            }
+        }
+
+        return false;
+    }
+
+    // V0-2
+    // IDEA: DP (gpt)
+    public boolean canCross_0_2(int[] stones) {
+        int n = stones.length;
+
+        // Quick edge-check: first jump must be 1
+        if (n == 0 || stones[1] - stones[0] != 1) {
+            return false;
+        }
+
+        // Map each position to the set of jump sizes that reach it
+        Map<Integer, Set<Integer>> dp = new HashMap<>();
+
+        for (int stone : stones) {
+            dp.put(stone, new HashSet<>());
+        }
+
+        // Start at stones[0] with jump 0
+        dp.get(stones[0]).add(0);
+
+        for (int stone : stones) {
+            Set<Integer> jumps = dp.get(stone);
+            for (int jump : jumps) {
+
+                // Next possible jumps: k - 1, k, k + 1
+                for (int step = jump - 1; step <= jump + 1; step++) {
+                    if (step > 0) {
+                        int nextPos = stone + step;
+                        if (dp.containsKey(nextPos)) {
+                            dp.get(nextPos).add(step);
+                        }
+                    }
+                }
+            }
+        }
+
+        // If last stone has any reachable jumps, return true
+        return !dp.get(stones[n - 1]).isEmpty();
+    }
+
+
+
     // V1
     // IDEA: DP
     // https://leetcode.com/problems/frog-jump/solutions/6280324/video-solution-by-niits-br29/

@@ -13273,6 +13273,47 @@ public class Workspace18 {
 
 
     // LC 403
+    // 15.37 - 47 pm
+    /**
+     *  -> `determine` if the frog can
+     *    cross the river by landing on the last stone.
+     *
+     *    - The frog can jump on a `stone`,
+     *       but it must NOT jump into the ` water`.
+     *
+     *
+     *     - stones positions (in units)
+     *         in sorted `ascending` order,
+     *
+     *     - Initially, the frog is on the first stone
+     *          and assumes the first jump must be 1 unit.
+     *
+     *
+     *     NOTE:
+     *
+     *      If the frog's last jump was ` k units, `
+     *        its next jump must be either
+     *          - k - 1, k, or
+     *          - k + 1 units.
+     *
+     *
+     *  ---------------
+     *
+     *   IDEA 1) GREEDY
+     *
+     *   IDEA 2) DP
+     *
+     *     dp[ [l,r] ]:
+     *          - l: smallest dist idx frog can jump at idx = i ???
+     *          - r: longest dist idx frog can jump at idx = i ???
+     *
+     *
+     *  ---------------
+     *
+     *
+     *
+     *
+     */
     public boolean canCross(int[] stones) {
 
         return false;
