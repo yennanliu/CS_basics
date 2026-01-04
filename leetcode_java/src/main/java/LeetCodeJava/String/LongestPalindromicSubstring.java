@@ -190,53 +190,285 @@ public class LongestPalindromicSubstring {
         return s.substring(left + 1, right);
     }
 
+
     // V0-2
-    // IDEA: DP (gemini)
-    public String longestPalindrome_0_2(String s) {
-        if (s == null || s.length() == 0)
-            return "";
-
-        int n = s.length();
-        // dp[i][j] indicates if s[i...j] is a palindrome
-        boolean[][] dp = new boolean[n][n];
-        int start = 0;
-        int maxLen = 1;
-
-        // All substrings of length 1 are palindromes
-        for (int i = 0; i < n; i++) {
-            dp[i][i] = true;
-        }
-
-        // Check for lengths from 2 up to n
-        for (int len = 2; len <= n; len++) {
-            for (int i = 0; i <= n - len; i++) {
-                int j = i + len - 1; // Ending index
-
-                if (s.charAt(i) == s.charAt(j)) {
-                    // Case 1: Substring length is 2 (e.g., "aa")
-                    if (len == 2) {
-                        dp[i][j] = true;
-                    }
-                    // Case 2: Substring length > 2, check if inner part is a palindrome
-                    else {
-                        dp[i][j] = dp[i + 1][j - 1];
-                    }
-                }
-
-                // If s[i...j] is a palindrome, update max substring info
-                if (dp[i][j] && len > maxLen) {
-                    maxLen = len;
-                    start = i;
-                }
-            }
-        }
-
-        return s.substring(start, start + maxLen);
-    }
-
-    // V0-3
     // IDEA: DP (GPT)
-    public String longestPalindrome_0_3(String s) {
+    /**  NOTE !!!
+     *
+     * 1. What does dp[i][j] mean?
+     *
+     *  -  The substring from index i to index j
+     *     (inclusive) is a palindrome.
+     *
+     *  Example:
+     *     s = "b a b a d"
+     *      0 1 2 3 4
+     *
+     *   Example meanings:
+     * 	•	dp[0][0] = true → "b"
+     * 	•	dp[0][2] = true → "bab"
+     * 	•	dp[1][3] = true → "aba"
+     * 	•	dp[2][4] = false → "bad"
+     *
+     * --------------
+     *
+     * 2.  DP Table
+     *
+     *   dp[i][j]
+     *
+     *    Rows → start index i
+     *    Columns → end index j
+     *
+     *    Only the upper-right triangle
+     *    is used (i <= j).
+     *
+     *   Example:
+     *
+     *              j →
+     *       0   1   2   3   4
+     * i  ┌───────────────────
+     * 0  │ T   F   T   F   F
+     * 1  │     T   F   T   F
+     * 2  │         T   F   F
+     * 3  │             T   F
+     * 4  │                 T
+     *
+     *
+     */
+    /**  NOTE !!!
+     *
+     *
+     *  Explain Transition Formula ?
+     *
+     *  ```
+     *  dp[i][j] = true
+     *     if:
+     *         s[i] == s[j] AND
+     *         (j - i <= 2 OR dp[i + 1][j - 1])
+     *  ```
+     *
+     *
+     *  Great question 👍
+     * This transition formula is the heart of LC 005, so let’s break it down slowly, visually, and logically.
+     *
+     * ⸻
+     *
+     * 🔑 The Transition Formula (Deep Dive)
+     *
+     * dp[i][j] = true
+     * if:
+     *     s[i] == s[j] AND
+     *     (j - i <= 2 OR dp[i + 1][j - 1])
+     *
+     *
+     * ⸻
+     *
+     * Step 1️⃣ What are we trying to prove?
+     *
+     * We want to know:
+     *
+     * Is the substring s[i..j] a palindrome?
+     *
+     * A palindrome means:
+     * 	•	first and last characters are equal
+     * 	•	the inside substring is also a palindrome
+     *
+     * ⸻
+     *
+     * Step 2️⃣ Condition #1 — s[i] == s[j]
+     *
+     * Why is this required?
+     *
+     * A palindrome must mirror:
+     *
+     * s[i] ...... s[j]
+     *    ↑          ↑
+     *
+     * Example ❌:
+     *
+     * "abca"
+     *  i    j
+     * 'a' != 'a' → OK
+     * but "bc" inside is not palindrome
+     *
+     * Example ❌:
+     *
+     * "ab"
+     * 'a' != 'b' → NOT palindrome
+     *
+     * So:
+     *
+     * If s[i] != s[j] → dp[i][j] = false immediately
+     *
+     *
+     * ⸻
+     *
+     * Step 3️⃣ Condition #2 — What about the middle?
+     *
+     * Now assume:
+     *
+     * s[i] == s[j]
+     *
+     * We still need to check the inside substring:
+     *
+     * s[i+1 .. j-1]
+     *
+     *
+     * ⸻
+     *
+     * Step 4️⃣ The Key Optimization
+     *
+     * Why do we split into 2 cases?
+     *
+     * (j - i <= 2) OR dp[i + 1][j - 1]
+     *
+     * Because short substrings behave differently.
+     *
+     * ⸻
+     *
+     * Case A️⃣ j - i <= 2 (Length ≤ 3)
+     *
+     * Let’s calculate length:
+     *
+     * length = j - i + 1
+     *
+     * j - i	length	example
+     * 0	1	“a”
+     * 1	2	“aa”
+     * 2	3	“aba”
+     *
+     * Why auto-true?
+     *
+     * Length 1
+     *
+     * "a" → palindrome
+     *
+     * Length 2
+     *
+     * "aa" → palindrome if chars equal
+     *
+     * Length 3
+     *
+     * "aba"
+     *
+     * Middle is one character, always palindrome.
+     *
+     * 👉 No need to check dp[i+1][j-1].
+     *
+     * That’s why:
+     *
+     * (j - i <= 2)
+     *
+     * is sufficient.
+     *
+     * ⸻
+     *
+     * Case B️⃣ j - i > 2 (Length ≥ 4)
+     *
+     * Example:
+     *
+     * "abccba"
+     *  i      j
+     *
+     * Now the inside is:
+     *
+     * "bccb"
+     *
+     * This is not guaranteed to be a palindrome.
+     *
+     * So we must check:
+     *
+     * dp[i + 1][j - 1]
+     *
+     * Only if the inside is palindrome can the whole string be palindrome.
+     *
+     * ⸻
+     *
+     * Step 5️⃣ Putting It Together
+     *
+     * Full Logical Meaning
+     *
+     * s[i..j] is palindrome if:
+     *     1) first and last characters match
+     *     2) AND either:
+     *         - it's short (≤3), OR
+     *         - the inside substring is palindrome
+     *
+     *
+     * ⸻
+     *
+     * Visual Example Walkthrough
+     *
+     * Example 1️⃣ "aba"
+     *
+     * i = 0, j = 2
+     * s[i] == s[j] → 'a' == 'a'
+     * j - i = 2 → small substring
+     * → dp[0][2] = true
+     *
+     *
+     * ⸻
+     *
+     * Example 2️⃣ "abba"
+     *
+     * i = 0, j = 3
+     * s[i] == s[j] → 'a' == 'a'
+     * j - i = 3 → must check dp[1][2]
+     *
+     * Check inside:
+     *
+     * dp[1][2] = "bb" → true
+     *
+     * So:
+     *
+     * dp[0][3] = true
+     *
+     *
+     * ⸻
+     *
+     * Example 3️⃣ "abca"
+     *
+     * i = 0, j = 3
+     * s[i] == s[j] → 'a' == 'a'
+     * j - i = 3 → check dp[1][2]
+     *
+     * dp[1][2] = "bc" → false
+     *
+     * So:
+     *
+     * dp[0][3] = false
+     *
+     *
+     * ⸻
+     *
+     * Why This Is DP (Not Just Brute Force)
+     *
+     * We reuse previously computed answers:
+     *
+     * dp[i+1][j-1] already known
+     *
+     * This avoids checking substrings repeatedly.
+     *
+     * ⸻
+     *
+     * Mental Model (Interview Gold)
+     *
+     * Think like this:
+     *
+     * “If I wrap the same character on both ends of a palindrome,
+     * I still have a palindrome.”
+     *
+     * ⸻
+     *
+     * TL;DR (One-Line Intuition)
+     *
+     * A string is palindrome if:
+     * ends match AND the middle is palindrome
+     * (short strings skip the middle check)
+     *
+     *
+     */
+    public String longestPalindrome_0_2(String s) {
         if (s == null || s.length() < 2) {
             return s;
         }
@@ -269,6 +501,57 @@ public class LongestPalindromicSubstring {
             }
         }
 
+        return s.substring(start, start + maxLen);
+    }
+
+
+    // V0-3
+    // IDEA: DP (gemini)
+    public String longestPalindrome_0_3(String s) {
+        // 1. Handle empty strings
+        if (s == null || s.length() == 0)
+            return "";
+
+        int n = s.length();
+        // 2. Initialize 2D table. Default values in Java are 'false'.
+        boolean[][] dp = new boolean[n][n];
+        int start = 0;
+        int maxLen = 1;
+
+        // 3. Base Case: Every individual character (length 1) is a palindrome.
+        for (int i = 0; i < n; i++) {
+            dp[i][i] = true;
+        }
+
+        // 4. Iterate through possible substring lengths starting from 2 up to n.
+        for (int len = 2; len <= n; len++) {
+            // 5. 'i' is the starting index of the substring.
+            for (int i = 0; i <= n - len; i++) {
+                // 6. 'j' is the ending index of the substring.
+                int j = i + len - 1;
+
+                // 7. Core logic: Check if outer characters match.
+                if (s.charAt(i) == s.charAt(j)) {
+                    // 8. If length is 2 (e.g., "aa"), it's a palindrome if s[i] == s[j].
+                    if (len == 2) {
+                        dp[i][j] = true;
+                    }
+                    // 9. If length > 2, check if the inner string is a palindrome.
+                    // This looks up the result we already calculated for a smaller length.
+                    else {
+                        dp[i][j] = dp[i + 1][j - 1];
+                    }
+                }
+
+                // 10. If the current s[i...j] is a palindrome and longer than our previous max...
+                if (dp[i][j] && len > maxLen) {
+                    maxLen = len; // Update the longest length found
+                    start = i; // Save the starting index for extraction later
+                }
+            }
+        }
+
+        // 11. Extract the final substring using the saved start and length.
         return s.substring(start, start + maxLen);
     }
 
@@ -370,8 +653,7 @@ public class LongestPalindromicSubstring {
 
         return s.substring(start, end + 1);
     }
-
-
+    
 
 
 }
