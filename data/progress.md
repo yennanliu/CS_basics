@@ -224,7 +224,6 @@
 		- gemini
 	- LC 70 Climbing Stairs
 		- gpt
-			- 312
 			- 403
 		- gemini
 			- 322
@@ -237,7 +236,7 @@
 			- 64
 			- 1326
 			- 174
-	-> TODO: redo `classics` dp prblems then
+	-> TODO: redo `classics` `1D` dp prblems then
 	- others:
 		- Path Signatures
 			- 694,711,652,508
