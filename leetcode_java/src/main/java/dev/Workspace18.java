@@ -13320,6 +13320,49 @@ public class Workspace18 {
     }
 
 
+    // LC 312
+    // 16.11 - 28 pm
+    /**
+     *
+     *  -> Return the `maximum` coins
+     *    you can collect by bursting the balloons `wisely`.
+     *
+     *
+     *  - burst all the balloons.
+     *  - n ballons, 0 to n-1
+     *    - painted with num by nums
+     *
+     *  - if burst i ballon,
+     *     - wil get
+     *          nums[i - 1] * nums[i] * nums[i + 1] coins
+     *
+     *     - If i - 1 or i + 1 goes out of bounds of the array,
+     *         - then treat it as if there is a balloon with a 1 painted on it.
+     *
+     *  --------------
+     *
+     *   IDEA 1) BRUTE FORCE
+     *
+     *   IDEA 2) DP
+     *
+     *     -  dp[i] :
+     *
+     *   IDEA 3) GREEDY
+     *
+     *
+     *  --------------
+     *
+     *
+     */
+    // IDEA 2) DP ???
+    public int maxCoins(int[] nums) {
+
+        return 0;
+    }
+
+
+
+
 
 
 }

@@ -41,8 +41,78 @@ public class BurstBalloons {
 //    }
 
     // V0-1
-    // IDEA: DP (gpt)
+    // IDEA: DP (gemini)
     public int maxCoins_0_1(int[] nums) {
+        int n = nums.length;
+        // 1. Add boundaries: [1, ...nums..., 1]
+        int[] balloons = new int[n + 2];
+        balloons[0] = 1;
+        balloons[n + 1] = 1;
+        for (int i = 0; i < n; i++) {
+            balloons[i + 1] = nums[i];
+        }
+
+        // 2. dp[i][j] is the max coins from bursting balloons between i and j (exclusive)
+        int[][] dp = new int[n + 2][n + 2];
+
+        // 3. Iterate over the length of the interval (from 2 up to n+1)
+        for (int len = 2; len <= n + 1; len++) {
+            // i is the left boundary
+            for (int i = 0; i <= n + 1 - len; i++) {
+                int j = i + len; // j is the right boundary
+
+                // 4. Pick k as the LAST balloon to burst in interval (i, j)
+                for (int k = i + 1; k < j; k++) {
+                    int currentCoins = balloons[i] * balloons[k] * balloons[j];
+                    int total = currentCoins + dp[i][k] + dp[k][j];
+                    dp[i][j] = Math.max(dp[i][j], total);
+                }
+            }
+        }
+
+        return dp[0][n + 1];
+    }
+
+
+    // V0-2
+    // IDEA: DP (GPT)
+    public int maxCoins_0_2(int[] nums) {
+        int n = nums.length;
+
+        int[] arr = new int[n + 2];
+        arr[0] = 1;
+        arr[n + 1] = 1;
+
+        for (int i = 0; i < n; i++) {
+            arr[i + 1] = nums[i];
+        }
+
+        int m = arr.length;
+        int[][] dp = new int[m][m];
+
+        // length is the interval width we are solving
+        for (int len = 2; len < m; len++) {
+            for (int left = 0; left + len < m; left++) {
+                int right = left + len;
+
+                // try every index between left and right as the last to burst
+                for (int k = left + 1; k < right; k++) {
+                    int coins = arr[left] * arr[k] * arr[right]
+                            + dp[left][k]
+                            + dp[k][right];
+
+                    dp[left][right] = Math.max(dp[left][right], coins);
+                }
+            }
+        }
+
+        return dp[0][m - 1];
+    }
+
+
+    // V0-3
+    // IDEA: DP (gpt)
+    public int maxCoins_0_3(int[] nums) {
         int n = nums.length;
 
         // Add 1 before and after to handle boundary cases easily
@@ -180,5 +250,7 @@ public class BurstBalloons {
 
 
     // V2
+
+
 
 }
