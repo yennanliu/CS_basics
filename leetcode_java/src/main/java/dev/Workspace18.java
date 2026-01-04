@@ -13227,6 +13227,35 @@ public class Workspace18 {
     }
 
 
+    // LC 005
+    // 14.45 - 55 pm
+    /**
+     *
+     *  Given a string s,
+     *    -> return the longest palindromic substring in s.
+     *
+     *    - NOTE:
+     *      - A string is palindromic if it reads
+     *        the same forward and backward.
+     *
+     *
+     *  ---------------
+     *
+     *   IDEA 1) BRUTE FORCE
+     *
+     *   IDEA 2) SLIDE WINDOW
+     *
+     *   IDEA 3) DP ???
+     *
+     *  ---------------
+     *
+     *
+     */
+    public String longestPalindrome(String s) {
+
+        return null;
+    }
+
 
 
 
