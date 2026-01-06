@@ -137,6 +137,48 @@ public class MaximumPerformanceOfAeam {
     // V0-3
     // IDEA: PQ
     // https://buildmoat.teachable.com/courses/7a7af3/lectures/64296433
+    /**  NOTE !!! core idea:
+     *
+     * Here is the text extracted from the screenshot in both English and Traditional Chinese.
+     *
+     * ### 1. English Translation
+     *
+     * **Q4**
+     *
+     * * Sort the **efficiency** from largest to smallest,
+     * then consider each person in order starting from
+     * the one with the maximum efficiency.
+     *
+     * * The **speed** will be chosen from the top K largest
+     * speeds among the people previously considered.
+     * Since all these people have a higher efficiency than the current person,
+     * you only need to know the current person’s efficiency.
+     *
+     *
+     * * The method to select the top K largest is
+     * to use a **priority queue** to store the people currently
+     * being considered. Every time a new person is considered,
+     * add their speed to the priority queue; if the queue contains
+     * more than  people, remove the person with the minimum speed.
+     *
+     * ---
+     *
+     * ### 2. Traditional Chinese (Original)
+     *
+     * **Q4**
+     *
+     * * 將 efficiency 從大到小排，然後從最大的依序考慮
+     *
+     * * 那 speed 就是前面有考慮過的人中挑前K大的，
+     *   因為這些人的 efficiency 都比當下的人高，
+     *   所以只需要知道當下的人的 efficiency 就好了
+     *
+     *
+     * * 挑前K大的方法就是，使用 priority queue 儲存我目前有考慮的人，
+     *   每次多考慮一個人時就把 speed 放進 priority queue，
+     *   若裡面存超過K個人時，就將最小 speed 的人移除
+     *
+     */
     private static final int MOD = 1_000_000_007;
     public int maxPerformance_0_3(int n, int[] speed, int[] efficiency, int k) {
         int[][] p = new int[n][2];
