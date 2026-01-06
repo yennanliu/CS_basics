@@ -121,10 +121,23 @@ public class CoinChange2 {
          *
          * ---
          *
+         *
+         *  NOTE !!!!!!!!!!
+         *
+         *
          * ### The Fix: Coin Outer Loop
          *
-         * When the **Coin** is the outer loop, you force an order. You say: *"First, I will find all ways using only 1s. Then, I will find all ways using 1s and 2s."* By the time you start using the `2` coin, you have finished all calculations for the `1` coin. This makes it impossible to ever place a `1` *after* a `2`, effectively forcing all combinations to be in non-decreasing order (like ), which naturally prevents duplicates.
+         * When the **Coin** is the outer loop, you force an order. You say:
          *
+         * *"First, I will find all ways using only 1s. Then,
+         * I will find all ways using 1s and 2s."* By the time you start using
+         * the `2` coin, you have finished all calculations for the `1` coin.
+         * This makes it impossible to ever place a `1` *after* a `2`,
+         * effectively forcing all combinations to be in non-decreasing order (like ),
+         * which naturally prevents duplicates.
+         *
+         *
+         * 
          * ---
          *
          * ### Summary Comparison
