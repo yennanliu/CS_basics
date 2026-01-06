@@ -138,6 +138,143 @@ public class CoinChange {
     }
 
     // V0-2
+    // IDEA: bottom up DP ("backward-looking" approach) (fixed by gemini)
+    /** NOTE !!! CORE IDEA
+     *
+     *  backward-looking
+     *
+     *  -> It's more standard and efficient to use a "backward-looking"
+     *     approach: "To reach sum i, which coin did I just use?"
+     *
+     *     ```
+     *            for (int i = 1; i <= amount; i++) {
+     *             // 5. For each amount, try every coin
+     *             for (int coin : coins) {
+     *                 // If the coin is smaller than or equal to the current amount i
+     *                 if (i >= coin) {
+     *
+     *                     // NOTE !!!!! CORE BELOW:
+     *
+     *
+     *                     // Transition: Min of (current value) OR (1 coin + coins needed for remainder)
+     *                     dp[i] = Math.min(dp[i], dp[i - coin] + 1);
+     *                 }
+     *             }
+     *         }
+     *   ```
+     *
+     *
+     *
+     *  ---------
+     *
+     *
+     *   Nested Loop Logic:
+     *   Your current nested loop (j = i + 1) is essentially checking
+     *   "from every sum $i$, what other sum j can I reach?"
+     *   This is a "forward-looking" approach.
+     *
+     *    NOTE !!! below code is `forward-looking`, which is NOT efficient for this LC problem
+     *
+     *    ```
+     *        for(int i = 1; i < dp.length; i++){
+     *            // ???
+     *            for(int j = i+1; j < dp.length; j++){
+     *                int diff = j - i;
+     *                if(set.contains(diff)){
+     *                    dp[j] = Math.min(dp[j], dp[j - diff] + 1);
+     *                }
+     *            }
+     *         }
+     *    ```
+     *
+     */
+    public int coinChange_0_2(int[] coins, int amount) {
+        if (amount == 0) return 0;
+
+        /** NOTE !!!
+         *
+         * dp[i] = min coins to make amount i.
+         *
+         */
+        // 1. Create DP array. dp[i] = min coins to make amount i.
+        int[] dp = new int[amount + 1];
+
+        // 2. Initialize with "Infinity".
+        // amount + 1 is safe because even with all 1-cent coins,
+        // you can't use more than 'amount' coins.
+        /** NOTE !!!
+         *
+         * init with `amount + 1`, a safer to avoid stackoverflow
+         */
+        Arrays.fill(dp, amount + 1);
+
+        // 3. Base case: 0 coins needed for 0 amount
+        dp[0] = 0;
+
+
+        /** NOTE !!!
+         *
+         * "backward-looking" approach:
+         *
+         *  "To reach sum i, which coin did I just use?"
+         */
+        // 4. Iterate through every amount from 1 to 'amount'
+        for (int i = 1; i <= amount; i++) {
+            // 5. For each amount, try every coin
+            for (int coin : coins) {
+                // If the coin is smaller than or equal to the current amount i
+                if (i >= coin) {
+                    /** NOTE !!!
+                     *
+                     * DP equation:
+                     *    dp[i] = Math.min(dp[i], dp[i - coin] + 1);
+                     */
+                    // Transition: Min of (current value) OR (1 coin + coins needed for remainder)
+                    dp[i] = Math.min(dp[i], dp[i - coin] + 1);
+                }
+            }
+        }
+
+        // 6. If the value is still the "Infinity" marker, we couldn't reach it.
+        return dp[amount] > amount ? -1 : dp[amount];
+    }
+
+
+
+    // V0-3
+    // IDEA: "forward-looking" approach: DP (fixed by gpt) (TLE)
+    public int coinChange_0_3(int[] coins, int amount) {
+        int INF = amount + 1;
+        int[] dp = new int[amount + 1];
+        Arrays.fill(dp, INF);
+        dp[0] = 0;
+
+        Set<Integer> set = new HashSet<>();
+        for (int c : coins) set.add(c);
+
+        /** NOTE !!
+         *
+         *  below is NOT efficient, and may cause TLE
+         */
+        // forward relaxation
+        for (int i = 0; i <= amount; i++) {
+            if (dp[i] == INF) continue; // unreachable state
+
+            for (int j = i + 1; j <= amount; j++) {
+                int diff = j - i;
+                if (set.contains(diff)) {
+                    dp[j] = Math.min(dp[j], dp[i] + 1);
+                }
+            }
+        }
+
+        return dp[amount] == INF ? -1 : dp[amount];
+    }
+
+
+
+
+    // V0-4
     // IDEA: BFS (fix by GPT)
     public static class CoinStatus {
         int curSum;
@@ -149,7 +286,7 @@ public class CoinChange {
         }
     }
 
-    public int coinChange_0_2(int[] coins, int amount) {
+    public int coinChange_0_4(int[] coins, int amount) {
         // Edge case
         if (amount == 0) {
             return 0;
@@ -204,9 +341,9 @@ public class CoinChange {
         return -1; // No solution found
     }
 
-    // V0-3
+    // V0-5
     // IDEA: BFS (fixed by gpt)
-    public int coinChange_0_3(int[] coins, int amount) {
+    public int coinChange_0_5(int[] coins, int amount) {
         // edge case: if amount is 0, no coins are needed
         if (amount == 0) {
             return 0;
@@ -253,9 +390,9 @@ public class CoinChange {
         return -1; // If no solution is found
     }
 
-    // V0-4
+    // V0-6
     // IDEA: BFS (TLE)
-    public int coinChange_0_4(int[] coins, int amount) {
+    public int coinChange_0_6(int[] coins, int amount) {
         // edge
         if (coins == null || coins.length == 0) {
             return -1;
@@ -555,6 +692,6 @@ public class CoinChange {
     }
 
 
-    
+
 
 }

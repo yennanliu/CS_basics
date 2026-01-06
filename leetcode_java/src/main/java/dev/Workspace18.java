@@ -13383,14 +13383,67 @@ public class Workspace18 {
      *  IDEA 1) BFS
      *
      *  IDEA 2) DP
+     *    dp[i] : min # of coins for sum == i
+     *
+     *    dp[i] init as max int
+     *    dp[0] = 0;
+     *
+     *    DP equation:
+     *
+     *      dp[i] =
+     *         - if coins contain coin
+     *            min(dp[i], dp[i - coin] + 1)
+     *
+     *
+     *
      *
      *
      *
      * ---------------
      *
      */
-    // IDEA 1) BFS
+    // idea: dp (bottom up)
     public int coinChange(int[] coins, int amount) {
+        // edge
+        if (amount == 0){
+            return 0;
+        }
+
+        Set<Integer> set = new HashSet<>();
+        for(int c: coins){
+            set.add(c);
+        }
+
+        // ???
+        int[] dp = new int[amount+1];
+        // ???
+        Arrays.fill(dp, Integer.MAX_VALUE); // ??
+        // init
+        dp[0] = 0;
+
+        //List<Integer> stateList = new ArrayList<>();
+
+        // ???
+        for(int i = 1; i < dp.length; i++){
+           // ???
+           for(int j = i+1; j < dp.length; j++){
+               int diff = j - i;
+               if(set.contains(diff)){
+                   dp[j] = Math.min(dp[j], dp[j - diff] + 1);
+               }
+           }
+        }
+
+        return dp[amount] == Integer.MAX_VALUE ? -1: dp[amount];
+    }
+
+
+
+
+
+
+    // IDEA 1) BFS
+    public int coinChange_99(int[] coins, int amount) {
         if (amount == 0)
             return 0;
 
