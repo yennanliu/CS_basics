@@ -2,8 +2,6 @@
 
 # 2026-01-06
 
-- LC weekly 180
-
 - weekly video
 	 - LC weekly 100 - done
 	 - LC weekly 102 - done
@@ -14,7 +12,7 @@
 	 - LC weekly 108 - done
 	 - LC weekly 341 - done
 	 - LC weekly 390 - done
-	 - LC weekly 180 - todo
+	 - LC weekly 180 - done
 - to review
 	- LC weekly 100
 - needcode `grind 75` - similar LC by AI
