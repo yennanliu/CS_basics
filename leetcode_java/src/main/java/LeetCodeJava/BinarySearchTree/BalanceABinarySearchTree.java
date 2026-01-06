@@ -199,6 +199,37 @@ public class BalanceABinarySearchTree {
         return root;
     }
 
+    // V0-3
+    // IDEA: get all nodes + rebuild BST by taking `mid` node as root
+    // https://buildmoat.teachable.com/courses/7a7af3/lectures/64296433
+    private List<Integer> v = new ArrayList<>();
+
+    private void dfs_0_3(TreeNode n) {
+        if (n == null) {
+            return;
+        }
+        dfs_0_3(n.left);
+        v.add(n.val);
+        dfs_0_3(n.right);
+    }
+
+    private TreeNode build_0_3(int l, int r) {
+        if (l > r) {
+            return null;
+        }
+        int mid = (l + r) / 2;
+        TreeNode res = new TreeNode(v.get(mid));
+        res.left = build_0_3(l, mid - 1);
+        res.right = build_0_3(mid + 1, r);
+        return res;
+    }
+
+    public TreeNode balanceBST_0_3(TreeNode root) {
+        dfs_0_3(root);
+        return build_0_3(0, v.size() - 1);
+    }
+
+
     // V1-1
     // IDEA: Inorder Traversal + Recursive Construction
     // https://leetcode.com/problems/balance-a-binary-search-tree/solutions/
