@@ -244,6 +244,43 @@ public class DesignAStackWithIncrementOperation {
         }
     }
 
+    // V0-4
+    // https://buildmoat.teachable.com/courses/7a7af3/lectures/64296433
+    class CustomStack_0_4 {
+        private List<int[]> stk;
+        private int size;
+
+        public CustomStack_0_4(int maxSize) {
+            size = maxSize;
+            stk = new ArrayList<>();
+        }
+
+        public void push(int x) {
+            if (stk.size() != size) {
+                stk.add(new int[] { x, 0 });
+            }
+        }
+
+        public int pop() {
+            if (stk.isEmpty()) {
+                return -1;
+            }
+            int[] p = stk.remove(stk.size() - 1);
+
+            if (!stk.isEmpty()) {
+                stk.get(stk.size() - 1)[1] += p[1];
+            }
+            return p[0] + p[1];
+
+        }
+
+        public void increment(int k, int val) {
+            if (!stk.isEmpty()) {
+                int idx = Math.min(k, stk.size()) - 1;
+                stk.get(idx)[1] += val;
+            }
+        }
+    }
 
 
     // V1-1
