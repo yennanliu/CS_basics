@@ -1195,6 +1195,990 @@ Last Updated: 2022-02-27
 
 ---
 
+## Math
+
+### Easy
+
+- #66 - Plus One - Array, Math - 42.5%
+- #9 - Palindrome Number - Math - 52.2%
+- #13 - Roman to Integer - Hash Table, Math, String - 57.9%
+- #202 - Happy Number - Hash Table, Math, Two Pointers - 52.8%
+- #168 - Excel Sheet Column Title - Math, String - 33.6%
+- #258 - Add Digits - Math, Simulation, Number Theory - 62.2%
+- #504 - Base 7 - Math - 47.3%
+- #326 - Power of Three - Math, Recursion - 43.3%
+- #231 - Power of Two - Math, Bit Manipulation, Recursion - 44.8%
+
+### Medium
+
+- #2 - Add Two Numbers - Linked List, Math, Recursion - 37.9%
+- #12 - Integer to Roman - Hash Table, Math, String - 59.1%
+- #50 - Pow(x, n) - Math, Recursion - 32.1%
+- #204 - Count Primes - Array, Math, Enumeration, Number Theory - 33.0%
+- #29 - Divide Two Integers - Math, Bit Manipulation - 17.0%
+- #7 - Reverse Integer - Math - 26.5%
+- #343 - Integer Break - Math, Dynamic Programming - 53.6%
+- #400 - Nth Digit - Math, Binary Search - 33.4%
+- #48 - Rotate Image - Array, Math, Matrix - 65.8%
+- #670 - Maximum Swap - Math, Greedy - 47.3%
+
+### Hard
+
+- #660 - Remove 9 - Math - 55.2%
+- #149 - Max Points on a Line - Array, Hash Table, Math, Geometry - 20.0%
+- #233 - Number of Digit One - Math, Dynamic Programming, Recursion - 33.3%
+- #829 - Consecutive Numbers Sum - Math, Enumeration - 40.8%
+
+---
+
+## Backtracking
+
+### Medium
+
+- #489 - Robot Room Cleaner - Backtracking, Interactive - 75.3%
+- #22 - Generate Parentheses - String, Dynamic Programming, Backtracking - 69.5%
+- #17 - Letter Combinations of a Phone Number - Hash Table, String, Backtracking - 53.1%
+- #39 - Combination Sum - Array, Backtracking - 64.7%
+- #216 - Combination Sum III - Array, Backtracking - 63.5%
+- #77 - Combinations - Array, Backtracking - 63.0%
+- #46 - Permutations - Array, Backtracking - 71.5%
+- #306 - Additive Number - String, Backtracking - 30.5%
+- #131 - Palindrome Partitioning - String, Dynamic Programming, Backtracking - 58.7%
+- #1079 - Letter Tile Possibilities - String, Backtracking - 76.2%
+- #320 - Generalized Abbreviation - String, Backtracking, Bit Manipulation - 56.0%
+
+### Hard
+
+- #248 - Strobogrammatic Number III - Array, String, Recursion - 41.2%
+- #1088 - Confusing Number II - Math, Backtracking - 46.5%
+- #465 - Optimal Account Balancing - Array, Backtracking - 48.7%
+- #679 - 24 Game - Array, Math, Backtracking - 48.6%
+- #37 - Sudoku Solver - Array, Backtracking, Matrix - 53.1%
+- #282 - Expression Add Operators - Math, String, Backtracking - 39.1%
+
+---
+
+## Linked List
+
+### Easy
+
+- #203 - Remove Linked List Elements - Linked List, Recursion - 43.0%
+
+### Medium
+
+- #146 - LRU Cache - Hash Table, Linked List, Design, Doubly-Linked List - 39.4%
+- #2 - Add Two Numbers - Linked List, Math, Recursion - 37.9%
+- #817 - Linked List Components - Hash Table, Linked List - 58.0%
+- #369 - Plus One Linked List - Linked List, Math - 60.3%
+- #328 - Odd Even Linked List - Linked List - 59.3%
+- #92 - Reverse Linked List II - Linked List - 43.1%
+- #143 - Reorder List - Linked List, Two Pointers, Stack, Recursion - 46.9%
+- #445 - Add Two Numbers II - Linked List, Math, Stack - 58.3%
+- #708 - Insert into a Sorted Circular Linked List - Linked List - 34.1%
+
+### Hard
+
+- #23 - Merge k Sorted Lists - Linked List, Divide and Conquer, Heap (Priority Queue), Merge Sort - 46.5%
+- #25 - Reverse Nodes in k-Group - Linked List, Recursion - 50.3%
+- #460 - LFU Cache - Hash Table, Linked List, Design, Doubly-Linked List - 39.0%
+
+---
+
+## Recursion
+
+### Medium
+
+- #2 - Add Two Numbers - Linked List, Math, Recursion - 37.9%
+- #50 - Pow(x, n) - Math, Recursion - 32.1%
+- #247 - Strobogrammatic Number II - Array, String, Recursion - 50.1%
+- #544 - Output Contest Matches - String, Recursion, Simulation - 76.4%
+- #394 - Decode String - String, Stack, Recursion - 56.0%
+- #736 - Parse Lisp Expression - Hash Table, String, Stack, Recursion - 51.2%
+
+### Hard
+
+- #248 - Strobogrammatic Number III - Array, String, Recursion - 41.2%
+- #10 - Regular Expression Matching - String, Dynamic Programming, Recursion - 28.2%
+- #224 - Basic Calculator - Math, String, Stack, Recursion - 40.2%
+- #772 - Basic Calculator III - Math, String, Stack, Recursion - 47.1%
+- #273 - Integer to English Words - Math, String, Recursion - 29.4%
+- #233 - Number of Digit One - Math, Dynamic Programming, Recursion - 33.3%
+
+---
+
+## Bit Manipulation
+
+### Easy
+
+- #136 - Single Number - Array, Bit Manipulation - 69.1%
+- #191 - Number of 1 Bits - Bit Manipulation - 59.1%
+- #461 - Hamming Distance - Bit Manipulation - 74.4%
+
+### Medium
+
+- #393 - UTF-8 Validation - Array, Bit Manipulation - 39.1%
+- #318 - Maximum Product of Word Lengths - Array, String, Bit Manipulation - 56.4%
+- #421 - Maximum XOR of Two Numbers in an Array - Array, Hash Table, Bit Manipulation, Trie - 54.2%
+- #260 - Single Number III - Array, Bit Manipulation - 67.0%
+- #137 - Single Number II - Array, Bit Manipulation - 56.3%
+- #29 - Divide Two Integers - Math, Bit Manipulation - 17.0%
+
+### Hard
+
+- #1066 - Campus Bikes II - Array, Dynamic Programming, Backtracking, Bit Manipulation, Bitmask - 54.7%
+
+---
+
+## Heap (Priority Queue)
+
+### Medium
+
+- #253 - Meeting Rooms II - Array, Two Pointers, Greedy, Sorting, Heap (Priority Queue) - 49.3%
+- #857 - Minimum Cost to Hire K Workers - Array, Greedy, Sorting, Heap (Priority Queue) - 51.6%
+- #621 - Task Scheduler - Array, Hash Table, Greedy, Sorting, Heap (Priority Queue), Counting - 54.2%
+- #659 - Split Array into Consecutive Subsequences - Array, Hash Table, Greedy, Heap (Priority Queue) - 45.5%
+- #767 - Reorganize String - Hash Table, String, Greedy, Sorting, Heap (Priority Queue), Counting - 51.8%
+- #692 - Top K Frequent Words - Hash Table, String, Trie, Sorting, Heap (Priority Queue), Bucket Sort, Counting - 54.2%
+
+### Hard
+
+- #23 - Merge k Sorted Lists - Linked List, Divide and Conquer, Heap (Priority Queue), Merge Sort - 46.5%
+- #218 - The Skyline Problem - Array, Divide and Conquer, Binary Indexed Tree, Segment Tree, Line Sweep, Heap (Priority Queue), Ordered Set - 38.4%
+- #295 - Find Median from Data Stream - Two Pointers, Design, Sorting, Heap (Priority Queue), Data Stream - 50.0%
+- #407 - Trapping Rain Water II - Array, Breadth-First Search, Heap (Priority Queue), Matrix - 46.7%
+
+---
+
+## Trie
+
+### Medium
+
+- #642 - Design Search Autocomplete System - String, Design, Trie, Data Stream - 48.0%
+- #208 - Implement Trie (Prefix Tree) - Hash Table, String, Design, Trie - 57.3%
+- #745 - Prefix and Suffix Search - String, Design, Trie - 36.3%
+- #676 - Implement Magic Dictionary - Hash Table, String, Design, Trie - 56.4%
+- #1268 - Search Suggestions System - Array, String, Trie - 65.6%
+- #720 - Longest Word in Dictionary - Array, Hash Table, String, Trie, Sorting - 50.8%
+
+### Hard
+
+- #425 - Word Squares - Array, String, Backtracking, Trie - 52.0%
+- #527 - Word Abbreviation - Array, String, Greedy, Trie, Sorting - 58.0%
+- #336 - Palindrome Pairs - Array, Hash Table, String, Trie - 36.0%
+- #212 - Word Search II - Array, String, Backtracking, Trie, Matrix - 38.4%
+- #1032 - Stream of Characters - Array, String, Design, Trie, Data Stream - 51.3%
+
+---
+
+## Union Find
+
+### Medium
+
+- #399 - Evaluate Division - Array, Depth-First Search, Breadth-First Search, Union Find, Graph, Shortest Path - 56.7%
+- #947 - Most Stones Removed with Same Row or Column - Depth-First Search, Union Find, Graph - 56.2%
+- #737 - Sentence Similarity II - Array, Hash Table, String, Depth-First Search, Breadth-First Search, Union Find - 47.8%
+- #200 - Number of Islands - Array, Depth-First Search, Breadth-First Search, Union Find, Matrix - 53.2%
+- #323 - Number of Connected Components in an Undirected Graph - Depth-First Search, Breadth-First Search, Union Find, Graph - 60.7%
+- #684 - Redundant Connection - Depth-First Search, Breadth-First Search, Union Find, Graph - 60.9%
+- #128 - Longest Consecutive Sequence - Array, Hash Table, Union Find - 48.5%
+
+### Hard
+
+- #305 - Number of Islands II - Array, Union Find - 39.3%
+- #803 - Bricks Falling When Hit - Array, Union Find, Matrix - 33.6%
+- #1168 - Optimize Water Distribution in a Village - Union Find, Graph, Minimum Spanning Tree - 63.6%
+- #685 - Redundant Connection II - Depth-First Search, Breadth-First Search, Union Find, Graph - 33.6%
+
+---
+
+## Simulation
+
+### Easy
+
+- #657 - Robot Return to Origin - String, Simulation - 75.0%
+- #412 - Fizz Buzz - Math, String, Simulation - 66.1%
+
+### Medium
+
+- #289 - Game of Life - Array, Matrix, Simulation - 62.3%
+- #418 - Sentence Screen Fitting - String, Dynamic Programming, Simulation - 35.3%
+- #723 - Candy Crush - Array, Two Pointers, Matrix, Simulation - 74.9%
+- #498 - Diagonal Traverse - Array, Matrix, Simulation - 55.7%
+- #54 - Spiral Matrix - Array, Matrix, Simulation - 40.6%
+- #43 - Multiply Strings - Math, String, Simulation - 37.4%
+
+---
+
+## Enumeration
+
+### Easy
+
+- #800 - Similar RGB Color - Math, String, Enumeration - 63.6%
+
+### Medium
+
+- #681 - Next Closest Time - String, Enumeration - 46.5%
+- #949 - Largest Time for Given Digits - String, Enumeration - 35.5%
+- #829 - Consecutive Numbers Sum - Math, Enumeration - 40.8%
+
+---
+
+## Binary Tree
+
+### Easy
+
+- #100 - Same Tree - Tree, Depth-First Search, Breadth-First Search, Binary Tree - 55.3%
+- #104 - Maximum Depth of Binary Tree - Tree, Depth-First Search, Breadth-First Search, Binary Tree - 71.4%
+- #226 - Invert Binary Tree - Tree, Depth-First Search, Breadth-First Search, Binary Tree - 70.9%
+- #543 - Diameter of Binary Tree - Tree, Depth-First Search, Binary Tree - 53.6%
+- #110 - Balanced Binary Tree - Tree, Depth-First Search, Binary Tree - 46.4%
+- #257 - Binary Tree Paths - String, Backtracking, Tree, Depth-First Search, Binary Tree - 57.9%
+- #94 - Binary Tree Inorder Traversal - Stack, Tree, Depth-First Search, Binary Tree - 70.1%
+
+### Medium
+
+- #236 - Lowest Common Ancestor of a Binary Tree - Tree, Depth-First Search, Binary Tree - 54.5%
+- #102 - Binary Tree Level Order Traversal - Tree, Breadth-First Search, Binary Tree - 60.4%
+- #297 - Serialize and Deserialize Binary Tree - String, Tree, Depth-First Search, Breadth-First Search, Design, Binary Tree - 53.2%
+- #199 - Binary Tree Right Side View - Tree, Depth-First Search, Breadth-First Search, Binary Tree - 59.2%
+- #114 - Flatten Binary Tree to Linked List - Linked List, Stack, Tree, Depth-First Search, Binary Tree - 57.1%
+- #103 - Binary Tree Zigzag Level Order Traversal - Tree, Breadth-First Search, Binary Tree - 53.1%
+
+### Hard
+
+- #124 - Binary Tree Maximum Path Sum - Dynamic Programming, Tree, Depth-First Search, Binary Tree - 37.4%
+- #297 - Serialize and Deserialize Binary Tree - String, Tree, Depth-First Search, Breadth-First Search, Design, Binary Tree - 53.2%
+
+---
+
+## Topological Sort
+
+### Medium
+
+- #329 - Longest Increasing Path in a Matrix - Dynamic Programming, Depth-First Search, Breadth-First Search, Graph, Topological Sort, Memoization - 49.2%
+- #444 - Sequence Reconstruction - Array, Graph, Topological Sort - 24.6%
+- #210 - Course Schedule II - Depth-First Search, Breadth-First Search, Graph, Topological Sort - 46.1%
+- #207 - Course Schedule - Depth-First Search, Breadth-First Search, Graph, Topological Sort - 44.9%
+- #310 - Minimum Height Trees - Depth-First Search, Breadth-First Search, Graph, Topological Sort - 38.0%
+
+### Hard
+
+- #269 - Alien Dictionary - Array, String, Depth-First Search, Breadth-First Search, Graph, Topological Sort - 34.7%
+- #631 - Design Excel Sum Formula - Graph, Design, Topological Sort - 40.5%
+
+---
+
+## Binary Search Tree
+
+### Easy
+
+- #270 - Closest Binary Search Tree Value - Binary Search, Tree, Depth-First Search, Binary Search Tree, Binary Tree - 53.3%
+- #530 - Minimum Absolute Difference in BST - Tree, Depth-First Search, Breadth-First Search, Binary Search Tree, Binary Tree - 56.1%
+- #700 - Search in a Binary Search Tree - Tree, Binary Search Tree, Binary Tree - 75.1%
+
+### Medium
+
+- #285 - Inorder Successor in BST - Tree, Depth-First Search, Binary Search Tree, Binary Tree - 46.5%
+- #776 - Split BST - Tree, Binary Search Tree, Recursion, Binary Tree - 58.1%
+- #230 - Kth Smallest Element in a BST - Tree, Depth-First Search, Binary Search Tree, Binary Tree - 66.2%
+- #173 - Binary Search Tree Iterator - Stack, Tree, Design, Binary Search Tree, Binary Tree, Iterator - 65.0%
+- #450 - Delete Node in a BST - Tree, Binary Search Tree, Binary Tree - 48.6%
+
+### Hard
+
+- #99 - Recover Binary Search Tree - Tree, Depth-First Search, Binary Search Tree, Binary Tree - 45.9%
+
+---
+
+## Prefix Sum
+
+### Easy
+
+- #303 - Range Sum Query - Immutable - Array, Design, Prefix Sum - 54.4%
+- #1732 - Find the Highest Altitude - Array, Prefix Sum - 78.9%
+- #1480 - Running Sum of 1d Array - Array, Prefix Sum - 89.5%
+
+### Medium
+
+- #1423 - Maximum Points You Can Obtain from Cards - Array, Sliding Window, Prefix Sum - 49.8%
+- #304 - Range Sum Query 2D - Immutable - Array, Design, Matrix, Prefix Sum - 46.9%
+- #560 - Subarray Sum Equals K - Array, Hash Table, Prefix Sum - 44.1%
+- #238 - Product of Array Except Self - Array, Prefix Sum - 63.6%
+- #370 - Range Addition - Array, Prefix Sum - 68.8%
+
+---
+
+## Divide and Conquer
+
+### Medium
+
+- #973 - K Closest Points to Origin - Array, Math, Divide and Conquer, Geometry, Sorting, Heap (Priority Queue), Quickselect - 66.0%
+- #347 - Top K Frequent Elements - Array, Hash Table, Divide and Conquer, Sorting, Heap (Priority Queue), Bucket Sort, Counting, Quickselect - 64.5%
+- #240 - Search a 2D Matrix II - Array, Binary Search, Divide and Conquer, Matrix - 47.9%
+- #932 - Beautiful Array - Array, Math, Divide and Conquer - 64.5%
+- #215 - Kth Largest Element in an Array - Array, Divide and Conquer, Sorting, Heap (Priority Queue), Quickselect - 62.8%
+- #395 - Longest Substring with At Least K Repeating Characters - Hash Table, String, Divide and Conquer, Sliding Window - 44.5%
+- #324 - Wiggle Sort II - Array, Divide and Conquer, Sorting, Quickselect - 32.0%
+
+### Hard
+
+- #4 - Median of Two Sorted Arrays - Array, Binary Search, Divide and Conquer - 33.7%
+- #218 - The Skyline Problem - Array, Divide and Conquer, Binary Indexed Tree, Segment Tree, Line Sweep, Heap (Priority Queue), Ordered Set - 38.4%
+- #315 - Count of Smaller Numbers After Self - Array, Binary Search, Divide and Conquer, Binary Indexed Tree, Segment Tree, Merge Sort, Ordered Set - 42.1%
+- #327 - Count of Range Sum - Array, Binary Search, Divide and Conquer, Binary Indexed Tree, Segment Tree, Merge Sort, Ordered Set - 36.0%
+- #493 - Reverse Pairs - Array, Binary Search, Divide and Conquer, Binary Indexed Tree, Segment Tree, Merge Sort, Ordered Set - 29.6%
+- #2031 - Count Subarrays With More Ones Than Zeros - Array, Binary Search, Divide and Conquer, Binary Indexed Tree, Segment Tree, Merge Sort, Ordered Set - 53.2%
+
+---
+
+## Segment Tree
+
+### Medium
+
+- #729 - My Calendar I - Design, Segment Tree, Ordered Set - 55.0%
+- #1146 - Snapshot Array - Array, Hash Table, Binary Search, Design - 37.0%
+- #307 - Range Sum Query - Mutable - Array, Design, Binary Indexed Tree, Segment Tree - 38.5%
+
+### Hard
+
+- #308 - Range Sum Query 2D - Mutable - Array, Design, Binary Indexed Tree, Segment Tree, Matrix - 40.6%
+- #715 - Range Module - Design, Segment Tree, Ordered Set - 43.3%
+- #732 - My Calendar III - Design, Segment Tree, Ordered Set - 66.2%
+- #850 - Rectangle Area II - Array, Segment Tree, Line Sweep, Ordered Set - 53.3%
+- #1157 - Online Majority Element In Subarray - Array, Binary Search, Design, Binary Indexed Tree, Segment Tree - 42.0%
+- #2158 - Amount of New Area Painted Each Day - Array, Segment Tree, Ordered Set - 63.2%
+
+---
+
+## Binary Indexed Tree
+
+### Hard
+
+- #683 - K Empty Slots - Array, Binary Indexed Tree, Sliding Window, Ordered Set - 36.7%
+- #308 - Range Sum Query 2D - Mutable - Array, Design, Binary Indexed Tree, Segment Tree, Matrix - 40.6%
+- #218 - The Skyline Problem - Array, Divide and Conquer, Binary Indexed Tree, Segment Tree, Line Sweep, Heap (Priority Queue), Ordered Set - 38.4%
+- #315 - Count of Smaller Numbers After Self - Array, Binary Search, Divide and Conquer, Binary Indexed Tree, Segment Tree, Merge Sort, Ordered Set - 42.1%
+- #327 - Count of Range Sum - Array, Binary Search, Divide and Conquer, Binary Indexed Tree, Segment Tree, Merge Sort, Ordered Set - 36.0%
+- #493 - Reverse Pairs - Array, Binary Search, Divide and Conquer, Binary Indexed Tree, Segment Tree, Merge Sort, Ordered Set - 29.6%
+- #673 - Number of Longest Increasing Subsequence - Array, Dynamic Programming, Binary Indexed Tree, Segment Tree - 40.5%
+- #1395 - Count Number of Teams - Array, Dynamic Programming, Binary Indexed Tree - 69.8%
+- #2031 - Count Subarrays With More Ones Than Zeros - Array, Binary Search, Divide and Conquer, Binary Indexed Tree, Segment Tree, Merge Sort, Ordered Set - 53.2%
+
+---
+
+## Monotonic Stack
+
+### Medium
+
+- #1762 - Buildings With an Ocean View - Array, Stack, Monotonic Stack - 78.7%
+- #739 - Daily Temperatures - Array, Stack, Monotonic Stack - 66.9%
+- #853 - Car Fleet - Array, Stack, Sorting, Monotonic Stack - 47.7%
+- #503 - Next Greater Element II - Array, Stack, Monotonic Stack - 61.6%
+- #907 - Sum of Subarray Minimums - Array, Dynamic Programming, Stack, Monotonic Stack - 33.7%
+- #1673 - Find the Most Competitive Subsequence - Array, Stack, Greedy, Monotonic Stack - 48.0%
+- #402 - Remove K Digits - String, Stack, Greedy, Monotonic Stack - 30.4%
+- #316 - Remove Duplicate Letters - String, Stack, Greedy, Monotonic Stack - 41.3%
+- #1081 - Smallest Subsequence of Distinct Characters - String, Stack, Greedy, Monotonic Stack - 55.0%
+- #769 - Max Chunks To Make Sorted - Array, Stack, Greedy, Sorting, Monotonic Stack - 57.5%
+- #962 - Maximum Width Ramp - Array, Stack, Monotonic Stack - 48.0%
+- #901 - Online Stock Span - Stack, Design, Monotonic Stack, Data Stream - 62.9%
+- #2030 - Smallest K-Length Subsequence With Occurrences of a Letter - String, Stack, Greedy, Monotonic Stack - 38.8%
+- #1996 - The Number of Weak Characters in the Game - Array, Stack, Greedy, Sorting, Monotonic Stack - 32.1%
+
+### Hard
+
+- #42 - Trapping Rain Water - Array, Two Pointers, Dynamic Programming, Stack, Monotonic Stack - 55.8%
+- #84 - Largest Rectangle in Histogram - Array, Stack, Monotonic Stack - 40.4%
+- #85 - Maximal Rectangle - Array, Dynamic Programming, Stack, Matrix, Monotonic Stack - 42.4%
+- #975 - Odd Even Jump - Array, Dynamic Programming, Stack, Monotonic Stack, Ordered Set - 39.1%
+- #1499 - Max Value of Equation - Array, Queue, Sliding Window, Heap (Priority Queue), Monotonic Queue - 46.9%
+- #1526 - Minimum Number of Increments on Subarrays to Form a Target Array - Array, Dynamic Programming, Stack, Greedy, Monotonic Stack - 67.9%
+- #456 - 132 Pattern - Array, Binary Search, Stack, Monotonic Stack, Ordered Set - 30.9%
+- #1504 - Count Submatrices With All Ones - Array, Dynamic Programming, Stack, Matrix, Monotonic Stack - 58.9%
+- #321 - Create Maximum Number - Stack, Greedy, Monotonic Stack - 28.3%
+- #1776 - Car Fleet II - Array, Math, Stack, Heap (Priority Queue), Monotonic Stack - 52.6%
+
+---
+
+## Memoization
+
+### Medium
+
+- #329 - Longest Increasing Path in a Matrix - Dynamic Programming, Depth-First Search, Breadth-First Search, Graph, Topological Sort, Memoization - 49.2%
+- #139 - Word Break - Hash Table, String, Dynamic Programming, Trie, Memoization - 44.2%
+- #509 - Fibonacci Number - Math, Dynamic Programming, Recursion, Memoization - 68.1%
+- #241 - Different Ways to Add Parentheses - Math, String, Dynamic Programming, Recursion, Memoization - 61.1%
+- #894 - All Possible Full Binary Trees - Dynamic Programming, Tree, Recursion, Memoization, Binary Tree - 79.3%
+
+### Hard
+
+- #140 - Word Break II - Hash Table, String, Dynamic Programming, Backtracking, Trie, Memoization - 41.3%
+- #294 - Flip Game II - Math, Dynamic Programming, Backtracking, Memoization, Game Theory - 51.4%
+- #1444 - Number of Ways of Cutting a Pizza - Array, Dynamic Programming, Memoization, Matrix - 55.3%
+- #913 - Cat and Mouse - Math, Dynamic Programming, Breadth-First Search, Graph, Memoization, Game Theory - 35.1%
+- #1553 - Minimum Number of Days to Eat N Oranges - Dynamic Programming, Memoization - 32.6%
+- #698 - Partition to K Equal Sum Subsets - Array, Dynamic Programming, Backtracking, Bit Manipulation, Memoization, Bitmask - 45.1%
+
+---
+
+## Shortest Path
+
+### Medium
+
+- #743 - Network Delay Time - Depth-First Search, Breadth-First Search, Graph, Heap (Priority Queue), Shortest Path - 48.1%
+- #787 - Cheapest Flights Within K Stops - Dynamic Programming, Depth-First Search, Breadth-First Search, Graph, Heap (Priority Queue), Shortest Path - 36.3%
+- #1514 - Path with Maximum Probability - Graph, Heap (Priority Queue), Shortest Path - 45.7%
+- #1786 - Number of Restricted Paths From First to Last Node - Dynamic Programming, Graph, Topological Sort, Heap (Priority Queue), Shortest Path - 37.9%
+
+### Hard
+
+- #1368 - Minimum Cost to Make at Least One Valid Path in a Grid - Array, Breadth-First Search, Graph, Heap (Priority Queue), Matrix, Shortest Path - 60.3%
+- #499 - The Maze III - Depth-First Search, Breadth-First Search, Graph, Heap (Priority Queue), Shortest Path - 44.7%
+- #505 - The Maze II - Depth-First Search, Breadth-First Search, Graph, Heap (Priority Queue), Shortest Path - 51.0%
+- #399 - Evaluate Division - Array, Depth-First Search, Breadth-First Search, Union Find, Graph, Shortest Path - 56.7%
+
+---
+
+## Monotonic Queue
+
+### Hard
+
+- #239 - Sliding Window Maximum - Array, Queue, Sliding Window, Heap (Priority Queue), Monotonic Queue - 46.1%
+- #1499 - Max Value of Equation - Array, Queue, Sliding Window, Heap (Priority Queue), Monotonic Queue - 46.9%
+- #862 - Shortest Subarray with Sum at Least K - Array, Binary Search, Queue, Sliding Window, Heap (Priority Queue), Prefix Sum, Monotonic Queue - 26.1%
+- #1438 - Longest Continuous Subarray With Absolute Diff Less Than or Equal to Limit - Array, Queue, Sliding Window, Heap (Priority Queue), Ordered Set, Monotonic Queue - 45.9%
+- #918 - Maximum Sum Circular Subarray - Array, Divide and Conquer, Dynamic Programming, Queue, Monotonic Queue - 36.7%
+- #1425 - Constrained Subsequence Sum - Array, Dynamic Programming, Queue, Sliding Window, Heap (Priority Queue), Monotonic Queue - 46.4%
+
+---
+
+## Ordered Set
+
+### Medium
+
+- #729 - My Calendar I - Design, Segment Tree, Ordered Set - 55.0%
+- #731 - My Calendar II - Design, Segment Tree, Ordered Set - 53.1%
+- #855 - Exam Room - Design, Ordered Set - 43.5%
+
+### Hard
+
+- #683 - K Empty Slots - Array, Binary Indexed Tree, Sliding Window, Ordered Set - 36.7%
+- #715 - Range Module - Design, Segment Tree, Ordered Set - 43.3%
+- #732 - My Calendar III - Design, Segment Tree, Ordered Set - 66.2%
+- #850 - Rectangle Area II - Array, Segment Tree, Line Sweep, Ordered Set - 53.3%
+- #975 - Odd Even Jump - Array, Dynamic Programming, Stack, Monotonic Stack, Ordered Set - 39.1%
+- #363 - Max Sum of Rectangle No Larger Than K - Array, Binary Search, Dynamic Programming, Matrix, Ordered Set - 40.1%
+- #218 - The Skyline Problem - Array, Divide and Conquer, Binary Indexed Tree, Segment Tree, Line Sweep, Heap (Priority Queue), Ordered Set - 38.4%
+- #315 - Count of Smaller Numbers After Self - Array, Binary Search, Divide and Conquer, Binary Indexed Tree, Segment Tree, Merge Sort, Ordered Set - 42.1%
+- #327 - Count of Range Sum - Array, Binary Search, Divide and Conquer, Binary Indexed Tree, Segment Tree, Merge Sort, Ordered Set - 36.0%
+- #493 - Reverse Pairs - Array, Binary Search, Divide and Conquer, Binary Indexed Tree, Segment Tree, Merge Sort, Ordered Set - 29.6%
+- #352 - Data Stream as Disjoint Intervals - Binary Search, Design, Ordered Set - 50.3%
+- #497 - Random Point in Non-overlapping Rectangles - Math, Binary Search, Reservoir Sampling, Prefix Sum, Ordered Set, Randomized - 39.1%
+- #1438 - Longest Continuous Subarray With Absolute Diff Less Than or Equal to Limit - Array, Queue, Sliding Window, Heap (Priority Queue), Ordered Set, Monotonic Queue - 45.9%
+- #456 - 132 Pattern - Array, Binary Search, Stack, Monotonic Stack, Ordered Set - 30.9%
+- #1825 - Finding MK Average - Design, Queue, Heap (Priority Queue), Ordered Set - 32.9%
+- #895 - Maximum Frequency Stack - Hash Table, Stack, Design, Ordered Set - 64.7%
+- #220 - Contains Duplicate III - Array, Sliding Window, Sorting, Bucket Sort, Ordered Set - 21.7%
+- #2034 - Stock Price Fluctuation - Hash Table, Design, Heap (Priority Queue), Data Stream, Ordered Set - 45.8%
+- #2031 - Count Subarrays With More Ones Than Zeros - Array, Binary Search, Divide and Conquer, Binary Indexed Tree, Segment Tree, Merge Sort, Ordered Set - 53.2%
+- #1756 - Design Most Recently Used Queue - Array, Hash Table, Stack, Design, Binary Indexed Tree, Ordered Set - 79.2%
+
+---
+
+## Game Theory
+
+### Medium
+
+- #486 - Predict the Winner - Array, Math, Dynamic Programming, Recursion, Game Theory - 50.0%
+- #877 - Stone Game - Array, Math, Dynamic Programming, Game Theory - 69.0%
+- #1140 - Stone Game II - Array, Math, Dynamic Programming, Game Theory - 64.9%
+- #1406 - Stone Game III - Array, Math, Dynamic Programming, Game Theory - 60.3%
+- #375 - Guess Number Higher or Lower II - Math, Dynamic Programming, Game Theory - 45.1%
+- #837 - New 21 Game - Math, Dynamic Programming, Sliding Window, Probability and Statistics - 36.0%
+
+### Hard
+
+- #843 - Guess the Word - Array, Math, String, Interactive, Game Theory - 43.3%
+- #294 - Flip Game II - Math, Dynamic Programming, Backtracking, Memoization, Game Theory - 51.4%
+- #913 - Cat and Mouse - Math, Dynamic Programming, Breadth-First Search, Graph, Memoization, Game Theory - 35.1%
+- #1728 - Cat and Mouse II - Math, Dynamic Programming, Breadth-First Search, Graph, Memoization, Game Theory - 40.2%
+- #1510 - Stone Game IV - Math, Dynamic Programming, Game Theory - 60.8%
+
+### Easy
+
+- #292 - Nim Game - Math, Brainteaser, Game Theory - 55.4%
+- #1025 - Divisor Game - Math, Dynamic Programming, Brainteaser, Game Theory - 66.5%
+
+---
+
+## Interactive
+
+### Medium
+
+- #702 - Search in a Sorted Array of Unknown Size - Array, Binary Search, Interactive - 70.5%
+- #1618 - Maximum Font to Fit a Sentence in a Screen - Array, String, Binary Search, Interactive - 57.8%
+- #1237 - Find Positive Integer Solution for a Given Equation - Math, Two Pointers, Binary Search, Interactive - 69.5%
+
+### Hard
+
+- #843 - Guess the Word - Array, Math, String, Interactive, Game Theory - 43.3%
+- #489 - Robot Room Cleaner - Backtracking, Interactive - 75.3%
+- #1236 - Web Crawler - String, Depth-First Search, Breadth-First Search, Interactive - 65.5%
+- #158 - Read N Characters Given read4 II - Call Multiple Times - String, Simulation, Interactive - 40.5%
+- #1810 - Minimum Path Cost in a Hidden Grid - Depth-First Search, Breadth-First Search, Graph, Heap (Priority Queue), Interactive - 53.5%
+- #1538 - Guess the Majority in a Hidden Array - Array, Math, Interactive - 61.9%
+
+### Easy
+
+- #278 - First Bad Version - Binary Search, Interactive - 41.1%
+- #374 - Guess Number Higher or Lower - Binary Search, Interactive - 48.4%
+- #157 - Read N Characters Given Read4 - String, Simulation, Interactive - 40.1%
+
+---
+
+## Geometry
+
+### Medium
+
+- #939 - Minimum Area Rectangle - Array, Hash Table, Math, Geometry, Sorting - 53.4%
+- #149 - Max Points on a Line - Array, Hash Table, Math, Geometry - 20.0%
+- #963 - Minimum Area Rectangle II - Array, Math, Geometry - 54.4%
+- #593 - Valid Square - Math, Geometry - 43.8%
+- #469 - Convex Polygon - Math, Geometry - 38.2%
+- #812 - Largest Triangle Area - Array, Math, Geometry - 59.5%
+- #1401 - Circle and Rectangle Overlapping - Math, Geometry - 43.6%
+- #1266 - Minimum Time Visiting All Points - Array, Math, Geometry - 78.2%
+- #973 - K Closest Points to Origin - Array, Math, Divide and Conquer, Geometry, Sorting, Heap (Priority Queue), Quickselect - 66.0%
+- #1828 - Queries on Number of Points Inside a Circle - Array, Math, Geometry - 86.6%
+- #335 - Self Crossing - Array, Math, Geometry - 29.1%
+- #1610 - Maximum Number of Visible Points - Array, Math, Geometry, Sliding Window, Sorting - 35.9%
+
+### Hard
+
+- #587 - Erect the Fence - Array, Math, Geometry - 43.2%
+- #1924 - Erect the Fence II - Array, Math, Geometry - 58.4%
+
+### Easy
+
+- #836 - Rectangle Overlap - Math, Geometry - 43.1%
+
+---
+
+## String Matching
+
+### Medium
+
+- #686 - Repeated String Match - String, String Matching - 33.5%
+- #616 - Add Bold Tag in String - Array, Hash Table, String, Trie, String Matching - 47.7%
+- #758 - Bold Words in String - Array, Hash Table, String, Trie, String Matching - 50.0%
+- #1023 - Camelcase Matching - Two Pointers, String, Trie, String Matching - 58.9%
+
+### Hard
+
+- #214 - Shortest Palindrome - String, Rolling Hash, String Matching, Hash Function - 31.7%
+- #1392 - Longest Happy Prefix - String, Rolling Hash, String Matching, Hash Function - 44.3%
+- #1044 - Longest Duplicate Substring - String, Binary Search, Sliding Window, Rolling Hash, Suffix Array, Hash Function - 31.3%
+- #1062 - Longest Repeating Substring - String, Binary Search, Dynamic Programming, Rolling Hash, Suffix Array, Hash Function - 59.3%
+- #1397 - Find All Good Strings - String, Dynamic Programming, String Matching - 40.4%
+
+### Easy
+
+- #28 - Implement strStr() - Two Pointers, String, String Matching - 35.6%
+- #459 - Repeated Substring Pattern - String, String Matching - 43.5%
+- #796 - Rotate String - String, String Matching - 51.6%
+
+---
+
+## Data Stream
+
+### Medium
+
+- #346 - Moving Average from Data Stream - Array, Design, Queue, Data Stream - 75.8%
+- #981 - Time Based Key-Value Store - Hash Table, String, Binary Search, Design - 52.8%
+- #1352 - Product of the Last K Numbers - Array, Math, Design, Queue, Data Stream - 47.5%
+
+### Hard
+
+- #295 - Find Median from Data Stream - Two Pointers, Design, Sorting, Heap (Priority Queue), Data Stream - 50.0%
+- #703 - Kth Largest Element in a Stream - Tree, Design, Binary Search Tree, Heap (Priority Queue), Binary Tree, Data Stream - 52.6%
+- #1032 - Stream of Characters - Array, String, Design, Trie, Data Stream - 51.3%
+- #642 - Design Search Autocomplete System - String, Design, Trie, Data Stream - 48.0%
+- #2034 - Stock Price Fluctuation - Hash Table, Design, Heap (Priority Queue), Data Stream, Ordered Set - 45.8%
+
+### Easy
+
+- #1472 - Design Browser History - Array, Linked List, Stack, Design, Doubly-Linked List, Data Stream - 74.5%
+- #901 - Online Stock Span - Stack, Design, Monotonic Stack, Data Stream - 62.9%
+
+---
+
+## Line Sweep
+
+### Hard
+
+- #218 - The Skyline Problem - Array, Divide and Conquer, Binary Indexed Tree, Segment Tree, Line Sweep, Heap (Priority Queue), Ordered Set - 38.4%
+- #850 - Rectangle Area II - Array, Segment Tree, Line Sweep, Ordered Set - 53.3%
+- #391 - Perfect Rectangle - Array, Line Sweep - 32.0%
+- #1851 - Minimum Interval to Include Each Query - Array, Binary Search, Line Sweep, Sorting, Heap (Priority Queue) - 45.4%
+
+---
+
+## Rolling Hash
+
+### Hard
+
+- #214 - Shortest Palindrome - String, Rolling Hash, String Matching, Hash Function - 31.7%
+- #1044 - Longest Duplicate Substring - String, Binary Search, Sliding Window, Rolling Hash, Suffix Array, Hash Function - 31.3%
+- #1062 - Longest Repeating Substring - String, Binary Search, Dynamic Programming, Rolling Hash, Suffix Array, Hash Function - 59.3%
+- #1316 - Distinct Echo Substrings - String, Dynamic Programming, Trie, Sliding Window, Rolling Hash, Hash Function - 50.1%
+
+### Medium
+
+- #187 - Repeated DNA Sequences - Hash Table, String, Bit Manipulation, Sliding Window, Rolling Hash, Hash Function - 44.1%
+- #718 - Maximum Length of Repeated Subarray - Array, Binary Search, Dynamic Programming, Sliding Window, Rolling Hash, Hash Function - 51.3%
+- #1461 - Check If a String Contains All Binary Codes of Size K - Hash Table, String, Bit Manipulation, Rolling Hash, Hash Function - 54.5%
+
+---
+
+## Hash Function
+
+### Hard
+
+- #214 - Shortest Palindrome - String, Rolling Hash, String Matching, Hash Function - 31.7%
+- #1044 - Longest Duplicate Substring - String, Binary Search, Sliding Window, Rolling Hash, Suffix Array, Hash Function - 31.3%
+- #1062 - Longest Repeating Substring - String, Binary Search, Dynamic Programming, Rolling Hash, Suffix Array, Hash Function - 59.3%
+- #1316 - Distinct Echo Substrings - String, Dynamic Programming, Trie, Sliding Window, Rolling Hash, Hash Function - 50.1%
+- #1948 - Delete Duplicate Folders in System - Array, Hash Table, String, Trie, Hash Function - 59.1%
+
+### Medium
+
+- #535 - Encode and Decode TinyURL - Hash Table, String, Design, Hash Function - 83.3%
+- #187 - Repeated DNA Sequences - Hash Table, String, Bit Manipulation, Sliding Window, Rolling Hash, Hash Function - 44.1%
+- #706 - Design HashMap - Array, Hash Table, Linked List, Design, Hash Function - 63.8%
+- #694 - Number of Distinct Islands - Hash Table, Depth-First Search, Breadth-First Search, Union Find, Hash Function - 59.5%
+- #718 - Maximum Length of Repeated Subarray - Array, Binary Search, Dynamic Programming, Sliding Window, Rolling Hash, Hash Function - 51.3%
+- #1461 - Check If a String Contains All Binary Codes of Size K - Hash Table, String, Bit Manipulation, Rolling Hash, Hash Function - 54.5%
+- #1147 - Longest Chunked Palindrome Decomposition - Two Pointers, String, Dynamic Programming, Greedy, Rolling Hash, Hash Function - 60.3%
+
+---
+
+## Doubly-Linked List
+
+### Hard
+
+- #432 - All O`one Data Structure - Hash Table, Linked List, Design, Doubly-Linked List - 35.4%
+- #460 - LFU Cache - Hash Table, Linked List, Design, Doubly-Linked List - 39.0%
+
+### Medium
+
+- #146 - LRU Cache - Hash Table, Linked List, Design, Doubly-Linked List - 39.4%
+- #430 - Flatten a Multilevel Doubly Linked List - Linked List, Depth-First Search, Doubly-Linked List - 58.8%
+- #426 - Convert Binary Search Tree to Sorted Doubly Linked List - Linked List, Stack, Tree, Depth-First Search, Binary Search Tree, Binary Tree, Doubly-Linked List - 64.1%
+
+### Easy
+
+- #1472 - Design Browser History - Array, Linked List, Stack, Design, Doubly-Linked List, Data Stream - 74.5%
+
+---
+
+## Counting
+
+### Hard
+
+- #358 - Rearrange String k Distance Apart - Hash Table, String, Greedy, Sorting, Heap (Priority Queue), Counting - 36.7%
+
+### Medium
+
+- #299 - Bulls and Cows - Hash Table, String, Counting - 46.9%
+- #621 - Task Scheduler - Array, Hash Table, Greedy, Sorting, Heap (Priority Queue), Counting - 54.2%
+- #692 - Top K Frequent Words - Hash Table, String, Trie, Sorting, Heap (Priority Queue), Bucket Sort, Counting - 54.2%
+- #451 - Sort Characters By Frequency - Hash Table, String, Sorting, Heap (Priority Queue), Bucket Sort, Counting - 67.4%
+- #767 - Reorganize String - Hash Table, String, Greedy, Sorting, Heap (Priority Queue), Counting - 51.8%
+- #347 - Top K Frequent Elements - Array, Hash Table, Divide and Conquer, Sorting, Heap (Priority Queue), Bucket Sort, Counting, Quickselect - 64.5%
+- #229 - Majority Element II - Array, Hash Table, Sorting, Counting - 41.9%
+- #900 - RLE Iterator - Array, Design, Counting, Iterator - 58.5%
+- #1090 - Largest Values From Labels - Array, Hash Table, Greedy, Sorting, Counting - 60.6%
+- #2013 - Detect Squares - Array, Hash Table, Design, Counting - 43.9%
+- #1267 - Count Servers that Communicate - Array, Depth-First Search, Breadth-First Search, Union Find, Matrix, Counting - 58.1%
+- #1940 - Longest Common Subsequence Between Sorted Arrays - Array, Hash Table, Counting - 79.6%
+- #2083 - Substrings That Begin and End With the Same Letter - Hash Table, Math, String, Counting, Prefix Sum - 69.1%
+- #828 - Count Unique Characters of All Substrings of a Given String - String, Dynamic Programming - 49.3%
+- #1603 - Design Parking System - Design, Simulation, Counting - 87.2%
+- #1512 - Number of Good Pairs - Array, Hash Table, Math, Counting - 87.9%
+- #2131 - Longest Palindrome by Concatenating Two Letter Words - Array, Hash Table, String, Greedy, Counting - 37.7%
+- #1781 - Sum of Beauty of All Substrings - Hash Table, String, Counting - 59.9%
+- #1365 - How Many Numbers Are Smaller Than the Current Number - Array, Hash Table, Sorting, Counting - 86.2%
+- #2025 - Maximum Number of Ways to Partition an Array - Array, Hash Table, Counting, Enumeration, Prefix Sum - 30.3%
+- #1857 - Largest Color Value in a Directed Graph - Hash Table, Dynamic Programming, Graph, Topological Sort, Memoization, Counting - 39.6%
+- #1737 - Change Minimum Characters to Satisfy One of Three Conditions - Hash Table, String, Counting, Prefix Sum - 33.4%
+- #1794 - Count Pairs of Equal Substrings With Minimum Difference - Hash Table, String, Greedy - 65.1%
+
+### Easy
+
+- #383 - Ransom Note - Hash Table, String, Counting - 55.6%
+- #914 - X of a Kind in a Deck of Cards - Array, Hash Table, Math, Counting, Number Theory - 33.2%
+- #387 - First Unique Character in a String - Hash Table, String, Queue, Counting - 56.6%
+- #1534 - Count Good Triplets - Array, Enumeration - 80.6%
+
+---
+
+## Bitmask
+
+### Hard
+
+- #1066 - Campus Bikes II - Array, Dynamic Programming, Backtracking, Bit Manipulation, Bitmask - 54.7%
+- #1125 - Smallest Sufficient Team - Array, Dynamic Programming, Bit Manipulation, Bitmask - 47.8%
+- #847 - Shortest Path Visiting All Nodes - Dynamic Programming, Bit Manipulation, Breadth-First Search, Graph, Bitmask - 60.9%
+- #1595 - Minimum Cost to Connect Two Groups of Points - Array, Dynamic Programming, Bit Manipulation, Matrix, Bitmask - 45.8%
+- #996 - Number of Squareful Arrays - Array, Math, Dynamic Programming, Backtracking, Bit Manipulation, Bitmask - 49.1%
+- #805 - Split Array With Same Average - Array, Math, Dynamic Programming, Bit Manipulation, Bitmask - 26.6%
+- #1494 - Parallel Courses II - Dynamic Programming, Bit Manipulation, Graph, Bitmask - 31.8%
+- #1255 - Maximum Score Words Formed by Letters - Array, String, Dynamic Programming, Backtracking, Bit Manipulation, Bitmask - 71.9%
+- #638 - Shopping Offers - Array, Dynamic Programming, Backtracking, Bit Manipulation, Memoization, Bitmask - 54.4%
+- #1655 - Distribute Repeating Integers - Array, Dynamic Programming, Backtracking, Bit Manipulation, Bitmask - 40.2%
+- #1815 - Maximum Number of Groups Getting Fresh Donuts - Array, Dynamic Programming, Bit Manipulation, Memoization, Bitmask - 39.9%
+
+### Medium
+
+- #698 - Partition to K Equal Sum Subsets - Array, Dynamic Programming, Backtracking, Bit Manipulation, Memoization, Bitmask - 45.1%
+
+---
+
+## Iterator
+
+### Medium
+
+- #281 - Zigzag Iterator - Array, Design, Queue, Iterator - 61.2%
+- #284 - Peeking Iterator - Array, Design, Iterator - 53.3%
+- #251 - Flatten 2D Vector - Array, Two Pointers, Design, Iterator - 47.7%
+- #341 - Flatten Nested List Iterator - Stack, Tree, Depth-First Search, Design, Queue, Iterator - 58.3%
+- #173 - Binary Search Tree Iterator - Stack, Tree, Design, Binary Search Tree, Binary Tree, Iterator - 65.0%
+- #1286 - Iterator for Combination - String, Backtracking, Design, Iterator - 73.2%
+- #900 - RLE Iterator - Array, Design, Counting, Iterator - 58.5%
+- #604 - Design Compressed String Iterator - Array, Hash Table, String, Design, Iterator - 38.9%
+- #1506 - Find Root of N-Ary Tree - Hash Table, Bit Manipulation, Tree, Depth-First Search - 78.2%
+
+---
+
+## Reservoir Sampling
+
+### Medium
+
+- #382 - Linked List Random Node - Linked List, Math, Reservoir Sampling, Randomized - 58.8%
+- #398 - Random Pick Index - Hash Table, Math, Reservoir Sampling, Randomized - 63.1%
+- #497 - Random Point in Non-overlapping Rectangles - Math, Binary Search, Reservoir Sampling, Prefix Sum, Ordered Set, Randomized - 39.1%
+- #519 - Random Flip Matrix - Hash Table, Math, Reservoir Sampling, Randomized - 38.9%
+
+---
+
+## Randomized
+
+### Medium
+
+- #380 - Insert Delete GetRandom O(1) - Array, Hash Table, Math, Design, Randomized - 51.1%
+- #382 - Linked List Random Node - Linked List, Math, Reservoir Sampling, Randomized - 58.8%
+- #398 - Random Pick Index - Hash Table, Math, Reservoir Sampling, Randomized - 63.1%
+- #384 - Shuffle an Array - Array, Math, Randomized - 56.8%
+- #528 - Random Pick with Weight - Math, Binary Search, Prefix Sum, Randomized - 46.0%
+- #710 - Random Pick with Blacklist - Hash Table, Math, Binary Search, Sorting, Randomized - 33.2%
+- #497 - Random Point in Non-overlapping Rectangles - Math, Binary Search, Reservoir Sampling, Prefix Sum, Ordered Set, Randomized - 39.1%
+- #519 - Random Flip Matrix - Hash Table, Math, Reservoir Sampling, Randomized - 38.9%
+
+---
+
+## Quickselect
+
+### Medium
+
+- #215 - Kth Largest Element in an Array - Array, Divide and Conquer, Sorting, Heap (Priority Queue), Quickselect - 62.8%
+- #324 - Wiggle Sort II - Array, Divide and Conquer, Sorting, Quickselect - 32.0%
+- #973 - K Closest Points to Origin - Array, Math, Divide and Conquer, Geometry, Sorting, Heap (Priority Queue), Quickselect - 66.0%
+- #347 - Top K Frequent Elements - Array, Hash Table, Divide and Conquer, Sorting, Heap (Priority Queue), Bucket Sort, Counting, Quickselect - 64.5%
+- #1738 - Find Kth Largest XOR Coordinate Value - Array, Divide and Conquer, Bit Manipulation, Heap (Priority Queue), Matrix, Prefix Sum, Quickselect - 62.3%
+
+---
+
+## Merge Sort
+
+### Hard
+
+- #315 - Count of Smaller Numbers After Self - Array, Binary Search, Divide and Conquer, Binary Indexed Tree, Segment Tree, Merge Sort, Ordered Set - 42.1%
+- #327 - Count of Range Sum - Array, Binary Search, Divide and Conquer, Binary Indexed Tree, Segment Tree, Merge Sort, Ordered Set - 36.0%
+- #493 - Reverse Pairs - Array, Binary Search, Divide and Conquer, Binary Indexed Tree, Segment Tree, Merge Sort, Ordered Set - 29.6%
+- #23 - Merge k Sorted Lists - Linked List, Divide and Conquer, Heap (Priority Queue), Merge Sort - 46.5%
+- #148 - Sort List - Linked List, Two Pointers, Divide and Conquer, Sorting, Merge Sort - 51.5%
+- #2031 - Count Subarrays With More Ones Than Zeros - Array, Binary Search, Divide and Conquer, Binary Indexed Tree, Segment Tree, Merge Sort, Ordered Set - 53.2%
+
+---
+
+## Bucket Sort
+
+### Medium
+
+- #692 - Top K Frequent Words - Hash Table, String, Trie, Sorting, Heap (Priority Queue), Bucket Sort, Counting - 54.2%
+- #451 - Sort Characters By Frequency - Hash Table, String, Sorting, Heap (Priority Queue), Bucket Sort, Counting - 67.4%
+- #347 - Top K Frequent Elements - Array, Hash Table, Divide and Conquer, Sorting, Heap (Priority Queue), Bucket Sort, Counting, Quickselect - 64.5%
+- #220 - Contains Duplicate III - Array, Sliding Window, Sorting, Bucket Sort, Ordered Set - 21.7%
+
+### Hard
+
+- #164 - Maximum Gap - Array, Sorting, Bucket Sort, Radix Sort - 41.1%
+
+---
+
+## Counting Sort
+
+### Medium
+
+- #274 - H-Index - Array, Sorting, Counting Sort - 37.4%
+
+### Easy
+
+- #1122 - Relative Sort Array - Array, Hash Table, Sorting, Counting Sort - 68.1%
+
+---
+
+## Radix Sort
+
+### Hard
+
+- #164 - Maximum Gap - Array, Sorting, Bucket Sort, Radix Sort - 41.1%
+
+---
+
+## Eulerian Circuit
+
+### Hard
+
+- #753 - Cracking the Safe - Depth-First Search, Graph, Eulerian Circuit - 54.4%
+- #332 - Reconstruct Itinerary - Depth-First Search, Graph, Eulerian Circuit - 39.9%
+
+---
+
+## Biconnected Component
+
+### Hard
+
+- #1192 - Critical Connections in a Network - Depth-First Search, Graph, Biconnected Component - 52.0%
+
+---
+
+## Minimum Spanning Tree
+
+### Hard
+
+- #1168 - Optimize Water Distribution in a Village - Union Find, Graph, Minimum Spanning Tree - 63.6%
+- #1724 - Checking Existence of Edge Length Limited Paths II - Union Find, Graph, Minimum Spanning Tree - 53.3%
+
+### Medium
+
+- #1135 - Connecting Cities With Minimum Cost - Union Find, Graph, Heap (Priority Queue), Minimum Spanning Tree - 60.6%
+
+---
+
+## Probability and Statistics
+
+### Medium
+
+- #837 - New 21 Game - Math, Dynamic Programming, Sliding Window, Probability and Statistics - 36.0%
+- #808 - Soup Servings - Math, Dynamic Programming, Probability and Statistics - 42.2%
+- #1227 - Airplane Seat Assignment Probability - Math, Dynamic Programming, Brainteaser, Probability and Statistics - 63.9%
+- #1230 - Toss Strange Coins - Math, Dynamic Programming, Probability and Statistics - 52.3%
+
+---
+
+## Brainteaser
+
+### Medium
+
+- #1227 - Airplane Seat Assignment Probability - Math, Dynamic Programming, Brainteaser, Probability and Statistics - 63.9%
+- #1503 - Last Moment Before All Ants Fall Out of a Plank - Array, Brainteaser, Simulation - 54.7%
+
+### Easy
+
+- #292 - Nim Game - Math, Brainteaser, Game Theory - 55.4%
+- #1025 - Divisor Game - Math, Dynamic Programming, Brainteaser, Game Theory - 66.5%
+
+---
+
+## Combinatorics
+
+### Hard
+
+- #920 - Number of Music Playlists - Math, Dynamic Programming, Combinatorics - 49.3%
+- #1866 - Number of Ways to Rearrange Sticks With K Sticks Visible - Math, Dynamic Programming, Combinatorics - 55.2%
+- #1569 - Number of Ways to Reorder Array to Get Same BST - Array, Math, Divide and Conquer, Dynamic Programming, Tree, Union Find, Binary Search Tree, Memoization, Combinatorics, Binary Tree - 49.2%
+
+### Medium
+
+- #62 - Unique Paths - Math, Dynamic Programming, Combinatorics - 59.5%
+
+---
+
+## Number Theory
+
+### Medium
+
+- #1447 - Simplified Fractions - Math, String, Number Theory - 63.6%
+
+### Easy
+
+- #914 - X of a Kind in a Deck of Cards - Array, Hash Table, Math, Counting, Number Theory - 33.2%
+- #258 - Add Digits - Math, Simulation, Number Theory - 62.2%
+
+---
+
+## Suffix Array
+
+### Hard
+
+- #1044 - Longest Duplicate Substring - String, Binary Search, Sliding Window, Rolling Hash, Suffix Array, Hash Function - 31.3%
+- #1062 - Longest Repeating Substring - String, Binary Search, Dynamic Programming, Rolling Hash, Suffix Array, Hash Function - 59.3%
+
+---
+
+## Shell
+
+### Medium
+
+- #192 - Word Frequency - Shell - 25.6%
+
+---
+
+## Database
+
+### Hard
+
+- #569 - Median Employee Salary - Database - 66.4%
+- #1767 - Find the Subtasks That Did Not Execute - Database - 86.5%
+
+### Medium
+
+- #176 - Second Highest Salary - Database - 35.0%
+- #177 - Nth Highest Salary - Database - 35.7%
+- #1270 - All People Report to the Given Manager - Database - 88.1%
+
+### Easy
+
+- #175 - Combine Two Tables - Database - 69.3%
+- #181 - Employees Earning More Than Their Managers - Database - 65.6%
+- #595 - Big Countries - Database - 78.2%
+- #1821 - Find Customers With Positive Revenue this Year - Database - 89.7%
+
+---
+
+## Concurrency
+
+### Medium
+
+- #1226 - The Dining Philosophers - Concurrency - 58.8%
+
+### Easy
+
+- #1114 - Print in Order - Concurrency - 68.2%
+
+---
+
 **End of Document**
 
 *Note: This document contains 1115 LeetCode problems organized by their primary and secondary tags. Each problem may appear under multiple tag categories. Problems are sorted by difficulty (Easy, Medium, Hard) within each tag section.*
