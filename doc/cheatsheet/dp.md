@@ -642,6 +642,134 @@ def knapsack_optimized(weights, values, capacity):
     return dp[capacity]
 ```
 
+### **Critical Pattern: Loop Order in Unbounded Knapsack (Combinations vs Permutations)**
+
+**🔑 Key Insight**: In unbounded knapsack problems (like Coin Change), the **order of nested loops** determines whether you count **combinations** or **permutations**.
+
+#### **Pattern 1: Combinations (Outer: Coins, Inner: Amount)**
+```java
+// LC 518: Coin Change II - Count combinations
+// Example: [1,2] and [2,1] are the SAME combination
+public int change(int amount, int[] coins) {
+    int[] dp = new int[amount + 1];
+    dp[0] = 1; // Base case: 1 way to make amount 0
+
+    // OUTER LOOP: Iterate through each coin
+    // This ensures we process all uses of one coin before moving to the next,
+    // which prevents duplicate combinations like [1,2] and [2,1].
+    for (int coin : coins) {
+        // INNER LOOP: Update dp table for all amounts reachable by this coin
+        for (int i = coin; i <= amount; i++) {
+            // Number of ways to make amount 'i' is:
+            // (Current ways) + (Ways to make 'i - coin')
+            dp[i] += dp[i - coin];
+        }
+    }
+
+    return dp[amount];
+}
+```
+
+**Why This Works**:
+- Process coins one at a time (e.g., first all 1s, then all 2s, then all 5s)
+- By the time you use coin `2`, you've finished all calculations with coin `1`
+- Impossible to place a `1` after a `2`, forcing non-decreasing order
+- Result: Only **combinations** (order doesn't matter)
+
+**Example Trace**: `coins = [1,2], amount = 3`
+```
+After coin 1: dp = [1, 1, 1, 1]  // {}, {1}, {1,1}, {1,1,1}
+After coin 2: dp = [1, 1, 2, 2]  // + {2}, {1,2}
+Result: 2 combinations → {1,1,1}, {1,2}
+```
+
+#### **Pattern 2: Permutations (Outer: Amount, Inner: Coins)**
+```java
+// LC 377: Combination Sum IV - Count permutations
+// Example: [1,2] and [2,1] are DIFFERENT permutations
+public int combinationSum4(int[] nums, int target) {
+    int[] dp = new int[target + 1];
+    dp[0] = 1;
+
+    // OUTER LOOP: Iterate through each amount
+    // For each amount, try all coins to see which was "last added"
+    for (int i = 1; i <= target; i++) {
+        // INNER LOOP: Try each coin for current amount
+        for (int num : nums) {
+            if (i >= num) {
+                dp[i] += dp[i - num];
+            }
+        }
+    }
+
+    return dp[target];
+}
+```
+
+**Why This Counts Permutations**:
+- For each amount, ask: "What was the **last coin** I added?"
+- Every coin can be the "last" coin at each step
+- Result: **Permutations** (order matters)
+
+**Example Trace**: `nums = [1,2], target = 3`
+```
+dp[1]: Use 1 → [1] (1 way)
+dp[2]: Use 1 → [1,1], Use 2 → [2] (2 ways)
+dp[3]: From dp[2] add 1 → [1,1,1], [2,1]
+       From dp[1] add 2 → [1,2]
+Result: 3 permutations → {1,1,1}, {1,2}, {2,1}
+```
+
+#### **Comparison Table**
+
+| Loop Order | Result Type | Problem Example | Use Case |
+|------------|-------------|-----------------|----------|
+| **Outer: Coin**<br>Inner: Amount | **Combinations**<br>(Order doesn't matter) | LC 518 Coin Change II | Count unique coin combinations |
+| **Outer: Amount**<br>Inner: Coin | **Permutations**<br>(Order matters) | LC 377 Combination Sum IV | Count different orderings |
+
+#### **When to Use Which**
+
+**Use Combinations (Coin → Amount)** when:
+- Problem asks for "number of ways" without considering order
+- [1,2,5] and [2,1,5] should be counted once
+- Keywords: "combinations", "unique sets"
+
+**Use Permutations (Amount → Coin)** when:
+- Problem asks for different sequences/orderings
+- [1,2] and [2,1] should be counted separately
+- Keywords: "permutations", "different orderings", "sequences"
+
+#### **Complete Java Example: LC 518 Coin Change II**
+```java
+public int change(int amount, int[] coins) {
+    // dp[i] = total number of combinations that make up amount i
+    int[] dp = new int[amount + 1];
+
+    // Base case: There is exactly 1 way to make 0 amount (empty set)
+    dp[0] = 1;
+
+    // CRITICAL: Coin outer loop = COMBINATIONS
+    for (int coin : coins) {
+        for (int i = coin; i <= amount; i++) {
+            dp[i] += dp[i - coin];
+        }
+    }
+
+    return dp[amount];
+}
+```
+
+**Test Cases**:
+```
+Input: amount = 5, coins = [1,2,5]
+Output: 4
+Combinations: {5}, {2,2,1}, {2,1,1,1}, {1,1,1,1,1}
+
+Input: amount = 3, coins = [2]
+Output: 0
+Explanation: Cannot make 3 with only coins of 2
+```
+
 ### **String DP Patterns**
 
 | Problem Type | Pattern | Complexity | Notes |
@@ -740,7 +868,7 @@ def interval_dp(arr):
 | Target Sum | 494 | Sum to target | Medium |
 | Last Stone Weight II | 1049 | Min difference | Medium |
 | Ones and Zeroes | 474 | 2D Knapsack | Medium |
-| Coin Change 2 | 518 | Unbounded knapsack | Medium |
+| Coin Change 2 | 518 | Unbounded (Coin→Amount for combinations) | Medium |
 
 ### **State Machine Problems**
 | Problem | LC # | Key Technique | Difficulty |
