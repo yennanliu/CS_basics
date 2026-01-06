@@ -13361,6 +13361,50 @@ public class Workspace18 {
     }
 
 
+    // LC 322
+    // 9.47 - 57 AM
+    /**
+     *  -> Return the `fewest` number of coins
+     *  that you need to make up that amount.
+     *
+     *    - IF NOT possible, return -1
+     *
+     *
+     *  - coins
+     *  - amount
+     *
+     *
+     *  You may assume that you have an
+     *  `infinite` number of each kind of coin.
+     *
+     *
+     * ---------------
+     *
+     *  IDEA 1) BFS
+     *
+     *  IDEA 2) DP
+     *
+     *
+     *
+     * ---------------
+     *
+     */
+    // IDEA 1) BFS
+    public int coinChange(int[] coins, int amount) {
+        // edge
+        Set<Integer> set = new HashSet<>();
+        for(int c: coins){
+            set.add(c);
+        }
+        if(set.contains(amount)){
+            return 0; // ???
+        }
+
+
+        return -1;
+    }
+
+
 
 
 
