@@ -42,11 +42,47 @@ import java.util.*;
 public class CoinChange {
 
     // V0
-    // IDEA : BFS
-    // TODO : implement it
-//    public int coinChange(int[] coins, int amount) {
-//        return 0;
-//    }
+    // IDEA : BFS (fixed by gemini)
+    public int coinChange(int[] coins, int amount) {
+        if (amount == 0)
+            return 0;
+
+        // Using a boolean array for 'visited' is much faster than a HashSet for fixed ranges
+        //boolean[] visited = new boolean[amount + 1];
+        Set<Integer> visited = new HashSet<>();
+        Queue<Integer> q = new LinkedList<>();
+
+        q.add(0);
+        //visited[0] = true;
+        visited.add(0);
+        int steps = 0; // This tracks the number of coins used
+
+        while (!q.isEmpty()) {
+            int size = q.size();
+            steps++; // Moving to the next level of the tree (adding 1 more coin)
+
+            for (int i = 0; i < size; i++) {
+                int curSum = q.poll();
+
+                for (int coin : coins) {
+                    // Use long to prevent overflow if amount is near Integer.MAX_VALUE
+                    long nextSum = (long) curSum + coin;
+
+                    if (nextSum == amount) {
+                        return steps;
+                    }
+
+                    if (nextSum < amount && !visited.contains((int) nextSum)) {
+                        //visited[(int) nextSum] = true;
+                        visited.add((int) nextSum);
+                        q.add((int) nextSum);
+                    }
+                }
+            }
+        }
+        return -1;
+    }
+
 
     // V0-1
     // IDEA : BFS (modified by GPT)
@@ -517,5 +553,8 @@ public class CoinChange {
 
         return t[n][amount] == Integer.MAX_VALUE - 1 ? -1 : t[n][amount];
     }
+
+
+    
 
 }

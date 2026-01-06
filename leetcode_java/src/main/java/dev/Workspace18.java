@@ -13391,18 +13391,101 @@ public class Workspace18 {
      */
     // IDEA 1) BFS
     public int coinChange(int[] coins, int amount) {
-        // edge
-        Set<Integer> set = new HashSet<>();
-        for(int c: coins){
-            set.add(c);
-        }
-        if(set.contains(amount)){
-            return 0; // ???
-        }
+        if (amount == 0)
+            return 0;
 
+        // Using a boolean array for 'visited' is much faster than a HashSet for fixed ranges
+        //boolean[] visited = new boolean[amount + 1];
+        Set<Integer> visited = new HashSet<>();
+        Queue<Integer> q = new LinkedList<>();
 
+        q.add(0);
+        //visited[0] = true;
+        visited.add(0);
+        int steps = 0; // This tracks the number of coins used
+
+        while (!q.isEmpty()) {
+            int size = q.size();
+            steps++; // Moving to the next level of the tree (adding 1 more coin)
+
+            for (int i = 0; i < size; i++) {
+                int curSum = q.poll();
+
+                for (int coin : coins) {
+                    // Use long to prevent overflow if amount is near Integer.MAX_VALUE
+                    long nextSum = (long) curSum + coin;
+
+                    if (nextSum == amount) {
+                        return steps;
+                    }
+
+                    if (nextSum < amount && !visited.contains((int) nextSum)) {
+                        //visited[(int) nextSum] = true;
+                        visited.add((int) nextSum);
+                        q.add((int) nextSum);
+                    }
+                }
+            }
+        }
         return -1;
     }
+
+
+
+//    public int coinChange(int[] coins, int amount) {
+//        // edge
+//        if(amount == 0){
+//            return 0;
+//        }
+//        Set<Integer> set = new HashSet<>();
+//        for(int c: coins){
+//            set.add(c);
+//        }
+//        if(set.contains(amount)){
+//            return 1; // ???
+//        }
+//
+//
+//        Set<Integer> visited = new HashSet<>();
+//
+//        // q: { cur_sum_1, cur_sum_2, ... }
+//        Queue<Integer> q = new LinkedList<>();
+//        q.add(0); // /??
+//        visited.add(0);
+//
+//        int step = 0;
+//
+//        while(!q.isEmpty()){
+//            int size = q.size();
+//            step += 1;
+//            for(int i = 0; i < size; i++){
+//                int cur_sum = q.poll();
+//               // visited.add(cur_sum);
+//               // step += 1;
+////                if(cur_sum == amount){
+////                    return step;
+////                }
+//                if(cur_sum > amount){
+//                    continue; // ???
+//                }
+//                for(int x: set){
+//                    int new_sum = cur_sum + x;
+//                    // ????
+//                    if(cur_sum == amount){
+//                        return step;
+//                    }
+//                    if(new_sum < amount && !visited.contains(new_sum)){
+//                        visited.add(new_sum);
+//                        q.add(new_sum);
+//                    }
+//                }
+//            }
+//            //step += 1;
+//        }
+//
+//
+//        return -1;
+//    }
 
 
 
