@@ -75,6 +75,98 @@ public class CoinChange2 {
         // 2. Base case: There is exactly 1 way to make 0 amount (empty set)
         dp[0] = 1;
 
+        /** NOTE !!!
+         *
+         *    1. loop `coin -> amount` can
+         *       - AVOID duplicate combinations like [1,2] and [2,1].
+         *
+         *
+         *   Explanation:
+         *
+         *
+         *   Exactly. If you put the **amount loop** on the outside,
+         *    -> you aren't just getting duplicates;
+         *      you are actually calculating **Permutations**
+         *      instead of **Combinations**.
+         *
+         * In LeetCode 518, the problem asks for the
+         * number of ways to make up the amount, where
+         * the **order does not matter** (e.g.,  is the same as ).
+         *
+         * ---
+         *
+         * ### Why the "Amount Outer" loop causes duplicates
+         *
+         * When the **Amount** is the outer loop, you
+         * are essentially asking: *"To get to sum ,
+         * what was the very last coin I added?"*
+         *
+         * Imagine `coins = {1, 2}` and `amount = 3`:
+         *
+         * 1. **To make sum 1:** Only one way .
+         * 2. **To make sum 2:**
+         * * Add a `1` to `dp[1]`:
+         * * Add a `2` to `dp[0]`:
+         * * *Total ways: 2*
+         *
+         *
+         * 3. **To make sum 3:**
+         * * Add a `1` to `dp[2]`: This includes adding `1` to  and adding `1` to . Result: **** and ****.
+         * * Add a `2` to `dp[1]`: This includes adding `2` to . Result: ****.
+         * * *Total ways: 3*
+         *
+         *
+         *
+         * Notice that **** and **** are both counted. This is why your result for amount 3 would be `3`, but the correct answer for combinations is `2`.
+         *
+         * ---
+         *
+         * ### The Fix: Coin Outer Loop
+         *
+         * When the **Coin** is the outer loop, you force an order. You say: *"First, I will find all ways using only 1s. Then, I will find all ways using 1s and 2s."* By the time you start using the `2` coin, you have finished all calculations for the `1` coin. This makes it impossible to ever place a `1` *after* a `2`, effectively forcing all combinations to be in non-decreasing order (like ), which naturally prevents duplicates.
+         *
+         * ---
+         *
+         * ### Summary Comparison
+         *
+         * | Loop Order | Logical Meaning | Result Type | LeetCode Example |
+         * | --- | --- | --- | --- |
+         * | **Outer: Coin**<br>
+         *
+         * <br>Inner: Amount | Each coin is considered one by one. | **Combinations**<br>
+         *
+         * <br>(Order doesn't matter) | **LC 518** (Coin Change II) |
+         * | **Outer: Amount**<br>
+         *
+         * <br>Inner: Coin | Every coin is tried at every step. | **Permutations**<br>
+         *
+         * <br>(Order matters) | **LC 377** (Combination Sum IV) |
+         *
+         * ---
+         *
+         * ### Corrected Code for LC 518
+         *
+         * Here is how your logic should look to avoid those duplicates:
+         *
+         * ```java
+         * public int change(int amount, int[] coins) {
+         *     int[] dp = new int[amount + 1];
+         *     dp[0] = 1; // Base case: 1 way to make 0
+         *
+         *     // COIN OUTER LOOP = COMBINATIONS
+         *     for (int c : coins) {
+         *         for (int i = c; i <= amount; i++) {
+         *             dp[i] += dp[i - c];
+         *         }
+         *     }
+         *
+         *     return dp[amount];
+         * }
+         *
+         * ```
+         *
+         *
+         */
         // 3. OUTER LOOP: Iterate through each coin
         // This ensures we process all uses of one coin before moving to the next,
         // which prevents duplicate combinations like [1,2] and [2,1].
@@ -104,7 +196,7 @@ public class CoinChange2 {
 
         return dp[amount];
     }
-    
+
 
     // V0-1
     int combinationCnt_0_1 = 0;
