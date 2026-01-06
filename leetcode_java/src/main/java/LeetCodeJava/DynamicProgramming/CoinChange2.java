@@ -53,9 +53,58 @@ import java.util.Arrays;
 public class CoinChange2 {
 
     // V0
-//    public int change(int amount, int[] coins) {
-//
-//    }
+    // IDEA: BOTTOM UP DP (fixed by gemini)
+    public int change(int amount, int[] coins) {
+
+        /** NOTE !!!
+         *
+         *   dp[i] = total number of `combinations` that make up amount i
+         *
+         *
+         *   compare with LC 322
+         */
+        // 1. dp[i] = total number of combinations that make up amount i
+        int[] dp = new int[amount + 1];
+
+        /** NOTE !!!
+         *
+         *   Base case: There is exactly 1 way to make 0 amount (empty set)
+         *
+         *  -> need to set dp[0] = 1, instead of 0
+         */
+        // 2. Base case: There is exactly 1 way to make 0 amount (empty set)
+        dp[0] = 1;
+
+        // 3. OUTER LOOP: Iterate through each coin
+        // This ensures we process all uses of one coin before moving to the next,
+        // which prevents duplicate combinations like [1,2] and [2,1].
+        for (int coin : coins) {
+            // 4. INNER LOOP: Update dp table for all amounts reachable by this coin
+            for (int i = coin; i <= amount; i++) {
+                // Number of ways to make amount 'i' is:
+                // (Current ways) + (Ways to make 'i - coin')
+                dp[i] += dp[i - coin];
+            }
+        }
+
+        return dp[amount];
+    }
+
+    // V0-0-1
+    // IDEA: DP (gpt)
+    public int change_0_0_1(int amount, int[] coins) {
+        int[] dp = new int[amount + 1];
+        dp[0] = 1;
+
+        for (int coin : coins) {
+            for (int a = coin; a <= amount; a++) {
+                dp[a] += dp[a - coin];
+            }
+        }
+
+        return dp[amount];
+    }
+    
 
     // V0-1
     int combinationCnt_0_1 = 0;
@@ -376,5 +425,8 @@ public class CoinChange2 {
     }
 
     // V2
+
+
+
 
 }

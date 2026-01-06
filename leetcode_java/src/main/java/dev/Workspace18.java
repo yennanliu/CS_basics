@@ -13542,6 +13542,66 @@ public class Workspace18 {
 
 
 
+    // LC 518
+    // 10.52 - 11.02 am
+    /**
+     *
+     *   ->
+     *   Return the `number of combinations` that make up that `amount`.
+     *   If that amount of money cannot be made
+     *   up by any combination of the coins, return` 0.`
+     *
+     *
+     *  ----------------
+     *
+     *   IDEA 1) BRUTE FORCE
+     *
+     *   IDEA 2) DP ??
+     *
+     *    - dp[i] `number of combinations` that make up that `amount`
+     *
+     *    dp[i] =
+     *          - if coin in coins
+     *             dp[i-coin] + 1
+     *
+     *
+     *
+     *  ----------------
+     *
+     */
+    public int change(int amount, int[] coins) {
+        // edge
+        if(amount == 0){
+            return 0;
+        }
+        Set<Integer> set = new HashSet<>();
+        for(int c: coins){
+            set.add(c);
+        }
+
+        // - dp[i] `number of combinations` that make up that `amount`
+        int[] dp = new int[amount + 1]; // ???
+        // init
+        Arrays.fill(dp, amount + 1);
+        // NOTE !!!
+        // SHOULD BE 1, since we have 1 way
+        // to come up with sum=0
+        // Base case: There is exactly 1 way to make 0 amount (empty set)
+        //dp[0] = 0;
+        dp[0] = 1;
+
+        for(int i = 1; i < amount; i++){
+            // ??
+            for(int c: coins){
+                // ???
+                if(i + c < amount){
+                    dp[i] += dp[i - c];
+                }
+            }
+        }
+
+        return dp[amount] == amount + 1 ? 0: dp[amount];
+    }
 
 
 
