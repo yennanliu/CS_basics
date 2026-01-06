@@ -134,6 +134,36 @@ public class MaximumPerformanceOfAeam {
         return (int) (maxPerf % MOD);
     }
 
+    // V0-3
+    // IDEA: PQ
+    // https://buildmoat.teachable.com/courses/7a7af3/lectures/64296433
+    private static final int MOD = 1_000_000_007;
+    public int maxPerformance_0_3(int n, int[] speed, int[] efficiency, int k) {
+        int[][] p = new int[n][2];
+        for (int i = 0; i < n; i++) {
+            p[i][0] = efficiency[i];
+            p[i][1] = speed[i];
+        }
+        Arrays.sort(p, (a, b) -> b[0] - a[0]);
+
+        PriorityQueue<Integer> pq = new PriorityQueue<>();
+
+        long sum = 0;
+        long ans = 0;
+
+        for (int i = 0; i < n; i++) {
+            sum += p[i][1];
+            pq.offer(p[i][1]);
+
+            if (pq.size() > k) {
+                sum -= pq.poll();
+            }
+
+            ans = Math.max(ans, sum * p[i][0]);
+        }
+
+        return (int) (ans % MOD);
+    }
 
     // V1
     // IDEA: PQ
