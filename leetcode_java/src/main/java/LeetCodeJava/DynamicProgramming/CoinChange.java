@@ -193,10 +193,13 @@ public class CoinChange {
 
         /** NOTE !!!
          *
-         * dp[i] = min coins to make amount i.
+         * dp[i] = min `coins` to make amount i.
+         *
+         *
+         * compare with LC 518
          *
          */
-        // 1. Create DP array. dp[i] = min coins to make amount i.
+        // 1. Create DP array. dp[i] = min `coins` to make amount i.
         int[] dp = new int[amount + 1];
 
         // 2. Initialize with "Infinity".
