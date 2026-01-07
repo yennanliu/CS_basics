@@ -234,6 +234,19 @@
 			- 64
 			- 1326
 			- 174
+	- LC 198 House Robber
+		- gpt
+			- 2560
+			- 376
+			- 309
+			- 714
+			- 1235
+			- 64 (?)
+		- gemini
+			- 1025
+			- 740
+			- 1911
+			- 639
 	-> TODO: redo `classics` `1D` dp prblems then
 	- others:
 		- Path Signatures
