@@ -9,6 +9,8 @@ import LeetCodeJava.Tree.OnlineMajorityElementInSubarray;
 import javax.swing.text.Style;
 import java.util.*;
 
+import static java.lang.Math.min;
+
 public class Workspace18 {
 
     ///WorkSpace17.MyTrie trie = new WorkSpace17.MyTrie();
@@ -3748,7 +3750,7 @@ public class Workspace18 {
             int idx = cur[0];
            // int val = cur[1];
             nums1_case1_sum += nums1[idx];
-            nums2_case1_min = Math.min(nums2_case1_min, nums2[idx]);  // ???
+            nums2_case1_min = min(nums2_case1_min, nums2[idx]);  // ???
         }
 
         res1 = ((long) nums1_case1_sum * nums2_case1_min);
@@ -3784,7 +3786,7 @@ public class Workspace18 {
             int idx = cur[0];
             //int val = cur[1];
             nums1_case2_sum += nums1[idx];
-            nums2_case2_min = Math.min(nums2_case2_min, nums2[idx]);  // ???
+            nums2_case2_min = min(nums2_case2_min, nums2[idx]);  // ???
         }
 
         res2 = ((long) nums1_case2_sum * nums2_case2_min);
@@ -6796,9 +6798,9 @@ public class Workspace18 {
             for(int x = 0; x < w; x++){
                 if(grid[y][x] == 0){
                     // update
-                    xStart = Math.min(xStart, x);
+                    xStart = min(xStart, x);
                     xEnd = Math.max(xEnd, x);
-                    yStart = Math.min(yStart, y);
+                    yStart = min(yStart, y);
                     yEnd = Math.max(yEnd, y);
                 }
             }
@@ -9869,7 +9871,7 @@ public class Workspace18 {
                 //int idx =
                 arr[i][0] = Math.max(arr[i][0], i);
             }else{
-                arr[i][1] = Math.min(arr[i][1], i);
+                arr[i][1] = min(arr[i][1], i);
             }
             // NOTE !!! check if valid
             if(arr[i][1] > arr[i][0]){
@@ -10730,7 +10732,7 @@ public class Workspace18 {
 //                    mat[y][x] =
 //                }
                 if(mat[y][x] == 1){
-                    mat[y][x] = Math.min(mat[y][x], dist); // ??
+                    mat[y][x] = min(mat[y][x], dist); // ??
                 }
                 // ???
                 for(int[] m: moves){
@@ -11802,7 +11804,7 @@ public class Workspace18 {
                 heightMap.put(i, new ArrayList<>());
             }
             int depth = getMinDepth(i, map);
-            minDepth = Math.min(minDepth, depth);
+            minDepth = min(minDepth, depth);
             heightMap.get(i).add(depth);
         }
 
@@ -12050,7 +12052,7 @@ public class Workspace18 {
                 if(grid[y][x] == 0){
                     int curDist = bfsGetShortestDist(grid, costGrid, x, y, buildList, 0);
                     if(curDist > 0){
-                        minDist = Math.min(curDist, minDist);
+                        minDist = min(curDist, minDist);
                     }
                 }
             }
@@ -12152,7 +12154,7 @@ public class Workspace18 {
                 if(grid[y][x] == 1){
                     //buildList.add(new Integer[]{x, y});
                     int dist = getMinTotalDist(x, y, grid, new boolean[l][w]);
-                    minDist = Math.min(minDist, dist);
+                    minDist = min(minDist, dist);
                 }
             }
         }
@@ -12621,7 +12623,7 @@ public class Workspace18 {
 
         // ??
         for(int i = 2; i < size + 1; i++){
-            dp[i] += Math.min(dp[i-2], dp[i-1]);
+            dp[i] += min(dp[i-2], dp[i-1]);
         }
 
         return dp[size]; // ???
@@ -13451,8 +13453,45 @@ public class Workspace18 {
      * ---------------
      *
      */
+    // 7.05 am
     // idea: dp (bottom up)
+    // dp[i]: fewest number of coins sum up to i
+    // if  ( i - coin ) > 0
+    //       dp[i] = min(dp[i], dp[i-1] + 1) // ???
     public int coinChange(int[] coins, int amount) {
+        // edge
+        if (amount == 0){
+            return 0;
+        }
+
+        // ??
+        int[] dp = new int[amount + 1];
+        // init ??
+        // worst case: use all 1 coin (?
+        Arrays.fill(dp, amount);
+
+        dp[0] = 0; // ???
+
+        for(int i = 1; i < amount + 1; i++){
+            for(int c:coins){
+                if(i - c >= 0){
+                    dp[i] = Math.min(dp[i], dp[i - c] + 1);
+                }
+            }
+        }
+
+        return dp[amount] == amount ? -1 : dp[amount];
+    }
+
+
+
+
+
+
+
+
+    // idea: dp (bottom up)
+    public int coinChange_98(int[] coins, int amount) {
         // edge
         if (amount == 0){
             return 0;
@@ -13478,7 +13517,7 @@ public class Workspace18 {
            for(int j = i+1; j < dp.length; j++){
                int diff = j - i;
                if(set.contains(diff)){
-                   dp[j] = Math.min(dp[j], dp[j - diff] + 1);
+                   dp[j] = min(dp[j], dp[j - diff] + 1);
                }
            }
         }
@@ -13878,7 +13917,7 @@ public class Workspace18 {
             int curSpeed = tmp[0];
             int curEff = tmp[1];
             speedCum += curSpeed;
-            minPerformance = Math.min(minPerformance, curEff);
+            minPerformance = min(minPerformance, curEff);
         }
 
         return speedCum * minPerformance;
