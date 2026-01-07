@@ -108,10 +108,21 @@ public class BalanceABinarySearchTree {
          */
         int mid = (l + r) / 2; // radius
         TreeNode root = nodes.get((mid));
-        root.left = rebuildBST(nodes, l, mid - 1); // ???
+        /** NOTE !!!
+         *
+         *  we need to focus ONLY on sub-left, sub-right tree,
+         *
+         *  -> so need to EXCLUDE the root idx,
+         *  -> so we set the `boundary` for
+         *     - left sub-tree: [l, mid - 1]
+         *     - right sub-tree: [mid + 1, r]
+         *
+         *
+         *  (EXCLUDE the root idx)
+         */
+        root.left = rebuildBST(nodes, l, mid - 1);
         root.right = rebuildBST(nodes, mid + 1, r);
-
-        // ???
+        
         return root;
     }
 
