@@ -177,8 +177,57 @@ public class Workspace18 {
      *          can make it balanced
      *
      */
-    // IDEA 1) INORDER + reconstruct tree
+    // 10.45 -55 am
+    /**
+     *  IDEA: DFS get all nodes -> BST rebuild tree (mid point as root node)
+     *
+     */
     public TreeNode balanceBST(TreeNode root) {
+        // edge
+
+        // ???
+        List<TreeNode> list = new ArrayList<>();
+        getAllNodes(root, list); // ???
+
+        return BSTBuilder(list, 0, list.size() - 1);
+    }
+
+    private TreeNode BSTBuilder(List<TreeNode> list, int l, int r){
+        if(list.isEmpty()){
+            return null; // ???
+        }
+        // NOTE !!!
+        if(r < l){
+            return null; // ????
+        }
+        int rootIdx = (l + r) / 2;
+        TreeNode root = list.get(rootIdx); // ???
+
+        root.left = BSTBuilder(list, l, rootIdx - 1);
+        root.right = BSTBuilder(list, rootIdx + 1, r);
+
+        return root; // ??
+    }
+
+    // in-order traverse
+    private void getAllNodes(TreeNode root, List<TreeNode> list){
+        if(root == null){
+            return;
+        }
+        getAllNodes(root.left, list);
+        list.add(root);
+        getAllNodes(root.right, list);
+    }
+
+
+
+
+
+
+
+
+    // IDEA 1) INORDER + reconstruct tree
+    public TreeNode balanceBST_99(TreeNode root) {
         List<TreeNode> list = new ArrayList<>();
         inorderGetNodes(root, list);
         return buildTree(list, 0, list.size() - 1);
