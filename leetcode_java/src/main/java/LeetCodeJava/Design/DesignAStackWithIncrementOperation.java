@@ -83,6 +83,79 @@ public class DesignAStackWithIncrementOperation {
 //        }
 //    }
 
+    // V0-0-1
+    // IDEA: DEQUEUE + STACK OP
+    class CustomStack_0_0_1 {
+
+        int maxSize;
+        Stack<Integer> st;
+
+        public CustomStack_0_0_1(int maxSize) {
+            this.maxSize = maxSize;
+            this.st = new Stack<>();
+        }
+
+        public void push(int x) {
+            if (this.st.size() < this.maxSize) {
+                this.st.push(x); // ???
+            }
+        }
+
+        public int pop() {
+            if (this.st.isEmpty()) {
+                return -1;
+            }
+
+            return this.st.pop();
+        }
+
+        public void increment(int k, int val) {
+            boolean isMoreThanK = this.st.size() > k;
+            /** NOTE !!!
+             *
+             *  we use `Deque` so can push, pop from both
+             *    - start
+             *    - end
+             *
+             *    idx
+             */
+            Deque<Integer> tmp = new LinkedList<>(); // ???
+            while (!this.st.isEmpty()) {
+                // STACK: FILO (first in last out)
+                tmp.add(this.st.pop());
+            }
+            if (!isMoreThanK) {
+                while (!tmp.isEmpty()) {
+                    /** NOTE !!!
+                     *
+                     *  since stack is FILO, we need to do `reverse` pop
+                     *
+                     *  e.g. pollLast
+                     */
+                    this.st.push(tmp.pollLast() + val);
+                }
+            } else {
+                int cnt = 0;
+                while (!tmp.isEmpty()) {
+                    int savedVal = tmp.pollLast();
+                    /** NOTE !!!
+                     *
+                     *  if stack size > k,
+                     *  ONLY do the `increment` op at first k element
+                     */
+                    if (cnt < k) {
+                        savedVal += val;
+                    }
+                    this.st.push(savedVal);
+                    cnt += 1;
+                }
+            }
+
+        }
+
+    }
+
+
     // V0-1
     // IDEA: ARRAY (fixed by gemini)
     /**  IDEA:

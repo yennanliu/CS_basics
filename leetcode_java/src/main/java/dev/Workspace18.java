@@ -13686,6 +13686,67 @@ public class Workspace18 {
         return maxLen != 0 ? maxLen: 1;
     }
 
+    // LC 1381
+    // 10.26 - 36 AM
+    /**
+     *
+     *
+     *
+     */
+    class CustomStack {
+
+        int maxSize;
+        Stack<Integer> st;
+
+        public CustomStack(int maxSize) {
+            this.maxSize = maxSize;
+            this.st = new Stack<>();
+        }
+
+        public void push(int x) {
+            if(this.st.size() < this.maxSize){
+                this.st.push(x); // ???
+            }
+        }
+
+        public int pop() {
+            if(this.st.isEmpty()){
+                return -1;
+            }
+
+            return this.st.pop();
+        }
+
+        public void increment(int k, int val) {
+            // ???
+            boolean isMoreThanK = this.st.size() > k;
+            //List<Integer> tmp = new ArrayList<>();
+            Deque<Integer> tmp = new LinkedList<>(); // ???
+            while(!this.st.isEmpty()){
+                // STACK: FILO (first in last out)
+                tmp.add(this.st.pop());
+            }
+            if(!isMoreThanK){
+                while(!tmp.isEmpty()){
+                    this.st.push(tmp.pollLast() + val);
+                }
+            }else{
+                int cnt = 0;
+                while(!tmp.isEmpty()){
+                    int savedVal = tmp.pollLast();
+                    if(cnt < k){
+                        savedVal += val;
+                    }
+                    this.st.push(savedVal);
+                    cnt += 1;
+                }
+            }
+
+        }
+
+    }
+
+
 
 
 }
