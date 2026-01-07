@@ -166,7 +166,17 @@ public class DesignAStackWithIncrementOperation {
      *
      */
     class CustomStack_0_1 {
+        /** NOTE !!!
+         *
+         *  a simple array data structure +
+         *  `top` idx is enough for this LC problem.
+         */
         private int[] stack;
+        /** NOTE !!!
+         *
+         *  we record the `top` of stack,
+         *  so we know at what point we can do `increment` op
+         */
         private int top; // Points to the next available position (size of stack)
 
         public CustomStack_0_1(int maxSize) {
