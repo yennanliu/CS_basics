@@ -107,6 +107,62 @@ public class LongestIncreasingSubsequence {
         return res;
     }
 
+  // V0-0-1
+  // IDEA: 1D DP (fixed by gemini)
+  public int lengthOfLIS_0_0_1(int[] nums) {
+      if (nums == null || nums.length == 0) {
+          return 0;
+      }
+
+      int n = nums.length;
+      // dp[i] is the length of LIS ending at index i
+      int[] dp = new int[n];
+
+      // Every single element is an increasing subsequence of length 1
+      Arrays.fill(dp, 1);
+
+      int overallMax = 1;
+
+      for (int i = 1; i < n; i++) {
+          for (int j = 0; j < i; j++) {
+              // If the current element is greater than the previous element
+              if (nums[i] > nums[j]) {
+                  // Extend the sequence ending at j
+                  dp[i] = Math.max(dp[i], dp[j] + 1);
+              }
+          }
+          // Track the highest value found in the dp array
+          overallMax = Math.max(overallMax, dp[i]);
+      }
+
+      return overallMax;
+  }
+
+  // V0-0-2
+  // IDEA: 1D DP (fixed by GPT)
+  public int lengthOfLIS_0_0_2(int[] nums) {
+      if (nums == null || nums.length == 0)
+          return 0;
+
+      int n = nums.length;
+      int[] dp = new int[n];
+      Arrays.fill(dp, 1); // base case
+
+      int maxLen = 1;
+
+      for (int i = 1; i < n; i++) {
+          for (int j = 0; j < i; j++) {
+              if (nums[j] < nums[i]) {
+                  dp[i] = Math.max(dp[i], dp[j] + 1);
+              }
+          }
+          maxLen = Math.max(maxLen, dp[i]);
+      }
+
+      return maxLen;
+  }
+
+
   // V0-1
   // IDEA: DP (fixed by gpt)
   public int lengthOfLIS_0_1(int[] nums) {
@@ -465,5 +521,7 @@ public class LongestIncreasingSubsequence {
         }
         return maxLength;
     }
+
+
 
 }
