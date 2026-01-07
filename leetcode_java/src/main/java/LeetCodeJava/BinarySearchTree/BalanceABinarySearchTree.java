@@ -122,7 +122,7 @@ public class BalanceABinarySearchTree {
          */
         root.left = rebuildBST(nodes, l, mid - 1);
         root.right = rebuildBST(nodes, mid + 1, r);
-        
+
         return root;
     }
 

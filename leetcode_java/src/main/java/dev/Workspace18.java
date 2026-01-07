@@ -13796,6 +13796,96 @@ public class Workspace18 {
     }
 
 
+    // LC 1383
+    // 11.11 - 21 am
+    /**
+     *  -> Choose at most k different engineers
+     *  out of the n engineers to form
+     *  a team with the `MAX performance.`
+     *
+     *   - speed array
+     *   - efficiency array
+     *
+     *   - NOTE:
+     *      - The performance of a team is the sum of its engineers'
+     *        speeds multiplied by the
+     *        minimum efficiency among its engineers.
+     *
+     *        e.g.:
+     *
+     *         n = 6, speed = [2,10,3,1,5,8], efficiency = [5,4,3,9,7,2], k = 2
+     *
+     *         ->  performance = (10 + 5) * min(4, 7) = 60
+     *
+     *
+     *
+     *
+     *
+     *  ----------
+     *
+     *   IDEA 1) BRUTE FORCE ??
+     *
+     *   IDEA 2) PQ [ [speed_1, eff_1], .... ] ??
+     *      - 1. sort efficiency (max -> small) (2D array)
+     *        2. maintain a k size PQ (with the sorted efficiency,  with speed)
+     *         - maintain the global max performance on the same time
+     *
+     *
+     *  ----------
+     *
+     *
+     */
+    public int maxPerformance(int n, int[] speed, int[] efficiency, int k) {
+        // edge
+
+        //int maxPerform = 0;
+
+        // [ [speed_1, eff_1], .... ]
+        List<Integer[]> list = new ArrayList<>();
+        for(int i = 0;  i < n; i++){
+            list.add(new Integer[]{speed[i], efficiency[i]});
+        }
+        // sort on efficiency (max -> small)
+        Collections.sort(list, new Comparator<Integer[]>() {
+            @Override
+            public int compare(Integer[] o1, Integer[] o2) {
+                int diff = o2[1] - o1[1];
+                return diff;
+            }
+        });
+
+        // small PQ:
+        // PQ [ [speed_1, eff_1], .... ]
+        PriorityQueue<Integer[]> pq = new PriorityQueue<>(new Comparator<Integer[]>() {
+            @Override
+            public int compare(Integer[] o1, Integer[] o2) {
+                int diff = o2[1] - o1[1];
+                return diff;
+            }
+        });
+
+        for(Integer[] x: list){
+            while (pq.size() > k){
+                pq.poll();
+            }
+            pq.add(x);
+        }
+
+        int minPerformance = Integer.MAX_VALUE; // ??
+        int speedCum = 0;
+        while(!pq.isEmpty()){
+            Integer[] tmp = pq.poll();
+            int curSpeed = tmp[0];
+            int curEff = tmp[1];
+            speedCum += curSpeed;
+            minPerformance = Math.min(minPerformance, curEff);
+        }
+
+        return speedCum * minPerformance;
+    }
+
+
+
 
 
 }
