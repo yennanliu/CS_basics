@@ -1214,6 +1214,107 @@ public int tribonacci(int n) {
 }
 ```
 
+### 2-4) Longest Increasing Subsequence (LIS)
+
+```java
+// java
+// LC 300. Longest Increasing Subsequence
+
+/**  NOTE !!!
+ *
+ *  1. use 1-D DP
+ *  2. Key Insight (Important):
+ *
+ *     - dp[i] = best LIS ending exactly at index i
+ *
+ *     - Inner loop checks:
+ *          - "Can I extend a smaller LIS ending at j by appending nums[i]?"
+ *
+ *      - maxLen tracks the global maximum across all endpoints
+ *
+ */
+
+// V0
+// IDEA: 1D DP - O(n²) solution
+public int lengthOfLIS(int[] nums) {
+    if(nums == null || nums.length < 1) {
+        return 0;
+    }
+
+    int n = nums.length;
+    int[] dp = new int[n];
+
+    // Each element itself is an increasing subsequence of length 1
+    for(int i = 0; i < n; i++) {
+        dp[i] = 1;
+    }
+
+    int res = 1;
+
+    for(int i = 1; i < n; i++) {
+        for(int j = 0; j < i; j++) {
+            /**
+             * NOTE !!!
+             *
+             *  `nums[i] > nums[j]` condition  !!!
+             *
+             *  -> ONLY if `right element is bigger than left element`,
+             *     new length is calculated and DP array is updated
+             *
+             *  -> This ensures we're building an INCREASING subsequence
+             *
+             *  -> We check all previous elements (j < i) to see if we can
+             *     extend their subsequences by adding nums[i]
+             *
+             */
+            if(nums[i] > nums[j]) {
+                dp[i] = Math.max(dp[i], dp[j] + 1);
+                res = Math.max(res, dp[i]);
+            }
+        }
+    }
+
+    return res;
+}
+```
+
+**LIS Pattern Explanation:**
+
+| Aspect | Explanation |
+|--------|-------------|
+| **State Definition** | `dp[i]` = length of longest increasing subsequence ending at index `i` |
+| **Initialization** | `dp[i] = 1` for all i (each element is a subsequence of length 1) |
+| **Transition** | `dp[i] = max(dp[i], dp[j] + 1)` if `nums[i] > nums[j]` for all `j < i` |
+| **Key Condition** | `nums[i] > nums[j]` ensures we only extend increasing subsequences |
+| **Time Complexity** | O(n²) - nested loops through array |
+| **Space Complexity** | O(n) - 1D DP array |
+| **Result** | `max(dp[i])` for all i - maximum value in DP array |
+
+**Why the condition `nums[i] > nums[j]` is critical:**
+- We iterate through all previous elements `j` (where `j < i`)
+- We check if current element `nums[i]` can extend the subsequence ending at `j`
+- Only when `nums[i] > nums[j]`, we can append `nums[i]` to maintain increasing order
+- `dp[j] + 1` represents extending the LIS ending at `j` by adding `nums[i]`
+
+**Example Walkthrough:**
+```
+Input: nums = [10, 9, 2, 5, 3, 7, 101, 18]
+
+Initial: dp = [1, 1, 1, 1, 1, 1, 1, 1]
+
+i=1, nums[1]=9:  No j where nums[j] < 9, dp[1] = 1
+i=2, nums[2]=2:  No j where nums[j] < 2, dp[2] = 1
+i=3, nums[3]=5:  nums[2]=2 < 5, dp[3] = dp[2]+1 = 2
+i=4, nums[4]=3:  nums[2]=2 < 3, dp[4] = dp[2]+1 = 2
+i=5, nums[5]=7:  nums[2]=2,nums[3]=5,nums[4]=3 < 7
+                 dp[5] = max(dp[2]+1, dp[3]+1, dp[4]+1) = 3
+i=6, nums[6]=101: Can extend from multiple, dp[6] = 4
+i=7, nums[7]=18: Can extend from multiple, dp[7] = 4
+
+Result: max(dp) = 4
+LIS: [2, 3, 7, 101] or [2, 5, 7, 101] or others
+```
+
 ## Decision Framework
 
 ### Pattern Selection Strategy
