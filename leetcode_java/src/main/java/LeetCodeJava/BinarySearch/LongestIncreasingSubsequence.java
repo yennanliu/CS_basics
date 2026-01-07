@@ -78,8 +78,12 @@ public class LongestIncreasingSubsequence {
         /**
          * NOTE !!!
          *
-         *  we move i first as RIGHT boundary, then move j as LEFT boundary
-         *  (different from `regular` double loop, here, we setup right boundary, then setup left boundary)
+         *  we move
+         *      `i` first as `RIGHT` boundary,
+         *     then move `j` as `LEFT` boundary
+         *
+         *  (different from `regular` double loop, here,
+         *  we setup right boundary, then setup left boundary)
          *
          *  e.g.
          *
@@ -120,6 +124,192 @@ public class LongestIncreasingSubsequence {
    *          - “Can I extend a smaller LIS ending at j by appending nums[i]?”
    *
    *      - maxLen tracks the global maximum across all endpoints
+   *
+   */
+  /**  Question:
+   *
+   *   why do we can decide if expand `max seq len` at `j` by comparing nums[i] > nums[j]?
+   *   why not compare nums[j] > nums[j-1] ?  isn't i is the right pointer ?
+   *
+   *
+   *  Answer (gpt):
+   *
+   *  1. dp[i] is the max SUB SEQUENCE len (NOT sub array) ends at i
+   *  2. if (dp[i] > dp[j]), we know that can `expand ` subsequence to i
+   *        so dp[i] = max(dp[i], dp[j] + 1)
+   *
+   *
+   *  This is an **excellent question** — it gets to the *core invariant* of the LIS DP.
+   *   The confusion you’re feeling is very common, so let’s resolve it cleanly and rigorously.
+   *
+   * ---
+   *
+   * ## Short answer (intuition)
+   *
+   * We compare **`nums[j] < nums[i]`** because:
+   *
+   * > `dp[j]` already represents a **valid increasing subsequence ending at `j`**.
+   * > To extend that subsequence, we only need to check whether `nums[i]` can come **after its last element** — which is `nums[j]`.
+   *
+   * We **do NOT** compare `nums[j] > nums[j-1]` because:
+   *
+   * * LIS is a **subsequence**, not a **subarray**  (NOTE !!!!!!!)
+   * * Elements do **not have to be adjacent**
+   * * `j-1` may not even be part of the subsequence ending at `j`
+   *
+   * ---
+   *
+   * ## Step 1: What `dp[j]` REALLY means (this is the key)
+   *
+   * In LIS DP, we define:
+   *
+   * ```
+   *
+   * (NOTE !!!!!!!)
+   *
+   * dp[j] = length of the longest increasing subsequence
+   *         that ENDS at index j
+   * ```
+   *
+   * That implies **two critical facts**:
+   *
+   * 1. The subsequence **must include `nums[j]`**
+   * 2. The **last value** of that subsequence is exactly `nums[j]`
+   *
+   * So `nums[j]` is the **only value that matters** when deciding whether we can append something after it.
+   *
+   * ---
+   *
+   * ## Step 2: Why `nums[i] > nums[j]` is the correct check
+   *
+   * We are at index `i` and asking:
+   *
+   * > “Can I extend a subsequence that ends at `j` by appending `nums[i]`?”
+   *
+   * For a subsequence to remain **strictly increasing**, the rule is:
+   *
+   * ```
+   * last_value < new_value
+   * ```
+   *
+   * Since the subsequence ending at `j` ends with `nums[j]`, the condition is:
+   *
+   * ```java
+   * if (nums[j] < nums[i]) {
+   *     dp[i] = max(dp[i], dp[j] + 1);
+   * }
+   * ```
+   *
+   * That’s it.
+   * No other comparison is relevant.
+   *
+   * ---
+   *
+   * ## Step 3: Why `nums[j] > nums[j-1]` is WRONG
+   *
+   * This check:
+   *
+   * ```java
+   * nums[j] > nums[j-1]
+   * ```
+   *
+   * only tells you something about **adjacent elements**.
+   *
+   * But LIS is about **subsequences**, not contiguous segments.
+   *
+   * ### Counterexample
+   *
+   * ```
+   * nums = [3, 1, 2]
+   * ```
+   *
+   * The LIS is:
+   *
+   * ```
+   * [1, 2]
+   * ```
+   *
+   * But:
+   *
+   * * `nums[1] = 1`
+   * * `nums[0] = 3`
+   * * `nums[1] > nums[0]` ❌ false
+   *
+   * Yet `1` **is still a valid start** of an LIS.
+   *
+   * So comparing `nums[j]` with `nums[j-1]`:
+   *
+   * * ❌ misses valid subsequences
+   * * ❌ incorrectly assumes adjacency matters
+   *
+   * ---
+   *
+   * ## Step 4: Why `i` is the “right pointer” but not used in that way
+   *
+   * Yes — `i` is the **right endpoint** of the subsequence we are trying to build.
+   *
+   * But DP logic is:
+   *
+   * > “To compute `dp[i]`, look at all earlier valid endpoints `j < i`
+   * > and see which ones can connect to `i`.”
+   *
+   * So:
+   *
+   * * `i` = the element you want to **append**
+   * * `j` = the element that is currently the **end** of a subsequence
+   *
+   * That’s why the comparison is:
+   *
+   * ```
+   * nums[j] < nums[i]
+   * ```
+   *
+   * Not:
+   *
+   * ```
+   * nums[j] > nums[j-1]
+   * ```
+   *
+   * ---
+   *
+   * ## Step 5: Mental model (use this in interviews)
+   *
+   * Think of it like this:
+   *
+   * > Every index `j` represents a **completed LIS ending at `j`**.
+   * > You are trying to **attach `nums[i]` to the end of it**.
+   *
+   * So the only question is:
+   *
+   * > “Is `nums[i]` bigger than the last element of that LIS?”
+   *
+   * And the last element **is `nums[j]`**.
+   *
+   * ---
+   *
+   * ## Visual summary
+   *
+   * ```
+   * Valid LIS ending at j:
+   * [ ... , nums[j] ]
+   *
+   * Can we extend it with nums[i]?
+   *
+   * YES if:
+   * nums[j] < nums[i]
+   * ```
+   *
+   * Nothing else matters.
+   *
+   * ---
+   *
+   * ## Final takeaway (very important)
+   *
+   * * ✅ LIS DP compares **endpoints**
+   * * ❌ Never compare with `j-1` (that’s subarray logic)
+   * * ✅ `dp[j]` already encodes the whole history
+   * * ✅ `nums[j]` is the only value needed to extend
+   *
    *
    */
   /**  DEMO:
