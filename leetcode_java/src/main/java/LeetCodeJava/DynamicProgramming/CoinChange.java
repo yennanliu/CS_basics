@@ -188,6 +188,171 @@ public class CoinChange {
      *    ```
      *
      */
+    /**  NOTE !!!
+     *
+     * Question:   why `if (i - c >= 0) ?`
+     *                 but NOT `if (i - c == 0)` ?
+     *
+     *             -> if `i-c > 0`, the coin sum is NOT equals to amount
+     *                can that still count as the valid coin amount?
+     *
+     *
+     * Answer (gemini):
+     *
+     * This is a great point of confusion,
+     * and it’s the key to understanding how **Dynamic Programming**
+     * builds on top of previously solved "sub-problems."
+     *
+     *
+     * -> (NOTE !!!) The short answer:
+     *     `i - c == 0` only checks if a **single coin** matches the amount.
+     *     `i - c > 0` checks if a coin can be **combined** with a previous sum
+     *     to reach the amount.
+     *
+     * ---
+     *
+     * ### 1. The Logic of `i - c > 0`
+     *
+     * When we calculate `dp[i]`, we aren't just looking for one coin that equals `i`. We are looking for a coin `c` that, when subtracted from `i`, leaves a remainder that we **already know how to solve.**
+     *
+     * * **`i`**: The total amount we are trying to reach right now.
+     * * **`c`**: The value of the coin we just picked up.
+     * * **`i - c`**: The "remainder" or the amount left over.
+     *
+     * If `i - c > 0`, it means we still need more coins to reach `i`. But since we are filling the table from `0` to `amount`, we have **already calculated** the best way to make the remainder `i - c`.
+     *
+     * looks back at dp[i-c]]
+     *
+     * ---
+     *
+     * ### 2. A Concrete Example
+     *
+     * Imagine `coins = [2]` and we want to find `dp[4]` (how to make 4 cents).
+     *
+     * 1. We try the coin `c = 2`.
+     * 2. `i - c` is `4 - 2 = 2`.
+     * 3. Since `2 > 0`, we don't stop. We look at `dp[2]`.
+     * 4. We already calculated `dp[2] = 1` (it took one 2-cent coin to make 2 cents).
+     * 5. So, `dp[4] = dp[2] + 1 = 2`.
+     *
+     * If we only used `if (i - c == 0)`, we would only ever find that `dp[2] = 1`. When we got to `dp[4]`, the condition `4 - 2 == 0` would be **false**, and we would incorrectly conclude that we can't make 4 cents!
+     *
+     * ---
+     *
+     * ### 3. The Three Scenarios
+     *
+     * When checking `i - c`:
+     *
+     * | Result of `i - c` | Meaning | Action |
+     * | --- | --- | --- |
+     * | **Negative** (`< 0`) | The coin is too big for this amount. | Skip this coin. |
+     * | **Zero** (`== 0`) | This single coin matches the amount perfectly. | `dp[i] = 1` |
+     * | **Positive** (`> 0`) | This coin fits, and we need to check the "remainder." | `dp[i] = dp[remainder] + 1` |
+     *
+     * ### 💡 Summary
+     *
+     * The condition `if (i - c >= 0)` covers both the case where a coin matches exactly **and** the case where a coin is just one piece of a larger puzzle.
+     *
+     *
+     *---------------
+     *
+     *  # More examples:
+     *
+     *    ```
+     *    Input: coins = [1,2,5], amount = 11Output: 3
+     *    Explanation: 11 = 5 + 5 + 1
+     *    ```
+     *
+     * ### 1. The Setup
+     *
+     * * **DP Array:** `int[12]` (Indices 0 to 11).
+     * * **Initialization:** `dp[0] = 0`, all others = `12` (our "Infinity").
+     *
+     * ---
+     *
+     * ### 2. The Step-by-Step Trace
+     *
+     * #### **Amounts 1 through 4**
+     *
+     * * **At **: Only coin `1` fits (). .
+     * * **At **:
+     * * Coin `1`: .
+     * * Coin `2`:  (Winner: Min is 1).
+     *
+     *
+     * * **At **:
+     * * Coin `1`: .
+     * * Coin `2`: .
+     * *  (e.g., ).
+     *
+     *
+     * * **At **:
+     * * Coin `1`: .
+     * * Coin `2`: .
+     * *  (e.g., ).
+     *
+     *
+     *
+     * #### **Amount 5 (The first big jump)**
+     *
+     * * Coin `1`: .
+     * * Coin `2`: .
+     * * **Coin `5**`: .
+     * * **Result:** . (Matches perfectly).
+     *
+     * #### **Amounts 6 through 10**
+     *
+     * The table continues to fill. Let's skip to **Amount 10**:
+     *
+     * * Coin `1`: .
+     * * Coin `2`: .
+     * * **Coin `5**`: .
+     * * **Result:**  (this represents ).
+     *
+     * ---
+     *
+     * ### 3. The Final Goal: Amount 11
+     *
+     * Now the computer calculates the final answer. It tries every coin in the `coins` array:
+     *
+     * 1. **Try Coin `1**`:
+     * * Remainder: .
+     * * Look up `dp[10]`: It is `2`.
+     * * Calculation: .
+     *
+     *
+     * 2. **Try Coin `2**`:
+     * * Remainder: .
+     * * Look up `dp[9]`: It is `3` (e.g., ).
+     * * Calculation: .
+     *
+     *
+     * 3. **Try Coin `5**`:
+     * * Remainder: .
+     * * Look up `dp[6]`: It is `2` (e.g., ).
+     * * Calculation: .
+     *
+     *
+     *
+     * **Final Comparison:** .
+     *
+     * ---
+     *
+     * ### 📊 Why the remainder `i - c > 0` worked:
+     *
+     * When calculating for **11**, the computer didn't have to "re-solve" how to make 10 or 6. It just looked at the table:
+     *
+     * * "Oh, I know the best way to make **10** is **2** coins ()."
+     * * "If I add my **1** coin to that, I get **11** using **3** coins ()."
+     *
+     * ### Summary Table (Simplified)
+     *
+     * | i | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | **11** |
+     * | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+     * | **dp[i]** | 0 | 1 | 1 | 2 | 2 | 1 | 2 | 2 | 3 | 3 | 2 | **3** |
+     *
+     *
+     */
     public int coinChange_0_2(int[] coins, int amount) {
         if (amount == 0) return 0;
 
@@ -215,7 +380,7 @@ public class CoinChange {
         dp[0] = 0;
 
 
-        /** NOTE !!!
+        /** NOTE !!! core of DP
          *
          * "backward-looking" approach:
          *
