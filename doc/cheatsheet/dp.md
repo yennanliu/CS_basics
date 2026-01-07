@@ -770,6 +770,158 @@ Output: 0
 Explanation: Cannot make 3 with only coins of 2
 ```
 
+### **Critical Pattern: Understanding `if (i - coin >= 0)` in Coin Change DP**
+
+**🔑 The Question**: Why use `if (i >= coin)` instead of `if (i == coin)`?
+
+This is a fundamental concept in understanding how Dynamic Programming builds on previously solved **subproblems**.
+
+#### **The Short Answer**
+- `i == coin` only checks if a **single coin** matches the amount
+- `i >= coin` checks if a coin can be **combined** with a previous sum to reach the amount
+
+#### **The Logic of `i - coin > 0`**
+
+When we calculate `dp[i]`, we aren't just looking for one coin that equals `i`. We are looking for a coin `coin` that, when subtracted from `i`, leaves a remainder that we **already know how to solve**.
+
+- **`i`**: The total amount we are trying to reach right now
+- **`coin`**: The value of the coin we just picked up
+- **`i - coin`**: The "remainder" or the amount left over
+
+If `i - coin > 0`, it means we still need more coins to reach `i`. But since we are filling the table from `0` to `amount`, we have **already calculated** the best way to make the remainder `i - coin`.
+
+**The DP looks back at `dp[i - coin]`** to reuse that solution!
+
+#### **A Concrete Example**
+
+Imagine `coins = [2]` and we want to find `dp[4]` (how to make 4 cents).
+
+1. We try the coin `coin = 2`
+2. `i - coin` is `4 - 2 = 2`
+3. Since `2 > 0`, we don't stop. We look at `dp[2]`
+4. We already calculated `dp[2] = 1` (it took one 2-cent coin to make 2 cents)
+5. So, `dp[4] = dp[2] + 1 = 2`
+
+**If we only used `if (i - coin == 0)`:**
+- We would only ever find that `dp[2] = 1`
+- When we got to `dp[4]`, the condition `4 - 2 == 0` would be **false**
+- We would incorrectly conclude that we can't make 4 cents!
+
+#### **The Three Scenarios**
+
+When checking `i - coin`:
+
+| Result of `i - coin` | Meaning | Action |
+| --- | --- | --- |
+| **Negative** (`< 0`) | The coin is too big for this amount | Skip this coin |
+| **Zero** (`== 0`) | This single coin matches the amount perfectly | `dp[i] = 1` |
+| **Positive** (`> 0`) | This coin fits, and we need to check the "remainder" | `dp[i] = dp[remainder] + 1` |
+
+#### **💡 Key Insight**
+
+The condition `if (i >= coin)` covers both the case where a coin matches exactly **and** the case where a coin is just one piece of a larger puzzle.
+
+#### **Complete Example with Trace**
+
+**Input**: `coins = [1,2,5], amount = 11`
+
+**Setup**:
+- **DP Array**: `int[12]` (Indices 0 to 11)
+- **Initialization**: `dp[0] = 0`, all others = `12` (our "Infinity")
+
+**Step-by-Step Trace**:
+
+**Amounts 1 through 4**:
+- **At `i=1`**: Only coin `1` fits (`1 >= 1`). `dp[1] = dp[0] + 1 = 1`
+- **At `i=2`**:
+  - Coin `1`: `dp[2] = dp[1] + 1 = 2`
+  - Coin `2`: `dp[2] = dp[0] + 1 = 1` (Winner: Min is 1)
+- **At `i=3`**:
+  - Coin `1`: `dp[3] = dp[2] + 1 = 2`
+  - Coin `2`: `dp[3] = dp[1] + 1 = 2`
+  - `dp[3] = 2` (e.g., `2+1` or `1+1+1`)
+- **At `i=4`**:
+  - Coin `1`: `dp[4] = dp[3] + 1 = 3`
+  - Coin `2`: `dp[4] = dp[2] + 1 = 2`
+  - `dp[4] = 2` (e.g., `2+2`)
+
+**Amount 5 (The first big jump)**:
+- Coin `1`: `dp[5] = dp[4] + 1 = 3`
+- Coin `2`: `dp[5] = dp[3] + 1 = 3`
+- **Coin `5`**: `dp[5] = dp[0] + 1 = 1`
+- **Result**: `dp[5] = 1` (Matches perfectly)
+
+**Amount 10**:
+- Coin `1`: `dp[10] = dp[9] + 1 = 4`
+- Coin `2`: `dp[10] = dp[8] + 1 = 4`
+- **Coin `5`**: `dp[10] = dp[5] + 1 = 2`
+- **Result**: `dp[10] = 2` (this represents `5+5`)
+
+**The Final Goal: Amount 11**:
+1. **Try Coin `1`**:
+   - Remainder: `11 - 1 = 10`
+   - Look up `dp[10]`: It is `2`
+   - Calculation: `dp[11] = dp[10] + 1 = 3`
+
+2. **Try Coin `2`**:
+   - Remainder: `11 - 2 = 9`
+   - Look up `dp[9]`: It is `3` (e.g., `5+2+2`)
+   - Calculation: `dp[11] = dp[9] + 1 = 4`
+
+3. **Try Coin `5`**:
+   - Remainder: `11 - 5 = 6`
+   - Look up `dp[6]`: It is `2` (e.g., `5+1`)
+   - Calculation: `dp[11] = dp[6] + 1 = 3`
+
+**Final Comparison**: `dp[11] = min(3, 4, 3) = 3`
+
+#### **Why the remainder `i - coin > 0` worked**
+
+When calculating for **11**, the algorithm didn't have to "re-solve" how to make 10 or 6. It just looked at the table:
+- "Oh, I know the best way to make **10** is **2** coins (`5+5`)"
+- "If I add my **1** coin to that, I get **11** using **3** coins (`5+5+1`)"
+
+#### **Summary Table (Simplified)**
+
+| i | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | **11** |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| **dp[i]** | 0 | 1 | 1 | 2 | 2 | 1 | 2 | 2 | 3 | 3 | 2 | **3** |
+
+#### **The DP Code Pattern**
+
+```java
+public int coinChange(int[] coins, int amount) {
+    if (amount == 0) return 0;
+
+    // dp[i] = min coins to make amount i
+    int[] dp = new int[amount + 1];
+
+    // Initialize with "Infinity" (amount + 1 is safe)
+    Arrays.fill(dp, amount + 1);
+
+    // Base case: 0 coins needed for 0 amount
+    dp[0] = 0;
+
+    // Iterate through every amount from 1 to amount
+    for (int i = 1; i <= amount; i++) {
+        // For each amount, try every coin
+        for (int coin : coins) {
+            // CRITICAL CONDITION: Check if coin fits
+            if (i >= coin) {
+                // DP equation: Min of (current value) OR
+                // (1 coin + coins needed for remainder)
+                dp[i] = Math.min(dp[i], dp[i - coin] + 1);
+            }
+        }
+    }
+
+    // If value is still "Infinity", we couldn't reach it
+    return dp[amount] > amount ? -1 : dp[amount];
+}
+```
+
+**Reference**: See `leetcode_java/src/main/java/LeetCodeJava/DynamicProgramming/CoinChange.java:356-408` for detailed implementation.
+
 ### **String DP Patterns**
 
 | Problem Type | Pattern | Complexity | Notes |
