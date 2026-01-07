@@ -13604,5 +13604,88 @@ public class Workspace18 {
     }
 
 
+    // LC 300
+    // 9.23 - 33 am
+    /**
+     *  -> Given an integer array nums,
+     *     return the length of the longest
+     *     `strictly increasing subsequence.`
+     *
+     *
+     *     subsequence:
+     *        an array that can be derived from another
+     *        array by `deleting` some or no elements `without `
+     *        `changing` the order of the remaining elements.
+     *
+     * -------------------
+     *
+     *  IDEA 1) BRUTE FORCE
+     *
+     *  IDEA 2) 1D DP ???
+     *
+     *    - dp[i, max_val_till_now]: longest strictly increase sub seq length
+     *          if max_val_till_now < num[i]:
+     *             dp[i, max_val_till_now] = max(dp[i, max_val_till_now], dp[i-1, max_val_till_now] + 1)
+     *
+     *
+     *
+     *
+     *
+     *  IDEA 2-1) 2D DP ???
+     *
+     *
+     *  IDEA 3) SLIDE WINDOW ???
+     *
+     *
+     * -------------------
+     *
+     *
+     */
+    // IDEA 2) DP ???
+    public int lengthOfLIS(int[] nums) {
+        // edge
+        if(nums == null || nums.length == 0){
+            return 0;
+        }
+
+        // ????
+        int maxLen = 0;
+
+        int n = nums.length;
+        // ??
+        // x : max val till now
+        // y: longest strictly increase sub seq length
+        int[][] dp = new int[n][n];
+        // init ??
+        for(int x = 0; x < n; x++){
+            dp[0][x] = -1; // /??
+        }
+
+        for(int y = 0; y < n; y++){
+            dp[y][0] = 0; // /??
+        }
+
+        // ?? loop over dp
+        /**
+         *      *    - dp[i, max_val_till_now]: longest strictly increase sub seq length
+         *      *          if max_val_till_now < num[i]:
+         *      *             dp[i, max_val_till_now] = max(dp[i, max_val_till_now], dp[i-1, max_val_till_now] + 1)
+         *      *
+         */
+        // ??
+        for(int y = 1; y < n; y++){
+            for(int x = 1; x < n; x++){
+                int max_val_till_now = dp[y-1][1];
+                if(dp[y][x] < max_val_till_now){
+                    dp[y][x] = Math.max(dp[y][x], dp[y-1][x]);
+                    maxLen = Math.max(maxLen, dp[y][x]);
+                }
+            }
+        }
+
+        return maxLen != 0 ? maxLen: 1;
+    }
+
+
 
 }
