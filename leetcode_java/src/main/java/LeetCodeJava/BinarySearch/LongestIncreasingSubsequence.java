@@ -109,6 +109,181 @@ public class LongestIncreasingSubsequence {
 
   // V0-0-1
   // IDEA: 1D DP (fixed by gemini)
+  /**  NOTE !!!
+   *
+   *  1. use 1-D DP
+   *  2. Key Insight (Important):
+   *
+   *     - dp[i] = best LIS ending exactly at index i
+   *
+   *     - Inner loop checks:
+   *          - “Can I extend a smaller LIS ending at j by appending nums[i]?”
+   *
+   *      - maxLen tracks the global maximum across all endpoints
+   *
+   */
+  /**  DEMO:
+   *
+   * Below is a **clear, step-by-step visualization**
+   * of that LIS DP loop so you can *see*
+   * exactly what is happening.
+   *
+   * ---
+   *
+   * ## Example Input
+   *
+   * ```text
+   * nums = [10, 9, 2, 5, 3, 7, 101, 18]
+   * ```
+   *
+   * Initial state:
+   *
+   * ```text
+   * dp = [1, 1, 1, 1, 1, 1, 1, 1]
+   * maxLen = 1
+   * ```
+   *
+   * > Meaning: every element by itself is an
+   * increasing subsequence of length 1.
+   *
+   * ---
+   *
+   * ## Step-by-Step Visualization
+   *
+   * ---
+   *
+   * ### i = 1 → nums[i] = 9
+   *
+   * Compare with all `j < i`:
+   *
+   * | j | nums[j] | nums[j] < nums[i]? | dp[i] |
+   * | - | ------- | ------------------ | ----- |
+   * | 0 | 10      | ❌                  | 1     |
+   *
+   * Result:
+   *
+   * ```text
+   * dp = [1, 1, 1, 1, 1, 1, 1, 1]
+   * maxLen = 1
+   * ```
+   *
+   * ---
+   *
+   * ### i = 2 → nums[i] = 2
+   *
+   * | j | nums[j] | nums[j] < nums[i]? |
+   * | - | ------- | ------------------ |
+   * | 0 | 10      | ❌                  |
+   * | 1 | 9       | ❌                  |
+   *
+   * No updates.
+   *
+   * ```text
+   * dp = [1, 1, 1, 1, 1, 1, 1, 1]
+   * maxLen = 1
+   * ```
+   *
+   * ---
+   *
+   * ### i = 3 → nums[i] = 5
+   *
+   * | j | nums[j] | nums[j] < nums[i]? | dp[i]               |
+   * | - | ------- | ------------------ | ------------------- |
+   * | 0 | 10      | ❌                  | 1                   |
+   * | 1 | 9       | ❌                  | 1                   |
+   * | 2 | 2       | ✅                  | max(1, dp[2]+1 = 2) |
+   *
+   * ```text
+   * dp = [1, 1, 1, 2, 1, 1, 1, 1]
+   * maxLen = 2
+   * ```
+   *
+   * ---
+   *
+   * ### i = 4 → nums[i] = 3
+   *
+   * | j | nums[j] | nums[j] < nums[i]? | dp[i] |
+   * | - | ------- | ------------------ | ----- |
+   * | 0 | 10      | ❌                  | 1     |
+   * | 1 | 9       | ❌                  | 1     |
+   * | 2 | 2       | ✅                  | 2     |
+   * | 3 | 5       | ❌                  | 2     |
+   *
+   * ```text
+   * dp = [1, 1, 1, 2, 2, 1, 1, 1]
+   * maxLen = 2
+   * ```
+   *
+   * ---
+   *
+   * ### i = 5 → nums[i] = 7
+   *
+   * | j | nums[j] | nums[j] < nums[i]? | dp[i] |
+   * | - | ------- | ------------------ | ----- |
+   * | 0 | 10      | ❌                  | 1     |
+   * | 1 | 9       | ❌                  | 1     |
+   * | 2 | 2       | ✅                  | 2     |
+   * | 3 | 5       | ✅                  | 3     |
+   * | 4 | 3       | ✅                  | 3     |
+   *
+   * ```text
+   * dp = [1, 1, 1, 2, 2, 3, 1, 1]
+   * maxLen = 3
+   * ```
+   *
+   * ---
+   *
+   * ### i = 6 → nums[i] = 101
+   *
+   * | j | nums[j] | nums[j] < nums[i]? | dp[i] |
+   * | - | ------- | ------------------ | ----- |
+   * | 0 | 10      | ✅                  | 2     |
+   * | 1 | 9       | ✅                  | 2     |
+   * | 2 | 2       | ✅                  | 2     |
+   * | 3 | 5       | ✅                  | 3     |
+   * | 4 | 3       | ✅                  | 3     |
+   * | 5 | 7       | ✅                  | 4     |
+   *
+   * ```text
+   * dp = [1, 1, 1, 2, 2, 3, 4, 1]
+   * maxLen = 4
+   * ```
+   *
+   * ---
+   *
+   * ### i = 7 → nums[i] = 18
+   *
+   * | j | nums[j] | nums[j] < nums[i]? | dp[i] |
+   * | - | ------- | ------------------ | ----- |
+   * | 0 | 10      | ✅                  | 2     |
+   * | 1 | 9       | ✅                  | 2     |
+   * | 2 | 2       | ✅                  | 2     |
+   * | 3 | 5       | ✅                  | 3     |
+   * | 4 | 3       | ✅                  | 3     |
+   * | 5 | 7       | ✅                  | 4     |
+   * | 6 | 101     | ❌                  | 4     |
+   *
+   * ```text
+   * dp = [1, 1, 1, 2, 2, 3, 4, 4]
+   * maxLen = 4
+   * ```
+   *
+   * ---
+   *
+   * ## Final Result
+   *
+   * ```text
+   * Longest Increasing Subsequence Length = 4
+   * ```
+   *
+   * Example LIS:
+   *
+   * ```
+   * [2, 5, 7, 101]
+   * ```
+   *
+   *
+   */
   public int lengthOfLIS_0_0_1(int[] nums) {
       if (nums == null || nums.length == 0) {
           return 0;
@@ -268,7 +443,7 @@ public class LongestIncreasingSubsequence {
     }
 
     // V0-4
-    // IDEA: BINARY SEATCH (gpt)
+    // IDEA: BINARY SEARCH (gpt)
     public int lengthOfLIS_0_4(int[] nums) {
         List<Integer> sub = new ArrayList<>();
         for (int num : nums) {
