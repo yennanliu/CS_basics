@@ -105,7 +105,7 @@ public class PartitionEqualSubsetSum {
 
 
     // V0-2
-    // IDEA: Optimal DP Solution (Subset Sum, O(n × target)) (GPT)
+    // IDEA: Optimal 1D DP Solution (Subset Sum, O(n × target)) (GPT)
     /**
      * Here’s a clear, correct Java solution for **LeetCode 416 — Partition Equal Subset Sum**.
      *
@@ -240,6 +240,43 @@ public class PartitionEqualSubsetSum {
         return dp[target];
     }
 
+
+    // V0-3
+    // IDEA: 2D DP (gpt)
+    public boolean canPartition_0_3(int[] nums) {
+        int total = 0;
+        for (int num : nums) {
+            total += num;
+        }
+
+        // If total sum is odd, cannot split evenly
+        if (total % 2 != 0) {
+            return false;
+        }
+
+        int target = total / 2;
+        int n = nums.length;
+
+        boolean[][] dp = new boolean[n + 1][target + 1];
+
+        // base case
+        dp[0][0] = true;
+
+        for (int i = 1; i <= n; i++) {
+            int cur = nums[i - 1];
+            for (int j = 0; j <= target; j++) {
+                // not take nums[i-1]
+                dp[i][j] = dp[i - 1][j];
+
+                // take nums[i-1] if possible
+                if (j >= cur) {
+                    dp[i][j] = dp[i][j] || dp[i - 1][j - cur];
+                }
+            }
+        }
+
+        return dp[n][target];
+    }
 
 
 
