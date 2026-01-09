@@ -13924,6 +13924,45 @@ public class Workspace18 {
     }
 
 
+    // LC 416
+    // 9.23 -33 am
+    /**
+     *  return true
+     *     - if you can partition the array into two subsets
+     *       such that the sum of the elements
+     *       in both subsets is equal
+     *
+     * - or false otherwise.
+     *
+     *
+     * --------------
+     *
+     *  IDEA 1) BRUTE FORCE
+     *
+     *  IDEA 2) DP ??
+     *
+     *     - bottom up ???
+     *       1. sort nums (small -> big)
+     *       2. dp[i]: # of combination has sum == i ??
+     *
+     *
+     *     - v2 ??
+     *      -  Set<Integer> dp = new HashSet<>();
+     *
+     *
+     *  IDEA 2) HASHMAP ??
+     *
+     *  IDEA 4) binary search ??
+     *
+     *  --------------
+     *
+     *
+     */
+    public boolean canPartition(int[] nums) {
+
+        return false;
+    }
+
 
 
 
