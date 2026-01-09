@@ -51,6 +51,91 @@ public class DeleteAndEarn {
 //
 //    }
 
+
+    // V0-1
+    // IDEA: DP (LC 198 HOUSE ROBBER) (GEMINI)
+    public int deleteAndEarn_0_1(int[] nums) {
+        // 1. Find the maximum value in nums to determine our array size
+        int maxVal = 0;
+        for (int num : nums) {
+            maxVal = Math.max(maxVal, num);
+        }
+
+        // 2. Create a "points" array where points[i] is the total
+        // sum of all occurrences of value 'i' in the input
+        int[] points = new int[maxVal + 1];
+        for (int num : nums) {
+            points[num] += num;
+        }
+
+        // 3. Apply House Robber DP logic
+        // dp[i] = max points considering values up to i
+        int[] dp = new int[maxVal + 1];
+
+        dp[0] = points[0]; // Usually 0
+        if (maxVal > 0) {
+            dp[1] = Math.max(points[0], points[1]);
+        }
+
+        for (int i = 2; i <= maxVal; i++) {
+            // Choice: Skip current i (take dp[i-1])
+            // OR Take current i (points[i] + dp[i-2])
+            dp[i] = Math.max(dp[i - 1], points[i] + dp[i - 2]);
+        }
+
+        return dp[maxVal];
+    }
+
+    // V0-2
+    // Space Optimization ($O(1)$ extra space) (GEMINI)
+    public int deleteAndEarn_0_2(int[] nums) {
+        int maxVal = 0;
+        for (int num : nums)
+            maxVal = Math.max(maxVal, num);
+
+        int[] points = new int[maxVal + 1];
+        for (int num : nums)
+            points[num] += num;
+
+        int prevTwo = 0;
+        int prevOne = 0;
+
+        for (int currentPoints : points) {
+            int tmp = prevOne;
+            prevOne = Math.max(prevOne, currentPoints + prevTwo);
+            prevTwo = tmp;
+        }
+
+        return prevOne;
+    }
+
+    // V0-3
+    // IDEA: DP (GPT)
+    public int deleteAndEarn_0_3(int[] nums) {
+        int maxVal = 0;
+        for (int n : nums) {
+            maxVal = Math.max(maxVal, n);
+        }
+
+        int[] points = new int[maxVal + 1];
+        for (int n : nums) {
+            points[n] += n;
+        }
+
+        int[] dp = new int[maxVal + 1];
+        dp[0] = points[0];
+        dp[1] = Math.max(points[0], points[1]);
+
+        for (int i = 2; i <= maxVal; i++) {
+            dp[i] = Math.max(dp[i - 1], dp[i - 2] + points[i]);
+        }
+
+        return dp[maxVal];
+    }
+
+
+
+
     // V1
     // https://leetcode.ca/2017-12-09-740-Delete-and-Earn/
 
