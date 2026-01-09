@@ -247,6 +247,15 @@
 			- 740
 			- 1911
 			- 639
+	- LC 5 Longest Palindromic Substring
+		- gpt
+			- 740
+			- 2560
+		- gemini
+			- 53
+			- 32
+			- 516
+			- 132
 	-> TODO: redo `classics` `1D` dp prblems then
 	- others:
 		- Path Signatures
