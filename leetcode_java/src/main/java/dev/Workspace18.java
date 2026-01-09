@@ -13895,6 +13895,14 @@ public class Workspace18 {
             }
         });
 
+
+        // NOTE !!!!
+        // 2. Min-PriorityQueue to store the speeds of the top k engineers
+        // We use a min-heap so we can remove the SMALLEST speed easily.
+        // NOTE !!! remove the SMALLEST `speed` easily.
+        // PQ: [ speed_1, speed_2, ... ]
+
+
         // small PQ:
         // PQ [ [speed_1, eff_1], .... ]
         PriorityQueue<Integer[]> pq = new PriorityQueue<>(new Comparator<Integer[]>() {
