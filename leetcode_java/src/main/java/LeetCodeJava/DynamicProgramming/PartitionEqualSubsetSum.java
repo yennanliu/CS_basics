@@ -301,6 +301,28 @@ public class PartitionEqualSubsetSum {
 
     // V0-3
     // IDEA: 2D DP (gpt)
+    /** NOTE !!!
+     *
+     *  1. DP definition:
+     *
+     *   dp[i,j]:
+     *    - Using the first i numbers (nums[0..i-1]),
+     *    - we can form a subset with sum = j.
+     *
+     *
+     *  2. DP equation:
+     *
+     *   For each number nums[i-1]:
+     *
+     *     - case 1) Do not take it
+     *         - dp[i][j] = dp[i-1][j]
+     *
+     *     - case 2) Take it (if possible)
+     *        - if j >= nums[i-1]:
+     *             dp[i][j] |= dp[i-1][j - nums[i-1]]
+     *
+     *
+     */
     public boolean canPartition_0_3(int[] nums) {
         int total = 0;
         for (int num : nums) {
@@ -323,13 +345,17 @@ public class PartitionEqualSubsetSum {
         for (int i = 1; i <= n; i++) {
             int cur = nums[i - 1];
             for (int j = 0; j <= target; j++) {
-                // not take nums[i-1]
+
+                /** NOTE !! we consider case 1, 2 on the same time */
+
+                // case 1) NOT take nums[i-1]
                 dp[i][j] = dp[i - 1][j];
 
-                // take nums[i-1] if possible
+                // case 2) take nums[i-1] if possible
                 if (j >= cur) {
                     dp[i][j] = dp[i][j] || dp[i - 1][j - cur];
                 }
+
             }
         }
 
