@@ -87,7 +87,7 @@ public class DeleteAndEarn {
     }
 
     // V0-2
-    // Space Optimization ($O(1)$ extra space) (GEMINI)
+    // Space Optimization (O(1) extra space) (GEMINI)
     public int deleteAndEarn_0_2(int[] nums) {
         int maxVal = 0;
         for (int num : nums)
@@ -111,6 +111,166 @@ public class DeleteAndEarn {
 
     // V0-3
     // IDEA: DP (GPT)
+    /**  CORE
+     *
+     * 0. transform this problem to `LC 198 HOUSE RUBBER`
+     *
+     * 1. (Transform to House Robber)
+     *   ```
+     *   freq[v] = total points by taking all occurrences of value v
+     *         = v * count(v)
+     *   ```
+     *
+     *  3. DP def:
+     *
+     *   - dp[i] =
+     *       MAX points we can earn considering values up to i
+     *
+     *  4. DP eq:
+     *
+     *    ```
+     *    dp[i] = max(dp[i-1], dp[i-2] + points[i])
+     *   ```
+     *
+     */
+    /** IDEA:
+     *
+     * Here’s a clear, optimal Java solution for **LeetCode 740 — Delete and Earn**.
+     *
+     * 👉 Problem: [https://leetcode.com/problems/delete-and-earn/description/](https://leetcode.com/problems/delete-and-earn/description/)
+     *
+     * ---
+     *
+     * ## 🧠 Problem Summary
+     *
+     * You are given an integer array `nums`.
+     * When you choose a value `x` from `nums`, you:
+     *
+     * * Earn `x` points
+     * * Must delete all occurrences of `x - 1` and `x + 1`
+     *
+     * Goal:
+     * Return the **maximum points** you can earn.
+     *
+     * ---
+     *
+     * ## 🔑 Key Insight (Transform to House Robber)
+     *
+     * Instead of thinking about deleting individual elements, we can group by **value** first.
+     *
+     * Let:
+     *
+     * ```
+     * freq[v] = total points by taking all occurrences of value v
+     *         = v * count(v)
+     * ```
+     *
+     * Now the restriction:
+     *
+     * > Taking value `v` prevents taking `(v-1)` and `(v+1)`
+     *
+     * This becomes exactly the **House Robber** constraint:
+     *
+     * > You can’t take adjacent indices.
+     *
+     * So we transform into:
+     *
+     * * An array `points[v]`
+     * * Earn `points[v]` if you “rob” house `v`
+     * * Cannot rob adjacent values
+     *
+     * ---
+     *
+     * ## 🧠 Approach (DP)
+     *
+     * ### Step 1 — Build the frequency/points array
+     *
+     * ```
+     * points[v] = v * (frequency of v in nums)
+     * ```
+     *
+     * ### Step 2 — Solve “House Robber” on `points`
+     *
+     * Let:
+     *
+     * ```
+     * dp[i] = max points we can earn considering values up to i
+     * ```
+     *
+     * Transition:
+     *
+     * ```
+     * dp[i] = max(dp[i-1], dp[i-2] + points[i])
+     * ```
+     *
+     * ## 🧠 Explanation
+     *
+     * ### Why this works
+     *
+     * * When you take all of value `v`, you *must delete* `v-1` and `v+1`.
+     * * By grouping all same values upfront into `points[v]`, this becomes a non-adjacent choice problem — just like **House Robber**.
+     *
+     * ---
+     *
+     * ## 🧪 Example
+     *
+     * ```
+     * nums = [3, 4, 2]
+     * points[2] = 2
+     * points[3] = 3
+     * points[4] = 4
+     *
+     * dp array:
+     * i = 0 → dp[0] = 0
+     * i = 1 → dp[1] = max(0, points[1]) = 0
+     * i = 2 → dp[2] = max(0, dp[0] + 2) = 2
+     * i = 3 → dp[3] = max(2, dp[1] + 3) = 3
+     * i = 4 → dp[4] = max(3, dp[2] + 4) = 6
+     *
+     * Return = 6
+     * ```
+     *
+     * Explanation: choose 2 and 4 → earn 2 + 4 = 6
+     *
+     * ---
+     *
+     * ## ⏱ Time & Space
+     *
+     * | Metric | Value          |
+     * | ------ | -------------- |
+     * | Time   | O(n + max_val) |
+     * | Space  | O(max_val)     |
+     *
+     * This is efficient within constraints.
+     *
+     * ---
+     *
+     * ## 🧠 Alternate Optimization
+     *
+     * You can also optimize `dp[]` to **constant space**:
+     *
+     * ```java
+     * int twoBack = points[0];
+     * int oneBack = Math.max(points[0], points[1]);
+     *
+     * for (int i = 2; i <= maxVal; i++) {
+     *     int curr = Math.max(oneBack, twoBack + points[i]);
+     *     twoBack = oneBack;
+     *     oneBack = curr;
+     * }
+     *
+     * return oneBack;
+     * ```
+     *
+     * ---
+     *
+     * ## 🎯 Summary
+     *
+     * 1. Convert the problem to a **frequency value problem**
+     * 2. Build `points[v] = total points for value v`
+     * 3. Run **House Robber DP**
+     *
+     */
     public int deleteAndEarn_0_3(int[] nums) {
         int maxVal = 0;
         for (int n : nums) {
