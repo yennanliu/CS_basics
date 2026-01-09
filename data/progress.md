@@ -1,6 +1,6 @@
 # Progress
 
-# 2026-01-08
+# 2026-01-09
 
 - weekly video
 	 - LC weekly 100 - done
