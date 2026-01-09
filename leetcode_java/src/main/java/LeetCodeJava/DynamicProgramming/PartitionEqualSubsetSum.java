@@ -45,12 +45,211 @@ public class PartitionEqualSubsetSum {
 //    }
 
     // V0-1
+    // IDEA: (Optimized 1D DP) (GEMINI)
+    /**
+     * To solve **LeetCode 416: Partition Equal Subset Sum**,
+     *
+     * -> the core insight is to realize that the problem is a
+     *    variation of the classic `**0/1 Knapsack Problem**.`
+     *
+     * ### The Logic
+     *
+     * 1. **Check the Sum:** If the total sum of all elements is **odd**, it is mathematically impossible to split them into two equal integer subsets. Return `false` immediately.
+     * 2. **The Target:** If the sum is even, your goal is to find if there exists a subset of numbers that adds up to exactly **Half of the Total Sum** (`sum / 2`).
+     * 3. **The DP State:** We use a boolean array `dp` where `dp[i]` is `true` if a sum of `i` can be achieved using a subset of the numbers processed so far.
+     * 4. **Reverse Iteration:** When updating the `dp` array for each number, we must iterate **backwards** (from `target` down to `num`). This ensures each number is only used **once**. If we went forward, we would accidentally allow a single number to be reused multiple times (like in the Coin Change problem).
+     *
+     *
+     * ### Complexity Analysis
+     *
+     * * **Time Complexity:** , where  is the number of elements and  is half the total sum.
+     * * **Space Complexity:**  to store the 1D DP array.
+     *
+     */
+    public boolean canPartition_0_1(int[] nums) {
+        int totalSum = 0;
+        for (int num : nums) {
+            totalSum += num;
+        }
+
+        // 1. If sum is odd, we cannot partition it into two equal integers
+        if (totalSum % 2 != 0) {
+            return false;
+        }
+
+        int target = totalSum / 2;
+
+        // 2. dp[i] will be true if sum i can be formed by a subset
+        boolean[] dp = new boolean[target + 1];
+
+        // 3. Base case: sum 0 is always possible (empty subset)
+        dp[0] = true;
+
+        // 4. Iterate through each number in the input
+        for (int num : nums) {
+            // Traverse backwards to ensure each number is used only once
+            for (int i = target; i >= num; i--) {
+                // If sum (i - num) was possible, then sum i is now possible
+                if (dp[i - num]) {
+                    dp[i] = true;
+                }
+            }
+
+            // Early exit: if we reached our target, no need to check further
+            if (dp[target])
+                return true;
+        }
+
+        return dp[target];
+    }
+
+
+    // V0-2
+    // IDEA: Optimal DP Solution (Subset Sum, O(n × target)) (GPT)
+    /**
+     * Here’s a clear, correct Java solution for **LeetCode 416 — Partition Equal Subset Sum**.
+     *
+     * 👉 Problem: [https://leetcode.com/problems/partition-equal-subset-sum/](https://leetcode.com/problems/partition-equal-subset-sum/)
+     *
+     * ---
+     *
+     * ## 🧠 Problem Summary
+     *
+     * You are given a non-negative integer array `nums`.
+     * Return **true** if you can split it into **two subsets** with equal sums.
+     *
+     * In other words:
+     *
+     * > Is there a subset whose sum is exactly **half of total sum**?
+     *
+     * If total sum is **odd**, it’s impossible.
+     *
+     * ---
+     *
+     * ## ✅ Optimal DP Solution (Subset Sum, `O(n × target)`)
+     *
+     * We reduce the problem to:
+     *
+     * ```
+     * is there a subset of nums that sums to totalSum / 2?
+     * ```
+     *
+     * This is a **classic 0/1 knapsack subset-sum problem**.
+     *
+     * ---
+     *
+     * ## 🧠 DP Idea (1D)
+     *
+     * Let:
+     *
+     * ```
+     * target = totalSum / 2
+     * ```
+     *
+     * Use a boolean DP array:
+     *
+     * ```
+     * dp[i] = true if there is a subset of nums that sums to i
+     * ```
+     *
+     * Initialize:
+     *
+     * ```
+     * dp[0] = true  // empty set sums to 0
+     * ```
+     *
+     * For each num:
+     *
+     * ```
+     * for i from target down to num:
+     *     dp[i] |= dp[i - num]
+     * ```
+     *
+     * We iterate backwards to ensure each number is only used once.
+     *
+     *
+     * ---
+     *
+     * ## 🧠 Why It Works
+     *
+     * We’re checking whether **some subset of `nums` sums to `target`**.
+     *
+     * * `dp[j]` means there is a subset summing to `j`.
+     * * When we process a number `num`, we update possible sums downwards so we don’t reuse a number more than once.
+     *
+     * ---
+     *
+     * ## 🧪 Example
+     *
+     * ```
+     * Input: nums = [1, 5, 11, 5]
+     * Total sum = 22 → target = 11
+     * dp[0] = true
+     * Process 1: dp[1] = true
+     * Process 5: dp[5] = true, dp[6] = true
+     * Process 11: dp[11] = dp[6] (true)
+     * Return true
+     * ```
+     *
+     * ---
+     *
+     * ## ⏱ Complexity
+     *
+     * | Aspect | Value             |
+     * | ------ | ----------------- |
+     * | Time   | **O(n × target)** |
+     * | Space  | **O(target)**     |
+     *
+     * Works well within constraints.
+     *
+     * ---
+     *
+     * ## 🧠 Alternate View (2D DP)
+     *
+     * If you want the classic `dp[i][j]`, here it is:
+     *
+     * ```
+     * dp[i][j] = whether we can reach sum j using first i numbers
+     * ```
+     *
+     * But 1D is enough and more efficient.
+     *
+     */
+    public boolean canPartition_0_2(int[] nums) {
+        int total = 0;
+        for (int num : nums) {
+            total += num;
+        }
+
+        // if total sum is odd, cannot partition evenly
+        if (total % 2 != 0) {
+            return false;
+        }
+
+        int target = total / 2;
+
+        boolean[] dp = new boolean[target + 1];
+        dp[0] = true;
+
+        for (int num : nums) {
+            for (int sum = target; sum >= num; sum--) {
+                dp[sum] = dp[sum] || dp[sum - num];
+            }
+        }
+
+        return dp[target];
+    }
+
+
+
+
+    // V0-4
     // IDEA: DP
     // https://github.com/yennanliu/CS_basics/blob/master/doc/pic/lc/lc_416_1.png
 
-    // V0-2
+    // V0-5
     // IDEA: DP (fixed by gpt)
-    public boolean canPartition_0_2(int[] nums) {
+    public boolean canPartition_0_5(int[] nums) {
         if (nums == null || nums.length < 2)
             return false;
 
@@ -237,5 +436,7 @@ public class PartitionEqualSubsetSum {
 
 
     // V2
+
+
 
 }
