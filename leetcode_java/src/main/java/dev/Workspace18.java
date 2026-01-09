@@ -13965,6 +13965,48 @@ public class Workspace18 {
 
 
     // LC 740
+    // 10.25 - 35 am
+    /**
+     *
+     * -> Return the `maximum` number
+     *   of points you can earn by applying
+     *   the above operation some number of times.
+     *
+     *
+     *   - integer array nums
+     *
+     *   - get mac number per below op (any number of times)
+     *
+     *    - pick a nums[i]
+     *      and delete  it to get `nums[i]` points
+     *    - also delete every points eauals to
+     *       - nums[i] - 1
+     *       - nums[i] + 1
+     *
+     *
+     * -------------
+     *
+     *  IDEA 1) GREEDY ???
+     *
+     *  IDEA 2) BRUTE FORCE ??
+     *
+     *  IDEA 3) DP ???
+     *     - top down dp ???
+     *
+     *     - dp def:
+     *
+     *        - dp[i]: max amount can get by deleting i ??
+     *
+     *     - dp eq:
+     *
+     *       - dp[i] =
+     *          - if not equals to i-1, i+1
+     *              dp[i] = max( dp[i], dp[i-2], dp[i+2] )  ????
+     *
+     *
+     * -------------
+     *
+     */
     public int deleteAndEarn(int[] nums) {
 
         return 0;
