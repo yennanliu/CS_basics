@@ -13964,6 +13964,13 @@ public class Workspace18 {
     }
 
 
+    // LC 740
+    public int deleteAndEarn(int[] nums) {
+
+        return 0;
+    }
+
+
 
 
 }
