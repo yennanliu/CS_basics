@@ -13874,6 +13874,8 @@ public class Workspace18 {
      *
      *
      */
+    // 11.22 - 33 am
+
     public int maxPerformance(int n, int[] speed, int[] efficiency, int k) {
         // edge
 
@@ -13922,6 +13924,10 @@ public class Workspace18 {
 
         return speedCum * minPerformance;
     }
+
+
+
+
 
 
     // LC 416

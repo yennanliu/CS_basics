@@ -207,6 +207,46 @@ public class MaximumPerformanceOfAeam {
         return (int) (ans % MOD);
     }
 
+    // V0-4
+    // IDEA: PQ (fixed by gemini)
+    public int maxPerformance_0_4(int n, int[] speed, int[] efficiency, int k) {
+        int[][] engineers = new int[n][2];
+        for (int i = 0; i < n; i++) {
+            engineers[i] = new int[] { efficiency[i], speed[i] };
+        }
+
+        // 1. Sort engineers by efficiency DESCENDING
+        Arrays.sort(engineers, (a, b) -> b[0] - a[0]);
+
+        // 2. Min-PriorityQueue to store the speeds of the top k engineers
+        // We use a min-heap so we can remove the SMALLEST speed easily.
+        PriorityQueue<Integer> pq = new PriorityQueue<>(k);
+
+        long speedSum = 0;
+        long maxPerf = 0;
+
+        for (int[] eng : engineers) {
+            int curEff = eng[0];
+            int curSpeed = eng[1];
+
+            // Add current speed to the pool
+            speedSum += curSpeed;
+            pq.add(curSpeed);
+
+            // 3. If we have more than k engineers, remove the one with the SLOWEST speed
+            if (pq.size() > k) {
+                speedSum -= pq.poll();
+            }
+
+            // 4. Calculate performance
+            // Current efficiency is the minimum because we sorted descending
+            maxPerf = Math.max(maxPerf, speedSum * curEff);
+        }
+
+        return (int) (maxPerf % 1000000007);
+    }
+
+
     // V1
     // IDEA: PQ
     // https://leetcode.com/problems/maximum-performance-of-a-team/solutions/2559857/java-easy-solution-with-explanation-99-f-3wul/
