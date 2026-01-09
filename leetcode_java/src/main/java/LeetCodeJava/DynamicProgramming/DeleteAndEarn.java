@@ -53,63 +53,6 @@ public class DeleteAndEarn {
 
 
     // V0-1
-    // IDEA: DP (LC 198 HOUSE ROBBER) (GEMINI)
-    public int deleteAndEarn_0_1(int[] nums) {
-        // 1. Find the maximum value in nums to determine our array size
-        int maxVal = 0;
-        for (int num : nums) {
-            maxVal = Math.max(maxVal, num);
-        }
-
-        // 2. Create a "points" array where points[i] is the total
-        // sum of all occurrences of value 'i' in the input
-        int[] points = new int[maxVal + 1];
-        for (int num : nums) {
-            points[num] += num;
-        }
-
-        // 3. Apply House Robber DP logic
-        // dp[i] = max points considering values up to i
-        int[] dp = new int[maxVal + 1];
-
-        dp[0] = points[0]; // Usually 0
-        if (maxVal > 0) {
-            dp[1] = Math.max(points[0], points[1]);
-        }
-
-        for (int i = 2; i <= maxVal; i++) {
-            // Choice: Skip current i (take dp[i-1])
-            // OR Take current i (points[i] + dp[i-2])
-            dp[i] = Math.max(dp[i - 1], points[i] + dp[i - 2]);
-        }
-
-        return dp[maxVal];
-    }
-
-    // V0-2
-    // Space Optimization (O(1) extra space) (GEMINI)
-    public int deleteAndEarn_0_2(int[] nums) {
-        int maxVal = 0;
-        for (int num : nums)
-            maxVal = Math.max(maxVal, num);
-
-        int[] points = new int[maxVal + 1];
-        for (int num : nums)
-            points[num] += num;
-
-        int prevTwo = 0;
-        int prevOne = 0;
-
-        for (int currentPoints : points) {
-            int tmp = prevOne;
-            prevOne = Math.max(prevOne, currentPoints + prevTwo);
-            prevTwo = tmp;
-        }
-
-        return prevOne;
-    }
-
-    // V0-3
     // IDEA: DP (GPT)
     /**  CORE
      *
@@ -271,13 +214,191 @@ public class DeleteAndEarn {
      * 3. Run **House Robber DP**
      *
      */
-    public int deleteAndEarn_0_3(int[] nums) {
+    /**
+     *
+     * Question: why `points[n] += n;`, but NOT record the freq ? (longer version)
+     *
+     * Answer:
+     *
+     *
+     * Great question — this gets to the **core modeling insight** of LC 740.
+     *
+     * Let’s break it down **cleanly and precisely**, step by step.
+     *
+     * ---
+     *
+     * ## Short answer
+     *
+     * We **add `n` directly** (instead of just counting frequency) because:
+     *
+     * > **Each occurrence of value `n` gives `n` points when chosen.**
+     *
+     * So:
+     *
+     * ```
+     * total points for value n = n × frequency(n)
+     * ```
+     *
+     * By doing:
+     *
+     * ```java
+     * points[n] += n;
+     * ```
+     *
+     * we are **implicitly multiplying by frequency**.
+     *
+     * ---
+     *
+     * ## Step 1: What happens when you “delete and earn”?
+     *
+     * When you pick a value `x`:
+     *
+     * * You earn **`x` points per occurrence**
+     * * You can (and should) take **all occurrences** of `x`
+     * * You lose the ability to take `x-1` and `x+1`
+     *
+     * So if `x` appears `k` times:
+     *
+     * ```
+     * earn = x + x + x + ... (k times) = x × k
+     * ```
+     *
+     * ---
+     *
+     * ## Step 2: Why counting frequency alone is not enough
+     *
+     * If you only did:
+     *
+     * ```java
+     * freq[n]++
+     * ```
+     *
+     * You would still need to compute:
+     *
+     * ```java
+     * points[n] = freq[n] * n
+     * ```
+     *
+     * So instead of storing **two arrays**, we collapse them into one:
+     *
+     * ```java
+     * points[n] += n;
+     * ```
+     *
+     * This directly accumulates:
+     *
+     * ```
+     * points[n] = n × frequency(n)
+     * ```
+     *
+     * ---
+     *
+     * ## Step 3: Example to make it concrete
+     *
+     * ### Input
+     *
+     * ```text
+     * nums = [2, 2, 3, 3, 3, 4]
+     * ```
+     *
+     * ### If we counted frequency
+     *
+     * ```text
+     * freq[2] = 2
+     * freq[3] = 3
+     * freq[4] = 1
+     * ```
+     *
+     * Points would be:
+     *
+     * ```text
+     * points[2] = 2 × 2 = 4
+     * points[3] = 3 × 3 = 9
+     * points[4] = 4 × 1 = 4
+     * ```
+     *
+     * ### With the code:
+     *
+     * ```java
+     * for (int n : nums) {
+     *     points[n] += n;
+     * }
+     * ```
+     *
+     * We directly get:
+     *
+     * ```text
+     * points = [0, 0, 4, 9, 4]
+     * ```
+     *
+     * Same result, fewer steps.
+     *
+     * ---
+     *
+     * ## Step 4: Why this grouping is essential for DP
+     *
+     * Once grouped, the problem becomes:
+     *
+     * > Choose values `v` to maximize `points[v]`,
+     * > but you **cannot choose adjacent values**.
+     *
+     * That is exactly the **House Robber** recurrence:
+     *
+     * ```text
+     * dp[v] = max(dp[v-1], dp[v-2] + points[v])
+     * ```
+     *
+     * This only works if `points[v]` already represents the **total gain** from choosing `v`.
+     *
+     * ---
+     *
+     * ## Step 5: Important insight (interview-level)
+     *
+     * > **Once you choose a value `v`, it is never optimal to take only some of its occurrences.**
+     *
+     * Why?
+     *
+     * * All `v`s give the same reward
+     * * All `v`s delete the same neighbors (`v-1`, `v+1`)
+     * * There is no downside to taking them all
+     *
+     * So grouping by value and summing their contributions is **lossless**.
+     *
+     * ---
+     *
+     * ## TL;DR
+     *
+     * * Each `n` gives `n` points → add `n`, not `1`
+     * * `points[n] += n` == `points[n] = n × freq(n)`
+     * * Grouping converts the problem into **House Robber**
+     * * Counting freq alone would just add an extra step
+     *
+     */
+    public int deleteAndEarn_0_1(int[] nums) {
         int maxVal = 0;
         for (int n : nums) {
             maxVal = Math.max(maxVal, n);
         }
 
+
         int[] points = new int[maxVal + 1];
+        /** Question: why `points[n] += n;`, but NOT record the freq ?
+         *
+         *   Answer (gpt):
+         *
+         *    We add n directly (instead of just counting frequency)
+         *
+         *    because:
+         *       - Each occurrence of value n gives n points when chosen.
+         *
+         *       -> so,
+         *       ```
+         *       total points for value n = n × frequency(n)
+         *       ```
+         *
+         *       -> By doing: `points[n] += n;`
+         *         -> we are implicitly multiplying by frequency.
+         */
         for (int n : nums) {
             points[n] += n;
         }
@@ -293,6 +414,63 @@ public class DeleteAndEarn {
         return dp[maxVal];
     }
 
+
+    // V0-2
+    // IDEA: DP (LC 198 HOUSE ROBBER) (GEMINI)
+    public int deleteAndEarn_0_2(int[] nums) {
+        // 1. Find the maximum value in nums to determine our array size
+        int maxVal = 0;
+        for (int num : nums) {
+            maxVal = Math.max(maxVal, num);
+        }
+
+        // 2. Create a "points" array where points[i] is the total
+        // sum of all occurrences of value 'i' in the input
+        int[] points = new int[maxVal + 1];
+        for (int num : nums) {
+            points[num] += num;
+        }
+
+        // 3. Apply House Robber DP logic
+        // dp[i] = max points considering values up to i
+        int[] dp = new int[maxVal + 1];
+
+        dp[0] = points[0]; // Usually 0
+        if (maxVal > 0) {
+            dp[1] = Math.max(points[0], points[1]);
+        }
+
+        for (int i = 2; i <= maxVal; i++) {
+            // Choice: Skip current i (take dp[i-1])
+            // OR Take current i (points[i] + dp[i-2])
+            dp[i] = Math.max(dp[i - 1], points[i] + dp[i - 2]);
+        }
+
+        return dp[maxVal];
+    }
+
+    // V0-3
+    // Space Optimization (O(1) extra space) (GEMINI)
+    public int deleteAndEarn_0_3(int[] nums) {
+        int maxVal = 0;
+        for (int num : nums)
+            maxVal = Math.max(maxVal, num);
+
+        int[] points = new int[maxVal + 1];
+        for (int num : nums)
+            points[num] += num;
+
+        int prevTwo = 0;
+        int prevOne = 0;
+
+        for (int currentPoints : points) {
+            int tmp = prevOne;
+            prevOne = Math.max(prevOne, currentPoints + prevTwo);
+            prevTwo = tmp;
+        }
+
+        return prevOne;
+    }
 
 
 
