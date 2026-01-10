@@ -14096,8 +14096,43 @@ public class Workspace18 {
      *
      *
      */
-    // IDEA 2) DP
+    // IDEA: PREFIX SUM
     public int maxSubArray(int[] nums) {
+        // edge
+        if(nums.length == 1){
+            return nums[0];
+        }
+
+        int maxSubSum = nums[0]; // ???
+
+        // ???
+        int cumSum = 0;
+        int[] prefixSum = new int[nums.length + 1];
+        for(int i = 0; i < nums.length; i++){
+
+            cumSum += nums[i];
+            prefixSum[i] = cumSum;
+        }
+
+        for(int i = 1; i < nums.length; i++){
+            // ???
+            maxSubSum = Math.max(maxSubSum, nums[i]);
+
+            // ??
+            int sumSum = prefixSum[i] - nums[i];
+            maxSubSum = Math.max(maxSubSum, sumSum);
+        }
+
+
+        return maxSubSum;
+    }
+
+
+
+
+
+    // IDEA 2) DP
+    public int maxSubArray_98(int[] nums) {
         // edge
         if(nums.length == 1){
             return nums[0];

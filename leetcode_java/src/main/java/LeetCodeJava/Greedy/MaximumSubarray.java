@@ -218,6 +218,7 @@ public class MaximumSubarray {
 
     // V0-1
     // IDEA : PRE-SUM ARRAY (fixed by gpt)
+    // TODO: check again
     public int maxSubArray_0_1(int[] nums) {
         if (nums == null || nums.length == 0) {
             throw new IllegalArgumentException("Input array cannot be null or empty");

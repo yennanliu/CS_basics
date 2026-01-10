@@ -250,7 +250,6 @@
 	- LC 5 Longest Palindromic Substring
 		- gpt
 		- gemini
-			- 32
 			- 516
 			- 132
 	-> TODO: redo `classics` `1D` dp prblems then
