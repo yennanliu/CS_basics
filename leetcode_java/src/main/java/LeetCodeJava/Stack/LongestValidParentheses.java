@@ -142,11 +142,76 @@ public class LongestValidParentheses {
 
     // V0-5
     // IDEA: 1D DP (gemini)
+    /**  IDEA:
+     *
+     *  To solve **LeetCode 32: Longest Valid Parentheses**,
+     *  we can use a 1D DP array
+     *  where
+     *    `dp[i]` represents the length of the longest valid parentheses
+     *      substring **ending at index `i**`.
+     *
+     * ### 💡 The Logic
+     *
+     * A valid substring must end with a closing parenthesis `')'`.
+     * Therefore, for any `dp[i]` where `s.charAt(i) == '('`,
+     * the value will always be `0`. We only update `dp[i]`
+     * when we encounter a `')'`.
+     *
+     *
+     *
+     * There are two main cases when we find a `')'` at index `i`:
+     *
+     * 1. **Case 1: `s[i-1] == '('**` (Pattern: `...()`)
+     * * We found a simple pair. The length is 2 plus whatever valid
+     * length existed before this pair.
+     * *
+     *
+     *
+     * 2. **Case 2: `s[i-1] == ')'**` (Pattern: `...))`)
+     * * If the character at `i-1` was also a closing bracket, it must have been part of its own valid substring (length `dp[i-1]`).
+     * * We look for a matching opening bracket for our current `')'` at index: ****.
+     * * If `s[j] == '('`, then we've found a match!
+     * *
+     *
+
+     *
+     * ---
+     *
+     * ### 🔍 Dry Run Example
+     *
+     * **Input:** `s = "()(())"`
+     *
+     * 1. `i=1` (`)`): Matches `s[0]`. `dp[1] = dp[-1] + 2 = 2`.
+     * 2. `i=2` (`(`): `dp[2] = 0`.
+     * 3. `i=3` (`(`): `dp[3] = 0`.
+     * 4. `i=4` (`)`): Matches `s[3]`. `dp[4] = dp[2] + 2 = 2`.
+     * 5. `i=5` (`)`): `s[4]` is `)`. Look for match for `s[5]`.
+     * * `dp[4]` is 2. The matching index is .
+     * * `s[2]` is `(`. Found a match!
+     * * `dp[5] = dp[4] + 2 + dp[1]` (inner + new pair + previous)
+     * * `dp[5] = 2 + 2 + 2 = 6`.
+     *
+     *
+     *
+     * ### 📊 Complexity Analysis
+     *
+     * * **Time Complexity:**  since we iterate through the string once.
+     * * **Space Complexity:**  to store the `dp` array.
+     *
+     */
     public int longestValidParentheses_0_5(String s) {
         int n = s.length();
         if (n < 2)
             return 0;
 
+        /**  NOTE !!
+         *
+         *  DP def:
+         *
+         *   `dp[i]` : the length of the longest
+         *      valid parentheses substring **ending at index `i**
+         *
+         */
         int[] dp = new int[n];
         int maxLen = 0;
 
@@ -175,6 +240,81 @@ public class LongestValidParentheses {
 
     // V0-6
     // IDEA: 1D DP (GPT)
+    /**  IDEA:
+     *
+     * Here’s a clean **Java DP solution** for **LeetCode 32. Longest Valid Parentheses**.
+     *
+     * ---
+     *
+     * ## 🧠 Problem Recap
+     *
+     * Given a string of `'('` and `')'`, find the length of the **longest valid (well-formed)** parentheses substring.
+     *
+     * ---
+     *
+     * ## 💡 DP Strategy
+     *
+     * Let:
+     *
+     * * `dp[i]` = **length of longest valid parentheses ending at index `i`**
+     * * We only update when `s.charAt(i) == ')'` because a valid substring must end with `)`
+     *
+     * Transitions:
+     *
+     * ```
+     * if s[i] == ')':
+     *     if s[i-1] == '(':
+     *         dp[i] = (i >= 2 ? dp[i-2] : 0) + 2
+     *
+     *     else if s[i-1] == ')' and
+     *             s[i - dp[i-1] - 1] == '(':
+     *         dp[i] = dp[i-1] + 2 +
+     *                 (i - dp[i-1] - 2 >= 0 ? dp[i - dp[i-1] - 2] : 0)
+     * ```
+     *
+     * Explanation:
+     *
+     * * Case `...()`: pair directly with previous `'('`
+     * * Case `...))`: match current `)` with a `'('` before a valid block
+     *
+     * Track **max length** over all `dp[i]`.
+
+     * ---
+     *
+     * ## 📊 Example
+     *
+     * ```
+     * Input:  "(()())"
+     * dp:     0 0 2 0 4 6
+     * Output: 6
+     * ```
+     *
+     * ```
+     * Input:  ")()())"
+     * dp:     0 0 2 0 4 0
+     * Output: 4
+     * ```
+     *
+     * ---
+     *
+     * ## ⏱ Complexity
+     *
+     * | Metric | Value |
+     * | ------ | ----- |
+     * | Time   | O(n)  |
+     * | Space  | O(n)  |
+     *
+     * ---
+     *
+     * ## 🚀 Why It Works
+     *
+     * The recursive definition:
+     *
+     * * Builds on previous valid substrings
+     * * Efficiently jumps over inner valid regions
+     * * Avoids re-scanning characters → linear time
+     *
+     */
     public int longestValidParentheses_0_6(String s) {
         int n = s.length();
         if (n < 2)
