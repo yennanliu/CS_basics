@@ -14228,7 +14228,7 @@ public class Workspace18 {
 
 
     // LC 32
-    // 16.12 - 22 pm
+    // 16.12 - 28 pm
     /**
      *  Given a string containing just the characters '(' and ')',
      *
@@ -14242,11 +14242,22 @@ public class Workspace18 {
      *
      *   IDEA 2) DP ???
      *
+     *     -  1D DP
+     *     - dp def:
+     *          - dp[i]: Longest Valid Parentheses with len i
+     *     - dp eq:
+     *          - dp[i] =
+     *              - if str[i-1] = (, and str[i] = )
+     *              - max( dp[i-1] + 1, dp[i] )
+     *
+     *
+     *
      *   IDEA 3) BRUTE FORCE ???
      *
      *
      *  -------------------
      */
+    // IDEA 2) DP ???
     public int longestValidParentheses(String s) {
 
         return 0;
