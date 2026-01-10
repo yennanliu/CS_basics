@@ -14026,6 +14026,12 @@ public class Workspace18 {
         return 0;
     }
 
+    // LC 2560
+    public int minCapability(int[] nums, int k) {
+
+        return 0;
+    }
+
 
 
 
