@@ -140,6 +140,72 @@ public class LongestValidParentheses {
         return maxLen;
     }
 
+    // V0-5
+    // IDEA: 1D DP (gemini)
+    public int longestValidParentheses_0_5(String s) {
+        int n = s.length();
+        if (n < 2)
+            return 0;
+
+        int[] dp = new int[n];
+        int maxLen = 0;
+
+        // Start from index 1 because index 0 cannot form a pair
+        for (int i = 1; i < n; i++) {
+            if (s.charAt(i) == ')') {
+                // Case 1: s[i-1] is '(', simple pair "()"
+                if (s.charAt(i - 1) == '(') {
+                    dp[i] = (i >= 2 ? dp[i - 2] : 0) + 2;
+                }
+                // Case 2: s[i-1] is ')', check if there's a matching '(' before the sub-sequence
+                else {
+                    int matchingOpenIndex = i - dp[i - 1] - 1;
+                    if (matchingOpenIndex >= 0 && s.charAt(matchingOpenIndex) == '(') {
+                        // Current match (2) + inner match (dp[i-1]) + match before the opening bracket
+                        int beforeMatch = (matchingOpenIndex >= 1) ? dp[matchingOpenIndex - 1] : 0;
+                        dp[i] = dp[i - 1] + 2 + beforeMatch;
+                    }
+                }
+                maxLen = Math.max(maxLen, dp[i]);
+            }
+        }
+
+        return maxLen;
+    }
+
+    // V0-6
+    // IDEA: 1D DP (GPT)
+    public int longestValidParentheses_0_6(String s) {
+        int n = s.length();
+        if (n < 2)
+            return 0;
+
+        int[] dp = new int[n];
+        int maxLen = 0;
+
+        for (int i = 1; i < n; i++) {
+            if (s.charAt(i) == ')') {
+                // Case 1: immediate "()"
+                if (s.charAt(i - 1) == '(') {
+                    dp[i] = (i >= 2 ? dp[i - 2] : 0) + 2;
+                }
+                // Case 2: ... "))"
+                else if (i - dp[i - 1] - 1 >= 0
+                        && s.charAt(i - dp[i - 1] - 1) == '(') {
+                    dp[i] = dp[i - 1] + 2
+                            + ((i - dp[i - 1] - 2 >= 0)
+                            ? dp[i - dp[i - 1] - 2]
+                            : 0);
+                }
+                maxLen = Math.max(maxLen, dp[i]);
+            }
+        }
+
+        return maxLen;
+    }
+
+
+
     // V1-1
     // https://leetcode.ca/2016-01-01-32-Longest-Valid-Parentheses/
     public int longestValidParentheses_1_1(String s) {
