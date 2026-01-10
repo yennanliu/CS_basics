@@ -77,7 +77,81 @@ public class MaximumSubarray {
         return globalMax;
     }
 
-    // V0_0_1
+
+    // V0-0-0-1
+    // IDEA: DP (KADANE ALGO)
+    public int maxSubArray_0_0_0_1(int[] nums) {
+        // edge
+        if (nums.length == 1) {
+            return nums[0];
+        }
+
+        /**  DP (Kadane ALGO)
+         *
+         *   - maintain local, global max, min
+         *   - in for loop,
+         *      update the local, global val
+         *
+         *   -----------
+         *
+         *   or we can do below as well:
+         *    (and for loop start from idx = 1)
+         *
+         *         int localMax = nums[0];  // Start with first element
+         *         int globalMax = nums[0];
+         */
+        int localMax = -1 * 10000;
+        int globalMax = -1 * 10000;
+
+        for (int i = 0; i < nums.length; i++) {
+            /**
+             * nums = [-2,1,-3,4,-1,2,1,-5,4]
+             *
+             *
+             * ->
+             *
+             *  [-2,1,-3,4,-1,2,1,-5,4]
+             *   x                        cur=-2, l_max= -2, g_max = -2
+             *
+             *
+             *   [-2,1,-3,4,-1,2,1,-5,4]
+             *       x                  cur=1, l_max= 1,  g_max = 1
+             *
+             *   [-2,1,-3,4,-1,2,1,-5,4]
+             *          x               cur=-3, l_max= -2,  g_max = 1
+             *
+             *  [-2,1,-3,4,-1,2,1,-5,4]
+             *           x             cur=4, l_max= 4,  g_max = 4
+             *
+             *  [-2,1,-3,4,-1,2,1,-5,4]
+             *             x          cur=-1, l_max= 3,  g_max = 4
+             *
+             *  [-2,1,-3,4,-1,2,1,-5,4]
+             *                x      cur=2, l_max= 5,  g_max = 5
+             *
+             *  [-2,1,-3,4,-1,2,1,-5,4]
+             *                  x         cur=1, l_max= 6,  g_max = 6
+             *
+             *
+             * [-2,1,-3,4,-1,2,1,-5,4]
+             *                    x     cur=-5, l_max= 1,  g_max = 6
+             *
+             * [-2,1,-3,4,-1,2,1,-5,4]
+             *                       x    cur=4, l_max= -1,  g_max = 6
+             */
+            int curVal = nums[i];
+
+            /** NOTE !!! below logic */
+            localMax = Math.max(curVal, localMax + curVal);
+
+            globalMax = Math.max(localMax, globalMax);
+        }
+
+        return globalMax;
+    }
+
+
+    // V0-0-1
     // IDEA : BRUTE FORCE + SUB ARRAY
     public int maxSubArray_0_0_1(int[] nums) {
 
@@ -446,6 +520,30 @@ public class MaximumSubarray {
         return maxSub;
     }
 
+    // V0-10
+    // IDEA: BRUTE FORCE (TLE)
+    public int maxSubArray_0_10(int[] nums) {
+        // edge
+        if(nums.length == 1){
+            return nums[0];
+        }
+
+        int maxSum = -1 * Integer.MAX_VALUE;
+
+        for(int i = 0; i < nums.length; i++){
+            int curSum = nums[i];
+            maxSum = Math.max(maxSum, nums[i]);
+            for(int j = i+1; j < nums.length; j++){
+                curSum += nums[j];
+                maxSum = Math.max(maxSum, curSum);
+            }
+        }
+
+
+        return maxSum;
+    }
+
+
     // V1
     // IDEA : OPTIMIZED BRUTE FORCE (TLE)
     // https://leetcode.com/problems/maximum-subarray/editorial/
@@ -545,5 +643,7 @@ public class MaximumSubarray {
         // The largest of the 3 is the answer for any given input array.
         return Math.max(bestCombinedSum, Math.max(leftHalf, rightHalf));
     }
+
+
 
 }
