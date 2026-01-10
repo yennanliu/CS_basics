@@ -13972,10 +13972,99 @@ public class Workspace18 {
      *
      *
      */
+    // 16.51 - 17.00 pm
+    // IDEA: DP
+    /**
+     *   1. get total sum
+     *   2. if sum % 2 != 0, return false
+     *
+     *   2.1 sort ???
+     *
+     *   3.
+     *     - dp def:
+     *        -  dp[i]:  sun of subarray end at idx = i
+     *
+     *     - dp eq:
+     *
+     *       dp[i] =
+     *           if( dp[i] == i):
+     *              dp
+     *
+     *
+     *
+     */
     public boolean canPartition(int[] nums) {
+        // edge ??
 
-        return false;
+        List<Integer> list = new ArrayList<>();
+
+        int cumSum = 0;
+        for(int x: nums){
+            cumSum += x;
+
+            list.add(x);
+        }
+
+        if(cumSum % 2 == 1){
+            return false;
+        }
+
+        System.out.println(">>> (before sort) list = " + list);
+
+        // ?? sorting ??
+        // default: small -> big ??
+        Collections.sort(list);
+
+        System.out.println(">>> (after sort) list = " + list);
+
+        //  dp[i] = true if there is a subset of nums that sums to i
+        //  dp[i] = dp[i] or dp[cumSum - i]
+        // ?? ????
+        /**
+         *   dp def : can sum up == cumSum % 2 at idx i ??
+         *
+         *   dp eq:
+         *      dp[i] = dp[i] && dp[cumSum - i]
+         *
+         */
+        int target = cumSum % 2;
+        //boolean[] dp = new boolean[nums.length];
+        boolean[] dp = new boolean[target  + 1];
+        dp[0] = true;
+
+//        for(int x = 1; x < target + 1; x++){
+//            dp[x] = (dp[x] || dp[target - x]);
+//        }
+
+
+        // ???
+        for(int x: nums){
+            // ??
+            for(int sum = target; sum > 0; sum --){
+                // ??
+                dp[x] = (dp[x] || dp[sum - x]);
+            }
+        }
+
+
+//        // ??
+//        int cur = 0;
+//        for(int x: nums){
+//            cur += x;
+//            if(cur == cumSum / 2){
+//                return true;
+//            }
+//        }
+
+        return dp[target]; // ??
     }
+
+
+
+
+
+
+
 
 
     // LC 740
