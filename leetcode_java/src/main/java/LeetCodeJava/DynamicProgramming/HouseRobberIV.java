@@ -52,6 +52,48 @@ public class HouseRobberIV {
 //
 //    }
 
+    // V0-1
+    // IDEA: BINARY SEARCH + DP/GREEDY (GPT)
+    public int minCapability_0_1(int[] nums, int k) {
+        int left = Integer.MAX_VALUE, right = 0;
+        for (int v : nums) {
+            left = Math.min(left, v);
+            right = Math.max(right, v);
+        }
+
+        // Binary search for minimum capability
+        int ans = right;
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+
+            // Check how many houses we can rob if max allowed value is mid
+            if (countRobbable(nums, mid) >= k) {
+                ans = mid; // mid is feasible
+                right = mid - 1;
+            } else {
+                left = mid + 1;
+            }
+        }
+        return ans;
+    }
+
+    // Return max count of houses we can rob with capability <= cap
+    private int countRobbable(int[] nums, int cap) {
+        int count = 0;
+        boolean robbedLast = false;
+
+        for (int v : nums) {
+            if (robbedLast) {
+                robbedLast = false; // skip this house due to adjacency
+            } else if (v <= cap) {
+                count++;
+                robbedLast = true; // we robbed this one
+            }
+        }
+        return count;
+    }
+
+
     // V1
     // IDEA: BINARY SEARCH
     // https://leetcode.com/problems/house-robber-iv/editorial/
