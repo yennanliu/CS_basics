@@ -14227,6 +14227,31 @@ public class Workspace18 {
     }
 
 
+    // LC 32
+    // 16.12 - 22 pm
+    /**
+     *  Given a string containing just the characters '(' and ')',
+     *
+     *  -> return the length of the longest valid (well-formed)
+     *  parentheses substring.
+     *
+     *
+     *  -------------------
+     *
+     *   IDEA 1) STACK ???
+     *
+     *   IDEA 2) DP ???
+     *
+     *   IDEA 3) BRUTE FORCE ???
+     *
+     *
+     *  -------------------
+     */
+    public int longestValidParentheses(String s) {
+
+        return 0;
+    }
+
 
 
 
