@@ -250,7 +250,6 @@
 	- LC 5 Longest Palindromic Substring
 		- gpt
 		- gemini
-			- 53
 			- 32
 			- 516
 			- 132

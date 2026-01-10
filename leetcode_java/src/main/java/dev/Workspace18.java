@@ -14027,10 +14027,170 @@ public class Workspace18 {
     }
 
     // LC 2560
+    // 15.16 - 26 pm
+    /**
+     * -> Return the `minimum` capability of
+     *   the `robber` out of all the possible ways
+     *   to steal `at least k houses.`
+     *
+     *
+     *   - nums[i]:  house i as `money in` dollar (money)
+     *   - k: min num of house needs to rob
+     *
+     *       -It is always possible to steal
+     *        at least k houses.
+     *
+     *
+     *
+     *   - but he refuses to steal from `adjacent` homes.
+     *
+     *   - capability of the robber
+     *      - the maximum amount of money
+     *      he steals from one house
+     *      of ALL the houses he robbed.
+
+     *
+     *
+     *   ----------
+     *
+     *   IDEA 1) GREEDY
+     *
+     *   IDEA 2) DP
+     *
+     *   IDEA 3) BINARY SEARCH ???
+     *
+     *
+     *   ----------
+     *
+     *
+     */
     public int minCapability(int[] nums, int k) {
 
         return 0;
     }
+
+
+    // LC 53
+    // 15.28 - 38 pm
+    /**
+     * Given an integer array nums,
+     * find the `subarray` with the `largest` sum,
+     * and return its sum.
+     *
+     *  -A subarray is a `contiguous`
+     *    non-empty sequence of elements within an array.
+     *
+     *
+     * -----------
+     *
+     *  IDEA 1) BRUTE FORCE
+     *
+     *  IDEA 2) DP
+     *
+     *  IDEA 3) SLIDE WINDOW ???
+     *
+     *  IDEA 3) PRE FIX SUM ???
+     *
+     * -----------
+     *
+     *
+     *
+     */
+    // IDEA 2) DP
+    public int maxSubArray(int[] nums) {
+        // edge
+        if(nums.length == 1){
+            return nums[0];
+        }
+
+        /**  DP (Kadane ALGO)
+         *
+         *   - maintain local, global max, min
+         *   - in for loop,
+         *      update the
+         *        - local
+         *        - global
+         *
+         *  - options:
+         *     - choose cur num[i]
+         *     - NOT choose cur num[i]
+         *
+         */
+        int localMax = -1 * 10000;
+        int globalMax = -1 * 10000;
+
+        for(int i = 0; i < nums.length; i++){
+            /**
+             * nums = [-2,1,-3,4,-1,2,1,-5,4]
+             *
+             *
+             * ->
+             *
+             *  [-2,1,-3,4,-1,2,1,-5,4]
+             *   x                        cur=-2, l_max= -2, g_max = -2
+             *
+             *
+             *   [-2,1,-3,4,-1,2,1,-5,4]
+             *       x                  cur=1, l_max= 1,  g_max = 1
+             *
+             *   [-2,1,-3,4,-1,2,1,-5,4]
+             *          x               cur=-3, l_max= -2,  g_max = 1
+             *
+             *  [-2,1,-3,4,-1,2,1,-5,4]
+             *           x             cur=4, l_max= 4,  g_max = 4
+             *
+             *  [-2,1,-3,4,-1,2,1,-5,4]
+             *             x          cur=-1, l_max= 3,  g_max = 4
+             *
+             *  [-2,1,-3,4,-1,2,1,-5,4]
+             *                x      cur=2, l_max= 5,  g_max = 5
+             *
+             *  [-2,1,-3,4,-1,2,1,-5,4]
+             *                  x         cur=1, l_max= 6,  g_max = 6
+             *
+             *
+             * [-2,1,-3,4,-1,2,1,-5,4]
+             *                    x     cur=-5, l_max= 1,  g_max = 6
+             *
+             * [-2,1,-3,4,-1,2,1,-5,4]
+             *                       x    cur=4, l_max= -1,  g_max = 6
+             */
+            int curVal = nums[i];
+            localMax = Math.max(curVal, localMax + curVal);
+
+
+            globalMax = Math.max(localMax, globalMax);
+        }
+
+
+        return globalMax;
+    }
+
+
+
+
+    // IDEA 1) BRUTE FORCE
+    public int maxSubArray_99(int[] nums) {
+        // edge
+        if(nums.length == 1){
+            return nums[0];
+        }
+
+        int maxSum = -1 * Integer.MAX_VALUE;
+
+        for(int i = 0; i < nums.length; i++){
+            int curSum = nums[i];
+            maxSum = Math.max(maxSum, nums[i]);
+            for(int j = i+1; j < nums.length; j++){
+                curSum += nums[j];
+                maxSum = Math.max(maxSum, curSum);
+            }
+        }
+
+
+        return maxSum;
+    }
+
 
 
 
