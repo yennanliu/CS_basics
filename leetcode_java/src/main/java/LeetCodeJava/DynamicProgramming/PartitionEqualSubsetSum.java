@@ -223,6 +223,86 @@ public class PartitionEqualSubsetSum {
          *      dp[i] or dp[i - num]
          *    ```
          */
+        /** Question:
+         *
+         *   why CAN'T use  below ?
+         *
+         *   ```
+         *           for(int x = 1; x < target + 1; x++){
+         *             dp[x] = (dp[x] || dp[target - x]);
+         *         }
+         *  ```
+         *
+         *
+         *  Answer:
+         *
+         *   ->  This is the most critical part of solving
+         *       the `0/1 Knapsack` (Subset Sum) problem.
+         *       The difference between your two snippets is
+         *       the difference between a correct algorithm and a broken one.
+         *
+         *      the provided code (WRONG one):
+         *
+         *      ```
+         *          //        for(int x = 1; x < target + 1; x++){
+         *          //            dp[x] = (dp[x] || dp[target - x]);
+         *          //        }
+         *     ```
+         *
+         *
+         *          This logic DOES NOT actually "use" the numbers in your nums array.
+         *          It just looks at the dp array and says "If I can make sum target-x,
+         *          I can make sum x."
+         *
+         *           - It doesn't track which numbers were used to reach those sums.
+         *           - It doesn't respect the rule that each number in nums can be used only once.
+         *
+         */
+        /**
+         *
+         * Question: ### 2. Why we need the Outer Loop (`for num : nums`)
+         *
+         *
+         * Answer:
+         *  -> We process one number at a time to say:
+         *      *"Given the numbers I've seen so far, what sums are possible?"*
+         *
+         *    - * When we look at the first number (e.g., `3`), we mark `dp[3]` as true.
+         *    - * When we look at the next number (e.g., `5`), we check every previously possible sum and see if adding `5` to it creates a new possible sum (like `3 + 5 = 8`).
+         *
+         * ---
+         *
+         * Question: ### 3. Why we must loop BACKWARDS (`sum--`)
+         *
+         *
+         * ----
+         *
+         * Answer:
+         *
+         *
+         * This is the "Golden Rule" of 1D DP for 0/1 Knapsack.
+         *
+         * If you loop **forward**, you risk using the same number multiple times to reach the target.
+         *
+         * #### The "Forward" Failure Example:
+         *
+         * Imagine `nums = [3]` and `target = 6`. You only have **one** 3.
+         *
+         * * **i = 3**: `dp[3] = dp[3] || dp[3-3]`  `dp[0]` is true, so `dp[3]` becomes **true**.
+         * * **i = 6**: `dp[6] = dp[6] || dp[6-3]`  Since we just made `dp[3]` true, `dp[6]` now becomes **true**.
+         * * **Result:** The algorithm thinks you used the number `3` twice to make `6`. This is "Infinite Supply" logic (like Coin Change).
+         *
+         * #### The "Backward" Success Example:
+         *
+         * Again, `nums = [3]` and `target = 6`.
+         *
+         * * **i = 6**: `dp[6-3]` is false. `dp[6]` stays **false**.
+         * * **i = 3**: `dp[3-3]` is true. `dp[3]` becomes **true**.
+         * * **Result:** `dp[6]` remains false because when we checked it, we hadn't updated `dp[3]` for the current number yet.
+         *
+         * By moving backwards, we ensure that when we update `dp[sum]`, the value of `dp[sum - num]` still represents a state from the **previous** number, not the current one.
+         *
+         */
         for (int num : nums) {
             // NOTE !!!  we loop from target, and sum --
             //           for the inner loop
