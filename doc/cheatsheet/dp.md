@@ -21,6 +21,13 @@
 
 <img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/dp_state_transition.png"></p>
 
+### Step
+
+Step 1. define `dp def`
+Step 2. define `dp eq`
+Step 3. check boundaru condition, req, edge case
+Step 4. get the result
+
 ### References
 - [Dynamic Programming Patterns](https://leetcode.com/discuss/general-discussion/458695/dynamic-programming-patterns)
 - [DP Tutorial](https://www.geeksforgeeks.org/dynamic-programming/) 
