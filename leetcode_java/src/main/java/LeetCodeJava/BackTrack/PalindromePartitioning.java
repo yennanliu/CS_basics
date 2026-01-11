@@ -2,31 +2,31 @@ package LeetCodeJava.BackTrack;
 
 // https://leetcode.com/problems/palindrome-partitioning/
 /**
- *  131. Palindrome Partitioning
+ * 131. Palindrome Partitioning
  * Solved
  * Medium
  * Topics
  * Companies
  * Given a string s, partition s such that every substring of the partition is a palindrome. Return all possible palindrome partitioning of s.
- *
- *
- *
+ * <p>
+ * <p>
+ * <p>
  * Example 1:
- *
+ * <p>
  * Input: s = "aab"
  * Output: [["a","a","b"],["aa","b"]]
  * Example 2:
- *
+ * <p>
  * Input: s = "a"
  * Output: [["a"]]
- *
- *
+ * <p>
+ * <p>
  * Constraints:
- *
+ * <p>
  * 1 <= s.length <= 16
  * s contains only lowercase English letters.
- *
  */
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,44 +53,44 @@ public class PalindromePartitioning {
     }
 
     private void backtrack(String s, int start, List<String> currentList) {
-    /**
-     *
-     * 	•	This is the base case of the recursion.
-     *
-     * 	•	It means: "If we've reached the end of the string,
-     * 	     then the current list of substrings (currentList)
-     * 	     forms a valid full partition of s into palindromes."
-     *
-     * 	•	-> So we add a copy of currentList into
-     * 	       the final result list partitionRes.
-     */
-    /**
-     *  - Why start == s.length()?
-     *
-     * 	•	Because start is the index from which
-     * 	    we're currently trying to partition.
-     *
-     * 	•	If start == s.length(), it means we've
-     * 	     used up all characters in s, and currentList is now a full,
-     * 	     valid partition.
-     */
-    if (start == s.length()) {
+        /**
+         *
+         * 	•	This is the base case of the recursion.
+         *
+         * 	•	It means: "If we've reached the end of the string,
+         * 	     then the current list of substrings (currentList)
+         * 	     forms a valid full partition of s into palindromes."
+         *
+         * 	•	-> So we add a copy of currentList into
+         * 	       the final result list partitionRes.
+         */
+        /**
+         *  - Why start == s.length()?
+         *
+         * 	•	Because start is the index from which
+         * 	    we're currently trying to partition.
+         *
+         * 	•	If start == s.length(), it means we've
+         * 	     used up all characters in s, and currentList is now a full,
+         * 	     valid partition.
+         */
+        if (start == s.length()) {
             partitionRes.add(new ArrayList<>(currentList));
             return;
         }
 
-   /**
-    *  NOTE !!!
-    *
-    *   1) we loop from `start + 1` to `s.length()`
-    *   2) get sub string via s.substring(a, b)
-    *   3) check if current sub string is Palindrome
-    *       - if yes,
-    *          - add sub string to current cache
-    *          - recursive call backtrack
-    *          - undo cache add
-    */
-   for (int end = start + 1; end <= s.length(); end++) {
+        /**
+         *  NOTE !!!
+         *
+         *   1) we loop from `start + 1` to `s.length()`
+         *   2) get sub string via s.substring(a, b)
+         *   3) check if current sub string is Palindrome
+         *       - if yes,
+         *          - add sub string to current cache
+         *          - recursive call backtrack
+         *          - undo cache add
+         */
+        for (int end = start + 1; end <= s.length(); end++) {
             String sub = s.substring(start, end);
             if (isPalindrome(sub)) {
                 currentList.add(sub);
@@ -121,6 +121,7 @@ public class PalindromePartitioning {
         int n = s.length();
         List<List<String>> result = new ArrayList<>();
 
+        /** NOTE !!! DP Pre-calculation */
         // 1. DP Pre-calculation
         // dp[i][j] is true if s[i...j] is a palindrome
         boolean[][] dp = new boolean[n][n];
@@ -135,10 +136,18 @@ public class PalindromePartitioning {
         }
 
         // 2. Backtracking
+        /** NOTE !!!
+         *
+         *  we pass `dp` to backtrack func
+         */
         backtrack(s, 0, new ArrayList<>(), result, dp);
         return result;
     }
 
+    /** NOTE !!!
+     *
+     *  `dp` is param of backtrack func
+     */
     private void backtrack(String s, int start, List<String> currentList,
                            List<List<String>> result, boolean[][] dp) {
         // Base Case: If we've reached the end of the string, add path to results
@@ -148,11 +157,19 @@ public class PalindromePartitioning {
         }
 
         for (int end = start; end < s.length(); end++) {
+            /** NOTE !!!
+             *
+             *  `dp` is being used here
+             */
             // If substring s[start...end] is a palindrome
             if (dp[start][end]) {
                 // Choose: add it to the current partition
                 currentList.add(s.substring(start, end + 1));
 
+                /** NOTE !!!
+                 *
+                 *  `dp` is being used here
+                 */
                 // Explore: continue partitioning from end + 1
                 backtrack(s, end + 1, currentList, result, dp);
 
@@ -246,6 +263,7 @@ public class PalindromePartitioning {
     // IDEA: Backtracking (DP)
     // time: O(N^2 + N * 2^N), space: O(N^2 + N * 2^N)
     boolean[][] dp;
+
     public List<List<String>> partition_1_3(String s) {
         int n = s.length();
         dp = new boolean[n][n];
