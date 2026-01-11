@@ -38,9 +38,53 @@ import java.util.Arrays;
 public class LongestPalindromicSubsequence {
 
     // V0
-//    public int longestPalindromeSubseq(String s) {
-//
-//    }
+    // IDEA: 2D DP (gemini)
+    public int longestPalindromeSubseq(String s) {
+        int n = s.length();
+        // dp[i][j] = longest palindromic subsequence in s[i...j]
+        int[][] dp = new int[n][n];
+
+        /** NOTE !!!
+         *
+         *  base case: dp[i][i] = 1;
+         */
+        // Base case: every single character is a palindrome of length 1
+        for (int i = 0; i < n; i++) {
+            dp[i][i] = 1;
+        }
+
+        /** NOTE !!!
+         *
+         *   i, j does backwards, forwards separately
+         *
+         *   (i: left boundary)
+         *   (j: right boundary)
+         *
+         *   - Loop i backwards (start of the substring)
+         *   - Loop j forwards (end of the substring)
+         */
+        // Loop i backwards (start of the substring)
+        for (int i = n - 1; i >= 0; i--) {
+            // Loop j forwards (end of the substring)
+            for (int j = i + 1; j < n; j++) {
+                if (s.charAt(i) == s.charAt(j)) {
+                    // If characters match, add 2 to the result of the inner substring
+                    dp[i][j] = dp[i + 1][j - 1] + 2;
+                } else {
+                    // If they don't match, take the max by skipping either i or j
+                    dp[i][j] = Math.max(dp[i + 1][j], dp[i][j - 1]);
+                }
+            }
+        }
+
+        /** NOTE !!!
+         *
+         *  final answer is `dp[0][n - 1]`
+         *  (from idx=0 to idx=`n-1`)
+         */
+        // The answer is the LPS of the entire string from index 0 to n-1
+        return dp[0][n - 1];
+    }
 
     // V0-1
     // IDEA: 2D DP (gemini)
@@ -79,6 +123,7 @@ public class LongestPalindromicSubsequence {
         int[][] dp = new int[n][n];
 
         // Iterate from the end to the beginning for the starting index
+        /** NOTE !!! //  Loop i backwards (start of the substring)  */
         for (int i = n - 1; i >= 0; i--) {
             dp[i][i] = 1; // Base case: single character
 
@@ -97,6 +142,7 @@ public class LongestPalindromicSubsequence {
              *      //  -> either skipping i or skipping j
              *      - dp[i][j] = max(dp[i+1][j], dp[i][j-1])
              */
+            /** NOTE !!! Loop j forwards (end of the substring) */
             for (int j = i + 1; j < n; j++) {
                 if (s.charAt(i) == s.charAt(j)) {
                     // Match found: inner sequence + 2
