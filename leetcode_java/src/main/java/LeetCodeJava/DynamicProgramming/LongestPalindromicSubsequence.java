@@ -42,6 +42,62 @@ public class LongestPalindromicSubsequence {
 //
 //    }
 
+    // V0-1
+    // IDEA: 2D DP (gemini)
+    public int longestPalindromeSubseq_0_1(String s) {
+        int n = s.length();
+        // dp[i][j] stores the LPS length for s[i...j]
+        int[][] dp = new int[n][n];
+
+        // Iterate from the end to the beginning for the starting index
+        for (int i = n - 1; i >= 0; i--) {
+            dp[i][i] = 1; // Base case: single character
+
+            for (int j = i + 1; j < n; j++) {
+                if (s.charAt(i) == s.charAt(j)) {
+                    // Match found: inner sequence + 2
+                    dp[i][j] = dp[i + 1][j - 1] + 2;
+                } else {
+                    // No match: best of either skipping i or skipping j
+                    dp[i][j] = Math.max(dp[i + 1][j], dp[i][j - 1]);
+                }
+            }
+        }
+
+        // The answer is the LPS for the entire string
+        return dp[0][n - 1];
+    }
+
+    // V0-2
+    // IDEA: 2D DP (GPT)
+    public int longestPalindromeSubseq_0_2(String s) {
+        if (s == null || s.length() == 0) {
+            return 0;
+        }
+
+        int n = s.length();
+        int[][] dp = new int[n][n];
+
+        // Base case: single character
+        for (int i = 0; i < n; i++) {
+            dp[i][i] = 1;
+        }
+
+        // Fill the DP table
+        for (int i = n - 1; i >= 0; i--) {
+            for (int j = i + 1; j < n; j++) {
+                if (s.charAt(i) == s.charAt(j)) {
+                    dp[i][j] = 2 + dp[i + 1][j - 1];
+                } else {
+                    dp[i][j] = Math.max(dp[i + 1][j], dp[i][j - 1]);
+                }
+            }
+        }
+
+        return dp[0][n - 1];
+    }
+
+
     // V1
     // IDEA: DP
     // https://leetcode.ca/2017-04-29-516-Longest-Palindromic-Subsequence/
