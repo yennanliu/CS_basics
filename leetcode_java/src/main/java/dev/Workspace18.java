@@ -14353,6 +14353,37 @@ public class Workspace18 {
     }
 
 
+    // LC 125
+    // 15.34 - 44 pm
+    /**
+     *
+     * -> Given a string s,
+     *     return true if it is a palindrome (回文),
+     *     or false otherwise.
+     *
+     *  --------------
+     *
+     *   IDEA 1) STR OP
+     *
+     *   IDEA 2) SLIDE WINDOW
+     *
+     *   IDEA 3) DP ???
+     *
+     *  --------------
+     *
+     */
+    public boolean isPalindrome(String s) {
+
+        return false;
+    }
+
+    // LC 516
+    public int longestPalindromeSubseq(String s) {
+
+        return 0;
+    }
+
+
 
 
 }
