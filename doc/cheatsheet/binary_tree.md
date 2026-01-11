@@ -61,7 +61,7 @@
             - via Array and index
         - how to find the parent node ?
             - n / 2
-            - NOTE : `n is "index"`
+            - NOTE : `n is an "index"` in array
         - how to find the left and right children ?
             - left children : n * 2
             - right children : n * 2 + 1
@@ -85,6 +85,8 @@ Let's say you have a complete binary tree like this:
 This tree as an **array (1-based)** would be:
 
 ```
+# `n is an "index"` in array
+
 Index:   1   2   3   4   5   6
 Value: [10, 15, 20, 30, 40, 50]
 ```
