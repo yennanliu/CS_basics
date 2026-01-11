@@ -44,6 +44,27 @@ public class LongestPalindromicSubsequence {
 
     // V0-1
     // IDEA: 2D DP (gemini)
+    /**  NOTE !!!
+     *
+     * - DP def:
+     *
+     *   dp[i][j]:
+     *     - the length of the `longest` palindromic subsequence
+     *     in the substring s[i...j].
+     *
+     * - DP eq:
+     *      If `s[i] == s[j]`:
+     *      The two characters match.
+     *      They add 2 to the length of the longest palindromic
+     *      subsequence found between them.
+     *         - `dp[i][j] = dp[i+1][j-1] + 2`
+
+     *      If `s[i] != s[j]`:
+     *      The characters don't match.
+     *      We have two choices: either ignore `s[i]` or ignore `s[j]`.
+     *      We take the maximum of these two possibilities.
+     *          - `dp[i][j] = Math.max(dp[i+1][j], dp[i][j-1])`
+     */
     public int longestPalindromeSubseq_0_1(String s) {
         int n = s.length();
         // dp[i][j] stores the LPS length for s[i...j]
@@ -69,8 +90,31 @@ public class LongestPalindromicSubsequence {
     }
 
     // V0-2
-    // IDEA: 2D DP (GPT)
+    // IDEA: 1D DP (gemini)
     public int longestPalindromeSubseq_0_2(String s) {
+        int n = s.length();
+        int[] dp = new int[n];
+
+        for (int i = n - 1; i >= 0; i--) {
+            dp[i] = 1;
+            int pre = 0; // Represents dp[i+1][j-1]
+            for (int j = i + 1; j < n; j++) {
+                int temp = dp[j];
+                if (s.charAt(i) == s.charAt(j)) {
+                    dp[j] = pre + 2;
+                } else {
+                    dp[j] = Math.max(dp[j], dp[j - 1]);
+                }
+                pre = temp;
+            }
+        }
+        return dp[n - 1];
+    }
+
+
+    // V0-3
+    // IDEA: 2D DP (GPT)
+    public int longestPalindromeSubseq_0_3(String s) {
         if (s == null || s.length() == 0) {
             return 0;
         }
