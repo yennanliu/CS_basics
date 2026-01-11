@@ -254,7 +254,6 @@
 			- 132
 	- LC 647 Palindromic Substrings
 		- gpt
-			- 131
 			- 132
 		- gemini
 			- 730
