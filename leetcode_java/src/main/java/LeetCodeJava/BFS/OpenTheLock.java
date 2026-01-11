@@ -2,8 +2,6 @@ package LeetCodeJava.BFS;
 
 // https://leetcode.com/problems/open-the-lock/description/
 
-import dev.workspace6;
-
 import java.util.*;
 
 /**

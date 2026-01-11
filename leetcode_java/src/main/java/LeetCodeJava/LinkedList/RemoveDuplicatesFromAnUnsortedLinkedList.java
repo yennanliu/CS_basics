@@ -3,10 +3,7 @@ package LeetCodeJava.LinkedList;
 // https://leetcode.com/problems/remove-duplicates-from-an-unsorted-linked-list/
 // https://leetcode.ca/all/1836.html
 
-import dev.workspace10;
-
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 
 /**

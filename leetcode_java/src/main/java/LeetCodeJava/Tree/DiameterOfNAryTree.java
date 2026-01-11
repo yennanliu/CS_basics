@@ -3,11 +3,8 @@ package LeetCodeJava.Tree;
 // https://leetcode.com/problems/diameter-of-n-ary-tree/
 // https://leetcode.ca/all/1522.html#google_vignette
 
-import dev.workspace11;
-
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 /**
