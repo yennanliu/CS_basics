@@ -38,12 +38,132 @@ import java.util.Set;
 public class PartitionEqualSubsetSum {
 
     // V0
+    // IDEA: 1D DP + `backward` (fixed by gemini)
+    /**  NOTE !!!
+     *
+     */
+    public boolean canPartition(int[] nums) {
+        // 1. Calculate total sum
+        int totalSum = 0;
+        for (int num : nums) {
+            totalSum += num;
+        }
+
+        // 2. If totalSum is odd, it's impossible to split into two equal integers
+        if (totalSum % 2 != 0) {
+            return false;
+        }
+
+        int target = totalSum / 2;
+
+        /** NOTE !!!
+         *
+         *  DP def: if total sum 'i' can be formed by a subset
+         */
+        // 3. dp[i] represents if sum 'i' can be formed by a subset
+        boolean[] dp = new boolean[target + 1];
+        dp[0] = true; // Base case: sum 0 is always possible
+
+        // 4. Process each number one by one
+        for (int num : nums) {
+            // IMPORTANT: Iterate backwards from target down to num
+            // This ensures each 'num' is used only once for this state
+            for (int i = target; i >= num; i--) {
+                /** NOTE !!!
+                 *
+                 *  DP eq:
+                 *
+                 *          for (int num : nums) {
+                 *             // NOTE !!!  we loop from target, and sum --
+                 *             //           for the inner loop
+                 *             for (int sum = target; sum >= num; sum--) {
+                 *                 dp[sum] = dp[sum] || dp[sum - num];
+                 *             }
+                 *         }
+                 */
+                // If the sum (i - num) was possible, then sum 'i' is now possible
+                if (dp[i - num]) {
+                    dp[i] = true;
+                }
+            }
+
+            // Optimization: if we already hit the target, return early
+            if (dp[target])
+                return true;
+        }
+
+        return dp[target];
+    }
+
+
+    // V0-0-1
+    // NOTE !!! below is WRONG !!!!
+    /**  NOTE !!!
+     *
+     *  1. below is WRONG !!!
+     *
+     *
+     *  ```
+     *        boolean[] dp = new boolean[target + 1];
+     *         Arrays.fill(dp, false); // ????
+     *         dp[0] = true; // ???
+     *
+     *         for(int i = 1; i < target + 1; i++){
+     *             // dp[i] or dp[ target - i] ????
+     *             dp[i] = dp[i] || dp[target - i];
+     *         }
+     *  ```
+     *
+     *  Reason:
+     *    - In your snippet, the inner loop tries to calculate dp[i] using dp[target - i],
+     *      but it DOES NOT actually reference the `numbers available` in your nums array.
+     *
+     *      -> To solve this, you must `iterate through each number in nums `
+     *         and `decide` `whether` to include it in your subset sum.
+     *
+     */
+//    public boolean canPartition(int[] nums) {
+//        // edge
+//        if(nums.length <= 1){
+//            return false;
+//        }
+//        if(nums.length == 2){
+//            return nums[0] == nums[1];
+//        }
+//
+//
+//        int cumSum = 0;
+//        for(int x: nums){
+//            cumSum += x;
+//        }
+//
+//        if(cumSum % 2 == 1){
+//            return false;
+//        }
+//
+//        int target = cumSum / 2;
+//
+//        // ?? init
+//        boolean[] dp = new boolean[target + 1];
+//        Arrays.fill(dp, false); // ????
+//        dp[0] = true; // ???
+//
+//        for(int i = 1; i < target + 1; i++){
+//            // dp[i] or dp[ target - i] ????
+//            dp[i] = dp[i] || dp[target - i];
+//        }
+//
+//
+//        return dp[target];
+//    }
+
+
+    // V0-0-1
     // TODO: implement with below idea (optimized brute force)
     // https://youtu.be/IsvocB5BJhw?si=evPYANn0pPicVwu6
 //    public boolean canPartition(int[] nums) {
 //
 //    }
-
 
 
     // V0-1
@@ -637,6 +757,7 @@ public class PartitionEqualSubsetSum {
 
 
     // V2
+
 
 
 

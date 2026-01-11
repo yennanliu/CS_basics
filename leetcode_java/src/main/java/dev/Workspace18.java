@@ -13993,7 +13993,73 @@ public class Workspace18 {
      *
      *
      */
+    // idea: dp
+    // 17.26 - 36 pm
+    /**
+     *  1D DP
+     *
+     *    - DP def:
+     *       -  boolean dp[i]:
+     *             exists subsets that has total sum == i ???
+     *
+     *    - DP eq:
+     *       - dp[i] =
+     *           dp[i] or dp[ target - i] ????
+     *
+     *  -------
+     *
+     *
+     *  2D DP
+     *
+     *
+     *
+     */
     public boolean canPartition(int[] nums) {
+        // edge
+        if(nums.length <= 1){
+            return false;
+        }
+        if(nums.length == 2){
+            return nums[0] == nums[1];
+        }
+
+
+        int cumSum = 0;
+        for(int x: nums){
+            cumSum += x;
+        }
+
+        if(cumSum % 2 == 1){
+            return false;
+        }
+
+        int target = cumSum / 2;
+
+        // ?? init
+        boolean[] dp = new boolean[target + 1];
+        Arrays.fill(dp, false); // ????
+        dp[0] = true; // ???
+
+        for(int i = 1; i < target + 1; i++){
+            // dp[i] or dp[ target - i] ????
+            dp[i] = dp[i] || dp[target - i];
+        }
+
+
+        return dp[target];
+    }
+
+
+
+
+
+
+
+
+
+
+
+    public boolean canPartition_99(int[] nums) {
         // edge ??
 
         List<Integer> list = new ArrayList<>();
