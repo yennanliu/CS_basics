@@ -44,7 +44,7 @@ public class LongestPalindromicSubsequence {
 
     // V0-1
     // IDEA: 2D DP (gemini)
-    /**  NOTE !!!
+    /**  NOTE !!! core idea
      *
      * - DP def:
      *
@@ -67,6 +67,14 @@ public class LongestPalindromicSubsequence {
      */
     public int longestPalindromeSubseq_0_1(String s) {
         int n = s.length();
+
+        /** NOTE !!!
+         *
+         *  DP def:
+         *
+         *   - the length of the `longest` palindromic subsequence
+         *     in the substring s[i...j].
+         */
         // dp[i][j] stores the LPS length for s[i...j]
         int[][] dp = new int[n][n];
 
@@ -74,6 +82,21 @@ public class LongestPalindromicSubsequence {
         for (int i = n - 1; i >= 0; i--) {
             dp[i][i] = 1; // Base case: single character
 
+            /** NOTE !!!
+             *
+             *  DP eq:
+             *
+             *   1. if s[i] == s[j]
+             *       // NOTE !!!
+             *       // if left, right pointer matched,
+             *       //   -> inner sequence + 2
+             *      - dp[i][j] = dp[i+1][j-1] + 2
+             *
+             *  2. else:
+             *      // left, right pointer NOT matched,
+             *      //  -> either skipping i or skipping j
+             *      - dp[i][j] = max(dp[i+1][j], dp[i][j-1])
+             */
             for (int j = i + 1; j < n; j++) {
                 if (s.charAt(i) == s.charAt(j)) {
                     // Match found: inner sequence + 2
