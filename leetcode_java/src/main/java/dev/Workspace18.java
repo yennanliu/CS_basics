@@ -14378,6 +14378,45 @@ public class Workspace18 {
     }
 
     // LC 516
+    // 15.45 - 55 pm
+    /**
+     *  -> Given a string s,
+     *   find the `longest` palindrome (回文)
+     *   subsequence's length in s.
+     *
+     *
+     *   NOTE:
+     *
+     *   A subsequence is a sequence that can be
+     *   derived from another sequence by `deleting`
+     *   some or no elements `without` changing the order
+     *   of the remaining elements.
+     *
+     * --------------
+     *
+     *  IDEA 1) BRUTE FORCE
+     *
+     *  IDEA 2) SLIDE WINDOW
+     *
+     *  IDEA 3)  DP
+     *
+     *     - 2D DP ????
+     *
+     *     - DP def:  dp[i][j]:
+     *              - `longest` palindrome (回文)
+     *                 subsequence between [i, j] (index)
+     *
+     *    - DP eq:
+     *             - dp[i][j] =
+     *                 - if dp[i][j] == dp[
+     *
+     *
+     *
+     * --------------
+     *
+     *
+     *
+     */
     public int longestPalindromeSubseq(String s) {
 
         return 0;
