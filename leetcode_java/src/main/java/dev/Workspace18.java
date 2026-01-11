@@ -14433,6 +14433,11 @@ public class Workspace18 {
      *
      * -> Return all possible palindrome (回文) partitioning of s.
      *
+     * - NOTE:
+     *    - substring:
+     *        - a contiguous non-empty sequence
+     *          of characters within a string.
+     *
      *
      * -----------------
      *
@@ -14440,6 +14445,22 @@ public class Workspace18 {
      *
      *  IDEA 2) DP ???
      *
+     *    - dp def:
+     *        2D dp:
+     *           sub-str [i,j] is `palindrome`
+     *
+     *
+     * ------
+     *
+     * - DP def: dp[i][j] is true if s[i...j] is a palindrome
+     *
+     * - DP def:
+     *     dp[i][j] =
+     *         - if s[i] == s[j]:
+     *            - dp[i][j] = dp[i+1][j-1] + 2
+     *
+     *         - else:
+     *            - dp[i][j] = max( dp[i+1][j], dp[i][j-1] )
      *
      *
      * -----------------
@@ -14447,6 +14468,8 @@ public class Workspace18 {
      *
      *
      */
+    // 16.26 - 36 pm
+    //  IDEA 2) DP ??? + backtrack ??
     public List<List<String>> partition(String s) {
 
         return null;
