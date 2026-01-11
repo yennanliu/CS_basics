@@ -114,6 +114,115 @@ public class LongestPalindromicSubsequence {
 
     // V0-2
     // IDEA: 1D DP (gemini)
+    /**  IDEA:
+     *
+     * Since dp[i] ONLY depends on the `previous row dp[i+1],`
+     *  -> we can compress the 2D array into a 1D array.
+     *  -> We use a variable pre to keep track of
+     *  -> the dp[i+1][j-1] value (the "diagonal" value in the 2D table).
+     *
+     *
+     *  - DP def:
+     *
+     *  `dp[j]` represents the **length of the Longest Palindromic Subsequence (LPS)
+     *      * for the substring starting at the current  and ending at **.
+     *
+     *
+     *  - DP eq:
+     *
+     *       * #### **Case 1: `s[i] == s[j]` (Match)**
+     *      *
+     *      * If the characters at the current start  and current end  match, we take the LPS of the inner substring () and add 2.
+     *      *
+     *      * * **2D Logic:**
+     *      * * **1D Logic:** `dp[j] = pre + 2`
+     *      * * *Note:* `pre` was saved from the previous iteration of  to represent .
+     *      *
+     *      *
+     *      *
+     *      * #### **Case 2: `s[i] != s[j]` (No Match)**
+     *      *
+     *      * If they don't match, we take the maximum of skipping either the character at  or the character at .
+     *      *
+     *      * * **2D Logic:**
+     *      * * **1D Logic:** `dp[j] = Math.max(dp[j], dp[j - 1])`
+     *      * * `dp[j]` (before update) still holds the value for .
+     *      * * `dp[j-1]` (already updated in this loop) holds the value for .
+     *      *
+     *
+     *
+     *
+     *
+     *  ---------
+     *
+     *
+     *  In 1D Dynamic Programming, the goal is to "compress"
+     *  a 2D table into a single array to save memory.
+     *  In the context of **LC 516 (Longest Palindromic Subsequence)**,
+     *  we do this because to calculate the current row , we only ever need data from the row we just finished ().
+     *
+     * ---
+     *
+     * ### 1. DP Definition
+     *
+     * In the 1D version, `dp[j]` represents the **length of the Longest Palindromic Subsequence (LPS)
+     * for the substring starting at the current  and ending at **.
+     *
+     * As we iterate  backwards from  down to :
+     *
+     * * **The Array:** `dp` stores the results from the *previous*  (specifically, ).
+     * * **The Variable `pre`:** This is a single integer that stores the "diagonal" value from the 2D table (). This is necessary because once we update `dp[j]`, the old value (which represented ) is lost.
+     *
+     * ---
+     *
+     * ### 2. DP Transition
+     *
+     * The 1D transition mimics the 2D logic but uses the updated values in the array strategically.
+     *
+     * #### **Case 1: `s[i] == s[j]` (Match)**
+     *
+     * If the characters at the current start  and current end  match, we take the LPS of the inner substring () and add 2.
+     *
+     * * **2D Logic:**
+     * * **1D Logic:** `dp[j] = pre + 2`
+     * * *Note:* `pre` was saved from the previous iteration of  to represent .
+     *
+     *
+     *
+     * #### **Case 2: `s[i] != s[j]` (No Match)**
+     *
+     * If they don't match, we take the maximum of skipping either the character at  or the character at .
+     *
+     * * **2D Logic:**
+     * * **1D Logic:** `dp[j] = Math.max(dp[j], dp[j - 1])`
+     * * `dp[j]` (before update) still holds the value for .
+     * * `dp[j-1]` (already updated in this loop) holds the value for .
+     *
+     *
+     *
+     * ---
+     *
+     * ### 📊 Logic Mapping Table
+     *
+     * | 2D Element | 1D Equivalent | Explanation |
+     * | --- | --- | --- |
+     * |  | `dp[j]` (new) | The result for the current range we are solving. |
+     * |  | `dp[j]` (old) | The value currently sitting in the array before we overwrite it. |
+     * |  | `dp[j-1]` | The value we just calculated in the current loop for the previous . |
+     * |  | `pre` | The value of `dp[j]` from the *previous*  iteration before it was updated. |
+     *
+     * ---
+     *
+     * ### ⚡ Why use 1D DP?
+     *
+     * In **LC 516**, if the string length :
+     *
+     * * **2D DP:**  integers ( MB).
+     * * **1D DP:**  integers ( KB).
+     * As  grows, the space savings become massive, preventing `OutOfMemoryError` on large test cases.
+     *
+     *
+     */
     public int longestPalindromeSubseq_0_2(String s) {
         int n = s.length();
         int[] dp = new int[n];
