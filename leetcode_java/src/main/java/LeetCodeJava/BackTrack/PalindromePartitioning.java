@@ -115,6 +115,54 @@ public class PalindromePartitioning {
         return true;
     }
 
+    // V0-2
+    // IDEA: BACKTRACK + DP (GEMINI)
+    public List<List<String>> partition_0_2(String s) {
+        int n = s.length();
+        List<List<String>> result = new ArrayList<>();
+
+        // 1. DP Pre-calculation
+        // dp[i][j] is true if s[i...j] is a palindrome
+        boolean[][] dp = new boolean[n][n];
+        for (int len = 1; len <= n; len++) {
+            for (int i = 0; i <= n - len; i++) {
+                int j = i + len - 1;
+                if (s.charAt(i) == s.charAt(j)) {
+                    // If length is 1 or 2, or the inner part is a palindrome
+                    dp[i][j] = (len <= 2) || dp[i + 1][j - 1];
+                }
+            }
+        }
+
+        // 2. Backtracking
+        backtrack(s, 0, new ArrayList<>(), result, dp);
+        return result;
+    }
+
+    private void backtrack(String s, int start, List<String> currentList,
+                           List<List<String>> result, boolean[][] dp) {
+        // Base Case: If we've reached the end of the string, add path to results
+        if (start == s.length()) {
+            result.add(new ArrayList<>(currentList));
+            return;
+        }
+
+        for (int end = start; end < s.length(); end++) {
+            // If substring s[start...end] is a palindrome
+            if (dp[start][end]) {
+                // Choose: add it to the current partition
+                currentList.add(s.substring(start, end + 1));
+
+                // Explore: continue partitioning from end + 1
+                backtrack(s, end + 1, currentList, result, dp);
+
+                // Un-choose: backtrack for the next possible cut
+                currentList.remove(currentList.size() - 1);
+            }
+        }
+    }
+
+
     // V1-1
     // https://neetcode.io/problems/palindrome-partitioning
     // IDEA: Backtracking (Pick / Not Pick)
@@ -283,5 +331,6 @@ public class PalindromePartitioning {
             }
         }
     }
+
 
 }

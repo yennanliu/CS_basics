@@ -14424,5 +14424,35 @@ public class Workspace18 {
 
 
 
+    // LC 131
+    /**
+     *
+     * Given a string s,
+     * partition s such that every substring
+     * of the partition is a palindrome.
+     *
+     * -> Return all possible palindrome (回文) partitioning of s.
+     *
+     *
+     * -----------------
+     *
+     *  IDEA 1) BACKTRACK
+     *
+     *  IDEA 2) DP ???
+     *
+     *
+     *
+     * -----------------
+     *
+     *
+     *
+     */
+    public List<List<String>> partition(String s) {
+
+        return null;
+    }
+
+
+
 
 }
