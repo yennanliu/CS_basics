@@ -14110,10 +14110,83 @@ public class Workspace18 {
      * -------------
      *
      */
+    // IDEA: DP ????
+    // 16.47 - 57 pm
+    /**
+     *  -> transform to `robber LC`
+     *
+     *   - hashmap  get { val : freq }
+     *
+     * DP:
+     *
+     *  - DP def:
+     *       dp[i]: max `total sum` at `val = i`
+     *
+     *  - DP eq:
+     *        dp[i] =
+     *           max( dp[i], dp[i-2] + nums[i] )
+     *
+     * --------------
+     *   0 1 2 3 4
+     *  [x,x,2,3,4]
+     */
     public int deleteAndEarn(int[] nums) {
+        // edge
+        if(nums.length == 1){
+            return nums[0];
+        }
 
-        return 0;
+        int maxVal = 0;
+        // v1:
+        // { val : cnt }
+        // v2
+        // map: { val : total sum with given key (val) }
+        Map<Integer, Integer> map = new HashMap<>();
+        for(int x: nums){
+//            if(!map.containsKey(x)){
+//                map.put(x, x);
+//            }else{
+//                map.put(x, map.get(x) + x);
+//            }
+            map.put(x, map.getOrDefault(x, 0) + 1);
+
+            maxVal = Math.max(maxVal, x);
+        }
+
+        // init dp
+        int n = nums.length;
+        int[] dp = new int[n + 1]; // ??
+        // ??
+        Arrays.fill(dp, 0);
+       // dp[0] = 0;
+       // ??
+       if(map.containsKey(1)){
+           dp[1] = map.get(1);
+       }
+
+        // ???
+        int maxRev = 0;
+
+        for(int i = 2; i < maxVal + 1; i++){
+//            dp[i] = Math.max( dp[i],
+//                    Math.max(dp[i-1] + map.get(i), dp[i-1] + map.get(i))
+//            );
+            // NOTE !!!
+            // `i * map.get(i)`
+            // NOTE !!!
+            int extra = map.containsKey(i) ? i * map.get(i): 0;
+            dp[i] = Math.max( dp[i], dp[i-2] + extra );
+            maxRev = Math.max(maxRev, dp[i]);
+        }
+
+       return maxRev;
     }
+
+
+
+
+
+
 
     // LC 2560
     // 15.16 - 26 pm

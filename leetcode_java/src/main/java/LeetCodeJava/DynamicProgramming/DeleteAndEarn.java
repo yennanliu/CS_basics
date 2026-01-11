@@ -4,6 +4,7 @@ package LeetCodeJava.DynamicProgramming;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  *  740. Delete and Earn
@@ -47,9 +48,83 @@ import java.util.HashMap;
 public class DeleteAndEarn {
 
     // V0
-//    public int deleteAndEarn(int[] nums) {
-//
-//    }
+    // IDEA: DP + HASHMAP (GEMINI)
+    /** NOTE !!!
+     *
+     * 1.   the op applied here is
+     *   based on `value`, but NOT index
+     *
+     *
+     * 2. transform this LC to LC 198  `House Robber`
+     */
+    public int deleteAndEarn(int[] nums) {
+        if (nums == null || nums.length == 0)
+            return 0;
+
+        /** NOTE !!!
+         *
+         *  need to track `max val` over nums
+         *  as it's the right boundary of our DP space
+         */
+        int maxVal = 0;
+        /** NOTE !!!
+         *
+         *  map : { val : freq }
+         *
+         *  so we can add all `val * freq` at once
+         *  in the DP eq below
+         */
+        Map<Integer, Integer> counts = new HashMap<>();
+        for (int x : nums) {
+            counts.put(x, counts.getOrDefault(x, 0) + 1);
+            maxVal = Math.max(maxVal, x);
+        }
+
+        /** NOTE !!!
+         *
+         *  DP def:
+         *   - max total sum from 0 to i (by robbing `i` value)
+         */
+        // dp[i] represents the max points we can get considering values from 0 up to i
+        int[] dp = new int[maxVal + 1];
+
+        // Base cases
+        dp[0] = 0;
+        // For value 1, points = 1 * count of 1s
+        dp[1] = counts.getOrDefault(1, 0);
+
+
+        /** NOTE !!!
+         *
+         *   1. `maxVal` is the right boundary of DP
+         *   2.  DP starts from idx = 2
+         */
+        for (int i = 2; i <= maxVal; i++) {
+            int currentPoints = i * counts.getOrDefault(i, 0);
+
+            /** NOTE !!!
+             *
+             *   DP eq:
+             *
+             *     dp[i] = max ( dp[i-2] + currentPoints, dp[i-1 )
+             *
+             *
+             *    -> e.g.
+             *           - we either `rob` `i - 2` idx
+             *            or
+             *          - we skip `i-2` and rob `i-1`
+             *            (so we CAN'T rob `i`)
+             */
+
+            /* * Option 1: Skip value 'i'. We take whatever we had at dp[i-1].
+             * Option 2: Take value 'i'. We get currentPoints + whatever we had at dp[i-2]
+             * (because taking 'i' deletes 'i-1').
+             */
+            dp[i] = Math.max(dp[i - 1], currentPoints + dp[i - 2]);
+        }
+
+        return dp[maxVal];
+    }
 
 
     // V0-1
