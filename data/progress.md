@@ -1,6 +1,6 @@
 # Progress
 
-# 2026-01-12
+# 2026-01-13
 
 - weekly video
 - to review
@@ -226,7 +226,6 @@
 	- LC 198 House Robber
 		- gpt
 			- 2560
-			- 376
 			- 309
 			- 714
 			- 1235
