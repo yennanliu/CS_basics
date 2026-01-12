@@ -115,6 +115,13 @@ public class Workspace19 {
     }
 
 
+    // LC 376
+    public int wiggleMaxLength(int[] nums) {
+
+        return 0;
+    }
+
+
 
 
 
