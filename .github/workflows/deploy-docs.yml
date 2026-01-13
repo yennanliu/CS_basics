@@ -1,0 +1,50 @@
+name: Deploy Docs to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main  # Or your default branch name
+      - dev-1-doc-to-website
+    paths:
+      - 'doc/**'  # Only trigger when files in doc directory change
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow one concurrent deployment
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      
+      - name: Setup Pages
+        uses: actions/configure-pages@v3
+        with:
+          enablement: 'true'  # Ensure Pages is enabled
+          
+      - name: Copy .nojekyll file to root
+        run: |
+          # Make sure .nojekyll exists in doc directory
+          touch doc/.nojekyll
+          # Also copy it to the root of the artifact
+          cp doc/.nojekyll .
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: './doc'
+      
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v2 
