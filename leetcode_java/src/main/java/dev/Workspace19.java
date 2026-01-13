@@ -332,6 +332,81 @@ public class Workspace19 {
     }
 
 
+    // LC 300
+    // 11.22 - 32 am
+    /**
+     *
+     *  -> Given an integer array nums,
+     *     return the length of the
+     *    `longest strictly increasing subsequence.`
+     *
+     *    - subsequence:
+     *      - an array that can be derived
+     *        from another array by deleting some
+     *        or no elements without changing the
+     *        order of the remaining elements.
+     *
+     * -----------------
+     *
+     *  IDEA 1) DP
+     *
+     *     - DP def:
+     *        dp[i][j]:
+     *           - len of longest increasing
+     *             subsequence in [i,j]
+     *
+     *     - DP eq:
+     *          dp[i][j] =
+     *             if  nums[j-1] < nums[j]:
+     *                 dp[i][j] = max ( dp[i][j-1] + 1, dp[i][j] )
+     *             else:
+     *                // ???
+     *
+     *
+     * -----------------
+     *
+     */
+    public int lengthOfLIS(int[] nums) {
+        // edge
+
+        int maxLenLIS = 1; // ??
+
+        int n = nums.length;
+        int[][] dp = new int[n + 1][n + 1]; //??
+        // ???
+        for(int x = 0; x < n; x++){
+            // if set start idx at every idx in nums,
+            // the default LIS len should be 1 ? (ieself)
+            dp[0][x] = 1;
+        }
+
+        // ???
+        /**
+         *      *     - DP eq:
+         *      *          dp[i][j] =
+         *      *             if  nums[j-1] < nums[j]:
+         *      *                 dp[i][j] = max ( dp[i][j-1] + 1, dp[i][j] )
+         *      *             else:
+         *      *                // ???
+         *
+         */
+        // loop start point (forward)
+        for(int i = 0; i < n; i++){
+            // ??? backward
+            // loop end point (forward) ?????
+            // for(int j = i; j > 0; j--){
+            for(int j = i; j > 0; j--){
+                if(nums[j-1] < nums[j]){
+                    // ????
+                    dp[i][j] = Math.max( dp[i][j-1] + 1, dp[i][j] );
+                    maxLenLIS = Math.max( maxLenLIS, dp[i][j] );
+                }
+            }
+        }
+
+        return maxLenLIS;
+    }
+
 
 
 
