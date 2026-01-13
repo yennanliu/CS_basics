@@ -189,6 +189,67 @@ public class Workspace19 {
     }
 
 
+    // LC 416
+    // 9.58 - 10.09 am
+    /**
+     *
+     * true if
+     *    - you can partition the array into
+     *    two subsets such that the sum of the elements in both subset
+     *
+     *
+     * ------------
+     *
+     * IDEA 1) DP
+     *
+     *  - dp def:
+     *
+     *     dp[i] : can partition by sum == i
+     *
+     *  - dp eq:
+     *
+     *  ------------
+     *
+     */
+    public boolean canPartition(int[] nums) {
+        // edge
+
+        int totalSum = 0;
+        for (int num : nums) {
+            totalSum += num;
+        }
+
+        // 2. If totalSum is odd, it's impossible to split into two equal integers
+        if (totalSum % 2 != 0) {
+            return false;
+        }
+
+        int target = totalSum / 2;
+
+        int n = nums.length;
+        //boolean[] dp = new boolean[n + 1]; // /?
+        // NOTE !!! `target + 1`
+        boolean[] dp = new boolean[target + 1]; // /?
+
+        dp[0] = true; // ??
+
+        // look forward
+        for(int num: nums){
+            // look backward ??
+//            for(int i = 1; i < n + 1; i++){
+//                if(dp[num] || dp[target - num]){
+//                    dp[num] = true;
+//                }
+//            }
+            for(int sum = target; sum >= num; sum--){
+                dp[sum] = dp[sum] || dp[sum - num];
+            }
+        }
+
+        return dp[n]; // ??
+    }
+
+
 
 
 
