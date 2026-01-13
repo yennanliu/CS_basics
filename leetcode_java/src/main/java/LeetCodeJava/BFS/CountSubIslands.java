@@ -48,9 +48,51 @@ import java.util.Queue;
 public class CountSubIslands {
 
     // V0
-//    public int countSubIslands(int[][] grid1, int[][] grid2) {
-//
-//    }
+    // IDEA: 2 pass DFS + COLOR (gemini)
+    public int countSubIslands(int[][] grid1, int[][] grid2) {
+        int rows = grid1.length;
+        int cols = grid1[0].length;
+
+        // 1st Pass: "Sink" all islands in grid2 that are NOT sub-islands.
+        // If grid2 has land (1) but grid1 has water (0), that whole island in grid2 is invalid.
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < cols; c++) {
+                if (grid2[r][c] == 1 && grid1[r][c] == 0) {
+                    // This island in grid2 is not a sub-island, sink it.
+                    sink(grid2, r, c);
+                }
+            }
+        }
+
+        // 2nd Pass: Now every remaining island in grid2 is a valid sub-island.
+        int subIslandCnt = 0;
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < cols; c++) {
+                if (grid2[r][c] == 1) {
+                    subIslandCnt++;
+                    sink(grid2, r, c); // Sink it so we don't count it again
+                }
+            }
+        }
+
+        return subIslandCnt;
+    }
+
+    private void sink(int[][] grid, int r, int c) {
+        // Boundary check and water check
+        if (r < 0 || r >= grid.length || c < 0 || c >= grid[0].length || grid[r][c] == 0) {
+            return;
+        }
+
+        // Sink the land (turn it into water/0) to mark as visited
+        grid[r][c] = 0;
+
+        // DFS in 4 directions
+        sink(grid, r + 1, c);
+        sink(grid, r - 1, c);
+        sink(grid, r, c + 1);
+        sink(grid, r, c - 1);
+    }
 
     // V0-1
     // IDEA: 2 pass DFS + pruning (gemini)

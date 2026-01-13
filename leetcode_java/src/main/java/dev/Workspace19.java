@@ -250,6 +250,83 @@ public class Workspace19 {
     }
 
 
+    // LC 1905
+    /**
+     *
+     * ------------
+     *
+     * -> Return the number of
+     *    islands in grid2 that
+     *   are considered sub-islands.
+     *
+     * ------------
+     *
+     *  IDEA 1) 2 pass BFS
+     *
+     *    - 1. first pass: color the `invalid island`
+     *      2. 2nd pass:  go through the `valid` island,
+     *                   and get the island cnt
+     *
+     *
+     */
+    public int countSubIslands(int[][] grid1, int[][] grid2) {
+        // edge
+
+        int l = grid1.length;
+        int w = grid1[0].length;
+
+        // ?? 1st pass
+        for(int y = 0; y < l; y++){
+            for(int x = 0; x < w; x++){
+                // ???
+                if(grid2[y][x] == 1 && grid1[y][x] == 0){
+                    color(grid1, grid2, x, y, -1);
+                }
+            }
+        }
+
+        int subIslandCnt = 0;
+
+        // ?? 2nd pass
+        for(int y = 0; y < l; y++){
+            for(int x = 0; x < w; x++){
+                // ???
+                // if(grid2[y][x] == 1 && grid1[y][x] == 1){
+                if(grid2[y][x] == 1 && grid1[y][x] == 1){
+                    //color(grid1, grid2, 2);
+                    color(grid1, grid2, x, y, 2);
+                    subIslandCnt += 1;
+                }
+            }
+        }
+
+
+        return subIslandCnt;
+    }
+
+    // dfs ???
+    private void color(int[][] grid1, int[][] grid2, int x, int y, int newColor){
+        int l = grid1.length;
+        int w = grid1[0].length;
+
+        int[][] moves = new int[][] { {0,1}, {0,-1}, {1,0}, {-1,0} };
+
+        // color
+        grid2[y][x] = newColor;
+
+        for(int[] m: moves){
+            int y_ = y + m[0];
+            int x_ = x + m[1];
+            if(x_ >= 0 && x_ < w && y_ >= 0 && y_ < l){
+                if(grid2[y_][x_] != newColor){
+                    // proceed
+                    color(grid1, grid2, x_, y_, newColor);
+                }
+            }
+        }
+
+    }
+
 
 
 
