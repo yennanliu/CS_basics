@@ -163,7 +163,7 @@ public class Workspace19 {
      *    ->
      *      diff = (16, -7, 3, -3, 6, -8)
      *
-     *      
+     *
      *
      *
      */

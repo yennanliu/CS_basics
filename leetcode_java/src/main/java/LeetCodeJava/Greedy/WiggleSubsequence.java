@@ -49,6 +49,97 @@ public class WiggleSubsequence {
 //
 //    }
 
+    // V0-1
+    // IDEA: DP (GEMINI)
+    public int wiggleMaxLength_0_1(int[] nums) {
+        int n = nums.length;
+        if (n < 2)
+            return n;
+
+        // up[i] is the max length ending with an ascending step
+        int[] up = new int[n];
+        // down[i] is the max length ending with a descending step
+        int[] down = new int[n];
+
+        // Base case: a single element is a wiggle sequence of length 1
+        up[0] = 1;
+        down[0] = 1;
+
+        for (int i = 1; i < n; i++) {
+            if (nums[i] > nums[i - 1]) {
+                // We can extend a "down" sequence with an "up" step
+                up[i] = down[i - 1] + 1;
+                down[i] = down[i - 1];
+            } else if (nums[i] < nums[i - 1]) {
+                // We can extend an "up" sequence with a "down" step
+                down[i] = up[i - 1] + 1;
+                up[i] = up[i - 1];
+            } else {
+                // No change: sequence length stays the same as the previous step
+                up[i] = up[i - 1];
+                down[i] = down[i - 1];
+            }
+        }
+
+        return Math.max(up[n - 1], down[n - 1]);
+    }
+
+
+    // V0-2
+    // IDEA: space optimized DP (GEMINI)
+    public int wiggleMaxLength_0_2(int[] nums) {
+        if (nums.length < 2)
+            return nums.length;
+
+        int up = 1;
+        int down = 1;
+
+        for (int i = 1; i < nums.length; i++) {
+            if (nums[i] > nums[i - 1]) {
+                up = down + 1;
+            } else if (nums[i] < nums[i - 1]) {
+                down = up + 1;
+            }
+        }
+
+        return Math.max(up, down);
+    }
+
+    // V0-3
+    // IDEA: DP (GPT)
+    public int wiggleMaxLength_0_3(int[] nums) {
+        if (nums == null || nums.length == 0)
+            return 0;
+        if (nums.length == 1)
+            return 1;
+
+        int n = nums.length;
+
+        // dp[i][0] -> ending at i, last diff is down
+        // dp[i][1] -> ending at i, last diff is up
+        int[][] dp = new int[n][2];
+
+        // base case
+        dp[0][0] = 1;
+        dp[0][1] = 1;
+
+        for (int i = 1; i < n; i++) {
+            if (nums[i] > nums[i - 1]) {
+                dp[i][1] = dp[i - 1][0] + 1;
+                dp[i][0] = dp[i - 1][0];
+            } else if (nums[i] < nums[i - 1]) {
+                dp[i][0] = dp[i - 1][1] + 1;
+                dp[i][1] = dp[i - 1][1];
+            } else {
+                dp[i][0] = dp[i - 1][0];
+                dp[i][1] = dp[i - 1][1];
+            }
+        }
+
+        return Math.max(dp[n - 1][0], dp[n - 1][1]);
+    }
+
+
     // V1
     // IDEA: DP
     // https://leetcode.ca/2016-12-10-376-Wiggle-Subsequence/
