@@ -408,6 +408,11 @@ public class Workspace19 {
     }
 
 
+    // LC 1025
+    public boolean divisorGame(int n) {
+
+        return false;
+    }
 
 
 }
