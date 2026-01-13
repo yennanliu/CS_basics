@@ -42,8 +42,37 @@ import java.util.List;
 public class LongestIncreasingSubsequence {
 
     // V0
-    // IDEA : DP
+    // IDEA : 1D DP
     // TODO : check & implement again
+    /**  NOTE !!
+     *
+     *  1. DP def: dp[i] = the length of LIS ending at index i
+     *
+     *  2. DP eq:
+     *
+     *     ```
+     *     if (nums[i] > nums[j]) {
+     *
+     *         // We can append nums[i] to the subsequence ending at j.
+     *         // So the new length is dp[j] + 1.
+     *         // We take the max to keep the best sequence found so far for index i.
+     *
+     *
+     *         dp[i] = Math.max(dp[i], dp[j] + 1);
+     *     }
+     *     ```
+     */
+    /**  NOTE !!!
+     *
+     *  no need `2D DP` for this LC, likely an overkill approach.
+     *
+     *  Reason:
+     *
+     *  - DP Definition: By using dp[i][j],
+     *  you are trying to track substrings or ranges,
+     *  but LIS doesn't care about ranges; it cares about
+     *  the "previous smallest number" you can attach the current number to.
+     */
     public int lengthOfLIS(int[] nums) {
 
         if(nums == null || nums.length == 0){
@@ -52,6 +81,7 @@ public class LongestIncreasingSubsequence {
 
         int n = nums.length;
         // init dp
+        // DP def: dp[i] = the length of LIS ending at index i
         int[] dp = new int[nums.length];
         /**
          *
@@ -529,7 +559,7 @@ public class LongestIncreasingSubsequence {
 
 
   // V0-1
-  // IDEA: DP (fixed by gpt)
+  // IDEA: 1D DP (fixed by gpt)
   public int lengthOfLIS_0_1(int[] nums) {
       // edge case: if the input array is null or has no elements
       if (nums == null || nums.length == 0) {
@@ -656,6 +686,41 @@ public class LongestIncreasingSubsequence {
         }
         return sub.size();
     }
+
+    // V0-5
+    // IDEA: 2D DP (gemini)
+    // NOTE !!!   this is an `overkill` idea,
+    //            we should use 1D DP, which is clean and simple
+    //            this 2D DP code is just for an reference
+    public int lengthOfLIS_0_5(int[] nums) {
+        int[] sorted = nums.clone();
+        Arrays.sort(sorted);
+
+        // Remove duplicates to ensure "strictly" increasing
+        int uniqueCount = 0;
+        for (int i = 0; i < sorted.length; i++) {
+            if (i == 0 || sorted[i] != sorted[i - 1]) {
+                sorted[uniqueCount++] = sorted[i];
+            }
+        }
+
+        // Standard 2D LCS between original nums and sorted unique nums
+        int n = nums.length;
+        int m = uniqueCount;
+        int[][] dp = new int[n + 1][m + 1];
+
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j <= m; j++) {
+                if (nums[i - 1] == sorted[j - 1]) {
+                    dp[i][j] = 1 + dp[i - 1][j - 1];
+                } else {
+                    dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
+                }
+            }
+        }
+        return dp[n][m];
+    }
+
 
     // V1-1
     // https://neetcode.io/problems/longest-increasing-subsequence
