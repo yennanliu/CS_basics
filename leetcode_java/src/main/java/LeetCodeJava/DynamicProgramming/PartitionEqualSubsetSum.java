@@ -64,8 +64,16 @@ public class PartitionEqualSubsetSum {
         boolean[] dp = new boolean[target + 1];
         dp[0] = true; // Base case: sum 0 is always possible
 
+        /** NOTE !!!
+         *
+         *  1st loop:  (forward) loop over nums (each number we have)
+         */
         // 4. Process each number one by one
         for (int num : nums) {
+            /** NOTE !!!
+             *
+             *  2nd loop: (backward) loop over [num, target] (each `target` we have)
+             */
             // IMPORTANT: Iterate backwards from target down to num
             // This ensures each 'num' is used only once for this state
             for (int i = target; i >= num; i--) {
