@@ -1,3 +1,16 @@
+---
+layout: cheatsheet
+title: "Greedy Algorithms"
+description: "Algorithms that make locally optimal choices for global optimization"
+category: "Algorithm"
+difficulty: "Medium"
+tags: ["greedy", "optimization", "local-optimal", "scheduling"]
+patterns:
+  - Local optimization
+  - Activity selection
+  - Interval scheduling
+---
+
 # Greedy Algorithms
 
 ## Overview

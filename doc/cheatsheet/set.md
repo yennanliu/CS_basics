@@ -1,3 +1,16 @@
+---
+layout: cheatsheet
+title: "Set"
+description: "Collection of unique elements with set operations"
+category: "Data Structure"
+difficulty: "Easy"
+tags: ["set", "unique", "hash-set", "tree-set"]
+patterns:
+  - Unique element storage
+  - Set operations (union, intersection)
+  - Duplicate elimination
+---
+
 # Set
 
 <img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/set_operations.png"></p>

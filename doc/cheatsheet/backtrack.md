@@ -1,4 +1,22 @@
-# Bracktrack 
+---
+layout: cheatsheet
+title: "Backtracking"
+description: "Backtracking algorithm for solving constraint satisfaction and combinatorial problems"
+category: "Algorithm"
+difficulty: "Hard"
+tags: ["backtracking", "recursion", "dfs", "permutations", "combinations", "constraint-satisfaction"]
+patterns:
+  - Subsets generation
+  - Permutations
+  - Combinations
+  - N-Queens problem
+  - Sudoku solver
+  - Word search
+time_complexity: "O(2^n) to O(n!) depending on problem"
+space_complexity: "O(n) for recursion depth"
+---
+
+# Backtracking 
 
 > Brute force via  `decision tree process`
 
@@ -1518,7 +1536,7 @@ private boolean dfs_(char[][] board, int y, int x, int idx, String word, boolean
     /** NOTE !!! we update visited on x, y here */
     visited[y][x] = true;
 
-    int[][] dirs = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+    int[][] dirs = {% raw %}{{0, 1}, {0, -1}, {1, 0}, {-1, 0}}{% endraw %};
     /**
      *  NOTE !!!
      *
