@@ -280,7 +280,8 @@ public class Workspace19 {
             for(int x = 0; x < w; x++){
                 // ???
                 if(grid2[y][x] == 1 && grid1[y][x] == 0){
-                    color(grid1, grid2, x, y, -1);
+                   // color(grid1, grid2, x, y, -1);
+                    color(grid2, x, y, -1);
                 }
             }
         }
@@ -294,7 +295,8 @@ public class Workspace19 {
                 // if(grid2[y][x] == 1 && grid1[y][x] == 1){
                 if(grid2[y][x] == 1 && grid1[y][x] == 1){
                     //color(grid1, grid2, 2);
-                    color(grid1, grid2, x, y, 2);
+                    //color(grid1, grid2, x, y, 2);
+                    color(grid2, x, y, 2);
                     subIslandCnt += 1;
                 }
             }
@@ -305,9 +307,9 @@ public class Workspace19 {
     }
 
     // dfs ???
-    private void color(int[][] grid1, int[][] grid2, int x, int y, int newColor){
-        int l = grid1.length;
-        int w = grid1[0].length;
+    private void color(int[][] grid2, int x, int y, int newColor){
+        int l = grid2.length;
+        int w = grid2[0].length;
 
         int[][] moves = new int[][] { {0,1}, {0,-1}, {1,0}, {-1,0} };
 
@@ -318,9 +320,11 @@ public class Workspace19 {
             int y_ = y + m[0];
             int x_ = x + m[1];
             if(x_ >= 0 && x_ < w && y_ >= 0 && y_ < l){
-                if(grid2[y_][x_] != newColor){
+                // if(grid2[y_][x_] != newColor)
+                // (grid2[y][x] == 1).
+                if(grid2[y_][x_] != newColor && grid2[y_][x_] != 0){
                     // proceed
-                    color(grid1, grid2, x_, y_, newColor);
+                    color(grid2, x_, y_, newColor);
                 }
             }
         }

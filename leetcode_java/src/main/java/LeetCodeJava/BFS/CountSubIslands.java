@@ -48,8 +48,115 @@ import java.util.Queue;
 public class CountSubIslands {
 
     // V0
-    // IDEA: 2 pass DFS + COLOR (gemini)
+    // IDEA: 2 pass DFS + COLOR
     public int countSubIslands(int[][] grid1, int[][] grid2) {
+        // edge
+
+        int l = grid1.length;
+        int w = grid1[0].length;
+
+        // 1st pass: color the `invalid` cell in grid 2
+        for (int y = 0; y < l; y++) {
+            for (int x = 0; x < w; x++) {
+                /** NOTE !!!
+                 *
+                 *  we ONLY do 1st color op:
+                 *    if grid2 is island AND grid1 is water
+                 *    (e.g. grid2[y][x] == 1 && grid1[y][x] == 0)
+                 */
+                if (grid2[y][x] == 1 && grid1[y][x] == 0) {
+                    // color(grid1, grid2, x, y, -1);
+                    color(grid2, x, y, -1);
+                }
+            }
+        }
+
+        int subIslandCnt = 0;
+
+        // 2nd pass: get island cnt and color the `valid` cell in grid 2
+        for (int y = 0; y < l; y++) {
+            for (int x = 0; x < w; x++) {
+                /** NOTE !!!
+                 *
+                 *  we ONLY do 1st color op:
+                 *    if grid2 is island AND grid1 is island
+                 *    (e.g. grid2[y][x] == 1 && grid1[y][x] == 1)
+                 */
+                if (grid2[y][x] == 1 && grid1[y][x] == 1) {
+                    //color(grid1, grid2, 2);
+                    //color(grid1, grid2, x, y, 2);
+                    color(grid2, x, y, 2);
+                    subIslandCnt += 1;
+                }
+            }
+        }
+
+        return subIslandCnt;
+    }
+
+    /** NOTE !!! for DFS, we ONLY need to pass grid2 (no need to pass grid1) */
+    // dfs
+    private void color(int[][] grid2, int x, int y, int newColor) {
+
+        // V1
+//        // Boundary check and water check
+//        if (r < 0 || r >= grid.length || c < 0 || c >= grid[0].length || grid[r][c] == 0) {
+//            return;
+//        }
+
+        int l = grid2.length;
+        int w = grid2[0].length;
+
+        int[][] moves = new int[][] { { 0, 1 }, { 0, -1 }, { 1, 0 }, { -1, 0 } };
+
+        /** NOTE !!! CORE idea
+         *
+         *  color the cell
+         *
+         *  1. mark at 1st pass, so in 2nd pass,
+         *    we know which are the VALID cells
+         *
+         *  2. avoid RE-VISIT (endless loop)
+         */
+        grid2[y][x] = newColor;
+
+        for (int[] m : moves) {
+            int y_ = y + m[0];
+            int x_ = x + m[1];
+            /** NOTE !!! CORE idea
+             *
+             *  when to go recursive (call DFS)
+             *
+             *  1. valid boundary
+             *
+             *  2. NOT visited and NOT water
+             *     (grid2[y_][x_] != newColor && grid2[y_][x_] != 0)
+             */
+            /**  NOTE !!! or,
+             *
+             *    we could do below init validation
+             *    at the begin of DFS func as well (V1)
+             *
+             *
+             *      // Boundary check and water check
+             *         if (r < 0 || r >= grid.length || c < 0 || c >= grid[0].length || grid[r][c] == 0) {
+             *             return;
+             *         }
+             */
+            // V2
+            if (x_ >= 0 && x_ < w && y_ >= 0 && y_ < l) {
+                if (grid2[y_][x_] != newColor && grid2[y_][x_] != 0) {
+                    // proceed
+                    color(grid2, x_, y_, newColor);
+                }
+            }
+        }
+    }
+
+
+    // V0-0-1
+    // IDEA: 2 pass DFS + COLOR (gemini)
+    public int countSubIslands_0_0_1(int[][] grid1, int[][] grid2) {
         int rows = grid1.length;
         int cols = grid1[0].length;
 
