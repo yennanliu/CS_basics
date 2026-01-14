@@ -1,5 +1,7 @@
 package dev;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
 public class Workspace19 {
@@ -740,6 +742,84 @@ public class Workspace19 {
 
         return dp[0]; // ????
     }
+
+
+    // LC 322
+    // 6.53 - 7.03 am
+    /**
+     *
+     *  -> Return the
+     *       - fewest number of coins that you need to make up that amount.
+     *       - otherwise, -1
+     *       
+     *       NOTE:
+     *         - You may assume that you have an 
+     *           `infinite` number of each kind of coin.
+     *
+     *
+     *
+     * -----------------
+     *
+     *
+     *  IDEA 1) BFS
+     *  
+     *  
+     *  
+     *  IDEA 2) DP (bottom up)
+     *  
+     *    - DP def:
+     *       - dp[i]: min number of coins sum up = i
+     *    
+     *    - DP eq:
+     *      - dp[i] = 
+     *           - if (num - i) in coins:
+     *             = dp[i] = min( dp[i],  dp[num - i] + 1 )
+     * 
+     *  -----------------
+     *
+     */
+    public int coinChange(int[] coins, int amount) {
+        // edge
+        if (amount == 0)
+            return 0;
+        
+        int[] dp = new int[amount + 1]; // ???
+        // init ??
+        //Arrays.fill(dp, Integer.MAX_VALUE); // ????
+        Arrays.fill(dp, amount + 1); // ????
+        //dp[0] = 1;
+        dp[0] = 0;
+
+//        HashSet<Integer> set = new HashSet<>();
+//        for (int c: coins){
+//            set.add(c);
+//        }
+
+        // ???
+//        for (int c: coins){
+//            for(int i = 0; i < amount + 1; i++){
+//                if( set.contains(i - c) ){
+//                    // dp[i] = min( dp[i],  dp[num - i] + 1 )
+//                    dp[i] = Math.min( dp[i],  dp[i - c] + 1 );
+//                }
+//            }
+//        }
+
+        for(int i = 0; i < amount + 1; i++){
+            for(int coin: coins){
+                if(i - coin >= 0){
+                    dp[i] = Math.min( dp[i],  dp[i - coin] + 1 );
+                }
+            }
+        }
+
+       // return dp[amount] == Integer.MAX_VALUE ? -1 : dp[amount];
+        return dp[amount] > amount ? -1 : dp[amount];
+    }
+
+
+
+
 
 
 }
