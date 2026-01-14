@@ -390,6 +390,34 @@ public class CoinChange {
         for (int i = 1; i <= amount; i++) {
             // 5. For each amount, try every coin
             for (int coin : coins) {
+                /** NOTE !!! CRITICAL !!!
+                 *
+                 *  the condition should be `i - coin >= 0` (e.g. i >= coin)
+                 *  -> so once we know the `remainder > = 0` (i - coin),
+                 *     we can let `prev dp and cur dp` decide the min coin cnt
+                 *     - prev dp:
+                 *          - dp[i - coin]
+                 *     - cur dp:
+                 *          - dp[i]
+                 *
+                 *
+                 * --------------------
+                 *
+                 *  NOTE !!! below logic in WRONG !!!
+                 *
+                 *   we should NOT only rely on `set.contains(i - c)`
+                 *   to for the sum up check
+                 *
+                 *  ```
+                 *  // ....
+                 *                 if( set.contains(i - c) ){
+                 *                     // dp[i] = min( dp[i],  dp[num - i] + 1 )
+                 *                     dp[i] = Math.min( dp[i],  dp[i - c] + 1 );
+                 *                 }
+                 *  // ...
+                 * ```
+                 *
+                 */
                 // If the coin is smaller than or equal to the current amount i
                 if (i >= coin) {
                     /** NOTE !!!
@@ -406,6 +434,48 @@ public class CoinChange {
         // 6. If the value is still the "Infinity" marker, we couldn't reach it.
         return dp[amount] > amount ? -1 : dp[amount];
     }
+
+    // V0-2-1
+    // IDEA: bottom up DP ("backward-looking" approach) (fixed by gemini)
+    public int coinChange_0_2_1(int[] coins, int amount) {
+        // 1. Base case
+        if (amount == 0)
+            return 0;
+
+        // 2. dp[i] = min coins needed to make amount i
+        int[] dp = new int[amount + 1];
+
+        // 3. Initialize with a value larger than any possible answer (amount + 1)
+        // We avoid Integer.MAX_VALUE to prevent overflow when adding 1
+        int max = amount + 1;
+        Arrays.fill(dp, max);
+
+        // It takes 0 coins to make 0 amount
+        dp[0] = 0;
+
+        // 4. Iterate through each coin
+        for (int coin : coins) {
+            // For each coin, update all reachable amounts from 'coin' up to 'amount'
+            for (int i = coin; i < amount + 1; i++) {
+                /**  NOTE !!!  below logic seems optional (compare V0-2 and V0-2-1)
+                 *
+                 *  ``
+                 *  if (i >= coin) {
+                 *      // ...
+                 *  }
+                 *
+                 *
+                 */
+                // Update dp[i] if using this coin gives us a smaller count
+                // dp[i - coin] is the min coins for the remainder
+                dp[i] = Math.min(dp[i], dp[i - coin] + 1);
+            }
+        }
+
+        // 5. If dp[amount] is still 'max', it means the amount is unreachable
+        return dp[amount] > amount ? -1 : dp[amount];
+    }
+
 
 
 
@@ -438,7 +508,6 @@ public class CoinChange {
 
         return dp[amount] == INF ? -1 : dp[amount];
     }
-
 
 
 
