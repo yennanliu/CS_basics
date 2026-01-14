@@ -587,5 +587,93 @@ public class Workspace19 {
     }
 
 
+    // LC 62
+    // 10.28 - 38 am
+    /**
+     *
+     *
+     *  -> Given the two integers m and n,
+     *    return the number of `possible unique paths`
+     *     that the robot can take to reach the` bottom-right corner.`
+     *
+     *
+     *    - m x n grid
+     *    - The robot is initially located
+     *       at the top-left corner (i.e., grid[0][0])
+     *
+     *    - NOTE:
+     *       -  CAN only move either
+     *          - down
+     *          - right
+     *          at any point in time.
+     *
+     * ------------
+     *
+     *   IDEA 1) MATH
+     *
+     *   IDEA 2) BRUTE FORCE
+     *
+     *   IDEA 3) 2D DP
+     *
+     *    - DP def:
+     *
+     *      - BOTTOM UP:
+     *
+     *         dp[i][j]: total possible unique path
+     *                   reach [i, j] cell
+     *
+     *      - TOP DOWN
+     *
+     *    - DP eq:
+     *
+     *       - dp[i][j]  =
+     *            dp[i-1][j] + dp[i][j-1]
+     *
+     *
+     *
+     * ------------
+     *
+     */
+    public int uniquePaths(int m, int n) {
+        // edge
+        if(m == 1 || n == 1){
+            return 1;
+        }
+
+        /**
+         *    *    - NOTE:
+         *      *       -  CAN only move either
+         *      *          - down
+         *      *          - right
+         *      *          at any point in time.
+         */
+        // ???
+        int[][] dp = new int[m + 1][n + 1];
+        // init
+        //dp[0][0] = 1;
+        // ???
+        for(int x = 0; x < n; x++){
+            dp[0][x] = 1;
+        }
+        // ???
+        // ???
+        for (int y = 0; y < m; y++) {
+            dp[y][0] = 1;
+        }
+
+
+        for(int y = 1; y < m + 1; y++){
+            for(int x = 1; x < n + 1; x++){
+                dp[y][x] = dp[y-1][x] + dp[y][x-1];
+            }
+        }
+
+        // ???
+        return dp[m][n];
+    }
+
+
+
+
 
 }
