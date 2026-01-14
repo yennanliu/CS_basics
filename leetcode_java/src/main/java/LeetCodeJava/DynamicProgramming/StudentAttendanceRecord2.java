@@ -48,9 +48,250 @@ import java.util.Arrays;
 public class StudentAttendanceRecord2 {
 
     // V0
-//    public int checkRecord(int n) {
-//
-//    }
+    // IDEA: 3D DP (GEMINI)
+    /**
+     *  **LeetCode 552 (Student Attendance Record II)**
+     *  is a much harder version of the previous problem.
+     *  Because you need to count the number of valid sequences of length ,
+     *  and you have constraints on both **total** absences
+     *  and **consecutive** lates, you need a multi-dimensional DP.
+     *
+     * ### 💡 The DP State Definition
+     *
+     * A record is valid if:
+     *
+     * 1. It contains **fewer than 2** 'A's (0 or 1).
+     * 2. It contains **no more than 2** consecutive 'L's (0, 1, or 2).
+     *
+     * Therefore, our state at day  depends on:
+     *
+     * * **Total 'A's** used so far: `j` (0 or 1).
+     * * **Consecutive 'L's** ending at the current day: `k` (0, 1, or 2).
+     *
+     * `dp[i][j][k]` = Number of valid sequences of length `i` with `j` total 'A's and `k` ending consecutive 'L's.
+     *
+     * ---
+     *
+     * ### 🔍 DP Transitions Explained
+     *
+     * When moving from day `i` to `i+1`, we consider adding one of the three letters:
+     *
+     * | Action | Impact on `j` (Absence) | Impact on `k` (Late) | Condition |
+     * | --- | --- | --- | --- |
+     * | **Add 'P'** | Stays `j` | **Resets to 0** | Always allowed |
+     * | **Add 'A'** | Becomes `j + 1` | **Resets to 0** | Only if `j < 1` |
+     * | **Add 'L'** | Stays `j` | Becomes `k + 1` | Only if `k < 2` |
+     *
+     * ---
+     *
+     * ### 📊 Complexity Analysis
+     *
+     * * **Time Complexity:** . We iterate through the days, and for each day, we perform a constant number of operations.
+     * * **Space Complexity:** .
+     * * *Note:* You can optimize space to  because day `i+1` only needs values from day `i`.
+
+     */
+    public int checkRecord(int n) {
+        int MOD = 1_000_000_007;
+        // dp[day][absent_count][consecutive_late_count]
+        int[][][] dp = new int[n + 1][2][3];
+
+        // Base case: day 0, 0 absences, 0 lates
+        dp[0][0][0] = 1;
+
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < 2; j++) { // Total Absents
+                for (int k = 0; k < 3; k++) { // Consecutive Lates
+                    if (dp[i][j][k] == 0)
+                        continue;
+
+                    long currentVal = dp[i][j][k];
+
+                    // Option 1: Add 'P' (Present)
+                    // Resets consecutive lates to 0, total absents remains same
+                    dp[i + 1][j][0] = (int) ((dp[i + 1][j][0] + currentVal) % MOD);
+
+                    // Option 2: Add 'A' (Absent)
+                    // Resets consecutive lates to 0, total absents increases
+                    if (j < 1) {
+                        dp[i + 1][j + 1][0] = (int) ((dp[i + 1][j + 1][0] + currentVal) % MOD);
+                    }
+
+                    // Option 3: Add 'L' (Late)
+                    // Consecutive lates increases, total absents remains same
+                    if (k < 2) {
+                        dp[i + 1][j][k + 1] = (int) ((dp[i + 1][j][k + 1] + currentVal) % MOD);
+                    }
+                }
+            }
+        }
+
+        // Sum all valid states at day n
+        long result = 0;
+        for (int j = 0; j < 2; j++) {
+            for (int k = 0; k < 3; k++) {
+                result = (result + dp[n][j][k]) % MOD;
+            }
+        }
+
+        return (int) result;
+    }
+
+    // V0-1
+    // IDEA: DP (GPT)
+    /**
+     * LC 552 (**Student Attendance Record II**) is a **DP counting problem with constraints**, and your current code is unfortunately **not salvageable by small fixes** — the **DP state is incorrectly defined**.
+     *
+     * I’ll do this properly, in a **tech-lead style**:
+     *
+     * 1. Why your DP definition is wrong
+     * 2. Correct DP state (this is the key)
+     * 3. Correct Java solution (clean, accepted)
+     * 4. Explanation + complexity
+     *
+     * ---
+     *
+     * You must track **three independent constraints**:
+     *
+     * * length
+     * * number of `A` used (≤ 1)
+     * * consecutive `L` streak (≤ 2)
+     *
+     * ---
+     *
+     * ## 2️⃣ Correct DP Definition (This Is the Key)
+     *
+     * ### State
+     *
+     * ```
+     * dp[i][a][l]
+     * ```
+     *
+     * Meaning:
+     *
+     * > Number of valid attendance records of length `i`
+     * > with:
+     * >
+     * > * `a` absences used (0 or 1)
+     * > * `l` consecutive L’s at the end (0, 1, or 2)
+     *
+     * ---
+     *
+     * ### Transitions
+     *
+     * From `dp[i][a][l]`, we can add:
+     *
+     * #### 1. `'P'` (Present)
+     *
+     * * Absences unchanged
+     * * Late streak resets
+     *
+     * ```
+     * dp[i+1][a][0] += dp[i][a][l]
+     * ```
+     *
+     * #### 2. `'A'` (Absent) — only if `a == 0`
+     *
+     * * Absences increase
+     * * Late streak resets
+     *
+     * ```
+     * dp[i+1][1][0] += dp[i][0][l]
+     * ```
+     *
+     * #### 3. `'L'` (Late) — only if `l < 2`
+     *
+     * * Absences unchanged
+     * * Late streak increases
+     *
+     * ```
+     * dp[i+1][a][l+1] += dp[i][a][l]
+     * ```
+     *
+     * ---
+     *
+     * ### Base Case
+     *
+     * ```
+     * dp[0][0][0] = 1
+     * ```
+     * ---
+     *
+     * ## 4️⃣ Why This Works
+     *
+     * * Exhaustively tracks all **legal states**
+     * * Never violates:
+     *
+     *   * more than 1 `A`
+     *   * 3 consecutive `L`
+     * * Counts **all valid strings of length `n`**
+     * * Uses modulo to prevent overflow
+     *
+     * ---
+     *
+     * ## ⏱ Complexity
+     *
+     * | Metric | Value    |
+     * | ------ | -------- |
+     * | Time   | **O(n)** |
+     * | Space  | **O(n)** |
+     *
+     * (States are constant: `2 × 3`)
+     *
+     * ---
+     *
+     * ## 🎯 Interview Takeaways (Very Important)
+     *
+     * * LC 552 **requires a 3-dimensional DP**
+     * * Missing **consecutive L tracking** = incorrect solution
+     * * Always define DP state from **constraints**
+     * * This is a **counting DP**, not a validation DP
+     *
+     */
+    public int checkRecord_0_1(int n) {
+        int MOD = 1_000_000_007;
+
+        // dp[i][a][l]:
+        // i = length
+        // a = absences used (0 or 1)
+        // l = consecutive L count (0..2)
+        long[][][] dp = new long[n + 1][2][3];
+
+        dp[0][0][0] = 1;
+
+        for (int i = 0; i < n; i++) {
+            for (int a = 0; a <= 1; a++) {
+                for (int l = 0; l <= 2; l++) {
+                    long cur = dp[i][a][l];
+                    if (cur == 0)
+                        continue;
+
+                    // add 'P'
+                    dp[i + 1][a][0] = (dp[i + 1][a][0] + cur) % MOD;
+
+                    // add 'A'
+                    if (a == 0) {
+                        dp[i + 1][1][0] = (dp[i + 1][1][0] + cur) % MOD;
+                    }
+
+                    // add 'L'
+                    if (l < 2) {
+                        dp[i + 1][a][l + 1] = (dp[i + 1][a][l + 1] + cur) % MOD;
+                    }
+                }
+            }
+        }
+
+        long res = 0;
+        for (int a = 0; a <= 1; a++) {
+            for (int l = 0; l <= 2; l++) {
+                res = (res + dp[n][a][l]) % MOD;
+            }
+        }
+
+        return (int) res;
+    }
+
 
     // V1
     // IDEA: DP (gemini)
