@@ -58,6 +58,38 @@ public class UniquePaths {
         }
 
         // 4. Fill the rest of the grid
+        /** NOTE !!!
+         *
+         *   the grid is `0 idx based`
+         *   e.g.
+         *    - x in [0, n-1]
+         *    - y in [0, m-1]
+         *
+         *  -> so when we loop as below:
+         *    ```
+         *     for (int y = 1; y < m; y++) {
+         *             for (int x = 1; x < n; x++) {
+         *    ```
+         *
+         *    the final reached cell (m-1, n-1)
+         *    is ALREADY the `bottom right` cell of the grid,
+         *    the robot move destination defined by this LC problem.
+         *
+         *
+         *  Conclusion:
+         *
+         *    we SHOULD use
+         *
+         *    - int[][] dp = new int[m][n];
+         *    - and loop as below:
+         *    ```
+         *            for (int y = 1; y < m; y++) {
+         *                for (int x = 1; x < n; x++) {
+         *                }
+         *             }
+         *    ```
+         *
+         */
         for (int y = 1; y < m; y++) {
             for (int x = 1; x < n; x++) {
                 // The ways to reach current cell = ways from top + ways from left
