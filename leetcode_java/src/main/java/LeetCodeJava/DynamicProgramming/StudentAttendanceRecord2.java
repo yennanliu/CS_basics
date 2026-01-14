@@ -193,7 +193,7 @@ public class StudentAttendanceRecord2 {
                      *  ---
                      *
                      *  (currentVal = dp[i][j][k])
-                     *  
+                     *
                      */
                     // Option 3: Add 'L' (Late)
                     // Consecutive lates increases, total absents remains same

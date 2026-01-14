@@ -210,6 +210,7 @@
 			- 310
 			- 1192
 		- gemini
+	- (1D DP)
 	- LC 70 Climbing Stairs
 		- gpt
 			- 403
@@ -243,6 +244,22 @@
 		- gpt
 		- gemini
 			- 730
+	- (2D DP)
+	- LC 62 Unique Paths
+		- gpt
+			- 63
+			- 64
+			- 931
+			- 221
+			- 1277
+			- 120
+			- 329
+			- 576
+		- gemini
+			- 1143
+			- 174
+			- 741
+			- 221
 	-> TODO: redo `classics` `1D` dp prblems then
 	- others:
 		- Path Signatures
