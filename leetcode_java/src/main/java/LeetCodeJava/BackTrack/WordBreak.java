@@ -178,6 +178,57 @@ public class WordBreak {
         return false;
     }
 
+    // V0-0-3
+    // IDEA: BOTTOM UP DP (gemini)
+    public boolean wordBreak_0_0_3(String s, List<String> wordDict) {
+        int n = s.length();
+        // Convert list to set for O(1) lookups
+        Set<String> wordSet = new HashSet<>(wordDict);
+
+        // dp[i] means the prefix s[0...i-1] can be segmented
+        boolean[] dp = new boolean[n + 1];
+
+        // Base case: empty string can be segmented
+        dp[0] = true;
+
+        // i is the end of the current substring we are checking
+        for (int i = 1; i <= n; i++) {
+            // j is the potential "split point"
+            for (int j = 0; j < i; j++) {
+                /* * If the prefix s[0...j] is valid (dp[j] is true)
+                 * AND the remaining part s[j...i] is in the dictionary
+                 */
+                if (dp[j] && wordSet.contains(s.substring(j, i))) {
+                    dp[i] = true;
+                    break; // Found a valid way to segment up to i, move to i+1
+                }
+            }
+        }
+
+        return dp[n];
+    }
+
+    // V0-0-4
+    // IDEA: TOP DOWN DP (gemini)
+    public boolean wordBreak_0_0_4(String s, List<String> wordDict) {
+        return solve(s, new HashSet<>(wordDict), 0, new Boolean[s.length()]);
+    }
+
+    private boolean solve(String s, Set<String> set, int start, Boolean[] memo) {
+        if (start == s.length())
+            return true;
+        if (memo[start] != null)
+            return memo[start];
+
+        for (int end = start + 1; end <= s.length(); end++) {
+            if (set.contains(s.substring(start, end)) && solve(s, set, end, memo)) {
+                return memo[start] = true;
+            }
+        }
+        return memo[start] = false;
+    }
+
+
 
     // V0-1
     // IDEA : BFS
