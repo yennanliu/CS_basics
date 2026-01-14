@@ -49,6 +49,23 @@ public class StudentAttendanceRecord2 {
 
     // V0
     // IDEA: 3D DP (GEMINI)
+    /**  NOTE !!!
+     *
+     * -  DP def:
+     *
+     *    - dp[i][j][k] =
+     *    Number of valid sequences of length i with j total
+     *    'A's and k ending consecutive 'L's.
+     *
+     *    e.g.:
+     *
+     *    Number of valid attendance records of
+     *      - length i
+     *    with:
+     *       - j absences used (0 or 1)
+     *       - k consecutive L’s at the end (0, 1, or 2)
+     *
+     */
     /**
      *  **LeetCode 552 (Student Attendance Record II)**
      *  is a much harder version of the previous problem.
@@ -93,6 +110,15 @@ public class StudentAttendanceRecord2 {
      */
     public int checkRecord(int n) {
         int MOD = 1_000_000_007;
+        /**  NOTE !!!
+         *
+         * dp[i][j][k] =
+         *
+         *  Number of valid sequences of
+         *    - length i
+         *    - j total 'A's
+         *    - k ending consecutive 'L's.
+         */
         // dp[day][absent_count][consecutive_late_count]
         int[][][] dp = new int[n + 1][2][3];
 
@@ -100,23 +126,75 @@ public class StudentAttendanceRecord2 {
         dp[0][0][0] = 1;
 
         for (int i = 0; i < n; i++) {
+            /** NOTE !!!
+             *
+             *  j is in [0,2]
+             */
             for (int j = 0; j < 2; j++) { // Total Absents
+                /** NOTE !!!
+                 *
+                 *  k is in [0,3]
+                 */
                 for (int k = 0; k < 3; k++) { // Consecutive Lates
                     if (dp[i][j][k] == 0)
                         continue;
 
+                    /** NOTE !!!
+                     *
+                     *  we already get cur val as `currentVal`
+                     *
+                     *  (currentVal = dp[i][j][k])
+                     *
+                     *  so we can use currentVal below in DP transtion
+                     *  for doing op such as:
+                     *
+                     *       dp[i + 1][a][0] += dp[i][a][l]
+                     *       ...
+                     *
+                     */
                     long currentVal = dp[i][j][k];
 
+                    /** NOTE !!!
+                     *
+                     *  OP 1: Add 'P' (Present)
+                     *
+                     *
+                     *  ---
+                     *
+                     *  (currentVal = dp[i][j][k])
+                     */
                     // Option 1: Add 'P' (Present)
                     // Resets consecutive lates to 0, total absents remains same
-                    dp[i + 1][j][0] = (int) ((dp[i + 1][j][0] + currentVal) % MOD);
+                    dp[i + 1][j][0] =
+                            (int) ((dp[i + 1][j][0] + currentVal) % MOD);
 
+                    /** NOTE !!!
+                     *
+                     *  OP 2: Add 'A' (Absent)
+                     *
+                     *
+                     *  ---
+                     *
+                     *  (currentVal = dp[i][j][k])
+                     *
+                     */
                     // Option 2: Add 'A' (Absent)
                     // Resets consecutive lates to 0, total absents increases
                     if (j < 1) {
-                        dp[i + 1][j + 1][0] = (int) ((dp[i + 1][j + 1][0] + currentVal) % MOD);
+                        dp[i + 1][j + 1][0] =
+                                (int) ((dp[i + 1][j + 1][0] + currentVal) % MOD);
                     }
 
+
+                    /** NOTE !!!
+                     *
+                     *  OP 3: Add 'L' (Late)
+                     *
+                     *  ---
+                     *
+                     *  (currentVal = dp[i][j][k])
+                     *  
+                     */
                     // Option 3: Add 'L' (Late)
                     // Consecutive lates increases, total absents remains same
                     if (k < 2) {
