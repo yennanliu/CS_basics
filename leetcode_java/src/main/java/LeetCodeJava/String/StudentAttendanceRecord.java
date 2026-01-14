@@ -42,9 +42,48 @@ package LeetCodeJava.String;
 public class StudentAttendanceRecord {
 
     // V0
-//    public boolean checkRecord(String s) {
-//
-//    }
+    // IDEA: STRING OP
+    public boolean checkRecord(String s) {
+        // edge
+        if (s.isEmpty() || s.length() == 1) {
+            return true;
+        }
+        if (s.length() == 2) {
+            if (s.charAt(0) == 'A' && s.charAt(1) == 'A') {
+                return false;
+            }
+            return true;
+        }
+
+        int absent_cnt = 0;
+        int con_late_cnt = 0;
+
+        for (char c : s.toCharArray()) {
+            // 'A'
+            if (c == 'A') {
+                absent_cnt += 1;
+                con_late_cnt = 0;
+            }
+            // 'C'
+            else if (c == 'L') {
+                con_late_cnt += 1;
+            }
+            // 'P'
+            else {
+                con_late_cnt = 0;
+            }
+
+            if (absent_cnt >= 2) {
+                return false;
+            }
+            if (con_late_cnt >= 3) {
+                return false;
+            }
+
+        }
+
+        return true;
+    }
 
     // V0-1
     // IDEA: BRUTE FORCE (fixed by gemini)
