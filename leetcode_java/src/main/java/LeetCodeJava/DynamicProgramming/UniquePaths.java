@@ -42,8 +42,37 @@ import java.util.Arrays;
 public class UniquePaths {
 
     // V0
-    // IDEA: 2D DP (fixed by gpt)
+    // IDEA: DP (gemini)
     public int uniquePaths(int m, int n) {
+        // 1. Define DP table: dp[y][x] is the number of ways to reach cell (y, x)
+        int[][] dp = new int[m][n];
+
+        // 2. Initialize first column: only one way (keep going down)
+        for (int y = 0; y < m; y++) {
+            dp[y][0] = 1;
+        }
+
+        // 3. Initialize first row: only one way (keep going right)
+        for (int x = 0; x < n; x++) {
+            dp[0][x] = 1;
+        }
+
+        // 4. Fill the rest of the grid
+        for (int y = 1; y < m; y++) {
+            for (int x = 1; x < n; x++) {
+                // The ways to reach current cell = ways from top + ways from left
+                dp[y][x] = dp[y - 1][x] + dp[y][x - 1];
+            }
+        }
+
+        // 5. The answer is at the bottom-right corner
+        return dp[m - 1][n - 1];
+    }
+
+
+    // V0-0-0-1
+    // IDEA: 2D DP (fixed by gpt)
+    public int uniquePaths_0_0_0_1(int m, int n) {
         if (m == 0 || n == 0)
             return 0;
 
@@ -368,5 +397,8 @@ public class UniquePaths {
         }
         return dp[m-1][n-1];
     }
+
+
+
 
 }
