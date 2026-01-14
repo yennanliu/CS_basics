@@ -409,6 +409,29 @@ public class Workspace19 {
 
 
     // LC 1025
+    // 8.56 - 9.06
+    // idea: dp
+    /**
+     *
+     * -> Return true if
+     * and only if Alice wins the game,
+     * assuming both players play optimally.
+     *
+     *  n at beginning
+     *
+     *  move:
+     *
+     *    1. choose any x with
+     *        -  0 < x < n
+     *        -  n % x == 0
+     *
+     *    2. replace n with n - x
+     *
+     * -----------
+     *
+     * -----------
+     *
+     */
     public boolean divisorGame(int n) {
 
         return false;
