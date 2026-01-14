@@ -1,4 +1,4 @@
-package LeetCodeJava.Greedy;
+package LeetCodeJava.String;
 
 // https://leetcode.com/problems/student-attendance-record-i/description/
 /**
