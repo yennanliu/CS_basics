@@ -464,7 +464,7 @@ public class Workspace19 {
      *
      *
      */
-    public boolean checkRecord(String s) {
+    public boolean checkRecord_99999(String s) {
         // edge
         if(s.isEmpty() || s.length() == 1){
             return true;
@@ -505,6 +505,87 @@ public class Workspace19 {
 
         return true;
     }
+
+    // LC 552
+    // 9.25 - 35 am
+    /**
+     *
+     *  -> Given an integer n, return the `number` of
+     *  possible `attendance records` of `length n`
+     *  that make a student eligible for an attendance award.
+     *  The answer may be very large, so return it modulo 109 + 7.
+     *
+     *
+     *  'A': Absent.
+     *  'L': Late.
+     *  'P': Present.
+     *
+     *
+     * ------------------
+     *
+     *  IDEA 1) BRUTE FORCE
+     *
+     *  IDEA 2) DP
+     *
+     *     (with double loop)
+     *
+     *     - DP def:
+     *          int dp[i][absent_cnt]:
+     *                    combination of  `attendance records`
+     *                    with len = i
+     *
+     *                    absent_cnt: total absent_cnt with len i
+     *
+     *     - DP eq:
+     *
+     *           dp[i][j] =
+     *                if absent_cnt < 2 && ( sum of 'L' in (s[i], s[i-1], s[i-2]) < 3 ):
+     *                    max(dp[i][j], dp[i-1][j])
+     *                else:
+     *                   0
+     *
+     *
+     * ------------------
+     *
+     */
+    public int checkRecord(int n) {
+        // edge
+        if(n == 0){
+            return 0;
+        }
+        if(n == 1){
+            return 3;
+        }
+        if(n == 2){
+            return 8;
+        }
+
+        // ???
+        /**
+         *      *     - DP def:
+         *      *          int dp[i][absent_cnt]:
+         *      *                    combination of  `attendance records`
+         *      *                    with len = i
+         *      *
+         *      *                    absent_cnt: total absent_cnt with len i
+         *
+         */
+        int[][] dp = new int[n + 1][n + 1];
+        // init
+        for(int y = 0; y < n + 1; y++){
+            dp[y][0] = y; // ???
+        }
+
+        String status = "ALP"; // /??
+
+        // ??
+        for(char c: status.toCharArray()){
+           // for(int i )
+        }
+
+        return 0;
+    }
+
 
 
 }
