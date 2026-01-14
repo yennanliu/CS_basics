@@ -180,14 +180,35 @@ public class WordBreak {
 
     // V0-0-3
     // IDEA: BOTTOM UP DP (gemini)
+    /**  NOTE !!!
+     *
+     *  - DP def:
+     *     - dp[i]: the prefix s[0...i-1] can be `segmented`
+     *
+     *  - DP eq:
+     *     - dp[i] =
+     *         if (dp[j] && wordSet.contains(s.substring(j, i)):
+     *             true
+     */
     public boolean wordBreak_0_0_3(String s, List<String> wordDict) {
         int n = s.length();
         // Convert list to set for O(1) lookups
         Set<String> wordSet = new HashSet<>(wordDict);
 
+        /** NOTE !!!
+         *
+         * - DP def:
+         *
+         * // dp[i] means the prefix s[0...i-1] can be segmented
+         *     boolean[] dp = new boolean[n + 1];
+         */
         // dp[i] means the prefix s[0...i-1] can be segmented
         boolean[] dp = new boolean[n + 1];
 
+        /** NOTE !!!
+         *
+         *  Base case
+         */
         // Base case: empty string can be segmented
         dp[0] = true;
 
@@ -195,6 +216,14 @@ public class WordBreak {
         for (int i = 1; i <= n; i++) {
             // j is the potential "split point"
             for (int j = 0; j < i; j++) {
+                /** NOTE !!!
+                 *
+                 * - DP eq:
+                 *
+                 *   - dp[i] =
+                 *        if (dp[j] && wordSet.contains(s.substring(j, i)):
+                 *          true
+                 */
                 /* * If the prefix s[0...j] is valid (dp[j] is true)
                  * AND the remaining part s[j...i] is in the dictionary
                  */
@@ -209,11 +238,13 @@ public class WordBreak {
     }
 
     // V0-0-4
-    // IDEA: TOP DOWN DP (gemini)
+    // IDEA: TOP DOWN DP (memo recursion) (gemini)
     public boolean wordBreak_0_0_4(String s, List<String> wordDict) {
+        /** NOTE !!! use helper func */
         return solve(s, new HashSet<>(wordDict), 0, new Boolean[s.length()]);
     }
 
+    // helper func
     private boolean solve(String s, Set<String> set, int start, Boolean[] memo) {
         if (start == s.length())
             return true;
@@ -221,6 +252,7 @@ public class WordBreak {
             return memo[start];
 
         for (int end = start + 1; end <= s.length(); end++) {
+            /** NOTE !!! recursive call here */
             if (set.contains(s.substring(start, end)) && solve(s, set, end, memo)) {
                 return memo[start] = true;
             }
