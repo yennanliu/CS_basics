@@ -44,9 +44,42 @@ public class LongestCommonPrefix {
      */
 
     // V0
-//    public String longestCommonPrefix(String[] strs) {
-//
-//    }
+    // IDEA: PREFIX + STRING OP (GEMINI)
+    public String longestCommonPrefix(String[] strs) {
+        if (strs == null || strs.length == 0)
+            return "";
+        if (strs.length == 1)
+            return strs[0];
+
+        // 1. Generate all possible prefixes from the first word
+        String first = strs[0];
+        List<String> prefixList = new ArrayList<>();
+        String cur = "";
+        for (char c : first.toCharArray()) {
+            cur += c;
+            prefixList.add(cur);
+        }
+
+        // 2. Search from LONGEST prefix to SHORTEST
+        for (int i = prefixList.size() - 1; i >= 0; i--) {
+            String prefix = prefixList.get(i);
+            boolean isCommon = true;
+
+            for (String s : strs) {
+                if (!s.startsWith(prefix)) {
+                    isCommon = false;
+                    break; // No need to check other words for this prefix
+                }
+            }
+
+            if (isCommon) {
+                return prefix; // Found the longest one!
+            }
+        }
+
+        return "";
+    }
+
 
     // V0-0-1
     // IDEA: SET + BRUTE FORCE (fixed by gpt)
@@ -172,6 +205,58 @@ public class LongestCommonPrefix {
         // No common prefix found
         return "";
     }
+
+    // V0-2
+    // IDEA: STRING OP (GEMINI)
+    public String longestCommonPrefix_0_2(String[] strs) {
+        if (strs.length == 0)
+            return "";
+
+        String prefix = strs[0];
+        for (int i = 1; i < strs.length; i++) {
+            // While the current string doesn't start with the prefix
+            while (strs[i].indexOf(prefix) != 0) {
+                // Shorten the prefix by one character from the end
+                prefix = prefix.substring(0, prefix.length() - 1);
+                if (prefix.isEmpty())
+                    return "";
+            }
+        }
+        return prefix;
+    }
+
+
+    // V0-3
+    // IDEA: DP (gpt)
+    public String longestCommonPrefix_0_3(String[] strs) {
+        if (strs == null || strs.length == 0) {
+            return "";
+        }
+
+        // dpPrefix holds the current longest common prefix
+        String dpPrefix = strs[0];
+
+        for (int i = 1; i < strs.length; i++) {
+            dpPrefix = commonPrefix_0_3(dpPrefix, strs[i]);
+            if (dpPrefix.isEmpty()) {
+                break;
+            }
+        }
+
+        return dpPrefix;
+    }
+
+    private String commonPrefix_0_3(String s1, String s2) {
+        int minLen = Math.min(s1.length(), s2.length());
+        int idx = 0;
+
+        while (idx < minLen && s1.charAt(idx) == s2.charAt(idx)) {
+            idx++;
+        }
+
+        return s1.substring(0, idx);
+    }
+
 
     // V1-1
     // https://leetcode.com/problems/longest-common-prefix/editorial/
