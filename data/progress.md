@@ -261,7 +261,6 @@
 			- 221
 	- LC 1143 Longest Common Subsequence
 		- gpt
-			- 392
 			- 583
 			- 1035
 			- 718

@@ -883,6 +883,13 @@ public class Workspace19 {
     }
 
 
+    // LC 392
+    public boolean isSubsequence(String s, String t) {
+
+        return false;
+    }
+
+
 
 
 
