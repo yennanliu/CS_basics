@@ -1,5 +1,6 @@
 package dev;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -817,6 +818,69 @@ public class Workspace19 {
         return dp[amount] > amount ? -1 : dp[amount];
     }
 
+
+    // LC 14
+    // 7.08 - 18 am
+    /**
+     *  -> Write a function to
+     *       find the `longest common prefix string`
+     *       amongst an array of strings.
+     *    if not, return ""
+     *
+     *
+     *    -------------
+     *
+     *    IDEA 1) BRUTE FORCE
+     *       - get the shortest string
+     *
+     *
+     *    IDEA 2) TRIE ???
+     *
+     *    IDEA 3) DP ????
+     *
+     *    IDEA 4) SET + BRUTE FORCE ???
+     *
+     *
+     *    -------------
+     *
+     *
+     */
+    //  IDEA 4) SET + BRUTE FORCE ???
+    public String longestCommonPrefix(String[] strs) {
+        // edge
+
+        // ???
+       String first = strs[0];
+
+       // ??
+        String cur = "";
+        List<String> prefixList = new ArrayList<>();
+        for(String x: first.split("")){
+            cur += x;
+            prefixList.add(cur);
+        }
+
+        boolean foundCommonPrefix = false;
+
+        for(String prefix: prefixList){
+            for(String s: strs){
+                if(prefix.length() > s.length()){
+                    continue;
+                }
+                if(!s.startsWith(prefix)){
+                    foundCommonPrefix = false;
+                }
+            }
+
+            if(foundCommonPrefix){
+                return prefix;
+            }
+        }
+
+
+
+        return ""; // ???
+    }
 
 
 
