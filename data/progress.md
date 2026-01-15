@@ -1,6 +1,6 @@
 # Progress
 
-# 2026-01-15
+# 2026-01-16
 
 - weekly video
 - to review
@@ -259,6 +259,20 @@
 			- 174
 			- 741
 			- 221
+	- LC 1143 Longest Common Subsequence
+		- gpt
+			- 14
+			- 392
+			- 583
+			- 1035
+			- 718
+			- 115
+			- 72
+			- 1092
+			- 97
+			- 10
+		- gemini
+			- 44
 	-> TODO: redo `classics` `1D` dp prblems then
 	- others:
 		- Path Signatures
