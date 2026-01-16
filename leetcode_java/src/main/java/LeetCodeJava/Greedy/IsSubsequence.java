@@ -37,9 +37,73 @@ package LeetCodeJava.Greedy;
 public class IsSubsequence {
 
     // V0
-//    public boolean isSubsequence(String s, String t) {
-//
-//    }
+    // IDEA: 2 POINTERS (gemini)
+    public boolean isSubsequence(String s, String t) {
+        // Edge case: Empty s is always a subsequence of any t
+        if (s.isEmpty())
+            return true;
+        // If t is empty but s isn't, s cannot be a subsequence
+        if (t.isEmpty())
+            return false;
+
+        int i = 0; // Pointer for s
+        int j = 0; // Pointer for t
+
+        /** NOTE !!!
+         *
+         *  the while loop condition:
+         *
+         *     i < s.length()
+         *     &&
+         *     j < t.length()
+         */
+        while (i < s.length() && j < t.length()) {
+            // If characters match, move the pointer for s
+            if (s.charAt(i) == t.charAt(j)) {
+                i++;
+            }
+            // Always move the pointer for t
+            j++;
+        }
+
+        // If i reached the end of s, all characters were found in order
+        return i == s.length();
+    }
+
+    // V0-1
+    // IDEA: 2 POINTERS (gpt)
+    public boolean isSubsequence_0_1(String s, String t) {
+        // edge cases
+        if (s.isEmpty())
+            return true;
+        if (t.isEmpty())
+            return false;
+
+        int len_s = s.length();
+        int len_t = t.length();
+
+        int idx_t = 0;
+
+        for (int idx_s = 0; idx_s < len_s; idx_s++) {
+
+            // move idx_t until we find s[idx_s]
+            while (idx_t < len_t && s.charAt(idx_s) != t.charAt(idx_t)) {
+                idx_t++;
+            }
+
+            // ran out of t without matching s[idx_s]
+            if (idx_t == len_t) {
+                return false;
+            }
+
+            // matched s[idx_s], move to next position in t
+            idx_t++;
+        }
+
+        return true;
+    }
+
+
 
     // V1-1
     // https://leetcode.ca/2016-12-26-392-Is-Subsequence/
