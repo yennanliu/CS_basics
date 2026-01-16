@@ -653,6 +653,19 @@ def knapsack_optimized(weights, values, capacity):
 
 **🔑 Key Insight**: In unbounded knapsack problems (like Coin Change), the **order of nested loops** determines whether you count **combinations** or **permutations**.
 
+#### **Quick Comparison Table**
+
+| Aspect | Combinations (LC 518) | Permutations (LC 377) |
+|--------|----------------------|----------------------|
+| **Loop Order** | Coin → Amount | Amount → Coin |
+| **Order Matters?** | ❌ No: [1,2] = [2,1] | ✅ Yes: [1,2] ≠ [2,1] |
+| **Problem Type** | Coin Change II | Combination Sum IV |
+| **Outer Loop** | `for (int coin : coins)` | `for (int i = 1; i <= target; i++)` |
+| **Inner Loop** | `for (int i = coin; i <= amount; i++)` | `for (int num : nums)` |
+| **Example** | amount=3, coins=[1,2] → 2 ways | target=3, nums=[1,2] → 3 ways |
+
+---
+
 #### **Pattern 1: Combinations (Outer: Coins, Inner: Amount)**
 ```java
 // LC 518: Coin Change II - Count combinations
@@ -734,6 +747,98 @@ Result: 3 permutations → {1,1,1}, {1,2}, {2,1}
 | **Outer: Coin**<br>Inner: Amount | **Combinations**<br>(Order doesn't matter) | LC 518 Coin Change II | Count unique coin combinations |
 | **Outer: Amount**<br>Inner: Coin | **Permutations**<br>(Order matters) | LC 377 Combination Sum IV | Count different orderings |
 
+#### **🔥 Side-by-Side Code Comparison**
+
+**LC 518: Coin Change II (Combinations)**
+```java
+public int change(int amount, int[] coins) {
+    int[] dp = new int[amount + 1];
+    dp[0] = 1; // Base: 1 way to make 0
+
+    // CRITICAL: Coin outer loop = COMBINATIONS
+    for (int coin : coins) {              // ← Process coins one by one
+        for (int i = coin; i <= amount; i++) {  // ← Update all amounts for this coin
+            dp[i] += dp[i - coin];
+        }
+    }
+    return dp[amount];
+}
+
+// Example: amount=3, coins=[1,2]
+// Result: 2 combinations
+// {1,1,1}, {1,2}  (Note: [1,2] and [2,1] counted as same)
+```
+
+**LC 377: Combination Sum IV (Permutations)**
+```java
+public int combinationSum4(int[] nums, int target) {
+    int[] dp = new int[target + 1];
+    dp[0] = 1; // Base: 1 way to make 0
+
+    // CRITICAL: Amount outer loop = PERMUTATIONS
+    for (int i = 1; i <= target; i++) {   // ← Process each amount
+        for (int num : nums) {            // ← Try every number for this amount
+            if (i >= num) {
+                dp[i] += dp[i - num];
+            }
+        }
+    }
+    return dp[target];
+}
+
+// Example: target=3, nums=[1,2]
+// Result: 3 permutations
+// {1,1,1}, {1,2}, {2,1}  (Note: [1,2] and [2,1] are different)
+```
+
+#### **🔍 Detailed Trace Comparison: Why Loop Order Matters**
+
+**Example: nums/coins = [1, 2], target/amount = 3**
+
+**LC 518 (Combinations - Coin Outer):**
+```
+Initialize: dp = [1, 0, 0, 0]
+
+Process coin 1:
+  i=1: dp[1] += dp[0] = 1    → [1, 1, 0, 0]  // ways: {1}
+  i=2: dp[2] += dp[1] = 1    → [1, 1, 1, 0]  // ways: {1,1}
+  i=3: dp[3] += dp[2] = 1    → [1, 1, 1, 1]  // ways: {1,1,1}
+
+Process coin 2:
+  i=2: dp[2] += dp[0] = 1+1=2 → [1, 1, 2, 1]  // ways: {1,1}, {2}
+  i=3: dp[3] += dp[1] = 1+1=2 → [1, 1, 2, 2]  // ways: {1,1,1}, {1,2}
+                                              // Note: Can't get {2,1} because
+                                              // all coin-1 uses are done before coin-2
+
+Final: dp[3] = 2  ✅ Only {1,1,1} and {1,2}
+```
+
+**LC 377 (Permutations - Amount Outer):**
+```
+Initialize: dp = [1, 0, 0, 0]
+
+i=1 (building sum 1):
+  Try 1: dp[1] += dp[0] = 1   → [1, 1, 0, 0]  // ways: {1}
+  Try 2: skip (2 > 1)
+
+i=2 (building sum 2):
+  Try 1: dp[2] += dp[1] = 1   → [1, 1, 1, 0]  // {1} + 1 = {1,1}
+  Try 2: dp[2] += dp[0] = 1+1=2 → [1, 1, 2, 0]  // {} + 2 = {2}
+
+i=3 (building sum 3):
+  Try 1: dp[3] += dp[2] = 2   → [1, 1, 2, 2]  // {1,1} + 1 = {1,1,1}
+                                              // {2} + 1 = {2,1}  ✅
+  Try 2: dp[3] += dp[1] = 2+1=3 → [1, 1, 2, 3]  // {1} + 2 = {1,2}  ✅
+
+Final: dp[3] = 3  ✅ All three: {1,1,1}, {1,2}, {2,1}
+```
+
+**Key Insight:**
+- **LC 518 (Coin Outer)**: Once you finish processing coin-1, you never revisit it. This forces a canonical order (all 1s before all 2s), preventing duplicates like {1,2} and {2,1}.
+- **LC 377 (Amount Outer)**: For each sum, you ask "what was the **last** number added?" Every number can be "last", allowing both {1,2} and {2,1}.
+
+---
+
 #### **When to Use Which**
 
 **Use Combinations (Coin → Amount)** when:
@@ -776,6 +881,17 @@ Input: amount = 3, coins = [2]
 Output: 0
 Explanation: Cannot make 3 with only coins of 2
 ```
+
+#### **📚 Problem References**
+
+| Problem | LC # | Loop Order | What it Counts | File Reference |
+|---------|------|------------|----------------|----------------|
+| **Coin Change II** | 518 | Coin → Amount | Combinations (order doesn't matter) | `leetcode_java/.../CoinChange2.java` |
+| **Combination Sum IV** | 377 | Amount → Coin | Permutations (order matters) | `leetcode_java/.../CombinationSumIV.java` |
+
+**💡 Memory Trick:**
+- **"Coin first" = Combinations** (both start with 'C')
+- **"Amount first" = Arrangements/Permutations** (both start with 'A')
 
 ### **Critical Pattern: Understanding `if (i - coin >= 0)` in Coin Change DP**
 
@@ -1027,7 +1143,8 @@ def interval_dp(arr):
 | Target Sum | 494 | Sum to target | Medium |
 | Last Stone Weight II | 1049 | Min difference | Medium |
 | Ones and Zeroes | 474 | 2D Knapsack | Medium |
-| Coin Change 2 | 518 | Unbounded (Coin→Amount for combinations) | Medium |
+| **Coin Change 2** | **518** | **Unbounded (Coin→Amount = Combinations)** | **Medium** |
+| **Combination Sum IV** | **377** | **Unbounded (Amount→Coin = Permutations)** | **Medium** |
 
 ### **State Machine Problems**
 | Problem | LC # | Key Technique | Difficulty |
