@@ -129,18 +129,47 @@ public class WordBreak2 {
             return res;
         }
 
-        // Try every possible end position for the current word
+        /** NOTE !!!
+         *
+         *  we loop over `END` idx of the string s,
+         *   -> so
+         *        if sub str (String word = s.substring(start, end)) is in word dict
+         *           -> we can proceed with DFS (with cur sub str)
+         */
+        // Try every possible END position for the current word
         for (int end = start + 1; end <= s.length(); end++) {
+            /** NOTE !!!
+             *
+             *  we get sub str first,
+             *
+             *  NOTE !!!
+             *    the `start idx` if fixed per DFS call
+             */
             String word = s.substring(start, end);
 
             if (wordSet.contains(word)) {
+                /**  NOTE !!!!
+                 *
+                 *
+                 */
                 // Get all valid sentences that can be formed from the remaining string
                 List<String> subList = dfs(s, wordSet, end);
 
                 for (String sub : subList) {
                     // Combine the current word with the suffix
                     // If suffix is empty (end of string), don't add a space
-                    res.add(word + (sub.isEmpty() ? "" : " ") + sub);
+
+                    // V1
+                    //res.add(word + (sub.isEmpty() ? "" : " ") + sub);
+
+                    // V2
+                    if (sub.isEmpty()) {
+                        res.add(word);
+                    } else {
+                        res.add(word + " " + sub);
+                    }
+
+
                 }
             }
         }
