@@ -271,6 +271,81 @@ for (int r = 0; r < s2.length(); r++){
 // ...
 ```
 
+#### 0-2-5) Subsequence Matching (One Always Moves, One Conditionally Moves)
+
+```java
+// java
+// LC 392 Is Subsequence
+// https://leetcode.com/problems/is-subsequence/
+
+/**
+ * Pattern: Check if string s is a subsequence of string t
+ *
+ * Key Idea:
+ *   - Use two pointers: i for s (target subsequence), j for t (main string)
+ *   - ALWAYS move j (scan through entire t)
+ *   - ONLY move i when characters match
+ *   - If i reaches end of s, we found all characters in order
+ *
+ * Example:
+ *   s = "abc", t = "ahbgdc"
+ *
+ *   [a h b g d c]    i=0, j=0, s[i]=a, t[j]=a, match! i++, j++
+ *    i j
+ *
+ *   [a h b g d c]    i=1, j=1, s[i]=b, t[j]=h, no match, j++
+ *      i j
+ *
+ *   [a h b g d c]    i=1, j=2, s[i]=b, t[j]=b, match! i++, j++
+ *        i j
+ *
+ *   [a h b g d c]    i=2, j=3, s[i]=c, t[j]=g, no match, j++
+ *          i j
+ *
+ *   [a h b g d c]    i=2, j=4, s[i]=c, t[j]=d, no match, j++
+ *            i j
+ *
+ *   [a h b g d c]    i=2, j=5, s[i]=c, t[j]=c, match! i++, j++
+ *              i j
+ *
+ *   i == s.length() -> return true
+ */
+public boolean isSubsequence(String s, String t) {
+    if (s.isEmpty())
+        return true;
+    if (t.isEmpty())
+        return false;
+
+    int i = 0; // Pointer for s (target subsequence)
+    int j = 0; // Pointer for t (main string)
+
+    /** NOTE !!!
+     *
+     *  the while loop condition:
+     *
+     *     i < s.length()
+     *     &&
+     *     j < t.length()
+     */
+    while (i < s.length() && j < t.length()) {
+        // If characters match, move the pointer for s
+        if (s.charAt(i) == t.charAt(j)) {
+            i++;
+        }
+        // Always move the pointer for t
+        j++;
+    }
+
+    // If i reached the end of s, all characters were found in order
+    return i == s.length();
+}
+```
+
+**Classic Problems:**
+- LC 392 Is Subsequence
+- LC 524 Longest Word in Dictionary through Deleting
+- LC 792 Number of Matching Subsequences
+
 ## 1) General form
 
 ### 1-1) Basic OP
