@@ -928,6 +928,79 @@ public class Workspace19 {
         return t.charAt(idx_t) == s.charAt(len_s - 1);
     }
 
+    // LC 1143
+    // 9.07 - 17 am
+    /**
+     *  ->  return the length of
+     *      their longest common subsequence
+     *      (if no common, return 0)
+     *
+     *      2 str:
+     *         - text1, text2
+     *
+     *
+     *    NOTE:
+     *      - A common subsequence of two strings is
+     *      a subsequence that is common to both strings.
+     *
+     *  --------------
+     *
+     *   IDEA 1) 2 POINTERS (SLIDE WINDOW)
+     *
+     *   IDEA 2) DP
+     *
+     *
+     *  --------------
+     *
+     *
+     */
+    // IDEA 1) 2 POINTERS (SLIDE WINDOW)
+    public int longestCommonSubsequence(String text1, String text2) {
+        // edge
+        if(text1.equals(text2)){
+            return text1.length();
+        }
+
+        // assume text1 len > text2 len
+        // if NOT, swap text1, text2
+        if(text1.length() < text2.length()){
+            String tmp = text1;
+            text1 = text2;
+            text2 = tmp;
+        }
+
+        int len1 = text1.length();
+        int len2 = text2.length();
+
+        int idx_1 = 0;
+        int idx_2 = 0;
+
+        int globalLongest = 0;
+        int localLongest = 0;
+
+        // NOTE !!!
+        while (idx_1 < len1 && idx_2 < len2){
+            // NOTE !!!
+            if (text1.charAt(idx_1) == text2.charAt(idx_2)){
+                idx_1 += 1;
+                localLongest += 1;
+                // update global len
+                globalLongest = Math.max(globalLongest, localLongest);
+            }
+            // ???
+            // reset
+            if(text1.charAt(idx_1) != text2.charAt(idx_2)){
+                localLongest = 0;
+            }
+
+            idx_2 += 1;
+        }
+
+        return globalLongest;
+    }
+
+
+
 
 
 

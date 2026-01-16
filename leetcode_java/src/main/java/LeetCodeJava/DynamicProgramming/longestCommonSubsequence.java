@@ -46,9 +46,32 @@ import java.util.Arrays;
 public class longestCommonSubsequence {
 
     // V0
-//    public int longestCommonSubsequence(String text1, String text2) {
-//
-//    }
+    // IDEA: BOTTOM UP 2D DP (GEMINI)
+    public int longestCommonSubsequence(String text1, String text2) {
+        int m = text1.length();
+        int n = text2.length();
+
+        // dp[i][j] stores the LCS of text1[0...i-1] and text2[0...j-1]
+        int[][] dp = new int[m + 1][n + 1];
+
+        for (int i = 1; i <= m; i++) {
+            for (int j = 1; j <= n; j++) {
+                // Case 1: Characters match
+                if (text1.charAt(i - 1) == text2.charAt(j - 1)) {
+                    // Diagonal move: 1 + result from both strings being 1 char shorter
+                    dp[i][j] = 1 + dp[i - 1][j - 1];
+                }
+                // Case 2: Characters don't match
+                else {
+                    // Take the maximum of skipping a char from text1 OR text2
+                    dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
+                }
+            }
+        }
+
+        // The final answer is the LCS of both full strings
+        return dp[m][n];
+    }
 
     // V0-1
     // IDEA: RECURSION (gpt) (TLE)
@@ -91,6 +114,52 @@ public class longestCommonSubsequence {
                     dfs(s1, s2, i, j + 1, memo));
         }
         return memo[i][j];
+    }
+
+    // V0-3
+    // IDEA: BOTTOM UP 2D DP (GPT)
+    public int longestCommonSubsequence_0_3(String text1, String text2) {
+        int m = text1.length();
+        int n = text2.length();
+
+        int[][] dp = new int[m + 1][n + 1];
+
+        for (int i = 1; i <= m; i++) {
+            for (int j = 1; j <= n; j++) {
+                if (text1.charAt(i - 1) == text2.charAt(j - 1)) {
+                    dp[i][j] = dp[i - 1][j - 1] + 1;
+                } else {
+                    dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
+                }
+            }
+        }
+
+        return dp[m][n];
+    }
+
+    //  V0-4
+    // IDEA: BOTTOM UP 2D DP WITH SPACE OPTIMIZATION (GPT)
+    public int longestCommonSubsequence_0_4(String text1, String text2) {
+        int m = text1.length();
+        int n = text2.length();
+
+        int[] prev = new int[n + 1];
+        int[] curr = new int[n + 1];
+
+        for (int i = 1; i <= m; i++) {
+            for (int j = 1; j <= n; j++) {
+                if (text1.charAt(i - 1) == text2.charAt(j - 1)) {
+                    curr[j] = prev[j - 1] + 1;
+                } else {
+                    curr[j] = Math.max(prev[j], curr[j - 1]);
+                }
+            }
+            int[] tmp = prev;
+            prev = curr;
+            curr = tmp;
+        }
+
+        return prev[n];
     }
 
     // V1-1
