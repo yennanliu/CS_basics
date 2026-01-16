@@ -106,6 +106,88 @@ public class WordBreak2 {
         return wordBreak2Res;
     }
 
+    // V0-2
+    // IDEA: DFS + DP (MEMORIZATION) (fixed by gemini)
+    // Memoization map: maps start index to a list of possible sentences from that point
+    Map<Integer, List<String>> memo = new HashMap<>();
+
+    public List<String> wordBreak_0_2(String s, List<String> wordDict) {
+        return dfs(s, new HashSet<>(wordDict), 0);
+    }
+
+    private List<String> dfs(String s, Set<String> wordSet, int start) {
+        // If we've already calculated results for this start index, return them
+        if (memo.containsKey(start)) {
+            return memo.get(start);
+        }
+
+        List<String> res = new ArrayList<>();
+
+        // Base case: if we reached the end of the string, return a list with an empty string
+        if (start == s.length()) {
+            res.add("");
+            return res;
+        }
+
+        // Try every possible end position for the current word
+        for (int end = start + 1; end <= s.length(); end++) {
+            String word = s.substring(start, end);
+
+            if (wordSet.contains(word)) {
+                // Get all valid sentences that can be formed from the remaining string
+                List<String> subList = dfs(s, wordSet, end);
+
+                for (String sub : subList) {
+                    // Combine the current word with the suffix
+                    // If suffix is empty (end of string), don't add a space
+                    res.add(word + (sub.isEmpty() ? "" : " ") + sub);
+                }
+            }
+        }
+
+        memo.put(start, res);
+        return res;
+    }
+
+
+    // V0-3
+    // IDEA: DFS + DP (MEMORIZATION) (fixed by GPT)
+    public List<String> wordBreak_0_3(String s, List<String> wordDict) {
+        Set<String> dict = new HashSet<>(wordDict);
+        Map<Integer, List<String>> memo = new HashMap<>();
+        return dfs(0, s, dict, memo);
+    }
+
+    private List<String> dfs(int start, String s,
+                             Set<String> dict,
+                             Map<Integer, List<String>> memo) {
+
+        if (memo.containsKey(start)) {
+            return memo.get(start);
+        }
+
+        List<String> res = new ArrayList<>();
+
+        // base case: reached end
+        if (start == s.length()) {
+            res.add("");
+            return res;
+        }
+
+        for (String w : dict) {
+            if (s.startsWith(w, start)) {
+                List<String> subs = dfs(start + w.length(), s, dict, memo);
+                for (String sub : subs) {
+                    res.add(w + (sub.isEmpty() ? "" : " ") + sub);
+                }
+            }
+        }
+
+        memo.put(start, res);
+        return res;
+    }
+
+
 
     // V1
     // https://www.youtube.com/watch?v=QgLKdluDo08
@@ -345,5 +427,7 @@ public class WordBreak2 {
 
 
     // V4
+
+
     
 }

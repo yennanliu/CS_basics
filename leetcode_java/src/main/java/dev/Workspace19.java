@@ -712,7 +712,7 @@ public class Workspace19 {
      * -----------
      */
     // IDEA 1) TOP DOWN DP ???
-    public boolean wordBreak(String s, List<String> wordDict) {
+    public boolean wordBreak_99(String s, List<String> wordDict) {
         // edge
 
         int n = s.length();
@@ -743,6 +743,78 @@ public class Workspace19 {
 
         return dp[0]; // ????
     }
+
+
+
+    // LC 140
+    // 10.17 - 27 am
+    /**
+     *
+     *  ->  Return all such `possible sentences` in any order.
+     *
+     *     -  add spaces in s to construct a sentence where
+     *        each word is a valid dictionary word
+     *
+     *    - String s
+     *    - word dict
+     *
+     *
+     * -------------
+     *
+     *
+     *  IDEA 1) BRUTE FORCE
+     *
+     *  IDEA 2) DP + DFS ???
+     *
+     *  IDEA 3) RECURSIVE / DP ???
+     *
+     *   -------------
+     *
+     */
+    public List<String> wordBreak(String s, List<String> wordDict) {
+        // edge
+
+        List<String> res = new ArrayList<>();
+        // ??
+        for(String w: wordDict){
+            workBreak2Helper(0, w.length(), res, "", s, wordDict);
+        }
+
+        return res;
+    }
+
+    private void workBreak2Helper(int startIdx, int endIdx, List<String> res, String cache, String s, List<String> wordDict){
+        // edge
+        if(endIdx == s.length() - 1){
+            // ???
+            res.add(cache);
+        }
+        if(endIdx > s.length() - 1){
+            // ???
+            return;
+        }
+
+        // validate ???
+        //if(en)
+
+        // dfs call
+        for(String w: wordDict){
+            // size in boundary
+            if(endIdx + w.length() < s.length()){
+                // sub str is the same
+                if(s.substring(endIdx + 1, w.length()).equals(w)){
+                    workBreak2Helper(endIdx + 1, endIdx + w.length(), res, cache, s, wordDict);
+                }
+            }
+        }
+
+
+    }
+
+
+
+
+
 
 
     // LC 322
