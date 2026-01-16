@@ -884,9 +884,48 @@ public class Workspace19 {
 
 
     // LC 392
+    // 7.48 - 58 am
+    /**
+     *  -> Given two strings s and t,
+     * return true if s is a
+     * subsequence of t, or false otherwise.
+     *
+     *
+     * --------------
+     *
+     * IDEA 1) 2 POINTERS
+     * IDEA 2) DP
+     *
+     *
+     * --------------
+     *
+     *
+     */
+    // IDEA 1) 2 POINTERS
     public boolean isSubsequence(String s, String t) {
+        // edge
+        if(s.isEmpty()){
+            return true;
+        }
+        if(t.isEmpty()){
+            return false;
+        }
 
-        return false;
+        // return true if s is a subsequence of t
+        int len_s = s.length();
+        int len_t = t.length();
+
+        //int idx_s = 0;
+        int idx_t = 0;
+
+        for(int idx_s = 0; idx_s < s.length(); idx_s++){
+            while(s.charAt(idx_s) != t.charAt(idx_t) && idx_t < len_t){
+                idx_t += 1;
+            }
+            idx_t += 1;
+        }
+
+        return t.charAt(idx_t) == s.charAt(len_s - 1);
     }
 
 
