@@ -653,6 +653,226 @@ def knapsack_optimized(weights, values, capacity):
 
 **🔑 Key Insight**: In unbounded knapsack problems (like Coin Change), the **order of nested loops** determines whether you count **combinations** or **permutations**.
 
+---
+
+#### **🎯 Ultimate Cheat Sheet: When to Use Which Pattern**
+
+| When Problem Says... | Pattern to Use | Loop Order | Direction | DP Transition | Example LC |
+|---------------------|----------------|------------|-----------|---------------|------------|
+| "Count ways" + order doesn't matter | **Combinations** | Item → Target | Forward | `dp[i] += dp[i-item]` | **518** |
+| "Count ways" + order matters | **Permutations** | Target → Item | Forward | `dp[i] += dp[i-item]` | **377** |
+| "Use each item once" + find max/min | **0/1 Knapsack** | Item → Capacity | **Backward** | `dp[w] = max(dp[w], ...)` | **416** |
+| "Unlimited items" + find max/min | **Unbounded Knapsack** | Item → Capacity | Forward | `dp[i] = min(dp[i], ...)` | **322** |
+
+**⚡ Quick Recognition (识别):**
+- See "different sequences" or "different orderings" → **Permutations** (Target outer)
+- See "number of combinations" or "unique ways" → **Combinations** (Item outer)
+- See "each element at most once" → **0/1 Knapsack** (Backward)
+- See "minimum coins" or "fewest items" → **Unbounded Knapsack** (Forward)
+
+---
+
+#### **📊 Visual Summary: The Four Core Patterns**
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│                     DP KNAPSACK PATTERN MATRIX                          │
+└─────────────────────────────────────────────────────────────────────────┘
+
+                          COUNT WAYS              FIND MIN/MAX
+                    ┌──────────────────┬──────────────────────────┐
+                    │                  │                          │
+ORDER MATTERS?      │  PERMUTATIONS    │   Not typically used     │
+(Yes)              │  LC 377          │   (Use Permutations      │
+                    │  Target→Item     │    for counting)         │
+                    │  Forward         │                          │
+                    ├──────────────────┼──────────────────────────┤
+                    │                  │                          │
+ORDER DOESN'T       │  COMBINATIONS    │   UNBOUNDED KNAPSACK     │
+MATTER              │  LC 518          │   LC 322                 │
+(No)                │  Item→Target     │   Item→Capacity          │
+                    │  Forward         │   Forward                │
+                    ├──────────────────┼──────────────────────────┤
+                    │                  │                          │
+USE EACH ONCE       │  Not typical     │   0/1 KNAPSACK           │
+(Constraint)        │  (Can adapt      │   LC 416                 │
+                    │   0/1 pattern)   │   Item→Capacity          │
+                    │                  │   BACKWARD ⚠️            │
+                    └──────────────────┴──────────────────────────┘
+
+Legend:
+  Item→Target     = Outer loop: items,    Inner loop: target
+  Target→Item     = Outer loop: target,   Inner loop: items
+  Forward         = Inner loop: i to target (allows reuse)
+  BACKWARD ⚠️     = Inner loop: target to i (prevents reuse)
+```
+
+**🎯 Decision Flow:**
+```
+Start
+  │
+  ├─ Question asks "count ways"?
+  │   │
+  │   ├─ YES → Order matters?
+  │   │         ├─ YES → Permutations (Target→Item) [LC 377]
+  │   │         └─ NO  → Combinations (Item→Target) [LC 518]
+  │   │
+  │   └─ NO  → Question asks "min/max"?
+  │             │
+  │             ├─ Each item once?
+  │             │   ├─ YES → 0/1 Knapsack (BACKWARD) [LC 416]
+  │             │   └─ NO  → Unbounded (FORWARD) [LC 322]
+  │             │
+  │             └─ Unknown → Check problem constraints
+```
+
+---
+
+#### **📋 Master Pattern Table: DP Transitions by Problem Type**
+
+| Pattern Type | Loop Order | DP Transition | What It Counts | Mental Model | Example | Result |
+|--------------|------------|---------------|----------------|--------------|---------|--------|
+| **COMBINATIONS**<br>(Order doesn't matter) | **ITEM → TARGET**<br><br>`for item in items:`<br>&nbsp;&nbsp;`for i in range(item, target+1):` | `dp[i] += dp[i - item]` | Unique sets<br>[1,2] = [2,1] | "Process all uses of item-1, then all uses of item-2"<br><br>Forces canonical order | LC 518<br>coins=[1,2]<br>amount=3 | **2 ways**<br>{1,1,1}<br>{1,2} |
+| **PERMUTATIONS**<br>(Order matters) | **TARGET → ITEM**<br><br>`for i in range(1, target+1):`<br>&nbsp;&nbsp;`for item in items:` | `dp[i] += dp[i - item]` | Different orderings<br>[1,2] ≠ [2,1] | "For each target, try every item as the 'last' one"<br><br>Allows any order | LC 377<br>nums=[1,2]<br>target=3 | **3 ways**<br>{1,1,1}<br>{1,2}<br>{2,1} |
+| **0/1 KNAPSACK**<br>(Use each once) | **ITEM → CAPACITY**<br>(backwards)<br><br>`for item in items:`<br>&nbsp;&nbsp;`for w in range(W, weight-1, -1):` | `dp[w] = max(dp[w],`<br>`dp[w-weight[i]] + value[i])` | Max/min with constraint<br>Each item used ≤ 1 time | "Must iterate backwards to avoid using same item twice in one pass" | LC 416<br>Partition<br>Subset | True/False<br>or Max value |
+| **UNBOUNDED KNAPSACK**<br>(Unlimited use) | **ITEM → CAPACITY**<br>(forwards)<br><br>`for item in items:`<br>&nbsp;&nbsp;`for w in range(weight, W+1):` | `dp[w] = max(dp[w],`<br>`dp[w-weight[i]] + value[i])` | Max/min without constraint<br>Each item used unlimited | "Iterate forwards - can use updated values in same pass" | LC 322<br>Coin Change<br>(min coins) | Min count<br>or -1 |
+
+---
+
+#### **💻 Code Templates by Pattern**
+
+```java
+// ============================================
+// PATTERN 1: COMBINATIONS (Item → Target)
+// ============================================
+// LC 518: Coin Change II
+public int countCombinations(int target, int[] items) {
+    int[] dp = new int[target + 1];
+    dp[0] = 1;  // Base: one way to make 0
+
+    // OUTER: Items/Coins
+    for (int item : items) {
+        // INNER: Target/Amount (forward)
+        for (int i = item; i <= target; i++) {
+            dp[i] += dp[i - item];  // ← Same transition
+        }
+    }
+    return dp[target];
+}
+
+// ============================================
+// PATTERN 2: PERMUTATIONS (Target → Item)
+// ============================================
+// LC 377: Combination Sum IV
+public int countPermutations(int target, int[] items) {
+    int[] dp = new int[target + 1];
+    dp[0] = 1;  // Base: one way to make 0
+
+    // OUTER: Target/Amount
+    for (int i = 1; i <= target; i++) {
+        // INNER: Items/Coins
+        for (int item : items) {
+            if (i >= item) {
+                dp[i] += dp[i - item];  // ← Same transition
+            }
+        }
+    }
+    return dp[target];
+}
+
+// ============================================
+// PATTERN 3: 0/1 KNAPSACK (Item → Capacity BACKWARDS)
+// ============================================
+// LC 416: Partition Equal Subset Sum
+public boolean canPartition(int[] nums, int target) {
+    boolean[] dp = new boolean[target + 1];
+    dp[0] = true;  // Base: can make 0
+
+    // OUTER: Items
+    for (int num : nums) {
+        // INNER: Capacity (BACKWARDS to prevent reuse)
+        for (int w = target; w >= num; w--) {
+            dp[w] = dp[w] || dp[w - num];  // ← Different transition (OR)
+        }
+    }
+    return dp[target];
+}
+
+// ============================================
+// PATTERN 4: UNBOUNDED KNAPSACK (Item → Capacity FORWARDS)
+// ============================================
+// LC 322: Coin Change (minimum coins)
+public int minCoins(int target, int[] coins) {
+    int[] dp = new int[target + 1];
+    Arrays.fill(dp, target + 1);  // Infinity
+    dp[0] = 0;  // Base: 0 coins for 0 amount
+
+    // OUTER: Items/Coins
+    for (int coin : coins) {
+        // INNER: Target (FORWARDS allows reuse)
+        for (int i = coin; i <= target; i++) {
+            dp[i] = Math.min(dp[i], dp[i - coin] + 1);  // ← Different transition (MIN)
+        }
+    }
+    return dp[target] > target ? -1 : dp[target];
+}
+```
+
+**🔑 Key Observations:**
+1. **Same DP Transition (`dp[i] += dp[i - item]`)** for:
+   - Combinations (Item → Target)
+   - Permutations (Target → Item)
+   - **Only difference**: Loop order!
+
+2. **Different DP Transitions** for:
+   - 0/1 Knapsack: `dp[w] = dp[w] || dp[w - num]` (boolean OR or MAX)
+   - Unbounded Knapsack: `dp[i] = min(dp[i], dp[i - coin] + 1)` (MIN/MAX)
+
+3. **Direction Matters** for knapsack:
+   - Backwards → prevents reuse (0/1)
+   - Forwards → allows reuse (unbounded)
+
+---
+
+#### **🎯 Pattern Selection Decision Tree**
+
+```
+Question: What does the problem ask for?
+
+├─ "Count number of ways/combinations to reach target"
+│  ├─ Order matters? (e.g., [1,2] ≠ [2,1])
+│  │  ├─ YES → Use PERMUTATIONS pattern (Target → Item)
+│  │  │         Example: LC 377 Combination Sum IV
+│  │  └─ NO  → Use COMBINATIONS pattern (Item → Target)
+│  │            Example: LC 518 Coin Change II
+│  │
+│  └─ Can reuse items?
+│     ├─ YES → Unbounded, iterate forwards
+│     └─ NO  → 0/1 Knapsack, iterate backwards
+│
+└─ "Find minimum/maximum value"
+   ├─ Can reuse items?
+   │  ├─ YES → Unbounded Knapsack (forwards)
+   │  │         Example: LC 322 Coin Change (min coins)
+   │  └─ NO  → 0/1 Knapsack (backwards)
+   │            Example: LC 416 Partition Equal Subset Sum
+   │
+   └─ Always use (Item → Capacity) order
+```
+
+---
+
+#### **⚡ Quick Reference: Loop Order → Problem Type**
+
+| Outer Loop | Inner Loop | Pattern Name | Use When | Problems |
+|------------|------------|--------------|----------|----------|
+| **Items/Coins** | **Target/Amount** | Combinations | Count unique sets (order doesn't matter) | LC 518 |
+| **Target/Amount** | **Items/Coins** | Permutations | Count sequences (order matters) | LC 377 |
+| **Items** (backwards) | **Capacity** | 0/1 Knapsack | Each item used once, find max/min | LC 416, 494 |
+| **Items** (forwards) | **Capacity** | Unbounded Knapsack | Unlimited items, find max/min | LC 322 |
+
+---
+
 #### **Quick Comparison Table**
 
 | Aspect | Combinations (LC 518) | Permutations (LC 377) |
@@ -892,6 +1112,37 @@ Explanation: Cannot make 3 with only coins of 2
 **💡 Memory Trick:**
 - **"Coin first" = Combinations** (both start with 'C')
 - **"Amount first" = Arrangements/Permutations** (both start with 'A')
+
+---
+
+#### **📝 Final Summary: Complete Pattern Comparison**
+
+| Aspect | LC 518: Coin Change II<br>(Combinations) | LC 377: Combination Sum IV<br>(Permutations) |
+|--------|------------------------------------------|---------------------------------------------|
+| **What it counts** | Unique sets (order doesn't matter) | Different sequences (order matters) |
+| **Example** | [1,2] = [2,1] (same) | [1,2] ≠ [2,1] (different) |
+| **Outer Loop** | `for (int coin : coins)` | `for (int i = 1; i <= target; i++)` |
+| **Inner Loop** | `for (int i = coin; i <= amount; i++)` | `for (int num : nums)` |
+| **DP Transition** | `dp[i] += dp[i - coin]` | `dp[i] += dp[i - num]` |
+| **Base Case** | `dp[0] = 1` | `dp[0] = 1` |
+| **Result for<br>nums=[1,2], target=3** | **2** combinations:<br>{1,1,1}, {1,2} | **3** permutations:<br>{1,1,1}, {1,2}, {2,1} |
+| **Why it works** | Processing coin-1 completely before coin-2 forces canonical order → no {2,1} | For each sum, try every number as "last" → allows all orderings |
+| **File Reference** | `CoinChange2.java` | `CombinationSumIV.java` |
+
+**🔥 The ONLY Difference:**
+```java
+// LC 518: Combinations
+for (int coin : coins)              // ← ITEM OUTER
+    for (int i = coin; i <= amount; i++)
+
+// LC 377: Permutations
+for (int i = 1; i <= target; i++)   // ← TARGET OUTER
+    for (int num : nums)
+```
+
+**Both use the EXACT SAME transition: `dp[i] += dp[i - item]`**
+
+---
 
 ### **Critical Pattern: Understanding `if (i - coin >= 0)` in Coin Change DP**
 
