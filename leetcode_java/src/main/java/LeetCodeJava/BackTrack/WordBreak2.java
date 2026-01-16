@@ -116,6 +116,12 @@ public class WordBreak2 {
     }
 
     private List<String> dfs(String s, Set<String> wordSet, int start) {
+        /** NOTE !!!
+         *
+         *   if the result (with same start idx) already calculated,
+         *   we should save it in hashmap (cache),
+         *   so we can reuse when see next time (same start idx)
+         */
         // If we've already calculated results for this start index, return them
         if (memo.containsKey(start)) {
             return memo.get(start);
@@ -150,6 +156,9 @@ public class WordBreak2 {
             if (wordSet.contains(word)) {
                 /**  NOTE !!!!
                  *
+                 *  get all valid `sentences` (from remaining string)
+                 *  via the DFS call
+                 *  (set start idx as `end`)
                  *
                  */
                 // Get all valid sentences that can be formed from the remaining string
