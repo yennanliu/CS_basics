@@ -938,7 +938,6 @@ public class Workspace19 {
      *      2 str:
      *         - text1, text2
      *
-     *
      *    NOTE:
      *      - A common subsequence of two strings is
      *      a subsequence that is common to both strings.
@@ -947,15 +946,72 @@ public class Workspace19 {
      *
      *   IDEA 1) 2 POINTERS (SLIDE WINDOW)
      *
-     *   IDEA 2) DP
+     *   IDEA 2) 2d DP
      *
+     *    - DP def:
+     *
+     *        dp[i][j]: longest common subsequence
+     *                   when
+     *                    - i idx in text1
+     *                    - j inx in text2
+     *
+     *    - DP eq:
+     *         dp[i][j] =
+     *             if( text1[i] == text1[j] ):
+     *                  dp[i][j] = max ( dp[i + 1][j], dp[i][j - 1]  )  + 1 // ????
      *
      *  --------------
      *
      *
      */
-    // IDEA 1) 2 POINTERS (SLIDE WINDOW)
+    // IDEA 2) 2d DP
     public int longestCommonSubsequence(String text1, String text2) {
+        // edge
+        if(text1.equals(text2)){
+            return text1.length();
+        }
+
+        int l1 = text1.length();
+        int l2 = text2.length();
+
+        //  int[][] dp = new int[m + 1][n + 1];
+        //int[][] dp = new int[l1][l2]; // ????
+        int[][] dp = new int[l1 + 1][l2 + 2]; // ????
+
+
+        // init ?? as 0 ???
+        //for()
+
+        /**
+         *      *    - DP eq:
+         *      *         dp[i][j] =
+         *      *             if( text1[i] == text1[j] ):
+         *      *                  dp[i][j] = max ( dp[i + 1][j], dp[i][j - 1]  )  + 1 // ????
+
+         */
+//        for(int i = 0; i < l1; i++){
+//            for(int j = 0; j < l2; j++){
+//
+//            }
+        for(int i = 1; i < l1; i++){
+            for(int j = 1; j < l2; j++){
+                // ????
+                if( j < l1 && i < l2 ){
+                    if(text1.charAt(i) == text2.charAt(j)){
+                        dp[i][j] = Math.max ( dp[i + 1][j], dp[i][j - 1]  )  + 1;
+                    }
+                }
+            }
+        }
+
+
+        return dp[l1][l2]; // ???
+    }
+
+
+
+    // IDEA 1) 2 POINTERS (SLIDE WINDOW) (wgon
+    public int longestCommonSubsequence_99(String text1, String text2) {
         // edge
         if(text1.equals(text2)){
             return text1.length();

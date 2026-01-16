@@ -45,6 +45,12 @@ import java.util.Arrays;
  */
 public class longestCommonSubsequence {
 
+    // NOTE !!!
+    // the `2 POINTERS (SLIDE WINDOW)` is WRONG
+    // -> we have no way to know
+    // whether `skip or take cur sub str` is a better or worse idea
+    // in terms to get a global LCS (longest common subsequence)
+
     // V0
     // IDEA: BOTTOM UP 2D DP (GEMINI)
     public int longestCommonSubsequence(String text1, String text2) {
@@ -72,6 +78,75 @@ public class longestCommonSubsequence {
         // The final answer is the LCS of both full strings
         return dp[m][n];
     }
+
+    // V0-0-1
+    // IDEA: BOTTOM UP 2D DP (gemini)
+    public int longestCommonSubsequence_0_0_1(String text1, String text2) {
+        int l1 = text1.length();
+        int l2 = text2.length();
+
+        /** NOTE !!!
+         *
+         *  DP def:
+         *
+         *  dp[i][j]:
+         *    - LCS of text1.substring(0, i)
+         *      and text2.substring(0, j)
+         *
+         */
+        /**  NOTE !!!
+         *
+         *   define dp as `new int[l1 + 1][l2 + 1];`
+         *
+         *  Array Sizing: You should use new int[l1 + 1][l2 + 1].
+         *  This allows you to handle the "empty string" case at
+         *  index 0 easily,
+         *  preventing IndexOutOfBounds errors when looking at i-1.
+         *
+         */
+        // 1. Size the DP table to length + 1
+        // dp[i][j] represents LCS of text1.substring(0, i) and text2.substring(0, j)
+        int[][] dp = new int[l1 + 1][l2 + 1];
+
+        // 2. Iterate through both strings
+        for (int i = 1; i <= l1; i++) {
+            for (int j = 1; j <= l2; j++) {
+                /** NOTE !!!
+                 *
+                 *  since the `dp def` is
+                 *       - LCS of text1.substring(0, i) and text2.substring(0, j)
+                 *
+                 *  -> what we need to compare is:
+                 *      the `prev` idx of text1, and text2
+                 *      -> e.g. `if (text1.charAt(i - 1) == text2.charAt(j - 1)))
+                 *
+                 *      and if above is true, update dp by
+                 *          dp[i - 1][j - 1] + 1;
+                 */
+                // Check characters at i-1 and j-1 because DP is 1-indexed
+                if (text1.charAt(i - 1) == text2.charAt(j - 1)) {
+                    // If they match, take the diagonal value and add 1
+                    dp[i][j] = dp[i - 1][j - 1] + 1;
+                } else {
+                    /** NOTE !!!
+                     *
+                     *    if text1.charAt(i - 1) != text2.charAt(j - 1):
+                     *      then dp[i][j] will be the max of
+                     *      either 2 possible prev dp
+                     *
+                     *      -> e.g. max(dp[i - 1][j], dp[i][j - 1])
+                     *
+                     */
+                    // If they don't match, take the best from either the top or left cell
+                    dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
+                }
+            }
+        }
+
+        // 3. The final result is in the bottom-right corner
+        return dp[l1][l2];
+    }
+
 
     // V0-1
     // IDEA: RECURSION (gpt) (TLE)
@@ -342,5 +417,8 @@ public class longestCommonSubsequence {
 
         return longest;
     }
+
+
+    
 
 }
