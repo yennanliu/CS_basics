@@ -1128,6 +1128,70 @@ public class Workspace19 {
     }
 
 
+    // LC 377
+    // 11.13 - 23 am
+    /**
+     *  ->  return the number
+     *     of possible `combinations` that `add up to target.`
+     *
+     *
+     *
+     * --------------
+     *
+     *  IDEA 1) BRUTE FORCE
+     *
+     *  IDEA 2) DP
+     *
+     *    - DP def:
+     *         dp[i]: `combinations` that `add up to target = i
+     *
+     *    - DP eq:
+     *        dp[i] =
+     *            if ( i - num  >= 0 )
+     *                dp[i - num] + 1 ???
+     *
+     * --------------
+     *
+     *
+     */
+    public int combinationSum4(int[] nums, int target) {
+        // edge
+
+        // dp[x] : # of ways to sum up equals `x`
+        /**  NOTE !!!
+         *
+         *  dp[x] : # of ways to sum up equals `x`
+         *
+         *   ->
+         *      dp[0]:   number of ways to reach sum 0
+         *      dp[1]:   number of ways to reach sum 1
+         *      ...
+         *      dp[k]:   number of ways to reach sum k
+         *
+         */
+        int[] dp = new int[target + 1]; // ???
+        dp[0] = 1;
+
+        /**
+         *     *    - DP eq:
+         *      *        dp[i] =
+         *      *            if ( i - num  >= 0 )
+         *      *                dp[i - num] + 1 ???
+         *
+         */
+        // NOTE !!! we loop
+        // to avoid `duplicated combination` // ???
+        for(int i = 1; i < target; i++){
+            // ???
+            for(int num: nums){
+                if ( i - num  >= 0 ){
+                    dp[i] = dp[i - num] + 1;
+                }
+            }
+        }
+
+        return dp[target];
+    }
 
 
 
