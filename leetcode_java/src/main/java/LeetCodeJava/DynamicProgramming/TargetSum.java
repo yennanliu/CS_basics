@@ -52,9 +52,171 @@ public class TargetSum {
 //
 //    }
 
+
     // V0-1
-    // IDEA: RECURSION (gpt)
+    // IDEA: DP (GEMINI)
+    /**
+     *
+     * For **LeetCode 494 (Target Sum)**, the goal is to find the number of ways to assign `+` or `-` signs to each number in an array so they sum up to a `target`.
+     *
+     * ### 💡 The Mathematical Trick
+     *
+     * You can transform this problem into
+     * a simpler **Subset Sum** problem.
+     *
+     * 1. Let  be the subset of numbers with a `+` sign.
+     * 2. Let  be the subset of numbers with a `-` sign.
+     * 3. We know:
+     * 4. We also know:
+     * 5. Adding these two:
+     * 6. Therefore:
+     *
+     * The problem is now: **How many ways
+     * can we find a subset  that sums to this new value?**
+     *
+     * ---
+     *
+     * ### 🔍 Key Logic Points
+     *
+     * * **The Array:** `int[] dp = new int[subsetTarget + 1]` is a **1D array**. This is the space-optimized version of a 2D array `dp[n][subsetTarget]`.
+     * * **The Inner Loop Direction:** We loop **backwards** (`i--`). If we looped forwards, we would be allowed to use the same number multiple times (Unbounded Knapsack), which isn't allowed here.
+     * * **Time Complexity:** , where  is the number of elements.
+     * * **Space Complexity:** .
+     *
+     * ### 📊 Comparing Stock vs. Target Sum Arrays
+     *
+     * | Problem | DP Array Shape | What columns represent |
+     * | --- | --- | --- |
+     * | **Stock (LC 309)** | `n x 3` | Specific States (Hold, Sold, Rest) |
+     * | **Target Sum (LC 494)** | `1 x subsetTarget` | Every possible integer sum from 0 to Target |
+     *
+     */
     public int findTargetSumWays_0_1(int[] nums, int target) {
+        int totalSum = 0;
+        for (int n : nums)
+            totalSum += n;
+
+        // Edge cases:
+        // 1. target is too large to reach
+        // 2. target + totalSum must be even (from the formula above)
+        if (Math.abs(target) > totalSum || (target + totalSum) % 2 != 0) {
+            return 0;
+        }
+
+        int subsetTarget = (target + totalSum) / 2;
+
+        // dp[i] stores the number of ways to get a sum of i
+        int[] dp = new int[subsetTarget + 1];
+        dp[0] = 1; // Base case: 1 way to make sum 0 (empty subset)
+
+        for (int num : nums) {
+            // Iterate BACKWARDS to avoid using the same number twice
+            // in the same row (standard 0/1 Knapsack optimization)
+            for (int i = subsetTarget; i >= num; i--) {
+                dp[i] += dp[i - num];
+            }
+        }
+
+        return dp[subsetTarget];
+    }
+
+
+    // V0-2
+    // IDEA: 1D DP (GPT)
+    /**
+     * Here’s a **Java dynamic programming solution** for **LeetCode 494 — Target Sum**.
+     *
+     * ---
+     *
+     * ## 🧠 Problem Insight
+     *
+     * Given an array `nums` and a target `S`, assign `+` or `–` to each number to reach `S`.
+     * Equivalent to: partition `nums` into two groups with sums `P` and `N` such that:
+     *
+     * ```
+     * P − N = S
+     * P + N = sum(nums)
+     * ⇒ P = (S + sum) / 2
+     * ```
+     *
+     * So the problem becomes:
+     *
+     * > Count the number of subsets with sum equal to `target = (S + sum) / 2`.
+     *
+     * Constraints:
+     *
+     * * If `(S + sum)` is odd or `target < 0`, return `0`.
+     *
+     * ---
+     *
+     * ## 📌 DP (1D Knapsack Count)
+     *
+     * Let `dp[i]` = number of ways to reach sum `i`.
+     *
+     * Initialize:
+     *
+     * ```
+     * dp[0] = 1
+     * ```
+     *
+     * For each num:
+     *
+     * ```
+     * for i from target down to num:
+     *     dp[i] += dp[i - num]
+     * ```
+     *
+     * ---
+     *
+     * ## 🧩 Example
+     *
+     * ```
+     * nums = [1,1,1,1,1]
+     * S = 3
+     * sum = 5
+     * target = (3 + 5) / 2 = 4
+     * ```
+     *
+     * Subsets summing to 4 → 5 ways ⇒ output = 5.
+     *
+     * ---
+     *
+     * ## ⏱ Complexity
+     *
+     * * **Time:** O(n × target)
+     * * **Space:** O(target)
+     *
+     */
+    public int findTargetSumWays_0_2(int[] nums, int S) {
+        int sum = 0;
+        for (int n : nums) {
+            sum += n;
+        }
+
+        // If (sum + S) is odd or S > sum, no valid partition
+        if ((S + sum) % 2 != 0 || Math.abs(S) > sum) {
+            return 0;
+        }
+
+        int target = (S + sum) / 2;
+
+        int[] dp = new int[target + 1];
+        dp[0] = 1;
+
+        for (int num : nums) {
+            for (int j = target; j >= num; j--) {
+                dp[j] += dp[j - num];
+            }
+        }
+
+        return dp[target];
+    }
+
+
+
+    // V0-10
+    // IDEA: RECURSION (gpt)
+    public int findTargetSumWays_0_10(int[] nums, int target) {
         return calculateWays(nums, 0, 0, target);
     }
 
@@ -170,5 +332,7 @@ public class TargetSum {
 
 
     // V2
+
+
 
 }

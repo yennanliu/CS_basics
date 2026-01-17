@@ -56,8 +56,23 @@ Step 4. get the result
 
 ### **Category 5: State Machine DP**
 - **Description**: Problems with multiple states and transitions
-- **Examples**: LC 714 (Stock with Fee), LC 309 (Stock with Cooldown)
+- **Examples**: LC 714 (Stock with Fee), LC 309 (Stock with Cooldown), LC 122 (Stock II)
 - **Pattern**: Multiple DP arrays for different states
+- **Key Characteristic**: State transitions depend on previous state + action constraints
+
+**Sub-patterns:**
+1. **2-State Machine** (Buy/Sell without cooldown)
+   - States: `hold`, `cash`
+   - Example: LC 122 (unlimited transactions)
+
+2. **3-State Machine** (Buy/Sell with cooldown) ⭐
+   - States: `hold`, `sold`, `rest`
+   - Example: LC 309 (cooldown after sell)
+   - Key: `rest` state prevents immediate buy after sell
+
+3. **Multi-State Machine** (Limited transactions)
+   - States: `buy1`, `sell1`, `buy2`, `sell2`, ...
+   - Example: LC 123 (at most 2 transactions), LC 188 (at most k transactions)
 
 ### **Category 6: Knapsack DP**
 - **Description**: Selection problems with constraints
@@ -360,20 +375,83 @@ def state_machine_dp(prices, fee=0):
     """DP with multiple states (stock problems)"""
     if not prices:
         return 0
-    
+
     n = len(prices)
     # States: hold stock, not hold stock
     hold = -prices[0]
     cash = 0
-    
+
     for i in range(1, n):
         # Transition between states
         prev_hold = hold
         hold = max(hold, cash - prices[i])  # Buy
         cash = max(cash, prev_hold + prices[i] - fee)  # Sell
-    
+
     return cash
 ```
+
+### Template 5-2: State Machine DP with Cooldown (LC 309 Pattern)
+```python
+def state_machine_with_cooldown(prices):
+    """
+    DP with 3 states for stock with cooldown
+
+    State Definition:
+    - hold: Currently holding a stock
+    - sold: Just sold a stock today (enters cooldown)
+    - rest: In cooldown or doing nothing (not holding stock)
+
+    Key Constraint: After selling, must cooldown for 1 day before buying again
+    """
+    if not prices:
+        return 0
+
+    # Initialize states
+    hold = -prices[0]  # Buy on day 0
+    sold = 0           # Can't sell on day 0
+    rest = 0           # Doing nothing
+
+    for i in range(1, len(prices)):
+        prev_sold = sold
+
+        # State transitions
+        # 1. SOLD: Sell today (must have held yesterday)
+        sold = hold + prices[i]
+
+        # 2. HOLD: Either continue holding OR buy today (after cooldown)
+        hold = max(hold, rest - prices[i])
+
+        # 3. REST: Either rest again OR just finished cooldown from yesterday's sale
+        rest = max(rest, prev_sold)
+
+    # Max profit when not holding stock
+    return max(sold, rest)
+```
+
+**State Transition Diagram for LC 309:**
+```
+    ┌─────────────────────────────────────────┐
+    │         State Machine Flow              │
+    └─────────────────────────────────────────┘
+
+         buy            sell          cooldown
+    REST ────→ HOLD ────→ SOLD ─────→ REST
+     ↑                                   │
+     └───────────────────────────────────┘
+
+    Transitions:
+    • REST → HOLD: Buy stock (rest - price)
+    • HOLD → SOLD: Sell stock (hold + price)
+    • SOLD → REST: Cooldown (no transaction)
+    • REST → REST: Do nothing (rest)
+    • HOLD → HOLD: Keep holding (hold)
+```
+
+**Key Insights:**
+- **3 States vs 2 States**: Unlike simple stock problems (buy/sell), this needs 3 states due to cooldown
+- **Cooldown Enforcement**: `rest` state ensures you can't buy immediately after selling
+- **Space Optimization**: Can use O(1) space with 3 variables instead of 2D array
+- **Critical Transition**: `hold = max(hold, rest - prices[i])` - can only buy after rest, not after sold
 
 ### Template 6: Top-Down Memoization
 ```python
@@ -1398,13 +1476,33 @@ def interval_dp(arr):
 | **Combination Sum IV** | **377** | **Unbounded (Amount→Coin = Permutations)** | **Medium** |
 
 ### **State Machine Problems**
-| Problem | LC # | Key Technique | Difficulty |
-|---------|------|---------------|------------|
-| Best Time to Buy and Sell Stock II | 122 | Multiple transactions | Easy |
-| Stock with Cooldown | 309 | State transitions | Medium |
-| Stock with Transaction Fee | 714 | Fee consideration | Medium |
-| Stock III | 123 | At most 2 transactions | Hard |
-| Stock IV | 188 | At most k transactions | Hard |
+| Problem | LC # | Key Technique | Difficulty | States | Pattern |
+|---------|------|---------------|------------|--------|---------|
+| Best Time to Buy and Sell Stock II | 122 | Multiple transactions | Easy | 2 states | hold/cash |
+| **Stock with Cooldown** | **309** | **3-state transitions** | **Medium** | **3 states** | **hold/sold/rest** |
+| Stock with Transaction Fee | 714 | Fee consideration | Medium | 2 states | hold/cash |
+| Stock III | 123 | At most 2 transactions | Hard | 4 states | buy1/sell1/buy2/sell2 |
+| Stock IV | 188 | At most k transactions | Hard | 2k states | Dynamic states |
+
+**Core Pattern Analysis: Stock Problems**
+
+| Problem | Constraint | States Needed | Key Difference |
+|---------|-----------|---------------|----------------|
+| **LC 122** | Unlimited transactions | 2 (hold/cash) | Simple buy/sell |
+| **LC 309** | Cooldown after sell | 3 (hold/sold/rest) | Need rest state |
+| **LC 714** | Transaction fee | 2 (hold/cash) | Deduct fee when sell |
+| **LC 123** | At most 2 transactions | 4 (2 buy/sell pairs) | Track transaction count |
+| **LC 188** | At most k transactions | 2k states | Generalized k transactions |
+
+**State Machine Pattern Recognition:**
+```
+Question asks...                          → Use this pattern
+─────────────────────────────────────────────────────────────
+"Cooldown after action"                   → 3+ states (LC 309)
+"Transaction fee/cost"                    → 2 states with cost
+"Limited transactions (k times)"          → 2k states
+"Unlimited transactions"                  → 2 states (hold/cash)
+```
 
 ## LC Examples
 
@@ -1712,7 +1810,165 @@ private int findMin(int a, int b, int c){
     }
 ```
 
-### 2-3) N-th Tribonacci Number
+### 2-3-2) Best Time to Buy and Sell Stock with Cooldown (LC 309)
+
+```java
+// java
+// LC 309. Best Time to Buy and Sell Stock with Cooldown
+
+/**
+ * Problem: You can buy and sell stock multiple times, but after selling,
+ * you must cooldown for 1 day before buying again.
+ *
+ * Key Insight: This requires 3 states instead of the typical 2 states
+ * because we need to track the cooldown period.
+ */
+
+// V0-1: 2D DP (n x 3 array) - Most Intuitive
+/**
+ * State Definition:
+ * dp[i][0] = Max profit on day i if we HOLD a stock
+ * dp[i][1] = Max profit on day i if we just SOLD a stock
+ * dp[i][2] = Max profit on day i if we are RESTING (cooldown/do nothing)
+ *
+ * State Transition Equations:
+ * 1. HOLD:  dp[i][0] = max(dp[i-1][0], dp[i-1][2] - prices[i])
+ *    - Either held from yesterday OR bought today (after rest)
+ *
+ * 2. SOLD:  dp[i][1] = dp[i-1][0] + prices[i]
+ *    - Must have held stock yesterday, sell at today's price
+ *
+ * 3. REST:  dp[i][2] = max(dp[i-1][2], dp[i-1][1])
+ *    - Either rested yesterday OR just finished cooldown from sale
+ *
+ * Why 3 States?
+ * - HOLD: Represents actively holding stock
+ * - SOLD: Triggers the cooldown (can't buy tomorrow)
+ * - REST: Free to make any action (cooldown complete or never started)
+ */
+public int maxProfit(int[] prices) {
+    if (prices == null || prices.length <= 1)
+        return 0;
+
+    int n = prices.length;
+    int[][] dp = new int[n][3];
+
+    // Base Case: Day 0
+    dp[0][0] = -prices[0]; // Bought on day 0
+    dp[0][1] = 0;          // Can't sell on day 0
+    dp[0][2] = 0;          // Doing nothing
+
+    for (int i = 1; i < n; i++) {
+        // HOLD: Either held yesterday OR bought today (after rest)
+        dp[i][0] = Math.max(dp[i-1][0], dp[i-1][2] - prices[i]);
+
+        // SOLD: Held yesterday and sell today
+        dp[i][1] = dp[i-1][0] + prices[i];
+
+        // REST: Either rested yesterday OR cooldown from yesterday's sale
+        dp[i][2] = Math.max(dp[i-1][2], dp[i-1][1]);
+    }
+
+    // Max profit when not holding stock on last day
+    return Math.max(dp[n-1][1], dp[n-1][2]);
+}
+
+// V0-2: Space Optimized (O(1) space) - Interview Favorite
+/**
+ * Since we only need previous day's state, we can use 3 variables
+ * instead of a 2D array.
+ *
+ * This is the preferred solution for interviews due to O(1) space.
+ */
+public int maxProfit_optimized(int[] prices) {
+    if (prices == null || prices.length == 0)
+        return 0;
+
+    int hold = -prices[0]; // Holding a stock
+    int sold = 0;          // Just sold (in cooldown trigger)
+    int rest = 0;          // Resting (free to act)
+
+    for (int i = 1; i < prices.length; i++) {
+        // Save previous sold state (needed for rest calculation)
+        int prevSold = sold;
+
+        // State transitions
+        sold = hold + prices[i];                 // Sell today
+        hold = Math.max(hold, rest - prices[i]); // Hold or buy today
+        rest = Math.max(rest, prevSold);         // Rest or finish cooldown
+    }
+
+    // Max profit when not holding stock
+    return Math.max(sold, rest);
+}
+```
+
+**Example Walkthrough: prices = [1,2,3,0,2]**
+
+```
+Day | Price | HOLD  | SOLD | REST | Action Taken
+----|-------|-------|------|------|-------------
+ 0  |   1   |  -1   |  0   |  0   | Buy at 1
+ 1  |   2   |  -1   |  1   |  0   | Sell at 2 (profit = 1)
+ 2  |   3   |  -1   |  2   |  1   | Sell at 3 (profit = 2)
+ 3  |   0   |   1   |  2   |  2   | Buy at 0 (after cooldown)
+ 4  |   2   |   1   |  3   |  2   | Sell at 2 (profit = 3)
+
+Optimal path: Buy@1 → Sell@2 → Cooldown → Buy@0 → Sell@2
+Max Profit: 3
+```
+
+**State Transition Trace (Day 4):**
+```
+Previous State (Day 3):
+  hold = 1, sold = 2, rest = 2
+
+Current Price: prices[4] = 2
+
+Calculate New States:
+  prevSold = sold = 2  (save before update)
+
+  sold = hold + prices[4] = 1 + 2 = 3  ✅ (sell the stock we bought at 0)
+  hold = max(hold, rest - prices[4])
+       = max(1, 2 - 2)
+       = max(1, 0) = 1  (keep holding, don't buy)
+  rest = max(rest, prevSold)
+       = max(2, 2) = 2  (stay in rest)
+
+Final Answer: max(sold, rest) = max(3, 2) = 3
+```
+
+**Key Differences from Regular Stock Problems:**
+
+| Aspect | Regular Stock (LC 122) | Stock with Cooldown (LC 309) |
+|--------|------------------------|------------------------------|
+| **States** | 2 (hold, cash) | 3 (hold, sold, rest) |
+| **Constraint** | None | Must cooldown after sell |
+| **Buy Transition** | `hold = max(hold, cash - price)` | `hold = max(hold, rest - price)` |
+| **Why Different?** | Can buy anytime | Can only buy after rest (not immediately after sold) |
+| **Space** | O(1) - 2 variables | O(1) - 3 variables |
+| **Complexity** | O(n) time | O(n) time |
+
+**Common Mistakes:**
+1. ❌ Using 2 states instead of 3 (ignores cooldown)
+2. ❌ `hold = max(hold, sold - prices[i])` (can't buy right after selling!)
+3. ❌ Forgetting to save `prevSold` before updating (wrong rest calculation)
+4. ❌ Returning `max(hold, sold, rest)` (can't end while holding)
+
+**Why This Pattern Works:**
+- **SOLD state**: Acts as a "gate" - after entering, you must go through REST
+- **REST state**: "Unlocks" the ability to BUY again
+- **HOLD state**: Blocks you from RESTING (must sell first)
+
+This creates a forced flow: `HOLD → SOLD → REST → HOLD`, ensuring cooldown compliance.
+
+**Similar Problems:**
+- LC 122: Best Time to Buy and Sell Stock II (no cooldown, simpler)
+- LC 714: Best Time to Buy and Sell Stock with Transaction Fee (2 states + fee)
+- LC 123: Best Time to Buy and Sell Stock III (4 states for 2 transactions)
+- LC 188: Best Time to Buy and Sell Stock IV (2k states for k transactions)
+
+### 2-3-3) N-th Tribonacci Number
 
 ```java
 // java
@@ -1992,6 +2248,51 @@ for i in range(2, n):
 4. **Consider bottom-up**: Often more efficient
 5. **Optimize space**: Impress with rolling array
 6. **Test with examples**: Trace through small inputs
+
+### State Machine DP Interview Pattern Recognition
+
+**Quick Decision Tree:**
+```
+Stock/Transaction Problem?
+├─ NO → Check other DP patterns
+└─ YES → Continue below
+
+Are there any constraints on transactions?
+├─ NO constraints (unlimited) → 2 states (hold/cash) [LC 122]
+├─ Cooldown period → 3 states (hold/sold/rest) [LC 309]
+├─ Transaction fee → 2 states + fee deduction [LC 714]
+├─ Limited k transactions → 2k states [LC 123, LC 188]
+└─ Buy only once → Kadane's algorithm [LC 121]
+```
+
+**State Machine Pattern Comparison:**
+
+| Constraint Type | States | State Names | Buy Condition | Sell Condition | Example LC |
+|----------------|--------|-------------|---------------|----------------|------------|
+| None | 2 | hold, cash | `cash - price` | `hold + price` | 122 |
+| **Cooldown** | **3** | **hold, sold, rest** | `rest - price` ⚠️ | `hold + price` | **309** |
+| Transaction fee | 2 | hold, cash | `cash - price` | `hold + price - fee` | 714 |
+| k transactions | 2k | buy1, sell1, ... | Track transaction # | Track transaction # | 123, 188 |
+
+**⚠️ Critical Difference in Cooldown Pattern:**
+- Regular: `hold = max(hold, cash - price)` - can buy anytime
+- Cooldown: `hold = max(hold, rest - price)` - can only buy after rest!
+
+**Pattern Recognition Cheat Sheet:**
+
+| Problem Says... | Pattern | States | Key Transition |
+|----------------|---------|--------|----------------|
+| "Cooldown 1 day after sell" | 3-state | hold/sold/rest | Buy from `rest` only |
+| "Transaction fee of k" | 2-state | hold/cash | `cash = hold + price - fee` |
+| "At most 2 transactions" | 4-state | buy1/sell1/buy2/sell2 | Track transaction count |
+| "At most k transactions" | 2k-state | Dynamic | Generalized k transactions |
+| "Unlimited transactions" | 2-state | hold/cash | Simple buy/sell |
+
+**Common Interview Follow-ups:**
+1. "What if cooldown is k days?" → Need k+2 states
+2. "What if both cooldown AND fee?" → 3 states + fee deduction
+3. "Space optimize it" → Use variables instead of arrays
+4. "Prove correctness" → Show state transitions enforce constraints
 
 ### Related Topics
 - **Greedy**: When local optimal leads to global

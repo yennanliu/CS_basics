@@ -1258,6 +1258,52 @@ public class Workspace19 {
     }
 
 
+    // LC 494
+    // 16.34 - 44 pm
+    /**
+     *  -> Return the `number` of
+     *    `different expressions` that you can build,
+     *    which evaluates to target.
+     *
+     *
+     *     - nums: int array
+     *     - target
+     *
+     *  -----------------
+     *
+     *   IDEA 1) BRUTE FORCE
+     *
+     *   IDEA 2) 2D bottom up DP ??
+     *
+     *      DP def:
+     *
+     *          n x 2
+     *
+     *         - dp[i][j]:
+     *             - # of different expressions sum up
+     *             to `i`
+     *
+     *             - j: cur sum ??
+     *
+     *      DP eq:
+     *
+     *        dp[i][j] =
+     *           if  dp[i - 1][1] < target:
+     *               max (dp[i - 1][1], dp[i - 1][j])
+     *
+     *
+     *
+     *
+     *
+     *  -----------------
+     *
+     *
+     */
+    public int findTargetSumWays(int[] nums, int target) {
+
+        return 0;
+    }
+
 
 
 
