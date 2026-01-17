@@ -43,6 +43,94 @@ public class BestTimeToBuyAndSellStockWithCooldown {
 //
 //    }
 
+    // V0-0-1
+    // IDEA: 2D DP (gemini)
+    public int maxProfit_0_0_1(int[] prices) {
+        if (prices == null || prices.length <= 1)
+            return 0;
+
+        int n = prices.length;
+
+        // dp[i][0]: Max profit on day i if we HOLD a stock
+        // dp[i][1]: Max profit on day i if we just SOLD a stock
+        // dp[i][2]: Max profit on day i if we are RESTING (doing nothing)
+        int[][] dp = new int[n][3];
+
+        // Base Case: Day 0
+        dp[0][0] = -prices[0]; // Bought on day 0
+        dp[0][1] = 0; // Can't sell on day 0
+        dp[0][2] = 0; // Doing nothing
+
+        for (int i = 1; i < n; i++) {
+            // 1. To HOLD today:
+            // Either you held it yesterday OR you were resting yesterday and bought today
+            dp[i][0] = Math.max(dp[i - 1][0], dp[i - 1][2] - prices[i]);
+
+            // 2. To SOLD today:
+            // You must have held a stock yesterday and you sell it at today's price
+            dp[i][1] = dp[i - 1][0] + prices[i];
+
+            // 3. To REST today:
+            // Either you rested yesterday OR you sold yesterday (cooldown)
+            dp[i][2] = Math.max(dp[i - 1][2], dp[i - 1][1]);
+        }
+
+        // The max profit will be the maximum of having sold or resting on the last day
+        return Math.max(dp[n - 1][1], dp[n - 1][2]);
+    }
+
+    // V0-0-2
+    // IDEA: DP (SPACE OPTIMIZATION) (gemini)
+    public int maxProfit_0_0_2(int[] prices) {
+        int hold = -prices[0];
+        int sold = 0;
+        int rest = 0;
+
+        for (int i = 1; i < prices.length; i++) {
+            int prevHold = hold;
+            int prevSold = sold;
+            int prevRest = rest;
+
+            hold = Math.max(prevHold, prevRest - prices[i]);
+            sold = prevHold + prices[i];
+            rest = Math.max(prevRest, prevSold);
+        }
+
+        return Math.max(sold, rest);
+    }
+
+
+    // V0-0-3
+    // IDEA: 2D DP (GPT)
+    public int maxProfit_0_0_3(int[] prices) {
+        if (prices == null || prices.length == 0)
+            return 0;
+
+        int n = prices.length;
+
+        // dp0 = holding
+        int dp0 = -prices[0];
+        // dp1 = not holding (free)
+        int dp1 = 0;
+        // dp2 = in cooldown
+        int dp2 = 0;
+
+        for (int i = 1; i < n; i++) {
+            int newDp0 = Math.max(dp0, dp1 - prices[i]);
+            int newDp1 = Math.max(dp1, dp2);
+            int newDp2 = dp0 + prices[i];
+
+            dp0 = newDp0;
+            dp1 = newDp1;
+            dp2 = newDp2;
+        }
+
+        // The max profit on last day is either not holding stock (free or in cooldown)
+        return Math.max(dp1, dp2);
+    }
+
+
+
     // V0-1
     // IDEA: DP (gpt)
     /**
@@ -311,5 +399,8 @@ public class BestTimeToBuyAndSellStockWithCooldown {
 
 
     // V2
+
+    
+
 
 }

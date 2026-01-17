@@ -1193,6 +1193,65 @@ public class Workspace19 {
         return dp[target];
     }
 
+    // LC 309
+    // 15.51 - 16.01 pm
+    /**
+     *
+     *
+     *  -> Find the maximum profit you can achieve.
+     *
+     *
+     *   - prices[i]: price on i day
+     *
+     *    - You may complete as many transactions as you like
+     *       (as many buy, sell as you want)
+     *
+     *    - NOTE:
+     *
+     *       - After you sell your stock,
+     *        you CAN NOT buy stock on the next day
+     *        (i.e., cooldown one day).
+     *
+     *
+     *        - Note: You may not engage in multiple
+     *           transactions simultaneously
+     *         (i.e., you must sell the stock before you buy again).
+     *
+     *
+     *  ---------------
+     *
+     *   IDEA 1) BRUTE FORCE
+     *
+     *   IDEA 2-1) 1D bottom DP
+     *
+     *      - DP def
+     *         - dp[i] = max revenue on day i ???
+     *
+     *      - DP eq
+     *          - dp[i] =
+     *               max ( dp[i-1
+     *
+     *   IDEA 2-2) 2D bottom DP
+     *
+     *    - DP def
+     *       - dp[i][j] = max revenue at day i
+     *                   with j op ?
+     *                     - buy: 1
+     *                     - sell: -1
+     *
+     *    - DP eq
+     *       dp[i][j] =
+     *           - if dp[i][j-1]
+     *
+     *  ---------------
+     *
+     */
+    // IDEA 2) DP
+    public int maxProfit(int[] prices) {
+
+        return 0;
+    }
+
 
 
 
