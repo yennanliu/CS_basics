@@ -44,7 +44,45 @@ public class BestTimeToBuyAndSellStockWithCooldown {
 //    }
 
     // V0-0-1
-    // IDEA: 2D DP (gemini)
+    // IDEA: 2D (n x 3 array) DP (gemini)
+    /**  NOTE !!!
+     *
+     *  1. we use 2D DP
+     *
+     *  2. `int[][] dp = new int[n][3]`
+     *    -> A `n x 3` 2D array
+     *    -> n rows, and 3 cols  (NOTE !!!!)
+     *    e.g.:
+     *      n is the number of Rows (usually representing Time/Days).
+     *     3 is the number of Columns (representing your specific States).
+     *
+     *  3. we use different col save the different op
+     *     - 0: `bought` OP
+     *     - 1: `sold` op
+     *     - 2: `do nothing` op
+     *
+     *  4.
+     *    DP def:
+     *
+     *         // dp[i][0]: Max profit on day i if we HOLD a stock
+     *         // dp[i][1]: Max profit on day i if we just SOLD a stock
+     *         // dp[i][2]: Max profit on day i if we are RESTING (doing nothing)
+     *
+     *    DP eq:
+     *       (as below)
+     *
+     *
+     *  5. Example:
+     *
+     * Day (i),Col 0: HOLD,Col 1: SOLD,Col 2: REST
+     * 0,dp[0][0],dp[0][1],dp[0][2]
+     * 1,dp[1][0],dp[1][1],dp[1][2]
+     * 2,dp[2][0],dp[2][1],dp[2][2]
+     * 3,dp[3][0],dp[3][1],dp[3][2]
+     * 4,dp[4][0],dp[4][1],dp[4][2]
+     *
+     *
+     */
     public int maxProfit_0_0_1(int[] prices) {
         if (prices == null || prices.length <= 1)
             return 0;
@@ -400,7 +438,7 @@ public class BestTimeToBuyAndSellStockWithCooldown {
 
     // V2
 
-    
+
 
 
 }

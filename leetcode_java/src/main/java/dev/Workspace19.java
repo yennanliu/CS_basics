@@ -1249,6 +1249,11 @@ public class Workspace19 {
     // IDEA 2) DP
     public int maxProfit(int[] prices) {
 
+        int n = prices.length;
+
+        //int[][] dp = new int[n][3];
+        int[][] dp = new int[][]{{1,2}};
+
         return 0;
     }
 
