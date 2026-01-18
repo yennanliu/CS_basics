@@ -51,18 +51,69 @@ public class LongestIncreasingPathInAMatrix {
 //    }
 
     // V0-1
-    // IDEA:  (DFS + Memoization) (gpt)
-    private static final int[][] DIRECTIONS = { { 0, 1 }, { 1, 0 }, { 0, -1 }, { -1, 0 } };
+    // IDEA: DFS + DP (Memoization) (gemini)
+    // 4 directions: Up, Down, Left, Right
+    private static final int[][] DIRECTIONS = { { 0, 1 }, { 0, -1 }, { 1, 0 }, { -1, 0 } };
     private int[][] memo;
-    private int rows, cols;
 
     public int longestIncreasingPath_0_1(int[][] matrix) {
+        if (matrix == null || matrix.length == 0)
+            return 0;
+
+        int rows = matrix.length;
+        int cols = matrix[0].length;
+        memo = new int[rows][cols];
+        int maxLen = 0;
+
+        // Start DFS from every single cell
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                maxLen = Math.max(maxLen, dfs(matrix, i, j));
+            }
+        }
+        return maxLen;
+    }
+
+    private int dfs(int[][] matrix, int r, int c) {
+        // If we've already calculated this cell, return the cached result
+        if (memo[r][c] != 0)
+            return memo[r][c];
+
+        // Every cell is a path of at least length 1
+        int max = 1;
+
+        for (int[] dir : DIRECTIONS) {
+            int nr = r + dir[0];
+            int nc = c + dir[1];
+
+            // Check boundaries AND if the neighbor is strictly INCREASING
+            if (nr >= 0 && nr < matrix.length && nc >= 0 && nc < matrix[0].length
+                    && matrix[nr][nc] > matrix[r][c]) {
+
+                int len = 1 + dfs(matrix, nr, nc);
+                max = Math.max(max, len);
+            }
+        }
+
+        // Cache the result before returning
+        memo[r][c] = max;
+        return max;
+    }
+
+
+    // V0-2
+    // IDEA:  (DFS + Memoization) (gpt)
+    private static final int[][] DIRECTIONS_0_2 = { { 0, 1 }, { 1, 0 }, { 0, -1 }, { -1, 0 } };
+    private int[][] memo_0_2;
+    private int rows, cols;
+
+    public int longestIncreasingPath_0_2(int[][] matrix) {
         if (matrix == null || matrix.length == 0 || matrix[0].length == 0)
             return 0;
 
         rows = matrix.length;
         cols = matrix[0].length;
-        memo = new int[rows][cols];
+        memo_0_2 = new int[rows][cols];
 
         /**
          *  NOTE !!!!
@@ -110,8 +161,8 @@ public class LongestIncreasingPathInAMatrix {
         }
 
         // Already computed
-        if (memo[row][col] > 0) {
-            return memo[row][col];
+        if (memo_0_2[row][col] > 0) {
+            return memo_0_2[row][col];
         }
 
         /**
@@ -127,14 +178,14 @@ public class LongestIncreasingPathInAMatrix {
          *
          */
         int max = 0;
-        for (int[] dir : DIRECTIONS) {
+        for (int[] dir : DIRECTIONS_0_2) {
             int newRow = row + dir[0];
             int newCol = col + dir[1];
             max = Math.max(max, dfs_0_1(matrix, newRow, newCol, matrix[row][col]));
         }
 
-        memo[row][col] = 1 + max;
-        return memo[row][col];
+        memo_0_2[row][col] = 1 + max;
+        return memo_0_2[row][col];
     }
 
 
@@ -258,6 +309,9 @@ public class LongestIncreasingPathInAMatrix {
         return LIS;
     }
 
+
     // V2
+
+
 
 }
