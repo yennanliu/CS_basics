@@ -50,6 +50,44 @@ public class LongestIncreasingPathInAMatrix {
 //
 //    }
 
+    /** NOTE !!! (WRONG code, just for reference)
+     *
+     *   below is WRONG,
+     *   -> we CAN'T do without DFS, by checking
+     *   the max increase path on 4 directions move
+     */
+//    public int longestIncreasingPath(int[][] matrix) {
+//        // edge
+//
+//        int l = matrix.length;
+//        int w = matrix[0].length;
+//
+//        // ???
+//        int[][] dp = new int[l][w]; // ??
+//        // init
+//        for(int x = 0; x < w; x++){
+//            dp[0][x] = 1;
+//        }
+//        for(int y = 0; y < l; y++){
+//            dp[y][0] = 1;
+//        }
+//
+//        // ???
+//        int maxIncreaseLen = 1;
+//        for(int y = 0; y < l; y++){
+//            for(int x = 0; x < w; x++){
+//                // ????
+//                if ( matrix[y][x] > matrix[y-1][x] || matrix[y][x] > matrix[y][x-1] ){
+//                    dp[y][x] = Math.max(dp[y-1][x] , dp[y][x-1]) + 1;
+//                    maxIncreaseLen = Math.max(maxIncreaseLen, dp[y][x]);
+//                }
+//            }
+//        }
+//
+//        return maxIncreaseLen;
+//    }
+
+
     // V0-1
     // IDEA: DFS + DP (Memoization) (gemini)
     // 4 directions: Up, Down, Left, Right
@@ -57,6 +95,12 @@ public class LongestIncreasingPathInAMatrix {
     /** NOTE !!!
      *
      *  memo is our DP (Memoization)
+     *
+     *  ----
+     *
+     *  NOTE!!!
+     *
+     *   memo[r][c]  is the result of dfs call e.g. cache
      */
     private int[][] memo;
 
@@ -83,6 +127,63 @@ public class LongestIncreasingPathInAMatrix {
      *
      *  we don't pass memo as a dfs param,
      *  but set it as global var, so dfs can access and operate it still
+     */
+    /**  NOTE !!!
+     *
+     *  memo[r][c]  is the result of dfs call e.g. cache
+     *
+     *  Yes, exactly! `memo[r][c]`
+     *  is the **cache** that stores the
+     *  "best possible answer" starting
+     *  from that specific coordinate.
+     *
+     * Without it, the algorithm would be **exponential** ()
+     * because it would recalculate the same paths over and over again.
+     * With it, the algorithm becomes **linear** ().
+     *
+     * ### 🧠 How the Cache Works
+     *
+     * Think of `memo[r][c]` as a notebook where you write down the answer to the question: *"If I am standing at cell , what is the longest path I can possibly take from here?"*
+     *
+     * 1. **Check the notebook:** Before doing any work, the DFS checks `if (memo[r][c] != 0)`. If there’s a number there, it just returns it instantly.
+     * 2. **Do the work:** If the notebook is empty (`0`), the DFS looks at all 4 neighbors.
+     * 3. **Write it down:** Once it finds the longest path from that cell, it saves it: `memo[r][c] = max`.
+     *
+     * ---
+     *
+     * ### 🔍 Execution Trace Example
+     *
+     * Imagine a small matrix: `[[1, 2], [4, 3]]`
+     *
+     * * **Step 1:** You call `dfs(0, 0)` for the value **1**.
+     * * **Step 2:** **1** sees **2** is larger, so it calls `dfs(0, 1)`.
+     * * **Step 3:** **2** sees **3** is larger, so it calls `dfs(1, 1)`.
+     * * **Step 4:** **3** has no larger neighbors. It returns **1**.
+     * * `memo[1][1]` is now **1**.
+     *
+     *
+     * * **Step 5:** Back in **2**'s call, it takes **3**'s result (1) and adds 1.
+     * * `memo[0][1]` is now **2**.
+     *
+     *
+     * * **Step 6:** Back in **1**'s call, it takes **2**'s result (2) and adds 1.
+     * * `memo[0][0]` is now **3**.
+     *
+     *
+     *
+     * Now, if another path (like starting from **4**) ever tries to look at **1**, **2**, or **3**, it doesn't have to recalculate anything! It just reads the `memo` table.
+     *
+     * ---
+     *
+     * ### 📊 DP vs. Memoization
+     *
+     * | Concept | Approach | Analogy |
+     * | --- | --- | --- |
+     * | **Tabulation (Iterative)** | Bottom-Up (starting from the smallest subproblems) | Building a house from the foundation up. |
+     * | **Memoization (Recursive)** | Top-Down (starting from the big problem and breaking it down) | Writing down the answer to a math problem so you don't have to solve it again. |
+     *
+     * **In this specific problem, Memoization is much easier because the "order" of the foundation isn't obvious (it depends on which numbers are smaller).**
+     *
      */
     private int dfs(int[][] matrix, int r, int c) {
         // If we've already calculated this cell, return the cached result
@@ -153,14 +254,10 @@ public class LongestIncreasingPathInAMatrix {
          *            getMaxIncreaseLen(...) +
          *            getMaxIncreaseLen(...);
          *
-         *
-         *
          *  -> This returns the sum of ALL increasing paths starting from
          *     four directions.
          *
-         *
          */
-
         return maxLen;
     }
 
