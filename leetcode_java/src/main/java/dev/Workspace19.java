@@ -1305,6 +1305,30 @@ public class Workspace19 {
     }
 
 
+    // LC 97
+    // 2.29 - 3.10 pm
+    /**
+     *
+     *   -> An interleaving of two strings s and t is a
+     *   configuration where s and t are divided
+     *   into n and m substrings respectively
+     *
+     *
+     *   -------------
+     *
+     *    IDEA 1) DP ??
+     *
+     *    IDEA 2) brute force ??
+     *
+     *   -------------
+     *
+     *
+     */
+    public boolean isInterleave(String s1, String s2, String s3) {
+
+        return false;
+    }
+
 
 
 }
