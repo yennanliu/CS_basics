@@ -1,6 +1,7 @@
 package LeetCodeJava.DynamicProgramming;
 
 // https://leetcode.com/problems/interleaving-string/
+// https://leetcode.cn/problems/interleaving-string/
 /**
  * 97. Interleaving String
  * Medium
@@ -55,6 +56,83 @@ public class InterleavingString {
 //    public boolean isInterleave(String s1, String s2, String s3) {
 //
 //    }
+
+    // V0-1
+    // IDEA: 2D DP (gemini)
+    public boolean isInterleave_0_1(String s1, String s2, String s3) {
+        int m = s1.length(), n = s2.length();
+        // If lengths don't match, it's impossible
+        if (m + n != s3.length())
+            return false;
+
+        boolean[][] dp = new boolean[m + 1][n + 1];
+        dp[0][0] = true;
+
+        // 1. Initialize first column (using only s1)
+        for (int i = 1; i <= m; i++) {
+            dp[i][0] = dp[i - 1][0] && s1.charAt(i - 1) == s3.charAt(i - 1);
+        }
+
+        // 2. Initialize first row (using only s2)
+        for (int j = 1; j <= n; j++) {
+            dp[0][j] = dp[0][j - 1] && s2.charAt(j - 1) == s3.charAt(j - 1);
+        }
+
+        // 3. Fill the rest of the table
+        for (int i = 1; i <= m; i++) {
+            for (int j = 1; j <= n; j++) {
+                // Check if current s3 char matches s1's current char
+                // AND the previous state was valid
+                boolean fromS1 = dp[i - 1][j] && s1.charAt(i - 1) == s3.charAt(i + j - 1);
+
+                // Check if current s3 char matches s2's current char
+                // AND the previous state was valid
+                boolean fromS2 = dp[i][j - 1] && s2.charAt(j - 1) == s3.charAt(i + j - 1);
+
+                dp[i][j] = fromS1 || fromS2;
+            }
+        }
+
+        return dp[m][n];
+    }
+
+    // V0-2
+    // IDEA: DP (GPT)
+    public boolean isInterleave_0_2(String s1, String s2, String s3) {
+
+        int n1 = s1.length(), n2 = s2.length(), n3 = s3.length();
+
+        // If total lengths don't match, can't interleave
+        if (n1 + n2 != n3) {
+            return false;
+        }
+
+        // dp[i][j] = using s1[0..i-1] and s2[0..j-1] to match s3[0..i+j-1]
+        boolean[][] dp = new boolean[n1 + 1][n2 + 1];
+
+        dp[0][0] = true; // empty string interleaves to empty
+
+        // Only s1 prefix builds s3 prefix
+        for (int i = 1; i <= n1; i++) {
+            dp[i][0] = dp[i - 1][0] && s1.charAt(i - 1) == s3.charAt(i - 1);
+        }
+
+        // Only s2 prefix builds s3 prefix
+        for (int j = 1; j <= n2; j++) {
+            dp[0][j] = dp[0][j - 1] && s2.charAt(j - 1) == s3.charAt(j - 1);
+        }
+
+        // Fill DP
+        for (int i = 1; i <= n1; i++) {
+            for (int j = 1; j <= n2; j++) {
+                dp[i][j] = (dp[i - 1][j] && s1.charAt(i - 1) == s3.charAt(i + j - 1))
+                        || (dp[i][j - 1] && s2.charAt(j - 1) == s3.charAt(i + j - 1));
+            }
+        }
+
+        return dp[n1][n2];
+    }
+
 
     // V1-1
     // https://neetcode.io/problems/interleaving-string
@@ -214,4 +292,6 @@ public class InterleavingString {
 
 
     // V2
+
+
 }
