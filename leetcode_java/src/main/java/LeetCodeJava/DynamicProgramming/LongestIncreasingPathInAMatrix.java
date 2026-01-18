@@ -190,6 +190,14 @@ public class LongestIncreasingPathInAMatrix {
         if (memo[r][c] != 0)
             return memo[r][c];
 
+        /** NOTE !!!
+         *
+         *  we init a `local max len` called max
+         *
+         *   1. we can maintain a `local max len` within DFS call
+         *   2. we can update cache (memo) with max val
+         *   3. we can return max as the DFS return value
+         */
         // Every cell is a path of at least length 1
         int max = 1;
 
@@ -201,13 +209,26 @@ public class LongestIncreasingPathInAMatrix {
             if (nr >= 0 && nr < matrix.length && nc >= 0 && nc < matrix[0].length
                     && matrix[nr][nc] > matrix[r][c]) {
 
+                /** NOTE !!!
+                 *
+                 *  1. tmp len: len
+                 *  2. update local max val (max)
+                 */
                 int len = 1 + dfs(matrix, nr, nc);
                 max = Math.max(max, len);
             }
         }
 
+        /** NOTE !!!
+         *
+         *  update cache (dp) with `max` val
+         */
         // Cache the result before returning
         memo[r][c] = max;
+        /** NOTE !!!
+         *
+         *  return `max` as DFS result
+         */
         return max;
     }
 
@@ -332,7 +353,7 @@ public class LongestIncreasingPathInAMatrix {
     // IDEA: Dynamic Programming (Top-Down)
     //int[][] directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
     int[][] dp;
-
+    
     private int dfs_1_2(int[][] matrix, int r, int c, int prevVal) {
         int ROWS = matrix.length, COLS = matrix[0].length;
         if (r < 0 || r >= ROWS || c < 0 ||
