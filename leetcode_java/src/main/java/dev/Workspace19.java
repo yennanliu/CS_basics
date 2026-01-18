@@ -1330,5 +1330,90 @@ public class Workspace19 {
     }
 
 
+    // LC 329
+    // 3.33 - 43 pm
+    /**
+     *  ->  return the length of the `longest` `increasing `
+     *      path in matrix.
+     *
+     *     - m x n matrix
+     *     -
+     *
+     *   NOTE:
+     *
+     *    - you can either move in four directions:
+     *       - left, right, up, or down
+     *
+     *    - CAN'T move
+     *       - out of boundary
+     *       - move diagonally
+     *
+     *  ---------------
+     *
+     *    IDEA 1) MULTI SOURCE BFS  ????
+     *
+     *    IDEA 2) 2D DP ???
+     *
+     *      -> so we need to loop all cells in matrix,
+     *         and calculate below dp:
+     *
+     *      - DP def:
+     *
+     *         - dp[i][j]: max longest` `increasing `
+     *                     path `at [i, j]` ????   (NOT start from (i,j))
+     *
+     *      - DP eq:
+     *
+     *         - dp[i][j] =
+     *              if ( matrix[i][j] > matrix[i-1][j] || matrix[i][j] > matrix[i][j-1] ):
+     *                 max(dp[i-1][j] , dp[i][j-1]) + 1
+     *
+     *   ---------------
+     *
+     *
+     *
+     */
+    public int longestIncreasingPath(int[][] matrix) {
+        // edge
+
+        int l = matrix.length;
+        int w = matrix[0].length;
+
+        // ???
+        int[][] dp = new int[l][w]; // ??
+        // init
+        for(int x = 0; x < w; x++){
+            dp[0][x] = 1;
+        }
+        for(int y = 0; y < l; y++){
+            dp[y][0] = 1;
+        }
+
+        /**
+         *      *      - DP eq:
+         *      *
+         *      *         - dp[i][j] =
+         *      *              if ( matrix[i][j] > matrix[i-1][j] || matrix[i][j] > matrix[i][j-1] ):
+         *      *                 max(dp[i-1][j] , dp[i][j-1]) + 1
+         *
+         */
+        // ???
+        int maxIncreaseLen = 1;
+        for(int y = 0; y < l; y++){
+            for(int x = 0; x < w; x++){
+                // ????
+                if ( matrix[y][x] > matrix[y-1][x] || matrix[y][x] > matrix[y][x-1] ){
+                    dp[y][x] = Math.max(dp[y-1][x] , dp[y][x-1]) + 1;
+                    maxIncreaseLen = Math.max(maxIncreaseLen, dp[y][x]);
+                }
+            }
+        }
+
+        return maxIncreaseLen;
+    }
+
+
+
+
 
 }
