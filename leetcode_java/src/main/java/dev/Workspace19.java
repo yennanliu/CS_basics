@@ -1479,5 +1479,46 @@ public class Workspace19 {
 
 
 
+     // LC 115
+     // 4.48 - 5.08 pm
+     /**
+      *  -> return the number of
+      *     distinct `subsequences of s`
+      *        - which equals t.
+      *
+      *   2 str: s, t
+      *
+      *
+      *
+      *  ------------
+      *
+      *    IDEA 1) 2D DP ???
+      *
+      *      - DP def:
+      *
+      *         - boolean dp[i][j]
+      *             - can s[0..i] be the sub str in
+      *                   t[0...j] ???
+      *
+      *      - DP eq:
+      *
+      *
+      *    IDEA 2) BRUTE FORCE
+      *       - double loop
+      *
+      *   ------------
+      *
+      *
+      *
+      *
+      *
+      */
+     public int numDistinct(String s, String t) {
+
+         return 0;
+    }
+
+
+
 
 }

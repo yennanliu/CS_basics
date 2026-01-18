@@ -353,7 +353,7 @@ public class LongestIncreasingPathInAMatrix {
     // IDEA: Dynamic Programming (Top-Down)
     //int[][] directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
     int[][] dp;
-    
+
     private int dfs_1_2(int[][] matrix, int r, int c, int prevVal) {
         int ROWS = matrix.length, COLS = matrix[0].length;
         if (r < 0 || r >= ROWS || c < 0 ||
