@@ -54,6 +54,10 @@ public class LongestIncreasingPathInAMatrix {
     // IDEA: DFS + DP (Memoization) (gemini)
     // 4 directions: Up, Down, Left, Right
     private static final int[][] DIRECTIONS = { { 0, 1 }, { 0, -1 }, { 1, 0 }, { -1, 0 } };
+    /** NOTE !!!
+     *
+     *  memo is our DP (Memoization)
+     */
     private int[][] memo;
 
     public int longestIncreasingPath_0_1(int[][] matrix) {
@@ -74,6 +78,12 @@ public class LongestIncreasingPathInAMatrix {
         return maxLen;
     }
 
+
+    /** NOTE !!!
+     *
+     *  we don't pass memo as a dfs param,
+     *  but set it as global var, so dfs can access and operate it still
+     */
     private int dfs(int[][] matrix, int r, int c) {
         // If we've already calculated this cell, return the cached result
         if (memo[r][c] != 0)
