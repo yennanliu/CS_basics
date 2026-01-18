@@ -53,6 +53,51 @@ public class DistinctSubsequences {
 
     // V0-1
     // IDEA: 2D DP (gemini)
+    /**
+     * To solve **LeetCode 115: Distinct Subsequences**,
+     * we use 2D Dynamic Programming.
+     * 
+     * The goal is to
+     * find how many ways we can form string
+     * `t` by picking characters from string `s`
+     * while maintaining their relative order.
+     *
+     * ### 💡 The DP Logic
+     *
+     * 1. **State Definition**: `dp[i][j]` represents the number of distinct subsequences of `s.substring(0, i)` which equal `t.substring(0, j)`.
+     * 2. **Base Cases**:
+     * * If `t` is empty (`j = 0`), there is **1** way to form it (by deleting all characters of `s`). So, `dp[i][0] = 1`.
+     * * If `s` is empty but `t` is not (`i = 0, j > 0`), there are **0** ways. So, `dp[0][j] = 0`.
+     *
+     *
+     * 3. **Transition**:
+     * * **Case 1: Characters Match (`s[i-1] == t[j-1]`)**
+     * We have two choices:
+     * 1. Use `s[i-1]` to match `t[j-1]`: The result is `dp[i-1][j-1]`.
+     * 2. Don't use `s[i-1]` (even though it matches): The result is `dp[i-1][j]`.
+     * *Equation*: `dp[i][j] = dp[i-1][j-1] + dp[i-1][j]`
+     *
+     *
+     * * **Case 2: Characters Don't Match**
+     * We have no choice but to skip `s[i-1]`.
+     * *Equation*: `dp[i][j] = dp[i-1][j]`
+     *
+     * ---
+     *
+     * ### 🔍 Visualizing the Transition
+     *
+     * Imagine `s = "rabbbit"` and `t = "rabbit"`.
+     * When we are at the third 'b' in `s` matching the second 'b' in `t`:
+     *
+     * 1. **Use it**: We look at how many ways "rab" (from `s`) made "ra" (from `t`).
+     * 2. **Skip it**: We look at how many ways "rab" (from `s`) already made "rab" (from `t`) using earlier characters.
+     *
+     * ### 📊 Complexity Analysis
+     *
+     * * **Time Complexity**: , where  is the length of `s` and  is the length of `t`.
+     * * **Space Complexity**:  for the 2D array.
+     *
+     */
     public int numDistinct_0_1(String s, String t) {
         int slen = s.length();
         int tlen = t.length();
