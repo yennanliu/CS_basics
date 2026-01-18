@@ -1389,14 +1389,6 @@ public class Workspace19 {
             dp[y][0] = 1;
         }
 
-        /**
-         *      *      - DP eq:
-         *      *
-         *      *         - dp[i][j] =
-         *      *              if ( matrix[i][j] > matrix[i-1][j] || matrix[i][j] > matrix[i][j-1] ):
-         *      *                 max(dp[i-1][j] , dp[i][j-1]) + 1
-         *
-         */
         // ???
         int maxIncreaseLen = 1;
         for(int y = 0; y < l; y++){
