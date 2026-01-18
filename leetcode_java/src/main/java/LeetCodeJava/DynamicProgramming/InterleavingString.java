@@ -110,6 +110,19 @@ public class InterleavingString {
         dp[0][0] = true;
 
         // 1. Initialize first column (using only s1)
+        /**  NOTE !!!
+         *
+         *   why `dp[i - 1][0] ` ?
+         *
+         * 1. dp[i - 1][0] (The Previous Link)
+         *    The string up until the previous character
+         *    must have already been a valid interleave.
+         *
+         *    -> If we couldn't even form the first 3 characters,
+         *       we certainly can't form the first 4.
+         *       This preserves the relative order.
+         *
+         */
         for (int i = 1; i <= m; i++) {
             dp[i][0] = dp[i - 1][0] && s1.charAt(i - 1) == s3.charAt(i - 1);
         }
@@ -133,6 +146,24 @@ public class InterleavingString {
          *              - dp[i][j] is true if dp[i][j-1] was true
          *                 AND
          *                 s_2[j-1] == s_3[i+j-1].
+         *
+         *
+         *   ---------------------
+         *
+         *   Explanation:
+         *
+         *    - Think of the DP table as a grid where you are trying
+         *      to find a path from the
+         *      top-left (0,0) to
+         *      the bottom-right (m,n).
+         *
+         *   - Moving Down (from dp[i-1][j]): You are choosing to use a character from s1.
+         *       - You can ONLY do this if the character at s1[i-1]
+         *         matches the required character in s3.
+         *
+         *   - Moving Right (from dp[i][j-1]): You are choosing to use a character from s2.
+         *       - You can ONLY do this if the character at s2[j-1]
+         *         matches the required character in s3.
          *
          */
         // 3. Fill the rest of the table
