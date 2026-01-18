@@ -51,6 +51,86 @@ public class DistinctSubsequences {
 //
 //    }
 
+    // V0-1
+    // IDEA: 2D DP (gemini)
+    public int numDistinct_0_1(String s, String t) {
+        int slen = s.length();
+        int tlen = t.length();
+
+        // dp[i][j] means number of subsequences of s[0...i-1] matching t[0...j-1]
+        int[][] dp = new int[slen + 1][tlen + 1];
+
+        // Base case: If t is empty, s can always form it in 1 way (empty subsequence)
+        for (int i = 0; i <= slen; i++) {
+            dp[i][0] = 1;
+        }
+
+        for (int i = 1; i <= slen; i++) {
+            for (int j = 1; j <= tlen; j++) {
+                // If characters match, we sum the ways including s[i-1] and excluding it
+                if (s.charAt(i - 1) == t.charAt(j - 1)) {
+                    dp[i][j] = dp[i - 1][j - 1] + dp[i - 1][j];
+                }
+                // If they don't match, we must exclude s[i-1]
+                else {
+                    dp[i][j] = dp[i - 1][j];
+                }
+            }
+        }
+
+        return dp[slen][tlen];
+    }
+
+
+    // V0-2
+    // IDEA: 2D DP + SPACE OPTIMIZED (gemini)
+    public int numDistinct_0_2(String s, String t) {
+        int[] dp = new int[t.length() + 1];
+        dp[0] = 1;
+
+        for (int i = 1; i <= s.length(); i++) {
+            for (int j = t.length(); j >= 1; j--) {
+                if (s.charAt(i - 1) == t.charAt(j - 1)) {
+                    dp[j] = dp[j] + dp[j - 1];
+                }
+            }
+        }
+        return dp[t.length()];
+    }
+
+
+    // V0-3
+    // IDEA: 2D DP (gpt)
+    public int numDistinct_0_3(String s, String t) {
+        int m = s.length();
+        int n = t.length();
+
+        // dp[i][j]: # of distinct ways to form t[:j] from s[:i]
+        long[][] dp = new long[m + 1][n + 1];
+
+        // base cases
+        for (int i = 0; i <= m; i++) {
+            dp[i][0] = 1; // one way to form empty t
+        }
+        // no need to set dp[0][j] because default 0
+
+        for (int i = 1; i <= m; i++) {
+            for (int j = 1; j <= n; j++) {
+
+                // first inherit without using s[i-1]
+                dp[i][j] = dp[i - 1][j];
+
+                if (s.charAt(i - 1) == t.charAt(j - 1)) {
+                    dp[i][j] += dp[i - 1][j - 1];
+                }
+            }
+        }
+
+        return (int) dp[m][n];
+    }
+
+
+
     // V1-1
     // https://neetcode.io/problems/count-subsequences
     // IDEA:  RECURSION
@@ -177,4 +257,7 @@ public class DistinctSubsequences {
     }
 
     // V2
+
+
+
 }
