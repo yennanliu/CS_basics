@@ -1373,7 +1373,79 @@ public class Workspace19 {
      *
      *
      */
+    // dfs + dp ???
+    // 4.28 - 38 pm
+    // ???
     public int longestIncreasingPath(int[][] matrix) {
+        // edge
+        if (matrix == null || matrix.length == 0)
+            return 0;
+
+
+        int l = matrix.length;
+        int w = matrix[0].length;
+
+       // int[][] moves = { { 0, 1 }, { 0, -1 }, { 1, 0 }, { -1, 0 } };
+        int maxIncreaseLen = 0; // 1;
+
+        // ???
+        int[][] memo = new int[l][w];
+
+        // ???
+        for(int y = 0; y < l; y++){
+            for(int x = 0; x < w; x++){
+                maxIncreaseLen = Math.max(
+                        maxIncreaseLen,
+                        //dfsIncreasePath(x, y, matrix, memo, 1)
+                        dfsIncreasePath(x, y, matrix, memo)
+                );
+            }
+        }
+
+
+        return maxIncreaseLen;
+    }
+
+    private int dfsIncreasePath(int x, int y, int[][] matrix,  int[][] memo){
+        // edge
+        if(memo[y][x] != -1){
+            return memo[y][x];
+        }
+
+        int l = matrix.length;
+        int w = matrix[0].length;
+
+        int[][] moves = { { 0, 1 }, { 0, -1 }, { 1, 0 }, { -1, 0 } };
+
+        int max = 1;
+
+        for(int[] m: moves){
+            int x_ = x + m[1];
+            int y_ = y + m[0];
+            // validate
+            if(x_ >= 0 && x_ < w && y_ >= 0 && y_ < l){
+                // ???
+                if(matrix[y_][x_] > matrix[y][x]){
+                    // ?????
+                    //dfsIncreasePath(x_, y_, matrix, memo, moveLen + 1);
+                    int len = 1 + dfsIncreasePath(x_, y_, matrix, memo);
+                    max = Math.max(max, len);
+                }
+            }
+        }
+
+        // update memo
+        memo[y][x] = max;
+        return max;
+    }
+
+
+
+
+
+
+
+    public int longestIncreasingPath_99(int[][] matrix) {
         // edge
 
         int l = matrix.length;
