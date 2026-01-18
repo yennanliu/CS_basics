@@ -1376,6 +1376,141 @@ public int coinChange(int[] coins, int amount) {
 
 ### **String DP Patterns**
 
+#### **The "Two-String / Two-Sequence Grid" Pattern** 🧩
+
+This is one of the most important DP patterns for string problems. Once you recognize this pattern, a whole class of problems becomes much easier to solve.
+
+**Core Structure:**
+- Create a 2D array `dp[m+1][n+1]` where:
+  - **Rows (i)**: Represent the prefix of String A (first i characters)
+  - **Columns (j)**: Represent the prefix of String B (first j characters)
+  - **Cell `dp[i][j]`**: Stores the answer for those two specific prefixes
+
+**Grid Movements (How to Choose the Move):**
+
+Think of the grid as a game where you move from `(0,0)` to `(m,n)`:
+
+1. **Diagonal Move (`dp[i-1][j-1]`)**: You "use" or "match" a character from **both** strings simultaneously
+2. **Vertical Move (`dp[i-1][j]`)**: You "skip" or "delete" a character from String A
+3. **Horizontal Move (`dp[i][j-1]`)**: You "skip" or "insert" a character from String B
+
+**Pattern Comparison Table:**
+
+| Problem | Goal | Match Logic (`s1[i-1] == s2[j-1]`) | Mismatch Logic | Key Insight |
+|---------|------|-----------------------------------|----------------|-------------|
+| **LC 1143: LCS** | Longest common length | `1 + dp[i-1][j-1]` (Diagonal + 1) | `max(dp[i-1][j], dp[i][j-1])` | Take diagonal when match, else max of skip either string |
+| **LC 97: Interleaving String** | Can s3 interleave s1+s2? | `dp[i-1][j] \|\| dp[i][j-1]` | `false` | Check if we can form by taking from either string |
+| **LC 115: Distinct Subsequences** | Count occurrences | `dp[i-1][j-1] + dp[i-1][j]` | `dp[i-1][j]` | Can either use match or skip s char |
+| **LC 72: Edit Distance** | Min edits to match | `dp[i-1][j-1]` (No cost) | `1 + min(top, left, diagonal)` | No operation needed if match, else try all 3 operations |
+| **LC 583: Delete Operation** | Min deletions to make equal | `dp[i-1][j-1]` | `1 + min(dp[i-1][j], dp[i][j-1])` | Delete from either string |
+| **LC 712: Min ASCII Delete Sum** | Min ASCII sum to make equal | `dp[i-1][j-1]` | `min(dp[i-1][j] + s1[i], dp[i][j-1] + s2[j])` | Track ASCII costs |
+
+**The "Empty String" Base Case Pattern** 💡
+
+This is **THE MOST IMPORTANT** pattern in Two-String DP:
+
+* `dp[0][0]`: State where both strings are empty (usually `0` or `true`)
+* First row `dp[0][j]`: String A is empty, only String B has characters
+* First column `dp[i][0]`: String B is empty, only String A has characters
+
+**Why `m+1` and `n+1`?**
+- The `+1` gives us room for the "empty string" base case
+- Without this, transitions like `dp[i-1][j]` would crash on the first character
+- `dp[i][j]` represents using the first `i` characters of string 1 and first `j` characters of string 2
+
+**Universal Template:**
+```java
+public int stringDP(String s1, String s2) {
+    int m = s1.length(), n = s2.length();
+    int[][] dp = new int[m + 1][n + 1];
+
+    // Step 1: Initialize base cases (empty string states)
+    dp[0][0] = 0; // Both strings empty
+
+    // Initialize first row (s1 is empty)
+    for (int j = 1; j <= n; j++) {
+        dp[0][j] = initValueForEmptyS1(j);
+    }
+
+    // Initialize first column (s2 is empty)
+    for (int i = 1; i <= m; i++) {
+        dp[i][0] = initValueForEmptyS2(i);
+    }
+
+    // Step 2: Fill the DP table
+    for (int i = 1; i <= m; i++) {
+        for (int j = 1; j <= n; j++) {
+            // NOTE: Use i-1 and j-1 to access string characters
+            if (s1.charAt(i-1) == s2.charAt(j-1)) {
+                // Characters match
+                dp[i][j] = transitionOnMatch(dp, i, j);
+            } else {
+                // Characters don't match
+                dp[i][j] = transitionOnMismatch(dp, i, j);
+            }
+        }
+    }
+
+    return dp[m][n];
+}
+```
+
+**Space Optimization Secret** ⚡
+
+In every "Two-String" problem, you only ever look at:
+- The **current row** (`dp[i][j]`)
+- The **row above** (`dp[i-1][j]`)
+- The **diagonal** (`dp[i-1][j-1]`)
+
+This means you can **always reduce space from O(m×n) to O(n)** by using:
+1. A 1D array for the previous row
+2. A variable to store the diagonal value
+3. Rolling updates as you process each row
+
+**Example Space-Optimized LCS:**
+```java
+public int longestCommonSubsequence(String s1, String s2) {
+    int m = s1.length(), n = s2.length();
+    int[] prev = new int[n + 1];
+
+    for (int i = 1; i <= m; i++) {
+        int[] curr = new int[n + 1];
+        for (int j = 1; j <= n; j++) {
+            if (s1.charAt(i-1) == s2.charAt(j-1)) {
+                curr[j] = prev[j-1] + 1; // Diagonal
+            } else {
+                curr[j] = Math.max(prev[j], curr[j-1]); // Top or left
+            }
+        }
+        prev = curr; // Roll forward
+    }
+
+    return prev[n];
+}
+```
+
+**Quick Recognition Checklist** ✅
+
+Use "Two-String Grid" pattern when you see:
+- [ ] Two strings/sequences as input
+- [ ] Need to compare characters from both strings
+- [ ] Answer depends on prefixes (first i chars of s1, first j chars of s2)
+- [ ] Keywords: "common", "matching", "transform", "interleaving", "subsequence"
+
+**Common Problems:**
+- LC 1143 (LCS) - Find longest common subsequence
+- LC 72 (Edit Distance) - Minimum edits to transform
+- LC 97 (Interleaving String) - Can s3 be formed by interleaving?
+- LC 115 (Distinct Subsequences) - Count occurrences
+- LC 583 (Delete Operation) - Min deletions to make equal
+- LC 712 (Min ASCII Delete Sum) - Min ASCII cost to make equal
+- LC 10 (Regular Expression Matching) - Pattern matching with * and .
+- LC 44 (Wildcard Matching) - Pattern matching with * and ?
+
+---
+
+### **Classic String DP Patterns (Detailed)**
+
 | Problem Type | Pattern | Complexity | Notes |
 |--------------|---------|------------|-------|
 | **Edit Distance** | dp[i][j] = operations to transform s1[:i] to s2[:j] | O(m×n) | Insert/Delete/Replace |
