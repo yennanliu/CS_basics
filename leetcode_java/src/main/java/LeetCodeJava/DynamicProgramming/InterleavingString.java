@@ -59,13 +59,54 @@ public class InterleavingString {
 
     // V0-1
     // IDEA: 2D DP (gemini)
+    /**
+     *
+     * To solve **LeetCode 97: Interleaving String**,
+     * we use 2D Dynamic Programming.
+     * The goal is to determine if a string
+     * is formed by interleaving  and
+     * while maintaining the relative order of characters from each.
+     *
+     * ### 💡 The DP Logic
+     *
+     * 1. **State Definition:** `dp[i][j]` is a boolean value representing whether  can be formed by interleaving  and .
+     * 2. **Base Case:** `dp[0][0] = true` (two empty strings interleave to form an empty string).
+     * 3. **Transition:** * If we take a character from : `dp[i][j]` is true if `dp[i-1][j]` was true AND .
+     * * If we take a character from : `dp[i][j]` is true if `dp[i][j-1]` was true AND .
+     *
+     * ---
+     *
+     * ### 📊 Complexity Analysis
+     *
+     * * **Time Complexity:**  where  and  are lengths of  and .
+     * * **Space Complexity:**  for the 2D table. (Note: This can be optimized to  space since we only ever need the previous row).
+     *
+     *
+     */
     public boolean isInterleave_0_1(String s1, String s2, String s3) {
         int m = s1.length(), n = s2.length();
         // If lengths don't match, it's impossible
         if (m + n != s3.length())
             return false;
 
+        /**  NOTE !!!
+         *
+         *  DP def:
+         *
+         *  dp[i][j]:
+         *    boolean value representing whether `s_3[0.... i+j-1]`
+         *    can be formed by `interleaving`
+         *       s1[0... i-1]
+         *       and
+         *       s2[0... j-1]
+         */
         boolean[][] dp = new boolean[m + 1][n + 1];
+        /**  NOTE !!!
+         *
+         *   base case:
+         *
+         *    dp[0][0] = true (two empty strings interleave to form an empty string).
+         */
         dp[0][0] = true;
 
         // 1. Initialize first column (using only s1)
@@ -78,6 +119,22 @@ public class InterleavingString {
             dp[0][j] = dp[0][j - 1] && s2.charAt(j - 1) == s3.charAt(j - 1);
         }
 
+        /**  NOTE !!!
+         *
+         *   DP eq:
+         *
+         *      Transition:
+         *          - If we take a character from s1:
+         *             dp[i][j] is true if dp[i-1][j] was true
+         *             AND
+         *             s_1[i-1] == s_3[i+j-1].
+         *
+         *          - If we take a character from s_2:
+         *              - dp[i][j] is true if dp[i][j-1] was true
+         *                 AND
+         *                 s_2[j-1] == s_3[i+j-1].
+         *
+         */
         // 3. Fill the rest of the table
         for (int i = 1; i <= m; i++) {
             for (int j = 1; j <= n; j++) {
