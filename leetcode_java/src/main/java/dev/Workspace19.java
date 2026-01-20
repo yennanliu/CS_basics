@@ -1520,5 +1520,63 @@ public class Workspace19 {
 
 
 
+    // LC 72
+    // 15.53 - 16.03 pm
+    /**
+     *
+     *  ->  return the `minimum` number
+     *     of operations required to
+     *  `  convert word1 to word2`
+     *
+     *    - 2 str: w1, w2
+     *
+     *    - can do op below:
+     *
+     *       - insert
+     *       - delete
+     *       - replace
+     *
+     *  -------------
+     *
+     *   IDEA 0) GREEDY ???
+     *
+     *
+     *   IDEA 1) BRUTE FORCE
+     *
+     *   IDEA 2) 2D DP ???
+     *
+     *     - DP def:
+     *
+     *         (2D)
+     *        - dp[i][j]:
+     *            min op make
+     *            w1, w2 are equal at idx = i ???
+     *
+     *
+     *         - j = 0: insert
+     *             = 1: delete
+     *             = 2: replace
+     *             ???
+     *
+     *         - i:
+     *
+     *
+     *
+     *
+     *     - DP eq:
+     *
+     *
+     * -------------
+     *
+     *
+     *
+     */
+    public int minDistance(String word1, String word2) {
+
+         return 0;
+    }
+
+
+
 
 }
