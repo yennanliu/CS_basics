@@ -49,7 +49,108 @@ public class EditDistance {
 //    public int minDistance(String word1, String word2) {
 //    }
 
+
     // V0-1
+    // IDEA: 2D DP (gemini)
+    public int minDistance_0_1(String word1, String word2) {
+        int m = word1.length();
+        int n = word2.length();
+
+        // 2D grid: Rows = word1, Cols = word2
+        int[][] dp = new int[m + 1][n + 1];
+
+        // Base case: word2 is empty (Delete all from word1)
+        for (int i = 0; i <= m; i++) {
+            dp[i][0] = i;
+        }
+
+        // Base case: word1 is empty (Insert all into word1)
+        for (int j = 0; j <= n; j++) {
+            dp[0][j] = j;
+        }
+
+        // Fill the grid
+        for (int i = 1; i <= m; i++) {
+            for (int j = 1; j <= n; j++) {
+                if (word1.charAt(i - 1) == word2.charAt(j - 1)) {
+                    // Match: Just take the previous best
+                    dp[i][j] = dp[i - 1][j - 1];
+                } else {
+                    // Mismatch: 1 + min of (Replace, Delete, Insert)
+                    int replace = dp[i - 1][j - 1];
+                    int delete = dp[i - 1][j];
+                    int insert = dp[i][j - 1];
+
+                    dp[i][j] = 1 + Math.min(replace, Math.min(delete, insert));
+                }
+            }
+        }
+
+        return dp[m][n];
+    }
+
+    // V0-2
+    // IDEA: 2D DP + SPACE OPTIMIZED (gemini)
+    public int minDistance_0_2(String word1, String word2) {
+        int m = word1.length(), n = word2.length();
+        int[] dp = new int[n + 1];
+        for (int j = 0; j <= n; j++)
+            dp[j] = j;
+
+        for (int i = 1; i <= m; i++) {
+            int prev = dp[0]; // This represents dp[i-1][j-1]
+            dp[0] = i; // This represents dp[i][0]
+            for (int j = 1; j <= n; j++) {
+                int temp = dp[j]; // Store original dp[i-1][j] for next j's diagonal
+                if (word1.charAt(i - 1) == word2.charAt(j - 1)) {
+                    dp[j] = prev;
+                } else {
+                    dp[j] = 1 + Math.min(prev, Math.min(dp[j - 1], dp[j]));
+                }
+                prev = temp;
+            }
+        }
+        return dp[n];
+    }
+
+    // V0-3
+    // IDEA: 2D DP (gpt)
+    public int minDistance_0_3(String word1, String word2) {
+        int n1 = word1.length();
+        int n2 = word2.length();
+
+        // dp[i][j] = edit distance converting first i chars of word1
+        // to first j chars of word2
+        int[][] dp = new int[n1 + 1][n2 + 1];
+
+        // base cases
+        for (int i = 0; i <= n1; i++) {
+            dp[i][0] = i; // delete all chars in word1
+        }
+        for (int j = 0; j <= n2; j++) {
+            dp[0][j] = j; // insert all chars of word2
+        }
+
+        for (int i = 1; i <= n1; i++) {
+            for (int j = 1; j <= n2; j++) {
+                if (word1.charAt(i - 1) == word2.charAt(j - 1)) {
+                    dp[i][j] = dp[i - 1][j - 1];
+                } else {
+                    int delete = dp[i - 1][j];
+                    int insert = dp[i][j - 1];
+                    int replace = dp[i - 1][j - 1];
+                    dp[i][j] = 1 + Math.min(delete, Math.min(insert, replace));
+                }
+            }
+        }
+
+        return dp[n1][n2];
+    }
+
+
+
+
+    // V0-5
     // IDEA: 2D DP (gpt)
     /**
      *
@@ -76,7 +177,7 @@ public class EditDistance {
      * dp[i][0] = i → Convert prefix of word1 to empty string
      *
      */
-    public int minDistance_0_1(String word1, String word2) {
+    public int minDistance_0_5(String word1, String word2) {
         int m = word1.length();
         int n = word2.length();
 
@@ -110,6 +211,7 @@ public class EditDistance {
 
         return dp[m][n];
     }
+
 
     // V1-1
     // https://neetcode.io/problems/edit-distance
@@ -280,5 +382,7 @@ public class EditDistance {
         }
         return f[m][n];
     }
+
+
 
 }
