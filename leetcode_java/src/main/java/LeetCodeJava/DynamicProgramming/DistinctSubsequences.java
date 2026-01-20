@@ -113,7 +113,72 @@ public class DistinctSubsequences {
         for (int i = 1; i <= slen; i++) {
             for (int j = 1; j <= tlen; j++) {
                 // If characters match, we sum the ways including s[i-1] and excluding it
+                /** NOTE !!!  why we compare `i-1` VS `j-1` ?
+                 *
+                 *  -> in short, idx=0 is for `empty string`,
+                 *     so we need `shift right 1 idx`
+                 *     e.g.
+                 *
+                 *       | DP Index (`i`) | Meaning | String `s.charAt(?)` |
+                 *       **`i`** | **-th character** | **`s.charAt(i - 1)`** |
+                 *
+                 *
+                 *
+                 * ### 1. The "Empty String" Offset
+                 *
+                 * Our DP table is size `(s_len + 1) x (t_len + 1)`.
+                 *
+                 * * Index **0** in the DP table represents an **empty string** ("").
+                 * * Index **1** in the DP table represents a string of **length 1**.
+                 *
+                 * Because the DP index `1` corresponds to
+                 * the first character of the string, and Java strings use **0-based indexing**,
+                 * the first character is at `charAt(0)`.
+                 *
+                 * and string charAt(i-1)]
+                 *
+                 * ---
+                 *
+                 * ### 2. Mapping the Indices
+                 *
+                 * Look at how the indices align:
+                 *
+                 * | DP Index (`i`) | Meaning | String `s.charAt(?)` |
+                 * | --- | --- | --- |
+                 * | **0** | Empty String `""` | (None) |
+                 * | **1** | First character | `s.charAt(0)` |
+                 * | **2** | Second character | `s.charAt(1)` |
+                 * | **`i`** | **-th character** | **`s.charAt(i - 1)`** |
+                 *
+                 * If you tried to use `s.charAt(i)`
+                 * when `i` is at its maximum value (`s_len`),
+                 * your code would throw a `StringIndexOutOfBoundsException`
+                 * because the last valid index in a string is `length - 1`.
+                 *
+                 * ---
+                 *
+                 * ### 3. Visualizing the "Previous" State
+                 *
+                 * The reason we look at `dp[i-1][j-1]` is **logical**, not just index-based.
+                 *
+                 * When we say "The -th character matches the -th character," we are effectively saying:
+                 *
+                 * > "Since these two match, the number of ways to form this sequence depends on how many ways we matched the **previous** prefixes."
+                 *
+                 * [j] looks back at dp[i-1][j-1]]
+                 *
+                 * ### 💡 Summary
+                 *
+                 * * We use **`i`** and **`j`** for the **DP Table** (because it needs an extra row/column for the empty string base case).
+                 * * We use **`i - 1`** and **`j - 1`** to "peek" into the actual **Strings** to see if the current characters we are considering actually match.
+                 *
+                 */
                 if (s.charAt(i - 1) == t.charAt(j - 1)) {
+                    /**
+                     * // Choice A: Use s[i-1] to match t[j-1] -> dp[i-1][j-1]
+                     *
+                     * // Choice B: Skip s[i-1] and look for t[j-1] earlier in s -> dp[i-1][j]
+                     */
                     dp[i][j] = dp[i - 1][j - 1] + dp[i - 1][j];
                 }
                 // If they don't match, we must exclude s[i-1]
