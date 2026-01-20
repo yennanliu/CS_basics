@@ -1509,14 +1509,83 @@ public class Workspace19 {
       *   ------------
       *
       *
+      *   ----------
+      *
+      *   - IDEA 1) 2D DP
+      *
+      *    - DP def:
+      *
+      *      - dp[i][j]
+      *        - # of distinct subsequences
+      *          for s[0... i] equals to t[0... j]
+      *
+      *    - DP eq
+      *
+      *       dp[i][j]  =
+      *           if s[i] == t[i]:
+      *               dp[i-1][j-1]
+      *
+      *         else:
+      *             min( dp[i][j],  dp[i-1][j-1] )
       *
       *
       *
       */
+     // 16.54 - 17.07
+     // DP
      public int numDistinct(String s, String t) {
+         // edge ???
 
-         return 0;
+         int s_len = s.length();
+         int t_len = t.length();
+
+         int [][] dp = new int[s_len + 1][t_len + 1]; // ???
+
+         // ??? init
+         // NOTE !!! end at `i <= s_len`
+         for(int i = 0; i <= s_len; i++){
+             dp[i][0] = 1;
+         }
+
+//         for(int j = 0; j < t_len; j++){
+//             dp[0][j] = 1;
+//         }
+
+
+
+         /**
+          *       *       dp[i][j]  =
+          *       *           if s[i] == t[i]:
+          *       *               dp[i-1][j-1]
+          *       *
+          *       *         else:
+          *       *             min( dp[i][j],  dp[i-1][j-1] )
+          *
+          *
+          */
+
+         // ???
+         // NOTE !!!
+         // 1. start from i=1, j=1
+         //
+         for(int i = 1; i < s_len + 1; i++){
+             for(int j = 1; j < t_len + 1; j++){
+                 // ???
+                 if(s.charAt(i) == t.charAt(j)){
+                     dp[i][j] = dp[i-1][j-1];
+                 }else{
+                     dp[i][j] = Math.min( dp[i][j],  dp[i-1][j-1] );
+                 }
+             }
+         }
+
+
+         return dp[s_len][t_len];
     }
+
+
+
+
 
 
 
