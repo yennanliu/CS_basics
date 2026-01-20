@@ -1570,8 +1570,77 @@ public class Workspace19 {
      *
      */
     public int minDistance(String word1, String word2) {
+        // edge
 
-         return 0;
+        int l1 = word1.length();
+        int l2 = word2.length();
+
+        // ???
+        int[][] dp = new int[l1][l2];
+
+        // ????
+        for(int i = 0; i < l1; i++){
+            for(int j = 0; j < l2; j++){
+                dp[i][j] = 1000; // ????
+            }
+        }
+
+        // init
+        // case 1) if w2 is null ???
+        for(int i = 0; i < l1; i++){
+            dp[i][0] = i;
+        }
+
+        // case 2) if w1 is null ???
+        for(int j = 0; j < l2; j++){
+            dp[0][j] = j;
+        }
+
+        int minOp = 1000; // ????
+
+        // ??
+        for(int i = 0; i < l1; i++){
+            for(int j = 0; j < l2; j++){
+
+                /** NOTE !!!
+                 *
+                 *  if same,
+                 */
+                if (word1.charAt(i - 1) == word2.charAt(j - 1)) {
+                    // Match: Just take the previous best
+                    dp[i][j] = dp[i - 1][j - 1];
+                }else{
+
+                    // case 1) replace
+                    // ??
+                    dp[i][j] = Math.min(dp[i-1][j] + 1, dp[i][j]);
+
+                    // case 2) delete
+
+                    // case 3) insert
+                }
+
+//                // ????
+//                if(word1.charAt(i) != word1.charAt(j)){
+//                    // case 1) replace
+//                    // ??
+//                    dp[i][j] = Math.min(dp[i-1][j] + 1, dp[i][j]);
+//
+//                    // case 2) delete
+//
+//                    // case 3) insert
+//                }
+
+                // ???? start update minOp
+                if(i >= l2){
+                    // ???
+                    minOp = Math.min(minOp, dp[i][j]);
+                }
+            }
+        }
+
+
+         return minOp; // ???
     }
 
 

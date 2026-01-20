@@ -153,6 +153,58 @@ public class EditDistance {
                     // Match: Just take the previous best
                     dp[i][j] = dp[i - 1][j - 1];
                 } else {
+                    /**  NOTE !!!!
+                     *
+                     *  OP explanation:
+                     *
+                     *
+                     *  This is the heart of the Edit Distance problem.
+                     *  Each variable represents a **choice**
+                     *  you can make to transform `word1` into `word2`.
+                     *
+                     * Think of `dp[i][j]` as the "Current Work Site."
+                     * You are trying to figure out the cheapest way to make the
+                     * first  characters of `word1` match the first  characters of `word2`.
+                     *
+                     * ---
+                     *
+                     * ### 1. `int delete = dp[i - 1][j]` (The Top Neighbor)
+                     *
+                     * * **Action:** You choose to **remove** the current character from `word1`.
+                     * * **Logic:** If you delete the character at `word1[i-1]`, you still need to form the target `word2[0...j-1]`.
+                     * * **Where you look:** You look at the cell directly **above** you. You've already solved how to match a shorter version of `word1` to the current `word2`.
+                     *
+                     * ### 2. `int insert = dp[i][j - 1]` (The Left Neighbor)
+                     *
+                     * * **Action:** You choose to **add** a character into `word1` to match `word2`.
+                     * * **Logic:** Since you just added a character that matches `word2[j-1]`, you now only need to worry about how you matched the current `word1` to the *previous* part of `word2`.
+                     * * **Where you look:** You look at the cell to your **left**.
+                     *
+                     * ### 3. `int replace = dp[i - 1][j - 1]` (The Diagonal Neighbor)
+                     *
+                     * * **Action:** You choose to **change** the character in `word1` to match the character in `word2`.
+                     * * **Logic:** By swapping the character, you have effectively "cleared" both `word1[i-1]` and `word2[j-1]` at the same time.
+                     * * **Where you look:** You look at the **diagonal** cell (top-left).
+                     *
+                     * ---
+                     *
+                     * ### 📊 Visualizing the "Decision Grid"
+                     *
+                     * Imagine you are at cell `(i, j)`. You look at your three neighbors who have already calculated their "best scores":
+                     *
+                     * | Direction | Variable | Meaning | Logic |
+                     * | --- | --- | --- | --- |
+                     * | **Diagonal** ↘️ | `replace` | Change char |  becomes  |
+                     * | **Vertical** ⬇️ | `delete` | Remove char | Drop  from the string |
+                     * | **Horizontal** ➡️ | `insert` | Add char | Add  into  |
+                     *
+                     * ### 💡 Why `1 + Math.min(...)`?
+                     *
+                     * Since the characters at your current position don't match, you **must** perform one operation. To be efficient, you pick the neighbor that had the lowest cost (`Math.min`) and add **1** to that cost to account for the operation you just performed.
+                     *
+                     * ---
+                     *
+                     */
                     // Mismatch: 1 + min of (Replace, Delete, Insert)
                     int replace = dp[i - 1][j - 1];
                     int delete = dp[i - 1][j];
