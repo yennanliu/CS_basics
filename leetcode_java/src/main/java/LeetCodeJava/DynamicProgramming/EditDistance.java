@@ -52,13 +52,71 @@ public class EditDistance {
 
     // V0-1
     // IDEA: 2D DP (gemini)
+    /**  NOTE !!! Core idea:
+     *
+     * Following the **"Two-String Grid"** pattern we just discussed, **LeetCode 72: Edit Distance** is the most comprehensive example of this logic. In this problem, we want the minimum number of operations (insert, delete, or replace) to transform `word1` into `word2`.
+     *
+     * ### 💡 The DP Logic
+     *
+     * 1. **State Definition**: `dp[i][j]` is the minimum operations to convert `word1.substring(0, i)` to `word2.substring(0, j)`.
+     * 2. **Base Cases (The Edges)**:
+     * * If `word1` is empty (`i=0`), we must **insert** all characters of `word2`. So, `dp[0][j] = j`.
+     * * If `word2` is empty (`j=0`), we must **delete** all characters of `word1`. So, `dp[i][0] = i`.
+     *
+     *
+     * 3. **Transition**:
+     * * **If characters match (`word1[i-1] == word2[j-1]`)**:
+     * No operation is needed. We take the diagonal value.
+     * `dp[i][j] = dp[i-1][j-1]`
+     * * **If characters don't match**:
+     * We must pick the best (minimum) of the three possible operations and add 1:
+     * 1. **Replace**: `dp[i-1][j-1] + 1` (Diagonal)
+     * 2. **Delete**: `dp[i-1][j] + 1` (Top)
+     * 3. **Insert**: `dp[i][j-1] + 1` (Left)
+     *
+     * ---
+     *
+     * ### 🔍 Why this fits the pattern
+     *
+     * * **Grid Size**: `(m+1) x (n+1)` to handle empty string prefixes.
+     * * **Initialization**: The first row and column are sequential numbers representing "all deletes" or "all inserts."
+     * * **Neighbors**: Every cell `dp[i][j]` looks at exactly three neighbors (Top, Left, Diagonal).
+     *
+     * ### 📊 Comparing Formula Logic
+     *
+     * | Problem | Move if Characters Match | Move if Characters Mismatch |
+     * | --- | --- | --- |
+     * | **LCS** | `Diagonal + 1` | `Max(Top, Left)` |
+     * | **Edit Distance** | `Diagonal` (No cost) | `1 + Min(Top, Left, Diagonal)` |
+     *
+     */
     public int minDistance_0_1(String word1, String word2) {
         int m = word1.length();
         int n = word2.length();
 
+        /**  NOTE !!!
+         *
+         *  DP def:
+         *
+         *   dp[i][j]
+         *      - the `minimum` operations to convert
+         *        `word1.substring(0, i) `
+         *        to
+         *        `word2.substring(0, j).`
+         *
+         */
         // 2D grid: Rows = word1, Cols = word2
         int[][] dp = new int[m + 1][n + 1];
 
+        /**  NOTE !!! DP base
+         *
+         *  - If word1 is empty (i=0),
+         *    we must insert all characters of word2. So, dp[0][j] = j.
+         *
+         *   - If word2 is empty (j=0),
+         *    we must delete all characters of word1. So, dp[i][0] = i.
+         *
+         */
         // Base case: word2 is empty (Delete all from word1)
         for (int i = 0; i <= m; i++) {
             dp[i][0] = i;
@@ -69,6 +127,25 @@ public class EditDistance {
             dp[0][j] = j;
         }
 
+
+        /**  NOTE !!!
+         *
+         *  DP eq:
+         *
+         *   - If characters match (word1[i-1] == word2[j-1]):
+         *         - No operation is needed. We take the diagonal value.
+         *           dp[i][j] = dp[i-1][j-1]
+         *
+         *   - If characters don't match: We must pick the best (minimum) o
+         *     f the three possible operations and add 1:
+         *
+         *       - Replace: dp[i-1][j-1] + 1 (Diagonal)
+         *
+         *       - Delete: dp[i-1][j] + 1 (Top)
+         *
+         *       -  Insert: dp[i][j-1] + 1 (Left)
+         *
+         */
         // Fill the grid
         for (int i = 1; i <= m; i++) {
             for (int j = 1; j <= n; j++) {
