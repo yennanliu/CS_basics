@@ -244,6 +244,60 @@ public class EditDistance {
 
     // V0-3
     // IDEA: 2D DP (gpt)
+    /**
+     *
+     * Here’s a **clean and efficient Java Dynamic Programming solution** for **LeetCode 72: Edit Distance** (a classic DP problem).
+     *
+     * ---
+     *
+     * ## 📌 **Problem Summary**
+     *
+     * Given two strings `word1` and `word2`, return the minimum number of operations required to convert `word1` into `word2`.
+     * Allowed operations:
+     *
+     * 1. Insert a character
+     * 2. Delete a character
+     * 3. Replace a character
+     *
+     * ---
+     *
+     * ## 💡 **DP Approach (Bottom-Up)**
+     *
+     * We define:
+     *
+     * ```
+     * dp[i][j] = minimum edit distance between:
+     *    word1[0..i-1] and word2[0..j-1]
+     * ```
+     *
+     * ### **Transitions**
+     *
+     * If characters match:
+     *
+     * ```
+     * dp[i][j] = dp[i-1][j-1]
+     * ```
+     *
+     * Otherwise:
+     *
+     * ```
+     * dp[i][j] = 1 + min(
+     *    dp[i-1][j],    // delete
+     *    dp[i][j-1],    // insert
+     *    dp[i-1][j-1]   // replace
+     * )
+     * ```
+     *
+     * ### **Base Cases**
+     *
+     * ```
+     * dp[0][j] = j  // insert all
+     * dp[i][0] = i  // delete all
+     * ```
+     *
+     * ---
+     *
+     */
     public int minDistance_0_3(String word1, String word2) {
         int n1 = word1.length();
         int n2 = word2.length();

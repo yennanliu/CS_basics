@@ -478,7 +478,29 @@ def top_down_dp(nums):
     return dp(len(nums) - 1)
 ```
 
-### Template 7: String DP (Edit Distance)
+### Template 7: String DP (Edit Distance / Levenshtein Distance)
+
+**Problem**: LC 72 - Edit Distance
+Given two strings word1 and word2, find the minimum number of operations required to convert word1 to word2.
+Operations allowed: Insert, Delete, Replace (each counts as 1 step)
+
+**Core Pattern**: Two-String Grid DP with three transition choices
+
+**State Definition**:
+- `dp[i][j]` = minimum operations to convert `word1[0...i-1]` to `word2[0...j-1]`
+
+**Base Cases**:
+- `dp[i][0] = i` (delete all i characters from word1)
+- `dp[0][j] = j` (insert all j characters to reach word2)
+
+**Transition**:
+- If `word1[i-1] == word2[j-1]`: `dp[i][j] = dp[i-1][j-1]` (no operation needed)
+- Else: `dp[i][j] = 1 + min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1])`
+  - `dp[i-1][j] + 1`: **Delete** from word1
+  - `dp[i][j-1] + 1`: **Insert** into word1
+  - `dp[i-1][j-1] + 1`: **Replace** in word1
+
+**Python Implementation**:
 ```python
 def string_dp(s1, s2):
     """String DP for edit distance problems"""
@@ -505,6 +527,83 @@ def string_dp(s1, s2):
 
     return dp[m][n]
 ```
+
+**Java Implementation** (Alternative indexing style):
+```java
+// LC 72: Edit Distance
+public int minDistance(String word1, String word2) {
+    int m = word1.length();
+    int n = word2.length();
+
+    int[][] dp = new int[m + 1][n + 1];
+
+    // Base cases: converting empty string
+    for(int i = 0; i <= m; i++) {
+        dp[i][0] = i;  // Delete all characters
+    }
+
+    for(int i = 0; i <= n; i++) {
+        dp[0][i] = i;  // Insert all characters
+    }
+
+    // Fill DP table
+    for(int i = 0; i < m; i++) {
+        for(int j = 0; j < n; j++) {
+            if(word1.charAt(i) == word2.charAt(j)) {
+                // Characters match - no operation needed
+                dp[i + 1][j + 1] = dp[i][j];
+            } else {
+                // Try all three operations and take minimum
+                int replace = dp[i][j];      // Replace word1[i] with word2[j]
+                int delete = dp[i][j + 1];   // Delete word1[i]
+                int insert = dp[i + 1][j];   // Insert word2[j]
+
+                dp[i + 1][j + 1] = Math.min(replace, Math.min(delete, insert)) + 1;
+            }
+        }
+    }
+
+    return dp[m][n];
+}
+```
+
+**Key Insights**:
+1. **Indexing Styles**: Two common approaches:
+   - Style 1 (Python above): Loop `i` from 1 to m, access `s1[i-1]`, store in `dp[i][j]`
+   - Style 2 (Java above): Loop `i` from 0 to m-1, access `word1[i]`, store in `dp[i+1][j+1]`
+
+2. **The Three Operations**:
+   ```
+   dp[i-1][j]   dp[i-1][j-1]      dp[i-1][j]   dp[i-1][j-1]
+                                ↓ (delete)     ↘ (replace)
+   dp[i][j-1]   dp[i][j]    =>   dp[i][j-1] → dp[i][j]
+                                   (insert)
+   ```
+
+3. **Complexity**: Time O(m×n), Space O(m×n) (optimizable to O(n))
+
+**Example Trace**: `word1 = "horse"`, `word2 = "ros"`
+```
+    ""  r   o   s
+""   0   1   2   3
+h    1   1   2   3
+o    2   2   1   2
+r    3   2   2   2
+s    4   3   3   2
+e    5   4   4   3
+
+Result: 3 operations (delete 'h', delete 'r', delete 'e')
+Or: replace 'h'→'r', remove 'r', remove 'e'
+```
+
+**Related Problems**:
+- LC 583: Delete Operation for Two Strings (variant: only delete allowed)
+- LC 712: Minimum ASCII Delete Sum (variant: minimize ASCII sum)
+- LC 1143: Longest Common Subsequence (maximize matches instead of minimize edits)
+
+**File References**:
+- Java Implementation: `ref_code/interviews-master/leetcode/string/EditDistance.java`
+- See also: Two-String Grid Pattern section below for more context
 
 ### Template 8: Longest Common Subsequence (LCS)
 ```python
