@@ -1744,6 +1744,91 @@ public class Workspace19 {
     }
 
 
+    // LC 10
+    // 9.19 - 29 am
+    /**
+     *
+     *  -> implement regular expression
+     *     matching with support for '.' and '*':
+
+     *      - '.' Matches any single character.
+     *      -  '*' Matches zero or more of the preceding element.
+     *
+     *
+     *      - s: str
+     *      - p: pattern
+     *
+     *      NOTE:
+     *        - The matching should cover the
+     *        `entire` input string (not partial).
+     *
+     * ---------------
+     *
+     *    *
+     *      *   IDEA 1) GREEDY / BRUTE FORCE
+     *      *
+     *      *   IDEA 2) 2D DP
+     *      *
+     *      *      - DP def:
+     *      *         - boolean dp[i][j]:
+     *      *            - can s(0..i) be fully
+     *                     presented by pattern p(0..j) ???
+     *      *
+     *      *
+     *      *      - DP eq:
+     *
+     *                dp[i][j] =
+     *                    if ( s[i] == p[i] or p[i] == "." or p[i] == "*" ):
+     *                        dp[i-1][j-1] or dp[i][j]  // ???
+     *                    else:
+     *                       // ???
+     *
+     * ---------------
+     *
+     *
+     */
+    public boolean isMatch(String s, String p) {
+        // edge
+
+        int s_len = s.length();
+        int p_len = p.length();
+
+        // default val is `false` ???
+        boolean[][] dp = new boolean[s_len + 1][p_len + 1];
+
+        // ??
+        /**
+         *      *      *      - DP def:
+         *      *      *         - boolean dp[i][j]:
+         *      *      *            - can s(0..i) be fully
+         *      *                     presented by pattern p(0..j) ???
+         *      *      *
+         *      *      *
+         *      *      *      - DP eq:
+         *      *
+         *      *                dp[i][j] =
+         *      *                    if ( s[i] == p[i] or p[i] == "." or p[i] == "*" ):
+         *      *                        dp[i-1][j-1] or dp[i][j]  // ???
+         *      *                    else:
+         *      *                       // ???
+         *
+         */
+
+        // ???
+        for(int i = 0; i < s_len + 1; i++){
+            for(int j = 0; j < p_len + 1; j++){
+                if ( s.charAt(i) == p.charAt(i) || p.charAt(i) == '.' || p.charAt(i) == '*'){
+
+                    dp[i][j] = dp[i-1][j-1] || dp[i][j]; // ???
+                }
+            }
+        }
+
+
+        return dp[s_len][p_len];
+    }
+
+
 
 
 }

@@ -50,9 +50,99 @@ public class RegularExpressionMatching {
 //    }
 
     // V0-1
+    // IDEA: 2D DP (gemini)
+    public boolean isMatch_0_1(String s, String p) {
+        int s_len = s.length();
+        int p_len = p.length();
+
+        boolean[][] dp = new boolean[s_len + 1][p_len + 1];
+
+        // 1. Base case: Empty string matches empty pattern
+        dp[0][0] = true;
+
+        // 2. Initialize first row (Empty string 's' vs pattern 'p')
+        // A pattern like a* or a*b* can match an empty string
+        for (int j = 2; j <= p_len; j++) {
+            if (p.charAt(j - 1) == '*') {
+                dp[0][j] = dp[0][j - 2];
+            }
+        }
+
+        // 3. Fill the DP table
+        for (int i = 1; i <= s_len; i++) {
+            for (int j = 1; j <= p_len; j++) {
+                char currS = s.charAt(i - 1);
+                char currP = p.charAt(j - 1);
+
+                if (currP == currS || currP == '.') {
+                    // Normal match or dot match
+                    dp[i][j] = dp[i - 1][j - 1];
+                } else if (currP == '*') {
+                    // Choice 1: Treat '*' as zero occurrences of the preceding char
+                    // Look back 2 columns in the pattern
+                    dp[i][j] = dp[i][j - 2];
+
+                    // Choice 2: Treat '*' as one or more occurrences
+                    // Only possible if the preceding char in P matches curr char in S
+                    char prevP = p.charAt(j - 2);
+                    if (prevP == currS || prevP == '.') {
+                        // dp[i][j] = (already true from zero-case) OR (true if prev row matched)
+                        dp[i][j] = dp[i][j] || dp[i - 1][j];
+                    }
+                }
+            }
+        }
+
+        return dp[s_len][p_len];
+    }
+
+
+    // V0-2
+    // IDEA: 2D DP (gpt)
+    public boolean isMatch_0_2(String s, String p) {
+        int m = s.length();
+        int n = p.length();
+
+        boolean[][] dp = new boolean[m + 1][n + 1];
+
+        // base case
+        dp[0][0] = true;
+
+        // handle patterns like a*, a*b*, etc.
+        for (int j = 2; j <= n; j++) {
+            if (p.charAt(j - 1) == '*') {
+                dp[0][j] = dp[0][j - 2];
+            }
+        }
+
+        for (int i = 1; i <= m; i++) {
+            for (int j = 1; j <= n; j++) {
+                char pc = p.charAt(j - 1);
+
+                if (pc == '.' || pc == s.charAt(i - 1)) {
+                    dp[i][j] = dp[i - 1][j - 1];
+                } else if (pc == '*') {
+                    // zero occurrences
+                    dp[i][j] = dp[i][j - 2];
+
+                    // one or more occurrences
+                    char prev = p.charAt(j - 2);
+                    if (prev == '.' || prev == s.charAt(i - 1)) {
+                        dp[i][j] |= dp[i - 1][j];
+                    }
+                }
+            }
+        }
+
+        return dp[m][n];
+    }
+
+
+
+    // V0-3
     // IDEA: 2D DP (gpt)
     // time: O(M*N), space: O(M*N)
-    public boolean isMatch_0_1(String s, String p) {
+    public boolean isMatch_0_3(String s, String p) {
         int m = s.length();
         int n = p.length();
 
@@ -249,5 +339,7 @@ public class RegularExpressionMatching {
 
 
     // V2
+
+
 
 }
