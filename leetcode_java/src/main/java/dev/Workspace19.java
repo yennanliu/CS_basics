@@ -1243,19 +1243,127 @@ public class Workspace19 {
      *       dp[i][j] =
      *           - if dp[i][j-1]
      *
+     *
+     * ------------
+     *
+     *
+     *      *
+     *      *  2. `int[][] dp = new int[n][3]`
+     *      *    -> A `n x 3` 2D array
+     *      *    -> n rows, and 3 cols  (NOTE !!!!)
+     *      *    e.g.:
+     *      *      n is the number of Rows (usually representing Time/Days).
+     *      *     3 is the number of Columns (representing your specific States).
+     *
+     *
+     *      *
+     *      *         // dp[i][0]: Max profit on day i if we HOLD a stock
+     *      *         // dp[i][1]: Max profit on day i if we just SOLD a stock
+     *      *         // dp[i][2]: Max profit on day i if we are RESTING (doing nothing)
+     *
+     *
+     *
      *  ---------------
      *
+     *   - arr:
+     *      - prices[i]
+     *
+     *
+     *   - DP def
+     *
+     *        *
+     *      *         // dp[i][0]: Max profit on day i if we HOLD a stock
+     *      *         // dp[i][1]: Max profit on day i if we just SOLD a stock
+     *      *         // dp[i][2]: Max profit on day i if we are RESTING (doing nothing)
+     *
+     *
+     *
+     *       - dp[i][3] = max profit can get
+     *                   at i days
+     *
+     *                 j:
+     *                    - 0: buy
+     *                    - 1: sell
+     *                    - 2: cooldown
+     *
+     *   - DP eq
+     *       - dp[i][j] =
+     *            if  dp[i-1][j] == 0:
+     *                dp[i][j] = dp[i-1][j]
+     *
+     *            if  dp[i-1][j] == 1:
+     *               dp[i][j] = ( dp[i-1][j] + prices[i-1] )
+     *
+     *            if  dp[i-1][j] == 0:
+     *               dp[i][j] = max( dp[i-1][j],  dp[i][j] )
+     *
      */
+    // 17.08 - 18 pm
     // IDEA 2) DP
     public int maxProfit(int[] prices) {
 
-        int n = prices.length;
+        //int n = prices.length + 1; // ????
+        int n = prices.length; // ????
 
-        //int[][] dp = new int[n][3];
-        int[][] dp = new int[][]{{1,2}};
+        // init ????
+        int[][] dp = new int[n][3];
+        //int[][] dp = new int[][]{{1,2}};
 
-        return 0;
+        // Base Case: Day 0
+        dp[0][0] = -prices[0]; // Bought on day 0
+        dp[0][1] = 0; // Can't sell on day 0
+        dp[0][2] = 0; // Doing nothing
+
+
+
+//        for(int i = 0; i < n + 1; i++){
+//            // ??? if `always cooldown` then the profit is always 0
+//            dp[i][2] = 0;
+//
+//            // ??? if `always sell` then the profit is always 0
+//            dp[i][1] = 0;
+//        }
+
+        int maxProfix = 0;
+
+        /**
+         *
+         *      *      *         // dp[i][0]: Max profit on day i if we HOLD a stock
+         *      *      *         // dp[i][1]: Max profit on day i if we just SOLD a stock
+         *      *      *         // dp[i][2]: Max profit on day i if we are RESTING (doing nothing)
+         *      *
+         *
+         */
+        for(int i = 1; i < n; i++){
+            // ??? loop over `op` ???
+            for(int j = 0; j < 3; j++){
+
+                // buy ???
+                int tmp1 = dp[i-1][2] + prices[i-1];
+
+                // sell ???
+                int tmp2 = dp[i-1][0] + prices[i-1];
+
+                // cooldown ???
+                int tmp3 = Math.max(dp[i-1][1], dp[i-1][2]);
+
+                dp[i][j] = Math.max(tmp1,
+                        Math.max(tmp2, tmp3)
+                );
+
+                // ??
+                maxProfix = Math.max(maxProfix, dp[i][j]);
+            }
+        }
+
+
+        return maxProfix;
     }
+
+
+
+
+
 
 
     // LC 494

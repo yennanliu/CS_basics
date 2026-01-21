@@ -54,7 +54,7 @@ public class BestTimeToBuyAndSellStockWithCooldown {
      *    -> n rows, and 3 cols  (NOTE !!!!)
      *    e.g.:
      *      n is the number of Rows (usually representing Time/Days).
-     *     3 is the number of Columns (representing your specific States).
+     *      3 is the number of Columns (representing your specific States).
      *
      *  3. we use different col save the different op
      *     - 0: `bought` OP
@@ -89,17 +89,41 @@ public class BestTimeToBuyAndSellStockWithCooldown {
 
         int n = prices.length;
 
-        // dp[i][0]: Max profit on day i if we HOLD a stock
-        // dp[i][1]: Max profit on day i if we just SOLD a stock
-        // dp[i][2]: Max profit on day i if we are RESTING (doing nothing)
+        /**  NOTE !!!!!!!!
+         *
+         *  - DP def:
+         *
+         *    // dp[i][0]: Max profit on day i if we HOLD a stock
+         *    // dp[i][1]: Max profit on day i if we just SOLD a stock
+         *    // dp[i][2]: Max profit on day i if we are RESTING (doing nothing)
+         *
+         *    (3 op: `hold`, sold, do nothing)
+         *
+         *
+         *  NOTE !!!
+         *     the dp array is `n x 3` dimension
+         *     (still a 2D array, but with
+         *       n row and 3 columns)
+         *
+         */
         int[][] dp = new int[n][3];
 
         // Base Case: Day 0
+        /**  NOTE: the `day 0` base case
+         */
         dp[0][0] = -prices[0]; // Bought on day 0
         dp[0][1] = 0; // Can't sell on day 0
         dp[0][2] = 0; // Doing nothing
 
         for (int i = 1; i < n; i++) {
+
+            /** NOTE: the `hold` op
+             *
+             *    -> can be either
+             *       - hold the stock
+             *       or
+             *       - buy new stock today
+             */
             // 1. To HOLD today:
             // Either you held it yesterday OR you were resting yesterday and bought today
             dp[i][0] = Math.max(dp[i - 1][0], dp[i - 1][2] - prices[i]);
