@@ -9,7 +9,7 @@ package LeetCodeJava.Array;
  * Companies
  * Given an input string s and a pattern p, implement regular expression matching with support for '.' and '*' where:
  *
- * '.' Matches any single character.​​​​
+ * '.' Matches any single character.
  * '*' Matches zero or more of the preceding element.
  * The matching should cover the entire input string (not partial).
  *
@@ -55,6 +55,14 @@ public class RegularExpressionMatching {
         int s_len = s.length();
         int p_len = p.length();
 
+        /**  NOTE !!!
+         *
+         *  DP def:
+         *
+         *   dp[i][j] = true if
+         *            s[0..i-1] matches p[0..j-1]
+         *
+         */
         boolean[][] dp = new boolean[s_len + 1][p_len + 1];
 
         // 1. Base case: Empty string matches empty pattern
@@ -68,6 +76,40 @@ public class RegularExpressionMatching {
             }
         }
 
+
+
+        /**  NOTE !!!
+         *
+         *  DP eq:
+         *
+         *   - Case 1: Current pattern char is NOT '*'
+         *        ```
+         *            if (p[j-1] == s[i-1] || p[j-1] == '.') {
+         *                dp[i][j] = dp[i-1][j-1];
+         *             }
+         *     ```
+         *
+         *   - Case 2: Current pattern char IS '*'
+         *
+         *       Let prev = p[j-2] (the char '*' applies to).
+         *
+         *       - Two possibilities:
+         *
+         *           a) '*' matches zero occurrences:
+         *              ```
+         *                dp[i][j] = dp[i][j-2];
+         *              ```
+         *
+         *
+         *           b) '*' matches one or more occurrences
+         *               Only if prev matches s[i-1]:
+         *               ```
+         *               if (prev == s[i-1] || prev == '.') {
+         *                   dp[i][j] |= dp[i-1][j];
+         *                 }
+         *                ```
+         *                
+         */
         // 3. Fill the DP table
         for (int i = 1; i <= s_len; i++) {
             for (int j = 1; j <= p_len; j++) {
@@ -78,6 +120,29 @@ public class RegularExpressionMatching {
                     // Normal match or dot match
                     dp[i][j] = dp[i - 1][j - 1];
                 } else if (currP == '*') {
+
+                    /**  NOTE !!!
+                     *
+                     * Q: why `j-2`  ? ( dp[i][j] = dp[i][j - 2];)
+                     *
+                     *  Answer
+                     * ->
+                     *   j-2 means:
+                     *     -> Ignore the x* pair entirely
+                     *
+                     *     - Because '*' always applies to the character before it,
+                     *       (e.g. '*'  NOT exists solely)
+                     *       so the pattern p[0..j-1] ends with:
+                     *
+                     *         ```
+                     *         ... x *
+                     *               ↑ j-1
+                     *         ```
+                     *
+                     *       -> To skip x* completely,
+                     *          you must remove both characters → `move back 2 positions.`
+                     *
+                     */
                     // Choice 1: Treat '*' as zero occurrences of the preceding char
                     // Look back 2 columns in the pattern
                     dp[i][j] = dp[i][j - 2];
