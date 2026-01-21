@@ -332,22 +332,305 @@ def interval_dp(arr):
     n = len(arr)
     # dp[i][j] = optimal value for interval [i, j]
     dp = [[0] * n for _ in range(n)]
-    
+
     # Base case: single elements
     for i in range(n):
         dp[i][i] = arr[i]
-    
+
     # Iterate by interval length
     for length in range(2, n + 1):
         for i in range(n - length + 1):
             j = i + length - 1
             # Try all split points
             for k in range(i, j):
-                dp[i][j] = max(dp[i][j], 
+                dp[i][j] = max(dp[i][j],
                               dp[i][k] + dp[k+1][j] + cost(i, j))
-    
+
     return dp[0][n-1]
 ```
+
+### Template 3-2: Classic Interval DP Pattern (LC 312 Burst Balloons Style)
+
+**🎯 Key Insight**: Think about which element to process **LAST**, not first!
+
+This is the hallmark of interval DP problems like Burst Balloons, Matrix Chain Multiplication, and similar problems where the order of operations matters.
+
+**Core Pattern**:
+- **State**: `dp[i][j]` = optimal value for interval `(i, j)` (often exclusive)
+- **Transition**: For each element `k` in `(i, j)`, assume `k` is the **last** element processed
+- **Why "Last"?** When `k` is last, the subproblems on left and right are independent
+
+**The 3-Level Nested Loop Structure**:
+```
+for length in [2, 3, ..., n+1]:        # Build from small to large intervals
+    for left in [0, 1, ..., n-length]: # Try all possible left boundaries
+        right = left + length           # Calculate right boundary
+        for k in [left+1, ..., right-1]: # Try each element as LAST
+            # dp[left][right] = combine(dp[left][k], dp[k][right], cost)
+```
+
+#### **Pattern 1: Burst Balloons (LC 312) - Exclusive Boundaries**
+
+**Problem**: Burst all balloons to maximize coins. Bursting balloon `i` gives `nums[i-1] * nums[i] * nums[i+1]` coins.
+
+**Key Insight**:
+- Add boundaries `[1, ...nums..., 1]` to handle edge cases
+- `dp[i][j]` = max coins from bursting balloons **between** `i` and `j` (exclusive)
+- When `k` is the **last** balloon burst in `(i, j)`, its neighbors are `i` and `j`
+
+**Why This Works**:
+- If we think "which balloon to burst first?", the problem is hard because neighbors change
+- If we think "which balloon to burst last?", when we burst `k` last:
+  - All balloons in `(i, k)` are already gone → subproblem `dp[i][k]`
+  - All balloons in `(k, j)` are already gone → subproblem `dp[k][j]`
+  - Only `i`, `k`, `j` remain → coins = `balloons[i] * balloons[k] * balloons[j]`
+
+**Python Implementation**:
+```python
+def maxCoins(nums):
+    """LC 312: Burst Balloons - Classic Interval DP"""
+    n = len(nums)
+
+    # Step 1: Add boundary balloons with value 1
+    balloons = [1] + nums + [1]
+
+    # Step 2: dp[i][j] = max coins from bursting balloons between i and j (exclusive)
+    dp = [[0] * (n + 2) for _ in range(n + 2)]
+
+    # Step 3: Build from small intervals to large
+    for length in range(2, n + 2):  # length of interval
+        for left in range(n + 2 - length):  # left boundary
+            right = left + length  # right boundary
+
+            # Step 4: Try each balloon k as the LAST to burst in (left, right)
+            for k in range(left + 1, right):
+                # Coins from bursting k last (only left, k, right remain)
+                coins = balloons[left] * balloons[k] * balloons[right]
+                # Add coins from left and right subproblems
+                total = coins + dp[left][k] + dp[k][right]
+                dp[left][right] = max(dp[left][right], total)
+
+    # Answer: burst all balloons between boundaries 0 and n+1
+    return dp[0][n + 1]
+```
+
+**Java Implementation**:
+```java
+// LC 312: Burst Balloons
+public int maxCoins(int[] nums) {
+    int n = nums.length;
+
+    // Add boundaries: [1, ...nums..., 1]
+    int[] balloons = new int[n + 2];
+    balloons[0] = 1;
+    balloons[n + 1] = 1;
+    for (int i = 0; i < n; i++) {
+        balloons[i + 1] = nums[i];
+    }
+
+    // dp[i][j] = max coins from bursting balloons between i and j (exclusive)
+    int[][] dp = new int[n + 2][n + 2];
+
+    // Iterate over interval lengths (from 2 up to n+1)
+    for (int len = 2; len <= n + 1; len++) {
+        // i is the left boundary
+        for (int i = 0; i <= n + 1 - len; i++) {
+            int j = i + len; // j is the right boundary
+
+            // Pick k as the LAST balloon to burst in interval (i, j)
+            for (int k = i + 1; k < j; k++) {
+                int currentCoins = balloons[i] * balloons[k] * balloons[j];
+                int total = currentCoins + dp[i][k] + dp[k][j];
+                dp[i][j] = Math.max(dp[i][j], total);
+            }
+        }
+    }
+
+    return dp[0][n + 1];
+}
+```
+
+**Example Trace**: `nums = [3,1,5,8]`
+
+After adding boundaries: `[1, 3, 1, 5, 8, 1]` (indices 0-5)
+
+```
+Building dp[0][5] (entire interval):
+  Try k=1 (value 3) as LAST:
+    coins = balloons[0] * balloons[1] * balloons[5] = 1 * 3 * 1 = 3
+    total = 3 + dp[0][1] + dp[1][5]
+
+  Try k=2 (value 1) as LAST:
+    coins = balloons[0] * balloons[2] * balloons[5] = 1 * 1 * 1 = 1
+    total = 1 + dp[0][2] + dp[2][5]
+
+  Try k=3 (value 5) as LAST:
+    coins = balloons[0] * balloons[3] * balloons[5] = 1 * 5 * 1 = 5
+    total = 5 + dp[0][3] + dp[3][5]
+
+  Try k=4 (value 8) as LAST:
+    coins = balloons[0] * balloons[4] * balloons[5] = 1 * 8 * 1 = 8
+    total = 8 + dp[0][4] + dp[4][5]
+
+Result: dp[0][5] = 167
+```
+
+#### **Pattern 2: Inclusive Boundaries Variant**
+
+Some interval DP problems use **inclusive** boundaries where `dp[i][j]` includes elements `i` and `j`.
+
+**Python Implementation**:
+```python
+def maxCoins_inclusive(nums):
+    """Alternative: dp[i][j] includes balloons i through j"""
+    n = len(nums)
+    balloons = [1] + nums + [1]
+    dp = [[0] * (n + 2) for _ in range(n + 2)]
+
+    # Iterate through window lengths (len) from 1 to n
+    for length in range(1, n + 1):
+        for left in range(1, n - length + 2):
+            right = left + length - 1
+
+            # Try every balloon k in [left, right] as LAST to burst
+            for k in range(left, right + 1):
+                coins = (dp[left][k - 1] + dp[k + 1][right] +
+                        balloons[left - 1] * balloons[k] * balloons[right + 1])
+                dp[left][right] = max(dp[left][right], coins)
+
+    return dp[1][n]
+```
+
+#### **Top-Down (Memoization) Approach**
+
+```python
+def maxCoins_topdown(nums):
+    """Top-down with memoization"""
+    balloons = [1] + nums + [1]
+    memo = {}
+
+    def dp(left, right):
+        """Max coins from bursting balloons between left and right (exclusive)"""
+        if left + 1 == right:  # No balloons between left and right
+            return 0
+
+        if (left, right) in memo:
+            return memo[(left, right)]
+
+        max_coins = 0
+        # Try each balloon k as the last to burst
+        for k in range(left + 1, right):
+            coins = (balloons[left] * balloons[k] * balloons[right] +
+                    dp(left, k) + dp(k, right))
+            max_coins = max(max_coins, coins)
+
+        memo[(left, right)] = max_coins
+        return max_coins
+
+    return dp(0, len(balloons) - 1)
+```
+
+**Java Top-Down**:
+```java
+public int maxCoins(int[] nums) {
+    int n = nums.length;
+    int[] balloons = new int[n + 2];
+    balloons[0] = balloons[n + 1] = 1;
+    for (int i = 0; i < n; i++) {
+        balloons[i + 1] = nums[i];
+    }
+
+    int[][] dp = new int[n + 2][n + 2];
+    for (int i = 0; i <= n; i++) {
+        for (int j = 0; j <= n; j++) {
+            dp[i][j] = -1;  // -1 means not computed yet
+        }
+    }
+
+    return burst(balloons, 0, n + 1, dp);
+}
+
+private int burst(int[] balloons, int left, int right, int[][] dp) {
+    if (left + 1 == right) return 0;  // No balloons between left and right
+
+    if (dp[left][right] != -1) {
+        return dp[left][right];
+    }
+
+    int maxCoins = 0;
+    for (int k = left + 1; k < right; k++) {
+        int coins = balloons[left] * balloons[k] * balloons[right];
+        coins += burst(balloons, left, k, dp) + burst(balloons, k, right, dp);
+        maxCoins = Math.max(maxCoins, coins);
+    }
+
+    dp[left][right] = maxCoins;
+    return maxCoins;
+}
+```
+
+#### **Key Characteristics of This Pattern**
+
+| Aspect | Detail |
+|--------|--------|
+| **State Definition** | `dp[i][j]` = optimal value for interval `(i, j)` or `[i, j]` |
+| **Loop Order** | Length (outer) → Left boundary → Split point `k` |
+| **Transition** | Try each `k` as the **last** element processed |
+| **Time Complexity** | O(n³) - three nested loops |
+| **Space Complexity** | O(n²) - 2D DP table |
+| **Key Insight** | Process elements in reverse order of dependency |
+
+#### **Common Problems Using This Pattern**
+
+| Problem | LC # | Key Technique | Difficulty |
+|---------|------|---------------|------------|
+| **Burst Balloons** | 312 | Last balloon to burst | Hard |
+| **Matrix Chain Multiplication** | N/A | Last matrix multiply | Classic |
+| **Minimum Cost to Merge Stones** | 1000 | Last merge operation | Hard |
+| **Remove Boxes** | 546 | Last box to remove | Hard |
+| **Palindrome Partitioning II** | 132 | Min cuts (variant) | Hard |
+| **Strange Printer** | 664 | Last character to print | Hard |
+
+#### **Pattern Recognition Checklist**
+
+Use this interval DP pattern when:
+- ✅ Problem involves processing elements in an array/sequence
+- ✅ Order of operations affects the result
+- ✅ Subproblems become independent after choosing an operation
+- ✅ Optimal solution can be built from optimal subproblems
+- ✅ Keywords: "merge", "burst", "remove", "split", "multiply"
+
+#### **Common Mistakes to Avoid**
+
+1. **Thinking "first" instead of "last"**:
+   - ❌ "Which balloon to burst first?" → Neighbors change, dependencies unclear
+   - ✅ "Which balloon to burst last?" → Subproblems are independent
+
+2. **Wrong boundary handling**:
+   - Add explicit boundaries (like `[1, ...nums..., 1]`) to simplify edge cases
+   - Decide if boundaries are inclusive or exclusive
+
+3. **Off-by-one errors**:
+   - Be consistent: `dp[i][j]` means `(i, j)` exclusive or `[i, j]` inclusive
+   - Adjust loop ranges accordingly
+
+4. **Incorrect loop order**:
+   - Always build from smaller intervals to larger ones
+   - Length must be the outermost loop
+
+#### **Complexity Analysis**
+
+**Time Complexity**: O(n³)
+- Outer loop (length): O(n)
+- Middle loop (left boundary): O(n)
+- Inner loop (split point k): O(n)
+- Each cell takes O(n) time to compute
+
+**Space Complexity**: O(n²)
+- 2D DP table of size `(n+2) × (n+2)`
+- Can be optimized in some cases, but generally requires O(n²)
+
+**Reference**: See `leetcode_java/src/main/java/LeetCodeJava/DynamicProgramming/BurstBalloons.java` for multiple implementation variants.
 
 ### Template 4: 0/1 Knapsack
 ```python
