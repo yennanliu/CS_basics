@@ -150,6 +150,76 @@ public class BurstBalloons {
         return maxCoins;
     }
 
+    // V0-4
+    // IDEA: 2D DP (gemini)
+    public int maxCoins_0_4(int[] nums) {
+        int n = nums.length;
+        // 1. Create a new array with boundaries 1 at both ends
+        int[] balloons = new int[n + 2];
+        balloons[0] = 1;
+        balloons[n + 1] = 1;
+        for (int i = 0; i < n; i++) {
+            balloons[i + 1] = nums[i];
+        }
+
+        // dp[i][j] = max coins from bursting balloons between index i and j (inclusive)
+        int[][] dp = new int[n + 2][n + 2];
+
+        // 2. Iterate through window lengths (len) from 1 to n
+        for (int len = 1; len <= n; len++) {
+            // 3. Iterate through possible starting points (left)
+            for (int left = 1; left <= n - len + 1; left++) {
+                int right = left + len - 1;
+
+                // 4. Try every balloon 'k' in the range [left, right] as the LAST to burst
+                for (int k = left; k <= right; k++) {
+                    // Coins = (coins from left subproblem)
+                    //         + (coins from right subproblem)
+                    //         + (coins from bursting k last)
+                    int currentCoins = dp[left][k - 1] + dp[k + 1][right]
+                            + (balloons[left - 1] * balloons[k] * balloons[right + 1]);
+
+                    dp[left][right] = Math.max(dp[left][right], currentCoins);
+                }
+            }
+        }
+
+        return dp[1][n];
+    }
+
+    // V0-5
+    // IDEA: DP (GPT)
+    public int maxCoins_0_5(int[] nums) {
+        int n = nums.length;
+
+        // Create new array with padding 1 on both ends
+        int[] arr = new int[n + 2];
+        arr[0] = 1;
+        arr[n + 1] = 1;
+        for (int i = 0; i < n; i++) {
+            arr[i + 1] = nums[i];
+        }
+
+        int m = arr.length;
+        int[][] dp = new int[m][m];
+
+        // len is the interval length (gap between i, j)
+        for (int len = 2; len < m; len++) {
+            for (int i = 0; i + len < m; i++) {
+                int j = i + len;
+                for (int k = i + 1; k < j; k++) {
+                    dp[i][j] = Math.max(
+                            dp[i][j],
+                            dp[i][k] + dp[k][j] + arr[i] * arr[k] * arr[j]);
+                }
+            }
+        }
+
+        return dp[0][m - 1];
+    }
+
+
+
     // V1-1
     // https://neetcode.io/problems/burst-balloons
     // IDEA:  Brute Force (Recursion)

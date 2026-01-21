@@ -1713,6 +1713,37 @@ public class Workspace19 {
     }
 
 
+    // LC 312
+    // 8.51 - 9.01
+    /**
+     *
+     *  -> Return the maximum coins
+     *  you can collect by bursting the balloons wisely.
+     *
+     *
+     *  -----------------
+     *
+     *   IDEA 1) GREEDY / BRUTE FORCE
+     *
+     *   IDEA 2) 2D DP
+     *
+     *      - DP def:
+     *         - dp[i][j]:
+     *            -
+     *
+     *
+     *      - DP eq:
+     *
+     *  -----------------
+     *
+     *
+     */
+    public int maxCoins(int[] nums) {
+
+        return 0;
+    }
+
+
 
 
 }
