@@ -40,6 +40,156 @@ public class BurstBalloons {
 //
 //    }
 
+    // V0-0-1
+    // IDEA: DP (GPT)
+    /**  NOTE !!! core idea
+     *
+     * Here’s a **clear and correct Java DP solution** for **LeetCode 312 — Burst Balloons**.
+     *
+     * 👉 Problem: [https://leetcode.com/problems/burst-balloons/](https://leetcode.com/problems/burst-balloons/)
+     *
+     * ---
+     *
+     * ## 🧠 Key Idea (Interval DP)
+     *
+     * You’re given a sequence of balloons with numbers.
+     * When you burst balloon `k`, you earn:
+     *
+     * ```
+     * nums[left] × nums[k] × nums[right]
+     * ```
+     *
+     * Where `left` and `right` are the nearest unburst neighbors of `k`.
+     *
+     * The challenge is that bursting one balloon affects all neighbors.
+     *
+     * ---
+     *
+     * ### 🎯 Trick:
+     *
+     * If we think about **the last balloon to burst** in a subinterval,
+     * we avoid that mess.
+     *
+     * Define:
+     *
+     * ```
+     * dp[i][j] = max coins from bursting all balloons in (i, j) exclusively
+     * ```
+     *
+     * Meaning:
+     *
+     * * We imagine the balloons at `i` and `j` are still present
+     * * We will pop everything **between them**
+     *
+     * Then:
+     *
+     * ```
+     * dp[i][j] = max(
+     *     dp[i][k] + dp[k][j] + arr[i] * arr[k] * arr[j]
+     * )  for all k in (i, j)
+     * ```
+     *
+     * ---
+     *
+     * ## 📌 Explanation
+     *
+     * ### 1. Pad the array
+     *
+     * Add 1 at both ends:
+     *
+     * ```
+     * [1, ...nums..., 1]
+     * ```
+     *
+     * This simulates bursting balloons at the edges correctly.
+     *
+     * ---
+     *
+     * ### 2. DP Interval
+     *
+     * We consider subarrays `(i, j)` where `i+1 < j`.
+     *
+     * For each possible `k` between `i` and `j`:
+     *
+     * * Think of bursting all balloons in `(i, k)` first
+     * * Then burst all in `(k, j)`
+     * * Finally burst balloon `k` last → gives coins for `arr[i]*arr[k]*arr[j]`.
+     *
+     * ---
+     *
+     * ## 🧪 Example
+     *
+     * ```
+     * nums = [3,1,5,8]
+     * arr = [1,3,1,5,8,1]
+     * ```
+     *
+     * DP table ultimately captures:
+     *
+     * ```
+     * maxCoins = 167
+     * ```
+     *
+     * Which matches the answer.
+     *
+     * ---
+     *
+     * ## ⏱ Time & Space Complexity
+     *
+     * | Metric | Value     |
+     * | ------ | --------- |
+     * | Time   | **O(N³)** |
+     * | Space  | **O(N²)** |
+     *
+     * This is optimal for this class of interval DP problems.
+     *
+     * ---
+     *
+     * ## 🧠 Interview Tips
+     *
+     * * Always think about **“last action” DP** for interval problems:
+     *
+     *   * optimal structure
+     *   * no messy state dependencies
+     * * This template also helps beyond balloons:
+     *
+     *   * Matrix Chain Multiplication
+     *   * Palindrome Partitioning
+     *   * Optimal BST
+     * * Padding simplifies edge effects
+     *
+     *
+     */
+    public int maxCoins_0_0_1(int[] nums) {
+        int n = nums.length;
+
+        // Create new array with padding 1 on both ends
+        int[] arr = new int[n + 2];
+        arr[0] = 1;
+        arr[n + 1] = 1;
+        for (int i = 0; i < n; i++) {
+            arr[i + 1] = nums[i];
+        }
+
+        int m = arr.length;
+        int[][] dp = new int[m][m];
+
+        // len is the interval length (gap between i, j)
+        for (int len = 2; len < m; len++) {
+            for (int i = 0; i + len < m; i++) {
+                int j = i + len;
+                for (int k = i + 1; k < j; k++) {
+                    dp[i][j] = Math.max(
+                            dp[i][j],
+                            dp[i][k] + dp[k][j] + arr[i] * arr[k] * arr[j]);
+                }
+            }
+        }
+
+        return dp[0][m - 1];
+    }
+
+
     // V0-1
     // IDEA: DP (gemini)
     public int maxCoins_0_1(int[] nums) {
@@ -186,38 +336,6 @@ public class BurstBalloons {
 
         return dp[1][n];
     }
-
-    // V0-5
-    // IDEA: DP (GPT)
-    public int maxCoins_0_5(int[] nums) {
-        int n = nums.length;
-
-        // Create new array with padding 1 on both ends
-        int[] arr = new int[n + 2];
-        arr[0] = 1;
-        arr[n + 1] = 1;
-        for (int i = 0; i < n; i++) {
-            arr[i + 1] = nums[i];
-        }
-
-        int m = arr.length;
-        int[][] dp = new int[m][m];
-
-        // len is the interval length (gap between i, j)
-        for (int len = 2; len < m; len++) {
-            for (int i = 0; i + len < m; i++) {
-                int j = i + len;
-                for (int k = i + 1; k < j; k++) {
-                    dp[i][j] = Math.max(
-                            dp[i][j],
-                            dp[i][k] + dp[k][j] + arr[i] * arr[k] * arr[j]);
-                }
-            }
-        }
-
-        return dp[0][m - 1];
-    }
-
 
 
     // V1-1
