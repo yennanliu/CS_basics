@@ -1,7 +1,7 @@
 # Progress
 
 
-# 2026-01-22
+# 2026-01-23
 
 - weekly video
 - to review
@@ -272,6 +272,13 @@
 			- 10
 		- gemini
 			- 44
+	- (greedy)
+	- LC 53 Maximum Subarray
+	  - gpt
+	  - gemini
+	- LC 55 Jump Game
+	  - gpt
+	  - gemini
 	-> TODO: redo `classics` `1D` dp prblems then
 	- others:
 		- Path Signatures
