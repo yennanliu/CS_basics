@@ -273,7 +273,7 @@ public class JumpGame {
     }
 
 
-    
+
     // V0-1
     // IDEA : GREEDY
     public boolean canJump_0_1(int[] nums) {

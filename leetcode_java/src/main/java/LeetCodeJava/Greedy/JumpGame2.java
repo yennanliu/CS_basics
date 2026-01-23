@@ -119,6 +119,44 @@ public class JumpGame2 {
         return jumps;
     }
 
+
+    // V0-0-2
+    // IDEA: 1D DP (gemini)
+    public int jump_0_0_2(int[] nums) {
+        int n = nums.length;
+
+        /** NOTE !!!
+         *
+         * dp[i] =
+         *   The minimum number of jumps required
+         *   to reach index i from index 0.
+         */
+        int[] dp = new int[n];
+
+        // 1. Initialize with a large value (Infinity)
+        // because we want to find the minimum.
+        Arrays.fill(dp, Integer.MAX_VALUE);
+
+        // 2. Base case: 0 jumps to reach the start
+        dp[0] = 0;
+
+        for (int i = 0; i < n; i++) {
+            // From index i, we can jump to any index j within nums[i] distance
+            int maxJump = nums[i];
+
+            for (int j = 1; j <= maxJump && (i + j) < n; j++) {
+                // 3. The jump to (i + j) is: 1 + jumps taken to get to i
+                if (dp[i] != Integer.MAX_VALUE) {
+                    dp[i + j] = Math.min(dp[i + j], dp[i] + 1);
+                }
+            }
+        }
+
+        return dp[n - 1];
+    }
+
+
+
     // V0-2
     // IDEA: GREEDY (GPT)
     /**
