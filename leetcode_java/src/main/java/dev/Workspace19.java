@@ -1639,9 +1639,43 @@ public class Workspace19 {
       *
       *
       */
-     // 16.54 - 17.07
-     // DP
+     // 18.01 - 11 pm
+     // 2D DP
+     /**
+      *  - DP def
+      *
+      *     dp[i][j]:
+      *        # of distinct subsequences of s which equals t.
+      *        for s[0..i], and t[0...j]
+      *
+      *  - DP eq:
+      *
+      *       dp[i][j] =
+      *
+      *         if s[i] == t[j]:
+      *             dp[i][j] =  dp[i-1][j-1]
+      *
+      *         else:
+      *           dp[i][j] =
+      *             max( dp[i][j-1], dp[i-1][j]  )
+      *
+      *
+      *
+      *
+      *
+      *
+      */
      public int numDistinct(String s, String t) {
+
+
+         return 0;
+     }
+
+
+
+
+
+     public int numDistinct_99(String s, String t) {
          // edge ???
 
          int s_len = s.length();
