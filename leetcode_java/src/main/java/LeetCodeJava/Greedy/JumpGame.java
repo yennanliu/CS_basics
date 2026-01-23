@@ -163,6 +163,25 @@ public class JumpGame {
         return true;
     }
 
+    // V0-0-1
+    // IDEA: 1D DP (gemini)
+    public boolean canJump_0_0_1(int[] nums) {
+        int n = nums.length;
+        int[] dp = new int[n];
+        dp[0] = nums[0];
+
+        for (int i = 1; i < n; i++) {
+            // If the previous reach couldn't even get to index i
+            if (dp[i - 1] < i)
+                return false;
+
+            // The reach at i is the max of the previous reach or the new potential
+            dp[i] = Math.max(dp[i - 1], i + nums[i]);
+        }
+        return dp[n - 1] >= n - 1;
+    }
+
+
     // V0-1
     // IDEA : GREEDY
     public boolean canJump_0_1(int[] nums) {
@@ -396,5 +415,7 @@ public class JumpGame {
         }
         return lastPos == 0;
     }
+
+
 
 }

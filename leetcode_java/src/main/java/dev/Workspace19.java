@@ -1973,4 +1973,49 @@ public class Workspace19 {
 
 
 
+    // LC 55
+    // 9.12 -27 am
+    /**
+     *
+     * -> Return true if you can reach the last index,
+     *   or false otherwise.
+     *
+     * -----------------
+     *
+     *  IDEA 1) GREEDY
+     *
+     *  IDEA 2) DP
+     *
+     *   - DP def:
+     *        - dp[i]: max step can jump from idx = i
+     *
+     *   - DP eq:
+     *        dp[i] =
+     *           max( dp[i-1],  nums[i] ) // ????
+     *
+     *
+     * -----------------
+     *
+     */
+    public boolean canJump(int[] nums) {
+        // edge
+
+        int n = nums.length;
+
+        int[] dp = new int[n]; // ???
+        // ??? init as -1 ???
+        Arrays.fill(dp, -1);
+        dp[0] = nums[0]; // /?
+
+        for(int i = 1; i < n; i++){
+            dp[i] = Math.max( dp[i], nums[i] );
+        }
+
+        return dp[n - 1] > 0; // /???
+    }
+
+
+
+
+
 }
