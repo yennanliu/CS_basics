@@ -245,6 +245,35 @@ public class JumpGame {
     }
 
 
+    // V0-0-2
+    // IDEA: 1D DP (gpt)
+    public boolean canJump_0_0_2(int[] nums) {
+        int n = nums.length;
+        int[] dp = new int[n];
+
+        /** NOTE !!!
+         *
+         * dp[i] =
+         *   maximum number of steps you can still
+         *   take after reaching index i
+         */
+        // dp[i] = max remaining jump length when standing on i
+        dp[0] = nums[0];
+
+        for (int i = 1; i < n; i++) {
+            // if previous position couldn't reach here
+            if (dp[i - 1] <= 0)
+                return false;
+
+            // decrease jump by 1 to move here, then take max with nums[i]
+            dp[i] = Math.max(dp[i - 1] - 1, nums[i]);
+        }
+
+        return true;
+    }
+
+
+    
     // V0-1
     // IDEA : GREEDY
     public boolean canJump_0_1(int[] nums) {

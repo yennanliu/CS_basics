@@ -2023,6 +2023,14 @@ public class Workspace19 {
 
 
 
+    // LC 45
+    public int jump(int[] nums) {
+
+        return 0;
+    }
+
+
+
 
 
 }
