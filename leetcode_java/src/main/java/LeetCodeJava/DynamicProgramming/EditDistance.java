@@ -117,12 +117,12 @@ public class EditDistance {
          *    we must delete all characters of word1. So, dp[i][0] = i.
          *
          */
-        // Base case: word2 is empty (Delete all from word1)
+        // Base case: `word2` is empty (Delete all from word1)
         for (int i = 0; i <= m; i++) {
             dp[i][0] = i;
         }
 
-        // Base case: word1 is empty (Insert all into word1)
+        // Base case: `word1` is empty (Insert all into word1)
         for (int j = 0; j <= n; j++) {
             dp[0][j] = j;
         }
@@ -209,6 +209,50 @@ public class EditDistance {
                     int replace = dp[i - 1][j - 1];
                     int delete = dp[i - 1][j];
                     int insert = dp[i][j - 1];
+
+                    /**  NOTE !!!  why `int insert = dp[i][j - 1];` ??? (as above)
+                     *
+                     * This is the most "unintuitive" part of the grid,
+                     * so it helps to think of **Insert** as a horizontal move.
+                     *
+                     * When we say `int insert = dp[i][j - 1]`, we are saying:
+                     *
+                     * > "I have already matched the first `i` characters of `word1` with
+                     * the first `j-1` characters of `word2`. To match that extra character
+                     * at `word2[j]`, I will just **insert** it into `word1`."
+                     *
+                     *
+                     * ### 1. The Logic of the Left Neighbor
+                     *
+                     * In our DP table, `dp[i][j]` represents the cost to
+                     * turn `word1.substring(0, i)` into `word2.substring(0, j)`.
+                     *
+                     * If we look at the cell to our **left** (`dp[i][j-1]`):
+                     *
+                     *   -  We have already successfully created `word2[0...j-1]`.
+                     *
+                     *   - `word2` still has one more character (`word2[j-1]`)
+                     *      that we haven't accounted for yet.
+                     *
+                     *   - By adding (**inserting**) that specific character into `word1`,
+                     *    we reach our goal of matching `word2[0...j]`.
+                     *
+                     * ---
+                     *
+                     * ### 2. A Concrete Example: `cat` → `cats`
+                     *
+                     * * Let `word1 = "cat"` ()
+                     * * Let `word2 = "cats"` ()
+                     *
+                     * To calculate `dp[3][4]` (cost to turn "cat" into "cats"):
+                     *
+                     * 1. Look at `dp[3][3]` (cost to turn "cat" into "cat"). The cost is **0**.
+                     * 2. To get to "cats", we need to **Insert** 's'.
+                     * 3. So, `dp[3][4] = dp[3][3] + 1` (Insert).
+                     *
+                     * Since `dp[3][3]` is the cell to the **left** of `dp[3][4]`, the formula is `dp[i][j-1] + 1`.
+                     *
+                     */
 
                     dp[i][j] = 1 + Math.min(replace, Math.min(delete, insert));
                 }

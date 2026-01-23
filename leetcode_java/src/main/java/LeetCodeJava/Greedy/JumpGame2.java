@@ -156,7 +156,6 @@ public class JumpGame2 {
     }
 
 
-
     // V0-2
     // IDEA: GREEDY (GPT)
     /**
