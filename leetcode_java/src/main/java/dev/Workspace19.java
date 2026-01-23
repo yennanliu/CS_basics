@@ -1780,7 +1780,96 @@ public class Workspace19 {
      *
      *
      */
+    // 10.39 - 49 am
+    /**
+     *   IDEA 2) 2D DP ???
+     *
+     *      - DP def:
+     *
+     *        dp[i][3]
+     *
+     *        -  dp[i][j]:
+     *            min op convert
+     *              w1[0..i]
+     *              to
+     *              w2[0..i]
+     *
+     *        j = 0: insert
+     *        j = 1: delete
+     *        j = 2: replace
+     *
+     *      - DP eq:
+     *
+     *        dp[i][j] =
+     *             // insert
+     *             min(dp[i][j], dp[i][j])
+     *
+     *             // delete
+     *             // replace
+     *
+     *
+     */
+
+    /**  NOTE !!!
+     *
+     *  DP def:
+     *
+     *   dp[i][j]
+     *      - the `minimum` operations to convert
+     *        `word1.substring(0, i) `
+     *        to
+     *        `word2.substring(0, j).`
+     *
+     */
     public int minDistance(String word1, String word2) {
+        // edge
+
+        int l1 = word1.length();
+        int l2 = word2.length();
+
+        int[][] dp = new int[l1 + 1][l2 + 1]; // ???
+        // init  ???
+//        for(int i = 0; i < l1; i++){
+//            dp[i][2] = 0;
+//        }
+        dp[0][0] = 0; //???
+
+        // ??????
+        for(int i = 1; i < l1 + 1; i++){
+            for(int j = 1; j < l2 + 1; j++){
+                // case 1) if equals
+                if(word1.charAt(i-1) == word2.charAt(j-1)){
+                    // no op needed
+                    dp[i][j] =  dp[i-1][j-1]; /// ?????
+                }
+                // case 2) if NOT equals
+                else{
+                    // insert
+                    //int op1 = dp[i-1][j+1] + 1; // ????
+                    int op1 = dp[i][j - 1] + 1;
+                    // delete
+                    int op2 = dp[i-1][j] + 1;
+                    // replace
+                    int op3 = dp[i-1][j-1] + 1;
+
+                    dp[i][j] = Math.min(op1,
+                            Math.min(op2, op3));
+                }
+            }
+        }
+
+        // /???
+        return dp[l1][l2];
+    }
+
+
+
+
+
+
+
+
+    public int minDistance_99(String word1, String word2) {
         // edge
 
         int l1 = word1.length();
@@ -2024,9 +2113,55 @@ public class Workspace19 {
 
 
     // LC 45
+    // 10.07 - 17 am
+    /**
+     *  -> Return the `minimum` number of jumps to reach index n - 1.
+     *    The test cases are generated such that you can reach index n - 1.
+     *
+     *
+     *  -------------
+     *
+     *   IDEA 1) GREEDY
+     *
+     *   IDEA 2) DP
+     *
+     *
+     *   -------------
+     *
+     */
+    // IDEA 2) DP
     public int jump(int[] nums) {
+        // edge
 
-        return 0;
+        int n = nums.length;
+
+        // dp[i]:
+        // the max `absolute index` can reach
+        // at index = i
+        int[] dp = new int[n];
+        dp[0] = nums[0];
+
+        for(int i = 1; i < nums.length; i++){
+            // if already at the `end`
+            if(i == n-1){
+                return i;
+            }
+
+//            // should NOT happen in this LC (jump game 2)
+//            if(dp[i-1] < i){
+//                return -1;
+//            }
+
+            dp[i] = Math.max(dp[i-1], i + nums[i]);
+
+            // if can reach the `end` in next jump
+            if(dp[i] >= n - i){
+                return i + 1;
+            }
+        }
+
+        // worst case, jump `1` every time ???
+        return n-1; // ????
     }
 
 
