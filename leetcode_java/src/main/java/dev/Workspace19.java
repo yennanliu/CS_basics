@@ -2008,10 +2008,17 @@ public class Workspace19 {
         dp[0] = nums[0]; // /?
 
         for(int i = 1; i < n; i++){
-            dp[i] = Math.max( dp[i], nums[i] );
+
+            // NOTE !!!
+            if (dp[i - 1] < i){
+                return false;
+            }
+
+            dp[i] = Math.max( dp[i - 1], nums[i]  + i );
         }
 
-        return dp[n - 1] > 0; // /???
+        //return dp[n - 1] > 0; // /???
+        return dp[n - 1] >= n - 1;
     }
 
 

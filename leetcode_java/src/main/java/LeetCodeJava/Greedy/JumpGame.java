@@ -165,15 +165,78 @@ public class JumpGame {
 
     // V0-0-1
     // IDEA: 1D DP (gemini)
+    /**  NOTE !!!
+     *
+     *  - DP def:
+     *     -  The furthest `index (absolute position)` reachable
+     *        (NOTE !! NOT distance, but `absolute index` it can reach)
+     *        using any jump from index 0 to i.
+     *
+     *  - DP eq:
+     *
+     *     dp[i] = max(dp[i-1], i + nums[i])
+     *
+     *       - dp[i-1]:
+     *          - This represents the best reach we achieved
+     *            before getting to this stone. Maybe a previous stone was
+     *            so `powerful` it could jump` further` than the current one.
+     *
+     *       - i + nums[i]:
+     *          - This is the potential reach of the current stone.
+     *            If you jump from here, you land at this absolute index.
+     *
+     */
+    /**  DEMO:
+     *
+     * ### 📊 Trace Example
+     *
+     * `nums = [2, 3, 1, 0, 4]`
+     *
+     * | Index () | `nums[i]` | `i + nums[i]` (Current Potential) | `dp[i]` (Furthest Reach) |
+     * | --- | --- | --- | --- |
+     * | **0** | 2 |  | **2** |
+     * | **1** | 3 |  | **4** (Max of 2 and 4) |
+     * | **2** | 1 |  | **4** (Max of 4 and 3) |
+     * | **3** | 0 |  | **4** (Max of 4 and 3) |
+     * | **4** | 4 |  | **8** |
+     *
+     *
+     */
     public boolean canJump_0_0_1(int[] nums) {
         int n = nums.length;
+        /**  NOTE !!!
+         *
+         *  - DP def:
+         *    dp[i]:
+         *       The furthest index (absolute position) reachable
+         *       using any jump from index 0 to i.
+         */
         int[] dp = new int[n];
         dp[0] = nums[0];
 
+
+        /**  NOTE !!!
+         *
+         *  - DP eq:
+         *
+         *     dp[i] = max(dp[i-1], i + nums[i])
+         *
+         *       - dp[i-1]:
+         *          - This represents the best reach we achieved
+         *            before getting to this stone. Maybe a previous stone was
+         *            so `powerful` it could jump` further` than the current one.
+         *
+         *       - i + nums[i]:
+         *          - This is the potential reach of the current stone.
+         *            If you jump from here, you land at this absolute index.
+         *
+         */
         for (int i = 1; i < n; i++) {
+            // NOTE !!! edge case
             // If the previous reach couldn't even get to index i
-            if (dp[i - 1] < i)
+            if (dp[i - 1] < i){
                 return false;
+            }
 
             // The reach at i is the max of the previous reach or the new potential
             dp[i] = Math.max(dp[i - 1], i + nums[i]);
