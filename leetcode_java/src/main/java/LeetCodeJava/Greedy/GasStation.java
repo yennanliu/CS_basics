@@ -74,6 +74,14 @@ public class GasStation {
             return 0;
         }
 
+        /**  NOTE !!!!
+         *
+         *  we init 3 var:
+         *
+         *   - remain:  the local accumulated `(gas[i] - cost[i])` (will reset to 0 if < 0)
+         *   - total: the sum of `(gas[i] - cost[i])` of all idx
+         *   - start: the `start` idx (for car)
+         */
         int remain = 0;
         int total = 0;
         int start = 0;
