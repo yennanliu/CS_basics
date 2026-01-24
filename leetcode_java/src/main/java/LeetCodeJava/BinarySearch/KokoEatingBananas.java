@@ -74,6 +74,10 @@ public class KokoEatingBananas {
         return result;
     }
 
+    /** NOTE !!! `Ceiling Division Trick` below
+     *  (may not be needed in interview, but would be needed
+     *   if want to AC this LC)
+     */
     private long getHour(int[] piles, int speed) {
         long hours = 0;
         for (int p : piles) {
@@ -82,6 +86,27 @@ public class KokoEatingBananas {
         }
         return hours;
     }
+
+
+    /**  NOTE !!!
+     *
+     *  below code is `logically correct`
+     *  but may cause `overflow issue`
+     */
+//    private int getHour(int[] piles, int speed){
+//        int hours = 0;
+//        for(int p: piles){
+//            // ???
+//            int v1 = p / speed;
+//            int v2 = p % speed;
+//            if(v2 != 0){
+//                v1 += 1;
+//            }
+//            hours += v1;
+//        }
+//        return hours;
+//    }
+
 
 
     // V0-0-1
