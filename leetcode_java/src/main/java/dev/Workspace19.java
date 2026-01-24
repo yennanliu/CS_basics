@@ -2431,5 +2431,80 @@ public class Workspace19 {
     }
 
 
+    // LC 875
+    // 17.36 - 46 pm
+    /**
+     * -> Return the minimum integer k such that
+     *   she can eat all the bananas within h hours.
+     *
+     *   - but still wants to finish eating all the
+     *     bananas before the guards return.
+     *
+     *  --------------
+     *
+     *   IDEA 1) BINARY SEARCH
+     *
+     *
+     *   --------------
+     *
+     */
+    public int minEatingSpeed(int[] piles, int h) {
+        // edge
+        if (piles.length == 0 || piles.equals(null)){
+            return 0;
+        }
+
+        int sum = 0;
+        for(int p: piles){
+            sum += p;
+        }
+
+        // binary search: `speed`
+        // ??
+        int l = 1;
+        int r = sum; // ??
+        //int minSpeed = r; // ??
+
+        while(r >= l){
+            int mid = (l + r) / 2;
+            int hours = getHour(piles, mid);
+            if(hours == h){
+                //minSpeed =
+                // ???
+                //return mid;
+                r -= 1;
+            }
+            else if(hours > h){
+                l = mid + 1;
+            }
+            // ???
+            else{
+                // ???
+               // r -= 1;
+               r = mid - 1;
+            }
+        }
+
+        return r;
+    }
+
+
+    private int getHour(int[] piles, int speed){
+        int hours = 0;
+        for(int p: piles){
+            // ???
+            int v1 = p / speed;
+            int v2 = p % speed;
+            if(v2 != 0){
+                v1 += 1;
+            }
+            hours += v1;
+        }
+        return hours;
+    }
+
+
+
+
 
 }

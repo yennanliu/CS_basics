@@ -45,6 +45,46 @@ import java.util.Arrays;
 public class KokoEatingBananas {
 
     // V0
+    // IDEA : BINARY SEARCH (close boundary) (gemini)
+    public int minEatingSpeed(int[] piles, int h) {
+        // 1. Define the search range for 'speed'
+        int l = 1;
+        int r = 0;
+        for (int p : piles) {
+            r = Math.max(r, p); // Maximum pile size is the upper bound
+        }
+
+        int result = r; // Default to the max speed
+
+        while (l <= r) {
+            int mid = l + (r - l) / 2; // Prevent integer overflow
+
+            long hours = getHour(piles, mid);
+
+            if (hours <= h) {
+                // This speed works! Try to find a slower (smaller) one.
+                result = mid;
+                r = mid - 1;
+            } else {
+                // Too slow, must eat faster.
+                l = mid + 1;
+            }
+        }
+
+        return result;
+    }
+
+    private long getHour(int[] piles, int speed) {
+        long hours = 0;
+        for (int p : piles) {
+            // Ceiling division: (p + speed - 1) / speed
+            hours += (p + speed - 1) / speed;
+        }
+        return hours;
+    }
+
+
+    // V0-0-1
     // IDEA : BINARY SEARCH (close boundary)
     /**
      * Example Walkthrough:
@@ -100,7 +140,7 @@ public class KokoEatingBananas {
      * >>> FINAL l = 30, r = 29
      */
     // time: O(N * log(max(piles))), space: O(1)
-    public int minEatingSpeed(int[] piles, int h) {
+    public int minEatingSpeed_0_0_1(int[] piles, int h) {
 
         if (piles.length == 0 || piles.equals(null)){
             return 0;
@@ -188,7 +228,7 @@ public class KokoEatingBananas {
     // V0-1
     // IDEA : BINARY SEARCH (open boundary)
     public int minEatingSpeed_0_1(int[] piles, int h) {
-
+        // edge
         if (piles.length == 0 || piles.equals(null)){
             return 0;
         }
@@ -287,5 +327,7 @@ public class KokoEatingBananas {
         // that is, the minimum workable eating speed.
         return right;
     }
+
+
 
 }
