@@ -1,9 +1,6 @@
 package dev;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 public class Workspace19 {
 
@@ -2164,6 +2161,81 @@ public class Workspace19 {
         return n-1; // ????
     }
 
+
+
+    // LC 134
+    // 16.13 - 23 pm
+    /**
+     *
+     * ->  return
+     *       - starting gas station's index if you can travel around the
+     *        circuit once in the clockwise direction,
+     *      - otherwise return -1
+     *
+     *    (Given two integer arrays gas and cost)
+     *    e.g. given:
+     *      - gas[i]
+     *      - cost
+     *
+     *
+     *    - n gas stations along a `circular` route
+     *    - gas amount = gas[i] at idx = i
+     *
+     *    - cost:
+     *      cost[i] of gas to
+     *         travel from the `ith station` to
+     *         its `next` (i + 1)th station
+     *
+     *  ------------
+     *
+     *   IDEA 1) GREEDY
+     *     - hashset record the `visited` idx
+     *     - maintain an array
+     *        arr[i] = can_move_dist
+     *
+     *        loop over idx:
+     *         if can_move_dist < 0, reset it as 0,
+     *         continue the looping
+     *
+     *
+     *   IDEA 2) BRUTE FORCE
+     *
+     *  ------------
+     */
+    public int canCompleteCircuit(int[] gas, int[] cost) {
+        // edge
+        if(gas == null){
+            return -1;
+        }
+        if(gas.length == 1){
+            return 0;
+        }
+
+        HashSet<Integer> visited = new HashSet<>();
+        int n = gas.length;
+        int[] canMove = new int[2 * n]; // ???
+
+        canMove[0] = gas[0];
+
+        //??
+        //List<Integer> list = new ArrayList<>();
+        for(int j = 0; j < 2; j++){
+            for(int i = 1; i < n; i++){
+                if(visited.contains(i)){
+                    return i;
+                }
+                int move = canMove[i-1] - cost[i-1] + canMove[i];
+                if(move < 0){
+                    move = 0;
+                }
+                canMove[i] = move;
+                visited.add(i);
+            }
+        }
+
+        // ???
+        return -1;
+    }
 
 
 

@@ -117,6 +117,35 @@ public class GasStation {
 //        return -1;
 //    }
 
+    // V0-0-1
+    // IDEA: GREEDY (gemini)
+    public int canCompleteCircuit_0_0_1(int[] gas, int[] cost) {
+        int n = gas.length;
+
+        int totalSurplus = 0; // gas[i] - cost[i] for the entire trip
+        int currentTank = 0; // gas[i] - cost[i] since the last starting point
+        int startStation = 0;
+
+        for (int i = 0; i < n; i++) {
+            int netGain = gas[i] - cost[i];
+            totalSurplus += netGain;
+            currentTank += netGain;
+
+            // If the tank drops below zero, the current startStation is invalid.
+            if (currentTank < 0) {
+                // Pick the next station as the potential starting point
+                startStation = i + 1;
+                // Reset our current tank for the new start
+                currentTank = 0;
+            }
+        }
+
+        // If total gas is less than total cost, return -1.
+        // Otherwise, the greedy startStation must be the answer.
+        return (totalSurplus >= 0) ? startStation : -1;
+    }
+
+
     // V0-1
     // IDEA: GREEDY (gpt)
     public int canCompleteCircuit_0_1(int[] gas, int[] cost) {
@@ -260,5 +289,7 @@ public class GasStation {
 
         return totalGain >= 0 ? answer : -1;
     }
+
+
 
 }

@@ -279,7 +279,7 @@
 	- LC 55 Jump Game
 	  - gpt
 	  - gemini
-	-> TODO: redo `classics` `1D` dp prblems then
+	- `google_leetcode_problems_by_tags.md`
 	- others:
 		- Path Signatures
 			- 694,711,652,508
