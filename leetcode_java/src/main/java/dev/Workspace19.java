@@ -2204,6 +2204,54 @@ public class Workspace19 {
      */
     public int canCompleteCircuit(int[] gas, int[] cost) {
         // edge
+        if (gas == null || cost == null || gas.length == 0 || cost.length == 0){
+            return 0;
+        }
+
+//        if(gas == null){
+//            return -1;
+//        }
+//        if(gas.length == 1){
+//            return 0;
+//        }
+
+
+        int n = gas.length;
+        int totalGain = 0;
+
+        for(int g: gas){
+            totalGain += g;
+        }
+
+        // ????
+        int curGain = 0;
+        int remain = 0;
+
+        for(int i = 0; i < n; i++){
+            // ???
+            remain += (gas[i] - cost[i]);
+            curGain += (gas[i] - cost[i]);
+            // ???
+            if(curGain >= -1 * (totalGain - curGain)){
+                return i;
+            }
+            //????
+            if(remain < 0){
+                remain = 0; // ???
+
+            }
+        }
+
+        return -1;
+    }
+
+
+
+
+
+
+    public int canCompleteCircuit_99(int[] gas, int[] cost) {
+        // edge
         if(gas == null){
             return -1;
         }
