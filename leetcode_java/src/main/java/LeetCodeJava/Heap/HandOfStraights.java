@@ -74,6 +74,109 @@ public class HandOfStraights {
         return true;
     }
 
+
+    // V0-0-1
+    // IDEA: TREEMAP (can get smallest `key` from map) (gemini)
+    public boolean isNStraightHand_0_0_1(int[] hand, int groupSize) {
+        int n = hand.length;
+        // Basic check: if total cards aren't divisible by group size, it's impossible
+        if (n % groupSize != 0)
+            return false;
+
+        /** NOTE !!! use `TreeMap` */
+        // 1. Create a frequency map that stays sorted by card value
+        TreeMap<Integer, Integer> map = new TreeMap<>();
+        for (int card : hand) {
+            map.put(card, map.getOrDefault(card, 0) + 1);
+        }
+
+        /** NOTE !!!
+         *
+         * a simpler `!map.isEmpty()`
+         * can assure that we `loop` all val in hand array
+         */
+        // 2. We need to form n / groupSize groups
+        while (!map.isEmpty()) {
+
+            /** NOTE !!!  core of this idea
+             *
+             * we get the `smallest` key from map
+             * via `firstKey()` API
+             */
+            // Always start the group with the smallest available card
+            int firstCard = map.firstKey();
+
+            /** NOTE !!!   we need to loop over `groupSize` to
+             *             `group` the vals
+             */
+            // 3. Try to form a consecutive group starting from firstCard
+            for (int i = 0; i < groupSize; i++) {
+                int currentCard = firstCard + i;
+
+                // If the next consecutive card isn't available, we can't form the group
+                if (!map.containsKey(currentCard)) {
+                    return false;
+                }
+
+                // Decrease frequency
+                int count = map.get(currentCard);
+                if (count == 1) {
+                    map.remove(currentCard);
+                } else {
+                    map.put(currentCard, count - 1);
+                }
+            }
+        }
+
+        return true;
+    }
+
+    // V0-0-2
+    // IDEA: TREEMAP (gpt)
+    public boolean isNStraightHand_0_0_2(int[] hand, int groupSize) {
+
+        int n = hand.length;
+        if (n % groupSize != 0) {
+            return false;
+        }
+
+        TreeMap<Integer, Integer> map = new TreeMap<>();
+        for (int h : hand) {
+            map.put(h, map.getOrDefault(h, 0) + 1);
+        }
+
+        int groups = n / groupSize;
+
+        for (int i = 0; i < groups; i++) {
+
+            /** NOTE !!!
+             *
+             *  firstKey() API get the smallest key from TreeMap
+             * */
+            int key = map.firstKey(); // ALWAYS restart from smallest
+
+            for (int j = 0; j < groupSize; j++) {
+
+                if (!map.containsKey(key)) {
+                    return false;
+                }
+
+                int cnt = map.get(key);
+                if (cnt == 1) {
+                    map.remove(key);
+                } else {
+                    map.put(key, cnt - 1);
+                }
+
+                key++; // next consecutive card
+            }
+        }
+
+        return true;
+    }
+
+
+
     // V0-1
     // IDEA: HASHMAP + SORTING
     // NOTE !!! groupSize could be >= 2
@@ -449,5 +552,7 @@ public class HandOfStraights {
         // All groups should be completed by the end
         return currentOpenGroups == 0;
     }
+
+
 
 }
