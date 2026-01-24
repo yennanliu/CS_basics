@@ -2454,16 +2454,20 @@ public class Workspace19 {
             return 0;
         }
 
-        int sum = 0;
-        for(int p: piles){
-            sum += p;
-        }
+//        int sum = 0;
+//        for(int p: piles){
+//            sum += p;
+//        }
 
         // binary search: `speed`
         // ??
         int l = 1;
-        int r = sum; // ??
-        //int minSpeed = r; // ??
+        int r = 0; // ??
+        for (int p : piles) {
+            r = Math.max(r, p); // Maximum pile size is the upper bound
+        }
+
+        int minSpeed = r; // ??
 
         while(r >= l){
             int mid = (l + r) / 2;
@@ -2472,7 +2476,9 @@ public class Workspace19 {
                 //minSpeed =
                 // ???
                 //return mid;
-                r -= 1;
+                minSpeed = mid; /// ????
+                //r -= 1;
+                r = mid - 1;
             }
             else if(hours > h){
                 l = mid + 1;
@@ -2485,10 +2491,15 @@ public class Workspace19 {
             }
         }
 
-        return r;
+        return minSpeed;
     }
 
 
+    /**  NOTE !!!
+     *
+     *  below code is `logically correct`
+     *  but may cause `overflow issue`
+     */
     private int getHour(int[] piles, int speed){
         int hours = 0;
         for(int p: piles){
