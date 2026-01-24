@@ -2286,6 +2286,96 @@ public class Workspace19 {
     }
 
 
+    // LC 846
+    // 16.51 - 17.01 pm
+    /**
+     *  -> return true if she can rearrange the cards,
+     *    or false otherwise.
+     *
+     * -------------------
+     *
+     *  IDEA 1)  TREEMAP
+     *
+     *  IDEA 2)  ORDER MAP ???
+     *
+     *   -> freq map
+     *   -> loop over groupSize
+     *      -> call map's `next key`
+     *         to get the `next big` key
+     *         if key NOT existed:
+     *            return false
+     *         else:
+     *            update freq map
+     *            and continue loop
+     *
+     *  IDEA 3) BRUTE FORCE ???
+     *
+     *
+     * -------------------
+     *
+     *  ex 1)
+     *
+     *   Input: hand = [1,2,3,6,2,3,4,7,8],
+     *   groupSize = 3
+     *
+     *   -> map = {1: 1, 2: 2, 3: 2, 4: 1, 6:1, 7: 1, 8: 1}
+     *
+     *
+     */
+    public boolean isNStraightHand(int[] hand, int groupSize) {
+        // edge
+        int n = hand.length;
+        if(n % groupSize != 0){
+            return false;
+        }
+
+        // ???
+        TreeMap<Integer, Integer> map = new TreeMap<>();
+        for(int h: hand){
+            map.put(h, map.getOrDefault(h, 0) + 1);
+        }
+
+        System.out.println(">>> map = " + map);
+
+        int key = map.firstKey(); // ????
+
+        // ???
+        int loop = n / groupSize;
+        for(int i = 0; i < loop; i++){
+            //key = map.firstKey(); // ???
+            for(int j = 0; j < groupSize; j++){
+                //int key = map.firstKey(); // ???
+                if(!map.containsKey(key)){
+                    return false;
+                }
+                int newCnt = map.get(key) - 1;
+                if(newCnt <= 0){
+                    map.remove(key);
+                }
+                map.put(key, newCnt);
+                key += 1; // ????
+            }
+        }
+
+        /**
+         *      *  IDEA 2)  ORDER MAP ???
+         *      *
+         *      *   -> freq map
+         *      *   -> loop over groupSize
+         *      *      -> call map's `next key`
+         *      *         to get the `next big` key
+         *      *         if key NOT existed:
+         *      *            return false
+         *      *         else:
+         *      *            update freq map
+         *      *            and continue loop
+         */
+
+        return true;
+    }
+
+
+
 
 
 }
