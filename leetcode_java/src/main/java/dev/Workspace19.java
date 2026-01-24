@@ -2375,6 +2375,60 @@ public class Workspace19 {
     }
 
 
+    // LC 367
+    // 17.28 - 38 pm
+    /**
+     *
+     *  ->  return true if num is a `perfect square `
+     *    or false otherwise.
+     *
+     *   -  `perfect square `:
+     *        is an integer that is the square of an integer.
+     *        In other words, it is the product of
+     *        some integer with itself.
+     *
+     *  ----------------
+     *
+     *   IDEA 1) MATH
+     *
+     *   IDEA 2) BINARY SEARCH
+     *
+     *   IDEA 3) BRUTE FORCE
+     *
+     *
+     *  ----------------
+     */
+    // IDEA 2) BINARY SEARCH - find `left boundary`
+    public boolean isPerfectSquare(int num) {
+        //edge
+        if(num < 0){
+            return false;
+        }
+        if(num <= 1){
+            return true;
+        }
+
+        int l = 0;
+        int r = (int) Math.sqrt(num) + 1; // ??
+        System.out.println(">>> l = " + l +
+                ", r = " + r);
+
+        // find
+        while(r >= l){
+            int mid = ( l + r ) / 2;
+            int square = mid * mid;
+            if(square == num){
+                return true;
+            }
+            if(square < num){
+                l = mid + 1;
+            }else{
+                r = mid - 1;
+            }
+        }
+
+        return false;
+    }
 
 
 
