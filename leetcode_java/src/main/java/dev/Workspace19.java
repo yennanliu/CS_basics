@@ -1295,9 +1295,70 @@ public class Workspace19 {
      *               dp[i][j] = max( dp[i-1][j],  dp[i][j] )
      *
      */
+    // 15.48 - 16.06 pm
+    /**
+     *  -------------
+     *
+     *
+     *  IDEA 1) 2D DP
+     *
+     *      *       - dp[i][3] = max profit can get
+     *      *                   at i days
+     *      *
+     *      *                 j:
+     *      *                    - 0: buy
+     *      *                    - 1: sell
+     *      *                    - 2: cooldown
+     *
+     *  -------------
+     *
+     */
+    public int maxProfit(int[] prices) {
+        // edge
+        if (prices == null || prices.length <= 1)
+            return 0;
+
+        int n = prices.length; // ????
+        //int maxProfit = 0;
+
+        // ???
+        //int[][] dp = new int[n + 1][3];
+        int[][] dp = new int[n][3];
+
+
+
+        // init // ???
+        dp[0][0] = -1 * prices[0]; // ???
+        dp[0][1] = 0;
+        dp[0][2] = 0;
+
+        // for(int i = 0; i < n + 1; i++){
+        for(int i = 0; i < n; i++){
+            // buy
+            //dp[i][0] = dp[i-1][2] - prices[i];
+            dp[i][0] = Math.max(dp[i-1][0], dp[i-1][2]) - prices[i];
+
+            // sell
+            //dp[i][1] = dp[i-1][0] + prices[i-1]; // /??
+            dp[i][1] = dp[i-1][0] + prices[i]; // /??
+
+            // hold
+            dp[i][2] = Math.max(dp[i-1][1], dp[i-1][2]);
+        }
+
+        //return Math.max(dp[n][1], dp[n][2]);
+        return Math.max(dp[n - 1][1], dp[n - 1][2]);
+    }
+
+
+
+
+
+
+
     // 17.08 - 18 pm
     // IDEA 2) DP
-    public int maxProfit(int[] prices) {
+    public int maxProfit_99(int[] prices) {
 
         //int n = prices.length + 1; // ????
         int n = prices.length; // ????

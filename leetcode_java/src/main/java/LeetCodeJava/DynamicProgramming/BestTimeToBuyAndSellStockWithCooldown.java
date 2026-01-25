@@ -110,6 +110,11 @@ public class BestTimeToBuyAndSellStockWithCooldown {
 
         // Base Case: Day 0
         /**  NOTE: the `day 0` base case
+         *
+         *  -> we init day 0 per each case
+         *   - 0: `bought` OP
+         *   - 1: `sold` op
+         *   - 2: `do nothing` op
          */
         dp[0][0] = -prices[0]; // Bought on day 0
         dp[0][1] = 0; // Can't sell on day 0
@@ -125,6 +130,13 @@ public class BestTimeToBuyAndSellStockWithCooldown {
              *       - buy new stock today
              */
             // 1. To HOLD today:
+            /**  NOTE !!!
+             *
+             *  for `hold` case, we can either do below in prev day:
+             *
+             *   1. `hold` as well in prev day (D-1)
+             *   2. `do nothing` (rest) in prev day (D-1)
+             */
             // Either you held it yesterday OR you were resting yesterday and bought today
             dp[i][0] = Math.max(dp[i - 1][0], dp[i - 1][2] - prices[i]);
 
