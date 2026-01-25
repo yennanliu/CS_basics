@@ -2659,6 +2659,48 @@ public class Workspace19 {
      *
      */
     public List<Integer> partitionLabels(String s) {
+        // edge
+
+        // map : { val : [end_idx] }
+        Map<String, Integer> map = new HashMap();
+
+        //???
+        for(int i = 0; i < s.toCharArray().length; i++){
+            String str = String.valueOf(s.charAt(i));
+            map.put(str, i);
+        }
+
+        List<Integer> res = new ArrayList<>();
+
+        // NOTE !!! we define below 2 var
+        //int max_idx = 0;
+        int cur_max_idx = 0;
+        // ??
+        int left_pointer = 0;
+
+        for(int i = 0; i < s.toCharArray().length; i++){
+            String str = String.valueOf(s.charAt(i));
+            // ???
+            int tmp_max_idx = map.get(str);
+            cur_max_idx = Math.max(cur_max_idx, tmp_max_idx);
+
+            // NOTE !!!
+            if(cur_max_idx == i){
+                res.add(i - left_pointer + 1);
+                left_pointer = i + 1;
+            }
+
+        }
+
+        return res;
+    }
+
+
+
+
+
+
+    public List<Integer> partitionLabels_99(String s) {
 
 //        Set<Integer> set = new HashSet<>();
 //        set.add(1);

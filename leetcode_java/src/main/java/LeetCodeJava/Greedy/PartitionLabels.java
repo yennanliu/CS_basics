@@ -71,6 +71,16 @@ public class PartitionLabels {
 
         //System.out.println(">>> map = " + map);
 
+        /** NOTE !!!
+         *
+         *  we define below 2 var:
+         *
+         *   - cur_len: for calculating `sub array len`
+         *
+         *   - cur_max_idx: for checking if cur `window` already
+         *                  contains ALL given alphabets in it
+         *                  (e.g. NO same alphabets outside of window)
+         */
         int cur_len = 1;
         int cur_max_idx = 0;
 
