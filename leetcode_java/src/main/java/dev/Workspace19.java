@@ -2619,6 +2619,93 @@ public class Workspace19 {
     }
 
 
+    // LC 763
+    // 14.58 - 15.08
+    /**
+     * -> Return a list of integers
+     *   representing the `size` of these parts.
+     *
+     *   - String s
+     *   - partition the string into `as many parts as possible` so
+     *     that `each letter` appears in `AT MOST ONE part`
+     *   -
+     *
+     *
+     * --------------
+     *
+     *  IDEA 1) GREEDY ???
+     *
+     *  IDEA 2) HASHMAP + 2 pointers  + dequeue ???
+     *
+     *    map : { val : [start_idx, end_idx] }
+     *
+     *
+     * --------------
+     *
+     *  ex 1)
+     *
+     *   Input: s = "ababcbacadefegdehijhklij"
+     *   Output: [9,7,8]
+     *
+     *   (The partition is "ababcbaca", "defegde", "hijhklij".)
+     *
+     *   ->
+     *
+     *    map = { a: [0, 8], b: [1,5], d: [9,14], e: [10, 15],
+     *           h: [], i:[], j: [], k:[], ....
+     *       }
+     *
+     *
+     *
+     */
+    public List<Integer> partitionLabels(String s) {
+
+//        Set<Integer> set = new HashSet<>();
+//        set.add(1);
+//        set.remove(1); // ???
+
+        List<Integer> res = new ArrayList<>();
+
+        // map : { val : [start_idx, end_idx] }
+        Map<String, Integer[]> map = new HashMap();
+
+        //???
+        for(int i = 0; i < s.toCharArray().length; i++){
+            String str = String.valueOf(s.charAt(i));
+            if(!map.containsKey(str)){
+                map.put(str, new Integer[]{0,0});
+            }
+            Integer[] indices = map.get(str);
+            // ???
+            indices[0] = Math.min(indices[0], i);
+            indices[1] = Math.max(indices[1], i);
+            map.put(str, indices);
+        }
+
+        System.out.println(">>> map = " + map);
+
+        int start = 0;
+        int end = 0;
+
+        // ???
+        Set<Integer> set = new HashSet<>();
+
+        // ???
+        for(int i = 0; i < s.toCharArray().length; i++){
+            String str = String.valueOf(s.charAt(i));
+            // ???
+            if(set.isEmpty()){
+                // ???
+                res.add(end - start + 1);
+                start += 1;
+                end = start;
+            }
+        }
+
+
+        return res;
+    }
+
 
 
 

@@ -181,6 +181,67 @@ public class PartitionLabels {
         return res;
     }
 
+    // V0-0-2
+    // IDEA: GREEDY (gemini)
+    public List<Integer> partitionLabels_0_0_2(String s) {
+        List<Integer> res = new ArrayList<>();
+        if (s == null || s.length() == 0)
+            return res;
+
+        // 1. Record the LAST occurrence of each character
+        int[] lastPos = new int[26];
+        for (int i = 0; i < s.length(); i++) {
+            lastPos[s.charAt(i) - 'a'] = i;
+        }
+
+        int start = 0; // The start of the current partition
+        int end = 0; // The furthest boundary of the current partition
+
+        // 2. Walk through the string and update the boundary
+        for (int i = 0; i < s.length(); i++) {
+            // Update 'end' to be the furthest last occurrence seen so far
+            end = Math.max(end, lastPos[s.charAt(i) - 'a']);
+
+            // 3. If the current index matches the furthest boundary,
+            // it means all characters inside this range stay inside this range.
+            if (i == end) {
+                res.add(end - start + 1);
+                start = i + 1; // Move start to the beginning of the next partition
+            }
+        }
+
+        return res;
+    }
+
+
+    // V0-0-3
+    // IDEA: GREEDY (GPT)
+    public List<Integer> partitionLabels_0_0_3(String s) {
+        List<Integer> res = new ArrayList<>();
+
+        // Step 1: last occurrence of each character
+        int[] last = new int[26];
+        for (int i = 0; i < s.length(); i++) {
+            last[s.charAt(i) - 'a'] = i;
+        }
+
+        // Step 2: greedy partition
+        int start = 0;
+        int end = 0;
+
+        for (int i = 0; i < s.length(); i++) {
+            end = Math.max(end, last[s.charAt(i) - 'a']);
+
+            if (i == end) {
+                res.add(end - start + 1);
+                start = i + 1;
+            }
+        }
+
+        return res;
+    }
+
+
     // V0-2
     // IDEA: GREEDY + hashMap record last idx + sliding window (fixed by gpt)
     public List<Integer> partitionLabels_0_2(String s) {
@@ -257,6 +318,8 @@ public class PartitionLabels {
         }
         return ans;
     }
+
+
 
 
 }
