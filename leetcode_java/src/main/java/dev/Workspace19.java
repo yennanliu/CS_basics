@@ -2515,6 +2515,110 @@ public class Workspace19 {
     }
 
 
+    // LC 1899
+    // 14.31 - 41 pm
+    /**
+     *  -> Return `true`
+     *      - if it is possible to obtain the target triplet [x, y, z] as an element of triplets,
+     *      - false otherwise.
+     *
+     *
+     *    - triplet: arr with 3 int
+     *    - 2D arr: triplets
+     *            - triplets[i] = [ai, bi, ci]
+     *
+     *    - target = [x, y, z]
+     *
+     *
+     *    - OP:
+     *       To obtain target, you may apply the following operation
+     *        on triplets ` any number of times (possibly zero):`
+     *
+     *         - choose 2 indices (i, j) (i != j)
+     *           - update triplets[j] as
+     *               - [max(ai, aj), max(bi, bj), max(ci, cj)]
+     *
+     *
+     *  ----------------
+     *
+     *   IDEA 1) GREEDY ???
+     *
+     *     -> 1. loop over triplet in triplets,
+     *        2. get and update max val in every index (e.g. index = 0, 1, 2)
+     *        3. finally, check if the `final array` is as same as target
+     *
+     *
+     *   IDEA 2) BRUTE FORCE ???
+     *
+     *
+     *  ----------------
+     *
+     */
+    public boolean mergeTriplets(int[][] triplets, int[] target) {
+        // edge
+        if(triplets == null && target == null){
+            return false;
+        }
+        // ??
+        if(triplets == null){
+            return false;
+        }
+        for(int[] x: triplets){
+            if(isSame(x, target)){
+                return true;
+            }
+        }
+
+        // ???
+        List<int[]> candidates = new ArrayList<>();
+        for(int[] x: triplets){
+            boolean isValid = true;
+            for(int i = 0; i < x.length; i++){
+                if(x[i] > target[i]){
+                    isValid = false;
+                    break; // ???
+                }
+            }
+            if(isValid){
+                candidates.add(x);
+            }
+        }
+
+        // ???
+        System.out.println(">>> candidates = " + candidates);
+
+        int[] tmp = new int[target.length];
+        Arrays.fill(tmp, 0);
+        // ???
+        for(int[] x: candidates){
+            for(int i = 0; i < x.length; i++){
+                tmp[i] = Math.max(
+                        tmp[i],
+                        x[i]
+                );
+            }
+        }
+
+        // ???
+        System.out.println(">>> tmp = " + Arrays.toString(tmp));
+
+        return isSame(tmp, target);
+    }
+
+
+    private boolean isSame(int[] a, int[] b){
+        if(a.length != b.length){
+            return false;
+        }
+        for(int i = 0; i < a.length; i++){
+            if(a[i] != b[i]){
+                return false;
+            }
+        }
+        return true;
+    }
+
+
 
 
 

@@ -104,6 +104,72 @@ public class MergeTripletsToFormTargetTriplet {
         return set.size() == target.length;
     }
 
+
+    // V0-0-1
+    // IDEA: GREEDY + pre-check
+    public boolean mergeTriplets_0_0_1(int[][] triplets, int[] target) {
+        // edge
+        if (triplets == null && target == null) {
+            return false;
+        }
+        // ??
+        if (triplets == null) {
+            return false;
+        }
+        for (int[] x : triplets) {
+            if (isSame(x, target)) {
+                return true;
+            }
+        }
+
+        // ???
+        List<int[]> candidates = new ArrayList<>();
+        for (int[] x : triplets) {
+            boolean isValid = true;
+            for (int i = 0; i < x.length; i++) {
+                if (x[i] > target[i]) {
+                    isValid = false;
+                    break; // ???
+                }
+            }
+            if (isValid) {
+                candidates.add(x);
+            }
+        }
+
+        // ???
+        //System.out.println(">>> candidates = " + candidates);
+
+        int[] tmp = new int[target.length];
+        Arrays.fill(tmp, 0);
+        // ???
+        for (int[] x : candidates) {
+            for (int i = 0; i < x.length; i++) {
+                tmp[i] = Math.max(
+                        tmp[i],
+                        x[i]);
+            }
+        }
+
+        // ???
+        //System.out.println(">>> tmp = " + Arrays.toString(tmp));
+
+        return isSame(tmp, target);
+    }
+
+    private boolean isSame(int[] a, int[] b) {
+        if (a.length != b.length) {
+            return false;
+        }
+        for (int i = 0; i < a.length; i++) {
+            if (a[i] != b[i]) {
+                return false;
+            }
+        }
+        return true;
+    }
+    
+
     // V0-1
     public boolean mergeTriplets_0_1(int[][] triplets, int[] target) {
         // edge
@@ -216,5 +282,7 @@ public class MergeTripletsToFormTargetTriplet {
         }
         return maxA == target[0] && maxB == target[1] && maxC == target[2];
     }
+
+
 
 }
