@@ -168,7 +168,37 @@ public class MergeTripletsToFormTargetTriplet {
         }
         return true;
     }
-    
+
+    // V0-0-2
+    // IDEA: GREEDY (gemini)
+    public boolean mergeTriplets_0_0_2(int[][] triplets, int[] target) {
+        // We only need to track if we've successfully reached the target
+        // for each of the three positions.
+        boolean[] reached = new boolean[3];
+
+        for (int[] t : triplets) {
+            // 1. FILTER: A triplet is only useful if NO element exceeds its target counterpart.
+            // If any element is bigger, merging it would make the result too big.
+            if (t[0] <= target[0] && t[1] <= target[1] && t[2] <= target[2]) {
+
+                // 2. UPDATE: If it's a valid triplet, check if it helps us hit
+                // any of the specific target values.
+                for (int i = 0; i < 3; i++) {
+                    if (t[i] == target[i]) {
+                        reached[i] = true;
+                    }
+                }
+            }
+
+            // 3. OPTIMIZATION: If we reached all three targets, we are done!
+            if (reached[0] && reached[1] && reached[2])
+                return true;
+        }
+
+        return reached[0] && reached[1] && reached[2];
+    }
+
+
 
     // V0-1
     public boolean mergeTriplets_0_1(int[][] triplets, int[] target) {
