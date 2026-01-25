@@ -1879,7 +1879,83 @@ public class Workspace19 {
      *        `word2.substring(0, j).`
      *
      */
+    // 7.05 - 15 am
+    // 2D DP
+    /**  NOTE !!!
+     *
+     *  DP def:
+     *
+     *   dp[i][j]
+     *      - the `minimum` operations to convert
+     *        `word1.substring(0, i) `
+     *        to
+     *        `word2.substring(0, j).`
+     *
+     *
+     *  DP eq:
+     *
+     *    dp[i][j] =
+     *       // if insert
+     *       // if delete
+     *       // if replace
+     *
+     *
+     */
     public int minDistance(String word1, String word2) {
+        // edge
+
+        int l1 = word1.length();
+        int l2 = word2.length();
+
+        // ?????
+        //int[][] dp = new int[l1][l2];
+        int[][] dp = new int[l1 + 1][l2 + 1];
+
+        // init ??
+        // if w2 is null
+        for(int i = 0; i < l1 + 1; i++){
+            dp[i][0] = i;
+        }
+        // if w1 is null
+        for(int i = 0; i < l2 + 1; i++){
+            dp[0][i] = i;
+        }
+
+        // ??
+        /**
+         *          *
+         *          *       - Replace: dp[i-1][j-1] + 1 (Diagonal)
+         *          *
+         *          *       - Delete: dp[i-1][j] + 1 (Top)
+         *          *
+         *          *       -  Insert: dp[i][j-1] + 1 (Left)
+         */
+        for(int i = 0; i < l1 + 1; i++){
+            for(int j = 0; j < l2 + 1; j++){
+                // insert
+                int val1 = dp[i][j-1] + 1; // dp[i][j+1] + 1; // ???
+                // delete
+                int val2 = dp[i-1][j] + 1;
+                // replace
+                int val3 = dp[i-1][j-1] + 1; //dp[i][j-1] + 1;
+
+                // ??
+                dp[i][j] = Math.min(val1, Math.max(val2, val3));
+            }
+        }
+
+
+        //return dp[l1 - 1][l2 - 1];
+        return dp[l1][l2];
+    }
+
+
+
+
+
+
+
+    public int minDistance_98(String word1, String word2) {
         // edge
 
         int l1 = word1.length();
