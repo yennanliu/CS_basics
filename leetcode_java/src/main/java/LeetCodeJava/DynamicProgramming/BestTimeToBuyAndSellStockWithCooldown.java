@@ -135,7 +135,14 @@ public class BestTimeToBuyAndSellStockWithCooldown {
              *  for `hold` case, we can either do below in prev day:
              *
              *   1. `hold` as well in prev day (D-1)
-             *   2. `do nothing` (rest) in prev day (D-1)
+             *   2. `do nothing` (rest) in prev day (D-1) and  bought today
+             *
+             *
+             *   NOTE !!!
+             *
+             *    we get max from
+             *     - dp[i - 1][0]
+             *     - dp[i - 1][2] - prices[i]
              */
             // Either you held it yesterday OR you were resting yesterday and bought today
             dp[i][0] = Math.max(dp[i - 1][0], dp[i - 1][2] - prices[i]);
