@@ -178,13 +178,27 @@ public class ValidParenthesisString {
        *
        *   - value → whether that state is reachable
        *
+       *
+       *   e.g.
+       *
+       *   i = prefix length
+       *   j = current open-parentheses count (balance)
+       *
        */
+      // Outer loop: process characters
       for (int i = 1; i <= n; i++) {
           char c = s.charAt(i - 1);
+          // Inner loop: try all balances
           for (int j = 0; j <= n; j++) {
               /** case 1) '(' */
               if (c == '(') {
                   if (j > 0)
+                      /**
+                       *
+                       *  - '(' adds one open parenthesis
+                       *
+                       *  - To end with j opens now, we must have had j - 1 before
+                       */
                       // V1
                       //dp[i][j] |= dp[i - 1][j - 1];
                       dp[i][j] = dp[i - 1][j - 1] || dp[i][j];
