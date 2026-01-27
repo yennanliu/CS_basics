@@ -136,10 +136,89 @@ public class ValidParenthesisString {
          *   -> need below logic, then can verify successfully
          */
         return minParenCnt == 0; // ???
-    }
-
+       }
 
   // V0-0-1
+  // IDEA: 2D DP (gpt)
+  public boolean checkValidString_0_0_1(String s) {
+      int n = s.length();
+
+      /**
+       *  - DP def:
+       *   - dp[i][j]:
+       *      if after processing the first i characters of the string,
+       *      -> it is possible to have exactly j unmatched open parentheses '('.
+       *
+       *
+       * - Break it down
+       *
+       *    - i → how many characters you’ve consumed (prefix s[0..i-1])
+       *    - j → how many '(' are currently open and not yet closed
+       *    - value → whether that state is reachable
+       *
+       *   -> So dp is describing all valid balances
+       *     you can have at each position.
+       */
+      boolean[][] dp = new boolean[n + 1][n + 1];
+
+      dp[0][0] = true; // empty string, 0 open
+
+      /**  NOTE !!!
+       *
+       *  DP eq:
+       *
+       *   - dp[i][j]:
+       *     -> if after `processing the first i` characters of the string,
+       *        it is` possible to have exactly j
+       *        unmatched open parentheses '('.`
+       *
+       *   - i → how many characters you’ve consumed (prefix s[0..i-1])
+       *
+       *   - j → how many '(' are currently open and not yet closed
+       *
+       *   - value → whether that state is reachable
+       *
+       */
+      for (int i = 1; i <= n; i++) {
+          char c = s.charAt(i - 1);
+          for (int j = 0; j <= n; j++) {
+              /** case 1) '(' */
+              if (c == '(') {
+                  if (j > 0)
+                      // V1
+                      //dp[i][j] |= dp[i - 1][j - 1];
+                      dp[i][j] = dp[i - 1][j - 1] || dp[i][j];
+              }
+              /** case 2) ')' */
+              else if (c == ')') {
+                  if (j < n)
+                      //dp[i][j] |= dp[i - 1][j + 1];
+                      dp[i][j] = dp[i - 1][j + 1] || dp[i][j];
+              }
+              /** case 3) '*' */
+              else {
+                  // '*'
+                  // empty
+                  //dp[i][j] |= dp[i - 1][j];
+                  dp[i][j] = dp[i - 1][j] || dp[i][j];
+                  // '('
+                  if (j > 0)
+                      //dp[i][j] |= dp[i - 1][j - 1];
+                      dp[i][j] = dp[i - 1][j - 1] || dp[i][j];
+                  // ')'
+                  if (j < n)
+                      //dp[i][j] |= dp[i - 1][j + 1];
+                      dp[i][j] = dp[i - 1][j + 1] ||  dp[i][j];
+              }
+          }
+      }
+
+      return dp[n][0];
+  }
+
+
+
+  // V0-0-2
   // IDEA: 2D DP (gemini)
   /**  NOTE !!!
    *
@@ -164,7 +243,7 @@ public class ValidParenthesisString {
    *       then the whole thing is true.
    *
    */
-  public boolean checkValidString_0_0_1(String s) {
+  public boolean checkValidString_0_0_2(String s) {
       int n = s.length();
       if (n == 0)
           return true;
@@ -320,45 +399,6 @@ public class ValidParenthesisString {
 //        //return leftParen.isEmpty() && rightParen.isEmpty();
 //        return leftParen.isEmpty();
 //    }
-
-    // V0-2
-    // IDEA: 2D DP (gpt)
-    public boolean checkValidString_0_2(String s) {
-        int n = s.length();
-        boolean[][] dp = new boolean[n + 1][n + 1];
-
-        dp[0][0] = true; // empty string, 0 open
-
-        for (int i = 1; i <= n; i++) {
-            char c = s.charAt(i - 1);
-            for (int j = 0; j <= n; j++) {
-                if (c == '(') {
-                    if (j > 0)
-                        // V1
-                        //dp[i][j] |= dp[i - 1][j - 1];
-                        dp[i][j] = dp[i - 1][j - 1] || dp[i][j];
-                } else if (c == ')') {
-                    if (j < n)
-                        //dp[i][j] |= dp[i - 1][j + 1];
-                        dp[i][j] = dp[i - 1][j + 1] || dp[i][j];
-                } else { // '*'
-                    // empty
-                    //dp[i][j] |= dp[i - 1][j];
-                    dp[i][j] = dp[i - 1][j] || dp[i][j];
-                    // '('
-                    if (j > 0)
-                        //dp[i][j] |= dp[i - 1][j - 1];
-                        dp[i][j] = dp[i - 1][j - 1] || dp[i][j];
-                    // ')'
-                    if (j < n)
-                        //dp[i][j] |= dp[i - 1][j + 1];
-                        dp[i][j] = dp[i - 1][j + 1] ||  dp[i][j];
-                }
-            }
-        }
-
-        return dp[n][0];
-    }
 
 
     // V1-1
