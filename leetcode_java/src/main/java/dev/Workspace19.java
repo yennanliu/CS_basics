@@ -2886,6 +2886,79 @@ public class Workspace19 {
     }
 
 
+    // LC 678
+    // 9.37 - 47 am
+    /**
+     *   ->  return true if s is valid.
+     *
+     *  Given a string s containing only
+     *  three types of characters
+     *
+     *  NOTE:
+     *   - '*' could be treated as a single right parenthesis ')' or a
+     *     single left parenthesis '(' or an empty string "".
+     *
+     * ---------------
+     *
+     *  IDEA 1) GREEDY
+     *
+     *  IDEA 2) BRUTE FORCE
+     *
+     *  IDEA 3) STACK
+     *
+     *  IDEA 4) DP ???
+     *
+     *    - bottom up dp ???
+     *       - DP def:
+     *          - boolean dp[i]:
+     *             - can s[0...i] be
+     *               a valid parenthesis string ????
+     *
+     *       - DP eq:
+     *          - dp[i] =
+     *              if (s[i] = * or s[i] == s[0]):
+     *                  dp[i] = dp[i] or dp[i-1] // ???
+     *              else:
+     *                 dp[i] = false // ???
+     *
+     * ---------------
+     *
+     *
+     */
+    public boolean checkValidString(String s) {
+        // edge
+
+        // ???
+        int n = s.length();
+        boolean[] dp = new boolean[n];
+        dp[0] = true;
+
+        /**
+         *      *
+         *      *       - DP eq:
+         *      *          - dp[i] =
+         *      *              if (s[i] = * or s[i] == s[0]):
+         *      *                  dp[i] = dp[i] or dp[i-1] // ???
+         *      *              else:
+         *      *                 dp[i] = false // ???
+         */
+        // ??
+        for(int i = 1; i < n; i++){
+            if(s.charAt(i) == '*' || s.charAt(i) == s.charAt(0)){
+                dp[i] = dp[i] || dp[i-1];
+            }else{
+                // ??
+                dp[i] = false;
+            }
+        }
+
+        return dp[n-1];
+    }
+
+
+
+
+
 
 
 }

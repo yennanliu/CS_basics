@@ -138,6 +138,104 @@ public class ValidParenthesisString {
         return minParenCnt == 0; // ???
     }
 
+
+  // V0-0-1
+  // IDEA: 2D DP (gemini)
+  /**  NOTE !!!
+   *
+   *  DP def:
+   *
+   *  boolean dp[i][j]:
+   *     "Is the substring from index i to j valid?"
+   *
+   *  DP eq:
+   *
+   *  1. Base Case: If the length is 1, it's only true if the character is
+   *  2. Base Case: If the length is 2, it's true if the pair is (), (*, *), or
+   *
+   *  3. Recursive Step:
+   *     - If s[i] and s[j] can form a pair
+   *       (e.g., ( and ), or * and *),
+   *       then dp[i][j] is true
+   *
+   *     - if the inner part dp[i+1][j-1] is true.
+   *       Split Point: We can also split the string at any index
+   *       $k$. If dp[i][k] is true and dp[k+1][j] is true,
+   *       then the whole thing is true.
+   *
+   */
+  public boolean checkValidString_0_0_1(String s) {
+      int n = s.length();
+      if (n == 0)
+          return true;
+
+      /**  NOTE !!!
+       *
+       *  DP def:
+       *
+       *  boolean dp[i][j]:
+       *     "Is the substring from index i to j valid?"
+       *
+       */
+      // dp[i][j] means substring s[i...j] is valid
+      boolean[][] dp = new boolean[n][n];
+
+      // 1. Base Case: Length 1
+      for (int i = 0; i < n; i++) {
+          if (s.charAt(i) == '*')
+              dp[i][i] = true;
+      }
+
+
+      /**  NOTE !!!
+       *  DP eq:
+       *
+       *  1. Base Case: If the length is 1, it's only true if the character is
+       *  2. Base Case: If the length is 2, it's true if the pair is (), (*, *), or
+       *
+       *  3. Recursive Step:
+       *     - If s[i] and s[j] can form a pair
+       *       (e.g., ( and ), or * and *),
+       *       then dp[i][j] is true
+       *
+       *     - if the inner part dp[i+1][j-1] is true.
+       *       Split Point: We can also split the string at any index
+       *       $k$. If dp[i][k] is true and dp[k+1][j] is true,
+       *       then the whole thing is true.
+       *
+       */
+      // 2. Fill the table for lengths 2 to n
+      for (int len = 2; len <= n; len++) {
+          for (int i = 0; i <= n - len; i++) {
+              int j = i + len - 1;
+
+              // Option A: Check if s[i] and s[j] can be a matching pair
+              // s[i] must be '(' or '*' AND s[j] must be ')' or '*'
+              if ((s.charAt(i) == '(' || s.charAt(i) == '*') &&
+                      (s.charAt(j) == ')' || s.charAt(j) == '*')) {
+                  // If the substring between them is valid (or they are adjacent)
+                  if (len == 2 || dp[i + 1][j - 1]) {
+                      dp[i][j] = true;
+                  }
+              }
+
+              // Option B: If not already true, try splitting the range at k
+              // This handles cases like "()()" or "(**)(*)"
+              if (!dp[i][j]) {
+                  for (int k = i; k < j; k++) {
+                      if (dp[i][k] && dp[k + 1][j]) {
+                          dp[i][j] = true;
+                          break;
+                      }
+                  }
+              }
+          }
+      }
+
+      return dp[0][n - 1];
+  }
+
+
   // V0-1
   // IDEA: GREEDY (fixed by gpt)
   /**
@@ -222,6 +320,40 @@ public class ValidParenthesisString {
 //        //return leftParen.isEmpty() && rightParen.isEmpty();
 //        return leftParen.isEmpty();
 //    }
+
+    // V0-2
+    // IDEA: 2D DP (gpt)
+    public boolean checkValidString_0_2(String s) {
+        int n = s.length();
+        boolean[][] dp = new boolean[n + 1][n + 1];
+
+        dp[0][0] = true; // empty string, 0 open
+
+        for (int i = 1; i <= n; i++) {
+            char c = s.charAt(i - 1);
+            for (int j = 0; j <= n; j++) {
+                if (c == '(') {
+                    if (j > 0)
+                        dp[i][j] |= dp[i - 1][j - 1];
+                } else if (c == ')') {
+                    if (j < n)
+                        dp[i][j] |= dp[i - 1][j + 1];
+                } else { // '*'
+                    // empty
+                    dp[i][j] |= dp[i - 1][j];
+                    // '('
+                    if (j > 0)
+                        dp[i][j] |= dp[i - 1][j - 1];
+                    // ')'
+                    if (j < n)
+                        dp[i][j] |= dp[i - 1][j + 1];
+                }
+            }
+        }
+
+        return dp[n][0];
+    }
+
 
     // V1-1
     // https://neetcode.io/problems/valid-parenthesis-string
@@ -468,6 +600,9 @@ public class ValidParenthesisString {
 
         return true; // If we passed both passes, the string is valid
     }
+
+
+
 
 
 }
