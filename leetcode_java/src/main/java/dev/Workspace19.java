@@ -848,7 +848,51 @@ public class Workspace19 {
      *  -----------------
      *
      */
+    // LC 322
+    // 10.49 - 59 AM
+    // // IDEA: bottom up DP ("backward-looking" approach) (fixed by gemini)
+    /**
+     *  - IDEA: bottom DP
+     *
+     *   - DP def
+     *       - dp[i]: min coin to represent sum = i
+     *
+     *   - DP eq:
+     *      - dp[i] =
+     *          if (i < amount):  // ????
+     *             min( dp[i-coin] + 1, dp[i] )
+     */
     public int coinChange(int[] coins, int amount) {
+        // edge
+
+        int[] dp = new int[amount + 1]; // ???
+        //Arrays.fill(dp, Integer.MAX_VALUE); // ???
+        Arrays.fill(dp, amount + 1); // ???
+        dp[0] = 0;
+
+
+        // NOTE !!! double loop
+        // loop 1) : loop over amount
+        for(int i = 1; i < amount + 1; i++){
+            // loop 2) : loop over coin:
+            // ??? loop back ???
+            for(int c: coins){
+                // ??
+                dp[i] = Math.max(dp[i], dp[i - c] + 1); // ?????
+            }
+        }
+
+        return dp[amount] != amount + 1 ? dp[amount] : -1;
+    }
+
+
+
+
+
+
+
+
+    public int coinChange_99(int[] coins, int amount) {
         // edge
         if (amount == 0)
             return 0;
@@ -2956,6 +3000,62 @@ public class Workspace19 {
     }
 
 
+
+    // https://leetcode.com/problems/coin-change-ii/
+    // LC 518
+    // 11.20 - 30 AM
+    /**
+     *
+     * -> Return the `number of combinations` that make up that amount.
+     *     - If that amount of money CAN NOT be made up
+     *       by any combination of the coins,
+     *       - return 0.
+     *
+     *
+     * --------------------
+     *
+     *  IDEA 1) 1D DP (bottom up)
+     *
+     *   - DP def:
+     *     - dp[i]: combination from coin that has sum = i
+     *
+     *   - DP eq:
+     *      dp[i] =
+     *         dp[i-c] + dp[i] // ???
+     */
+    public int change(int amount, int[] coins) {
+        // edge
+        if (coins.length == 1) {
+            return amount % coins[0] == 0 ? amount / coins[0] : 0;
+        }
+
+        int[] dp = new int[amount + 1]; // ???
+        // init
+        dp[0] = 1;
+
+//        for(int i = 1; i < amount + 1; i++){
+//            for(int c: coins){
+//                // i - c: remaining amount
+//                if(i - c > 0){
+//                    dp[i] += dp[i - c];
+//                }
+//            }
+//        }
+        // 3. OUTER LOOP: Iterate through each coin
+        // This ensures we process coins one by one to avoid duplicate combinations
+        for (int c : coins) {
+            // 4. INNER LOOP: Update dp table for all amounts reachable by this coin
+            for (int i = c; i <= amount; i++) {
+                // New ways to make i = existing ways + ways to make (i - current coin)
+                dp[i] += dp[i - c];
+            }
+        }
+
+
+        System.out.println(">>> dp = " + Arrays.toString(dp));
+
+        return dp[amount];
+    }
 
 
 

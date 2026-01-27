@@ -196,8 +196,57 @@ public class CoinChange2 {
     }
 
     // V0-0-1
-    // IDEA: DP (gpt)
+    // IDEA: 1D DP (gemini)
     public int change_0_0_1(int amount, int[] coins) {
+        // edge
+
+        int[] dp = new int[amount + 1]; // ???
+        // init
+        dp[0] = 1;
+
+        /** NOTE !!!
+         *
+         *   before looping `order` is WRONG
+         *   -> we need to loop coin, then amount
+         *   e.g.
+         *    for(int c: coins){
+         *        // ...
+         *        for(int i = 1; i < amount + 1; i++){
+         *            // ....
+         *        }
+         *    }
+         *
+         */
+        //        for(int i = 1; i < amount + 1; i++){
+        //            for(int c: coins){
+        //                // i - c: remaining amount
+        //                if(i - c > 0){
+        //                    dp[i] += dp[i - c];
+        //                }
+        //            }
+        //        }
+
+
+        // 3. OUTER LOOP: Iterate through each coin
+        // This ensures we process coins one by one to avoid duplicate combinations
+        for (int c : coins) {
+            // 4. INNER LOOP: Update dp table for all amounts reachable by this coin
+            for (int i = c; i <= amount; i++) {
+                // New ways to make i = existing ways + ways to make (i - current coin)
+                dp[i] += dp[i - c];
+            }
+        }
+
+        //System.out.println(">>> dp = " + Arrays.toString(dp));
+
+        return dp[amount];
+    }
+
+    
+
+    // V0-0-2
+    // IDEA: DP (gpt)
+    public int change_0_0_2(int amount, int[] coins) {
         int[] dp = new int[amount + 1];
         dp[0] = 1;
 
