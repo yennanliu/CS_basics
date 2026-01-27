@@ -1900,6 +1900,337 @@ Use "Two-String Grid" pattern when you see:
 | **Palindrome** | dp[i][j] = is s[i:j+1] palindrome | O(n²) | Expand around centers |
 | **Word Break** | dp[i] = can break s[:i] | O(n³) | Check all possible breaks |
 
+---
+
+### **Valid Parenthesis String Pattern (LC 678)** 🌟
+
+**Problem**: Given a string containing '(', ')' and '*', where '*' can be treated as '(', ')' or empty string, determine if the string is valid.
+
+This problem demonstrates **multiple DP paradigms** and is excellent for understanding:
+- State tracking with wildcards
+- Greedy vs DP trade-offs
+- Interval DP patterns
+- Space optimization techniques
+
+#### **Approach 1: Greedy (Min/Max Balance Tracking)** ⚡ OPTIMAL
+
+**Time**: O(n) | **Space**: O(1)
+
+**Key Insight**: Track the **range** of possible unmatched open parentheses at each position.
+
+```java
+public boolean checkValidString(String s) {
+    int minParenCnt = 0; // minimum possible unmatched '('
+    int maxParenCnt = 0; // maximum possible unmatched '('
+
+    for (char c : s.toCharArray()) {
+        if (c == '(') {
+            minParenCnt++;
+            maxParenCnt++;
+        } else if (c == ')') {
+            minParenCnt--;
+            maxParenCnt--;
+        } else { // '*' - wildcard
+            minParenCnt--; // treat '*' as ')'
+            maxParenCnt++; // treat '*' as '('
+        }
+
+        // If maxParenCnt < 0: too many unmatched ')'
+        if (maxParenCnt < 0) return false;
+
+        // If minParenCnt < 0: reset to 0 (can use '*' as empty)
+        if (minParenCnt < 0) minParenCnt = 0;
+    }
+
+    // Valid if we can have 0 unmatched '('
+    return minParenCnt == 0;
+}
+```
+
+**Why this works**:
+- `maxParenCnt < 0` → impossible to balance (too many ')')
+- `minParenCnt = 0` → can reset negative balance using '*' as empty
+- Final `minParenCnt == 0` → at least one valid way to match all
+
+---
+
+#### **Approach 2: 2D DP (Position × Open Count)** 📊
+
+**Time**: O(n²) | **Space**: O(n²)
+
+**DP Definition**:
+- `dp[i][j]`: Can we have exactly `j` unmatched '(' after processing first `i` characters?
+
+```java
+public boolean checkValidString(String s) {
+    int n = s.length();
+    boolean[][] dp = new boolean[n + 1][n + 1];
+    dp[0][0] = true; // empty string, 0 open parens
+
+    for (int i = 1; i <= n; i++) {
+        char c = s.charAt(i - 1);
+        for (int j = 0; j <= n; j++) {
+            if (c == '(') {
+                // Add one open paren
+                if (j > 0) dp[i][j] = dp[i - 1][j - 1];
+            } else if (c == ')') {
+                // Close one open paren
+                if (j < n) dp[i][j] = dp[i - 1][j + 1];
+            } else { // '*'
+                // Option 1: treat '*' as empty
+                dp[i][j] = dp[i - 1][j];
+                // Option 2: treat '*' as '('
+                if (j > 0) dp[i][j] |= dp[i - 1][j - 1];
+                // Option 3: treat '*' as ')'
+                if (j < n) dp[i][j] |= dp[i - 1][j + 1];
+            }
+        }
+    }
+
+    return dp[n][0]; // n chars processed, 0 open parens
+}
+```
+
+**State Transitions**:
+- `'('`: `dp[i][j] = dp[i-1][j-1]` (increase open count)
+- `')'`: `dp[i][j] = dp[i-1][j+1]` (decrease open count)
+- `'*'`: `dp[i][j] = dp[i-1][j] || dp[i-1][j-1] || dp[i-1][j+1]` (try all 3)
+
+---
+
+#### **Approach 3: Interval DP (Range Validity)** 🎯
+
+**Time**: O(n³) | **Space**: O(n²)
+
+**DP Definition**:
+- `dp[i][j]`: Is substring `s[i..j]` valid?
+
+```java
+public boolean checkValidString(String s) {
+    int n = s.length();
+    if (n == 0) return true;
+
+    boolean[][] dp = new boolean[n][n];
+
+    // Base case: single character valid only if '*'
+    for (int i = 0; i < n; i++) {
+        if (s.charAt(i) == '*') dp[i][i] = true;
+    }
+
+    // Fill table for increasing lengths
+    for (int len = 2; len <= n; len++) {
+        for (int i = 0; i <= n - len; i++) {
+            int j = i + len - 1;
+
+            // Option A: s[i] and s[j] form a matching pair
+            if ((s.charAt(i) == '(' || s.charAt(i) == '*') &&
+                (s.charAt(j) == ')' || s.charAt(j) == '*')) {
+                if (len == 2 || dp[i + 1][j - 1]) {
+                    dp[i][j] = true;
+                }
+            }
+
+            // Option B: Split at some point k
+            if (!dp[i][j]) {
+                for (int k = i; k < j; k++) {
+                    if (dp[i][k] && dp[k + 1][j]) {
+                        dp[i][j] = true;
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    return dp[0][n - 1];
+}
+```
+
+**Key Pattern**: This is classic **Interval DP** similar to:
+- LC 312 (Burst Balloons)
+- LC 1039 (Minimum Score Triangulation)
+- LC 1547 (Minimum Cost to Cut a Stick)
+
+---
+
+#### **Approach 4: Top-Down DP (Recursion + Memoization)** 🔄
+
+**Time**: O(n²) | **Space**: O(n²) + recursion stack
+
+```java
+public boolean checkValidString(String s) {
+    int n = s.length();
+    Boolean[][] memo = new Boolean[n + 1][n + 1];
+    return dfs(0, 0, s, memo);
+}
+
+private boolean dfs(int i, int open, String s, Boolean[][] memo) {
+    // Too many closing parens
+    if (open < 0) return false;
+
+    // End of string: valid if all matched
+    if (i == s.length()) return open == 0;
+
+    // Memoization
+    if (memo[i][open] != null) return memo[i][open];
+
+    boolean result;
+    if (s.charAt(i) == '(') {
+        result = dfs(i + 1, open + 1, s, memo);
+    } else if (s.charAt(i) == ')') {
+        result = dfs(i + 1, open - 1, s, memo);
+    } else { // '*'
+        result = dfs(i + 1, open, s, memo) ||        // empty
+                 dfs(i + 1, open + 1, s, memo) ||    // '('
+                 dfs(i + 1, open - 1, s, memo);      // ')'
+    }
+
+    memo[i][open] = result;
+    return result;
+}
+```
+
+---
+
+#### **Approach 5: Bottom-Up DP** 📈
+
+**Time**: O(n²) | **Space**: O(n²)
+
+```java
+public boolean checkValidString(String s) {
+    int n = s.length();
+    boolean[][] dp = new boolean[n + 1][n + 1];
+    dp[n][0] = true; // base: end with 0 open parens
+
+    for (int i = n - 1; i >= 0; i--) {
+        for (int open = 0; open < n; open++) {
+            boolean res = false;
+            if (s.charAt(i) == '*') {
+                res |= dp[i + 1][open + 1];           // treat as '('
+                if (open > 0) res |= dp[i + 1][open - 1]; // treat as ')'
+                res |= dp[i + 1][open];                // treat as empty
+            } else {
+                if (s.charAt(i) == '(') {
+                    res |= dp[i + 1][open + 1];
+                } else if (open > 0) {
+                    res |= dp[i + 1][open - 1];
+                }
+            }
+            dp[i][open] = res;
+        }
+    }
+    return dp[0][0];
+}
+```
+
+---
+
+#### **Approach 6: Space-Optimized DP** ⚡
+
+**Time**: O(n²) | **Space**: O(n)
+
+```java
+public boolean checkValidString(String s) {
+    int n = s.length();
+    boolean[] dp = new boolean[n + 1];
+    dp[0] = true;
+
+    for (int i = n - 1; i >= 0; i--) {
+        boolean[] newDp = new boolean[n + 1];
+        for (int open = 0; open < n; open++) {
+            if (s.charAt(i) == '*') {
+                newDp[open] = dp[open + 1] ||
+                              (open > 0 && dp[open - 1]) ||
+                              dp[open];
+            } else if (s.charAt(i) == '(') {
+                newDp[open] = dp[open + 1];
+            } else if (open > 0) {
+                newDp[open] = dp[open - 1];
+            }
+        }
+        dp = newDp;
+    }
+    return dp[0];
+}
+```
+
+**Space Optimization Technique**: Rolling array - only keep current and previous row.
+
+---
+
+#### **Approach 7: Stack-Based (Two Stacks)** 📚
+
+**Time**: O(n) | **Space**: O(n)
+
+```java
+public boolean checkValidString(String s) {
+    Stack<Integer> leftStack = new Stack<>();  // indices of '('
+    Stack<Integer> starStack = new Stack<>();  // indices of '*'
+
+    // First pass: match ')' with '(' or '*'
+    for (int i = 0; i < s.length(); i++) {
+        char ch = s.charAt(i);
+        if (ch == '(') {
+            leftStack.push(i);
+        } else if (ch == '*') {
+            starStack.push(i);
+        } else { // ')'
+            if (!leftStack.isEmpty()) {
+                leftStack.pop();
+            } else if (!starStack.isEmpty()) {
+                starStack.pop();
+            } else {
+                return false; // unmatched ')'
+            }
+        }
+    }
+
+    // Second pass: match remaining '(' with '*'
+    while (!leftStack.isEmpty() && !starStack.isEmpty()) {
+        // '*' must come after '(' to be valid
+        if (leftStack.pop() > starStack.pop()) {
+            return false;
+        }
+    }
+
+    return leftStack.isEmpty();
+}
+```
+
+**Key Insight**: Store **indices** to ensure '*' comes after '(' when used as ')'.
+
+---
+
+#### **Pattern Comparison Summary**
+
+| Approach | Time | Space | Best For | Trade-offs |
+|----------|------|-------|----------|------------|
+| **Greedy (min/max)** | O(n) | O(1) | Production code | Hardest to understand initially |
+| **2D DP (pos × count)** | O(n²) | O(n²) | Learning state transitions | Space-heavy but intuitive |
+| **Interval DP** | O(n³) | O(n²) | Understanding range problems | Slowest but shows interval pattern |
+| **Top-Down DP** | O(n²) | O(n²) | Natural recursion thinkers | Stack overhead |
+| **Bottom-Up DP** | O(n²) | O(n²) | Avoiding recursion | Requires reverse thinking |
+| **Space-Optimized** | O(n²) | O(n) | Memory-constrained | More complex implementation |
+| **Stack-Based** | O(n) | O(n) | Index-tracking insight | Two-pass algorithm |
+
+#### **Key Takeaways** 💡
+
+1. **Greedy is optimal** for this problem - recognizing when greedy works is crucial
+2. **Wildcard handling**: Always consider all possibilities ('(', ')', empty)
+3. **Balance tracking**: Many paren problems reduce to tracking open count
+4. **Index matters**: When wildcards can be different things, position matters (stack approach)
+5. **Multiple paradigms**: Same problem solvable with interval DP, state DP, greedy, and stacks
+
+#### **Related Problems**
+- LC 20 (Valid Parentheses) - simpler version without '*'
+- LC 32 (Longest Valid Parentheses) - find longest valid substring
+- LC 301 (Remove Invalid Parentheses) - remove minimum to make valid
+- LC 921 (Minimum Add to Make Parentheses Valid) - min additions needed
+
+**Reference**: `leetcode_java/src/main/java/LeetCodeJava/String/ValidParenthesisString.java`
+
+---
+
 ### **State Compression Patterns**
 
 **When to Use Bitmask DP**:
