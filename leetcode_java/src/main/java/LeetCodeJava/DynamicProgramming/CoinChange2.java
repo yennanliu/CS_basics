@@ -52,6 +52,33 @@ import java.util.Arrays;
  */
 public class CoinChange2 {
 
+    /**  NOTE !!!
+     *
+     *  1) in Coin change (LC 322),
+     *  we do below looping:
+     *
+     *    ```
+     *     for (int i = 0; i < size; i++) {
+     *             // ...
+     *             for (int coin : coins) {
+     *                 // ...
+     *     }
+     *   ```
+     *
+     *
+     *  2) while in this LC (Coin change 2 (LC 518),
+     *     we do below:
+     *
+     *    ````
+     *    for(int c: coins){
+     *        // ...
+     *          for(int i = 1; i < amount + 1; i++){
+     *           // ....
+     *           }
+     *        }
+     *   ```
+     *
+     */
     // V0
     // IDEA: BOTTOM UP DP (fixed by gemini)
     public int change(int amount, int[] coins) {
@@ -242,7 +269,7 @@ public class CoinChange2 {
         return dp[amount];
     }
 
-    
+
 
     // V0-0-2
     // IDEA: DP (gpt)
