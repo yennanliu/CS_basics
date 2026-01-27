@@ -173,9 +173,7 @@ public class ValidParenthesisString {
        *        unmatched open parentheses '('.`
        *
        *   - i → how many characters you’ve consumed (prefix s[0..i-1])
-       *
        *   - j → how many '(' are currently open and not yet closed
-       *
        *   - value → whether that state is reachable
        *
        *
@@ -206,6 +204,17 @@ public class ValidParenthesisString {
               /** case 2) ')' */
               else if (c == ')') {
                   if (j < n)
+                      /**
+                       *
+                       *  - ')' closes one '('
+                       *
+                       *  - To end with j opens now, we must have had j + 1 before
+                       *
+                       *
+                       *  - j < n avoids out-of-bounds
+                       *
+                       * - This enforces: you can’t close if nothing is open
+                       */
                       //dp[i][j] |= dp[i - 1][j + 1];
                       dp[i][j] = dp[i - 1][j + 1] || dp[i][j];
               }
