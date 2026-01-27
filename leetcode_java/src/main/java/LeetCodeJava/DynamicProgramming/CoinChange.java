@@ -41,6 +41,34 @@ import java.util.*;
 
 public class CoinChange {
 
+    /**  NOTE !!!
+     *
+     *  1) in Coin change (LC 322),
+     *  we do below looping:
+     *
+     *    ```
+     *     for (int i = 0; i < size; i++) {
+     *             // ...
+     *             for (int coin : coins) {
+     *                 // ...
+     *     }
+     *   ```
+     *
+     *
+     *  2) while in this LC (Coin change 2 (LC 518),
+     *     we do below:
+     *
+     *    ````
+     *    for(int c: coins){
+     *        // ...
+     *          for(int i = 1; i < amount + 1; i++){
+     *           // ....
+     *           }
+     *        }
+     *   ```
+     *
+     */
+    
     // V0
     // IDEA : BFS (fixed by gemini)
     public int coinChange(int[] coins, int amount) {
