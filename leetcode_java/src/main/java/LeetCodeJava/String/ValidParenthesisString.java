@@ -334,19 +334,25 @@ public class ValidParenthesisString {
             for (int j = 0; j <= n; j++) {
                 if (c == '(') {
                     if (j > 0)
-                        dp[i][j] |= dp[i - 1][j - 1];
+                        // V1
+                        //dp[i][j] |= dp[i - 1][j - 1];
+                        dp[i][j] = dp[i - 1][j - 1] || dp[i][j];
                 } else if (c == ')') {
                     if (j < n)
-                        dp[i][j] |= dp[i - 1][j + 1];
+                        //dp[i][j] |= dp[i - 1][j + 1];
+                        dp[i][j] = dp[i - 1][j + 1] || dp[i][j];
                 } else { // '*'
                     // empty
-                    dp[i][j] |= dp[i - 1][j];
+                    //dp[i][j] |= dp[i - 1][j];
+                    dp[i][j] = dp[i - 1][j] || dp[i][j];
                     // '('
                     if (j > 0)
-                        dp[i][j] |= dp[i - 1][j - 1];
+                        //dp[i][j] |= dp[i - 1][j - 1];
+                        dp[i][j] = dp[i - 1][j - 1] || dp[i][j];
                     // ')'
                     if (j < n)
-                        dp[i][j] |= dp[i - 1][j + 1];
+                        //dp[i][j] |= dp[i - 1][j + 1];
+                        dp[i][j] = dp[i - 1][j + 1] ||  dp[i][j];
                 }
             }
         }
@@ -600,8 +606,6 @@ public class ValidParenthesisString {
 
         return true; // If we passed both passes, the string is valid
     }
-
-
 
 
 
