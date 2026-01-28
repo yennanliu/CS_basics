@@ -1086,7 +1086,10 @@ public class Workspace19 {
      *  IDEA 1) 2D DP
      *
      *   - DP def:
-*      dp[i][j]:       
+*          dp[i][j]:
+     *         if text1(0...i) is subsequence of
+     *         text2(0...j)
+     *
      *
      *   - DP eq:
      *
@@ -1094,10 +1097,29 @@ public class Workspace19 {
      *
      *
      */
+    /** NOTE !!!
+     *
+     *  DP def:
+     *
+     *  dp[i][j]:
+     *    - LCS of text1.substring(0, i)
+     *      and text2.substring(0, j)
+     *
+     */
     public int longestCommonSubsequence(String text1, String text2) {
+        // edge
+
+        int l1 = text1.length();
+        int l2 = text2.length();
+
+        int[][] dp = new int[l1][l2];
 
         return 0;
     }
+
+
+
+
 
     // IDEA 2) 2d DP
     public int longestCommonSubsequence_97(String text1, String text2) {
