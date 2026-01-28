@@ -1112,14 +1112,46 @@ public class Workspace19 {
         int l1 = text1.length();
         int l2 = text2.length();
 
-        int[][] dp = new int[l1][l2];
+        int[][] dp = new int[l1 + 1][l2 + 1];
+        Arrays.fill(dp, -1); // ????
 
         // init ???
         int maxLCS = 0;
-        
 
-        return maxLCS;
+//        // if text2 is null
+//        for(int i = 0; i < l1; i++){
+//            dp[i][0] = 0; // ???
+//        }
+//        // if text1 is null
+//        for(int i = 0; i < l2; i++){
+//            dp[0][i] = 0; // ???
+//        }
+
+        // ???
+//        for(int i = 1; i < l1; i++){
+//            for(int j = 1; j < l2; j++){
+//
+//            }
+        for(int i = 1; i < l1 + 1; i++){
+            for(int j = 1; j < l2 + 1; j++){
+                // if(text1.charAt(i) == text2.charAt(j)){
+                if(text1.charAt(i - 1) == text2.charAt(j - 1)){
+                    dp[i][j] = dp[i-1][j-1] + 1; //Math.max(dp[i-1][j], dp[i][j-1]) + 1; // ??? //dp[i-1][j-1] + 1;
+                    //maxLCS = Math.max(maxLCS, dp[i][j]);
+                }else{
+                    // ?????
+                    dp[i][j] = Math.max(dp[i-1][j], dp[i][j-1]) + 1; //Math.max(dp[i-1][j-1] + 1, dp[i][j]);
+                }
+                maxLCS = Math.max(maxLCS, dp[i][j]);
+            }
+        }
+
+        //return maxLCS;
+        return dp[l1][l2];
     }
+
+
+
 
 
 
