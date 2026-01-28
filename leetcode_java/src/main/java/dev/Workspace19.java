@@ -3163,6 +3163,12 @@ public class Workspace19 {
         Stack<int[]> st = new Stack<>();
         st.add(points[0]);
 
+        // NOTE !!!
+        // 1. SORT by the end coordinate.
+        // This is the greedy key: finish the earliest balloon first to leave room for others.
+        // Use Integer.compare to avoid overflow with negative numbers!
+        Arrays.sort(points, (a, b) -> Integer.compare(a[1], b[1]));
+
         /**  cases prev and cur interval NOT overlap
          *
          *    1.

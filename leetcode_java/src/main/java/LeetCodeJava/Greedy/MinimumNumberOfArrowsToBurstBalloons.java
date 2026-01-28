@@ -47,13 +47,105 @@ package LeetCodeJava.Greedy;
  */
 
 import java.util.Arrays;
+import java.util.Stack;
 
 public class MinimumNumberOfArrowsToBurstBalloons {
 
     // V0
+    public int findMinArrowShots(int[][] points) {
+        if (points == null || points.length == 0)
+            return 0;
+
+        // 1. MUST SORT: Sorting by the end point is the most efficient greedy strategy here.
+        Arrays.sort(points, (a, b) -> Integer.compare(a[1], b[1]));
+
+        Stack<int[]> st = new Stack<>();
+        st.push(points[0]);
+
+        for (int i = 1; i < points.length; i++) {
+            int[] prev = st.peek();
+            int[] cur = points[i];
+
+            // 2. CHECK OVERLAP:
+            // Since we sorted by end points, we only need to check if
+            // the current balloon starts before (or at) the previous balloon ends.
+            if (cur[0] <= prev[1]) {
+                // 3. INTERSECT (Merge):
+                // Pop the old range and push the intersection.
+                // The intersection end is the MINIMUM of the two ends.
+                // The intersection start is the MAXIMUM of the two starts.
+                st.pop();
+                int[] intersection = new int[] {
+                        Math.max(prev[0], cur[0]),
+                        Math.min(prev[1], cur[1])
+                };
+                st.push(intersection);
+            } else {
+                // No overlap, this balloon needs a new arrow.
+                st.push(cur);
+            }
+        }
+
+        return st.size();
+    }
+
+    // NOTE !!! below is WRONG
+    // this LC is `arrow burst ballon`,
+    // but NOT `interval merge` problem
+//    public int findMinArrowShots(int[][] points) {
+//        // edge
+//        if(points == null || points.length == 0){
+//            return 0;
+//        }
+//        if(points.length == 1){
+//            return 1;
+//        }
+//        //List<Integer[]> list = new ArrayList<>();
+//        Stack<int[]> st = new Stack<>();
+//        st.add(points[0]);
+//
+//        // NOTE !!!
+//        // 1. SORT by the end coordinate.
+//        // This is the greedy key: finish the earliest balloon first to leave room for others.
+//        // Use Integer.compare to avoid overflow with negative numbers!
+//        Arrays.sort(points, (a, b) -> Integer.compare(a[1], b[1]));
+//
+//        /**  cases prev and cur interval NOT overlap
+//         *
+//         *    1.
+//         *
+//         *      |---|               prev
+//         *             |----|       cur
+//         *
+//         *  2.
+//         *             |-----|      prev
+//         *      |--|                cur
+//         *
+//         */
+//        for(int i = 1; i < points.length; i++){
+//            int[] prev = st.peek(); // ??
+//            int[] cur = points[i];
+//
+//            // if `NOT` NOT overlap
+//            // -> prev and cur MUST overlap
+//            if( !(cur[0] > prev[1]) || !(cur[1] < prev[0]) ){
+//                prev = st.pop();
+//                st.add( new int[] { Math.min(prev[0], cur[0]), Math.max(prev[1], cur[1]) } );
+//            }else{
+//                st.add(cur);
+//            }
+//        }
+//
+//
+//        return st.size();
+//    }
+
+
+
+    // V0-0-1
     // IDEA : GREEDY
     // https://www.bilibili.com/video/BV1SA41167xe/?share_source=copy_web&vd_source=771d0eba9b524b4f63f92e37bde71301
-    public int findMinArrowShots(int[][] points) {
+    public int findMinArrowShots_0_0_1(int[][] points) {
 
         if (points.length == 0 || points.equals(null)){
             return 0;
