@@ -65,9 +65,39 @@ The repository extensively references:
 - Interview preparation materials (Blind 75, Grind 75, Grind 169)
 - System design fundamentals and case studies
 
+## Utility Scripts
+
+The `script/` directory contains utility scripts for managing and analyzing LeetCode practice data:
+
+### categorize_lc_by_type.py
+Categorizes LeetCode problems from `data/progress.md` by problem type (Array, DP, Graph, etc.) based on the directory structure in `leetcode_python/` and `leetcode_java/`.
+
+**Usage:**
+```bash
+# Default: 2025-2026
+python3 script/categorize_lc_by_type.py
+
+# Specify custom year range
+python3 script/categorize_lc_by_type.py 2024 2025
+```
+
+**Output:**
+- Generates `data/LC_Practice_{year_start}_{year_end}_By_Category.md`
+- Includes table of contents, problem counts per category, and summary statistics
+- Categorizes ~80%+ of problems based on existing codebase structure
+
+### Other Scripts
+- `get_again_problems.sh` - Extract problems to review again
+- `get_company_LC.sh` - Get company-specific LeetCode problems
+- `get_lc_per_rating.py` - Filter problems by difficulty rating
+- `get_must_problems.sh` - Extract must-do problems
+- `get_review_list.py` - Generate review lists
+- `list_leetcode_solutions_by_type.sh` - List solutions by type
+
 ## Development Notes
 
 - Code follows language-specific conventions
 - Problems often include multiple solution approaches
 - System design includes both theoretical concepts and practical implementations
 - Documentation emphasizes interview preparation and pattern recognition
+- Use `data/progress.md` to track daily practice progress with AI-suggested related problems

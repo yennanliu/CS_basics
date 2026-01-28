@@ -1114,7 +1114,11 @@ public class Workspace19 {
 
         int[][] dp = new int[l1][l2];
 
-        return 0;
+        // init ???
+        int maxLCS = 0;
+        
+
+        return maxLCS;
     }
 
 
