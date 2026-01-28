@@ -3133,12 +3133,64 @@ public class Workspace19 {
     // LC 452
     // 10.10 - 20 am
     /**
+     * -> Given the array points,
+     *   return the minimum number of arrows
+     *   that must be shot to burst all balloons.
      *
+     *
+     *  --------------
+     *
+     *   IDEA 1) GREEDY
+     *
+     *   IDEA 2) BRUTE FORCE
+     *
+     *   IDEA 3) INTERVAL
+     *     -> `merge` interval
+     *
+     *
+     *  --------------
      *
      */
     public int findMinArrowShots(int[][] points) {
+        // edge
+        if(points == null || points.length == 0){
+            return 0;
+        }
+        if(points.length == 1){
+            return 1;
+        }
+        //List<Integer[]> list = new ArrayList<>();
+        Stack<int[]> st = new Stack<>();
+        st.add(points[0]);
 
-        return 0;
+        /**  cases prev and cur interval NOT overlap
+         *
+         *    1.
+         *
+         *      |---|               prev
+         *             |----|       cur
+         *
+         *  2.
+         *             |-----|      prev
+         *      |--|                cur
+         *
+         */
+        for(int i = 1; i < points.length; i++){
+            int[] prev = st.peek(); // ??
+            int[] cur = points[i];
+
+            // if `NOT` NOT overlap
+            // -> prev and cur MUST overlap
+            if( !(cur[0] > prev[1]) || !(cur[1] < prev[0]) ){
+                prev = st.pop();
+                st.add( new int[] { Math.min(prev[0], cur[0]), Math.max(prev[1], cur[1]) } );
+            }else{
+                st.add(cur);
+            }
+        }
+
+
+        return st.size();
     }
 
 
