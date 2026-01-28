@@ -3280,6 +3280,72 @@ public class Workspace19 {
     }
 
 
+    // LC 986
+    // 7.05 - 15 am
+    /**
+     * -> Return the intersection
+     * of these two interval lists.
+     *
+     *
+     * -----------------
+     *
+     *  IDEA 1) INTERVAL OP
+     *
+     *
+     * -----------------
+     *
+     *
+     */
+    public int[][] intervalIntersection(int[][] firstList, int[][] secondList) {
+        // edge
+
+        int n = firstList.length;
+
+        // ??
+        Deque<int[]> deque = new ArrayDeque<>();
+
+        int[] prev = new int[]{1,1};
+
+        // idx = 0
+        int start = Math.max(firstList[0][0], secondList[0][0]);
+        int end = Math.min(firstList[0][1], secondList[0][1]);
+        deque.add(new int[]{start,end});
+
+        /** NOTE !!!
+         *
+         * Each list of intervals is
+         * pairwise `disjoint` and in sorted order
+         **/
+        for(int i = 1; i < n; i++){
+            int[] cur1 = firstList[i];
+            int[] cur2 = secondList[i];
+
+            start = Math.max(cur1[0], cur2[0]);
+            end = Math.min(cur1[1], cur2[1]);
+            deque.add(new int[]{start,end});
+
+            // check if boundary overlap
+            int[] prev1 = firstList[i-1];
+            int[] prev2 = secondList[i-1];
+            if(cur1[0] == prev2[1]){
+                deque.add(new int[]{cur1[0],cur1[0]});
+            }
+            if(cur2[1] == prev1[0]){
+                deque.add(new int[]{cur1[0],cur1[0]});
+            }
+        }
+
+        // ??
+        int[][] res = new int[deque.size()][2];
+        int i = 0;
+        while (!deque.isEmpty()){
+            res[i] = deque.pollFirst(); // ???
+        }
+
+        return res;
+    }
+
+
 
 
 }
