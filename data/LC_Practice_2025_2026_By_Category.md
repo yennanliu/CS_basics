@@ -230,7 +230,7 @@ Date: 2026-01-28
 
 **Count: 58**
 
-These problems were not found in the leetcode_python directory structure.
+These problems were not found in the leetcode_python or leetcode_java directory structure.
 
 44, 69, 132, 174, 188, 214, 301, 315, 352, 354
 431, 480, 568, 576, 583, 642, 668, 685, 691, 704
