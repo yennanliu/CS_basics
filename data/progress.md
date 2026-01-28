@@ -274,7 +274,6 @@
 			- 44
 	- LC 57 Insert Interval
 		- gpt
-			- 986
 			- 1288
 			- 163
 			- 1094
