@@ -108,6 +108,62 @@ public class MinimumNumberOfArrowsToBurstBalloons {
         }
     }
 
+
+    // V0-1
+    // IDEA: INTERVAL (gemini)
+    public int findMinArrowShots_0_1(int[][] points) {
+        if (points == null || points.length == 0)
+            return 0;
+
+        // 1. SORT by the end coordinate.
+        // This is the greedy key: finish the earliest balloon first to leave room for others.
+        // Use Integer.compare to avoid overflow with negative numbers!
+        Arrays.sort(points, (a, b) -> Integer.compare(a[1], b[1]));
+
+        // 2. We always need at least one arrow for the first balloon
+        int arrows = 1;
+        int currentEnd = points[0][1];
+
+        for (int i = 1; i < points.length; i++) {
+            // 3. If the next balloon's start is GREATER than our current arrow's position
+            if (points[i][0] > currentEnd) {
+                // We need a new arrow
+                arrows++;
+                // Move the arrow to the end of the current balloon
+                currentEnd = points[i][1];
+            }
+            // Else: The balloon overlaps with the current arrow range, so it's popped!
+        }
+
+        return arrows;
+    }
+
+
+    // V0-2
+    // IDEA: INTERVAL (gpt)
+    public int findMinArrowShots_0_2(int[][] points) {
+
+        if (points == null || points.length == 0)
+            return 0;
+
+        // sort by end
+        Arrays.sort(points, (a, b) -> a[1] == b[1] ? Integer.compare(a[0], b[0]) : Integer.compare(a[1], b[1]));
+
+        int arrows = 1;
+        int arrowPos = points[0][1];
+
+        for (int i = 1; i < points.length; i++) {
+            if (points[i][0] > arrowPos) {
+                arrows++;
+                arrowPos = points[i][1];
+            }
+        }
+
+        return arrows;
+    }
+
+
+
     // V1
     // IDEA : GREEDY
     // https://leetcode.com/problems/minimum-number-of-arrows-to-burst-balloons/editorial/
