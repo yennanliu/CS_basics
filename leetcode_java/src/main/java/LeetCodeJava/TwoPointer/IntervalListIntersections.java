@@ -139,6 +139,39 @@ public class IntervalListIntersections {
 
     }
 
+    // V0-0-1
+    // IDEA: INTERVAL (gemini)
+    public int[][] intervalIntersection_0_0_1(int[][] firstList, int[][] secondList) {
+        List<int[]> res = new ArrayList<>();
+        int i = 0; // Pointer for firstList
+        int j = 0; // Pointer for secondList
+
+        while (i < firstList.length && j < secondList.length) {
+            // 1. Find the potential intersection range
+            // The intersection START is the MAX of both starts
+            // The intersection END is the MIN of both ends
+            int start = Math.max(firstList[i][0], secondList[j][0]);
+            int end = Math.min(firstList[i][1], secondList[j][1]);
+
+            // 2. If start <= end, they actually overlap
+            if (start <= end) {
+                res.add(new int[] { start, end });
+            }
+
+            // 3. Move the pointer of the interval that ends first
+            // This is the "greedy" part: the one that ends earlier
+            // cannot possibly intersect with anything else later.
+            if (firstList[i][1] < secondList[j][1]) {
+                i++;
+            } else {
+                j++;
+            }
+        }
+
+        return res.toArray(new int[res.size()][]);
+    }
+
+
     // V0-1
     // IDEA: SCANNING LINE (fixed by gpt)
     /**
@@ -358,7 +391,7 @@ public class IntervalListIntersections {
 
         return intersections.toArray(new int[0][]);
     }
-    
+
 
 
 }
