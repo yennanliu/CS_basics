@@ -3057,6 +3057,78 @@ public class Workspace19 {
         return dp[amount];
     }
 
+    // LC 228
+    // 9.38 - 48 am
+    /**
+     *  -> Return the smallest sorted
+     *    list of ranges that cover all the
+     *    numbers in the array exactly.
+     *
+     *
+     *    nums: sorted unique int array
+     *    [a,b]: set of all int from a to b (inclusive)
+     *
+     *
+     *    Each range [a,b] in the list should be output as:
+     *
+     *    "a->b" if a != b
+     *    "a" if a == b
+     *
+     *
+     *  --------------
+     *
+     *   IDEA 1) INTERVAL OP
+     *
+     *
+     *  --------------
+     *
+     */
+    public List<String> summaryRanges(int[] nums) {
+        // edge
+        List<String> res = new ArrayList<>();
+        if(nums == null || nums.length == 0){
+            return res;
+        }
+        if(nums.length == 1){
+            res.add(String.valueOf(nums[0]));
+            return res;
+        }
+//        if(nums.length == 2){
+//            res.add(String.valueOf(nums[0]));
+//            return res;
+//        }
+
+        int l = 0; // left pointer
+        int rBackup = 0;
+
+        for(int r = 1; r < nums.length; r++){
+            //int cur = nums[r];
+            if(nums[r] - nums[r-1] > 1){
+                if((r-1) - l + 1 == 1){
+                    res.add(String.valueOf(nums[l]));
+                }else{
+                    String leftVal = String.valueOf(nums[l]);
+                    String rightVal = String.valueOf(nums[r-1]);
+                    res.add(leftVal + "->" + rightVal);
+                }
+                l = r;
+            }
+            // ???
+            rBackup = r;
+        }
+
+        // handle final idx
+        if(rBackup == l){
+            res.add(String.valueOf(nums[rBackup]));
+        }else{
+            String leftVal = String.valueOf(nums[l]);
+            String rightVal = String.valueOf(nums[rBackup]);
+            res.add(leftVal + "->" + rightVal);
+        }
+
+        return res;
+    }
+
 
 
 

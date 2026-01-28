@@ -1,7 +1,6 @@
 # Progress
 
-
-# 2026-01-27
+# 2026-01-28
 
 - weekly video
 - to review
