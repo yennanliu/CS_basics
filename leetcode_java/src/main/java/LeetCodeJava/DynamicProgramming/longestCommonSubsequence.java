@@ -47,12 +47,26 @@ public class longestCommonSubsequence {
 
     // NOTE !!!
     // the `2 POINTERS (SLIDE WINDOW)` is WRONG
-    // -> we have no way to know
-    // whether `skip or take cur sub str` is a better or worse idea
-    // in terms to get a global LCS (longest common subsequence)
+    // -> we have NO way to know
+    //    whether `skip or take cur sub str` is a better or worse idea
+    //    in terms to get a global LCS (longest common subsequence)
+    //
+    //
+    // -> so, CAN'T use `2 POINTERS (SLIDE WINDOW)` for this LC problem
 
     // V0
     // IDEA: BOTTOM UP 2D DP (GEMINI)
+    /**  CORE IDEA:
+     *
+     *  - if two characters match,
+     *     -> they extend the `best result` found
+     *        `before` those characters.
+     *
+     *  - If they DO NOT match,
+     *    - you take the best result possible by `ignoring`
+     *     `either` one character from `text1 or one from text2.`
+     *
+     */
     public int longestCommonSubsequence(String text1, String text2) {
         int m = text1.length();
         int n = text2.length();
@@ -62,6 +76,14 @@ public class longestCommonSubsequence {
 
         for (int i = 1; i <= m; i++) {
             for (int j = 1; j <= n; j++) {
+                /** NOTE !!!
+                 *
+                 *  we check if `PREV character` (i,j) are equal (within text1, text2)
+                 *  when at idx=i, inx=j
+                 *
+                 *  e.g. check `text1.charAt(i - 1) == text2.charAt(j - 1))`
+                 *  
+                 */
                 // Case 1: Characters match
                 if (text1.charAt(i - 1) == text2.charAt(j - 1)) {
                     // Diagonal move: 1 + result from both strings being 1 char shorter
@@ -98,10 +120,12 @@ public class longestCommonSubsequence {
          *
          *   define dp as `new int[l1 + 1][l2 + 1];`
          *
-         *  Array Sizing: You should use new int[l1 + 1][l2 + 1].
-         *  This allows you to handle the "empty string" case at
-         *  index 0 easily,
-         *  preventing IndexOutOfBounds errors when looking at i-1.
+         *  Array Sizing:
+         *     You should use new int[l1 + 1][l2 + 1].
+         *     This allows you to handle the
+         *     "empty string" case at index 0 easily,
+         *
+         *   -> preventing IndexOutOfBounds errors when looking at i-1.
          *
          */
         // 1. Size the DP table to length + 1
