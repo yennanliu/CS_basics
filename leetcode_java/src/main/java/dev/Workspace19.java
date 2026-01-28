@@ -1077,8 +1077,30 @@ public class Workspace19 {
      *
      *
      */
-    // IDEA 2) 2d DP
+    // LC 1143
+    // 10.46 - 56 AM
+    /**
+     *  -----------
+     *
+     *
+     *  IDEA 1) 2D DP
+     *
+     *   - DP def:
+*      dp[i][j]:       
+     *
+     *   - DP eq:
+     *
+     *  -----------
+     *
+     *
+     */
     public int longestCommonSubsequence(String text1, String text2) {
+
+        return 0;
+    }
+
+    // IDEA 2) 2d DP
+    public int longestCommonSubsequence_97(String text1, String text2) {
         // edge
         if(text1.equals(text2)){
             return text1.length();
