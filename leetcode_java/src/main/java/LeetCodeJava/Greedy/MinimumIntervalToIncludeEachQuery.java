@@ -56,32 +56,64 @@ public class MinimumIntervalToIncludeEachQuery {
         int n = intervals.length;
         int m = queries.length;
 
+        /** NOTE !!!
+         *
+         *  we need to sort BOTH `intervals` and `queries`
+         *  -> so we can do `one pass` via PQ below
+         */
         // 1. Sort intervals by start time
         Arrays.sort(intervals, (a, b) -> Integer.compare(a[0], b[0]));
 
+        /** NOTE !!!
+         *
+         *  we create a new `queries`, save both query val and idx
+         */
         // 2. Store queries with their original indices so we can fill the result array correctly
         int[][] sortedQueries = new int[m][2];
         for (int i = 0; i < m; i++) {
             sortedQueries[i][0] = queries[i];
             sortedQueries[i][1] = i;
         }
+        /** NOTE !!!
+         *
+         *  we sort queries based on their value
+         */
         // Sort queries by their value
         Arrays.sort(sortedQueries, (a, b) -> Integer.compare(a[0], b[0]));
 
+
+        /** NOTE !!!
+         *
+         *  small PQ, sort on `size` (so, small size first, then bigger size ...)
+         *
+         *  PQ : { size, end_time }
+         */
         // 3. Priority Queue: stores {size, end_time}, sorted by smallest size
         PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> Integer.compare(a[0], b[0]));
 
         int[] res = new int[m];
+        /** NOTE !!!
+         *
+         *  we define `Pointer for intervals` as well,
+         *  for tracking if we're `still in boundary`
+         */
         int i = 0; // Pointer for intervals
 
         for (int[] query : sortedQueries) {
             int qVal = query[0];
             int qIdx = query[1];
 
+            /** NOTE !!!
+             *
+             *  we add ALL intervals to PQ
+             *  that have `start time <= query val`
+             */
             // 4. Add all intervals that START before or at the current query value
+            // NOTE !!!  `i < n` (when still in boundary)
             while (i < n && intervals[i][0] <= qVal) {
                 int size = intervals[i][1] - intervals[i][0] + 1;
                 pq.add(new int[] { size, intervals[i][1] });
+                // NOTE !!! we update idx
                 i++;
             }
 
@@ -97,6 +129,7 @@ public class MinimumIntervalToIncludeEachQuery {
 
         return res;
     }
+
 
     // V0-0-1
     // IDEA: PQ + SORT (gpt)
@@ -151,7 +184,7 @@ public class MinimumIntervalToIncludeEachQuery {
 
     // V0-0-2
     // https://www.youtube.com/watch?v=5hQ5WWW5awQ
-    
+
 
     // V1-1
     // https://neetcode.io/problems/minimum-interval-including-query
