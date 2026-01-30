@@ -1014,8 +1014,71 @@ public class Workspace19 {
      *
      *
      */
+
     // IDEA 1) 2 POINTERS
+    // 11.09 - 19 am
     public boolean isSubsequence(String s, String t) {
+        // edge
+        if(s.isEmpty()){
+            return true;
+        }
+        if(t.isEmpty()){
+            return false;
+        }
+        // ???
+        if(s.equals(t)){
+            return true;
+        }
+
+        int s_idx = 0;
+        int t_idx = 0;
+
+        while (s_idx < s.length() && t_idx < t.length()){
+            // if reach the `last idx` in s
+//            if(s_idx == s.length() - 1){
+//                while (t_idx < t.length()){
+//                    if(s.charAt(s_idx) == t.charAt(t_idx)){
+//                        return true;
+//                    }
+//                    t_idx += 1;
+//                }
+//                return false;
+//            }
+
+            System.out.println(">>> s.charAt(s_idx) = " + s.charAt(s_idx) +
+                   ", t.charAt(t_idx) = " + t.charAt(t_idx) );
+
+
+            if(s.charAt(s_idx) == t.charAt(t_idx)){
+                // ??? early quit
+                if(s_idx == s.length() - 1){
+                    return true;
+                }
+                s_idx += 1;
+            }
+
+            t_idx += 1;
+        }
+
+
+//        while (t_idx < t.length()){
+//            if(s.charAt(s_idx) == t.charAt(t_idx)){
+//                return true;
+//            }
+//            t_idx += 1;
+//        }
+
+        return false;
+    }
+
+
+
+
+
+
+
+    // IDEA 1) 2 POINTERS
+    public boolean isSubsequence_99(String s, String t) {
         // edge
         if(s.isEmpty()){
             return true;
