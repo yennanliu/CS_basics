@@ -3346,6 +3346,87 @@ public class Workspace19 {
     }
 
 
+    // LC 435
+    // 9.21 - 45 am
+    /**
+     * ->  return the minimum number of intervals you
+     *     need to remove to make the rest
+     *     of the intervals non-overlapping.
+     *
+     *  ---------------
+     *
+     *   IDEA 1) SORT + INTETVAL OP
+     *
+     *
+     *   ---------------
+     *
+     *   ex 1)
+     *
+     *   Input: intervals = [[1,2],[2,3],[3,4],[1,3]]
+     *  Output: 1
+     *   Explanation: [1,3] can be removed and the
+     *   rest of the intervals are non-overlapping.
+     *
+     *
+     *  -> intervals = [[1,2],[2,3],[3,4],[1,3]]
+     *
+     *  sort
+     *
+     *  intervals = [ [1,2],[1,3],[2,3],[3,4] ]
+     *                 x     x     x      x
+     *
+     *   cache = [ [1,2], [2,3], [3,4] ]
+     *
+     *
+     */
+    public int eraseOverlapIntervals(int[][] intervals) {
+        // edge
+        if(intervals == null || intervals.length == 0){
+            return 0;
+        }
+        if(intervals.length == 1){
+            return 1;
+        }
+
+        // sort ??
+        // sort on 1st element (small -> big)
+        Arrays.sort(intervals, new Comparator<int[]>() {
+            @Override
+            public int compare(int[] o1, int[] o2) {
+//                int diff = o1[0] - o2[0];
+//                if(diff != 0){
+//                    return diff;
+//                }
+//                return o1[1] - o2[2]; // ???
+                return o1[0] - o2[0] != 0 ? o1[0] - o2[0] : o1[1] - o2[1];
+            }
+        });
+
+        //int res = 0;
+        Deque<int[]> deque = new LinkedList<>();
+        for(int[] x: intervals){
+            if(deque.isEmpty()){
+                deque.add(x);
+            }else{
+                int[] prev = deque.getLast(); // ???
+                // if NOT overlap: add to dequeue
+                if(x[0] >= prev[1]){
+                    deque.addLast(x); // ???
+                }
+
+            }
+        }
+
+        System.out.println("deque = " );
+        for(int[] x: deque){
+            System.out.println(Arrays.toString(x));
+        }
+
+        return intervals.length - deque.size();
+    }
+
+
+
 
 
 }

@@ -37,13 +37,48 @@ package LeetCodeJava.Greedy;
  * -5 * 104 <= starti < endi <= 5 * 104
  *
  */
-import java.util.Arrays;
-import java.util.Stack;
-import java.util.Comparator;
+import java.util.*;
 
 public class NonOverlappingIntervals {
 
     // V0
+    // IDEA: SORT + INTETVAL (fixed by gemini)
+    public int eraseOverlapIntervals(int[][] intervals) {
+        if (intervals == null || intervals.length <= 1)
+            return 0;
+
+        // 1. Sort by Start Time (using Integer.compare to prevent overflow)
+        Arrays.sort(intervals, (a, b) -> Integer.compare(a[0], b[0]));
+
+        Deque<int[]> deque = new LinkedList<>();
+
+        for (int[] x : intervals) {
+            if (deque.isEmpty()) {
+                deque.add(x);
+            } else {
+                int[] prev = deque.getLast();
+
+                // Case A: NO overlap (New starts after/at prev ends)
+                if (x[0] >= prev[1]) {
+                    deque.addLast(x);
+                }
+                // Case B: OVERLAP detected
+                else {
+                    // Keep the one that ends EARLIER
+                    if (x[1] < prev[1]) {
+                        deque.removeLast();
+                        deque.addLast(x);
+                    }
+                    // If x[1] >= prev[1], we just ignore x (effectively removing it)
+                }
+            }
+        }
+
+        return intervals.length - deque.size();
+    }
+
+
+    // V0-0-1
     // IDEA : sorting + intervals (modified by GPT)
     // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Greedy/non-overlapping-intervals.py
     /**
@@ -153,7 +188,7 @@ public class NonOverlappingIntervals {
      * | End Time (ASC) ✅ | Prioritizes short, early-ending intervals | ✅ Optimal — maximizes future options |
      *
      */
-    public int eraseOverlapIntervals(int[][] intervals) {
+    public int eraseOverlapIntervals_0_0_1(int[][] intervals) {
 
         /** NOTE !!!
          *
@@ -365,5 +400,8 @@ public class NonOverlappingIntervals {
             else p=i;
         return res;
     }
+
+
+
 
 }
