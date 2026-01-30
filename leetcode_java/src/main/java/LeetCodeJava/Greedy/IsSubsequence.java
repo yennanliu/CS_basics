@@ -70,6 +70,42 @@ public class IsSubsequence {
         return i == s.length();
     }
 
+    // V0-0-1
+    // IDEA: 2 POINTERS
+    public boolean isSubsequence_0_0_1(String s, String t) {
+        // edge
+        if (s.isEmpty()) {
+            return true;
+        }
+        if (t.isEmpty()) {
+            return false;
+        }
+        if (s.equals(t)) {
+            return true;
+        }
+
+        int s_idx = 0;
+        int t_idx = 0;
+
+        while (s_idx < s.length() && t_idx < t.length()) {
+//            System.out.println(">>> s.charAt(s_idx) = " + s.charAt(s_idx) +
+//                    ", t.charAt(t_idx) = " + t.charAt(t_idx));
+
+            if (s.charAt(s_idx) == t.charAt(t_idx)) {
+                // NOTE !!! early quit
+                if (s_idx == s.length() - 1) {
+                    return true;
+                }
+                s_idx += 1;
+            }
+
+            t_idx += 1;
+        }
+
+        return false;
+    }
+
+
     // V0-1
     // IDEA: 2 POINTERS (gpt)
     public boolean isSubsequence_0_1(String s, String t) {
@@ -277,6 +313,7 @@ public class IsSubsequence {
 //            return -1;
 //        }
 //    }
+
 
 
 
