@@ -3398,7 +3398,8 @@ public class Workspace19 {
 //                    return diff;
 //                }
 //                return o1[1] - o2[2]; // ???
-                return o1[0] - o2[0] != 0 ? o1[0] - o2[0] : o1[1] - o2[1];
+                //return o1[0] - o2[0] != 0 ? o1[0] - o2[0] : o1[1] - o2[1];
+                return o1[0] - o2[0];
             }
         });
 
@@ -3409,11 +3410,21 @@ public class Workspace19 {
                 deque.add(x);
             }else{
                 int[] prev = deque.getLast(); // ???
+                // // Case A: NO overlap (New starts after/at prev ends)
                 // if NOT overlap: add to dequeue
                 if(x[0] >= prev[1]){
                     deque.addLast(x); // ???
                 }
-
+                // Case B: OVERLAP detected
+                //         -> Keep the one that ends EARLIER
+                else{
+                    if(x[1] < prev[1]){
+                        // pop last oen first
+                        deque.pollLast();
+                        // add the cur one
+                        deque.add(x);
+                    }
+                }
             }
         }
 

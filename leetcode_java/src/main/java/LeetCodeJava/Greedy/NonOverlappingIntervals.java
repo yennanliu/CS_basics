@@ -47,28 +47,56 @@ public class NonOverlappingIntervals {
         if (intervals == null || intervals.length <= 1)
             return 0;
 
+
+        /** NOTE !!!
+         *
+         *  sort on `start time` ONLY (1st idx) (small -> big)
+         */
         // 1. Sort by Start Time (using Integer.compare to prevent overflow)
         Arrays.sort(intervals, (a, b) -> Integer.compare(a[0], b[0]));
 
         Deque<int[]> deque = new LinkedList<>();
 
         for (int[] x : intervals) {
+            // if dequeue is empty
             if (deque.isEmpty()) {
                 deque.add(x);
-            } else {
+            }
+            // if dequeue is NOT empty
+            else {
                 int[] prev = deque.getLast();
 
+                /** NOTE !!!
+                 *
+                 *  we need to handle 2 cases
+                 *
+                 *   1. NO overlap
+                 *   2. overlap
+                 */
                 // Case A: NO overlap (New starts after/at prev ends)
                 if (x[0] >= prev[1]) {
                     deque.addLast(x);
                 }
                 // Case B: OVERLAP detected
                 else {
+                    /** NOTE !!!
+                     *
+                     *  if overlapped,
+                     *  we need to keep the `the one that ends EARLIER` one,
+                     *  so it ensures that we can have
+                     *  `least` remove op in the future
+                     *  (greedy idea)
+                     *
+                     *   -> `x[1] < prev[1]`
+                     */
                     // Keep the one that ends EARLIER
                     if (x[1] < prev[1]) {
+                        // NOTE !!! pop last one
                         deque.removeLast();
+                        // NOTE !!! add cur one
                         deque.addLast(x);
                     }
+                    /** NOTE !!! */
                     // If x[1] >= prev[1], we just ignore x (effectively removing it)
                 }
             }
@@ -400,7 +428,6 @@ public class NonOverlappingIntervals {
             else p=i;
         return res;
     }
-
 
 
 
