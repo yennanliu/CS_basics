@@ -51,12 +51,107 @@ import java.util.*;
 public class MinimumIntervalToIncludeEachQuery {
 
     // V0
-//    public int[] minInterval(int[][] intervals, int[] queries) {
-//
-//    }
+    // IDEA: PQ + SORT (fixed by gemini)
+    public int[] minInterval(int[][] intervals, int[] queries) {
+        int n = intervals.length;
+        int m = queries.length;
+
+        // 1. Sort intervals by start time
+        Arrays.sort(intervals, (a, b) -> Integer.compare(a[0], b[0]));
+
+        // 2. Store queries with their original indices so we can fill the result array correctly
+        int[][] sortedQueries = new int[m][2];
+        for (int i = 0; i < m; i++) {
+            sortedQueries[i][0] = queries[i];
+            sortedQueries[i][1] = i;
+        }
+        // Sort queries by their value
+        Arrays.sort(sortedQueries, (a, b) -> Integer.compare(a[0], b[0]));
+
+        // 3. Priority Queue: stores {size, end_time}, sorted by smallest size
+        PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> Integer.compare(a[0], b[0]));
+
+        int[] res = new int[m];
+        int i = 0; // Pointer for intervals
+
+        for (int[] query : sortedQueries) {
+            int qVal = query[0];
+            int qIdx = query[1];
+
+            // 4. Add all intervals that START before or at the current query value
+            while (i < n && intervals[i][0] <= qVal) {
+                int size = intervals[i][1] - intervals[i][0] + 1;
+                pq.add(new int[] { size, intervals[i][1] });
+                i++;
+            }
+
+            // 5. Remove intervals from the top that END before the current query value
+            // These are "expired" and can never satisfy this or future sorted queries
+            while (!pq.isEmpty() && pq.peek()[1] < qVal) {
+                pq.poll();
+            }
+
+            // 6. The smallest valid interval is at the top of the PQ
+            res[qIdx] = pq.isEmpty() ? -1 : pq.peek()[0];
+        }
+
+        return res;
+    }
 
     // V0-0-1
+    // IDEA: PQ + SORT (gpt)
+    public int[] minInterval_0_0_1(int[][] intervals, int[] queries) {
+
+        // sort intervals by start
+        Arrays.sort(intervals, (a, b) -> a[0] - b[0]);
+
+        // queries with original indices
+        int[][] qs = new int[queries.length][2];
+        for (int i = 0; i < queries.length; i++) {
+            qs[i][0] = queries[i];
+            qs[i][1] = i;
+        }
+
+        Arrays.sort(qs, (a, b) -> a[0] - b[0]);
+
+        // min heap: [interval size, interval end]
+        PriorityQueue<int[]> pq = new PriorityQueue<>(
+                (a, b) -> a[0] - b[0]);
+
+        int[] res = new int[queries.length];
+        Arrays.fill(res, -1);
+
+        int i = 0;
+
+        for (int[] q : qs) {
+            int query = q[0];
+            int idx = q[1];
+
+            // add intervals whose start <= query
+            while (i < intervals.length && intervals[i][0] <= query) {
+                int start = intervals[i][0];
+                int end = intervals[i][1];
+                pq.offer(new int[] { end - start + 1, end });
+                i++;
+            }
+
+            // remove intervals that no longer cover query
+            while (!pq.isEmpty() && pq.peek()[1] < query) {
+                pq.poll();
+            }
+
+            if (!pq.isEmpty()) {
+                res[idx] = pq.peek()[0];
+            }
+        }
+
+        return res;
+    }
+
+
+    // V0-0-2
     // https://www.youtube.com/watch?v=5hQ5WWW5awQ
+    
 
     // V1-1
     // https://neetcode.io/problems/minimum-interval-including-query
@@ -254,5 +349,8 @@ public class MinimumIntervalToIncludeEachQuery {
 
 
     // V2
+
+
+
 
 }

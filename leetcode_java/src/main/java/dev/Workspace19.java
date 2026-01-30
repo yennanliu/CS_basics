@@ -3437,6 +3437,80 @@ public class Workspace19 {
     }
 
 
+    // LC 1851
+    // 10.01 - 10.11 am
+    /**
+     *  -> Return an array containing the answers to the queries.
+     *
+     *  - queries
+     *     - The answer of `jth query`
+     *        -  the size of the `smallest` interval i
+     *            - that lefti <= queries[j] <= righti.
+     *        - If NO such interval exists,
+     *           - return -1.
+     *
+     *
+     *  ------------
+     *
+     *   IDEA 1) INTERVAL + HASHMAP ??
+     *
+     *     { idx: size }
+     *
+     *     interval: sort on start time ?? (1st idx)
+     *
+     *
+     *  ------------
+     *
+     *
+     */
+    public int[] minInterval(int[][] intervals, int[] queries) {
+        // edge
+
+        // { idx : size }
+        Map<Integer, Integer> map = new HashMap<>();
+        for(int i = 0; i < intervals.length; i++){
+            map.put(i, intervals[i][1] - intervals[i][0] + 1);
+        }
+
+        // sort intervals ??
+        // sort on 1st idx (small -> big)
+        Arrays.sort(intervals, new Comparator<int[]>() {
+            @Override
+            public int compare(int[] o1, int[] o2) {
+                return o1[0] - o2[0];
+            }
+        });
+
+        int[] res = new int[queries.length];
+
+        for(int i = 0; i < queries.length; i++){
+            int q = queries[i];
+            // find the interval
+            // 1) include q
+            // 2) has shortest interval
+            res[i] = getInterval(q, intervals, map);
+        }
+
+        return res;
+    }
+
+    // ????
+    private int getInterval(int q, int[][] intervals, Map<Integer, Integer> map){
+        //List<Integer> indexList = new ArrayList<>();
+        int smallestSize = 100000001; // ???
+        for(int i = 0; i < intervals.length; i++){
+            int[] x = intervals[i];
+            if(x[0] <= q && q <= x[1]){
+                //indexList.add(i);
+                smallestSize = Math.min(smallestSize, map.get(i));
+            }
+        }
+
+        // get the one has shortest interval
+        return smallestSize != 100000001 ? smallestSize : -1;
+    }
+
+
 
 
 
