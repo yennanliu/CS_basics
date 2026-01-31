@@ -34,6 +34,79 @@ import java.util.*;
 public class LongestConsecutiveSequence {
 
     // V0
+    // IDEA: SET + SORT + 2 POINTERS
+    // NOTE !! NO need `slide window` for this LC
+    /**  DEMO
+     *
+     *      *   ex 1)
+     *      *
+     *      *   nums = [100,4,200,1,3,2]
+     *      *
+     *      *   -> set, sort
+     *      *   -> nums = [1,2,3,4,100,200]
+     *      *
+     *      *   [1,2,3,4,100,200]
+     *      *    l r                 len = 2
+     *      *
+     *      *   [1,2,3,4,100,200]
+     *      *    l   r               len = 3
+     *      *
+     *      *   [1,2,3,4,100,200]
+     *      *    l     r             len =4
+     *      *
+     *      *   [1,2,3,4,100,200]
+     *      *    l       r            len =4
+     *      *            l
+     *      *
+     *      *   [1,2,3,4,100,200]    len = 4
+     *      *             l   r
+     *      *
+     */
+    public int longestConsecutive(int[] nums) {
+        // edge
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
+        if (nums.length == 1) {
+            return 1;
+        }
+
+        Set<Integer> set = new HashSet<>();
+        for (int x : nums) {
+            set.add(x);
+        }
+        List<Integer> list = new ArrayList<>();
+        for (int x : set) {
+            list.add(x);
+        }
+        // sort (small -> big)
+        Collections.sort(list, new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                int diff = o1 - o2;
+                return diff;
+            }
+        });
+
+        // 2 pointers
+        int maxConSeLen = 1;
+        int l = 0;
+        // ????
+        for (int r = 1; r < list.size(); r++) {
+//            System.out.println(">>> l = " + l +
+//                    ", r = " + r);
+
+            if (list.get(r) - list.get(r - 1) != 1) {
+                l = r;
+            }
+            maxConSeLen = Math.max(maxConSeLen, r - l + 1);
+        }
+
+        return maxConSeLen;
+    }
+
+
+    // V0-0-1
     // IDEA: SET + LIST SORT + 2 POINTERS
     /**
      *  DEMO
@@ -76,7 +149,7 @@ public class LongestConsecutiveSequence {
      *      i              j  len=9
      *
      */
-    public int longestConsecutive(int[] nums) {
+    public int longestConsecutive_0_0_1(int[] nums) {
 
         // edge
         if (nums == null || nums.length == 0) {
@@ -481,5 +554,8 @@ public class LongestConsecutiveSequence {
 
         return Math.max(longestStreak, currentStreak);
     }
+
+
+
 
 }

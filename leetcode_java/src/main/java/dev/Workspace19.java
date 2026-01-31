@@ -3620,5 +3620,133 @@ public class Workspace19 {
 
 
 
+    // LC 128
+    // 16.18 - 33 am
+    /**
+     *  -> Given an `unsorted` array of integers nums,
+     *    return the length of the
+     *    `longest consecutive elements sequence.`
+     *
+     *
+     *  -------------------
+     *
+     *   IDEA 1) 2 POINTERS ???
+     *
+     *    -> Set -> sort -> 2 pointers
+     *
+     *
+     *   -------------------
+     *
+     *   ex 1)
+     *
+     *   nums = [100,4,200,1,3,2]
+     *
+     *   -> set, sort
+     *   -> nums = [1,2,3,4,100,200]
+     *
+     *   [1,2,3,4,100,200]
+     *    l r                 len = 2
+     *
+     *   [1,2,3,4,100,200]
+     *    l   r               len = 3
+     *
+     *   [1,2,3,4,100,200]
+     *    l     r             len =4
+     *
+     *   [1,2,3,4,100,200]
+     *    l       r            len =4
+     *            l
+     *
+     *   [1,2,3,4,100,200]    len = 4
+     *             l   r
+     *
+     *
+     *
+     *  ex 2)
+     * Input: nums = [0,3,7,2,5,8,4,6,0,1]
+     * Output: 9
+     *
+     *
+     * -> set, sort
+     *
+     * [0,1,2,3,4,5,6,7,8]
+     *
+     *
+     * ex 3)
+     *
+     *   Input: nums = [1,0,1,2]
+     *   Output: 3
+     *
+     *
+     *  -> set, sort
+     *  [0,1,2]
+     *
+     *
+     */
+    public int longestConsecutive(int[] nums) {
+        // edge
+        if(nums == null || nums.length == 0){
+            return 0;
+        }
+        if(nums.length == 1){
+            return 1;
+        }
+
+        Set<Integer> set = new HashSet<>();
+        for(int x: nums){
+            set.add(x);
+        }
+        // ??
+        List<Integer> list = new ArrayList<>();
+        for(int x: set){
+            list.add(x);
+        }
+        // sort (small -> big)
+        Collections.sort(list, new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                int diff = o1 - o2;
+                return diff;
+            }
+        });
+
+        System.out.println(">>> list = " + list);
+        // 2 pointers
+        /**  slide window
+         *
+         *   for(int r = 0; r < nums.len; r++){
+         *        // ...
+         *       while(conditions){
+         *           // ...
+         *           l += 1;
+         *       }
+         *       // ...
+         *   }
+         *
+         */
+        int maxConSeLen = 1;
+        int l = 0;
+        // ????
+        for(int r = 1; r < list.size(); r++){
+            System.out.println(">>> l = " + l +
+                    ", r = " + r);
+
+            if(list.get(r) - list.get(r-1) != 1){
+                l = r;
+            }
+            maxConSeLen = Math.max(maxConSeLen, r - l + 1);
+
+//            if(l >= list.size()){
+//                break;
+//            }
+        }
+
+        return maxConSeLen;
+    }
+
+
+
+
+
 
 }
