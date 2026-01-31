@@ -3575,9 +3575,47 @@ public class Workspace19 {
 
 
     // LC 1929
+    // 16.10 - 20 am
+    /**
+     *
+     *  -> Return the array ans.
+     *
+     *   nums: arr, size = n
+     *
+     *   to create an array ans of length 2n
+     *   where
+     *     - ans[i] == nums[i]
+     *     - and ans[i + n] == nums[i] for 0 <= i < n (0-indexed).
+     *
+     *     e.g.
+     *
+     *     - ans is the concatenation of two nums arrays.
+     *
+     *
+     *  ---------------
+     *
+     *   IDEA 1) ARRAY OP
+     *
+     *
+     *  ---------------
+     *
+     */
     public int[] getConcatenation(int[] nums) {
+        // edge
+        if(nums == null || nums.length == 0){
+            return nums;
+        }
+        int n = nums.length;
+        int[] res = new int[2 * n];
+        int cnt = 0;
+        for(int i = 0; i < 2; i++){
+            for(int j = 0; j < n; j++){
+                res[cnt] = nums[j];
+                cnt += 1;
+            }
+        }
 
-        return null;
+        return res;
     }
 
 

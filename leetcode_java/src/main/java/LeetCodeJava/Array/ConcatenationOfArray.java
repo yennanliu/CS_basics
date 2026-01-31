@@ -43,9 +43,24 @@ package LeetCodeJava.Array;
 public class ConcatenationOfArray {
 
     // V0
-//    public int[] getConcatenation(int[] nums) {
-//
-//    }
+    // IDEA: ARRAY OP
+    public int[] getConcatenation(int[] nums) {
+        // edge
+        if (nums == null || nums.length == 0) {
+            return nums;
+        }
+        int n = nums.length;
+        int[] res = new int[2 * n];
+        int cnt = 0;
+        for (int i = 0; i < 2; i++) {
+            for (int j = 0; j < n; j++) {
+                res[cnt] = nums[j];
+                cnt += 1;
+            }
+        }
+
+        return res;
+    }
 
     // V1
     // https://leetcode.com/problems/concatenation-of-array/solutions/3612143/java-simple-solution-runtime-9417-memory-yeuo/
