@@ -3526,7 +3526,92 @@ public class Workspace19 {
      *
      *
      */
+    // 16.58 - 17.21 pm
+    /**  IDEA 1) PQ + SORT ???
+     *
+     *  1. sort intervals
+     *     - 1st idx (small -> big)
+     *
+     *  2.  `new` queries
+     *     - [ i, query ]
+     *
+     *     // ?? need sort ???
+     *
+     *  3. PQ:  {  size, idx }
+     *      - small PQ, sort on size
+     *
+     *
+     */
     public int[] minInterval(int[][] intervals, int[] queries) {
+        // edge
+
+        // sort intervals
+        Arrays.sort(intervals, new Comparator<int[]>() {
+            @Override
+            public int compare(int[] o1, int[] o2) {
+                return o1[0] - o2[0]; // ???
+            }
+        });
+
+        // `new` queries:  [ i, query ]
+        int[][] queries2 = new int[queries.length][2];
+        for(int i = 0; i < queries.length; i++){
+            // ???
+            queries2[i] = new int[]{i, queries[i]};
+        }
+        // sort queries2 ???
+        // query: small -> big
+        Arrays.sort(queries2, new Comparator<int[]>() {
+            @Override
+            public int compare(int[] o1, int[] o2) {
+                return o1[1] - o2[1]; // ???
+            }
+        });
+
+        // ?? PQ:  {  size, end_time }
+        PriorityQueue<Integer[]> pq = new PriorityQueue<>(new Comparator<Integer[]>() {
+            @Override
+            public int compare(Integer[] o1, Integer[] o2) {
+                return o1[0] - o2[1];
+            }
+        });
+
+        int[] res = new int[queries.length];
+
+        int i = 0; // pointer for interval
+
+        int n = intervals.length;
+
+        // // `new` queries:  [ i, query ]
+        for(int[] q: queries2){
+            int qIdx = q[0];
+            int qVal = q[1];
+
+
+            while(i < n &&  intervals[i][0] < qVal){
+                int size = intervals[i][1] - intervals[i][0] + 1;
+                pq.add(new Integer[] { size, intervals[i][1] });
+                i += 1;
+            }
+
+            while(!pq.isEmpty() && pq.peek()[1] < qVal){
+                pq.poll();
+            }
+
+            res[qIdx] = pq.isEmpty() ? -1: pq.peek()[0];
+
+        }
+
+
+        return res;
+    }
+
+
+
+
+
+
+    public int[] minInterval_99(int[][] intervals, int[] queries) {
         // edge
 
         // { idx : size }
