@@ -3574,6 +3574,12 @@ public class Workspace19 {
     }
 
 
+    // LC 1929
+    public int[] getConcatenation(int[] nums) {
+
+        return null;
+    }
+
 
 
 
