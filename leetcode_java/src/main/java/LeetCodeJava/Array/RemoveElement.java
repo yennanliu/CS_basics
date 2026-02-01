@@ -61,8 +61,10 @@ class RemoveElement {
 
     // V0
     // IDEA : 2 POINTERS
-    // time: O(N), space: O(1)
     /**
+     * time = O(N)
+     * space = O(1)
+     *
      *  //--------------------
      *  Example 1
      *  //--------------------
@@ -139,7 +141,10 @@ class RemoveElement {
     // V1
     // IDEA : 2 POINTERS
     // https://leetcode.com/problems/remove-element/solutions/3670940/best-100-c-java-python-beginner-friendly/
-    // time: O(N), space: O(1)
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int removeElement_1(int[] nums, int val) {
         int index = 0;
         for (int i = 0; i < nums.length; i++) {
@@ -154,7 +159,10 @@ class RemoveElement {
     // V2
     // IDEA : 2 POINTERS
     // https://leetcode.com/problems/remove-element/solutions/3102906/java-best-solution-o-n-time-complexity/
-    // time: O(N), space: O(1)
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int removeElement_2(int[] nums, int val) {
         int i = 0;
         for (int j = 0; j < nums.length; j++) {

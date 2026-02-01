@@ -47,6 +47,9 @@ public class NextPermutation {
     // IDEA : 2 POINTERS (gpt)
     // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Array/next-permutation.py#L43
     /**
+     * time = O(N)
+     * space = O(1)
+     *
      *  Examples :
      *
      *
@@ -180,6 +183,10 @@ public class NextPermutation {
     // V1
     // IDEA : 2 POINTERS
     // https://leetcode.com/problems/next-permutation/solutions/3473399/beats-100-full-explanation-in-steps/
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public void nextPermutation_1(int[] nums) {
         int ind1=-1;
         int ind2=-1;
@@ -227,6 +234,10 @@ public class NextPermutation {
     // V2
     // IDEA : 2 POINTERS
     // https://leetcode.com/problems/next-permutation/solutions/5205798/java-solution-0ms-solution-100-faster-solution-full-explanation-code/
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public void nextPermutation_2(int[] nums) {
         // Traverse form the end and find the element which is smaller
         // than its next element. Keep that index as ind
@@ -290,6 +301,9 @@ public class NextPermutation {
     // V3
     // IDEA : 2 POINTERS (gpt)
     /**
+     * time = O(N)
+     * space = O(1)
+     *
      *  IDEA :
      *
      *  Explanation of the Algorithm:

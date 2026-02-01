@@ -37,7 +37,10 @@ public class BestTimeToBuyAndSellStock {
 
     // V0
     // IDEA: maintain `min till now` var + problem observation
-    // time: O(N), space: O(1)
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int maxProfit(int[] prices) {
         // edge
         if (prices.length <= 1) {
@@ -71,8 +74,10 @@ public class BestTimeToBuyAndSellStock {
 
     // V0_0_1
     // IDEA: 2 POINTERS
-    // time: O(N), space: O(1)
     /**
+     * time = O(N)
+     * space = O(1)
+     *
      *  IDEA: 2 POINTERS
      *  maintain local min, max, and global max
      *  (global max as result)
@@ -151,7 +156,10 @@ public class BestTimeToBuyAndSellStock {
     }
 
     // V0-1
-    // time: O(N), space: O(1)
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int maxProfit_0_1(int[] prices) {
 
         if (prices.length == 1){
@@ -180,7 +188,10 @@ public class BestTimeToBuyAndSellStock {
     }
 
     // V0-2
-    // time: O(N), space: O(1)
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int maxProfit_0_2(int[] prices) {
 
         if (prices.length == 0){
@@ -219,7 +230,10 @@ public class BestTimeToBuyAndSellStock {
     }
 
     // V0-3
-    // time: O(N), space: O(1)
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int maxProfit_0_3(int[] prices) {
 
         int minVal = (int) Math.pow(10, 4);
@@ -242,7 +256,10 @@ public class BestTimeToBuyAndSellStock {
     // V0-4
     // IDEA: BRUTE FORCE (TLE)
     //IDEA 1) BRUTE FORCE
-    // time: O(N^2), space: O(1)
+    /**
+     * time = O(N^2)
+     * space = O(1)
+     */
     public int maxProfit_0_4(int[] prices) {
         // edge
         if(prices.length <= 1){
@@ -260,7 +277,10 @@ public class BestTimeToBuyAndSellStock {
 
     // V1
     // https://leetcode.com/problems/best-time-to-buy-and-sell-stock/solutions/1735493/java-c-best-ever-explanation-could-possible/
-    // time: O(N), space: O(1)
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int maxProfit_2(int[] prices) {
         int lsf = Integer.MAX_VALUE;
         int op = 0;
