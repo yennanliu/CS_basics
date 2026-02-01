@@ -37,12 +37,20 @@ import java.util.*;
 public class LeastNumberOfUniqueIntegersAfterKRemovals {
 
     // V0
-//    public int findLeastNumOfUniqueInts(int[] arr, int k) {
+//    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
+    public int findLeastNumOfUniqueInts(int[] arr, int k) {
 //
 //    }
 
     // V0-1
     // IDEA: HASHMAP + PQ (fixed by gpt)
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public int findLeastNumOfUniqueInts_0_1(int[] arr, int k) {
         // edge
         if (arr == null || arr.length == 0) {
@@ -104,6 +112,10 @@ public class LeastNumberOfUniqueIntegersAfterKRemovals {
 
     // V0-2
     // IDEA: MAP + PQ (fixed by gemini)
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public int findLeastNumOfUniqueInts_0_2(int[] arr, int k) {
         // Edge case: empty array
         if (arr == null || arr.length == 0) {
@@ -158,6 +170,10 @@ public class LeastNumberOfUniqueIntegersAfterKRemovals {
     // V1-1
     // IDEA: Sorting the Frequencies
     // https://leetcode.com/problems/least-number-of-unique-integers-after-k-removals/
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public int findLeastNumOfUniqueInts_1_1(int[] arr, int k) {
         // Map to track the frequencies of elements
         Map<Integer, Integer> map = new HashMap<>();
@@ -195,6 +211,10 @@ public class LeastNumberOfUniqueIntegersAfterKRemovals {
     // V1-2
     // IDEA: MIN HEAP
     // https://leetcode.com/problems/least-number-of-unique-integers-after-k-removals/
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public int findLeastNumOfUniqueInts_1_2(int[] arr, int k) {
         // Map to track the frequencies of elements
         Map<Integer, Integer> map = new HashMap<>();
@@ -230,6 +250,10 @@ public class LeastNumberOfUniqueIntegersAfterKRemovals {
     // V1-3
     // IDEA: Counting Sort
     // https://leetcode.com/problems/least-number-of-unique-integers-after-k-removals/
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public int findLeastNumOfUniqueInts_1_3(int[] arr, int k) {
         // Map to track the frequencies of elements
         Map<Integer, Integer> map = new HashMap<>();
@@ -285,6 +309,10 @@ public class LeastNumberOfUniqueIntegersAfterKRemovals {
 
     // V2
     // https://leetcode.ca/2019-12-20-1481-Least-Number-of-Unique-Integers-after-K-Removals/
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public int findLeastNumOfUniqueInts_2(int[] arr, int k) {
         Map<Integer, Integer> cnt = new HashMap<>();
         for (int x : arr) {

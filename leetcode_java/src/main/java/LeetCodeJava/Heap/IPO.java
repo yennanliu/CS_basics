@@ -50,7 +50,11 @@ import java.util.*;
 public class IPO {
 
     // V0
-//    public int findMaximizedCapital(int k, int w, int[] profits, int[] capital) {
+//    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
+    public int findMaximizedCapital(int k, int w, int[] profits, int[] capital) {
 //
 //    }
 
@@ -68,6 +72,10 @@ public class IPO {
      *     - structure : { profit }
      *
      *
+     */
+    /**
+     * time = O(N log N)
+     * space = O(N)
      */
     public int findMaximizedCapital_0_1(int k, int w, int[] profits, int[] capital) {
         // edge
@@ -203,6 +211,10 @@ public class IPO {
 
     // V0-2
     // IDEA: 2 PQ (fixed by gpt)
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public int findMaximizedCapital_0_2(int k, int w, int[] profits, int[] capital) {
         int n = profits.length;
 
@@ -240,6 +252,10 @@ public class IPO {
 
     // V0-3
     // IDEA: PQ (gemini)
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public int findMaximizedCapital_0_3(int k, int w, int[] profits, int[] capital) {
         int n = profits.length;
 
@@ -306,6 +322,10 @@ public class IPO {
      *
      *   - Efficiently maintains project choices using two heaps.
      *
+     */
+    /**
+     * time = O(N log N)
+     * space = O(N)
      */
     public int findMaximizedCapital_1(int k, int w, int[] profits, int[] capital) {
         // Max-heap for profits of affordable projects
@@ -397,6 +417,10 @@ public class IPO {
         }
     }
 
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public int findMaximizedCapital_2(int k, int w, int[] profits, int[] capital) {
         int n = profits.length;
         List<Project> projects = new ArrayList<>();
@@ -435,6 +459,10 @@ public class IPO {
 
     // V3
     // https://leetcode.com/problems/ipo/solutions/3219987/day-54-c-priority_queue-easiest-beginner-m55e/
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public int findMaximizedCapital_3(int k, int w, int[] profits, int[] capital) {
         int n = profits.length;
         int[][] projects = new int[n][2];
@@ -470,6 +498,10 @@ public class IPO {
         }
     }
 
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public int findMaximizedCapital_4(int k, int w, int[] profits, int[] capital) {
         int n = profits.length;
         List<Project2> projects = new ArrayList<>();
@@ -500,6 +532,10 @@ public class IPO {
 
     // V5
     // https://leetcode.ca/2017-04-15-502-IPO/
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public int findMaximizedCapital_5(int k, int w, int[] profits, int[] capital) {
         int n = capital.length;
         PriorityQueue<int[]> q1 = new PriorityQueue<>((a, b) -> a[0] - b[0]);

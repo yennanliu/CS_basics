@@ -49,12 +49,20 @@ import java.util.PriorityQueue;
 public class KthSmallestElementInASortedMatrix {
 
     // V0
-//    public int kthSmallest(int[][] matrix, int k) {
+//    /**
+     * time = O(N^2 log k)
+     * space = O(k)
+     */
+    public int kthSmallest(int[][] matrix, int k) {
 //
 //    }
 
     // V0-1
     // IDEA: PQ (fixed by gpt)
+    /**
+     * time = O(N^2 log k)
+     * space = O(k)
+     */
     public int kthSmallest_0_1(int[][] matrix, int k) {
         if (matrix == null || matrix.length == 0 || matrix[0].length == 0) {
             return 0;
@@ -94,6 +102,10 @@ public class KthSmallestElementInASortedMatrix {
 
     // V0-2
     // IDEA: PQ (fixed by gemini)
+    /**
+     * time = O(N^2 log k)
+     * space = O(k)
+     */
     public int kthSmallest_0_2(int[][] matrix, int k) {
         // --- FIX 1: Correct Edge Case Handling ---
         // For an LC problem, return 0 if constraints ensure matrix is non-empty,
@@ -142,6 +154,10 @@ public class KthSmallestElementInASortedMatrix {
 
     // V0-3
     // IDEA: BINARY SEARCH (gemini)
+    /**
+     * time = O(N^2 log k)
+     * space = O(k)
+     */
     public int kthSmallest_0_3(int[][] matrix, int k) {
         int N = matrix.length;
         int low = matrix[0][0]; // Smallest possible answer
@@ -175,6 +191,10 @@ public class KthSmallestElementInASortedMatrix {
 
     /** NOTE !!! helper func: ``# of elements that has value <= mid` calculation  */
     // Helper function to count how many elements in the matrix are less than or equal to 'target'
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     private int countLessEqual(int[][] matrix, int target) {
         int N = matrix.length;
         int count = 0;
@@ -209,6 +229,10 @@ public class KthSmallestElementInASortedMatrix {
         }
     }
 
+    /**
+     * time = O(N^2 log k)
+     * space = O(k)
+     */
     public int kthSmallest_1_1(int[][] matrix, int k) {
 
         if (matrix == null || matrix.length == 0 || k <= 0) {
@@ -245,6 +269,10 @@ public class KthSmallestElementInASortedMatrix {
 
     // V1-2
     // https://leetcode.ca/2016-12-12-378-Kth-Smallest-Element-in-a-Sorted-Matrix/
+    /**
+     * time = O(N^2 log k)
+     * space = O(k)
+     */
     public int kthSmallest_1_2(int[][] matrix, int k) {
 
         if (matrix == null || matrix.length == 0 || k <= 0) {
@@ -270,6 +298,10 @@ public class KthSmallestElementInASortedMatrix {
         return min; // return max will also work
     }
 
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     private int countSmallerThanMid(int[][] matrix, int mid) {
         int count = 0;
 
@@ -293,6 +325,10 @@ public class KthSmallestElementInASortedMatrix {
 
     // V1-3
     // https://leetcode.ca/2016-12-12-378-Kth-Smallest-Element-in-a-Sorted-Matrix/
+    /**
+     * time = O(N^2 log k)
+     * space = O(k)
+     */
     public int kthSmallest_1_3(int[][] matrix, int k) {
         int n = matrix.length;
         int left = matrix[0][0], right = matrix[n - 1][n - 1];
@@ -307,6 +343,10 @@ public class KthSmallestElementInASortedMatrix {
         return left;
     }
 
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     private boolean check(int[][] matrix, int mid, int k, int n) {
         int count = 0;
         int i = n - 1, j = 0;
@@ -324,6 +364,10 @@ public class KthSmallestElementInASortedMatrix {
 
     // V2-1
     // https://leetcode.com/problems/kth-smallest-element-in-a-sorted-matrix/solutions/1547354/3-different-approaches-for-interview-wit-3mg1/
+    /**
+     * time = O(N^2 log k)
+     * space = O(k)
+     */
     public int kthSmallest_2_1(int[][] matrix, int k) {
         int n = matrix.length;
         int[] arr = new int[n * n];
@@ -342,6 +386,10 @@ public class KthSmallestElementInASortedMatrix {
     // V2-2
     // https://leetcode.com/problems/kth-smallest-element-in-a-sorted-matrix/solutions/1547354/3-different-approaches-for-interview-wit-3mg1/
     // IDEA: PQ
+    /**
+     * time = O(N^2 log k)
+     * space = O(k)
+     */
     public int kthSmallest_2_2(int[][] matrix, int k) {
         PriorityQueue<Integer> pq = new PriorityQueue<>(Collections.reverseOrder());
 
@@ -366,6 +414,10 @@ public class KthSmallestElementInASortedMatrix {
     // V2-3
     // https://leetcode.com/problems/kth-smallest-element-in-a-sorted-matrix/solutions/1547354/3-different-approaches-for-interview-wit-3mg1/
     // IDEA: BINARY SEARCH
+    /**
+     * time = O(N^2 log k)
+     * space = O(k)
+     */
     public int kthSmallest_2_3(int[][] matrix, int k) {
         int rows = matrix.length, cols = matrix[0].length;
 

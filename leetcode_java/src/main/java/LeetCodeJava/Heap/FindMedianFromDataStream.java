@@ -79,6 +79,10 @@ public class FindMedianFromDataStream {
         PriorityQueue<Integer> small_pq; // max-heap (stores smaller half)
         PriorityQueue<Integer> big_pq;   // min-heap (stores larger half)
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public MedianFinder() {
             // Initialize small_pq as a max-heap
             this.small_pq = new PriorityQueue<>(Comparator.reverseOrder());
@@ -87,6 +91,10 @@ public class FindMedianFromDataStream {
             this.big_pq = new PriorityQueue<>();
         }
 
+        /**
+         * time = O(log N)
+         * space = O(1)
+         */
         public void addNum(int num) {
             // Add the new number to the appropriate heap
             if (this.small_pq.isEmpty() || num <= this.small_pq.peek()) {
@@ -116,6 +124,10 @@ public class FindMedianFromDataStream {
             }
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public double findMedian() {
 
             /**
@@ -155,11 +167,19 @@ public class FindMedianFromDataStream {
         List<Integer> collected;
         int cnt;
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public MedianFinder_0_1() {
             this.cnt = 0;
             this.collected = new ArrayList<>();
         }
 
+        /**
+         * time = O(log N)
+         * space = O(1)
+         */
         public void addNum(int num) {
             this.collected.add(num);
             // sort (increasing) (small -> big)
@@ -173,6 +193,10 @@ public class FindMedianFromDataStream {
             this.cnt += 1;
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public double findMedian() {
             if (this.cnt == 0 || this.collected == null) {
                 return 0;
@@ -212,14 +236,26 @@ public class FindMedianFromDataStream {
     public class MedianFinder_1_1 {
         private ArrayList<Integer> data;
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public MedianFinder_1_1() {
             data = new ArrayList<>();
         }
 
+        /**
+         * time = O(log N)
+         * space = O(1)
+         */
         public void addNum(int num) {
             data.add(num);
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public double findMedian() {
             Collections.sort(data);
             int n = data.size();
@@ -250,6 +286,10 @@ public class FindMedianFromDataStream {
         private Queue<Integer> smallHeap; // small elements - maxHeap
         private Queue<Integer> largeHeap; // large elements - minHeap
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public MedianFinder_1_2() {
             smallHeap = new PriorityQueue<>((a, b) -> b - a);
             largeHeap = new PriorityQueue<>((a, b) -> a - b);
@@ -274,6 +314,10 @@ public class FindMedianFromDataStream {
          *  step 4) This balancing ensures that the two heaps are either of
          *          the same size or smallHeap has one extra element than largeHeap.
          *
+         */
+        /**
+         * time = O(log N)
+         * space = O(1)
          */
         public void addNum(int num) {
             smallHeap.add(num);
@@ -305,6 +349,10 @@ public class FindMedianFromDataStream {
          *        the median is the root of largeHeap.
          *
          */
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public double findMedian() {
             if (smallHeap.size() == largeHeap.size()) {
                 return (double) (largeHeap.peek() + smallHeap.peek()) / 2;
@@ -325,6 +373,10 @@ public class FindMedianFromDataStream {
         private PriorityQueue<Integer> large = new PriorityQueue<>();
         private boolean even = true;
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public double MedianFinder_2() {
             if (even)
                 return (small.peek() + large.peek()) / 2.0;
@@ -332,6 +384,10 @@ public class FindMedianFromDataStream {
                 return small.peek();
         }
 
+        /**
+         * time = O(log N)
+         * space = O(1)
+         */
         public void addNum(int num) {
             if (even) {
                 large.offer(num);
@@ -352,12 +408,20 @@ public class FindMedianFromDataStream {
         PriorityQueue<Integer> maxHeap;
         PriorityQueue<Integer> minHeap;
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public MedianFinder_3() {
             maxHeap = new PriorityQueue<>(Collections.reverseOrder()); // . we need to store the elements in decreasing
             // order so we use reverse order.
             minHeap = new PriorityQueue<>();
         }
 
+        /**
+         * time = O(log N)
+         * space = O(1)
+         */
         public void addNum(int num) {
             maxHeap.offer(num);
 
@@ -372,6 +436,10 @@ public class FindMedianFromDataStream {
             }
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public double findMedian() {
             if (maxHeap.size() == minHeap.size()) {
                 return (maxHeap.peek() + minHeap.peek()) / 2.0;

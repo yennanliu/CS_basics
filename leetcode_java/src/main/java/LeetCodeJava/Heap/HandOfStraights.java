@@ -41,6 +41,10 @@ import java.util.*;
 public class HandOfStraights {
 
     // V0
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public boolean isNStraightHand(int[] hand, int groupSize) {
         if (hand.length % groupSize != 0) return false;
         Map<Integer, Integer> count = new HashMap<>();
@@ -77,6 +81,10 @@ public class HandOfStraights {
 
     // V0-0-1
     // IDEA: TREEMAP (can get smallest `key` from map) (gemini)
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public boolean isNStraightHand_0_0_1(int[] hand, int groupSize) {
         int n = hand.length;
         // Basic check: if total cards aren't divisible by group size, it's impossible
@@ -133,6 +141,10 @@ public class HandOfStraights {
 
     // V0-0-2
     // IDEA: TREEMAP (gpt)
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public boolean isNStraightHand_0_0_2(int[] hand, int groupSize) {
 
         int n = hand.length;
@@ -180,6 +192,10 @@ public class HandOfStraights {
     // V0-1
     // IDEA: HASHMAP + SORTING
     // NOTE !!! groupSize could be >= 2
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public boolean isNStraightHand_0_1(int[] hand, int groupSize) {
         if (hand.length % groupSize != 0) return false;
         Map<Integer, Integer> count = new HashMap<>();
@@ -215,6 +231,10 @@ public class HandOfStraights {
 
     // V0-2
     // IDEA: HASHMAP + SORTING + small PQ
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public boolean isNStraightHand_0_2(int[] hand, int groupSize) {
 
         int len = hand.length;
@@ -281,6 +301,10 @@ public class HandOfStraights {
     // V1-1
     // https://neetcode.io/problems/hand-of-straights
     // IDEA: HASHMAP + SORTING
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public boolean isNStraightHand_1_1(int[] hand, int groupSize) {
         if (hand.length % groupSize != 0) return false;
         Map<Integer, Integer> count = new HashMap<>();
@@ -303,6 +327,10 @@ public class HandOfStraights {
     // V1-2
     // https://neetcode.io/problems/hand-of-straights
     // IDEA: HEAP
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public boolean isNStraightHand_1_2(int[] hand, int groupSize) {
         if (hand.length % groupSize != 0)
             return false;
@@ -332,6 +360,10 @@ public class HandOfStraights {
     // V1-3
     // https://neetcode.io/problems/hand-of-straights
     // IDEA: ORDERED MAP
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public boolean isNStraightHand_1_3(int[] hand, int groupSize) {
         if (hand.length % groupSize != 0) return false;
 
@@ -363,6 +395,10 @@ public class HandOfStraights {
     // V1-4
     // https://neetcode.io/problems/hand-of-straights
     // IDEA: HASH MAP
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public boolean isNStraightHand_1_4(int[] hand, int groupSize) {
         if (hand.length % groupSize != 0) return false;
         Map<Integer, Integer> count = new HashMap<>();
@@ -389,6 +425,10 @@ public class HandOfStraights {
 
     // V2-1
     // IDEA: TreeMap (gpt)
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public boolean isNStraightHand_2_1(int[] hand, int groupSize) {
         // If the total number of cards is not divisible by groupSize, return false
         if (hand.length % groupSize != 0) {
@@ -441,6 +481,10 @@ public class HandOfStraights {
 
     // V2-2
     // IDEA: HashMap (gpt)
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public boolean isNStraightHand_2_2(int[] hand, int groupSize) {
         // If the total number of cards is not divisible by groupSize, return false
         if (hand.length % groupSize != 0) {
@@ -478,6 +522,10 @@ public class HandOfStraights {
     // V2-3
     // IDEA :  Using Map
     // https://leetcode.com/problems/hand-of-straights/editorial/
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public boolean isNStraightHand_2_3(int[] hand, int groupSize) {
         int handSize = hand.length;
         if (handSize % groupSize != 0) {
@@ -515,6 +563,10 @@ public class HandOfStraights {
     // V2-4
     // IDEA : TreeMap + Queue (Optimal with hashMap)
     // https://leetcode.com/problems/hand-of-straights/editorial/
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public boolean isNStraightHand_2_4(int[] hand, int groupSize) {
         // Map to store the count of each card value
         Map<Integer, Integer> cardCount = new TreeMap<>();
