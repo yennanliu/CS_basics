@@ -47,6 +47,10 @@ public class FindTheClosestPalindrome {
     // V1-1
     // https://leetcode.com/problems/find-the-closest-palindrome/editorial/
     // IDEA:  Find Previous and Next Palindromes
+    /**
+     * time = O(log N)
+     * space = O(log N)
+     */
     public String nearestPalindromic_1_1(String n) {
         int len = n.length();
         int i = len % 2 == 0 ? len / 2 - 1 : len / 2;
@@ -83,6 +87,10 @@ public class FindTheClosestPalindrome {
         return String.valueOf(res);
     }
 
+    /**
+     * time = O(log N)
+     * space = O(1)
+     */
     private long halfToPalindrome(long left, boolean even) {
         // Convert the given half to palindrome.
         long res = left;
@@ -100,6 +108,10 @@ public class FindTheClosestPalindrome {
     // https://leetcode.com/problems/find-the-closest-palindrome/editorial/
     // IDEA: Binary Search
     // Convert to palindrome keeping first half constant.
+    /**
+     * time = O(log N)
+     * space = O(log N)
+     */
     private long convert(long num) {
         String s = Long.toString(num);
         int n = s.length();
@@ -112,6 +124,10 @@ public class FindTheClosestPalindrome {
     }
 
     // Find the previous palindrome, just smaller than n.
+    /**
+     * time = O(log N * log N)
+     * space = O(1)
+     */
     private long previousPalindrome(long num) {
         long left = 0, right = num;
         long ans = Long.MIN_VALUE;
@@ -129,6 +145,10 @@ public class FindTheClosestPalindrome {
     }
 
     // Find the next palindrome, just greater than n.
+    /**
+     * time = O(log N * log N)
+     * space = O(1)
+     */
     private long nextPalindrome(long num) {
         long left = num, right = (long) 1e18;
         long ans = Long.MIN_VALUE;
@@ -145,6 +165,10 @@ public class FindTheClosestPalindrome {
         return ans;
     }
 
+    /**
+     * time = O(log N * log N)
+     * space = O(1)
+     */
     public String nearestPalindromic_1_2(String n) {
         long num = Long.parseLong(n);
         long a = previousPalindrome(num);

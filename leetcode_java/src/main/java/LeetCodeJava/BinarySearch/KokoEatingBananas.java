@@ -46,6 +46,10 @@ public class KokoEatingBananas {
 
     // V0
     // IDEA : BINARY SEARCH (close boundary) (gemini)
+    /**
+     * time = O(N * log M)
+     * space = O(1)
+     */
     public int minEatingSpeed(int[] piles, int h) {
         // 1. Define the search range for 'speed'
         int l = 1;
@@ -165,6 +169,10 @@ public class KokoEatingBananas {
      * >>> FINAL l = 30, r = 29
      */
     // time: O(N * log(max(piles))), space: O(1)
+    /**
+     * time = O(N * log M)
+     * space = O(1)
+     */
     public int minEatingSpeed_0_0_1(int[] piles, int h) {
 
         if (piles.length == 0 || piles.equals(null)){
@@ -240,6 +248,10 @@ public class KokoEatingBananas {
     }
 
 
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     private int getCompleteTime_(int[] piles, int speed) {
 
         int _hour = 0;
@@ -252,6 +264,10 @@ public class KokoEatingBananas {
 
     // V0-1
     // IDEA : BINARY SEARCH (open boundary)
+    /**
+     * time = O(N * log M)
+     * space = O(1)
+     */
     public int minEatingSpeed_0_1(int[] piles, int h) {
         // edge
         if (piles.length == 0 || piles.equals(null)){
@@ -276,6 +292,10 @@ public class KokoEatingBananas {
         return r;
     }
 
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     private int getCompleteTime(int[] piles, int speed){
 
         int _hour  = 0;
@@ -289,6 +309,10 @@ public class KokoEatingBananas {
     // V1
     // IDEA : BRUTE FORCE
     // https://leetcode.com/problems/koko-eating-bananas/editorial/
+    /**
+     * time = O(N * M)
+     * space = O(1)
+     */
     public int minEatingSpeed_1(int[] piles, int h) {
         // Start at an eating speed of 1.
         int speed = 1;
@@ -321,6 +345,10 @@ public class KokoEatingBananas {
     // V2
     // IDEA : BINARY SEARCH
     // https://leetcode.com/problems/koko-eating-bananas/editorial/
+    /**
+     * time = O(N * log M)
+     * space = O(1)
+     */
     public int minEatingSpeed_2(int[] piles, int h) {
         // Initialize the left and right boundaries
         int left = 1, right = 1;

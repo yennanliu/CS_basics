@@ -61,6 +61,10 @@ public class GuessNumberHigherOrLower {
 
     // V2
     // https://leetcode.com/problems/guess-number-higher-or-lower/solutions/6592740/simple-java-code-using-binary-search-by-3mz5a/
+    /**
+     * time = O(log N)
+     * space = O(1)
+     */
     public int guessNumber_2(int n) {
         int low = 1;
         int high = n;
@@ -79,6 +83,10 @@ public class GuessNumberHigherOrLower {
 
     // V3
     // https://leetcode.com/problems/guess-number-higher-or-lower/solutions/6087292/easy-beats-proof-java-beginner-frendly-d-hxt7/
+    /**
+     * time = O(log N)
+     * space = O(1)
+     */
     public int guessNumber_3(int n) {
         int low = 0;
         int high = n;
@@ -98,6 +106,10 @@ public class GuessNumberHigherOrLower {
         return -1;
     }
 
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public int guess(int num){
         return 0;
     }
