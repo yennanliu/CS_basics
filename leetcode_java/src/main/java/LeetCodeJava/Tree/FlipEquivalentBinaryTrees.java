@@ -66,6 +66,10 @@ public class FlipEquivalentBinaryTrees {
 
     // V1
     // IDEA : DFS (fixed by gpt)
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public boolean flipEquiv_1(TreeNode root1, TreeNode root2) {
         // Both trees are null, they are equivalent
         if (root1 == null && root2 == null) {
@@ -87,6 +91,10 @@ public class FlipEquivalentBinaryTrees {
     // V2-1
     // IDEA : Recursion (Top-down Traversal)
     // https://leetcode.com/problems/flip-equivalent-binary-trees/editorial/
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public boolean flipEquiv_2_1(TreeNode root1, TreeNode root2) {
         // Both trees are empty
         if (root1 == null && root2 == null) {
@@ -120,6 +128,10 @@ public class FlipEquivalentBinaryTrees {
 
     // Checks whether the given pair of nodes should be examined -
     // be pushed into the stack
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public boolean checkNodeValues(TreeNode node1, TreeNode node2) {
         if (node1 == null && node2 == null) return true;
         if (
@@ -128,6 +140,10 @@ public class FlipEquivalentBinaryTrees {
         return false;
     }
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public boolean flipEquiv_2_2(TreeNode root1, TreeNode root2) {
         // Initialize stack to store pairs of nodes
         Stack<TreeNode[]> nodePairStack = new Stack<>();
@@ -167,6 +183,10 @@ public class FlipEquivalentBinaryTrees {
     // V2-3
     // IDEA : Canonical Forms
     // https://leetcode.com/problems/flip-equivalent-binary-trees/editorial/
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public void findCanonicalForm(TreeNode root) {
         if (root == null) return;
 
@@ -192,6 +212,10 @@ public class FlipEquivalentBinaryTrees {
         }
     }
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public boolean areEquivalent(TreeNode root1, TreeNode root2) {
         if (root1 == null && root2 == null) return true;
         if (root1 == null || root2 == null) return false;
@@ -203,6 +227,10 @@ public class FlipEquivalentBinaryTrees {
         );
     }
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public boolean flipEquiv_2_3(TreeNode root1, TreeNode root2) {
         findCanonicalForm(root1);
         findCanonicalForm(root2);

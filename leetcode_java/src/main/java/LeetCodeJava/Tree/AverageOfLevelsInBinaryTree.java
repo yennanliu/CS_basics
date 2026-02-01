@@ -14,6 +14,10 @@ public class AverageOfLevelsInBinaryTree {
     // V1
     // IDEA : BFS
     // https://leetcode.com/problems/average-of-levels-in-binary-tree/editorial/
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public List < Double > averageOfLevels(TreeNode root) {
         List < Double > res = new ArrayList < > ();
         Queue < TreeNode > queue = new LinkedList < > ();
@@ -44,6 +48,10 @@ public class AverageOfLevelsInBinaryTree {
     // V1
     // IDEA : DFS
     // https://leetcode.com/problems/average-of-levels-in-binary-tree/editorial/
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public List < Double > averageOfLevels_2(TreeNode root) {
         List < Integer > count = new ArrayList < > ();
         List < Double > res = new ArrayList < > ();
@@ -52,6 +60,10 @@ public class AverageOfLevelsInBinaryTree {
             res.set(i, res.get(i) / count.get(i));
         return res;
     }
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public void average(TreeNode t, int i, List < Double > sum, List < Integer > count) {
         if (t == null)
             return;

@@ -245,6 +245,10 @@ public class ChangeTheRootOfABinaryTree {
    * (with correct parent pointers)
    *
    */
+  /**
+   * time = O(log N)
+   * space = O(1)
+   */
   public Node flipBinaryTree_1(Node root, Node leaf) {
         Node curr = leaf;
         Node prev = null;
@@ -283,6 +287,10 @@ public class ChangeTheRootOfABinaryTree {
 
     // V2
     // https://leetcode.ca/2020-06-22-1666-Change-the-Root-of-a-Binary-Tree/
+    /**
+     * time = O(log N)
+     * space = O(1)
+     */
     public Node flipBinaryTree_2(Node root, Node leaf) {
         Node cur = leaf;
         Node p = cur.parent;

@@ -82,6 +82,10 @@ public class ConstructQuadTree {
         public Node bottomRight;
 
 
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public Node() {
             this.val = false;
             this.isLeaf = false;
@@ -91,6 +95,10 @@ public class ConstructQuadTree {
             this.bottomRight = null;
         }
 
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public Node(boolean val, boolean isLeaf) {
             this.val = val;
             this.isLeaf = isLeaf;
@@ -100,6 +108,10 @@ public class ConstructQuadTree {
             this.bottomRight = null;
         }
 
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public Node(boolean val, boolean isLeaf, Node topLeft, Node topRight, Node bottomLeft, Node bottomRight) {
             this.val = val;
             this.isLeaf = isLeaf;
@@ -121,6 +133,10 @@ public class ConstructQuadTree {
         public Node bottomRight;
 
 
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public Node() {
             this.val = false;
             this.isLeaf = false;
@@ -130,6 +146,10 @@ public class ConstructQuadTree {
             this.bottomRight = null;
         }
 
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public Node(boolean val, boolean isLeaf) {
             this.val = val;
             this.isLeaf = isLeaf;
@@ -139,6 +159,10 @@ public class ConstructQuadTree {
             this.bottomRight = null;
         }
 
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public Node(boolean val, boolean isLeaf, Node topLeft, Node topRight, Node bottomLeft, Node bottomRight) {
             this.val = val;
             this.isLeaf = isLeaf;
@@ -160,6 +184,10 @@ public class ConstructQuadTree {
     // https://github.com/neetcode-gh/leetcode/blob/main/java%2F0427-construct-quad-tree.java
     private int[][] grid;
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public Node construct_1(int[][] grid) {
         this.grid = grid;
         return dfs(0, 0, grid.length);
@@ -200,6 +228,10 @@ public class ConstructQuadTree {
 
     // V2
     // https://leetcode.com/problems/construct-quad-tree/solutions/3234703/clean-codes-full-explanation-helper-meth-oifr/
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public Node construct_2(int[][] grid) {
         return helper(grid, 0, 0, grid.length);
     }
@@ -226,10 +258,18 @@ public class ConstructQuadTree {
 
     // V3-1
     // https://leetcode.com/problems/construct-quad-tree/solutions/3235464/java-with-explanation-2-approaches-by-ka-ppc5/
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public Node construct_3_1(int[][] grid) {
         return construct_3_1(grid, 0, 0, grid.length);
     }
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public Node construct_3_1(int[][] grid, int i, int j, int length) {
         if (isSame(grid, i, j, length)) {
             return new Node(grid[i][j] == 1, true);
@@ -243,6 +283,10 @@ public class ConstructQuadTree {
         }
     }
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public boolean isSame(int[][] grid, int x1, int y1, int length) {
         for (int i = x1; i < x1 + length; i++) {
             for (int j = y1; j < y1 + length; j++) {
@@ -256,10 +300,18 @@ public class ConstructQuadTree {
 
     // V3-2
     // https://leetcode.com/problems/construct-quad-tree/solutions/3235464/java-with-explanation-2-approaches-by-ka-ppc5/
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public Node construct_3_2(int[][] grid) {
         return construct_3_2(grid, 0, 0, grid.length);
     }
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public Node construct_3_2(int[][] grid, int i, int j, int length) {
         if (length == 1) {
             return new Node(grid[i][j] == 1, true);
@@ -285,6 +337,10 @@ public class ConstructQuadTree {
 
     // V4
     // https://leetcode.com/problems/construct-quad-tree/solutions/1199472/java-easy-to-understand-100-faster-78-le-tu6i/
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public Node construct_4(int[][] grid) {
         return make(grid, 0, 0, grid.length);
     }

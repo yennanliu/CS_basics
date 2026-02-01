@@ -94,6 +94,10 @@ public class BinaryTreeMaximumPathSum {
      */
     int maxPathSum = Integer.MIN_VALUE; // global tracker
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int maxPathSum(TreeNode root) {
         dfs_0(root);
         return maxPathSum;
@@ -194,6 +198,10 @@ public class BinaryTreeMaximumPathSum {
     // V0-0-1
     // IDEA: DFS + max depth track (fixed by gpt)
     int maxPath = Integer.MIN_VALUE;
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int maxPathSum_0_0_1(TreeNode root) {
         if (root == null)
             return 0;
@@ -224,6 +232,10 @@ public class BinaryTreeMaximumPathSum {
     Map<TreeNode, Integer> pathMap = new HashMap<>();
     int globalMax = Integer.MIN_VALUE;
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int maxPathSum_0_0_2(TreeNode root) {
         dfs_0_0_2(root);
 
@@ -257,6 +269,10 @@ public class BinaryTreeMaximumPathSum {
     // IDEA: DFS (GPT)
     private int maxSum = Integer.MIN_VALUE;
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int maxPathSum_0_1(TreeNode root) {
         if (root == null) {
             return Integer.MIN_VALUE; // Handle null case
@@ -361,6 +377,10 @@ public class BinaryTreeMaximumPathSum {
     Map<TreeNode, Integer> pathMap_0_2 = new HashMap<>();
     int maxSum_2 = Integer.MIN_VALUE;
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int maxPathSum_0_2(TreeNode root) {
         if (root == null)
             return 0;
@@ -398,6 +418,10 @@ public class BinaryTreeMaximumPathSum {
     /** NOTE !!! we init res as Integer.MIN_VALUE */
     int max_path_sum = Integer.MIN_VALUE; // Fix this initialization
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int maxPathSum_0_3(TreeNode root) {
         // edge
         if (root == null) {
@@ -413,6 +437,10 @@ public class BinaryTreeMaximumPathSum {
         return max_path_sum;
     }
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int getMaxPathHelper(TreeNode root) {
 
         if (root == null) {
@@ -488,6 +516,10 @@ public class BinaryTreeMaximumPathSum {
     // IDEA: DFS
     int res = Integer.MIN_VALUE;
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int maxPathSum_1_1(TreeNode root) {
         dfs_1(root);
         return res;
@@ -514,6 +546,10 @@ public class BinaryTreeMaximumPathSum {
     // https://neetcode.io/problems/binary-tree-maximum-path-sum
     // IDEA: DFS (OPTIMAL)
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int maxPathSum_1_2(TreeNode root) {
         int[] res = new int[]{root.val};
         dfs_1_2(root, res);
@@ -537,6 +573,10 @@ public class BinaryTreeMaximumPathSum {
     // https://leetcode.com/problems/binary-tree-maximum-path-sum/solutions/4586190/beat-100-1/
     int max = Integer.MIN_VALUE;
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int maxPath_2(TreeNode root) {
 
         if(root == null) return 0;
@@ -551,6 +591,10 @@ public class BinaryTreeMaximumPathSum {
         return Math.max(left_sum, right_sum) + value;
     }
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int maxPathSum_2(TreeNode root) {
 
         maxPath_2(root);
@@ -563,6 +607,10 @@ public class BinaryTreeMaximumPathSum {
     class INT {
         int val;
     }
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int maxPathSum_3(TreeNode root) {
         INT maxPathLen = new INT();
         maxPathLen.val = Integer.MIN_VALUE;

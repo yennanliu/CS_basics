@@ -53,15 +53,27 @@ public class DiameterOfNAryTree {
         public List<Node> children;
 
 
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public Node() {
             children = new ArrayList<Node>();
         }
 
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public Node(int _val) {
             val = _val;
             children = new ArrayList<Node>();
         }
 
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public Node(int _val,ArrayList<Node> _children) {
             val = _val;
             children = _children;
@@ -139,6 +151,10 @@ public class DiameterOfNAryTree {
     // TODO: validate below
     private int maxDiameter = 0;
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int diameter_0_2(Node root) {
         if (root == null) return 0;
         nDiaHelper(root);
@@ -171,6 +187,10 @@ public class DiameterOfNAryTree {
     // https://leetcode.ca/2020-01-30-1522-Diameter-of-N-Ary-Tree/
     private int ans;
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int diameter(Node root) {
         ans = 0;
         dfs(root);

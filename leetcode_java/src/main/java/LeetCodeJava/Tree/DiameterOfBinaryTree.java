@@ -54,6 +54,10 @@ public class DiameterOfBinaryTree {
      * 	- maxLen is updated inside the helper whenever we find a longer path.
      */
     int maxLen = 0;
+    /**
+     * time = O(log N)
+     * space = O(1)
+     */
     public int diameterOfBinaryTree(TreeNode root) {
         // edge
         if (root == null) {
@@ -199,6 +203,10 @@ public class DiameterOfBinaryTree {
     // maxDiameter Variable: This is a class-level variable that keeps track of the maximum diameter encountered so far during the DFS traversal.
     private int maxDiameter = 0;
 
+    /**
+     * time = O(log N)
+     * space = O(1)
+     */
     public int diameterOfBinaryTree_0_1(TreeNode root) {
         // Start DFS from the root to calculate the maximum diameter
         dfs_0_1(root);
@@ -264,6 +272,10 @@ public class DiameterOfBinaryTree {
     // IDEA: get Max depth + `diameter + sub left depth + sub right depth + DFS  (bottom up)
     // NOTE !!! we define below global var
     int maxDiameter_ = 0;
+    /**
+     * time = O(log N)
+     * space = O(1)
+     */
     public int diameterOfBinaryTree_0_2(TreeNode root) {
         // edge
         if (root == null) {
@@ -278,6 +290,10 @@ public class DiameterOfBinaryTree {
     }
 
     // NOTE !!! diameter = `left sub tree depth` + `right sub tree depth`
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int getMaxDiameter(TreeNode root) {
         if (root == null) {
             return 0;
@@ -292,6 +308,10 @@ public class DiameterOfBinaryTree {
         return Math.max(getMaxDiameter(root.left), getMaxDiameter(root.right)); // ???
     }
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int getDepth(TreeNode root) {
         if (root == null) {
             return 0;
@@ -303,6 +323,10 @@ public class DiameterOfBinaryTree {
     // IDEA: DFS (fixed by gpt)
     private int maxDiameter_0_3 = 0;
 
+    /**
+     * time = O(log N)
+     * space = O(1)
+     */
     public int diameterOfBinaryTree_0_3(TreeNode root) {
         dfs(root);
         return maxDiameter_0_3;
@@ -327,6 +351,10 @@ public class DiameterOfBinaryTree {
     // https://youtu.be/bkxqA8Rfv04?feature=shared
     // https://neetcode.io/problems/binary-tree-diameter
     // IDEA: BRUTE FORCE
+    /**
+     * time = O(log N)
+     * space = O(1)
+     */
     public int diameterOfBinaryTree_1_1(TreeNode root) {
         if (root == null) {
             return 0;
@@ -340,6 +368,10 @@ public class DiameterOfBinaryTree {
         return Math.max(diameter, sub);
     }
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int maxHeight(TreeNode root) {
         if (root == null) {
             return 0;
@@ -352,6 +384,10 @@ public class DiameterOfBinaryTree {
     // https://youtu.be/bkxqA8Rfv04?feature=shared
     // https://neetcode.io/problems/binary-tree-diameter
     // IDEA: DFS
+    /**
+     * time = O(log N)
+     * space = O(1)
+     */
     public int diameterOfBinaryTree_1_2(TreeNode root) {
         int[] res = new int[1];
         dfs(root, res);
@@ -373,6 +409,10 @@ public class DiameterOfBinaryTree {
     // https://youtu.be/bkxqA8Rfv04?feature=shared
     // https://neetcode.io/problems/binary-tree-diameter
     // IDEA: Iterative DFS
+    /**
+     * time = O(log N)
+     * space = O(1)
+     */
     public int diameterOfBinaryTree_1_3(TreeNode root) {
         Map<TreeNode, int[]> mp = new HashMap<>();
         mp.put(null, new int[]{0, 0});
@@ -410,6 +450,10 @@ public class DiameterOfBinaryTree {
     // IDEA : DFS
     // https://leetcode.com/problems/diameter-of-binary-tree/editorial/
     private int diameter;
+    /**
+     * time = O(log N)
+     * space = O(1)
+     */
     public int diameterOfBinaryTree_2(TreeNode root) {
         diameter = 0;
         longestPath(root);
@@ -434,6 +478,10 @@ public class DiameterOfBinaryTree {
     // IDEA : DFS
     // https://leetcode.com/problems/diameter-of-binary-tree/solutions/3396281/solution/
     int result = -1;
+    /**
+     * time = O(log N)
+     * space = O(1)
+     */
     public int diameterOfBinaryTree_3(TreeNode root) {
         dfs(root);
         return result;
@@ -451,11 +499,19 @@ public class DiameterOfBinaryTree {
     // V4
     // IDEA: DFS
     // https://leetcode.com/problems/diameter-of-binary-tree/solutions/3280141/beats-100-onlycode-in-java/
+    /**
+     * time = O(log N)
+     * space = O(1)
+     */
     public int diameterOfBinaryTree_4(TreeNode root) {
         int dia[] = new int[1];
         ht(root,dia);
         return dia[0];
     }
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int ht(TreeNode root , int dia[]){
         if(root == null) return 0;
         int lh = ht(root.left,dia);
@@ -466,6 +522,10 @@ public class DiameterOfBinaryTree {
 
     // V5
     // IDEA; DFS (GPT)
+    /**
+     * time = O(log N)
+     * space = O(1)
+     */
     public int diameterOfBinaryTree_5(TreeNode root) {
         if (root == null) {
             return 0;

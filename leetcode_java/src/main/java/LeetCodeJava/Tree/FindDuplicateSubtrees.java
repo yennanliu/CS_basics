@@ -78,6 +78,10 @@ public class FindDuplicateSubtrees {
     private Map<String, Integer> counter_0_1;
     private List<TreeNode> ans_0_1;
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public List<TreeNode> findDuplicateSubtrees_0_1(TreeNode root) {
         counter_0_1 = new HashMap<>();
         ans_0_1 = new ArrayList<>();
@@ -110,6 +114,10 @@ public class FindDuplicateSubtrees {
     Map<String, Integer> freq = new HashMap<>();
     List<TreeNode> res = new ArrayList<>();
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public List<TreeNode> findDuplicateSubtrees_0_2(TreeNode root) {
         dfs_0_2(root);
         return res;
@@ -156,6 +164,10 @@ public class FindDuplicateSubtrees {
      * 	 pathMap: { node: list_of_paths }
      */
     Map<TreeNode, List<String>> pathMap = new HashMap<>();
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public List<TreeNode> findDuplicateSubtrees_0_3(TreeNode root) {
         List<TreeNode> res = new ArrayList<>();
         if (root == null) {
@@ -261,6 +273,10 @@ public class FindDuplicateSubtrees {
     // https://leetcode.ca/2017-09-12-652-Find-Duplicate-Subtrees/
     private Map<String, Integer> counter;
     private List<TreeNode> ans;
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public List<TreeNode> findDuplicateSubtrees_1(TreeNode root) {
         counter = new HashMap<>();
         ans = new ArrayList<>();
@@ -283,6 +299,10 @@ public class FindDuplicateSubtrees {
     // V2
     // IDEA: HASHMAP
     // https://leetcode.com/problems/find-duplicate-subtrees/solutions/3238264/java-easy-hashmap-with-explanation-by-ka-a6tv/
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public List<TreeNode> findDuplicateSubtrees_2(TreeNode root) {
         List<TreeNode> res = new ArrayList<>();
         HashMap<String, Integer> hm = new HashMap<>();
@@ -290,6 +310,10 @@ public class FindDuplicateSubtrees {
         return res;
     }
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public String helper(List<TreeNode> res, TreeNode root, HashMap<String, Integer> hm) {
         if (root == null)
             return "";
@@ -310,11 +334,19 @@ public class FindDuplicateSubtrees {
     HashMap<String, Integer> map = new HashMap<>();//String -- frequency//it store the string at every instant when we visit parent after visiting its children //it also calculates the frequency of the String in the tree
     ArrayList<TreeNode> res3 = new ArrayList<>();//it contain the list of dublicate nodes
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public List<TreeNode> findDuplicateSubtrees_3(TreeNode root) {
         Mapper(root);
         return res3;//returning the list containing a node of dublicate subtree
     }
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public String Mapper(TreeNode root) {//we are doing postorder traversal because we want to first deal with children and then the parent
         if (root == null)//when we reach to the null ,we return N to tell that i am null and unique
             return "N";
@@ -336,6 +368,10 @@ public class FindDuplicateSubtrees {
     // V4
     // https://leetcode.com/problems/find-duplicate-subtrees/solutions/3238342/clean-codes-full-explanation-depth-first-yn8v/
     // IDEA: DFS
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public List<TreeNode> findDuplicateSubtrees_4(TreeNode root) {
         List<TreeNode> ans = new ArrayList<>();
         Map<String, Integer> count = new HashMap<>();

@@ -78,16 +78,28 @@ public class MapSumPairs {
         // { string : val }
         Map<String, Integer> map;
 
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public MapSum_0_1() {
             this.map = new HashMap<>();
         }
 
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public void insert(String key, int val) {
             this.map.put(key, val);
             System.out.println(">>> this.map " + this.map);
         }
 
         /** BRUTE FORCE */
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public int sum(String prefix) {
             int res = 0;
             /**  NOTE !!!
@@ -163,6 +175,10 @@ public class MapSumPairs {
         // Map to store the original key-value pairs to calculate the delta upon update/re-insertion.
         private final Map<String, Integer> map;
 
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public MapSum_0_2() {
             this.root = new TrieNode();
             this.map = new HashMap<>();
@@ -171,6 +187,10 @@ public class MapSumPairs {
         /**
          * Inserts the key-value pair, updating the Trie with the delta value.
          * Time: O(L), where L is the length of the key.
+         */
+        /**
+         * time = O(N)
+         * space = O(H)
          */
         public void insert(String key, int val) {
             // Calculate the difference between the new value and the old value (0 if new key).
@@ -193,6 +213,10 @@ public class MapSumPairs {
         /**
          * Returns the sum of values of all keys starting with the given prefix.
          * Time: O(L), where L is the length of the prefix.
+         */
+        /**
+         * time = O(N)
+         * space = O(H)
          */
         public int sum(String prefix) {
             TrieNode current = root;
@@ -219,14 +243,26 @@ public class MapSumPairs {
         // { key : value }
         Map<String, Integer> map;
 
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public MapSum_0_3() {
             this.map = new HashMap<>();
         }
 
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public void insert(String key, int val) {
             this.map.put(key, val);
         }
 
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public int sum(String prefix) {
             int res = 0;
 
@@ -251,11 +287,19 @@ public class MapSumPairs {
         // prefix → sum of all keys having that prefix
         Map<String, Integer> prefixSum;
 
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public MapSum_0_4() {
             this.values = new HashMap<>();
             this.prefixSum = new HashMap<>();
         }
 
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public void insert(String key, int val) {
             int oldVal = values.getOrDefault(key, 0);
             /** NOTE !!!
@@ -279,6 +323,10 @@ public class MapSumPairs {
             }
         }
 
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public int sum(String prefix) {
             return prefixSum.getOrDefault(prefix, 0);
         }
@@ -291,14 +339,26 @@ public class MapSumPairs {
     class MapSum_1_1 {
         HashMap<String, Integer> map;
 
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public MapSum_1_1() {
             map = new HashMap<>();
         }
 
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public void insert(String key, int val) {
             map.put(key, val);
         }
 
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public int sum(String prefix) {
             int ans = 0;
             for (String key : map.keySet()) {
@@ -318,11 +378,19 @@ public class MapSumPairs {
         Map<String, Integer> map;
         Map<String, Integer> score;
 
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public MapSum_1_2() {
             map = new HashMap();
             score = new HashMap();
         }
 
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public void insert(String key, int val) {
             int delta = val - map.getOrDefault(key, 0);
             map.put(key, val);
@@ -333,6 +401,10 @@ public class MapSumPairs {
             }
         }
 
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public int sum(String prefix) {
             return score.getOrDefault(prefix, 0);
         }
@@ -346,11 +418,19 @@ public class MapSumPairs {
         HashMap<String, Integer> map;
         TrieNode root;
 
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public MapSum_1_3() {
             map = new HashMap();
             root = new TrieNode();
         }
 
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public void insert(String key, int val) {
             int delta = val - map.getOrDefault(key, 0);
             map.put(key, val);
@@ -363,6 +443,10 @@ public class MapSumPairs {
             }
         }
 
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public int sum(String prefix) {
             TrieNode cur = root;
             for (char c : prefix.toCharArray()) {
@@ -388,6 +472,10 @@ public class MapSumPairs {
         private Trie[] children = new Trie[26];
         private int val;
 
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public void insert(String w, int x) {
             Trie node = this;
             for (int i = 0; i < w.length(); ++i) {
@@ -400,6 +488,10 @@ public class MapSumPairs {
             }
         }
 
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public int search(String w) {
             Trie node = this;
             for (int i = 0; i < w.length(); ++i) {
@@ -417,15 +509,27 @@ public class MapSumPairs {
         private Map<String, Integer> d = new HashMap<>();
         private Trie trie = new Trie();
 
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public MapSum_2() {
         }
 
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public void insert(String key, int val) {
             int x = val - d.getOrDefault(key, 0);
             d.put(key, val);
             trie.insert(key, x);
         }
 
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public int sum(String prefix) {
             return trie.search(prefix);
         }

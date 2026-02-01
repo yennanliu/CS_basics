@@ -56,6 +56,10 @@ public class FindDistanceInABinaryTree {
     // IDEA: LCA + NODE DIST + DFS (fixed by gpt)
     // https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/tree.md
     // TODO: validate
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int findDistance_0_1(TreeNode root, int p, int q) {
         // edge
         if (root == null) {
@@ -183,6 +187,10 @@ public class FindDistanceInABinaryTree {
     // V0-2
     // IDEA: LCA (fixed by gemini)
     // TODO: validate
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int findDistance_0_2(TreeNode root, int p, int q) {
         // Edge case check.
         if (root == null) {
@@ -261,6 +269,10 @@ public class FindDistanceInABinaryTree {
     // V1-1
     // IDEA: alternative: hashmap to store distance of every node-pair during finding LCA, then just map look up
     // https://leetcode.ca/2021-03-23-1740-Find-Distance-in-a-Binary-Tree/
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int findDistance_1_1(TreeNode root, int p, int q) {
         if (p == q)
             return 0;
@@ -268,6 +280,10 @@ public class FindDistanceInABinaryTree {
         return getDistance(ancestor, p) + getDistance(ancestor, q);
     }
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public TreeNode lowestCommonAncestor(TreeNode root, int p, int q) {
         if (root == null)
             return null;
@@ -280,6 +296,10 @@ public class FindDistanceInABinaryTree {
         return left == null ? right : left;
     }
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int getDistance(TreeNode node, int val) {
         if (node == null)
             return -1;
@@ -294,6 +314,10 @@ public class FindDistanceInABinaryTree {
     // V1-2
     // IDEA: DFS
     // https://leetcode.ca/2021-03-23-1740-Find-Distance-in-a-Binary-Tree/
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int findDistance_1_2(TreeNode root, int p, int q) {
         TreeNode g = lca(root, p, q);
         return dfs(g, p) + dfs(g, q);

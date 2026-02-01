@@ -64,6 +64,10 @@ public class BinaryTreePreorderTraversal {
     // IDEA: DFS
     List<Integer> res = new ArrayList<>();
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public List<Integer> preorderTraversal(TreeNode root) {
         // edge
         if (root == null) {
@@ -78,6 +82,10 @@ public class BinaryTreePreorderTraversal {
         return res;
     }
 
+    /**
+     * time = O(V + E)
+     * space = O(V)
+     */
     public void preOrderDfs(TreeNode root) {
         if (root == null) {
             return;

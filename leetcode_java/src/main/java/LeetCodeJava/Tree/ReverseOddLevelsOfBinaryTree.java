@@ -69,6 +69,10 @@ public class ReverseOddLevelsOfBinaryTree {
 
     // V0-1
     // IDEA: DFS + `left, right, layer as helper func parameter` (fixed by gpt)
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public TreeNode reverseOddLevels_0_1(TreeNode root) {
         if (root == null)
             return null;
@@ -116,6 +120,10 @@ public class ReverseOddLevelsOfBinaryTree {
     // V2-1
     // https://leetcode.com/problems/reverse-odd-levels-of-binary-tree/editorial/
     // IDEA: DFS
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public TreeNode reverseOddLevels_2_1(TreeNode root) {
         traverseDFS(root.left, root.right, 0);
         return root;
@@ -157,6 +165,10 @@ public class ReverseOddLevelsOfBinaryTree {
     // V2-2
     // https://leetcode.com/problems/reverse-odd-levels-of-binary-tree/editorial/
     // IDEA: BFS
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public TreeNode reverseOddLevels_2_2(TreeNode root) {
         if (root == null) {
             return null; // Return null if the tree is empty.

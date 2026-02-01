@@ -67,6 +67,10 @@ public class BinaryTreePostorderTraversal {
     // IDEA: DFS
     // TODO: validate it
     List<Integer> res2 = new ArrayList<>();
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public List<Integer> postorderTraversal(TreeNode root) {
         // edge
         if(root == null){
@@ -81,6 +85,10 @@ public class BinaryTreePostorderTraversal {
         return res2;
     }
 
+    /**
+     * time = O(V + E)
+     * space = O(V)
+     */
     public void postOrderDfs(TreeNode root){
         if(root == null){
             return;

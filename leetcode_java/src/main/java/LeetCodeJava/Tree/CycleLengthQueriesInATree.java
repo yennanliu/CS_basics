@@ -84,6 +84,10 @@ public class CycleLengthQueriesInATree {
      * The number of moves is distance(a,b).
      *
      */
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int[] cycleLengthQueries_0_1(int n, int[][] queries) {
         int m = queries.length;
         int[] ans = new int[m];
@@ -147,6 +151,10 @@ public class CycleLengthQueriesInATree {
      *
      * In the provided Java solution, the distance is found by counting the steps (edges) taken to move a and b up to the LCA.
      */
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int[] cycleLengthQueries_0_2(int n, int[][] queries) {
         // The problem is about finding the length of the cycle created by adding an edge
         // between two nodes (a, b) in a complete binary tree.
@@ -191,6 +199,10 @@ public class CycleLengthQueriesInATree {
 
     // V1
     // https://leetcode.com/problems/cycle-length-queries-in-a-tree/solutions/2923489/javacpython-lowest-common-ancestor-by-le-p3ft/
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int[] cycleLengthQueries_1(int n, int[][] queries) {
         int m = queries.length, res[] = new int[m];
         for (int i = 0; i < m; ++i) {
@@ -209,6 +221,10 @@ public class CycleLengthQueriesInATree {
 
     // V2
     // https://leetcode.com/problems/cycle-length-queries-in-a-tree/solutions/7118068/cycle-length-queries-in-a-tree-2509q-by-5h8cf/
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int[] cycleLengthQueries_2(int n, int[][] queries) {
         int m = queries.length;
         int[] result = new int[m];

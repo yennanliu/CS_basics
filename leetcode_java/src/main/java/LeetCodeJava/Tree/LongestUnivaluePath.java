@@ -50,11 +50,19 @@ public class LongestUnivaluePath {
     // IDEA : Recursion
     // https://leetcode.com/problems/longest-univalue-path/editorial/
     int ans;
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int longestUnivaluePath(TreeNode root) {
         ans = 0;
         arrowLength(root);
         return ans;
     }
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int arrowLength(TreeNode node) {
         if (node == null) return 0;
         int left = arrowLength(node.left);
@@ -76,6 +84,10 @@ public class LongestUnivaluePath {
     // V3
     // https://leetcode.com/problems/longest-univalue-path/solutions/1427807/java-easy-approach-with-explanation-postorder/
     private int Lpath= 0;//maximum univalued path length
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int longestUnivaluePath_3(TreeNode root)
     {
         pathCalculator(root);//helps to calculate the univalued path

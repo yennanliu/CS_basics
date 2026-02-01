@@ -45,6 +45,10 @@ public class AllNodesDistanceKInBinaryTree {
     // V0
     // IDEA: BFS + PARENT MAP (fixed by gpt)
     Map<TreeNode, TreeNode> parentMap_0 = new HashMap<>();
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public List<Integer> distanceK(TreeNode root, TreeNode target, int k) {
         List<Integer> res = new ArrayList<>();
         if (root == null) {
@@ -148,6 +152,10 @@ public class AllNodesDistanceKInBinaryTree {
      */
     Map<TreeNode, TreeNode> parentMap_0_0_1 = new HashMap<>();
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public List<Integer> distanceK_0_0_1(TreeNode root, TreeNode target, int k) {
         List<Integer> res = new ArrayList<>();
         if (root == null)
@@ -250,6 +258,10 @@ public class AllNodesDistanceKInBinaryTree {
      */
     Map<TreeNode, TreeNode> parentMap = new HashMap<>();
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public List<Integer> distanceK_0_1(TreeNode root, TreeNode target, int k) {
         if (root == null)
             return res;
@@ -348,6 +360,10 @@ public class AllNodesDistanceKInBinaryTree {
     // IDEA: PURE DFS (gpt)
     List<Integer> res_0_2 = new ArrayList<>();
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public List<Integer> distanceK_0_2(TreeNode root, TreeNode target, int k) {
         dfs(root, target, k);
         return res_0_2;
@@ -414,6 +430,10 @@ public class AllNodesDistanceKInBinaryTree {
     private Set<Integer> vis;
     private List<Integer> ans;
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public List<Integer> distanceK_1(TreeNode root, TreeNode target, int k) {
         p = new HashMap<>();
         vis = new HashSet<>();
@@ -450,6 +470,10 @@ public class AllNodesDistanceKInBinaryTree {
     // V2
     // IDEA: BFS
     // https://leetcode.com/problems/all-nodes-distance-k-in-binary-tree/solutions/3747835/two-bfs-c-java-python-beginner-friendly-jwora/
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public List<Integer> distanceK_2(TreeNode root, TreeNode target, int k) {
         List<Integer> ans = new ArrayList<>();
         Map<Integer, TreeNode> parent = new HashMap<>();
@@ -509,6 +533,10 @@ public class AllNodesDistanceKInBinaryTree {
     // V3
     // IDEA: BFS
     // https://leetcode.com/problems/all-nodes-distance-k-in-binary-tree/solutions/7205194/the-best-detailed-explanation-let-you-ln-i610/
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public List<Integer> distanceK_3(TreeNode root, TreeNode target, int k) {
 
         HashMap<TreeNode, TreeNode> map = new HashMap<>();
@@ -554,6 +582,10 @@ public class AllNodesDistanceKInBinaryTree {
         return list;
     }
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public void getParent(TreeNode root, HashMap<TreeNode, TreeNode> map) {
 
         Queue<TreeNode> q = new LinkedList<>();
