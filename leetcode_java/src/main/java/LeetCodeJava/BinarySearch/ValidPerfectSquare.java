@@ -36,6 +36,10 @@ public class ValidPerfectSquare {
 
     // V0
     // IDEA : BINARY SEARCH
+    /**
+     * time = O(log N)
+     * space = O(1)
+     */
     public boolean isPerfectSquare(int num) {
         //edge
         if (num < 0) {
@@ -98,6 +102,10 @@ public class ValidPerfectSquare {
     // V1
     // IDEA : BINARY SEARCH
     // https://leetcode.com/problems/valid-perfect-square/editorial/
+    /**
+     * time = O(log N)
+     * space = O(1)
+     */
     public boolean isPerfectSquare_1(int num) {
         if (num < 2) {
             return true;

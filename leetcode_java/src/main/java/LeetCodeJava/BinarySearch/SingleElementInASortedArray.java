@@ -40,6 +40,10 @@ public class SingleElementInASortedArray {
 
     // V0
     // IDEA: HASHMAP
+    /**
+     * time = O(log N)
+     * space = O(1)
+     */
     public int singleNonDuplicate(int[] nums) {
         // edge
         if (nums == null || nums.length == 0) {
@@ -64,6 +68,10 @@ public class SingleElementInASortedArray {
 
     // V2
     // https://leetcode.com/problems/single-element-in-a-sorted-array/solutions/3212178/day-52-binary-search-easiest-beginner-fr-sqyl/
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int singleNonDuplicate_2(int[] nums) {
         int left = 0, right = nums.length - 1;
         while (left < right) {

@@ -59,6 +59,10 @@ public class SplitArrayLargestSum {
     // V1-1
     // https://www.youtube.com/watch?v=YUF3_eBdzsk
     // https://github.com/neetcode-gh/leetcode/blob/main/java%2F0410-split-array-largest-sum.java
+    /**
+     * time = O(N * log M)
+     * space = O(1)
+     */
     public int splitArray_1_1(int[] nums, int k) {
         int start = 0;
         int end = 0;
@@ -96,6 +100,10 @@ public class SplitArrayLargestSum {
     // V2
     // https://leetcode.com/problems/split-array-largest-sum/solutions/1899033/java-simple-and-easy-solution-beats-100/
     int[] nums;
+    /**
+     * time = O(N * m)
+     * space = O(N * m)
+     */
     public int splitArray_2(int[] nums, int m) {
         this.nums = nums;
         int low = 0, high = 0, min = Integer.MAX_VALUE;

@@ -155,6 +155,10 @@ public class PeakIndexInAMountainArray {
      * 	•	Higher than neighbors → stop, that’s the peak.
      *
      */
+    /**
+     * time = O(log N)
+     * space = O(1)
+     */
     public int peakIndexInMountainArray(int[] arr) {
         if (arr == null || arr.length < 3) {
             return -1; // Return -1 if the array length is less than 3

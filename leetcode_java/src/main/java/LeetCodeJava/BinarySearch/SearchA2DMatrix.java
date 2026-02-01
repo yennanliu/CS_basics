@@ -41,6 +41,10 @@ public class SearchA2DMatrix {
 
     // V0
     // IDEA : BINARY SEARCH + FLATTEN MATRIX
+    /**
+     * time = O(log(M * N))
+     * space = O(1)
+     */
     public boolean searchMatrix(int[][] matrix, int target) {
 
         int length = matrix[0].length;
@@ -74,6 +78,10 @@ public class SearchA2DMatrix {
 
     // V0-1
     // IDEA: BINARY SEARCH + 2D ARRAY
+    /**
+     * time = O(M + N)
+     * space = O(1)
+     */
     public boolean searchMatrix_0_1(int[][] matrix, int target) {
 
         int l = matrix.length;
@@ -130,6 +138,10 @@ public class SearchA2DMatrix {
     // V1
     // IDEA : BINARY SEARCH + FLATTEN MATRIX
     // https://leetcode.com/problems/search-a-2d-matrix/editorial/
+    /**
+     * time = O(log(M * N))
+     * space = O(1)
+     */
     public boolean searchMatrix_2(int[][] matrix, int target) {
         int m = matrix.length;
         if (m == 0)
