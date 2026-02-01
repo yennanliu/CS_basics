@@ -1,6 +1,10 @@
 package LeetCodeJava.String;
 
 // https://leetcode.com/problems/compare-version-numbers/description/
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 165. Compare Version Numbers
  * Solved
@@ -69,6 +73,65 @@ public class CompareVersionNumbers {
 //
 //        return 0;
 //    }
+
+    // V0-1
+    // IDEA: STR OP (fixed by gemini)
+    public int compareVersion_0_1(String version1, String version2) {
+        // 1. Split by dot (regex needs \\.)
+        String[] v1 = version1.split("\\.");
+        String[] v2 = version2.split("\\.");
+
+        // 2. Iterate through the LONGEST array
+        int maxLength = Math.max(v1.length, v2.length);
+
+        for (int i = 0; i < maxLength; i++) {
+            // 3. Get the integer value, or 0 if we ran out of parts
+            // Integer.parseInt automatically handles leading zeros (e.g., "001" -> 1)
+            int num1 = i < v1.length ? Integer.parseInt(v1[i]) : 0;
+            int num2 = i < v2.length ? Integer.parseInt(v2[i]) : 0;
+
+            if (num1 > num2) {
+                return 1;
+            } else if (num1 < num2) {
+                return -1;
+            }
+            // If they are equal, the loop continues to the next part
+        }
+
+        // 4. If the loop finishes, all compared parts were equal
+        return 0;
+    }
+
+
+    // V0-2
+    // IDEA: STR OP (gpt)
+    public int compareVersion_0_2(String version1, String version2) {
+
+        List<Integer> list1 = new ArrayList<>();
+        List<Integer> list2 = new ArrayList<>();
+
+        for (String x : version1.split("\\.")) {
+            list1.add(Integer.parseInt(x)); // ✅ keep zeros
+        }
+
+        for (String x : version2.split("\\.")) {
+            list2.add(Integer.parseInt(x)); // ✅ keep zeros
+        }
+
+        int size = Math.max(list1.size(), list2.size());
+
+        for (int i = 0; i < size; i++) {
+            int v1 = i < list1.size() ? list1.get(i) : 0;
+            int v2 = i < list2.size() ? list2.get(i) : 0;
+
+            if (v1 > v2)
+                return 1;
+            if (v1 < v2)
+                return -1;
+        }
+
+        return 0;
+    }
 
 
     // V1

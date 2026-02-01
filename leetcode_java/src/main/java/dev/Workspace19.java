@@ -3915,10 +3915,133 @@ public class Workspace19 {
 
 
     // LC 165
+    // 16.40 - 50 pm
+    /**
+     * -> return the version comparision
+     *   Return the following:
+     *
+     *   - If version1 < version2, return -1.
+     *   - If version1 > version2, return 1.
+     *   - Otherwise, return 0.
+     *
+     *    (left-to-right order. )
+     *
+     *
+     *   2 version str:
+     *     - version1, version2
+     *
+     *
+     *
+     *  -----------------------
+     *
+     *   IDEA 1) STR OP
+     *
+     *
+     *
+     *  -----------------------
+     *
+     *
+     */
     public int compareVersion(String version1, String version2) {
+        // edge
 
-        return 0;
+        List<Integer> list1 = new ArrayList<>();
+        List<Integer> list2 = new ArrayList<>();
+
+        int cnt = 0;
+        for (String x : version1.split("\\.")) {
+            if (cnt == 0) {
+                list1.add(Integer.parseInt(x));
+            } else {
+                if (!x.equals("0")) {
+                    list1.add(Integer.parseInt(x));
+                }
+            }
+            cnt += 1;
+        }
+
+        cnt = 0;
+        for (String x : version2.split("\\.")) {
+            if (cnt == 0) {
+                list2.add(Integer.parseInt(x));
+            } else {
+                if (!x.equals("0")) {
+                    list2.add(Integer.parseInt(x));
+                }
+            }
+            cnt += 1;
+        }
+
+        System.out.println(">>> list1 = " + list1 +
+                ", list2 = " + list2);
+
+        int size = Math.min(list1.size(), list2.size());
+
+        for (int i = 0; i < size; i++) {
+            if (list1.get(i) > list2.get(i)) {
+                return 1;
+            }
+            if (list1.get(i) < list2.get(i)) {
+                return -1;
+            }
+        }
+
+        if(list1.size() == list2.size()){
+            return 0;
+        }
+
+        return list1.size() > list2.size() ? 1 : -1;
     }
+
+
+
+
+//    public int compareVersion(String version1, String version2) {
+//        // edge
+//
+//        List<Integer> list1 = new ArrayList<>();
+//        List<Integer> list2 = new ArrayList<>();
+//
+//        int cnt = 0;
+//        for(String x: version1.split("")){
+//            if(cnt == 0){
+//                list1.add(Integer.parseInt(x));
+//            }else{
+//                if(!x.equals("0")){
+//                    list1.add(Integer.parseInt(x));
+//                }
+//            }
+//            cnt += 1;
+//        }
+//
+//        cnt = 0;
+//        for(String x: version2.split("")){
+//            if(cnt == 0){
+//                list2.add(Integer.parseInt(x));
+//            }else{
+//                if(!x.equals("0")){
+//                    list2.add(Integer.parseInt(x));
+//                }
+//            }
+//            cnt += 1;
+//        }
+//
+//        System.out.println(">>> list1 = " + list1 +
+//                ", list2 = " + list2);
+//
+//        int size = Math.min(list1.size(), list2.size());
+//
+//        for(int i = 0; i < size; i++){
+//            if(list1.get(i) > list2.get(i)){
+//                return 1;
+//            }if(list1.get(i) < list2.get(i)){
+//                return -1;
+//            }
+//        }
+//
+//
+//        return 0;
+//    }
 
 
 
