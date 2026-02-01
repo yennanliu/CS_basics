@@ -60,8 +60,19 @@ public class LoggerRateLimiter {
         public Logger() {
             limiter = new HashMap<>();
         }
-
-        public boolean shouldPrintMessage(int timestamp, String message) {
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    public boolean shouldPrintMessage(int timestamp, String message) {
             if (!this.limiter.containsKey(message)){
                 this.limiter.put(message, timestamp+10);
                 return true;
@@ -93,7 +104,19 @@ public class LoggerRateLimiter {
          * If the message has not been printed before OR the current timestamp is >= its next allowable print time,
          * update the map and return true.
          */
-        public boolean shouldPrintMessage(int timestamp, String message) {
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    public boolean shouldPrintMessage(int timestamp, String message) {
 
             // 1. Check if the message has been seen before
             if (!this.limiter.containsKey(message)) {
@@ -136,8 +159,19 @@ public class LoggerRateLimiter {
         public Logger_0_2() {
             this.limiter = new HashMap<>();
         }
-
-        public boolean shouldPrintMessage(int timestamp, String message) {
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    public boolean shouldPrintMessage(int timestamp, String message) {
             // if message was never logged before
             if (!this.limiter.containsKey(message)) {
                 this.limiter.put(message, timestamp + 10);
@@ -174,7 +208,19 @@ public class LoggerRateLimiter {
          false. If this method returns false, the message will not be printed. The timestamp is in
          seconds granularity.
          */
-        public boolean shouldPrintMessage(int timestamp, String message) {
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    public boolean shouldPrintMessage(int timestamp, String message) {
             int t = limiter.getOrDefault(message, 0);
             if (t > timestamp) {
                 return false;

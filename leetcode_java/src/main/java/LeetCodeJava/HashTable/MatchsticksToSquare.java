@@ -50,6 +50,18 @@ public class MatchsticksToSquare {
     // https://www.youtube.com/watch?v=hUe0cUKV-YY
     // https://github.com/neetcode-gh/leetcode/blob/main/java%2F0473-matchsticks-to-square.java
     boolean[] used;
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public boolean makesquare_1(int[] matchsticks) {
         used = new boolean[matchsticks.length];
         int total = 0;
@@ -92,6 +104,18 @@ public class MatchsticksToSquare {
 
     // V2
     // IDEA: BACKTRACK (GEMINI)
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public boolean makesquare_2(int[] matchsticks) {
         if (matchsticks == null || matchsticks.length < 4) {
             return false;
@@ -155,6 +179,18 @@ public class MatchsticksToSquare {
     public int possibleSquareSide;
 
     // Depth First Search function.
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public boolean dfs(int index) {
 
         // If we have exhausted all our matchsticks, check if all sides of the square are of equal length
@@ -178,7 +214,18 @@ public class MatchsticksToSquare {
 
         return false;
     }
-
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public boolean makesquare_4_1(int[] nums) {
         // Empty matchsticks.
         if (nums == null || nums.length == 0) {

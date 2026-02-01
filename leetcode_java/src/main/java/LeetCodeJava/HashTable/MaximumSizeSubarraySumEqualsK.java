@@ -78,6 +78,18 @@ public class MaximumSizeSubarraySumEqualsK {
      * 	        •	Subarray [3, 3] has sum 3, so maxSize = max(2, 3 - 2) = 2
      * 	        •	Update map: {0: -1, 1: 0, 3: 1, 2: 2, 5: 3}
      */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int maxSubArrayLen_0_1(int[] nums, int k) {
         // Map to store (prefixSum, index)
         Map<Integer, Integer> preSumMap = new HashMap<>();
@@ -155,6 +167,18 @@ public class MaximumSizeSubarraySumEqualsK {
     // V0-2
     // IDEA: Hash MAP + PRE-SUM ARRAY
     // TODO: validate
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int maxSubArrayLen_0_2(int[] nums, int k) {
         // Edge case
         if (nums == null || nums.length == 0) {
@@ -200,6 +224,18 @@ public class MaximumSizeSubarraySumEqualsK {
 
     // V1
     // https://leetcode.com/problems/maximum-size-subarray-sum-equals-k/solutions/1017059/java-prefix-sums/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int maxSubArrayLen(int[] nums, int k) {
 
         int sum = 0;
@@ -223,6 +259,18 @@ public class MaximumSizeSubarraySumEqualsK {
 
     // V2
     // https://leetcode.com/problems/maximum-size-subarray-sum-equals-k/solutions/77784/o-n-clean-short-java-python-solution-with-hashmap-with-code-comments/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int maxSubArrayLen_2(int[] nums, int k) {
         int currSum = 0, maxLen = 0; // set initial values for cumulative sum and max length sum to k
         HashMap<Integer, Integer> sumToIndexMap = new HashMap<Integer, Integer>(); // key: cumulative sum until index i, value: i
@@ -242,6 +290,18 @@ public class MaximumSizeSubarraySumEqualsK {
 
     // V3
     // https://leetcode.com/problems/maximum-size-subarray-sum-equals-k/solutions/77844/java-with-newer-methods/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int maxSubArrayLen_3(int[] nums, int k) {
         Map<Integer, Integer> index = new HashMap();
         index.put(0, -1);
@@ -256,6 +316,18 @@ public class MaximumSizeSubarraySumEqualsK {
 
     // V4
     // https://leetcode.ca/2016-10-20-325-Maximum-Size-Subarray-Sum-Equals-k/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int maxSubArrayLen_4(int[] nums, int k) {
         Map<Long, Integer> d = new HashMap<>();
         d.put(0L, -1);
@@ -271,6 +343,18 @@ public class MaximumSizeSubarraySumEqualsK {
 
     // V5
     // https://leetcode.ca/2017-06-12-560-Subarray-Sum-Equals-K/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int subarraySum_5(int[] nums, int k) {
         Map<Integer, Integer> counter = new HashMap<>();
         counter.put(0, 1);

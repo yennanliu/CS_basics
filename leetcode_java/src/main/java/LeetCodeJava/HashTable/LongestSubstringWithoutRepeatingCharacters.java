@@ -48,6 +48,18 @@ public class LongestSubstringWithoutRepeatingCharacters {
 
     // V0
     // IDEA : HASHMAP + SLIDING WINDOW
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int lengthOfLongestSubstring(String s) {
         // Edge case
         if (s == null || s.isEmpty()) {
@@ -97,6 +109,18 @@ public class LongestSubstringWithoutRepeatingCharacters {
 
     // V0-0-1
     // IDEA: HASHSET + SLIDE WINDOW
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int lengthOfLongestSubstring_0_0_1(String s) {
         // edge
         if (s.isEmpty()) {
@@ -154,6 +178,18 @@ public class LongestSubstringWithoutRepeatingCharacters {
 
     // V0-1
     // IDEA : HASHMAP + SLIDING WINDOW
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int lengthOfLongestSubstring_0_1(String s) {
 
         /**
@@ -209,6 +245,18 @@ public class LongestSubstringWithoutRepeatingCharacters {
 
     // V0-2
     // IDEA : SLIDING WINDOW + HASH SET
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int lengthOfLongestSubstring_0_2(String s) {
 
         if (s.equals("")){
@@ -246,6 +294,18 @@ public class LongestSubstringWithoutRepeatingCharacters {
 
     // V0-3
     // IDEA: HASHMAP + SLIDING WINDOW (GPT)
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int lengthOfLongestSubstring_0_3(String s) {
         // Edge cases
         if (s == null || s.length() == 0) {
@@ -279,6 +339,18 @@ public class LongestSubstringWithoutRepeatingCharacters {
 
     // V0-4
     // IDEA: HASHMAP + SLIDING WINDOW
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int lengthOfLongestSubstring_0_4(String s) {
         if (s == null || s.isEmpty())
             return 0;
@@ -307,6 +379,18 @@ public class LongestSubstringWithoutRepeatingCharacters {
     // V1
     // IDEA : BRUTE FORCE
     // https://leetcode.com/problems/longest-substring-without-repeating-characters/editorial/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int lengthOfLongestSubstring_1(String s) {
         int n = s.length();
 
@@ -339,6 +423,18 @@ public class LongestSubstringWithoutRepeatingCharacters {
     // V2
     // IDEA : SLIDING WINDOW
     // https://leetcode.com/problems/longest-substring-without-repeating-characters/editorial/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int lengthOfLongestSubstring_2(String s) {
         Map<Character, Integer> chars = new HashMap();
 

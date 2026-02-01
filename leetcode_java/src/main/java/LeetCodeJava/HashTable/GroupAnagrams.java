@@ -81,6 +81,10 @@ public class GroupAnagrams {
     }
 
     // https://www.scaler.com/topics/sort-a-string-in-java/
+    /**
+     * time = O(K log K)
+     * space = O(K)
+     */
     private String sortString(String strs){
 
         if (strs.length() == 0 || strs.equals(null)) {
