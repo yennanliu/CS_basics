@@ -74,6 +74,10 @@ public class BinaryTreeRightSideView {
      */
     // VO
     // IDEA : BFS + custom class (`NodeLayer`)
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public class NodeLayer {
         TreeNode node;
         int layer;
@@ -84,6 +88,10 @@ public class BinaryTreeRightSideView {
         }
     }
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public List<Integer> rightSideView(TreeNode root) {
         List<Integer> res = new ArrayList<>();
         // edge
@@ -132,6 +140,10 @@ public class BinaryTreeRightSideView {
 
     // V0-0-1
     // IDEA: BFS + `pre-order traverse` (root -> left -> right) + `maintain rightmost element`
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public List<Integer> rightSideView_0_0_1(TreeNode root) {
         List<Integer> res = new ArrayList<>();
         // edge
@@ -193,6 +205,10 @@ public class BinaryTreeRightSideView {
 
     // V0-1
     // IDEA: BFS + `right node collect`
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public List<Integer> rightSideView_0_1(TreeNode root) {
         List<Integer> res = new ArrayList<>();
         Queue<TreeNode> q = new LinkedList<>();
@@ -237,6 +253,10 @@ public class BinaryTreeRightSideView {
 
     // V0-2
     // IDEA : BFS + LC 102
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public List<Integer> rightSideView_0_2(TreeNode root) {
 
         List<Integer> res = new ArrayList<>();
@@ -291,6 +311,10 @@ public class BinaryTreeRightSideView {
 
     // V0-3
     // IDEA:  BFS + `maintain the RIGHTMOST` element (fixed by gpt)
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public List<Integer> rightSideView_0_3(TreeNode root) {
         List<Integer> res = new ArrayList<>();
         if (root == null) {
@@ -328,6 +352,10 @@ public class BinaryTreeRightSideView {
     // V1-1
     // https://neetcode.io/problems/binary-tree-right-side-view
     // IDEA: BFS
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public List<Integer> rightSideView_1_1(TreeNode root) {
         List<Integer> res = new ArrayList<>();
         Queue<TreeNode> q = new LinkedList<>();
@@ -357,6 +385,10 @@ public class BinaryTreeRightSideView {
     // IDEA: DFS
     List<Integer> res = new ArrayList<>();
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public List<Integer> rightSideView_1_2(TreeNode root) {
         dfs(root, 0);
         return res;
@@ -378,6 +410,10 @@ public class BinaryTreeRightSideView {
     // V2
     // IDEA: BFS: Two Queues
     // https://leetcode.com/problems/binary-tree-right-side-view/editorial/
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public List<Integer> rightSideView_2(TreeNode root) {
         if (root == null) return new ArrayList<Integer>();
 
@@ -413,6 +449,10 @@ public class BinaryTreeRightSideView {
     // V3
     // IDEA:  BFS: One Queue + Sentinel
     // https://leetcode.com/problems/binary-tree-right-side-view/editorial/
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public List<Integer> rightSideView_3(TreeNode root) {
         if (root == null) return new ArrayList<Integer>();
 
@@ -451,6 +491,10 @@ public class BinaryTreeRightSideView {
     // V4
     // IDEA: BFS: One Queue + Level Size Measurements
     // https://leetcode.com/problems/binary-tree-right-side-view/editorial/
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public List<Integer> rightSideView_4(TreeNode root) {
         if (root == null) return new ArrayList<Integer>();
 
@@ -483,6 +527,10 @@ public class BinaryTreeRightSideView {
     // IDEA: Recursive DFS
     // https://leetcode.com/problems/binary-tree-right-side-view/editorial/
     List<Integer> rightside = new ArrayList();
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public void helper(TreeNode node, int level) {
         if (level == rightside.size())
             rightside.add(node.val);
@@ -493,6 +541,10 @@ public class BinaryTreeRightSideView {
             helper(node.left, level + 1);
     }
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public List<Integer> rightSideView_5(TreeNode root) {
         if (root == null) return rightside;
 
