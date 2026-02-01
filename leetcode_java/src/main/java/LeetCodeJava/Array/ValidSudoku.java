@@ -68,7 +68,10 @@ public class ValidSudoku {
 
     // V0
     // IDEA: SET, MATRIX OP (fixed by GPT)
-    // time: O(1), space: O(1)
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public boolean isValidSudoku(char[][] board) {
         // edge case: if board is empty, return true (no validation needed)
         if (board.length == 0 || board[0].length == 0) {
@@ -129,7 +132,10 @@ public class ValidSudoku {
     // V0-1
     // IDEA : SET
     // https://github.com/neetcode-gh/leetcode/blob/main/java/0036-valid-sudoku.java
-    // time: O(1), space: O(1)
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public boolean isValidSudoku_0_1(char[][] board) {
         //neetcode solution, slightly modified
 
@@ -204,7 +210,10 @@ public class ValidSudoku {
     // V1
     // IDEA : HASH SET
     // https://leetcode.com/problems/valid-sudoku/editorial/
-    // time: O(1), space: O(1)
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public boolean isValidSudoku_1(char[][] board) {
         int N = 9;
 
@@ -254,7 +263,10 @@ public class ValidSudoku {
     // V2
     // IDEA : Array of Fixed Length
     // https://leetcode.com/problems/valid-sudoku/editorial/
-    // time: O(1), space: O(1)
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public boolean isValidSudoku_2(char[][] board) {
         int N = 9;
 
@@ -297,7 +309,10 @@ public class ValidSudoku {
     // V3
     // IDEA : Bitmasking
     // https://leetcode.com/problems/valid-sudoku/editorial/
-    // time: O(1), space: O(1)
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public boolean isValidSudoku_3(char[][] board) {
         int N = 9;
 

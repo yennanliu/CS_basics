@@ -44,6 +44,10 @@ public class ConcatenationOfArray {
 
     // V0
     // IDEA: ARRAY OP
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int[] getConcatenation(int[] nums) {
         // edge
         if (nums == null || nums.length == 0) {
@@ -64,6 +68,10 @@ public class ConcatenationOfArray {
 
     // V1
     // https://leetcode.com/problems/concatenation-of-array/solutions/3612143/java-simple-solution-runtime-9417-memory-yeuo/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int[] getConcatenation_1(int[] nums) {
         int len = nums.length;
         int[] ans = new int[2 * len];
@@ -76,6 +84,10 @@ public class ConcatenationOfArray {
 
 
     // V2
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int[] getConcatenation_2(int[] nums) {
         int[] ans = new int[2 * nums.length];
         for (int i = 0; i < nums.length; i++) {

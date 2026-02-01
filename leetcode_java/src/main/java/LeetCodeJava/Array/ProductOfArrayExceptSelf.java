@@ -41,7 +41,10 @@ public class ProductOfArrayExceptSelf {
 
     // VO
     // IDEA : ARRAY PRODUCT
-    // time: O(N), space: O(N)
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int[] productExceptSelf(int[] nums) {
 
         if (nums.length == 0 || nums.equals(null)){
@@ -83,7 +86,10 @@ public class ProductOfArrayExceptSelf {
 
     // V0-1
     // LC 238
-    // time: O(N), space: O(1)
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int[] productExceptSelf_0_1(int[] nums) {
 
         // edge
@@ -123,7 +129,10 @@ public class ProductOfArrayExceptSelf {
     // V1
     // IDEA : Left and Right product lists
     // https://leetcode.com/problems/product-of-array-except-self/editorial/
-    // time: O(N), space: O(N)
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int[] productExceptSelf_2(int[] nums) {
 
         // The length of the input array
@@ -174,7 +183,10 @@ public class ProductOfArrayExceptSelf {
     // V2
     // IDEA : O(1) space approach
     // https://leetcode.com/problems/product-of-array-except-self/editorial/
-    // time: O(N), space: O(1)
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int[] productExceptSelf_3(int[] nums) {
 
         // The length of the input array

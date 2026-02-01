@@ -7,7 +7,10 @@ import java.util.HashMap;
 public class MajorityElement {
 
     // V0
-    // time: O(N), space: O(N)
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int majorityElement(int[] nums) {
 
         if (nums.length == 1){
@@ -36,7 +39,10 @@ public class MajorityElement {
 
     // V1
     // https://leetcode.com/problems/majority-element/solutions/3407133/o-1-java-solution-ternary-operators-in-linear-time-beats-100/
-    // time: O(N), space: O(1)
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int majorityElement_1(int[] nums) {
         int majority_index = 0;
         int count = 1;
