@@ -646,6 +646,10 @@ public class StudentAttendanceRecord2 {
         return memo[n][totalAbsences][consecutiveLates] = count;
     }
 
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int checkRecord_2_1(int n) {
         // Initialize the cache.
         memo = new int[n + 1][2][3];
@@ -662,6 +666,10 @@ public class StudentAttendanceRecord2 {
     // V2_2
     // IDEA : Bottom-Up Dynamic Programming
     // https://leetcode.com/problems/student-attendance-record-ii/editorial/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int checkRecord_2_2(int n) {
         int MOD = 1000000007;
         // Cache to store sub-problem results.
@@ -719,6 +727,10 @@ public class StudentAttendanceRecord2 {
     // V2_3
     // IDEA : Bottom-Up Dynamic Programming, Space Optimized
     // https://leetcode.com/problems/student-attendance-record-ii/editorial/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int checkRecord_2_3(int n) {
         int MOD = 1000000007;
         // Cache to store current sub-problem results.

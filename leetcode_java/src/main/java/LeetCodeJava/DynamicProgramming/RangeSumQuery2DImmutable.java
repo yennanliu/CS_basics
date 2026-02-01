@@ -107,6 +107,10 @@ public class RangeSumQuery2DImmutable {
             }
         }
 
+        /**
+         * time = O(N)
+         * space = O(N)
+         */
         public int sumRegion(int row1, int col1, int row2, int col2) {
             // Calculate the sum of the region using the inclusion-exclusion principle
             /**
@@ -150,6 +154,10 @@ public class RangeSumQuery2DImmutable {
             }
         }
 
+        /**
+         * time = O(N)
+         * space = O(N)
+         */
         public int sumRegion(int row1, int col1, int row2, int col2) {
             return preSum[row2 + 1][col2 + 1] - preSum[row2 + 1][col1] - preSum[row1][col2 + 1] + preSum[row1][col1];
         }
@@ -183,6 +191,10 @@ public class RangeSumQuery2DImmutable {
             }
         }
 
+        /**
+         * time = O(N)
+         * space = O(N)
+         */
         public int sumRegion(int row1, int col1, int row2, int col2) {
             return sums[row2 + 1][col2 + 1]
                     - sums[row2 + 1][col1]
@@ -206,6 +218,10 @@ public class RangeSumQuery2DImmutable {
                     sums[i][j] = sums[i-1][j] + sums[i][j-1] + matrix[i-1][j-1] - sums[i-1][j-1];
         }
 
+        /**
+         * time = O(N)
+         * space = O(N)
+         */
         public int sumRegion(int row1, int col1, int row2, int col2) {
             int RED_RECTANGLE = sums[row2+1][col2+1];
             int PURPLE_RECTANGLES = sums[row1][col2+1] + sums[row2+1][col1];
@@ -228,6 +244,10 @@ public class RangeSumQuery2DImmutable {
                     dp[i][j] = M[i-1][j-1] + dp[i-1][j] + dp[i][j-1] - dp[i-1][j-1];
         }
 
+        /**
+         * time = O(N)
+         * space = O(N)
+         */
         public int sumRegion(int R1, int C1, int R2, int C2) {
             return (int)(dp[R2+1][C2+1] - dp[R2+1][C1] - dp[R1][C2+1] + dp[R1][C1]);
         }
@@ -249,6 +269,10 @@ public class RangeSumQuery2DImmutable {
             }
         }
 
+        /**
+         * time = O(N)
+         * space = O(N)
+         */
         public int sumRegion(int row1, int col1, int row2, int col2) {
             return s[row2 + 1][col2 + 1] - s[row2 + 1][col1] - s[row1][col2 + 1] + s[row1][col1];
         }

@@ -578,6 +578,10 @@ public class PartitionEqualSubsetSum {
 
     // V0-5
     // IDEA: DP (fixed by gpt)
+    /**
+     * time = O(N * sum)
+     * space = O(sum)
+     */
     public boolean canPartition_0_5(int[] nums) {
         if (nums == null || nums.length < 2)
             return false;
@@ -605,6 +609,10 @@ public class PartitionEqualSubsetSum {
     // V1-1
     // https://neetcode.io/problems/partition-equal-subset-sum
     // IDEA: RECURSION
+    /**
+     * time = O(N * sum)
+     * space = O(sum)
+     */
     public boolean canPartition_1_1(int[] nums) {
         int n = nums.length;
         int sum = 0;
@@ -618,6 +626,10 @@ public class PartitionEqualSubsetSum {
         return dfs(nums, 0, sum / 2);
     }
 
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public boolean dfs(int[] nums, int i, int target) {
         if (i == nums.length) {
             return target == 0;
@@ -634,6 +646,10 @@ public class PartitionEqualSubsetSum {
     // https://neetcode.io/problems/partition-equal-subset-sum
     // IDEA: Dynamic Programming (Top-Down)
     Boolean[][] memo;
+    /**
+     * time = O(N * sum)
+     * space = O(sum)
+     */
     public boolean canPartition_1_2(int[] nums) {
         int n = nums.length;
         int sum = 0;
@@ -648,6 +664,10 @@ public class PartitionEqualSubsetSum {
         return dfs_1_2(nums, 0, sum / 2);
     }
 
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public boolean dfs_1_2(int[] nums, int i, int target) {
         if (i == nums.length) {
             return target == 0;
@@ -668,6 +688,10 @@ public class PartitionEqualSubsetSum {
     // V1-3
     // https://neetcode.io/problems/partition-equal-subset-sum
     // IDEA: Dynamic Programming (Bottom-Up)
+    /**
+     * time = O(N * sum)
+     * space = O(sum)
+     */
     public boolean canPartition_1_3(int[] nums) {
         int n = nums.length;
         int sum = 0;
@@ -702,6 +726,10 @@ public class PartitionEqualSubsetSum {
     // V1-4
     // https://neetcode.io/problems/partition-equal-subset-sum
     // IDEA: Dynamic Programming (Space Optimized)
+    /**
+     * time = O(N * sum)
+     * space = O(sum)
+     */
     public boolean canPartition_1_4(int[] nums) {
         if (sum(nums) % 2 != 0) {
             return false;
@@ -740,6 +768,10 @@ public class PartitionEqualSubsetSum {
     // V1-5
     // https://neetcode.io/problems/partition-equal-subset-sum
     // IDEA: Dynamic Programming (Hash Set)
+    /**
+     * time = O(N * sum)
+     * space = O(sum)
+     */
     public boolean canPartition_1_5(int[] nums) {
         if (Arrays.stream(nums).sum() % 2 != 0) {
             return false;

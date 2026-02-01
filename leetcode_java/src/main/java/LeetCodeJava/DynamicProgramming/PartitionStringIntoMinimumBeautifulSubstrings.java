@@ -60,6 +60,10 @@ public class PartitionStringIntoMinimumBeautifulSubstrings {
     // V0-4
     // IDEA: DP
     // https://buildmoat.teachable.com/courses/7a7af3/lectures/64103646
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public boolean isPow5(int x) {
         while (x % 5 == 0) {
             x /= 5;
@@ -67,6 +71,10 @@ public class PartitionStringIntoMinimumBeautifulSubstrings {
         return x == 1;
     }
 
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int minimumBeautifulSubstrings_0_4(String s) {
         int n = s.length();
         int[] dp = new int[n];
@@ -104,6 +112,10 @@ public class PartitionStringIntoMinimumBeautifulSubstrings {
     // V1
     // IDEA: DP
     // https://leetcode.com/problems/partition-string-into-minimum-beautiful-substrings/solutions/3737219/javacpython-dp-by-lee215-ceow/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int minimumBeautifulSubstrings_1(String s) {
         int n = s.length(), dp[] = new int[n + 1];
         Arrays.fill(dp, n + 1);
@@ -152,6 +164,10 @@ public class PartitionStringIntoMinimumBeautifulSubstrings {
         return n == 1;
     }
 
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int minimumBeautifulSubstrings_2(String s) {
         int n = s.length();
         int dp[][] = new int[n + 1][n + 1];
@@ -163,6 +179,10 @@ public class PartitionStringIntoMinimumBeautifulSubstrings {
     // V3
     // IDEA: DP
     // https://leetcode.com/problems/partition-string-into-minimum-beautiful-substrings/solutions/3737127/palindromic-partitioning-2-variation-c-j-ibm2/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public boolean isFive(int num) {
         while (num > 1) {
             if (num % 5 != 0) {
@@ -173,6 +193,10 @@ public class PartitionStringIntoMinimumBeautifulSubstrings {
         return num == 1;
     }
 
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public boolean isSubstringBeautiful(int i, int j, String s) {
         String str = s.substring(i, j + 1);
         int k = 0;
@@ -193,6 +217,10 @@ public class PartitionStringIntoMinimumBeautifulSubstrings {
         return isFive(ans);
     }
 
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int func(int idx, String s, int[] dp) {
         if (idx == s.length())
             return 0;
@@ -209,6 +237,10 @@ public class PartitionStringIntoMinimumBeautifulSubstrings {
         return min_part;
     }
 
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int minimumBeautifulSubstrings_3(String s) {
         int[] dp = new int[s.length() + 1];
         Arrays.fill(dp, -1);

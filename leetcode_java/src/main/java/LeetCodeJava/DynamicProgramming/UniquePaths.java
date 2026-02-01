@@ -43,6 +43,10 @@ public class UniquePaths {
 
     // V0
     // IDEA: DP (gemini)
+    /**
+     * time = O(M * N)
+     * space = O(N)
+     */
     public int uniquePaths(int m, int n) {
         // 1. Define DP table: dp[y][x] is the number of ways to reach cell (y, x)
         int[][] dp = new int[m][n];
@@ -104,6 +108,10 @@ public class UniquePaths {
 
     // V0-0-0-1
     // IDEA: 2D DP (fixed by gpt)
+    /**
+     * time = O(M * N)
+     * space = O(N)
+     */
     public int uniquePaths_0_0_0_1(int m, int n) {
         if (m == 0 || n == 0)
             return 0;
@@ -140,6 +148,10 @@ public class UniquePaths {
 
     // V0_1_1_1
     // IDEA: 1-D DP (fixed by gpt)
+    /**
+     * time = O(M * N)
+     * space = O(N)
+     */
     public int uniquePaths_0_1_1(int m, int n) {
         int[] dp = new int[n];
         Arrays.fill(dp, 1); // Initialize all to 1 (first row)
@@ -199,6 +211,10 @@ public class UniquePaths {
     //         <- x count ->    <- y count ->
     // -> so the combination count is
     //        (x+y)! / (x! * y!)
+    /**
+     * time = O(M * N)
+     * space = O(N)
+     */
     public int uniquePaths_0_2(int m, int n) {
         if (m == 0 || n == 0) {
             return 0;
@@ -228,10 +244,18 @@ public class UniquePaths {
     // V1-1
     // https://neetcode.io/problems/count-paths
     // IDEA: Recursion
+    /**
+     * time = O(M * N)
+     * space = O(N)
+     */
     public int uniquePaths_1_1(int m, int n) {
         return dfs(0, 0, m, n);
     }
 
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int dfs(int i, int j, int m, int n) {
         if (i == (m - 1) && j == (n - 1)) {
             return 1;
@@ -245,6 +269,10 @@ public class UniquePaths {
     // https://neetcode.io/problems/count-paths
     // IDEA: Dynamic Programming (Top-Down)
     int[][] memo;
+    /**
+     * time = O(M * N)
+     * space = O(N)
+     */
     public int uniquePaths_1_2(int m, int n) {
         memo = new int[m][n];
         for(int[] it : memo) {
@@ -253,6 +281,10 @@ public class UniquePaths {
         return dfs_1_2(0, 0, m, n);
     }
 
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int dfs_1_2(int i, int j, int m, int n) {
         if (i == (m - 1) && j == (n - 1)) {
             return 1;
@@ -268,6 +300,10 @@ public class UniquePaths {
     // V1-3
     // https://neetcode.io/problems/count-paths
     // IDEA:  Dynamic Programming (Bottom-Up)
+    /**
+     * time = O(M * N)
+     * space = O(N)
+     */
     public int uniquePaths_1_3(int m, int n) {
         int[][] dp = new int[m + 1][n + 1];
         dp[m - 1][n - 1] = 1;
@@ -284,6 +320,10 @@ public class UniquePaths {
     // V1-4
     // https://neetcode.io/problems/count-paths
     // IDEA:  Dynamic Programming (Space Optimized)
+    /**
+     * time = O(M * N)
+     * space = O(N)
+     */
     public int uniquePaths_1_4(int m, int n) {
         int[] row = new int[n];
         Arrays.fill(row, 1);
@@ -302,6 +342,10 @@ public class UniquePaths {
     // V1-5
     // https://neetcode.io/problems/count-paths
     // IDEA: Dynamic Programming (Optimal)
+    /**
+     * time = O(M * N)
+     * space = O(N)
+     */
     public int uniquePaths_1_5(int m, int n) {
         int[] dp = new int[n];
         Arrays.fill(dp, 1);
@@ -318,6 +362,10 @@ public class UniquePaths {
     // V1-6
     // https://neetcode.io/problems/count-paths
     // IDEA: MATH
+    /**
+     * time = O(M * N)
+     * space = O(N)
+     */
     public int uniquePaths_1_6(int m, int n) {
         if (m == 1 || n == 1) {
             return 1;
@@ -341,6 +389,10 @@ public class UniquePaths {
 
     // V2
     // https://leetcode.com/problems/unique-paths/solutions/4795217/memoization-and-tabulation-java-100-beats/
+    /**
+     * time = O(M * N)
+     * space = O(N)
+     */
     public int uniquePaths_2(int m, int n) {
         Integer[][] memo = new Integer[m][n];
         return findPath(m - 1, n - 1, memo);
@@ -413,6 +465,10 @@ public class UniquePaths {
     // }
 
     // Tabulation
+    /**
+     * time = O(M * N)
+     * space = O(N)
+     */
     public int uniquePaths_3(int m, int n) {
         int[][] dp= new int[m+1][n+1];
         dp[0][0]= 1;

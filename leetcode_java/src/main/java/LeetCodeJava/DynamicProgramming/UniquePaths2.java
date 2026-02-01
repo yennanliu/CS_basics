@@ -45,6 +45,10 @@ public class UniquePaths2 {
 
     // V0
     // IDEA: DP, LC 62 (gpt)
+    /**
+     * time = O(M * N)
+     * space = O(N)
+     */
     public int uniquePathsWithObstacles(int[][] obstacleGrid) {
         int m = obstacleGrid.length;
         int n = obstacleGrid[0].length;
@@ -112,6 +116,10 @@ public class UniquePaths2 {
     // IDEA: DFS (fixed by gpt) (TLE)
     int pathCnt = 0;
 
+    /**
+     * time = O(M * N)
+     * space = O(N)
+     */
     public int uniquePathsWithObstacles_0_1(int[][] obstacleGrid) {
         int m = obstacleGrid.length;
         int n = obstacleGrid[0].length;
@@ -127,6 +135,10 @@ public class UniquePaths2 {
         return pathCnt;
     }
 
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public void uniquePathDFS(int x, int y, int[][] obstacleGrid, boolean[][] visited) {
         int m = obstacleGrid.length;
         int n = obstacleGrid[0].length;
@@ -153,6 +165,10 @@ public class UniquePaths2 {
 
     // V0-2
     // IDEA: DP (gpt)
+    /**
+     * time = O(M * N)
+     * space = O(N)
+     */
     public int uniquePathsWithObstacles_0_2(int[][] obstacleGrid) {
         int m = obstacleGrid.length;
         int n = obstacleGrid[0].length;
@@ -192,6 +208,10 @@ public class UniquePaths2 {
     // V1
     // https://www.youtube.com/watch?v=pGMsrvt0fpk
     // https://github.com/neetcode-gh/leetcode/blob/main/java%2F0063-unique-paths-ii.java
+    /**
+     * time = O(M * N)
+     * space = O(N)
+     */
     public int uniquePathsWithObstacles_1(int[][] grid) {
         return dfs(
                 grid,
@@ -203,6 +223,10 @@ public class UniquePaths2 {
         );
     }
 
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int dfs(int[][] grid, int i, int j, int m, int n, int[][] dp) {
         if (i < 0 || j < 0 || i >= m || j >= n || grid[i][j] == 1) {
             return 0;
@@ -228,6 +252,10 @@ public class UniquePaths2 {
 
     // V2
     // https://leetcode.com/problems/unique-paths-ii/solutions/6106874/video-simple-solution-by-niits-cni4/
+    /**
+     * time = O(M * N)
+     * space = O(N)
+     */
     public int uniquePathsWithObstacles_2(int[][] obstacleGrid) {
         if (obstacleGrid == null || obstacleGrid[0][0] == 1) {
             return 0;
@@ -255,6 +283,10 @@ public class UniquePaths2 {
 
     // V3
     // https://leetcode.com/problems/unique-paths-ii/solutions/23395/java-simple-and-clean-dp-solution-easy-t-s64f/
+    /**
+     * time = O(M * N)
+     * space = O(N)
+     */
     public int uniquePathsWithObstacles_3(int[][] obstacleGrid) {
         int m = obstacleGrid.length, n = obstacleGrid[0].length;
         int[][] path = new int[m][n];
