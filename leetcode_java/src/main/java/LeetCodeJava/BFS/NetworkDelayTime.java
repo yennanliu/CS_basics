@@ -46,6 +46,10 @@ public class NetworkDelayTime {
     // V0
     // IDEA: Dijkstra (fixed by gpt)
     // ref video: https://neetcode.io/problems/network-delay-time
+    /**
+     * time = O((V + E) log V)
+     * space = O(V + E)
+     */
     public int networkDelayTime(int[][] times, int n, int k) {
         // Edge case: If no nodes exist
         if (times == null || times.length == 0 || n == 0) {
@@ -121,6 +125,10 @@ public class NetworkDelayTime {
 
     // V0-1
     // IDEA: Dijkstra (fixed by gpt)
+    /**
+     * time = O((V + E) log V)
+     * space = O(V + E)
+     */
     public int networkDelayTime_0_1(int[][] times, int n, int k) {
         if (times == null || times.length == 0 || n == 0) {
             return -1;
@@ -238,6 +246,10 @@ public class NetworkDelayTime {
     // V1-1
     // https://neetcode.io/problems/network-delay-time
     // IDEA: DFS
+    /**
+     * time = O(N^N + E)
+     * space = O(N + E)
+     */
     public int networkDelayTime_1_1(int[][] times, int n, int k) {
         Map<Integer, List<int[]>> adj = new HashMap<>();
         for (int[] time : times) {
@@ -267,6 +279,10 @@ public class NetworkDelayTime {
     // V1-2
     // https://neetcode.io/problems/network-delay-time
     // IDEA: Floyd Warshall Algorithm
+    /**
+     * time = O(N^3)
+     * space = O(N^2)
+     */
     public int networkDelayTime_1_2(int[][] times, int n, int k) {
         int inf = Integer.MAX_VALUE / 2;
         int[][] dist = new int[n][n];
@@ -295,6 +311,10 @@ public class NetworkDelayTime {
     // V1-3
     // https://neetcode.io/problems/network-delay-time
     // IDEA:  Bellman Ford Algorithm
+    /**
+     * time = O(N * E)
+     * space = O(N)
+     */
     public int networkDelayTime_1_3(int[][] times, int n, int k) {
         int[] dist = new int[n];
         Arrays.fill(dist, Integer.MAX_VALUE);
@@ -317,6 +337,10 @@ public class NetworkDelayTime {
     // V1-4
     // https://neetcode.io/problems/network-delay-time
     // IDEA:  Shortest Path Faster Algorithm
+    /**
+     * time = O(V + E)
+     * space = O(V)
+     */
     public int networkDelayTime_1_4(int[][] times, int n, int k) {
         Map<Integer, List<int[]>> adj = new HashMap<>();
         for (int i = 1; i <= n; i++) adj.put(i, new ArrayList<>());
@@ -353,6 +377,10 @@ public class NetworkDelayTime {
     // V1-5
     // https://neetcode.io/problems/network-delay-time
     // IDEA: Dijkstra's Algorithm
+    /**
+     * time = O((V + E) log V)
+     * space = O(V + E)
+     */
     public int networkDelayTime_1_5(int[][] times, int n, int k) {
         Map<Integer, List<int[]>> edges = new HashMap<>();
         for (int[] time : times) {
@@ -408,6 +436,10 @@ public class NetworkDelayTime {
     Step 4: find the maximum value from result array:
 
     */
+    /**
+     * time = O(V + E)
+     * space = O(V + E)
+     */
     public int networkDelayTime_2(int[][] times, int n, int k) {
 
         //Step 1
@@ -462,46 +494,49 @@ public class NetworkDelayTime {
     /**
      *
      * You can solve the problem using BFS (Breadth-First Search),
-     * but BFS is generally less efficient than Dijkstra’s
+     * but BFS is generally less efficient than Dijkstra's
      * Algorithm when working with weighted graphs
-     * because BFS doesn’t account for varying edge weights,
+     * because BFS doesn't account for varying edge weights,
      * as it assumes uniform cost edges.
      * In a scenario where edges have different weights
      * (which is the case in the network delay problem),
-     * Dijkstra’s algorithm is preferred since it optimizes
+     * Dijkstra's algorithm is preferred since it optimizes
      * the process of finding the shortest paths.
      *
      * That said, you could still use a modified BFS approach
      * if you track the total cost at each step.
      * However, BFS would need to be adapted to handle the weight differences between edges.
      *
-     * Here’s how you can do it:
+     * Here's how you can do it:
      *
      * Steps for BFS with Edge Weights:
      *
      * 	1.	Track Time for Each Node: You would need to maintain a time array (or map) that stores the shortest time to reach each node from the starting node k.
-     * 	2.	Priority Queue: Similar to Dijkstra’s, use a priority queue (min-heap) to always explore the node with the shortest accumulated time.
+     * 	2.	Priority Queue: Similar to Dijkstra's, use a priority queue (min-heap) to always explore the node with the shortest accumulated time.
      * 	3.	Relaxation of Edges: At each step, you explore the neighbors of the current node, and if the new time to reach a neighbor is shorter than the previously recorded time, update it and continue the BFS from that neighbor.
      *
      *
      *
      * Differences from Standard BFS:
      *
-     * 	•	Priority Queue: Normally, BFS uses a FIFO queue. Here, we mimic Dijkstra’s by always processing the node with the smallest current time.
+     * 	•	Priority Queue: Normally, BFS uses a FIFO queue. Here, we mimic Dijkstra's by always processing the node with the smallest current time.
      * 	•	Tracking Distance: We maintain an array dist to track the shortest time to reach each node, updating it as we explore the graph.
      *
-     * Why Dijkstra’s Algorithm is Better:
+     * Why Dijkstra's Algorithm is Better:
      *
-     * 	•	Dijkstra’s algorithm is naturally suited for graphs with different edge weights and ensures that you always find the shortest path by exploring the smallest distances first.
-     * 	•	BFS would need these modifications (min-heap) to work efficiently in such cases, making it very similar to Dijkstra’s approach.
+     * 	•	Dijkstra's algorithm is naturally suited for graphs with different edge weights and ensures that you always find the shortest path by exploring the smallest distances first.
+     * 	•	BFS would need these modifications (min-heap) to work efficiently in such cases, making it very similar to Dijkstra's approach.
      *
      * Conclusion:
      *
      * While you can adapt BFS to handle this problem,
-     * it ends up being very close to Dijkstra’s algorithm.
+     * it ends up being very close to Dijkstra's algorithm.
      * The standard BFS without adaptation would not give the correct solution
-     * because it doesn’t account for edge weights,
+     * because it doesn't account for edge weights,
      * which are crucial in this problem. Dijkstra is the better approach here.
+     *
+     * time = O(V + E)
+     * space = O(V + E)
      */
     public int networkDelayTime_3(int[][] times, int n, int k) {
         // Step 1: Build graph (adjacency list)
@@ -568,6 +603,10 @@ public class NetworkDelayTime {
     // V5
     // IDEA : Dijlstra
     // https://leetcode.com/problems/network-delay-time/submissions/1409038407/
+    /**
+     * time = O(V^2)
+     * space = O(V^2)
+     */
     public int networkDelayTime_5(int[][] times, int n, int K) {
         int[][] graph = new int[n][n];
         for(int i = 0; i < n ; i++) Arrays.fill(graph[i], Integer.MAX_VALUE);
@@ -597,6 +636,10 @@ public class NetworkDelayTime {
         return result;
     }
 
+    /**
+     * time = O(V)
+     * space = O(1)
+     */
     private int minIndex(int[] distance, boolean[] visited){
         int min = Integer.MAX_VALUE, minIndex = -1;
         for(int i = 0; i < distance.length; i++){
