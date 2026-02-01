@@ -21,6 +21,19 @@
 [![Star History Chart](https://api.star-history.com/svg?repos=yennanliu/CS_basics&type=Date)](https://star-history.com/#yennanliu/CS_basics&Date)
 
 
+## Cmd
+
+```bash
+# 1) (claude code) add time, space complexity to java class
+claude
+
+/add-time-space BinarySearch
+/add-time-space BFS
+
+# ....
+```
+
+
 ## Resource
 
 * LC classics problems
