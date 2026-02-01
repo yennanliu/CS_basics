@@ -177,6 +177,10 @@ public class Minesweeper {
 
     // V0-2
     // IDEA: BFS (fixed by gpt)
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public char[][] updateBoard_0_2(char[][] board, int[] click) {
         int y = click[0];
         int x = click[1];
@@ -260,6 +264,10 @@ public class Minesweeper {
 
     // V1
     // IDEA: DFS + ARRAY OP (GPT)
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public char[][] updateBoard_1(char[][] board, int[] click) {
         int rows = board.length;
         int cols = board[0].length;
@@ -365,6 +373,10 @@ public class Minesweeper {
     // V2
     // IDEA: DFS
     // https://leetcode.com/problems/minesweeper/solutions/495383/java-simple-recursive-solution-with-comm-5mtf/
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public char[][] updateBoard_2(char[][] board, int[] click) {
         // once a mine is revealed, we can terminate immediately
         if (board[click[0]][click[1]] == 'M') {

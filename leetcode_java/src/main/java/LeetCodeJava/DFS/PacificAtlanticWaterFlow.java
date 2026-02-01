@@ -60,6 +60,10 @@ public class PacificAtlanticWaterFlow {
     // V0
     // IDEA : DFS (fixed by GPT)
     // https://www.youtube.com/watch?v=s-VkcjHqkGI
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public List<List<Integer>> pacificAtlantic(int[][] heights) {
 
         if (heights == null || heights.length == 0 || heights[0].length == 0) {
@@ -289,6 +293,10 @@ public class PacificAtlanticWaterFlow {
     // https://neetcode.io/problems/pacific-atlantic-water-flow
     // IDEA: BFS
     //private int[][] directions = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public List<List<Integer>> pacificAtlantic_1_3(int[][] heights) {
         int ROWS = heights.length, COLS = heights[0].length;
         boolean[][] pac = new boolean[ROWS][COLS];
