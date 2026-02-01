@@ -45,6 +45,10 @@ public class MaximumLengthSubstringWithTwoOccurrences {
 
     // V0
     // IDEA: SLIDE WINDOW + HASHMAP
+    /**
+     * time = O(N)
+     * space = O(K)
+     */
     public int maximumLengthSubstring(String s) {
         // edge
         if (s.isEmpty()) {
@@ -123,6 +127,10 @@ public class MaximumLengthSubstringWithTwoOccurrences {
      * * Time Complexity: O(N) - Each pointer moves at most N times.
      * Space Complexity: O(1) - Fixed size frequency array.
      */
+    /**
+     * time = O(N)
+     * space = O(K)
+     */
     public int maximumLengthSubstring_0_1(String s) {
         int n = s.length();
         if (n <= 2)
@@ -176,6 +184,10 @@ public class MaximumLengthSubstringWithTwoOccurrences {
     // V1
     // IDEA:  Sliding Window
     // https://leetcode.com/problems/maximum-length-substring-with-two-occurrences/solutions/4916854/easy-video-solution-brute-force-optimal-xul8w/
+    /**
+     * time = O(N)
+     * space = O(K)
+     */
     public int maximumLengthSubstring_1(String s) {
         int n = s.length();
         int maxLen = 0;
@@ -193,6 +205,10 @@ public class MaximumLengthSubstringWithTwoOccurrences {
     // V2
     // IDEA: ARRAY
     // https://leetcode.com/problems/maximum-length-substring-with-two-occurrences/solutions/4916763/simple-java-solution-by-siddhant_1602-i3dd/
+    /**
+     * time = O(N)
+     * space = O(K)
+     */
     public int maximumLengthSubstring_2(String s) {
         int a[] = new int[26];
         int maxi = 0, i = 0, i1 = 0;
@@ -226,6 +242,10 @@ public class MaximumLengthSubstringWithTwoOccurrences {
 
     // V3
     // IDEA:  Sliding Window
+    /**
+     * time = O(N)
+     * space = O(K)
+     */
     public int maximumLengthSubstring_3(String s) {
         int ans = 0;
         int[] freq = new int[26];
@@ -241,6 +261,10 @@ public class MaximumLengthSubstringWithTwoOccurrences {
     // V4
     // IDEA: SLIDE WINDOW
     // https://buildmoat.teachable.com/courses/7a7af3/lectures/64243726
+    /**
+     * time = O(N)
+     * space = O(K)
+     */
     public int maximumLengthSubstring_4(String s) {
         int[] cnt = new int[26];
         int ans = 0;

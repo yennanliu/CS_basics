@@ -47,6 +47,10 @@ public class MaximizeWinFromTwoSegments {
 
     // V0-1
     // IDEA: DP + SLIDE WINDOW (fixed by gpt)
+    /**
+     * time = O(N)
+     * space = O(K)
+     */
     public int maximizeWin_0_1(int[] prizePositions, int k) {
         int n = prizePositions.length;
         if (n == 0)
@@ -87,6 +91,10 @@ public class MaximizeWinFromTwoSegments {
     // V0-5
     // IDEA:  SLIDE WINDOW + PREFIX SUM
     // https://leetcode.com/problems/maximize-win-from-two-segments/solutions/7026737/on-sliding-window-prefix-sum-by-wbcnskdh-f2zv/
+    /**
+     * time = O(N)
+     * space = O(K)
+     */
     public int maximizeWin_0_5(int[] prizePositions, int k) {
         int n = prizePositions.length;
 
@@ -119,6 +127,10 @@ public class MaximizeWinFromTwoSegments {
     // V1
     // IDEA: DP
     // https://leetcode.com/problems/maximize-win-from-two-segments/solutions/3141449/javacpython-dp-sliding-segment-on-by-lee-bum4/
+    /**
+     * time = O(N)
+     * space = O(K)
+     */
     public int maximizeWin_1(int[] A, int k) {
         int res = 0, n = A.length, j = 0, dp[] = new int[n + 1];
         for (int i = 0; i < n; ++i) {
@@ -133,6 +145,10 @@ public class MaximizeWinFromTwoSegments {
     // V2
     // IDEA: DP: leftMax + rightMax
     // https://leetcode.com/problems/maximize-win-from-two-segments/solutions/3141758/dp-leftmax-rightmax-by-hardcracker-0ov1/
+    /**
+     * time = O(N)
+     * space = O(K)
+     */
     public int maximizeWin_2(int[] prizePositions, int k) {
         int n = prizePositions.length;
         int[] leftMax = new int[n], rightMax = new int[n];
@@ -172,6 +188,10 @@ public class MaximizeWinFromTwoSegments {
     // V3
     // IDEA: 2 POINTERS
     // https://leetcode.com/problems/maximize-win-from-two-segments/solutions/4649586/java-two-pointer-solution-simple-easy-so-4snp/
+    /**
+     * time = O(N)
+     * space = O(K)
+     */
     public int maximizeWin_3(int[] prizePositions, int k) {
 
         int n = prizePositions.length;
@@ -204,6 +224,10 @@ public class MaximizeWinFromTwoSegments {
     // V4
     // IDEA: DP + SLIDE WINDOW
     // https://leetcode.com/problems/maximize-win-from-two-segments/solutions/3142203/java-dp-sliding-window-solution-by-opraj-begp/
+    /**
+     * time = O(N)
+     * space = O(K)
+     */
     public int maximizeWin_4(int[] prizePositions, int k) {
         int n = prizePositions.length;
         //dp to store the maximum number of prizes that can be won at each position

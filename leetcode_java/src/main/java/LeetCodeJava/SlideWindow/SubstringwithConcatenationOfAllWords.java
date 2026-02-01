@@ -73,6 +73,10 @@ public class SubstringwithConcatenationOfAllWords {
 
     // V0-1
     // IDEA: SLIDE WINDOW + BACKTRACK + HASH MAP (fixed by gpt)
+    /**
+     * time = O(N)
+     * space = O(K)
+     */
     public List<Integer> findSubstring_0_1(String s, String[] words) {
         List<Integer> res = new ArrayList<>();
         if (s == null || s.length() == 0 || words == null || words.length == 0) {
@@ -173,6 +177,10 @@ public class SubstringwithConcatenationOfAllWords {
 
     // V0-2
     // IDEA: (fixed by gemini)
+    /**
+     * time = O(N)
+     * space = O(K)
+     */
     public List<Integer> findSubstring_0_2(String s, String[] words) {
         List<Integer> resultIndices = new ArrayList<>();
         if (s == null || s.isEmpty() || words == null || words.length == 0) {
@@ -254,6 +262,10 @@ public class SubstringwithConcatenationOfAllWords {
 
     // V1
     // https://leetcode.ca/2015-12-30-30-Substring-with-Concatenation-of-All-Words/
+    /**
+     * time = O(N)
+     * space = O(K)
+     */
     public List<Integer> findSubstring_1(String s, String[] words) {
         Map<String, Integer> cnt = new HashMap<>();
         for (String w : words) {
@@ -294,6 +306,10 @@ public class SubstringwithConcatenationOfAllWords {
 
     // V2
     // https://leetcode.com/problems/substring-with-concatenation-of-all-words/solutions/7099022/if-not-understood-block-me-by-amyy_1256-1g7w/
+    /**
+     * time = O(N)
+     * space = O(K)
+     */
     public List<Integer> findSubstring_2(String s, String[] words) {
         List<Integer> ans = new ArrayList<>();
 
@@ -345,6 +361,10 @@ public class SubstringwithConcatenationOfAllWords {
     // V3
     // IDEA: HASH MAP + SLIDE WINDOW
     // https://leetcode.com/problems/substring-with-concatenation-of-all-words/solutions/6613074/easy-explanation-of-sliding-window-hashm-8qiy/
+    /**
+     * time = O(N)
+     * space = O(K)
+     */
     public List<Integer> findSubstring_3(String s, String[] words) {
         List<Integer> ans = new ArrayList<>();
 
@@ -397,6 +417,10 @@ public class SubstringwithConcatenationOfAllWords {
     // V4
     // IDEA: 2 HASH MAP (TLE)
     // https://leetcode.com/problems/substring-with-concatenation-of-all-words/solutions/13658/easy-two-map-solution-cjava-by-jianchao-wlsli/
+    /**
+     * time = O(N)
+     * space = O(K)
+     */
     public List<Integer> findSubstring_4(String s, String[] words) {
         final Map<String, Integer> counts = new HashMap<>();
         for (final String word : words) {

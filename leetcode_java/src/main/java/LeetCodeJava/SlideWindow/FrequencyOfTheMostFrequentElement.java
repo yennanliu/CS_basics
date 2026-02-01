@@ -54,6 +54,10 @@ public class FrequencyOfTheMostFrequentElement {
 
     // V0
     // IDEA: SLIDE WINDOW + cumSum
+    /**
+     * time = O(N)
+     * space = O(K)
+     */
     public int maxFrequency(int[] nums, int k) {
         // edge
         if (nums == null || nums.length == 0) {
@@ -100,6 +104,10 @@ public class FrequencyOfTheMostFrequentElement {
      * 	•	Compute cost = (target * windowSize) - sumOfWindow.
      * 	•	If cost ≤ k → valid window → update max frequency.
      * 	•	If cost > k → shrink window by moving left.
+     */
+    /**
+     * time = O(N)
+     * space = O(K)
      */
     public int maxFrequency_0_1(int[] nums, int k) {
         /**
@@ -174,6 +182,10 @@ public class FrequencyOfTheMostFrequentElement {
     // V1-1
     // IDEA: Sliding Window
     // https://leetcode.com/problems/frequency-of-the-most-frequent-element/editorial/
+    /**
+     * time = O(N)
+     * space = O(K)
+     */
     public int maxFrequency_1_1(int[] nums, int k) {
         Arrays.sort(nums);
         int left = 0;
@@ -198,6 +210,10 @@ public class FrequencyOfTheMostFrequentElement {
     // V1-2
     // IDEA:  Advanced Sliding Window
     // https://leetcode.com/problems/frequency-of-the-most-frequent-element/editorial/
+    /**
+     * time = O(N)
+     * space = O(K)
+     */
     public int maxFrequency_1_2(int[] nums, int k) {
         Arrays.sort(nums);
         int left = 0;
@@ -219,6 +235,10 @@ public class FrequencyOfTheMostFrequentElement {
     // V1-3
     // IDEA: Binary Search
     // https://leetcode.com/problems/frequency-of-the-most-frequent-element/editorial/
+    /**
+     * time = O(N)
+     * space = O(K)
+     */
     public int check(int i, int k, int[] nums, long[] prefix) {
         int target = nums[i];
         int left = 0;
@@ -243,6 +263,10 @@ public class FrequencyOfTheMostFrequentElement {
         return i - best + 1;
     }
 
+    /**
+     * time = O(N)
+     * space = O(K)
+     */
     public int maxFrequency_1_3(int[] nums, int k) {
         Arrays.sort(nums);
         long[] prefix = new long[nums.length];
@@ -264,6 +288,10 @@ public class FrequencyOfTheMostFrequentElement {
 
     // V2
     // https://leetcode.com/problems/frequency-of-the-most-frequent-element/solutions/5513173/video-sliding-window-solution-by-niits-j4zy/
+    /**
+     * time = O(N)
+     * space = O(K)
+     */
     public int maxFrequency_2(int[] nums, int k) {
         Arrays.sort(nums);
         int left = 0, right = 0;
@@ -287,6 +315,10 @@ public class FrequencyOfTheMostFrequentElement {
 
     // V3
     // https://leetcode.com/problems/frequency-of-the-most-frequent-element/solutions/4300738/more-than-one-waydetail-explanation-java-rg2k/
+    /**
+     * time = O(N)
+     * space = O(K)
+     */
     public int maxFrequency_3(int[] nums, int k) {
         int maxFrequency = 0; // Initialize the maximum frequency
         long currentSum = 0; // Initialize the current sum of the subarray elements
