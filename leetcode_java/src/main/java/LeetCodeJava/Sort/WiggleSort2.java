@@ -54,6 +54,10 @@ public class WiggleSort2 {
      * 	3.	Fill from both halves alternately in reverse order to ensure the wiggle pattern.
      *
      */
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public void wiggleSort_0_1(int[] nums) {
         int n = nums.length;
         int[] sorted = nums.clone();
@@ -83,6 +87,10 @@ public class WiggleSort2 {
      * 	•	Middle part = median
      * 	•	Right part > median
      * 	•	Rearrange in-place so that the “greater half” goes to odd indices and the “smaller half” to even indices.
+     */
+    /**
+     * time = O(N log N)
+     * space = O(N)
      */
     public void wiggleSort_0_2(int[] nums) {
         int n = nums.length;
@@ -170,6 +178,10 @@ public class WiggleSort2 {
         return nums[n / 2];
     }
 
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public void wiggleSort_0_3(int[] nums) {
         int n = nums.length;
 
@@ -210,6 +222,10 @@ public class WiggleSort2 {
 
     // V1
     // https://leetcode.ca/2016-10-19-324-Wiggle-Sort-II/
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public void wiggleSort_1(int[] nums) {
         int[] arr = nums.clone();
         Arrays.sort(arr);
@@ -227,6 +243,10 @@ public class WiggleSort2 {
     // V2
     // IDEA: BRUTE FORCE
     // https://leetcode.com/problems/wiggle-sort-ii/solutions/6956714/simple-and-beginner-friendly-solution-be-np09/
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public void wiggleSort_2(int[] nums) {
         int n = nums.length-1;
         int[] arr = Arrays.copyOf(nums,nums.length);

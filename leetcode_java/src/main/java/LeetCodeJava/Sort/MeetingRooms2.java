@@ -32,6 +32,10 @@ public class MeetingRooms2 {
     // V0
     // IDEA: SCANNING LINE (gpt)
     // TODO: validate
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int minMeetingRooms(int[][] intervals) {
 
         // Edge cases
@@ -81,6 +85,10 @@ public class MeetingRooms2 {
     // V0-1
     // IDEA : ARRAY SORT + BOUNDARY OP
     // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Sort/meeting-rooms-ii.py#L90
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int minMeetingRooms_0_1(int[][] intervals) {
 
         final int n = intervals.length;
@@ -119,16 +127,28 @@ public class MeetingRooms2 {
             this.status = status;
         }
 
+        /**
+         * time = O(N)
+         * space = O(N)
+         */
         public int getTime() {
             return time;
         }
 
+        /**
+         * time = O(N)
+         * space = O(N)
+         */
         public String getStatus() {
             return status;
         }
     }
 
     public class MeetingRooms_0_2 {
+        /**
+         * time = O(N)
+         * space = O(N)
+         */
         public int minMeetingRooms(int[][] intervals) {
             if (intervals.length <= 1) {
                 return intervals.length;
@@ -233,6 +253,10 @@ public class MeetingRooms2 {
     // V1
     // IDEA : HEAP (PQ) (priority queue)
     // https://walkccc.me/LeetCode/problems/253/#__tabbed_1_2
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int minMeetingRooms_1(int[][] intervals) {
         Arrays.sort(intervals, (a, b) -> (a[0] - b[0]));
 
@@ -254,6 +278,10 @@ public class MeetingRooms2 {
     // V2
     // IDEA : SORT
     // https://walkccc.me/LeetCode/problems/253/#__tabbed_1_2
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int minMeetingRooms_2(int[][] intervals) {
 
         final int n = intervals.length;
@@ -281,6 +309,10 @@ public class MeetingRooms2 {
 
     // V3
     // https://leetcode.ca/2016-08-09-253-Meeting-Rooms-II/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int minMeetingRooms_3(int[][] intervals) {
         int n = 1000010;
         int[] delta = new int[n];

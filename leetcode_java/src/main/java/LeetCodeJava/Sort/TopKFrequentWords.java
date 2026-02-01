@@ -49,6 +49,10 @@ public class TopKFrequentWords {
 
     // V0-1
     // IDEA: Sort on map key set
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public List<String> topKFrequent_0_1(String[] words, int k) {
 
         // IDEA: map sorting
@@ -94,6 +98,10 @@ public class TopKFrequentWords {
 
     // V0-2
     // IDEA: MAP + MIN PQ (fixed by gpt)
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public List<String> topKFrequent_0_2(String[] words, int k) {
         List<String> res = new ArrayList<>();
         if (words == null || words.length == 0 || k <= 0) {
@@ -133,6 +141,10 @@ public class TopKFrequentWords {
     // V1
     // IDEA: SORT
     // https://leetcode.com/problems/top-k-frequent-words/solutions/1244692/java-solution-by-keerthy0212-1jtv/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public List<String> topKFrequent_1(String[] words, int k) {
         HashMap<String, Integer> freq = new HashMap<>();
         for (int i = 0; i < words.length; i++) {
@@ -152,6 +164,10 @@ public class TopKFrequentWords {
     // V2
     // IDEA: SORT
     // https://leetcode.com/problems/top-k-frequent-words/solutions/2720232/java-easy-solution-with-explanation-hash-mk80/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public List<String> topKFrequent_2(String[] words, int k) {
 
         // map hold the word: counts
@@ -190,6 +206,10 @@ public class TopKFrequentWords {
     // V3
     // IDEA: SORT + STREAM API
     // https://leetcode.com/problems/top-k-frequent-words/solutions/2721452/java-stream-api-memory-usage-less-than-8-d1t4/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public List<String> topKFrequent_3(String[] words, int k) {
         TreeMap<String, Integer> map = new TreeMap<>(String::compareTo);
         Arrays.stream(words).forEach(x -> map.put(x, map.getOrDefault(x, 0) + 1));
@@ -206,6 +226,10 @@ public class TopKFrequentWords {
         TrieNode[] children;
         String word;
 
+        /**
+         * time = O(N)
+         * space = O(N)
+         */
         public TrieNode() {
             this.children = new TrieNode[26];
             this.word = null;
@@ -215,10 +239,18 @@ public class TopKFrequentWords {
     class Trie {
         private TrieNode root;
 
+        /**
+         * time = O(N)
+         * space = O(N)
+         */
         public Trie() {
             root = new TrieNode();
         }
 
+        /**
+         * time = O(N)
+         * space = O(N)
+         */
         public void addWord(String word) {
             TrieNode cur = root;
             for (char c : word.toCharArray()) {
@@ -231,6 +263,10 @@ public class TopKFrequentWords {
             cur.word = word;
         }
 
+        /**
+         * time = O(N)
+         * space = O(N)
+         */
         public void getWords(TrieNode node, List<String> result) {
             if (node == null)
                 return;
@@ -244,10 +280,18 @@ public class TopKFrequentWords {
         }
 
         // Added method to expose root
+        /**
+         * time = O(N)
+         * space = O(N)
+         */
         public TrieNode getRoot() {
             return root;
         }
     }
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public List<String> topKFrequent_4(String[] words, int k) {
         Map<String, Integer> frequencyMap = new HashMap<>();
         List<Trie> buckets = new ArrayList<>(Collections.nCopies(words.length + 1, null));

@@ -111,6 +111,10 @@ public class CampusBike2 {
 
     // V1_1
     // https://leetcode.ca/2018-10-31-1066-Campus-Bikes-II/#google_vignette
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int assignBikes_1_1(int[][] workers, int[][] bikes) {
         int n = workers.length;
         int m = bikes.length;
@@ -136,6 +140,10 @@ public class CampusBike2 {
     // V2
     // https://github.com/doocs/leetcode/blob/main/solution/1000-1099/1066.Campus%20Bikes%20II/README.md
     // IDEA : ROUTE COMPRESSION + DP
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int assignBikes_2(int[][] workers, int[][] bikes) {
         int n = workers.length;
         int m = bikes.length;

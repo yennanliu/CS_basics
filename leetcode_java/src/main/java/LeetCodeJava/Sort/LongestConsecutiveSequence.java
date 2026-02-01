@@ -62,6 +62,10 @@ public class LongestConsecutiveSequence {
      *      *             l   r
      *      *
      */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int longestConsecutive(int[] nums) {
         // edge
         if (nums == null || nums.length == 0) {
@@ -82,6 +86,10 @@ public class LongestConsecutiveSequence {
         // sort (small -> big)
         Collections.sort(list, new Comparator<Integer>() {
             @Override
+            /**
+             * time = O(N)
+             * space = O(N)
+             */
             public int compare(Integer o1, Integer o2) {
                 int diff = o1 - o2;
                 return diff;
@@ -149,6 +157,10 @@ public class LongestConsecutiveSequence {
      *      i              j  len=9
      *
      */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int longestConsecutive_0_0_1(int[] nums) {
 
         // edge
@@ -187,6 +199,10 @@ public class LongestConsecutiveSequence {
 
     // V0-1
     // IDEA : SET + SORT + 2 POINTERS
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int longestConsecutive_0_1(int[] nums) {
 
         if (nums.length <= 1){
@@ -230,6 +246,10 @@ public class LongestConsecutiveSequence {
     // V0-2
     // IDEA : SORT + SLIDING WINDOW (gpt)
     // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Sort/longest-consecutive-sequence.py#L32
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int longestConsecutive_0_2(int[] nums) {
 
         // Edge case
@@ -321,6 +341,10 @@ public class LongestConsecutiveSequence {
     // step 1) set : only collect unique element
     // step 2) sort, so element is in ascending ordering
     // step 3) loop over final list, and maintain a max len of sequence
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int longestConsecutive_0_3(int[] nums) {
 
         if (nums.length == 0 || nums.equals(null)){
@@ -367,6 +391,10 @@ public class LongestConsecutiveSequence {
     // Step 3) we shift to with 1 index from above unique array as shift array
     // Step 4) we loop over unique array, shift array and calculate max length when diff = 1
     // Step 5) return amx length from above
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int longestConsecutive_0_4(int[] nums) {
 
         if (nums.length == 0 || nums.equals(null)){
@@ -411,6 +439,10 @@ public class LongestConsecutiveSequence {
     // V1-1
     // https://neetcode.io/problems/longest-consecutive-sequence
     // IDEA: BRUTE FORCE
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int longestConsecutive_1_1(int[] nums) {
         int res = 0;
         Set<Integer> store = new HashSet<>();
@@ -432,6 +464,10 @@ public class LongestConsecutiveSequence {
     // V1-2
     // https://neetcode.io/problems/longest-consecutive-sequence
     // IDEA: SORTING
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int longestConsecutive_1_2(int[] nums) {
         if (nums.length == 0) {
             return 0;
@@ -458,6 +494,10 @@ public class LongestConsecutiveSequence {
     // V1-3
     // https://neetcode.io/problems/longest-consecutive-sequence
     // IDEA: HASHSET
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int longestConsecutive_1_3(int[] nums) {
         Set<Integer> numSet = new HashSet<>();
         for (int num : nums) {
@@ -480,6 +520,10 @@ public class LongestConsecutiveSequence {
     // V1-4
     // https://neetcode.io/problems/longest-consecutive-sequence
     // IDEA: HASHMAP
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int longestConsecutive_1_4(int[] nums) {
         Map<Integer, Integer> mp = new HashMap<>();
         int res = 0;
@@ -508,6 +552,10 @@ public class LongestConsecutiveSequence {
         return false;
     }
 
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int longestConsecutive_2(int[] nums) {
         int longestStreak = 0;
 
@@ -529,6 +577,10 @@ public class LongestConsecutiveSequence {
     // V3
     // IDEA : SORTING
     // https://leetcode.com/problems/longest-consecutive-sequence/editorial/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int longestConsecutive_3(int[] nums) {
 
         if (nums.length == 0) {

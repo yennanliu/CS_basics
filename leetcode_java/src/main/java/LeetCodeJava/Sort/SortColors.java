@@ -44,6 +44,10 @@ import java.util.Comparator;
 public class SortColors {
 
     // V0
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public void sortColors(int[] nums) {
         // edge
         if (nums == null || nums.length == 0) {
@@ -58,6 +62,10 @@ public class SortColors {
         // sort on nums2
         Arrays.sort(nums2, new Comparator<Integer>() {
             @Override
+            /**
+             * time = O(N)
+             * space = O(N)
+             */
             public int compare(Integer o1, Integer o2) {
                 int diff = o1 - o2;
                 return diff;

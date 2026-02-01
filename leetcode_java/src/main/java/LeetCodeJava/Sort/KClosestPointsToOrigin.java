@@ -46,6 +46,10 @@ public class KClosestPointsToOrigin {
 
     // V0
     // IDEA: MAX PQ + custom sorting (with function) (fixed by gpt)
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int[][] kClosest(int[][] points, int k) {
         if (points == null || points.length == 0 || k <= 0) {
             return new int[0][];
@@ -61,6 +65,10 @@ public class KClosestPointsToOrigin {
          */
         PriorityQueue<int[]> pq = new PriorityQueue<>(new Comparator<int[]>() {
             @Override
+            /**
+             * time = O(N)
+             * space = O(N)
+             */
             public int compare(int[] a, int[] b) {
                 double distA = getDist(a[0], a[1]);
                 double distB = getDist(b[0], b[1]);
@@ -82,12 +90,20 @@ public class KClosestPointsToOrigin {
         return res;
     }
 
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public double getDist(int x, int y) {
         return Math.sqrt(x * x + y * y);
     }
 
     // V0-0-1
     // IDEA: BIG PQ
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int[][] kClosest_0_0_1(int[][] points, int k) {
         // edge
         if (points == null || points.length == 0 || points[0].length == 0) {
@@ -97,6 +113,10 @@ public class KClosestPointsToOrigin {
         // { [x, y, dist] }
         PriorityQueue<Integer[]> pq = new PriorityQueue<>(new Comparator<Integer[]>() {
             @Override
+            /**
+             * time = O(N)
+             * space = O(N)
+             */
             public int compare(Integer[] o1, Integer[] o2) {
                 int diff = o2[2] - o1[2];
                 return diff;
@@ -138,6 +158,10 @@ public class KClosestPointsToOrigin {
 
     // V0-1
     // IDEA: PriorityQueue (gpt)
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int[][] kClosest_0_1(int[][] points, int k) {
         if (points == null || points.length == 0 || k <= 0) {
             return new int[0][0];
@@ -165,6 +189,10 @@ public class KClosestPointsToOrigin {
 
     // V0-2
     // IDEA: HASHMAP + PQ
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int[][] kClosest_0_2(int[][] points, int k) {
         // edge
         if (points == null || points.length == 0) {
@@ -186,6 +214,10 @@ public class KClosestPointsToOrigin {
         // pq sorts distances (smallest first)
         PriorityQueue<Integer> pq = new PriorityQueue<>(new Comparator<Integer>() {
             @Override
+            /**
+             * time = O(N)
+             * space = O(N)
+             */
             public int compare(Integer o1, Integer o2) {
                 return Integer.compare(o1, o2); // fix
             }
@@ -213,6 +245,10 @@ public class KClosestPointsToOrigin {
     // V1
     // IDEA : SORTING
     // https://leetcode.com/problems/k-closest-points-to-origin/editorial/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int[][] kClosest_2(int[][] points, int K) {
         int N = points.length;
         int[] dists = new int[N];
@@ -230,6 +266,10 @@ public class KClosestPointsToOrigin {
         return ans;
     }
 
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int dist(int[] point) {
         return point[0] * point[0] + point[1] * point[1];
     }
@@ -238,12 +278,20 @@ public class KClosestPointsToOrigin {
     // IDEA : Divide and Conquer
     // https://leetcode.com/problems/k-closest-points-to-origin/editorial/
     int[][] points;
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int[][] kClosest_3(int[][] points, int K) {
         this.points = points;
         sort(0, points.length - 1, K);
         return Arrays.copyOfRange(points, 0, K);
     }
 
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public void sort(int i, int j, int K) {
         if (i >= j) return;
         int k = ThreadLocalRandom.current().nextInt(i, j);
@@ -257,6 +305,10 @@ public class KClosestPointsToOrigin {
             sort(mid + 1, j, K - leftLength);
     }
 
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int partition(int i, int j) {
         int oi = i;
         int pivot = dist(i);
@@ -274,10 +326,18 @@ public class KClosestPointsToOrigin {
         return j;
     }
 
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int dist(int i) {
         return points[i][0] * points[i][0] + points[i][1] * points[i][1];
     }
 
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public void swap(int i, int j) {
         int t0 = points[i][0], t1 = points[i][1];
         points[i][0] = points[j][0];

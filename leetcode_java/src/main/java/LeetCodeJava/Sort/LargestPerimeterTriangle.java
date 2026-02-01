@@ -8,6 +8,10 @@ public class LargestPerimeterTriangle {
 
     // V0
     // IDEA : SORTING
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int largestPerimeter(int[] nums) {
 
         if (nums.length == 0 || nums == null || nums.length < 3){
@@ -66,6 +70,10 @@ public class LargestPerimeterTriangle {
     // V1
     // https://leetcode.com/problems/largest-perimeter-triangle/editorial/
     // IDEA : SORTING
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int largestPerimeter_2(int[] A) {
         Arrays.sort(A);
         for (int i = A.length - 3; i >= 0; --i)
