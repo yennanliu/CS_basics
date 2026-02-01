@@ -39,6 +39,10 @@ public class LongestPalindromicSubsequence {
 
     // V0
     // IDEA: 2D DP (gemini)
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int longestPalindromeSubseq(String s) {
         int n = s.length();
         // dp[i][j] = longest palindromic subsequence in s[i...j]
@@ -292,6 +296,10 @@ public class LongestPalindromicSubsequence {
 
     // V0-3
     // IDEA: 2D DP (GPT)
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int longestPalindromeSubseq_0_3(String s) {
         if (s == null || s.length() == 0) {
             return 0;
@@ -323,6 +331,10 @@ public class LongestPalindromicSubsequence {
     // V1
     // IDEA: DP
     // https://leetcode.ca/2017-04-29-516-Longest-Palindromic-Subsequence/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int longestPalindromeSubseq_1(String s) {
         int n = s.length();
         int[][] dp = new int[n][n];
@@ -345,6 +357,10 @@ public class LongestPalindromicSubsequence {
     // V2
     // IDEA: DP
     // https://leetcode.com/problems/longest-palindromic-subsequence/solutions/3414715/easy-solutions-in-java-python-and-c-look-fl62/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int longestPalindromeSubseq_2(String s) {
         // Get the length of the input string
         int n = s.length();
@@ -374,6 +390,10 @@ public class LongestPalindromicSubsequence {
     // V3
     // IDEA: ARRAY OP
     // https://leetcode.com/problems/longest-palindromic-subsequence/solutions/3414839/java-easy-image-explaination-dp-beginner-r69e/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int longestPalindromeSubseq_3(String s) {
         /* If the two ends of a string are the same, then they must be included in the longest palindrome subsequence. Otherwise, both ends cannot be included in the longest palindrome subsequence. */
 
@@ -426,6 +446,10 @@ public class LongestPalindromicSubsequence {
     // V4-4
     // IDEA: Bottom Up Tabulation with space optimization
     // https://leetcode.com/problems/longest-palindromic-subsequence/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int longestPalindromeSubseq_4_4(String s) {
         int[] dp = new int[s.length()];
         for (int i = s.length() - 1; i >= 0; i--) {

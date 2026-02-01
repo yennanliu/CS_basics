@@ -56,6 +56,10 @@ public class LongestAlternatingSubarray {
 
     // V0-1
     // IDEA: BRUTE FORCE (double loop) (fixed by gpt)
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int alternatingSubarray_0_1(int[] nums) {
         int n = nums.length;
         int res = -1;
@@ -388,6 +392,10 @@ public class LongestAlternatingSubarray {
 
     // V1-1
     // IDEA: BRUTE FORCE
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int alternatingSubarray_1_1(int[] A) {
         int n = A.length, res = 0, j = 0;
         for (int i = 0; i < n; ++i)
@@ -400,6 +408,10 @@ public class LongestAlternatingSubarray {
     // V1-2
     // IDEA: 2 POINTERS
     // https://leetcode.com/problems/longest-alternating-subarray/solutions/3737191/javacpython-two-pointers-and-dp-solution-4y71/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int alternatingSubarray_1_2(int[] A) {
         int n = A.length, res = 0, j = 0;
         for (int i = 0; i < n; i = Math.max(i + 1, j - 1))
@@ -412,6 +424,10 @@ public class LongestAlternatingSubarray {
     // V1-3
     // IDEA: DP
     // https://leetcode.com/problems/longest-alternating-subarray/solutions/3737191/javacpython-two-pointers-and-dp-solution-4y71/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int alternatingSubarray_1_3(int[] A) {
         int n = A.length, res = -1, dp = -1;
         for (int i = 1; i < n; ++i, res = Math.max(res, dp))
@@ -425,6 +441,10 @@ public class LongestAlternatingSubarray {
     // V2
     // https://leetcode.com/problems/longest-alternating-subarray/solutions/7243610/easy-two-pointer-approach-by-lokeshthaku-au5a/
     // IDEA: 2 POINTERS
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int alternatingSubarray_2(int[] nums) {
         int ans = -1, i = 0, j = 1, check = 1;
         while (j < nums.length) {
@@ -453,6 +473,10 @@ public class LongestAlternatingSubarray {
     // V3
     // IDEA: direction and counter
     // https://leetcode.com/problems/longest-alternating-subarray/solutions/3737352/java-on-solution-without-2-pointers-with-fr4h/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int alternatingSubarray_3(int[] nums) {
         int ans = -1;
         int n = nums.length;

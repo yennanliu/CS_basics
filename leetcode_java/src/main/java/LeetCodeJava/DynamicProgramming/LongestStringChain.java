@@ -57,6 +57,10 @@ public class LongestStringChain {
     private Map<Integer, List<String>> wordLengthMap;
     private Map<String, Integer> memo;
 
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int longestStrChain_1(String[] words) {
         // store each word with its corresponding length
         wordLengthMap = new HashMap<>();
@@ -139,6 +143,10 @@ public class LongestStringChain {
     // V1-3
     // IDEA : DP | Decreasing Word Length:
     // https://leetcode.com/problems/longest-string-chain/solutions/2153004/explaining-three-approaches-java/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int longestStrChain_1_3(String[] words) {
         Arrays.sort(words, (String a, String b) -> a.length() - b.length()); // sort by length
         Map<String, Integer> dp = new HashMap<>();
