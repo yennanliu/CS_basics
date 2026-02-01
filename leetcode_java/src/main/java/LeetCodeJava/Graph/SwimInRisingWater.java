@@ -66,6 +66,10 @@ public class SwimInRisingWater {
      *
      *     (val pop from min PQ)
      */
+    /**
+     * time = O((M * N) log (M * N))
+     * space = O(M * N)
+     */
     public int swimInWater_0_1(int[][] grid) {
         int n = grid.length;
 
@@ -123,6 +127,10 @@ public class SwimInRisingWater {
     // V1-1
     // https://neetcode.io/problems/swim-in-rising-water
     // IDEA: BRUTE FORCE
+    /**
+     * time = O((M * N) * 4^(M * N))
+     * space = O(M * N)
+     */
     public int swimInWater_1_1(int[][] grid) {
         int n = grid.length;
         boolean[][] visit = new boolean[n][n];
@@ -130,6 +138,10 @@ public class SwimInRisingWater {
         return dfs(grid, visit, 0, 0, 0);
     }
 
+    /**
+     * time = O(4^(M * N))
+     * space = O(M * N)
+     */
     private int dfs(int[][] grid, boolean[][] visit,
                     int r, int c, int t) {
         int n = grid.length;
@@ -152,6 +164,10 @@ public class SwimInRisingWater {
     // V1-2
     // https://neetcode.io/problems/swim-in-rising-water
     // IDEA: DFS
+    /**
+     * time = O((M * N)^2)
+     * space = O(M * N)
+     */
     public int swimInWater_1_2(int[][] grid) {
         int n = grid.length;
         boolean[][] visit = new boolean[n][n];
@@ -174,6 +190,10 @@ public class SwimInRisingWater {
         return maxH;
     }
 
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     private boolean dfs_1_1(int[][] grid, boolean[][] visit, int r, int c, int t) {
         if (r < 0 || c < 0 || r >= grid.length ||
                 c >= grid.length || visit[r][c] || grid[r][c] > t) {
@@ -193,6 +213,10 @@ public class SwimInRisingWater {
     // V1-3
     // https://neetcode.io/problems/swim-in-rising-water
     // IDEA: Binary Search + DFS
+    /**
+     * time = O((M * N) log (M * N))
+     * space = O(M * N)
+     */
     public int swimInWater_1_3(int[][] grid) {
         int n = grid.length;
         boolean[][] visit = new boolean[n][n];
@@ -219,6 +243,10 @@ public class SwimInRisingWater {
         return r;
     }
 
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     private boolean dfs_1_3(int[][] grid, boolean[][] visit, int r, int c, int t) {
         if (r < 0 || c < 0 || r >= grid.length ||
                 c >= grid.length || visit[r][c] || grid[r][c] > t) {
@@ -238,6 +266,10 @@ public class SwimInRisingWater {
     // V1-4
     // https://neetcode.io/problems/swim-in-rising-water
     // IDEA:  Dijkstra's Algorithm
+    /**
+     * time = O((M * N) log (M * N))
+     * space = O(M * N)
+     */
     public int swimInWater_1_4(int[][] grid) {
         int N = grid.length;
         boolean[][] visit = new boolean[N][N];
