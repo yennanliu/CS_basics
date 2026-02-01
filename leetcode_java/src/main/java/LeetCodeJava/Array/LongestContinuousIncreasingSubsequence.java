@@ -11,7 +11,13 @@ public class LongestContinuousIncreasingSubsequence {
 
     // V1
     // https://leetcode.com/problems/longest-continuous-increasing-subsequence/solutions/2565636/clean-0ms-java-solution/
-    // time: O(N), space: O(1)
+    /**
+
+     * time = O(N)
+
+     * space = O(1)
+
+     */
     public int findLengthOfLCIS_1(int[] nums)
     {
         int max =0;
@@ -32,7 +38,13 @@ public class LongestContinuousIncreasingSubsequence {
 
     // V2
     // https://leetcode.com/problems/longest-continuous-increasing-subsequence/solutions/3426987/solution/
-    // time: O(N), space: O(1)
+    /**
+
+     * time = O(N)
+
+     * space = O(1)
+
+     */
     public int findLengthOfLCIS_2(int[] nums) {
         int maxCount = 1;
         int currentCount = 1;
@@ -62,7 +74,13 @@ public class LongestContinuousIncreasingSubsequence {
 
     // V3
     // https://leetcode.com/problems/longest-continuous-increasing-subsequence/solutions/3118835/simple-java-solution-using-2-pointer-approach-time-beats-100-of-the-solutions/
-    // time: O(N), space: O(1)
+    /**
+
+     * time = O(N)
+
+     * space = O(1)
+
+     */
     public int findLengthOfLCIS_3(int[] nums)
     {
         int maxCount = 1;
