@@ -98,6 +98,10 @@ public class TimeBasedKeyValueStore {
             this.insertTimeMap = new HashMap<>();
         }
 
+        /**
+         * time = O(1)
+         * space = O(N)
+         */
         public void set(String key, String value, int timestamp) {
 
             // update keyValueMap
@@ -112,6 +116,10 @@ public class TimeBasedKeyValueStore {
             this.insertTimeMap.put(key, times);
         }
 
+        /**
+         * time = O(log N)
+         * space = O(1)
+         */
         public String get(String key, int timestamp) {
             if (!this.keyValueMap.containsKey(key)){
                 return "";
@@ -197,6 +205,10 @@ public class TimeBasedKeyValueStore {
             this.map2 = new HashMap<>();
         }
 
+        /**
+         * time = O(1)
+         * space = O(N)
+         */
         public void set(String key, String value, int timestamp) {
             map1.putIfAbsent(key, new ArrayList<>());
             map1.get(key).add(timestamp); // timestamps are naturally increasing
@@ -204,6 +216,10 @@ public class TimeBasedKeyValueStore {
             map2.put(key + "-" + timestamp, value);
         }
 
+        /**
+         * time = O(log N)
+         * space = O(1)
+         */
         public String get(String key, int timestamp) {
             if (!map1.containsKey(key)) {
                 return "";
@@ -257,6 +273,10 @@ public class TimeBasedKeyValueStore {
          * Stores the key, value, and timestamp.
          * Time Complexity: O(log N) for TreeMap insertion.
          */
+        /**
+         * time = O(1)
+         * space = O(N)
+         */
         public void set(String key, String value, int timestamp) {
             // 1. Ensure the TreeMap exists for the key.
             // If the key is new, putIfAbsent creates a new TreeMap.
@@ -270,6 +290,10 @@ public class TimeBasedKeyValueStore {
         /**
          * Retrieves the value associated with the largest timestamp less than or equal to the given timestamp.
          * Time Complexity: O(log N) using TreeMap's floorKey().
+         */
+        /**
+         * time = O(log N)
+         * space = O(1)
          */
         public String get(String key, int timestamp) {
 
@@ -312,6 +336,10 @@ public class TimeBasedKeyValueStore {
         }
 
         // Set a new value at the given timestamp
+        /**
+         * time = O(1)
+         * space = O(N)
+         */
         public void set(String key, String value, int timestamp) {
             // Add the timestamp and value to their respective lists for the given key
             keyToTimestamps.putIfAbsent(key, new ArrayList<>());
@@ -322,6 +350,10 @@ public class TimeBasedKeyValueStore {
         }
 
         // Get the value associated with the largest timestamp <= given timestamp
+        /**
+         * time = O(log N)
+         * space = O(1)
+         */
         public String get(String key, int timestamp) {
             if (!keyToTimestamps.containsKey(key)) {
                 return "";  // Key does not exist
@@ -387,6 +419,10 @@ public class TimeBasedKeyValueStore {
             this.keyTimeMap = new HashMap<>();
         }
 
+        /**
+         * time = O(1)
+         * space = O(N)
+         */
         public void set(String key, String value, int timestamp) {
             // Initialize TreeMap if key is new
             keyTimeMap.putIfAbsent(key, new TreeMap<>());
@@ -394,6 +430,10 @@ public class TimeBasedKeyValueStore {
             keyTimeMap.get(key).put(timestamp, value);
         }
 
+        /**
+         * time = O(log N)
+         * space = O(1)
+         */
         public String get(String key, int timestamp) {
             // Return empty string if the key is not found
             if (!keyTimeMap.containsKey(key)) {
@@ -422,6 +462,10 @@ public class TimeBasedKeyValueStore {
             this.timeArray = new HashMap<>();
         }
 
+        /**
+         * time = O(1)
+         * space = O(N)
+         */
         public void set(String key, String value, int timestamp) {
             List<String> values = this.map.getOrDefault(key, new ArrayList<>());
             List<Integer> timeList = this.timeArray.getOrDefault(key, new ArrayList<>());
@@ -433,6 +477,10 @@ public class TimeBasedKeyValueStore {
             this.timeArray.put(key, timeList);
         }
 
+        /**
+         * time = O(log N)
+         * space = O(1)
+         */
         public String get(String key, int timestamp) {
             if (!this.map.containsKey(key)) {
                 return "";
@@ -478,6 +526,10 @@ public class TimeBasedKeyValueStore {
 //            this.keyTimeMap = new HashMap<>();
 //        }
 //
+/**
+ * time = O(1)
+ * space = O(N)
+ */
 //        public void set(String key, String value, int timestamp) {
 //            Map<Integer, String> valueMap = null;
 //            if (!this.keyTimeMap.containsKey(key)){
@@ -489,6 +541,10 @@ public class TimeBasedKeyValueStore {
 //            this.keyTimeMap.put(key, valueMap);
 //        }
 //
+/**
+ * time = O(log N)
+ * space = O(1)
+ */
 //        public String get(String key, int timestamp) {
 //            // linear search ???
 //            if (!this.keyTimeMap.containsKey(key)){
@@ -521,11 +577,19 @@ public class TimeBasedKeyValueStore {
             keyTimeMap = new HashMap<>();
         }
 
+        /**
+         * time = O(1)
+         * space = O(N)
+         */
         public void set(String key, String value, int timestamp) {
             keyTimeMap.putIfAbsent(key, new TreeMap<>());
             keyTimeMap.get(key).put(timestamp, value);
         }
 
+        /**
+         * time = O(log N)
+         * space = O(1)
+         */
         public String get(String key, int timestamp) {
             if (!keyTimeMap.containsKey(key)) return "";
 
@@ -558,6 +622,10 @@ public class TimeBasedKeyValueStore {
 //            keyValueMap = new HashMap<>();
 //        }
 //
+/**
+ * time = O(1)
+ * space = O(N)
+ */
 //        public void set(String key, String value, int timestamp) {
 //
 //            // update hashmap 1
@@ -572,6 +640,10 @@ public class TimeBasedKeyValueStore {
 //            keyValueMap.put(key + timestamp, value);
 //        }
 //
+/**
+ * time = O(log N)
+ * space = O(1)
+ */
 //        public String get(String key, int timestamp) {
 //            // edge
 //            if(keyValueMap.isEmpty() || !keyTimeListMap.containsKey(key)){
@@ -616,6 +688,10 @@ public class TimeBasedKeyValueStore {
             keyStore = new HashMap<>();
         }
 
+        /**
+         * time = O(1)
+         * space = O(N)
+         */
         public void set(String key, String value, int timestamp) {
             if (!keyStore.containsKey(key)) {
                 keyStore.put(key, new HashMap<>());
@@ -626,6 +702,10 @@ public class TimeBasedKeyValueStore {
             keyStore.get(key).get(timestamp).add(value);
         }
 
+        /**
+         * time = O(log N)
+         * space = O(1)
+         */
         public String get(String key, int timestamp) {
             if (!keyStore.containsKey(key)) {
                 return "";
@@ -653,6 +733,10 @@ public class TimeBasedKeyValueStore {
             m = new HashMap<>();
         }
 
+        /**
+         * time = O(1)
+         * space = O(N)
+         */
         public void set(String key, String value, int timestamp) {
             m.computeIfAbsent(key, k -> new TreeMap<>()).put(timestamp, value);
         }
@@ -676,6 +760,10 @@ public class TimeBasedKeyValueStore {
             keyStore = new HashMap<>();
         }
 
+        /**
+         * time = O(1)
+         * space = O(N)
+         */
         public void set(String key, String value, int timestamp) {
             keyStore.computeIfAbsent(key, k -> new ArrayList<>()).add(new Pair<>(timestamp, value));
         }
@@ -727,6 +815,10 @@ public class TimeBasedKeyValueStore {
             keyTimeMap = new HashMap<String, HashMap<Integer, String>>();
         }
 
+        /**
+         * time = O(1)
+         * space = O(N)
+         */
         public void set(String key, String value, int timestamp) {
             // If the 'key' does not exist in map.
             if (!keyTimeMap.containsKey(key)) {
@@ -737,6 +829,10 @@ public class TimeBasedKeyValueStore {
             keyTimeMap.get(key).put(timestamp, value);
         }
 
+        /**
+         * time = O(log N)
+         * space = O(1)
+         */
         public String get(String key, int timestamp) {
             // If the 'key' does not exist in map we will return empty string.
             if (!keyTimeMap.containsKey(key)) {
@@ -766,6 +862,10 @@ public class TimeBasedKeyValueStore {
             keyTimeMap = new HashMap<String, TreeMap<Integer, String>>();
         }
 
+        /**
+         * time = O(1)
+         * space = O(N)
+         */
         public void set(String key, String value, int timestamp) {
             if (!keyTimeMap.containsKey(key)) {
                 keyTimeMap.put(key, new TreeMap<Integer, String>());
@@ -775,6 +875,10 @@ public class TimeBasedKeyValueStore {
             keyTimeMap.get(key).put(timestamp, value);
         }
 
+        /**
+         * time = O(log N)
+         * space = O(1)
+         */
         public String get(String key, int timestamp) {
             // If the 'key' does not exist in map we will return empty string.
             if (!keyTimeMap.containsKey(key)) {
@@ -801,6 +905,10 @@ public class TimeBasedKeyValueStore {
 //            keyTimeMap = new HashMap();
 //        }
 //
+/**
+ * time = O(1)
+ * space = O(N)
+ */
 //        public void set(String key, String value, int timestamp) {
 //            if (!keyTimeMap.containsKey(key)) {
 //                keyTimeMap.put(key, new ArrayList());
@@ -810,6 +918,10 @@ public class TimeBasedKeyValueStore {
 //            keyTimeMap.get(key).add(new Pair(timestamp, value));
 //        }
 //
+/**
+ * time = O(log N)
+ * space = O(1)
+ */
 //        public String get(String key, int timestamp) {
 //            // If the 'key' does not exist in map we will return empty string.
 //            if (!keyTimeMap.containsKey(key)) {

@@ -48,6 +48,10 @@ public class SearchInRotatedSortedArray {
     // CASE 2) sub array right is sorted
     // https://www.youtube.com/watch?v=U8XENwh8Oy8
     // https://github.com/yennanliu/CS_basics/blob/master/doc/pic/lc_33.png
+    /**
+     * time = O(log N)
+     * space = O(1)
+     */
     public int search(int[] nums, int target) {
 
         if (nums.length == 0 || nums.equals(null)){
@@ -139,6 +143,10 @@ public class SearchInRotatedSortedArray {
     // IDEA : BINARY SEARCH
     // CASE 1) sub array left is sorted
     // CASE 2) sub array right is sorted
+    /**
+     * time = O(log N)
+     * space = O(1)
+     */
     public int search_0_1(int[] nums, int target) {
         if (nums.length == 1){
             return nums[0] == target ? 0 : -1;
@@ -184,6 +192,10 @@ public class SearchInRotatedSortedArray {
 
     // V0-2
     // IDEA : BINARY SEARCH (fixed by GPT)
+    /**
+     * time = O(log N)
+     * space = O(1)
+     */
     public int search_0_2(int[] nums, int target) {
 
         if (nums.length == 0){
@@ -339,6 +351,10 @@ public class SearchInRotatedSortedArray {
     // V1
     // IDEA : Find Pivot Index + Binary Search
     // https://leetcode.com/problems/search-in-rotated-sorted-array/editorial/
+    /**
+     * time = O(log N)
+     * space = O(1)
+     */
     public int search_2(int[] nums, int target) {
         int n = nums.length;
         int left = 0, right = n - 1;
@@ -382,6 +398,10 @@ public class SearchInRotatedSortedArray {
     // V2
     // IDEA : Find Pivot Index + Binary Search with Shift
     // https://leetcode.com/problems/search-in-rotated-sorted-array/editorial/
+    /**
+     * time = O(log N)
+     * space = O(1)
+     */
     public int search_3(int[] nums, int target) {
         int n = nums.length;
         int left = 0, right = n - 1;

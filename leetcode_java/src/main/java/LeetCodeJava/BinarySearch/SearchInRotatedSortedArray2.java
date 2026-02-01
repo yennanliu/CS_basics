@@ -48,6 +48,10 @@ public class SearchInRotatedSortedArray2 {
     // V0
     // IDEA : BINARY SEARCH + SET
     // LC 33
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public boolean search(int[] nums, int target) {
 
         if (nums.length == 1) {
@@ -102,6 +106,10 @@ public class SearchInRotatedSortedArray2 {
 
     // V0-1
     // IDEA: BINARY SEARCH + `DEDUP` + LC 33
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public boolean search_0_1(int[] nums, int target) {
 
         if (nums.length == 0 || nums.equals(null)){
@@ -158,6 +166,10 @@ public class SearchInRotatedSortedArray2 {
     // V1
     // IDEA : BINARY SEARCH
     // https://leetcode.com/problems/search-in-rotated-sorted-array-ii/solutions/3888242/100-binary-search-video-with-rotation-handling-optimal/
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public boolean search_1(int[] nums, int target) {
         int low = 0, high = nums.length - 1;
 
@@ -184,6 +196,10 @@ public class SearchInRotatedSortedArray2 {
     // V2
     // IDEA : BINARY SEARCH
     // https://leetcode.com/problems/search-in-rotated-sorted-array-ii/solutions/2689441/java-best-solution-for-understanding/
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public boolean search_2(int[] nums, int target) {
         int start = 0, end = nums.length - 1;
         while(start <= end) {

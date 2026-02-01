@@ -40,6 +40,10 @@ public class SearchInsertPosition {
 
     // V0
     // IDEA: BINARY SEARCH ( r >= l)
+    /**
+     * time = O(log N)
+     * space = O(1)
+     */
     public int searchInsert(int[] nums, int target) {
         // edge
         if (nums == null) {
@@ -135,6 +139,10 @@ public class SearchInsertPosition {
      * ✅ Correct without needing special “between mid and mid+1” conditions.
      *
      */
+    /**
+     * time = O(log N)
+     * space = O(1)
+     */
     public int searchInsert_0_1(int[] nums, int target) {
         // edge
         if (nums == null || nums.length == 0) {
@@ -176,6 +184,10 @@ public class SearchInsertPosition {
 
     // V2
     // https://leetcode.com/problems/search-insert-position/solutions/5361984/video-return-middle-or-left-pointer-by-n-dj1y/
+    /**
+     * time = O(log N)
+     * space = O(1)
+     */
     public int searchInsert_2(int[] nums, int target) {
         int left = 0;
         int right = nums.length - 1;
