@@ -101,15 +101,27 @@ public class DesignCircularQueue {
 
     // V0-1
     // IDEA: DEQUEUE
+    /**
+     * time = O(1)
+     * space = O(k)
+     */
     class MyCircularQueue {
         int capacity;
         Deque<Integer> dq;
 
+        /**
+         * time = O(1)
+         * space = O(k)
+         */
         public MyCircularQueue(int k) {
             this.capacity = k;
             this.dq = new LinkedList<>(); // ???
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public boolean enQueue(int value) {
             if (this.isFull()) {
                 return false;
@@ -119,6 +131,10 @@ public class DesignCircularQueue {
 
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public boolean deQueue() {
             if (this.isEmpty()) {
                 return false;
@@ -128,6 +144,10 @@ public class DesignCircularQueue {
             return true;
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public int Front() {
             if (this.isEmpty()) {
                 return -1;
@@ -135,6 +155,10 @@ public class DesignCircularQueue {
             return this.dq.getFirst(); // Queue: FIFO
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public int Rear() {
             if (this.isEmpty()) {
                 return -1;
@@ -142,10 +166,18 @@ public class DesignCircularQueue {
             return this.dq.getLast(); // Queue: FIFO
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public boolean isEmpty() {
             return this.dq.isEmpty();
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public boolean isFull() {
             return this.dq.size() == this.capacity;
         }
@@ -175,11 +207,19 @@ public class DesignCircularQueue {
         int tail = -1; // NOTE !!! we init tail as -1
         int[] data;
 
+        /**
+         * time = O(1)
+         * space = O(k)
+         */
         public MyCircularQueue_2_1(int k) {
             data = new int[k];
             maxSize = k;
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public boolean enQueue(int val) {
             if (isFull())  // Check if the queue is full.
                 return false;  // If the queue is full, return false.
@@ -202,6 +242,10 @@ public class DesignCircularQueue {
             return true;  // Successfully added the value.
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public boolean deQueue() {
             if (isEmpty())  // Check if the queue is empty.
                 return false;  // If the queue is empty, return false.
@@ -238,6 +282,10 @@ public class DesignCircularQueue {
             return true;  // Successfully removed the element.
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public int Front() {
             /**
              * If the queue is empty (isEmpty() returns true), return -1 (to indicate no elements).
@@ -248,6 +296,10 @@ public class DesignCircularQueue {
             return isEmpty() ? -1 : data[head];
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public int Rear() {
             /**
              * If the queue is empty (isEmpty() returns true), return -1 (to indicate no elements).
@@ -258,6 +310,10 @@ public class DesignCircularQueue {
             return isEmpty() ? -1 : data[tail];
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public boolean isEmpty() {
             /**
              * Action: Returns true if the queue is empty, otherwise false.
@@ -267,6 +323,10 @@ public class DesignCircularQueue {
             return tail == -1;
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public boolean isFull() {
             return !isEmpty() && (tail + 1) % maxSize == head;
         }
@@ -279,6 +339,10 @@ public class DesignCircularQueue {
         int val;
         ListNode next;
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public ListNode(int val, ListNode next) {
             this.val = val;
             this.next = next;
@@ -289,10 +353,18 @@ public class DesignCircularQueue {
         int maxSize, size = 0;
         ListNode head = null, tail = null;
 
+        /**
+         * time = O(1)
+         * space = O(k)
+         */
         public MyCircularQueue_2_2(int k) {
             maxSize = k;
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public boolean enQueue(int val) {
             if (isFull())
                 return false;
@@ -307,6 +379,10 @@ public class DesignCircularQueue {
             return true;
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public boolean deQueue() {
             if (isEmpty())
                 return false;
@@ -315,18 +391,34 @@ public class DesignCircularQueue {
             return true;
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public int Front() {
             return isEmpty() ? -1 : head.val;
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public int Rear() {
             return isEmpty() ? -1 : tail.val;
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public boolean isEmpty() {
             return size == 0;
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public boolean isFull() {
             return size == maxSize;
         }
@@ -339,6 +431,10 @@ public class DesignCircularQueue {
     // Space Complexity: O(N)
     class MyCircularQueue_3 {
 
+        /**
+         * time = O(1)
+         * space = O(k)
+         */
         public MyCircularQueue_3(int k) {
             // the queue holding the elements for the circular queue
             q = new int[k];
@@ -350,6 +446,10 @@ public class DesignCircularQueue {
             headIdx = 0;
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public boolean enQueue(int value) {
             // handle full case
             if (isFull())
@@ -367,6 +467,10 @@ public class DesignCircularQueue {
             return true;
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public boolean deQueue() {
             // handle empty case
             if (isEmpty())
@@ -378,6 +482,10 @@ public class DesignCircularQueue {
             return true;
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public int Front() {
             // handle empty queue case
             if (isEmpty())
@@ -386,6 +494,10 @@ public class DesignCircularQueue {
             return q[headIdx];
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public int Rear() {
             // handle empty queue case
             if (isEmpty())
@@ -401,11 +513,19 @@ public class DesignCircularQueue {
             return q[(headIdx + cnt - 1) % sz];
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public boolean isEmpty() {
             // no element in the queue
             return cnt == 0;
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public boolean isFull() {
             // return true if the count is equal to the queue size
             // else return false
@@ -435,6 +555,10 @@ public class DesignCircularQueue {
         }
 
         // rest is as simple as implmenting a normal queue using array.
+        /**
+         * time = O(1)
+         * space = O(k)
+         */
         public MyCircularQueue_4(int k) {
             arr = new int[k];
             cap = k;
@@ -442,6 +566,10 @@ public class DesignCircularQueue {
             rear = -1;
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public boolean enQueue(int value) {
             if (isFull())
                 return false;
@@ -456,6 +584,10 @@ public class DesignCircularQueue {
             return true;
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public boolean deQueue() {
             if (isEmpty())
                 return false;
@@ -468,22 +600,38 @@ public class DesignCircularQueue {
             return true;
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public int Front() {
             if (front == -1)
                 return -1;
             return arr[front];
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public int Rear() {
             if (rear == -1)
                 return -1;
             return arr[rear];
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public boolean isEmpty() {
             return front == -1;
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public boolean isFull() {
             return front != -1 && next(rear) == front;
         }
