@@ -194,6 +194,10 @@ public class DistinctSubsequences {
 
     // V0-2
     // IDEA: 2D DP + SPACE OPTIMIZED (gemini)
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int numDistinct_0_2(String s, String t) {
         int[] dp = new int[t.length() + 1];
         dp[0] = 1;
@@ -211,6 +215,10 @@ public class DistinctSubsequences {
 
     // V0-3
     // IDEA: 2D DP (gpt)
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int numDistinct_0_3(String s, String t) {
         int m = s.length();
         int n = t.length();
@@ -244,6 +252,10 @@ public class DistinctSubsequences {
     // V1-1
     // https://neetcode.io/problems/count-subsequences
     // IDEA:  RECURSION
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int numDistinct_1_1(String s, String t) {
         if (t.length() > s.length()) {
             return 0;
@@ -272,6 +284,10 @@ public class DistinctSubsequences {
     // IDEA: Dynamic Programming (Top-Down)
     private int[][] dp;
 
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int numDistinct_1_2(String s, String t) {
         int m = s.length(), n = t.length();
         if (n > m) return 0;
@@ -298,6 +314,10 @@ public class DistinctSubsequences {
     // V1-3
     // https://neetcode.io/problems/count-subsequences
     // IDEA:  Dynamic Programming (Bottom-Up)
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int numDistinct_1_3(String s, String t) {
         int m = s.length(), n = t.length();
         int[][] dp = new int[m + 1][n + 1];
@@ -322,6 +342,10 @@ public class DistinctSubsequences {
     // V1-4
     // https://neetcode.io/problems/count-subsequences
     // IDEA: Dynamic Programming (Space Optimized)
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int numDistinct_1_4(String s, String t) {
         int m = s.length(), n = t.length();
         int[] dp = new int[n + 1];
@@ -345,6 +369,10 @@ public class DistinctSubsequences {
     // V1-5
     // https://neetcode.io/problems/count-subsequences
     // IDEA: Dynamic Programming (Optimal)
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int numDistinct_1_5(String s, String t) {
         int m = s.length(), n = t.length();
         int[] dp = new int[n + 1];

@@ -41,18 +41,30 @@ public class DivisorGame {
 
     // V1
     // https://leetcode.com/problems/divisor-game/solutions/274606/javacpython-return-n-2-0-by-lee215-y2v5/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public boolean divisorGame_1(int n) {
         return n % 2 == 0;
     }
 
     // V2-1
     // https://leetcode.com/problems/divisor-game/solutions/979796/java-all-approach-easy-recursive-memoiza-icg2/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public boolean divisorGame_2_1(int N) {
         return N % 2 == 0;
     }
 
     // V2-2
     // https://leetcode.com/problems/divisor-game/solutions/979796/java-all-approach-easy-recursive-memoiza-icg2/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public boolean divisorGame_2_2(int N) {
 
         if (N == 1)
@@ -69,6 +81,10 @@ public class DivisorGame {
 
     // V2-3
     // https://leetcode.com/problems/divisor-game/solutions/979796/java-all-approach-easy-recursive-memoiza-icg2/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public boolean divisorGame_2_3(int N) {
 
         boolean[] cache = new boolean[N + 1];

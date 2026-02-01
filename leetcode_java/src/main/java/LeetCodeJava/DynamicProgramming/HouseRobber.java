@@ -37,6 +37,10 @@ public class HouseRobber {
 
     // V0
     // IDEA: DP (fixed by gemini)
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int rob(int[] nums) {
         if (nums == null || nums.length == 0)
             return 0;
@@ -78,6 +82,10 @@ public class HouseRobber {
     // V0-1
     // IDEA : DP
     // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Dynamic_Programming/house-robber.py
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int rob_0_1(int[] nums) {
 
         if (nums == null || nums.length == 0){
@@ -108,6 +116,10 @@ public class HouseRobber {
 
     // V0-2
     // IDEA: DP (GPT)
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int rob_0_2(int[] nums) {
         // Edge cases
         if (nums.length == 0)
@@ -134,6 +146,10 @@ public class HouseRobber {
 
     // V0-3
     // IDEA : DP
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int rob_0_3(int[] nums) {
 
         if (nums.length <= 3){
@@ -181,6 +197,10 @@ public class HouseRobber {
     // V1
     // IDEA : DP
     // https://leetcode.com/problems/house-robber/solutions/4600148/beats-100-c-java-python-js-explained-with-video-dynamic-programming-space-optimized/
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int rob_1(int[] nums) {
         int rob = 0;
         int norob = 0;

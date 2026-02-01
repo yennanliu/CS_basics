@@ -54,6 +54,10 @@ public class HouseRobberIV {
 
     // V0-1
     // IDEA: BINARY SEARCH + DP/GREEDY (GPT)
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int minCapability_0_1(int[] nums, int k) {
         int left = Integer.MAX_VALUE, right = 0;
         for (int v : nums) {
@@ -97,6 +101,10 @@ public class HouseRobberIV {
     // V1
     // IDEA: BINARY SEARCH
     // https://leetcode.com/problems/house-robber-iv/editorial/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int minCapability_1(int[] nums, int k) {
         // Store the maximum nums value in maxReward.
         int minReward = 1;
@@ -129,6 +137,10 @@ public class HouseRobberIV {
     // V2
     // IDEA: BINARY SEARCH
     // https://leetcode.com/problems/house-robber-iv/solutions/3143697/javacpython-binary-search-o1-space-by-le-nylu/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int minCapability_2(int[] A, int k) {
         int left = 1, right = (int) 1e9, n = A.length;
         while (left < right) {
@@ -164,6 +176,10 @@ public class HouseRobberIV {
         return count >= k;
     }
 
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int minCapability_3(int[] nums, int k) {
         int left = Arrays.stream(nums).min().getAsInt();
         int right = Arrays.stream(nums).max().getAsInt();
@@ -183,6 +199,10 @@ public class HouseRobberIV {
     // V4
     // IDEA: BINARY SEARCH
     // https://leetcode.com/problems/house-robber-iv/solutions/6537753/binary-search-visualization-math-python-26vxz/
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public boolean canRob(int[] nums, int mid, int k) {
         int count = 0, n = nums.length;
         for (int i = 0; i < n; i++) {
@@ -194,6 +214,10 @@ public class HouseRobberIV {
         return count >= k;
     }
 
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int minCapability_4(int[] nums, int k) {
         int left = 1, right = Arrays.stream(nums).max().getAsInt(), ans = right;
         while (left <= right) {

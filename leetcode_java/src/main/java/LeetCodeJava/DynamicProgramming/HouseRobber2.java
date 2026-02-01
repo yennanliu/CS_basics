@@ -45,6 +45,10 @@ public class HouseRobber2 {
     // V0
     // IDEA : DP, LC 198
     // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Dynamic_Programming/house-robber-ii.py
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int rob(int[] nums) {
 
         if (nums.length == 1) {
@@ -71,6 +75,10 @@ public class HouseRobber2 {
 
     // NOTE !!! define robRange(int[] nums, int start, int end)
     // with start, end idx
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int robRange(int[] nums, int start, int end) {
 
         int[] dp = new int[nums.length];
@@ -87,6 +95,10 @@ public class HouseRobber2 {
 
     // V0-1
     // IDEA: 1D DP + LC 198 (fixed by gemini)
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int rob_0_1(int[] nums) {
         if (nums == null || nums.length == 0)
             return 0;
@@ -136,6 +148,10 @@ public class HouseRobber2 {
 
     // V0-2
     // IDEA: DP (fixed by gpt)
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int rob_0_2(int[] nums) {
 
         if (nums == null || nums.length == 0) {
@@ -173,6 +189,10 @@ public class HouseRobber2 {
     // V0-3
     // IDEA : BRUTE FORCE (MODIFIED BY GPT)
     // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Dynamic_Programming/house-robber-ii.py
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int rob_0_3(int[] nums) {
         if (nums == null || nums.length == 0) {
             return 0;
@@ -203,6 +223,10 @@ public class HouseRobber2 {
 
     // V1
     // https://leetcode.com/problems/house-robber-ii/solutions/4844002/beats-100-simple-to-understand/
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int robber(int[] nums) {
         int n=nums.length;
         int prev=nums[0];
@@ -218,6 +242,10 @@ public class HouseRobber2 {
         }
         return prev;
     }
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int rob_2(int[] nums) {
         int n=nums.length;
         if(n==1) return nums[0];
