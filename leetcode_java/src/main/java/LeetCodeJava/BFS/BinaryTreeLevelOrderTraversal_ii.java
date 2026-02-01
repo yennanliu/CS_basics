@@ -50,6 +50,10 @@ public class BinaryTreeLevelOrderTraversal_ii {
 
     // V0
     // IDEA: BFS
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public List<List<Integer>> levelOrderBottom(TreeNode root) {
 
         List<List<Integer>> res = new ArrayList<>();
@@ -91,6 +95,10 @@ public class BinaryTreeLevelOrderTraversal_ii {
 
     // V0-1
     // IDEA : BFS
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public List<List<Integer>> levelOrderBottom_0_1(TreeNode root) {
 
         List<List<Integer>> res = new ArrayList<>();
@@ -139,6 +147,10 @@ public class BinaryTreeLevelOrderTraversal_ii {
 
     // V1
     // IDEA : BFS
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public List<List<Integer>> levelOrderBottom_2(TreeNode root) {
         List<List<Integer>> levels = new ArrayList<List<Integer>>();
         if (root == null) return levels;
@@ -173,6 +185,10 @@ public class BinaryTreeLevelOrderTraversal_ii {
     // https://leetcode.com/problems/binary-tree-level-order-traversal-ii/editorial/
     List<List<Integer>> levels = new ArrayList<List<Integer>>();
 
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public void helper(TreeNode node, int level) {
         // start the current level
         if (levels.size() == level)
@@ -188,6 +204,10 @@ public class BinaryTreeLevelOrderTraversal_ii {
             helper(node.right, level + 1);
     }
 
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public List<List<Integer>> levelOrderBottom_3(TreeNode root) {
         if (root == null) return levels;
         helper(root, 0);

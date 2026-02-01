@@ -93,6 +93,10 @@ public class BusRoutes {
     // V1
     // IDEA : Breadth-First Search (BFS) with Bus Stops as Nodes
     // https://leetcode.com/problems/bus-routes/editorial/
+    /**
+     * time = O(N * M)
+     * space = O(N * M)
+     */
     public int numBusesToDestination_1(int[][] routes, int source, int target) {
         if (source == target) {
             return 0;
@@ -158,6 +162,10 @@ public class BusRoutes {
     List<List<Integer>> adjList = new ArrayList();
     // Iterate over each pair of routes and add an edge between them if there's a
     // common stop.
+    /**
+     * time = O(N * N * M)
+     * space = O(N * N)
+     */
     void createGraph(int[][] routes) {
         for (int i = 0; i < routes.length; i++) {
             for (int j = i + 1; j < routes.length; j++) {
@@ -170,6 +178,10 @@ public class BusRoutes {
     }
 
     // Returns true if the provided routes have a common stop, false otherwise.
+    /**
+     * time = O(M)
+     * space = O(1)
+     */
     boolean haveCommonNode(int[] route1, int[] route2) {
         int i = 0, j = 0;
         while (i < route1.length && j < route2.length) {
@@ -187,6 +199,10 @@ public class BusRoutes {
     }
 
     // Add all the routes in the queue that have the source as one of the stops.
+    /**
+     * time = O(N * M)
+     * space = O(1)
+     */
     void addStartingNodes(Queue<Integer> q, int[][] routes, int source) {
         for (int i = 0; i < routes.length; i++) {
             if (isStopExist(routes[i], source)) {
@@ -196,6 +212,10 @@ public class BusRoutes {
     }
 
     // Returns true if the given stop is present in the route, false otherwise.
+    /**
+     * time = O(M)
+     * space = O(1)
+     */
     boolean isStopExist(int[] route, int stop) {
         for (int j = 0; j < route.length; j++) {
             if (route[j] == stop) {
@@ -205,6 +225,10 @@ public class BusRoutes {
         return false;
     }
 
+    /**
+     * time = O(N * N * M)
+     * space = O(N * N)
+     */
     public int numBusesToDestination_2(int[][] routes, int source, int target) {
         if (source == target) {
             return 0;

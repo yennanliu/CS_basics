@@ -59,6 +59,10 @@ public class AsFarFromLandAsPossible {
      * 2. Traverse outwards into water cells (0).
      * 3. The distance of the last water cell reached is the maximum distance.
      */
+    /**
+     * time = O(N * N)
+     * space = O(N * N)
+     */
     public int maxDistance_0_1(int[][] grid) {
         int n = grid.length;
         Queue<int[]> q = new LinkedList<>();
@@ -125,6 +129,10 @@ public class AsFarFromLandAsPossible {
 
     // V0-2
     // IDEA: Multi-source BFS (fixed by gpt)
+    /**
+     * time = O(N * N)
+     * space = O(N * N)
+     */
     public int maxDistance_0_2(int[][] grid) {
         int n = grid.length;
         int m = grid[0].length;
@@ -179,6 +187,10 @@ public class AsFarFromLandAsPossible {
     // V1
     // IDEA: BFS
     // https://leetcode.ca/2019-02-04-1162-As-Far-from-Land-as-Possible/
+    /**
+     * time = O(N * N)
+     * space = O(N * N)
+     */
     public int maxDistance_1(int[][] grid) {
         int n = grid.length;
         Deque<int[]> q = new ArrayDeque<>();
@@ -214,6 +226,10 @@ public class AsFarFromLandAsPossible {
     // V2
     // IDEA: BFS
     // https://leetcode.com/problems/as-far-from-land-as-possible/solutions/3166138/day-41-c-bfs-easiest-beginner-friendly-a-z1ms/
+    /**
+     * time = O(N * N)
+     * space = O(N * N)
+     */
     public int maxDistance_2(int[][] grid) {
         int n = grid.length;
         Queue<int[]> q = new LinkedList<>();
@@ -249,6 +265,10 @@ public class AsFarFromLandAsPossible {
     // V3
     // IDEA: BFS
     // https://leetcode.com/problems/as-far-from-land-as-possible/solutions/3166441/fast-java-solution-by-coding_menance-cwtf/
+    /**
+     * time = O(N * N)
+     * space = O(N * N)
+     */
     public int maxDistance_3(int[][] grid) {
         int m = grid.length, n = grid[0].length;
         boolean[][] visited = new boolean[m][n];
