@@ -52,6 +52,10 @@ public class NumberOfProvinces {
 
     // V0-1
     // IDEA: DFS + HASHMAP
+    /**
+     * time = O(N^2)
+     * space = O(N)
+     */
     public int findCircleNum_0_1(int[][] isConnected) {
         // edge
         if (isConnected == null || isConnected.length == 0 || isConnected[0].length == 0) {
@@ -141,7 +145,8 @@ public class NumberOfProvinces {
      * Finds the number of provinces (connected components) using DFS directly on the adjacency matrix.
      * @param isConnected The adjacency matrix where isConnected[i][j] = 1 means provinces i and j are connected.
      * @return The total number of provinces.
-     * Time Complexity: O(N^2), where N is the number of cities/provinces.
+     * time = O(N^2)
+     * space = O(N)
      */
     public int findCircleNum_0_2(int[][] isConnected) {
         // Edge case checks
@@ -198,6 +203,10 @@ public class NumberOfProvinces {
 
     // V0-3
     // IDEA: DFS (gpt)
+    /**
+     * time = O(N^2)
+     * space = O(N)
+     */
     public int findCircleNum_0_3(int[][] isConnected) {
 
         // edge
@@ -251,6 +260,10 @@ public class NumberOfProvinces {
     // V1-1
     // IDEA: DFS
     // https://leetcode.com/problems/number-of-provinces/editorial/
+    /**
+     * time = O(N^2)
+     * space = O(N)
+     */
     public void dfs(int node, int[][] isConnected, boolean[] visit) {
         visit[node] = true;
         for (int i = 0; i < isConnected.length; i++) {
@@ -260,6 +273,10 @@ public class NumberOfProvinces {
         }
     }
 
+    /**
+     * time = O(N^2)
+     * space = O(N)
+     */
     public int findCircleNum_1_1(int[][] isConnected) {
         int n = isConnected.length;
         int numberOfComponents = 0;
@@ -279,6 +296,10 @@ public class NumberOfProvinces {
     // V1-2
     // IDEA: BFS
     // https://leetcode.com/problems/number-of-provinces/editorial/
+    /**
+     * time = O(N^2)
+     * space = O(N)
+     */
     public void bfs(int node, int[][] isConnected, boolean[] visit) {
         Queue<Integer> q = new LinkedList<>();
         q.offer(node);
@@ -296,6 +317,10 @@ public class NumberOfProvinces {
         }
     }
 
+    /**
+     * time = O(N^2)
+     * space = O(N)
+     */
     public int findCircleNum_1_2(int[][] isConnected) {
         int n = isConnected.length;
         int numberOfComponents = 0;
@@ -315,6 +340,10 @@ public class NumberOfProvinces {
     // V1-3
     // IDEA: Union-find
     // https://leetcode.com/problems/number-of-provinces/editorial/
+    /**
+     * time = O(N^2 * α(N))
+     * space = O(N)
+     */
     class UnionFind {
 
         int[] parent;
@@ -348,7 +377,10 @@ public class NumberOfProvinces {
         }
     }
 
-
+    /**
+     * time = O(N^2 * α(N))
+     * space = O(N)
+     */
     public int findCircleNum_1_3(int[][] isConnected) {
         int n = isConnected.length;
         UnionFind dsu = new UnionFind(n);

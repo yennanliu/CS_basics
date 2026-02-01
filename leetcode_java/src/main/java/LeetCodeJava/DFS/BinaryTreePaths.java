@@ -15,6 +15,10 @@ public class BinaryTreePaths {
     // IDEA : DFS
     private List<List<Integer>> collected = new ArrayList<>();
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public List<String> binaryTreePaths(TreeNode root) {
 
         if (root == null){
@@ -66,6 +70,10 @@ public class BinaryTreePaths {
     // V1
     // https://leetcode.com/problems/binary-tree-paths/editorial/
     // IDEA : DFS (RECURSION)
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public void construct_paths(TreeNode root, String path, LinkedList<String> paths) {
         if (root != null) {
             path += Integer.toString(root.val);
@@ -79,6 +87,10 @@ public class BinaryTreePaths {
         }
     }
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public List<String> binaryTreePaths_2(TreeNode root) {
         LinkedList<String> paths = new LinkedList();
         construct_paths(root, "", paths);
@@ -88,6 +100,10 @@ public class BinaryTreePaths {
     // V2
     // https://leetcode.com/problems/binary-tree-paths/editorial/
     // IDEA : ITERATIVE
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public List<String> binaryTreePaths_3(TreeNode root) {
         LinkedList<String> paths = new LinkedList();
         if (root == null)

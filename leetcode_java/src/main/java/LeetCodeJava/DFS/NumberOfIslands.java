@@ -48,6 +48,10 @@ public class NumberOfIslands {
 
     // V0
     // IDEA: DFS (with looping)
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public int numIslands(char[][] grid) {
         if (grid == null || grid.length == 0 || grid[0].length == 0) {
             return 0;
@@ -142,6 +146,10 @@ public class NumberOfIslands {
     // IDEA : DFS
     int num_island = 0;
     boolean[][] _seen;
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public int numIslands_0_1(char[][] grid) {
 
         if (grid.length == 1 && grid[0].length == 1){
@@ -198,6 +206,10 @@ public class NumberOfIslands {
     int num_island_2 = 0;
     boolean[][] _seen_2;
 
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public int numIslands_0_2(char[][] grid) {
         if (grid.length == 1 && grid[0].length == 1) {
             return grid[0][0] == '1' ? 1 : 0;
@@ -242,6 +254,10 @@ public class NumberOfIslands {
 
     // V0-3
     // IDEA: DFS + MODIFY grid value (fixed by gpt)
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public int numIslands_0_3(char[][] grid) {
 
         // edge
@@ -323,6 +339,10 @@ public class NumberOfIslands {
     private static final int[][] directions = {{1, 0}, {-1, 0},
             {0, 1}, {0, -1}};
 
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public int numIslands_1_1(char[][] grid) {
         int ROWS = grid.length, COLS = grid[0].length;
         int islands = 0;
@@ -357,6 +377,10 @@ public class NumberOfIslands {
 //    private static final int[][] directions = {{1, 0}, {-1, 0},
 //            {0, 1}, {0, -1}};
 
+    /**
+     * time = O(M * N)
+     * space = O(min(M, N))
+     */
     public int numIslands_1_2(char[][] grid) {
         int ROWS = grid.length, COLS = grid[0].length;
         int islands = 0;
@@ -397,6 +421,10 @@ public class NumberOfIslands {
     // V2
     // IDEA : DFS
     // https://leetcode.com/problems/number-of-islands/editorial/
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     void dfs_2(char[][] grid, int r, int c) {
         int nr = grid.length;
         int nc = grid[0].length;
@@ -412,6 +440,10 @@ public class NumberOfIslands {
         dfs_2(grid, r, c + 1);
     }
 
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public int numIslands_2(char[][] grid) {
         if (grid == null || grid.length == 0) {
             return 0;
@@ -435,6 +467,10 @@ public class NumberOfIslands {
     // V3
     // IDEA : BFS
     // https://leetcode.com/problems/number-of-islands/editorial/
+    /**
+     * time = O(M * N)
+     * space = O(min(M, N))
+     */
     public int numIslands_3(char[][] grid) {
         if (grid == null || grid.length == 0) {
             return 0;
@@ -496,6 +532,10 @@ public class NumberOfIslands {
     static int[] dy = { 1, -1, 0, 0 };
     static int directionCount = 4;
 
+    /**
+     * time = O(α(N))
+     * space = O(1)
+     */
     private int findParent(int id) {
         if (parent[id] == id) {
             return id;
@@ -503,6 +543,10 @@ public class NumberOfIslands {
         return parent[id] = findParent(parent[id]);
     }
 
+    /**
+     * time = O(α(N))
+     * space = O(1)
+     */
     private boolean union(int x, int y) {
         int parentX = findParent(x);
         int parentY = findParent(y);
@@ -513,6 +557,10 @@ public class NumberOfIslands {
         return false;
     }
 
+    /**
+     * time = O(K * α(K))
+     * space = O(K)
+     */
     public ArrayList<Integer> numberOfIslands(int m, int n, int [][] position) {
         int [][] grid = new int[m][n];
         parent = new int[position.length+1];

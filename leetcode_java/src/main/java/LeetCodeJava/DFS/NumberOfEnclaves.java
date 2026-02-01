@@ -51,6 +51,10 @@ public class NumberOfEnclaves {
 
     // V0-1
     // IDEA: LC 130, DFS (fixed by gpt)
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public int numEnclaves_0_1(int[][] grid) {
 
         if (grid == null || grid.length == 0 || grid[0].length == 0)
@@ -112,6 +116,10 @@ public class NumberOfEnclaves {
     private final int ESCAPED_LAND = 2; // Temporary marker for land connected to the boundary
     private final int[][] MOVES = new int[][] { { 0, 1 }, { 0, -1 }, { 1, 0 }, { -1, 0 } };
 
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public int numEnclaves_0_2(int[][] grid) {
         if (grid == null || grid.length == 0 || grid[0].length == 0) {
             return 0;
@@ -183,6 +191,10 @@ public class NumberOfEnclaves {
 
     // V0-3
     // IDEA: DFS (fixed by gemini)
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public int numEnclaves_0_3(int[][] grid) {
         if (grid == null || grid.length == 0)
             return 0;
@@ -241,6 +253,10 @@ public class NumberOfEnclaves {
 
     // V0-4
     // IDEA: DFS (fixed by gpt)
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public int numEnclaves_0_4(int[][] grid) {
 
         // edge case
@@ -313,6 +329,10 @@ public class NumberOfEnclaves {
     private int n;
     private int[][] grid;
 
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public int numEnclaves_1(int[][] grid) {
         this.grid = grid;
         m = grid.length;
@@ -348,6 +368,10 @@ public class NumberOfEnclaves {
     // V2
     // IDEA: DFS
     // https://leetcode.com/problems/number-of-enclaves/solutions/7377896/leetcode-1020-number-of-enclaves-reverse-t7pv/
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public int numEnclaves_2(int[][] grid) {
         int rows = grid.length;
         int cols = grid[0].length;
@@ -393,6 +417,10 @@ public class NumberOfEnclaves {
     // V3
     // IDEA: DFS
     // https://leetcode.com/problems/number-of-enclaves/solutions/3388131/pythonjavacsimple-solutioneasy-to-unders-y0m8/
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public int numEnclaves_3(int[][] grid) {
         int m = grid.length;
         int n = grid[0].length;
