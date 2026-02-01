@@ -76,6 +76,10 @@ public class LongestCommonSuffixQueries {
         int minLength = Integer.MAX_VALUE;
     }
 
+    /**
+     * time = O(L)
+     * space = O(1)
+     */
     public int[] stringIndices(String[] wordsContainer, String[] wordsQuery) {
         TrieNode_0_1 root = new TrieNode_0_1();
 
@@ -215,6 +219,10 @@ public class LongestCommonSuffixQueries {
         return query(next, s, pos + 1);
     }
 
+    /**
+     * time = O(L)
+     * space = O(1)
+     */
     public int[] stringIndices_0_3(String[] wordsContainer, String[] wordsQuery) {
         List<String> reversedContainer = new ArrayList<>();
         for (String w : wordsContainer) {
@@ -250,6 +258,10 @@ public class LongestCommonSuffixQueries {
         public int index;
         public TrieNode[] children;
 
+        /**
+         * time = O(L)
+         * space = O(ALPHABET_SIZE * L * N)
+         */
         public TrieNode() {
             index = Integer.MAX_VALUE;
             children = new TrieNode[26];
@@ -278,6 +290,10 @@ public class LongestCommonSuffixQueries {
             return curr.index;
         }
 
+        /**
+         * time = O(L)
+         * space = O(ALPHABET_SIZE * L * N)
+         */
         public Trie(String[] words) {
             int n = words.length;
             root = new TrieNode();
@@ -288,6 +304,10 @@ public class LongestCommonSuffixQueries {
             fillIndices(root);
         }
 
+        /**
+         * time = O(L)
+         * space = O(1)
+         */
         public void insertSuffix(String s, int index) {
             TrieNode curr = root;
             char[] str = s.toCharArray();
@@ -300,6 +320,10 @@ public class LongestCommonSuffixQueries {
             curr.index = Math.min(curr.index, index);
         }
 
+        /**
+         * time = O(L)
+         * space = O(1)
+         */
         public int longestCommonSuffix(String s) {
             TrieNode curr = root;
             char[] str = s.toCharArray();
@@ -310,6 +334,10 @@ public class LongestCommonSuffixQueries {
         }
     }
 
+    /**
+     * time = O(L)
+     * space = O(1)
+     */
     public int[] stringIndices_1_1(String[] wordsContainer, String[] wordsQuery) {
         int m = wordsQuery.length;
         Trie trie = new Trie(wordsContainer);
@@ -328,6 +356,10 @@ public class LongestCommonSuffixQueries {
         public int index;
         public TrieNode_1_2[] children;
 
+        /**
+         * time = O(L)
+         * space = O(ALPHABET_SIZE * L * N)
+         */
         public TrieNode_1_2() {
             index = Integer.MAX_VALUE;
             children = new TrieNode_1_2[26];
@@ -346,6 +378,10 @@ public class LongestCommonSuffixQueries {
             // or if less index: REMOVED as we are inserting words from container with increasing index
         }
 
+        /**
+         * time = O(L)
+         * space = O(ALPHABET_SIZE * L * N)
+         */
         public Trie_1_2(String[] words) {
             int n = words.length;
             root = new TrieNode_1_2();
@@ -355,6 +391,10 @@ public class LongestCommonSuffixQueries {
             }
         }
 
+        /**
+         * time = O(L)
+         * space = O(1)
+         */
         public void insertSuffix(String s, int index) {
             TrieNode_1_2 curr = root;
             char[] str = s.toCharArray();
@@ -372,6 +412,10 @@ public class LongestCommonSuffixQueries {
             }
         }
 
+        /**
+         * time = O(L)
+         * space = O(1)
+         */
         public int longestCommonSuffix(String s) {
             TrieNode_1_2 curr = root;
             char[] str = s.toCharArray();
@@ -383,6 +427,10 @@ public class LongestCommonSuffixQueries {
     }
 
 
+    /**
+     * time = O(L)
+     * space = O(1)
+     */
     public int[] stringIndices_1_2(String[] wordsContainer, String[] wordsQuery) {
         int m = wordsQuery.length;
         Trie trie = new Trie(wordsContainer);
@@ -407,6 +455,10 @@ public class LongestCommonSuffixQueries {
         }
     };
 
+    /**
+     * time = O(L)
+     * space = O(1)
+     */
     public void add(Node ptr, String[] wordsContainer, int i) {
         for (int j = wordsContainer[i].length() - 1; j >= 0; --j) {
             int c = wordsContainer[i].charAt(j) - 'a';
@@ -418,6 +470,10 @@ public class LongestCommonSuffixQueries {
         }
     }
 
+    /**
+     * time = O(L)
+     * space = O(1)
+     */
     public int search(Node ptr, String s) {
         int ans = ptr.ind;
         for (int i = s.length() - 1; i >= 0; --i) {
@@ -429,6 +485,10 @@ public class LongestCommonSuffixQueries {
         return ans;
     }
 
+    /**
+     * time = O(L)
+     * space = O(1)
+     */
     public int[] stringIndices_2(String[] wordsContainer, String[] wordsQuery) {
         int[] ans = new int[wordsQuery.length];
         Node head = new Node(0);
