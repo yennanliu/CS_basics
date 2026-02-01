@@ -42,7 +42,10 @@ import java.util.Arrays;
 public class IncreasingTripletSubsequence {
 
     // V0
-    // time: O(N), space: O(1)
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public boolean increasingTriplet(int[] nums) {
 
         // NOTE !!! we init as max integer
@@ -66,7 +69,10 @@ public class IncreasingTripletSubsequence {
 
     // V0-1
     // IDEA: DP (LC 300) (fixed by gpt) (TLE)
-    // time: O(N^2), space: O(N)
+    /**
+     * time = O(N^2)
+     * space = O(N)
+     */
     public boolean increasingTriplet_0_1(int[] nums) {
         if (nums == null || nums.length < 3) {
             return false;
@@ -93,7 +99,10 @@ public class IncreasingTripletSubsequence {
 
     // V1
     // IDEA : LOOP (fixed by gpt)
-    // time: O(N), space: O(1)
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public boolean increasingTriplet_1(int[] nums) {
         if (nums.length < 3) {
             return false;

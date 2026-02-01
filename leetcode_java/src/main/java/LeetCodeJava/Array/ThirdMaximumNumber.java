@@ -54,6 +54,10 @@ public class ThirdMaximumNumber {
 
     // V0
     // IDEA: SET + SORT
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public int thirdMax(int[] nums) {
         // edge
         if (nums == null || nums.length == 0) {
@@ -88,6 +92,10 @@ public class ThirdMaximumNumber {
     // V1-1
     // IDEA: SORTING
     // https://leetcode.com/problems/third-maximum-number/editorial/
+    /**
+     * time = O(N log N)
+     * space = O(1)
+     */
     public int thirdMax_1(int[] nums) {
         // Sort the array in non-increasing order.
         Arrays.sort(nums);
@@ -122,6 +130,10 @@ public class ThirdMaximumNumber {
     // V1-2
     // IDEA: MIN HEAP (PQ)
     // https://leetcode.com/problems/third-maximum-number/editorial/
+    /**
+     * time = O(N log 3) = O(N)
+     * space = O(3) = O(1)
+     */
     public int thirdMax_1_2(int[] nums) {
         PriorityQueue<Integer> minHeap = new PriorityQueue();
         Set<Integer> taken = new HashSet<Integer>();
@@ -165,6 +177,10 @@ public class ThirdMaximumNumber {
     // V1-3
     // IDEA: ORDERED SET
     // https://leetcode.com/problems/third-maximum-number/editorial/
+    /**
+     * time = O(N log 3) = O(N)
+     * space = O(3) = O(1)
+     */
     public int thirdMax_1_3(int[] nums) {
         // Sorted set to keep elements in sorted order.
         TreeSet<Integer> sortedNums = new TreeSet<Integer>();
@@ -204,6 +220,10 @@ public class ThirdMaximumNumber {
     // V1-4
     // IDEA: 3 POINTERS
     // https://leetcode.com/problems/third-maximum-number/editorial/
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int thirdMax_1_4(int[] nums) {
         // Three variables to store maxiumum three numbers till now.
         long firstMax = Long.MIN_VALUE;
@@ -249,6 +269,10 @@ public class ThirdMaximumNumber {
     // V1-5
     // IDEA: 3 POINTERS V2
     // https://leetcode.com/problems/third-maximum-number/editorial/
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int thirdMax_1_5(int[] nums) {
         Pair<Integer, Boolean> firstMax = new Pair<Integer, Boolean>(-1, false);
         Pair<Integer, Boolean> secondMax = new Pair<Integer, Boolean>(-1, false);

@@ -65,7 +65,10 @@ public class RotateImage {
 
     // V0
     // IDEA : ARRAY OP
-    // time: O(N^2), space: O(1)
+    /**
+     * time = O(N^2)
+     * space = O(1)
+     */
     public void rotate(int[][] matrix){
 
         int len = matrix.length;
@@ -147,7 +150,10 @@ public class RotateImage {
     // V1-1
     // https://neetcode.io/problems/rotate-matrix
     // IDEA: BRUTE FORCE
-    // time: O(N^2), space: O(N^2)
+    /**
+     * time = O(N^2)
+     * space = O(N^2)
+     */
     public void rotate_1_1(int[][] matrix) {
         int n = matrix.length;
         int[][] rotated = new int[n][n];
@@ -168,7 +174,10 @@ public class RotateImage {
     // V1-2
     // https://neetcode.io/problems/rotate-matrix
     // IDEA: Rotate By Four Cells
-    // time: O(N^2), space: O(1)
+    /**
+     * time = O(N^2)
+     * space = O(1)
+     */
     public void rotate_1_2(int[][] matrix) {
         int l = 0;
         int r = matrix.length - 1;
@@ -201,7 +210,10 @@ public class RotateImage {
     // V1-3
     // https://neetcode.io/problems/rotate-matrix
     // IDEA: Reverse And Transpose
-    // time: O(N^2), space: O(1)
+    /**
+     * time = O(N^2)
+     * space = O(1)
+     */
     public void rotate_1_3(int[][] matrix) {
         // Reverse the matrix vertically
         reverse(matrix);
@@ -229,7 +241,10 @@ public class RotateImage {
     // V2-1
     // IDEA : Rotate Groups of Four Cells
     // https://leetcode.com/problems/rotate-image/editorial/
-    // time: O(N^2), space: O(1)
+    /**
+     * time = O(N^2)
+     * space = O(1)
+     */
     public void rotate_2_1(int[][] matrix) {
         int n = matrix.length;
         for (int i = 0; i < (n + 1) / 2; i ++) {
@@ -246,7 +261,10 @@ public class RotateImage {
     // V2-2
     // IDEA : Reverse on the Diagonal and then Reverse Left to Right
     // https://leetcode.com/problems/rotate-image/editorial/
-    // time: O(N^2), space: O(1)
+    /**
+     * time = O(N^2)
+     * space = O(1)
+     */
     public void rotate_2_2(int[][] matrix) {
         transpose(matrix);
         reflect(matrix);

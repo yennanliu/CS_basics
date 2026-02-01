@@ -51,7 +51,10 @@ public class FindTheDuplicateNumber {
 
     // V0
     // IDEA: HASHSET
-    // time: O(N), space: O(N)
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int findDuplicate(int[] nums) {
         HashSet<Integer> set = new HashSet<>();
         for (int x : nums) {
