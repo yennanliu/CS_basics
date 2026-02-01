@@ -224,8 +224,11 @@ public class PalindromePartitioning {
     // V1-2
     // https://neetcode.io/problems/palindrome-partitioning
     // IDEA: Backtracking
-    // time: O(N * 2^N), space: O(N * 2^N)
-    public List<List<String>> partition_1_2(String s) {
+    /**
+     * time = O(N * 2^N)
+     * space = O(N * 2^N)
+     */
+        public List<List<String>> partition_1_2(String s) {
         List<List<String>> res = new ArrayList<>();
         List<String> part = new ArrayList<>();
         dfs_1_2(0, s, part, res);
@@ -298,8 +301,11 @@ public class PalindromePartitioning {
     // V4
     // IDEA: BACKTRACK
     // https://leetcode.com/problems/palindrome-partitioning/editorial/
-    // time: O(N * 2^N), space: O(N * 2^N)
-    public List<List<String>> partition_4(String s) {
+    /**
+     * time = O(N * 2^N)
+     * space = O(N * 2^N)
+     */
+        public List<List<String>> partition_4(String s) {
         /** NOTE : we can init result, pass it to method, modify it, and return as ans */
         List<List<String>> result = new ArrayList<List<String>>();
         dfs_1(0, result, new ArrayList<String>(), s);
@@ -329,8 +335,11 @@ public class PalindromePartitioning {
     // V5
     // IDEA: BACKTRACK + DP
     // https://leetcode.com/problems/palindrome-partitioning/editorial/
-    // time: O(N^2 + N * 2^N), space: O(N^2 + N * 2^N)
-    public List<List<String>> partition_5(String s) {
+    /**
+     * time = O(N^2 + N * 2^N)
+     * space = O(N^2 + N * 2^N)
+     */
+        public List<List<String>> partition_5(String s) {
         int len = s.length();
         boolean[][] dp = new boolean[len][len];
         List<List<String>> result = new ArrayList<>();

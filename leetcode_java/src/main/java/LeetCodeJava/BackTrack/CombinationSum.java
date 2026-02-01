@@ -53,7 +53,10 @@ public class CombinationSum {
 
     // V0
     // IDEA : BACKTRACK + START_IDX
-    // time: O(N^(T/M)), space: O(T/M)
+    /**
+     * time = O(N^(T/M))
+     * space = O(T/M)
+     */
     public List<List<Integer>> combinationSum(int[] candidates, int target) {
 
         if (candidates == null || candidates.length == 0){

@@ -153,8 +153,11 @@ public class Permutations2 {
     // IDEA: BACKTRACK + `VISITED ARRAY` (NO NEED start_idx)
     // https://www.youtube.com/watch?v=qhBVWf0YafA
     // https://github.com/neetcode-gh/leetcode/blob/main/java%2F0047-permutations-ii.java
-    // time: O(N! * N), space: O(N! * N)
-    public List<List<Integer>> permuteUnique_1_1(int[] nums) {
+    /**
+     * time = O(N! * N)
+     * space = O(N! * N)
+     */
+        public List<List<Integer>> permuteUnique_1_1(int[] nums) {
         Arrays.sort(nums);
         List<List<Integer>> res = new ArrayList<>();
 
@@ -189,8 +192,11 @@ public class Permutations2 {
     // V2-1
     // https://leetcode.com/problems/permutations-ii/editorial/
     // IDEA: Backtracking with Groups of Numbers (counter)
-    // time: O(N! * N), space: O(N! * N)
-    public List<List<Integer>> permuteUnique_2_1(int[] nums) {
+    /**
+     * time = O(N! * N)
+     * space = O(N! * N)
+     */
+        public List<List<Integer>> permuteUnique_2_1(int[] nums) {
         List<List<Integer>> results = new ArrayList<>();
 
         // count the occurrence of each number
@@ -239,8 +245,11 @@ public class Permutations2 {
 
     // V3
     // https://leetcode.com/problems/permutations-ii/solutions/18601/short-iterative-java-solution-by-shpolsk-r4tm/
-    // time: O(N! * N), space: O(N! * N)
-    public List<List<Integer>> permuteUnique_3(int[] num) {
+    /**
+     * time = O(N! * N)
+     * space = O(N! * N)
+     */
+        public List<List<Integer>> permuteUnique_3(int[] num) {
         LinkedList<List<Integer>> res = new LinkedList<>();
         res.add(new ArrayList<>());
         for (int i = 0; i < num.length; i++) {

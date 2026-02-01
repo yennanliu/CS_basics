@@ -50,8 +50,11 @@ public class WordBreak2 {
 
     // V0-1
     // IDEA: BFS (fixed by gpt)
-    // time: O(N * 2^N), space: O(N * 2^N)
-    public class WordInfo {
+    /**
+     * time = O(N * 2^N)
+     * space = O(N * 2^N)
+     */
+        public class WordInfo {
         int start_idx;
         StringBuilder sb;
 
@@ -234,8 +237,11 @@ public class WordBreak2 {
     // V2-1
     // IDEA: Backtracking
     // https://leetcode.com/problems/word-break-ii/editorial/
-    // time: O(N * 2^N), space: O(N * 2^N)
-    public List<String> wordBreak_2_1(String s, List<String> wordDict) {
+    /**
+     * time = O(N * 2^N)
+     * space = O(N * 2^N)
+     */
+        public List<String> wordBreak_2_1(String s, List<String> wordDict) {
         // Convert wordDict to a set for O(1) lookups
         Set<String> wordSet = new HashSet<>(wordDict);
         List<String> results = new ArrayList<>();
@@ -279,8 +285,11 @@ public class WordBreak2 {
     // V2-2
     // IDEA: Dynamic Programming - Memoization
     // https://leetcode.com/problems/word-break-ii/editorial/
-    // time: O(N^2 * M + 2^N), space: O(N * 2^N)
-    public List<String> wordBreak_2_2(String s, List<String> wordDict) {
+    /**
+     * time = O(N^2 * M + 2^N)
+     * space = O(N * 2^N)
+     */
+        public List<String> wordBreak_2_2(String s, List<String> wordDict) {
         Set<String> wordSet = new HashSet<>(wordDict);
         Map<String, List<String>> memoization = new HashMap<>();
         return dfs(s, wordSet, memoization);
@@ -324,8 +333,11 @@ public class WordBreak2 {
     // V2-3
     // IDEA: Dynamic Programming - Tabulation
     // https://leetcode.com/problems/word-break-ii/editorial/
-    // time: O(N * 2^N), space: O(N * 2^N)
-    public List<String> wordBreak_2_3(String s, List<String> wordDict) {
+    /**
+     * time = O(N * 2^N)
+     * space = O(N * 2^N)
+     */
+        public List<String> wordBreak_2_3(String s, List<String> wordDict) {
         // Map to store results of subproblems
         Map<Integer, List<String>> dp = new HashMap<>();
 

@@ -54,7 +54,10 @@ public class PathWithMaximumGold {
 
     // V0
     // IDEA : DFS + BACKTRACK
-    // time: O(M * N * 4^K), space: O(K)
+    /**
+     * time = O(M * N * 4^K)
+     * space = O(K)
+     */
     private final int[] DIRECTIONS = new int[]{0, 1, 0, -1, 0};
 
     public int getMaximumGold(int[][] grid) {

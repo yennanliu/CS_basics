@@ -38,8 +38,11 @@ public class NQueens2 {
 
     // V0
     // IDEA: N QUEENS (LC 51) + unique cnt
-    // time: O(N!), space: O(N^2)
-    public int totalNQueens(int n) {
+    /**
+     * time = O(N!)
+     * space = O(N^2)
+     */
+        public int totalNQueens(int n) {
         // edge
         if (n == 1 || n == 0) {
             return n; // ???
@@ -140,8 +143,11 @@ public class NQueens2 {
 
     // V2
     // https://leetcode.com/problems/n-queens-ii/solutions/6667257/java-solution-by-_aman_varma-u29o/
-    // time: O(N!), space: O(N^2)
-    public boolean isSafe(int row, int col, int[] arr1, int[] arr2, int[] leftRow, int n) {
+    /**
+     * time = O(N!)
+     * space = O(N^2)
+     */
+        public boolean isSafe(int row, int col, int[] arr1, int[] arr2, int[] leftRow, int n) {
         return arr1[row + col] == 0 && arr2[(n - 1 - row) + col] == 0 && leftRow[row] == 0;
 
     }

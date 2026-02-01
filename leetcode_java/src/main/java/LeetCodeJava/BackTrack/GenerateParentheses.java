@@ -32,7 +32,10 @@ public class GenerateParentheses {
 
     // V0
     // IDEA: BACKTRACK (fixed by gpt)
-    // time: O(4^N / sqrt(N)), space: O(4^N / sqrt(N))
+    /**
+     * time = O(4^N / sqrt(N))
+     * space = O(4^N / sqrt(N))
+     */
     List<String> resParenthesis = new ArrayList<>();
 
     public List<String> generateParenthesis(int n) {
