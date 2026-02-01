@@ -32,6 +32,10 @@ public class GraphValidTree {
     // TODO : validate below
     // IDEA: UNION FIND (fixed by gpt)
     // https://www.youtube.com/watch?v=bXsUuownnoQ
+    /**
+     * time = O(N * α(N))
+     * space = O(N)
+     */
     public boolean validTree(int n, int[][] edges) {
         // edge case
         /**
@@ -212,6 +216,10 @@ public class GraphValidTree {
     // V0-0-1
     // IDEA: UNION FIND (fixed by gemini)
     // TODO: validate
+    /**
+     * time = O(N * α(N))
+     * space = O(N)
+     */
     public boolean validTree_0_0_1(int n, int[][] edges) {
         /** NOTE !!!
          *
@@ -287,6 +295,10 @@ public class GraphValidTree {
 
     // V0-1
     // IDEA : QUICK FIND (gpt)
+    /**
+     * time = O(N * α(N))
+     * space = O(N)
+     */
     public boolean validTree_0_1(int n, int[][] edges) {
         if (n == 0) {
             return false;
@@ -359,6 +371,10 @@ public class GraphValidTree {
     // V0-2
     // IDEA: UNION FIND
     // TODO: validate
+    /**
+     * time = O(N * α(N))
+     * space = O(N)
+     */
     public boolean validTree_0_2(int n, int[][] edges) {
         // edge
         if(n == 0){
@@ -498,6 +514,10 @@ public class GraphValidTree {
     // https://github.com/neetcode-gh/leetcode/blob/main/java/0261-graph-valid-tree.java
     private Map<Integer, List<Integer>> adjacencyList = new HashMap<>();
 
+    /**
+     * time = O(V + E)
+     * space = O(V + E)
+     */
     public boolean validTree_0_4(int n, int[][] edges) {
         if (n == 0 || n == 1) return true;
 
@@ -540,6 +560,10 @@ public class GraphValidTree {
     // V1-1
     // https://neetcode.io/problems/valid-tree
     // IDEA:  Cycle Detection (DFS)
+    /**
+     * time = O(V + E)
+     * space = O(V + E)
+     */
     public boolean validTree_1_1(int n, int[][] edges) {
         if (edges.length > n - 1) {
             return false;
@@ -584,6 +608,10 @@ public class GraphValidTree {
     // V1-2
     // https://neetcode.io/problems/valid-tree
     // IDEA:  BFS
+    /**
+     * time = O(V + E)
+     * space = O(V + E)
+     */
     public boolean validTree_1_2(int n, int[][] edges) {
         if (edges.length > n - 1) {
             return false;
@@ -626,6 +654,10 @@ public class GraphValidTree {
     // V1-3
     // https://neetcode.io/problems/valid-tree
     // IDEA:  Disjoint Set Union
+    /**
+     * time = O(N * α(N))
+     * space = O(N)
+     */
     public class DSU {
         int[] Parent, Size;
         int comps;
@@ -666,6 +698,10 @@ public class GraphValidTree {
         }
     }
 
+    /**
+     * time = O(N * α(N))
+     * space = O(N)
+     */
     public boolean validTree_1_3(int n, int[][] edges) {
         if (edges.length > n - 1) {
             return false;
@@ -684,6 +720,10 @@ public class GraphValidTree {
     // V2
     // IDEA : BFS
     // https://protegejj.gitbook.io/algorithm-practice/leetcode/graph/261-graph-valid-tree
+    /**
+     * time = O(V + E)
+     * space = O(V + E)
+     */
     public boolean validTree_2(int n, int[][] edges) {
 
         // NOTE here !!! List<Set<Integer>> as List type
@@ -740,6 +780,10 @@ public class GraphValidTree {
     // https://leetcode.ca/2016-08-17-261-Graph-Valid-Tree/
     private int[] p;
 
+    /**
+     * time = O(N * α(N))
+     * space = O(N)
+     */
     public boolean validTree_3(int n, int[][] edges) {
         p = new int[n];
         for (int i = 0; i < n; ++i) {
@@ -766,6 +810,10 @@ public class GraphValidTree {
     // V4
     // IDEA : DFS
     // https://protegejj.gitbook.io/algorithm-practice/leetcode/graph/261-graph-valid-tree
+    /**
+     * time = O(V + E)
+     * space = O(V + E)
+     */
     public boolean validTree_4(int n, int[][] edges) {
         List<Set<Integer>> adjList = new ArrayList<>();
 
@@ -810,6 +858,10 @@ public class GraphValidTree {
     // V5
     // IDEA : UNION FIND
     // https://protegejj.gitbook.io/algorithm-practice/leetcode/graph/261-graph-valid-tree
+    /**
+     * time = O(N * α(N))
+     * space = O(N)
+     */
     public boolean validTree_5(int n, int[][] edges) {
         UnionFind uf = new UnionFind(n);
 

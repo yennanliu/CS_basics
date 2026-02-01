@@ -53,6 +53,10 @@ public class MinimumHeightTrees {
     // V0-1
     // IDEA: BRUTE FORCE (loop over nodes, then get dist via dfs/bfs) (GPT) (TLE)
     // https://neetcode.io/solutions/minimum-height-trees
+    /**
+     * time = O(N^2)
+     * space = O(N)
+     */
     public List<Integer> findMinHeightTrees_0_1(int n, int[][] edges) {
         if (n == 1)
             return Collections.singletonList(0); // Edge case: single node
@@ -113,6 +117,10 @@ public class MinimumHeightTrees {
 
     // V0-2
     // IDEA: similar to `Kahn's Algorithm`, Topological Leaf Removal. Topological Sort like (fixed by gemini)
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     /**
      * Time Complexity: O(N) - Each node and edge is processed once.
      * Space Complexity: O(N) - Adjacency list and queue storage.
@@ -215,6 +223,10 @@ public class MinimumHeightTrees {
     // V0-3
     // IDEA: (Leaf Trimming / Topological BFS) (fixed by gpt)
     /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
      * Algorithm (Leaf Trimming / Topological BFS)
      *
      * Build adjacency list + degree count
@@ -278,6 +290,10 @@ public class MinimumHeightTrees {
 
     // V1
     // IDEA:  topological sorting with a BFS (Breadth-First Search) (GPT)
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public List<Integer> findMinHeightTrees_1(int n, int[][] edges) {
         if (n == 1)
             return Collections.singletonList(0); // If there's only one node, it's the MHT root.
@@ -335,6 +351,10 @@ public class MinimumHeightTrees {
     private List<Integer> centroids;
     private int nodeB;
 
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public List<Integer> findMinHeightTrees_2_2(int n, int[][] edges) {
         if (n == 1)
             return Collections.singletonList(0);
@@ -394,6 +414,10 @@ public class MinimumHeightTrees {
     // V2-3
     // Topological Sorting (BFS)
     // https://neetcode.io/solutions/minimum-height-trees
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public List<Integer> findMinHeightTrees_2_3(int n, int[][] edges) {
         if (n == 1)
             return Collections.singletonList(0);
@@ -437,6 +461,10 @@ public class MinimumHeightTrees {
 
     // V3
     // https://leetcode.com/problems/minimum-height-trees/solutions/76055/share-some-thoughts-by-dietpepsi-mjsc/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public List<Integer> findMinHeightTrees_3(int n, int[][] edges) {
         if (n == 1)
             return Collections.singletonList(0);
@@ -474,6 +502,10 @@ public class MinimumHeightTrees {
     // V5
     // IDEA: BFS
     // https://leetcode.com/problems/minimum-height-trees/solutions/5060930/full-explanation-bfs-remove-leaf-nodes-b-4x00/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public List<Integer> findMinHeightTrees_5(int n, int[][] edges) {
         if (n == 1)
             return Collections.singletonList(0);
@@ -517,6 +549,10 @@ public class MinimumHeightTrees {
 
     // V6
     // https://leetcode.com/problems/minimum-height-trees/solutions/5062733/fasterlesserdetailed-explainationbfsstep-085i/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public List<Integer> findMinHeightTrees_6(int n, int[][] edges) {
         if (n == 1) {
             return Collections.singletonList(0); // Only one node, return the root

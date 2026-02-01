@@ -67,6 +67,10 @@ public class FindAllPossibleRecipesFromGivenSupplies {
     // V1-1
     // https://leetcode.com/problems/find-all-possible-recipes-from-given-supplies/editorial/
     // IDEA: BFS
+    /**
+     * time = O(R * I)
+     * space = O(R + S)
+     */
     public List<String> findAllRecipes_1_1(
             String[] recipes,
             List<List<String>> ingredients,
@@ -121,6 +125,10 @@ public class FindAllPossibleRecipesFromGivenSupplies {
     // V1-2
     // https://leetcode.com/problems/find-all-possible-recipes-from-given-supplies/editorial/
     // IDEA: DFS
+    /**
+     * time = O(R * I)
+     * space = O(R + S)
+     */
     public List<String> findAllRecipes_1_2(
             String[] recipes,
             List<List<String>> ingredients,
@@ -200,6 +208,10 @@ public class FindAllPossibleRecipesFromGivenSupplies {
     // V1-3
     // https://leetcode.com/problems/find-all-possible-recipes-from-given-supplies/editorial/
     // IDEA: Topological Sort (Kahn's Algorithm)
+    /**
+     * time = O(R * I)
+     * space = O(R + S)
+     */
     public List<String> findAllRecipes_1_3(
             String[] recipes,
             List<List<String>> ingredients,
