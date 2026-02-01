@@ -192,6 +192,10 @@ public class BurstBalloons {
 
     // V0-1
     // IDEA: DP (gemini)
+    /**
+     * time = O(N^3)
+     * space = O(N^2)
+     */
     public int maxCoins_0_1(int[] nums) {
         int n = nums.length;
         // 1. Add boundaries: [1, ...nums..., 1]
@@ -226,6 +230,10 @@ public class BurstBalloons {
 
     // V0-2
     // IDEA: DP (GPT)
+    /**
+     * time = O(N^3)
+     * space = O(N^2)
+     */
     public int maxCoins_0_2(int[] nums) {
         int n = nums.length;
 
@@ -262,6 +270,10 @@ public class BurstBalloons {
 
     // V0-3
     // IDEA: DP (gpt)
+    /**
+     * time = O(N^3)
+     * space = O(N^2)
+     */
     public int maxCoins_0_3(int[] nums) {
         int n = nums.length;
 
@@ -302,6 +314,10 @@ public class BurstBalloons {
 
     // V0-4
     // IDEA: 2D DP (gemini)
+    /**
+     * time = O(N^3)
+     * space = O(N^2)
+     */
     public int maxCoins_0_4(int[] nums) {
         int n = nums.length;
         // 1. Create a new array with boundaries 1 at both ends
@@ -341,6 +357,10 @@ public class BurstBalloons {
     // V1-1
     // https://neetcode.io/problems/burst-balloons
     // IDEA:  Brute Force (Recursion)
+    /**
+     * time = O(N^3)
+     * space = O(N^2)
+     */
     public int maxCoins_1_1(int[] nums) {
         int[] newNums = new int[nums.length + 2];
         newNums[0] = newNums[nums.length + 1] = 1;
@@ -351,6 +371,10 @@ public class BurstBalloons {
         return dfs(newNums);
     }
 
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int dfs(int[] nums) {
         if (nums.length == 2) {
             return 0;
@@ -375,6 +399,10 @@ public class BurstBalloons {
     // V1-2
     // https://neetcode.io/problems/burst-balloons
     // IDEA: Dynamic Programming (Top-Down)
+    /**
+     * time = O(N^3)
+     * space = O(N^2)
+     */
     public int maxCoins_1_2(int[] nums) {
         int n = nums.length;
         int[] newNums = new int[n + 2];
@@ -393,6 +421,10 @@ public class BurstBalloons {
         return dfs(newNums, 1, newNums.length - 2, dp);
     }
 
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int dfs(int[] nums, int l, int r, int[][] dp) {
         if (l > r) {
             return 0;
@@ -414,6 +446,10 @@ public class BurstBalloons {
     // V1-3
     // https://neetcode.io/problems/burst-balloons
     // IDEA: Dynamic Programming (Bottom-Up)
+    /**
+     * time = O(N^3)
+     * space = O(N^2)
+     */
     public int maxCoins_1_3(int[] nums) {
         int n = nums.length;
         int[] newNums = new int[n + 2];

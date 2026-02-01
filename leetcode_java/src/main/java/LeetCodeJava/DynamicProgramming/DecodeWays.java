@@ -336,6 +336,10 @@ public class DecodeWays {
     // IDEA:  Dynamic Programming (Top-Down)
     // https://neetcode.io/problems/decode-ways/solution
     // https://youtu.be/6aEyTjOwlJU?si=mtcvm7xJNjoNLILY
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int numDecodings_0_1(String s) {
         Map<Integer, Integer> dp = new HashMap<>();
         dp.put(s.length(), 1);
@@ -365,6 +369,10 @@ public class DecodeWays {
     // IDEA: Dynamic Programming (Bottom-Up)
     // https://neetcode.io/problems/decode-ways/solution
     // https://youtu.be/6aEyTjOwlJU?si=mtcvm7xJNjoNLILY
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int numDecodings_0_2(String s) {
         int[] dp = new int[s.length() + 1];
         dp[s.length()] = 1;
@@ -386,6 +394,10 @@ public class DecodeWays {
     // IDEA: Dynamic Programming (Space Optimized)
     // https://neetcode.io/problems/decode-ways/solution
     // https://youtu.be/6aEyTjOwlJU?si=mtcvm7xJNjoNLILY
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int numDecodings_0_3(String s) {
         int dp = 0, dp2 = 0;
         int dp1 = 1;
@@ -425,6 +437,10 @@ public class DecodeWays {
         return res;
     }
 
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int numDecodings_0_5(String s) {
         return dfs_0_5(0, s);
     }
@@ -525,6 +541,10 @@ public class DecodeWays {
 
     // V0-7
     // IDEA: DP (gpt)
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int numDecodings_0_7(String s) {
         if (s == null || s.length() == 0)
             return 0;
@@ -624,6 +644,10 @@ public class DecodeWays {
         return res;
     }
 
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int numDecodings_1_1(String s) {
         return dfs(0, s);
     }
@@ -631,6 +655,10 @@ public class DecodeWays {
     // V1-2
     // https://neetcode.io/problems/decode-ways
     // IDEA: Dynamic Programming (Top-Down)
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int numDecodings_1_2(String s) {
         Map<Integer, Integer> dp = new HashMap<>();
         dp.put(s.length(), 1);
@@ -659,6 +687,10 @@ public class DecodeWays {
     // V1-3
     // https://neetcode.io/problems/decode-ways
     // IDEA: Dynamic Programming (Bottom-Up)
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int numDecodings_1_3(String s) {
         int[] dp = new int[s.length() + 1];
         dp[s.length()] = 1;
@@ -680,6 +712,10 @@ public class DecodeWays {
     // V2
     // IDEA : DP
     // https://leetcode.com/problems/decode-ways/solutions/4456554/character-state-machine-video-solution-java-c/
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int numDecodings_2(String encodedString) {
         char s[] = encodedString.toCharArray();
         if(s[0] == '0')return 0;
@@ -709,6 +745,10 @@ public class DecodeWays {
     // V3
     // IDEA : DP
     // https://leetcode.com/problems/decode-ways/solutions/4454539/decode-ways-java/
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int numDecodings_3(String s) {
         int n = s.length();
         int[] dp = new int[n + 1];
@@ -733,6 +773,10 @@ public class DecodeWays {
     // V4-1
     // IDEA: DP (TOP DOWN)
     // https://leetcode.com/problems/decode-ways/solutions/4454173/recursive-top-down-bottom-up-clean-and-c-hqge/
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int numDecodings_4_1(String s) {
         int[] memo = new int[s.length()];
         Arrays.fill(memo, -1);
@@ -772,6 +816,10 @@ public class DecodeWays {
     // V4-2
     // IDEA: DP (BOTTOM UP)
     // https://leetcode.com/problems/decode-ways/solutions/4454173/recursive-top-down-bottom-up-clean-and-c-hqge/
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int numDecodings_4_2(String s) {
         int n = s.length();
         if (n == 0) {

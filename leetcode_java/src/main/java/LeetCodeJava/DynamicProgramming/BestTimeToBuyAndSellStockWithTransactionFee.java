@@ -137,6 +137,10 @@ public class BestTimeToBuyAndSellStockWithTransactionFee {
 
     // V1
     // https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-transaction-fee/solutions/3667440/beats-100-c-java-python-beginner-friendl-rpgh/
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int maxProfit_1(int[] prices, int fee) {
         int buy = Integer.MIN_VALUE;
         int sell = 0;
@@ -151,6 +155,10 @@ public class BestTimeToBuyAndSellStockWithTransactionFee {
 
     // V2
     // https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-transaction-fee/solutions/1112088/js-python-java-c-very-simple-state-machi-f4zp/
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int maxProfit_2(int[] P, int F) {
         int len = P.length, buying = 0, selling = -P[0];
         for (int i = 1; i < len; i++) {
@@ -166,6 +174,10 @@ public class BestTimeToBuyAndSellStockWithTransactionFee {
     // V4
     // IDEA: DP
     // https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-transaction-fee/solutions/3667495/beats-100-video-java-c-python-by-jeevank-uyrl/
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int maxProfit_4(int[] prices, int fee) {
         int free = 0;
         int hold = -prices[0];

@@ -492,6 +492,10 @@ public class DeleteAndEarn {
 
     // V0-2
     // IDEA: DP (LC 198 HOUSE ROBBER) (GEMINI)
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int deleteAndEarn_0_2(int[] nums) {
         // 1. Find the maximum value in nums to determine our array size
         int maxVal = 0;
@@ -526,6 +530,10 @@ public class DeleteAndEarn {
 
     // V0-3
     // Space Optimization (O(1) extra space) (GEMINI)
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int deleteAndEarn_0_3(int[] nums) {
         int maxVal = 0;
         for (int num : nums)
@@ -557,6 +565,10 @@ public class DeleteAndEarn {
     // IDEA: TOP DOWN DP
     // top down DP solution
     // https://leetcode.com/problems/delete-and-earn/solutions/284609/for-top-down-dp-fans-java-2ms-solution-e-sthk/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int deleteAndEarn_2(int[] nums) {
         // if we sort the array, we do not need to delete elements smaller than nums[idx] (ie nums[idx] - 1) because they are already computed
         // and saved in memo, we only need to delete nums[idx] + 1 and we can do this simply by skipping them since the array is sorted

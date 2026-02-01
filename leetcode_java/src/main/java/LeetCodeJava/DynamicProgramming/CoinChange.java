@@ -71,6 +71,10 @@ public class CoinChange {
     
     // V0
     // IDEA : BFS (fixed by gemini)
+    /**
+     * time = O(N * amount)
+     * space = O(amount)
+     */
     public int coinChange(int[] coins, int amount) {
         if (amount == 0)
             return 0;
@@ -114,6 +118,10 @@ public class CoinChange {
 
     // V0-1
     // IDEA : BFS (modified by GPT)
+    /**
+     * time = O(N * amount)
+     * space = O(amount)
+     */
     public int coinChange_0_1(int[] coins, int amount) {
         /**
          * NOTE !!!
@@ -465,6 +473,10 @@ public class CoinChange {
 
     // V0-2-1
     // IDEA: bottom up DP ("backward-looking" approach) (fixed by gemini)
+    /**
+     * time = O(N * amount)
+     * space = O(amount)
+     */
     public int coinChange_0_2_1(int[] coins, int amount) {
         // 1. Base case
         if (amount == 0)
@@ -509,6 +521,10 @@ public class CoinChange {
 
     // V0-3
     // IDEA: "forward-looking" approach: DP (fixed by gpt) (TLE)
+    /**
+     * time = O(N * amount)
+     * space = O(amount)
+     */
     public int coinChange_0_3(int[] coins, int amount) {
         int INF = amount + 1;
         int[] dp = new int[amount + 1];
@@ -551,6 +567,10 @@ public class CoinChange {
         }
     }
 
+    /**
+     * time = O(N * amount)
+     * space = O(amount)
+     */
     public int coinChange_0_4(int[] coins, int amount) {
         // Edge case
         if (amount == 0) {
@@ -608,6 +628,10 @@ public class CoinChange {
 
     // V0-5
     // IDEA: BFS (fixed by gpt)
+    /**
+     * time = O(N * amount)
+     * space = O(amount)
+     */
     public int coinChange_0_5(int[] coins, int amount) {
         // edge case: if amount is 0, no coins are needed
         if (amount == 0) {
@@ -657,6 +681,10 @@ public class CoinChange {
 
     // V0-6
     // IDEA: BFS (TLE)
+    /**
+     * time = O(N * amount)
+     * space = O(amount)
+     */
     public int coinChange_0_6(int[] coins, int amount) {
         // edge
         if (coins == null || coins.length == 0) {
@@ -688,6 +716,10 @@ public class CoinChange {
         }
         Collections.sort(coins_, new Comparator<Integer>() {
             @Override
+            /**
+             * time = O(N)
+             * space = O(N)
+             */
             public int compare(Integer o1, Integer o2) {
                 int diff = o2 - o1;
                 return diff;
@@ -727,6 +759,10 @@ public class CoinChange {
 
     // V0-4-1 (fixed of V0-4)
     // IDEA: BFS
+    /**
+     * time = O(N * amount)
+     * space = O(amount)
+     */
     public int coinChange_0_4_1(int[] coins, int amount) {
         if (amount < 0) return -1;
         if (amount == 0) return 0;
@@ -761,6 +797,10 @@ public class CoinChange {
     // V1-1
     // https://neetcode.io/problems/coin-change
     // IDEA: RECURSION
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int dfs(int[] coins, int amount) {
         if (amount == 0) return 0;
 
@@ -774,6 +814,10 @@ public class CoinChange {
         return res;
     }
 
+    /**
+     * time = O(N * amount)
+     * space = O(amount)
+     */
     public int coinChange_1_1(int[] coins, int amount) {
         int minCoins = dfs(coins, amount);
         return (minCoins >= 1e9) ? -1 : minCoins;
@@ -784,6 +828,10 @@ public class CoinChange {
     // IDEA: Dynamic Programming (Top-Down)
     HashMap<Integer, Integer> memo = new HashMap<>();
 
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int dfs(int amount, int[] coins) {
         if (amount == 0) return 0;
         if (memo.containsKey(amount))
@@ -803,6 +851,10 @@ public class CoinChange {
         return res;
     }
 
+    /**
+     * time = O(N * amount)
+     * space = O(amount)
+     */
     public int coinChange_1_2(int[] coins, int amount) {
         int minCoins = dfs(amount, coins);
         return minCoins == Integer.MAX_VALUE ? -1 : minCoins;
@@ -812,6 +864,10 @@ public class CoinChange {
     // V1-3
     // https://neetcode.io/problems/coin-change
     // IDEA: Dynamic Programming (Bottom-Up)
+    /**
+     * time = O(N * amount)
+     * space = O(amount)
+     */
     public int coinChange_1_3(int[] coins, int amount) {
         int[] dp = new int[amount + 1];
         Arrays.fill(dp, amount + 1);
@@ -830,6 +886,10 @@ public class CoinChange {
     // V1-4
     // https://neetcode.io/problems/coin-change
     // IDEA: BFS
+    /**
+     * time = O(N * amount)
+     * space = O(amount)
+     */
     public int coinChange_1_4(int[] coins, int amount) {
         if (amount == 0) return 0;
 
@@ -862,6 +922,10 @@ public class CoinChange {
     // V2
     // IDEA : DFS
     // https://leetcode.com/problems/coin-change/solutions/4564988/pretty-intuitive-approach-with-recursion-memoization/
+    /**
+     * time = O(N * amount)
+     * space = O(amount)
+     */
     public int coinChange_2(int[] coins, int amount) {
         if(amount == 0){
             return 0;
@@ -871,6 +935,10 @@ public class CoinChange {
         return ans == Integer.MAX_VALUE ? -1 : ans;
     }
 
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int dfs(int[] coins, int amount, Map<Integer, Integer> cache){
         if(cache.containsKey(amount)){
             return cache.get(amount);
@@ -896,6 +964,10 @@ public class CoinChange {
     // V3
     // IDEA : DP
     // https://leetcode.com/problems/coin-change/solutions/4638602/java/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int find( int i,int tar,int[] arr, Integer[][] dp ) {
 
         if( tar == 0 ) return 0;
@@ -913,6 +985,10 @@ public class CoinChange {
         return dp[i][tar] = Math.min(take,ntake);
     }
 
+    /**
+     * time = O(N * amount)
+     * space = O(amount)
+     */
     public int coinChange_3(int[] coins, int amount) {
         int n = coins.length;
 
@@ -929,6 +1005,10 @@ public class CoinChange {
     // V4
     // IDEA : DP
     // https://leetcode.com/problems/coin-change/solutions/4649450/easy-to-understand-java-code-aditya-verma-approach/
+    /**
+     * time = O(N * amount)
+     * space = O(amount)
+     */
     public int coinChange_4(int[] coins, int amount) {
         int n = coins.length;
         int[][] t = new int[n + 1][amount + 1];
