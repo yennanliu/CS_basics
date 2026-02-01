@@ -58,7 +58,11 @@ public class SenderWithLargestWordCount {
 
   // V0
   // IDEA: HASH MAP (LC 347)
-  public String largestWordCount(String[] messages, String[] senders) {
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    public String largestWordCount(String[] messages, String[] senders) {
       // edge
       if (messages.length == 0 || senders.length == 0) {
           return null;
@@ -79,7 +83,11 @@ public class SenderWithLargestWordCount {
       // sort
       Collections.sort(keyList, new Comparator<String>() {
           @Override
-          public int compare(String o1, String o2) {
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    public int compare(String o1, String o2) {
               int diff = map.get(o2) - map.get(o1);
               if (diff == 0) {
                   return o2.compareTo(o1);
@@ -94,7 +102,11 @@ public class SenderWithLargestWordCount {
 
   // V1
   // IDEA: HASHMAP (GPT)
-  public String largestWordCount_1(String[] messages, String[] senders) {
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    public String largestWordCount_1(String[] messages, String[] senders) {
       // Edge case: Empty input
       if (messages.length == 0 || senders.length == 0) {
           return "";

@@ -82,14 +82,6 @@ public class MaximumSizeSubarraySumEqualsK {
      * time = O(N)
      * space = O(N)
      */
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
     public int maxSubArrayLen_0_1(int[] nums, int k) {
         // Map to store (prefixSum, index)
         Map<Integer, Integer> preSumMap = new HashMap<>();
@@ -171,14 +163,6 @@ public class MaximumSizeSubarraySumEqualsK {
      * time = O(N)
      * space = O(N)
      */
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
     public int maxSubArrayLen_0_2(int[] nums, int k) {
         // Edge case
         if (nums == null || nums.length == 0) {
@@ -228,14 +212,6 @@ public class MaximumSizeSubarraySumEqualsK {
      * time = O(N)
      * space = O(N)
      */
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
     public int maxSubArrayLen(int[] nums, int k) {
 
         int sum = 0;
@@ -263,14 +239,6 @@ public class MaximumSizeSubarraySumEqualsK {
      * time = O(N)
      * space = O(N)
      */
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
     public int maxSubArrayLen_2(int[] nums, int k) {
         int currSum = 0, maxLen = 0; // set initial values for cumulative sum and max length sum to k
         HashMap<Integer, Integer> sumToIndexMap = new HashMap<Integer, Integer>(); // key: cumulative sum until index i, value: i
@@ -294,14 +262,6 @@ public class MaximumSizeSubarraySumEqualsK {
      * time = O(N)
      * space = O(N)
      */
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
     public int maxSubArrayLen_3(int[] nums, int k) {
         Map<Integer, Integer> index = new HashMap();
         index.put(0, -1);
@@ -316,14 +276,6 @@ public class MaximumSizeSubarraySumEqualsK {
 
     // V4
     // https://leetcode.ca/2016-10-20-325-Maximum-Size-Subarray-Sum-Equals-k/
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
     /**
      * time = O(N)
      * space = O(N)
@@ -343,14 +295,6 @@ public class MaximumSizeSubarraySumEqualsK {
 
     // V5
     // https://leetcode.ca/2017-06-12-560-Subarray-Sum-Equals-K/
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
     /**
      * time = O(N)
      * space = O(N)

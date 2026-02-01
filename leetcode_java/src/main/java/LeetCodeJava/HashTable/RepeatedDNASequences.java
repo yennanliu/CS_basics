@@ -39,6 +39,10 @@ public class RepeatedDNASequences {
 
     // V0
     // IDEA: 2 POINTERS + HASH MAP
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public List<String> findRepeatedDnaSequences(String s) {
         List<String> res = new ArrayList<>();
 
@@ -79,6 +83,10 @@ public class RepeatedDNASequences {
 
     // V0-1
     // IDEA: 2 POINTERS + HASH MAP (gpt)
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public List<String> findRepeatedDnaSequences_0_1(String s) {
         List<String> res = new ArrayList<>();
 
@@ -109,6 +117,10 @@ public class RepeatedDNASequences {
 
     // V1
     // https://leetcode.com/problems/repeated-dna-sequences/solutions/6738307/sliding-window-hashmap-by-pratham_18-0wj0/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public List<String> findRepeatedDnaSequences_1(String s) {
         List<String> ans = new ArrayList<>();
         HashMap<String, Integer> map = new HashMap<>();
@@ -136,6 +148,10 @@ public class RepeatedDNASequences {
 
     // V2
     // https://leetcode.com/problems/repeated-dna-sequences/solutions/53855/7-lines-simple-java-on-by-stefanpochmann-4sts/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public List<String> findRepeatedDnaSequences_2(String s) {
         Set seen = new HashSet(), repeated = new HashSet();
         for (int i = 0; i + 9 < s.length(); i++) {
@@ -148,6 +164,10 @@ public class RepeatedDNASequences {
 
     // V3
     // https://leetcode.com/problems/repeated-dna-sequences/solutions/5704051/solution-by-dare2solve-detailed-explanat-zwtc/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public List<String> findRepeatedDnaSequences_3(String s) {
         Map<String, Integer> map = new HashMap<>();
         List<String> result = new ArrayList<>();

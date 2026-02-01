@@ -355,12 +355,18 @@ public class PalindromePairs {
 
         return res;
     }
-
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public String reverseStr(String str) {
         StringBuilder sb = new StringBuilder(str);
         return sb.reverse().toString();
     }
-
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public boolean isPalindrome(String s) {
         int i = 0;
         int j = s.length() - 1;
@@ -504,12 +510,18 @@ public class PalindromePairs {
 
         return res;
     }
-
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public String reverseStr_3(String str) {
         StringBuilder sb = new StringBuilder(str);
         return sb.reverse().toString();
     }
-
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public boolean isPalindrome_3(String s) {
         int i = 0;
         int j = s.length() - 1;

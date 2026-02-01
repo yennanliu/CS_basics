@@ -156,6 +156,10 @@ public class SmallestCommonRegion {
      * > Using a `Set` of ancestors from one node and walking up from the other **guarantees** the smallest region that contains both — because the first match is the **lowest** shared ancestor in the tree.
      *
      */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public String findSmallestRegion(List<List<String>> regions, String region1, String region2) {
 
         if (regions == null || regions.isEmpty()) {
@@ -199,6 +203,10 @@ public class SmallestCommonRegion {
     // V0-1
     // IDEA: HASHMAP (fixed by gpt)
     // TODO: validate
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public String findSmallestRegion_0_1(List<List<String>> regions, String region1, String region2) {
 
         // Map each region to its parent
@@ -243,6 +251,10 @@ public class SmallestCommonRegion {
 
     // V1
     // https://leetcode.ca/2019-05-10-1257-Smallest-Common-Region/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public String findSmallestRegion_1(List<List<String>> regions, String region1, String region2) {
         Map<String, String> m = new HashMap<>();
         for (List<String> region : regions) {

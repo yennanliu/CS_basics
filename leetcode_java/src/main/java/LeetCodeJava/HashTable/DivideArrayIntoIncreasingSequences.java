@@ -53,14 +53,6 @@ public class DivideArrayIntoIncreasingSequences {
      * time = O(N)
      * space = O(N)
      */
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
     public boolean canDivideIntoSubsequences_2(int[] nums, int k) {
         Map<Integer, Integer> cnt = new HashMap<>();
         int mx = 0;

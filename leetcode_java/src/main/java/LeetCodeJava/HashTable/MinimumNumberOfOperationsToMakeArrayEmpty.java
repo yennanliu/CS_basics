@@ -68,6 +68,10 @@ public class MinimumNumberOfOperationsToMakeArrayEmpty {
      * 2	e.g. 2, 5, 8	add one group of 2	count / 3 + 1	e.g. 5 = 3+2, 8 = 3+3+2
      *
      */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int minOperations(int[] nums) {
         if (nums == null || nums.length == 0) {
             return -1;
@@ -191,6 +195,10 @@ public class MinimumNumberOfOperationsToMakeArrayEmpty {
 
     // V1
     // IDEA: HASHMAP (fixed by gpt)
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int minOperations_1(int[] nums) {
         if (nums == null || nums.length == 0) {
             return -1;
@@ -233,6 +241,10 @@ public class MinimumNumberOfOperationsToMakeArrayEmpty {
     // V2
     // IDEA: COUNT
     // https://leetcode.com/problems/minimum-number-of-operations-to-make-array-empty/editorial/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int minOperations_2(int[] nums) {
         Map<Integer, Integer> counter = new HashMap<Integer, Integer>();
         for (int num : nums) {

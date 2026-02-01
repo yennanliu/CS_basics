@@ -64,14 +64,6 @@ public class LoggerRateLimiter {
      * time = O(N)
      * space = O(N)
      */
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
     public boolean shouldPrintMessage(int timestamp, String message) {
             if (!this.limiter.containsKey(message)){
                 this.limiter.put(message, timestamp+10);
@@ -104,14 +96,6 @@ public class LoggerRateLimiter {
          * If the message has not been printed before OR the current timestamp is >= its next allowable print time,
          * update the map and return true.
          */
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
     /**
      * time = O(N)
      * space = O(N)
@@ -163,14 +147,6 @@ public class LoggerRateLimiter {
      * time = O(N)
      * space = O(N)
      */
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
     public boolean shouldPrintMessage(int timestamp, String message) {
             // if message was never logged before
             if (!this.limiter.containsKey(message)) {
@@ -208,14 +184,6 @@ public class LoggerRateLimiter {
          false. If this method returns false, the message will not be printed. The timestamp is in
          seconds granularity.
          */
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
     /**
      * time = O(N)
      * space = O(N)

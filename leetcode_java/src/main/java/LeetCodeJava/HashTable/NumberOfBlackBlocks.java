@@ -85,6 +85,10 @@ public class NumberOfBlackBlocks {
     // V1
     // IDEA: HASHMAP
     // https://leetcode.com/problems/number-of-black-blocks/solutions/3746090/javacpython-hashmap-by-lee215-amk0/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public long[] countBlackBlocks_1(int m, int n, int[][] coordinates) {
         HashMap<Long, Integer> cnt = new HashMap<>();
         long[] res = { (n - 1L) * (m - 1), 0, 0, 0, 0 };
@@ -104,6 +108,10 @@ public class NumberOfBlackBlocks {
     // V2
     // IDEA: HASHMAP
     // https://leetcode.com/problems/number-of-black-blocks/solutions/6657759/javahashmap-readable-code-to-understand-312zu/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public long[] countBlackBlocks_2(int m, int n, int[][] coordinates) {
         HashMap<String, Integer> map = new HashMap<>();
         StringBuilder sb = new StringBuilder();
@@ -130,7 +138,10 @@ public class NumberOfBlackBlocks {
         res[0] = (long) (m - 1) * (n - 1) - map.size(); // Count of blocks with 0 black cells
         return res;
     }
-
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public void addToMap(StringBuilder sb, int x, int y, HashMap<String, Integer> map) {
         sb.setLength(0);
         sb.append(x).append(',').append(y);
@@ -141,6 +152,10 @@ public class NumberOfBlackBlocks {
 
     // V3
     // IDEA: MAP
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public long[] countBlackBlocks_3(int m, int n, int[][] coordinates) {
         Map<Long, Integer> countMap = new HashMap<>(); // Map to store the count of black blocks
         List<Long> res = new ArrayList<>(5); // Result list to store the final counts
@@ -215,6 +230,10 @@ public class NumberOfBlackBlocks {
      * * The number of all-white  matrices is calculated by subtracting the number of matrices containing black cells from .
      *
      *
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
      */
     public long[] countBlackBlocks_4(int n, int m, int[][] coordinates) {
         long[] ans = new long[5];

@@ -65,6 +65,10 @@ public class SubarraySumEqualsK {
      * 	4.	Simplifying Index-Based Logic:
      * 	    •	Removed unnecessary index-based conditions (map.get(presum - k) == i + 1) which were incorrect and not required for this problem.
      */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int subarraySum(int[] nums, int k) {
         /**
          * NOTE !!!
@@ -121,6 +125,10 @@ public class SubarraySumEqualsK {
 
     // V0-1
     // IDEA : HASH MAP (fixed by gpt)
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int subarraySum_0_1(int[] nums, int k) {
 
         if (nums.length == 1){
@@ -173,6 +181,10 @@ public class SubarraySumEqualsK {
 
     // V0-2
     // IDEA : presum + hashmap
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int subarraySum_0_2(int[] nums, int k) {
 
         if (nums.length == 1){
@@ -214,6 +226,10 @@ public class SubarraySumEqualsK {
     // V1
     // IDEA : HASH MAP
     // https://leetcode.com/problems/subarray-sum-equals-k/solutions/6143642/java-beats-9983-by-mohamedhazem3-9yj6/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public static int subarraySum_1(int[] nums, int k) {
         int[] prefix = new int[nums.length + 1];
         int out = 0;
@@ -235,6 +251,10 @@ public class SubarraySumEqualsK {
     // V2
     // IDEA : HASH MAP
     // https://leetcode.com/problems/subarray-sum-equals-k/solutions/3167609/explained-beats-964-using-hashmap-in-jav-0b6o/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int subarraySum_2(int[] nums, int k) {
         int sum = 0;
         int ans = 0;
@@ -253,6 +273,10 @@ public class SubarraySumEqualsK {
     // V3
     // IDEA : HASH MAP
     // https://leetcode.com/problems/subarray-sum-equals-k/solutions/803317/java-solution-with-detailed-explanation-yu2hg/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int subarraySum_3(int[] nums, int k) {
         int count = 0;
 
@@ -272,6 +296,10 @@ public class SubarraySumEqualsK {
 
     // V4
     // IDEA:  SLIDING WINDOW + HASHMAP
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int subarraySum_4(int[] nums, int k) {
         // Edge case handling for null or empty array
         if (nums == null || nums.length == 0) {

@@ -48,14 +48,6 @@ public class LongestRepeatingCharacterReplacement {
      * time = O(N)
      * space = O(N)
      */
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
     public int characterReplacement(String s, int k) {
         Map<Character, Integer> table = new HashMap<>();
         int res = 0;
@@ -112,14 +104,6 @@ public class LongestRepeatingCharacterReplacement {
      * time = O(N)
      * space = O(N)
      */
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
     public int characterReplacement_0_1(String s, int k) {
         if (s == null || s.length() == 0)
             return 0;
@@ -150,14 +134,6 @@ public class LongestRepeatingCharacterReplacement {
     }
 
     // V0_2
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
     /**
      * time = O(N)
      * space = O(N)
@@ -223,14 +199,6 @@ public class LongestRepeatingCharacterReplacement {
      * time = O(N)
      * space = O(N)
      */
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
     public int characterReplacement_0_3(String s, int k) {
         Map<Character, Integer> table = new HashMap<>();
         int res = 0;
@@ -266,14 +234,6 @@ public class LongestRepeatingCharacterReplacement {
      * time = O(N)
      * space = O(N)
      */
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
     public int characterReplacement_1_1(String s, int k) {
         int res = 0;
         for (int i = 0; i < s.length(); i++) {
@@ -294,14 +254,6 @@ public class LongestRepeatingCharacterReplacement {
     // V1-2
     // https://neetcode.io/problems/longest-repeating-substring-with-replacement
     // IDEA: SLIDING WINDOW
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
     /**
      * time = O(N)
      * space = O(N)
@@ -341,14 +293,6 @@ public class LongestRepeatingCharacterReplacement {
      * time = O(N)
      * space = O(N)
      */
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
     public int characterReplacement_1_3(String s, int k) {
         HashMap<Character, Integer> count = new HashMap<>();
         int res = 0;
@@ -371,14 +315,6 @@ public class LongestRepeatingCharacterReplacement {
     // V2
     // IDEA : Sliding Window + Binary Search
     // https://leetcode.com/problems/longest-repeating-character-replacement/editorial/
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
     /**
      * time = O(N)
      * space = O(N)
@@ -451,14 +387,6 @@ public class LongestRepeatingCharacterReplacement {
      * time = O(N)
      * space = O(N)
      */
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
     public int characterReplacement_3(String s, int k) {
         HashSet<Character> allLetters = new HashSet();
 
@@ -501,14 +429,6 @@ public class LongestRepeatingCharacterReplacement {
     // V4
     // IDEA : Sliding Window (Fast)
     // https://leetcode.com/problems/longest-repeating-character-replacement/editorial/
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
     /**
      * time = O(N)
      * space = O(N)

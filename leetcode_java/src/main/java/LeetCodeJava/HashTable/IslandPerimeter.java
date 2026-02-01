@@ -54,14 +54,6 @@ public class IslandPerimeter {
      * time = O(N)
      * space = O(N)
      */
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
     public int islandPerimeter(int[][] grid) {
 
         // edge
@@ -99,14 +91,6 @@ public class IslandPerimeter {
      * time = O(N)
      * space = O(N)
      */
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
     public int getPerimeter(int[][] grid, int x, int y) {
 
         int res = 0;
@@ -126,14 +110,6 @@ public class IslandPerimeter {
      * time = O(N)
      * space = O(N)
      */
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
     public boolean isWaterOrBorder(int[][] grid, int x, int y) {
 
         int l = grid.length;
@@ -148,14 +124,6 @@ public class IslandPerimeter {
 
     // V0-1
     // IDEA: BRUTE FORCE (gpt)
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
     /**
      * time = O(N)
      * space = O(N)
@@ -197,14 +165,6 @@ public class IslandPerimeter {
      * The island is guaranteed to be a single connected component.
      * * Time Complexity: O(R * C), where R is rows and C is columns (single pass over the grid).
      * Space Complexity: O(1)
-     */
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
-    /**
-     * time = O(N)
-     * space = O(N)
      */
     /**
      * time = O(N)
@@ -284,14 +244,6 @@ public class IslandPerimeter {
      * time = O(N)
      * space = O(N)
      */
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
     public int islandPerimeter_1(int[][] _grid) {
         final int[][] grid = _grid;
         final Set<Integer> visit = new HashSet<>();
@@ -327,14 +279,6 @@ public class IslandPerimeter {
      * time = O(N)
      * space = O(N)
      */
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
     public int islandPerimeter_2(int[][] grid) {
         int perimeter = 0;
         int rows = grid.length;
@@ -359,14 +303,6 @@ public class IslandPerimeter {
 
     // V3
     // https://leetcode.com/problems/island-perimeter/submissions/1616175020/
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
     /**
      * time = O(N)
      * space = O(N)
@@ -435,14 +371,6 @@ public class IslandPerimeter {
 
     // V4
     // https://leetcode.com/problems/island-perimeter/solutions/6600010/easiest-code-java-soln-beats-9982-leetco-3par/
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
     /**
      * time = O(N)
      * space = O(N)
