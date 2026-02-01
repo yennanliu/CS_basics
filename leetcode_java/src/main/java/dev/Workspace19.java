@@ -207,17 +207,123 @@ public class Workspace19 {
      * ------------
      */
 
-    // 17.10 - 20 pm
+    // 17.10 - 27 pm
     /**
      *
+     *  ->  return true
+     *        - if you can partition the array
+     *          into two subsets such that the sum of
+     *           the elements in both subsets is equal
+     *        - false otherwise.
      *
      *
+     *  -----------------
+     *
+     *   IDEA 1) 1D DP
+     *
+     *    - bottom up
+     *
+     *    - DP def:
+     *       boolean dp[i]: if nums can sum as `i`
+     *
+     *    - DP eq:
+     *
+     *      dp[i] =
+     *         if sum - dp[i] == true
+     *            dp[i] = dp[ sum - dp[i] ] or dp[i]
+     *
+     *  -----------------
      */
+
     public boolean canPartition(int[] nums) {
+        //edge
+        int sum = 0;
+        int n = nums.length;
+
+       // Integer[] nums2 = new Integer[n];
+
+        for(int i = 0; i < n; i++){
+            int x = nums[i];
+            sum += x;
+
+           // nums2[i] = x;
+        }
+
+//        // ?? need sorting ???
+//        Arrays.sort(nums2, new Comparator<Integer>() {
+//            @Override
+//            public int compare(Integer o1, Integer o2) {
+//                return o1 - o2;
+//            }
+//        });
+
+        // dp
+        int target = sum / 2;
+        boolean[] dp = new boolean[target + 1]; // ???
+        dp[0] = true; // ??
+
+        // ???
+        for(int x: nums){
+            // ???
+            for(int t = target; t >= x; t--){
+                if(dp[t - x]){
+                    dp[t] = true;
+                }
+            }
+        }
 
 
-        return false;
+        // ???
+        return dp[target];
     }
+
+
+
+
+//    public boolean canPartition(int[] nums) {
+//        //edge
+//        int sum = 0;
+//        int n = nums.length;
+//
+//        Integer[] nums2 = new Integer[n];
+//
+//        for(int i = 0; i < n; i++){
+//            int x = nums[i];
+//            sum += x;
+//
+//            nums2[i] = x;
+//        }
+//
+//        // ?? need sorting ???
+//        Arrays.sort(nums2, new Comparator<Integer>() {
+//            @Override
+//            public int compare(Integer o1, Integer o2) {
+//                return o1 - o2;
+//            }
+//        });
+//
+//        // dp
+//        boolean[] dp = new boolean[sum + 1]; // ???
+//        dp[0] = true; // ??
+//
+//        // ???
+//        int cumsum = 0;
+//        for(int x: nums2){
+//            cumsum += x;
+//            // ???
+//            if(dp[x] || dp[sum - cumsum]){
+//                dp[x] = true;
+//            }
+//        }
+//
+//        // ???
+//        return dp[sum];
+//    }
+
+
+
+
+
 
     public boolean canPartition_99(int[] nums) {
         // edge

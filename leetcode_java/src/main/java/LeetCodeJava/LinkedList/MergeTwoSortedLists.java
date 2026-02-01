@@ -57,6 +57,10 @@ public class MergeTwoSortedLists {
 
     // V0
     // IDEA: LINKED LIST OP
+    /**
+     * time = O(m + n)
+     * space = O(1)
+     */
     public ListNode mergeTwoLists(ListNode list1, ListNode list2) {
 
         // edge case
@@ -119,6 +123,10 @@ public class MergeTwoSortedLists {
 
     // V0-0-1
     // IDEA: LINKED LIST OP
+    /**
+     * time = O(m + n)
+     * space = O(1)
+     */
     public ListNode mergeTwoLists_0_0_1(ListNode list1, ListNode list2) {
         // edge
         if (list1 == null && list2 == null) {
@@ -153,6 +161,10 @@ public class MergeTwoSortedLists {
     }
 
     // V0-1
+    /**
+     * time = O(m + n)
+     * space = O(1)
+     */
     public ListNode mergeTwoLists_0_1(ListNode list1, ListNode list2) {
 
         if (list1 == null && list2 == null){
@@ -194,6 +206,10 @@ public class MergeTwoSortedLists {
 
     // V0-2
     // IDEA : linked list op + iteration
+    /**
+     * time = O(m + n)
+     * space = O(1)
+     */
     public ListNode mergeTwoLists_0_2(ListNode list1, ListNode list2) {
 
         if (list1 == null && list2 == null){
@@ -242,6 +258,10 @@ public class MergeTwoSortedLists {
     // V1
     // IDEA : Recursion
     // https://leetcode.com/problems/merge-two-sorted-lists/editorial/
+    /**
+     * time = O(m + n)
+     * space = O(m + n)
+     */
     public ListNode mergeTwoLists_1(ListNode l1, ListNode l2) {
         if (l1 == null) {
             return l2;
@@ -263,6 +283,10 @@ public class MergeTwoSortedLists {
     // V2
     // IDEA : Iteration
     // https://leetcode.com/problems/merge-two-sorted-lists/editorial/
+    /**
+     * time = O(m + n)
+     * space = O(1)
+     */
     public ListNode mergeTwoLists_2(ListNode l1, ListNode l2) {
         // maintain an unchanging reference to node ahead of the return node.
         ListNode prehead = new ListNode(-1);
