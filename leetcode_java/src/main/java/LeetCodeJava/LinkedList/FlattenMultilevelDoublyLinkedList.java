@@ -99,6 +99,10 @@ public class FlattenMultilevelDoublyLinkedList {
 
     // V0
     // IDEA: ITERATIVE + STACK + LINKED LIST OP (fixed by gpt)
+    /**
+     * time = O(N)
+     * space = O(D)
+     */
     public Node flatten(Node head) {
         if (head == null)
             return null;
@@ -175,6 +179,10 @@ public class FlattenMultilevelDoublyLinkedList {
 
     // V0-0-1
     // IDEA: ITERATIVE + STACK + LINKED LIST OP (fixed by gpt)
+    /**
+     * time = O(N)
+     * space = O(D)
+     */
     public Node flatten_0_0_1(Node head) {
         // edge
         if (head == null) {
@@ -281,6 +289,10 @@ public class FlattenMultilevelDoublyLinkedList {
 
   // V0-0-2
   // IDEA: ITERATIVE + STACK + LINKED LIST OP (fixed by gpt)
+  /**
+   * time = O(N)
+   * space = O(D)
+   */
   public Node flatten_0_0_2(Node head) {
       if (head == null){
           return null;
@@ -320,6 +332,10 @@ public class FlattenMultilevelDoublyLinkedList {
   // IDEA: ITERATIVE + STACK + LINKED LIST OP (fixed by gpt)
   // 	•	Time Complexity: O(n) — each node is visited once.
   //	•	Space Complexity: O(d) — where d is the maximum depth of nesting (due to stack usage).
+  /**
+   * time = O(N)
+   * space = O(D)
+   */
   public Node flatten_0_1(Node head) {
         if (head == null)
             return null;
@@ -397,6 +413,10 @@ public class FlattenMultilevelDoublyLinkedList {
 
     // V0-2
     // IDEA: DFS + LINKED LIST OP (fixed by gpt)
+    /**
+     * time = O(N)
+     * space = O(D)
+     */
     public Node flatten_0_2(Node head) {
         if (head == null)
             return null;
@@ -405,6 +425,10 @@ public class FlattenMultilevelDoublyLinkedList {
     }
 
     // Returns the tail of the flattened list
+    /**
+     * time = O(N)
+     * space = O(D)
+     */
     private Node flattenDFS(Node node) {
         Node curr = node;
         Node last = null;
@@ -466,6 +490,10 @@ public class FlattenMultilevelDoublyLinkedList {
 
     // V0-3
     // IDEA: ITERATIVE + STACK + LINKED LIST OP (fixed by gpt)
+    /**
+     * time = O(N)
+     * space = O(D)
+     */
     public Node flatten_0_3(Node head) {
         if (head == null)
             return null;
@@ -502,6 +530,10 @@ public class FlattenMultilevelDoublyLinkedList {
 
     // V0-4
     // IDEA: DFS + LINKED LIST OP (gpt)
+    /**
+     * time = O(N)
+     * space = O(D)
+     */
     public Node flatten_0_4(Node head) {
         if (head == null)
             return head;
@@ -510,6 +542,10 @@ public class FlattenMultilevelDoublyLinkedList {
     }
 
     // returns the tail of the flattened list
+    /**
+     * time = O(N)
+     * space = O(D)
+     */
     private Node flattenDFS_0_4(Node node) {
         Node curr = node;
         Node last = null;
@@ -547,6 +583,10 @@ public class FlattenMultilevelDoublyLinkedList {
 
     // V0-5
     // IDEA: ITERATIVE + LINKED LIST OP (fixed by gpt)
+    /**
+     * time = O(N)
+     * space = O(D)
+     */
     public Node flatten_0_5(Node head) {
         if (head == null) {
             return null;
@@ -586,6 +626,10 @@ public class FlattenMultilevelDoublyLinkedList {
     // V1
     // IDEA : LINKED LIST OP + one off + iterative
     // https://zihengcat.github.io/2019/09/02/leetcode-430-flatten-a-multilevel-doubly-linked-list/
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public Node flatten_1(Node head) {
         if (head == null) {
             return head;
@@ -620,11 +664,19 @@ public class FlattenMultilevelDoublyLinkedList {
     // V2
     // IDEA : DFS + LINKED LIST (modified by GPT)
     // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Linked_list/flatten_a_multilevel_doubly_linked_list.py#L2
+    /**
+     * time = O(N)
+     * space = O(D)
+     */
     public Node flatten_2(Node head) {
         dfs_2(head);
         return head;
     }
 
+    /**
+     * time = O(N)
+     * space = O(D)
+     */
     private Node dfs_2(Node head) {
         Node cur = head;
 
@@ -656,11 +708,19 @@ public class FlattenMultilevelDoublyLinkedList {
     // V11
     // https://leetcode.cn/problems/flatten-a-multilevel-doubly-linked-list/solutions/1013884/bian-ping-hua-duo-ji-shuang-xiang-lian-b-383h/
     // IDEA : RECURSIVE + LINKED LIST (LC CN official)
+    /**
+     * time = O(N)
+     * space = O(D)
+     */
     public Node flatten_11(Node head) {
         dfs(head);
         return head;
     }
 
+    /**
+     * time = O(N)
+     * space = O(D)
+     */
     public Node dfs(Node node) {
         Node cur = node;
         // record last node in linked list
@@ -707,6 +767,10 @@ public class FlattenMultilevelDoublyLinkedList {
 
     private Queue<Node> store = new LinkedList<>();
 
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public void helper(Node head) {
         Node temp;
         while (head != null) {
@@ -721,6 +785,10 @@ public class FlattenMultilevelDoublyLinkedList {
         }
     }
 
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public Node flatten_10(Node head) {
         helper(head);
         if (store.peek() == null)
@@ -745,10 +813,18 @@ public class FlattenMultilevelDoublyLinkedList {
         Node tail;
     }
 
+    /**
+     * time = O(N)
+     * space = O(D)
+     */
     public Node flatten_12(Node head) {
         return util1(head).head;
     }
 
+    /**
+     * time = O(N)
+     * space = O(D)
+     */
     public lc430Helper util1(Node head) {
         Node dummy = new Node();
         dummy.next = head;
@@ -779,6 +855,10 @@ public class FlattenMultilevelDoublyLinkedList {
 
     // V13
     // https://leetcode.com/problems/flatten-a-multilevel-doubly-linked-list/solutions/5328452/easy-to-understand-best-solution/
+    /**
+     * time = O(N)
+     * space = O(D)
+     */
     public Node flatten_13(Node head) {
         Node temp = head;
         while(temp != null){

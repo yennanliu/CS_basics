@@ -77,7 +77,12 @@ import java.util.Set;
 public class IntersectionOfTwoLinkedLists {
 
     // V0
+
     // IDEA: HASHSET + FAST-SLOW POINTER
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public DataStructure.ListNode getIntersectionNode(DataStructure.ListNode headA, DataStructure.ListNode headB) {
         // edge
         if(headA == null && headB == null){
@@ -109,7 +114,12 @@ public class IntersectionOfTwoLinkedLists {
 
     // V1
     // IDEA : BRUTE FORCE
+
     // https://leetcode.com/problems/intersection-of-two-linked-lists/editorial/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public ListNode getIntersectionNode_1(ListNode headA, ListNode headB) {
         while (headA != null) {
             ListNode pB = headB;
@@ -124,7 +134,12 @@ public class IntersectionOfTwoLinkedLists {
 
     // V2
     // IDEA : HASH TABLE
+
     // https://leetcode.com/problems/intersection-of-two-linked-lists/editorial/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public ListNode getIntersectionNode_2(ListNode headA, ListNode headB) {
         Set<ListNode> nodesInB = new HashSet<ListNode>();
 
@@ -147,7 +162,12 @@ public class IntersectionOfTwoLinkedLists {
 
     // V3
     // IDEA : TWO POINTERS
+
     // https://leetcode.com/problems/intersection-of-two-linked-lists/editorial/
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public ListNode getIntersectionNode_3(ListNode headA, ListNode headB) {
         ListNode pA = headA;
         ListNode pB = headB;

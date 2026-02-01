@@ -58,7 +58,12 @@ public class LinkedListComponents {
      * }
      */
     // V0
+
     // IDEA: SET + LINKED LIST OP
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int numComponents(ListNode head, int[] nums) {
 
 //        // edge
@@ -95,7 +100,12 @@ public class LinkedListComponents {
     }
 
     // V1
+
     // IDEA: set, linkedlist (gpt)
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int numComponents_1(ListNode head, int[] nums) {
         // Convert nums array to a HashSet for O(1) lookups
         Set<Integer> numsSet = new HashSet<>();
@@ -126,7 +136,12 @@ public class LinkedListComponents {
 
     // V2
     // https://leetcode.com/problems/linked-list-components/editorial/
+
     // IDEA: GROUPING
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int numComponents_2(ListNode head, int[] G) {
         Set<Integer> Gset = new HashSet();
         for (int x : G)

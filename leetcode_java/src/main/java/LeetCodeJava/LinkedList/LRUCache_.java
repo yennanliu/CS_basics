@@ -112,6 +112,11 @@ public class LRUCache_ {
             this.dq = new LinkedList<>();
         }
 
+
+        /**
+         * time = O(N)
+         * space = O(1)
+         */
         public int get(int key) {
             if (!this.map.containsKey(key)) {
                 return -1;
@@ -137,6 +142,11 @@ public class LRUCache_ {
             return val;
         }
 
+
+        /**
+         * time = O(N)
+         * space = O(1)
+         */
         public void put(int key, int value) {
             if (this.map.containsKey(key)) {
                 // If the key exists, update the value and move the key to the end
@@ -187,6 +197,11 @@ public class LRUCache_ {
             };
         }
 
+
+        /**
+         * time = O(N)
+         * space = O(1)
+         */
         public int get(int key) {
             if (!lruCache.containsKey(key)) {
                 return -1;
@@ -195,6 +210,11 @@ public class LRUCache_ {
             }
         }
 
+
+        /**
+         * time = O(N)
+         * space = O(N)
+         */
         public void put(int key, int value) {
             lruCache.put(key, value);
         }
@@ -229,6 +249,11 @@ public class LRUCache_ {
             tail.prev = head;
         }
 
+
+        /**
+         * time = O(N)
+         * space = O(1)
+         */
         public int get(int key) {
             if (!cache.containsKey(key)) {
                 return -1;
@@ -239,6 +264,11 @@ public class LRUCache_ {
             return node.value;
         }
 
+
+        /**
+         * time = O(N)
+         * space = O(1)
+         */
         public void put(int key, int value) {
             if (cache.containsKey(key)) {
                 Node node = cache.get(key);
@@ -298,6 +328,11 @@ public class LRUCache_ {
             tail.prev = head;
         }
 
+
+        /**
+         * time = O(N)
+         * space = O(1)
+         */
         public int get(int key) {
             if (!map.containsKey(key))
                 return -1;
@@ -309,6 +344,11 @@ public class LRUCache_ {
             return node.val;
         }
 
+
+        /**
+         * time = O(N)
+         * space = O(1)
+         */
         public void put(int key, int value) {
             if (map.containsKey(key)) {
                 Node node = map.get(key);
@@ -376,12 +416,22 @@ public class LRUCache_ {
             };
         }
 
+
+        /**
+         * time = O(N)
+         * space = O(N)
+         */
         public int get(int key) {
             // LinkedHashMap's get() method automatically moves the accessed entry
             // to the MRU end when accessOrder=true.
             return cache.getOrDefault(key, -1);
         }
 
+
+        /**
+         * time = O(N)
+         * space = O(N)
+         */
         public void put(int key, int value) {
             // LinkedHashMap's put() method handles three things:
             // 1. If key exists, it updates the value AND moves the entry to the MRU end.
@@ -406,6 +456,11 @@ public class LRUCache_ {
             this.capacity = capacity;
         }
 
+
+        /**
+         * time = O(N)
+         * space = O(1)
+         */
         public int get(int key) {
             for (int i = 0; i < cache.size(); i++) {
                 if (cache.get(i)[0] == key) {
@@ -417,6 +472,11 @@ public class LRUCache_ {
             return -1;
         }
 
+
+        /**
+         * time = O(N)
+         * space = O(1)
+         */
         public void put(int key, int value) {
             for (int i = 0; i < cache.size(); i++) {
                 if (cache.get(i)[0] == key) {
@@ -484,6 +544,11 @@ public class LRUCache_ {
             this.right.prev = node;
         }
 
+
+        /**
+         * time = O(N)
+         * space = O(1)
+         */
         public int get(int key) {
             if (cache.containsKey(key)) {
                 Node node = cache.get(key);
@@ -494,6 +559,11 @@ public class LRUCache_ {
             return -1;
         }
 
+
+        /**
+         * time = O(N)
+         * space = O(1)
+         */
         public void put(int key, int value) {
             if (cache.containsKey(key)) {
                 remove(cache.get(key));
@@ -554,6 +624,11 @@ public class LRUCache_ {
             tail.prev = head;
         }
 
+
+        /**
+         * time = O(N)
+         * space = O(1)
+         */
         public int get(int key) {
             if (!dic.containsKey(key)) {
                 return -1;
@@ -565,6 +640,11 @@ public class LRUCache_ {
             return node.val;
         }
 
+
+        /**
+         * time = O(N)
+         * space = O(1)
+         */
         public void put(int key, int value) {
             if (dic.containsKey(key)) {
                 ListNode oldNode = dic.get(key);
@@ -582,6 +662,11 @@ public class LRUCache_ {
             }
         }
 
+
+        /**
+         * time = O(N)
+         * space = O(N)
+         */
         public void add(ListNode node) {
             ListNode previousEnd = tail.prev;
             previousEnd.next = node;
@@ -590,6 +675,11 @@ public class LRUCache_ {
             tail.prev = node;
         }
 
+
+        /**
+         * time = O(N)
+         * space = O(N)
+         */
         public void remove(ListNode node) {
             node.prev.next = node.next;
             node.next.prev = node.prev;
@@ -614,10 +704,20 @@ public class LRUCache_ {
             };
         }
 
+
+        /**
+         * time = O(N)
+         * space = O(1)
+         */
         public int get(int key) {
             return dic.getOrDefault(key, -1);
         }
 
+
+        /**
+         * time = O(N)
+         * space = O(1)
+         */
         public void put(int key, int value) {
             dic.put(key, value);
         }
