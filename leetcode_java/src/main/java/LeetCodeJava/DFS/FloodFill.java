@@ -60,6 +60,10 @@ public class FloodFill {
 
     // V0
     // IDEA: DFS
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public int[][] floodFill(int[][] image, int sr, int sc, int color) {
         // edge
         if (image == null || image.length == 0 || image[0].length == 0) {
@@ -103,6 +107,10 @@ public class FloodFill {
 
     // V0-1
     // IDEA: DFS (gpt)
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public int[][] floodFill_0_1(int[][] image, int sr, int sc, int color) {
         // edge
         if (image == null || image.length == 0 || image[0].length == 0) {
@@ -145,6 +153,10 @@ public class FloodFill {
     // V1
     // IDEA: DFS
     // https://leetcode.com/problems/flood-fill/solutions/
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public int[][] floodFill_1(int[][] image, int sr, int sc, int newColor) {
         int color = image[sr][sc];
         if (color != newColor) {
@@ -175,6 +187,10 @@ public class FloodFill {
     // V2
     // IDEA: DFS
     // https://leetcode.com/problems/flood-fill/solutions/7369657/beats-10000-flood-fill-using-dfs-by-abhi-cqks/
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public int[][] floodFil_2(int[][] image, int sr, int sc, int color) {
         int startingColor = image[sr][sc];
         dfs_2(image, sr, sc, color, startingColor);
@@ -204,6 +220,10 @@ public class FloodFill {
     // V3
     // IDEA: DFS
     // https://leetcode.com/problems/flood-fill/solutions/7364239/simple-java-code-beginner-friendly-dfs-a-d36x/
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public int[][] floodFill_3(int[][] image, int sr, int sc, int color) {
         dfsHelper(image, sr, sc, image[sr][sc], color);
         return image;

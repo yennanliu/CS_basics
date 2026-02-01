@@ -72,6 +72,10 @@ public class EvaluateDivision {
      *  -> so can track `dividend, divisor, and result` relations
      *
      */
+    /**
+     * time = O(Q * (V + E))
+     * space = O(V + E)
+     */
     public double[] calcEquation_0_1(List<List<String>> equations, double[] values, List<List<String>> queries) {
 
         // NOTE !!! below
@@ -196,6 +200,10 @@ public class EvaluateDivision {
     // V2
     // IDEA: DFS
     // https://leetcode.com/problems/evaluate-division/solutions/3543256/image-explanation-easiest-concise-comple-okpu/
+    /**
+     * time = O(Q * (V + E))
+     * space = O(V + E)
+     */
     public double[] calcEquation_2(List<List<String>> equations, double[] values, List<List<String>> queries) {
         HashMap<String, HashMap<String, Double>> gr = buildGraph(equations, values);
         double[] finalAns = new double[queries.size()];
@@ -281,6 +289,10 @@ public class EvaluateDivision {
 
     // V3
     // IDEA: DFS (gpt)
+    /**
+     * time = O(Q * (V + E))
+     * space = O(V + E)
+     */
     public double[] calcEquation_3(List<List<String>> equations, double[] values, List<List<String>> queries) {
         // Build the graph
         Map<String, Map<String, Double>> graph = new HashMap<>();
@@ -349,6 +361,10 @@ public class EvaluateDivision {
     // V4
     // IDEA: DFS
     // https://leetcode.com/problems/evaluate-division/solutions/1992891/java-dfs-solution-with-comments-evaluate-6gmn/
+    /**
+     * time = O(E)
+     * space = O(V + E)
+     */
     private Map<String, Map<String, Double>> makeGraph(List<List<String>> e, double[] values) {
         // build a graph
         // like a -> b = values[i]
@@ -370,6 +386,10 @@ public class EvaluateDivision {
         return graph;
     }
 
+    /**
+     * time = O(Q * (V + E))
+     * space = O(V + E)
+     */
     public double[] calcEquation_4(List<List<String>> equations, double[] values, List<List<String>> queries) {
         Map<String, Map<String, Double>> graph = makeGraph(equations, values);
 
@@ -416,6 +436,10 @@ public class EvaluateDivision {
 
     // V5
     // IDEA: UNION FIND (gpt)
+    /**
+     * time = O(V + E * α(V) + Q * α(V))
+     * space = O(V)
+     */
     class UnionFind {
         private Map<String, String> parent;
         private Map<String, Double> ratio;
@@ -469,6 +493,10 @@ public class EvaluateDivision {
         }
     }
 
+    /**
+     * time = O(V + E * α(V) + Q * α(V))
+     * space = O(V)
+     */
     public double[] calcEquation_5(List<List<String>> equations, double[] values, List<List<String>> queries) {
         UnionFind uf = new UnionFind();
 

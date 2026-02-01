@@ -53,6 +53,10 @@ public class BraceExpansion {
     private List<String> ans;
     private List<String[]> items;
 
+    /**
+     * time = O(N * M)
+     * space = O(N * M)
+     */
     public String[] expand_1(String s) {
         ans = new ArrayList<>();
         items = new ArrayList<>();
@@ -132,6 +136,10 @@ public class BraceExpansion {
     // V2
     // IDEA : DFS
     // https://walkccc.me/LeetCode/problems/1087/#__tabbed_1_2
+    /**
+     * time = O(N * M)
+     * space = O(N * M)
+     */
     public String[] expand_2(String s) {
         List<String> ans = new ArrayList<>();
 

@@ -64,6 +64,10 @@ public class CountUnreachablePairsOfNodesInAnUndirectedGraph {
      *
      *   3. cur node cnt (derived from DFS)
      */
+    /**
+     * time = O(V + E)
+     * space = O(V + E)
+     */
     public long countPairs_0_0_1(int n, int[][] edges) {
         // 1. Build Adjacency List
         List<List<Integer>> adj = new ArrayList<>();
@@ -208,6 +212,10 @@ public class CountUnreachablePairsOfNodesInAnUndirectedGraph {
      *
      *
      */
+    /**
+     * time = O(V + E)
+     * space = O(V + E)
+     */
     public long countPairs_0_1(int n, int[][] edges) {
         // 1. Build Adjacency List
         List<Integer>[] adj = new ArrayList[n];
@@ -289,6 +297,10 @@ public class CountUnreachablePairsOfNodesInAnUndirectedGraph {
     int[] parent_0_2;
     int[] size_0_2;
 
+    /**
+     * time = O(V + E * α(V))
+     * space = O(V)
+     */
     public long countPairs_0_2(int n, int[][] edges) {
         parent_0_2 = new int[n];
         size_0_2 = new int[n];
@@ -339,6 +351,10 @@ public class CountUnreachablePairsOfNodesInAnUndirectedGraph {
 
     // V0-3
     // IDEA: UNION FIND (gpt)
+    /**
+     * time = O(V + E * α(V))
+     * space = O(V)
+     */
     public long countPairs_0_3(int n, int[][] edges) {
         DisjointSet dsu = new DisjointSet(n);
 
@@ -410,6 +426,10 @@ public class CountUnreachablePairsOfNodesInAnUndirectedGraph {
     // https://leetcode.com/problems/count-unreachable-pairs-of-nodes-in-an-undirected-graph/solutions/3337487/python-java-csimple-solution-easy-to-und-mu31/
     private List<Integer>[] graph;
 
+    /**
+     * time = O(V + E)
+     * space = O(V + E)
+     */
     public long countPairs_1(int n, int[][] edges) {
         createGraph(n, edges);
         boolean[] visited = new boolean[n];
@@ -455,6 +475,10 @@ public class CountUnreachablePairsOfNodesInAnUndirectedGraph {
     // https://leetcode.com/problems/count-unreachable-pairs-of-nodes-in-an-undirected-graph/solutions/3337574/image-explanation-3-approaches-dfs-cjava-5csg/
     List<List<Integer>> x = new ArrayList<>();
 
+    /**
+     * time = O(V + E)
+     * space = O(V + E)
+     */
     public long countPairs_2(int n, int[][] edges) {
         for (int i = 0; i < n; i++)
             x.add(new ArrayList<>());
@@ -486,6 +510,10 @@ public class CountUnreachablePairsOfNodesInAnUndirectedGraph {
     // V3
     // IDEA: BFS
     // https://leetcode.com/problems/count-unreachable-pairs-of-nodes-in-an-undirected-graph/solutions/3337954/java-easy-bfs-by-kalinga-lb4f/
+    /**
+     * time = O(V + E)
+     * space = O(V + E)
+     */
     public long countPairs_3(int n, int[][] edges) {
         List<List<Integer>> adj = new ArrayList<>();
         for (int i = 0; i < n; i++) {
@@ -532,6 +560,10 @@ public class CountUnreachablePairsOfNodesInAnUndirectedGraph {
     int[] parent;
     int[] rank;
 
+    /**
+     * time = O(α(V))
+     * space = O(1)
+     */
     int find(int x) {
         while (parent[x] != x) {
             x = parent[parent[x]];
@@ -539,6 +571,10 @@ public class CountUnreachablePairsOfNodesInAnUndirectedGraph {
         return x;
     }
 
+    /**
+     * time = O(α(V))
+     * space = O(1)
+     */
     void makeUnion(int x, int y) {
         int xPar = find(x);
         int yPar = find(y);
@@ -555,6 +591,10 @@ public class CountUnreachablePairsOfNodesInAnUndirectedGraph {
         return;
     }
 
+    /**
+     * time = O(V + E * α(V))
+     * space = O(V)
+     */
     public long countPairs_4(int n, int[][] edges) {
         parent = new int[n];
         rank = new int[n];
@@ -588,6 +628,10 @@ public class CountUnreachablePairsOfNodesInAnUndirectedGraph {
     // V5
     // IDEA: DFS
     // https://leetcode.com/problems/count-unreachable-pairs-of-nodes-in-an-undirected-graph/solutions/3337653/easy-solutions-with-exaplanation-in-java-sny5/
+    /**
+     * time = O(V + E)
+     * space = O(V + E)
+     */
     public long countPairs_5(int n, int[][] edges) {
         // Build the adjacency list of the graph
         List<Integer>[] adjList = new ArrayList[n];

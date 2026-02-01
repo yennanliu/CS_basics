@@ -81,6 +81,10 @@ public class FindEventualSafeStates {
      *   -> check if a node is `cycle` or NOT
      *    (visit itself again via recursive call)
      */
+    /**
+     * time = O(V + E)
+     * space = O(V)
+     */
     public List<Integer> eventualSafeNodes_0_1(int[][] graph) {
         int n = graph.length;
         int[] state = new int[n]; // 0: unvisited, 1: visiting, 2: safe
@@ -114,6 +118,10 @@ public class FindEventualSafeStates {
 
     // V0-2
     // IDEA: Topological Sort (Kahn's on Reversed Graph) (gemini)
+    /**
+     * time = O(V + E)
+     * space = O(V + E)
+     */
     public List<Integer> eventualSafeNodes_0_2(int[][] graph) {
         int n = graph.length;
         List<List<Integer>> reverseGraph = new ArrayList<>();
@@ -157,6 +165,10 @@ public class FindEventualSafeStates {
 
     // V0-3
     // IDEA: DFS + COLORING (fixed by gpt)
+    /**
+     * time = O(V + E)
+     * space = O(V)
+     */
     public List<Integer> eventualSafeNodes_0_3(int[][] graph) {
 
         int n = graph.length;
@@ -203,6 +215,10 @@ public class FindEventualSafeStates {
     // https://www.youtube.com/watch?v=v5Ni_3bHjzk
     // https://zxi.mytechroad.com/blog/graph/leetcode-802-find-eventual-safe-states/
     // https://github.com/yennanliu/CS_basics/tree/master/doc/pic/lc_802.png
+    /**
+     * time = O(V + E)
+     * space = O(V)
+     */
     public List<Integer> eventualSafeNodes_1(int[][] graph) {
         // init
         int n = graph.length;
@@ -294,6 +310,10 @@ public class FindEventualSafeStates {
     // V1-1
     // https://leetcode.com/problems/find-eventual-safe-states/editorial/
     // IDEA : DFS
+    /**
+     * time = O(V + E)
+     * space = O(V)
+     */
     public boolean dfs(int node, int[][] adj, boolean[] visit, boolean[] inStack) {
         // If the node is already in the stack, we have a cycle.
         if (inStack[node]) {
@@ -315,6 +335,10 @@ public class FindEventualSafeStates {
         return false;
     }
 
+    /**
+     * time = O(V + E)
+     * space = O(V)
+     */
     public List<Integer> eventualSafeNodes_1_1(int[][] graph) {
         int n = graph.length;
         boolean[] visit = new boolean[n];
@@ -337,6 +361,10 @@ public class FindEventualSafeStates {
     // V1-2
     // https://leetcode.com/problems/find-eventual-safe-states/editorial/
     // IDEA : Topological Sort Using Kahn's Algorithm
+    /**
+     * time = O(V + E)
+     * space = O(V + E)
+     */
     public List<Integer> eventualSafeNodes_1_2(int[][] graph) {
         int n = graph.length;
         int[] indegree = new int[n];
@@ -387,6 +415,10 @@ public class FindEventualSafeStates {
     // V2
     // IDEA : DFS
     // https://leetcode.com/problems/find-eventual-safe-states/solutions/3752567/cycle-detection-same-code-begineers-friendly-c-java-python/
+    /**
+     * time = O(V + E)
+     * space = O(V)
+     */
     public boolean dfs2(List<List<Integer>> adj, int src, boolean[] vis, boolean[] recst) {
         vis[src] = true;
         recst[src] = true;
@@ -401,6 +433,10 @@ public class FindEventualSafeStates {
         return false;
     }
 
+    /**
+     * time = O(V + E)
+     * space = O(V + E)
+     */
     public List<Integer> eventualSafeNodes_2(int[][] graph) {
         int n = graph.length;
         List<List<Integer>> adj = new ArrayList<>();
@@ -431,6 +467,10 @@ public class FindEventualSafeStates {
     // V3
     // IDEA : BFS
     // https://leetcode.com/problems/find-eventual-safe-states/solutions/3753320/c-java-python-bfs-dfs-topological-sort-easy-to-understand/
+    /**
+     * time = O(V + E)
+     * space = O(V + E)
+     */
     public List<Integer> eventualSafeNodes_3(int[][] graph) {
         // Using BFS
         int n = graph.length;
