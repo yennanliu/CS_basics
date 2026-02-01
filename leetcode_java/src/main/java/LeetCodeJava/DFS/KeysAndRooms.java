@@ -54,6 +54,10 @@ public class KeysAndRooms {
 
     // V0-1
     // IDEA: BFS
+    /**
+     * time = O(V + E)
+     * space = O(V)
+     */
     public boolean canVisitAllRooms_0_1(List<List<Integer>> rooms) {
         // edge
         if (rooms.isEmpty()) {
@@ -98,6 +102,10 @@ public class KeysAndRooms {
 
     // V0-2
     // IDEA: DFS
+    /**
+     * time = O(V + E)
+     * space = O(V)
+     */
     public boolean canVisitAllRooms_0_2(List<List<Integer>> rooms) {
         // edge
         if (rooms.isEmpty()) {
@@ -138,6 +146,10 @@ public class KeysAndRooms {
     // V1
     // IDEA: DFS
     // https://leetcode.com/problems/keys-and-rooms/editorial/
+    /**
+     * time = O(V + E)
+     * space = O(V)
+     */
     public boolean canVisitAllRooms_1(List<List<Integer>> rooms) {
         boolean[] seen = new boolean[rooms.size()];
         seen[0] = true;
@@ -167,6 +179,10 @@ public class KeysAndRooms {
     private List<List<Integer>> rooms;
     private Set<Integer> vis;
 
+    /**
+     * time = O(V + E)
+     * space = O(V)
+     */
     public boolean canVisitAllRooms_2(List<List<Integer>> rooms) {
         vis = new HashSet<>();
         this.rooms = rooms;
@@ -193,6 +209,10 @@ public class KeysAndRooms {
     List<List<Integer>> list;
     int n;
 
+    /**
+     * time = O(V + E)
+     * space = O(V)
+     */
     public boolean canVisitAllRooms_3(List<List<Integer>> rooms) {
         n = rooms.size();
         visited = new boolean[n];

@@ -76,6 +76,10 @@ public class MakingALargeIsland {
     // Moves: (dr, dc)
     private final int[][] MOVES = new int[][] { { 0, 1 }, { 0, -1 }, { 1, 0 }, { -1, 0 } };
 
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public int largestIsland_0_1(int[][] grid) {
         if (grid == null || grid.length == 0 || grid[0].length == 0) {
             return 0;
@@ -211,6 +215,10 @@ public class MakingALargeIsland {
 //    private int cols;
 //    private final int[][] MOVES = new int[][] { { 0, 1 }, { 0, -1 }, { 1, 0 }, { -1, 0 } };
 
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public int largestIsland_0_2(int[][] grid) {
         if (grid == null || grid.length == 0 || grid[0].length == 0) {
             return 0;
@@ -309,6 +317,10 @@ public class MakingALargeIsland {
 
     // V0-3
     // IDEA: UNION FIND (DSU) (gemini)
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public int largestIsland_0_3(int[][] grid) {
         int l = grid.length;
         int w = grid[0].length;
@@ -423,6 +435,10 @@ public class MakingALargeIsland {
     // V1-1
     // IDEA: DFS
     // https://leetcode.com/problems/making-a-large-island/editorial/
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public int largestIsland_1_1(int[][] grid) {
         Map<Integer, Integer> islandSizes = new HashMap<>();
         int islandId = 2;
@@ -573,6 +589,10 @@ public class MakingALargeIsland {
         }
     }
 
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public int largestIsland_1_2(int[][] grid) {
         int rows = grid.length;
         int columns = grid[0].length;
@@ -669,6 +689,10 @@ public class MakingALargeIsland {
     private int ans = 1;
     private int[] dirs = new int[] {-1, 0, 1, 0, -1};
 
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public int largestIsland_2(int[][] grid) {
         n = grid.length;
         p = new int[n * n];
