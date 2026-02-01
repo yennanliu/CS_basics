@@ -14,6 +14,10 @@ public class LicenseKeyFormatting {
 
     // V1
     // https://leetcode.com/problems/license-key-formatting/solutions/316752/clean-and-self-explanatory-11-ms-java-solution/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public String licenseKeyFormatting_1(String S, int K) {
 
         StringBuilder sb = new StringBuilder();
@@ -38,6 +42,10 @@ public class LicenseKeyFormatting {
 
     // V2
     // https://leetcode.com/problems/license-key-formatting/solutions/2087766/java-solution-16ms-runtime/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public String licenseKeyFormatting_2(String s, int k) {
         StringBuilder sb = new StringBuilder();
         int count = 0;

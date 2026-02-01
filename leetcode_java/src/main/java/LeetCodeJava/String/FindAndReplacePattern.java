@@ -50,6 +50,10 @@ public class FindAndReplacePattern {
 
     // V0-1
     // IDEA: HASHMAP
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public List<String> findAndReplacePattern_0_1(String[] words, String pattern) {
         List<String> res = new ArrayList<>();
         for (String word : words) {
@@ -90,6 +94,10 @@ public class FindAndReplacePattern {
 
     // V0-2
     // IDEA: HASHMAP (gemini)
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public List<String> findAndReplacePattern_0_2(String[] words, String pattern) {
         List<String> result = new ArrayList<>();
         String canonicalPattern = getCanonical(pattern);
@@ -121,6 +129,10 @@ public class FindAndReplacePattern {
 
     // V0-3
     // IDEA: HASH MAP (gpt)
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public List<String> findAndReplacePattern_0_3(String[] words, String pattern) {
         List<String> res = new ArrayList<>();
         for (String word : words) {
@@ -204,6 +216,10 @@ public class FindAndReplacePattern {
     // V1
     // IDEA: HASHMAP
     // https://leetcode.com/problems/find-and-replace-pattern/solutions/2348332/java-easy-solution-100-faster-code-by-sh-px0m/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public List<String> findAndReplacePattern_1(String[] words, String pattern) {
         List<String> res = new ArrayList<>();
         for (String word : words) {
@@ -228,6 +244,10 @@ public class FindAndReplacePattern {
     Map<Character, Character> codex;
     char[] cipher;
 
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public List<String> findAndReplacePattern_2(String[] words, String pattern) {
         ans = new ArrayList<>();
         codex = new HashMap<>();

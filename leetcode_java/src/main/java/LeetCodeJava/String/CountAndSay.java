@@ -49,6 +49,10 @@ public class CountAndSay {
     // V1
     // IDEA : ITERATION
     // https://leetcode.com/problems/count-and-say/solutions/3409791/easy-code-java-solution/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public String countAndSay_1(int n) {
         if(n == 1){
             return "1";
@@ -79,6 +83,10 @@ public class CountAndSay {
     // IDEA : RECURSION
     // https://leetcode.com/problems/count-and-say/solutions/3412863/java-recursion-good-to-go/
     int counter;
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public String countAndSay_2(int n) {
         if(n==1) return "1" ;
         String s= countAndSay_2(n-1);

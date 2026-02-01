@@ -54,6 +54,10 @@ public class ValidPalindrome2 {
    * 📦 Space: O(1)
    *
    */
+  /**
+   * time = O(N)
+   * space = O(N)
+   */
   public boolean validPalindrome_0_1(String s) {
         if (s == null || s.length() <= 1) {
             return true;
@@ -96,6 +100,10 @@ public class ValidPalindrome2 {
 
     // V0-2
     // IDEA: 2 POINTERS (TLE)
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public boolean validPalindrome_0_2(String s) {
         // edge
         if (s == null || s.length() == 0) {
@@ -110,6 +118,10 @@ public class ValidPalindrome2 {
         return false;
     }
 
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public boolean isPalindrome(String input, int i) {
         StringBuilder sb = new StringBuilder();
         for (int j = 0; j < input.split("").length; j++) {
@@ -137,6 +149,10 @@ public class ValidPalindrome2 {
     // V1
     // IDEA: 2 POINTERS
     // https://leetcode.com/problems/valid-palindrome-ii/solutions/6445414/beats-super-easy-beginners-java-c-c-pyth-2cal/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public boolean validPalindrome_1(String s) {
         int left = 0, right = s.length() - 1;
 
@@ -163,6 +179,10 @@ public class ValidPalindrome2 {
     // V2-1
     // IDEA: 2 POINTERS
     // https://leetcode.com/problems/valid-palindrome-ii/solutions/6049559/video-solution-short-and-simple-by-piotr-axj4/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public boolean validPalindrome_2(String s) {
         int left = 0;
         int right = s.length() - 1;
@@ -194,6 +214,10 @@ public class ValidPalindrome2 {
     // https://leetcode.com/problems/valid-palindrome-ii/solutions/6049559/video-solution-short-and-simple-by-piotr-axj4/
 
    // V3
+   /**
+    * time = O(N)
+    * space = O(N)
+    */
    public boolean validPalindrome_3(String s) {
        int i = 0;
        int j = s.length() - 1;
@@ -208,6 +232,10 @@ public class ValidPalindrome2 {
        return true;
    }
 
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public boolean isPalindrome_3(String s, int i, int j) {
         while (i <= j) {
             if (s.charAt(i) == s.charAt(j)) {
@@ -222,10 +250,18 @@ public class ValidPalindrome2 {
     // V4
     // https://leetcode.com/problems/valid-palindrome-ii/solutions/1245374/c-java-easy-single-method-two-pointers-e-w2b1/
     // IDEA: RECURSION
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public boolean validPalindrome_4(String s) {
         return isPalindrome(s, 0, s.length() - 1, false);
     }
 
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public boolean isPalindrome(final String s, int leftIndex, int rightIndex, final boolean isCharacterDeleted) {
 
         while (leftIndex < rightIndex) {

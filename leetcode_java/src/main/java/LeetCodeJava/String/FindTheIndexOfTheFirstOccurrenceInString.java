@@ -5,6 +5,10 @@ package LeetCodeJava.String;
 public class FindTheIndexOfTheFirstOccurrenceInString {
 
     // V0
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int strStr(String haystack, String needle) {
 
         if (haystack.equals(null) || needle.equals(null)){

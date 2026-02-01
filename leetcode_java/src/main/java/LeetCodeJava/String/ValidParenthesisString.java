@@ -72,6 +72,10 @@ public class ValidParenthesisString {
      *    step 3) check if 0 == minParenCnt
      *
      */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public boolean checkValidString(String s) {
         // edge
         if(s == null || s.isEmpty()){
@@ -140,6 +144,10 @@ public class ValidParenthesisString {
 
   // V0-0-1
   // IDEA: 2D DP (gpt)
+  /**
+   * time = O(N)
+   * space = O(N)
+   */
   public boolean checkValidString_0_0_1(String s) {
       int n = s.length();
 
@@ -266,6 +274,10 @@ public class ValidParenthesisString {
    *       then the whole thing is true.
    *
    */
+  /**
+   * time = O(N)
+   * space = O(N)
+   */
   public boolean checkValidString_0_0_2(String s) {
       int n = s.length();
       if (n == 0)
@@ -353,6 +365,10 @@ public class ValidParenthesisString {
    * 	•	If low == 0 at the end → valid string
    *
    */
+  /**
+   * time = O(N)
+   * space = O(N)
+   */
   public boolean checkValidString_0_1(String s) {
         int low = 0; // min possible open parens
         int high = 0; // max possible open parens
@@ -427,6 +443,10 @@ public class ValidParenthesisString {
     // V1-1
     // https://neetcode.io/problems/valid-parenthesis-string
     // IDEA: RECURSION
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public boolean checkValidString_1_1(String s) {
 
         return dfs(0, 0, s);
@@ -450,6 +470,10 @@ public class ValidParenthesisString {
     // V1-2
     // https://neetcode.io/problems/valid-parenthesis-string
     // IDEA: DP (TOP DOWN)
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public boolean checkValidString_1_2(String s) {
         int n = s.length();
         Boolean[][] memo = new Boolean[n + 1][n + 1];
@@ -481,6 +505,10 @@ public class ValidParenthesisString {
     // V1-3
     // https://neetcode.io/problems/valid-parenthesis-string
     // IDEA: DP (BOTTOM UP)
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public boolean checkValidString_1_3(String s) {
         int n = s.length();
         boolean[][] dp = new boolean[n + 1][n + 1];
@@ -510,6 +538,10 @@ public class ValidParenthesisString {
     // V1-4
     // https:/neetcode.io/problems/valid-parenthesis-string
     // IDEA: DP (SPACE OPTIMIZED)
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public boolean checkValidString_1_4(String s) {
         int n = s.length();
         boolean[] dp = new boolean[n + 1];
@@ -536,6 +568,10 @@ public class ValidParenthesisString {
     // V1-5
     // https://neetcode.io/problems/valid-parenthesis-string
     // IDEA: STACK
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public boolean checkValidString_1_5(String s) {
         Stack<Integer> left = new Stack<>();
         Stack<Integer> star = new Stack<>();
@@ -564,6 +600,10 @@ public class ValidParenthesisString {
     // V1-6
     // https://neetcode.io/problems/valid-parenthesis-string
     // IDEA: GREEDY
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public boolean checkValidString_1_6(String s) {
         int leftMin = 0, leftMax = 0;
 
@@ -615,6 +655,10 @@ public class ValidParenthesisString {
      *       if the number of ( exceeds ) and use * as a closing
      *       parenthesis if needed.
      *
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
      */
     public boolean checkValidString_2(String s) {
         // Left to right pass

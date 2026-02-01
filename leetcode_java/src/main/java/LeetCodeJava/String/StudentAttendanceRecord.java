@@ -43,6 +43,10 @@ public class StudentAttendanceRecord {
 
     // V0
     // IDEA: STRING OP
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public boolean checkRecord(String s) {
         // edge
         if (s.isEmpty() || s.length() == 1) {
@@ -87,6 +91,10 @@ public class StudentAttendanceRecord {
 
     // V0-1
     // IDEA: BRUTE FORCE (fixed by gemini)
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public boolean checkRecord_0_1(String s) {
         int absentCount = 0;
 
@@ -104,6 +112,10 @@ public class StudentAttendanceRecord {
 
     // V0-2
     // IDEA: BRUTE FORCE (fixed by GPT)
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public boolean checkRecord_0_2(String s) {
         if (s.length() <= 1)
             return true;
@@ -139,6 +151,10 @@ public class StudentAttendanceRecord {
 
     // V1
     // https://leetcode.com/problems/student-attendance-record-i/solutions/2826653/java-100-easiest-solution-by-sharforaz_r-x2ra/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public boolean checkRecord_1(String s) {
         int A = 0, L = 0, max = 0;
         for (char c : s.toCharArray()) {
@@ -161,6 +177,10 @@ public class StudentAttendanceRecord {
 
     // V2
     // https://leetcode.com/problems/student-attendance-record-i/solutions/7333244/easy-and-concise-solution-explanation-be-el3d/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public boolean checkRecord_2(String s) {
         int countA = 0, countL = 0;
 

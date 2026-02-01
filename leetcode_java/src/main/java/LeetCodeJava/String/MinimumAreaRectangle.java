@@ -41,6 +41,10 @@ public class MinimumAreaRectangle {
 
     // V0
     // IDEA : HASHMAP + BRUTE FORCE + LOGIC (fixed by gpt)
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int minAreaRect(int[][] points) {
 
         // Step 1: Build a map where key = x-coordinate and value = list of y-coordinates for that x
@@ -90,6 +94,10 @@ public class MinimumAreaRectangle {
     // V2
     // IDEA : HASHMAP
     // https://leetcode.com/problems/minimum-area-rectangle/solutions/1265321/java-hashmap-set-solution-short-code-o-n-2/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int minAreaRect_2(int[][] points) {
 
         HashMap<Integer,HashSet<Integer>> map=new HashMap<>();
@@ -167,6 +175,10 @@ public class MinimumAreaRectangle {
     // V3
     // IDEA : HASHMAP
     // https://leetcode.com/problems/minimum-area-rectangle/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int minAreaRect_3(int[][] points) {
         HashMap<Integer, Set<Integer>> hashmap = new HashMap<>();  // Key => Integer | Value => Set
 
@@ -230,6 +242,10 @@ public class MinimumAreaRectangle {
     // V4
     // IDEA : HASHMAP
     // https://leetcode.com/problems/minimum-area-rectangle/solutions/1664233/java-hashmap-o-n-2-57ms/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int minAreaRect_4(int[][] points) {
         HashMap<Integer,Set<Integer>> hm = new HashMap<>();
         int area=Integer.MAX_VALUE;

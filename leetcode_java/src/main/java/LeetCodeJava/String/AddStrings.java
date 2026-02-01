@@ -40,6 +40,10 @@ public class AddStrings {
 
     // V0
     // IDEA: string op (fixed by gpt)
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public String addStrings(String num1, String num2) {
         if (num1 == null || num2 == null) {
             if (num1 == null) {
@@ -119,6 +123,10 @@ public class AddStrings {
 
     // V0-1
     // IDEA: string op (fixed by gpt)
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public String addStrings_0_1(String num1, String num2) {
         StringBuilder sb = new StringBuilder();
 
@@ -143,6 +151,10 @@ public class AddStrings {
 
     // V1
     // https://leetcode.com/problems/add-strings/solutions/6789491/simple-java-code-by-vikrant_heer-64g6/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public String addStrings_1(String num1, String num2) {
         StringBuilder result = new StringBuilder();
         int pointer1 = num1.length() - 1;

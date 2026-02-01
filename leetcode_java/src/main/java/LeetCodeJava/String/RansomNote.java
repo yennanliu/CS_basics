@@ -41,6 +41,10 @@ public class RansomNote {
 
     // V0
     // IDEA: HASH MAP
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public boolean canConstruct(String ransomNote, String magazine) {
         // edge
         if(ransomNote == null){
@@ -78,6 +82,10 @@ public class RansomNote {
 
     // V1
     // https://leetcode.com/problems/ransom-note/solutions/1671552/1ms-100-easy-explanation-java-solution-b-a286/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public boolean canConstruct_1(String ransomNote, String magazine) {
         if (ransomNote.length() > magazine.length()) return false;
         int[] alphabets_counter = new int[26];
@@ -94,6 +102,10 @@ public class RansomNote {
 
     // V2
     // https://leetcode.com/problems/ransom-note/solutions/6743962/video-counting-each-character-2-solution-3x0h/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public boolean canConstruct_2(String ransomNote, String magazine) {
         HashMap<Character, Integer> magaHash = new HashMap<>();
 

@@ -10,6 +10,10 @@ public class ValidAnagram {
 
     // V0
     // IDEA : HASHMAP
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public boolean isAnagram(String s, String t) {
 
         if (s == null && t == null){
@@ -47,6 +51,10 @@ public class ValidAnagram {
     // V1
     // IDEA : ARRAY SORT
     // https://leetcode.com/problems/valid-anagram/solutions/3687854/3-method-s-c-java-python-beginner-friendly/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public boolean isAnagram_1(String s, String t) {
         char[] sChars = s.toCharArray();
         char[] tChars = t.toCharArray();
@@ -59,6 +67,10 @@ public class ValidAnagram {
 
     // V2
     // https://leetcode.com/problems/valid-anagram/solutions/3261552/easy-solutions-in-java-python-javascript-and-c-look-at-once/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public boolean isAnagram_2(String s, String t) {
         if (s.length() != t.length()) {
             return false;

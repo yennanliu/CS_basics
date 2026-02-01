@@ -68,6 +68,10 @@ public class MinimumWindowSubstring {
      *   }
      *
      */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public String minWindow(String s, String t) {
         if (s == null || t == null || s.length() == 0 || t.length() == 0) {
             return "";
@@ -140,6 +144,10 @@ public class MinimumWindowSubstring {
 
     // V0-0-1
     // IDEA: MAP + SLIDING WINDOW (fixed by gpt)
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public String minWindow_0_0_1(String s, String t) {
         // Edge cases
         if (s == null || t == null || s.length() < t.length()) {
@@ -202,6 +210,10 @@ public class MinimumWindowSubstring {
     // IDEA: BRUTE FORCE (TLE)
     // https://youtu.be/jSto0O4AJbM?si=pASTto2TTl1MOI_S
     // https://neetcode.io/problems/minimum-window-with-characters
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public String minWindow_1_1(String s, String t) {
         if (t.isEmpty()) return "";
 
@@ -241,6 +253,10 @@ public class MinimumWindowSubstring {
     // IDEA: SLIDING WINDOW
     // https://youtu.be/jSto0O4AJbM?si=pASTto2TTl1MOI_S
     // https://neetcode.io/problems/minimum-window-with-characters
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public String minWindow_1_2(String s, String t) {
         if (t.isEmpty())
             return "";
@@ -286,6 +302,10 @@ public class MinimumWindowSubstring {
     // V2
     // IDEA: SLIDING WINDOW
     // https://leetcode.com/problems/minimum-window-substring/solutions/4674237/easy-explanation-solution/?envType=list&envId=xoqag3yj
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public String minWindow_2(String s, String t) {
         Map<Character, Integer> targetFreq = new HashMap<>();
         Map<Character, Integer> windowFreq = new HashMap<>();
@@ -333,6 +353,10 @@ public class MinimumWindowSubstring {
 
     // V3
     // https://leetcode.com/problems/minimum-window-substring/solutions/4673541/beats-100-explained-any-language-by-prodonik/?envType=list&envId=xoqag3yj
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public String minWindow_3(String s, String t) {
         if (s == null || t == null || s.length() == 0 || t.length() == 0 ||
                 s.length() < t.length()) {

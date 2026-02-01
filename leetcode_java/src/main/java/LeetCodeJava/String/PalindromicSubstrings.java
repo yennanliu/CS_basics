@@ -40,6 +40,10 @@ public class PalindromicSubstrings {
     // V0
     // IDEA : 2 POINTER + for loop + odd / even length handling (gpt) (LC 005)
     // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/String/palindromic-substrings.py#L59
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int countSubstrings(String s) {
         int ans = 0;
         for (int i = 0; i < s.length(); i++) {
@@ -73,6 +77,10 @@ public class PalindromicSubstrings {
     // V0-1
     // IDEA : BRUTE FORCE
     // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/String/palindromic-substrings.py
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int countSubstrings_0_1(String s) {
         int cnt = 0;
         if (s == null || s.length() == 0){
@@ -115,6 +123,10 @@ public class PalindromicSubstrings {
 
     // V0-2
     // IDEA : 2 pointers with all cases covered (gpt)
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int countSubstrings_0_2(String s) {
         int n = s.length();
         int res = 0;
@@ -135,6 +147,10 @@ public class PalindromicSubstrings {
 
     // V0-3
     // IDEA: BRUTE FORCE
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int countSubstrings_0_3(String s) {
         // edge
         if(s == null || s.length() == 0){
@@ -192,6 +208,10 @@ public class PalindromicSubstrings {
 
     // V1
     // https://leetcode.com/problems/palindromic-substrings/solutions/4705208/beats-100-easy-to-understand-c-java-python-solution/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int check(String s, int i, int j) {
         int ans = 0;
         while (i >= 0 && j < s.length() && s.charAt(i) == s.charAt(j)) {
@@ -202,6 +222,10 @@ public class PalindromicSubstrings {
         return ans;
     }
 
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int countSubstrings_1(String s) {
         int ans = 0;
         for (int i = 0; i < s.length(); i++) {
@@ -213,11 +237,19 @@ public class PalindromicSubstrings {
 
     // V2
     // https://leetcode.com/problems/palindromic-substrings/solutions/4667296/short-and-easy-method-3ms-please-upvote/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int solve(String s, int i, int j){
         if(i<0 || j==s.length()) return 0;
         if(s.charAt(i) == s.charAt(j)) return solve(s, i-1, j+1) + 1;
         else return 0;
     }
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int countSubstrings_2(String s) {
         int max = 0;
         for(int i=0; i<s.length(); i++){

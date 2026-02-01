@@ -45,6 +45,10 @@ public class LongestCommonPrefix {
 
     // V0
     // IDEA: prefix list + string op (startsWith)
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public String longestCommonPrefix(String[] strs) {
         // edge
         if (strs == null || strs.length == 0) {
@@ -88,6 +92,10 @@ public class LongestCommonPrefix {
 
     // V0-0-0-0-1
     // IDEA: PREFIX + STRING OP (GEMINI)
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public String longestCommonPrefix_0_0_0_1(String[] strs) {
         if (strs == null || strs.length == 0)
             return "";
@@ -126,6 +134,10 @@ public class LongestCommonPrefix {
 
     // V0-0-1
     // IDEA: SET + BRUTE FORCE (fixed by gpt)
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public String longestCommonPrefix_0_0_1(String[] strs) {
         // edge
         if (strs == null || strs.length == 0) {
@@ -176,6 +188,10 @@ public class LongestCommonPrefix {
      * Time Complexity: O(S), where S is the sum of all characters in all strings (in the worst case).
      * In the best/average case, it's O(N * minLen) where N is array length and minLen is length of shortest string.
      */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public String longestCommonPrefix_0_0_2(String[] strs) {
         // Edge case: Handle null array, empty array, or single element array.
         if (strs == null || strs.length == 0) {
@@ -212,6 +228,10 @@ public class LongestCommonPrefix {
 
     // V0-1
     // IDEA: STRING OP (fixed by gpt)
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public String longestCommonPrefix_0_1(String[] strs) {
         if (strs == null || strs.length == 0) {
             return "";
@@ -251,6 +271,10 @@ public class LongestCommonPrefix {
 
     // V0-2
     // IDEA: STRING OP (GEMINI)
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public String longestCommonPrefix_0_2(String[] strs) {
         if (strs.length == 0)
             return "";
@@ -271,6 +295,10 @@ public class LongestCommonPrefix {
 
     // V0-3
     // IDEA: DP (gpt)
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public String longestCommonPrefix_0_3(String[] strs) {
         if (strs == null || strs.length == 0) {
             return "";
@@ -304,6 +332,10 @@ public class LongestCommonPrefix {
     // V1-1
     // https://leetcode.com/problems/longest-common-prefix/editorial/
     // IDEA: Horizontal scanning
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public String longestCommonPrefix_1_1(String[] strs) {
         if (strs.length == 0)
             return "";
@@ -321,6 +353,10 @@ public class LongestCommonPrefix {
     // V1-2
     // https://leetcode.com/problems/longest-common-prefix/editorial/
     // IDEA: Vertical scanning
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public String longestCommonPrefix_1_2(String[] strs) {
         if (strs == null || strs.length == 0)
             return "";
@@ -337,6 +373,10 @@ public class LongestCommonPrefix {
     // V1-3
     // https://leetcode.com/problems/longest-common-prefix/editorial/
     // IDEA: Divide and conquer
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public String longestCommonPrefix_1_3(String[] strs) {
         if (strs == null || strs.length == 0)
             return "";
@@ -366,6 +406,10 @@ public class LongestCommonPrefix {
     // V1-4
     // https://leetcode.com/problems/longest-common-prefix/editorial/
     // IDEA: BINARY SEARCH
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public String longestCommonPrefix_1_5(String[] strs) {
         if (strs == null || strs.length == 0)
             return "";

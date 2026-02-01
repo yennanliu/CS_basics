@@ -78,6 +78,10 @@ public class ExpressiveWords {
      * 	•	The getRepeatedLength method calculates the length of the group of repeated characters starting from the given index.
      *
      */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int expressiveWords_1(String s, String[] words) {
         int count = 0;
         for (String word : words) {
@@ -121,6 +125,10 @@ public class ExpressiveWords {
     }
 
     // V1_1 (modified by gpt)
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int expressiveWords_1_1(String s, String[] words) {
         if (words == null || words.length == 0) {
             return 0;
@@ -172,6 +180,10 @@ public class ExpressiveWords {
 
     // V2
     // https://leetcode.com/problems/expressive-words/solutions/4729707/java-easy-100-solution-easy-to-understand/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int expressiveWords_2(final String s, final String[] words) {
         int count = 0;
 
@@ -216,6 +228,10 @@ public class ExpressiveWords {
 
     // V3
     // https://leetcode.com/problems/expressive-words/solutions/1850024/java-solution-using-frequency-lists/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int expressiveWords_3(String s, String[] words) {
 
         int expressive = 0;
@@ -252,6 +268,10 @@ public class ExpressiveWords {
         return expressive;
     }
 
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public List<List<Integer>> countOrder(String str) {
 
         List<List<Integer>> countList = new ArrayList<>();

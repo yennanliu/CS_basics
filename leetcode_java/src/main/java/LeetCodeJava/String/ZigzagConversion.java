@@ -4,6 +4,10 @@ package LeetCodeJava.String;
 
 public class ZigzagConversion {
 
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public String convert(String s, int numRows) {
         return s;
     }

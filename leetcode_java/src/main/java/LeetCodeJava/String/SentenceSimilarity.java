@@ -58,6 +58,10 @@ public class SentenceSimilarity {
 
     // V0
     // IDEA : HASHMAP (fixed by gpt)
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public boolean areSentencesSimilar(
             String[] sentence1, String[] sentence2, List<List<String>> similarPairs) {
         // Check if sentences are of different lengths
@@ -89,6 +93,10 @@ public class SentenceSimilarity {
 
     // V1
     // https://leetcode.ca/2017-12-03-734-Sentence-Similarity/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public boolean areSentencesSimilar_1(
             String[] sentence1, String[] sentence2, List<List<String>> similarPairs) {
         if (sentence1.length != sentence2.length) {

@@ -51,6 +51,10 @@ public class LongestSubstringWithAtMostKDistinctCharacters {
      *   }
      *
      */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int lengthOfLongestSubstringKDistinct_0_0_1(String s, int k) {
         // edge
         if (s == null || s.isEmpty() || k == 0) {
@@ -86,6 +90,10 @@ public class LongestSubstringWithAtMostKDistinctCharacters {
 
     // V1
     // https://leetcode.ca/2016-11-04-340-Longest-Substring-with-At-Most-K-Distinct-Characters/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int lengthOfLongestSubstringKDistinct_1(String s, int k) {
         Map<Character, Integer> cnt = new HashMap<>();
         int n = s.length();
@@ -111,6 +119,10 @@ public class LongestSubstringWithAtMostKDistinctCharacters {
 
     // V3
     // https://algo.monster/liteproblems/340
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int lengthOfLongestSubstringKDistinct_3(String s, int k) {
         // Map to store character frequencies in the current window
         Map<Character, Integer> charFrequency = new HashMap<>();
@@ -147,6 +159,10 @@ public class LongestSubstringWithAtMostKDistinctCharacters {
     // V4-1
     // IDEA: Sliding Window
     // https://walkccc.me/LeetCode/problems/340/#__tabbed_1_2
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int lengthOfLongestSubstringKDistinct_4_1(String s, int k) {
         int ans = 0;
         int distinct = 0;
@@ -168,6 +184,10 @@ public class LongestSubstringWithAtMostKDistinctCharacters {
     // V4-2
     // IDEA: ORDERED MAP
     // https://walkccc.me/LeetCode/problems/340/#__tabbed_1_2
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int lengthOfLongestSubstringKDistinct_4_2(String s, int k) {
         if (s == null || s.length() == 0 || k == 0) {
             return 0;

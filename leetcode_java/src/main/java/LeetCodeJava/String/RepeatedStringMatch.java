@@ -37,6 +37,10 @@ public class RepeatedStringMatch {
 
     // V0
     // IDEA : BRUTE FORCE + StringBuilder (poor performance, check V0-1 for optimization)
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int repeatedStringMatch(String a, String b) {
 
         // edge case
@@ -62,6 +66,10 @@ public class RepeatedStringMatch {
 
     // V0-1
     // IDEA : MATH + StringBuilder (offered by gpt)
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int repeatedStringMatch_0_1(String a, String b) {
 
         // Calculate the minimum number of times to repeat 'a'
@@ -131,6 +139,10 @@ public class RepeatedStringMatch {
     // V1-1
     // IDEA : Ad-Hoc
     // https://leetcode.com/problems/repeated-string-match/editorial/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int repeatedStringMatch_1_1(String A, String B) {
         int q = 1;
         StringBuilder S = new StringBuilder(A);
@@ -143,6 +155,10 @@ public class RepeatedStringMatch {
     // V1-2
     // IDEA : Rabin-Karp (Rolling Hash)
     // https://leetcode.com/problems/repeated-string-match/editorial/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public boolean check(int index, String A, String B) {
         for (int i = 0; i < B.length(); i++) {
             if (A.charAt((i + index) % A.length()) != B.charAt(i)) {
@@ -151,6 +167,10 @@ public class RepeatedStringMatch {
         }
         return true;
     }
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int repeatedStringMatch_1_2(String A, String B) {
         int q = (B.length() - 1) / A.length() + 1;
         int p = 113, MOD = 1_000_000_007;

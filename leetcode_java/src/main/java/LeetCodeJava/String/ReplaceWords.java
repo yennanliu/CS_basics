@@ -62,6 +62,10 @@ public class ReplaceWords {
             this.root = new MyNode97();
         }
 
+        /**
+         * time = O(N)
+         * space = O(N)
+         */
         public void addWord(String word) {
             MyNode97 node = root;
             for (char ch : word.toCharArray()) {
@@ -78,6 +82,10 @@ public class ReplaceWords {
          *  (instead of doing so in the main func)
          */
         // Return the shortest root for the given word
+        /**
+         * time = O(N)
+         * space = O(N)
+         */
         public String findShortestRoot(String word) {
             MyNode97 node = root;
             StringBuilder sb = new StringBuilder();
@@ -105,6 +113,10 @@ public class ReplaceWords {
         }
     }
 
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public String replaceWords_0_1(List<String> dictionary, String sentence) {
 
         if (sentence == null || sentence.isEmpty()) return sentence;
@@ -150,6 +162,10 @@ public class ReplaceWords {
      * Builds the Trie by inserting all dictionary words.
      * @param word The root word to insert.
      */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public void insert(String word) {
         TrieNode_0_2 node = root;
         for (char ch : word.toCharArray()) {
@@ -163,6 +179,10 @@ public class ReplaceWords {
      * Finds the shortest root word in the Trie that is a prefix of the given word.
      * @param word The word to check against the Trie.
      * @return The shortest root, or the original word if no root is found.
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
      */
     public String findShortestRoot(String word) {
         TrieNode_0_2 node = root;
@@ -197,6 +217,10 @@ public class ReplaceWords {
     }
 
 
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public String replaceWords_0_2(List<String> dictionary, String sentence) {
 
         // 1. Build the Trie from the dictionary
@@ -219,6 +243,10 @@ public class ReplaceWords {
     // V1-1
     // IDEA: HASHSET
     // https://leetcode.com/problems/replace-words/editorial/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public String replaceWords_1_1(List<String> dictionary, String sentence) {
         String[] wordArray = sentence.split(" ");
         Set<String> dictSet = new HashSet<>(dictionary);
@@ -262,10 +290,18 @@ public class ReplaceWords {
 
         private TrieNode root;
 
+        /**
+         * time = O(N)
+         * space = O(N)
+         */
         public Trie() {
             root = new TrieNode();
         }
 
+        /**
+         * time = O(N)
+         * space = O(N)
+         */
         public void insert(String word) {
             TrieNode current = root;
             for (char c : word.toCharArray()) {
@@ -278,6 +314,10 @@ public class ReplaceWords {
         }
 
         // Find the shortest root of the word in the trie
+        /**
+         * time = O(N)
+         * space = O(N)
+         */
         public String shortestRoot(String word) {
             TrieNode current = root;
             for (int i = 0; i < word.length(); i++) {
@@ -296,6 +336,10 @@ public class ReplaceWords {
         }
     }
 
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public String replaceWords_1_2(List<String> dictionary, String sentence) {
         String wordArray[] = sentence.split(" ");
 
@@ -319,6 +363,10 @@ public class ReplaceWords {
         private Trie_2_1[] children = new Trie_2_1[26];
         private int ref = -1;
 
+        /**
+         * time = O(N)
+         * space = O(N)
+         */
         public void insert(String w, int i) {
             Trie_2_1 node = this;
             for (int j = 0; j < w.length(); ++j) {
@@ -331,6 +379,10 @@ public class ReplaceWords {
             node.ref = i;
         }
 
+        /**
+         * time = O(N)
+         * space = O(N)
+         */
         public int search(String w) {
             Trie_2_1 node = this;
             for (int j = 0; j < w.length(); ++j) {
@@ -347,6 +399,10 @@ public class ReplaceWords {
         }
     }
 
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public String replaceWords_2_1(List<String> dictionary, String sentence) {
         Trie_2_1 trie = new Trie_2_1();
         for (int i = 0; i < dictionary.size(); ++i) {
