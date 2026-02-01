@@ -275,6 +275,16 @@ public class FindEdgesInShortestPaths {
         }
     }
 
+    /**
+     * time = O(E * α(V))
+
+
+     * space = O(V)
+
+
+     */
+
+
     public boolean[] findAnswer_1(int n, int[][] edges) {
         // Initialize graph as an array of lists
         List<Edge>[] graph = new ArrayList[n];
@@ -383,6 +393,16 @@ public class FindEdgesInShortestPaths {
         }
         return ans;
     }
+
+    /**
+     * time = O(V + E)
+
+
+     * space = O(V)
+
+
+     */
+
 
     public boolean[] findAnswer_3(int n, int[][] edges) {
         graph = new ArrayList[n];

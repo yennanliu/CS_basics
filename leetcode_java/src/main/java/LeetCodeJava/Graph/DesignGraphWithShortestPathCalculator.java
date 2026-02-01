@@ -80,6 +80,10 @@ public class DesignGraphWithShortestPathCalculator {
         // Adjacency list: { node -> [ [neighbor, cost], [neighbor, cost], ... ] }
         private Map<Integer, List<int[]>> map;
 
+        /**
+         * time = O(E)
+         * space = O(V + E)
+         */
         public Graph_0_1(int n, int[][] edges) {
             map = new HashMap<>();
             for (int i = 0; i < n; i++) {
@@ -93,6 +97,10 @@ public class DesignGraphWithShortestPathCalculator {
             }
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public void addEdge(int[] edge) {
             int from = edge[0];
             int to = edge[1];
@@ -100,6 +108,10 @@ public class DesignGraphWithShortestPathCalculator {
             map.get(from).add(new int[] { to, cost });
         }
 
+        /**
+         * time = O((V + E) log V)
+         * space = O(V)
+         */
         public int shortestPath(int node1, int node2) {
 
             /** NOTE !!!
@@ -224,6 +236,10 @@ public class DesignGraphWithShortestPathCalculator {
         // The PriorityQueue is local to shortestPath for correct behavior,
         // as it needs to be fresh for every path search.
 
+        /**
+         * time = O(E)
+         * space = O(V + E)
+         */
         public Graph_0_2(int n, int[][] edges) {
             this.N = n;
             this.adj = new HashMap<>();
@@ -239,6 +255,10 @@ public class DesignGraphWithShortestPathCalculator {
             }
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public void addEdge(int[] edge) {
             int from = edge[0];
             int to = edge[1];
@@ -249,6 +269,10 @@ public class DesignGraphWithShortestPathCalculator {
             this.adj.get(from).add(new int[] { to, cost });
         }
 
+        /**
+         * time = O((V + E) log V)
+         * space = O(V)
+         */
         public int shortestPath(int node1, int node2) {
             // --- FIX 1: Initialize Distance Array (dist) ---
             // Array to store the minimum distance from node1 to every other node.
@@ -312,6 +336,10 @@ public class DesignGraphWithShortestPathCalculator {
 
         private Map<Integer, List<int[]>> graph;
 
+        /**
+         * time = O(E)
+         * space = O(V + E)
+         */
         public Graph_1(int n, int[][] edges) {
             graph = new HashMap<>();
             for (int i = 0; i < n; i++) {
@@ -323,6 +351,10 @@ public class DesignGraphWithShortestPathCalculator {
             }
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public void addEdge(int[] edge) {
             int from = edge[0];
             int to = edge[1];
@@ -330,6 +362,10 @@ public class DesignGraphWithShortestPathCalculator {
             graph.get(from).add(new int[]{to, cost});
         }
 
+        /**
+         * time = O((V + E) log V)
+         * space = O(V)
+         */
         public int shortestPath(int node1, int node2) {
             // Standard Dijkstra’s Algorithm
             PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[1] - b[1]);
@@ -376,6 +412,8 @@ public class DesignGraphWithShortestPathCalculator {
 
         /**
          * Constructor: Builds the initial graph from the edges array.
+         * time = O(E)
+         * space = O(V + E)
          */
         public Graph_2(int n, int[][] edges) {
             this.N = n;
@@ -394,6 +432,8 @@ public class DesignGraphWithShortestPathCalculator {
 
         /**
          * Adds a new directed edge to the graph.
+         * time = O(1)
+         * space = O(1)
          */
         public void addEdge(int[] edge) {
             int from = edge[0];
@@ -407,6 +447,8 @@ public class DesignGraphWithShortestPathCalculator {
 
         /**
          * Finds the shortest path from node1 to node2 using Dijkstra's algorithm.
+         * time = O((V + E) log V)
+         * space = O(V)
          */
         public int shortestPath(int node1, int node2) {
 
