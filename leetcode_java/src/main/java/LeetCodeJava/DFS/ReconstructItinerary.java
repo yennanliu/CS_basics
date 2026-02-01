@@ -180,6 +180,10 @@ public class ReconstructItinerary {
     // V1-1
     // https://neetcode.io/problems/reconstruct-flight-path
     // IDEA: DFS
+    /**
+     * time = O(E log E)
+     * space = O(E)
+     */
     public List<String> findItinerary_1_1(List<List<String>> tickets) {
         Map<String, List<String>> adj = new HashMap<>();
         for (List<String> ticket : tickets) {
@@ -294,6 +298,10 @@ public class ReconstructItinerary {
     // V1-2
     // https://neetcode.io/problems/reconstruct-flight-path
     // IDEA: Hierholzer's Algorithm (Recursion)
+    /**
+     * time = O(E log E)
+     * space = O(E)
+     */
     public List<String> findItinerary_1_2(List<List<String>> tickets) {
         Map<String, PriorityQueue<String>> adj = new HashMap<>();
         for (List<String> ticket : tickets) {
@@ -323,6 +331,10 @@ public class ReconstructItinerary {
     // V1-3
     // https://neetcode.io/problems/reconstruct-flight-path
     // IDEA: Hierholzer's Algorithm (Iteration)
+    /**
+     * time = O(E log E)
+     * space = O(E)
+     */
     public List<String> findItinerary_1_3(List<List<String>> tickets) {
         Map<String, PriorityQueue<String>> adj = new HashMap<>();
         for (List<String> ticket : tickets) {
@@ -350,6 +362,10 @@ public class ReconstructItinerary {
     // V2
     // https://leetcode.com/problems/reconstruct-itinerary/solutions/4041944/9576-dfs-recursive-iterative-by-vanamsen-62uy/
     // IDEA : DFS
+    /**
+     * time = O(E log E)
+     * space = O(E)
+     */
     public List<String> findItinerary_2(List<List<String>> tickets) {
         Map<String, PriorityQueue<String>> graph = new HashMap<>();
 
@@ -374,6 +390,10 @@ public class ReconstructItinerary {
     // V3
     // IDEA : DFS
     // https://leetcode.com/problems/reconstruct-itinerary/solutions/6113294/simple-solution-with-diagrams-in-video-j-67os/
+    /**
+     * time = O(E log E)
+     * space = O(E)
+     */
     public List<String> findItinerary_3(List<List<String>> tickets) {
         Map<String, List<String>> flightMap = new HashMap<>();
         List<String> result = new LinkedList<>();

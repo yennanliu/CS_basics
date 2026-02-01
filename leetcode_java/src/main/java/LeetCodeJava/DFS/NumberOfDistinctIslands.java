@@ -224,6 +224,10 @@ public class NumberOfDistinctIslands {
 
     // V0-2
     // IDEA: DFS + PATH SIGNATURE (fixed by gpt)
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public int numDistinctIslands_0_2(int[][] grid) {
         if (grid == null || grid.length == 0 || grid[0].length == 0) {
             return 0;
@@ -654,6 +658,10 @@ public class NumberOfDistinctIslands {
     // V3
     // IDEA: DFS (GPT)
     // TODO: validate
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public int numDistinctIslands_3(int[][] grid) {
         if (grid == null || grid.length == 0) return 0;
         int rows = grid.length, cols = grid[0].length;
