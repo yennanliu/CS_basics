@@ -145,7 +145,10 @@ public class DesignPhoneDirectory {
         private Set<Integer> assignedNumbers;
         private int maxNumbers;
 
-        /** Initialize your data structure here. */
+        /**
+         * time = O(N)
+         * space = O(N)
+         */
         public PhoneDirectory_0_1(int maxNumbers) {
             this.maxNumbers = maxNumbers;
             this.availableNumbers = new LinkedList<>();
@@ -157,8 +160,10 @@ public class DesignPhoneDirectory {
             }
         }
 
-        /** Provide a number which is not assigned to anyone.
-         @return - Return an available number. Return -1 if none is available. */
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public int get() {
             if (availableNumbers.isEmpty()) {
                 return -1; // No available numbers
@@ -168,7 +173,10 @@ public class DesignPhoneDirectory {
             return number;
         }
 
-        /** Check if a number is available or not. */
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public boolean check(int number) {
             if (number < 0 || number >= maxNumbers) {
                 return false; // Out of bounds
@@ -176,7 +184,10 @@ public class DesignPhoneDirectory {
             return !assignedNumbers.contains(number);
         }
 
-        /** Recycle or release a number. */
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public void release(int number) {
             if (assignedNumbers.contains(number)) {
                 assignedNumbers.remove(number);
@@ -192,8 +203,10 @@ public class DesignPhoneDirectory {
         boolean[] available;
         Queue<Integer> unused;
 
-        /** Initialize your data structure here
-         @param maxNumbers - The maximum numbers that can be stored in the phone directory. */
+        /**
+         * time = O(N)
+         * space = O(N)
+         */
         public PhoneDirectory_1_1(int maxNumbers) {
             this.maxNumbers = maxNumbers;
             available = new boolean[maxNumbers];
@@ -204,8 +217,10 @@ public class DesignPhoneDirectory {
             }
         }
 
-        /** Provide a number which is not assigned to anyone.
-         @return - Return an available number. Return -1 if none is available. */
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public int get() {
             if (unused.isEmpty())
                 return -1;
@@ -216,7 +231,10 @@ public class DesignPhoneDirectory {
             }
         }
 
-        /** Check if a number is available or not. */
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public boolean check(int number) {
             if (number < 0 || number >= maxNumbers)
                 return false;
@@ -224,7 +242,10 @@ public class DesignPhoneDirectory {
                 return available[number];
         }
 
-        /** Recycle or release a number. */
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public void release(int number) {
             if (!available[number]) {
                 unused.offer(number);
@@ -243,9 +264,8 @@ public class DesignPhoneDirectory {
         LinkedList<Integer> queue; // available number
 
         /**
-         * Initialize your data structure here
-         *
-         * @param maxNumbers - The maximum numbers that can be stored in the phone directory.
+         * time = O(N)
+         * space = O(N)
          */
         public PhoneDirectory_1_2(int maxNumbers) {
             set = new HashSet<Integer>();
@@ -296,16 +316,16 @@ public class DesignPhoneDirectory {
         private boolean[] provided;
 
         /**
-         Initialize your data structure here
-         @param maxNumbers - The maximum numbers that can be stored in the phone directory.
+         * time = O(N)
+         * space = O(N)
          */
         public PhoneDirectory_1_3(int maxNumbers) {
             provided = new boolean[maxNumbers];
         }
 
         /**
-         Provide a number which is not assigned to anyone.
-         @return - Return an available number. Return -1 if none is available.
+         * time = O(N)
+         * space = O(1)
          */
         public int get() {
             for (int i = 0; i < provided.length; ++i) {
@@ -317,12 +337,18 @@ public class DesignPhoneDirectory {
             return -1;
         }
 
-        /** Check if a number is available or not. */
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public boolean check(int number) {
             return !provided[number];
         }
 
-        /** Recycle or release a number. */
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public void release(int number) {
             provided[number] = false;
         }

@@ -69,6 +69,10 @@ public class PrefixAndSuffixSearch {
         // Child map changed to use Character key for better consistency.
         Map<Character, MyNode101> child;
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         MyNode101() {
             // We use 0 as the default, non-functional weight.
             this.maxWeight = 0;
@@ -82,6 +86,10 @@ public class PrefixAndSuffixSearch {
         MyNode101 root; // Renamed to root for clarity
 
         // constructor
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         MyTrie101() {
             this.root = new MyNode101();
         }
@@ -249,6 +257,10 @@ public class PrefixAndSuffixSearch {
         int maxWeight;
         Map<Character, TrieNode_0_1> children;
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         TrieNode_0_1() {
             this.maxWeight = 0;
             this.children = new HashMap<>();
@@ -485,6 +497,10 @@ public class PrefixAndSuffixSearch {
             }
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public int f(String pref, String suff) {
             String query = suff + "{" + pref;
             TrieNode node = root;
@@ -538,6 +554,10 @@ public class PrefixAndSuffixSearch {
             }
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public int f(String prefix, String suffix) {
             TrieNode cur1 = trie1, cur2 = trie2;
             for (char letter : prefix.toCharArray()) {
@@ -626,6 +646,10 @@ public class PrefixAndSuffixSearch {
             }
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public int f(String prefix, String suffix) {
             TrieNode_1_2 cur = trie;
             int i = 0, j = suffix.length() - 1;
@@ -680,6 +704,10 @@ public class PrefixAndSuffixSearch {
             }
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public int f(String prefix, String suffix) {
             TrieNode_1_3 cur = trie;
             for (char letter : (suffix + '{' + prefix).toCharArray()) {

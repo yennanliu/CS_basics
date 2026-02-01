@@ -76,16 +76,28 @@ public class DesignHashSet {
         // Since we are using a direct address array where the index IS the key,
         // no separate hash function is needed.
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public void add(int key) {
             // We simply mark the key's index as true (present).
             this.cache[key] = true;
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public void remove(int key) {
             // We mark the key's index as false (not present).
             this.cache[key] = false;
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public boolean contains(int key) {
             // The key is present if the value at its index is true.
             return this.cache[key];
@@ -110,14 +122,26 @@ public class DesignHashSet {
             storage = new boolean[1_000_001]; // Initialize array for keys in range [0, 1000000]
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public void add(int key) {
             storage[key] = true; // Mark key as present
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public void remove(int key) {
             storage[key] = false; // Mark key as absent
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public boolean contains(int key) {
             return storage[key]; // Check if key is present
         }
@@ -134,14 +158,26 @@ public class DesignHashSet {
             Arrays.fill(mp, false);
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public void add(int key) {
             mp[key] = true;
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public void remove(int key) {
             mp[key] = false;
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public boolean contains(int key) {
             return mp[key];
         }

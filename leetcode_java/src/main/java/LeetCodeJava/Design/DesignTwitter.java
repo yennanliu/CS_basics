@@ -192,12 +192,20 @@ public class DesignTwitter {
             users = new HashMap<>();
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public void postTweet(int userId, int tweetId) {
             if(!users.containsKey(userId))
                 users.put(userId, new User(userId));
             tweets.add(new Tweet(tweetId, userId));
         }
 
+        /**
+         * time = O(K log N)
+         * space = O(K)
+         */
         public List<Integer> getNewsFeed(int userId) {
             if(!users.containsKey(userId))
                 users.put(userId, new User(userId));
@@ -211,6 +219,10 @@ public class DesignTwitter {
             return ans;
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public void follow(int followerId, int followeeId) {
             if(!users.containsKey(followerId))
                 users.put(followerId, new User(followerId));
@@ -220,6 +232,10 @@ public class DesignTwitter {
             user.follows.add(followeeId);
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public void unfollow(int followerId, int followeeId) {
             if(!users.containsKey(followerId))
                 users.put(followerId, new User(followerId));
@@ -233,6 +249,10 @@ public class DesignTwitter {
     class Tweet {
         int tweetId;
         int userId;
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         Tweet(int t, int u) {
             tweetId = t;
             userId = u;
@@ -242,6 +262,10 @@ public class DesignTwitter {
     class User {
         int userId;
         HashSet<Integer> follows;
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         User(int u) {
             userId = u;
             follows = new HashSet<>();

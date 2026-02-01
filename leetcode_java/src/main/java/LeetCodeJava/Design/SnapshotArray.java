@@ -125,14 +125,26 @@ public class SnapshotArray {
             }
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public void set(int index, int val) {
             snapshots.get(index).put(snapId, val);
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public int snap() {
             return snapId++;
         }
 
+        /**
+         * time = O(log S)
+         * space = O(1)
+         */
         public int get(int index, int snap_id) {
             // Get the greatest key less than or equal to snap_id
             return snapshots.get(index).floorEntry(snap_id).getValue();
@@ -156,6 +168,10 @@ public class SnapshotArray {
             }
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public void set(int index, int val) {
             // Store the new value along with the current snapId
             List<int[]> snapshotList = snapshots.get(index);
@@ -167,10 +183,18 @@ public class SnapshotArray {
             }
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public int snap() {
             return snapId++;
         }
 
+        /**
+         * time = O(log S)
+         * space = O(1)
+         */
         public int get(int index, int snap_id) {
             List<int[]> snapshotList = snapshots.get(index);
 
@@ -204,14 +228,26 @@ public class SnapshotArray {
             }
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public void set(int index, int val) {
             historyRecords[index].put(snapId, val);
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public int snap() {
             return snapId++;
         }
 
+        /**
+         * time = O(log S)
+         * space = O(1)
+         */
         public int get(int index, int snapId) {
             return historyRecords[index].floorEntry(snapId).getValue();
         }
@@ -230,16 +266,28 @@ public class SnapshotArray {
             diff = new HashMap<>(length);
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public void set(int index, int val) {
             diff.put(index, val);
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public int snap() {
             shot.add(diff);
             diff = new HashMap<>();
             return shot.size() - 1;
         }
 
+        /**
+         * time = O(log S)
+         * space = O(1)
+         */
         public int get(int index, int snap_id) {
             for (int i = snap_id; i >= 0; --i)
                 if (shot.get(i).containsKey(index))
@@ -266,6 +314,10 @@ public class SnapshotArray {
             }
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public void set(int index, int val) {
             List<int[]> a = this.shot.get(index);
             if (a.get(a.size() - 1)[0] == this.snapId) {
@@ -275,11 +327,19 @@ public class SnapshotArray {
             }
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public int snap() {
             this.snapId++;
             return this.snapId - 1; // Return the current snapId, then increment
         }
 
+        /**
+         * time = O(log S)
+         * space = O(1)
+         */
         public int get(int index, int snapId) {
             List<int[]> a = this.shot.get(index);
             int low = 0, high = a.size() - 1;

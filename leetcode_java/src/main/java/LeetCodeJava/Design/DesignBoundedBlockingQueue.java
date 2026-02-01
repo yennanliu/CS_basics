@@ -113,12 +113,20 @@ public class DesignBoundedBlockingQueue {
             s2 = new Semaphore(0);
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public void enqueue(int element) throws InterruptedException {
             s1.acquire();
             q.offer(element);
             s2.release();
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public int dequeue() throws InterruptedException {
             s2.acquire();
             int ans = q.poll();
@@ -126,6 +134,10 @@ public class DesignBoundedBlockingQueue {
             return ans;
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public int size() {
             return q.size();
         }
@@ -144,12 +156,20 @@ public class DesignBoundedBlockingQueue {
             s2 = new Semaphore(0);
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public void enqueue(int element) throws InterruptedException {
             s1.acquire();
             q.offer(element);
             s2.release();
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public int dequeue() throws InterruptedException {
             s2.acquire();
             int ans = q.poll();
@@ -157,6 +177,10 @@ public class DesignBoundedBlockingQueue {
             return ans;
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public int size() {
             return q.size();
         }

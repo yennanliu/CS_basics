@@ -102,10 +102,18 @@ public class DesignHitCounter {
             this.counter = new HashMap<>();
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public void hit(int timestamp) {
             counter.put(timestamp, counter.getOrDefault(timestamp, 0) + 1);
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public int getHits(int timestamp) {
             int sum = 0;
 
@@ -174,10 +182,18 @@ public class DesignHitCounter {
             this.counter = new HashMap<>();
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public void hit(int timestamp) {
             counter.put(timestamp, counter.getOrDefault(timestamp, 0) + 1);
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public int getHits(int timestamp) {
             int cnt = 0;
 
@@ -218,6 +234,10 @@ public class DesignHitCounter {
          @param timestamp - The current timestamp (in seconds granularity). */
 
         // Time Complexity : O(n)
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public int getHits(int timestamp) {
             int startTime = timestamp - 300;
 
@@ -255,6 +275,10 @@ public class DesignHitCounter {
          @param timestamp - The current timestamp (in seconds granularity). */
 
         // Time Complexity : O(n)
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public int getHits(int timestamp) {
             int res = 0;
             for (int i = 0; i < 300; ++i) {

@@ -61,6 +61,10 @@ public class SearchSuggestionsSystem {
             boolean isEnd;
             Map<Character, MyTrieNode> child;
 
+            /**
+             * time = O(1)
+             * space = O(1)
+             */
             MyTrieNode() {
                 this.isEnd = false;
                 this.child = new HashMap<>();
@@ -69,6 +73,10 @@ public class SearchSuggestionsSystem {
 
         MyTrieNode root;
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         MyTrie() {
             this.root = new MyTrieNode();
         }
@@ -181,6 +189,10 @@ public class SearchSuggestionsSystem {
 
 
     // Main code for LC 1268 (trie)
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public List<List<String>> suggestedProducts_0_1(String[] products, String searchWord) {
         List<List<String>> res = new ArrayList<>();
         if (products == null || products.length == 0 || searchWord == null) {
@@ -218,6 +230,10 @@ public class SearchSuggestionsSystem {
             // Since we pre-sort the input, this list is guaranteed to be sorted lexicographically.
             List<String> products;
 
+            /**
+             * time = O(1)
+             * space = O(1)
+             */
             MyTrieNode() {
                 this.children = new HashMap<>();
                 this.products = new ArrayList<>();
@@ -226,11 +242,19 @@ public class SearchSuggestionsSystem {
 
         private MyTrieNode root;
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         MyTrie2() {
             this.root = new MyTrieNode();
         }
 
         // --- 2. Insert Method ---
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public void insert(String word) {
             MyTrieNode curr = this.root;
             for (char c : word.toCharArray()) {
@@ -280,6 +304,10 @@ public class SearchSuggestionsSystem {
          */
         // --- 3. Find Node for Prefix ---
         // This method finds the node corresponding to the end of the given prefix.
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public MyTrieNode findNodeForPrefix(String prefix) {
             MyTrieNode curr = this.root;
             for (char c : prefix.toCharArray()) {
@@ -294,6 +322,10 @@ public class SearchSuggestionsSystem {
     }
 
     // --- Main Method ---
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public List<List<String>> suggestedProducts(String[] products, String searchWord) {
         List<List<String>> res = new ArrayList<>();
         if (products == null || products.length == 0 || searchWord == null) {
@@ -339,6 +371,10 @@ public class SearchSuggestionsSystem {
 
     // V0-3
     // IDEA: 2 POINTERS
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public List<List<String>> suggestedProducts_0_3(String[] products, String searchWord) {
         List<List<String>> res = new ArrayList<>();
         if (products == null || products.length == 0 || searchWord == null) {
@@ -393,6 +429,10 @@ public class SearchSuggestionsSystem {
     // V0-4
     // IDEA: 2 POINTERS
     // https://www.youtube.com/watch?v=D4T2N0yAr20
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public List<List<String>> suggestedProducts_0_4(String[] products, String searchWord) {
         // Final list to store the results for each prefix
         List<List<String>> result = new ArrayList<>();
@@ -495,6 +535,10 @@ public class SearchSuggestionsSystem {
         // passing through this node. This is the key optimization.
         List<String> suggestions;
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         TrieNode001() {
             this.children = new HashMap<>();
             this.suggestions = new ArrayList<>();
@@ -503,6 +547,10 @@ public class SearchSuggestionsSystem {
 
     private TrieNode001 root;
 
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public List<List<String>> suggestedProducts_0_0_1(String[] products, String searchWord) {
 
         // 1. Sort Products Lexicographically
@@ -596,6 +644,10 @@ public class SearchSuggestionsSystem {
                     dfsWithPrefix(curr.children.get(c - 'a'), word + c);
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         Trie() {
             Root = new Node();
         }
@@ -661,6 +713,10 @@ public class SearchSuggestionsSystem {
         return i;
     }
 
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public List<List<String>> suggestedProducts_1_2(String[] products, String searchWord) {
         Arrays.sort(products);
         List<List<String>> result = new ArrayList<>();
@@ -693,6 +749,10 @@ public class SearchSuggestionsSystem {
     // V2
     // IDEA: PQ
     // https://leetcode.com/problems/search-suggestions-system/solutions/471718/java-priority-queue-no-sort-or-trie-by-g-bxvg/
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public List<List<String>> suggestedProducts_2(String[] products, String searchWord) {
         PriorityQueue<String> pq = new PriorityQueue<>(3, (s1, s2) -> s1.compareTo(s2));
         List<List<String>> list = new ArrayList<>();
@@ -728,11 +788,19 @@ public class SearchSuggestionsSystem {
             pq = new PriorityQueue<>((a,b) -> b.compareTo(a));
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public void addToPQ(String word) {
             pq.add(word);
             if (pq.size() > 3) pq.poll();
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public List<String> getTopThree() {
             List<String> topThree = new ArrayList<>();
             while (!pq.isEmpty()) topThree.add(pq.poll());
@@ -741,6 +809,10 @@ public class SearchSuggestionsSystem {
         }
     }
 
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public List<List<String>> suggestedProducts_3(String[] products, String searchWord) {
         TrieNode root = new TrieNode();
         for (String product: products) insert(root, product);

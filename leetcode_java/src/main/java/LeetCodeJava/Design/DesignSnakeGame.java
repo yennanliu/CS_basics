@@ -167,12 +167,9 @@ public class DesignSnakeGame {
         private Set<Integer> vis = new HashSet<>();
 
         /**
-         * 2. Constructor (SnakeGame_1)
-         *
-         * 	•	Initializes the grid with width n and height m, as well as the food array.
-         * 	•	The snake initially starts at position (0, 0). This position is both added to the Deque (q.offer(0)) and marked as visited in the Set (vis.add(0)).
+         * time = O(1)
+         * space = O(1)
          */
-
         public SnakeGame_1(int width, int height, int[][] food) {
             m = height;
             n = width;
@@ -183,19 +180,8 @@ public class DesignSnakeGame {
 
 
         /**
-         *
-         * 3. Move Method (move(String direction))
-         *
-         * This method is responsible for moving the snake based on the input direction:
-         *
-         * 	•	First, the current position of the snake’s head is retrieved (p = q.peekFirst()), and its row (i) and column (j) on the grid are computed using division and modulus.
-         * 	•	The method then updates the coordinates (x, y) based on the direction:
-         * 	•	"U" (Up): Decrease row (x--).
-         * 	•	"D" (Down): Increase row (x++).
-         * 	•	"L" (Left): Decrease column (y--).
-         * 	•	"R" (Right): Increase column (y++).
-         * 	•	If the snake moves out of bounds (x < 0 || x >= m || y < 0 || y >= n), the game is lost, and -1 is returned.
-         *
+         * time = O(1)
+         * space = O(1)
          */
         public int move(String direction) {
             int p = q.peekFirst();
@@ -274,11 +260,10 @@ public class DesignSnakeGame {
         // 食物坐标
         int[][] food;
 
-        /** Initialize your data structure here.
-         @param width - screen width
-         @param height - screen height
-         @param food - A list of food positions
-         E.g food = [[1,1], [1,0]] means the first food is positioned at [1,1], the second is at [1,0]. */
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public SnakeGame_2(int width, int height, int[][] food) {
             this.width = width;
             this.height = height;
@@ -291,10 +276,10 @@ public class DesignSnakeGame {
             deque.offerLast(0);
         }
 
-        /** Moves the snake.
-         @param direction - 'U' = Up, 'L' = Left, 'R' = Right, 'D' = Down
-         @return The game's score after the move. Return -1 if game over.
-         Game over when snake crosses the screen boundary or bites its body. */
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public int move(String direction) {
             // 当前头部的坐标
             int rowHead = deque.peekFirst() / width;

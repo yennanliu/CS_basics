@@ -88,6 +88,10 @@ public class RLEIterator {
             }
         }
 
+        /**
+         * time = O(N)
+         * space = O(1)
+         */
         public int next(int n) {
             next += n;
             return tm.ceilingKey(next) != null ? tm.get(tm.ceilingKey(next)) : -1;
@@ -111,6 +115,10 @@ public class RLEIterator {
             }
         }
 
+        /**
+         * time = O(N)
+         * space = O(1)
+         */
         public int next(int n) {
             index += n;
             return index <= list.size() ? list.get(index - 1) : -1;
@@ -127,6 +135,10 @@ public class RLEIterator {
             this.encoding = encoding;
         }
 
+        /**
+         * time = O(N)
+         * space = O(1)
+         */
         public int next(int n) {
             while (index < encoding.length && n > encoding[index]) {
                 n -= encoding[index];
@@ -154,6 +166,10 @@ public class RLEIterator {
             index = 0;
         }
 
+        /**
+         * time = O(N)
+         * space = O(1)
+         */
         public int next(int n) {
             if (index >= A.length) {
                 return -1;
@@ -182,6 +198,10 @@ public class RLEIterator {
             this.cursor = 0;
         }
 
+        /**
+         * time = O(N)
+         * space = O(1)
+         */
         public int next(int n) {
             while(cursor < encodingArr.length){
                 if(encodingArr[cursor] >= n){

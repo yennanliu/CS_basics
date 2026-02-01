@@ -69,11 +69,19 @@ public class ImplementStackUsingQueues {
             // this.size = 0;
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public void push(int x) {
             this.q.addFirst(x);
             // this.size += 1;
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public int pop() {
             if (!this.q.isEmpty()) {
                 return this.q.pollFirst();
@@ -81,10 +89,18 @@ public class ImplementStackUsingQueues {
             return 0; // ???
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public int top() {
             return this.q.peekFirst(); // NOTE !!! here
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public boolean empty() {
             return this.q.isEmpty();
         }
@@ -102,6 +118,10 @@ public class ImplementStackUsingQueues {
             this.q2 = new LinkedList<>();
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public void push(int x) {
             // Push into q2 first
             q2.add(x);
@@ -117,6 +137,10 @@ public class ImplementStackUsingQueues {
             q2 = temp;
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public int pop() {
             if (empty()) {
                 throw new RuntimeException("Stack is empty");
@@ -124,6 +148,10 @@ public class ImplementStackUsingQueues {
             return q1.poll();
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public int top() {
             if (empty()) {
                 throw new RuntimeException("Stack is empty");
@@ -131,6 +159,10 @@ public class ImplementStackUsingQueues {
             return q1.peek();
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public boolean empty() {
             return q1.isEmpty();
         }
@@ -153,6 +185,10 @@ public class ImplementStackUsingQueues {
             this.tail = 0;
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public boolean enQueue(int value) {
             if (this.isFull()) {
                 return false;
@@ -167,6 +203,10 @@ public class ImplementStackUsingQueues {
             return true;
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public boolean deQueue() {
             if (this.isEmpty()) {
                 return false;
@@ -180,6 +220,10 @@ public class ImplementStackUsingQueues {
             return true;
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public int Front() {
             if (this.isEmpty()) {
                 return -1;
@@ -187,6 +231,10 @@ public class ImplementStackUsingQueues {
             return arr[head];
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public int Rear() {
             if (this.isEmpty()) {
                 return -1;
@@ -199,10 +247,18 @@ public class ImplementStackUsingQueues {
             return arr[rearIndex];
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public boolean isEmpty() {
             return elementCnt == 0;
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public boolean isFull() {
             return elementCnt == capacity;
         }
@@ -215,6 +271,10 @@ public class ImplementStackUsingQueues {
 
         private Queue<Integer> queue = new LinkedList<>();
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public void push(int x) {
 
             /**
@@ -274,14 +334,26 @@ public class ImplementStackUsingQueues {
                 queue.add(queue.remove());
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public void pop() {
             queue.remove();
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public int top() {
             return queue.peek();
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public boolean empty() {
             return queue.isEmpty();
         }
@@ -300,6 +372,10 @@ public class ImplementStackUsingQueues {
 
         // Push element x onto stack.
         // NOTE this trick!!!
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public void push(int x)
         {
             queue.add(x);
@@ -310,18 +386,30 @@ public class ImplementStackUsingQueues {
         }
 
         // Removes the element on top of the stack.
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public void pop()
         {
             queue.poll();
         }
 
         // Get the top element.
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public int top()
         {
             return queue.peek();
         }
 
         // Return whether the stack is empty.
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public boolean empty()
         {
             return queue.isEmpty();
