@@ -44,8 +44,51 @@ public class LongestCommonPrefix {
      */
 
     // V0
-    // IDEA: PREFIX + STRING OP (GEMINI)
+    // IDEA: prefix list + string op (startsWith)
     public String longestCommonPrefix(String[] strs) {
+        // edge
+        if (strs == null || strs.length == 0) {
+            return "";
+        }
+        if (strs.length == 1) {
+            return strs[0];
+        }
+
+        String first = strs[0];
+        List<String> prefixList = new ArrayList<>();
+        String tmp = "";
+        for (String x : first.split("")) {
+            tmp += x;
+            prefixList.add(tmp);
+        }
+
+        //System.out.println(">>> prefixList = " + prefixList);
+        String longestPrefix = "";
+
+        int n = strs.length;
+
+        for (String prefix : prefixList) {
+            //boolean allMatched = true;
+            int cnt = 0;
+            for (String str : strs) {
+                if (!str.startsWith(prefix)) {
+                    //allMatched = false;
+                    break;
+                }
+                cnt += 1;
+            }
+            if (cnt == n) {
+                longestPrefix = prefix;
+            }
+        }
+
+        return longestPrefix;
+    }
+
+
+    // V0-0-0-0-1
+    // IDEA: PREFIX + STRING OP (GEMINI)
+    public String longestCommonPrefix_0_0_0_1(String[] strs) {
         if (strs == null || strs.length == 0)
             return "";
         if (strs.length == 1)
