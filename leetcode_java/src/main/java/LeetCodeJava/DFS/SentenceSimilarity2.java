@@ -40,6 +40,10 @@ public class SentenceSimilarity2 {
     // https://leetcode.ca/2017-12-06-737-Sentence-Similarity-II/
     private int[] p;
 
+    /**
+     * time = O(N + M)
+     * space = O(N)
+     */
     public boolean areSentencesSimilarTwo_1(
             String[] sentence1, String[] sentence2, List<List<String>> similarPairs) {
         if (sentence1.length != sentence2.length) {

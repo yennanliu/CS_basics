@@ -92,10 +92,18 @@ public class StrobogrammaticNumber2 {
     List<String> singleDigitList = new ArrayList<>(Arrays.asList("0", "1", "8")); // not char[], because List can direct return as result
     char[][] digitPair = { {'1', '1'}, {'8', '8'}, {'6', '9'}, {'9', '6'} }; // except '0', a special case
 
+    /**
+     * time = O(5^(N/2))
+     * space = O(N)
+     */
     public List<String> findStrobogrammatic_1_1(int n) {
         return dfs(n, n);
     }
 
+    /**
+     * time = O(5^(N/2))
+     * space = O(N)
+     */
     public List<String> dfs(int k, int n) {
         if (k <= 0) {
             return new ArrayList<String>(Arrays.asList(""));
@@ -124,6 +132,10 @@ public class StrobogrammaticNumber2 {
     private static final int[][] PAIRS = { {1, 1}, {8, 8}, {6, 9}, {9, 6}};
     private int n;
 
+    /**
+     * time = O(5^(N/2))
+     * space = O(N)
+     */
     public List<String> findStrobogrammatic_1_2(int n) {
         this.n = n;
         return dfs(n);
@@ -152,6 +164,10 @@ public class StrobogrammaticNumber2 {
     // IDEA : DFS (gpt)
     // TODO: validate the code
     List<String> res = new ArrayList<>();
+    /**
+     * time = O(5^(N/2))
+     * space = O(N)
+     */
     public List<String> findStrobogrammatic_2_1(int n) {
         // Use valid strobogrammatic pairs only
         char[][] pairs = new char[][] {

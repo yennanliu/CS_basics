@@ -99,6 +99,10 @@ public class ReorderRoutesToMakeAllPathsLeadToTheCityZero {
      * Time Complexity: O(N + E), where N is cities, E is connections.
      * Space Complexity: O(N + E) for the adjacency list and visited array.
      */
+    /**
+     * time = O(V + E)
+     * space = O(V)
+     */
     public int minReorder_0_1(int n, int[][] connections) {
 
         // --- 1. Build Adjacency List (Undirected with Direction Info) ---
@@ -167,6 +171,10 @@ public class ReorderRoutesToMakeAllPathsLeadToTheCityZero {
      * Time Complexity: O(N + E), where N is cities, E is connections.
      * Space Complexity: O(N + E) for the adjacency list, queue, and visited array.
      */
+    /**
+     * time = O(V + E)
+     * space = O(V)
+     */
     public int minReorder_0_2(int n, int[][] connections) {
 
         // --- 1. Build Adjacency List (Undirected with Direction Info) ---
@@ -233,6 +241,10 @@ public class ReorderRoutesToMakeAllPathsLeadToTheCityZero {
     // https://leetcode.com/problems/reorder-routes-to-make-all-paths-lead-to-the-city-zero/editorial/
     int count = 0;
 
+    /**
+     * time = O(V + E)
+     * space = O(V)
+     */
     public void dfs(int node, int parent, Map<Integer, List<List<Integer>>> adj) {
         if (!adj.containsKey(node)) {
             return;
@@ -247,6 +259,10 @@ public class ReorderRoutesToMakeAllPathsLeadToTheCityZero {
         }
     }
 
+    /**
+     * time = O(V + E)
+     * space = O(V)
+     */
     public int minReorder_1_1(int n, int[][] connections) {
         Map<Integer, List<List<Integer>>> adj = new HashMap<>();
         for (int[] connection : connections) {
@@ -265,6 +281,10 @@ public class ReorderRoutesToMakeAllPathsLeadToTheCityZero {
     // https://leetcode.com/problems/reorder-routes-to-make-all-paths-lead-to-the-city-zero/editorial/
     int count_1_2 = 0;
 
+    /**
+     * time = O(V + E)
+     * space = O(V)
+     */
     public void bfs(int node, int n, Map<Integer, List<List<Integer>>> adj) {
         Queue<Integer> q = new LinkedList<>();
         boolean[] visit = new boolean[n];
@@ -288,6 +308,10 @@ public class ReorderRoutesToMakeAllPathsLeadToTheCityZero {
         }
     }
 
+    /**
+     * time = O(V + E)
+     * space = O(V)
+     */
     public int minReorder_1_2(int n, int[][] connections) {
         Map<Integer, List<List<Integer>>> adj = new HashMap<>();
         for (int[] connection : connections) {
@@ -306,6 +330,10 @@ public class ReorderRoutesToMakeAllPathsLeadToTheCityZero {
     // https://leetcode.ca/2019-12-05-1466-Reorder-Routes-to-Make-All-Paths-Lead-to-the-City-Zero/
     private List<int[]>[] g;
 
+    /**
+     * time = O(V + E)
+     * space = O(V)
+     */
     public int minReorder_2(int n, int[][] connections) {
         g = new List[n];
         Arrays.setAll(g, k -> new ArrayList<>());

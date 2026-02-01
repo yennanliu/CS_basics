@@ -144,6 +144,10 @@ public class VerticalOrderTraversalOfABinaryTree {
     // V1
     // IDEA: DFS
     // https://leetcode.ca/2018-08-13-987-Vertical-Order-Traversal-of-a-Binary-Tree/
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public List<List<Integer>> verticalTraversal_1(TreeNode root) {
         List<int[]> list = new ArrayList<>();
         dfs(root, 0, 0, list);
@@ -180,6 +184,10 @@ public class VerticalOrderTraversalOfABinaryTree {
     // V2
     // IDEA: DFS
     // https://leetcode.com/problems/vertical-order-traversal-of-a-binary-tree/solutions/7018292/beats-9953-easy-explanation-and-code-usi-4it9/
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public List<List<Integer>> verticalTraversal_2(TreeNode root) {
         List<int[]> nodes = new ArrayList<>();
 
@@ -305,6 +313,10 @@ public class VerticalOrderTraversalOfABinaryTree {
     // V4
     // IDEA: BFS + TREE MAP
     // https://leetcode.com/problems/vertical-order-traversal-of-a-binary-tree/solutions/7210773/problem-no-987-vertical-order-traversal-1rm7y/
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public List<List<Integer>> verticalTraversal_4(TreeNode root) {
         // Map to store nodes by column -> row -> min-heap of node values
         // TreeMap ensures columns and rows are sorted automatically
