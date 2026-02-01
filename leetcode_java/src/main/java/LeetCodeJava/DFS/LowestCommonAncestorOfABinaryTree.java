@@ -57,6 +57,10 @@ public class LowestCommonAncestorOfABinaryTree {
     // V0
     // IDEA : DFS (RECURSION + POST ORDER TRANSVERSAL)
     // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Depth-First-Search/lowest-common-ancestor-of-a-binary-tree.py#L42
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
 
         // since p != q
@@ -138,6 +142,10 @@ public class LowestCommonAncestorOfABinaryTree {
 
     // V0-0-1
     // IDEA: DFS + `_right, _left is null` case consideration
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public TreeNode lowestCommonAncestor_0_0_1(TreeNode root, TreeNode p, TreeNode q) {
         if (root == null){
             return null;
@@ -170,6 +178,10 @@ public class LowestCommonAncestorOfABinaryTree {
     // V1-1
     // https://neetcode.io/problems/lowest-common-ancestor-in-binary-search-tree
     // IDEA: RECURSION
+    /**
+     * time = O(H)
+     * space = O(H)
+     */
     public TreeNode lowestCommonAncestor_1_1(TreeNode root, TreeNode p, TreeNode q) {
         if (root == null || p == null || q == null) {
             return null;
@@ -187,6 +199,10 @@ public class LowestCommonAncestorOfABinaryTree {
     // V1-2
     // https://neetcode.io/problems/lowest-common-ancestor-in-binary-search-tree
     // IDEA: Iteration
+    /**
+     * time = O(H)
+     * space = O(1)
+     */
     public TreeNode lowestCommonAncestor_1_2(TreeNode root, TreeNode p, TreeNode q) {
         TreeNode cur = root;
 
@@ -205,6 +221,10 @@ public class LowestCommonAncestorOfABinaryTree {
 
     // V2
     // https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/solutions/65226/my-java-solution-which-is-easy-to-understand/
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public TreeNode lowestCommonAncestor_2(TreeNode root, TreeNode p, TreeNode q) {
         if(root == null || root == p || root == q)  return root;
         TreeNode left = lowestCommonAncestor_2(root.left, p, q);
@@ -215,6 +235,10 @@ public class LowestCommonAncestorOfABinaryTree {
 
     // V3
     // https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/submissions/1280367287/
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public TreeNode lowestCommonAncestor_3(TreeNode root, TreeNode p, TreeNode q) {
         //base case
         if(root == null || root == p || root == q)
@@ -234,6 +258,10 @@ public class LowestCommonAncestorOfABinaryTree {
 
     // V4
     // IDEA: DFS (GPT)
+    /**
+     * time = O(H)
+     * space = O(1)
+     */
     public TreeNode lowestCommonAncestor_4(TreeNode root, TreeNode p, TreeNode q) {
         // Keep traversing the tree
         while (root != null) {

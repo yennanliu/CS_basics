@@ -43,6 +43,10 @@ public class MaxAreaOfIsland {
 
     // V0
     // IDEA: DFS
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     /**  NOTE !!! with below DFS pattern:
      *
      *  2) (as VO-0-1)
@@ -129,6 +133,10 @@ public class MaxAreaOfIsland {
      */
     int biggestArea = 0;
 
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public int maxAreaOfIsland_0_0_1(int[][] grid) {
         int l = grid.length;
         int w = grid[0].length;

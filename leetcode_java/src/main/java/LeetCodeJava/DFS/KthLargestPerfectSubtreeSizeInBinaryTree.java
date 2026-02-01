@@ -115,6 +115,10 @@ public class KthLargestPerfectSubtreeSizeInBinaryTree {
   // This is a class-level list that stores the sizes of all perfect subtrees we discover during traversal.
   private List<Integer> perfectSizes = new ArrayList<>();
 
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public int kthLargestPerfectSubtree_0_1(TreeNode root, int k) {
         dfs(root);
         if (perfectSizes.size() < k)
@@ -306,6 +310,10 @@ public class KthLargestPerfectSubtreeSizeInBinaryTree {
     // V2
     // https://leetcode.com/problems/k-th-largest-perfect-subtree-size-in-binary-tree/solutions/5905522/javacpython-dfs-by-lee215-5ejv/
     // IDEA: DFS
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public int kthLargestPerfectSubtree_2(TreeNode root, int k) {
         List<Integer> res = new ArrayList<>();
         dfs(root, res);
@@ -330,6 +338,10 @@ public class KthLargestPerfectSubtreeSizeInBinaryTree {
     // V3
     // https://leetcode.com/problems/k-th-largest-perfect-subtree-size-in-binary-tree/solutions/5913315/python3-10-lines-dfs-ts-82-77-by-spauldi-mfov/
     // IDEA: DFS
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public int kthLargestPerfectSubtree_3(TreeNode root, int k) {
         List<Integer> ans = new ArrayList<>();
         dfs_3(root, ans);
