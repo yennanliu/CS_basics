@@ -68,6 +68,10 @@ public class LinkedListCycle2 {
 
     // V0
     // IDEA: LIST NODE + HASHSET
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public ListNode detectCycle(ListNode head) {
         // edge
         if (head == null || head.next == null) {
@@ -87,6 +91,10 @@ public class LinkedListCycle2 {
 
     // V0-1
     // IDEA: LIS TNODE + HASHSET
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public ListNode detectCycle_0_1(ListNode head) {
         // edge
         if (head == null || head.next == null) {
@@ -132,6 +140,10 @@ public class LinkedListCycle2 {
      *          when slow == fast (which is the `cycle start node`)
      *
      */
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public ListNode detectCycle_0_2(ListNode head) {
         if (head == null || head.next == null)
             return null;
@@ -167,6 +179,10 @@ public class LinkedListCycle2 {
     // V2
     // https://leetcode.com/problems/linked-list-cycle-ii/solutions/1701128/cjavapython-slow-and-fast-image-explanat-uxjx/
     // IDEA:  fast, slow pointers
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public ListNode detectCycle_2(ListNode head) {
         ListNode slow = head, fast = head;
         while (fast != null && fast.next != null) {
@@ -186,6 +202,10 @@ public class LinkedListCycle2 {
 
     // V3
     // https://leetcode.com/problems/linked-list-cycle-ii/solutions/3274329/clean-codes-full-explanation-floyds-cycl-mugo/
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public ListNode detectCycle_3(ListNode head) {
         // Initialize two pointers, slow and fast, to the head of the linked list.
         ListNode slow = head;

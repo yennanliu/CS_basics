@@ -54,6 +54,10 @@ public class TwoSumIIArrayInputIsSorted {
         // V0
         // IDEA : 2 POINTERS
         // NOTE !!! we use `2 pointers` but NOT binary search
+        /**
+         * time = O(N)
+         * space = O(1)
+         */
         public int[] twoSum(int[] numbers, int target) {
 
             if (numbers.length == 0 || numbers.equals(null)) {
@@ -96,6 +100,10 @@ public class TwoSumIIArrayInputIsSorted {
 
     // V0-1
     // IDEA: HASHMAP (001 2 sum)
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int[] twoSum_0_1(int[] numbers, int target) {
         // { val: idx}
         HashMap<Integer, Integer> map = new HashMap<>();
@@ -115,6 +123,10 @@ public class TwoSumIIArrayInputIsSorted {
 
     // V0-2
     // IDEA: HASHMAP
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int[] twoSum_0_2(int[] numbers, int target) {
         // edge
         if (numbers == null || numbers.length == 0) {

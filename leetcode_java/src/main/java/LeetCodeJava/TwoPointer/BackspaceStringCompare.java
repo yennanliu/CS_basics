@@ -8,6 +8,10 @@ public class BackspaceStringCompare {
 
     // V0
     // IDEA : STACK + stringBuilder
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public boolean backspaceCompare(String s, String t) {
 
         if (s == null && t == null){
@@ -45,6 +49,10 @@ public class BackspaceStringCompare {
 
 
     // V1
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public boolean backspaceCompare_1(String s, String t) {
 
         if (s == null && t == null){
@@ -103,10 +111,18 @@ public class BackspaceStringCompare {
     // V2
     // IDEA : BUILD STRING
     // https://leetcode.com/problems/backspace-string-compare/editorial/
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public boolean backspaceCompare_2(String S, String T) {
         return build(S).equals(build(T));
     }
 
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public String build(String S) {
         Stack<Character> ans = new Stack();
         for (char c: S.toCharArray()) {

@@ -75,6 +75,10 @@ public class ShortestWayToFormString {
     // V1_1
     // IDEA : 2 POINTER (gpt)
     // TODO : validate below
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int shortestWay_1(String source, String target) {
         // Step 1: Check if every character in target exists in source
         for (char x : target.toCharArray()) {
@@ -124,6 +128,10 @@ public class ShortestWayToFormString {
     // V2_1
     // https://leetcode.ca/2018-10-20-1055-Shortest-Way-to-Form-String/
     // IDEA : 2 POINTER
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int shortestWay_2_1(String source, String target) {
         int m = source.length(), n = target.length();
         int ans = 0, j = 0;

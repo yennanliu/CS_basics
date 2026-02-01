@@ -51,6 +51,10 @@ public class ReverseVowelsOfAString {
         chars[y] = temp;
     }
 
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public String reverseVowels(String s) {
         int start = 0;
         int end = s.length() - 1;
@@ -81,6 +85,10 @@ public class ReverseVowelsOfAString {
     // V2
     // https://leetcode.com/problems/reverse-vowels-of-a-string/solutions/81221/one-pass-java-solution-13ms/
     public class Solution {
+        /**
+         * time = O(N)
+         * space = O(1)
+         */
         public String reverseVowels_2(String s) {
             char[] list=s.toCharArray();
             Set<Character> set=new HashSet<>();

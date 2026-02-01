@@ -51,6 +51,10 @@ public class MergeStringsAlternately {
 
     // V0
     // IDEA: STRING OP
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public String mergeAlternately(String word1, String word2) {
         // edge
         if (word1 == null && word2 == null) {
@@ -89,6 +93,10 @@ public class MergeStringsAlternately {
 
     // V1
     // https://leetcode.com/problems/merge-strings-alternately/solutions/6141609/video-simple-solution-by-niits-ip8k/
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public String mergeAlternately_1(String word1, String word2) {
         StringBuilder merged = new StringBuilder();
         int maxLength = Math.max(word1.length(), word2.length());
@@ -107,6 +115,10 @@ public class MergeStringsAlternately {
 
     // V2
     // https://leetcode.com/problems/merge-strings-alternately/solutions/3429116/easy-solutions-in-java-python-and-c-look-80lt/
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public String mergeAlternately_2(String word1, String word2) {
         StringBuilder result = new StringBuilder();
         int i = 0;

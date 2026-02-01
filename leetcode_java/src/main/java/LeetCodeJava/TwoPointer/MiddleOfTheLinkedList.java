@@ -46,6 +46,10 @@ public class MiddleOfTheLinkedList {
 
     // V0
     // IDEA: SLOW - FAST POINTER
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public ListNode middleNode(ListNode head) {
         ListNode slow = head;
         ListNode fast = head;
@@ -58,6 +62,10 @@ public class MiddleOfTheLinkedList {
 
     // V0-1
     // IDEA: SLOW - FAST POINTER
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public ListNode middleNode_0_1(ListNode head) {
         // edge
         if (head == null || head.next == null) {
@@ -78,6 +86,10 @@ public class MiddleOfTheLinkedList {
 
     // V0-2
     // IDEA : 2 POINTERS
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public ListNode middleNode_0_2(ListNode head) {
 
         if (head == null) {
@@ -103,6 +115,10 @@ public class MiddleOfTheLinkedList {
     // V1
     // IDEA : OUTPUT TO ARRAY
     // https://leetcode.com/problems/middle-of-the-linked-list/editorial/
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public ListNode middleNode_2(ListNode head) {
         ListNode[] A = new ListNode[100];
         int t = 0;
@@ -116,6 +132,10 @@ public class MiddleOfTheLinkedList {
     // V2
     // IDEA : 2 POINTERS
     // https://leetcode.com/problems/middle-of-the-linked-list/editorial/
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public ListNode middleNode_3(ListNode head) {
         ListNode slow = head, fast = head;
         while (fast != null && fast.next != null) {

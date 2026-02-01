@@ -62,6 +62,10 @@ public class FruitIntoBaskets {
      *  }
      *    // do sth
      */
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int totalFruit(int[] fruits) {
         // edge
         if (fruits.length <= 2) {
@@ -114,6 +118,10 @@ public class FruitIntoBaskets {
 
     // V0-1
     // IDEA: 2 POINTERS (gpt)
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int totalFruit_0_1(int[] fruits) {
         if (fruits.length == 0) {
             return 0;
@@ -146,6 +154,10 @@ public class FruitIntoBaskets {
 
     // V0-2
     // IDEA: SLIDE WINDOW (gpt)
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int totalFruit_0_2(int[] fruits) {
         // edge case
         if (fruits == null || fruits.length == 0) {
@@ -182,6 +194,10 @@ public class FruitIntoBaskets {
 
     // V1
     // https://leetcode.com/problems/fruit-into-baskets/solutions/3153809/clean-codes-full-explanation-hashtable-c-dd57/
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int totalFruit_1(int[] tree) {
         int ans = 0;
         Map<Integer, Integer> count = new HashMap<>();
@@ -201,6 +217,10 @@ public class FruitIntoBaskets {
 
     // V2
     // https://leetcode.com/problems/fruit-into-baskets/solutions/3153492/easy-explanation-with-animation-and-vide-mo3t/
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int totalFruit_2(int[] fruits) {
         Map<Integer, Integer> basket = new HashMap<>();
         int j = 0;
@@ -220,6 +240,10 @@ public class FruitIntoBaskets {
 
     // V3
     // https://leetcode.com/problems/fruit-into-baskets/solutions/3153971/crystal-clear-explanation-c-java-by-myst-73x0/
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int totalFruit_3(int[] fruits) {
         // Initializing a map for keeping count of distinct fruits
         Map<Integer, Integer> fruitCount = new HashMap<>();

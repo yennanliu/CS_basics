@@ -48,6 +48,10 @@ public class PartitionList {
 
     // V0
     //IDEA 1) linked list -> array -> split -> reconnect
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public ListNode partition(ListNode head, int x) {
         // edge
         if (head == null || head.next == null) {
@@ -92,6 +96,10 @@ public class PartitionList {
 
     // V1
     // https://leetcode.ca/2016-02-24-86-Partition-List/
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public ListNode partition_1(ListNode head, int x) {
         ListNode d1 = new ListNode();
         ListNode d2 = new ListNode();
@@ -114,6 +122,10 @@ public class PartitionList {
 
     // V2
     // https://leetcode.com/problems/partition-list/solutions/6750680/video-solution-by-niits-yzyp/
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public ListNode partition_2(ListNode head, int x) {
         ListNode slist = new ListNode();
         ListNode blist = new ListNode();
@@ -141,6 +153,10 @@ public class PartitionList {
 
     // V3
     // https://leetcode.com/problems/partition-list/solutions/7234561/beats-100-very-very-very-easy-to-underst-eppp/
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public ListNode partition_3(ListNode head, int x) {
         ListNode temp = head;
         if (head == null) {
