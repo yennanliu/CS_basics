@@ -12,6 +12,10 @@ public class MaximumNumberOfEventsThatCanBeAttended {
     // V1
     // IDEA : PRIORITY QUEUE (HEAP)
     // https://leetcode.com/problems/maximum-number-of-events-that-can-be-attended/solutions/2272460/explanation-of-code-java/
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public int maxEvents(int[][] A) {
 
         PriorityQueue<Integer> pq = new PriorityQueue<Integer>();
@@ -76,6 +80,10 @@ public class MaximumNumberOfEventsThatCanBeAttended {
     // 4. Do the loop until we explore all the events and the min heap is empty.
     // Time complexity: O(NlogN)
     // Space complexity: O(N)
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public int maxEvents_2(int[][] events) {
         if (events == null || events.length == 0) return 0;
         final int N = events.length;

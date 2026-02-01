@@ -40,7 +40,11 @@ import java.util.*;
 public class UglyNumber2 {
 
     // V0
-//    public int nthUglyNumber(int n) {
+//    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
+    public int nthUglyNumber(int n) {
 //
 //    }
 
@@ -63,6 +67,10 @@ public class UglyNumber2 {
      * 	           get the `current min val` min_val  by pq.poll();
      * 	           then multiply min_val by 2, 3, and 5,
      * 	           and add them to the small PQ
+     */
+    /**
+     * time = O(N log N)
+     * space = O(N)
      */
     public int nthUglyNumber_0_1(int n) {
         if (n <= 0) {
@@ -101,6 +109,10 @@ public class UglyNumber2 {
      * Finds the n-th ugly number using Dynamic Programming (Multi-pointer merge).
      * Time Complexity: O(n)
      * Space Complexity: O(n)
+     */
+    /**
+     * time = O(N log N)
+     * space = O(N)
      */
     public int nthUglyNumber_0_3(int n) {
         // Base case: 1 is the 1st ugly number.
@@ -155,6 +167,10 @@ public class UglyNumber2 {
 
     // V0-4
     // IDEA: DP (fixed by gpt)
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public int nthUglyNumber_0_4(int n) {
         if (n <= 0) {
             throw new IllegalArgumentException("n must be positive");
@@ -186,6 +202,10 @@ public class UglyNumber2 {
     // V1-1
     // IDEA: SET
     // https://leetcode.com/problems/ugly-number-ii/editorial/
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public int nthUglyNumber_1_1(int n) {
         TreeSet<Long> uglyNumbersSet = new TreeSet<>(); // TreeSet to store potential ugly numbers
         uglyNumbersSet.add(1L); // Start with 1, the first ugly number
@@ -209,6 +229,10 @@ public class UglyNumber2 {
     // V1-2
     // IDEA: Min-Heap/Priority Queue
     // https://leetcode.com/problems/ugly-number-ii/editorial/
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public int nthUglyNumber_1_2(int n) {
         PriorityQueue<Long> minHeap = new PriorityQueue<>();
         Set<Long> seenNumbers = new HashSet<>(); // Set to avoid duplicates
@@ -237,6 +261,10 @@ public class UglyNumber2 {
     // V1-3
     // IDEA: DP
     // https://leetcode.com/problems/ugly-number-ii/editorial/
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public int nthUglyNumber_1_3(int n) {
         int[] uglyNumbers = new int[n]; // DP array to store ugly numbers
         uglyNumbers[0] = 1; // The first ugly number is 1
@@ -276,6 +304,10 @@ public class UglyNumber2 {
     // V2-1
     // IDEA:
     // https://leetcode.ca/2016-08-20-264-Ugly-Number-II/
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public int nthUglyNumber_2_1(int n) {
         if (n <= 0) {
             return 0;
@@ -317,6 +349,10 @@ public class UglyNumber2 {
     // V2-2
     // IDEA:
     // https://leetcode.ca/2016-08-20-264-Ugly-Number-II/
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public int nthUglyNumber_2_2(int n) {
         int[] dp = new int[n];
         dp[0] = 1;

@@ -50,12 +50,20 @@ import java.util.*;
 public class RelativeRanks {
 
     // LC 506
-//    public String[] findRelativeRanks(int[] score) {
+//    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
+    public String[] findRelativeRanks(int[] score) {
 //
 //    }
 
     // V0-1
     // IDEA: PQ
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public String[] findRelativeRanks_0_1(int[] score) {
         // edge
         if(score.length == 1){
@@ -112,6 +120,10 @@ public class RelativeRanks {
     // V1-1
     // IDEA: Sort & Reverse
     // https://leetcode.com/problems/relative-ranks/editorial/
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public String[] findRelativeRanks_1_1(int[] score) {
         int N = score.length;
         int[] scoreCopy = new int[N];
@@ -148,6 +160,10 @@ public class RelativeRanks {
     // V1-2
     // IDEA: Heap (Priority Queue)
     // https://leetcode.com/problems/relative-ranks/editorial/
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public String[] findRelativeRanks_1_2(int[] score) {
         int N = score.length;
 
@@ -182,6 +198,10 @@ public class RelativeRanks {
     // V1-3
     // IDEA: Array as Map
     // https://leetcode.com/problems/relative-ranks/editorial/
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     private int findMax(int[] score) {
         int maxScore = 0;
         for (int s : score) {
@@ -192,6 +212,10 @@ public class RelativeRanks {
         return maxScore;
     }
 
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public String[] findRelativeRanks_1_3(int[] score) {
         int N = score.length;
 

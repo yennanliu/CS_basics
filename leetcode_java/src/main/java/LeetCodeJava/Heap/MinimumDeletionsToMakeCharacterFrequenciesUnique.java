@@ -56,6 +56,10 @@ public class MinimumDeletionsToMakeCharacterFrequenciesUnique {
      * * Time Complexity: O(N + K^2 log K) where N is string length and K is alphabet size (26).
      * Space Complexity: O(K) for the frequency array and PQ.
      */
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int minDeletions(String s) {
         /** NOTE !!!
          *
@@ -121,6 +125,10 @@ public class MinimumDeletionsToMakeCharacterFrequenciesUnique {
 
     // V0-1
     // IDEA: PQ (fixed by gemini)
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int minDeletions_0_1(String s) {
         // 1. Map character to frequency
         int[] counts = new int[26];
@@ -154,6 +162,10 @@ public class MinimumDeletionsToMakeCharacterFrequenciesUnique {
 
     // V0-2
     // IDEA: PQ (gpt)
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int minDeletions_0_2(String s) {
 
         int[] freq = new int[26];
@@ -191,6 +203,10 @@ public class MinimumDeletionsToMakeCharacterFrequenciesUnique {
     // V1-1
     // IDEA: GREEDY
     // https://leetcode.com/problems/minimum-deletions-to-make-character-frequencies-unique/solutions/4033214/9932greedyheapbeginner-friendlyfull-expl-gdkl/
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int minDeletions_1_1(String s) {
         /** NOTE !!!
          *
@@ -254,6 +270,10 @@ public class MinimumDeletionsToMakeCharacterFrequenciesUnique {
     // V1-2
     // IDEA: PQ
     // https://leetcode.com/problems/minimum-deletions-to-make-character-frequencies-unique/solutions/4033214/9932greedyheapbeginner-friendlyfull-expl-gdkl/
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int minDeletions_1_2(String s) {
         // Create a HashMap to count the frequency of each character.
         Map<Character, Integer> frequencyMap = new HashMap<>();
@@ -291,6 +311,10 @@ public class MinimumDeletionsToMakeCharacterFrequenciesUnique {
     // V2-1
     // IDEA: GREEDY
     // https://leetcode.com/problems/minimum-deletions-to-make-character-frequencies-unique/solutions/4033205/9818-greedy-heap-sorting-by-vanamsen-vqis/
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int minDeletions_2_1(String s) {
         HashMap<Character, Integer> cnt = new HashMap<>();
         int deletions = 0;
@@ -319,6 +343,10 @@ public class MinimumDeletionsToMakeCharacterFrequenciesUnique {
 
     // V3
     // https://leetcode.com/problems/minimum-deletions-to-make-character-frequencies-unique/solutions/927654/cjavapython3-simple-time-on-space-o1-a-s-9xa8/
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int minDeletions_3(String s) {
         int freq[] = new int[26];
         for (char c : s.toCharArray())

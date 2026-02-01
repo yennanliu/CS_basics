@@ -57,12 +57,20 @@ import java.util.PriorityQueue;
 public class MaximumSubsequenceScore {
 
     // V0
-//    public long maxScore(int[] nums1, int[] nums2, int k) {
+//    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
+    public long maxScore(int[] nums1, int[] nums2, int k) {
 //
 //    }
 
     // V0-1
     // IDEA: SORT + PQ (fixed by gpt)
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public long maxScore_0_1(int[] nums1, int[] nums2, int k) {
         int n = nums1.length;
 
@@ -103,6 +111,10 @@ public class MaximumSubsequenceScore {
      * Finds the maximum score: (Sum of k largest nums1) * (Min of corresponding nums2).
      * Time Complexity: O(N log N + N log K)
      * Space Complexity: O(N + K)
+     */
+    /**
+     * time = O(N log N)
+     * space = O(N)
      */
     public long maxScore_0_2(int[] nums1, int[] nums2, int k) {
         int n = nums1.length;
@@ -173,7 +185,11 @@ public class MaximumSubsequenceScore {
      * of the chosen set is determined by the last picked element in this sorted order.
      *
      */
-//    public long maxScore(int[] nums1, int[] nums2, int k) {
+//    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
+    public long maxScore(int[] nums1, int[] nums2, int k) {
 //        // edge
 //        if(nums1.length == 1){
 //            if(k == 1){
@@ -265,6 +281,10 @@ public class MaximumSubsequenceScore {
     // V1
     // IDEA: PQ
     // https://leetcode.ca/2023-03-10-2542-Maximum-Subsequence-Score/
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public long maxScore_1(int[] nums1, int[] nums2, int k) {
         int n = nums1.length;
         int[][] nums = new int[n][2];
@@ -288,6 +308,10 @@ public class MaximumSubsequenceScore {
     // V2
     // IDEA: PQ
     // https://leetcode.com/problems/maximum-subsequence-score/solutions/3082106/javacpython-priority-queue-by-lee215-s52z/
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public long maxScore_2(int[] speed, int[] efficiency, int k) {
         int n = speed.length;
         int[][] ess = new int[n][2];
@@ -309,6 +333,10 @@ public class MaximumSubsequenceScore {
     // V3
     // IDEA: PQ
     // https://leetcode.com/problems/maximum-subsequence-score/solutions/6127501/beats-100-proof-beginner-freindly-java-c-c4lm/
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public long maxScore_3(int[] speed, int[] efficiency, int k) {
         int n = speed.length;
         int[][] ess = new int[n][2];
