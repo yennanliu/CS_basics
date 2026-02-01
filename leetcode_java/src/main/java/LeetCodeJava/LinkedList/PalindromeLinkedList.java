@@ -44,6 +44,10 @@ public class PalindromeLinkedList {
 
     // V0
     // IDEA : ARRAY + LINKED LIST
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public boolean isPalindrome(ListNode head) {
 
         if (head == null || head.next == null){
@@ -72,6 +76,10 @@ public class PalindromeLinkedList {
 
     // V1
     // https://leetcode.com/problems/palindrome-linked-list/solutions/7047915/video-two-pointers-by-niits-wwqq/
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public boolean isPalindrome_1(ListNode head) {
         ListNode slow = head;
         ListNode fast = head;
@@ -106,6 +114,10 @@ public class PalindromeLinkedList {
     // V2-1
     // https://leetcode.com/problems/palindrome-linked-list/solutions/4908031/interview-approach-4-approach-list-stack-r0wz/
     // IDEA: STACK
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public boolean isPalindrome_2_1(ListNode head) {
         Stack<Integer> stack = new Stack();
         ListNode curr = head;
@@ -124,11 +136,19 @@ public class PalindromeLinkedList {
     // https://leetcode.com/problems/palindrome-linked-list/solutions/4908031/interview-approach-4-approach-list-stack-r0wz/
     // IDEA: RECURSION
     ListNode curr;
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public boolean isPalindrome_2_2(ListNode head) {
         curr = head;
         return solve(head);
     }
 
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public boolean solve(ListNode head) {
         if (head == null)
             return true;
@@ -140,6 +160,10 @@ public class PalindromeLinkedList {
     // V2-3
     // https://leetcode.com/problems/palindrome-linked-list/solutions/4908031/interview-approach-4-approach-list-stack-r0wz/
     // IDEA: LINKED LIST
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public ListNode reverse(ListNode head) {
         ListNode prev = null;
         ListNode curr = head;
@@ -152,6 +176,10 @@ public class PalindromeLinkedList {
         return prev;
     }
 
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public boolean isPalindrome_2_3(ListNode head) {
         ListNode slow = head;
         ListNode fast = head.next;
