@@ -51,6 +51,10 @@ public class ExtraCharactersInAString {
     // V1
     // https://www.youtube.com/watch?v=ONstwO1cD7c
     // https://github.com/neetcode-gh/leetcode/blob/main/java%2F2707-extra-characters-in-a-string.java
+    /**
+     * time = O(L)
+     * space = O(1)
+     */
     public int minExtraChar_1(String s, String[] dictionary) {
         int n = s.length();
         int[] dp = new int[n+1];
@@ -78,6 +82,10 @@ public class ExtraCharactersInAString {
     Integer[] memo;
     HashSet<String> dictionarySet;
 
+    /**
+     * time = O(L)
+     * space = O(1)
+     */
     public int minExtraChar_2_1(String s, String[] dictionary) {
         int n = s.length();
         memo = new Integer[n];
@@ -109,6 +117,10 @@ public class ExtraCharactersInAString {
     // V2-2
     // https://leetcode.com/problems/extra-characters-in-a-string/editorial/
     // IDEA: Bottom Up Dynamic Programming with Substring Method
+    /**
+     * time = O(L)
+     * space = O(1)
+     */
     public int minExtraChar_2_2(String s, String[] dictionary) {
         int n = s.length();
         HashSet dictionarySet = new HashSet<>(Arrays.asList(dictionary));
@@ -136,6 +148,10 @@ public class ExtraCharactersInAString {
     }
     TrieNode root;
     Integer[] memo_2_3;
+    /**
+     * time = O(L)
+     * space = O(1)
+     */
     public int minExtraChar_2_3(String s, String[] dictionary) {
         int n = s.length();
         root = buildTrie(dictionary);

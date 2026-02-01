@@ -59,6 +59,10 @@ public class DesignAddAndSearchWordsDataStructure {
     class TrieNode {
         Map<String, TrieNode> children = new HashMap<>();
         boolean isEnd = false;
+        /**
+         * time = O(L)
+         * space = O(1)
+         */
         public TrieNode() {}
     }
 
@@ -66,11 +70,19 @@ public class DesignAddAndSearchWordsDataStructure {
         TrieNode trie;
 
         /** Initialize your data structure here. */
+        /**
+         * time = O(L)
+         * space = O(ALPHABET_SIZE * L * N)
+         */
         public WordDictionary() {
             trie = new TrieNode();
         }
 
         /** Adds a word into the data structure. */
+        /**
+         * time = O(L)
+         * space = O(1)
+         */
         public void addWord(String word) {
 
             TrieNode node = trie;
@@ -86,6 +98,10 @@ public class DesignAddAndSearchWordsDataStructure {
         }
 
         /** Returns if the word is in the node. */
+        /**
+         * time = O(L)
+         * space = O(1)
+         */
         public boolean searchInNode(String word, TrieNode node) {
 
             /**
@@ -229,6 +245,10 @@ public class DesignAddAndSearchWordsDataStructure {
         }
 
         /** Returns if the word is in the data structure. A word could contain the dot character '.' to represent any one letter. */
+        /**
+         * time = O(L)
+         * space = O(1)
+         */
         public boolean search(String word) {
             return searchInNode(word, trie);
         }
@@ -241,6 +261,10 @@ public class DesignAddAndSearchWordsDataStructure {
         Map<Character, MyTreeNode2> children;
         boolean isEnd;
 
+        /**
+         * time = O(L)
+         * space = O(ALPHABET_SIZE * L * N)
+         */
         public MyTreeNode2() {
             this.children = new HashMap<>();
             this.isEnd = false;
@@ -250,11 +274,19 @@ public class DesignAddAndSearchWordsDataStructure {
     class WordDictionary_0_1 {
         private final MyTreeNode2 root;
 
+        /**
+         * time = O(L)
+         * space = O(ALPHABET_SIZE * L * N)
+         */
         public WordDictionary_0_1() {
             this.root = new MyTreeNode2();
         }
 
         /** Adds a word into the data structure. */
+        /**
+         * time = O(L)
+         * space = O(1)
+         */
         public void addWord(String word) {
             if (word == null || word.isEmpty()) return;
 
@@ -267,6 +299,10 @@ public class DesignAddAndSearchWordsDataStructure {
         }
 
         /** Returns if the word is in the data structure. */
+        /**
+         * time = O(L)
+         * space = O(1)
+         */
         public boolean search(String word) {
             return dfs(word.toCharArray(), 0, root);
         }
@@ -308,6 +344,10 @@ public class DesignAddAndSearchWordsDataStructure {
     class TrieNode2 {
         Map<Character, TrieNode2> children = new HashMap();
         boolean word = false;
+        /**
+         * time = O(L)
+         * space = O(1)
+         */
         public TrieNode2() {}
     }
 
@@ -315,11 +355,19 @@ public class DesignAddAndSearchWordsDataStructure {
         TrieNode2 trie;
 
         /** Initialize your data structure here. */
+        /**
+         * time = O(L)
+         * space = O(ALPHABET_SIZE * L * N)
+         */
         public WordDictionary2() {
             trie = new TrieNode2();
         }
 
         /** Adds a word into the data structure. */
+        /**
+         * time = O(L)
+         * space = O(1)
+         */
         public void addWord(String word) {
             TrieNode2 node = trie;
 
@@ -333,6 +381,10 @@ public class DesignAddAndSearchWordsDataStructure {
         }
 
         /** Returns if the word is in the node. */
+        /**
+         * time = O(L)
+         * space = O(1)
+         */
         public boolean searchInNode(String word, TrieNode2 node) {
             for (int i = 0; i < word.length(); ++i) {
                 char ch = word.charAt(i);
@@ -365,6 +417,10 @@ public class DesignAddAndSearchWordsDataStructure {
         }
 
         /** Returns if the word is in the data structure. A word could contain the dot character '.' to represent any one letter. */
+        /**
+         * time = O(L)
+         * space = O(1)
+         */
         public boolean search(String word) {
             return searchInNode(word, trie);
         }
@@ -377,11 +433,19 @@ public class DesignAddAndSearchWordsDataStructure {
         Map<Integer, Set<String>> d;
 
         /** Initialize your data structure here. */
+        /**
+         * time = O(L)
+         * space = O(ALPHABET_SIZE * L * N)
+         */
         public WordDictionary4() {
             d = new HashMap();
         }
 
         /** Adds a word into the data structure. */
+        /**
+         * time = O(L)
+         * space = O(1)
+         */
         public void addWord(String word) {
             int m = word.length();
             if (!d.containsKey(m)) {
@@ -391,6 +455,10 @@ public class DesignAddAndSearchWordsDataStructure {
         }
 
         /** Returns if the word is in the data structure. A word could contain the dot character '.' to represent any one letter. */
+        /**
+         * time = O(L)
+         * space = O(1)
+         */
         public boolean search(String word) {
             int m = word.length();
             if (d.containsKey(m)) {

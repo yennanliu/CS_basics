@@ -97,6 +97,10 @@ public class ImplementTrie {
         Map<String, TrieNode> children;
         boolean isWord;
 
+        /**
+         * time = O(L)
+         * space = O(ALPHABET_SIZE * L * N)
+         */
         public TrieNode() {
             children = new HashMap<>();
             isWord = false;
@@ -115,11 +119,19 @@ public class ImplementTrie {
     class Trie {
         TrieNode root;
 
+        /**
+         * time = O(L)
+         * space = O(ALPHABET_SIZE * L * N)
+         */
         public Trie() {
 
             root = new TrieNode();
         }
 
+        /**
+         * time = O(L)
+         * space = O(1)
+         */
         public void insert(String word) {
             /**
              *  NOTE !!! get current node first
@@ -133,6 +145,10 @@ public class ImplementTrie {
             cur.isWord = true;
         }
 
+        /**
+         * time = O(L)
+         * space = O(1)
+         */
         public boolean search(String word) {
             /**
              *  NOTE !!! get current node first
@@ -147,6 +163,10 @@ public class ImplementTrie {
             return cur.isWord;
         }
 
+        /**
+         * time = O(L)
+         * space = O(1)
+         */
         public boolean startsWith(String prefix) {
             /**
              *  NOTE !!! get current node first
@@ -273,22 +293,46 @@ public class ImplementTrie {
 
         private boolean isEnd;
 
+        /**
+         * time = O(L)
+         * space = O(ALPHABET_SIZE * L * N)
+         */
         public TrieNode2() {
             links = new TrieNode2[R];
         }
 
+        /**
+         * time = O(L)
+         * space = O(1)
+         */
         public boolean containsKey(char ch) {
             return links[ch -'a'] != null;
         }
+        /**
+         * time = O(L)
+         * space = O(1)
+         */
         public TrieNode2 get(char ch) {
             return links[ch -'a'];
         }
+        /**
+         * time = O(L)
+         * space = O(1)
+         */
         public void put(char ch, TrieNode2 node) {
             links[ch -'a'] = node;
         }
+        /**
+         * time = O(L)
+         * space = O(1)
+         */
         public void setEnd() {
             isEnd = true;
         }
+        /**
+         * time = O(L)
+         * space = O(1)
+         */
         public boolean isEnd() {
             return isEnd;
         }
@@ -298,11 +342,19 @@ public class ImplementTrie {
     class Trie2 {
         private TrieNode2 root;
 
+        /**
+         * time = O(L)
+         * space = O(ALPHABET_SIZE * L * N)
+         */
         public Trie2() {
             root = new TrieNode2();
         }
 
         // Inserts a word into the trie.
+        /**
+         * time = O(L)
+         * space = O(1)
+         */
         public void insert(String word) {
             TrieNode2 node = root;
             for (int i = 0; i < word.length(); i++) {
@@ -332,6 +384,10 @@ public class ImplementTrie {
         }
 
         // Returns if the word is in the trie.
+        /**
+         * time = O(L)
+         * space = O(1)
+         */
         public boolean search(String word) {
             TrieNode2 node = searchPrefix(word);
             return node != null && node.isEnd();
@@ -339,6 +395,10 @@ public class ImplementTrie {
 
         // Returns if there is any word in the trie
         // that starts with the given prefix.
+        /**
+         * time = O(L)
+         * space = O(1)
+         */
         public boolean startsWith(String prefix) {
             TrieNode2 node = searchPrefix(prefix);
             return node != null;
@@ -353,6 +413,10 @@ public class ImplementTrie {
         boolean isWord;
         TrieNode3[] children;
 
+        /**
+         * time = O(L)
+         * space = O(ALPHABET_SIZE * L * N)
+         */
         public TrieNode3() {
             isWord = false;
             children = new TrieNode3[26]; // 26 English lowercase letters
@@ -362,10 +426,18 @@ public class ImplementTrie {
     class Trie3 {
         TrieNode3 root;
 
+        /**
+         * time = O(L)
+         * space = O(ALPHABET_SIZE * L * N)
+         */
         public Trie3() {
             root = new TrieNode3();
         }
 
+        /**
+         * time = O(L)
+         * space = O(1)
+         */
         public void insert(String word) {
             TrieNode3 node = root;
             for (char c : word.toCharArray()) {
@@ -378,6 +450,10 @@ public class ImplementTrie {
             node.isWord = true;
         }
 
+        /**
+         * time = O(L)
+         * space = O(1)
+         */
         public boolean search(String word) {
             TrieNode3 node = root;
             for (char c : word.toCharArray()) {
@@ -390,6 +466,10 @@ public class ImplementTrie {
             return node.isWord;
         }
 
+        /**
+         * time = O(L)
+         * space = O(1)
+         */
         public boolean startsWith(String prefix) {
             TrieNode3 node = root;
             for (char c : prefix.toCharArray()) {
@@ -414,6 +494,10 @@ public class ImplementTrie {
             // a node array of size 26
             // to store nodes for 26 lowercase alphabets
             TrieNode[] children;
+            /**
+             * time = O(L)
+             * space = O(ALPHABET_SIZE * L * N)
+             */
             public TrieNode() {
                 isComplete = false;
                 children = new TrieNode[26];
@@ -421,10 +505,18 @@ public class ImplementTrie {
         }
 
         TrieNode root;  // Declare the root node
+        /**
+         * time = O(L)
+         * space = O(ALPHABET_SIZE * L * N)
+         */
         public Trie4() {
             root = new TrieNode();  // initialize the root node
         }
 
+        /**
+         * time = O(L)
+         * space = O(1)
+         */
         public void insert(String word) {
             TrieNode node  = root;  // start traversing from the root
             for (char c : word.toCharArray()) {
@@ -441,6 +533,10 @@ public class ImplementTrie {
             node.isComplete = true;
         }
 
+        /**
+         * time = O(L)
+         * space = O(1)
+         */
         public boolean search(String word) {
             TrieNode node = root;
             for (char c : word.toCharArray()) {
@@ -458,6 +554,10 @@ public class ImplementTrie {
             return node.isComplete;
         }
 
+        /**
+         * time = O(L)
+         * space = O(1)
+         */
         public boolean startsWith(String prefix) {
             TrieNode node = root;
             for (char c : prefix.toCharArray()) {
