@@ -36,7 +36,10 @@ public class MergeIntervals {
 
     // V0
     // IDEA: LC 57 + `interval op`
-    // time: O(N log N), space: O(N)
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public int[][] merge(int[][] intervals) {
 
         if (intervals == null || intervals.length == 0) {
@@ -116,7 +119,10 @@ public class MergeIntervals {
      */
     // V0-0-1
     // IDEA : ARRAY OP + BOUNDARY OP
-    // time: O(N log N), space: O(N)
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public int[][] merge_0_0_1(int[][] intervals) {
         /**
          *
@@ -157,7 +163,10 @@ public class MergeIntervals {
 
     // V0-1
     // IDEA: SORTING + BOUNDARY OP
-    // time: O(N log N), space: O(N)
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public int[][] merge_0_1(int[][] intervals) {
         // edge
         if(intervals == null || intervals.length == 0){
@@ -214,7 +223,10 @@ public class MergeIntervals {
 
     // V0-2
     // IDEA: SORT + ARRAY OP + BOUNDARY HANDLING
-    // time: O(N log N), space: O(N)
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public int[][] merge_0_2(int[][] intervals) {
 
         if (intervals.length <= 1){
@@ -251,7 +263,10 @@ public class MergeIntervals {
 
     // V0-3
     // IDEA: ARRAY OP (GPT)
-    // time: O(N log N), space: O(N)
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public int[][] merge_0_3(int[][] intervals) {
         // Edge case: If intervals is null or empty, return an empty array
         if (intervals == null || intervals.length == 0) {
@@ -293,7 +308,10 @@ public class MergeIntervals {
     // V1-1
     // https://neetcode.io/problems/merge-intervals
     // IDEA: SORTING
-    // time: O(N log N), space: O(N)
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public int[][] merge_1_1(int[][] intervals) {
         Arrays.sort(intervals, (a, b) -> Integer.compare(a[0], b[0]));
         List<int[]> output = new ArrayList<>();
@@ -317,7 +335,10 @@ public class MergeIntervals {
     // V1-2
     // https://neetcode.io/problems/merge-intervals
     // IDEA:  Sweep Line Algorithm
-    // time: O(N log N), space: O(N)
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public int[][] merge_1_2(int[][] intervals) {
         TreeMap<Integer, Integer> map = new TreeMap<>();
 
@@ -346,7 +367,10 @@ public class MergeIntervals {
     // V1-3
     // https://neetcode.io/problems/merge-intervals
     // IDEA: GREEDY
-    // time: O(N log N), space: O(N)
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public int[][] merge_1_3(int[][] intervals) {
         int max = 0;
         for (int i = 0; i < intervals.length; i++) {
@@ -394,7 +418,10 @@ public class MergeIntervals {
     // V2
     // IDEA : Sorting
     // https://leetcode.com/problems/merge-intervals/editorial/
-    // time: O(N log N), space: O(N)
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public int[][] merge_2(int[][] intervals) {
         Arrays.sort(intervals, (a, b) -> Integer.compare(a[0], b[0]));
         // NOTE !!! we set res as linkedlist type
@@ -417,7 +444,10 @@ public class MergeIntervals {
     // V3
     // IDEA : Connected Components
     // https://leetcode.com/problems/merge-intervals/editorial/
-    // time: O(N^2), space: O(N)
+    /**
+     * time = O(N^2)
+     * space = O(N)
+     */
     private Map<int[], List<int[]>> graph;
     private Map<Integer, List<int[]>> nodesInComp;
     private Set<int[]> visited;

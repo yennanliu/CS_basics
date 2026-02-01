@@ -48,6 +48,10 @@ public class InsertInterval {
 
     // V0
     // IDEA : ARRAY + BOUNDARY OP + sort
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public int[][] insert(int[][] intervals, int[] newInterval) {
 
         if (intervals.length == 0){
@@ -124,6 +128,10 @@ public class InsertInterval {
 
     // V0-1
     // IDEA : ARRAY + BOUNDARY OP (by GPT)
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public int[][] insert_0_1(int[][] intervals, int[] newInterval) {
 
         // Convert the intervals array to a list for easier manipulation
@@ -155,6 +163,10 @@ public class InsertInterval {
 
     // V0-2
     // IDEA: ARRAY OP (GPT)
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int[][] insert_0_2(int[][] intervals, int[] newInterval) {
         // Edge case: if intervals are empty, just return the newInterval
         if (intervals == null || intervals.length == 0) {
@@ -191,6 +203,10 @@ public class InsertInterval {
     // V1-1
     // https://neetcode.io/problems/insert-new-interval
     // IDEA: LINEAR SEARCH
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int[][] insert_1_1(int[][] intervals, int[] newInterval) {
         int n = intervals.length, i = 0;
         List<int[]> res = new ArrayList<>();
@@ -219,6 +235,10 @@ public class InsertInterval {
     // V1-2
     // https://neetcode.io/problems/insert-new-interval
     // IDEA: BINARY SEARCH
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public int[][] insert_1_2(int[][] intervals, int[] newInterval) {
         if (intervals.length == 0) {
             return new int[][] { newInterval };
@@ -266,6 +286,10 @@ public class InsertInterval {
     // V1-3
     // https://neetcode.io/problems/insert-new-interval
     // IDEA: GREEDY
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int[][] insert_1_3(int[][] intervals, int[] newInterval) {
         List<int[]> res = new ArrayList<>();
         for (int[] interval : intervals) {

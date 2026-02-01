@@ -46,6 +46,10 @@ public class DiagonalTraverse {
 
     // V0-1
     // IDEA : matrix op (gpt)
+    /**
+     * time = O(M*N)
+     * space = O(1)
+     */
     public int[] findDiagonalOrder_0_1(int[][] mat) {
         // Edge case: empty matrix
         if (mat == null || mat.length == 0 || mat[0].length == 0) {
@@ -81,6 +85,9 @@ public class DiagonalTraverse {
     // V0-2
     // IDEA: ARRAY OP (fixed by gpt)
     /**
+     * time = O(M*N)
+     * space = O(1)
+     *
      *  IDEA: (4 cases to move per `boundary` conditions)
      *
      *  Explanation:
@@ -152,6 +159,10 @@ public class DiagonalTraverse {
     // V1-1
     // https://leetcode.com/problems/diagonal-traverse/editorial/
     // IDEA: Diagonal Iteration and Reversal
+    /**
+     * time = O(M*N)
+     * space = O(M*N)
+     */
     public int[] findDiagonalOrder_1_1(int[][] matrix) {
 
         // Check for empty matrices
@@ -209,6 +220,10 @@ public class DiagonalTraverse {
     // V1-2
     // https://leetcode.com/problems/diagonal-traverse/editorial/
     // IDEA: Simulation
+    /**
+     * time = O(M*N)
+     * space = O(1)
+     */
     public int[] findDiagonalOrder_1_2(int[][] matrix) {
 
         // Check for empty matrices
