@@ -55,6 +55,10 @@ public class WordLadder2 {
 
     // V0-1
     // IDEA: BFS + DFS (fixed by gpt)
+    /**
+     * time = O(N * M * 26)
+     * space = O(N * M)
+     */
     public List<List<String>> findLadders_0_1(String beginWord, String endWord, List<String> wordList) {
         List<List<String>> res = new ArrayList<>();
         Set<String> wordSet = new HashSet<>(wordList);
@@ -139,6 +143,10 @@ public class WordLadder2 {
 
     // V0-2
     // IDEA: BFS, LC 127 (fixed by gpt) (TLE)
+    /**
+     * time = O(N * M * 26)
+     * space = O(N * M)
+     */
     public List<List<String>> findLadders_0_2(String beginWord, String endWord, List<String> wordList) {
         List<List<String>> res = new ArrayList<>();
         Set<String> wordSet = new HashSet<>(wordList);
@@ -206,6 +214,10 @@ public class WordLadder2 {
 
     // V0-3
     // IDEA: BFS + DFS + BACKTRACK (gemini)
+    /**
+     * time = O(N * M * 26)
+     * space = O(N * M)
+     */
     public List<List<String>> findLadders_0_3(String beginWord, String endWord, List<String> wordList) {
         List<List<String>> result = new ArrayList<>();
         Set<String> dict = new HashSet<>(wordList);

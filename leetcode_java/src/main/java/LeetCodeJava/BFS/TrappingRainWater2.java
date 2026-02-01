@@ -157,6 +157,10 @@ public class TrappingRainWater2 {
     // V1
     // IDEA: BFS + Priority Queue
     // https://leetcode.com/problems/trapping-rain-water-ii/editorial/
+    /**
+     * time = O(M * N * log(M * N))
+     * space = O(M * N)
+     */
     public int trapRainWater_1(int[][] heightMap) {
         // Direction arrays
         int[] dRow = { 0, 0, -1, 1 };

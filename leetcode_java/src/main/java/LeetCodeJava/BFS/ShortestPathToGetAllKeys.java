@@ -81,6 +81,10 @@ public class ShortestPathToGetAllKeys {
     int[] dr = new int[] { -1, 0, 1, 0 };
     int[] dc = new int[] { 0, -1, 0, 1 };
 
+    /**
+     * time = O(M * N * 2^K * K!)
+     * space = O(M * N * K!)
+     */
     public int shortestPathAllKeys_1_1(String[] grid) {
         this.grid = grid;
         R = grid.length;
@@ -195,6 +199,10 @@ public class ShortestPathToGetAllKeys {
 //    int[] dr = new int[] { -1, 0, 1, 0 };
 //    int[] dc = new int[] { 0, -1, 0, 1 };
 
+    /**
+     * time = O(M * N * 2^K)
+     * space = O(M * N * 2^K)
+     */
     public int shortestPathAllKeys_1_2(String[] grid) {
         this.grid = grid;
         R = grid.length;
