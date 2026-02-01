@@ -112,6 +112,10 @@ public class SnakesAndLadders {
     // V2
     // IDEA: BFS
     // https://leetcode.com/problems/snakes-and-ladders/solutions/6797437/using-bfs-with-images-example-walkthroug-22bs/
+    /**
+     * time = O(N^2)
+     * space = O(N^2)
+     */
     public int snakesAndLadders_2(int[][] board) {
         int n = board.length;
         int[] min_rolls = new int[n * n + 1];
@@ -141,6 +145,10 @@ public class SnakesAndLadders {
 
     // V3
     // https://leetcode.com/problems/snakes-and-ladders/solutions/3092376/day-24-easiest-beginner-friendly-solutio-e5kp/
+    /**
+     * time = O(N^2)
+     * space = O(N^2)
+     */
     public int snakesAndLadders_3(int[][] board) {
         int n = board.length;
         int moves = 0;

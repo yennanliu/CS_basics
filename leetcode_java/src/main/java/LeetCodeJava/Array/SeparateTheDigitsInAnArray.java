@@ -51,6 +51,10 @@ import java.util.List;
 public class SeparateTheDigitsInAnArray {
 
     // V0
+    /**
+     * time = O(N*D)
+     * space = O(N*D)
+     */
     public int[] separateDigits(int[] nums) {
         if (nums == null || nums.length == 0) {
             return new int[] {}; // ??
@@ -82,6 +86,10 @@ public class SeparateTheDigitsInAnArray {
 
     // V1
     // https://leetcode.com/problems/separate-the-digits-in-an-array/solutions/7227360/easy-code-for-solve-this-problem-by-4_k4-s6dh/
+    /**
+     * time = O(N*D)
+     * space = O(N*D)
+     */
     public int[] separateDigits_1(int[] nums) {
         List<Integer> list = new ArrayList<>();
         for (int k : nums) {

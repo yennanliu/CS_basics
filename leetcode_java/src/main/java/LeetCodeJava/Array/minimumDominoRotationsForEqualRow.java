@@ -49,6 +49,10 @@ public class minimumDominoRotationsForEqualRow {
     // V2
     // IDEA : DP
     // https://leetcode.com/problems/minimum-domino-rotations-for-equal-row/submissions/1309255149/
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int minDominoRotations_2(int[] tops, int[] bottoms) {
         int len = tops.length;
         int[][] dp = new int[6][3];
@@ -78,6 +82,10 @@ public class minimumDominoRotationsForEqualRow {
 
     // V3
     // https://leetcode.com/problems/minimum-domino-rotations-for-equal-row/solutions/1866884/simple-and-easy-to-understand-t-c-o-n-s-c-o-1-java/
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int minDominoRotations_3(int[] top, int[] bottom) {
         int n = top.length;
         int a = top[0], b = bottom[0];

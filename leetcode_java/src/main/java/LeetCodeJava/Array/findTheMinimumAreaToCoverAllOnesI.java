@@ -8,6 +8,10 @@ public class findTheMinimumAreaToCoverAllOnesI {
 
     // V0
     // IDEA : ARRAY (modified by gpt)
+    /**
+     * time = O(M*N)
+     * space = O(1)
+     */
     public int minimumArea(int[][] grid) {
         if (grid.length == 1 && grid[0].length == 1) {
             return 1;
@@ -86,6 +90,10 @@ public class findTheMinimumAreaToCoverAllOnesI {
 
     // V1
     // https://leetcode.com/problems/find-the-minimum-area-to-cover-all-ones-i/solutions/5355084/easy-java-solution/
+    /**
+     * time = O(M*N)
+     * space = O(1)
+     */
     public int minimumArea_1(int[][] grid) {
         int m = grid.length;
         int n = grid[0].length;

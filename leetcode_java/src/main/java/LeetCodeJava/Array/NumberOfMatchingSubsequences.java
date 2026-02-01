@@ -44,6 +44,10 @@ public class NumberOfMatchingSubsequences {
     // V1
     // IDEA : HASH MAP + 2 POINTERS
     // https://leetcode.com/problems/number-of-matching-subsequences/solutions/2306416/java-easy-solution-97-faster-code/
+    /**
+     * time = O(N+M)
+     * space = O(M)
+     */
     public int numMatchingSubseq_1(String s, String[] words) {
 
         Map<String, Integer> map = new HashMap<>();
@@ -121,6 +125,10 @@ public class NumberOfMatchingSubsequences {
 
     // V3
     // https://leetcode.com/problems/number-of-matching-subsequences/solutions/2306285/java-easy-solution-using-hashmap/
+    /**
+     * time = O(N+M)
+     * space = O(M)
+     */
     public int numMatchingSubseq_3(String s, String[] words) {
         Map<Character, Queue<String>> mp = new HashMap<>();
         int ans = 0;
@@ -205,6 +213,10 @@ public class NumberOfMatchingSubsequences {
 
     // V5
     // IDEA : list + queue (gpt)
+    /**
+     * time = O(N+M)
+     * space = O(M)
+     */
     public int numMatchingSubseq_5(String s, String[] words) {
         // Create an array of 26 queues (one for each letter)
         List<Queue<String>> waiting = new ArrayList<>(26);
