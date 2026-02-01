@@ -45,6 +45,10 @@ public class IntervalListIntersections {
     // V0
     // IDEA: 2 POINTER (on 2 arrays) + boundary check (fixed by gpt)
     class Solution {
+        /**
+         * time = O(N)
+         * space = O(1)
+         */
         public int[][] intervalIntersection(int[][] firstList, int[][] secondList) {
 
             // edge
@@ -141,6 +145,10 @@ public class IntervalListIntersections {
 
     // V0-0-1
     // IDEA: INTERVAL (gemini)
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int[][] intervalIntersection_0_0_1(int[][] firstList, int[][] secondList) {
         List<int[]> res = new ArrayList<>();
         int i = 0; // Pointer for firstList
@@ -190,6 +198,10 @@ public class IntervalListIntersections {
      *       intervals as you process each event.
      *       If two intervals overlap, calculate and add their intersection.
      *
+     */
+    /**
+     * time = O(N)
+     * space = O(1)
      */
     public int[][] intervalIntersection_0_1(int[][] firstList, int[][] secondList) {
         List<int[]> events = new ArrayList<>();
@@ -275,6 +287,10 @@ public class IntervalListIntersections {
     // V1
     // https://leetcode.com/problems/interval-list-intersections/solutions/1593579/java-two-pointers-most-intutive-by-chait-8cfr/
     // IDEA: 2 POINTERS
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int[][] intervalIntersection_1(int[][] firstList, int[][] secondList) {
         if (firstList.length == 0 || secondList.length == 0)
             return new int[0][0];
@@ -343,6 +359,10 @@ public class IntervalListIntersections {
     // V2
     // https://leetcode.com/problems/interval-list-intersections/solutions/592550/2-ms-faster-than-9963-of-java-and-memory-0pqj/
     // IDEA: 2 POINTERS
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int[][] intervalIntersection_2(int[][] A, int[][] B) {
         int i = 0;
         int j = 0;
@@ -366,6 +386,10 @@ public class IntervalListIntersections {
     // V3
     // https://leetcode.com/problems/interval-list-intersections/solutions/6048050/simple-solution-with-diagrams-in-short-v-u77n/
     // IDEA: 2 POINTERS
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int[][] intervalIntersection_3(int[][] firstList, int[][] secondList) {
         List<int[]> intersections = new ArrayList<>(); // to store all
         // intersecting intervals

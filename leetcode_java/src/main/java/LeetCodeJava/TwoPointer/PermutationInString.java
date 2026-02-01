@@ -41,6 +41,10 @@ public class PermutationInString {
 
     // V0
     // IDEA: HASHMAP + SLIDING WINDOW (gpt)
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public boolean checkInclusion(String s1, String s2) {
         // edge
         if (s1 == null || s2 == null || s1.length() > s2.length()) {
@@ -96,6 +100,10 @@ public class PermutationInString {
 
     // V0_0_1
     // IDEA: HASHMAP + SLIDING WINDOW (fixed by gpt)
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public boolean checkInclusion_0_0_1(String s1, String s2) {
         if (!s1.isEmpty() && s2.isEmpty()) {
             return false;
@@ -178,6 +186,10 @@ public class PermutationInString {
     // V0-1
     // IDEA : hashMap + 2 pointers (gpt)
     // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Two_Pointers/permutation-in-string.py
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public boolean checkInclusion_0_1(String s1, String s2) {
         if (s1.length() > s2.length()) {
             return false;
@@ -238,6 +250,10 @@ public class PermutationInString {
 
     // V0-2
     // IDEA: String op (gpt)
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public boolean checkInclusion_0_2(String s1, String s2) {
         if (s1 == null || s2 == null || s1.length() > s2.length()) {
             return false;
@@ -265,6 +281,10 @@ public class PermutationInString {
 
     // V0-3
     // IDEA: MAP + DOUBLE LOOP (l, r idx) (fixed by gpt)
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public boolean checkInclusion_0_3(String s1, String s2) {
         if (s1 == null || s2 == null || s1.length() > s2.length()) {
             return false;
@@ -306,11 +326,19 @@ public class PermutationInString {
     // https://leetcode.com/problems/permutation-in-string/editorial/
     boolean flag = false;
 
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public boolean checkInclusion_1(String s1, String s2) {
         permute(s1, s2, 0);
         return flag;
     }
 
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public String swap(String s, int i0, int i1) {
         if (i0 == i1)
             return s;
@@ -336,6 +364,10 @@ public class PermutationInString {
     // V2
     // IDEA : SORTING
     // https://leetcode.com/problems/permutation-in-string/editorial/
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public boolean checkInclusion_2(String s1, String s2) {
         s1 = sort(s1);
         for (int i = 0; i <= s2.length() - s1.length(); i++) {
@@ -345,6 +377,10 @@ public class PermutationInString {
         return false;
     }
 
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public String sort(String s) {
         char[] t = s.toCharArray();
         Arrays.sort(t);
@@ -354,6 +390,10 @@ public class PermutationInString {
     // V3
     // IDEA : Hashmap
     // https://leetcode.com/problems/permutation-in-string/editorial/
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public boolean checkInclusion_3(String s1, String s2) {
         if (s1.length() > s2.length())
             return false;
@@ -373,6 +413,10 @@ public class PermutationInString {
         return false;
     }
 
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public boolean matches(HashMap<Character, Integer> s1map, HashMap<Character, Integer> s2map) {
         for (char key : s1map.keySet()) {
             if (s1map.get(key) - s2map.getOrDefault(key, -1) != 0)
@@ -384,6 +428,10 @@ public class PermutationInString {
     // V4
     // IDEA : Array
     // https://leetcode.com/problems/permutation-in-string/editorial/
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public boolean checkInclusion_4(String s1, String s2) {
         if (s1.length() > s2.length())
             return false;
@@ -401,6 +449,10 @@ public class PermutationInString {
         return false;
     }
 
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public boolean matches(int[] s1map, int[] s2map) {
         for (int i = 0; i < 26; i++) {
             if (s1map[i] != s2map[i])
@@ -412,6 +464,10 @@ public class PermutationInString {
     // V5
     // IDEA : Sliding Window
     // https://leetcode.com/problems/permutation-in-string/editorial/
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public boolean checkInclusion_5(String s1, String s2) {
         if (s1.length() > s2.length())
             return false;
@@ -430,6 +486,10 @@ public class PermutationInString {
         return matches_6(s1map, s2map);
     }
 
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public boolean matches_6(int[] s1map, int[] s2map) {
         for (int i = 0; i < 26; i++) {
             if (s1map[i] != s2map[i])
@@ -441,6 +501,10 @@ public class PermutationInString {
     // V6
     // IDEA : OPTIMIZED SLIDING WINDOW
     // https://leetcode.com/problems/permutation-in-string/editorial/
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public boolean checkInclusion_6(String s1, String s2) {
         if (s1.length() > s2.length())
             return false;
@@ -480,6 +544,10 @@ public class PermutationInString {
 
     // V7
     // https://github.com/neetcode-gh/leetcode/blob/main/java/0567-permutation-in-string.java
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public boolean checkInclusion_7(String s1, String s2) {
         int n = s1.length();
         int[] freq = new int[26];

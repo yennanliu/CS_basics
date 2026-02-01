@@ -8,6 +8,10 @@ public class minimumOperationsToMakeBinaryArrayElementsEqualToOneI {
 
     // V0
     // IDEA :  2 POINTERS
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int minOperations(int[] nums) {
 
         int res = 0;
@@ -58,6 +62,10 @@ public class minimumOperationsToMakeBinaryArrayElementsEqualToOneI {
     // V1
     // IDEA : 2 POINTERS
     // https://leetcode.com/problems/minimum-operations-to-make-binary-array-elements-equal-to-one-i/submissions/1297671097/
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int minOperations_1(int[] nums) {
         int n = nums.length;
         int i = 0;
@@ -99,6 +107,10 @@ public class minimumOperationsToMakeBinaryArrayElementsEqualToOneI {
 
     // V2
     // https://leetcode.com/problems/minimum-operations-to-make-binary-array-elements-equal-to-one-i/solutions/5352828/easy-approach/
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int minOperations_2(int[] nums) {
         int n = nums.length;
         int cnt = 0;
@@ -131,6 +143,10 @@ public class minimumOperationsToMakeBinaryArrayElementsEqualToOneI {
 
     // V3
     // https://leetcode.com/problems/minimum-operations-to-make-binary-array-elements-equal-to-one-i/solutions/5353478/basic-ternary-operator-easy-beginner/
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int minOperations_3(int[] nums) {
         int ans = 0;
 

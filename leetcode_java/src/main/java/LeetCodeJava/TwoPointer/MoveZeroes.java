@@ -6,6 +6,10 @@ public class MoveZeroes {
 
     // V0
     // IDEA : 2 POINTER (gpt)
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public void moveZeroes(int[] nums) {
         int y = 0;
         for (int x = 0; x < nums.length; x++) {
@@ -22,6 +26,10 @@ public class MoveZeroes {
     // V1
     // IDEA : 2 POINTERS
     // https://leetcode.com/problems/move-zeroes/solutions/72000/1ms-java-solution/
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public void moveZeroes_1(int[] nums) {
 
         int j = 0;
@@ -37,6 +45,10 @@ public class MoveZeroes {
 
     // V2
     // https://leetcode.com/problems/move-zeroes/solutions/72011/simple-o-n-java-solution-using-insert-index/
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public void moveZeroes_2(int[] nums) {
         if (nums == null || nums.length == 0) return;
 

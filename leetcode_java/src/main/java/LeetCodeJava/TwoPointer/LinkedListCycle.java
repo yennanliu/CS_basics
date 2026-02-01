@@ -54,6 +54,10 @@ public class LinkedListCycle {
 
     // V0
     // IDEA: HASHSET
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public boolean hasCycle(ListNode head) {
         // edge
         if(head == null || head.next == null){
@@ -86,6 +90,10 @@ public class LinkedListCycle {
 
     // V0-1
     // IDEA : HASHSET
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public boolean hasCycle_0_1(ListNode head) {
 
         if (head == null){
@@ -110,6 +118,10 @@ public class LinkedListCycle {
     // V0-2
     // IDEA : Hash table
     // https://leetcode.com/problems/linked-list-cycle/editorial/
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public boolean hasCycle_0_2(ListNode head) {
         Set<ListNode> nodesSeen = new HashSet<>();
         while (head != null) {
@@ -125,6 +137,10 @@ public class LinkedListCycle {
     // V0-3
     // IDEA : 2 POINTERS
     // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Two_Pointers/linked-list-cycle.py#L49
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public boolean hasCycle_0_3(ListNode head) {
 
         if (head == null || head.next == null || head.next.next == null){
@@ -174,6 +190,10 @@ public class LinkedListCycle {
     // V1
     // IDEA :  Floyd's Cycle Finding Algorithm (fast, slow pointer)
     // https://leetcode.com/problems/linked-list-cycle/editorial/
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public boolean hasCycle_1(ListNode head) {
         if (head == null) {
             return false;

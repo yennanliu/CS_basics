@@ -69,6 +69,10 @@ public class TrappingRainWater {
      *  -> Result = 1. ✅
      *
      */
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int trap_0_0_1(int[] height) {
         int n = height.length;
         if (n <= 2)
@@ -167,6 +171,10 @@ public class TrappingRainWater {
      *    finally, we sum over val in min_left_right_height_diff as result
      */
     // https://youtu.be/ZI2z5pq0TqA?si=rAMqW6nXeqnoxNKo
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int trap_0_1(int[] height) {
         // edge
         if (height == null || height.length <= 2) {
@@ -231,6 +239,10 @@ public class TrappingRainWater {
     // V1-1
     // https://neetcode.io/problems/trapping-rain-water
     // IDEA: BRUTE FORCE - `leftMax, rightMax array`
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int trap_1_1(int[] height) {
         if (height == null || height.length == 0) {
             return 0;
@@ -257,6 +269,10 @@ public class TrappingRainWater {
     // V1-2
     // https://neetcode.io/problems/trapping-rain-water
     // IDEA: PREFIX & SUFFIX ARRAY
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int trap_1_2(int[] height) {
         int n = height.length;
         if (n == 0) {
@@ -286,6 +302,10 @@ public class TrappingRainWater {
     // V1-3
     // https://neetcode.io/problems/trapping-rain-water
     // IDEA: STACK
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int trap_1_3(int[] height) {
         if (height.length == 0) {
             return 0;
@@ -313,6 +333,10 @@ public class TrappingRainWater {
     // V1-4
     // https://neetcode.io/problems/trapping-rain-water
     // IDEA: 2 POINTERS
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int trap_1_4(int[] height) {
         if (height == null || height.length == 0) {
             return 0;
@@ -338,6 +362,10 @@ public class TrappingRainWater {
 
     // V2
     // https://github.com/neetcode-gh/leetcode/blob/main/java/0042-trapping-rain-water.java
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int trap_2(int[] heights) {
         int left[] = new int[heights.length], right[] = new int[heights.length], max =
                 heights[0], c = 0;
@@ -361,6 +389,10 @@ public class TrappingRainWater {
 
     // V3
     // https://github.com/neetcode-gh/leetcode/blob/main/java/0042-trapping-rain-water.java
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int trap_3(int[] heights) {
         if (heights.length == 0) return 0;
 

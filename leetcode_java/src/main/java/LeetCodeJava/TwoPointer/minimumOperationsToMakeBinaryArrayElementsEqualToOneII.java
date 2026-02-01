@@ -65,6 +65,10 @@ public class minimumOperationsToMakeBinaryArrayElementsEqualToOneII {
      *
      */
     class Solution {
+        /**
+         * time = O(N)
+         * space = O(1)
+         */
         public int minOperations_1(int[] nums) {
             int res = 0;
             boolean zero_found = false;
@@ -88,6 +92,10 @@ public class minimumOperationsToMakeBinaryArrayElementsEqualToOneII {
 
     // V2
     // https://leetcode.com/problems/minimum-operations-to-make-binary-array-elements-equal-to-one-ii/solutions/5353910/beats-100-time-100-space-java-solution/
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int minOperations_2(int[] nums) {
         int flipCount =1-nums[nums.length-1];
         for (int i = 0; i < nums.length-1; i++) {
@@ -100,6 +108,10 @@ public class minimumOperationsToMakeBinaryArrayElementsEqualToOneII {
 
     // V3
     // https://leetcode.com/problems/minimum-operations-to-make-binary-array-elements-equal-to-one-ii/solutions/5353296/easy-java-code-single-pass-linear-time/
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int minOperations_3(int[] nums) {
         int ans=0;
         int t=0;
