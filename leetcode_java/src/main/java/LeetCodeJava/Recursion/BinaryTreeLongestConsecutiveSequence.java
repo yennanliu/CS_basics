@@ -74,6 +74,10 @@ public class BinaryTreeLongestConsecutiveSequence {
     // TODO : validate it
     int longestCnt = 0;
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int longestConsecutive(TreeNode root) {
         if (root == null) {
             return 0;
@@ -200,6 +204,10 @@ public class BinaryTreeLongestConsecutiveSequence {
      *
      */
     int maxConsecutive = 0;
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int longestConsecutive_0_0_1(TreeNode root) {
         if (root == null) {
             return 0;
@@ -244,6 +252,10 @@ public class BinaryTreeLongestConsecutiveSequence {
     // LC 298 - Binary Tree Longest Consecutive Sequence
     // DFS + pathMap2 (node -> path from root to this node) + post traversal to get max consecutive path
     Map<TreeNode, List<List<Integer>>> pathMap2 = new HashMap<>();
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int longestConsecutive_0_1(TreeNode root) {
         if (root == null) return 0;
         collectAllPaths(root, new ArrayList<>(), root);
@@ -321,6 +333,10 @@ public class BinaryTreeLongestConsecutiveSequence {
     // V0-2
     // IDEA: DFS (fixed by gpt)
     // TODO: validate
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int longestConsecutive_0_2(TreeNode root) {
         if (root == null) {
             return 0;
@@ -353,6 +369,10 @@ public class BinaryTreeLongestConsecutiveSequence {
     // Global variable to track the maximum consecutive path length found anywhere in the tree.
     private int maxLen = 0;
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int longestConsecutive_0_3(TreeNode root) {
         if (root == null) {
             return 0;
@@ -406,6 +426,10 @@ public class BinaryTreeLongestConsecutiveSequence {
     // https://leetcode.ca/2016-09-23-298-Binary-Tree-Longest-Consecutive-Sequence/
     private int ans;
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int longestConsecutive_1_1(TreeNode root) {
         dfs_1(root);
         return ans;
@@ -431,6 +455,10 @@ public class BinaryTreeLongestConsecutiveSequence {
     // V2
     // IDEA : DFS
     // https://walkccc.me/LeetCode/problems/298/#__tabbed_1_2
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int longestConsecutive_2_1(TreeNode root) {
         if (root == null)
             return 0;
@@ -453,6 +481,10 @@ public class BinaryTreeLongestConsecutiveSequence {
     // https://blog.csdn.net/qq_46105170/article/details/108481001
     private int res;
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int longestConsecutive_3(TreeNode root) {
         dfs_3(root);
         return res;

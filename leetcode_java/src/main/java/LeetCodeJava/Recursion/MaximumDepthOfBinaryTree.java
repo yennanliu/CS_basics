@@ -54,6 +54,10 @@ public class MaximumDepthOfBinaryTree {
 
     // V0
     // IDEA : DFS (RECURSIVE)
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int maxDepth(TreeNode root) {
 
         if (root == null){
@@ -79,6 +83,10 @@ public class MaximumDepthOfBinaryTree {
 
     // V0-0-1
     // IDEA: DFS
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int maxDepth_0_0_1(TreeNode root) {
         // edge
         if(root == null){
@@ -101,6 +109,10 @@ public class MaximumDepthOfBinaryTree {
      */
     int maxDepth = 0;
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int maxDepth_0_0_2(TreeNode root) {
         // edge
         if (root == null) {
@@ -156,6 +168,10 @@ public class MaximumDepthOfBinaryTree {
     // V0-0-3
     // IDEA: DFS (fixed by gpt)
     // NOTE !!! NOT need to setup `max_depth` in below code
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int maxDepth_0_0_3(TreeNode root) {
         // edge
         if (root == null) {
@@ -171,6 +187,10 @@ public class MaximumDepthOfBinaryTree {
         return depthHelper(root);
     }
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int depthHelper(TreeNode root) {
         // edge
         if (root == null) {
@@ -223,6 +243,10 @@ public class MaximumDepthOfBinaryTree {
 
     // V0-1
     // IDEA : RECURSIVE
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int maxDepth_0_1(TreeNode root) {
 
         if (root == null){
@@ -234,6 +258,10 @@ public class MaximumDepthOfBinaryTree {
 
     // V0-2
     // IDEA : DFS (RECURSION)
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int maxDepth_0_2(TreeNode root) {
 
         if (root == null){
@@ -254,6 +282,10 @@ public class MaximumDepthOfBinaryTree {
     // V0-3
     // IDEA: DFS (GPT) + GLOBAL VAR (maxDepth)
     int maxDepth_0_3 = 0;
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int maxDepth_0_3(TreeNode root) {
         dfs(root, 1);
         return maxDepth_0_3;
@@ -272,6 +304,10 @@ public class MaximumDepthOfBinaryTree {
 
     // V0-4
     // IDEA: RECURSIVE (GPT)
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int maxDept0_4(TreeNode root) {
         // edge case: if the root is null, the depth is 0
         if (root == null) {
@@ -297,6 +333,10 @@ public class MaximumDepthOfBinaryTree {
 
     // V0-5
     // IDEA: RECURSIVE (fixed by gpt)
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int maxDepth_0_5(TreeNode root) {
         // Edge case: if the tree is empty, return 0
         if (root == null) {
@@ -306,6 +346,10 @@ public class MaximumDepthOfBinaryTree {
         return getMaxDepthDfs(root);
     }
 
+    /**
+     * time = O(V + E)
+     * space = O(V)
+     */
     public int getMaxDepthDfs(TreeNode root) {
         // Base case: if the node is null, return 0 (no depth)
         if (root == null) {
@@ -323,6 +367,10 @@ public class MaximumDepthOfBinaryTree {
     // V1
     // IDEA : RECURSION
     // https://leetcode.com/problems/maximum-depth-of-binary-tree/editorial/
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int maxDepth_1(TreeNode root) {
         if (root == null) {
             return 0;
@@ -342,6 +390,10 @@ public class MaximumDepthOfBinaryTree {
     // V3
     // IDEA : Iteration
     // https://leetcode.com/problems/maximum-depth-of-binary-tree/editorial/
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int maxDepth_3(TreeNode root) {
         LinkedList<TreeNode> stack = new LinkedList<>();
         LinkedList<Integer> depths = new LinkedList<>();

@@ -48,6 +48,10 @@ public class FindModeInBinarySearchTree {
 
     // V0
     // IDEA: DFS + BST
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int[] findMode(TreeNode root) {
         if (root == null)
             return new int[0];
@@ -91,6 +95,10 @@ public class FindModeInBinarySearchTree {
     Map<Integer, Integer> map = new HashMap<>();
     int topCnt = 0;
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int[] findMode_0_1(TreeNode root) {
         // edge
         if (root == null) {
@@ -137,6 +145,10 @@ public class FindModeInBinarySearchTree {
     // V1-1
     // https://leetcode.com/problems/find-mode-in-binary-search-tree/editorial/
     // IDEA: Count Frequency With Hash Map (DFS)
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int[] findMode_1_1(TreeNode root) {
         Map<Integer, Integer> counter = new HashMap();
         dfs(root, counter);
@@ -161,6 +173,10 @@ public class FindModeInBinarySearchTree {
         return result;
     }
 
+    /**
+     * time = O(V + E)
+     * space = O(V)
+     */
     public void dfs(TreeNode node, Map<Integer, Integer> counter) {
         if (node == null) {
             return;
@@ -175,6 +191,10 @@ public class FindModeInBinarySearchTree {
     // V1-2
     // https://leetcode.com/problems/find-mode-in-binary-search-tree/editorial/
     // IDEA: Iterative DFS
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int[] findMode_1_2(TreeNode root) {
         Map<Integer, Integer> counter = new HashMap();
         Stack<TreeNode> stack = new Stack();
@@ -216,6 +236,10 @@ public class FindModeInBinarySearchTree {
     // V1-3
     // https://leetcode.com/problems/find-mode-in-binary-search-tree/editorial/
     // IDEA: BFS
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int[] findMode_1_3(TreeNode root) {
         Map<Integer, Integer> counter = new HashMap();
         Queue<TreeNode> queue = new LinkedList();
@@ -257,6 +281,10 @@ public class FindModeInBinarySearchTree {
     // V1-4
     // https://leetcode.com/problems/find-mode-in-binary-search-tree/editorial/
     // IDEA: No Hash-Map
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int[] findMode_1_4(TreeNode root) {
         List<Integer> values = new ArrayList();
         dfs(root, values);
@@ -292,6 +320,10 @@ public class FindModeInBinarySearchTree {
         return result;
     }
 
+    /**
+     * time = O(V + E)
+     * space = O(V)
+     */
     public void dfs(TreeNode node, List<Integer> values) {
         if (node == null) {
             return;
@@ -312,6 +344,10 @@ public class FindModeInBinarySearchTree {
     int currNum = 0;
     List<Integer> ans = new ArrayList();
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int[] findMode_1_5(TreeNode root) {
         dfs(root);
 
@@ -323,6 +359,10 @@ public class FindModeInBinarySearchTree {
         return result;
     }
 
+    /**
+     * time = O(V + E)
+     * space = O(V)
+     */
     public void dfs(TreeNode node) {
         if (node == null) {
             return;
@@ -353,6 +393,10 @@ public class FindModeInBinarySearchTree {
     // V1-6
     // https://leetcode.com/problems/find-mode-in-binary-search-tree/editorial/
     // IDEA: True Constant Space: Morris Traversal
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int[] findMode_1_6(TreeNode root) {
         int maxStreak = 0;
         int currStreak = 0;

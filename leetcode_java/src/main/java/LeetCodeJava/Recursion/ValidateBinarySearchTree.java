@@ -54,6 +54,10 @@ public class ValidateBinarySearchTree {
 
     // V0
     // IDEA : DFS + BST property + setup smallest, biggest val
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public boolean isValidBST(TreeNode root) {
         if (root == null) {
             return true;
@@ -175,6 +179,10 @@ public class ValidateBinarySearchTree {
         return check_(root, smallest_val, biggest_val);
     }
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public boolean check_(TreeNode root, long smallest_val, long biggest_val) {
 
         if (root == null) {
@@ -199,6 +207,10 @@ public class ValidateBinarySearchTree {
 
     // V0-1
     // IDEA: DFS + BST property
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public boolean isValidBST_0_1(TreeNode root) {
         // edge
         if(root == null){
@@ -218,6 +230,10 @@ public class ValidateBinarySearchTree {
         return validBSTHelper(root, Long.MIN_VALUE, Long.MAX_VALUE);
     }
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public boolean validBSTHelper(TreeNode root, long smallestVal, long biggestVal){
         // edge
         if(root == null){
@@ -235,6 +251,10 @@ public class ValidateBinarySearchTree {
 
     // V0-2
     // IDEA: RECURSION + BST property (GPT)
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public boolean isValidBST_0_2(TreeNode root) {
         return isValidateBST(root, null, null);
     }
@@ -256,10 +276,18 @@ public class ValidateBinarySearchTree {
 
     // V0-3
     // IDEA: DFS + maintain `max till now`, `min till now` val (gpt)
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public boolean isValidBST_0_3(TreeNode root) {
         return checkIsValidBst(root, Long.MIN_VALUE, Long.MAX_VALUE);
     }
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public boolean checkIsValidBst(TreeNode node, long min, long max) {
         if (node == null) {
             return true;
@@ -278,6 +306,10 @@ public class ValidateBinarySearchTree {
     // V1
     // IDEA : Recursive Traversal with Valid Range
     // https://leetcode.com/problems/validate-binary-search-tree/editorial/
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public boolean validate(TreeNode root, Integer low, Integer high) {
         // Empty trees are valid BSTs.
         if (root == null) {
@@ -291,6 +323,10 @@ public class ValidateBinarySearchTree {
         return validate(root.right, root.val, high) && validate(root.left, low, root.val);
     }
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public boolean isValidBST_2(TreeNode root) {
         return validate(root, null, null);
     }
@@ -302,12 +338,20 @@ public class ValidateBinarySearchTree {
     private Deque<Integer> upperLimits = new LinkedList();
     private Deque<Integer> lowerLimits = new LinkedList();
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public void update(TreeNode root, Integer low, Integer high) {
         stack.add(root);
         lowerLimits.add(low);
         upperLimits.add(high);
     }
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public boolean isValidBST_3(TreeNode root) {
         Integer low = null, high = null, val;
         update(root, low, high);
@@ -338,6 +382,10 @@ public class ValidateBinarySearchTree {
     // We use Integer instead of int as it supports a null value.
     private Integer prev;
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public boolean isValidBST_4(TreeNode root) {
         prev = null;
         return inorder(root);

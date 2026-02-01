@@ -61,12 +61,24 @@ public class PopulatingNextRightPointersInEachNode2 {
         public Node right;
         public Node next;
 
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public Node() {}
 
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public Node(int _val) {
             val = _val;
         }
 
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public Node(int _val, Node _left, Node _right, Node _next) {
             val = _val;
             left = _left;
@@ -104,6 +116,10 @@ public class PopulatingNextRightPointersInEachNode2 {
 
     // V0-1
     // IDEA: BFS (fixed by gpt)
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public Node connect_0_1(Node root) {
         if (root == null) {
             return root;
@@ -164,6 +180,10 @@ public class PopulatingNextRightPointersInEachNode2 {
 
     // V1
     // https://leetcode.com/problems/populating-next-right-pointers-in-each-node-ii/solutions/5449615/my-easy-accepted-java-solution-100-by-di-nz2w/
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public Node connect_1(Node root) {
         if (root == null)
             return null;

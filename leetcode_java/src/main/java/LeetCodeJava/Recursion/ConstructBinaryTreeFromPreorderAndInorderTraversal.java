@@ -42,6 +42,10 @@ public class ConstructBinaryTreeFromPreorderAndInorderTraversal {
     // V0
     // IDEA : RECURSIVE + PRE-ORDER, IN-ORDER PROPERTY
     // https://www.youtube.com/watch?v=ihj4IQGZ2zc
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public TreeNode buildTree(int[] preorder, int[] inorder) {
 
         if (preorder.length == 0) {
@@ -117,6 +121,10 @@ public class ConstructBinaryTreeFromPreorderAndInorderTraversal {
     // V0-1
     // IDEA : RECURSION (DFS) (transform below py code to java by GPT)
     // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Recursion/construct-binary-tree-from-preorder-and-inorder-traversal.py#L36
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public TreeNode buildTree_0_1(int[] preorder, int[] inorder) {
         if (preorder.length == 0) {
             return null;
@@ -140,6 +148,10 @@ public class ConstructBinaryTreeFromPreorderAndInorderTraversal {
 
     // V0-2
     // IDEA: RECURSION (GPT)
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public TreeNode buildTree_0_2(int[] preorder, int[] inorder) {
         if (preorder.length == 0 || inorder.length == 0) {
             return null;
@@ -181,6 +193,10 @@ public class ConstructBinaryTreeFromPreorderAndInorderTraversal {
     // https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/editorial/
     int preorderIndex;
     Map<Integer, Integer> inorderIndexMap;
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public TreeNode buildTree_1(int[] preorder, int[] inorder) {
         preorderIndex = 0;
         // build a hashmap to store value -> its index relations
@@ -210,6 +226,10 @@ public class ConstructBinaryTreeFromPreorderAndInorderTraversal {
 
     // V2
     // https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/solutions/34541/5ms-java-clean-solution-with-caching/
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public TreeNode buildTree_2(int[] preorder, int[] inorder) {
         Map<Integer, Integer> inMap = new HashMap<Integer, Integer>();
 
@@ -221,6 +241,10 @@ public class ConstructBinaryTreeFromPreorderAndInorderTraversal {
         return root;
     }
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public TreeNode _buildTree(int[] preorder, int preStart, int preEnd, int[] inorder, int inStart, int inEnd, Map<Integer, Integer> inMap) {
         if(preStart > preEnd || inStart > inEnd) return null;
 
@@ -236,6 +260,10 @@ public class ConstructBinaryTreeFromPreorderAndInorderTraversal {
 
     // V3
     // https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/solutions/1258712/js-python-java-c-easy-recursive-solution-w-explanation/
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public TreeNode buildTree_3(int[] P, int[] I) {
         Map<Integer, Integer> M = new HashMap<>();
         for (int i = 0; i < I.length; i++)
@@ -257,6 +285,10 @@ public class ConstructBinaryTreeFromPreorderAndInorderTraversal {
     private Map<Integer, Integer> inorderIndexMap_;
     private int preorderIndex_;
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public TreeNode buildTree_4(int[] preorder, int[] inorder) {
         if (preorder == null || preorder.length == 0)
             return null;

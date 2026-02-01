@@ -48,6 +48,10 @@ public class LongestSubstringWithAtLeastKRepeatingCharacters {
 
     // V0-1
     // IDEA: BRUTE FORCE + HASHMAP
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int longestSubstring_0_1(String s, int k) {
 
         // edge
@@ -85,6 +89,10 @@ public class LongestSubstringWithAtLeastKRepeatingCharacters {
         return res;
     }
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public boolean isValid(Map<Character, Integer> map, int k) {
         for (Character c : map.keySet()) {
             if (map.get(c) < k) {
@@ -96,6 +104,10 @@ public class LongestSubstringWithAtLeastKRepeatingCharacters {
 
     // V0-2
     // IDEA: HASHMAP + SLIDE WINDOW (fixed by gpt)
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int longestSubstring_0_2(String s, int k) {
         if (s == null || s.isEmpty() || k > s.length())
             return 0;
@@ -141,6 +153,10 @@ public class LongestSubstringWithAtLeastKRepeatingCharacters {
 
     // V0-3
     // IDEA: DIVIDE AND CONQUER (gpt)
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int longestSubstring_0_3(String s, int k) {
         return longestSubstringHelper(s, 0, s.length(), k);
     }
@@ -171,6 +187,10 @@ public class LongestSubstringWithAtLeastKRepeatingCharacters {
 
     // V0-4
     // IDEA: SLIDE WINDOW (gpt)
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int longestSubstring_0_4(String s, int k) {
         int n = s.length();
         int res = 0;
@@ -227,6 +247,10 @@ public class LongestSubstringWithAtLeastKRepeatingCharacters {
     // V1-1
     // https://leetcode.com/problems/longest-substring-with-at-least-k-repeating-characters/editorial/
     // IDEA: BRUTE FORCE
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int longestSubstring_1_1(String s, int k) {
         if (s == null || s.isEmpty() || k > s.length()) {
             return 0;
@@ -262,6 +286,10 @@ public class LongestSubstringWithAtLeastKRepeatingCharacters {
     // V1-2
     // https://leetcode.com/problems/longest-substring-with-at-least-k-repeating-characters/editorial/
     // IDEA: Divide And Conquer
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int longestSubstring_1_2(String s, int k) {
         return longestSubstringUtil(s, 0, s.length(), k);
     }
@@ -289,6 +317,10 @@ public class LongestSubstringWithAtLeastKRepeatingCharacters {
     // V1-3
     // https://leetcode.com/problems/longest-substring-with-at-least-k-repeating-characters/editorial/
     // IDEA: SLIDING WINDOW
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int longestSubstring_1_3(String s, int k) {
         char[] str = s.toCharArray();
         int[] countMap = new int[26];

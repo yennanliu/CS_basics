@@ -43,6 +43,10 @@ public class SameTree {
 
     // V0
     // IDEA : RECURSION
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public boolean isSameTree(TreeNode p, TreeNode q) {
 
         if (p == null && q == null) {
@@ -62,6 +66,10 @@ public class SameTree {
 
     // V0
     // IDEA : RECURSION
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public boolean isSameTree_0(TreeNode p, TreeNode q) {
 
         if (p == null && q == null){
@@ -100,6 +108,10 @@ public class SameTree {
     // V1
     // IDEA : RECURSION
     // https://leetcode.com/problems/same-tree/editorial/
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public boolean isSameTre_2(TreeNode p, TreeNode q) {
         // p and q are both null
         if (p == null && q == null) return true;
@@ -113,6 +125,10 @@ public class SameTree {
     // V2
     // IDEA : ITERATIVE
     // https://leetcode.com/problems/same-tree/editorial/
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public boolean check2(TreeNode p, TreeNode q) {
         // p and q are null
         if (p == null && q == null) return true;
@@ -122,6 +138,10 @@ public class SameTree {
         return true;
     }
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public boolean isSameTree_3(TreeNode p, TreeNode q) {
         if (p == null && q == null) return true;
         if (!check(p, q)) return false;

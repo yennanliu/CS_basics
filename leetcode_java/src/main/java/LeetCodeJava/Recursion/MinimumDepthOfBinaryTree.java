@@ -80,6 +80,10 @@ public class MinimumDepthOfBinaryTree {
      * 	- minDepth needs this guard, because null doesn’t count as a valid path.
      *
      */
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int minDepth_0_0_1(TreeNode root) {
         // edge
         if (root == null) {
@@ -171,6 +175,10 @@ public class MinimumDepthOfBinaryTree {
 
     // V0-1
     // IDEA: DFS (fixed by gpt)
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int minDepth_0_1(TreeNode root) {
         if (root == null)
             return 0;
@@ -194,6 +202,10 @@ public class MinimumDepthOfBinaryTree {
 
     // V0-2
     // IDEA : DFS
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int minDepth_0_2(TreeNode root) {
 
         if (root == null){
@@ -257,6 +269,10 @@ public class MinimumDepthOfBinaryTree {
         return 1 + Math.min(dfs(root.left), dfs(root.right));
     }
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int minDepth_2(TreeNode root) {
         return dfs(root);
     }
@@ -264,6 +280,10 @@ public class MinimumDepthOfBinaryTree {
     // V2
     // IDEA : BFS
     // https://leetcode.com/problems/minimum-depth-of-binary-tree/editorial/
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int minDepth_3(TreeNode root) {
         if (root == null) {
             return 0;

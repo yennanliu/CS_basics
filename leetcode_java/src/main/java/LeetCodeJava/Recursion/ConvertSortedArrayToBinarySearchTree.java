@@ -49,6 +49,10 @@ public class ConvertSortedArrayToBinarySearchTree {
 
     // V0-0-1
     // IDEA: DFS build tree + BST property (fixed by gemini)
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public TreeNode sortedArrayToBST_0_0_1(int[] nums) {
         // Corrected edge case handling
         if (nums == null || nums.length == 0) {
@@ -65,6 +69,10 @@ public class ConvertSortedArrayToBinarySearchTree {
      * 1. Find the middle element (root).
      * 2. Recursively build the left subtree from the left half.
      * 3. Recursively build the right subtree from the right half.
+     */
+    /**
+     * time = O(N)
+     * space = O(H)
      */
     public TreeNode buildBST(int[] nums, int leftIdx, int rightIdx) {
 
@@ -278,6 +286,10 @@ public class ConvertSortedArrayToBinarySearchTree {
      * ⸻
      *
      */
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public TreeNode sortedArrayToBST_0_1(int[] nums) {
         // edge
         if (nums == null || nums.length == 0) {
@@ -311,6 +323,10 @@ public class ConvertSortedArrayToBinarySearchTree {
 
     // V0-2
     // IDEA: ITERATIVE version (BFS like) (gpt)
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public TreeNode sortedArrayToBST_0_2(int[] nums) {
         if (nums == null || nums.length == 0)
             return null;
@@ -355,6 +371,10 @@ public class ConvertSortedArrayToBinarySearchTree {
 
     // V0-3
     // IDEA: DFS build tree + BST property (gpt)
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public TreeNode sortedArrayToBST_0_3(int[] nums) {
         if (nums == null || nums.length == 0) {
             return null;
@@ -380,6 +400,10 @@ public class ConvertSortedArrayToBinarySearchTree {
 
     // V1
     // https://leetcode.com/problems/convert-sorted-array-to-binary-search-tree/solutions/6892739/video-find-middle-of-tree-or-subtree-by-94thd/
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public TreeNode sortedArrayToBST_1(int[] nums) {
         return convert(nums, 0, nums.length - 1);
     }
@@ -408,6 +432,10 @@ public class ConvertSortedArrayToBinarySearchTree {
 
     // V2
     // https://leetcode.com/problems/convert-sorted-array-to-binary-search-tree/solutions/6025974/0-ms-runtime-beats-100-user-step-by-step-88p3/
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public TreeNode sortedArrayToBST_2(int[] nums) {
         return helper(nums, 0, nums.length - 1);
     }
@@ -425,6 +453,10 @@ public class ConvertSortedArrayToBinarySearchTree {
 
     // V3
     // https://leetcode.com/problems/convert-sorted-array-to-binary-search-tree/solutions/6907442/beats-100-beginner-friendly-explanation-dna9u/
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public TreeNode sortedArrayToBST_3(int[] nums) {
         return insert(nums, 0, nums.length);
     }

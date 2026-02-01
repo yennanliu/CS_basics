@@ -42,6 +42,10 @@ public class ConstructBinaryTreeFromInorderAndPostorderTraversal {
     // V0
     // IDEA : DFS, LC 105
     // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Recursion/construct-binary-tree-from-inorder-and-postorder-traversal.py
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public TreeNode buildTree(int[] inorder, int[] postorder) {
 
         if (postorder.length == 0) {
@@ -116,6 +120,10 @@ public class ConstructBinaryTreeFromInorderAndPostorderTraversal {
     int[] inorder;
     HashMap<Integer, Integer> idx_map = new HashMap<Integer, Integer>();
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public TreeNode helper(int in_left, int in_right) {
         // if there is no elements to construct subtrees
         if (in_left > in_right)
@@ -138,6 +146,10 @@ public class ConstructBinaryTreeFromInorderAndPostorderTraversal {
         return root;
     }
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public TreeNode buildTree_1(int[] inorder, int[] postorder) {
         this.postorder = postorder;
         this.inorder = inorder;
