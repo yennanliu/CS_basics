@@ -112,7 +112,7 @@ public class InsertIntoACyclicSortedList {
    *  Key Notes About the Code
    *
    * 	•	Cyclic Nature Handling:
-   * 	    •	The loop ensures traversal through all nodes by checking curr != head. If it reaches back to the head, it stops, ensuring we don’t loop indefinitely.
+   * 	    •	The loop ensures traversal through all nodes by checking curr != head. If it reaches back to the head, it stops, ensuring we don't loop indefinitely.
    * 	    •	Robust Conditions:
    *
    * 	•	The combination of conditions handles:
@@ -120,6 +120,8 @@ public class InsertIntoACyclicSortedList {
    * 	    2.	Insertion at the end-to-start transition point.
    * 	    3.	Insertion when all nodes have the same value (handled implicitly since the loop eventually exits, and the new node is inserted anywhere).
    *
+   * time = O(N)
+   * space = O(1)
    */
   public Node insert_1(Node head, int insertVal) {
         Node node = new Node(insertVal);
@@ -168,6 +170,10 @@ public class InsertIntoACyclicSortedList {
     // V2-1
     // IDEA: LINKED LIST (gpt)
     // TODO: validate
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public Node insert_2_1(Node head, int insertVal) {
         // Edge case: If the list is empty, create a new node pointing to itself
         if (head == null) {
@@ -214,6 +220,10 @@ public class InsertIntoACyclicSortedList {
     // V2-1
     // IDEA: LINKED LIST (while loop)(gpt)
     // TODO: validate
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public Node insert_2_2(Node head, int insertVal) {
         // Edge case: If the list is empty, create a new node pointing to itself
         if (head == null) {

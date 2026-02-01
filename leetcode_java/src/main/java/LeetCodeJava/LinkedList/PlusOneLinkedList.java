@@ -38,6 +38,11 @@ public class PlusOneLinkedList {
    *  Step 2) plus 1, bring `carry` to next digit if curSum > 9, ... repeat for all nodes
    *  Step 3) reverse linked list again
    */
+
+  /**
+   * time = O(N)
+   * space = O(1)
+   */
   public ListNode plusOne(ListNode head) {
 
     // edge case
@@ -89,6 +94,11 @@ public class PlusOneLinkedList {
    *  Step 2) plus 1, bring `carry` to next digit if curSum > 9, ... repeat for all nodes
    *  Step 3) reverse linked list again
    */
+
+  /**
+   * time = O(N)
+   * space = O(1)
+   */
   public ListNode plusOne_1(ListNode head) {
     if (head == null) return new ListNode(1); // Handle edge case
 
@@ -130,7 +140,12 @@ public class PlusOneLinkedList {
   }
 
   // V2
+
   // https://leetcode.ca/2016-12-03-369-Plus-One-Linked-List/
+  /**
+   * time = O(N)
+   * space = O(1)
+   */
   public ListNode plusOne_2(ListNode head) {
     ListNode dummy = new ListNode(0, head);
     ListNode target = dummy;

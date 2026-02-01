@@ -92,7 +92,12 @@ public class RemoveDuplicatesFromAnUnsortedLinkedList {
 
     // V0-1
     // IDEA: LIST NODE (fixed by gpt)
+
     // TODO: validate below
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public ListNode deleteDuplicatesUnsorted_0_1(ListNode head) {
         // Step 1: Count frequencies of each value
         Map<Integer, Integer> freq = new HashMap<>();
@@ -121,7 +126,12 @@ public class RemoveDuplicatesFromAnUnsortedLinkedList {
     // V1
 
     // V2-1
+
     // https://leetcode.ca/2021-06-27-1836-Remove-Duplicates-From-an-Unsorted-Linked-List/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public ListNode deleteDuplicatesUnsorted_2_1(ListNode head) {
         Map<Integer, Integer> map = new HashMap<Integer, Integer>();
         ListNode temp = head;
@@ -145,7 +155,12 @@ public class RemoveDuplicatesFromAnUnsortedLinkedList {
     }
 
     // V2-2
+
     // https://leetcode.ca/2021-06-27-1836-Remove-Duplicates-From-an-Unsorted-Linked-List/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public ListNode deleteDuplicatesUnsorted_2_2(ListNode head) {
         Map<Integer, Integer> cnt = new HashMap<>();
         for (ListNode cur = head; cur != null; cur = cur.next) {

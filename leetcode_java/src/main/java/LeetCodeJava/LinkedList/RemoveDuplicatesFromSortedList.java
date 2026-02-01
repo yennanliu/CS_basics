@@ -38,7 +38,12 @@ import java.util.Set;
 public class RemoveDuplicatesFromSortedList {
 
     // V0
+
     // IDEA: HASHSET + LINKED LIST OP
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public ListNode deleteDuplicates(ListNode head) {
 
         ListNode ans = new ListNode();
@@ -59,7 +64,12 @@ public class RemoveDuplicatesFromSortedList {
     }
 
     // V0-1
+
     // IDEA: FAST, SLOW POINTER, LC 26
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public ListNode deleteDuplicates_0_1(ListNode head) {
         // edge
         if(head == null){
@@ -89,7 +99,12 @@ public class RemoveDuplicatesFromSortedList {
 
 
     //  V1
+
     // https://leetcode.com/problems/remove-duplicates-from-sorted-list/solutions/3257316/c-python-c-java-easiest-solution-o-n-time/
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public ListNode deleteDuplicates_2(ListNode head) {
         ListNode temp = head;
         while (temp != null && temp.next != null)

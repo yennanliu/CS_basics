@@ -63,7 +63,12 @@ import java.util.*;
 public class MergeKSortedLists {
 
     // V0
+
     // IDEA: LINKED LIST -> ARRAY -> SORT -> LINKED LIST
+    /**
+     * time = O(N*log(K))
+     * space = O(K)
+     */
     public ListNode mergeKLists(ListNode[] lists) {
         // edge
         if(lists == null || lists.length == 0){
@@ -85,6 +90,11 @@ public class MergeKSortedLists {
         // sort (small -> big)
         Collections.sort(list, new Comparator<Integer>() {
             @Override
+
+            /**
+             * time = O(N)
+             * space = O(1)
+             */
             public int compare(Integer o1, Integer o2) {
                 int diff = o1 - o2;
                 return diff;
@@ -104,7 +114,12 @@ public class MergeKSortedLists {
     }
 
     // V0-1
+
     // IDEA : to array -> sort -> add to new linked list
+    /**
+     * time = O(N*log(K))
+     * space = O(K)
+     */
     public ListNode mergeKLists_0_1(ListNode[] lists) {
 
         if (lists == null || lists.length == 0) {
@@ -141,7 +156,12 @@ public class MergeKSortedLists {
 
     // V1-1
     // https://neetcode.io/problems/merge-k-sorted-linked-lists
+
     // IDEA: BRUTE FORCE
+    /**
+     * time = O(N*log(K))
+     * space = O(K)
+     */
     public ListNode mergeKLists_1_1(ListNode[] lists) {
         List<Integer> nodes = new ArrayList<>();
         for (ListNode lst : lists) {
@@ -164,7 +184,12 @@ public class MergeKSortedLists {
 
     // V1-2
     // https://neetcode.io/problems/merge-k-sorted-linked-lists
+
     // IDEA: Iteration
+    /**
+     * time = O(N*log(K))
+     * space = O(K)
+     */
     public ListNode mergeKLists_1_2(ListNode[] lists) {
         ListNode res = new ListNode(0);
         ListNode cur = res;
@@ -193,7 +218,12 @@ public class MergeKSortedLists {
 
     // V1-3
     // https://neetcode.io/problems/merge-k-sorted-linked-lists
+
     // IDEA:  Merge Lists One By One
+    /**
+     * time = O(N*log(K))
+     * space = O(K)
+     */
     public ListNode mergeKLists_1_3(ListNode[] lists) {
         if (lists.length == 0) return null;
 
@@ -230,7 +260,12 @@ public class MergeKSortedLists {
 
     // V1-4
     // https://neetcode.io/problems/merge-k-sorted-linked-lists
+
     // IDEA: HEAP
+    /**
+     * time = O(N*log(K))
+     * space = O(K)
+     */
     public ListNode mergeKLists_1_4(ListNode[] lists) {
         if (lists.length == 0) return null;
 
@@ -259,7 +294,12 @@ public class MergeKSortedLists {
 
     // V1-5
     // https://neetcode.io/problems/merge-k-sorted-linked-lists
+
     // IDEA: Divide And Conquer (Recursion)
+    /**
+     * time = O(N*log(K))
+     * space = O(K)
+     */
     public ListNode mergeKLists_1_5(ListNode[] lists) {
         if (lists == null || lists.length == 0) {
             return null;
@@ -309,7 +349,12 @@ public class MergeKSortedLists {
 
     // V1-6
     // https://neetcode.io/problems/merge-k-sorted-linked-lists
+
     // IDEA: Divide And Conquer (Iteration)
+    /**
+     * time = O(N*log(K))
+     * space = O(K)
+     */
     public ListNode mergeKLists_1_6(ListNode[] lists) {
         if (lists == null || lists.length == 0) {
             return null;
@@ -355,7 +400,12 @@ public class MergeKSortedLists {
 
     // V2
     // IDEA : MERGE 2 LINKED LIST ONE BY ONE
+
     // https://leetcode.com/problems/merge-k-sorted-lists/solutions/3285930/100-faster-c-java-python/
+    /**
+     * time = O(N*log(K))
+     * space = O(K)
+     */
     public ListNode mergeKLists_2(ListNode[] lists) {
         if (lists == null || lists.length == 0) {
             return null;
