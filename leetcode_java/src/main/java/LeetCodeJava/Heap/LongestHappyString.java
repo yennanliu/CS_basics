@@ -44,14 +44,22 @@ import java.util.PriorityQueue;
 public class LongestHappyString {
 
     // V0
-//    public String longestDiverseString(int a, int b, int c) {
+//    /**
+     * time = O(a + b + c)
+     * space = O(a + b + c)
+     */
+    public String longestDiverseString(int a, int b, int c) {
 //
 //    }
 
     // V1
     // https://www.youtube.com/watch?v=8u-H6O_XQKE
     // https://github.com/neetcode-gh/leetcode/blob/main/java%2F1405-longest-happy-string.java
-//    public String longestDiverseString_1(int a, int b, int c) {
+//    /**
+     * time = O(a + b + c)
+     * space = O(a + b + c)
+     */
+    public String longestDiverseString_1(int a, int b, int c) {
 //        String res = "";
 //        PriorityQueue<Pair<Integer, Character>> maxHeap = new PriorityQueue<>(
 //                (i1, i2) -> i2.getKey() - i1.getKey());
@@ -98,6 +106,10 @@ public class LongestHappyString {
     // V2-1
     // https://leetcode.com/problems/longest-happy-string/editorial/
     // IDEA: PQ
+    /**
+     * time = O(a + b + c)
+     * space = O(a + b + c)
+     */
     public String longestDiverseString_2_1(int a, int b, int c) {
 
         PriorityQueue<Pair> pq = new PriorityQueue<Pair>((x, y) -> (y.count - x.count));
@@ -176,6 +188,10 @@ public class LongestHappyString {
     // V2-2
     // https://leetcode.com/problems/longest-happy-string/editorial/
     // IDEA: Using Counters
+    /**
+     * time = O(a + b + c)
+     * space = O(a + b + c)
+     */
     public String longestDiverseString_2_2(int a, int b, int c) {
         int curra = 0, currb = 0, currc = 0;
         // Maximum total iterations possible is given by the sum of a, b and c.
@@ -217,6 +233,10 @@ public class LongestHappyString {
     // V3
     // https://leetcode.com/problems/longest-happy-string/solutions/5918628/how-to-easily-solve-the-longest-happy-st-alwj/
     // IDEA: PQ
+    /**
+     * time = O(a + b + c)
+     * space = O(a + b + c)
+     */
     public String longestDiverseString_3(int a, int b, int c) {
         // Priority queue to store the characters and their counts.
         PriorityQueue<int[]> pq = new PriorityQueue<>((x, y) -> y[0] - x[0]);
@@ -261,6 +281,10 @@ public class LongestHappyString {
 
     // V4
     // https://leetcode.com/problems/longest-happy-string/solutions/5919175/understand-greed-once-beats-100-with-add-i9l9/
+    /**
+     * time = O(a + b + c)
+     * space = O(a + b + c)
+     */
     public String longestDiverseString_4(int a, int b, int c) {
         int currA = 0, currB = 0, currC = 0;
         int maxLen = a + b + c, i = 0;

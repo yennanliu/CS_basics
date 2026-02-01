@@ -51,12 +51,20 @@ import java.util.*;
 public class MaximumPerformanceOfAeam {
 
     // V0
-//    public int maxPerformance(int n, int[] speed, int[] efficiency, int k) {
+//    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
+    public int maxPerformance(int n, int[] speed, int[] efficiency, int k) {
 //
 //    }
 
     // V0-1
     // IDEA: PQ (gemini)
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public int maxPerformance_0_1(int n, int[] speed, int[] efficiency, int k) {
         int[][] engineers = new int[n][2];
         for (int i = 0; i < n; i++) {
@@ -95,6 +103,10 @@ public class MaximumPerformanceOfAeam {
 
     // V0-2
     // IDEA: PQ (gpt)
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public int maxPerformance_0_2(int n, int[] speed, int[] efficiency, int k) {
         final int MOD = 1_000_000_007;
 
@@ -180,6 +192,10 @@ public class MaximumPerformanceOfAeam {
      *
      */
     private static final int MOD = 1_000_000_007;
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public int maxPerformance_0_3(int n, int[] speed, int[] efficiency, int k) {
         int[][] p = new int[n][2];
         for (int i = 0; i < n; i++) {
@@ -209,6 +225,10 @@ public class MaximumPerformanceOfAeam {
 
     // V0-4
     // IDEA: PQ (fixed by gemini)
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public int maxPerformance_0_4(int n, int[] speed, int[] efficiency, int k) {
         int[][] engineers = new int[n][2];
         for (int i = 0; i < n; i++) {
@@ -250,6 +270,10 @@ public class MaximumPerformanceOfAeam {
     // V1
     // IDEA: PQ
     // https://leetcode.com/problems/maximum-performance-of-a-team/solutions/2559857/java-easy-solution-with-explanation-99-f-3wul/
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public int maxPerformance_1(int n, int[] speed, int[] efficiency, int k) {
         int[][] players = new int[n][2];
         for (int i = 0; i < n; i++) {
@@ -280,6 +304,10 @@ public class MaximumPerformanceOfAeam {
     // V2
     // IDEA: PQ
     // https://leetcode.com/problems/maximum-performance-of-a-team/solutions/1252316/js-python-java-c-easy-priority-queue-sol-aa78/
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public int maxPerformance_2(int n, int[] speed, int[] efficiency, int k) {
         int[][] ord = new int[n][2];
         for (int i = 0; i < n; i++)
@@ -313,6 +341,10 @@ public class MaximumPerformanceOfAeam {
         }
     }
 
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public int maxPerformance_3(int n, int[] speed, int[] efficiency, int k) {
         List<Engineer> engg = new ArrayList<>(); // Will store all the engineers
         for (int i = 0; i < n; i++) {

@@ -62,6 +62,10 @@ public class MostFrequentIDs {
 
     // V0
     // IDEA: PQ + HASHMAP (gemini)
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public long[] mostFrequentIDs(int[] nums, int[] freq) {
         int n = nums.length;
         long[] res = new long[n];
@@ -212,7 +216,11 @@ public class MostFrequentIDs {
      *
      */
     // NOTE !!! below is WRONG !!!!
-//    public long[] mostFrequentIDs(int[] nums, int[] freq) {
+//    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
+    public long[] mostFrequentIDs(int[] nums, int[] freq) {
 //        int n = nums.length;
 //
 //        // map: { val : cnt }
@@ -240,6 +248,10 @@ public class MostFrequentIDs {
      * 2. Use a Max-Heap (PriorityQueue) to store pairs of {frequency, id}.
      * 3. When a frequency changes, push the NEW state into the PQ.
      * 4. Before getting the result, "Lazy Remove" stale entries from the top of the PQ.
+     */
+    /**
+     * time = O(N log N)
+     * space = O(N)
      */
     public long[] mostFrequentIDs_0_0_1(int[] nums, int[] freq) {
         int n = nums.length;
@@ -278,6 +290,10 @@ public class MostFrequentIDs {
 
     // V0-0-2
     // IDEA: PQ (fixed by gpt)
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public long[] mostFrequentIDs_0_0_2(int[] nums, int[] freq) {
         int n = nums.length;
         long[] res = new long[n];
@@ -324,6 +340,10 @@ public class MostFrequentIDs {
 
     // V0-0-3
     // IDEA: PQ (gpt)
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public long[] mostFrequentIDs_0_0_3(int[] nums, int[] freq) {
         int n = nums.length;
         long[] res = new long[n];
@@ -367,6 +387,10 @@ public class MostFrequentIDs {
 
     // V0-0-4
     // IDEA: PQ (fixed by gemini)
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public long[] mostFrequentIDs_0_0_4(int[] nums, int[] freq) {
         int n = nums.length;
         long[] res = new long[n];
@@ -432,6 +456,10 @@ public class MostFrequentIDs {
      * * Time Complexity: O(N log N)
      * Space Complexity: O(N)
      */
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public long[] mostFrequentIDs_0_1(int[] nums, int[] freq) {
         int n = nums.length;
         long[] res = new long[n];
@@ -470,6 +498,10 @@ public class MostFrequentIDs {
 
     // V0-2
     // IDEA: HASHMAP + DOUBLE LOOP (TLE) (GPT)
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public long[] mostFrequentIDs_0_2(int[] nums, int[] freq) {
         long[] res = new long[nums.length];
         Map<Integer, Long> map = new HashMap<>();
@@ -496,6 +528,10 @@ public class MostFrequentIDs {
         return res;
     }
 
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     private long getMaxCnt(Map<Integer, Long> map) {
         long max = 0;
         for (long v : map.values()) {
@@ -506,6 +542,10 @@ public class MostFrequentIDs {
 
     // V0-3
     // IDEA: TREEMAP (gpt)
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public long[] mostFrequentIDs_0_3(int[] nums, int[] freq) {
         int n = nums.length;
         long[] res = new long[n];
@@ -545,6 +585,10 @@ public class MostFrequentIDs {
     // V0-4
     // IDEA: MAP, TREEMAP, ARRAY OP
     // https://buildmoat.teachable.com/courses/7a7af3/lectures/64243726
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public long[] mostFrequentIDs_0_4(int[] nums, int[] freq) {
         Map<Integer, Long> m = new HashMap<>();
         TreeMap<Long, Integer> s = new TreeMap<>();
@@ -613,6 +657,10 @@ public class MostFrequentIDs {
      * 3. **Get Max:** The `TreeMap.lastKey()` method will always provide the maximum frequency in  time.
      *
      */
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public long[] mostFrequentIDs_0_5(int[] nums, int[] freq) {
         int n = nums.length;
         long[] res = new long[n];
@@ -664,6 +712,10 @@ public class MostFrequentIDs {
     // V1-1
     // IDEA: TREEMAP, HASHMAP, without max heap
     // https://leetcode.com/problems/most-frequent-ids/solutions/4916730/c-java-explained-using-heap-and-without-10on0/
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public long[] mostFrequentIDs_1_1(int[] nums, int[] freq) {
         long[] ans = new long[nums.length];
         HashMap<Integer, Long> idToFreqMap = new HashMap<>();
@@ -685,6 +737,10 @@ public class MostFrequentIDs {
     // V1-2
     // IDEA: Using maxHeap
     // https://leetcode.com/problems/most-frequent-ids/solutions/4916730/c-java-explained-using-heap-and-without-10on0/
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public long[] mostFrequentIDs_1_2(int[] nums, int[] freq) {
         long[] ans = new long[nums.length];
         HashMap<Integer, Long> idToFreqMap = new HashMap<>();
@@ -707,6 +763,10 @@ public class MostFrequentIDs {
     HashMap<Integer, Long> idToFreq = new HashMap<>();
     TreeMap<Long, Set<Integer>> freqToIds = new TreeMap<>();
 
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public long[] mostFrequentIDs_2(int[] nums, int[] freq) {
         int size = nums.length;
         long[] result = new long[size];
@@ -722,10 +782,18 @@ public class MostFrequentIDs {
         return result;
     }
 
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     private void updateIdToFreq(int id, long newFreq) {
         idToFreq.put(id, newFreq);
     }
 
+    /**
+     * time = O(log N)
+     * space = O(1)
+     */
     private void updateFreqToIds(int id, long oldFreq, long newFreq) {
         if (oldFreq != 0) {
             freqToIds.get(oldFreq).remove(id);
@@ -741,6 +809,10 @@ public class MostFrequentIDs {
     // V3
     // IDEA: PQ
     // https://leetcode.com/problems/most-frequent-ids/solutions/4917475/codestorywithmik-intuition-heap-map-c-ja-s2y7/
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public long[] mostFrequentIDs_3(int[] nums, int[] freq) {
         int n = nums.length;
 

@@ -93,6 +93,10 @@ public class SingleThreadedCPU {
         }
     }
 
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public int[] getOrder(int[][] tasks) {
         if (tasks == null || tasks.length == 0)
             return new int[] {};
@@ -287,6 +291,10 @@ public class SingleThreadedCPU {
      *   4)  if PQ is `empty`
      *
      */
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public int[] getOrder_0_1(int[][] tasks) {
         int n = tasks.length;
 
@@ -360,6 +368,10 @@ public class SingleThreadedCPU {
     // V1
     // https://youtu.be/RR1n-d4oYqE?feature=shared
     //https://github.com/neetcode-gh/leetcode/blob/main/java%2F1834-single-threaded-cpu.java
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public int[] getOrder_1(int[][] tasks) {
 
         // Sort based on min task processing time or min task index.
@@ -407,6 +419,10 @@ public class SingleThreadedCPU {
     // V2
     // https://leetcode.com/problems/single-threaded-cpu/solutions/2965290/simple-java-solution-with-detailed-expla-yfsi/
     // IDEA: PQ
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public int[] getOrder_2(int[][] tasks) {
         int n = tasks.length;
         Task2[] arr = new Task2[n];
@@ -461,6 +477,10 @@ public class SingleThreadedCPU {
 
     // V4
     // https://leetcode.com/problems/single-threaded-cpu/solutions/2965812/best-approach-100-using-sorting-priority-ruh1/
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public int[] getOrder_4(int[][] tasks) {
         int n = tasks.length;
         Triad[] arr = new Triad[n];
