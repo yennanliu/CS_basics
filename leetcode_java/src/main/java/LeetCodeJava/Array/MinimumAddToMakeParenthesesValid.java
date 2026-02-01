@@ -46,8 +46,11 @@ public class MinimumAddToMakeParenthesesValid {
 
     // V0-1
     // IDEA: GREEDY + BRACKET OP (fixed by gpt)
-    // time: O(N), space: O(1)
-    public int minAddToMakeValid_0_1(String s) {
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
+        public int minAddToMakeValid_0_1(String s) {
         int leftCnt = 0; // "(" waiting to match
         int rightCnt = 0; // ")" waiting to match
 
@@ -67,8 +70,11 @@ public class MinimumAddToMakeParenthesesValid {
 
     // V0-2
     // IDEA: GREEDY + BRACKET OP (fixed by gpt)
-    // time: O(N), space: O(1)
-    public int minAddToMakeValid_0_2(String s) {
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
+        public int minAddToMakeValid_0_2(String s) {
         // edge
         if (s == null || s.isEmpty()) {
             return 0;
@@ -96,8 +102,11 @@ public class MinimumAddToMakeParenthesesValid {
     // V1
     // IDEA: Open Bracket Counter
     // https://leetcode.com/problems/minimum-add-to-make-parentheses-valid/editorial/
-    // time: O(N), space: O(1)
-    public int minAddToMakeValid_1(String s) {
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
+        public int minAddToMakeValid_1(String s) {
         int openBrackets = 0;
         int minAddsRequired = 0;
 
@@ -122,8 +131,11 @@ public class MinimumAddToMakeParenthesesValid {
 
     // V2
     // https://leetcode.ca/2018-06-08-921-Minimum-Add-to-Make-Parentheses-Valid/
-    // time: O(N), space: O(1)
-    public int minAddToMakeValid_2(String s) {
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
+        public int minAddToMakeValid_2(String s) {
         int ans = 0, cnt = 0;
         for (char c : s.toCharArray()) {
             if (c == '(') {

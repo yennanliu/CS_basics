@@ -40,8 +40,11 @@ public class MinimumSizeSubarraySum {
 
     // V0
     // IDEA: SLIDING WINDOW (fix by gpt)
-    // time: O(N), space: O(1)
-    public int minSubArrayLen(int target, int[] nums) {
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
+        public int minSubArrayLen(int target, int[] nums) {
         // Check for empty input array
         if (nums == null || nums.length == 0) {
             return 0; // No valid subarray exists
@@ -145,8 +148,11 @@ public class MinimumSizeSubarraySum {
     // V1
     // https://leetcode.com/problems/minimum-size-subarray-sum/editorial/
     // IDEA: SLIDING WINDOW
-    // time: O(N), space: O(1)
-    public int minSubArrayLen_1(int target, int[] nums) {
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
+        public int minSubArrayLen_1(int target, int[] nums) {
         int left = 0, right = 0, sumOfCurrentWindow = 0;
         int res = Integer.MAX_VALUE;
 

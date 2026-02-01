@@ -140,8 +140,11 @@ public class MaximumSumOfTwoNonOverlappingSubarrays {
     // V1
     // https://leetcode.ca/2018-09-26-1031-Maximum-Sum-of-Two-Non-Overlapping-Subarrays/
     // IDEA: PREFIX SUM
-    // time: O(N), space: O(N)
-    public int maxSumTwoNoOverlap_1(int[] nums, int firstLen, int secondLen) {
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+        public int maxSumTwoNoOverlap_1(int[] nums, int firstLen, int secondLen) {
         int n = nums.length;
         int[] s = new int[n + 1];
         for (int i = 0; i < n; ++i) {
@@ -164,8 +167,11 @@ public class MaximumSumOfTwoNonOverlappingSubarrays {
     // V1-2
     // IDEA: PREFIX SUM
     // https://leetcode.com/problems/maximum-sum-of-two-non-overlapping-subarrays/solutions/1489581/java-easy-to-understand-prefix-sum-by-rm-5d2z/
-    // time: O(N), space: O(N)
-    public int maxSumTwoNoOverlap_1_2(int[] A, int L, int M) {
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+        public int maxSumTwoNoOverlap_1_2(int[] A, int L, int M) {
         int sums[] = new int[A.length + 1];
 
         for (int i = 1; i <= A.length; i++)
@@ -213,8 +219,11 @@ public class MaximumSumOfTwoNonOverlappingSubarrays {
 
     // V3
     // https://leetcode.com/problems/maximum-sum-of-two-non-overlapping-subarrays/solutions/913234/on-thought-process-java-by-133c7-wn3a/
-    // time: O(N), space: O(N)
-    public int maxSumTwoNoOverlap_3(int[] A, int L, int M) {
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+        public int maxSumTwoNoOverlap_3(int[] A, int L, int M) {
         int n = A.length;
         if (n == 0) {
             return 0;
