@@ -44,7 +44,12 @@ public class GreatestCommonDivisorOfStrings {
     // V1
     // https://www.youtube.com/watch?v=i5I_wrbUdzM&pp=0gcJCdgAo7VqN5tD
     // https://github.com/neetcode-gh/leetcode/blob/main/java%2F1071-greatest-common-divisor-of-strings.java
+
     // Helper function to calculate gcd using Euclidean algorithm
+    /**
+     * time = O(log(min(a,b)))
+     * space = O(1)
+     */
     public int gcd_1_1(int a, int b){
         if(b == 0){
             return a;
@@ -59,6 +64,11 @@ public class GreatestCommonDivisorOfStrings {
     Else, return empty string.
     */
 
+
+    /**
+     * time = O(log(min(a,b)))
+     * space = O(1)
+     */
     public String gcdOfStrings_1_1(String str1, String str2) {
         if((str1 + str2).equals(str2 + str1)){
             int len1 = str1.length();
@@ -72,7 +82,12 @@ public class GreatestCommonDivisorOfStrings {
 
     // V2-1
     // https://leetcode.com/problems/greatest-common-divisor-of-strings/editorial/
+
     // IDEA: BRUTE FORCE
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public boolean valid(String str1, String str2, int k) {
         int len1 = str1.length(), len2 = str2.length();
         if (len1 % k > 0 || len2 % k > 0) {
@@ -84,6 +99,11 @@ public class GreatestCommonDivisorOfStrings {
     }
 
 
+
+    /**
+     * time = O(log(min(a,b)))
+     * space = O(1)
+     */
     public String gcdOfStrings_2_1(String str1, String str2) {
         int len1 = str1.length(), len2 = str2.length();
         for (int i = Math.min(len1, len2); i >= 1; --i) {
@@ -97,7 +117,12 @@ public class GreatestCommonDivisorOfStrings {
 
     // V2-2
     // https://leetcode.com/problems/greatest-common-divisor-of-strings/editorial/
+
     // IDEA: Greatest Common Divisor
+    /**
+     * time = O(log(min(a,b)))
+     * space = O(1)
+     */
     public int gcd(int x, int y) {
         if (y == 0) {
             return x;
@@ -106,6 +131,11 @@ public class GreatestCommonDivisorOfStrings {
         }
     }
 
+
+    /**
+     * time = O(log(min(a,b)))
+     * space = O(1)
+     */
     public String gcdOfStrings_2_2(String str1, String str2) {
         // Check if they have non-zero GCD string.
         if (!(str1 + str2).equals(str2 + str1)) {

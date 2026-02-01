@@ -55,7 +55,12 @@ public class ExcelSheetColumnTitle {
 
     // V1
     // https://www.youtube.com/watch?v=X_vJDpCCuoA
+
     // https://github.com/neetcode-gh/leetcode/blob/main/java%2F0168-excel-sheet-column-title.java
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public String convertToTitle_1(int columnNumber) {
         Map<Integer, Character> map = new HashMap<>();
         char c = 'A';
@@ -91,7 +96,12 @@ public class ExcelSheetColumnTitle {
 
 
     // V2
+
     // https://leetcode.com/problems/excel-sheet-column-title/editorial/
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public String convertToTitle_2(int columnNumber) {
         StringBuilder ans = new StringBuilder();
 

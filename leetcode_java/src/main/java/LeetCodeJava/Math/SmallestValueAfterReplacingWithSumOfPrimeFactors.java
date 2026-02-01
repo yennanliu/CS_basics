@@ -60,6 +60,11 @@ public class SmallestValueAfterReplacingWithSumOfPrimeFactors {
      * sum of its prime factors until n becomes a prime number.
      * The process stops when n == sum_of_prime_factors(n).
      */
+
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int smallestValue_0_1(int n) {
         // Base case: If n is 1, return 1. (Though constraints start at n=2)
         if (n <= 1) {
@@ -136,7 +141,12 @@ public class SmallestValueAfterReplacingWithSumOfPrimeFactors {
     // The unnecessary and flawed hasFactor function is removed.
 
     // V0-2
+
     // IDEA: MATH (gpt)
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int smallestValue_0_2(int n) {
         while (true) {
             int sum = sumOfPrimeFactors(n);

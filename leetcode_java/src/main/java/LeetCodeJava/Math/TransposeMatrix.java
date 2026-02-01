@@ -53,7 +53,12 @@ public class TransposeMatrix {
 //    }
 
     // V0-1
+
     // IDEA: MATH + ARRAY OP (fixed by gpt)
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int[][] transpose_0_1(int[][] matrix) {
         if (matrix == null || matrix.length == 0 || matrix[0].length == 0) {
             return new int[0][0];
@@ -77,7 +82,12 @@ public class TransposeMatrix {
 
     // V2
     // IDEA: COPY DIRECTLY
+
     // https://leetcode.com/problems/transpose-matrix/editorial/
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int[][] transpose_2(int[][] A) {
         int R = A.length, C = A[0].length;
         int[][] ans = new int[C][R];

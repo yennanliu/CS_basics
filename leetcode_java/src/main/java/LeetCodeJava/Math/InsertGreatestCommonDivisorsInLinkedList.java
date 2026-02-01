@@ -62,7 +62,12 @@ public class InsertGreatestCommonDivisorsInLinkedList {
      */
 
     // V0
+
     // IDEA: LINKED LIST -> LIST + MATH
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public ListNode insertGreatestCommonDivisors(ListNode head) {
         // edge
         if (head == null || head.next == null) {
@@ -98,6 +103,11 @@ public class InsertGreatestCommonDivisorsInLinkedList {
         return res.next;
     }
 
+
+    /**
+     * time = O(log(min(a,b)))
+     * space = O(1)
+     */
     public int getGCD(int x, int y) {
         if (x == y) {
             return x;
@@ -115,7 +125,12 @@ public class InsertGreatestCommonDivisorsInLinkedList {
     }
 
     // V0-1
+
     // IDEA: LINKED LIST OP + MATH (gpt)
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public ListNode insertGreatestCommonDivisors_0_1(ListNode head) {
         if (head == null || head.next == null) {
             return head;
@@ -144,7 +159,12 @@ public class InsertGreatestCommonDivisorsInLinkedList {
     }
 
     // V0-2
+
     // IDEA: LINKED LIST OP + MATH (fixed by gpt)
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public ListNode insertGreatestCommonDivisors_0_2(ListNode head) {
         if (head == null || head.next == null) {
             return head;
@@ -178,7 +198,12 @@ public class InsertGreatestCommonDivisorsInLinkedList {
 
     // V1
     // https://www.youtube.com/watch?v=SS_IlBrocYQ
+
     // https://neetcode.io/solutions/insert-greatest-common-divisors-in-linked-list
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public ListNode insertGreatestCommonDivisors_1(ListNode head) {
         if (head == null) return null;
 
@@ -205,7 +230,12 @@ public class InsertGreatestCommonDivisorsInLinkedList {
     }
 
     // V2
+
     // https://leetcode.com/problems/insert-greatest-common-divisors-in-linked-list/description/
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public ListNode insertGreatestCommonDivisors_2(ListNode head) {
         // If the list contains only one node, return the head as no insertion is needed
         if (head.next == null)

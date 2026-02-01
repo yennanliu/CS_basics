@@ -68,6 +68,11 @@ public class ApplyOperationsToMakeSumOfArrayGreaterThanOrEqualToK {
      * * Time Complexity: O(sqrt(K)) or O(K). O(K) is safe given K <= 10^5.
      * Space Complexity: O(1).
      */
+
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int minOperations_0_1(int k) {
         if (k <= 1)
             return 0;
@@ -187,6 +192,11 @@ public class ApplyOperationsToMakeSumOfArrayGreaterThanOrEqualToK {
      *     - op1: how many 1 to add  (# of op1)
      *     - op2: how many max num to add  (# of op2)
      */
+
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int minOperations_0_2(int k) {
         int ans = k;
 
@@ -242,6 +252,11 @@ public class ApplyOperationsToMakeSumOfArrayGreaterThanOrEqualToK {
      * Space O(sqrt)
      *
      */
+
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int minOperations_1(int k) {
         int a = (int) Math.sqrt(k);
         return a + (k - 1) / a - 1;
@@ -249,7 +264,12 @@ public class ApplyOperationsToMakeSumOfArrayGreaterThanOrEqualToK {
 
     // V2
     // IDEA: MATH, GREEDY
+
     // https://leetcode.com/problems/apply-operations-to-make-sum-of-array-greater-than-or-equal-to-k/solutions/4916835/step-step-easy-video-solution-maths-gree-o5v2/
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int minOperations_2(int k) {
         int ans = Integer.MAX_VALUE;
         for (int i = 1; i <= k; i++) {
@@ -262,7 +282,12 @@ public class ApplyOperationsToMakeSumOfArrayGreaterThanOrEqualToK {
 
     // V3
     // IDEA: MATH
+
     // https://leetcode.com/problems/apply-operations-to-make-sum-of-array-greater-than-or-equal-to-k/solutions/4920227/python-3-2-lines-calculus-problem-ts-96-hr9y8/
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int minOperations_3(int k) {
 
         int sqt = (int) Math.sqrt(k);

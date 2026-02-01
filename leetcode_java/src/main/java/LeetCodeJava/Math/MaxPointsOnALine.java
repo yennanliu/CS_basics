@@ -46,7 +46,12 @@ public class MaxPointsOnALine {
 //    }
 
     // V1
+
     // https://leetcode.ca/2016-04-27-149-Max-Points-on-a-Line/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int maxPoints_1(int[][] points) {
         int n = points.length;
         int ans = 1;
@@ -72,7 +77,12 @@ public class MaxPointsOnALine {
     // V2
     // https://leetcode.com/problems/max-points-on-a-line/solutions/3017341/java-solution-with-explantation-by-sarth-bwrz/
     // This method returns the maximum number of points that lie on the same line
+
     // given a set of points represented by the 2D array points
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int maxPoints_2(int[][] points) {
         // n is the number of points in the array
         int n = points.length;
@@ -111,7 +121,12 @@ public class MaxPointsOnALine {
     }
 
 
+
     // V3
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int maxPoints_3(int[][] points) {
         if (points.length <= 2) return points.length;
 

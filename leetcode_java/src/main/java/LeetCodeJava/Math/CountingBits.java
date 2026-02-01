@@ -48,7 +48,12 @@ package LeetCodeJava.Math;
 public class CountingBits {
 
     // V0
+
     // IDEA : MATH
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int[] countBits(int n) {
         /** NOTE !!! we init ans as below */
         int[] ans = new int[n+1];
@@ -73,7 +78,12 @@ public class CountingBits {
     }
 
     // V0-1
+
     // IDEA: BRUTE FORCE
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int[] countBits_0_1(int n) {
         // edge
         if (n == 0) {
@@ -109,7 +119,12 @@ public class CountingBits {
     }
 
     // V0-2
+
     // IDEA: BIT DP (gemini)
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int[] countBits_0_2(int n) {
         int[] res = new int[n + 1];
 
@@ -125,7 +140,12 @@ public class CountingBits {
     
 
     // V0-3
+
     // IDEA : java default
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int[] countBits_0_3(int n) {
 
         if (n == 0){
@@ -156,7 +176,12 @@ public class CountingBits {
     }
 
     // V1
+
     // https://leetcode.com/problems/counting-bits/solutions/3987279/java-solution-using-right-shift-operator/
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int countOnes(int n) {
         int count = 0;
         while(n != 0) {
@@ -165,6 +190,11 @@ public class CountingBits {
         }
         return count;
     }
+
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int[] countBits_1(int n) {
         int ans[] = new int[n+1];
         ans[0] = 0;
@@ -176,7 +206,12 @@ public class CountingBits {
 
     // V2
     // IDEA : BIT OP
+
     // https://leetcode.com/problems/counting-bits/solutions/79539/three-line-java-solution/
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int[] countBits_2(int num) {
         int[] f = new int[num + 1];
         for (int i=1; i<=num; i++) f[i] = f[i >> 1] + (i & 1);

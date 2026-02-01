@@ -129,6 +129,11 @@ public class RandomPickWithWeight {
             }
         }
 
+
+        /**
+         * time = O(N)
+         * space = O(1)
+         */
         public int pickIndex() {
             // Get a random value in the range [1, totalSum]
             int target = random.nextInt(totalSum) + 1;
@@ -164,6 +169,11 @@ public class RandomPickWithWeight {
                     this.nums.add(i);
         }
 
+
+        /**
+         * time = O(N)
+         * space = O(1)
+         */
         public int pickIndex() {
             int n = this.rand.nextInt(nums.size());
             return nums.get(n);
@@ -185,6 +195,11 @@ public class RandomPickWithWeight {
             }
         }
 
+
+        /**
+         * time = O(N)
+         * space = O(1)
+         */
         public int pickIndex() {
             return map.get(map.higherKey(random.nextInt(sum)));
         }

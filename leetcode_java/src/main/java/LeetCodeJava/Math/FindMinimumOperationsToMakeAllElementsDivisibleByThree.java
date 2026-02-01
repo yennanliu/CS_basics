@@ -5,7 +5,12 @@ package LeetCodeJava.Math;
 public class FindMinimumOperationsToMakeAllElementsDivisibleByThree {
 
     // V0
+
     // IDEA : MATH
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int minimumOperations(int[] nums) {
 
         int res = 0;
@@ -25,7 +30,12 @@ public class FindMinimumOperationsToMakeAllElementsDivisibleByThree {
 
     // V1
     // IDEA : MATH
+
     // https://leetcode.com/problems/find-minimum-operations-to-make-all-elements-divisible-by-three/solutions/5352966/simple-approach-if-num-3-0-count-explained/
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int minimumOperations_1(int[] nums) {
         int count = 0;
         for (int num : nums) {
