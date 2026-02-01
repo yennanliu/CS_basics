@@ -41,6 +41,10 @@ public class ClimbingStairs {
 
     // V0
     // IDEA: DP
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int climbStairs(int n) {
         // edge
         if (n <= 2) {
@@ -62,6 +66,10 @@ public class ClimbingStairs {
 
     // V0-1
     // IDEA : DP
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int climbStairs_0_1(int n) {
 
         if (n <= 2){
@@ -93,6 +101,10 @@ public class ClimbingStairs {
 
     // V0-2
     // IDEA : DP
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int climbStairs_0_2(int n) {
 
         // null check
@@ -122,6 +134,10 @@ public class ClimbingStairs {
     // V1
     // IDEA : Memoization
     // https://leetcode.com/problems/climbing-stairs/solutions/3708750/4-method-s-beat-s-100-c-java-python-beginner-friendly/
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int climbStairs_2(int n) {
         Map<Integer, Integer> memo = new HashMap<>();
         return climbStairs(n, memo);
@@ -140,6 +156,10 @@ public class ClimbingStairs {
     // V2
     // IDEA : Tabulation
     // https://leetcode.com/problems/climbing-stairs/solutions/3708750/4-method-s-beat-s-100-c-java-python-beginner-friendly/
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int climbStairs_4(int n) {
         if (n == 0 || n == 1) {
             return 1;
@@ -157,6 +177,10 @@ public class ClimbingStairs {
     // V3
     // IDEA : Space Optimization
     // https://leetcode.com/problems/climbing-stairs/solutions/3708750/4-method-s-beat-s-100-c-java-python-beginner-friendly/
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int climbStairs_5(int n) {
         if (n == 0 || n == 1) {
             return 1;

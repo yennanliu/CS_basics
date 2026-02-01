@@ -440,6 +440,10 @@ public class CombinationSumIV {
 
     // V0-0-3
     // IDEA: Memoized Recursion (gpt)
+    /**
+     * time = O(N * target)
+     * space = O(target)
+     */
     public int combinationSum4_0_0_3(int[] nums, int target) {
         int[] memo = new int[target + 1];
         Arrays.fill(memo, -1);
@@ -466,6 +470,10 @@ public class CombinationSumIV {
     // IDEA: BACKTRACK (gpt) (TLE)
     int count = 0;
 
+    /**
+     * time = O(N * target)
+     * space = O(target)
+     */
     public int combinationSum4_0_1(int[] nums, int target) {
         backtrack(nums, target);
         return count;
@@ -486,6 +494,10 @@ public class CombinationSumIV {
 
     // V0-2
     // IDEA : Top-Down DP (with Memoization) (gpt)
+    /**
+     * time = O(N * target)
+     * space = O(target)
+     */
     public int combinationSum4_0_2(int[] nums, int target) {
         Integer[] memo = new Integer[target + 1];
         return dp(nums, target, memo);
@@ -510,6 +522,10 @@ public class CombinationSumIV {
 
     // V0-3
     // IDEA:  Bottom-Up DP Version (Tabulation) (gpt)
+    /**
+     * time = O(N * target)
+     * space = O(target)
+     */
     public int combinationSum4_0_3(int[] nums, int target) {
         int[] dp = new int[target + 1];
         dp[0] = 1; // Base case
@@ -529,11 +545,19 @@ public class CombinationSumIV {
     // IDEA: BACKTRACK (gpt) (TLE)
     int cnt = 0;
 
+    /**
+     * time = O(N * target)
+     * space = O(target)
+     */
     public int combinationSum4_0_4(int[] nums, int target) {
         backtrack_0_4(nums, target, new ArrayList<>());
         return cnt;
     }
 
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public void backtrack_0_4(int[] nums, int target, List<Integer> cur) {
         if (target == 0) {
             cnt++;
@@ -636,6 +660,10 @@ public class CombinationSumIV {
 
     // V2
     // https://leetcode.com/problems/combination-sum-iv/solutions/6726200/optimized-solution-for-combination-sum-i-vv5u/
+    /**
+     * time = O(N * target)
+     * space = O(target)
+     */
     public int combinationSum4_2(int[] nums, int target) {
         return dp(nums, target, new HashMap<>());
     }

@@ -68,11 +68,19 @@ public class DecodeWays2 {
     // https://leetcode.com/problems/decode-ways-ii/editorial/
     int M = 1000000007;
 
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int numDecodings_1_1(String s) {
         Long[] memo = new Long[s.length()];
         return (int) ways(s, s.length() - 1, memo);
     }
 
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public long ways(String s, int i, Long[] memo) {
         if (i < 0)
             return 1;
@@ -105,6 +113,10 @@ public class DecodeWays2 {
     // IDEA: DP
     // https://leetcode.com/problems/decode-ways-ii/editorial/
     //int M = 1000000007;
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int numDecodings_1_2(String s) {
         long[] dp = new long[s.length() + 1];
         dp[0] = 1;
@@ -135,6 +147,10 @@ public class DecodeWays2 {
     // IDEA:  Constant Space Dynamic Programming
     // https://leetcode.com/problems/decode-ways-ii/editorial/
     //int M = 1000000007;
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int numDecodings_1_3(String s) {
         long first = 1, second = s.charAt(0) == '*' ? 9 : s.charAt(0) == '0' ? 0 : 1;
         for (int i = 1; i < s.length(); i++) {

@@ -68,6 +68,10 @@ public class CountSubtreesWithMaxDistanceBetweenCities {
     boolean[] inStack; // do not allow to travel upwards in the rooted tree
     int[] ans;
 
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int[] countSubgraphsForEachDiameter_1(int n, int[][] edges) {
         buildTree(n, edges);
         ans = new int[n - 1];
@@ -157,6 +161,10 @@ public class CountSubtreesWithMaxDistanceBetweenCities {
     // V3
     // IDEA: BITMASK
     // https://leetcode.com/problems/count-subtrees-with-max-distance-between-cities/solutions/1706928/java-solution-bitmask-by-gauravkr442-xeah/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int[] countSubgraphsForEachDiameter_3(int n, int[][] edges) {
 
         ArrayList<Integer>[] graph = (ArrayList<Integer>[]) new ArrayList[n];
@@ -235,6 +243,10 @@ public class CountSubtreesWithMaxDistanceBetweenCities {
 
     // V4
     // https://leetcode.com/problems/count-subtrees-with-max-distance-between-cities/solutions/889194/java-build-subtrees-recursively-on2-numb-t11w/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int[] countSubgraphsForEachDiameter_4(int n, int[][] edges) {
 
         ArrayList<Integer>[] graph = (ArrayList<Integer>[]) new ArrayList[n];

@@ -81,6 +81,10 @@ public class CoinChange2 {
      */
     // V0
     // IDEA: BOTTOM UP DP (fixed by gemini)
+    /**
+     * time = O(N * amount)
+     * space = O(amount)
+     */
     public int change(int amount, int[] coins) {
 
         /** NOTE !!!
@@ -224,6 +228,10 @@ public class CoinChange2 {
 
     // V0-0-1
     // IDEA: 1D DP (gemini)
+    /**
+     * time = O(N * amount)
+     * space = O(amount)
+     */
     public int change_0_0_1(int amount, int[] coins) {
         // edge
 
@@ -273,6 +281,10 @@ public class CoinChange2 {
 
     // V0-0-2
     // IDEA: DP (gpt)
+    /**
+     * time = O(N * amount)
+     * space = O(amount)
+     */
     public int change_0_0_2(int amount, int[] coins) {
         int[] dp = new int[amount + 1];
         dp[0] = 1;
@@ -290,6 +302,10 @@ public class CoinChange2 {
     // V0-1
     int combinationCnt_0_1 = 0;
 
+    /**
+     * time = O(N * amount)
+     * space = O(amount)
+     */
     public int change_0_1(int amount, int[] coins) {
         if (coins == null || coins.length == 0)
             return 0;
@@ -423,6 +439,10 @@ public class CoinChange2 {
 
     // V0-2
     // IDEA: BACKTRACK (gpt) (TLE)
+    /**
+     * time = O(N * amount)
+     * space = O(amount)
+     */
     public int change_0_2(int amount, int[] coins) {
         return backtrack(coins, 0, amount);
     }
@@ -442,6 +462,10 @@ public class CoinChange2 {
 
     // V0-3
     // IDEA: Backtracking + Memoization (Top-Down DP)  (gpt)
+    /**
+     * time = O(N * amount)
+     * space = O(amount)
+     */
     public int change_0_3(int amount, int[] coins) {
         Integer[][] memo = new Integer[coins.length][amount + 1];
         return dfs(coins, 0, amount, memo);
@@ -466,6 +490,10 @@ public class CoinChange2 {
     // IDEA: BACKTRACK (gpt) (TLE)
     int combinationCnt = 0;
 
+    /**
+     * time = O(N * amount)
+     * space = O(amount)
+     */
     public int change_0_4(int amount, int[] coins) {
         if (coins == null || coins.length == 0)
             return 0;
@@ -496,6 +524,10 @@ public class CoinChange2 {
     // V1-1
     // https://neetcode.io/problems/coin-change-ii
     // IDEA: Recursion
+    /**
+     * time = O(N * amount)
+     * space = O(amount)
+     */
     public int change_1_1(int amount, int[] coins) {
         Arrays.sort(coins);
 
@@ -521,6 +553,10 @@ public class CoinChange2 {
     // V1-2
     // https://neetcode.io/problems/coin-change-ii
     // IDEA: Dynamic Programming (Top-Down)
+    /**
+     * time = O(N * amount)
+     * space = O(amount)
+     */
     public int change_1_2(int amount, int[] coins) {
         Arrays.sort(coins);
         int[][] memo = new int[coins.length + 1][amount + 1];
@@ -549,6 +585,10 @@ public class CoinChange2 {
     // V1-3
     // https://neetcode.io/problems/coin-change-ii
     // IDEA: Dynamic Programming (Bottom-Up)
+    /**
+     * time = O(N * amount)
+     * space = O(amount)
+     */
     public int change_1_3(int amount, int[] coins) {
         int n = coins.length;
         Arrays.sort(coins);
@@ -574,6 +614,10 @@ public class CoinChange2 {
     // V1-4
     // https://neetcode.io/problems/coin-change-ii
     // IDEA: Dynamic Programming (Space Optimized)
+    /**
+     * time = O(N * amount)
+     * space = O(amount)
+     */
     public int change_1_4(int amount, int[] coins) {
         int[] dp = new int[amount + 1];
         dp[0] = 1;
@@ -596,6 +640,10 @@ public class CoinChange2 {
     // V1-5
     // https://neetcode.io/problems/coin-change-ii
     // IDEA: Dynamic Programming (Optimal)
+    /**
+     * time = O(N * amount)
+     * space = O(amount)
+     */
     public int change_1_5(int amount, int[] coins) {
         int[] dp = new int[amount + 1];
         dp[0] = 1;
