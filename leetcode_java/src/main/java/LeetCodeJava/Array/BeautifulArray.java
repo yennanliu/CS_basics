@@ -43,7 +43,10 @@ public class BeautifulArray {
     // V1
     // IDEA : Divide and Conquer
     // https://leetcode.com/problems/beautiful-array/editorial/
-    // time: O(N log N), space: O(N)
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     Map<Integer, int[]> memo;
     public int[] beautifulArray_1(int N) {
         memo = new HashMap();
@@ -72,7 +75,10 @@ public class BeautifulArray {
     // V2
     // IDEA : Divide and Conquer
     // https://leetcode.com/problems/beautiful-array/solutions/1373064/java-clear-thinking-process-divide-and-conquer/
-    // time: O(N log N), space: O(N)
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public int[] beautifulArray(int n) {
         int[] ans = new int[n];
         for(int i = 0; i  < n; i++){
@@ -111,7 +117,10 @@ public class BeautifulArray {
 
     // V3-1
     // https://leetcode.com/problems/beautiful-array/solutions/1368607/java-0-ms-100-00-fast-explained-2-solutions/
-    // time: O(N log N), space: O(N)
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public int[] beautifulArray_3_1(int n) {
         int[] answer = new int[n];
         if(n == 1) {
@@ -132,7 +141,10 @@ public class BeautifulArray {
 
     // V3-2
     // https://leetcode.com/problems/beautiful-array/solutions/1368607/java-0-ms-100-00-fast-explained-2-solutions/
-    // time: O(N log N), space: O(N)
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public int[] beautifulArray_3_2(int n) {
         ArrayList<Integer> answer=new ArrayList<>();
         answer.add(1);

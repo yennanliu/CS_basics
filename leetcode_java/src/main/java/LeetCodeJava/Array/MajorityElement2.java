@@ -46,7 +46,13 @@ public class MajorityElement2 {
 
     // V0
     // IDEA: HASHMAP
-    // time: O(N), space: O(N)
+    /**
+
+     * time = O(N)
+
+     * space = O(N)
+
+     */
     public List<Integer> majorityElement(int[] nums) {
         List<Integer> res = new ArrayList<>();
         // edge

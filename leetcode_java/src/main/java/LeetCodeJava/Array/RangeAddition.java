@@ -32,6 +32,10 @@ public class RangeAddition {
   // IDEA : DIFFERENCE ARRAY + prefix sum
   // LC 1109
   // https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/Array/CorporateFlightBookings.java
+  /**
+   * time = O(N + K) where K is number of updates
+   * space = O(N)
+   */
   public static int[] getModifiedArray(int length, int[][] updates) {
 
     /**
@@ -141,6 +145,10 @@ public class RangeAddition {
 
   // V0-2
   // IDEA: PREFIX SUM (fixed by gpt)
+  /**
+   * time = O(N + K) where K is number of updates
+   * space = O(N)
+   */
   public static int[] getModifiedArray_0_2(int length, int[][] updates) {
     // Edge case: if the length is 0, return an empty array.
     if (length == 0) {
@@ -178,6 +186,10 @@ public class RangeAddition {
 
   // V1
   // https://leetcode.ca/2016-12-04-370-Range-Addition/
+  /**
+   * time = O(N + K) where K is number of updates
+   * space = O(N)
+   */
   public int[] getModifiedArray_1(int length, int[][] updates) {
     int[] d = new int[length];
     for (int[] e : updates) {

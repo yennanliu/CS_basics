@@ -56,7 +56,13 @@ public class LongestArithmeticSubsequence {
 
     // V2
     // https://leetcode.com/problems/longest-arithmetic-subsequence/solutions/3671662/beats-100-c-java-python-beginner-friendl-c1gm/
-    // time: O(N^2), space: O(N^2)
+    /**
+
+     * time = O(N^2)
+
+     * space = O(N^2)
+
+     */
     public int longestArithSeqLength_2(int[] nums) {
         int n = nums.length;
         if (n <= 2)
@@ -80,7 +86,13 @@ public class LongestArithmeticSubsequence {
     // V3
     // https://leetcode.com/problems/longest-arithmetic-subsequence/solutions/595478/java-dp-solution-using-hashmap-on2-with-92d0r/
     // IDEA: DP
-    // time: O(N^2), space: O(N^2)
+    /**
+
+     * time = O(N^2)
+
+     * space = O(N^2)
+
+     */
     public int longestArithSeqLength_3(int[] A) {
         int ansMax = 0, n = A.length, was, diff;
         HashMap<Integer, Integer> tillI[] = new HashMap[n];

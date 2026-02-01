@@ -93,7 +93,7 @@ public class MaximizeDistanceToClosestPerson {
    *
    * 	2.	Iterate Through the Array:
    * 	    •	When a seat is occupied (seats[i] == 1):
-   * 	    •	If it’s the first occupied seat, calculate the distance from the start of the array to this seat (i).
+   * 	    •	If it's the first occupied seat, calculate the distance from the start of the array to this seat (i).
    * 	    •	Otherwise, calculate the middle distance between the current and the last occupied seat using (i - lastOccupied) / 2.
    *
    * 	3.	Check the Last Segment:
@@ -123,6 +123,10 @@ public class MaximizeDistanceToClosestPerson {
    *  Case 2)  1001001 (all "0" are enclosed by "1")
    *  Case 3)  1001000 (there are "0" that NOT enclosed by "1" on the right hand side)
    *
+   */
+  /**
+   * time = O(N)
+   * space = O(1)
    */
   public int maxDistToClosest_0_1(int[] seats) {
         int maxDistance = 0;
@@ -192,6 +196,10 @@ public class MaximizeDistanceToClosestPerson {
      * the answer is K, and we should take into account those answers too.
      *
      */
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int maxDistToClosest_1_1(int[] seats) {
         int N = seats.length;
         int prev = -1, future = 0;
@@ -216,6 +224,10 @@ public class MaximizeDistanceToClosestPerson {
     // V1-2
     // IDEA : Next Array
     // https://leetcode.com/problems/maximize-distance-to-closest-person/editorial/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int maxDistToClosest_1_2(int[] seats) {
         int N = seats.length;
         int[] left = new int[N], right = new int[N];
