@@ -88,6 +88,10 @@ public class MinimumKnightMoves {
     // V1
     // IDEA : BFS
     // https://leetcode.ca/2019-03-11-1197-Minimum-Knight-Moves/
+    /**
+     * time = O(x * y)
+     * space = O(x * y)
+     */
     public int minKnightMoves_1(int x, int y) {
         x += 310;
         y += 310;
@@ -121,6 +125,10 @@ public class MinimumKnightMoves {
     // V2
     // IDEA : BFD
     // https://www.cnblogs.com/cnoodle/p/12820573.html
+    /**
+     * time = O(x * y)
+     * space = O(x * y)
+     */
     public int minKnightMoves_2(int x, int y) {
         int[][] dirs = new int[][]{{-1, -2}, {-1, 2}, {1, -2}, {1, 2}, {-2, -1}, {-2, 1}, {2, -1}, {2, 1}};
         x = Math.abs(x);
