@@ -75,6 +75,11 @@ public class FindInMountainArray {
     // V2-1
     // https://leetcode.com/problems/find-in-mountain-array/editorial/
     // IDEA: Binary Search
+    /**
+     * time = O(log N)
+     * space = O(1)
+     */
+
     public int findInMountainArray_2_1(int target, MountainArray mountainArr) {
         // Save the length of the mountain array
         int length = mountainArr.length();
@@ -131,6 +136,11 @@ public class FindInMountainArray {
     // V2-2
     // https://leetcode.com/problems/find-in-mountain-array/editorial/
     // IDEA:  Minimizing get Calls with Early Stopping and Caching
+    /**
+     * time = O(log N)
+     * space = O(N)
+     */
+
     public int findInMountainArray_2_2(int target, MountainArray mountainArr) {
         // Save the length of the mountain array
         int length = mountainArr.length();
@@ -227,6 +237,11 @@ public class FindInMountainArray {
 
     // V3
     // https://leetcode.com/problems/find-in-mountain-array/solutions/4159000/100-binary-search-explained-intuition-by-1gun/
+    /**
+     * time = O(log N)
+     * space = O(1)
+     */
+
     public int findInMountainArray_3(int target, MountainArray mountainArr) {
         int length = mountainArr.length();
 
@@ -246,6 +261,11 @@ public class FindInMountainArray {
         return -1; // Target not found in the mountain array.
     }
 
+    /**
+     * time = O(log N)
+     * space = O(1)
+     */
+
     private int findPeakIndex(int low, int high, MountainArray mountainArr) {
         while (low != high) {
             int mid = low + (high - low) / 2;
@@ -257,6 +277,11 @@ public class FindInMountainArray {
         }
         return low; // Return the index of the peak element.
     }
+
+    /**
+     * time = O(log N)
+     * space = O(1)
+     */
 
     private int binarySearch(int low, int high, int target, MountainArray mountainArr, boolean reversed) {
         while (low != high) {
@@ -278,6 +303,11 @@ public class FindInMountainArray {
 
     // V4
     // https://leetcode.com/problems/find-in-mountain-array/solutions/4159293/video-give-me-10-minutes-how-we-think-ab-b582/
+    /**
+     * time = O(log N)
+     * space = O(1)
+     */
+
     public int findInMountainArray_4(int target, MountainArray mountainArr) {
         int length = mountainArr.length();
         int peakIndex = findPeak(mountainArr, length);
@@ -289,6 +319,11 @@ public class FindInMountainArray {
 
         return findTarget(mountainArr, peakIndex + 1, length - 1, target, false);
     }
+
+    /**
+     * time = O(log N)
+     * space = O(1)
+     */
 
     private int findTarget(MountainArray mountainArr, int left, int right, int target, boolean isUpside) {
         while (left <= right) {
@@ -316,6 +351,11 @@ public class FindInMountainArray {
 
         return -1;
     }
+
+    /**
+     * time = O(log N)
+     * space = O(1)
+     */
 
     private int findPeak(MountainArray mountainArr, int length) {
         int left = 0;

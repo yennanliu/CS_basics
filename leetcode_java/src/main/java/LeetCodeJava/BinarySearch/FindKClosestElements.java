@@ -51,6 +51,11 @@ public class FindKClosestElements {
 
     // V0-1
     // IDEA: 2 POINTERS
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
+
     public List<Integer> findClosestElements_0_1(int[] arr, int k, int x) {
         int l = 0, r = arr.length - 1; // left and right pointers
 
@@ -75,6 +80,11 @@ public class FindKClosestElements {
 
     // V0-3
     // IDEA: 2 POINTERS (fixed by gpt)
+    /**
+     * time = O(N)
+     * space = O(k)
+     */
+
     public List<Integer> findClosestElements_0_3(int[] arr, int k, int x) {
         List<Integer> res = new ArrayList<>();
 
@@ -119,6 +129,11 @@ public class FindKClosestElements {
     // V3
     // https://leetcode.com/problems/find-k-closest-elements/solutions/6550496/optimized-solution-two-pointer-approach-p2wfl/
     // IDEA: 2 POINTERS
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
+
     public List<Integer> findClosestElements_3(int[] arr, int k, int x) {
         int l = 0, r = arr.length - 1; // left and right pointers
 
@@ -145,6 +160,11 @@ public class FindKClosestElements {
     // Using two pointers, we are going the 'start' and 'end' pointers towards each
     // other,
     // until only k elements between 'start' and 'end'.
+    /**
+     * time = O(N)
+     * space = O(k)
+     */
+
     public List<Integer> findClosestElements_4_1(int[] arr, int k, int x) {
 
         int start = 0;
@@ -181,6 +201,11 @@ public class FindKClosestElements {
      * best starting point for this window efficiently,
      * leveraging the fact that the array is already sorted.
      */
+    /**
+     * time = O(log N)
+     * space = O(k)
+     */
+
     public List<Integer> findClosestElements_4_2(int[] arr, int k, int x) {
 
         // The sliding window is between 'mid' and 'mid' + k.
@@ -245,6 +270,11 @@ public class FindKClosestElements {
     // integers.
     // Then, traverse the 'arr' array will replacing the priority queue with integer
     // closer to x.
+    /**
+     * time = O(N log k)
+     * space = O(k)
+     */
+
     public List<Integer> findClosestElements_4_3(int[] arr, int k, int x) {
 
         PriorityQueue<Integer> minHeap = new PriorityQueue<>();

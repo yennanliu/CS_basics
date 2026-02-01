@@ -8,6 +8,11 @@ public class CountOfSmallerNumbersAfterSelf {
 
     // V0
     // IDEA : BINARY SEARCH (fixed by GPT)
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
+
     public List<Integer> countSmaller(int[] nums) {
         List<Integer> res = new ArrayList<>();
         List<Integer> sortedList = new ArrayList<>();
@@ -30,6 +35,11 @@ public class CountOfSmallerNumbersAfterSelf {
         Collections.reverse(res);
         return res;
     }
+
+    /**
+     * time = O(log N)
+     * space = O(1)
+     */
 
     private int findInsertPosition_(List<Integer> sortedList, int target) {
         int left = 0;
@@ -92,6 +102,11 @@ public class CountOfSmallerNumbersAfterSelf {
      * 	    •	The time complexity of this approach is O(n log n) where n is the length of the input array. The log n factor comes from the binary search, and we do this for each of the n elements.
      *
      */
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
+
     public List<Integer> countSmaller_1(int[] nums) {
         List<Integer> sortedList = new ArrayList<>();
         Integer[] result = new Integer[nums.length];
@@ -118,6 +133,11 @@ public class CountOfSmallerNumbersAfterSelf {
      *
      *  NOTE !!! -> This position also represents the number of elements in sortedList that are smaller than target.
      */
+    /**
+     * time = O(log N)
+     * space = O(1)
+     */
+
     private int findInsertPosition(List<Integer> sortedList, int target) {
 
         /**
@@ -174,6 +194,11 @@ public class CountOfSmallerNumbersAfterSelf {
      *   3, Using standard BIT operation to solve it.
      *
      */
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
+
     public List<Integer> countSmaller_2(int[] nums) {
         List<Integer> res = new LinkedList<Integer>();
         if (nums == null || nums.length == 0) {
@@ -197,6 +222,11 @@ public class CountOfSmallerNumbersAfterSelf {
         }
         return res;
     }
+    /**
+     * time = O(log N)
+     * space = O(1)
+     */
+
     private int get(int i, int[] tree) {
         int num = 0;
         while (i > 0) {
@@ -205,6 +235,11 @@ public class CountOfSmallerNumbersAfterSelf {
         }
         return num;
     }
+    /**
+     * time = O(log N)
+     * space = O(1)
+     */
+
     private void update(int i, int[] tree) {
         while (i < tree.length) {
             tree[i] ++;
@@ -217,6 +252,11 @@ public class CountOfSmallerNumbersAfterSelf {
     // IDEA : BST
     // TODO : fix TLE
     // https://leetcode.com/problems/count-of-smaller-numbers-after-self/solutions/76587/easiest-java-solution/
+    /**
+     * time = O(N^2)
+     * space = O(N)
+     */
+
     public List<Integer> countSmaller_3(int[] nums) {
         List<Integer> res = new ArrayList<>();
         if(nums == null || nums.length == 0) return res;
@@ -229,6 +269,11 @@ public class CountOfSmallerNumbersAfterSelf {
         Collections.reverse(res);
         return res;
     }
+
+    /**
+     * time = O(log N)
+     * space = O(1)
+     */
 
     public int insertNode(TreeNode root, int val) {
         int thisCount = 0;
@@ -278,6 +323,11 @@ class TreeNode {
         }
     }
 
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
+
     public List<Integer> countSmaller_4(int[] nums) {
         if (nums == null || nums.length == 0) return new LinkedList<Integer>();
         int n = nums.length;
@@ -294,6 +344,11 @@ class TreeNode {
         for (int i : result) resultList.add(i);
         return resultList;
     }
+
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
 
     private void mergeSortAndCount(ArrayValWithOrigIdx[] nums, int start, int end, int[] result) {
         if (start >= end) return;

@@ -74,6 +74,10 @@ public class CountCompleteTreeNodes {
 
     // V0
     // IDEA : BFS
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int countNodes(TreeNode root) {
 
         if (root == null){
@@ -100,6 +104,10 @@ public class CountCompleteTreeNodes {
 
     // V0-1
     // IDEA : DFS
+    /**
+     * time = O(N)
+     * space = O(log N)
+     */
     public int countNodes_0_1(TreeNode root) {
         if (root == null) {
             return 0;
@@ -118,6 +126,10 @@ public class CountCompleteTreeNodes {
     // V0-2
     // IDEA: DFS
     int nodeCnt = 0;
+    /**
+     * time = O(N)
+     * space = O(log N)
+     */
     public int countNodes_0_2(TreeNode root) {
         // edge
         if(root == null){

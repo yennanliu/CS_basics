@@ -41,6 +41,11 @@ public class FindFirstAndLastPositionOfElementInSortedArray {
 
     // V0
     // IDEA: BINARY SEARCH (fixed by gpt)
+    /**
+     * time = O(log N)
+     * space = O(1)
+     */
+
     public int[] searchRange(int[] nums, int target) {
         int[] res = new int[] { -1, -1 };
         if (nums == null || nums.length == 0)
@@ -51,6 +56,11 @@ public class FindFirstAndLastPositionOfElementInSortedArray {
 
         return new int[] { left, right };
     }
+
+    /**
+     * time = O(log N)
+     * space = O(1)
+     */
 
     private int getLeftBound(int[] nums, int target) {
         int l = 0, r = nums.length - 1;
@@ -69,6 +79,11 @@ public class FindFirstAndLastPositionOfElementInSortedArray {
         }
         return nums[l] == target ? l : -1;
     }
+
+    /**
+     * time = O(log N)
+     * space = O(1)
+     */
 
     private int getRightBound(int[] nums, int target) {
         int l = 0, r = nums.length - 1;
@@ -90,6 +105,11 @@ public class FindFirstAndLastPositionOfElementInSortedArray {
 
     // V0-0-1
     // IDEA: BINARY SEARCH + `left, right` idx extension (fixed by gpt)
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
+
     public int[] searchRange_0_0_1(int[] nums, int target) {
         int[] res = new int[] { -1, -1 };
 
@@ -120,6 +140,11 @@ public class FindFirstAndLastPositionOfElementInSortedArray {
 
         return res;
     }
+
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
 
     private int[] getRange(int[] nums, int idx, int target) {
         int l = idx;
@@ -153,6 +178,11 @@ public class FindFirstAndLastPositionOfElementInSortedArray {
 
     // V0-1
     // IDEA: BINARY SEARCH (fixed by gpt)
+    /**
+     * time = O(log N)
+     * space = O(1)
+     */
+
     public int[] searchRange_0_1(int[] nums, int target) {
         int[] res = new int[] { -1, -1 };
         if (nums == null || nums.length == 0) {
@@ -190,6 +220,11 @@ public class FindFirstAndLastPositionOfElementInSortedArray {
 
     // V0-2
     // IDEA: BINARY SEARCH (fixed by gpt)
+    /**
+     * time = O(log N)
+     * space = O(1)
+     */
+
     public int[] searchRange_0_2(int[] nums, int target) {
         int[] res = new int[]{-1, -1}; // Default result
 
@@ -208,6 +243,11 @@ public class FindFirstAndLastPositionOfElementInSortedArray {
 
         return new int[]{left, right};
     }
+
+    /**
+     * time = O(log N)
+     * space = O(1)
+     */
 
     private int findBound(int[] nums, int target, boolean isFirst) {
         int l = 0, r = nums.length - 1;
@@ -237,6 +277,11 @@ public class FindFirstAndLastPositionOfElementInSortedArray {
     // V2
     // IDEA : BINARY SEARCH
     // https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/solutions/14734/easy-java-o-logn-solution/
+    /**
+     * time = O(log N)
+     * space = O(1)
+     */
+
     public int[] searchRange_2(int[] nums, int target) {
         int[] result = new int[2];
 
@@ -247,6 +292,11 @@ public class FindFirstAndLastPositionOfElementInSortedArray {
         result[1] = findLast(nums, target);
         return result;
     }
+
+    /**
+     * time = O(log N)
+     * space = O(1)
+     */
 
     private int findFirst(int[] nums, int target) {
         int idx = -1;
@@ -270,6 +320,11 @@ public class FindFirstAndLastPositionOfElementInSortedArray {
         }
         return idx;
     }
+
+    /**
+     * time = O(log N)
+     * space = O(1)
+     */
 
     private int findLast(int[] nums, int target) {
         int idx = -1;
@@ -296,6 +351,11 @@ public class FindFirstAndLastPositionOfElementInSortedArray {
     // V3
     // IDEA : Binary Tree
     // https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/solutions/14701/a-very-simple-java-solution-with-only-one-binary-search-algorithm/
+    /**
+     * time = O(log N)
+     * space = O(1)
+     */
+
     public int[] searchRange_3(int[] A, int target) {
         int start = firstGreaterEqual(A, target);
         if (start == A.length || A[start] != target) {
@@ -307,6 +367,11 @@ public class FindFirstAndLastPositionOfElementInSortedArray {
     //find the first number that is greater than or equal to target.
     //could return A.length if target is greater than A[A.length-1].
     //actually this is the same as lower_bound in C++ STL.
+    /**
+     * time = O(log N)
+     * space = O(1)
+     */
+
     private static int firstGreaterEqual(int[] A, int target) {
         int low = 0, high = A.length;
         while (low < high) {
@@ -326,6 +391,11 @@ public class FindFirstAndLastPositionOfElementInSortedArray {
     // V4
     // IDEA : binary Search
     // https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/solutions/5378191/video-binary-search-solution/
+    /**
+     * time = O(log N)
+     * space = O(1)
+     */
+
     public int[] searchRange_4(int[] nums, int target) {
         int[] result = { -1, -1 };
         int left = binarySearch(nums, target, true);
@@ -334,6 +404,11 @@ public class FindFirstAndLastPositionOfElementInSortedArray {
         result[1] = right;
         return result;
     }
+
+    /**
+     * time = O(log N)
+     * space = O(1)
+     */
 
     private int binarySearch(int[] nums, int target, boolean isSearchingLeft) {
         int left = 0;
@@ -362,6 +437,11 @@ public class FindFirstAndLastPositionOfElementInSortedArray {
 
     // V5
     // IDEA : binary Search (gpt)
+    /**
+     * time = O(log N)
+     * space = O(1)
+     */
+
     public int[] searchRange_5(int[] nums, int target) {
         if (nums == null || nums.length == 0) {
             return new int[]{-1, -1};
@@ -376,6 +456,11 @@ public class FindFirstAndLastPositionOfElementInSortedArray {
 
         return new int[]{start, end};
     }
+
+    /**
+     * time = O(log N)
+     * space = O(1)
+     */
 
     private int findBoundary(int[] nums, int target, boolean findStart) {
         int left = 0;

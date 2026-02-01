@@ -57,6 +57,10 @@ public class CapacityToShipPackagesWithinDDays {
 
     // V0
     // IDEA: BINARY SEARCH (fixed by gpt)
+    /**
+     * time = O(N * log M)
+     * space = O(1)
+     */
     public int shipWithinDays(int[] weights, int days) {
         if (weights == null || weights.length == 0 || days <= 0) {
             return -1;
@@ -126,6 +130,10 @@ public class CapacityToShipPackagesWithinDDays {
         return answer;
     }
 
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     private int getDays(int[] weights, int capacity) {
         int days = 1;
         int current = 0;
@@ -141,6 +149,10 @@ public class CapacityToShipPackagesWithinDDays {
 
     // V0-0-0-1
     // IDEA : BINARY SEARCH
+    /**
+     * time = O(N * log M)
+     * space = O(N)
+     */
     public int shipWithinDays_0_0_1(int[] weights, int days) {
 
         if (weights.length==1){
@@ -188,6 +200,10 @@ public class CapacityToShipPackagesWithinDDays {
         return left; // ??? or return mid
     }
 
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     private int getDays(List<Integer> weightsList, int speed){
         int cur = 0;
         int days = 0;
@@ -208,6 +224,10 @@ public class CapacityToShipPackagesWithinDDays {
 
     // V0-1
     // IDEA : BINARY SEARCH (modified by GPT)
+    /**
+     * time = O(N * log M)
+     * space = O(1)
+     */
     public int shipWithinDays_0_1(int[] weights, int days) {
         int maxWeight = 0;
         int totalWeight = 0;
@@ -251,6 +271,10 @@ public class CapacityToShipPackagesWithinDDays {
         return left; // Left and right will converge to the minimum valid capacity
     }
 
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     private int getShipDays(int capacity, int[] weights) {
         int curSum = 0;
         int days = 1;  // Start with 1 day
@@ -273,6 +297,10 @@ public class CapacityToShipPackagesWithinDDays {
     // V2
     // IDEA : BINARY SEARCH
     // https://leetcode.com/problems/capacity-to-ship-packages-within-d-days/solutions/3216547/day-53-binary-search-easiest-beginner-friendly-sol/
+    /**
+     * time = O(N * log M)
+     * space = O(1)
+     */
     public int shipWithinDays_2(int[] weights, int days) {
         int maxWeight = -1, totalWeight = 0;
         for (int weight : weights) {
@@ -302,6 +330,10 @@ public class CapacityToShipPackagesWithinDDays {
     // V3
     // IDEA : BINARY SEARCH
     // https://leetcode.com/problems/capacity-to-ship-packages-within-d-days/solutions/256756/java-simple-java-solution-with-explanation/
+    /**
+     * time = O(N * M)
+     * space = O(D)
+     */
     public int shipWithinDays_3(int[] weights, int D) {
         /*
          * Find the least possible capacity of ship. It will be maximum of -> the
@@ -339,6 +371,10 @@ public class CapacityToShipPackagesWithinDDays {
     // V4
     // IDEA : BINARY SEARCH
     // https://leetcode.com/problems/capacity-to-ship-packages-within-d-days/solutions/3216643/clean-codes-full-explanation-binary-search-c-java-python3/
+    /**
+     * time = O(N * log M)
+     * space = O(1)
+     */
     public int shipWithinDays_4(int[] weights, int days) {
         int l = Arrays.stream(weights).max().getAsInt();
         int r = Arrays.stream(weights).sum();
@@ -353,6 +389,10 @@ public class CapacityToShipPackagesWithinDDays {
         return l;
     }
 
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     private int shipDays(int[] weights, int shipCapacity) {
         int days = 1;
         int capacity = 0;
