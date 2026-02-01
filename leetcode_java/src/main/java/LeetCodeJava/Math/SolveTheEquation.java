@@ -50,13 +50,23 @@ public class SolveTheEquation {
 
     // V1-1
     // IDEA: Partioning Coefficients
+
     // https://leetcode.com/problems/solve-the-equation/editorial/
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public String coeff(String x) {
         if (x.length() > 1 && x.charAt(x.length() - 2) >= '0' && x.charAt(x.length() - 2) <= '9')
             return x.replace("x", "");
         return x.replace("x", "1");
     }
 
+
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public String solveEquation_1_1(String equation) {
         String[] lr = equation.split("=");
         int lhs = 0, rhs = 0;
@@ -81,6 +91,11 @@ public class SolveTheEquation {
         return "x=" + rhs / lhs;
     }
 
+
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public List<String> breakIt(String s) {
         List<String> res = new ArrayList<>();
         String r = "";
@@ -98,13 +113,23 @@ public class SolveTheEquation {
 
     // V1-2
     // IDEA: Using regex for spliting
+
     // https://leetcode.com/problems/solve-the-equation/editorial/
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public String coeff_1_2(String x) {
         if (x.length() > 1 && x.charAt(x.length() - 2) >= '0' && x.charAt(x.length() - 2) <= '9')
             return x.replace("x", "");
         return x.replace("x", "1");
     }
 
+
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public String solveEquation_1_2(String equation) {
         String[] lr = equation.split("=");
         int lhs = 0, rhs = 0;

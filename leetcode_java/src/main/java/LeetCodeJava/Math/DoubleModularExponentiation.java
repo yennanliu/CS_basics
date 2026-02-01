@@ -67,6 +67,11 @@ public class DoubleModularExponentiation {
      *
      *   we do `mod op` in each multiply
      */
+
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public List<Integer> getGoodIndices_0_1(int[][] variables, int target) {
         List<Integer> ans = new ArrayList<>();
 
@@ -210,7 +215,12 @@ public class DoubleModularExponentiation {
 
 
     // V0-2
+
     // IDEA: MATH (fixed by gpt)
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public List<Integer> getGoodIndices_0_2(int[][] variables, int target) {
         List<Integer> ans = new ArrayList<>();
 
@@ -258,7 +268,12 @@ public class DoubleModularExponentiation {
 
 
     // V0-3
+
     // IDEA: MATH (fixed by gemini)
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public List<Integer> getGoodIndices_0_3(int[][] variables, int target) {
         List<Integer> ans = new ArrayList<>();
 
@@ -335,7 +350,12 @@ public class DoubleModularExponentiation {
 
 
     // V1
+
     // https://leetcode.com/problems/double-modular-exponentiation/solutions/4384819/mastering-modular-exponentiation-beginne-rsfw/
+    /**
+     * time = O(log(N))
+     * space = O(1)
+     */
     public long customPow(int base, int exponent, int mod) {
         long result = 1;
         while (exponent > 0) {
@@ -348,6 +368,11 @@ public class DoubleModularExponentiation {
         return result;
     }
 
+
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public List<Integer> getGoodIndices_1(int[][] variables, int target) {
         List<Integer> ans = new ArrayList<>();
         int i = 0;
@@ -364,7 +389,12 @@ public class DoubleModularExponentiation {
         return ans;
     }
 
+
     // V2
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public List<Integer> getGoodIndices_2(int[][] variables, int target) {
         List<Integer> result = new ArrayList<>();
         for (int i = 0; i < variables.length; ++i) {

@@ -84,6 +84,11 @@ public class DetectSquares {
             this.points = new HashSet<>();
         }
 
+
+        /**
+         * time = O(N)
+         * space = O(1)
+         */
         public void add(int[] point) {
             String val = getValue(point);
             this.map.put(val, this.map.getOrDefault(val, 0) + 1);
@@ -91,6 +96,11 @@ public class DetectSquares {
             this.points.add(val);
         }
 
+
+        /**
+         * time = O(N)
+         * space = O(1)
+         */
         public int count(int[] point) {
 
             // check `square cnt`
@@ -181,12 +191,22 @@ public class DetectSquares {
             this.points = new HashSet<>();
         }
 
+
+        /**
+         * time = O(N)
+         * space = O(1)
+         */
         public void add(int[] point) {
             String key = point[0] + "," + point[1]; // Use a string to represent the point
             this.pointCnt.put(key, this.pointCnt.getOrDefault(key, 0) + 1);
             this.points.add(key); // Add the point to the set
         }
 
+
+        /**
+         * time = O(N)
+         * space = O(1)
+         */
         public int count(int[] point) {
             int cnt = 0;
             int p_x = point[0];
@@ -234,12 +254,22 @@ public class DetectSquares {
             this.points = new HashSet<>();
         }
 
+
+        /**
+         * time = O(N)
+         * space = O(1)
+         */
         public void add(int[] point) {
             String key = point[0] + "," + point[1]; // Use a string to represent the point
             this.pointCnt.put(key, this.pointCnt.getOrDefault(key, 0) + 1);
             this.points.add(key); // Add the point to the set
         }
 
+
+        /**
+         * time = O(N)
+         * space = O(1)
+         */
         public int count(int[] point) {
             int cnt = 0;
             int p_x = point[0];
@@ -284,6 +314,11 @@ public class DetectSquares {
             pointMap = new HashMap<>();
         }
 
+
+        /**
+         * time = O(N)
+         * space = O(N)
+         */
         public void add(int[] point) {
             int x = point[0], y = point[1];
             pointMap.putIfAbsent(x, new HashMap<>());
@@ -291,6 +326,11 @@ public class DetectSquares {
             yMap.put(y, yMap.getOrDefault(y, 0) + 1);
         }
 
+
+        /**
+         * time = O(N)
+         * space = O(1)
+         */
         public int count(int[] point) {
             int x = point[0], y = point[1];
             int total = 0;
@@ -331,12 +371,22 @@ public class DetectSquares {
                 pts = new ArrayList<>();
             }
 
+
+            /**
+             * time = O(N)
+             * space = O(1)
+             */
             public void add(int[] point) {
                 List<Integer> p = Arrays.asList(point[0], point[1]);
                 ptsCount.put(p, ptsCount.getOrDefault(p, 0) + 1);
                 pts.add(p);
             }
 
+
+            /**
+             * time = O(N)
+             * space = O(1)
+             */
             public int count(int[] point) {
                 int res = 0;
                 int px = point[0], py = point[1];
@@ -362,12 +412,22 @@ public class DetectSquares {
                 ptsCount = new HashMap<>();
             }
 
+
+            /**
+             * time = O(N)
+             * space = O(N)
+             */
             public void add(int[] point) {
                 int x = point[0], y = point[1];
                 ptsCount.putIfAbsent(x, new HashMap<>());
                 ptsCount.get(x).put(y, ptsCount.get(x).getOrDefault(y, 0) + 1);
             }
 
+
+            /**
+             * time = O(N)
+             * space = O(N)
+             */
             public int count(int[] point) {
                 int res = 0, x1 = point[0], y1 = point[1];
 
@@ -402,6 +462,11 @@ public class DetectSquares {
                 matrix = new Integer[1001][1001];
             }
 
+
+            /**
+             * time = O(N)
+             * space = O(1)
+             */
             public void add(int[] point) {
                 if (matrix[point[0]][point[1]] == null) {
                     matrix[point[0]][point[1]] = 1;
@@ -410,6 +475,11 @@ public class DetectSquares {
                 }
             }
 
+
+            /**
+             * time = O(N)
+             * space = O(1)
+             */
             public int count(int[] point) {
                 int currentSquareCount = 0;
                 int currentPointCount = 1;
@@ -515,12 +585,22 @@ public class DetectSquares {
                 counts = new HashMap<>();
             }
 
+
+            /**
+             * time = O(N)
+             * space = O(1)
+             */
             public void add(int[] point) {
                 coordinates.add(point);
                 String key = point[0] + "@" + point[1];
                 counts.put(key, counts.getOrDefault(key, 0) + 1);
             }
 
+
+            /**
+             * time = O(N)
+             * space = O(1)
+             */
             public int count(int[] point) {
                 int sum = 0, px = point[0], py = point[1];
                 for (int[] coordinate : coordinates) {

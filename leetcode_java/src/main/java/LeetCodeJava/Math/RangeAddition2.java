@@ -52,7 +52,12 @@ public class RangeAddition2 {
     // V1
 
     // V2
+
     // https://leetcode.ca/2017-07-20-598-Range-Addition-II/
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int maxCount_2(int m, int n, int[][] ops) {
         for (int[] op : ops) {
             m = Math.min(m, op[0]);

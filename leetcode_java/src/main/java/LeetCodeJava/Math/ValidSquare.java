@@ -35,11 +35,21 @@ public class ValidSquare {
 
   // V1
   // https://leetcode.com/problems/valid-square/editorial/
+
   // IDEA : BRUTE FORCE
+  /**
+   * time = O(N)
+   * space = O(1)
+   */
   public double dist(int[] p1, int[] p2) {
     return (p2[1] - p1[1]) * (p2[1] - p1[1]) + (p2[0] - p1[0]) * (p2[0] - p1[0]);
   }
 
+
+  /**
+   * time = O(N)
+   * space = O(1)
+   */
   public boolean check(int[] p1, int[] p2, int[] p3, int[] p4) {
     return dist(p1, p2) > 0
         && dist(p1, p2) == dist(p2, p3)
@@ -48,6 +58,11 @@ public class ValidSquare {
         && dist(p1, p3) == dist(p2, p4);
   }
 
+
+  /**
+   * time = O(N)
+   * space = O(1)
+   */
   public boolean validSquare_1(int[] p1, int[] p2, int[] p3, int[] p4) {
     int[][] p = {p1, p2, p3, p4};
     return checkAllPermutations(p, 0);
@@ -67,6 +82,11 @@ public class ValidSquare {
     }
   }
 
+
+  /**
+   * time = O(N)
+   * space = O(1)
+   */
   public void swap(int[][] p, int x, int y) {
     int[] temp = p[x];
     p[x] = p[y];
@@ -75,11 +95,21 @@ public class ValidSquare {
 
   // V2
   // https://leetcode.com/problems/valid-square/editorial/
+
   // IDEA : Using Sorting
+  /**
+   * time = O(N)
+   * space = O(1)
+   */
   public double dist_2(int[] p1, int[] p2) {
     return (p2[1] - p1[1]) * (p2[1] - p1[1]) + (p2[0] - p1[0]) * (p2[0] - p1[0]);
   }
 
+
+  /**
+   * time = O(N)
+   * space = O(1)
+   */
   public boolean validSquare_2(int[] p1, int[] p2, int[] p3, int[] p4) {
     int[][] p = {p1, p2, p3, p4};
     Arrays.sort(p, (l1, l2) -> l2[0] == l1[0] ? l1[1] - l2[1] : l1[0] - l2[0]);
@@ -92,11 +122,21 @@ public class ValidSquare {
 
   // V3
   // https://leetcode.com/problems/valid-square/editorial/
+
   // IDEA : Checking every case
+  /**
+   * time = O(N)
+   * space = O(1)
+   */
   public double dist_3(int[] p1, int[] p2) {
     return (p2[1] - p1[1]) * (p2[1] - p1[1]) + (p2[0] - p1[0]) * (p2[0] - p1[0]);
   }
 
+
+  /**
+   * time = O(N)
+   * space = O(1)
+   */
   public boolean check_3(int[] p1, int[] p2, int[] p3, int[] p4) {
     return dist_3(p1, p2) > 0
         && dist_3(p1, p2) == dist_3(p2, p3)
@@ -105,6 +145,11 @@ public class ValidSquare {
         && dist_3(p1, p3) == dist_3(p2, p4);
   }
 
+
+  /**
+   * time = O(N)
+   * space = O(1)
+   */
   public boolean validSquare_3(int[] p1, int[] p2, int[] p3, int[] p4) {
     return check_3(p1, p2, p3, p4) || check_3(p1, p3, p2, p4) || check_3(p1, p2, p4, p3);
   }

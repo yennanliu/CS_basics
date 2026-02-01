@@ -62,7 +62,12 @@ public class RomanTOInteger {
 
 
     // V0
+
     // IDEA: MAP + STR OP (fixed by gpt)
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int romanToInt(String s) {
 
         // edge
@@ -121,7 +126,12 @@ public class RomanTOInteger {
     }
 
     // V0-1
+
     // IDEA: MAP + STR OP (fixed by gpt)
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int romanToInt_0_1(String s) {
         if (s == null || s.isEmpty()) {
             return 0;
@@ -164,7 +174,12 @@ public class RomanTOInteger {
 
     // V1
     // https://www.youtube.com/watch?v=3jdxYj3DD98&pp=0gcJCdgAo7VqN5tD
+
     // https://github.com/neetcode-gh/leetcode/blob/main/java%2F0013-roman-to-integer.java
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int romanToInt_1(String s) {
         HashMap<Character, Integer> map = new HashMap();
         map.put('I', 1);

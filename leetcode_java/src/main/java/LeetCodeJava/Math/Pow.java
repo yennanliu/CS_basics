@@ -70,7 +70,12 @@ public class Pow {
 
     // V1-1
     // https://neetcode.io/problems/pow-x-n
+
     // IDEA: BRUTE FORCE
+    /**
+     * time = O(log(N))
+     * space = O(1)
+     */
     public double myPow_1_1(double x, int n) {
         if (x == 0) {
             return 0;
@@ -88,7 +93,12 @@ public class Pow {
 
     // V1-2
     // https://neetcode.io/problems/pow-x-n
+
     // IDEA: Binary Exponentiation (Recursive)
+    /**
+     * time = O(log(N))
+     * space = O(1)
+     */
     public double myPow_1_2(double x, int n) {
         if (x == 0) {
             return 0;
@@ -112,7 +122,12 @@ public class Pow {
 
     // V1-3
     // https://neetcode.io/problems/pow-x-n
+
     // IDEA: Binary Exponentiation (Iterative)
+    /**
+     * time = O(log(N))
+     * space = O(1)
+     */
     public double myPow_1_3(double x, int n) {
         if (x == 0) return 0;
         if (n == 0) return 1;
@@ -132,7 +147,12 @@ public class Pow {
     }
 
     // V2
+
     // IDEA: GREEDY (fix by gpt)
+    /**
+     * time = O(log(N))
+     * space = O(1)
+     */
     public double myPow_2(double x, int n) {
         if (n == 0)
             return 1.0; // ✅ Fix incorrect return value
@@ -157,7 +177,12 @@ public class Pow {
 
 
     // V3
+
     // https://leetcode.com/problems/powx-n/solutions/4919918/beats-100-00-of-users-with-java-simple-easy-well-explained-solution-using-loop/
+    /**
+     * time = O(log(N))
+     * space = O(1)
+     */
     public double myPow_3(double x, int n) {
         double ans=1;
         long n_temp = n;
@@ -181,7 +206,12 @@ public class Pow {
 
     // V4
     // IDEA : BIT OP
+
     // https://leetcode.com/problems/powx-n/
+    /**
+     * time = O(log(N))
+     * space = O(1)
+     */
     public double myPow_4(double x, int n) {
 
         if(n < 0){

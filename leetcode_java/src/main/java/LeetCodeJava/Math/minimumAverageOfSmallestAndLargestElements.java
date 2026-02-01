@@ -9,7 +9,12 @@ import java.util.List;
 public class minimumAverageOfSmallestAndLargestElements {
 
     // V0
+
     // IDEA : MATH
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public double minimumAverage(int[] nums) {
 
         if (nums.length == 1){
