@@ -52,6 +52,18 @@ public class MaximizeGreatnessOfAnArray {
 
     // V1
     // IDEA: TREE MAP + 2 POINTERS (fixed by gpt)
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int maximizeGreatness_1(int[] nums) {
         if (nums == null || nums.length <= 1)
             return 0;
@@ -88,6 +100,18 @@ public class MaximizeGreatnessOfAnArray {
     // V2-1
     // IDEA: SORT
     // https://leetcode.com/problems/maximize-greatness-of-an-array/solutions/3312061/javacpython-easy-and-concise-on-by-lee21-y92l/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int maximizeGreatness_2_1(int[] A) {
         Arrays.sort(A);
         int res = 0;
@@ -100,6 +124,18 @@ public class MaximizeGreatnessOfAnArray {
     // V2-2
     // IDEA: hashmap + greedy
     // https://leetcode.com/problems/maximize-greatness-of-an-array/solutions/3312061/javacpython-easy-and-concise-on-by-lee21-y92l/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int maximizeGreatness_2_2(int[] A) {
         Map<Integer, Integer> count = new HashMap<Integer, Integer>();
         int k = 0;
@@ -110,6 +146,18 @@ public class MaximizeGreatnessOfAnArray {
 
     // V3
     // https://leetcode.com/problems/maximize-greatness-of-an-array/solutions/3311993/easy-java-solution-by-1asthakhushi1-1hmy/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int maximizeGreatness_3(int[] nums) {
         Arrays.sort(nums);
         if (nums.length == 1)

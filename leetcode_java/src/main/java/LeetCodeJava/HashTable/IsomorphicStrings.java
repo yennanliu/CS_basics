@@ -5,7 +5,18 @@ package LeetCodeJava.HashTable;
 import java.util.HashMap;
 
 public class IsomorphicStrings {
-
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public boolean isIsomorphic(String s, String t) {
         if (s.length() != t.length()) {
             return false;

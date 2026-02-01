@@ -74,6 +74,10 @@ class GroupShiftedStrings {
      *
      *   how we get `dist pattern` below
      */
+    /**
+     * time = O(K)
+     * space = O(K)
+     */
     private String getDist(String input) {
         if (input.isEmpty() || input.length() == 1) {
             return "single"; // all single letters belong together

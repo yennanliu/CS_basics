@@ -66,6 +66,18 @@ public class LineReflection {
 
     // V0-2
     // IDEA: HASHSET (fixed by gpt)
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public boolean isReflected_0_2(int[][] points) {
         if (points == null || points.length == 0) return true;
 
@@ -96,6 +108,18 @@ public class LineReflection {
 
     // V1
     // https://leetcode.ca/2016-11-20-356-Line-Reflection/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public boolean isReflected_1(int[][] points) {
         final int inf = 1 << 30;
         int minX = inf, maxX = -inf;

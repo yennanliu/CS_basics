@@ -59,6 +59,18 @@ public class LongestHarmoniousSubsequence {
 
     // V0
     // IDEA: HASHMAP
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int findLHS(int[] nums) {
         // edge
         if (nums == null || nums.length == 0) {
@@ -106,6 +118,18 @@ public class LongestHarmoniousSubsequence {
     // V1
     // IDEA: HASH MAP
     // https://leetcode.ca/2017-07-16-594-Longest-Harmonious-Subsequence/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int findLHS_1(int[] nums) {
         Map<Integer, Integer> counter = new HashMap<>();
         for (int num : nums) {
@@ -123,6 +147,18 @@ public class LongestHarmoniousSubsequence {
     // V2-1
     // IDEA: SORT + ARRAY
     // https://leetcode.com/problems/longest-harmonious-subsequence/solutions/6899953/beginner-freindlyjavacpythonjs-by-ashokv-7can/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int findLHS_2_1(int[] nums) {
         Arrays.sort(nums);
         int j = 0;
@@ -142,6 +178,18 @@ public class LongestHarmoniousSubsequence {
     // V2-2
     // IDEA: HASHMAP
     // https://leetcode.com/problems/longest-harmonious-subsequence/solutions/6899953/beginner-freindlyjavacpythonjs-by-ashokv-7can/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int findLHS_2_2(int[] nums) {
         Map<Integer, Integer> frequencyMap = new HashMap<>();
 

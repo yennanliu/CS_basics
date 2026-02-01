@@ -44,6 +44,18 @@ public class LongestRepeatingCharacterReplacement {
     // V0
     // IDEA : TWO POINTER + HASHMAP + FOR LOOP
     // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Hash_table/longest-repeating-character-replacement.py
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int characterReplacement(String s, int k) {
         Map<Character, Integer> table = new HashMap<>();
         int res = 0;
@@ -96,6 +108,18 @@ public class LongestRepeatingCharacterReplacement {
 
     // V0-1
     // IDEA: HASHMAP + 2 POINTERS (fixed by gpt)
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int characterReplacement_0_1(String s, int k) {
         if (s == null || s.length() == 0)
             return 0;
@@ -126,6 +150,18 @@ public class LongestRepeatingCharacterReplacement {
     }
 
     // V0_2
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int characterReplacement_0_2(String s, int k) {
 
         if (s.length() < k){
@@ -183,6 +219,18 @@ public class LongestRepeatingCharacterReplacement {
     // V0_3
     // IDEA : TWO POINTER + HASHMAP (modified by GPT)
     // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Hash_table/longest-repeating-character-replacement.py
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int characterReplacement_0_3(String s, int k) {
         Map<Character, Integer> table = new HashMap<>();
         int res = 0;
@@ -214,6 +262,18 @@ public class LongestRepeatingCharacterReplacement {
     // V1-1
     // https://neetcode.io/problems/longest-repeating-substring-with-replacement
     // IDEA: BRUTE FORCE
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int characterReplacement_1_1(String s, int k) {
         int res = 0;
         for (int i = 0; i < s.length(); i++) {
@@ -234,6 +294,18 @@ public class LongestRepeatingCharacterReplacement {
     // V1-2
     // https://neetcode.io/problems/longest-repeating-substring-with-replacement
     // IDEA: SLIDING WINDOW
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int characterReplacement_1_2(String s, int k) {
         int res = 0;
         HashSet<Character> charSet = new HashSet<>();
@@ -265,6 +337,18 @@ public class LongestRepeatingCharacterReplacement {
     // V1-3
     // https://neetcode.io/problems/longest-repeating-substring-with-replacement
     // IDEA: Sliding Window (Optimal)
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int characterReplacement_1_3(String s, int k) {
         HashMap<Character, Integer> count = new HashMap<>();
         int res = 0;
@@ -287,6 +371,18 @@ public class LongestRepeatingCharacterReplacement {
     // V2
     // IDEA : Sliding Window + Binary Search
     // https://leetcode.com/problems/longest-repeating-character-replacement/editorial/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int characterReplacement_2(String s, int k) {
         // binary search over the length of substring
         // lo contains the valid value, and hi contains the
@@ -351,6 +447,18 @@ public class LongestRepeatingCharacterReplacement {
     // V3
     // IDEA : Sliding Window (Slow)
     // https://leetcode.com/problems/longest-repeating-character-replacement/editorial/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int characterReplacement_3(String s, int k) {
         HashSet<Character> allLetters = new HashSet();
 
@@ -393,6 +501,18 @@ public class LongestRepeatingCharacterReplacement {
     // V4
     // IDEA : Sliding Window (Fast)
     // https://leetcode.com/problems/longest-repeating-character-replacement/editorial/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int characterReplacement_4(String s, int k) {
         int start = 0;
         int[] frequencyMap = new int[26];
