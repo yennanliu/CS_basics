@@ -49,6 +49,18 @@ public class DivideArrayIntoIncreasingSequences {
     // V2
     // https://leetcode.ca/2018-12-25-1121-Divide-Array-Into-Increasing-Sequences/
     // TODO: validate below
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public boolean canDivideIntoSubsequences_2(int[] nums, int k) {
         Map<Integer, Integer> cnt = new HashMap<>();
         int mx = 0;

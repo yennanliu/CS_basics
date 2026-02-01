@@ -9,6 +9,18 @@ import java.util.Set;
 public class ContainsDuplicate {
 
     // V0
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public boolean containsDuplicate(int[] nums) {
         Set<Integer> set = new HashSet<>();
         for (int x : nums){
@@ -18,6 +30,18 @@ public class ContainsDuplicate {
     }
 
     // V1
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public boolean containsDuplicate_1(int[] nums) {
 
         if (nums.length == 0 || nums.equals(null)){

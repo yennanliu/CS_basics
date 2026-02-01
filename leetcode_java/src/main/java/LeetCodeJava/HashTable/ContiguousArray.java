@@ -62,6 +62,18 @@ public class ContiguousArray {
      * 	    the subarray between the first and current index is balanced.
      *
      */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int findMaxLength_0_1(int[] nums) {
 
     // Map: {count -> first index where this count occurred}
@@ -131,6 +143,18 @@ public class ContiguousArray {
 
     // V0-2
     // IDEA; BRUTE FORCE (TLE)
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int findMaxLength_0_2(int[] nums) {
 
         // edge
@@ -166,6 +190,18 @@ public class ContiguousArray {
     // V1-1
     // https://leetcode.com/problems/contiguous-array/editorial/
     // IDEA: BRUTE FORCE
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int findMaxLength_1_1(int[] nums) {
         int maxlen = 0;
         for (int start = 0; start < nums.length; start++) {
@@ -187,7 +223,19 @@ public class ContiguousArray {
   // V1-2
   // https://leetcode.com/problems/contiguous-array/editorial/
   // IDEA: HASHMAP
-  public int findMaxLength_1_2(int[] nums) {
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    public int findMaxLength_1_2(int[] nums) {
         Map<Integer, Integer> map = new HashMap<>();
         map.put(0, -1);
         int maxlen = 0, count = 0;
