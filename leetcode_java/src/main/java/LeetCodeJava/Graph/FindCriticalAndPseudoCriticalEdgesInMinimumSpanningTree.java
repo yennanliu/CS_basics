@@ -71,21 +71,61 @@ public class FindCriticalAndPseudoCriticalEdgesInMinimumSpanningTree {
     class UnionFind {
         private int[] parent;
 
+        /**
+         * time = O(E * α(V))
+
+
+         * space = O(V)
+
+
+         */
+
+
         public UnionFind(int n) {
             parent = new int[n];
             for (int i = 0; i < n; i++)
                 parent[i] = i;
         }
 
+        /**
+         * time = O(E * α(V))
+
+
+         * space = O(V)
+
+
+         */
+
+
         public int findParent(int p) {
             return parent[p] == p ? p : (parent[p] = findParent(parent[p]));
         }
+
+        /**
+         * time = O(E * α(V))
+
+
+         * space = O(V)
+
+
+         */
+
 
         public void union(int u, int v) {
             int pu = findParent(u), pv = findParent(v);
             parent[pu] = pv;
         }
     }
+
+    /**
+     * time = O(E * α(V))
+
+
+     * space = O(V)
+
+
+     */
+
 
     public List<List<Integer>> findCriticalAndPseudoCriticalEdges_3(int n, int[][] edges) {
         List<Integer> critical = new ArrayList<>();

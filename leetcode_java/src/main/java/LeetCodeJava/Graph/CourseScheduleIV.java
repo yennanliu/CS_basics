@@ -168,6 +168,10 @@ public class CourseScheduleIV {
 
     // V0-1
     // IDEA: TOPOLOGICAL SORT (fixed by gpt)
+    /**
+     * time = O(V + E)
+     * space = O(V)
+     */
     public List<Boolean> checkIfPrerequisite_0_1(int numCourses, int[][] prerequisites, int[][] queries) {
         List<Boolean> res = new ArrayList<>();
 
@@ -219,6 +223,10 @@ public class CourseScheduleIV {
 
     // V0-2
     // IDEA: DFS (fixed by gpt)
+    /**
+     * time = O(V + E)
+     * space = O(V)
+     */
     public List<Boolean> checkIfPrerequisite_0_2(int numCourses, int[][] prerequisites, int[][] queries) {
         List<Boolean> res = new ArrayList<>();
 
@@ -251,6 +259,10 @@ public class CourseScheduleIV {
         return res;
     }
 
+    /**
+     * time = O(V + E)
+     * space = O(V)
+     */
     private void dfs(int course, List<Integer>[] graph, Set<Integer>[] reachable, boolean[] visited) {
         if (!reachable[course].isEmpty())
             return;
@@ -272,6 +284,10 @@ public class CourseScheduleIV {
     // V1
     // https://www.youtube.com/watch?v=cEW05ofxhn0
     // https://github.com/neetcode-gh/leetcode/blob/main/java%2F1462-course-schedule-iv.java
+    /**
+     * time = O(V + E)
+     * space = O(V)
+     */
     public List<Boolean> checkIfPrerequisite_1(int numCourses, int[][] prerequisites, int[][] queries) {
         HashMap<Integer, List<Integer>> hm = new HashMap<>();
         List<Boolean> res = new ArrayList<>();
@@ -287,6 +303,10 @@ public class CourseScheduleIV {
         return res;
     }
 
+    /**
+     * time = O(V + E)
+     * space = O(V)
+     */
     boolean dfs(HashMap<Integer, List<Integer>> hm, int s, int target, boolean[] visited) {
         if (!hm.containsKey(s)) return false;
         if (hm.get(s).contains(target)) return true;
@@ -305,6 +325,10 @@ public class CourseScheduleIV {
     // IDEA: Tree Traversal - On Demand
     // Performs DFS and returns true if there's a path between src and target
     // and false otherwise.
+    /**
+     * time = O(V + E)
+     * space = O(V)
+     */
     private boolean isPrerequisite(
             Map<Integer, List<Integer>> adjList,
             boolean[] visited,
@@ -328,6 +352,10 @@ public class CourseScheduleIV {
         return answer;
     }
 
+    /**
+     * time = O(V * (V + E))
+     * space = O(V)
+     */
     public List<Boolean> checkIfPrerequisite_2_1(
             int numCourses,
             int[][] prerequisites,
@@ -360,6 +388,10 @@ public class CourseScheduleIV {
     // Iterate over each node and perform BFS starting from it.
     // Mark the starting node as a prerequisite to all the nodes in the BFS
     // traversal.
+    /**
+     * time = O(V * (V + E))
+     * space = O(V^2)
+     */
     private void preprocess(
             int numCourses,
             int[][] prerequisites,
@@ -386,6 +418,10 @@ public class CourseScheduleIV {
         }
     }
 
+    /**
+     * time = O(V * (V + E))
+     * space = O(V^2)
+     */
     public List<Boolean> checkIfPrerequisite_2_2(
             int numCourses,
             int[][] prerequisites,
@@ -413,6 +449,10 @@ public class CourseScheduleIV {
     // V2-3
     // https://leetcode.com/problems/course-schedule-iv/editorial/
     // IDEA: Topological Sort - Kahn's Algorithm
+    /**
+     * time = O(V + E)
+     * space = O(V^2)
+     */
     public List<Boolean> checkIfPrerequisite_2_3(
             int numCourses,
             int[][] prerequisites,
@@ -476,6 +516,10 @@ public class CourseScheduleIV {
     // V2-4
     // https://leetcode.com/problems/course-schedule-iv/editorial/
     // IDEA: Floyd Warshall Algorithm
+    /**
+     * time = O(V^3)
+     * space = O(V^2)
+     */
     public List<Boolean> checkIfPrerequisite_2_4(
             int numCourses,
             int[][] prerequisites,

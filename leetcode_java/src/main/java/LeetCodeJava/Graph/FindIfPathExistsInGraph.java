@@ -49,6 +49,11 @@ public class FindIfPathExistsInGraph {
 
     // V0
     // IDEA: DFS (fixed by gemini)
+    /**
+     * time = O(V + E)
+     * space = O(V)
+     */
+
     public boolean validPath(int n, int[][] edges, int source, int destination) {
         // 1. Quick check: If source is destination, a path exists.
         if (source == destination)
@@ -118,6 +123,11 @@ public class FindIfPathExistsInGraph {
 
     // V0-2
     // IDEA: DFS
+    /**
+     * time = O(V + E)
+     * space = O(V)
+     */
+
     public boolean validPath_0_2(int n, int[][] edges, int source, int destination) {
         if (source == destination) {
             return true;
@@ -167,6 +177,11 @@ public class FindIfPathExistsInGraph {
     // V1-1
     // IDEA: BFS
     // https://leetcode.ca/2021-08-17-1971-Find-if-Path-Exists-in-Graph/
+    /**
+     * time = O(V + E)
+     * space = O(V)
+     */
+
     public boolean validPath_1_1(int n, int[][] edges, int start, int end) {
         Map<Integer, List<Integer>> map = new HashMap<Integer, List<Integer>>();
         for (int[] edge : edges) {
@@ -202,6 +217,11 @@ public class FindIfPathExistsInGraph {
     // IDEA: UNION FIND (?
     // https://leetcode.ca/2021-08-17-1971-Find-if-Path-Exists-in-Graph/
     private int[] p;
+    /**
+     * time = O(E * α(V))
+     * space = O(V)
+     */
+
     public boolean validPath_1_2(int n, int[][] edges, int source, int destination) {
         p = new int[n];
         for (int i = 0; i < n; ++i) {
@@ -224,6 +244,11 @@ public class FindIfPathExistsInGraph {
     // V2-1
     // IDEA: DFS
     // https://leetcode.com/problems/find-if-path-exists-in-graph/solutions/5052207/fasterlesser4-methodsdetailed-approachdf-jo0x/
+    /**
+     * time = O(V + E)
+     * space = O(V)
+     */
+
     public boolean validPath_2_1(int n, int[][] edges, int source, int destination) {
         Map<Integer, List<Integer>> graph = new HashMap<>();
         for (int[] edge : edges) {
@@ -256,6 +281,11 @@ public class FindIfPathExistsInGraph {
     // V2-2
     // IDEA: BFS
     // https://leetcode.com/problems/find-if-path-exists-in-graph/solutions/5052207/fasterlesser4-methodsdetailed-approachdf-jo0x/
+    /**
+     * time = O(V + E)
+     * space = O(V)
+     */
+
     public boolean validPath_2_2(int n, int[][] edges, int source, int destination) {
         Map<Integer, List<Integer>> graph = new HashMap<>();
         for (int[] edge : edges) {
@@ -294,6 +324,16 @@ public class FindIfPathExistsInGraph {
     // https://leetcode.com/problems/find-if-path-exists-in-graph/solutions/5052207/fasterlesser4-methodsdetailed-approachdf-jo0x/
     private int[] parent;
     private int[] rank;
+
+    /**
+     * time = O(E * α(V))
+
+
+     * space = O(V)
+
+
+     */
+
 
     public boolean validPath_2_3(int n, int[][] edges, int source, int destination) {
         parent = new int[n];
@@ -341,6 +381,11 @@ public class FindIfPathExistsInGraph {
     // V2-4
     // IDEA: GRAPH
     // https://leetcode.com/problems/find-if-path-exists-in-graph/solutions/5052207/fasterlesser4-methodsdetailed-approachdf-jo0x/
+    /**
+     * time = O(E * α(V))
+     * space = O(V)
+     */
+
     public boolean validPath_2_4(int n, int[][] edges, int source, int destination) {
         Map<Integer, List<Integer>> graph = new HashMap<>();
         for (int[] edge : edges) {
