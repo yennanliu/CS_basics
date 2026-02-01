@@ -242,6 +242,10 @@ public class MaximumNumberOfKDivisibleComponents {
     // V1-1
     // IDEA: DFS
     // https://leetcode.com/problems/maximum-number-of-k-divisible-components/editorial/
+    /**
+     * time = O(V + E)
+     * space = O(V)
+     */
     public int maxKDivisibleComponents_1_1(
             int n,
             int[][] edges,
@@ -310,6 +314,10 @@ public class MaximumNumberOfKDivisibleComponents {
     // V1-2
     // IDEA: DFS
     // https://leetcode.com/problems/maximum-number-of-k-divisible-components/editorial/
+    /**
+     * time = O(V + E)
+     * space = O(V)
+     */
     public int maxKDivisibleComponents_1_2(
             int n,
             int[][] edges,
@@ -391,6 +399,10 @@ public class MaximumNumberOfKDivisibleComponents {
     // V1-3
     // IDEA: Topological Sort / Onion Sort
     // https://leetcode.com/problems/maximum-number-of-k-divisible-components/editorial/
+    /**
+     * time = O(V + E)
+     * space = O(V)
+     */
     public int maxKDivisibleComponents_1_3(
             int n,
             int[][] edges,
@@ -464,6 +476,10 @@ public class MaximumNumberOfKDivisibleComponents {
 
     // V3
     // https://leetcode.com/problems/maximum-number-of-k-divisible-components/solutions/6169223/topological-sort-approach-c-java-python-s98ti/
+    /**
+     * time = O(V + E)
+     * space = O(V)
+     */
     public int maxKDivisibleComponents_3(int n, int[][] edges, int[] vals, int k) {
         if (n < 2)
             return 1;
