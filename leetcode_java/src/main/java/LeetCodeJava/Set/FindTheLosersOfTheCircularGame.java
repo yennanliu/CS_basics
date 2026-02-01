@@ -65,6 +65,10 @@ public class FindTheLosersOfTheCircularGame {
 
     // V0-1
     // IDEA: SET + MATH (fixed by gpt)
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public int[] circularGameLosers_0_1(int n, int k) {
         boolean[] visited = new boolean[n + 1]; // 1-based indexing
         int cnt = 1;
@@ -100,6 +104,10 @@ public class FindTheLosersOfTheCircularGame {
 
     // V1
     // https://leetcode.com/problems/find-the-losers-of-the-circular-game/solutions/3521902/simple-clean-java-solution-by-himanshubh-sd3u/
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public int[] circularGameLosers_1(int n, int k) {
         boolean visited[] = new boolean[n];
         int v = 0, i = 0;
@@ -119,6 +127,10 @@ public class FindTheLosersOfTheCircularGame {
 
     // V2
     // https://leetcode.com/problems/find-the-losers-of-the-circular-game/solutions/3528741/java-beats-99-10-lines-by-judgementdey-g5ia/
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public int[] circularGameLosers_2(int n, int k) {
         boolean[] map = new boolean[n];
         int x = 0, i;

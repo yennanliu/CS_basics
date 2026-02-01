@@ -48,6 +48,10 @@ public class DistinctEchoSubstrings {
     private static final int PRIME = 101;
     private static final int MOD = 1_000_000_007;
 
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public int distinctEchoSubstrings_2(String text) {
         int n = text.length();
 
@@ -77,6 +81,10 @@ public class DistinctEchoSubstrings {
 
     // V3
     // https://leetcode.com/problems/distinct-echo-substrings/solutions/477137/another-java-solution-by-gyarish-on7k/
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public int distinctEchoSubstrings_3(String text) {
         char[] word = text.toCharArray();
         Set<String> result = new HashSet<>();

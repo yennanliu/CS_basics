@@ -45,6 +45,10 @@ public class makeArrayZeroBySubtractingEqualAmounts {
     //
     // Different elements, are always different until 0
     //  -> Counts unique elements
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public int minimumOperations_1(int[] nums) {
         Set<Integer> set = new HashSet<>();
         for (int a: nums)
@@ -58,6 +62,10 @@ public class makeArrayZeroBySubtractingEqualAmounts {
     // https://leetcode.com/problems/make-array-zero-by-subtracting-equal-amounts/solutions/4789123/hashset-method/
     // Number of unique element determine the number of operations because if
     // the numbers present in the array are same would become zero in a single operation.
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public int minimumOperations_2(int[] nums) {
         HashSet<Integer> a=new HashSet<Integer>();
         for(int i=0;i<nums.length;i++){
