@@ -109,7 +109,10 @@ public class Flatten2DVector {
     // V0-2
     // IDEA: (fixed by gpt)
     // TODO: fix & validate below
-    // time: O(N*M) for constructor, O(1) for next/hasNext, space: O(N*M)
+    /**
+     * time = O(N*M) for constructor, O(1) for next/hasNext
+     * space = O(N*M)
+     */
     class Vector2D_0_2 {
         private List<Integer> collected;
         private int pointer;
