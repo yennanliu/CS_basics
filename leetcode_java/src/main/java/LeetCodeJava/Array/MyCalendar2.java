@@ -65,6 +65,10 @@ public class MyCalendar2 {
 
   // V0
   // IDEA: SCANNING LINE + CUSTOM SORTING (fixed by gpt)
+  /**
+   * time = O(N^2) per book operation
+   * space = O(N)
+   */
   class MyCalendarTwo {
 
       // Attributes
