@@ -54,6 +54,10 @@ public class CreateMaximumNumber {
     // https://leetcode.com/problems/create-maximum-number/solutions/1611691/java-easy-to-understand-monotonic-stack-43ijd/
     // IDEA:  monotonic STACK
     // monotonic decreasing stack same as leetcode 1673 , only > changed to <
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public int[] findLexMax(int[] nums, int k) {
         int n = nums.length;
         Stack<Integer> st = new Stack<>();
@@ -125,6 +129,10 @@ public class CreateMaximumNumber {
         return res;
     }
 
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public int[] maxNumber_1(int[] nums1, int[] nums2, int k) {
         int len1 = nums1.length;
         int len2 = nums2.length;
@@ -147,6 +155,10 @@ public class CreateMaximumNumber {
     // V2
     // IDEA: GREEDY
     // https://leetcode.com/problems/create-maximum-number/solutions/77285/share-my-greedy-solution-by-dietpepsi-jm2d/
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public int[] maxNumber_2(int[] nums1, int[] nums2, int k) {
         int n = nums1.length;
         int m = nums2.length;
@@ -166,6 +178,10 @@ public class CreateMaximumNumber {
         return ans;
     }
 
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public boolean greater(int[] nums1, int i, int[] nums2, int j) {
         while (i < nums1.length && j < nums2.length && nums1[i] == nums2[j]) {
             i++;
@@ -174,6 +190,10 @@ public class CreateMaximumNumber {
         return j == nums2.length || (i < nums1.length && nums1[i] > nums2[j]);
     }
 
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public int[] maxArray(int[] nums, int k) {
         int n = nums.length;
         int[] ans = new int[k];
@@ -189,6 +209,10 @@ public class CreateMaximumNumber {
     // V3
     // https://zxi.mytechroad.com/blog/dynamic-programming/leetcode-321-create-maximum-number/
     // IDRA: DP
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public int[] maxNumber_3(int[] nums1, int[] nums2, int k) {
         int n1 = nums1.length, n2 = nums2.length;
         int[] best = new int[k];

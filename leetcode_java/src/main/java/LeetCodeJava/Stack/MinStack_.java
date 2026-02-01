@@ -58,11 +58,19 @@ public class MinStack_ {
     class MinStack {
         Stack<Integer> st;
         PriorityQueue<Integer> pq;
+        /**
+         * time = O(1)
+         * space = O(N)
+         */
         public MinStack() {
             this.st = new Stack<>();
             this.pq = new PriorityQueue<Integer>();
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public void push(int val) {
             this.st.push(val);
             this.pq.add(val);
@@ -89,14 +97,26 @@ public class MinStack_ {
          *   this.pq.remove(this.st.pop());
          *
          */
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public void pop() {
             this.pq.remove(this.st.pop());
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public int top() {
             return this.st.peek();
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public int getMin() {
             return this.pq.peek();
         }
@@ -107,20 +127,36 @@ public class MinStack_ {
     class MinStack_0_1 {
         private List<Integer> list; // Storage list
 
+        /**
+         * time = O(1)
+         * space = O(N)
+         */
         public MinStack_0_1() {
             this.list = new ArrayList<>();
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public void push(int val) {
             list.add(val); // Add to the end
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public void pop() {
             if (!list.isEmpty()) {
                 list.remove(list.size() - 1); // Remove last element
             }
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public int top() {
             if (!list.isEmpty()) {
                 return list.get(list.size() - 1); // Return last element
@@ -128,6 +164,10 @@ public class MinStack_ {
             throw new EmptyStackException(); // Proper error handling
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public int getMin() {
             if (list.isEmpty()) {
                 throw new EmptyStackException(); // Prevent access on empty list
@@ -159,6 +199,10 @@ public class MinStack_ {
         private Stack<Integer> stack; // Stores all elements
         private Stack<Integer> minStack; // Stores min values
 
+        /**
+         * time = O(1)
+         * space = O(N)
+         */
         public MinStack_0_2() {
             this.stack = new Stack<>();
             this.minStack = new Stack<>();
@@ -173,6 +217,10 @@ public class MinStack_ {
          *      -> `min stack` : [smallest_1, smallest_2, ...] (small -> big)
          *      ->  e.g. `min stack` has `the smallest element at its top,
          *                then `less smallest element`... and so on
+         */
+        /**
+         * time = O(1)
+         * space = O(1)
          */
         public void push(int val) {
             stack.push(val);
@@ -190,6 +238,10 @@ public class MinStack_ {
          *   2) if stack is NOT empty, then we need to pop it, and check if the `current pop element`
          *      is also the `top element` at `min stack`
          */
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public void pop() {
             if (stack.isEmpty())
                 return;
@@ -199,6 +251,10 @@ public class MinStack_ {
             }
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public int top() {
             if (stack.isEmpty()) {
                 System.out.println("Stack is empty");
@@ -207,6 +263,10 @@ public class MinStack_ {
             return stack.peek();
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public int getMin() {
             if (minStack.isEmpty()) {
                 System.out.println("Stack is empty");
@@ -222,24 +282,44 @@ public class MinStack_ {
     class MinStack_1 {
         Stack<Integer> st;
         PriorityQueue<Integer> pq;
+        /**
+         * time = O(1)
+         * space = O(N)
+         */
         public MinStack_1() {
             this.st = new Stack<>();
             this.pq = new PriorityQueue<Integer>();
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public void push(int val) {
             this.st.push(val);
             this.pq.add(val);
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public void pop() {
             this.pq.remove(this.st.pop());
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public int top() {
             return this.st.peek();
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public int getMin() {
             return this.pq.peek();
         }
@@ -251,25 +331,45 @@ public class MinStack_ {
     class MinStack_1_1 {
         Stack<Integer> s = new Stack<>();
         PriorityQueue<Integer> pq = new PriorityQueue<>();
+        /**
+         * time = O(1)
+         * space = O(N)
+         */
         public MinStack_1_1() {
 
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public void push(int val) {
             s.push(val);
             pq.add(val);
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public void pop() {
             int temp = s.pop();
             pq.remove(temp);
 
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public int top() {
             return s.peek();
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public int getMin() {
             return pq.peek();
         }
@@ -282,9 +382,17 @@ public class MinStack_ {
 
         private Stack<int[]> stack = new Stack<>();
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public MinStack_2() { }
 
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public void push(int x) {
 
             /* If the stack is empty, then the min value
@@ -299,16 +407,28 @@ public class MinStack_ {
         }
 
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public void pop() {
             stack.pop();
         }
 
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public int top() {
             return stack.peek()[0];
         }
 
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public int getMin() {
             return stack.peek()[1];
         }
@@ -323,9 +443,17 @@ public class MinStack_ {
         private Stack<Integer> minStack = new Stack<>();
 
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public MinStack_3() { }
 
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public void push(int x) {
             stack.push(x);
             if (minStack.isEmpty() || x <= minStack.peek()) {
@@ -334,6 +462,10 @@ public class MinStack_ {
         }
 
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public void pop() {
             if (stack.peek().equals(minStack.peek())) {
                 minStack.pop();
@@ -342,11 +474,19 @@ public class MinStack_ {
         }
 
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public int top() {
             return stack.peek();
         }
 
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public int getMin() {
             return minStack.peek();
         }
@@ -361,9 +501,17 @@ public class MinStack_ {
         private Stack<int[]> minStack = new Stack<>();
 
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public MinStack_4() { }
 
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public void push(int x) {
 
             // We always put the number onto the main stack.
@@ -383,6 +531,10 @@ public class MinStack_ {
         }
 
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public void pop() {
 
             // If the top of min stack is the same as the top of stack
@@ -402,11 +554,19 @@ public class MinStack_ {
         }
 
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public int top() {
             return stack.peek();
         }
 
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public int getMin() {
             return minStack.peek()[0];
         }

@@ -72,12 +72,20 @@ public class MaximumFrequencyStack {
         // Map to track the elements for each frequency count
         Map<Integer, Stack<Integer>> freqMap;
 
+        /**
+         * time = O(1)
+         * space = O(N)
+         */
         public FreqStack() {
             this.maxCnt = 0; // Initially no elements, so max frequency is 0
             this.cntMap = new HashMap<>();
             this.freqMap = new HashMap<>();
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public void push(int val) {
             // Update the count of the value in cntMap
             int count = cntMap.getOrDefault(val, 0) + 1;
@@ -91,6 +99,10 @@ public class MaximumFrequencyStack {
             maxCnt = Math.max(maxCnt, count);
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public int pop() {
             if (maxCnt == 0) {
                 throw new RuntimeException("no element to pop");
@@ -126,12 +138,20 @@ public class MaximumFrequencyStack {
             private Map<Integer, Stack<Integer>> freqMap;
             private int maxFreq;
 
+            /**
+             * time = O(1)
+             * space = O(N)
+             */
             public FreqStack_0_1() {
                 this.map = new HashMap<>();
                 this.freqMap = new HashMap<>();
                 this.maxFreq = 0;
             }
 
+            /**
+             * time = O(1)
+             * space = O(1)
+             */
             public void push(int val) {
                 // Update the frequency count of the value
                 int freq = map.getOrDefault(val, 0) + 1;
@@ -145,6 +165,10 @@ public class MaximumFrequencyStack {
                 freqMap.get(freq).push(val);
             }
 
+            /**
+             * time = O(1)
+             * space = O(1)
+             */
             public int pop() {
                 if (maxFreq == 0) {
                     throw new RuntimeException("Empty stack");
@@ -176,12 +200,20 @@ public class MaximumFrequencyStack {
             HashMap<Integer, Integer> fmap;
             List<Stack<Integer>> stack;
 
+            /**
+             * time = O(1)
+             * space = O(N)
+             */
             public FreqStack_2() {
                 fmap = new HashMap();
                 stack = new ArrayList();
                 stack.add(new Stack());
             }
 
+            /**
+             * time = O(1)
+             * space = O(1)
+             */
             public void push(int x) {
                 int freq = fmap.getOrDefault(x, 0) + 1;
                 fmap.put(x, freq);
@@ -190,6 +222,10 @@ public class MaximumFrequencyStack {
                 stack.get(freq).add(x);
             }
 
+            /**
+             * time = O(1)
+             * space = O(1)
+             */
             public int pop() {
                 Stack<Integer> top = stack.get(stack.size() - 1);
                 int x = top.pop();
@@ -210,6 +246,10 @@ public class MaximumFrequencyStack {
             /**
              * Constructs an empty frequency stack
              */
+            /**
+             * time = O(1)
+             * space = O(N)
+             */
             public FreqStack_3() {
             }
 
@@ -217,6 +257,10 @@ public class MaximumFrequencyStack {
              * Pushes an integer val onto the top of the stack.
              *
              * @param val integer to be pushed
+             */
+            /**
+             * time = O(1)
+             * space = O(1)
              */
             public void push(int val) {
                 Integer freq = numToMaxFreq.compute(val, (k, v) -> v == null ? 1 : ++v);
@@ -230,6 +274,10 @@ public class MaximumFrequencyStack {
              * the element closest to the stack's top is removed and returned.
              *
              * @return The most frequent element in the stack
+             */
+            /**
+             * time = O(1)
+             * space = O(1)
              */
             public int pop() {
                 Deque<Integer> stack = freqToStack.get(maxFreq);
@@ -248,6 +296,10 @@ public class MaximumFrequencyStack {
             HashMap<Integer, Stack<Integer>> m = new HashMap<>();
             int maxfreq = 0;
 
+            /**
+             * time = O(1)
+             * space = O(1)
+             */
             public void push(int x) {
                 int f = freq.getOrDefault(x, 0) + 1;
                 freq.put(x, f);
@@ -257,6 +309,10 @@ public class MaximumFrequencyStack {
                 m.get(f).push(x);// for the frequency f the elements are pushed into the stack. ie. For every Frequency Its own Key Exist
             }
 
+            /**
+             * time = O(1)
+             * space = O(1)
+             */
             public int pop() {
                 int x = m.get(maxfreq).pop();
                 freq.put(x, maxfreq - 1);

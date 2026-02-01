@@ -7,6 +7,10 @@ import java.util.Stack;
 public class BaseballGame {
 
     // V0
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public int calPoints(String[] operations) {
 
         Integer ans = 0;
@@ -56,6 +60,10 @@ public class BaseballGame {
 
     // V1
     // https://leetcode.com/problems/baseball-game/solutions/3152920/beats-100-easy-sol-in-java/
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public int calPoints_1(String[] operations) {
         int sum=0;
         int[] arr = new int[operations.length];
@@ -89,6 +97,10 @@ public class BaseballGame {
 
     // V2
     // https://leetcode.com/problems/baseball-game/solutions/3534032/java-stack-baseball-game/
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public int calPoints_2(String[] operations) {
         Stack<Integer> stack = new Stack<>();
         for(String step : operations)

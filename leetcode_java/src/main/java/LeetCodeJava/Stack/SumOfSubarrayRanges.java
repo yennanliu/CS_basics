@@ -68,6 +68,10 @@ public class SumOfSubarrayRanges {
     // V1-1
     // https://leetcode.com/problems/sum-of-subarray-ranges/editorial/
     // IDEA: 2 LOOPS
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public long subArrayRanges_1_1(int[] nums) {
         int n = nums.length;
         long answer = 0;
@@ -87,6 +91,10 @@ public class SumOfSubarrayRanges {
     // V1-2
     // https://leetcode.com/problems/sum-of-subarray-ranges/editorial/
     // IDEA:  Monotonic Stack
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public long subArrayRanges_1_2(int[] nums) {
         int n = nums.length;
         long answer = 0;
@@ -121,6 +129,10 @@ public class SumOfSubarrayRanges {
 
     // V2
     // https://leetcode.ca/2021-09-03-2104-Sum-of-Subarray-Ranges/
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public long subArrayRanges_2(int[] nums) {
         long ans = 0;
         int n = nums.length;

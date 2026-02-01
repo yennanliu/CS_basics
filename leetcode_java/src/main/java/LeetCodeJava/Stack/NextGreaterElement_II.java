@@ -40,6 +40,10 @@ public class NextGreaterElement_II {
 
     // V0
     // IDEA: HASHMAP, STACK (mono increase stack) + LC 496
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public int[] nextGreaterElements(int[] nums) {
 
         // edge
@@ -131,6 +135,10 @@ public class NextGreaterElement_II {
      *      - Update the result array (res[]) at the correct index
      *      - Correctly handle `DUPLICATED` values
      */
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public int[] nextGreaterElements_0_1(int[] nums) {
         // edge
         if (nums == null || nums.length == 0) {
@@ -185,6 +193,10 @@ public class NextGreaterElement_II {
 
     // V0-2
     // IDEA: BRUTE FORCE + DOUBLE STACK
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public int[] nextGreaterElements_0_2(int[] nums) {
         if (nums == null || nums.length == 0) {
             return null;
@@ -225,6 +237,10 @@ public class NextGreaterElement_II {
     // V1-1
     // https://leetcode.com/problems/next-greater-element-ii/editorial/
     // IDEA: BRUTE FORCE
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public int[] nextGreaterElements_1_1(int[] nums) {
         int[] res = new int[nums.length];
         int[] doublenums = new int[nums.length * 2];
@@ -245,6 +261,10 @@ public class NextGreaterElement_II {
     // V1-2
     // https://leetcode.com/problems/next-greater-element-ii/editorial/
     // IDEA: BETTER BRUTE FORCE
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public int[] nextGreaterElements_1_2(int[] nums) {
         int[] res = new int[nums.length];
         for (int i = 0; i < nums.length; i++) {
@@ -262,6 +282,10 @@ public class NextGreaterElement_II {
     // V1-3
     // https://leetcode.com/problems/next-greater-element-ii/editorial/
     // IDEA: STACK
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public int[] nextGreaterElements_1_3(int[] nums) {
         int[] res = new int[nums.length]; // Initialize the result array to store the next greater element for each element in nums
         Stack<Integer> stack = new Stack<>(); // Stack to keep track of indices of elements while finding the next greater element

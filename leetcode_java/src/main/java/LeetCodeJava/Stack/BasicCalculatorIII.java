@@ -43,6 +43,10 @@ public class BasicCalculatorIII {
     // V1-1
     // https://leetcode.ca/2018-01-10-772-Basic-Calculator-III/
     // http://buttercola.blogspot.com/2019/03/leetcode-772-basic-calculator-iii.html
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public int calculate_1_1(String s) {
         if (s == null || s.length() == 0) {
             return 0;

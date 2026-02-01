@@ -75,10 +75,18 @@ public class OnlineStockSpan {
     class StockSpanner_2 {
         Stack<int[]> st;
 
+        /**
+         * time = O(1)
+         * space = O(N)
+         */
         public StockSpanner_2() {
             st = new Stack<>();
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public int next(int price) {
             int span = 1;
             while (st.size() > 0 && price >= st.peek()[0]) {
@@ -95,10 +103,18 @@ public class OnlineStockSpan {
     class StockSpanner_3 {
         Stack<int[]> st;
 
+        /**
+         * time = O(1)
+         * space = O(N)
+         */
         public StockSpanner_3() {
             st = new Stack<>();
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public int next(int price) {
             int days = 1;
             while (!st.isEmpty() && st.peek()[0] <= price) {
@@ -115,10 +131,18 @@ public class OnlineStockSpan {
         Stack<int[]> st; // size of array would be 2 -> 0th index will hold price and 1st index will hold
         // span
 
+        /**
+         * time = O(1)
+         * space = O(N)
+         */
         public StockSpanner_4() {
             st = new Stack<>(); // initialize our stack
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public int next(int price) {
             // for every price span would be 1
             int span = 1;

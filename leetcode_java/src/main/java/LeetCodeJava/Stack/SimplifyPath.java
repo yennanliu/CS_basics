@@ -97,6 +97,10 @@ public class SimplifyPath {
 
     // V0-1
     // IDEA: STACK (fixed by gpt)
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public String simplifyPath_0_1(String path) {
         if (path == null || path.isEmpty()) {
             return "/";
@@ -145,6 +149,10 @@ public class SimplifyPath {
     // V2
     // IDEA: DEQEUE + SET
     // https://leetcode.com/problems/simplify-path/solutions/25686/java-10-lines-solution-with-stack-by-shp-u6t2/
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public String simplifyPath_2(String path) {
         Deque<String> stack = new LinkedList<>();
         Set<String> skip = new HashSet<>(Arrays.asList("..", ".", ""));
@@ -163,6 +171,10 @@ public class SimplifyPath {
     // V3
     // IDEA: STACK
     // https://leetcode.com/problems/simplify-path/solutions/3407361/easy-solutions-in-java-python-and-c-look-0a1r/
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public String simplifyPath_3(String path) {
         Stack<String> stack = new Stack<>(); // create a stack to keep track of directories
         String[] directories = path.split("/"); // split the path by slash '/'
@@ -183,6 +195,10 @@ public class SimplifyPath {
     // V4
     // IDEA: STACK
     // https://leetcode.com/problems/simplify-path/solutions/6210383/video-stack-solution-by-niits-wg7g/
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public String simplifyPath_4(String path) {
         String[] components = path.split("/");
         Stack<String> st = new Stack<>();

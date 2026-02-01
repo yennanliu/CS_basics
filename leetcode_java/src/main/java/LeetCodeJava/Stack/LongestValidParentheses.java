@@ -44,6 +44,10 @@ public class LongestValidParentheses {
 
     // V0-1
     // IDEA: STACK (fixed by gpt)
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public int longestValidParentheses_0_1(String s) {
         // Edge cases
         // Strings shorter than 2 can’t form valid pairs.
@@ -199,6 +203,10 @@ public class LongestValidParentheses {
      * * **Space Complexity:**  to store the `dp` array.
      *
      */
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public int longestValidParentheses_0_5(String s) {
         int n = s.length();
         if (n < 2)
@@ -315,6 +323,10 @@ public class LongestValidParentheses {
      * * Avoids re-scanning characters → linear time
      *
      */
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public int longestValidParentheses_0_6(String s) {
         int n = s.length();
         if (n < 2)
@@ -348,6 +360,10 @@ public class LongestValidParentheses {
 
     // V1-1
     // https://leetcode.ca/2016-01-01-32-Longest-Valid-Parentheses/
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public int longestValidParentheses_1_1(String s) {
         int n = s.length();
         int[] f = new int[n + 1];
@@ -370,6 +386,10 @@ public class LongestValidParentheses {
 
     // V1-2
     // https://leetcode.ca/2016-01-01-32-Longest-Valid-Parentheses/
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public int longestValidParentheses_1_2(String s) {
         int res = 0, left = 0, right = 0, n = s.length();
 
@@ -397,6 +417,10 @@ public class LongestValidParentheses {
 
     // V1-3
     // https://leetcode.ca/2016-01-01-32-Longest-Valid-Parentheses/
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public int longestValidParentheses_1_3(String s) {
         Stack<Integer> sk = new Stack<>();
         int start = 0;
@@ -419,6 +443,10 @@ public class LongestValidParentheses {
 
     // V2
     // https://leetcode.com/problems/longest-valid-parentheses/solutions/5373015/stack-solution-video-explanation-by-niit-x3ct/
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public int longestValidParentheses_2(String s) {
         Stack<Integer> stack = new Stack<>();
         stack.push(-1);
@@ -441,6 +469,10 @@ public class LongestValidParentheses {
     }
 
     // V3
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public int longestValidParentheses_3(String s) {
         Stack<Integer> stack = new Stack<>();
         stack.push(-1); // Base index
@@ -464,6 +496,10 @@ public class LongestValidParentheses {
 
     // V4
     // https://leetcode.com/problems/longest-valid-parentheses/solutions/3401956/100-detailed-explaination-with-pictures-xc4yq/
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public int longestValidParentheses_4(String s) {
         int leftCount = 0;
         int rightCount = 0;

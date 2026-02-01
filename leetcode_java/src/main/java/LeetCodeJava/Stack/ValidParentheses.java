@@ -70,6 +70,10 @@ public class ValidParentheses {
 
     // V0
     // IDEA : STACK + DICT
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public boolean isValid(String s) {
 
         if (s == null || s.length() == 0){
@@ -104,6 +108,10 @@ public class ValidParentheses {
 
     // V0-1
     // IDEA : STACK + DICT
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public boolean isValid_0_1(String s) {
 
         if (s.length() % 2 != 0){
@@ -139,6 +147,10 @@ public class ValidParentheses {
     // V0-2
     // IDEA : STACK + add "inverse" Parentheses to stack directly
     // https://www.bilibili.com/video/BV1AF411w78g/?share_source=copy_web&vd_source=771d0eba9b524b4f63f92e37bde71301
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public boolean isValid_0_2(String s) {
 
         if (s.length() % 2 != 0){
@@ -180,6 +192,10 @@ public class ValidParentheses {
 
     // V0-3
     // IDEA: STACK
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public boolean isValid_0_3(String s) {
         // edge
         if (s.isEmpty() || s.length() == 0) {
@@ -217,6 +233,10 @@ public class ValidParentheses {
 
     // V1
     // https://leetcode.com/problems/valid-parentheses/solutions/3398779/python-java-c-simple-solution-video-solution/
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public boolean isValid_1(String s) {
         Stack<Character> stack = new Stack<>();
         for (char c : s.toCharArray()) {
@@ -242,6 +262,10 @@ public class ValidParentheses {
 
     // V2
     // https://leetcode.com/problems/valid-parentheses/solutions/3399077/easy-solutions-in-java-python-and-c-look-at-once-with-exaplanation/
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public boolean isValid_2(String s) {
         Stack<Character> stack = new Stack<>();
         int count = 0;
@@ -273,6 +297,10 @@ public class ValidParentheses {
      */
     // FOLLOWUP V0
     // IDEA: STACK (teachable course)
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public String ConvertToValidBracketString (String s) {
         Stack<Character> stack = new Stack<>();
         String ans = "";
@@ -309,6 +337,10 @@ public class ValidParentheses {
 
     // FOLLOWUP V1
     // IDEA: STACK (GPT)
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public String ConvertToValidBracketString_1(String s) {
         if (s == null || s.isEmpty()) {
             return "";
@@ -358,6 +390,10 @@ public class ValidParentheses {
 
     // FOLLOWUP V2
     // IDEA: STACK (fixed by GPT)
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public String convertToValidBracketString_2(String s) {
         if (s == null || s.isEmpty()) {
             return "()";

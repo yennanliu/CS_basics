@@ -57,6 +57,10 @@ public class SymmetricTree {
 
     // V0
     // IDEA: DFS (fixed by gpt)
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public boolean isSymmetric(TreeNode root) {
         if (root == null) {
             return true;
@@ -113,11 +117,19 @@ public class SymmetricTree {
     // V0-0-1
     // https://www.bilibili.com/video/BV1ue4y1Y7Mf/?spm_id_from=333.999.0.0&vd_source=28459ac8543f6a81e3a8c993dc73b54e
     // IDEA : post traversal // TODO : check if post traversal is necessary
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public boolean isSymmetric_0_0_1(TreeNode root) {
 
         return _compare(root, root);
     }
 
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public boolean _compare(TreeNode t1, TreeNode t2) {
 
         if (t1 == null && t2 == null) return true;
@@ -132,11 +144,19 @@ public class SymmetricTree {
 
     // V1 : IDEA : Recursive
     // https://leetcode.com/problems/symmetric-tree/editorial/
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public boolean isSymmetric_2(TreeNode root) {
 
         return isMirror_2(root, root);
     }
 
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public boolean isMirror_2(TreeNode t1, TreeNode t2) {
 
         if (t1 == null && t2 == null) return true;
@@ -148,6 +168,10 @@ public class SymmetricTree {
 
     // V1' : IDEA : Iterative, queue
     // https://leetcode.com/problems/symmetric-tree/editorial/
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public boolean isSymmetric_1(TreeNode root) {
         Queue<TreeNode> q = new LinkedList<>();
         q.add(root);

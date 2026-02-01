@@ -138,6 +138,10 @@ public class DecodeString {
      *
      *
      */
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public String decodeString(String s) {
         if (s == null || s.isEmpty()) {
             return "";
@@ -209,6 +213,10 @@ public class DecodeString {
      * @param s The encoded string.
      * @return The decoded string.
      */
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public String decodeString_0_1(String s) {
         // Stack to store counts (k)
         Stack<Integer> countStack = new Stack<>();
@@ -277,6 +285,10 @@ public class DecodeString {
 
     // V0-2
     // IDEA: STACK (fixed by gpt)
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public String decodeString_0_2(String s) {
         if (s == null || s.isEmpty())
             return s;
@@ -313,6 +325,10 @@ public class DecodeString {
     // V1
     // https://youtu.be/qB0zZpBJlh8?si=ZZBP6BrcHvIIfup9
     // https://leetcode.ca/2016-12-28-394-Decode-String/
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public String decodeString_1(String s) {
         Deque<Integer> s1 = new ArrayDeque<>();
         Deque<String> s2 = new ArrayDeque<>();
@@ -341,6 +357,10 @@ public class DecodeString {
 
     // V2
     // IDEA : STACK (gpt)
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public static String decodeString_2(String s) {
         if (s.isEmpty()) {
             return "";

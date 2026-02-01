@@ -94,6 +94,10 @@ public class BinarySearchTreeIterator {
         TreeNode treeNode;
         List<Integer> cache;
 
+        /**
+         * time = O(1)
+         * space = O(N)
+         */
         public BSTIterator(TreeNode root) {
             this.treeNode = root;
             this.cache = new ArrayList<>();
@@ -102,12 +106,20 @@ public class BinarySearchTreeIterator {
             this.cache.sort(Integer::compareTo); // ???
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public int next() {
             int tmp = this.cache.get(0);
             this.cache.remove(0);
             return tmp;
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public boolean hasNext() {
             return !this.cache.isEmpty();
         }
@@ -142,6 +154,10 @@ public class BinarySearchTreeIterator {
         TreeNode root;
         int idx;
 
+        /**
+         * time = O(1)
+         * space = O(N)
+         */
         public BSTIterator_0_0_1(TreeNode root) {
             this.root = root;
             this.list = new ArrayList<>();
@@ -160,6 +176,10 @@ public class BinarySearchTreeIterator {
             buildInorder(root.right);
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public int next() {
             // edge
             if (this.idx >= this.list.size()) {
@@ -171,6 +191,10 @@ public class BinarySearchTreeIterator {
             return cur.val;
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public boolean hasNext() {
             return this.idx < this.list.size();
         }
@@ -194,15 +218,27 @@ public class BinarySearchTreeIterator {
         private List<Integer> list = new ArrayList<>();
         private int idx = 0;
 
+        /**
+         * time = O(1)
+         * space = O(N)
+         */
         public BSTIterator_0_1(TreeNode root) {
             getAllNodes(root); // fill list in inorder order
             System.out.println(">>> list (inorder) = " + list);
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public int next() {
             return list.get(idx++);
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public boolean hasNext() {
             System.out.println(">>> (hasNext) idx = " + idx + ", size = " + list.size());
             return idx < list.size();
@@ -236,17 +272,29 @@ public class BinarySearchTreeIterator {
         private TreeNode visit;
         private Stack<TreeNode> stack;
 
+        /**
+         * time = O(1)
+         * space = O(N)
+         */
         public BSTIterator_1(TreeNode root) {
             visit = root;
             stack = new Stack();
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public boolean hasNext() {
             return visit != null || !stack.empty();
         }
 
         /**
          * NOTE !!! next() method logic
+         */
+        /**
+         * time = O(1)
+         * space = O(1)
          */
         public int next() {
       /**
@@ -293,16 +341,28 @@ public class BinarySearchTreeIterator {
     public class BSTIterator_2 {
         private Stack<TreeNode> stack = new Stack<TreeNode>();
 
+        /**
+         * time = O(1)
+         * space = O(N)
+         */
         public BSTIterator_2(TreeNode root) {
             pushAll(root);
         }
 
         /** @return whether we have a next smallest number */
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public boolean hasNext() {
             return !stack.isEmpty();
         }
 
         /** @return the next smallest number */
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public int next() {
             TreeNode tmpNode = stack.pop();
             pushAll(tmpNode.right);
@@ -333,20 +393,36 @@ public class BinarySearchTreeIterator {
    */
   class BSTIterator_3 {
         Stack<TreeNode> stack;
+        /**
+         * time = O(1)
+         * space = O(N)
+         */
         public BSTIterator_3(TreeNode root) {
             stack = new Stack<>();
             TreeNode node = root;
             updateStack(node);                                      // update stack
         }
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public int next() {
             TreeNode toRemove = stack.pop();
             updateStack(toRemove.right);                             // before return node, first update stack further
             return toRemove.val;
         }
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public boolean hasNext() {
             return !stack.isEmpty();
         }
         // -------------------
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public void updateStack(TreeNode node){
             while(node != null){
                 stack.add(node);

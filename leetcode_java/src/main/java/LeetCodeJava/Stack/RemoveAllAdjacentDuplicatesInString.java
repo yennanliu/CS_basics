@@ -41,6 +41,10 @@ public class RemoveAllAdjacentDuplicatesInString {
 
     // V0
     // IDEA: STACK
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public String removeDuplicates(String s) {
         // edge
         if (s.isEmpty() || s.length() == 1) {
@@ -81,6 +85,10 @@ public class RemoveAllAdjacentDuplicatesInString {
 
     // V0-1
     // IDEA : STACK + STRING
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public String removeDuplicates_0_1(String s) {
 
         if (s.equals(null)){
@@ -116,6 +124,10 @@ public class RemoveAllAdjacentDuplicatesInString {
 
     // V0-2
     // IDEA: STACK (gpt)
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public String removeDuplicates_0_2(String s) {
         // edge
         if (s.isEmpty() || s.length() == 1) {
@@ -143,6 +155,10 @@ public class RemoveAllAdjacentDuplicatesInString {
 
     // V0-3
     // IDEA: STACK
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public String removeDuplicates_0_3(String s) {
         // edge
         if (s.isEmpty() || s.length() == 0) {
@@ -196,6 +212,10 @@ public class RemoveAllAdjacentDuplicatesInString {
 
     // V1
     // https://leetcode.com/problems/remove-all-adjacent-duplicates-in-string/solutions/2800677/java-solution-using-stack-explained-using-diagrams/
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public String removeDuplicates_2(String s) {
         Stack<Character> stack = new Stack();
         if(s.length()<=1){return s;}
@@ -218,6 +238,10 @@ public class RemoveAllAdjacentDuplicatesInString {
 
     // V2
     // https://leetcode.com/problems/remove-all-adjacent-duplicates-in-string/solutions/2799124/easy-stack-solution-with-explanation/
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public String removeDuplicates_3(String str) {
 
         Stack<Character> s= new Stack<>();
