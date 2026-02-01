@@ -11,6 +11,22 @@ public class CompareStringsByFrequencyOfTheSmallestCharacter {
 
     // V0
     // IDEA : HASH MAP + SORT + BINARY SEARCH (fixed by gpt)
+    /**
+     * time = O(N log N + M log N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int[] numSmallerByFrequency(String[] queries, String[] words) {
 
         int[] wordsFrequency = new int[words.length];
@@ -39,6 +55,22 @@ public class CompareStringsByFrequencyOfTheSmallestCharacter {
         return result;
     }
 
+    /**
+     * time = O(K)
+     * space = O(1)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int getFrequencyOfSmallestCharacter_(String word, Map<String, Integer> map){
         int cnt = 1;
         String prev = null;
@@ -58,7 +90,18 @@ public class CompareStringsByFrequencyOfTheSmallestCharacter {
         }
         return cnt;
     }
-
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int countGreater_(int[] wordFreq, int freq) {
         // binary search (find bigger num idx)
         int l = 0;
@@ -84,6 +127,18 @@ public class CompareStringsByFrequencyOfTheSmallestCharacter {
 
     // V1
     // IDEA : HASHMAP (gpt)
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int[] numSmallerByFrequency_1(String[] queries, String[] words) {
         int[] wordsFrequency = new int[words.length];
         Map<String, Integer> frequencyMap = new HashMap<>();
@@ -149,6 +204,18 @@ public class CompareStringsByFrequencyOfTheSmallestCharacter {
 
     // V1-1
     // IDEA : ARRAY + BINARY SEARCH (gpt)
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int[] numSmallerByFrequency_1_1(String[] queries, String[] words) {
         int[] wordsFrequency = new int[words.length];
 
@@ -217,6 +284,18 @@ public class CompareStringsByFrequencyOfTheSmallestCharacter {
 
     // V2
     // https://leetcode.com/problems/compare-strings-by-frequency-of-the-smallest-character/submissions/1312707199/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int[] numSmallerByFrequency_2(String[] queries, String[] words) {
         int[] minCount = new int[11];
         int[] aggregated = new int[11];
@@ -258,6 +337,18 @@ public class CompareStringsByFrequencyOfTheSmallestCharacter {
 
     // V3
     // https://leetcode.com/problems/compare-strings-by-frequency-of-the-smallest-character/solutions/1200429/java-extremely-easy-solution-using-normal-strings-and-arraylist/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int[] numSmallerByFrequency_3(String[] queries, String[] words) {
 
         ArrayList<Integer> temp = new ArrayList<Integer>();
@@ -285,7 +376,18 @@ public class CompareStringsByFrequencyOfTheSmallestCharacter {
         }
         return ans;
     }
-
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int freqOfSmallestCharacter(String str, char a) {
         int count = 0;
         for (int i = 0; i < str.length(); i++) {
@@ -295,7 +397,18 @@ public class CompareStringsByFrequencyOfTheSmallestCharacter {
         }
         return count;
     }
-
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public char SmallestCharacter(String str) {
         char temp = str.charAt(0);
         for (int i = 0; i < str.length(); i++) {

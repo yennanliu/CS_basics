@@ -120,6 +120,10 @@ public class BinaryTreeVerticalOrderTraversal {
     // TreeMap ensures column ordering from left to right automatically
     private Map<Integer, List<int[]>> cols = new TreeMap<>();
 
+    /**
+     * time = O(N log K)
+     * space = O(N)
+     */
     public List<List<Integer>> verticalOrder_0_0_1(TreeNode root) {
         dfs_0_0_1(root, 0, 0);  // start at row=0, col=0
 
@@ -146,6 +150,10 @@ public class BinaryTreeVerticalOrderTraversal {
      * @param row current row index (depth)
      * @param col current column index
      */
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     private void dfs_0_0_1(TreeNode node, int row, int col) {
         if (node == null) return;
 
@@ -170,6 +178,10 @@ public class BinaryTreeVerticalOrderTraversal {
         }
     }
 
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public List<List<Integer>> verticalOrder_0_1(TreeNode root) {
         List<List<Integer>> res = new ArrayList<>();
         if (root == null) return res;
@@ -216,6 +228,10 @@ public class BinaryTreeVerticalOrderTraversal {
     // V1-1
     // IDEA: BFS + SORT
     // https://neetcode.io/solutions/binary-tree-vertical-order-traversal
+    /**
+     * time = O(N log K)
+     * space = O(N)
+     */
     public List<List<Integer>> verticalOrder_1_1(TreeNode root) {
         if (root == null) return new ArrayList<>();
 
@@ -242,6 +258,10 @@ public class BinaryTreeVerticalOrderTraversal {
     // https://neetcode.io/solutions/binary-tree-vertical-order-traversal
     private Map<Integer, List<int[]>> cols_1_2 = new TreeMap<>();
 
+    /**
+     * time = O(N log K)
+     * space = O(N)
+     */
     public List<List<Integer>> verticalOrder_1_2(TreeNode root) {
         dfs(root, 0, 0);
         List<List<Integer>> res = new ArrayList<>();
@@ -262,6 +282,10 @@ public class BinaryTreeVerticalOrderTraversal {
      *
      *    -> int row, int col
      */
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     private void dfs(TreeNode node, int row, int col) {
         if (node == null) return;
         cols_1_2.computeIfAbsent(col, k -> new ArrayList<>()).add(new int[]{row, node.val});
@@ -276,6 +300,10 @@ public class BinaryTreeVerticalOrderTraversal {
     // V1-3
     // IDEA: Breadth First Search (Optimal)
     // https://neetcode.io/solutions/binary-tree-vertical-order-traversal
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public List<List<Integer>> verticalOrder_1_3(TreeNode root) {
         if (root == null) return new ArrayList<>();
 
@@ -310,6 +338,10 @@ public class BinaryTreeVerticalOrderTraversal {
     private Map<Integer, List<int[]>> cols_1_4 = new HashMap<>();
     private int minCol = 0, maxCol = 0;
 
+    /**
+     * time = O(N log K)
+     * space = O(N)
+     */
     public List<List<Integer>> verticalOrder_1_4(TreeNode root) {
         if (root == null) return new ArrayList<>();
         dfs_1_4(root, 0, 0);
@@ -325,6 +357,10 @@ public class BinaryTreeVerticalOrderTraversal {
         return res;
     }
 
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     private void dfs_1_4(TreeNode node, int row, int col) {
         if (node == null) return;
         cols_1_4.computeIfAbsent(col, k -> new ArrayList<>()).add(new int[]{row, node.val});
@@ -341,6 +377,10 @@ public class BinaryTreeVerticalOrderTraversal {
     // V2-2
     // IDEA: BFS
     // https://leetcode.ca/2016-10-09-314-Binary-Tree-Vertical-Order-Traversal/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public List<List<Integer>> verticalOrder_2_2(TreeNode root) {
         List<List<Integer>> ans = new ArrayList<>();
         if (root == null) {

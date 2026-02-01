@@ -72,6 +72,18 @@ public class CountTheNumberOfSpecialCharacters2 {
      * Time Complexity: O(N) where N is the length of the word.
      * Space Complexity: O(1) due to the fixed-size 26x2 array.
      */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int numberOfSpecialChars_0_0_1(String word) {
         if (word == null || word.isEmpty()) {
             return 0;
@@ -137,6 +149,18 @@ public class CountTheNumberOfSpecialCharacters2 {
      * the FIRST uppercase occurrence.
      * * Time Complexity: O(N)
      * Space Complexity: O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
      */
     public int numberOfSpecialChars_0_1(String word) {
         if (word == null || word.isEmpty()) {
@@ -219,6 +243,18 @@ public class CountTheNumberOfSpecialCharacters2 {
 
     // V0-2
     // IDEA: 2 ARRAY (fixed by gpt)
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int numberOfSpecialChars_0_2(String word) {
         if (word == null || word.isEmpty())
             return 0;
@@ -264,6 +300,18 @@ public class CountTheNumberOfSpecialCharacters2 {
     // V1-1
     // IDEA:
     // https://leetcode.com/problems/count-the-number-of-special-characters-ii/solutions/5052474/two-flags-by-votrubac-l0zs/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int numberOfSpecialChars_1_1(String word) {
         boolean[] lo = new boolean[26], up = new boolean[26];
         int res = 0;
@@ -280,6 +328,18 @@ public class CountTheNumberOfSpecialCharacters2 {
 
     // V2
     // https://leetcode.com/problems/count-the-number-of-special-characters-ii/solutions/5052488/simple-java-solution-by-siddhant_1602-1ote/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int numberOfSpecialChars_2(String word) {
         int a[][] = new int[26][2];
         int b[][] = new int[26][2];
@@ -310,6 +370,18 @@ public class CountTheNumberOfSpecialCharacters2 {
     // V3
     // IDEA: HASHMAP
     // https://leetcode.com/problems/count-the-number-of-special-characters-ii/solutions/5052518/java-2-maps-get-last-lowercase-and-first-ikc8/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int numberOfSpecialChars_3(String word) {
         Map<Character, Integer> firstUpperCasePos = new HashMap<>();
         Map<Character, Integer> lastLowerCasePos = new HashMap<>();
@@ -339,6 +411,18 @@ public class CountTheNumberOfSpecialCharacters2 {
 
     // V4
     // https://leetcode.com/problems/count-the-number-of-special-characters-ii/solutions/6979560/simple-solution-without-using-hash-map-b-gz0m/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int numberOfSpecialChars_4(String word) {
 
         int u[][] = new int[26][2];

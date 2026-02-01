@@ -46,6 +46,18 @@ public class ContainsDuplicate2 {
      * 	•	Otherwise, just update the index and keep going.
      * 
      */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public boolean containsNearbyDuplicate(int[] nums, int k) {
         /**
          *
@@ -79,6 +91,18 @@ public class ContainsDuplicate2 {
      *  to check if abs(j-i) <= k
      *
      */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public boolean containsNearbyDuplicate_0_0_1(int[] nums, int k) {
         // edge
         if (nums.length <= 1) {
@@ -101,6 +125,18 @@ public class ContainsDuplicate2 {
 
     // V0-0-2
     // IDEA: HASHMAP + BRUTE FORCE
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public boolean containsNearbyDuplicate_0_0_2(int[] nums, int k) {
         // edge
         if (nums == null || nums.length == 0) {
@@ -136,6 +172,18 @@ public class ContainsDuplicate2 {
     // V1
     // IDEA: SET
     // https://leetcode.com/problems/contains-duplicate-ii/solutions/61372/simple-java-solution-by-southpenguin-ruxe/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public boolean containsNearbyDuplicate_1(int[] nums, int k) {
         Set<Integer> set = new HashSet<Integer>();
         for (int i = 0; i < nums.length; i++) {
@@ -150,6 +198,18 @@ public class ContainsDuplicate2 {
     // V2
     // IDEA: SET
     // https://leetcode.com/problems/contains-duplicate-ii/solutions/2463150/very-easy-100-fully-explained-java-c-pyt-mhkz/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public boolean containsNearbyDuplicate_2(int[] nums, int k) {
         // Base case...
         if (nums == null || nums.length < 2 || k == 0)

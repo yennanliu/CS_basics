@@ -50,6 +50,18 @@ public class FirstUniqueCharacterInAString {
 
     // V0
     // IDEA: HASHMAP
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int firstUniqChar(String s) {
         // edge
         if(s == null || s.isEmpty()){
@@ -78,6 +90,18 @@ public class FirstUniqueCharacterInAString {
 
     // V1
     // https://leetcode.com/problems/first-unique-character-in-a-string/editorial/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int firstUniqChar_1(String s) {
         HashMap<Character, Integer> count = new HashMap<Character, Integer>();
         int n = s.length();

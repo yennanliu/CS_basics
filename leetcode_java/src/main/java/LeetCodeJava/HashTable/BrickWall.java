@@ -90,6 +90,10 @@ public class BrickWall {
 
     // V0-1
     // IDEA: HASH TABLE + SORTING (fixed by gpt)
+    /**
+     * time = O(N*M)
+     * space = O(N*M)
+     */
     public int leastBricks_0_1(List<List<Integer>> wall) {
         // Edge case: if the wall is empty, return 0
         if (wall.isEmpty()) {
@@ -125,6 +129,10 @@ public class BrickWall {
 
     // V1
     // https://leetcode.ca/2017-06-06-554-Brick-Wall/
+    /**
+     * time = O(N*M)
+     * space = O(N*M)
+     */
     public int leastBricks_1(List<List<Integer>> wall) {
         Map<Integer, Integer> cnt = new HashMap<>();
         for (List<Integer> row : wall) {
