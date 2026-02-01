@@ -49,6 +49,10 @@ public class CountSubIslands {
 
     // V0
     // IDEA: 2 pass DFS + COLOR
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public int countSubIslands(int[][] grid1, int[][] grid2) {
         // edge
 
@@ -156,6 +160,10 @@ public class CountSubIslands {
 
     // V0-0-1
     // IDEA: 2 pass DFS + COLOR (gemini)
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public int countSubIslands_0_0_1(int[][] grid1, int[][] grid2) {
         int rows = grid1.length;
         int cols = grid1[0].length;
@@ -185,6 +193,10 @@ public class CountSubIslands {
         return subIslandCnt;
     }
 
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     private void sink(int[][] grid, int r, int c) {
         // Boundary check and water check
         if (r < 0 || r >= grid.length || c < 0 || c >= grid[0].length || grid[r][c] == 0) {
@@ -244,6 +256,10 @@ public class CountSubIslands {
     /**
      * Counts the number of islands in grid2 that are entirely contained in land of grid1.
      * Time Complexity: O(R * C)
+     */
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
      */
     public int countSubIslands_0_1(int[][] grid1, int[][] grid2) {
         this.R = grid1.length;
@@ -317,6 +333,10 @@ public class CountSubIslands {
      *
      *  we ONLY need to pass 1 grid as param
      */
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     private void sinkIsland(int[][] grid, int r, int c) {
         /**
          *  NOTE !!!
@@ -343,6 +363,10 @@ public class CountSubIslands {
         }
     }
 
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     private boolean isValid(int r, int c) {
         return r >= 0 && r < R && c >= 0 && c < C;
     }
@@ -350,6 +374,10 @@ public class CountSubIslands {
 
     // V0-2
     // IDEA: DFS (gpt)
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public int countSubIslands_0_2(int[][] grid1, int[][] grid2) {
         int l = grid1.length;
         int w = grid1[0].length;
@@ -370,6 +398,10 @@ public class CountSubIslands {
     }
 
     // DFS: returns true if island in grid2 is a sub-island of grid1
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     private boolean dfsCheck(int[][] grid1, int[][] grid2, int x, int y) {
         int l = grid1.length;
         int w = grid1[0].length;
@@ -404,6 +436,10 @@ public class CountSubIslands {
 
     // V0-3
     // IDEA: BFS (gpt)
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public int countSubIslands_0_3(int[][] grid1, int[][] grid2) {
         int l = grid1.length;
         int w = grid1[0].length;
@@ -422,6 +458,10 @@ public class CountSubIslands {
         return count;
     }
 
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     private boolean bfsCheck(int[][] grid1, int[][] grid2, int startX, int startY) {
         int l = grid1.length;
         int w = grid1[0].length;
@@ -483,6 +523,10 @@ public class CountSubIslands {
      * Time Complexity: O(R * C) where R is rows and C is columns.
      * Space Complexity: O(R * C) for the recursion stack in the worst case.
      */
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public int countSubIslands_0_4(int[][] grid1, int[][] grid2) {
         int rows = grid2.length;
         int cols = grid2[0].length;
@@ -502,6 +546,10 @@ public class CountSubIslands {
         return subIslandCount;
     }
 
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     private boolean isSubIslandDFS(int[][] grid1, int[][] grid2, int r, int c) {
         // Base case: out of bounds or water in grid2
         if (r < 0 || r >= grid1.length || c < 0 || c >= grid1[0].length || grid2[r][c] == 0) {
@@ -540,12 +588,20 @@ public class CountSubIslands {
 
     // Helper method to check if the cell at the position (x, y) in the 'grid'
     // is a land cell.
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     private boolean isCellLand_1_1(int x, int y, int[][] grid) {
         return grid[x][y] == 1;
     }
 
     // Traverse all cells of island starting at position (x, y) in 'grid2',
     // and check this island is a sub-island in 'grid1'.
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     private boolean isSubIsland_1_1(
             int x,
             int y,
@@ -595,6 +651,10 @@ public class CountSubIslands {
         return isSubIsland_1_1;
     }
 
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public int countSubIslands_1_1(int[][] grid1, int[][] grid2) {
         int totalRows = grid2.length;
         int totalCols = grid2[0].length;
@@ -636,12 +696,20 @@ public class CountSubIslands {
 
     // Helper method to check if the cell at the position (x, y) in the 'grid'
     // is a land cell.
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     private boolean isCellLand(int x, int y, int[][] grid) {
         return grid[x][y] == 1;
     }
 
     // Traverse all cells of island starting at position (x, y) in 'grid2',
     // and check if this island is a sub-island in 'grid1'.
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     private boolean isSubIsland(
             int x,
             int y,
@@ -684,6 +752,10 @@ public class CountSubIslands {
         return isSubIsland;
     }
 
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public int countSubIslands_1_2(int[][] grid1, int[][] grid2) {
         int totalRows = grid2.length;
         int totalCols = grid2[0].length;
@@ -714,6 +786,10 @@ public class CountSubIslands {
     // https://leetcode.ca/2021-07-29-1905-Count-Sub-Islands/
    // static int[][] directions = { {-1, 0}, {1, 0}, {0, -1}, {0, 1} };
 
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public int countSubIslands_2_1(int[][] grid1, int[][] grid2) {
         int subIslands = 0;
         int m = grid1.length, n = grid1[0].length;
@@ -730,6 +806,10 @@ public class CountSubIslands {
         return subIslands;
     }
 
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public boolean breadthFirstSearch(int[][] grid1, int[][] grid2, boolean[][] visited, int m, int n, int startRow, int startColumn) {
         boolean isSubisland = true;
         Queue<int[]> queue = new LinkedList<int[]>();
@@ -755,6 +835,10 @@ public class CountSubIslands {
     // V2-2
     // IDEA:
     // https://leetcode.ca/2021-07-29-1905-Count-Sub-Islands/
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public int countSubIslands_2_2(int[][] grid1, int[][] grid2) {
         int m = grid1.length;
         int n = grid1[0].length;
@@ -769,6 +853,10 @@ public class CountSubIslands {
         return ans;
     }
 
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     private boolean dfs(int i, int j, int m, int n, int[][] grid1, int[][] grid2) {
         boolean ans = grid1[i][j] == 1;
         grid2[i][j] = 0;
