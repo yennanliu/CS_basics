@@ -60,15 +60,27 @@ public class ImplementQueueUsingStacks {
         Stack<Integer> st1;
         Stack<Integer> st2;
 
+        /**
+         * time = O(1)
+         * space = O(N)
+         */
         public MyQueue() {
             st1 = new Stack<>();
             st2 = new Stack<>();
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public void push(int x) {
             this.st1.push(x);
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public int pop() {
             if (this.empty()) {
                 throw new RuntimeException("queue is empty");
@@ -80,6 +92,10 @@ public class ImplementQueueUsingStacks {
             return this.st2.pop();
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public int peek() {
             if (this.empty()) {
                 throw new RuntimeException("queue is empty");
@@ -91,6 +107,10 @@ public class ImplementQueueUsingStacks {
             return this.st2.peek();
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public boolean empty() {
             return this.st1.isEmpty() && this.st2.isEmpty();
         }
@@ -111,15 +131,27 @@ public class ImplementQueueUsingStacks {
         Stack<Integer> st1;
         Stack<Integer> st2;
 
+        /**
+         * time = O(1)
+         * space = O(N)
+         */
         public MyQueue_0_1() {
             st1 = new Stack<>();
             st2 = new Stack<>();
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public void push(int x) {
             this.st1.push(x);
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public int pop() {
             if (this.empty()) {
                 throw new RuntimeException("queue is empty");
@@ -134,6 +166,10 @@ public class ImplementQueueUsingStacks {
             return this.st2.pop();
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public int peek() {
             if (this.empty()) {
                 throw new RuntimeException("queue is empty");
@@ -148,6 +184,10 @@ public class ImplementQueueUsingStacks {
             return this.st2.peek();
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public boolean empty() {
             return this.st1.isEmpty() && this.st2.isEmpty();
         }
@@ -170,15 +210,27 @@ public class ImplementQueueUsingStacks {
         private Stack<Integer> input;
         private Stack<Integer> output;
 
+        /**
+         * time = O(1)
+         * space = O(N)
+         */
         public MyQueue_3() {
             input = new Stack<>();
             output = new Stack<>();
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public void push(int x) {
             input.push(x);
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public int pop() {
             /**
              *  NOTE !!!
@@ -197,6 +249,10 @@ public class ImplementQueueUsingStacks {
             return output.pop();
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public int peek() {
             if (output.isEmpty()) {
                 while (!input.isEmpty()) {
@@ -206,6 +262,10 @@ public class ImplementQueueUsingStacks {
             return output.peek();
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public boolean empty() {
             return input.isEmpty() && output.isEmpty();
         }
@@ -218,11 +278,19 @@ public class ImplementQueueUsingStacks {
         Stack<Integer> st1;
         Stack<Integer> st2;
 
+        /**
+         * time = O(1)
+         * space = O(N)
+         */
         public MyQueue_4() {
             st1 = new Stack<>();
             st2 = new Stack<>();
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public void push(int x) {
             while(!st1.isEmpty()){
                 int data = st1.pop();
@@ -235,18 +303,30 @@ public class ImplementQueueUsingStacks {
             }
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public int pop() {
             if(empty()) return -1;
             return st1.pop();
 
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public int peek() {
             if(empty()) return -1;
             return st1.peek();
 
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public boolean empty() {
             return st1.isEmpty();
         }

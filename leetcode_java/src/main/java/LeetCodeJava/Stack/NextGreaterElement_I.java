@@ -52,6 +52,10 @@ public class NextGreaterElement_I {
 
     // V0
     // IDEA:  HASHMAP { val: next_bigger_val } + BRUTE FORCE
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public int[] nextGreaterElement(int[] nums1, int[] nums2) {
 
         int[] res = new int[nums1.length];
@@ -85,6 +89,10 @@ public class NextGreaterElement_I {
 
     // V-0-0-1
     // IDEA : STACK
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public int[] nextGreaterElement_0_0_1(int[] nums1, int[] nums2) {
         int[] res = new int[nums1.length];
         Arrays.fill(res, -1);
@@ -171,6 +179,10 @@ public class NextGreaterElement_I {
      *  st = [], map = {6:7,5:7,4:7,3:7,2:7,1:7}
      *
      */
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public int[] nextGreaterElement_0_0_2(int[] nums1, int[] nums2) {
 
         if (nums1.length == 1 && nums2.length == 1){
@@ -227,6 +239,10 @@ public class NextGreaterElement_I {
     // IDEA : BRUTE FORCE
     // https://www.youtube.com/watch?v=68a1Dc_qVq4
     // https://github.com/neetcode-gh/leetcode/blob/main/java%2F0496-next-greater-element-i.java
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public int[] nextGreaterElement_0_1(int[] nums1, int[] nums2) {
 
         int[] res = new int[nums1.length];
@@ -253,6 +269,10 @@ public class NextGreaterElement_I {
     }
 
     // V0-2
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public int[] nextGreaterElement_0_2(int[] nums1, int[] nums2) {
 
         if (nums1.equals(null) && nums2.equals(null)) {
@@ -293,6 +313,10 @@ public class NextGreaterElement_I {
 
     // V0-3
     // IDEA: BRUTE FORCE
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public int[] nextGreaterElement_0_3(int[] nums1, int[] nums2) {
         // Edge case: If nums1 is empty or null, return an empty array.
         if (nums1 == null || nums1.length == 0) {
@@ -334,6 +358,10 @@ public class NextGreaterElement_I {
     // IDEA : STACK
     // https://leetcode.com/problems/next-greater-element-i/solutions/2910456/java/
     // https://leetcode.com/problems/next-greater-element-i/solutions/97595/java-10-lines-linear-time-complexity-o-n-with-explanation/?orderBy=most_votes
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public int[] nextGreaterElement_1(int[] nums1, int[] nums2) {
         Map<Integer, Integer> nextGreater = new HashMap<>();
         Deque<Integer> stack = new ArrayDeque<>();
@@ -356,6 +384,10 @@ public class NextGreaterElement_I {
 
     // V2
     // https://leetcode.com/problems/next-greater-element-i/solutions/2614962/easy-java-solution/
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public int[] nextGreaterElement_2(int[] nums1, int[] nums2) {
         int[] ans = new int[nums1.length];
         for(int a = 0; a<nums1.length;a++)

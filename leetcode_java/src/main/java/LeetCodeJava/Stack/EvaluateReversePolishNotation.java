@@ -57,6 +57,10 @@ import java.util.Stack;
 public class EvaluateReversePolishNotation {
 
     // V0 : IDEA : STACK
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public int evalRPN(String[] tokens) {
 
         if (tokens.length == 0){
@@ -99,6 +103,10 @@ public class EvaluateReversePolishNotation {
         return ans;
     }
 
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public Integer calculate(Integer i1, Integer i2, String op){
         if (op.equals("+")){
             return i1 + i2;
@@ -118,6 +126,10 @@ public class EvaluateReversePolishNotation {
 
     // V0-1
     // IDEA: STACK (fixed by gpt)
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public int evalRPN_0_1(String[] tokens) {
         if (tokens == null || tokens.length == 0) {
             return 0;
@@ -165,6 +177,10 @@ public class EvaluateReversePolishNotation {
     // V1
     // IDEA : Reducing the List In-place
     // https://leetcode.com/problems/evaluate-reverse-polish-notation/editorial/
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public int evalRPN_2(String[] tokens) {
 
         int currentPosition = 0;
@@ -217,6 +233,10 @@ public class EvaluateReversePolishNotation {
     // V2
     // IDEA : Evaluate with Stack
     // https://leetcode.com/problems/evaluate-reverse-polish-notation/editorial/
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public int evalRPN_3(String[] tokens) {
 
         Stack<Integer> stack = new Stack<>();

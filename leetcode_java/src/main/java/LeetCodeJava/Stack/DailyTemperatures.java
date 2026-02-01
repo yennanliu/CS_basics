@@ -37,6 +37,10 @@ public class DailyTemperatures {
 
     // V0
     // IDEA: STACK + HASHMAP ( {idx : val} )
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public int[] dailyTemperatures(int[] temperatures) {
         // edge
         if(temperatures == null || temperatures.length == 0){
@@ -87,6 +91,10 @@ public class DailyTemperatures {
     // mono `decreasing` stack
     // big -> small
     // stack: [ [idx, val] ]
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public int[] dailyTemperatures_0_0_1(int[] temperatures) {
         // edge
         if(temperatures == null || temperatures.length == 0){
@@ -147,6 +155,10 @@ public class DailyTemperatures {
     // V0-0-2
     // IDEA : STACK (MONOTONIC STACK)
     // LC 496
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public int[] dailyTemperatures_0_0_2(int[] temperatures) {
 
         if (temperatures.length == 1){
@@ -217,6 +229,10 @@ public class DailyTemperatures {
     // V0-1
     // IDEA : STACK (gpt)
     // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Stack/daily-temperatures.py#L34
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public int[] dailyTemperatures_0_1(int[] temperatures) {
         // Edge case: if the input array is null or empty, return an empty array
         if (temperatures == null || temperatures.length == 0) {
@@ -266,6 +282,10 @@ public class DailyTemperatures {
      *
      *   It's critical to define whether "increasing" or "decreasing" stack
      *   We're going to use in stack LC before implement it
+     */
+    /**
+     * time = O(1)
+     * space = O(1)
      */
     public int[] dailyTemperatures_0_2(int[] temperatures) {
 
@@ -321,6 +341,10 @@ public class DailyTemperatures {
 
     // V0-3
     // IDEA: MONOTONIC STACK (gpt)
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public int[] dailyTemperatures_0_3(int[] temperatures) {
         // edge case
         if (temperatures == null || temperatures.length == 0) {
@@ -351,6 +375,10 @@ public class DailyTemperatures {
     // V1
     // IDEA : Monotonic Stack
     // https://leetcode.com/problems/daily-temperatures/editorial/
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public int[] dailyTemperatures_1(int[] temperatures) {
         int n = temperatures.length;
         int[] answer = new int[n];
@@ -373,6 +401,10 @@ public class DailyTemperatures {
     // V2
     // IDEA : Array, Optimized Space
     // https://leetcode.com/problems/daily-temperatures/editorial/
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public int[] dailyTemperatures_2(int[] temperatures) {
         int n = temperatures.length;
         int hottest = 0;

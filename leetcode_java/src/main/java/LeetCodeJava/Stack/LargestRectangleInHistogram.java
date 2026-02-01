@@ -67,6 +67,10 @@ public class LargestRectangleInHistogram {
      •	So we pop them, calculate area, and move on.
      *
      */
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public int largestRectangleArea_0_0_1(int[] heights) {
         int n = heights.length;
 
@@ -163,6 +167,10 @@ public class LargestRectangleInHistogram {
 
     // V0-0-2
     // IDEA: BRUTE FORCE (TLE)
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public int largestRectangleArea_0_0_2(int[] heights) {
         // edge
         if (heights == null || heights.length == 0) {
@@ -220,6 +228,10 @@ public class LargestRectangleInHistogram {
      * Area Calculation:
      *    - Every time we pop an element from the stack,
      *     we calculate the area of the rectangle that the popped bar forms.
+     */
+    /**
+     * time = O(1)
+     * space = O(1)
      */
     public int largestRectangleArea_1(int[] heights) {
 
@@ -307,6 +319,10 @@ public class LargestRectangleInHistogram {
 
     // V0-3
     // IDEA: BRUTE FORCE (TLE)
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public int largestRectangleArea_0_3(int[] heights) {
         // edge
         if (heights.length == 0) {
@@ -338,6 +354,10 @@ public class LargestRectangleInHistogram {
 
     // V0-4
     // IDEA: monotonic increasing stack (GPT)
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public int largestRectangleArea_0_4(int[] heights) {
         int n = heights.length;
         Stack<Integer> st = new Stack<>();
@@ -359,6 +379,10 @@ public class LargestRectangleInHistogram {
     // V2
     // IDEA : BRUTE FORCE
     // https://leetcode.com/problems/largest-rectangle-in-histogram/editorial/
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public int largestRectangleArea_2(int[] heights) {
         int maxarea = 0;
         for (int i = 0; i < heights.length; i++) {
@@ -375,6 +399,10 @@ public class LargestRectangleInHistogram {
     // V3
     // IDEA : better BRUTE FORCE
     // https://leetcode.com/problems/largest-rectangle-in-histogram/editorial/
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public int largestRectangleArea_3(int[] heights) {
         int maxArea = 0;
         int length = heights.length;
@@ -391,6 +419,10 @@ public class LargestRectangleInHistogram {
     // V4
     // IDEA : Divide and Conquer Approach
     // https://leetcode.com/problems/largest-rectangle-in-histogram/editorial/
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public int calculateArea(int[] heights, int start, int end) {
         if (start > end)
             return 0;
@@ -404,6 +436,10 @@ public class LargestRectangleInHistogram {
         );
     }
 
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public int largestRectangleArea_4(int[] heights) {
         return calculateArea(heights, 0, heights.length - 1);
     }
@@ -417,6 +453,10 @@ public class LargestRectangleInHistogram {
     // V6
     // IDEA : STACK
     // https://leetcode.com/problems/largest-rectangle-in-histogram/editorial/
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public int largestRectangleArea_6(int[] heights) {
         Deque<Integer> stack = new ArrayDeque<>();
         stack.push(-1);

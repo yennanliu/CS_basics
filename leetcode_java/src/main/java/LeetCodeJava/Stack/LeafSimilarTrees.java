@@ -24,6 +24,10 @@ import java.util.Stack;
 public class LeafSimilarTrees {
 
     // V0
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public boolean leafSimilar(TreeNode root1, TreeNode root2) {
 
         List<Integer> l1 = new ArrayList<>();
@@ -79,6 +83,10 @@ public class LeafSimilarTrees {
 
     // V1
     // https://leetcode.com/problems/leaf-similar-trees/solutions/2891123/recurssion-with-java-0-ms/
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public void leaf(TreeNode node,ArrayList<Integer> al)
     {
         if(node==null)
@@ -90,6 +98,10 @@ public class LeafSimilarTrees {
         leaf(node.left,al);
         leaf(node.right,al);
     }
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public boolean leafSimilar2(TreeNode root1, TreeNode root2)
     {
         ArrayList<Integer> l1=new ArrayList<>();
@@ -101,15 +113,27 @@ public class LeafSimilarTrees {
 
     // V2
     // https://leetcode.com/problems/leaf-similar-trees/solutions/2889337/java-solution-using-stack/
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public boolean isLeaf(TreeNode node){
         return (node.left==null && node.right==null);
     }
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public void findLeafs(TreeNode node, Stack<Integer> stack){
         if(node==null) return;
         if(isLeaf(node)) stack.push(node.val);
         findLeafs(node.left,stack);
         findLeafs(node.right,stack);
     }
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public void removeLeafs(TreeNode node, Stack<Integer> stack){
         if(node==null) return;
         if(isLeaf(node)){
@@ -120,6 +144,10 @@ public class LeafSimilarTrees {
         removeLeafs(node.right,stack);
         removeLeafs(node.left,stack);
     }
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public boolean leafSimilar3(TreeNode root1, TreeNode root2) {
         Stack<Integer> stack = new Stack<Integer>();
         findLeafs(root1,stack);

@@ -103,6 +103,10 @@ public class CarFleet {
      * 	    •	The number of distinct times that exceed lastTime corresponds to the number of fleets.
      *
      */
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public int carFleet(int target, int[] position, int[] speed) {
         int n = position.length;
     /**
@@ -186,6 +190,10 @@ public class CarFleet {
      *          -> time = (target - position) / speed
      *
      */
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public int carFleet_0_1(int target, int[] position, int[] speed) {
 
         int[] dist = new int[position.length];
@@ -221,6 +229,10 @@ public class CarFleet {
     }
 
     // V0-2
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public int carFleet_0_2(int target, int[] position, int[] speed) {
         // edge
         if (position == null || position.length == 0) {
@@ -250,6 +262,10 @@ public class CarFleet {
         }
         Arrays.sort(position2, new Comparator<Integer>() {
             @Override
+            /**
+             * time = O(1)
+             * space = O(1)
+             */
             public int compare(Integer o1, Integer o2) {
                 int diff = o2 - o1;
                 return diff;
@@ -291,6 +307,10 @@ public class CarFleet {
     // V1-1
     // https://neetcode.io/problems/car-fleet
     // IDEA:  STACK
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public int carFleet_1_1(int target, int[] position, int[] speed) {
         int[][] pair = new int[position.length][2];
         for (int i = 0; i < position.length; i++) {
@@ -314,6 +334,10 @@ public class CarFleet {
     // V1-2
     // https://neetcode.io/problems/car-fleet
     // IDEA: Iteration
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public int carFleet_1_2(int target, int[] position, int[] speed) {
         int n = position.length;
         int[][] pair = new int[n][2];
@@ -337,6 +361,10 @@ public class CarFleet {
 
     // V2
     // https://leetcode.com/problems/car-fleet/solutions/2013259/java-simple-solution-100-faster/
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public int carFleet_2(int target, int[] position, int[] speed) {
 
         int res = 0;
@@ -365,6 +393,10 @@ public class CarFleet {
     // calculate distance left for each car
     // calculate time needed for each car
     // if a car has greater distance left than another car & its time needed is smaller than another car, it wil chase up and become the same fleet
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public int carFleet_3(int target, int[] position, int[] speed) {
         int n = position.length;
         int[] dist = new int[n];
@@ -390,6 +422,10 @@ public class CarFleet {
 
     // V4
     // https://leetcode.com/problems/car-fleet/solutions/3224677/fast-100-16ms-space-efficient-99-511-mb-and-compact/
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public int carFleet_4(int target, int[] position, int[] speed) {
         float arraytime[] = new float[target+1],max=0;
         for(int i=0;i<position.length;i++){
