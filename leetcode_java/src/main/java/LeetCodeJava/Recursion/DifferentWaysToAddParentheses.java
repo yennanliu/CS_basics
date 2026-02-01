@@ -66,6 +66,10 @@ public class DifferentWaysToAddParentheses {
     // V1-1
     // https://leetcode.com/problems/different-ways-to-add-parentheses/editorial/
     // IDEA: Recursion
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public List<Integer> diffWaysToCompute_1_1(String expression) {
         List<Integer> results = new ArrayList<>();
 
@@ -131,6 +135,10 @@ public class DifferentWaysToAddParentheses {
     // V1-2
     // https://leetcode.com/problems/different-ways-to-add-parentheses/editorial/
     // IDEA: Memoization
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public List<Integer> diffWaysToCompute_1_2(String expression) {
         // Initialize memoization array to store results of subproblems
         List<Integer>[][] memo = new ArrayList[expression.length()][expression.length()];
@@ -211,6 +219,10 @@ public class DifferentWaysToAddParentheses {
     // https://leetcode.com/problems/different-ways-to-add-parentheses/editorial/
     // IDEA: Tabulation
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public List<Integer> diffWaysToCompute(String expression) {
         int n = expression.length();
         // Create a 2D array of lists to store results of subproblems
@@ -301,6 +313,10 @@ public class DifferentWaysToAddParentheses {
 
     // V2
     // IDEA:  divide-and-conquer , Memoization (gpt)
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public List<Integer> diffWaysToCompute_2(String expression) {
         // Use memoization to avoid redundant computations
         Map<String, List<Integer>> memo = new HashMap<>();

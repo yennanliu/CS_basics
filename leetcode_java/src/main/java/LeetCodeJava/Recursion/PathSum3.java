@@ -69,6 +69,10 @@ public class PathSum3 {
      * 	             (2,147,483,647). Using long prevents integer overflow.
      */
     Map<Long, Integer> pathCntMap = new HashMap<>();
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int pathSum_0_1(TreeNode root, int targetSum) {
         if (root == null)
             return 0;
@@ -148,6 +152,10 @@ public class PathSum3 {
     // Map to store the frequency of prefix sums encountered from the root down to the current node.
     // Key: Prefix Sum | Value: Number of times this sum has been seen.
     private Map<Long, Integer> prefixSumCounts = new HashMap<>();
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int pathSum_0_2(TreeNode root, int targetSum) {
         if (root == null) {
             return 0;
@@ -213,6 +221,10 @@ public class PathSum3 {
     private Map<Long, Integer> cnt = new HashMap<>();
     private int targetSum;
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int pathSum_1(TreeNode root, int targetSum) {
         cnt.put(0L, 1);
         this.targetSum = targetSum;
@@ -235,6 +247,10 @@ public class PathSum3 {
     // V2
     // IDEA: HASHMAP + DFS
     // https://leetcode.com/problems/path-sum-iii/solutions/7182200/prefix-sum-hashmap-on-c-by-mkhlz-psr9/
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int pathSum_2(TreeNode root, int targetSum) {
         Map<Long, Integer> prefix = new HashMap<>();
         prefix.put(0L, 1); // base

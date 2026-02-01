@@ -99,6 +99,10 @@ public class BinaryTreeColoringGame {
      */
     // V0
     // IDEA : RECURSION + TREE OP (fixed by GPT)
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public boolean btreeGameWinningMove(TreeNode root, int n, int x) {
 
         // Get the total count of nodes in the left and right subtree of the node with value x
@@ -210,6 +214,10 @@ public class BinaryTreeColoringGame {
     // Map to record { node.val : number of nodes in its subtree }
     Map<Integer, Integer> subNodeCntMap = new HashMap<>();
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public boolean btreeGameWinningMove_0_1(TreeNode root, int n, int x) {
         if (root == null || n == 0) return false;
 
@@ -253,6 +261,10 @@ public class BinaryTreeColoringGame {
     private int leftSize;
     private int rightSize;
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public boolean btreeGameWinningMove_0_2(TreeNode root, int n, int x) {
         // The game requires n >= 3 for a meaningful game, but we handle constraints.
         if (root == null) {
@@ -326,6 +338,10 @@ public class BinaryTreeColoringGame {
      * one of those paths should include more nodes than
      * the sum of other two paths.
      */
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public boolean btreeGameWinningMove_1(TreeNode root, int n, int x) {
         if(root == null) return false;
 
@@ -354,6 +370,10 @@ public class BinaryTreeColoringGame {
     // so i can only win if i choose a node which contains elements greater than the count of elements in otther 2 nodes i.e a>b+c i color a node blue, or b>a+c i color b node blue , or c>a+b i color c node blue
     // if none of these 3 conditions hold true then red person wins bcoz he has more nodes to color
     int count;
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public boolean btreeGameWinningMove_2(TreeNode root, int n, int x) {
         if (root == null)
             return false;
@@ -397,6 +417,10 @@ public class BinaryTreeColoringGame {
 
     // V3
     // https://leetcode.com/problems/binary-tree-coloring-game/solutions/1700137/java-explained-beginner-friendly/
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public boolean btreeGameWinningMove_3(TreeNode root, int n, int x) {
         if(root==null) return false;
         if(root.val==x){
@@ -413,6 +437,10 @@ public class BinaryTreeColoringGame {
 
         return false;
     }
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int countofnodes(TreeNode root){
         if(root==null) return 0;
         return countofnodes(root.left)+countofnodes(root.right)+1;
@@ -420,6 +448,10 @@ public class BinaryTreeColoringGame {
 
     // V4
     // https://leetcode.com/problems/binary-tree-coloring-game/solutions/4408523/java-o-n-100-faster-solution/
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public boolean btreeGameWinningMove_4(TreeNode root, int n, int x) {
         TreeNode[] red = new TreeNode[1];
         findNode(root, x, red);

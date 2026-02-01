@@ -51,12 +51,24 @@ public class PopulatingNextRightPointersInEachNode {
         public Node right;
         public Node next;
 
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public Node() {}
 
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public Node(int _val) {
             val = _val;
         }
 
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public Node(int _val, Node _left, Node _right, Node _next) {
             val = _val;
             left = _left;
@@ -72,6 +84,10 @@ public class PopulatingNextRightPointersInEachNode {
 
     // V0-1
     // IDEA: BFS (fixed by gpt)
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public Node connect_0_1(Node root) {
         if (root == null)
             return null;
@@ -203,6 +219,10 @@ public class PopulatingNextRightPointersInEachNode {
      * - Space Complexity: O(1). Since we are not using any extra space apart from the input tree and a few constant variables, the space complexity is constant.
      *
      */
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public Node connect_1(Node root) {
         if (root == null) {
             return null;
@@ -240,6 +260,10 @@ public class PopulatingNextRightPointersInEachNode {
     // V2
     // IDEA: DFS
     // https://leetcode.com/problems/populating-next-right-pointers-in-each-node/solutions/7189314/recursive-dfs-solution-java-on-time-oh-s-wzqb/
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public Node connect_2(Node root) {
         if (root == null)
             return root;
@@ -248,6 +272,10 @@ public class PopulatingNextRightPointersInEachNode {
         return root;
     }
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public void helper(Node root) {
         if (root.left == null)
             return;
@@ -265,6 +293,10 @@ public class PopulatingNextRightPointersInEachNode {
     // V3
     // IDEA: BFS
     // https://leetcode.com/problems/populating-next-right-pointers-in-each-node/solutions/7093295/o1-space-complexity-easiest-solution-jav-adb7/
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public Node connect_3(Node root) {
         if (root == null)
             return root;

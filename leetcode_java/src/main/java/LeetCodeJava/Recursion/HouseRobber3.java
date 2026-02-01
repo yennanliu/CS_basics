@@ -75,6 +75,10 @@ public class HouseRobber3 {
    *  -> The DP traversal picks the best at each level.
    *
    */
+  /**
+   * time = O(N)
+   * space = O(H)
+   */
   public int rob_0_1(TreeNode root) {
         int[] result = dfs_0_1(root);
         return Math.max(result[0], result[1]);
@@ -96,6 +100,10 @@ public class HouseRobber3 {
 
     // V0-2
     // IDEA: DFS (TLE) (gpt)
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int rob_0_2(TreeNode root) {
         return getMaxNodeSum(root, false);
     }
@@ -149,6 +157,10 @@ public class HouseRobber3 {
      */
     private Map<TreeNode, Integer[]> memo = new HashMap<>();
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int rob_0_3(TreeNode root) {
         return getMaxNodeSum_0_3(root);
     }
@@ -208,6 +220,10 @@ public class HouseRobber3 {
      *
      *
      */
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int rob_0_4(TreeNode root) {
         int[] res = robSub(root);
         return Math.max(res[0], res[1]);
@@ -233,6 +249,10 @@ public class HouseRobber3 {
     // V1
     // https://youtu.be/nHR8ytpzz7c?si=7y46QM-wwMWAmn8b
     // https://github.com/neetcode-gh/leetcode/blob/main/java%2F0337-house-robber-iii.java
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int rob_1(TreeNode root) {
         // NOTE !!! we call helper func below
         int[] ans = dfs(root);
@@ -240,6 +260,10 @@ public class HouseRobber3 {
     }
 
     // helper func
+    /**
+     * time = O(V + E)
+     * space = O(V)
+     */
     public int[] dfs(TreeNode root){
         if(root == null) return new int[2];
 
@@ -256,6 +280,10 @@ public class HouseRobber3 {
 
     // V2
     // https://leetcode.com/problems/house-robber-iii/solutions/79363/easy-understanding-solution-with-dfs-by-1tqxw/
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int rob_2(TreeNode root) {
         int[] num = dfs_2(root);
         return Math.max(num[0], num[1]);
@@ -275,6 +303,10 @@ public class HouseRobber3 {
     // V3-1
     // IDEA: RECURSIVE (TLE)
     // https://leetcode.com/problems/house-robber-iii/solutions/1611881/java-3-approaches-recursion-dp-greedy-de-tvu9/
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int rob_3_1(TreeNode root) {
         if (root == null)
             return 0;
@@ -298,10 +330,18 @@ public class HouseRobber3 {
     // V3-2
     // IDEA: Rucrsion Using HashMap
     // https://leetcode.com/problems/house-robber-iii/solutions/1611881/java-3-approaches-recursion-dp-greedy-de-tvu9/
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int rob_3_2(TreeNode root) {
         return rob_3_2(root, new HashMap<>());
     }
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int rob_3_2(TreeNode root, Map<TreeNode, Integer> map) {
 
         if (root == null)
@@ -329,11 +369,19 @@ public class HouseRobber3 {
     // V3-3
     // IDEA: Greedy Approach
     // https://leetcode.com/problems/house-robber-iii/solutions/1611881/java-3-approaches-recursion-dp-greedy-de-tvu9/
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int rob_3_3(TreeNode root) {
         int ans[] = robHouse(root);
         return Math.max(ans[0], ans[1]);
     }
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int[] robHouse(TreeNode root) {
         if (root == null) {
             return new int[2];

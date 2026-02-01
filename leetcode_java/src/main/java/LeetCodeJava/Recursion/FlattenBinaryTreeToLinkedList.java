@@ -78,6 +78,10 @@ public class FlattenBinaryTreeToLinkedList {
      *   helper val (list) to collect visited tree node
      */
     List<TreeNode> list = new ArrayList<>();
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public void flatten_0_0_1(TreeNode root) {
         if (root == null) {
             return;
@@ -106,6 +110,10 @@ public class FlattenBinaryTreeToLinkedList {
 
     // V1
     // https://leetcode.ca/2016-03-23-114-Flatten-Binary-Tree-to-Linked-List/
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public void flatten_1(TreeNode root) {
         while (root != null) {
             if (root.left != null) {
@@ -125,6 +133,10 @@ public class FlattenBinaryTreeToLinkedList {
     // V2-1
     // IDEA: PREORDER TRAVERSE
     // https://leetcode.com/problems/flatten-binary-tree-to-linked-list/solutions/7096855/2-approaches-in-place-depth-first-search-wmwk/
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public void flatten_2(TreeNode root) {
         if (root == null)
             return;
@@ -148,6 +160,10 @@ public class FlattenBinaryTreeToLinkedList {
     // V2-2
     // IDEA: In-Place Optimized
     // https://leetcode.com/problems/flatten-binary-tree-to-linked-list/solutions/7096855/2-approaches-in-place-depth-first-search-wmwk/
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public void flatten_2_2(TreeNode root) {
         TreeNode current = root;
         while (current != null) {
@@ -166,6 +182,10 @@ public class FlattenBinaryTreeToLinkedList {
 
     // V3
     // https://leetcode.com/problems/flatten-binary-tree-to-linked-list/solutions/7198280/runtime-0ms-beats-10000-binary-tree-flat-lwm4/
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public void flatten_3(TreeNode root) {
         if (root == null)
             return;
@@ -216,6 +236,10 @@ public class FlattenBinaryTreeToLinkedList {
 
     // V4
     // https://leetcode.com/problems/flatten-binary-tree-to-linked-list/solutions/6907687/beats-100-beginner-friendly-explanation-d3g32/
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public void flatten(TreeNode root) {
         Queue<TreeNode> q = new LinkedList<>();
         insert(root, q);

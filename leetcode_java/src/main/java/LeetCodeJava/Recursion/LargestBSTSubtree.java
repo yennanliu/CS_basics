@@ -51,6 +51,10 @@ public class LargestBSTSubtree {
     // TODO: validate
     int maxBSTNodeCnt = 0;
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int largestBSTSubtree_0_1(TreeNode root) {
         if (root == null) {
             return 0;
@@ -97,6 +101,10 @@ public class LargestBSTSubtree {
     // IDEA: IMPROVED OF V0-1 (gpt)
     int maxBST = 0;
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int largestBSTSubtree_0_2(TreeNode root) {
         dfs_0_2(root);
         return maxBST;
@@ -132,6 +140,10 @@ public class LargestBSTSubtree {
     // Global variable to track the maximum size of a valid BST found so far.
     private int maxBSTNodeCnt_0_3 = 0;
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int largestBSTSubtree_0_3(TreeNode root) {
         if (root == null) {
             return 0;
@@ -197,6 +209,10 @@ public class LargestBSTSubtree {
     // IDEA: DFS
     // https://leetcode.ca/2016-10-28-333-Largest-BST-Subtree/
     private int ans;
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int largestBSTSubtree_1(TreeNode root) {
         ans = 0;
         dfs(root);

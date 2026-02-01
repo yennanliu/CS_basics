@@ -47,6 +47,10 @@ public class BalancedBinaryTree {
     // V0
     // IDEA : DFS, LC 104
     // https://www.bilibili.com/video/BV1Ug411S7my/?share_source=copy_web
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public boolean isBalanced(TreeNode root) {
         // edge
         if (root == null) {
@@ -70,6 +74,10 @@ public class BalancedBinaryTree {
     }
 
     // LC 104
+    /**
+     * time = O(V + E)
+     * space = O(V)
+     */
     public int getDepthDFS(TreeNode root) {
         if (root == null) {
             return 0;
@@ -84,6 +92,10 @@ public class BalancedBinaryTree {
 
     // V0-2
     // IDEA: BFS (gpt)
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public boolean isBalanced_0_2(TreeNode root) {
         if (root == null)
             return true;
@@ -137,6 +149,10 @@ public class BalancedBinaryTree {
 
     // V0-3
     // IDEA: DFS + LC 104
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public boolean isBalanced_0_3(TreeNode root) {
 
         // edge
@@ -151,6 +167,10 @@ public class BalancedBinaryTree {
         return isBalanceHelper(root);
     }
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public boolean isBalanceHelper(TreeNode root) {
 
         // edge
@@ -184,6 +204,10 @@ public class BalancedBinaryTree {
 
     // LC 104
     // NOTE !!! we need this `get max depth` helper func
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int getDepthHelper(TreeNode root) {
         // edge
         if (root == null) {
@@ -199,6 +223,10 @@ public class BalancedBinaryTree {
     // V1-1
     // https://neetcode.io/problems/balanced-binary-tree
     // IDEA: BRUTE FORCE
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public boolean isBalanced_1_1(TreeNode root) {
         if (root == null) return true;
 
@@ -208,6 +236,10 @@ public class BalancedBinaryTree {
         return isBalanced_1_1(root.left) && isBalanced_1_1(root.right);
     }
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int height_1_1(TreeNode root) {
         if (root == null) {
             return 0;
@@ -220,6 +252,10 @@ public class BalancedBinaryTree {
     // V1-2
     // https://neetcode.io/problems/balanced-binary-tree
     // IDEA: DFS
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public boolean isBalanced_1_2(TreeNode root) {
         return dfs(root)[0] == 1;
     }
@@ -243,6 +279,10 @@ public class BalancedBinaryTree {
     // V1-3
     // https://neetcode.io/problems/balanced-binary-tree
     // IDEA: Depth First Search (Stack)
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public boolean isBalanced_1_3(TreeNode root) {
         Stack<TreeNode> stack = new Stack<>();
         TreeNode node = root, last = null;
@@ -283,6 +323,10 @@ public class BalancedBinaryTree {
         return 1 + Math.max(height(root.left), height(root.right));
     }
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public boolean isBalanced_2(TreeNode root) {
         // An empty tree satisfies the definition of a balanced tree
         if (root == null) {
@@ -305,6 +349,10 @@ public class BalancedBinaryTree {
         public final int height;
         public final boolean balanced;
 
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public TreeInfo(int height, boolean balanced) {
             this.height = height;
             this.balanced = balanced;
@@ -336,6 +384,10 @@ public class BalancedBinaryTree {
         return new TreeInfo(-1, false);
     }
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public boolean isBalanced_3(TreeNode root) {
         return isBalancedTreeHelper(root).balanced;
     }

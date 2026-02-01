@@ -12,6 +12,10 @@ public class SumOfLeftLeaves {
     // VO
     // IDEA: DFS (post order traverse)
     int res = 0;
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int sumOfLeftLeaves(TreeNode root) {
 
         if (root == null){
@@ -53,6 +57,10 @@ public class SumOfLeftLeaves {
         return node != null && node.left == null && node.right == null;
     }
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int sumOfLeftLeaves_0_1(TreeNode root) {
 
         if (root == null) {
@@ -90,6 +98,10 @@ public class SumOfLeftLeaves {
         return node != null && node.left == null && node.right == null;
     }
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int sumOfLeftLeaves_1(TreeNode root) {
 
         if (root == null) {
@@ -122,6 +134,10 @@ public class SumOfLeftLeaves {
     // V2
     // IDEA : Recursive Tree Traversal (Pre-order)
     // https://leetcode.com/problems/sum-of-left-leaves/editorial/
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int sumOfLeftLeaves_2(TreeNode root) {
         if (root == null) {
             return 0;
@@ -152,6 +168,10 @@ public class SumOfLeftLeaves {
     // IDEA : Recursive Tree Traversal (Pre-order) simplified
     // https://leetcode.com/problems/sum-of-left-leaves/editorial/
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int sumOfLeftLeaves_2_1(TreeNode root) {
         return processSubtree_2_1(root, false);
     }
@@ -176,6 +196,10 @@ public class SumOfLeftLeaves {
     // V3
     // IDEA : Morris Tree Traversal (Pre-order)
     // https://leetcode.com/problems/sum-of-left-leaves/editorial/
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int sumOfLeftLeaves_3(TreeNode root) {
         int totalSum = 0;
         TreeNode currentNode = root;

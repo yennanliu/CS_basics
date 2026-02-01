@@ -62,6 +62,10 @@ public class CrackingTheSafes {
 
     // V1
     // https://leetcode.com/problems/cracking-the-safe/solutions/314906/java-dfs-not-a-fast-solution-but-easy-to-understand-with-explanation/
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public String crackSafe_1(int n, int k) {
         Set<String> visited = new HashSet<String>();
         //*start from string "00.."
@@ -99,6 +103,10 @@ public class CrackingTheSafes {
     // V2
     // IDEA : DFS + BACKTRACK (gpt)
     // https://zxi.mytechroad.com/blog/graph/leetcode-753-cracking-the-safe/
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public String crackSafe_2(int n, int k) {
         int totalLen = (int) Math.pow(k, n) + n - 1;
         StringBuilder ans = new StringBuilder();
@@ -139,6 +147,10 @@ public class CrackingTheSafes {
     // V2-1
     // IDEA : DFS + BACKTRACK
     // https://zxi.mytechroad.com/blog/graph/leetcode-753-cracking-the-safe/
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public String crackSafe_2_1(int n, int k) {
         int totalLen = (int) Math.pow(k, n) + n - 1;
         StringBuilder node = new StringBuilder();

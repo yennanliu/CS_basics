@@ -64,6 +64,10 @@ public class SumRootToLeafNumbers {
     // IDEA: DFS (pre-order traverse) + PATH SUM (fixed by gpt)
     List<String> cache = new ArrayList<>();
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int sumNumbers_0_1(TreeNode root) {
         if (root == null) {
             return 0;
@@ -151,6 +155,10 @@ public class SumRootToLeafNumbers {
     // V1
     // IDEA: DFS
     // https://leetcode.ca/2016-04-07-129-Sum-Root-to-Leaf-Numbers/
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int sumNumbers_1(TreeNode root) {
         return dfs(root, 0);
     }
@@ -171,6 +179,10 @@ public class SumRootToLeafNumbers {
     // IDEA: DFS
     // https://leetcode.com/problems/sum-root-to-leaf-numbers/solutions/7238268/easy-solution-dfs-beats-10000-by-adhi_m_-319h/
     int sum = 0;
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int sumNumbers_2(TreeNode root) {
         helper(root, 0);
         return sum;
@@ -190,6 +202,10 @@ public class SumRootToLeafNumbers {
     // V3-1
     // IDEA: DFS
     // https://leetcode.com/problems/sum-root-to-leaf-numbers/solutions/7238149/one-of-the-good-solution-to-solve-this-p-sh13/
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int sumNumbers_3_1(TreeNode root) {
         int arr[] = new int[1];
         List<Integer> list = new ArrayList<>();
@@ -197,6 +213,10 @@ public class SumRootToLeafNumbers {
         return arr[0];
     }
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public void fn(TreeNode root, int arr[], List<Integer> list) {
         if (root == null) return;
 
@@ -219,6 +239,10 @@ public class SumRootToLeafNumbers {
     // V3-2
     // IDEA: OPTIMIZED DFS
     // https://leetcode.com/problems/sum-root-to-leaf-numbers/solutions/7238149/one-of-the-good-solution-to-solve-this-p-sh13/
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int sumNumbers_3_2(TreeNode root) {
         return dfs_3_2(root, 0);
     }
