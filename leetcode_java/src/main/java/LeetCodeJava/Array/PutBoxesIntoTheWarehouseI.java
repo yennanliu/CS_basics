@@ -123,6 +123,10 @@ public class PutBoxesIntoTheWarehouseI {
     // V0-2
     // IDEA: ARRAY, SORTING (gpt)
     // TODO: validate below:
+    /**
+     * time = O(N log N)
+     * space = O(1)
+     */
     public int maxBoxesInWarehouse_0_2(int[] boxes, int[] warehouse) {
         // Edge case: check for null or empty arrays
         if (boxes == null || warehouse == null || boxes.length == 0 || warehouse.length == 0) {
@@ -159,6 +163,10 @@ public class PutBoxesIntoTheWarehouseI {
 
     // V1
     // https://leetcode.ca/2020-03-12-1564-Put-Boxes-Into-the-Warehouse-I/
+    /**
+     * time = O(N log N)
+     * space = O(1)
+     */
     public int maxBoxesInWarehouse_1(int[] boxes, int[] warehouse) {
         int n = warehouse.length;
         int[] left = new int[n];

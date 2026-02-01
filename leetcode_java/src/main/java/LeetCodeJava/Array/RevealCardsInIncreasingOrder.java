@@ -151,6 +151,10 @@ public class RevealCardsInIncreasingOrder {
     // V1-2
     // IDEA : 2 POINTERS
     // https://leetcode.com/problems/reveal-cards-in-increasing-order/editorial/
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public int[] deckRevealedIncreasing_1_2(int[] deck) {
         int N = deck.length;
         int[] result = new int[N];
@@ -181,6 +185,10 @@ public class RevealCardsInIncreasingOrder {
 
     // V2
     // https://leetcode.com/problems/reveal-cards-in-increasing-order/solutions/5001469/faster-lesser-detailed-explaination-sorting-deque-step-by-step-explaination-python-java-c/
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public int[] deckRevealedIncreasing_2(int[] deck) {
         Arrays.sort(deck); // Sort the deck in increasing order
 
@@ -205,6 +213,10 @@ public class RevealCardsInIncreasingOrder {
 
     // V3
     // https://leetcode.com/problems/reveal-cards-in-increasing-order/submissions/1454215743/
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public int[] deckRevealedIncreasing_3(int[] deck) {
         int n=deck.length;
         Arrays.sort(deck);

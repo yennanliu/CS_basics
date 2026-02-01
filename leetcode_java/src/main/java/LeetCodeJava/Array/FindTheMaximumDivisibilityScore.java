@@ -136,6 +136,10 @@ public class FindTheMaximumDivisibilityScore {
 
     // V0-2
     // IDEA: BRUTE FORCE (fixed by GPT)
+    /**
+     * time = O(N*M)
+     * space = O(1)
+     */
     public int maxDivScore_0_2(int[] nums, int[] divisors) {
         int bestScore = -1;
         int bestDiv = Integer.MAX_VALUE;
@@ -160,6 +164,10 @@ public class FindTheMaximumDivisibilityScore {
 
     // V1
     // https://leetcode.ca/2023-02-25-2644-Find-the-Maximum-Divisibility-Score/
+    /**
+     * time = O(N*M)
+     * space = O(1)
+     */
     public int maxDivScore_1(int[] nums, int[] divisors) {
         int ans = divisors[0];
         int mx = 0;
@@ -183,6 +191,10 @@ public class FindTheMaximumDivisibilityScore {
 
     // V2
     // https://leetcode.com/problems/find-the-maximum-divisibility-score/solutions/3421736/clean-simple-java-solution-by-himanshubh-2ndh/
+    /**
+     * time = O(N*M)
+     * space = O(1)
+     */
     public int maxDivScore_2(int[] nums, int[] divisors) {
         Arrays.sort(divisors);
         int max = 0, res = divisors[0];

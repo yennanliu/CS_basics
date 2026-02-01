@@ -58,6 +58,10 @@ public class FindTheScoreOfAllPrefixesOfAnArray {
 
     // V0
     // IDEA: ARRAY OP (fixed by gpt)
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public long[] findPrefixScore(int[] nums) {
         // edge
         if (nums == null || nums.length == 0) {
@@ -91,6 +95,10 @@ public class FindTheScoreOfAllPrefixesOfAnArray {
 
     // V1
     // IDEA: ARRAY OP (fixed by gpt)
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public long[] findPrefixScore_1(int[] nums) {
         // edge
         if (nums == null || nums.length == 0) {
@@ -120,6 +128,10 @@ public class FindTheScoreOfAllPrefixesOfAnArray {
 
     // V2
     // IDEA: ARRAY OP (fix by gemini)
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public long[] findPrefixScore_2(int[] nums) {
         // Edge case: Handle null or empty array
         if (nums == null || nums.length == 0) {

@@ -102,6 +102,10 @@ public class SparseMatrixMultiplication {
 
     // V1
     // IDEA : ARRAY OP (gpt)
+    /**
+     * time = O(M*N*K)
+     * space = O(M*K)
+     */
     public int[][] multiply_1(int[][] A, int[][] B) {
         int m = A.length; // Number of rows in A
         int n = A[0].length; // Number of columns in A
@@ -127,6 +131,10 @@ public class SparseMatrixMultiplication {
 
     // V2
     // https://leetcode.ca/2016-10-06-311-Sparse-Matrix-Multiplication/
+    /**
+     * time = O(M*N*K)
+     * space = O(M*K)
+     */
     public int[][] multiply_2(int[][] mat1, int[][] mat2) {
         int m = mat1.length, n = mat2[0].length;
         int[][] ans = new int[m][n];

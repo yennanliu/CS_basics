@@ -136,6 +136,10 @@ public class SelfCrossing {
 
     // V0-1
     // IDEA: ARRAY OP (fixed by gpt)
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public boolean isSelfCrossing_0_1(int[] distance) {
         if (distance == null || distance.length < 4)
             return false;
@@ -224,6 +228,10 @@ public class SelfCrossing {
 
     // V2
     // https://leetcode.com/problems/self-crossing/solutions/1018879/java-arm-leg-and-swirl-by-orc-dev-5a9e/
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public boolean isSelfCrossing_2(int[] x) {
         boolean arm = false;
         boolean leg = false;
@@ -250,6 +258,10 @@ public class SelfCrossing {
     }
 
     // V3
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public boolean isSelfCrossing_3(int[] x) {
         int a1, a2, a3, a4, a5;
 
@@ -298,6 +310,10 @@ public class SelfCrossing {
 
     // V4
     // https://leetcode.com/problems/self-crossing/solutions/79168/simple-java-solution-by-munsteur-kntf/
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public boolean isSelfCrossing_4(int[] x) {
         if (x.length <= 3) {
             return false;

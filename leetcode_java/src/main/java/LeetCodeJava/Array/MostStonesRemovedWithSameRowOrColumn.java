@@ -65,6 +65,14 @@ public class MostStonesRemovedWithSameRowOrColumn {
     // IDEA : DFS
     // https://leetcode.com/problems/most-stones-removed-with-same-row-or-column/editorial/
 
+    /**
+
+     * time = O(N)
+
+     * space = O(N)
+
+     */
+
     public int removeStones_1_1(int[][] stones) {
         int n = stones.length;
 
@@ -119,6 +127,10 @@ public class MostStonesRemovedWithSameRowOrColumn {
     // V1-2
     // IDEA : Disjoint Set Union
     // https://leetcode.com/problems/most-stones-removed-with-same-row-or-column/editorial/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int removeStones_1_2(int[][] stones) {
         int n = stones.length;
         UnionFind uf = new UnionFind(n);
@@ -175,6 +187,10 @@ public class MostStonesRemovedWithSameRowOrColumn {
     // V1-3
     // IDEA : Disjoint Set Union (Optimized)
     // https://leetcode.com/problems/most-stones-removed-with-same-row-or-column/editorial/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int removeStones_1_3(int[][] stones) {
         int n = stones.length;
         UnionFind_1_3 uf = new UnionFind_1_3(20002); // Initialize UnionFind with a large enough range to handle coordinates

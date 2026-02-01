@@ -196,6 +196,10 @@ public class MaxChunksToMakeSorted {
     // V1-3
     // https://leetcode.com/problems/max-chunks-to-make-sorted/editorial/
     // IDEA:  Monotonic Increasing Stack
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int maxChunksToSorted_1_3(int[] arr) {
         int n = arr.length;
         // Stack to store the maximum elements of each chunk
