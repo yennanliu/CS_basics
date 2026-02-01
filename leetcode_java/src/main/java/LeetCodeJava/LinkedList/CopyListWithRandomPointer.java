@@ -122,6 +122,10 @@ public class CopyListWithRandomPointer {
     // IDEA: HASHMAP (RECURSION)
     HashMap<Node, Node> map = new HashMap<>();
 
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public Node copyRandomList_1_1(Node head) {
         if (head == null) return null;
         if (map.containsKey(head)) return map.get(head);
@@ -137,6 +141,10 @@ public class CopyListWithRandomPointer {
     // https://youtu.be/5Y2EiZST97Y?feature=shared
     // https://neetcode.io/problems/copy-linked-list-with-random-pointer
     // IDEA: Hash Map (Two Pass)
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public Node copyRandomList_1_2(Node head) {
         Map<Node, Node> oldToCopy = new HashMap<>();
         oldToCopy.put(null, null);
@@ -164,6 +172,10 @@ public class CopyListWithRandomPointer {
     // https://youtu.be/5Y2EiZST97Y?feature=shared
     // https://neetcode.io/problems/copy-linked-list-with-random-pointer
     // IDEA: Hash Map (One Pass)
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public Node copyRandomList_1_3(Node head) {
         HashMap<Node, Node> oldToCopy = new HashMap<>();
         oldToCopy.put(null, null);
@@ -194,6 +206,10 @@ public class CopyListWithRandomPointer {
     // https://youtu.be/5Y2EiZST97Y?feature=shared
     // https://neetcode.io/problems/copy-linked-list-with-random-pointer
     // IDEA: Space Optimized - I
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public Node copyRandomList_1_4(Node head) {
         if (head == null) {
             return null;
@@ -235,6 +251,10 @@ public class CopyListWithRandomPointer {
     // https://youtu.be/5Y2EiZST97Y?feature=shared
     // https://neetcode.io/problems/copy-linked-list-with-random-pointer
     // IDEA:  Space Optimized - II
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public Node copyRandomList_1_5(Node head) {
         if (head == null) {
             return null;
@@ -275,6 +295,10 @@ public class CopyListWithRandomPointer {
     // HashMap which holds old nodes as keys and new nodes as its values.
     HashMap<Node, Node> visitedHash = new HashMap<Node, Node>();
 
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public Node copyRandomList_2(Node head) {
 
         if (head == null) {
@@ -312,6 +336,10 @@ public class CopyListWithRandomPointer {
     // Visited dictionary to hold old node reference as "key" and new node reference as the "value"
     HashMap<Node, Node> visited = new HashMap<Node, Node>();
 
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public Node getClonedNode(Node node) {
         // If the node exists then
         if (node != null) {
@@ -328,6 +356,10 @@ public class CopyListWithRandomPointer {
         return null;
     }
 
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public Node copyRandomList_3(Node head) {
 
         if (head == null) {
@@ -356,6 +388,10 @@ public class CopyListWithRandomPointer {
     // V4
     // IDEA :  Iterative with O(1) Space
     // https://leetcode.com/problems/copy-list-with-random-pointer/editorial/
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public Node copyRandomList_4(Node head) {
 
         if (head == null) {

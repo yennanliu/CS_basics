@@ -44,6 +44,10 @@ public class AddTwoNumbers {
 
     // V0
     // IDEA : STACK + number op
+    /**
+     * time = O(max(m, n))
+     * space = O(max(m, n))
+     */
     public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
 
         if (l1 == null && l2 == null){
@@ -95,6 +99,10 @@ public class AddTwoNumbers {
 
     // V0-1
     // IDEA: LINKED LIST = STR OP (fixed by gpt)
+    /**
+     * time = O(max(m, n))
+     * space = O(max(m, n))
+     */
     public ListNode addTwoNumbers_0_1(ListNode l1, ListNode l2) {
         ListNode dummyHead = new ListNode(0); // Create a dummy head for the result list
         ListNode current = dummyHead; // Pointer to build the result list
@@ -128,6 +136,10 @@ public class AddTwoNumbers {
     // https://leetcode.com/problems/add-two-numbers/editorial/
     // IDEA : Math
     // Add Two Numbers (Java improved)
+    /**
+     * time = O(max(m, n))
+     * space = O(max(m, n))
+     */
     public ListNode addTwoNumbers_1(ListNode l1, ListNode l2) {
         ListNode dummyHead = new ListNode(0);
         ListNode curr = dummyHead;

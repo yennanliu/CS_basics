@@ -151,6 +151,10 @@ public class DesignLinkedList {
         }
 
         /** Get the value of the index-th node in the linked list. If the index is invalid, return -1. */
+        /**
+         * time = O(index)
+         * space = O(1)
+         */
         public int get(int index) {
             // if index is invalid
             if (index < 0 || index >= size) return -1;
@@ -163,16 +167,28 @@ public class DesignLinkedList {
         }
 
         /** Add a node of value val before the first element of the linked list. After the insertion, the new node will be the first node of the linked list. */
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public void addAtHead(int val) {
             addAtIndex(0, val);
         }
 
         /** Append a node of value val to the last element of the linked list. */
+        /**
+         * time = O(N)
+         * space = O(1)
+         */
         public void addAtTail(int val) {
             addAtIndex(size, val);
         }
 
         /** Add a node of value val before the index-th node in the linked list. If index equals to the length of linked list, the node will be appended to the end of linked list. If index is greater than the length, the node will not be inserted. */
+        /**
+         * time = O(index)
+         * space = O(1)
+         */
         public void addAtIndex(int index, int val) {
             // If index is greater than the length,
             // the node will not be inserted.
@@ -195,6 +211,10 @@ public class DesignLinkedList {
         }
 
         /** Delete the index-th node in the linked list, if the index is valid. */
+        /**
+         * time = O(index)
+         * space = O(1)
+         */
         public void deleteAtIndex(int index) {
             // if the index is invalid, do nothing
             if (index < 0 || index >= size) return;
@@ -232,6 +252,10 @@ public class DesignLinkedList {
         }
 
         /** Get the value of the index-th node in the linked list. If the index is invalid, return -1. */
+        /**
+         * time = O(min(index, N - index))
+         * space = O(1)
+         */
         public int get(int index) {
             // if index is invalid
             if (index < 0 || index >= size) return -1;
@@ -250,6 +274,10 @@ public class DesignLinkedList {
         }
 
         /** Add a node of value val before the first element of the linked list. After the insertion, the new node will be the first node of the linked list. */
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public void addAtHead(int val) {
             ListNode pred = head, succ = head.next;
 
@@ -262,6 +290,10 @@ public class DesignLinkedList {
         }
 
         /** Append a node of value val to the last element of the linked list. */
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public void addAtTail(int val) {
             ListNode succ = tail, pred = tail.prev;
 
@@ -274,6 +306,10 @@ public class DesignLinkedList {
         }
 
         /** Add a node of value val before the index-th node in the linked list. If index equals to the length of linked list, the node will be appended to the end of linked list. If index is greater than the length, the node will not be inserted. */
+        /**
+         * time = O(min(index, N - index))
+         * space = O(1)
+         */
         public void addAtIndex(int index, int val) {
             // If index is greater than the length,
             // the node will not be inserted.
@@ -306,6 +342,10 @@ public class DesignLinkedList {
         }
 
         /** Delete the index-th node in the linked list, if the index is valid. */
+        /**
+         * time = O(min(index, N - index))
+         * space = O(1)
+         */
         public void deleteAtIndex(int index) {
             // if the index is invalid, do nothing
             if (index < 0 || index >= size) return;

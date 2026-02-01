@@ -59,6 +59,10 @@ public class DeleteNodeInALinkedList {
     // V1
     // https://leetcode.com/problems/delete-node-in-a-linked-list/editorial/
     // IDEA: LINKED LIST
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public void deleteNode_1(ListNode node) {
         // Overwrite data of next node on current node.
         node.val = node.next.val;
@@ -68,6 +72,10 @@ public class DeleteNodeInALinkedList {
 
     // V2
     // https://leetcode.ca/2016-07-24-237-Delete-Node-in-a-Linked-List/
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public void deleteNode_2(ListNode node) {
         node.val = node.next.val;
         node.next = node.next.next;
