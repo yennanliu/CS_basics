@@ -63,6 +63,10 @@ public class CountTheNumberOfCompleteComponents {
      *        this graph are complete (fully connected).
      *
      */
+    /**
+     * time = O(V + E)
+     * space = O(V + E)
+     */
     public int countCompleteComponents_0_1(int n, int[][] edges) {
         // Build graph
         Map<Integer, List<Integer>> graph = new HashMap<>();
@@ -203,6 +207,10 @@ public class CountTheNumberOfCompleteComponents {
      * Counts the number of connected components that are complete graphs.
      * A component with V vertices and E edges is complete if E == V * (V - 1) / 2.
      */
+    /**
+     * time = O(V + E)
+     * space = O(V + E)
+     */
     public int countCompleteComponents_0_2(int n, int[][] edges) {
         // Edge case: If no nodes, no components.
         if (n == 0) {
@@ -294,6 +302,10 @@ public class CountTheNumberOfCompleteComponents {
     // V1-1
     // IDEA: DFS
     // https://leetcode.com/problems/count-the-number-of-complete-components/editorial/
+    /**
+     * time = O(V + E)
+     * space = O(V + E)
+     */
     public int countCompleteComponents_1_1(int n, int[][] edges) {
         // Adjacency lists for each vertex
         List<Integer>[] graph = new ArrayList[n];
@@ -350,6 +362,10 @@ public class CountTheNumberOfCompleteComponents {
     // V1-2
     // IDEA: Adjacency List
     // https://leetcode.com/problems/count-the-number-of-complete-components/editorial/
+    /**
+     * time = O(V^2)
+     * space = O(V + E)
+     */
     public int countCompleteComponents_1_2(int n, int[][] edges) {
         // Adjacency lists for each vertex
         List<Integer>[] graph = new ArrayList[n];
@@ -396,6 +412,10 @@ public class CountTheNumberOfCompleteComponents {
     // V1-3
     // IDEA: Breadth-First Search (BFS)
     // https://leetcode.com/problems/count-the-number-of-complete-components/editorial/
+    /**
+     * time = O(V + E)
+     * space = O(V + E)
+     */
     public int countCompleteComponents_1_3(int n, int[][] edges) {
         // Create adjacency list representation of the graph
         List<Integer>[] graph = new ArrayList[n];
@@ -457,6 +477,10 @@ public class CountTheNumberOfCompleteComponents {
     // V1-4
     // IDEA: Disjoint Set Union (Union-Find)
     // https://leetcode.com/problems/count-the-number-of-complete-components/editorial/
+    /**
+     * time = O(V + E * α(V))
+     * space = O(V)
+     */
     public int countCompleteComponents_1_4(int n, int[][] edges) {
         // Initialize Union Find and edge counter
         UnionFind dsu = new UnionFind(n);
