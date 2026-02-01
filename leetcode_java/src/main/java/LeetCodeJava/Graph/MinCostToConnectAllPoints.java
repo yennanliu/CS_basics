@@ -50,6 +50,10 @@ public class MinCostToConnectAllPoints {
     // V1-1
     // https://neetcode.io/problems/min-cost-to-connect-points
     // IDEA: Kruskal's Algorithm
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public class DSU {
         int[] Parent, Size;
 
@@ -60,6 +64,10 @@ public class MinCostToConnectAllPoints {
             Arrays.fill(Size, 1);
         }
 
+        /**
+         * time = O(α(N))
+         * space = O(1)
+         */
         public int find(int node) {
             if (Parent[node] != node) {
                 Parent[node] = find(Parent[node]);
@@ -67,6 +75,10 @@ public class MinCostToConnectAllPoints {
             return Parent[node];
         }
 
+        /**
+         * time = O(α(N))
+         * space = O(1)
+         */
         public boolean union(int u, int v) {
             int pu = find(u), pv = find(v);
             if (pu == pv) return false;
@@ -81,6 +93,10 @@ public class MinCostToConnectAllPoints {
         }
     }
 
+    /**
+     * time = O(N^2 log N)
+     * space = O(N^2)
+     */
     public int minCostConnectPoints_1_1(int[][] points) {
         int n = points.length;
         DSU dsu = new DSU(n);
@@ -109,6 +125,10 @@ public class MinCostToConnectAllPoints {
     // V1-2
     // https://neetcode.io/problems/min-cost-to-connect-points
     // IDEA: Prim's Algorithm
+    /**
+     * time = O(N^2 log N)
+     * space = O(N^2)
+     */
     public int minCostConnectPoints_1_2(int[][] points) {
         int N = points.length;
         Map<Integer, List<int[]>> adj = new HashMap<>();
