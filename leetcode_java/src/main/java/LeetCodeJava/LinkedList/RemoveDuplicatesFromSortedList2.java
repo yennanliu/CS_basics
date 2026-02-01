@@ -45,7 +45,12 @@ public class RemoveDuplicatesFromSortedList2 {
 //    }
 
     // V0-1
+
     // IDEA: LINKED LIST -> HASHMAP, SET -> LINKED LIST
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public ListNode deleteDuplicates_0_1(ListNode head) {
         // edge
         if (head == null || head.next == null) {
@@ -187,6 +192,11 @@ public class RemoveDuplicatesFromSortedList2 {
      *
      *
      */
+
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public ListNode deleteDuplicates_0_2(ListNode head) {
 
         /**
@@ -236,7 +246,12 @@ public class RemoveDuplicatesFromSortedList2 {
     }
 
     // V1
+
     // https://leetcode.ca/2016-02-20-82-Remove-Duplicates-from-Sorted-List-II/
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public ListNode deleteDuplicates_1(ListNode head) {
         ListNode dummy = new ListNode(0, head);
         ListNode pre = dummy;
@@ -256,7 +271,12 @@ public class RemoveDuplicatesFromSortedList2 {
     }
 
     //  V2
+
     // https://leetcode.com/problems/remove-duplicates-from-sorted-list-ii/solutions/6801800/beats-100-easiest-explanation-for-beginn-6noz/
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public ListNode deleteDuplicates_2(ListNode head) {
         if (head == null || head.next == null)
             return head;
@@ -283,7 +303,12 @@ public class RemoveDuplicatesFromSortedList2 {
     }
 
     // V3
+
     // https://leetcode.com/problems/remove-duplicates-from-sorted-list-ii/solutions/7002012/simple-solution-by-harshita_114-2gqn/
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public ListNode deleteDuplicates_3(ListNode head) {
         if (head == null || head.next == null)
             return head;
@@ -306,7 +331,12 @@ public class RemoveDuplicatesFromSortedList2 {
     }
 
     // V4
+
     // https://leetcode.com/problems/remove-duplicates-from-sorted-list-ii/solutions/7192741/remove-duplicates-from-sorted-list-ii-on-4dmz/
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public ListNode deleteDuplicates_4(ListNode head) {
         if (head == null)
             return head;

@@ -53,6 +53,11 @@ public class ReorderList {
      *
      *     LC 21 Merge Two Sorted Lists.
      */
+
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public void reorderList(ListNode head) {
         // Edge case: empty or single node list
         if (head == null || head.next == null) {
@@ -174,6 +179,11 @@ public class ReorderList {
      *   1 -> 5 -> 2 -> 4 -> 3
      *
      */
+
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public void reorderList_0_1(ListNode head) {
         if (head == null || head.next == null) {
             return;
@@ -246,6 +256,11 @@ public class ReorderList {
      *     LC 206 Reverse Linked List.
      *
      *     LC 21 Merge Two Sorted Lists.
+     */
+
+    /**
+     * time = O(N)
+     * space = O(1)
      */
     public void reorderList_1(ListNode head) {
         if (head == null) return;

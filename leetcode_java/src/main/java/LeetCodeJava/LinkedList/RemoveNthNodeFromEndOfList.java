@@ -44,7 +44,12 @@ public class RemoveNthNodeFromEndOfList {
 
     // V0
     // IDEA : 2 POINTERS
+
     // https://www.youtube.com/watch?v=oMzRxtXvDbA&list=PL-qDGN2q6cbClYCRpJ2pyrlhYK9VjZmL3&index=13
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public ListNode removeNthFromEnd(ListNode head, int n) {
 
         if (head == null){
@@ -142,7 +147,12 @@ public class RemoveNthNodeFromEndOfList {
     }
 
     // V0-1
+
     // IDEA : get len of linkedlist, and re-point node
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public ListNode removeNthFromEnd_0_1(ListNode head, int n) {
 
         if (head.next == null){
@@ -211,7 +221,12 @@ public class RemoveNthNodeFromEndOfList {
     }
 
     // V0-2
+
     // IDEA: FAST, SLOW POINTERS (GPT)
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public ListNode removeNthFromEnd_0_2(ListNode head, int n) {
         // Create a dummy node to simplify edge cases
         ListNode dummy = new ListNode(0);
@@ -237,7 +252,12 @@ public class RemoveNthNodeFromEndOfList {
     }
 
     // V0-3
+
     // IDEA: 2 POINTERS (fixed by gpt)
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public ListNode removeNthFromEnd_0_3(ListNode head, int n) {
         // Edge case: if the list is empty or only has one node
         if (head == null) {
@@ -271,7 +291,12 @@ public class RemoveNthNodeFromEndOfList {
 
     // V1
     // IDEA :  Two pass algorithm
+
     // https://leetcode.com/problems/remove-nth-node-from-end-of-list/editorial/
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public ListNode removeNthFromEnd_2(ListNode head, int n) {
         ListNode dummy = new ListNode(0);
         dummy.next = head;
@@ -292,7 +317,12 @@ public class RemoveNthNodeFromEndOfList {
     }
 
     // V2
+
     // https://leetcode.com/problems/remove-nth-node-from-end-of-list/editorial/
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public ListNode removeNthFromEnd_3(ListNode head, int n) {
         ListNode dummy = new ListNode(0);
         dummy.next = head;

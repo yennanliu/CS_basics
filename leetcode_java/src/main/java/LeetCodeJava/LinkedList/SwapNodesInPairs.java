@@ -66,6 +66,11 @@ public class SwapNodesInPairs {
      *    list.set(idx, new_val)
      *
      */
+
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public ListNode swapPairs(ListNode head) {
         if (head == null || head.next == null) {
             return head;
@@ -104,7 +109,12 @@ public class SwapNodesInPairs {
     }
 
     // V0-2
+
     // IDEA: LINKED LIST OP (gpt)
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public ListNode swapPairs_0_2(ListNode head) {
         // Edge cases: 0 or 1 node — nothing to swap
         if (head == null || head.next == null) {
@@ -138,7 +148,12 @@ public class SwapNodesInPairs {
     // V0-3
     // IDEA : linked list op + swap
     // https://youtu.be/GI1Ghz7Lej0?t=915
+
     // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Linked_list/swap-nodes-in-pairs.py
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public ListNode swapPairs_0_3(ListNode head) {
 
         if (head == null || head.next == null){
@@ -171,7 +186,12 @@ public class SwapNodesInPairs {
 
     // V1
     // IDEA : Recursive
+
     // https://leetcode.com/problems/swap-nodes-in-pairs/editorial/
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public ListNode swapPairs_1(ListNode head) {
 
         // If the list has no node or has only one node left.
@@ -194,7 +214,12 @@ public class SwapNodesInPairs {
 
     // V2
     // IDEA : Iterative
+
     // https://leetcode.com/problems/swap-nodes-in-pairs/editorial/
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public ListNode swapPairs_2(ListNode head) {
 
         // Dummy node acts as the prevNode for the head node

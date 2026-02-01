@@ -43,7 +43,12 @@ public class RotateList {
 //    }
 
     // V0-1
+
     // IDEA: LIST NODE -> DEQUEUE -> ROTATE OP
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public ListNode rotateRight_0_1(ListNode head, int k) {
         // edge
         if (k == 0 || head == null || head.next == null) {
@@ -99,7 +104,12 @@ public class RotateList {
     }
 
     //  V1
+
     // https://leetcode.ca/2016-01-30-61-Rotate-List/
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public ListNode rotateRight_1(ListNode head, int k) {
         if (head == null || head.next == null) {
             return head;
@@ -129,7 +139,12 @@ public class RotateList {
     }
 
     // V2
+
     // https://leetcode.com/problems/rotate-list/solutions/6870528/video-find-new-head-by-niits-p22w/
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public ListNode rotateRight_2(ListNode head, int k) {
         if (head == null)
             return head;
@@ -159,7 +174,12 @@ public class RotateList {
     }
 
     // V3
+
     // https://leetcode.com/problems/rotate-list/solutions/7212053/rotate-list-java-solution-reversal-appro-sz3q/
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public ListNode rotateRight_3(ListNode head, int k) {
         if (head == null || head.next == null || k == 0)
             return head;

@@ -6,7 +6,12 @@ import LeetCodeJava.DataStructure.ListNode;
 
 public class RemoveLinkedListElements {
 
+
     // V0
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public ListNode removeElements(ListNode head, int val) {
 
         if (head == null){
@@ -33,7 +38,12 @@ public class RemoveLinkedListElements {
     }
 
     // V1
+
     // https://leetcode.com/problems/remove-linked-list-elements/editorial/
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public ListNode removeElements_2(ListNode head, int val) {
         ListNode sentinel = new ListNode(0);
         sentinel.next = head;

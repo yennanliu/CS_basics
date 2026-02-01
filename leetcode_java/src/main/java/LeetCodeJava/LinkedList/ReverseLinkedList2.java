@@ -76,6 +76,11 @@ public class ReverseLinkedList2 {
    * 	•	Iteration 1: pluck 3, insert after 1 → 1 → 3 → 2 → 4 → 5
    * 	•	Iteration 2: pluck 4, insert after 1 → 1 → 4 → 3 → 2 → 5 ✅
    */
+
+  /**
+   * time = O(N)
+   * space = O(1)
+   */
   public ListNode reverseBetween(ListNode head, int left, int right) {
       // edge
       if (head == null || head.next == null || left == right) {
@@ -127,6 +132,11 @@ public class ReverseLinkedList2 {
    *    curr.next = prev
    *    prev = curr
    *    curr = next
+   */
+
+  /**
+   * time = O(N)
+   * space = O(1)
    */
   public ListNode reverseBetween_0_0_1(ListNode head, int left, int right) {
       // edge
@@ -210,7 +220,12 @@ public class ReverseLinkedList2 {
   }
 
   // V0-0-2
+
   // IDEA: list reverse + LINED LIST OP (fixed by gpt)
+  /**
+   * time = O(N)
+   * space = O(1)
+   */
   public ListNode reverseBetween_0_0_2(ListNode head, int left, int right) {
       if (head == null || head.next == null || left == right) {
           return head;
@@ -253,7 +268,12 @@ public class ReverseLinkedList2 {
   }
 
   // V0-0-3
+
   // IDEA: list reverse + LINED LIST OP (fixed by gpt)
+  /**
+   * time = O(N)
+   * space = O(1)
+   */
   public ListNode reverseBetween_0_0_3(ListNode head, int left, int right) {
       // edge
       if (head == null || head.next == null) {
@@ -411,7 +431,12 @@ public class ReverseLinkedList2 {
   // https://github.com/yennanliu/CS_basics/blob/master/doc/pic/lc_92_2.png
   // https://github.com/yennanliu/CS_basics/blob/master/doc/pic/lc_92_3.png
   // https://github.com/yennanliu/CS_basics/blob/master/doc/pic/lc_92_4.png
+
   // https://github.com/yennanliu/CS_basics/blob/master/doc/pic/lc_92_5.png
+  /**
+   * time = O(N)
+   * space = O(1)
+   */
   public ListNode reverseBetween_0_1(ListNode head, int left, int right) {
 
       /**
@@ -487,7 +512,12 @@ public class ReverseLinkedList2 {
   // V0-2
   // IDEA: LINKED LIST OP (iteration 2)
   // https://neetcode.io/solutions/reverse-linked-list-ii
+
   // https://youtu.be/RF_M9tX4Eag?si=vTfAtfbmGwzsmtpi
+  /**
+   * time = O(N)
+   * space = O(1)
+   */
   public ListNode reverseBetween_0_2(ListNode head, int left, int right) {
       ListNode dummy = new ListNode(0);
       dummy.next = head;
@@ -525,7 +555,12 @@ public class ReverseLinkedList2 {
     }
 
   // V0-3
+
   // IDEA: ARRAY (fixed by gpt)
+  /**
+   * time = O(N)
+   * space = O(1)
+   */
   public ListNode reverseBetween_0_3(ListNode head, int left, int right) {
       if (head == null || head.next == null || left == right) {
           return head;
@@ -569,7 +604,12 @@ public class ReverseLinkedList2 {
   }
 
   // V0-4
+
   // IDEA: reverse in start, end idx (fixed by gpt)
+  /**
+   * time = O(N)
+   * space = O(1)
+   */
   public ListNode reverseBetween_0_4(ListNode head, int left, int right) {
       if (head == null || head.next == null || left == right) {
           return head;
@@ -620,7 +660,12 @@ public class ReverseLinkedList2 {
   }
 
   // V0-5
+
   // IDEA: LINKED LIST (GPT)
+  /**
+   * time = O(N)
+   * space = O(1)
+   */
   public ListNode reverseBetween_0_5(ListNode head, int left, int right) {
       if (head == null || left >= right)
           return head;
@@ -671,6 +716,11 @@ public class ReverseLinkedList2 {
    * 	•	Time Complexity: O(N) (traverse once and reverse a portion)
    * 	•	Space Complexity: O(1) (in-place reversal, no extra space)
    */
+
+  /**
+   * time = O(N)
+   * space = O(1)
+   */
   public ListNode reverseBetween_1(ListNode head, int left, int right) {
         // Edge case: if the list is empty or has only one node
         if (head == null || head.next == null || left == right) {
@@ -704,7 +754,12 @@ public class ReverseLinkedList2 {
 
     // V2
     // IDEA: LINKED LIST
+
     // https://leetcode.com/problems/reverse-linked-list-ii/solutions/30666/simple-java-solution-with-clear-explanat-yd1u/
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public ListNode reverseBetween_2(ListNode head, int m, int n) {
         if (head == null)
             return null;
@@ -735,7 +790,12 @@ public class ReverseLinkedList2 {
     }
 
     // V3
+
     // https://leetcode.com/problems/reverse-linked-list-ii/solutions/2311084/javac-tried-to-explain-every-step-by-hi-5w5kl/
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public ListNode reverseBetween_3(ListNode head, int left, int right) {
         ListNode dummy = new ListNode(0); // created dummy node
         dummy.next = head;

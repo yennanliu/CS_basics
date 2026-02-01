@@ -61,7 +61,12 @@ public class ReverseNodesInKGroup {
 //    }
 
     // V0-1
+
     // IDEA : reverse in iteration (fixed by gpt)
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public ListNode reverseKGroup_0_1(ListNode head, int k) {
         // edge case
         if (head == null || k <= 1) {
@@ -105,6 +110,11 @@ public class ReverseNodesInKGroup {
         return dummy.next;
     }
 
+
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public ListNode reverseLinkedList(ListNode head, int k) {
         ListNode prev = null;
         ListNode current = head;
@@ -121,7 +131,12 @@ public class ReverseNodesInKGroup {
     // V1-1
     // https://www.youtube.com/watch?v=1UOPsfP85V4
     // https://neetcode.io/problems/reverse-nodes-in-k-group
+
     // IDEA: RECURSION
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public ListNode reverseKGroup_1_1(ListNode head, int k) {
         ListNode cur = head;
         int group = 0;
@@ -147,7 +162,12 @@ public class ReverseNodesInKGroup {
     // V1-2
     // https://www.youtube.com/watch?v=1UOPsfP85V4
     // https://neetcode.io/problems/reverse-nodes-in-k-group
+
     // IDEA: Iteration
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public ListNode reverseKGroup_1_2(ListNode head, int k) {
         ListNode dummy = new ListNode(0, head);
         ListNode groupPrev = dummy;
@@ -186,7 +206,12 @@ public class ReverseNodesInKGroup {
 
     // V2
     // IDEA : LINKED LIST OP + RECURSIVE
+
     // https://github.com/neetcode-gh/leetcode/blob/main/java/0025-reverse-nodes-in-k-group.java
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public ListNode reverseKGroup_2(ListNode head, int k) {
         ListNode cur = head;
         int count = 0;
@@ -209,7 +234,12 @@ public class ReverseNodesInKGroup {
 
     // V3
     // IDEA : LINKED LIST OP + ITERATION
+
     // https://github.com/neetcode-gh/leetcode/blob/main/java/0025-reverse-nodes-in-k-group.java
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public ListNode reverseKGroup_3(ListNode head, int k) {
         ListNode dummy = new ListNode(0, head);
         ListNode curr = head;
