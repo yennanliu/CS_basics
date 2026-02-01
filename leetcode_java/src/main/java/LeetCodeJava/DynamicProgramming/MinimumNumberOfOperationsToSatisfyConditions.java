@@ -158,6 +158,10 @@ public class MinimumNumberOfOperationsToSatisfyConditions {
 
     // V0-2
     // IDEA: DP (fixed by gpt)
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int minimumOperations_0_2(int[][] grid) {
         int n = grid.length;
         int m = grid[0].length;
@@ -211,6 +215,10 @@ public class MinimumNumberOfOperationsToSatisfyConditions {
     // V1
     // IDEA: DP
     // https://leetcode.com/problems/minimum-number-of-operations-to-satisfy-conditions/solutions/5052842/java-python-dp-optimized-solution-with-e-9bzi/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int minimumOperations_1(int[][] grid) {
         int n = grid.length;
         int m = grid[0].length;
@@ -244,6 +252,10 @@ public class MinimumNumberOfOperationsToSatisfyConditions {
     // IDEA: DP
     // https://leetcode.com/problems/minimum-number-of-operations-to-satisfy-conditions/solutions/7372556/column-based-dp-java-solution-by-mainoo1-y3to/
     int[][] dp;
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int minimumOperations_2(int[][] grid) {
 
         int n = grid[0].length;
@@ -267,6 +279,10 @@ public class MinimumNumberOfOperationsToSatisfyConditions {
         return f(0, -1, colOperations, grid);
     }
 
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int f(int col, int prevVal, int[][] colOperations, int[][] grid) {
         if (col >= grid[0].length)
             return 0;
@@ -330,6 +346,10 @@ public class MinimumNumberOfOperationsToSatisfyConditions {
         return queue;
     }
 
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int minimumOperations_3(int[][] grid) {
         PriorityQueue<List<Integer>> queue = dfs(grid, 0);
         return queue.peek().get(0);
@@ -340,6 +360,10 @@ public class MinimumNumberOfOperationsToSatisfyConditions {
     // https://leetcode.com/problems/minimum-number-of-operations-to-satisfy-conditions/solutions/5052743/dp-tabulation-time-omn-space-on-java-by-4ldud/
     private int[][] dp_4;
 
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int minimumOperations_4(int[][] grid) {
         int m = grid.length;
         int n = grid[0].length;

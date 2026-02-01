@@ -44,6 +44,10 @@ public class NthTribonacciNumber {
 
     // V0
     // IDEA: DP
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int tribonacci(int n) {
         // edge
         if (n == 0) {
@@ -91,6 +95,10 @@ public class NthTribonacciNumber {
 
     // V0-1
     // IDEA: DP (fixed by gpt)
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int tribonacci_0_1(int n) {
         if (n == 0)
             return 0;
@@ -113,6 +121,10 @@ public class NthTribonacciNumber {
 
     // V0-2
     // IDEA: RECURSION (TLE)
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int tribonacci_0_2(int n) {
         // edge
         if(n == 0){
@@ -134,6 +146,10 @@ public class NthTribonacciNumber {
 
     // V0-3
     // IDEA: DP (via hashmap)
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int tribonacci_0_3(int n) {
         if (n == 0)
             return 0;
@@ -162,11 +178,19 @@ public class NthTribonacciNumber {
 
     // V2
     // https://leetcode.com/problems/n-th-tribonacci-number/solutions/6707211/beginner-friendly-step-by-step-code-walk-ftvo/
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int tribonacci_2(int n) {
         int[] dp = new int[n+1];
         Arrays.fill(dp,-1);
         return findTribNum(n,dp);
     }
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int findTribNum(int n,int[] dp)
     {
         if(n == 0){

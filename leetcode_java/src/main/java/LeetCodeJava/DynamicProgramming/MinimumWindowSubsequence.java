@@ -46,6 +46,10 @@ public class MinimumWindowSubsequence {
     // V1
     // https://leetcode.ca/2017-11-26-727-Minimum-Window-Subsequence/
     // IDEA : DP
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public String minWindow_1(String s1, String s2) {
         int m = s1.length(), n = s2.length();
         int[][] f = new int[m + 1][n + 1];
@@ -74,6 +78,10 @@ public class MinimumWindowSubsequence {
 
     // V2
     // https://github.com/doocs/leetcode/blob/main/solution/0700-0799/0727.Minimum%20Window%20Subsequence/README.md
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public String minWindow_2(String s1, String s2) {
         int m = s1.length(), n = s2.length();
         int[][] f = new int[m + 1][n + 1];
@@ -103,6 +111,10 @@ public class MinimumWindowSubsequence {
     // https://www.cnblogs.com/grandyang/p/8684817.html
     // IDEA : DP (modified by GPT)
     // TODO : validate below
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public String minWindow_3_1(String S, String T) {
         int m = S.length();
         int n = T.length();
@@ -141,6 +153,10 @@ public class MinimumWindowSubsequence {
     // https://www.cnblogs.com/grandyang/p/8684817.html
     // IDEA : 2 POINTERS (modified by GPT)
     // TODO : validate below
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public String minWindow_3_2(String S, String T) {
         int m = S.length();
         int n = T.length();

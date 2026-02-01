@@ -55,6 +55,10 @@ public class MinCostClimbingStairs {
 
     // V0-1
     // IDEA: DP (fixed by gemini)
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int minCostClimbingStairs_0_1(int[] cost) {
         int n = cost.length;
         /**  NOTE !!!
@@ -93,6 +97,10 @@ public class MinCostClimbingStairs {
 
     // V0-2
     // IDEA: DP (gpt)
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int minCostClimbingStairs_0_2(int[] cost) {
         if (cost == null || cost.length == 0) {
             return 0;
@@ -136,6 +144,10 @@ public class MinCostClimbingStairs {
     // V1-1
     // https://neetcode.io/problems/min-cost-climbing-stairs
     // IDEA: Recursion
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int minCostClimbingStairs_1_1(int[] cost) {
 
         return Math.min(dfs(cost, 0), dfs(cost, 1));
@@ -154,6 +166,10 @@ public class MinCostClimbingStairs {
     // IDEA: Dynamic Programming (Top-Down)
     int[] memo;
 
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int minCostClimbingStairs_1_2(int[] cost) {
         memo = new int[cost.length];
         Arrays.fill(memo, -1);
@@ -175,6 +191,10 @@ public class MinCostClimbingStairs {
     // V1-3
     // https://neetcode.io/problems/min-cost-climbing-stairs
     // IDEA: Dynamic Programming (Bottom-Up)
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int minCostClimbingStairs_1_3(int[] cost) {
         int n = cost.length;
         int[] dp = new int[n + 1];
@@ -191,6 +211,10 @@ public class MinCostClimbingStairs {
     // V2
     // https://leetcode.ca/2017-12-15-746-Min-Cost-Climbing-Stairs/
     // IDEA: DP
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int minCostClimbingStairs_2(int[] cost) {
         int f = 0, g = 0;
         for (int i = 2; i <= cost.length; ++i) {

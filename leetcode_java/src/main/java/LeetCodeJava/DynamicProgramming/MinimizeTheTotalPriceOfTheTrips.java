@@ -73,6 +73,10 @@ public class MinimizeTheTotalPriceOfTheTrips {
     private int[] price;
     private int[] cnt;
 
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int minimumTotalPrice_1(int n, int[][] edges, int[] price, int[][] trips) {
         this.price = price;
         cnt = new int[n];
@@ -128,6 +132,10 @@ public class MinimizeTheTotalPriceOfTheTrips {
     // V2
     // IDEA: Variation of House Robber III, BFS
     // https://leetcode.com/problems/minimize-the-total-price-of-the-trips/solutions/3422043/variation-of-house-robber-iii-easy-to-un-m1od/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int minimumTotalPrice_2(int n, int[][] edges, int[] price, int[][] trips) {
         List<List<Integer>> tree = new ArrayList<>();
         for (int i = 0; i < n; i++) {
@@ -196,6 +204,10 @@ public class MinimizeTheTotalPriceOfTheTrips {
     // V3
     // IDEA: DFS + DP
     // https://leetcode.com/problems/minimize-the-total-price-of-the-trips/solutions/3421754/java-solution-using-dfs-memoisation-for-3h0xh/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int minimumTotalPrice_3(int n, int[][] edges, int[] price, int[][] trips) {
         List<Integer>[] tree = buildTree(n, edges);
 
@@ -338,6 +350,10 @@ public class MinimizeTheTotalPriceOfTheTrips {
         return dp[node][half] = Math.min(res1, res2);
     }
 
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int minimumTotalPrice_4(int n, int[][] edges, int[] price, int[][] trips) {
         // creating graph
         graph = new HashMap<>();
