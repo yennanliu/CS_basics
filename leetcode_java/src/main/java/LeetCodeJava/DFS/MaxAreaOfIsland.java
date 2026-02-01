@@ -223,6 +223,10 @@ public class MaxAreaOfIsland {
 
     // V0-0-2
     // IDEA: DFS (fixed by gpt)
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public int maxAreaOfIsland_0_0_2(int[][] grid) {
         // edge
         if (grid == null || grid.length == 0 || grid[0].length == 0)
@@ -281,6 +285,10 @@ public class MaxAreaOfIsland {
 
     // V0-0-3
     // IDEA: DFS
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public int maxAreaOfIsland_0_0_3(int[][] grid) {
         // edge
         if (grid == null || grid.length == 0 || grid[0].length == 0) {
@@ -382,6 +390,10 @@ public class MaxAreaOfIsland {
 
     // V0-2
     // IDEA: DFS (gpt)
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public int maxAreaOfIsland_0_2(int[][] grid) {
         // Edge case
         if (grid == null || grid.length == 0 || grid[0].length == 0) {
@@ -433,6 +445,10 @@ public class MaxAreaOfIsland {
 
     // V0-3
     // IDEA: DFS (fixed by gpt)
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public int maxAreaOfIsland_0_3(int[][] grid) {
         if (grid == null || grid.length == 0)
             return 0;
@@ -516,6 +532,10 @@ public class MaxAreaOfIsland {
     // IDEA: BFS
     //    private static final int[][] directions = {{1, 0}, {-1, 0},
     //            {0, 1}, {0, -1}};
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public int maxAreaOfIsland_1_2(int[][] grid) {
         int ROWS = grid.length, COLS = grid[0].length;
         int area = 0;
@@ -585,6 +605,10 @@ public class MaxAreaOfIsland {
     // V3
     // IDEA : DFS (iterative)
     // https://leetcode.com/problems/max-area-of-island/editorial/
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public int maxAreaOfIsland_3(int[][] grid) {
         boolean[][] seen = new boolean[grid.length][grid[0].length];
         int[] dr = new int[]{1, -1, 0, 0};

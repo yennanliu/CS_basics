@@ -53,6 +53,10 @@ import java.util.Map;
 public class PathSum {
 
     // V0
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public boolean hasPathSum(TreeNode root, int targetSum) {
 
         if (root == null){
@@ -131,6 +135,10 @@ public class PathSum {
     // V1
     // https://leetcode.com/problems/path-sum/editorial/
     // IDEA : RECURSION
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public boolean hasPathSum_2(TreeNode root, int sum) {
         if (root == null)
             return false;
@@ -144,6 +152,10 @@ public class PathSum {
     // V2
     // https://leetcode.com/problems/path-sum/editorial/
     // IDEA : Iterations
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public boolean hasPathSum_3(TreeNode root, int sum) {
         if (root == null)
             return false;

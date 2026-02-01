@@ -55,6 +55,10 @@ public class PathSum_ii {
     // NOTE !!! we have res attr, so can use this.res collect result
     private List<List<Integer>> res = new ArrayList<>();
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public List<List<Integer>> pathSum(TreeNode root, int targetSum) {
 
         if (root == null){
@@ -105,6 +109,10 @@ public class PathSum_ii {
     // Reverse map: sum -> list of paths
     Map<Integer, List<List<Integer>>> sumToPathsMap = new HashMap<>();
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public List<List<Integer>> pathSum_0_1(TreeNode root, int targetSum) {
         List<List<Integer>> res = new ArrayList<>();
         if (root == null)
@@ -172,6 +180,10 @@ public class PathSum_ii {
     // IDEA : DFS + backtracking V2
     private List<List<Integer>> res2 = new ArrayList<>();
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public List<List<Integer>> pathSum_0_2(TreeNode root, int targetSum) {
 
         if (root == null){
@@ -243,6 +255,10 @@ public class PathSum_ii {
         pathNodes.remove(pathNodes.size() - 1);
     }
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public List<List<Integer>> pathSum_3(TreeNode root, int sum) {
         List<List<Integer>> pathsList = new ArrayList<List<Integer>>();
         List<Integer> pathNodes = new ArrayList<Integer>();
