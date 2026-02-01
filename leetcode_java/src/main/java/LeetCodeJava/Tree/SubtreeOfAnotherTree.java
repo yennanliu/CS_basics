@@ -53,6 +53,10 @@ public class SubtreeOfAnotherTree {
      *           if any match, return true directly
      *   step 3) otherwise, return false, since no `match` is found
      */
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public boolean isSubtree(TreeNode root, TreeNode subRoot) {
         // edge
         if (root == null && subRoot == null) {
@@ -93,6 +97,10 @@ public class SubtreeOfAnotherTree {
     // V0-0-1
     // IDEA: BFS + `isSameTree` (LC 100)
     // IDEA 1) DFS
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public boolean isSubtree_0_0_1(TreeNode root, TreeNode subRoot) {
         // edge
         if(root == null && subRoot == null){
@@ -142,6 +150,10 @@ public class SubtreeOfAnotherTree {
     }
 
     // V0-0-2
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public boolean isSubtree_0_0_2(TreeNode root, TreeNode subRoot) {
         // edge
         if (root == null && subRoot == null) {
@@ -193,6 +205,10 @@ public class SubtreeOfAnotherTree {
     // V0-1
     // IDEA : DFS + DFS (modified by GPT)
     // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Tree/subtree-of-another-tree.py#L110
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public boolean isSubtree_0_1(TreeNode s, TreeNode t) {
         if (s == null && t == null) {
             return true;
@@ -237,6 +253,10 @@ public class SubtreeOfAnotherTree {
     }
 
     // V0-2
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public boolean isSubtree_0_2(TreeNode root, TreeNode subRoot) {
         if (root == null && subRoot == null) {
             return true;
@@ -263,6 +283,10 @@ public class SubtreeOfAnotherTree {
         return false;
     }
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public boolean isSameTree_(TreeNode p, TreeNode q) {
         // edge
         if (p == null && q == null) {
@@ -282,6 +306,10 @@ public class SubtreeOfAnotherTree {
     // V1
     // IDEA : DFS
     // https://leetcode.com/problems/subtree-of-another-tree/editorial/
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public boolean isSubtree_1(TreeNode root, TreeNode subRoot) {
 
         // If this node is Empty, then no tree is rooted at this Node
@@ -320,6 +348,10 @@ public class SubtreeOfAnotherTree {
     // V2
     // IDEA : STRING MATCH
     // https://leetcode.com/problems/subtree-of-another-tree/editorial/
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public boolean isSubtree_2(TreeNode root, TreeNode subRoot) {
         // Serialize given Nodes
         StringBuilder rootList = new StringBuilder();
@@ -440,6 +472,10 @@ public class SubtreeOfAnotherTree {
     // Vector to store hashed value of each node.
     List<long[]> memo = new ArrayList<>();
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public boolean isSubtree_4(TreeNode root, TreeNode subRoot) {
 
         // Calling and adding hash to List

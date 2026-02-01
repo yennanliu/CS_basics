@@ -60,12 +60,20 @@ public class BinaryTreeInorderTraversal {
 
     // V0-1
     // IDEA: recursion
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public List<Integer> inorderTraversal_0_1(TreeNode root) {
         List<Integer> res = new ArrayList<>();
         helper(root, res);
         return res;
     }
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public void helper(TreeNode root, List<Integer> res) {
         if (root != null) {
             helper(root.left, res);
@@ -76,6 +84,10 @@ public class BinaryTreeInorderTraversal {
 
     // V0-2
     // IDEA: iteration
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public List<Integer> inorderTraversal_0_2(TreeNode root) {
         List<Integer> res = new ArrayList<>();
         Stack<TreeNode> stack = new Stack<>();
@@ -103,6 +115,10 @@ public class BinaryTreeInorderTraversal {
     // V0-3
     // IDEA : DFS
     List<Integer> res = new ArrayList<>();
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public List<Integer> inorderTraversal_0_3(TreeNode root) {
         //List<Integer> res = new ArrayList<>();
         // edge
@@ -118,6 +134,10 @@ public class BinaryTreeInorderTraversal {
         return res;
     }
 
+    /**
+     * time = O(V + E)
+     * space = O(V)
+     */
     public void inorderDfs(TreeNode root){
         if(root == null){
             return;
@@ -130,6 +150,10 @@ public class BinaryTreeInorderTraversal {
 
     // V0-4
     // IDEA: BFS
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public List<Integer> inorderTraversal_0_4(TreeNode root) {
         List<Integer> res = new ArrayList<>();
         Stack<TreeNode> stack = new Stack<>();

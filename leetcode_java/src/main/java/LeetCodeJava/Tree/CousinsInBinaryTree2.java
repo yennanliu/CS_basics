@@ -65,6 +65,10 @@ public class CousinsInBinaryTree2 {
     // Map to store the total sum of node values for each depth.
     private Map<Integer, Integer> depthSum = new HashMap<>();
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public TreeNode replaceValueInTree_0_1(TreeNode root) {
         if (root == null) {
             return null;
@@ -179,6 +183,10 @@ public class CousinsInBinaryTree2 {
 
     // V1
     // IDEA: BFS (gpt)
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public TreeNode replaceValueInTree_1(TreeNode root) {
         if (root == null){
             return null;
@@ -244,6 +252,10 @@ public class CousinsInBinaryTree2 {
     // IDEA: DFS (gpt)
     Map<Integer, Integer> levelSum = new HashMap<>();
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public TreeNode replaceValueInTree_3(TreeNode root) {
         if (root == null)
             return null;

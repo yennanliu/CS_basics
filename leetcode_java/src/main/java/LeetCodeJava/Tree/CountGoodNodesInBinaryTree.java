@@ -78,6 +78,10 @@ public class CountGoodNodesInBinaryTree {
      *    > is  good if in the path from root to X there are no nodes with a value greater than X.
      */
     private int numGoodNodes = 0;
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int goodNodes(TreeNode root) {
         //dfs(root, Integer.MIN_VALUE);
         findGoodNode(root, root.val); // can use root.val as well
@@ -134,6 +138,10 @@ public class CountGoodNodesInBinaryTree {
     // V0-0-1
     // IDEA: DFS
     int goodNodeCnt = 0;
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int goodNodes_0_0_1(TreeNode root) {
         // edge
         if(root == null){
@@ -176,6 +184,10 @@ public class CountGoodNodesInBinaryTree {
 
     private int res = 0;
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int goodNodes_0_1(TreeNode root) {
         if (root == null)
             return 0;
@@ -210,6 +222,10 @@ public class CountGoodNodesInBinaryTree {
      *    > is  good if in the path from root to X there are no nodes with a value greater than X.
      */
     int goodNodeCnt_2 = 0;
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int goodNodes_0_2(TreeNode root) {
         // edge
         if (root == null) {
@@ -249,6 +265,10 @@ public class CountGoodNodesInBinaryTree {
     // IDEA: DFS + `max val so far` (fixed by gpt)
     int goodNodeCnt_3 = 0;
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int goodNodes_0_3(TreeNode root) {
         if (root == null) {
             return 0;
@@ -258,6 +278,10 @@ public class CountGoodNodesInBinaryTree {
         return goodNodeCnt_3;
     }
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public void getGoodCnt(TreeNode root, int maxValTillNow) {
         if (root == null) {
             return;
@@ -277,6 +301,10 @@ public class CountGoodNodesInBinaryTree {
     // V1-1
     // https://neetcode.io/problems/count-good-nodes-in-binary-tree
     // IDEA: DFS
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int goodNodes_1_1(TreeNode root) {
         return dfs_1_1(root, root.val);
     }
@@ -324,6 +352,10 @@ public class CountGoodNodesInBinaryTree {
     // https://leetcode.com/problems/count-good-nodes-in-binary-tree/editorial/
     private int numGoodNodes_1 = 0;
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int goodNodes_2(TreeNode root) {
         dfs(root, Integer.MIN_VALUE);
         return numGoodNodes_1;
@@ -352,12 +384,20 @@ public class CountGoodNodesInBinaryTree {
         public TreeNode node;
         public int maxSoFar;
 
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public Pair(TreeNode node, int maxSoFar) {
             this.node = node;
             this.maxSoFar = maxSoFar;
         }
     }
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int goodNodes_3(TreeNode root) {
         int numGoodNodes = 0;
         Stack<Pair> stack = new Stack<>();
@@ -388,12 +428,20 @@ public class CountGoodNodesInBinaryTree {
         public TreeNode node;
         public int maxSoFar;
 
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public Pair2(TreeNode node, int maxSoFar) {
             this.node = node;
             this.maxSoFar = maxSoFar;
         }
     }
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int goodNodes_4(TreeNode root) {
         int numGoodNodes = 0;
         Queue<Pair> queue = new LinkedList<>();

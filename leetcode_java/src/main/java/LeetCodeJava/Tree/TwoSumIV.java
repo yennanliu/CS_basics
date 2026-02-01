@@ -41,6 +41,10 @@ public class TwoSumIV {
 
     // V0
     // IDEA : BFS + HASHMAP + 2 SUM
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public boolean findTarget(TreeNode root, int k) {
         // edge
         if (root == null) {
@@ -94,10 +98,18 @@ public class TwoSumIV {
     // V1
     // IDEA : SET + RECURSIVE
     // https://leetcode.com/problems/two-sum-iv-input-is-a-bst/editorial/
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public boolean findTarget_1(TreeNode root, int k) {
         Set< Integer > set = new HashSet();
         return find(root, k, set);
     }
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public boolean find(TreeNode root, int k, Set < Integer > set) {
         if (root == null)
             return false;
@@ -110,6 +122,10 @@ public class TwoSumIV {
     // V2
     // IDEA : BFS + HASHSET
     // https://leetcode.com/problems/two-sum-iv-input-is-a-bst/editorial/
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public boolean findTarget_2(TreeNode root, int k) {
         Set < Integer > set = new HashSet();
         Queue < TreeNode > queue = new LinkedList();
@@ -131,6 +147,10 @@ public class TwoSumIV {
     // V3
     // IDEA : BST
     // https://leetcode.com/problems/two-sum-iv-input-is-a-bst/editorial/
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public boolean findTarget_3(TreeNode root, int k) {
         List < Integer > list = new ArrayList();
         inorder(root, list);
@@ -146,6 +166,10 @@ public class TwoSumIV {
         }
         return false;
     }
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public void inorder(TreeNode root, List < Integer > list) {
         if (root == null)
             return;

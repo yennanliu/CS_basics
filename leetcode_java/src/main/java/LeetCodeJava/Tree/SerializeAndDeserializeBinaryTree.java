@@ -56,6 +56,10 @@ public class SerializeAndDeserializeBinaryTree {
     // VO
     // IDEA : DFS (NOTE: `BFS` approach is also OK)
     public class Codec{
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public String serialize(TreeNode root) {
 
             /** NOTE !!!
@@ -82,6 +86,10 @@ public class SerializeAndDeserializeBinaryTree {
             return root.val + "," + serialize(root.left) + "," + serialize(root.right);
         }
 
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public TreeNode deserialize(String data) {
 
             /** NOTE !!!
@@ -414,6 +422,10 @@ public class SerializeAndDeserializeBinaryTree {
     public class Codec_0_0_1 {
 
         // Encodes a tree to a single string.
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public String serialize(TreeNode root) {
             if (root == null)
                 return "#,"; // use "#" to mark nulls
@@ -438,6 +450,10 @@ public class SerializeAndDeserializeBinaryTree {
         }
 
         // Decodes your encoded data to tree.
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public TreeNode deserialize(String data) {
             if (data.equals("#,"))
                 return null;
@@ -483,6 +499,10 @@ public class SerializeAndDeserializeBinaryTree {
     public class Codec_0_1 {
 
         // Encodes a tree to a single string.
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public String serialize(TreeNode root) {
             if (root == null)
                 return ""; // Edge case: empty tree
@@ -514,6 +534,10 @@ public class SerializeAndDeserializeBinaryTree {
         }
 
         // Decodes your encoded data to tree.
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public TreeNode deserialize(String data) {
             if (data.isEmpty())
                 return null; // Edge case: empty string means no tree
@@ -564,6 +588,10 @@ public class SerializeAndDeserializeBinaryTree {
     public class Codec_0_2 {
 
         // Encodes a tree to a single string using pre-order DFS.
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public String serialize(TreeNode root) {
             StringBuilder sb = new StringBuilder();
             serializeHelper(root, sb);
@@ -581,6 +609,10 @@ public class SerializeAndDeserializeBinaryTree {
         }
 
         // Decodes your encoded data to tree.
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public TreeNode deserialize(String data) {
             if (data == null || data.isEmpty())
                 return null;
@@ -612,6 +644,10 @@ public class SerializeAndDeserializeBinaryTree {
     public class Codec_1_1 {
 
         // Encodes a tree to a single string.
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public String serialize(TreeNode root) {
             List<String> res = new ArrayList<>();
             dfsSerialize(root, res);
@@ -629,6 +665,10 @@ public class SerializeAndDeserializeBinaryTree {
         }
 
         // Decodes your encoded data to tree.
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public TreeNode deserialize(String data) {
             String[] vals = data.split(",");
             int[] i = {0};
@@ -679,6 +719,10 @@ public class SerializeAndDeserializeBinaryTree {
     public class Codec_1_2 {
 
         // Encodes a tree to a single string.
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public String serialize(TreeNode root) {
             if (root == null) return "N";
             StringBuilder res = new StringBuilder();
@@ -699,6 +743,10 @@ public class SerializeAndDeserializeBinaryTree {
         }
 
         // Decodes your encoded data to tree.
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public TreeNode deserialize(String data) {
             String[] vals = data.split(",");
             if (vals[0].equals("N")) return null;
@@ -729,6 +777,10 @@ public class SerializeAndDeserializeBinaryTree {
     // https://leetcode.com/problems/serialize-and-deserialize-binary-tree/solutions/4705074/solution-using-level-order-traversal/?envType=list&envId=xoqag3yj
     public class Codec_2 {
 
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public String serialize(TreeNode root) {
 
             if (root == null)
@@ -754,6 +806,10 @@ public class SerializeAndDeserializeBinaryTree {
             return sb.toString().trim();
         }
 
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public TreeNode deserialize(String data) {
             if (data.equals(""))
                 return null;
@@ -791,11 +847,19 @@ public class SerializeAndDeserializeBinaryTree {
     // IDEA : DFS
     // https://leetcode.com/problems/serialize-and-deserialize-binary-tree/solutions/281714/clean-java-solution/?envType=list&envId=xoqag3yj
     public class Codec_3 {
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public String serialize(TreeNode root) {
             if (root == null) return "#";
             return root.val + "," + serialize(root.left) + "," + serialize(root.right);
         }
 
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public TreeNode deserialize(String data) {
             Queue<String> queue = new LinkedList<>(Arrays.asList(data.split(",")));
             return helper(queue);

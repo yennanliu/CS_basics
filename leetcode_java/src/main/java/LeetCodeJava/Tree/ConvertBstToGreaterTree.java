@@ -23,6 +23,10 @@ public class ConvertBstToGreaterTree {
     // https://leetcode.com/problems/convert-bst-to-greater-tree/solutions/2823307/java-recursive-solution/
     static Set<Integer> set;
     static int sum;
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public TreeNode convertBST_1(TreeNode root) {
         set = new TreeSet<>();
         sum = 0;
@@ -62,6 +66,10 @@ public class ConvertBstToGreaterTree {
     // V2
     // https://leetcode.com/problems/convert-bst-to-greater-tree/solutions/4932808/java-dept-first-search-beats-100-0ms/
     int store=0;
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public void helper(TreeNode root,boolean flag){
         if(root==null){
             return ;
@@ -76,6 +84,10 @@ public class ConvertBstToGreaterTree {
         helper(root.left,false);
 
     }
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public TreeNode convertBST_2(TreeNode root) {
         helper(root,false);
         return root;

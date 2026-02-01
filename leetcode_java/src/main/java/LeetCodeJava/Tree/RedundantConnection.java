@@ -47,6 +47,10 @@ public class RedundantConnection {
 
     // V0
     // IDEA: UNION FIND (fixed by gpt)
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int[] findRedundantConnection(int[][] edges) {
 
         // Initialize union-find data structure
@@ -72,6 +76,10 @@ public class RedundantConnection {
         int n;
 
         // Constructor to initialize the union-find data structure
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public MyUF3(int[][] edges) {
             HashSet<Integer> set = new HashSet<>();
             for (int[] x : edges) {
@@ -90,6 +98,10 @@ public class RedundantConnection {
         }
 
         // Find the root of the set containing 'x' with path compression
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public int getParent(int x) {
             /**
              * NOTE !!!
@@ -113,6 +125,10 @@ public class RedundantConnection {
         }
 
         // Union the sets containing x and y, return false if they are already connected
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public boolean union(int x, int y) {
             int rootX = getParent(x);
             int rootY = getParent(y);
@@ -137,6 +153,10 @@ public class RedundantConnection {
     // V1-1
     // https://neetcode.io/problems/redundant-connection
     // IDEA: Cycle Detection (DFS)
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int[] findRedundantConnection_1_1(int[][] edges) {
         int n = edges.length;
         List<List<Integer>> adj = new ArrayList<>();
@@ -183,6 +203,10 @@ public class RedundantConnection {
     private Set<Integer> cycle;
     private int cycleStart;
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int[] findRedundantConnection_1_2(int[][] edges) {
         int n = edges.length;
         adj = new ArrayList<>();
@@ -231,6 +255,10 @@ public class RedundantConnection {
     // V1-3
     // https://neetcode.io/problems/redundant-connection
     // IDEA:  Topological Sort (Kahn's Algorithm)
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int[] findRedundantConnection_1_3(int[][] edges) {
         int n = edges.length;
         int[] indegree = new int[n + 1];
@@ -269,6 +297,10 @@ public class RedundantConnection {
     // V1-4
     // https://neetcode.io/problems/redundant-connection
     // IDEA:  Disjoint Set Union
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int[] findRedundantConnection_1_4(int[][] edges) {
         int[] par = new int[edges.length + 1];
         int[] rank = new int[edges.length + 1];
@@ -314,6 +346,10 @@ public class RedundantConnection {
     // https://github.com/neetcode-gh/leetcode/blob/main/java/0684-redundant-connection.java
     int[] parent;
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int[] findRedundantConnection_2(int[][] edges) {
         parent = new int[edges.length];
         for (int i = 0; i < edges.length; i++) {
@@ -331,11 +367,19 @@ public class RedundantConnection {
         return new int[2];
     }
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int find(int x) {
         if (x == parent[x - 1]) return x;
         return find(parent[x - 1]);
     }
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public void union(int x, int y) {
         parent[find(y) - 1] = find(x);
     }
@@ -346,6 +390,10 @@ public class RedundantConnection {
     Set<Integer> seen = new HashSet();
     int MAX_EDGE_VAL = 1000;
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int[] findRedundantConnection_3(int[][] edges) {
         ArrayList<Integer>[] graph = new ArrayList[MAX_EDGE_VAL + 1];
         for (int i = 0; i <= MAX_EDGE_VAL; i++) {
@@ -364,6 +412,10 @@ public class RedundantConnection {
         throw new AssertionError();
     }
 
+    /**
+     * time = O(V + E)
+     * space = O(V)
+     */
     public boolean dfs(ArrayList<Integer>[] graph, int source, int target) {
         if (!seen.contains(source)) {
             seen.add(source);
@@ -380,6 +432,10 @@ public class RedundantConnection {
     // https://leetcode.com/problems/redundant-connection/editorial/
     int MAX_EDGE_VAL_1 = 1000;
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int[] findRedundantConnection_4(int[][] edges) {
         DSU dsu = new DSU(MAX_EDGE_VAL_1 + 1);
         for (int[] edge : edges) {
@@ -392,17 +448,29 @@ public class RedundantConnection {
         int[] parent;
         int[] rank;
 
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public DSU(int size) {
             parent = new int[size];
             for (int i = 0; i < size; i++) parent[i] = i;
             rank = new int[size];
         }
 
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public int find(int x) {
             if (parent[x] != x) parent[x] = find(parent[x]);
             return parent[x];
         }
 
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public boolean union(int x, int y) {
             int xr = find(x), yr = find(y);
             if (xr == yr) {

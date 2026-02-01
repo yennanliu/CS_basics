@@ -44,6 +44,10 @@ public class CountUnivalueSubtrees {
     //https://leetcode.ca/2016-08-06-250-Count-Univalue-Subtrees/
     private int ans;
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int countUnivalSubtrees_1(TreeNode root) {
         dfs(root);
         return ans;

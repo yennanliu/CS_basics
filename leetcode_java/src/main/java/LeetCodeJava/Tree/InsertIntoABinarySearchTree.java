@@ -45,6 +45,10 @@ public class InsertIntoABinarySearchTree {
 
     // V0
     // IDEA: DFS + BST property (fixed by gpt)
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public TreeNode insertIntoBST(TreeNode root, int val) {
         if (root == null) {
             return new TreeNode(val);
@@ -116,6 +120,10 @@ public class InsertIntoABinarySearchTree {
 
     // V0-1
     // IDEA: RECURSION (fixed by gpt)
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public TreeNode insertIntoBST_0_1(TreeNode root, int val) {
         if (root == null) {
             return new TreeNode(val);
@@ -142,6 +150,10 @@ public class InsertIntoABinarySearchTree {
         return root;
     }
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public void insertNodeHelper(TreeNode root, int val) {
         if (val < root.val) {
             if (root.left == null) {
@@ -166,6 +178,10 @@ public class InsertIntoABinarySearchTree {
 
     // V0-2
     // IDEA: RECURSION V2 (fixed by gpt)
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public TreeNode insertIntoBST_0_2(TreeNode root, int val) {
         if (root == null) {
             return new TreeNode(val);
@@ -187,6 +203,10 @@ public class InsertIntoABinarySearchTree {
     // V2-1
     // IDEA: RECURSION
     // https://leetcode.com/problems/insert-into-a-binary-search-tree/solutions/1683942/well-detailed-explaination-java-c-python-3o3n/
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public TreeNode insertIntoBST_2_1(TreeNode root, int val) {
         if (root == null)
             return new TreeNode(val);
@@ -200,6 +220,10 @@ public class InsertIntoABinarySearchTree {
     // V2-2
     // IDEA: RECURSION
     // https://leetcode.com/problems/insert-into-a-binary-search-tree/submissions/1603221927/
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public TreeNode insertIntoBST_2_2(TreeNode root, int val) {
         if (root == null)
             return new TreeNode(val);
@@ -229,6 +253,10 @@ public class InsertIntoABinarySearchTree {
     // V3-1
     // IDEA: RECURSION
     // https://leetcode.com/problems/insert-into-a-binary-search-tree/solutions/6586549/100-acceptance-0ms-very-easy-to-understa-hq6b/
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public TreeNode insertIntoBST_3_1(TreeNode root, int val) {
         if (root == null)
             return new TreeNode(val);
@@ -242,6 +270,10 @@ public class InsertIntoABinarySearchTree {
 
     // V4
     // https://leetcode.com/problems/insert-into-a-binary-search-tree/solutions/6519231/well-detailed-explanation-java-easy-to-u-mpdh/
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public TreeNode insertIntoBST_4(TreeNode root, int val) {
         if (root == null) {
             return new TreeNode(val); // Insert as root if tree is empty.

@@ -67,6 +67,10 @@ public class OnlineMajorityElementInSubarray {
         private int[] arr;
         private Random rand;
 
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public MajorityChecker_0_1(int[] arr) {
             this.arr = arr;
             this.posMap = new HashMap<>();
@@ -78,6 +82,10 @@ public class OnlineMajorityElementInSubarray {
             }
         }
 
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public int query(int left, int right, int threshold) {
             int len = right - left + 1;
 
@@ -137,10 +145,18 @@ public class OnlineMajorityElementInSubarray {
 
         int[] arr;
 
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public MajorityChecker_0_3(int[] arr) {
             this.arr = arr;
         }
 
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public int query(int left, int right, int threshold) {
             // Count frequency in [left, right]
             Map<Integer, Integer> freq = new HashMap<>();
@@ -166,6 +182,10 @@ public class OnlineMajorityElementInSubarray {
         private Map<Integer, List<Integer>> idxMap;
         private Random rand;
 
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public MajorityChecker_0_4(int[] arr) {
             this.arr = arr;
             this.idxMap = new HashMap<>();
@@ -177,6 +197,10 @@ public class OnlineMajorityElementInSubarray {
             }
         }
 
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public int query(int left, int right, int threshold) {
             int length = right - left + 1;
 
@@ -236,11 +260,19 @@ public class OnlineMajorityElementInSubarray {
         // { val: cnt}
         Map<Integer, Integer> cnt_map;
 
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public MajorityChecker_0_5(int[] arr) {
             this.cur_arr = arr;
             this.cnt_map = new HashMap<>();
         }
 
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public int query(int left, int right, int threshold) {
             //int ans = -1;
             // copy sub array
@@ -289,6 +321,10 @@ public class OnlineMajorityElementInSubarray {
         private int[][] presum;
         private ArrayList<Integer>[] pos;
 
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public MajorityChecker_1(int[] arr) {
             int len = arr.length;
             presum = new int[len + 1][digits];
@@ -307,6 +343,10 @@ public class OnlineMajorityElementInSubarray {
             }
         }
 
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public int query(int left, int right, int threshold) {
             int ans = 0;
             for (int i = digits - 1; i >= 0; i--) {
@@ -354,10 +394,18 @@ public class OnlineMajorityElementInSubarray {
     class MajorityChecker_2 {
         int[] arr;
 
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public MajorityChecker_2(int[] arr) {
             this.arr = arr;
         }
 
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public int query(int left, int right, int threshold) {
             int candidate = -1;
             int count = 0;
@@ -395,6 +443,10 @@ public class OnlineMajorityElementInSubarray {
         private int[][] presum;
         private ArrayList<Integer>[] pos;
 
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public MajorityChecker_3(int[] arr) {
             int len = arr.length;
             presum = new int[len + 1][digits];
@@ -413,6 +465,10 @@ public class OnlineMajorityElementInSubarray {
             }
         }
 
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public int query(int left, int right, int threshold) {
             int ans = 0;
             for (int i = digits - 1; i >= 0; i--) {
@@ -462,6 +518,10 @@ public class OnlineMajorityElementInSubarray {
         private int[][] presum;
         private ArrayList<Integer>[] pos;
 
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public MajorityChecker_4(int[] arr) {
             int len = arr.length;
             presum = new int[len + 1][digits];
@@ -480,6 +540,10 @@ public class OnlineMajorityElementInSubarray {
             }
         }
 
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public int query(int left, int right, int threshold) {
             int ans = 0;
             for (int i = digits - 1; i >= 0; i--) {

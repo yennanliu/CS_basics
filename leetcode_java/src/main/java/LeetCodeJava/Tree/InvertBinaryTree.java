@@ -42,6 +42,10 @@ public class InvertBinaryTree {
 
     // V0
     // IDEA: DFS
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public TreeNode invertTree(TreeNode root) {
 
         // edge
@@ -71,6 +75,10 @@ public class InvertBinaryTree {
 
     // V0-0-1
     // IDEA: DFS + CACHE
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public TreeNode invertTree_0_0_1(TreeNode root) {
         // edge
         if (root == null) {
@@ -110,6 +118,10 @@ public class InvertBinaryTree {
 
     // VO-1
     // IDEA : DFS + cache
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public TreeNode invertTree_0_1(TreeNode root) {
 
         if (root == null){
@@ -128,6 +140,10 @@ public class InvertBinaryTree {
 
     // V0-2
     // IDEA : DFS
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public TreeNode invertTree_0_2(TreeNode root) {
         if (root == null) {
             return null;
@@ -164,6 +180,10 @@ public class InvertBinaryTree {
 
     // V0-3
     // IDEA : BFS
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public TreeNode invertTree_0_3(TreeNode root) {
 
         if (root == null) {
@@ -195,6 +215,10 @@ public class InvertBinaryTree {
 
     // V0-4
     // IDEA: DFS + cache
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public TreeNode invertTree_0_4(TreeNode root) {
         // edge
         if (root == null || (root.left == null && root.right == null)) {
@@ -206,6 +230,10 @@ public class InvertBinaryTree {
         return reversedNode;
     }
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public TreeNode inverseHelper(TreeNode root) {
         // edge
         if (root == null) {
@@ -224,6 +252,10 @@ public class InvertBinaryTree {
     // V1
     // IDEA: Recursive
     // https://leetcode.com/problems/invert-binary-tree/editorial/
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public TreeNode invertTree_1(TreeNode root) {
         if (root == null) {
             return null;
@@ -238,6 +270,10 @@ public class InvertBinaryTree {
     // V1-1
     // IDEA : Iterative
     // https://leetcode.com/problems/invert-binary-tree/editorial/
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public TreeNode invertTree_1_1(TreeNode root) {
         if (root == null) return null;
         /**

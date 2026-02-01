@@ -81,11 +81,19 @@ public class MaximumBinaryTree {
     // V1
     // IDEA : Recursive Solution
     // https://leetcode.com/problems/maximum-binary-tree/editorial/
+    /**
+     * time = O(log N)
+     * space = O(1)
+     */
     public TreeNode constructMaximumBinaryTree_1(int[] nums) {
         return construct(nums, 0, nums.length);
     }
 
     /** NOTE !!! : parameters : l, r */
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public TreeNode construct(int[] nums, int l, int r) {
         if (l == r)
             return null;
@@ -95,6 +103,10 @@ public class MaximumBinaryTree {
         root.right = construct(nums, max_i + 1, r);
         return root;
     }
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public int max(int[] nums, int l, int r) {
         int max_i = l;
         for (int i = l; i < r; i++) {

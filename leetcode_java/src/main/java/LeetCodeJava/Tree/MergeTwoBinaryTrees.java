@@ -47,6 +47,10 @@ public class MergeTwoBinaryTrees {
 
     // V0
     // IDEA : RECURSIVE
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public TreeNode mergeTrees(TreeNode t1, TreeNode t2) {
 
         if (t1 == null && t2 == null){
@@ -75,6 +79,10 @@ public class MergeTwoBinaryTrees {
 
     // V0-0-1
     // IDEA: DFS
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public TreeNode mergeTrees_0_0_1(TreeNode root1, TreeNode root2) {
         // edge
         if (root1 == null && root2 == null) {
@@ -104,6 +112,10 @@ public class MergeTwoBinaryTrees {
 
     // V0-1
     // IDEA: DFS (GPT)
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public TreeNode mergeTrees_0_1(TreeNode root1, TreeNode root2) {
         // base cases
         if (root1 == null) return root2;
@@ -122,6 +134,10 @@ public class MergeTwoBinaryTrees {
     // V1
     // IDEA : RECURSIVE
     // https://leetcode.com/problems/merge-two-binary-trees/editorial/
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public TreeNode mergeTrees_1(TreeNode t1, TreeNode t2) {
         if (t1 == null)
             return t2;
@@ -136,6 +152,10 @@ public class MergeTwoBinaryTrees {
     // V2
     // IDEA : RECURSIVE
     // https://leetcode.com/problems/merge-two-binary-trees/editorial/
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public TreeNode mergeTrees_2(TreeNode t1, TreeNode t2) {
         if (t1 == null)
             return t2;
@@ -164,6 +184,10 @@ public class MergeTwoBinaryTrees {
     // V3
     // IDEA : RECURSIVE
     // https://leetcode.ca/2017-08-08-617-Merge-Two-Binary-Trees/
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public TreeNode mergeTrees_3(TreeNode root1, TreeNode root2) {
         if (root1 == null) {
             return root2;

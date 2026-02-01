@@ -156,6 +156,10 @@ public class RangeSumQueryMutable {
         int[] BIT;
         int n;
 
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public NumArray_2(int[] nums) {
             this.nums = nums;
 
@@ -165,6 +169,10 @@ public class RangeSumQueryMutable {
                 init(i, nums[i]);
         }
 
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public void init(int i, int val) {
             i++;
             while (i <= n) {
@@ -179,6 +187,10 @@ public class RangeSumQueryMutable {
             init(i, diff);
         }
 
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public int getSum(int i) {
             int sum = 0;
             i++;
@@ -189,6 +201,10 @@ public class RangeSumQueryMutable {
             return sum;
         }
 
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public int sumRange(int i, int j) {
             return getSum(j) - getSum(i - 1);
         }
@@ -204,6 +220,10 @@ public class RangeSumQueryMutable {
             private SegmentTreeNode left, right;
             private int sum;
 
+            /**
+             * time = O(N)
+             * space = O(H)
+             */
             public SegmentTreeNode(int start, int end) {
                 this.start = start;
                 this.end = end;
@@ -215,6 +235,10 @@ public class RangeSumQueryMutable {
 
         SegmentTreeNode root = null;
 
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public NumArray_3_1(int[] nums) {
             root = buildTree(nums, 0, nums.length - 1);
         }
@@ -259,11 +283,19 @@ public class RangeSumQueryMutable {
             }
         }
 
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public int sumRange(int i, int j) {
             return sumRangeHelper(root, i, j);
         }
 
         // TC : O(logn)
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public int sumRangeHelper(SegmentTreeNode root, int start, int end) {
             // if you found out the node that matches your search return its value
             if (root.start == start && root.end == end) {
@@ -292,6 +324,10 @@ public class RangeSumQueryMutable {
         private int arrayLength; // Length of the input array
 
         // Constructor to initialize the segment tree with the given array
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public NumArray_3_2(int[] nums) {
             this.arrayLength = nums.length; // Set the length of the input array
             if (arrayLength > 0) { // If array is not empty
@@ -322,6 +358,10 @@ public class RangeSumQueryMutable {
         }
 
         // Function to update an element in the segment tree
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public void update(int index, int newValue) {
             if (arrayLength == 0)
                 return; // If the array is empty, do nothing
@@ -359,6 +399,10 @@ public class RangeSumQueryMutable {
         }
 
         // Function to get the sum of elements in the given range
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public int sumRange(int left, int right) {
             if (arrayLength == 0)
                 return 0; // If the array is empty, return 0
@@ -388,6 +432,10 @@ public class RangeSumQueryMutable {
     class NumArray_3_3 {
         private SegmentTree root; // Root of the segment tree
 
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public NumArray_3_3(int[] nums) {
             if (nums.length > 0) {
                 root = buildSegmentTree(nums, 0, nums.length - 1); // Build the segment tree
@@ -420,6 +468,10 @@ public class RangeSumQueryMutable {
         }
 
         // Function to update an element in the segment tree
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public void update(int index, int val) {
             update(root, index, val);
         }
@@ -439,6 +491,10 @@ public class RangeSumQueryMutable {
         }
 
         // Function to get the sum of elements in the given range
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public int sumRange(int left, int right) {
             return sumRange(root, left, right);
         }

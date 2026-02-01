@@ -62,6 +62,10 @@ public class ConstructBinaryTreeFromPreorderAndPostorderTraversal {
      */
 
     // V0
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public TreeNode constructFromPrePost(int[] preorder, int[] postorder) {
 
         // O(n) time | O(h) space
@@ -149,6 +153,10 @@ public class ConstructBinaryTreeFromPreorderAndPostorderTraversal {
      * The preorder array helps in determining the root nodes,
      * while the postorder array helps in determining the boundary between left and right subtrees.
      */
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public TreeNode constructFromPrePost_2(int[] preorder, int[] postorder) {
 
         // O(n) time | O(h) space
@@ -207,12 +215,20 @@ public class ConstructBinaryTreeFromPreorderAndPostorderTraversal {
     // https://leetcode.com/problems/construct-binary-tree-from-preorder-and-postorder-traversal/solutions/357699/java-o-n/
     int pre[];
     int post[];
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public TreeNode constructFromPrePost_3(int[] pre, int[] post) {
         this.pre = pre;
         this.post = post;
         return helper(0, pre.length-1, 0, post.length-1);
     }
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public TreeNode helper(int pre_start, int pre_end, int post_start, int post_end){
         if (post_start > post_end){
             return null;
@@ -238,6 +254,10 @@ public class ConstructBinaryTreeFromPreorderAndPostorderTraversal {
     // V4
     // IDEA: RECURSIVE + TREE
     // https://leetcode.com/problems/construct-binary-tree-from-preorder-and-postorder-traversal/solutions/3305293/beats-100-java-solution-using-recursion-simple-and-clean-code/
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public TreeNode f(int[] pre, int[] post, int preS, int preE, int postS, int postE){
         if(postS>postE) return null;
         int rootVal=pre[preS];
@@ -263,6 +283,10 @@ public class ConstructBinaryTreeFromPreorderAndPostorderTraversal {
         root.right=f(pre, post, rPreS, rPreE, rPostS, rPostE);
         return root;
     }
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public TreeNode constructFromPrePost_4(int[] preorder, int[] postorder) {
         return f(preorder, postorder, 0, preorder.length-1, 0, preorder.length-1);
     }
@@ -284,6 +308,10 @@ public class ConstructBinaryTreeFromPreorderAndPostorderTraversal {
     private Map<Integer,Integer> postMap = new HashMap<>();
     private int preIdx;
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public TreeNode constructFromPrePost_5(int[] pre, int[] post) {
         IntStream.range(0, post.length).forEach(i -> postMap.put(post[i], i));
         return buildTree(0, post.length - 1, pre, post);
@@ -317,6 +345,10 @@ public class ConstructBinaryTreeFromPreorderAndPostorderTraversal {
     private int preIndex = 0;
     private int postIndex = 0;
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public TreeNode constructFromPrePost_6(int[] preorder, int[] postorder) {
         // Create the root node from the current preorder value
         TreeNode root = new TreeNode(preorder[preIndex++]);

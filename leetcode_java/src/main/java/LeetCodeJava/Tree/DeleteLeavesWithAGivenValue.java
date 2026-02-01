@@ -64,6 +64,10 @@ public class DeleteLeavesWithAGivenValue {
    *
    */
   // https://youtu.be/FqAoYAwbwV8?si=mOdW8Wgj3TJ4AyRL
+  /**
+   * time = O(N)
+   * space = O(H)
+   */
   public TreeNode removeLeafNodes(TreeNode root, int target) {
         // edge
         if (root == null) {
@@ -83,6 +87,10 @@ public class DeleteLeavesWithAGivenValue {
         return res;
     }
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public TreeNode deleteLeafHelper_0(TreeNode root, int target) {
         // edge
         if (root == null) {
@@ -170,6 +178,10 @@ public class DeleteLeavesWithAGivenValue {
 
     // V0-1
     // IDEA: DFS (fixed by gpt)
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public TreeNode removeLeafNodes_0_1(TreeNode root, int target) {
         return deleteLeafHelper(root, target);
     }
@@ -193,6 +205,10 @@ public class DeleteLeavesWithAGivenValue {
 
     // V0-2
     // IDEA: DFS (gpt)
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public TreeNode removeLeafNodes_0_2(TreeNode root, int target) {
         // edge
         if (root == null) {
@@ -218,6 +234,10 @@ public class DeleteLeavesWithAGivenValue {
     // V2-1
     // https://leetcode.com/problems/delete-leaves-with-a-given-value/editorial/
     // IDEA:  Recursion (Postorder Traversal)
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public TreeNode removeLeafNodes_2_1(TreeNode root, int target) {
         // Base case
         if (root == null) {
@@ -244,6 +264,10 @@ public class DeleteLeavesWithAGivenValue {
     // V2-2
     // https://leetcode.com/problems/delete-leaves-with-a-given-value/editorial/
     // IDEA:  Iterative (PostOrder Traversal)
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     public TreeNode removeLeafNodes_2_2(TreeNode root, int target) {
         Stack<TreeNode> stack = new Stack<>();
         TreeNode currentNode = root, lastRightNode = null;

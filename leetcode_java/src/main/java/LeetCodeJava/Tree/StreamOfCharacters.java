@@ -90,10 +90,18 @@ public class StreamOfCharacters {
         int maxSize;
         StringBuilder sb = new StringBuilder();
 
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public StreamChecker_2(String[] words) {
             insert(words);
         }
 
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public boolean query(char letter) {
             if(sb.length()>=maxSize){
                 sb.deleteCharAt(0);
@@ -111,6 +119,10 @@ public class StreamOfCharacters {
             return false;
         }
 
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public void insert(String[] words){
 
             for(String s : words){
@@ -146,6 +158,10 @@ public class StreamOfCharacters {
             }
         }
 
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public StreamChecker_4(String[] words) {
             root = new TrieNode();
             buildTrie(words);
@@ -171,6 +187,10 @@ public class StreamOfCharacters {
             p.isWord = true;
         }
 
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public boolean query(char letter) {
             history.add(letter);
             TrieNode p = root;
@@ -194,6 +214,10 @@ public class StreamOfCharacters {
             boolean word;
             Trie[] next;
 
+            /**
+             * time = O(N)
+             * space = O(H)
+             */
             public Trie() {
                 this.next = new Trie[26];
                 this.word = false;
@@ -204,6 +228,10 @@ public class StreamOfCharacters {
         int p = 0;
         char[] history;
 
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public void insert(String word) {
             Trie curr = root;
             for (int i = word.length() - 1; i >=0; i--) {
@@ -215,6 +243,10 @@ public class StreamOfCharacters {
             curr.word = true;
         }
 
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public StreamChecker_5(String[] words) {
             this.root = new Trie();
             for (String word : words) {
@@ -223,6 +255,10 @@ public class StreamOfCharacters {
             this.history = new char[2000];
         }
 
+        /**
+         * time = O(N)
+         * space = O(H)
+         */
         public boolean query(char letter) {
             // System.out.println("query " + letter);
             history[p % 2000] = letter;
