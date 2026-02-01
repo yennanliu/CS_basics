@@ -285,8 +285,11 @@ public class MedianOfTwoSortedArrays {
     // V1-2
     // https://neetcode.io/problems/median-of-two-sorted-arrays
     // IDEA: 2 POINTERS
-    // time: O(M+N), space: O(1)
-    public double findMedianSortedArrays_1_2(int[] nums1, int[] nums2) {
+    /**
+     * time = O(M+N)
+     * space = O(1)
+     */
+        public double findMedianSortedArrays_1_2(int[] nums1, int[] nums2) {
         int len1 = nums1.length, len2 = nums2.length;
         int i = 0, j = 0;
         int median1 = 0, median2 = 0;

@@ -206,8 +206,11 @@ public class RegularExpressionMatching {
 
     // V0-3
     // IDEA: 2D DP (gpt)
-    // time: O(M*N), space: O(M*N)
-    public boolean isMatch_0_3(String s, String p) {
+    /**
+     * time = O(M*N)
+     * space = O(M*N)
+     */
+        public boolean isMatch_0_3(String s, String p) {
         int m = s.length();
         int n = p.length();
 
@@ -309,8 +312,11 @@ public class RegularExpressionMatching {
     // V1-3
     // https://neetcode.io/problems/regular-expression-matching
     // IDEA: DP (BOTTOM UP)
-    // time: O(M*N), space: O(M*N)
-    public boolean isMatch_1_3(String s, String p) {
+    /**
+     * time = O(M*N)
+     * space = O(M*N)
+     */
+        public boolean isMatch_1_3(String s, String p) {
         int m = s.length(), n = p.length();
         boolean[][] dp = new boolean[m + 1][n + 1];
         dp[m][n] = true;
@@ -338,8 +344,11 @@ public class RegularExpressionMatching {
     // V1-4
     // https://neetcode.io/problems/regular-expression-matching
     // IDEA: DP (SPACE OPTIMIZED)
-    // time: O(M*N), space: O(N)
-    public boolean isMatch_1_4(String s, String p) {
+    /**
+     * time = O(M*N)
+     * space = O(N)
+     */
+        public boolean isMatch_1_4(String s, String p) {
         boolean[] dp = new boolean[p.length() + 1];
         dp[p.length()] = true;
 
@@ -372,8 +381,11 @@ public class RegularExpressionMatching {
     // V1-5
     // https://neetcode.io/problems/regular-expression-matching
     // IDEA: DP (OPTIMAL)
-    // time: O(M*N), space: O(M*N)
-    public boolean isMatch_1_5(String s, String p) {
+    /**
+     * time = O(M*N)
+     * space = O(M*N)
+     */
+        public boolean isMatch_1_5(String s, String p) {
         boolean[] dp = new boolean[p.length() + 1];
         dp[p.length()] = true;
 

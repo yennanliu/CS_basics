@@ -8,8 +8,11 @@ import java.util.List;
 public class ShortestWordDistance {
 
     // V0
-    // time: O(N + M*K), space: O(M+K)
-    public int shortestDistance(String[] wordsDict, String word1, String word2) {
+    /**
+     * time = O(N + M*K)
+     * space = O(M+K)
+     */
+        public int shortestDistance(String[] wordsDict, String word1, String word2) {
 
         List<Integer> list1 =  new ArrayList<>();
         List<Integer> list2 =  new ArrayList<>();
@@ -38,8 +41,11 @@ public class ShortestWordDistance {
 
     // V1
     // https://leetcode.com/problems/shortest-word-distance/solutions/66931/ac-java-clean-solution/
-    // time: O(N), space: O(1)
-    public int shortestDistance_1(String[] words, String word1, String word2) {
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
+        public int shortestDistance_1(String[] words, String word1, String word2) {
         int p1 = -1, p2 = -1, min = Integer.MAX_VALUE;
 
         for (int i = 0; i < words.length; i++) {
@@ -58,8 +64,11 @@ public class ShortestWordDistance {
 
     // V2
     // https://leetcode.com/problems/shortest-word-distance/solutions/3458164/java-easy-to-understand-solution/
-    // time: O(N^2), space: O(1)
-    public int shortestDistance_2(String[] wordsDict, String word1, String word2) {
+    /**
+     * time = O(N^2)
+     * space = O(1)
+     */
+        public int shortestDistance_2(String[] wordsDict, String word1, String word2) {
         int minDistance = Integer.MAX_VALUE;
 
         for(int i = 0; i< wordsDict.length; i++) {

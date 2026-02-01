@@ -234,8 +234,11 @@ public class maxSubarraySumCircular {
 
     // V0-2
     // IDEA: Kadane algo (gpt)
-    // time: O(N), space: O(1)
-    public int maxSubarraySumCircular_0_2(int[] nums) {
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
+        public int maxSubarraySumCircular_0_2(int[] nums) {
         int totalSum = 0;
         int maxSum = nums[0], curMax = 0;
         int minSum = nums[0], curMin = 0;
@@ -259,8 +262,11 @@ public class maxSubarraySumCircular {
 
     // V0-3
     // IDEA: DEQUEUE + PREFIX SUM (gpt)
-    // time: O(N), space: O(N)
-    public int maxSubarraySumCircular_0_3(int[] nums) {
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+        public int maxSubarraySumCircular_0_3(int[] nums) {
         int n = nums.length;
         int[] prefix = new int[2 * n + 1];
 
@@ -296,8 +302,11 @@ public class maxSubarraySumCircular {
 
 
     // V1
-    // time: O(N), space: O(1)
-    public int maxSubarraySumCircular_1(int[] nums) {
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
+        public int maxSubarraySumCircular_1(int[] nums) {
         int curMax = 0, curMin = 0;
         int globMax = nums[0], globMin = nums[0];
         int total = 0;

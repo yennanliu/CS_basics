@@ -143,8 +143,11 @@ public class RemoveDuplicatesFromSortedArray {
 
     // V1
     // https://leetcode.com/problems/remove-duplicates-from-sorted-array/solutions/3416595/c-java-python-javascript-fully-explained-two-pointer/
-    // time: O(N), space: O(1)
-    public int removeDuplicates_1(int[] nums) {
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
+        public int removeDuplicates_1(int[] nums) {
         int i = 0;
         for (int j = 1; j < nums.length; j++) {
             if (nums[i] != nums[j]) {
@@ -157,8 +160,11 @@ public class RemoveDuplicatesFromSortedArray {
 
     // V2
     // https://leetcode.com/problems/remove-duplicates-from-sorted-array/solutions/3342081/100-faster-java-2-approaches-step-by-step-explained/
-    // time: O(N), space: O(1)
-    public int removeDuplicates_2(int[] nums) {
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
+        public int removeDuplicates_2(int[] nums) {
 
         int newIndex = 1; // Start with index 1 because the first element is already in place
 
@@ -175,8 +181,11 @@ public class RemoveDuplicatesFromSortedArray {
 
     // V2'
     // https://leetcode.com/problems/remove-duplicates-from-sorted-array/solutions/3342081/100-faster-java-2-approaches-step-by-step-explained/
-    // time: O(N), space: O(N)
-    public int removeDuplicates_3(int[] nums) {
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+        public int removeDuplicates_3(int[] nums) {
 
         //Insert all array element in the Set.
         //Set does not allow duplicates and sets like LinkedHashSet maintains the order of insertion so it will remove duplicates and elements will be printed in the same order in which it is inserted
