@@ -57,6 +57,10 @@ public class FindTheTownJudge {
      * - A judge loses 1 point for every person they trust.
      * - The judge must have exactly n - 1 points.
      */
+    /**
+     * time = O(E)
+     * space = O(N)
+     */
     public int findJudge(int n, int[][] trust) {
         // If there is only one person and no trust relationship, they are the judge
         if (n == 1 && trust.length == 0)
@@ -87,6 +91,10 @@ public class FindTheTownJudge {
 
     // V0-0-0-1
     // IDEA: TRUST, TRUSTED ARRAY
+    /**
+     * time = O(E)
+     * space = O(N)
+     */
     public int findJudge_0_0_0_1(int n, int[][] trust) {
         // edge
         if (n == 1 && trust.length == 0) {
@@ -124,6 +132,10 @@ public class FindTheTownJudge {
 
     // V0-0-1
     // IDEA: 2 ARRAY (fixed by gpt)
+    /**
+     * time = O(E)
+     * space = O(N)
+     */
     /** NOTE: how do we handle `exactly ONLY 1 judge` in below code ?
      *
      *  e.g. `There is exactly one person that satisfies properties 1 and 2`
@@ -218,6 +230,10 @@ public class FindTheTownJudge {
      * * Time Complexity: O(E + N), where E is the number of trust relationships.
      * Space Complexity: O(N) for the degree array.
      */
+    /**
+     * time = O(E + N)
+     * space = O(N)
+     */
     public int findJudge_0_0_2(int n, int[][] trust) {
 
         // Edge case: If N=1 and no trust relationships, person 1 is trivially the Judge.
@@ -264,6 +280,10 @@ public class FindTheTownJudge {
      *    - Used an `inDegree` and `outDegree` approach to efficiently determine the judge.
      *    - Avoided unnecessary `candidates` list manipulation, which was overly complicated.
      *
+     */
+    /**
+     * time = O(E)
+     * space = O(N)
      */
     public int findJudge_0_1(int n, int[][] trust) {
         // Edge case: If there's only one person, they are the judge
@@ -314,6 +334,10 @@ public class FindTheTownJudge {
 
     // V2
     // https://leetcode.com/problems/find-the-town-judge/solutions/3088104/day-23-easiest-beginner-friendly-solutio-7fbp/
+    /**
+     * time = O(E)
+     * space = O(N)
+     */
     public int findJudge_2(int n, int[][] trust) {
         if (trust.length == 0 && n == 1)
             return 1;
@@ -332,6 +356,10 @@ public class FindTheTownJudge {
 
     // V3
     // https://leetcode.com/problems/find-the-town-judge/solutions/4764873/beats-98-users-cjavapythonjavascript-exp-lk99/
+    /**
+     * time = O(E)
+     * space = O(N)
+     */
     public int findJudge_3(int N, int[][] trust) {
         int[] in = new int[N + 1];
         int[] out = new int[N + 1];
