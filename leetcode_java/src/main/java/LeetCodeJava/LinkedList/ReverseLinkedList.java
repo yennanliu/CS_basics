@@ -42,6 +42,10 @@ public class ReverseLinkedList {
 
         // V0
         // IDEA : iteration
+        /**
+         * time = O(N)
+         * space = O(1)
+         */
         public ListNode reverseList(ListNode head) {
 
             if (head == null) {
@@ -98,6 +102,10 @@ public class ReverseLinkedList {
 
         // V-0-0-1
         // IDEA: iteration
+        /**
+         * time = O(N)
+         * space = O(1)
+         */
         public ListNode reverseList_0_0_1(ListNode head) {
             // edge
             if(head == null || head.next == null) {
@@ -145,6 +153,10 @@ public class ReverseLinkedList {
 
         // V0-1
         // IDEA : iteration
+        /**
+         * time = O(N)
+         * space = O(1)
+         */
         public ListNode reverseList_0_1(ListNode head) {
 
             if (head == null){
@@ -197,6 +209,10 @@ public class ReverseLinkedList {
 
         // V0-2
         // IDEA: RECURSION  (Tail-Recursive Style) (fixed by gpt)
+        /**
+         * time = O(N)
+         * space = O(N)
+         */
         public ListNode reverseList_0_2(ListNode head) {
             return reverseHelper(head, null);
         }
@@ -208,6 +224,10 @@ public class ReverseLinkedList {
          *
          *   the 1st param is `current`
          *       2nd param is `prev`
+         */
+        /**
+         * time = O(1)
+         * space = O(1)
          */
         private ListNode reverseHelper(ListNode current, ListNode prev) {
             // Base case: end of the list
@@ -242,6 +262,10 @@ public class ReverseLinkedList {
 
         // V0-3
         // IDEA: RECURSION (Backtracking Style Instead) (gpt)
+        /**
+         * time = O(N)
+         * space = O(N)
+         */
         public ListNode reverseList_0_3(ListNode head) {
             if (head == null || head.next == null) {
                 return head;
@@ -257,6 +281,10 @@ public class ReverseLinkedList {
         // V1
         // IDEA : iteration
         // https://leetcode.com/problems/reverse-linked-list/editorial/
+        /**
+         * time = O(N)
+         * space = O(1)
+         */
         public ListNode reverseList_1(ListNode head) {
             ListNode prev = null;
             ListNode curr = head;
@@ -272,6 +300,10 @@ public class ReverseLinkedList {
         // V2
         // IDEA : Recursive
         // https://leetcode.com/problems/reverse-linked-list/editorial/
+        /**
+         * time = O(N)
+         * space = O(N)
+         */
         public ListNode reverseList_2(ListNode head) {
             if (head == null || head.next == null) {
                 return head;
