@@ -68,6 +68,8 @@ public class NumberOfClosedIslands {
      * @param grid The grid.
      * @param r Row index.
      * @param c Column index.
+     * time = O(M * N)
+     * space = O(M * N)
      */
     public int closedIsland_0_1(int[][] grid) {
         if (grid == null || grid.length == 0) {
@@ -151,6 +153,10 @@ public class NumberOfClosedIslands {
 
     // V0-2
     // IDEA: DFS (gpt)
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public int closedIsland_0_2(int[][] grid) {
         int m = grid.length, n = grid[0].length;
 
@@ -195,6 +201,10 @@ public class NumberOfClosedIslands {
 
     // V0-3
     // IDEA: BFS (gpt)
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public int closedIsland_0_3(int[][] grid) {
         int m = grid.length, n = grid[0].length;
 
@@ -256,6 +266,10 @@ public class NumberOfClosedIslands {
     // V1-1
     // IDEA: BFS
     // https://leetcode.com/problems/number-of-closed-islands/editorial/
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public int closedIsland_1_1(int[][] grid) {
         int m = grid.length;
         int n = grid[0].length;
@@ -304,6 +318,10 @@ public class NumberOfClosedIslands {
     // V1-2
     // IDEA: DFS
     // https://leetcode.com/problems/number-of-closed-islands/editorial/
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public int closedIsland_1_2(int[][] grid) {
         int m = grid.length;
         int n = grid[0].length;
@@ -356,6 +374,10 @@ public class NumberOfClosedIslands {
     private int n;
     private int[][] grid;
 
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public int closedIsland_3(int[][] grid) {
         m = grid.length;
         n = grid[0].length;

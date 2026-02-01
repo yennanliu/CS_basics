@@ -54,6 +54,10 @@ public class AccountsMerge {
     // V1
     // https://www.youtube.com/watch?v=6st4IxEF-90
     // https://github.com/neetcode-gh/leetcode/blob/main/java%2F0721-accounts-merge.java
+    /**
+     * time = O(N * M * α(N))
+     * space = O(N * M)
+     */
     public List<List<String>> accountsMerge_1(List<List<String>> accounts) {
         int n = accounts.size();
         DSU dsu = new DSU(n);
@@ -135,6 +139,10 @@ class DSU {
     HashSet<String> visited = new HashSet<>();
     Map<String, List<String>> adjacent = new HashMap<String, List<String>>();
 
+    /**
+     * time = O(N * M)
+     * space = O(N * M)
+     */
     private void DFS(List<String> mergedAccount, String email) {
         visited.add(email);
         // Add the email vector that contains the current component's emails
@@ -151,6 +159,10 @@ class DSU {
         }
     }
 
+    /**
+     * time = O(N * M + N * M * log(N * M))
+     * space = O(N * M)
+     */
     public List<List<String>> accountsMerge_2_1(List<List<String>> accountList) {
         int accountListSize = accountList.size();
 
@@ -249,6 +261,10 @@ class DSU {
         }
     }
 
+    /**
+     * time = O(N * M * α(N))
+     * space = O(N * M)
+     */
     public List<List<String>> accountsMerge_2_2(List<List<String>> accountList) {
         int accountListSize = accountList.size();
         DSU_2_2 dsu = new DSU_2_2(accountListSize);
