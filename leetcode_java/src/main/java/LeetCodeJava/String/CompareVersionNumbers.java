@@ -78,6 +78,10 @@ public class CompareVersionNumbers {
     // IDEA: STR OP (fixed by gemini)
     public int compareVersion_0_1(String version1, String version2) {
         // 1. Split by dot (regex needs \\.)
+        /** NOTE !!!
+         *
+         *  Split by dot (regex needs \\.)
+         */
         String[] v1 = version1.split("\\.");
         String[] v2 = version2.split("\\.");
 
@@ -85,6 +89,14 @@ public class CompareVersionNumbers {
         int maxLength = Math.max(v1.length, v2.length);
 
         for (int i = 0; i < maxLength; i++) {
+            /** NOTE !!!
+             *
+             *  below str op
+             *
+             *  1. we loop over the `bigger` len
+             *  2. if `out of boundary` we return 0 instead.
+             *      e.g. `i < v1.length ? Integer.parseInt(v1[i]) : 0;`
+             */
             // 3. Get the integer value, or 0 if we ran out of parts
             // Integer.parseInt automatically handles leading zeros (e.g., "001" -> 1)
             int num1 = i < v1.length ? Integer.parseInt(v1[i]) : 0;

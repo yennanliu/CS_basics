@@ -83,6 +83,10 @@ public class BestTimeToBuyAndSellStockWithCooldown {
      *
      *
      */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int maxProfit_0_0_1(int[] prices) {
         if (prices == null || prices.length <= 1)
             return 0;
@@ -162,6 +166,10 @@ public class BestTimeToBuyAndSellStockWithCooldown {
 
     // V0-0-2
     // IDEA: DP (SPACE OPTIMIZATION) (gemini)
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int maxProfit_0_0_2(int[] prices) {
         int hold = -prices[0];
         int sold = 0;
@@ -183,6 +191,10 @@ public class BestTimeToBuyAndSellStockWithCooldown {
 
     // V0-0-3
     // IDEA: 2D DP (GPT)
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int maxProfit_0_0_3(int[] prices) {
         if (prices == null || prices.length == 0)
             return 0;
@@ -329,6 +341,10 @@ public class BestTimeToBuyAndSellStockWithCooldown {
      *
      *
      */
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int maxProfit_0_1(int[] prices) {
         if (prices == null || prices.length == 0)
             return 0;
@@ -357,10 +373,18 @@ public class BestTimeToBuyAndSellStockWithCooldown {
 
     // V0-2
     // IDEA: RECURSIVE (gpt) (TLE)
+    /**
+     * time = O(2^N)
+     * space = O(N)
+     */
     public int maxProfit_0_2(int[] prices) {
         return dfs(prices, 0, false);
     }
 
+    /**
+     * time = O(2^N)
+     * space = O(N)
+     */
     private int dfs(int[] prices, int day, boolean holding) {
         if (day >= prices.length)
             return 0;
@@ -382,11 +406,19 @@ public class BestTimeToBuyAndSellStockWithCooldown {
     // V1-1
     // https://neetcode.io/problems/buy-and-sell-crypto-with-cooldown
     // IDEA:  RECURSION
+    /**
+     * time = O(2^N)
+     * space = O(N)
+     */
     public int maxProfit_1_1(int[] prices) {
 
         return dfs(0, true, prices);
     }
 
+    /**
+     * time = O(2^N)
+     * space = O(N)
+     */
     private int dfs(int i, boolean buying, int[] prices) {
         if (i >= prices.length) {
             return 0;
@@ -408,10 +440,18 @@ public class BestTimeToBuyAndSellStockWithCooldown {
     // IDEA: Dynamic Programming (Top-Down)
     private Map<String, Integer> dp = new HashMap<>();
 
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int maxProfit_1_2(int[] prices) {
         return dfs_1_2(0, true, prices);
     }
 
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     private int dfs_1_2(int i, boolean buying, int[] prices) {
         if (i >= prices.length) {
             return 0;
@@ -438,6 +478,10 @@ public class BestTimeToBuyAndSellStockWithCooldown {
     // V1-3
     // https://neetcode.io/problems/buy-and-sell-crypto-with-cooldown
     // IDEA: Dynamic Programming (Bottom-Up)
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int maxProfit_1_3(int[] prices) {
         int n = prices.length;
         int[][] dp = new int[n + 1][2];
@@ -462,6 +506,10 @@ public class BestTimeToBuyAndSellStockWithCooldown {
     // V1-4
     // https://neetcode.io/problems/buy-and-sell-crypto-with-cooldown
     // IDEA: Dynamic Programming (Space Optimized)
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int maxProfit_1_4(int[] prices) {
         int n = prices.length;
         int dp1_buy = 0, dp1_sell = 0;
