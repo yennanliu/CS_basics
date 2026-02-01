@@ -42,6 +42,10 @@ public class FibonacciNumber {
 
     // V0
     // IDEA: DP
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int fib(int n) {
         // edge
         if (n <= 1) {
@@ -67,6 +71,10 @@ public class FibonacciNumber {
             102334155, 165580141, 267914296, 433494437, 701408733, 1134903170, 1836311903
     };
 
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int fib_1(int n) {
         return fib_nums[n];
     }
@@ -75,6 +83,10 @@ public class FibonacciNumber {
     // V2
     // IDEA: DP
     // https://leetcode.com/problems/fibonacci-number/solutions/6032855/0-ms-runtime-beats-100-user-step-by-step-rnht/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int fib_2(int n) {
         if (n <= 1)
             return n;

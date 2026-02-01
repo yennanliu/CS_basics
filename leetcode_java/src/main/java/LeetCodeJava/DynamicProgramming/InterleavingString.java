@@ -186,6 +186,10 @@ public class InterleavingString {
 
     // V0-2
     // IDEA: DP (GPT)
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public boolean isInterleave_0_2(String s1, String s2, String s3) {
 
         int n1 = s1.length(), n2 = s2.length(), n3 = s3.length();
@@ -225,6 +229,10 @@ public class InterleavingString {
     // V1-1
     // https://neetcode.io/problems/interleaving-string
     // IDEA: RECURSION
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public boolean isInterleave_1_1(String s1, String s2, String s3) {
 
         return dfs(0, 0, 0, s1, s2, s3);
@@ -255,6 +263,10 @@ public class InterleavingString {
     // IDEA: Dynamic Programming (Top-Down)
     private Boolean[][] dp;
 
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public boolean isInterleave_1_2(String s1, String s2, String s3) {
         int m = s1.length(), n = s2.length();
         if (m + n != s3.length()) return false;
@@ -286,6 +298,10 @@ public class InterleavingString {
     // V1-3
     // https://neetcode.io/problems/interleaving-string
     // IDEA: Dynamic Programming (Bottom-Up)
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public boolean isInterleave_1_3(String s1, String s2, String s3) {
         int m = s1.length(), n = s2.length();
         if (m + n != s3.length()) {
@@ -313,6 +329,10 @@ public class InterleavingString {
     // V1-4
     // https://neetcode.io/problems/interleaving-string
     // IDEA: Dynamic Programming (Space Optimized)
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public boolean isInterleave_1_4(String s1, String s2, String s3) {
         int m = s1.length(), n = s2.length();
         if (m + n != s3.length()) return false;
@@ -347,6 +367,10 @@ public class InterleavingString {
     // V1-5
     // https://neetcode.io/problems/interleaving-string
     // IDEA:  Dynamic Programming (Optimal)
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public boolean isInterleave_1_5(String s1, String s2, String s3) {
         int m = s1.length(), n = s2.length();
         if (m + n != s3.length()) return false;

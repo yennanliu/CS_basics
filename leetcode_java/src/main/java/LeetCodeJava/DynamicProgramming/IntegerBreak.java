@@ -81,6 +81,10 @@ public class IntegerBreak {
     // V1
     // https://www.youtube.com/watch?v=in6QbUPMJ3I
     // https://github.com/neetcode-gh/leetcode/blob/main/java%2F0343-integer-break.java
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int integerBreak_1(int n) {
         if (n < 4) return n - 1;
 
@@ -98,6 +102,10 @@ public class IntegerBreak {
     // V2-1
     // https://leetcode.com/problems/integer-break/solutions/4135963/faster-lesser4-methodssimple-mathdynamic-lc7i/
     // IDEA: 1D DP (BOTTOM UP)
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int integerBreak_2_1(int n) {
         if (n <= 1) {
             return 0;
@@ -115,6 +123,10 @@ public class IntegerBreak {
     // V2-2
     // https://leetcode.com/problems/integer-break/solutions/4135963/faster-lesser4-methodssimple-mathdynamic-lc7i/
     // IDEA: Dynamic Programming (Top-Down with Memoization):
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int integerBreak_2_2(int n) {
         if (n <= 1) {
             return 0;
@@ -142,6 +154,10 @@ public class IntegerBreak {
     // V2-3
     // https://leetcode.com/problems/integer-break/solutions/4135963/faster-lesser4-methodssimple-mathdynamic-lc7i/
     // IDEA: GREEDY
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int integerBreak_2_3(int n) {
         if (n <= 1) {
             return 0;
@@ -164,6 +180,10 @@ public class IntegerBreak {
     // V2-4
     // https://leetcode.com/problems/integer-break/solutions/4135963/faster-lesser4-methodssimple-mathdynamic-lc7i/
     // IDEA: MATH
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int integerBreak_2_4(int n) {
         if (n <= 1) {
             return 0;
@@ -188,6 +208,10 @@ public class IntegerBreak {
 
     // V3
     // https://leetcode.com/problems/integer-break/solutions/80785/ologn-time-solution-with-explanation-by-6deq2/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int integerBreak_3(int n) {
         if (n == 2)
             return 1;
@@ -203,6 +227,10 @@ public class IntegerBreak {
 
     // V4
     // https://leetcode.com/problems/integer-break/solutions/6210269/video-give-me-10-minutes-how-we-think-ab-publ/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int integerBreak_4(int n) {
         if (n == 2) {
             return 1;

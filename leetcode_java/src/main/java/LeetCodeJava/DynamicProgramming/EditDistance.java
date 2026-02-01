@@ -264,6 +264,10 @@ public class EditDistance {
 
     // V0-2
     // IDEA: 2D DP + SPACE OPTIMIZED (gemini)
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public int minDistance_0_2(String word1, String word2) {
         int m = word1.length(), n = word2.length();
         int[] dp = new int[n + 1];
@@ -443,6 +447,10 @@ public class EditDistance {
     // V1-1
     // https://neetcode.io/problems/edit-distance
     // IDEA: RECURSION
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public int minDistance_1_1(String word1, String word2) {
         int m = word1.length(), n = word2.length();
 
@@ -467,6 +475,10 @@ public class EditDistance {
     // https://neetcode.io/problems/edit-distance
     // IDEA:  Dynamic Programming (Top-Down)
     private int[][] dp;
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public int minDistance_1_2(String word1, String word2) {
         int m = word1.length(), n = word2.length();
         dp = new int[m][n];
@@ -497,6 +509,10 @@ public class EditDistance {
     // V1-3
     // https://neetcode.io/problems/edit-distance
     // IDEA: Dynamic Programming (Bottom-Up)
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public int minDistance_1_3(String word1, String word2) {
         int[][] dp = new int[word1.length() + 1][word2.length() + 1];
 
@@ -523,6 +539,10 @@ public class EditDistance {
     // V1-4
     // https://neetcode.io/problems/edit-distance
     // IDEA: Dynamic Programming (Space Optimized)
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public int minDistance_1_4(String word1, String word2) {
         int m = word1.length(), n = word2.length();
         if (m < n) {
@@ -560,6 +580,10 @@ public class EditDistance {
     // V1-5
     // https://neetcode.io/problems/edit-distance
     // IDEA: Dynamic Programming (Optimal)
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public int minDistance_1_5(String word1, String word2) {
         int m = word1.length(), n = word2.length();
         if (m < n) {
@@ -591,6 +615,10 @@ public class EditDistance {
     // V2
     // https://leetcode.ca/2016-02-10-72-Edit-Distance/
     // IDEA: DP
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public int minDistance_2(String word1, String word2) {
         int m = word1.length(), n = word2.length();
         int[][] f = new int[m + 1][n + 1];

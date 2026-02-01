@@ -154,6 +154,10 @@ public class FrogJump {
 
     // V0-2
     // IDEA: DP (gpt)
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public boolean canCross_0_2(int[] stones) {
         int n = stones.length;
 
@@ -197,6 +201,10 @@ public class FrogJump {
     // V1
     // IDEA: DP
     // https://leetcode.com/problems/frog-jump/solutions/6280324/video-solution-by-niits-br29/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public boolean canCross_1(int[] stones) {
         Map<Integer, Set<Integer>> dp = new HashMap<>();
         for (int stone : stones) {
@@ -249,6 +257,10 @@ public class FrogJump {
         return dp[i][k] == 1;
     }
 
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public boolean canCross_2(int[] stones) {
         if (stones[1] - stones[0] != 1) {
             return false;
@@ -269,6 +281,10 @@ public class FrogJump {
     // V3
     // IDEA:DP
     // https://leetcode.com/problems/frog-jump/solutions/3964889/simple-java-solution-beginner-friendly-e-k03j/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public boolean canCross_3(int[] stones) {
         int n = stones.length;
         boolean[][] dp = new boolean[n][n + 1];
