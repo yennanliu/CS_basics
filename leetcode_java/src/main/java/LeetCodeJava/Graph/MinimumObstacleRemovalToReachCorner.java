@@ -64,6 +64,11 @@ public class MinimumObstacleRemovalToReachCorner {
      * 	•	No explicit visited needed → the dist[][] + early skip (if (cost > dist[y][x]) continue) handles that.
      *
      */
+    /**
+     * time = O((V + E) log V)
+     * space = O(V)
+     */
+
     public int minimumObstacles(int[][] grid) {
         // edge
         if (grid == null || grid.length == 0 || grid[0].length == 0) {
@@ -100,6 +105,11 @@ public class MinimumObstacleRemovalToReachCorner {
         // V2: formal Comparator syntax
         PriorityQueue<List<Integer>> pq = new PriorityQueue<>(new Comparator<List<Integer>>() {
             @Override
+            /**
+             * time = O(V + E)
+             * space = O(V)
+             */
+
             public int compare(List<Integer> o1, List<Integer> o2) {
                 int diff = o1.get(0) - o2.get(0);
                 return diff;
@@ -187,6 +197,11 @@ public class MinimumObstacleRemovalToReachCorner {
      * 	•	No explicit visited needed → the dist[][] + early skip (if (cost > dist[y][x]) continue) handles that.
      *
      */
+    /**
+     * time = O((V + E) log V)
+     * space = O(V)
+     */
+
     public int minimumObstacles_0_1(int[][] grid) {
         if (grid == null || grid.length == 0 || grid[0].length == 0) {
             return 0;
@@ -300,6 +315,16 @@ public class MinimumObstacleRemovalToReachCorner {
             { -1, 0 },
     };
 
+    /**
+     * time = O((V + E) log V)
+
+
+     * space = O(V)
+
+
+     */
+
+
     public int minimumObstacles_1_1(int[][] grid) {
         int m = grid.length, n = grid[0].length;
 
@@ -366,6 +391,16 @@ public class MinimumObstacleRemovalToReachCorner {
             { -1, 0 },
     };
 
+    /**
+     * time = O(V + E)
+
+
+     * space = O(V)
+
+
+     */
+
+
     public int minimumObstacles_1_2(int[][] grid) {
         int m = grid.length, n = grid[0].length;
 
@@ -419,6 +454,11 @@ public class MinimumObstacleRemovalToReachCorner {
     // V2
     // IDEA: BFS
     // https://leetcode.com/problems/minimum-obstacle-removal-to-reach-corner/solutions/6090483/minimum-obstacle-removal-bfs-approach-be-906q/
+    /**
+     * time = O(V + E)
+     * space = O(V)
+     */
+
     public int minimumObstacles_2(int[][] grid) {
         int m = grid.length, n = grid[0].length;
         int[][] distance = new int[m][n];
