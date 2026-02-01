@@ -106,6 +106,21 @@ python3 script/categorize_lc_by_type.py 2024 2025
 
 ## Adding Time/Space Complexity Javadoc Comments
 
+### Quick Start (Using Skill)
+
+The easiest way to add complexity comments is using the `/add-time-space` skill:
+
+```bash
+/add-time-space BinarySearch
+/add-time-space DynamicProgramming
+```
+
+The skill is located at `.claude/skills/add-time-space.yaml` and automates the entire process including:
+- Running the Python script
+- Manual processing if needed
+- Verification
+- Git commit
+
 ### Overview
 
 A standardized process for adding time and space complexity documentation to Java LeetCode solutions. This transforms inline complexity comments into proper Javadoc format for better documentation and IDE integration.
@@ -201,18 +216,24 @@ if __name__ == "__main__":
 
 ### Usage Instructions
 
-#### 1. Process a Single Directory
+#### 1. Using the Skill (Recommended)
 
 ```bash
-# Save script to /tmp/add_javadoc_complexity.py
-chmod +x /tmp/add_javadoc_complexity.py
+/add-time-space BinarySearch
+/add-time-space DynamicProgramming
+```
+
+#### 2. Process a Single Directory (Manual)
+
+```bash
+# The script is located at script/add_javadoc_complexity.py
 
 # Process all Java files in a directory
-python3 /tmp/add_javadoc_complexity.py \
+python3 script/add_javadoc_complexity.py \
   leetcode_java/src/main/java/LeetCodeJava/Array/*.java
 
 # Or specific files
-python3 /tmp/add_javadoc_complexity.py \
+python3 script/add_javadoc_complexity.py \
   leetcode_java/src/main/java/LeetCodeJava/Array/TwoSum.java \
   leetcode_java/src/main/java/LeetCodeJava/Array/ThreeSum.java
 ```
