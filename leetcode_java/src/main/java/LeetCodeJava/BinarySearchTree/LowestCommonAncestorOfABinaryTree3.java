@@ -73,6 +73,11 @@ public class LowestCommonAncestorOfABinaryTree3 {
     // e.g.
     //      setup a pointer traverse and collect all p's parent
     //      the other pointer traverse and collect all q's parent
+    /**
+     * time = O(H)
+     * space = O(1)
+     */
+
     public Node lowestCommonAncestor(Node p, Node q) {
         // Step 1: Traverse both paths
         Set<Node> ancestors = new HashSet<>();
@@ -96,6 +101,11 @@ public class LowestCommonAncestorOfABinaryTree3 {
 
     // V0-1
     // IDEA: 2 POINTERS (gpt)
+    /**
+     * time = O(H)
+     * space = O(1)
+     */
+
     public Node lowestCommonAncestor_0_1(Node p, Node q) {
         Node a = p;
         Node b = q;
@@ -115,6 +125,11 @@ public class LowestCommonAncestorOfABinaryTree3 {
 
     // V0-2
     // IDEA: SET + 2 POINTERS (gpt)
+    /**
+     * time = O(H)
+     * space = O(1)
+     */
+
     public Node lowestCommonAncestor_0_2(Node p, Node q) {
         // Step 1: Traverse both paths
         Set<Node> ancestors = new HashSet<>();
@@ -140,8 +155,9 @@ public class LowestCommonAncestorOfABinaryTree3 {
     // https://leetcode.ca/2020-06-06-1650-Lowest-Common-Ancestor-of-a-Binary-Tree-III/
     // IDEA: SET
     /** NOTE !!
-     *
      *   -> NO recursive call in below approach
+     * time = O(H)
+     * space = O(H)
      */
     public Node lowestCommonAncestor_1_1(Node p, Node q) {
 
@@ -185,6 +201,11 @@ public class LowestCommonAncestorOfABinaryTree3 {
     // V1-2
     // https://leetcode.ca/2020-06-06-1650-Lowest-Common-Ancestor-of-a-Binary-Tree-III/
     // IDEA: 2 POINTERS
+    /**
+     * time = O(H)
+     * space = O(1)
+     */
+
     public Node lowestCommonAncestor_1_2(Node p, Node q) {
         Node a = p, b = q;
         while (a != b) {

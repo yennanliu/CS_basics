@@ -75,11 +75,19 @@ public class SplitBST {
     // https://leetcode.ca/2018-01-14-776-Split-BST/
     private int t;
 
+    /**
+     * time = O(H)
+     * space = O(H)
+     */
     public TreeNode[] splitBST_1(TreeNode root, int target) {
         t = target;
         return dfs(root);
     }
 
+    /**
+     * time = O(H)
+     * space = O(H)
+     */
     private TreeNode[] dfs(TreeNode root) {
         if (root == null) {
             return new TreeNode[] {null, null};
@@ -102,16 +110,13 @@ public class SplitBST {
     // TODO : validate
     /**
      * Explanation
-     *
      * 	1.	Base Case:
-     * 	    •	If the root is null, return two null subtrees because there’s nothing to split.
-     *
+     * 	    •	If the root is null, return two null subtrees because there's nothing to split.
      * 	2.	Recursive Case:
-     * 	    •	If the root’s value is  <= V :
+     * 	    •	If the root's value is  <= V :
      * 	            •	Keep the root as part of the left subtree.
      * 	            •	Recursively split the right child since nodes greater than  V  might be in the right subtree.
-     *
-     * 	    •	If the root’s value is  > V :
+     * 	    •	If the root's value is  > V :
      * 	            •	Keep the root as part of the right subtree.
      * 	            •	Recursively split the left child since nodes  <= V  might be in the left subtree.
      * 	3.	Reassign Children:
@@ -119,16 +124,12 @@ public class SplitBST {
      * 	4.	Result:
      * 	    •	The first element in the result array is the root of the subtree  <= V .
      * 	    •	The second element is the root of the subtree  > V .
-     *
-     *
      *      Time Complexity
-     *
      * 	        •	Each node is visited exactly once, so the time complexity is  O(n) , where  n  is the number of nodes in the BST.
-     *
      *      Space Complexity
-     *
      * 	        •	The space complexity is  O(h) , where  h  is the height of the tree, due to the recursive stack.
-     *
+     * time = O(H)
+     * space = O(H)
      */
     public TreeNode[] splitBST_2(TreeNode root, int V) {
         // Base case: If the root is null, both subtrees are null

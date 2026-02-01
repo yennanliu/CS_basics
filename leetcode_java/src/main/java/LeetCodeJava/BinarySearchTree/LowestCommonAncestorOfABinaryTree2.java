@@ -66,6 +66,7 @@ public class LowestCommonAncestorOfABinaryTree2 {
      */
 
     // V0
+    // Commented out - no implementation
 //    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
 //    }
 
@@ -80,6 +81,14 @@ public class LowestCommonAncestorOfABinaryTree2 {
      *  2. LC 236 : find LCA on binary tree
      */
     Set<Integer> nodeSet = new HashSet<>();
+
+    /**
+
+     * time = O(N)
+
+     * space = O(N)
+     */
+
 
     public TreeNode lowestCommonAncestor_0_0_1(TreeNode root, TreeNode p, TreeNode q) {
         // Collect all node values
@@ -133,6 +142,14 @@ public class LowestCommonAncestorOfABinaryTree2 {
     private boolean foundP = false;
     private boolean foundQ = false;
 
+    /**
+
+     * time = O(N)
+
+     * space = O(H)
+     */
+
+
     public TreeNode lowestCommonAncestor_0_1(TreeNode root, TreeNode p, TreeNode q) {
         TreeNode lca = findLCA(root, p, q);
         return (foundP && foundQ) ? lca : null;
@@ -163,6 +180,11 @@ public class LowestCommonAncestorOfABinaryTree2 {
 
     // V0-2
     // IDEA: DFS (gpt)
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+
     public TreeNode lowestCommonAncestor_0_2(TreeNode root, TreeNode p, TreeNode q) {
         // Start the DFS recursion to find the LCA
         TreeNode[] result = new TreeNode[1];  // We use an array to return the result by reference
@@ -204,6 +226,14 @@ public class LowestCommonAncestorOfABinaryTree2 {
     public TreeNode ancestor = null;
     public TreeNode p = null, q = null;
 
+    /**
+
+     * time = O(N)
+
+     * space = O(H)
+     */
+
+
     public TreeNode lowestCommonAncestor_1(TreeNode root, TreeNode p, TreeNode q) {
         findNodes(root, p, q);
         if (p == null || q == null)
@@ -211,6 +241,14 @@ public class LowestCommonAncestorOfABinaryTree2 {
         depthFirstSearch(root, p, q);
         return ancestor;
     }
+
+    /**
+
+     * time = O(N)
+
+     * space = O(H)
+     */
+
 
     public void findNodes(TreeNode root, TreeNode p, TreeNode q) {
         if (root == null)
@@ -222,6 +260,14 @@ public class LowestCommonAncestorOfABinaryTree2 {
         findNodes(root.left, p, q);
         findNodes(root.right, p, q);
     }
+
+    /**
+
+     * time = O(N)
+
+     * space = O(H)
+     */
+
 
     public boolean depthFirstSearch(TreeNode root, TreeNode p, TreeNode q) {
         if (root == null)

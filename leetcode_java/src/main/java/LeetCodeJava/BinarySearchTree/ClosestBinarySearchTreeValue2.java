@@ -42,12 +42,17 @@ import java.util.List;
 public class ClosestBinarySearchTreeValue2 {
 
     // V0
+    // Commented out - no implementation
 //    public List<Integer> closestKValues(TreeNode root, double target, int k) {
 //    }
 
     // V0-1
     // IDEA: INORDER TRAVERSE + 2 POINTERS (fixed by gpt)
     // TODO: validate
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public List<Integer> closestKValues_0_1(TreeNode root, double target, int k) {
         List<Integer> res = new ArrayList<>();
         if (root == null || k == 0) return res;
@@ -121,6 +126,8 @@ public class ClosestBinarySearchTreeValue2 {
     // TODO: validate
     /**
      * Main function to find k closest values.
+     * time = O(N)
+     * space = O(N)
      */
     public List<Integer> closestKValues_0_2(TreeNode root, double target, int k) {
         List<Integer> res = new ArrayList<>();
@@ -233,6 +240,10 @@ public class ClosestBinarySearchTreeValue2 {
     private double target;
     private int k;
 
+    /**
+     * time = O(N)
+     * space = O(K)
+     */
     public List<Integer> closestKValues_1(TreeNode root, double target, int k) {
         ans = new LinkedList<>();
         this.target = target;
