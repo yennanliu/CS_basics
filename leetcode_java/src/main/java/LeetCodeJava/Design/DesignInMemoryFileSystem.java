@@ -94,6 +94,10 @@ public class DesignInMemoryFileSystem {
             // Stores the content if this node is a file.
             String content;
 
+            /**
+             * time = O(1)
+             * space = O(1)
+             */
             TrieNode() {
                 this.children = new HashMap<>();
                 this.isFile = false;
@@ -131,6 +135,10 @@ public class DesignInMemoryFileSystem {
 
         // --- Public Methods ---
 
+        /**
+         * time = O(K)
+         * space = O(1)
+         */
         public List<String> ls(String path) {
             TrieNode current = this.root;
             List<String> result = new ArrayList<>();
@@ -172,6 +180,10 @@ public class DesignInMemoryFileSystem {
             return result;
         }
 
+        /**
+         * time = O(K)
+         * space = O(K)
+         */
         public void mkdir(String path) {
             // Use traverse helper to create all nodes along the path.
             // The traverse helper handles the creation of directories implicitly.
@@ -179,6 +191,10 @@ public class DesignInMemoryFileSystem {
             // No further action is needed since directories are just TrieNodes.
         }
 
+        /**
+         * time = O(K)
+         * space = O(1)
+         */
         public void addContentToFile(String filePath, String content) {
             TrieNode fileNode = traverse(filePath);
 
@@ -192,6 +208,10 @@ public class DesignInMemoryFileSystem {
             // correctly by the traverse helper, which sees the file name as the final component.
         }
 
+        /**
+         * time = O(K)
+         * space = O(1)
+         */
         public String readContentFromFile(String filePath) {
             TrieNode fileNode = traverse(filePath);
 
@@ -219,6 +239,10 @@ public class DesignInMemoryFileSystem {
             root = new Node();
         }
 
+        /**
+         * time = O(K)
+         * space = O(1)
+         */
         public List<String> ls(String path) {
             Node node = traverse(path, false);
             // if it's a file
@@ -233,16 +257,28 @@ public class DesignInMemoryFileSystem {
             return res;
         }
 
+        /**
+         * time = O(K)
+         * space = O(K)
+         */
         public void mkdir(String path) {
             traverse(path, true);
         }
 
+        /**
+         * time = O(K)
+         * space = O(1)
+         */
         public void addContentToFile(String filePath, String content) {
             Node node = traverse(filePath, true);
             if (node.content == null) node.content = new StringBuilder();
             node.content.append(content);
         }
 
+        /**
+         * time = O(K)
+         * space = O(1)
+         */
         public String readContentFromFile(String filePath) {
             Node node = traverse(filePath, false);
             if (node == null || node.content == null) return "";
@@ -316,6 +352,10 @@ public class DesignInMemoryFileSystem {
         public FileSystem() {
         }
 
+        /**
+         * time = O(K)
+         * space = O(1)
+         */
         public List<String> ls(String path) {
             List<String> ans = new ArrayList<>();
             Trie node = root.search(path);
@@ -333,15 +373,27 @@ public class DesignInMemoryFileSystem {
             return ans;
         }
 
+        /**
+         * time = O(K)
+         * space = O(K)
+         */
         public void mkdir(String path) {
             root.insert(path, false);
         }
 
+        /**
+         * time = O(K)
+         * space = O(1)
+         */
         public void addContentToFile(String filePath, String content) {
             Trie node = root.insert(filePath, true);
             node.content.append(content);
         }
 
+        /**
+         * time = O(K)
+         * space = O(1)
+         */
         public String readContentFromFile(String filePath) {
             Trie node = root.search(filePath);
             return node.content.toString();

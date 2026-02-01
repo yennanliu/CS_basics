@@ -103,6 +103,10 @@ public class LFUCache_ {
             this.minFreq = 0;
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public int get(int key) {
             if (!kvMap.containsKey(key)) {
                 return -1;
@@ -143,6 +147,10 @@ public class LFUCache_ {
             return val;
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public void put(int key, int value) {
             if (capacity <= 0)
                 return;
@@ -252,6 +260,10 @@ public class LFUCache_ {
             this.capacity = capacity;
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public int get(int key) {
             if (!keyToVal.containsKey(key))
                 return -1;
@@ -269,6 +281,10 @@ public class LFUCache_ {
             return keyToVal.get(key);
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public void put(int key, int value) {
             if (capacity == 0)
                 return;
@@ -313,6 +329,10 @@ public class LFUCache_ {
         Node prev;
         int freq = 1;
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         Node(int k, int v) {
             key = k;
             val = v;
@@ -323,6 +343,10 @@ public class LFUCache_ {
         Node head;
         Node tail;
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         DoublyLinkedList() {
             head = new Node(-1, -1);
             tail = new Node(-1, -1);
@@ -372,6 +396,10 @@ public class LFUCache_ {
             minFreq = 1;
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public int get(int key) {
             if (lfuCache.get(key) == null)
                 return -1;
@@ -393,6 +421,10 @@ public class LFUCache_ {
             return v.val;
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public void put(int key, int value) {
             if (capacity == 0)
                 return;

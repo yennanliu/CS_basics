@@ -95,12 +95,20 @@ public class DesignAStackWithIncrementOperation {
             this.st = new Stack<>();
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public void push(int x) {
             if (this.st.size() < this.maxSize) {
                 this.st.push(x); // ???
             }
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public int pop() {
             if (this.st.isEmpty()) {
                 return -1;
@@ -109,6 +117,10 @@ public class DesignAStackWithIncrementOperation {
             return this.st.pop();
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public void increment(int k, int val) {
             boolean isMoreThanK = this.st.size() > k;
             /** NOTE !!!
@@ -184,6 +196,10 @@ public class DesignAStackWithIncrementOperation {
             top = 0;
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public void push(int x) {
             // Only push if there is space; otherwise, do nothing
             if (top < stack.length) {
@@ -192,6 +208,10 @@ public class DesignAStackWithIncrementOperation {
             }
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public int pop() {
             // If empty, return -1
             if (top == 0) {
@@ -202,6 +222,10 @@ public class DesignAStackWithIncrementOperation {
             return stack[top];
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public void increment(int k, int val) {
             // Increment the bottom k elements (index 0 up to k-1)
             // If the stack has fewer than k elements, increment all of them
@@ -238,6 +262,10 @@ public class DesignAStackWithIncrementOperation {
             top = -1; // Using index for top
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public void push(int x) {
             if (top < stack.length - 1) {
                 top++;
@@ -246,6 +274,10 @@ public class DesignAStackWithIncrementOperation {
             }
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public int pop() {
             if (top == -1)
                 return -1;
@@ -262,6 +294,10 @@ public class DesignAStackWithIncrementOperation {
             return res;
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public void increment(int k, int val) {
             // We only mark the (k-1)-th element.
             // Any pop above this index won't see this 'val' until it reaches this index.
@@ -285,6 +321,10 @@ public class DesignAStackWithIncrementOperation {
             this.deque = new ArrayDeque<>();
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public void push(int x) {
             // Only push if stack hasn't reached maxSize
             if (deque.size() < maxSize) {
@@ -292,6 +332,10 @@ public class DesignAStackWithIncrementOperation {
             }
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public int pop() {
             if (deque.isEmpty()) {
                 return -1;
@@ -299,6 +343,10 @@ public class DesignAStackWithIncrementOperation {
             return deque.pop(); // Removes from the FRONT (Top)
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public void increment(int k, int val) {
             // ArrayDeque doesn't allow indexed access, so we have to use an Iterator.
             // We use descendingIterator() because it starts from the BACK (Bottom).
@@ -338,12 +386,20 @@ public class DesignAStackWithIncrementOperation {
             stk = new ArrayList<>();
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public void push(int x) {
             if (stk.size() != size) {
                 stk.add(new int[] { x, 0 });
             }
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public int pop() {
             if (stk.isEmpty()) {
                 return -1;
@@ -357,6 +413,10 @@ public class DesignAStackWithIncrementOperation {
 
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public void increment(int k, int val) {
             if (!stk.isEmpty()) {
                 int idx = Math.min(k, stk.size()) - 1;
@@ -381,12 +441,20 @@ public class DesignAStackWithIncrementOperation {
             topIndex = -1;
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public void push(int x) {
             if (topIndex < stackArray.length - 1) {
                 stackArray[++topIndex] = x;
             }
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public int pop() {
             if (topIndex >= 0) {
                 return stackArray[topIndex--];
@@ -394,6 +462,10 @@ public class DesignAStackWithIncrementOperation {
             return -1; // Return -1 if the stack is empty
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public void increment(int k, int val) {
             int limit = Math.min(k, topIndex + 1);
             for (int i = 0; i < limit; i++) {
@@ -464,12 +536,20 @@ public class DesignAStackWithIncrementOperation {
             topIndex = -1;
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public void push(int x) {
             if (topIndex < stackArray.length - 1) {
                 stackArray[++topIndex] = x;
             }
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public int pop() {
             if (topIndex < 0) {
                 return -1;
@@ -490,6 +570,10 @@ public class DesignAStackWithIncrementOperation {
             return result;
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public void increment(int k, int val) {
             if (topIndex >= 0) {
                 // Apply increment to the topmost element of the range
@@ -510,6 +594,10 @@ public class DesignAStackWithIncrementOperation {
             this.stack = new int[maxSize];
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public void push(int x) {
             if (top < this.stack.length - 1) {
                 top++;
@@ -517,6 +605,10 @@ public class DesignAStackWithIncrementOperation {
             }
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public int pop() {
             if (top != -1) {
                 return this.stack[top--];
@@ -524,6 +616,10 @@ public class DesignAStackWithIncrementOperation {
             return -1;
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public void increment(int k, int val) {
             for (int i = 0; i < Math.min(k, top + 1); i++) {
                 this.stack[i] += val;
@@ -545,6 +641,10 @@ public class DesignAStackWithIncrementOperation {
             this.inc = new ArrayList<>();
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public void push(int x) {
             if (stack.size() < n) {
                 stack.push(x);
@@ -552,6 +652,10 @@ public class DesignAStackWithIncrementOperation {
             }
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public int pop() {
             if (stack.isEmpty())
                 return -1;
@@ -560,6 +664,10 @@ public class DesignAStackWithIncrementOperation {
             return stack.pop() + inc.remove(inc.size() - 1);
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public void increment(int k, int val) {
             if (!stack.isEmpty()) {
                 int index = Math.min(k, inc.size()) - 1;

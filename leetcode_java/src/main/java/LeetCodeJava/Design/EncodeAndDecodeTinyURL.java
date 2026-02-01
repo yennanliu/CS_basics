@@ -82,6 +82,10 @@ public class EncodeAndDecodeTinyURL {
         private int counter = 1;
 
         // Encodes a URL to a shortened URL.
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public String encode(String longUrl) {
             if (longUrl == null)
                 return baseShort;
@@ -97,6 +101,10 @@ public class EncodeAndDecodeTinyURL {
         }
 
         // Decodes a shortened URL to its original URL.
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public String decode(String shortUrl) {
             return shortToLong.getOrDefault(shortUrl, null);
         }
@@ -109,6 +117,10 @@ public class EncodeAndDecodeTinyURL {
         private static final String BASE_SHORT = "http://tinyurl.com";
 
         // Encodes a URL to a shortened URL using ASCII diff style
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public String encode(String longUrl) {
             if (longUrl == null || longUrl.isEmpty())
                 return BASE_SHORT;
@@ -130,6 +142,10 @@ public class EncodeAndDecodeTinyURL {
         }
 
         // Decodes a shortened URL back to the original URL
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public String decode(String shortUrl) {
             if (shortUrl == null || shortUrl.equals(BASE_SHORT))
                 return null;
@@ -167,6 +183,10 @@ public class EncodeAndDecodeTinyURL {
         private Map<String, String> urlToKey = new HashMap<>();
 
         // Encodes a URL to a shortened URL.
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public String encode(String longUrl) {
             if (urlToKey.containsKey(longUrl)) { // could also be collision and hash to different tinyUrl
                 return BASE_HOST + urlToKey.get(longUrl);
@@ -188,6 +208,10 @@ public class EncodeAndDecodeTinyURL {
         }
 
         // Decodes a shortened URL to its original URL.
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public String decode(String shortUrl) {
             return keyToUrl.get(shortUrl.replace(BASE_HOST, ""));
         }
@@ -202,6 +226,10 @@ public class EncodeAndDecodeTinyURL {
         private String domain = "https://tinyurl.com/";
 
         // Encodes a URL to a shortened URL.
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public String encode(String longUrl) {
             String v = String.valueOf(++idx);
             m.put(v, longUrl);
@@ -209,6 +237,10 @@ public class EncodeAndDecodeTinyURL {
         }
 
         // Decodes a shortened URL to its original URL.
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public String decode(String shortUrl) {
             int i = shortUrl.lastIndexOf('/') + 1;
             return m.get(shortUrl.substring(i));
@@ -228,6 +260,10 @@ public class EncodeAndDecodeTinyURL {
             return "http://tinyurl.com/" + String.valueOf(code);
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public String encode(String longUrl) {
             if (urlDB.containsKey(longUrl))
                 return urlDB.get(longUrl);
@@ -239,6 +275,10 @@ public class EncodeAndDecodeTinyURL {
             return code;
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public String decode(String shortUrl) {
             return codeDB.get(shortUrl);
         }
@@ -259,6 +299,10 @@ public class EncodeAndDecodeTinyURL {
         }
 
         // Encodes a URL to a shortened URL.
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public String encode(String longUrl) {
             for (Map.Entry<String, String> map : Db.entrySet()) {
                 if (map.getValue().equals(longUrl))
@@ -272,6 +316,10 @@ public class EncodeAndDecodeTinyURL {
         }
 
         // Decodes a shortened URL to its original URL.
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public String decode(String shortUrl) {
             return Db.get(shortUrl);
         }

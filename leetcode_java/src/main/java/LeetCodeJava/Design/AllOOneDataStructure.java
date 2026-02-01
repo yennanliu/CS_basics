@@ -108,6 +108,10 @@ public class AllOOneDataStructure {
         Node tail;
         Map<String, Node> map = new HashMap<>();
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         AllOne_1_1() {
             head = new Node(0);
             tail = new Node(0);
@@ -115,6 +119,10 @@ public class AllOOneDataStructure {
             tail.prev = head;
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public void inc(String key) {
             if (map.containsKey(key)) {
                 Node node = map.get(key);
@@ -155,6 +163,10 @@ public class AllOOneDataStructure {
             }
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public void dec(String key) {
             if (!map.containsKey(key)) {
                 return;
@@ -187,6 +199,10 @@ public class AllOOneDataStructure {
             }
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public String getMaxKey() {
             if (tail.prev == head) {
                 return "";
@@ -194,6 +210,10 @@ public class AllOOneDataStructure {
             return tail.prev.keys.iterator().next();
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public String getMinKey() {
             if (head.next == tail) {
                 return "";

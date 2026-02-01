@@ -85,6 +85,10 @@ public class InsertDeleteGetRandom0_1 {
             rand = new Random();
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public boolean insert(int val) {
             if (map.containsKey(val)) return false;
 
@@ -119,6 +123,10 @@ public class InsertDeleteGetRandom0_1 {
             return true;
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public int getRandom() {
             int idx = rand.nextInt(list.size());
             return list.get(idx);
@@ -231,6 +239,10 @@ public class InsertDeleteGetRandom0_1 {
             this.random = new Random();
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public boolean insert(int val) {
             if (!this.map.containsKey(val)){
                 this.map.put(val, 1);
@@ -240,6 +252,10 @@ public class InsertDeleteGetRandom0_1 {
             return false;
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public boolean remove(int val) {
             if (this.map.containsKey(val)){
                 this.map.remove(val);
@@ -249,6 +265,10 @@ public class InsertDeleteGetRandom0_1 {
             return false;
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public int getRandom() {
             int randomIdx = random.nextInt(this.count);
             // java get hashMap key as array
@@ -273,6 +293,10 @@ public class InsertDeleteGetRandom0_1 {
             this.random = new Random();
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public boolean insert(int val) {
             if (!this.map.containsKey(val)) {
                 this.list.add(val); // Add value to the list
@@ -282,6 +306,10 @@ public class InsertDeleteGetRandom0_1 {
             return false; // Value already exists
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public boolean remove(int val) {
             if (this.map.containsKey(val)) {
                 int idx = this.map.get(val); // Index of the value to remove
@@ -300,6 +328,10 @@ public class InsertDeleteGetRandom0_1 {
             return false; // Value does not exist
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public int getRandom() {
             int randomIdx = this.random.nextInt(this.list.size());
             return this.list.get(randomIdx); // Return a random element from the list

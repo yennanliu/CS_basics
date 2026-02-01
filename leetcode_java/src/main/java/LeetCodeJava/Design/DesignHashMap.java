@@ -55,15 +55,27 @@ public class DesignHashMap {
 
         int[] arr;
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public MyHashMap() {
             this.arr = new int[1000000 + 1]; // ???
             Arrays.fill(this.arr, -1);
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public void put(int key, int value) {
             this.arr[key] = value;
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public int get(int key) {
             if (this.arr[key] == -1) {
                 return -1;
@@ -72,6 +84,10 @@ public class DesignHashMap {
             return this.arr[key];
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public void remove(int key) {
             this.arr[key] = -1;
         }
