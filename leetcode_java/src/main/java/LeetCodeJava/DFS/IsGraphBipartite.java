@@ -79,6 +79,10 @@ public class IsGraphBipartite {
      *    -> node 2, has neighbor: [0,1,3]
      *    ...
      */
+    /**
+     * time = O(V + E)
+     * space = O(V)
+     */
     public boolean isBipartite(int[][] graph) {
         // edge
         if (graph == null || graph.length == 0) {
@@ -142,6 +146,10 @@ public class IsGraphBipartite {
 
     // V0-0-1
     // IDEA: DFS
+    /**
+     * time = O(V + E)
+     * space = O(V)
+     */
     public boolean isBipartite_0_0_1(int[][] graph) {
         int n = graph.length;
         // 0 = uncolored
@@ -208,6 +216,10 @@ public class IsGraphBipartite {
 
     // V0-0-2
     // IDEA: DFS (fixed by gpt)
+    /**
+     * time = O(V + E)
+     * space = O(V)
+     */
     public boolean isBipartite_0_0_2(int[][] graph) {
         int n = graph.length;
         // 0 = uncolored, 1 = color A, -1 = color B
@@ -264,6 +276,10 @@ public class IsGraphBipartite {
      * Determines if the graph is bipartite using DFS 2-coloring.
      * Time Complexity: O(V + E) - we visit every node and edge once.
      * Space Complexity: O(V) for the color array and recursion stack.
+     */
+    /**
+     * time = O(V + E)
+     * space = O(V)
      */
     public boolean isBipartite_0_0_3(int[][] graph) {
         int n = graph.length;
@@ -340,6 +356,10 @@ public class IsGraphBipartite {
      *           node such that no two adjacent nodes have the same color.
      *
      */
+    /**
+     * time = O(V + E)
+     * space = O(V)
+     */
     public boolean isBipartite_0_1(int[][] graph) {
         // edge
         if (graph == null || graph.length == 0) {
@@ -412,6 +432,10 @@ public class IsGraphBipartite {
     // IDEA: DFS (fixed by gemini)
     /**
      * Checks if the graph is bipartite using graph coloring (DFS).
+     */
+    /**
+     * time = O(V + E)
+     * space = O(V)
      */
     public boolean isBipartite_0_2(int[][] graph) {
         if (graph == null || graph.length == 0) {
@@ -486,6 +510,10 @@ public class IsGraphBipartite {
 
     // V0-3
     // IDEA: BFS (gpt)
+    /**
+     * time = O(V + E)
+     * space = O(V)
+     */
     public boolean isBipartite_0_3(int[][] graph) {
         int n = graph.length;
         int[] color = new int[n]; // 0 = uncolored, 1 = red, -1 = blue
@@ -532,6 +560,10 @@ public class IsGraphBipartite {
      * * @param graph The input graph represented as an adjacency list, where graph[i]
      * is an array of neighbors of node i.
      * @return true if the graph is bipartite, false otherwise.
+     */
+    /**
+     * time = O(V + E)
+     * space = O(V)
      */
     public boolean isBipartite_0_4(int[][] graph) {
         if (graph == null || graph.length == 0) {
@@ -601,6 +633,10 @@ public class IsGraphBipartite {
 
     // V0-5
     // IDEA: DFS (fixed by gpt)
+    /**
+     * time = O(V + E)
+     * space = O(V)
+     */
     public boolean isBipartite_0_5(int[][] graph) {
         int n = graph.length;
 
@@ -645,6 +681,10 @@ public class IsGraphBipartite {
      * Checks if the given graph is bipartite using Breadth-First Search (BFS) coloring.
      * @param graph The input graph represented as an adjacency list.
      * @return true if the graph is bipartite, false otherwise.
+     */
+    /**
+     * time = O(V + E)
+     * space = O(V)
      */
     public boolean isBipartite_0_6(int[][] graph) {
         if (graph == null || graph.length == 0) {
@@ -704,6 +744,10 @@ public class IsGraphBipartite {
     private int[] color;
     private int[][] g;
 
+    /**
+     * time = O(V + E)
+     * space = O(V)
+     */
     public boolean isBipartite_1(int[][] graph) {
         int n = graph.length;
         color = new int[n];
@@ -732,6 +776,10 @@ public class IsGraphBipartite {
 
     // V2
     // https://leetcode.com/problems/is-graph-bipartite/solutions/6906965/beat-100simplestcolor-the-graph-like-a-p-sdjb/
+    /**
+     * time = O(V + E)
+     * space = O(V)
+     */
     public boolean isBipartite_2(int[][] graph) {
         int n = graph.length;
         int[] color = new int[n];
@@ -762,6 +810,10 @@ public class IsGraphBipartite {
     // V3
     // IDEA: DFS
     // https://leetcode.com/problems/is-graph-bipartite/solutions/7284419/100-beat-depth-first-search-by-balrampat-54zv/
+    /**
+     * time = O(V + E)
+     * space = O(V)
+     */
     public boolean isBipartite_3(int[][] graph) {
         int n = graph.length;
         int[] color = new int[n];
