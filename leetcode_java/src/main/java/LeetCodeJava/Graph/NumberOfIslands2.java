@@ -87,6 +87,11 @@ public class NumberOfIslands2 {
         // --- Core Operations ---
 
         // Find the representative (root) of the set containing element i, with Path Compression.
+        /**
+         * time = O(E * α(V))
+         * space = O(V)
+         */
+
         public int find(int i) {
             // Find only works if the cell is land (parent[i] != -1)
             if (parent[i] != i) {
@@ -97,6 +102,11 @@ public class NumberOfIslands2 {
 
         // Unite the sets containing elements i and j, using Union by Rank.
         // Returns true if a merge occurred.
+        /**
+         * time = O(E * α(V))
+         * space = O(V)
+         */
+
         public boolean union(int i, int j) {
             /** NOTE !!!
              *
@@ -137,6 +147,11 @@ public class NumberOfIslands2 {
          *  specifically for this LC 305 problem.
          */
         // Initializes a new cell as a distinct island.
+        /**
+         * time = O(E * α(V))
+         * space = O(V)
+         */
+
         public boolean initializeLand(int i) {
             // Only initialize if it was previously water (parent[i] == -1).
             if (parent[i] == -1) {
@@ -153,6 +168,16 @@ public class NumberOfIslands2 {
             return false;
         }
 
+        /**
+         * time = O(V + E)
+
+
+         * space = O(V)
+
+
+         */
+
+
         public int getCount() {
             return count;
         }
@@ -160,6 +185,16 @@ public class NumberOfIslands2 {
 
     // Directions for neighbors: Right, Left, Down, Up
     private final int[][] directions = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+
+    /**
+     * time = O(V + E)
+
+
+     * space = O(V)
+
+
+     */
+
 
     public List<Integer> numIslands2_0_0_1(int m, int n, int[][] positions) {
         List<Integer> res = new ArrayList<>();
@@ -243,6 +278,16 @@ public class NumberOfIslands2 {
         // Current total number of connected components (islands).
         private int count;
 
+        /**
+         * time = O(E * α(V))
+
+
+         * space = O(V)
+
+
+         */
+
+
         public UnionFind_0_1(int size) {
             // Size is M * N, representing all cells.
             parent = new int[size];
@@ -253,6 +298,11 @@ public class NumberOfIslands2 {
         }
 
         // Find the representative (root) of the set containing element i, with path compression.
+        /**
+         * time = O(E * α(V))
+         * space = O(V)
+         */
+
         public int find(int i) {
             if (parent[i] != i) {
                 parent[i] = find(parent[i]);
@@ -262,6 +312,11 @@ public class NumberOfIslands2 {
 
         // Unite the sets containing elements i and j, using union by rank/size.
         // Returns true if a union occurred (i.e., i and j were in different sets).
+        /**
+         * time = O(E * α(V))
+         * space = O(V)
+         */
+
         public boolean union(int i, int j) {
             int rootI = find(i);
             int rootJ = find(j);
@@ -284,6 +339,11 @@ public class NumberOfIslands2 {
         }
 
         // Initialize a new cell as a distinct island.
+        /**
+         * time = O(V + E)
+         * space = O(V)
+         */
+
         public void setParent(int i) {
             // Only initialize if it was previously not initialized (not yet land).
             if (parent[i] == -1) {
@@ -292,6 +352,16 @@ public class NumberOfIslands2 {
                 count++;
             }
         }
+
+        /**
+         * time = O(V + E)
+
+
+         * space = O(V)
+
+
+         */
+
 
         public int getCount() {
             return count;
@@ -308,6 +378,11 @@ public class NumberOfIslands2 {
      * and alpha is the inverse Ackermann function (nearly constant).
      * Space Complexity: O(M * N)
      */
+    /**
+     * time = O(E * α(V))
+     * space = O(V)
+     */
+
     public List<Integer> numIslands2_0_1(int m, int n, int[][] positions) {
 
         List<Integer> result = new ArrayList<>();
@@ -516,6 +591,16 @@ public class NumberOfIslands2 {
         private final int[] p;
         private final int[] size;
 
+        /**
+         * time = O(E * α(V))
+
+
+         * space = O(V)
+
+
+         */
+
+
         public UnionFind(int n) {
             p = new int[n];
             size = new int[n];
@@ -525,12 +610,32 @@ public class NumberOfIslands2 {
             }
         }
 
+        /**
+         * time = O(E * α(V))
+
+
+         * space = O(V)
+
+
+         */
+
+
         public int find(int x) {
             if (p[x] != x) {
                 p[x] = find(p[x]);
             }
             return p[x];
         }
+
+        /**
+         * time = O(E * α(V))
+
+
+         * space = O(V)
+
+
+         */
+
 
         public boolean union(int a, int b) {
             int pa = find(a), pb = find(b);
@@ -547,6 +652,16 @@ public class NumberOfIslands2 {
             return true;
         }
     }
+
+    /**
+     * time = O(V + E)
+
+
+     * space = O(V)
+
+
+     */
+
 
     public List<Integer> numIslands2_2(int m, int n, int[][] positions) {
         int[][] grid = new int[m][n];

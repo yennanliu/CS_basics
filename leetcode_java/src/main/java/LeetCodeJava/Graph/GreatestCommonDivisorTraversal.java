@@ -55,6 +55,11 @@ public class GreatestCommonDivisorTraversal {
 
     // V2
     // https://leetcode.com/problems/greatest-common-divisor-traversal/editorial/
+    /**
+     * time = O(V + E)
+     * space = O(V)
+     */
+
     public boolean canTraverseAllPairs_2(int[] nums) {
         int MAX = 100000;
         int N = nums.length;
@@ -111,6 +116,16 @@ class DSU {
     public int[] dsu;
     public int[] size;
 
+    /**
+     * time = O(V + E)
+
+
+     * space = O(V)
+
+
+     */
+
+
     public DSU(int N) {
         dsu = new int[N + 1];
         size = new int[N + 1];
@@ -120,9 +135,29 @@ class DSU {
         }
     }
 
+    /**
+     * time = O(V + E)
+
+
+     * space = O(V)
+
+
+     */
+
+
     public int find(int x) {
         return dsu[x] == x ? x : (dsu[x] = find(dsu[x]));
     }
+
+    /**
+     * time = O(E * α(V))
+
+
+     * space = O(V)
+
+
+     */
+
 
     public void merge(int x, int y) {
         int fx = find(x);

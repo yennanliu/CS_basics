@@ -45,6 +45,11 @@ public class NumberOfConnectedComponentsUndirectedGraph {
     // IDEA : UNION FIND
     // TODO : validate below
     // https://www.youtube.com/watch?v=8f1XPm4WOUc
+    /**
+     * time = O(E * α(V))
+     * space = O(V)
+     */
+
     public int countComponents(int n, int[][] edges) {
         myUF2_ myUF2 = new myUF2_(n, edges);
         for (int[] e : edges) {
@@ -72,6 +77,16 @@ public class NumberOfConnectedComponentsUndirectedGraph {
         //int[] rank;
         int clusterCnt;
 
+        /**
+         * time = O(V + E)
+
+
+         * space = O(V)
+
+
+         */
+
+
         public myUF2_(int n, int[][] edges) {
             this.n = n;
             this.parents = new int[n];
@@ -90,6 +105,11 @@ public class NumberOfConnectedComponentsUndirectedGraph {
          *           true, NO cycle is detected
          *           false, cycle is detected
          */
+        /**
+         * time = O(V + E)
+         * space = O(V)
+         */
+
         public boolean union(int x, int y) {
             int xRoot = findParent(x);
             int yRoot = findParent(y);
@@ -112,6 +132,16 @@ public class NumberOfConnectedComponentsUndirectedGraph {
             return true;
         }
 
+        /**
+         * time = O(V + E)
+
+
+         * space = O(V)
+
+
+         */
+
+
         public int findParent(int x) {
             if (parents[x] != x) {
                 // Path compression: directly link nodes to their root
@@ -119,6 +149,16 @@ public class NumberOfConnectedComponentsUndirectedGraph {
             }
             return parents[x];
         }
+
+        /**
+         * time = O(E * α(V))
+
+
+         * space = O(V)
+
+
+         */
+
 
         public int getClusterCnt() {
             return clusterCnt;
@@ -154,6 +194,11 @@ public class NumberOfConnectedComponentsUndirectedGraph {
          * @param x The element whose root is sought.
          * @return The root parent of x.
          */
+        /**
+         * time = O(E * α(V))
+         * space = O(V)
+         */
+
         public int findParent(int x) {
             // Base case: x is the root of its set.
             if (this.parents[x] != x) {
@@ -177,6 +222,11 @@ public class NumberOfConnectedComponentsUndirectedGraph {
          * @param x Element in the first set.
          * @param y Element in the second set.
          */
+        /**
+         * time = O(E * α(V))
+         * space = O(V)
+         */
+
         public void union(int x, int y) {
             int parentX = this.findParent(x);
             int parentY = this.findParent(y);
@@ -214,10 +264,30 @@ public class NumberOfConnectedComponentsUndirectedGraph {
             this.groupCnt--;
         }
 
+        /**
+         * time = O(V + E)
+
+
+         * space = O(V)
+
+
+         */
+
+
         public int getGroupCnt() {
             return this.groupCnt;
         }
     }
+
+    /**
+     * time = O(V + E)
+
+
+     * space = O(V)
+
+
+     */
+
 
     public int countComponents_0_0_1(int n, int[][] edges) {
         // n is the number of nodes (0 to n-1).
@@ -240,6 +310,11 @@ public class NumberOfConnectedComponentsUndirectedGraph {
     // IDEA: UNION FIND (without RANK) (gpt)
     // TODO: validate
     // private int[] p_;
+    /**
+     * time = O(E * α(V))
+     * space = O(V)
+     */
+
     public int countComponents_0_1(int n, int[][] edges) {
         UnionFind2 uf2 = new UnionFind2(n, edges);
         // union
@@ -259,6 +334,11 @@ public class NumberOfConnectedComponentsUndirectedGraph {
         int[] parents;
 
         // Constructor
+        /**
+         * time = O(E * α(V))
+         * space = O(V)
+         */
+
         public UnionFind2(int n, int[][] edges) {
             this.n = n;
             this.indCnt = n;
@@ -271,6 +351,11 @@ public class NumberOfConnectedComponentsUndirectedGraph {
         }
 
         // Union method to merge two components
+        /**
+         * time = O(E * α(V))
+         * space = O(V)
+         */
+
         public void union(int x, int y) {
             int rootX = find(x);
             int rootY = find(y);
@@ -288,6 +373,11 @@ public class NumberOfConnectedComponentsUndirectedGraph {
         }
 
         // Find the root of the component containing x
+        /**
+         * time = O(E * α(V))
+         * space = O(V)
+         */
+
         public int find(int x) {
             if (x != parents[x]) {
                 parents[x] = find(parents[x]); // Path compression
@@ -296,6 +386,11 @@ public class NumberOfConnectedComponentsUndirectedGraph {
         }
 
         // Check if x and y are connected
+        /**
+         * time = O(E * α(V))
+         * space = O(V)
+         */
+
         public boolean isConnected(int x, int y) {
             return find(x) == find(y);
         }
@@ -308,6 +403,16 @@ public class NumberOfConnectedComponentsUndirectedGraph {
         private int[] root;
         private int[] rank;
 
+        /**
+         * time = O(E * α(V))
+
+
+         * space = O(V)
+
+
+         */
+
+
         public UnionFind_0_2(int size) {
             root = new int[size];
             rank = new int[size];
@@ -317,6 +422,16 @@ public class NumberOfConnectedComponentsUndirectedGraph {
             }
         }
 
+        /**
+         * time = O(E * α(V))
+
+
+         * space = O(V)
+
+
+         */
+
+
         public int find(int x) {
             if (root[x] == x) {
                 return x;
@@ -324,6 +439,16 @@ public class NumberOfConnectedComponentsUndirectedGraph {
             root[x] = find(root[x]); // Path compression
             return root[x];
         }
+
+        /**
+         * time = O(E * α(V))
+
+
+         * space = O(V)
+
+
+         */
+
 
         public boolean union(int x, int y) {
             int rootX = find(x);
@@ -371,6 +496,16 @@ public class NumberOfConnectedComponentsUndirectedGraph {
             return false;
         }
 
+        /**
+         * time = O(V + E)
+
+
+         * space = O(V)
+
+
+         */
+
+
         public int getCount() {
             Set<Integer> uniqueRoots = new HashSet<>();
             for (int i = 0; i < root.length; i++) {
@@ -379,6 +514,16 @@ public class NumberOfConnectedComponentsUndirectedGraph {
             return uniqueRoots.size();
         }
     }
+
+    /**
+     * time = O(E * α(V))
+
+
+     * space = O(V)
+
+
+     */
+
 
     public int countComponents_0_2(int n, int[][] edges) {
         UnionFind_0_2 uf = new UnionFind_0_2(n);
@@ -393,6 +538,11 @@ public class NumberOfConnectedComponentsUndirectedGraph {
     // V0-3
     // IDEA: DFS (fixed by gpt)
     // TODO: validate below:
+    /**
+     * time = O(V + E)
+     * space = O(V)
+     */
+
     public int countComponents_0_3(int n, int[][] edges) {
         if (n <= 1) return n;
 
@@ -500,6 +650,11 @@ public class NumberOfConnectedComponentsUndirectedGraph {
     // V1-1
     // https://neetcode.io/problems/count-connected-components
     // IDEA: DFS
+    /**
+     * time = O(V + E)
+     * space = O(V)
+     */
+
     public int countComponents_1_1(int n, int[][] edges) {
         List<List<Integer>> adj = new ArrayList<>();
         boolean[] visit = new boolean[n];
@@ -540,6 +695,11 @@ public class NumberOfConnectedComponentsUndirectedGraph {
     // V1-2
     // https://neetcode.io/problems/count-connected-components
     // IDEA: BFS
+    /**
+     * time = O(V + E)
+     * space = O(V)
+     */
+
     public int countComponents_1_2(int n, int[][] edges) {
         List<List<Integer>> adj = new ArrayList<>();
         boolean[] visit = new boolean[n];
@@ -583,6 +743,16 @@ public class NumberOfConnectedComponentsUndirectedGraph {
         int[] parent;
         int[] rank;
 
+        /**
+         * time = O(E * α(V))
+
+
+         * space = O(V)
+
+
+         */
+
+
         public DSU(int n) {
             parent = new int[n];
             rank = new int[n];
@@ -592,6 +762,16 @@ public class NumberOfConnectedComponentsUndirectedGraph {
             }
         }
 
+        /**
+         * time = O(V + E)
+
+
+         * space = O(V)
+
+
+         */
+
+
         public int find(int node) {
             int cur = node;
             while (cur != parent[cur]) {
@@ -600,6 +780,16 @@ public class NumberOfConnectedComponentsUndirectedGraph {
             }
             return cur;
         }
+
+        /**
+         * time = O(E * α(V))
+
+
+         * space = O(V)
+
+
+         */
+
 
         public boolean union(int u, int v) {
             int pu = find(u);
@@ -617,6 +807,16 @@ public class NumberOfConnectedComponentsUndirectedGraph {
             return true;
         }
     }
+
+    /**
+     * time = O(V + E)
+
+
+     * space = O(V)
+
+
+     */
+
 
     public int countComponents_1_3(int n, int[][] edges) {
         DSU dsu = new DSU(n);
@@ -636,6 +836,16 @@ public class NumberOfConnectedComponentsUndirectedGraph {
     // https://www.youtube.com/watch?v=8f1XPm4WOUc
     private int[] parent;
     private int[] rank;
+
+    /**
+     * time = O(E * α(V))
+
+
+     * space = O(V)
+
+
+     */
+
 
     public int countComponents_1_4(int n, int[][] edges) {
         parent = new int[n];
@@ -691,6 +901,16 @@ public class NumberOfConnectedComponentsUndirectedGraph {
     // https://leetcode.ca/2016-10-18-323-Number-of-Connected-Components-in-an-Undirected-Graph/
     private int[] p;
 
+    /**
+     * time = O(E * α(V))
+
+
+     * space = O(V)
+
+
+     */
+
+
     public int countComponents_2(int n, int[][] edges) {
         p = new int[n];
         for (int i = 0; i < n; ++i) {
@@ -719,6 +939,11 @@ public class NumberOfConnectedComponentsUndirectedGraph {
     // V3
     // IDEA : DFS
     // https://www.cnblogs.com/cnoodle/p/14197652.html
+    /**
+     * time = O(V + E)
+     * space = O(V)
+     */
+
     public int countComponents_3(int n, int[][] edges) {
         int count = 0;
         List<List<Integer>> g = new ArrayList<>();
@@ -752,6 +977,11 @@ public class NumberOfConnectedComponentsUndirectedGraph {
     // V4
     // IDEA :  UNION FIND
     // https://www.cnblogs.com/cnoodle/p/14197652.html
+    /**
+     * time = O(V + E)
+     * space = O(V)
+     */
+
     public int countComponents_4(int n, int[][] edges) {
         int count = n;
         int[] parents = new int[n];
@@ -780,6 +1010,11 @@ public class NumberOfConnectedComponentsUndirectedGraph {
     // V5
     // IDEA :  BFS
     // https://www.cnblogs.com/cnoodle/p/14197652.html
+    /**
+     * time = O(V + E)
+     * space = O(V)
+     */
+
     public int countComponents_5(int n, int[][] edges) {
         int count = 0;
         List<List<Integer>> g = new ArrayList<>();

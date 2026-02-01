@@ -100,6 +100,11 @@ public class PathWithMinimumEffort {
 
     // V0-1
     // IDEA: Dijkstra's ALGO ( fixed by gpt) : min PQ + BFS
+    /**
+     * time = O((V + E) log V)
+     * space = O(V)
+     */
+
     public int minimumEffortPath_0_1(int[][] heights) {
         if (heights == null || heights.length == 0)
             return 0;
@@ -205,6 +210,11 @@ public class PathWithMinimumEffort {
     // V2
     // https://leetcode.com/problems/path-with-minimum-effort/solutions/4049557/9767-optimal-dijkstra-with-heap-by-vanam-1rxv/
     // IDEA: MIN Heap (PQ)
+    /**
+     * time = O((V + E) log V)
+     * space = O(V)
+     */
+
     public int minimumEffortPath_2(int[][] heights) {
 
         int rows = heights.length;
@@ -310,6 +320,11 @@ public class PathWithMinimumEffort {
     }
 
     // Function to find the minimum effort path
+    /**
+     * time = O(E * α(V))
+     * space = O(V)
+     */
+
     public int minimumEffortPath_3_1(int[][] heights) {
         int rows = heights.length;
         int cols = heights[0].length;
@@ -357,6 +372,16 @@ public class PathWithMinimumEffort {
         }
     }
 
+    /**
+     * time = O(V + E)
+
+
+     * space = O(V)
+
+
+     */
+
+
     public int minimumEffortPath_3_2(int[][] heights) {
         numRows = heights.length;
         numCols = heights[0].length;
@@ -388,6 +413,16 @@ public class PathWithMinimumEffort {
     // https://leetcode.com/problems/path-with-minimum-effort/solutions/1036518/java-3-clean-codes-dijkstras-algo-union-1k2ga/
     // IDEA: Dijkstra's algorithm
     private static final int[][] dir = { { -1, 0 }, { 1, 0 }, { 0, -1 }, { 0, 1 } };
+
+    /**
+     * time = O((V + E) log V)
+
+
+     * space = O(V)
+
+
+     */
+
 
     public int minimumEffortPath_4_1(int[][] heights) {
         int m = heights.length, n = heights[0].length;
@@ -431,9 +466,29 @@ public class PathWithMinimumEffort {
             }
         }
 
+        /**
+         * time = O(E * α(V))
+
+
+         * space = O(V)
+
+
+         */
+
+
         public int find(int x) {
             return x == parent[x] ? x : (parent[x] = find(parent[x]));
         }
+
+        /**
+         * time = O(E * α(V))
+
+
+         * space = O(V)
+
+
+         */
+
 
         public void union(int x, int y) {
             int a = find(x), b = find(y);
@@ -448,6 +503,16 @@ public class PathWithMinimumEffort {
             }
         }
     }
+
+    /**
+     * time = O(V + E)
+
+
+     * space = O(V)
+
+
+     */
+
 
     public int minimumEffortPath_4_2(int[][] heights) {
         int m = heights.length, n = heights[0].length;
@@ -483,6 +548,16 @@ public class PathWithMinimumEffort {
                 || dfs(h, i + 1, j, h[i][j], limit, visited) || dfs(h, i, j - 1, h[i][j], limit, visited)
                 || dfs(h, i, j + 1, h[i][j], limit, visited);
     }
+
+    /**
+     * time = O((V + E) log V)
+
+
+     * space = O(V)
+
+
+     */
+
 
     public int minimumEffortPath_4_3(int[][] heights) {
         int l = 0, r = 1_000_000;
