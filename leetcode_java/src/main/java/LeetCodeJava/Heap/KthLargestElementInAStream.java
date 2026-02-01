@@ -81,6 +81,10 @@ public class KthLargestElementInAStream {
         int k;
 
         // constructor
+        /**
+         * time = O(N log k)
+         * space = O(k)
+         */
         public KthLargest(int k, int[] nums) {
 
             this.k = k;
@@ -105,7 +109,15 @@ public class KthLargestElementInAStream {
             }
         }
 
-        public int add(int val) {
+        /**
+         * time = O(log k)
+         * space = O(1)
+         */
+        /**
+     * time = O(log k)
+     * space = O(1)
+     */
+    public int add(int val) {
 
             this.heap.offer(val);
             if (heap.size() > k){
@@ -126,6 +138,10 @@ public class KthLargestElementInAStream {
         int size;
         int k;
 
+        /**
+         * time = O(N log k)
+         * space = O(k)
+         */
         public KthLargest_0_0_1(int k, int[] nums) {
             this.k = k;
             this.size = 0; // ??
@@ -140,7 +156,15 @@ public class KthLargestElementInAStream {
             }
         }
 
-        public int add(int val) {
+        /**
+         * time = O(log k)
+         * space = O(1)
+         */
+        /**
+     * time = O(log k)
+     * space = O(1)
+     */
+    public int add(int val) {
             this.pq.add(val);
             // pop
             while(this.pq.size() > k){
@@ -163,6 +187,10 @@ public class KthLargestElementInAStream {
         int[] nums;
         PriorityQueue<Integer> pq;
 
+        /**
+         * time = O(N log k)
+         * space = O(k)
+         */
         public KthLargest_0_1(int k, int[] nums) {
             this.k = k;
             this.nums = nums; // ???
@@ -181,7 +209,15 @@ public class KthLargestElementInAStream {
             }
         }
 
-        public int add(int val) {
+        /**
+         * time = O(log k)
+         * space = O(1)
+         */
+        /**
+     * time = O(log k)
+     * space = O(1)
+     */
+    public int add(int val) {
             this.pq.add(val);
             // NOTE !!! need to remove elements when PQ size > k
             while (this.pq.size() > k) {
@@ -200,6 +236,10 @@ public class KthLargestElementInAStream {
         int k;
         PriorityQueue<Integer> pq;
 
+        /**
+         * time = O(N log k)
+         * space = O(k)
+         */
         public KthLargest_0_2(int k, int[] nums) {
             this.k = k;
             this.pq = new PriorityQueue<>(); // Default is min-heap
@@ -209,7 +249,15 @@ public class KthLargestElementInAStream {
             }
         }
 
-        public int add(int val) {
+        /**
+         * time = O(log k)
+         * space = O(1)
+         */
+        /**
+     * time = O(log k)
+     * space = O(1)
+     */
+    public int add(int val) {
             pq.add(val);
 
             if (pq.size() > k) {
@@ -230,6 +278,10 @@ public class KthLargestElementInAStream {
 
     // replace with name as KthLargest when run at LC
     // constructor
+    /**
+     * time = O(N log k)
+     * space = O(k)
+     */
     public KthLargestElementInAStream(int k, int[] nums) {
 
         this.k = k;
@@ -248,6 +300,10 @@ public class KthLargestElementInAStream {
         }
     }
 
+    /**
+     * time = O(log k)
+     * space = O(1)
+     */
     public int add(int val) {
         heap.offer(val);
         if (heap.size() > k) {
@@ -267,7 +323,11 @@ public class KthLargestElementInAStream {
 //        for (var n : nums) add(n);
 //    }
 //
-//    public int add(int val) {
+//    /**
+     * time = O(log k)
+     * space = O(1)
+     */
+    public int add(int val) {
 //        heap.offer(val);
 //        if (heap.size() > k) heap.poll();
 //        return heap.peek();

@@ -64,11 +64,19 @@ public class ExamRoom {
 //
 //        }
 //
-//        public int seat() {
+//        /**
+         * time = O(N log N)
+         * space = O(1)
+         */
+        public int seat() {
 //
 //        }
 //
-//        public void leave(int p) {
+//        /**
+         * time = O(log N)
+         * space = O(1)
+         */
+        public void leave(int p) {
 //
 //        }
 //    }
@@ -82,11 +90,19 @@ public class ExamRoom {
         private int n;
         private ArrayList<Integer> seats;
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public ExamRoom_2_1(int n) {
             this.n = n;
             this.seats = new ArrayList<>();
         }
 
+        /**
+         * time = O(N log N)
+         * space = O(1)
+         */
         public int seat() {
             // If no one is seated, the first student sits at seat 0
             if (seats.isEmpty()) {
@@ -120,6 +136,10 @@ public class ExamRoom {
             return seat;
         }
 
+        /**
+         * time = O(N)
+         * space = O(1)
+         */
         public void leave(int p) {
             seats.remove(Integer.valueOf(p)); // Remove the student from the seat
         }
@@ -146,6 +166,10 @@ public class ExamRoom {
         private TreeSet<Integer> seats;
         private int n;
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public ExamRoom_2_2(int n) {
             this.n = n;
             this.seats = new TreeSet<>();
@@ -157,6 +181,10 @@ public class ExamRoom {
          * 	    •	If no seats are occupied, the student sits at seat 0.
          * 	    •	Otherwise, iterate through the list of occupied seats to find the largest gap between two seats. For each gap, calculate the middle seat and check if it maximizes the distance to the nearest student.
          * 	    •	Finally, also consider the distance from the last occupied seat to the end of the row, in case sitting at the last seat maximizes the distance.
+         */
+        /**
+         * time = O(N log N)
+         * space = O(1)
          */
         public int seat() {
             int seat = 0;
@@ -192,6 +220,10 @@ public class ExamRoom {
         /**
          * 3.	leave(int p): Simply remove seat p from the
          */
+        /**
+         * time = O(log N)
+         * space = O(1)
+         */
         public void leave(int p) {
             seats.remove(p);
         }
@@ -213,6 +245,10 @@ public class ExamRoom {
             this.seats = new TreeSet<>();
         }
 
+        /**
+         * time = O(N log N)
+         * space = O(1)
+         */
         public int seat() {
             int seatNumber = 0;
 		/*
@@ -254,6 +290,10 @@ public class ExamRoom {
             return seatNumber;
         }
 
+        /**
+         * time = O(log N)
+         * space = O(1)
+         */
         public void leave(int p) {
             seats.remove(p);
 		/* simply remove the seat number from treeset
@@ -272,6 +312,10 @@ public class ExamRoom {
             this.N = n;
         }
 
+        /**
+         * time = O(N log N)
+         * space = O(1)
+         */
         public int seat() {
             int student = 0;
 
@@ -296,6 +340,10 @@ public class ExamRoom {
             return student;
         }
 
+        /**
+         * time = O(log N)
+         * space = O(1)
+         */
         public void leave(int p) {
             seats.remove(p);
         }
@@ -320,6 +368,10 @@ public class ExamRoom {
             this.taken = new TreeSet<>();
         }
 
+        /**
+         * time = O(N log N)
+         * space = O(1)
+         */
         public int seat() {
             Interval inter = available.pollFirst();
             int idx = getInsertPosition(inter);
@@ -331,6 +383,10 @@ public class ExamRoom {
             return idx;
         }
 
+        /**
+         * time = O(log N)
+         * space = O(1)
+         */
         public void leave(int p) {
             taken.remove(p);
             Integer lo = taken.lower(p);

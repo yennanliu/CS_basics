@@ -47,6 +47,10 @@ public class LastStoneWeight {
 
     // V0
     // IDEA : PQ (MAX HEAP)
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public int lastStoneWeight(int[] stones) {
 
         if (stones.length == 0){
@@ -85,6 +89,10 @@ public class LastStoneWeight {
 
     // V0'
     // IDEA : MAX HEAP (PRIORITY QUEUE)
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public int lastStoneWeight_0_1(int[] stones) {
 
         if (stones.length == 0 || stones.equals(null)){
@@ -122,6 +130,10 @@ public class LastStoneWeight {
     // V1
     // IDEA : Array-Based Simulation
     // https://leetcode.com/problems/last-stone-weight/editorial/
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     private int removeLargest(List<Integer> stones) {
         int indexOfLargest = stones.indexOf(Collections.max(stones));
         int result = stones.get(indexOfLargest);
@@ -130,6 +142,10 @@ public class LastStoneWeight {
         return result;
     }
 
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public int lastStoneWeight_2(int[] stones) {
         List<Integer> stoneList = new ArrayList<>();
         for (int weight : stones) {
@@ -150,6 +166,10 @@ public class LastStoneWeight {
     // V2
     // IDEA : Sorted Array-Based Simulation
     // https://leetcode.com/problems/last-stone-weight/editorial/
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public int lastStoneWeight_3(int[] stones) {
         List<Integer> stoneList = new ArrayList<>();
         for (int stone : stones) {
@@ -178,6 +198,10 @@ public class LastStoneWeight {
     // V3
     // IDEA : Heap-Based Simulation
     // https://leetcode.com/problems/last-stone-weight/editorial/
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public int lastStoneWeight_4(int[] stones) {
 
         /** NOTE !!! we can define Max-heap via below */

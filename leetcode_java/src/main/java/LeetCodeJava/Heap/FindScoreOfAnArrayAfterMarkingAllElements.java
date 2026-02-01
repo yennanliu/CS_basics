@@ -55,12 +55,20 @@ import java.util.PriorityQueue;
 public class FindScoreOfAnArrayAfterMarkingAllElements {
 
     // VO
-//    public long findScore(int[] nums) {
+//    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
+    public long findScore(int[] nums) {
 //
 //    }
 
 
     // V0-1: IDEA: custom min PQ (fixed by gpt)
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public long findScore_0_1(int[] nums) {
         if (nums == null || nums.length == 0) {
             return 0;
@@ -111,6 +119,10 @@ public class FindScoreOfAnArrayAfterMarkingAllElements {
 
     // V0-2
     // IDEA: PQ (fixed by gemini)
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public long findScore_0_2(int[] nums) {
         // edge
         if (nums == null || nums.length == 0) {
@@ -188,6 +200,10 @@ public class FindScoreOfAnArrayAfterMarkingAllElements {
     // V1-1
     // IDEA: SORTING
     // https://leetcode.com/problems/find-score-of-an-array-after-marking-all-elements/editorial/
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public long findScore_1_1(int[] nums) {
         long ans = 0;
         int[][] customSorted = new int[nums.length][2];
@@ -222,6 +238,10 @@ public class FindScoreOfAnArrayAfterMarkingAllElements {
     // V1-2
     // IDEA: PQ (HEAP)
     // https://leetcode.com/problems/find-score-of-an-array-after-marking-all-elements/editorial/
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public long findScore_1_2(int[] nums) {
         long ans = 0;
         boolean[] marked = new boolean[nums.length];
