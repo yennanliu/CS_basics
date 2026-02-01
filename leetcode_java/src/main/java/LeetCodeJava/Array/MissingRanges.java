@@ -26,6 +26,10 @@ public class MissingRanges {
 
     // V0
     // IDEA : ARRAY + BOUNDARY HANDLING (fix by gpt)
+    /**
+     * time = O(N)
+     * space = O(K) where K is number of missing ranges
+     */
     public List<List<Integer>> findMissingRanges(int[] nums, int lower, int upper) {
 
         List<List<Integer>> res = new ArrayList<>();
