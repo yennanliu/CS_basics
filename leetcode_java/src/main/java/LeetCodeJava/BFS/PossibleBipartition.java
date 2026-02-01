@@ -43,6 +43,10 @@ public class PossibleBipartition {
 
     // V0
     // IDEA: LC 785 + DFS + NEIGHBOR CHECK (fixed by gpt)
+    /**
+     * time = O(V + E)
+     * space = O(V)
+     */
     public boolean possibleBipartition(int n, int[][] dislikes) {
         // build adjacency list
         Map<Integer, List<Integer>> graph = new HashMap<>();
@@ -185,6 +189,10 @@ public class PossibleBipartition {
 
     // V0-0-1
     // IDEA: DFS + LC 785 (fixed by gpt)
+    /**
+     * time = O(V + E)
+     * space = O(V)
+     */
     public boolean possibleBipartition_0_0_1(int n, int[][] dislikes) {
         // Build adjacency list
         Map<Integer, List<Integer>> dislikeMap = new HashMap<>();
@@ -362,6 +370,10 @@ public class PossibleBipartition {
     // V2
     // IDEA: BFS
     // https://leetcode.com/problems/possible-bipartition/solutions/7317770/possible-bipartition-solutionbfs-by-ajen-ncyp/
+    /**
+     * time = O(V + E)
+     * space = O(V)
+     */
     public boolean possibleBipartition_2(int n, int[][] dislikes) {
         List<List<Integer>> graph = new ArrayList<>();
         for (int i = 0; i <= n; i++) {
@@ -404,6 +416,10 @@ public class PossibleBipartition {
     // V3
     // IDEA: DFS
     // https://leetcode.com/problems/possible-bipartition/solutions/654955/pythoncjava-on-by-dfs-and-coloring-w-gra-vjcq/
+    /**
+     * time = O(V + E)
+     * space = O(V)
+     */
     public boolean possibleBipartition_3(int N, int[][] dislikes) {
         List<Integer>[] graph = new List[N + 1];
 

@@ -47,6 +47,10 @@ public class WordLadder {
 
     // V0
     // IDEA: BFS (gpt)
+    /**
+     * time = O(N * M * 26)
+     * space = O(N * M)
+     */
     public int ladderLength(String beginWord, String endWord, List<String> wordList) {
 
         if (!wordList.contains(endWord))
@@ -139,6 +143,10 @@ public class WordLadder {
 
     // V0-0-1
     // IDEA: BFS + CUSTOM CLASS
+    /**
+     * time = O(N * M * 26)
+     * space = O(N * M)
+     */
     public int ladderLength_0_0_1(String beginWord, String endWord, List<String> wordList) {
         Set<String> wordSet = new HashSet<>(wordList);
         if (!wordSet.contains(endWord))
@@ -191,6 +199,10 @@ public class WordLadder {
 
     // V0-0-2
     // IDEA: BFS (fixed by gemini)
+    /**
+     * time = O(N * M * 26)
+     * space = O(N * M)
+     */
     public int ladderLength_0_0_2(String beginWord, String endWord, List<String> wordList) {
 
         // 1. Convert wordList to a Set for O(1) lookup, which is essential for performance.
@@ -277,6 +289,10 @@ public class WordLadder {
     // V0-0-3
     // IDEA: BFS (fixed by gpt) (TLE)
     // TODO: optimize
+    /**
+     * time = O(N * M * 26)
+     * space = O(N * M)
+     */
     public int ladderLength_0_0_3(String beginWord, String endWord, List<String> wordList) {
 
         // edge case: if the endWord is not in the wordList, return 0
@@ -347,6 +363,10 @@ public class WordLadder {
     // V0-1
     // IDEA : BFS + pair (gpt)
     // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Breadth-First-Search/word-ladder.py#L42
+    /**
+     * time = O(N * M * 26)
+     * space = O(N * M)
+     */
     public int ladderLength_0_1(String beginWord, String endWord, List<String> wordList) {
         // Convert wordList to a set for O(1) lookups
         Set<String> wordSet = new HashSet<>(wordList);
@@ -398,6 +418,10 @@ public class WordLadder {
 
     // V0-2
     // IDEA: BFS + CUSTOM CLASS (fixed by gpt)
+    /**
+     * time = O(N * M * 26)
+     * space = O(N * M)
+     */
     public int ladderLength_0_2(String beginWord, String endWord, List<String> wordList) {
         Set<String> wordSet = new HashSet<>(wordList);
         if (!wordSet.contains(endWord)) {
@@ -478,6 +502,10 @@ public class WordLadder {
 
     // V0-3
     // IDEA: BFS + CUSTOM CLASS (gpt)
+    /**
+     * time = O(N * M * 26)
+     * space = O(N * M)
+     */
     public int ladderLength_0_3(String beginWord, String endWord, List<String> wordList) {
         Set<String> wordSet = new HashSet<>(wordList);
         if (!wordSet.contains(endWord))
@@ -531,6 +559,10 @@ public class WordLadder {
     // V1-1
     // https://neetcode.io/problems/word-ladder
     // IDEA: BFS - I
+    /**
+     * time = O(N * M * 26)
+     * space = O(N * M)
+     */
     public int ladderLength_1_1(String beginWord, String endWord, List<String> wordList) {
         if (!wordList.contains(endWord) || beginWord.equals(endWord)) {
             return 0;
@@ -604,6 +636,10 @@ public class WordLadder {
     // V1-2
     // https://neetcode.io/problems/word-ladder
     // IDEA: BFS - II
+    /**
+     * time = O(N * M * 26)
+     * space = O(N * M)
+     */
     public int ladderLength_1_2(String beginWord, String endWord, List<String> wordList) {
         if (!wordList.contains(endWord) || beginWord.equals(endWord)) return 0;
         Set<String> words = new HashSet<>(wordList);
@@ -635,6 +671,10 @@ public class WordLadder {
     // V1-3
     // https://neetcode.io/problems/word-ladder
     // IDEA: BFS - III
+    /**
+     * time = O(N * M * 26)
+     * space = O(N * M)
+     */
     public int ladderLength_1_3(String beginWord, String endWord, List<String> wordList) {
         if (!wordList.contains(endWord)) {
             return 0;
@@ -679,6 +719,10 @@ public class WordLadder {
     // V1-4
     // https://neetcode.io/problems/word-ladder
     // IDEA: Meet In The Middle (BFS)
+    /**
+     * time = O(N * M * 26)
+     * space = O(N * M)
+     */
     public int ladderLength_1_4(String beginWord, String endWord, List<String> wordList) {
         if (!wordList.contains(endWord) || beginWord.equals(endWord))
             return 0;

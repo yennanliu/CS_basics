@@ -353,6 +353,10 @@ public class ShortestBridge {
     }
 
     // Find any land cell, and we treat it as a cell of island A.
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public int shortestBridge_1_1(int[][] grid) {
         int n = grid.length;
         int firstX = -1, firstY = -1;
@@ -401,6 +405,10 @@ public class ShortestBridge {
     // V1-2
     // https://leetcode.com/problems/shortest-bridge/editorial/
     // IDEA: BFS
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public int shortestBridge_1_2(int[][] grid) {
         int n = grid.length;
         int firstX = -1, firstY = -1;

@@ -297,6 +297,10 @@ public class SurroundedRegions {
 
     // V0-1
     // IDEA: DFS (fixed by gpt)
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public void solve_0_1(char[][] board) {
         if (board == null || board.length == 0 || board[0].length == 0)
             return;
@@ -461,6 +465,10 @@ public class SurroundedRegions {
 
     // V2
     // IDEA : DFS (fixed by gpt)
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public void solve_2(char[][] board) {
         if (board == null || board.length == 0 || board[0].length == 0) {
             return;
@@ -689,6 +697,10 @@ public class SurroundedRegions {
     // V5
     // IDEA : DFS
     // https://leetcode.com/problems/surrounded-regions/solutions/3805983/java-100-faster-step-by-step-explained/
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public void solve_5(char[][] board) {
         int rows = board.length;
         int cols = board[0].length;

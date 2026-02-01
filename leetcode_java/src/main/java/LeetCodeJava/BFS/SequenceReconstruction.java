@@ -366,6 +366,10 @@ public class SequenceReconstruction {
 
     // V2
     // https://leetcode.ca/2017-02-16-444-Sequence-Reconstruction/
+    /**
+     * time = O(V + E)
+     * space = O(V)
+     */
     public boolean sequenceReconstruction_2(int[] nums, List<List<Integer>> sequences) {
         int n = nums.length;
         int[] indeg = new int[n];
@@ -401,6 +405,10 @@ public class SequenceReconstruction {
     // V3
     // IDEA : topological sorting  (gpt)
     // TODO : validate
+    /**
+     * time = O(V + E)
+     * space = O(V)
+     */
     public boolean sequenceReconstruction_3(int[] org, List<List<Integer>> seqs) {
         int n = org.length;
 

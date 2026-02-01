@@ -52,6 +52,10 @@ public class OpenTheLock {
 
     // V0-1
     // IDEA: BFS + String replace (fixed by gpt)
+    /**
+     * time = O(N * M * 26)
+     * space = O(N * M)
+     */
     public int openLock_0_1(String[] deadends, String target) {
         // Edge: starting point is the target
         if (target.equals("0000")) {
@@ -131,6 +135,10 @@ public class OpenTheLock {
 
     // V0-2
     // IDEA: BFS + custom class (fixed by gpt)
+    /**
+     * time = O(N * M * 26)
+     * space = O(N * M)
+     */
     public class LockInfo {
         String lock;
         int moves;
@@ -208,6 +216,10 @@ public class OpenTheLock {
     // V1
     // https://github.com/neetcode-gh/leetcode/blob/main/java%2F0752-open-the-lock.java
     // https://www.youtube.com/watch?v=Pzg3bCDY87w
+    /**
+     * time = O(N * M * 26)
+     * space = O(N * M)
+     */
     public int openLock_1(String[] deadends, String target) {
         Set<String> visited = new HashSet<>();
         for (String deadend : deadends) {
@@ -258,6 +270,10 @@ public class OpenTheLock {
     // V2
     // https://leetcode.com/problems/open-the-lock/editorial/
     // IDEA: BFS
+    /**
+     * time = O(N * M * 26)
+     * space = O(N * M)
+     */
     public int openLock_2(String[] deadends, String target) {
 
 //        // Map the next slot digit for each current slot digit.
@@ -375,6 +391,10 @@ public class OpenTheLock {
 
     // V3
     // https://leetcode.com/problems/open-the-lock/solutions/5057217/java-solution-by-archivebizzle-dawj/
+    /**
+     * time = O(N * M * 26)
+     * space = O(N * M)
+     */
     public int openLock_3(String[] deadends, String target) {
         Set<String> seen = new HashSet<>(Arrays.asList(deadends));
         if (seen.contains("0000"))

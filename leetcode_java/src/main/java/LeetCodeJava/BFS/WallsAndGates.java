@@ -102,6 +102,10 @@ public class WallsAndGates {
 
     // V0-0-1
     // IDEA: BFS (fixed by gpt)
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public void wallsAndGates_0_0_1(int[][] rooms) {
 
         if (rooms == null || rooms.length == 0 || rooms[0].length == 0) {
@@ -150,6 +154,10 @@ public class WallsAndGates {
 
     // V0-0-3
     // IDEA : BFS
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public void wallsAndGates_0_0_3(int[][] rooms) {
 
         class Pair<U, V, W> {
@@ -270,6 +278,10 @@ public class WallsAndGates {
     // V0-1
     // IDEA: BFS + custom class (fixed by gpt)
     // TODO: validate below
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public void wallsAndGates_0_1(int[][] rooms) {
         // Edge case
         if (rooms == null || rooms.length == 0 || rooms[0].length == 0) {
@@ -319,6 +331,10 @@ public class WallsAndGates {
     }
 
     // Helper class
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public class DistInfo {
         int row;
         int col;
@@ -436,6 +452,10 @@ public class WallsAndGates {
     // V-1-3
     // https://neetcode.io/problems/islands-and-treasure
     // IDEA: Multi Source BFS
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public void islandsAndTreasure_1_3(int[][] grid) {
         Queue<int[]> q = new LinkedList<>();
         int m = grid.length;

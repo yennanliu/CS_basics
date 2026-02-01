@@ -410,6 +410,10 @@ public class ShortestDistanceFromAllBuildings {
     // IDEA: BFS
     // https://leetcode.ca/2016-10-12-317-Shortest-Distance-from-All-Buildings/
     // TODO: validate
+    /**
+     * time = O(M * N * K)
+     * space = O(M * N)
+     */
     public int shortestDistance_1(int[][] grid) {
         int m = grid.length;
         int n = grid[0].length;

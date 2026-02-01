@@ -117,6 +117,10 @@ public class ZeroOneMatrix {
 
     // V0-0-1
     // IDEA:  multi-source BFS (fixed by gpt)
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public int[][] updateMatrix_0_0_1(int[][] mat) {
 
         int l = mat.length;
@@ -288,6 +292,10 @@ public class ZeroOneMatrix {
 
     // V0-1
     // IDEA:  multi-source BFS (fixed by gpt)
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public int[][] updateMatrix_0_1(int[][] mat) {
         if (mat == null || mat.length == 0 || mat[0].length == 0) {
             return new int[0][0];
@@ -383,6 +391,10 @@ public class ZeroOneMatrix {
 
     // V2
     // https://leetcode.com/problems/01-matrix/solutions/6750388/video-using-queue-solution-by-niits-e1z6/
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public int[][] updateMatrix_2(int[][] mat) {
         int rows = mat.length;
         int cols = mat[0].length;
@@ -427,6 +439,10 @@ public class ZeroOneMatrix {
     // V3
     // https://leetcode.com/problems/01-matrix/solutions/3920110/9487-multi-source-bfs-queue-by-vanamsen-gd1q/
     // IDEA:  Multi-source BFS + Queue
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public int[][] updateMatrix_3(int[][] mat) {
         if (mat == null || mat.length == 0 || mat[0].length == 0)
             return new int[0][0];
