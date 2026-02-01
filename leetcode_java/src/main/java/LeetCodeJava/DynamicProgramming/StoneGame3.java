@@ -84,6 +84,10 @@ public class StoneGame3 {
 
     // V2
     // https://leetcode.com/problems/stone-game-iii/solutions/3566457/image-explanation-recursion-memo-bottom-t421z/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public String stoneGameIII_2(int[] stoneValue) {
         int n = stoneValue.length;
         int[] dp = new int[3];
@@ -113,6 +117,10 @@ public class StoneGame3 {
 
     // V3
     // https://leetcode.com/problems/stone-game-iii/solutions/3566303/pythonjavacsimple-solutioneasy-to-unders-p749/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public String stoneGameIII_3(int[] stoneValue) {
         int n = stoneValue.length;
         int[] dp = new int[3];

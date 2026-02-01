@@ -216,6 +216,10 @@ public class TargetSum {
 
     // V0-10
     // IDEA: RECURSION (gpt)
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int findTargetSumWays_0_10(int[] nums, int target) {
         return calculateWays(nums, 0, 0, target);
     }
@@ -239,6 +243,10 @@ public class TargetSum {
     // V1-1
     // https://neetcode.io/problems/target-sum
     // IDEA: RECURSION
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int findTargetSumWays_1_1(int[] nums, int target) {
         return backtrack(0, 0, nums, target);
     }
@@ -258,6 +266,10 @@ public class TargetSum {
     private int[][] dp;
     private int totalSum;
 
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int findTargetSumWays_1_2(int[] nums, int target) {
         totalSum = 0;
         for (int num : nums) totalSum += num;
@@ -286,6 +298,10 @@ public class TargetSum {
     // V1-3
     // https://neetcode.io/problems/target-sum
     // IDEA: Dynamic Programming (Bottom-Up)
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int findTargetSumWays_1_3(int[] nums, int target) {
         int n = nums.length;
         Map<Integer, Integer>[] dp = new HashMap[n + 1];
@@ -311,6 +327,10 @@ public class TargetSum {
     // V1-4
     // https://neetcode.io/problems/target-sum
     // IDEA: Dynamic Programming (Space Optimized)
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int findTargetSumWays_1_4(int[] nums, int target) {
         Map<Integer, Integer> dp = new HashMap<>();
         dp.put(0, 1);

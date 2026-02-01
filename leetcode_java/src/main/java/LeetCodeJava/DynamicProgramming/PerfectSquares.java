@@ -37,6 +37,10 @@ public class PerfectSquares {
 
     // V0
     // IDEA: BFS (gpt)
+    /**
+     * time = O(N * sqrt(N))
+     * space = O(N)
+     */
     public int numSquares(int n) {
         Queue<Integer> queue = new LinkedList<>();
         Set<Integer> visited = new HashSet<>();
@@ -73,12 +77,20 @@ public class PerfectSquares {
 
     // V0-1
     // IDEA: BRUTE FORCE (gpt) (TLE)
+    /**
+     * time = O(N * sqrt(N))
+     * space = O(N)
+     */
     public int numSquares_0_1(int n) {
         if (n <= 0)
             return 0;
         return helper(n);
     }
 
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int helper(int n) {
         if (n == 0)
             return 0;
@@ -95,12 +107,20 @@ public class PerfectSquares {
 
     // V0-2
     // IDEA:  OPTIMIZED BRUTE FORCE (WITH MEMORY) (gpt)
+    /**
+     * time = O(N * sqrt(N))
+     * space = O(N)
+     */
     public int numSquares_0_2(int n) {
         int[] memo = new int[n + 1];
         Arrays.fill(memo, -1);
         return helper_0_2(n, memo);
     }
 
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int helper_0_2(int n, int[] memo) {
         if (n == 0)
             return 0;
@@ -119,6 +139,10 @@ public class PerfectSquares {
 
     // V0-3
     // IDEA: DP (gpt)
+    /**
+     * time = O(N * sqrt(N))
+     * space = O(N)
+     */
     public int numSquares_0_3(int n) {
         int[] dp = new int[n + 1];
         Arrays.fill(dp, Integer.MAX_VALUE);
@@ -135,6 +159,10 @@ public class PerfectSquares {
 
     // V0-4
     // IDEA: BFS (gpt)
+    /**
+     * time = O(N * sqrt(N))
+     * space = O(N)
+     */
     public int numSquares_0_4(int n) {
         Queue<Integer> queue = new LinkedList<>();
         Set<Integer> visited = new HashSet<>();
@@ -172,6 +200,10 @@ public class PerfectSquares {
     // V1
     // IDEA: DP
     // https://leetcode.com/problems/perfect-squares/solutions/4694883/beats-99-users-cjavapythonjavascript-exp-37yg/
+    /**
+     * time = O(N * sqrt(N))
+     * space = O(N)
+     */
     public int numSquares_1(int n) {
         int[] dp = new int[n + 1];
         Arrays.fill(dp, Integer.MAX_VALUE);
@@ -189,6 +221,10 @@ public class PerfectSquares {
     // V2
     // https://leetcode.com/problems/perfect-squares/solutions/1520447/dp-easy-to-understand-js-java-python-c-b-sk59/
     // IDEA: DP
+    /**
+     * time = O(N * sqrt(N))
+     * space = O(N)
+     */
     public int numSquares_2(int n) {
         int[] dp = new int[n + 1];
         Arrays.fill(dp, Integer.MAX_VALUE);
@@ -207,11 +243,19 @@ public class PerfectSquares {
     // V3-1
     // https://leetcode.com/problems/perfect-squares/solutions/2837992/java-recursion-memoization-dp-3-square-t-72qb/
     // IDEA: Top Down DP (Recursion + Memoization)
+    /**
+     * time = O(N * sqrt(N))
+     * space = O(N)
+     */
     public int numSquares_3_1(int n) {
         int[] memo = new int[n + 1];
         return helper(n, memo);
     }
 
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int helper(int n, int[] memo) {
         if (n < 4)
             return n;
@@ -234,6 +278,10 @@ public class PerfectSquares {
     // IDEA: Top Down DP (Recursion + Memoization)
     // Time complexity: O(N * sqrt(N))
     // Space complexity: O(N)
+    /**
+     * time = O(N * sqrt(N))
+     * space = O(N)
+     */
     public int numSquares_3_2(int n) {
         int[] dp = new int[n + 1];
         dp[0] = 0;
