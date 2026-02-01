@@ -103,6 +103,10 @@ public class CloneGraph {
 
     // V0
     // IDEA : DFS
+    /**
+     * time = O(V + E)
+     * space = O(V)
+     */
     public Node cloneGraph(Node node) {
 
         // init hashmap
@@ -168,6 +172,10 @@ public class CloneGraph {
         return _clone(_visited, node);
     }
 
+    /**
+     * time = O(V + E)
+     * space = O(V)
+     */
     private Node _clone(HashMap<Integer, Node> visited, Node node){
 
         // NOTE !!! handle edge case, if node is null, return itself directly
@@ -214,12 +222,20 @@ public class CloneGraph {
     // IDEA: DFS (fixed by gpt)
     Map<Node, Node> visited_0_1 = new HashMap<>();
 
+    /**
+     * time = O(V + E)
+     * space = O(V)
+     */
     public Node cloneGraph_0_1(Node node) {
         if (node == null)
             return null;
         return dfs(node);
     }
 
+    /**
+     * time = O(V + E)
+     * space = O(V)
+     */
     private Node dfs(Node node) {
         // If already cloned
         if (visited_0_1.containsKey(node)) {
@@ -245,6 +261,10 @@ public class CloneGraph {
 
     // V0-2
     // IDEA: DFS (fixed by gpt)
+    /**
+     * time = O(V + E)
+     * space = O(V)
+     */
     public Node cloneGraph_0_2(Node node) {
         if (node == null)
             return null;
@@ -258,6 +278,10 @@ public class CloneGraph {
         return cloned;
     }
 
+    /**
+     * time = O(V + E)
+     * space = O(V)
+     */
     private void cloneHelper(Node node, Node cloned, Map<Node, Node> map) {
 
         for (Node neighbor : node.neighbors) {
@@ -280,6 +304,10 @@ public class CloneGraph {
 
     // V0-3
     // IDEA: BFS (fixed by gpt)
+    /**
+     * time = O(V + E)
+     * space = O(V)
+     */
     public Node cloneGraph_0_3(Node node) {
         if (node == null)
             return null;
@@ -331,12 +359,20 @@ public class CloneGraph {
     // V1-1
     // https://neetcode.io/problems/clone-graph
     // IDEA: DFS
+    /**
+     * time = O(V + E)
+     * space = O(V)
+     */
     public Node cloneGraph_1_1(Node node) {
         Map<Node, Node> oldToNew = new HashMap<>();
 
         return dfs(node, oldToNew);
     }
 
+    /**
+     * time = O(V + E)
+     * space = O(V)
+     */
     private Node dfs(Node node, Map<Node, Node> oldToNew) {
         if (node == null) {
             return null;
@@ -359,6 +395,10 @@ public class CloneGraph {
     // V1-2
     // https://neetcode.io/problems/clone-graph
     // IDEA: BFS
+    /**
+     * time = O(V + E)
+     * space = O(V)
+     */
     public Node cloneGraph_1_2(Node node) {
         if (node == null) return null;
         Map<Node, Node> oldToNew = new HashMap<>();
@@ -383,6 +423,10 @@ public class CloneGraph {
     // IDEA : DFS
     // https://leetcode.com/problems/clone-graph/editorial/
     private HashMap <Node, Node> visited = new HashMap <> ();
+    /**
+     * time = O(V + E)
+     * space = O(V)
+     */
     public Node cloneGraph_2(Node node) {
         if (node == null) {
             return node;
@@ -413,6 +457,10 @@ public class CloneGraph {
     // V3
     // IDEA : BFS
     // https://leetcode.com/problems/clone-graph/editorial/
+    /**
+     * time = O(V + E)
+     * space = O(V)
+     */
     public Node cloneGraph_3(Node node) {
         if (node == null) {
             return node;

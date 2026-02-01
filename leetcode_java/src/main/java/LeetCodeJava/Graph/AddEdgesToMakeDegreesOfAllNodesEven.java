@@ -111,6 +111,10 @@ public class AddEdgesToMakeDegreesOfAllNodesEven {
      *
      *
      */
+    /**
+     * time = O(N + E)
+     * space = O(N)
+     */
     public boolean isPossible_0_1(int n, List<List<Integer>> edges) {
         // Build adjacency (undirected) in a Set for fast existence check
         /**
@@ -233,6 +237,10 @@ public class AddEdgesToMakeDegreesOfAllNodesEven {
      * Checks if it's possible to make the degree of every node even by adding at most two edges.
      * The logic handles 0, 2, and 4 initial odd-degree nodes.
      */
+    /**
+     * time = O(N + E)
+     * space = O(N)
+     */
     public boolean isPossible_0_2(int n, List<List<Integer>> edges) {
         // 1. Initialize Adjacency List and Degrees
         // We use 1-based indexing for nodes 1 to n.
@@ -334,6 +342,10 @@ public class AddEdgesToMakeDegreesOfAllNodesEven {
 
     // V2
     // https://leetcode.com/problems/add-edges-to-make-degrees-of-all-nodes-even/solutions/7118040/add-edges-to-make-degrees-of-all-nodes-e-1og4/
+    /**
+     * time = O(N + E)
+     * space = O(N)
+     */
     public boolean isPossible_2(int n, List<List<Integer>> edges) {
         Set<Integer>[] g = new Set[n + 1];
         Arrays.setAll(g, k -> new HashSet<>());

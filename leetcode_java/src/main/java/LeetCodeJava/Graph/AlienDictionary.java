@@ -60,6 +60,10 @@ public class AlienDictionary {
     // V0
     // IDEA: TOPOLOGICAL SORT (neetcode, comments created by gpt)
     // TOPOLOGICAL SORT : `degrees`, map, BFS
+    /**
+     * time = O(C)
+     * space = O(1)
+     */
     public String foreignDictionary(String[] words) {
         Map<Character, Set<Character>> adj = new HashMap<>();
         // NOTE !!! we use `map` as degrees storage
@@ -204,6 +208,10 @@ public class AlienDictionary {
     // V0-1
     // IDEA: TOPOLOGICAL SORT (fixed by gpt)
     // TODO: validate below
+    /**
+     * time = O(C)
+     * space = O(1)
+     */
     public String alienOrder_0_1(String[] words) {
         if (words == null || words.length == 0) return "";
 
@@ -277,6 +285,10 @@ public class AlienDictionary {
     private Map<Character, Boolean> visited;
     private List<Character> result;
 
+    /**
+     * time = O(C)
+     * space = O(1)
+     */
     public String foreignDictionary_1_1(String[] words) {
         adj = new HashMap<>();
         for (String word : words) {
@@ -316,6 +328,10 @@ public class AlienDictionary {
         return sb.toString();
     }
 
+    /**
+     * time = O(C)
+     * space = O(1)
+     */
     private boolean dfs(char ch) {
         if (visited.containsKey(ch)) {
             return visited.get(ch);
@@ -336,6 +352,10 @@ public class AlienDictionary {
     // V1-2
     // https://neetcode.io/problems/foreign-dictionary
     // IDEA:  Topological Sort (Kahn's Algorithm)
+    /**
+     * time = O(C)
+     * space = O(1)
+     */
     public String foreignDictionary_1_2(String[] words) {
         Map<Character, Set<Character>> adj = new HashMap<>();
         Map<Character, Integer> indegree = new HashMap<>();
@@ -468,6 +488,10 @@ public class AlienDictionary {
     // V2
     // IDEA : topological sorting
     // https://leetcode.ca/all/269.html
+    /**
+     * time = O(C)
+     * space = O(1)
+     */
     public String alienOrder_2(String[] words) {
 
         // Step 1: build the graph
@@ -499,6 +523,10 @@ public class AlienDictionary {
         return sb.toString();
     }
 
+    /**
+     * time = O(min(len1, len2))
+     * space = O(1)
+     */
     private void connectGraph(Map<Character, Set<Character>> graph, String prev, String curr) {
         if (prev == null || curr == null) {
             return;
@@ -518,6 +546,10 @@ public class AlienDictionary {
         }
     }
 
+    /**
+     * time = O(V + E)
+     * space = O(V)
+     */
     private boolean topologicalSort(
             char vertexId,
             Map<Character, Set<Character>> graph,
@@ -555,6 +587,10 @@ public class AlienDictionary {
 
      // V3
      // https://github.com/Cee/Leetcode/blob/master/269%20-%20Alien%20Dictionary.java
+     /**
+      * time = O(C)
+      * space = O(1)
+      */
      public String alienOrder_3(String[] words) {
          Map<Character, Set<Character>> map = new HashMap<>();
          Map<Character, Integer> degree = new HashMap<>();
@@ -620,6 +656,10 @@ public class AlienDictionary {
           * @param words: a list of words
           * @return: a string which is correct order
           */
+         /**
+          * time = O(C)
+          * space = O(1)
+          */
          public String alienOrder(String[] words) {
              // Write your code here
              if (words == null || words.length == 0) {
@@ -684,6 +724,10 @@ public class AlienDictionary {
              return result.toString();
          }
 
+         /**
+          * time = O(C)
+          * space = O(1)
+          */
          private void constructGraph(String[] words, Map<Character, List<Character>> adjMap) {
              // construct nodes
              for (String word : words) {
@@ -711,6 +755,10 @@ public class AlienDictionary {
     // https://leetcode.ca/2016-08-25-269-Alien-Dictionary/
     // IDEA: DFS
     // dfs
+    /**
+     * time = O(C)
+     * space = O(1)
+     */
     public String alienOrder_4_2(String[] words) {
 
         // Step 1: build the graph
@@ -742,6 +790,10 @@ public class AlienDictionary {
         return sb.toString();
     }
 
+    /**
+     * time = O(min(len1, len2))
+     * space = O(1)
+     */
     private void connectGraph_4_2(Map<Character, Set<Character>> graph, String prev, String curr) {
         if (prev == null || curr == null) {
             return;
@@ -761,6 +813,10 @@ public class AlienDictionary {
         }
     }
 
+    /**
+     * time = O(V + E)
+     * space = O(V)
+     */
     private boolean topologicalSort_4_2(
             char vertexId,
             Map<Character, Set<Character>> graph,
@@ -797,6 +853,10 @@ public class AlienDictionary {
     }
 
     // V4-3
+    /**
+     * time = O(C)
+     * space = O(1)
+     */
     public String connectGraph_4_3(String[] words) {
         boolean[][] g = new boolean[26][26];
         boolean[] s = new boolean[26];

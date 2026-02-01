@@ -206,7 +206,20 @@ public class Workspace19 {
      * <p>
      * ------------
      */
+
+    // 17.10 - 20 pm
+    /**
+     *
+     *
+     *
+     */
     public boolean canPartition(int[] nums) {
+
+
+        return false;
+    }
+
+    public boolean canPartition_99(int[] nums) {
         // edge
 
         int totalSum = 0;
