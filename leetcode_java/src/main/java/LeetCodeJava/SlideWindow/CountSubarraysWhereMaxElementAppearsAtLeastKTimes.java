@@ -52,6 +52,10 @@ public class CountSubarraysWhereMaxElementAppearsAtLeastKTimes {
      * @param k The minimum required count for the maximum element.
      * @return The total number of valid subarrays.
      */
+    /**
+     * time = O(N)
+     * space = O(K)
+     */
     public long countSubarrays(int[] nums, int k) {
         if (nums == null || nums.length == 0 || k <= 0) {
             return 0L;
@@ -146,6 +150,10 @@ public class CountSubarraysWhereMaxElementAppearsAtLeastKTimes {
 
     // V0-0-1
     // IDEA: SLIDE WINDOW:
+    /**
+     * time = O(N)
+     * space = O(K)
+     */
     public long countSubarrays_0_0_1(int[] nums, int k) {
         if (nums == null || nums.length == 0 || k <= 0) {
             return 0L;
@@ -269,6 +277,10 @@ public class CountSubarraysWhereMaxElementAppearsAtLeastKTimes {
 
     // V0-1
     // IDEA: SLIDE WINDOW (fixed by gpt)
+    /**
+     * time = O(N)
+     * space = O(K)
+     */
     public long countSubarrays_0_1(int[] nums, int k) {
         int n = nums.length;
         int maxNum = 0;
@@ -339,6 +351,10 @@ public class CountSubarraysWhereMaxElementAppearsAtLeastKTimes {
     // V1-1
     // IDEA: SLIDE WINDOW (for ... while (maxElementsInWindow == k) )
     // https://leetcode.com/problems/count-subarrays-where-max-element-appears-at-least-k-times/editorial/
+    /**
+     * time = O(N)
+     * space = O(K)
+     */
     public long countSubarrays_1_1(int[] nums, int k) {
         int maxElement = Arrays.stream(nums).max().getAsInt();
         long ans = 0, start = 0;
@@ -363,6 +379,10 @@ public class CountSubarraysWhereMaxElementAppearsAtLeastKTimes {
     // V1-2
     // IDEA: Track Indexes of Max Element
     // https://leetcode.com/problems/count-subarrays-where-max-element-appears-at-least-k-times/editorial/
+    /**
+     * time = O(N)
+     * space = O(K)
+     */
     public long countSubarrays_1_2(int[] nums, int k) {
         // Finding the maximum element in the array
 

@@ -57,6 +57,10 @@ public class MaxConsecutiveOnes3 {
      *      //  do sth
      *  }
      */
+    /**
+     * time = O(N)
+     * space = O(K)
+     */
     public int longestOnes(int[] nums, int k) {
         // edge
         if (nums.length == 0) {
@@ -94,6 +98,10 @@ public class MaxConsecutiveOnes3 {
 
     // V0-1
     // IDEA: SLIDE WINDOW (gpt)
+    /**
+     * time = O(N)
+     * space = O(K)
+     */
     public int longestOnes_0_1(int[] nums, int k) {
         if (nums == null || nums.length == 0) {
             return 0;
@@ -124,6 +132,10 @@ public class MaxConsecutiveOnes3 {
 
     // V1
     // https://leetcode.ca/2018-08-30-1004-Max-Consecutive-Ones-III/
+    /**
+     * time = O(N)
+     * space = O(K)
+     */
     public int longestOnes_1(int[] nums, int k) {
         int l = 0, r = 0;
         while (r < nums.length) {
@@ -139,6 +151,10 @@ public class MaxConsecutiveOnes3 {
 
     // V2
     // https://leetcode.com/problems/max-consecutive-ones-iii/solutions/6253008/easy-sliding-window-method-beatsbest-app-fa89/
+    /**
+     * time = O(N)
+     * space = O(K)
+     */
     public int longestOnes_2(int[] nums, int k) {
         int left = 0;
         int window = 0;
@@ -161,6 +177,10 @@ public class MaxConsecutiveOnes3 {
 
     // V3
     // https://leetcode.com/problems/max-consecutive-ones-iii/solutions/3540704/solution-by-deleted_user-aqta/
+    /**
+     * time = O(N)
+     * space = O(K)
+     */
     public int longestOnes_3(int[] nums, int k) {
         int start = 0;
         int end = 0;
@@ -183,6 +203,10 @@ public class MaxConsecutiveOnes3 {
 
     // V4
     // https://leetcode.com/problems/max-consecutive-ones-iii/solutions/6826967/video-sliding-window-technique-with-two-y0j1s/
+    /**
+     * time = O(N)
+     * space = O(K)
+     */
     public int longestOnes_4(int[] nums, int k) {
         int left = 0;
 
