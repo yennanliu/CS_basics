@@ -40,6 +40,10 @@ public class TopKFrequentElements {
 
     // V0
     // IDEA : HASHMAP + CUSTOM ORDER PQ
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int[] topKFrequent(int[] nums, int k) {
 
         Map<Integer, Integer> map = new HashMap<>();
@@ -105,6 +109,10 @@ public class TopKFrequentElements {
     }
 
     // V0-0-1
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int[] topKFrequent_0_1_1(int[] nums, int k) {
 
         Map<Integer, Integer> map = new HashMap<>();
@@ -147,6 +155,10 @@ public class TopKFrequentElements {
 
     // V0-1
     // IDEA : HASHMAP + ARRAY ORDERING
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int[] topKFrequent_0_1(int[] nums, int k) {
 
         if (nums.equals(null) || nums.length == 0){
@@ -194,6 +206,10 @@ public class TopKFrequentElements {
 
     // V0-2
     // IDEA : PQ (priority queue)
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int[] topKFrequent_0_2(int[] nums, int k) {
 
         // O(1) time
@@ -260,6 +276,10 @@ public class TopKFrequentElements {
 
     // V0-3
     // IDEA : HASH MAP + PQ (by GPT)
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int[] topKFrequent_0_3(int[] nums, int k) {
 
         // Step 1. Count the frequency of each element
@@ -293,6 +313,10 @@ public class TopKFrequentElements {
 
     // V0-4
     // IDEA : PQ + MAP
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int[] topKFrequent_0_4(int[] nums, int k) {
 
         if (nums.length == 1){
@@ -333,6 +357,10 @@ public class TopKFrequentElements {
     // V1
     // IDEA : HEAP
     // https://leetcode.com/problems/top-k-frequent-elements/editorial/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int[] topKFrequent_2(int[] nums, int k) {
         // O(1) time
         if (k == nums.length) {
@@ -371,13 +399,19 @@ public class TopKFrequentElements {
     // https://leetcode.com/problems/top-k-frequent-elements/editorial/
     int[] unique;
     Map<Integer, Integer> count;
-
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public void swap(int a, int b) {
         int tmp = unique[a];
         unique[a] = unique[b];
         unique[b] = tmp;
     }
-
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int partition(int left, int right, int pivot_index) {
         int pivot_frequency = count.get(unique[pivot_index]);
         // 1. move pivot to end
@@ -397,7 +431,10 @@ public class TopKFrequentElements {
 
         return store_index;
     }
-
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public void quickselect(int left, int right, int k_smallest) {
         /*
         Sort a list within left..right till kth less frequent element
@@ -425,7 +462,10 @@ public class TopKFrequentElements {
             quickselect(pivot_index + 1, right, k_smallest);
         }
     }
-
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int[] topKFrequent_3(int[] nums, int k) {
         // build hash map : character and how often it appears
         count = new HashMap();

@@ -60,14 +60,6 @@ public class CountTheNumberOfGoodPartitions {
      * time = O(N)
      * space = O(N)
      */
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
     public int numberOfGoodPartitions_0_1(int[] nums) {
         final int MOD = 1_000_000_007;
         int n = nums.length;
@@ -122,14 +114,6 @@ public class CountTheNumberOfGoodPartitions {
      * Counts the total number of good partitions.
      * Time Complexity: O(N)
      * Space Complexity: O(N)
-     */
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
-    /**
-     * time = O(N)
-     * space = O(N)
      */
     /**
      * time = O(N)
@@ -193,14 +177,6 @@ public class CountTheNumberOfGoodPartitions {
      * time = O(N)
      * space = O(N)
      */
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
     public int numberOfGoodPartitions_1(int[] A) {
         int res = 1, n = A.length, mod = 1000000007;
         Map<Integer, Integer> last = new HashMap<>();
@@ -219,28 +195,12 @@ public class CountTheNumberOfGoodPartitions {
      * time = O(N)
      * space = O(N)
      */
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
     public long power(long b, long p, long m) {
         if (p == 0)
             return 1;
         long t = power(b, p / 2, m);
         return (p % 2 == 1) ? ((((t * t) % m) * b) % m) : (t * t) % m;
     }
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
     /**
      * time = O(N)
      * space = O(N)

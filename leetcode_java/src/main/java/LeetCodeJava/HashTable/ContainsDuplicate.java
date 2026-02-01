@@ -13,14 +13,6 @@ public class ContainsDuplicate {
      * time = O(N)
      * space = O(N)
      */
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
     public boolean containsDuplicate(int[] nums) {
         Set<Integer> set = new HashSet<>();
         for (int x : nums){
@@ -30,14 +22,6 @@ public class ContainsDuplicate {
     }
 
     // V1
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
     /**
      * time = O(N)
      * space = O(N)

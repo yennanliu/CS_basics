@@ -80,6 +80,10 @@ public class RelocateMarbles {
      *    NOT the actual position (idx) of every single marble
      *
      */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public List<Integer> relocateMarbles_0_0_1(int[] nums, int[] moveFrom, int[] moveTo) {
         // edge
         List<Integer> res = new ArrayList<>();
@@ -109,7 +113,11 @@ public class RelocateMarbles {
         // sort
         Collections.sort(res, new Comparator<Integer>() {
             @Override
-            public int compare(Integer o1, Integer o2) {
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    public int compare(Integer o1, Integer o2) {
                 int diff = o1 - o2;
                 return diff;
             }
@@ -145,6 +153,10 @@ public class RelocateMarbles {
      * @param moveFrom Array of starting positions for moves.
      * @param moveTo Array of destination positions for moves.
      * @return A sorted list of the final unique positions.
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
      */
     public List<Integer> relocateMarbles_0_1(int[] nums, int[] moveFrom, int[] moveTo) {
 
@@ -199,6 +211,10 @@ public class RelocateMarbles {
 
     // V0-2
     // IDEA: SET (gpt)
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public List<Integer> relocateMarbles_0_2(int[] nums, int[] moveFrom, int[] moveTo) {
 
         // Use a set because only unique positions matter
@@ -228,6 +244,10 @@ public class RelocateMarbles {
     // V1
     // IDEA: HASHMAP
     // https://leetcode.com/problems/relocate-marbles/solutions/3737295/cjavapython-clean-code-using-map-by-adit-5oxa/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public List<Integer> relocateMarbles_1(int[] nums, int[] moveFrom, int[] moveTo) {
         Map<Integer, Integer> map = new HashMap<>(); // Map to store the count of marbles
 
@@ -255,6 +275,10 @@ public class RelocateMarbles {
     // V2
     // IDEA: SET
     // https://leetcode.com/problems/relocate-marbles/solutions/7218887/java-easy-100-solution-by-ytchouar-gowg/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public List<Integer> relocateMarbles_2(final int[] nums, final int[] moveFrom, final int[] moveTo) {
         final int n = moveFrom.length;
         final Set<Integer> set = new HashSet<>();
@@ -278,6 +302,10 @@ public class RelocateMarbles {
     // V3
     // IDEA: SET
     // https://leetcode.com/problems/relocate-marbles/solutions/6848791/most-simple-java-solution-beginner-frien-8vsf/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public List<Integer> relocateMarbles_3(int[] nums, int[] moveFrom, int[] moveTo) {
         Set<Integer> set=new HashSet<>();
         for(int i=0;i<nums.length;i++){

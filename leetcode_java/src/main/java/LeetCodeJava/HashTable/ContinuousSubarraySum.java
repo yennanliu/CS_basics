@@ -65,14 +65,6 @@ public class ContinuousSubarraySum {
      * time = O(N)
      * space = O(N)
      */
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
     public boolean checkSubarraySum(int[] nums, int k) {
         if (nums.length < 2) {
             return false;
@@ -110,14 +102,6 @@ public class ContinuousSubarraySum {
     }
 
     // V0-1
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
     /**
      * time = O(N)
      * space = O(N)
@@ -192,14 +176,6 @@ public class ContinuousSubarraySum {
      * time = O(N)
      * space = O(N)
      */
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
     public boolean checkSubarraySum_0_2(int[] nums, int k) {
 
         if (nums.length < 2) {
@@ -238,14 +214,6 @@ public class ContinuousSubarraySum {
      * time = O(N)
      * space = O(N)
      */
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
     public boolean checkSubarraySum_1(int[] nums, int k) {
         int prefixMod = 0;
         HashMap<Integer, Integer> modSeen = new HashMap<>();
@@ -275,14 +243,6 @@ public class ContinuousSubarraySum {
     // V2
     // IDEA : HASHMAP
     // https://leetcode.com/problems/continuous-subarray-sum/solutions/1405425/a-java-implementation-of-prefix-sum-that-si0m/
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
     /**
      * time = O(N)
      * space = O(N)

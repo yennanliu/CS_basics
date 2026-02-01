@@ -11,6 +11,10 @@ public class StrobogrammaticNumber {
 
     // V1
     // https://leetcode.com/problems/strobogrammatic-number/solutions/67188/4-lines-in-java/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public boolean isStrobogrammatic(String num) {
         for (int i=0, j=num.length()-1; i <= j; i++, j--)
             if (!"00 11 88 696".contains(num.charAt(i) + "" + num.charAt(j)))
@@ -20,6 +24,10 @@ public class StrobogrammaticNumber {
 
     // V2
     // https://leetcode.com/problems/strobogrammatic-number/solutions/3350263/java-simple-solution/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public boolean isStrobogrammatic_2(String num) {
         Map<Character, Character> map = new HashMap<Character, Character>();
         map.put('6', '9');

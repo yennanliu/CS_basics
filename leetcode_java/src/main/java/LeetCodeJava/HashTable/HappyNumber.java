@@ -10,14 +10,6 @@ public class HappyNumber {
      * time = O(N)
      * space = O(N)
      */
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
     public boolean isHappy(int n) {
 
         Set<Integer> seen = new HashSet<>();

@@ -66,14 +66,6 @@ public class ContiguousArray {
      * time = O(N)
      * space = O(N)
      */
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
     public int findMaxLength_0_1(int[] nums) {
 
     // Map: {count -> first index where this count occurred}
@@ -147,14 +139,6 @@ public class ContiguousArray {
      * time = O(N)
      * space = O(N)
      */
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
     public int findMaxLength_0_2(int[] nums) {
 
         // edge
@@ -194,14 +178,6 @@ public class ContiguousArray {
      * time = O(N)
      * space = O(N)
      */
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
     public int findMaxLength_1_1(int[] nums) {
         int maxlen = 0;
         for (int start = 0; start < nums.length; start++) {
@@ -223,14 +199,6 @@ public class ContiguousArray {
   // V1-2
   // https://leetcode.com/problems/contiguous-array/editorial/
   // IDEA: HASHMAP
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
     /**
      * time = O(N)
      * space = O(N)

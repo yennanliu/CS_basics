@@ -76,14 +76,6 @@ public class CountTheNumberOfSpecialCharacters2 {
      * time = O(N)
      * space = O(N)
      */
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
     public int numberOfSpecialChars_0_0_1(String word) {
         if (word == null || word.isEmpty()) {
             return 0;
@@ -149,14 +141,6 @@ public class CountTheNumberOfSpecialCharacters2 {
      * the FIRST uppercase occurrence.
      * * Time Complexity: O(N)
      * Space Complexity: O(N)
-     */
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
-    /**
-     * time = O(N)
-     * space = O(N)
      */
     /**
      * time = O(N)
@@ -247,14 +231,6 @@ public class CountTheNumberOfSpecialCharacters2 {
      * time = O(N)
      * space = O(N)
      */
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
     public int numberOfSpecialChars_0_2(String word) {
         if (word == null || word.isEmpty())
             return 0;
@@ -304,14 +280,6 @@ public class CountTheNumberOfSpecialCharacters2 {
      * time = O(N)
      * space = O(N)
      */
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
     public int numberOfSpecialChars_1_1(String word) {
         boolean[] lo = new boolean[26], up = new boolean[26];
         int res = 0;
@@ -328,14 +296,6 @@ public class CountTheNumberOfSpecialCharacters2 {
 
     // V2
     // https://leetcode.com/problems/count-the-number-of-special-characters-ii/solutions/5052488/simple-java-solution-by-siddhant_1602-1ote/
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
     /**
      * time = O(N)
      * space = O(N)
@@ -374,14 +334,6 @@ public class CountTheNumberOfSpecialCharacters2 {
      * time = O(N)
      * space = O(N)
      */
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
     public int numberOfSpecialChars_3(String word) {
         Map<Character, Integer> firstUpperCasePos = new HashMap<>();
         Map<Character, Integer> lastLowerCasePos = new HashMap<>();
@@ -411,14 +363,6 @@ public class CountTheNumberOfSpecialCharacters2 {
 
     // V4
     // https://leetcode.com/problems/count-the-number-of-special-characters-ii/solutions/6979560/simple-solution-without-using-hash-map-b-gz0m/
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
     /**
      * time = O(N)
      * space = O(N)

@@ -63,14 +63,6 @@ public class LongestHarmoniousSubsequence {
      * time = O(N)
      * space = O(N)
      */
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
     public int findLHS(int[] nums) {
         // edge
         if (nums == null || nums.length == 0) {
@@ -122,14 +114,6 @@ public class LongestHarmoniousSubsequence {
      * time = O(N)
      * space = O(N)
      */
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
     public int findLHS_1(int[] nums) {
         Map<Integer, Integer> counter = new HashMap<>();
         for (int num : nums) {
@@ -147,14 +131,6 @@ public class LongestHarmoniousSubsequence {
     // V2-1
     // IDEA: SORT + ARRAY
     // https://leetcode.com/problems/longest-harmonious-subsequence/solutions/6899953/beginner-freindlyjavacpythonjs-by-ashokv-7can/
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
     /**
      * time = O(N)
      * space = O(N)
@@ -178,14 +154,6 @@ public class LongestHarmoniousSubsequence {
     // V2-2
     // IDEA: HASHMAP
     // https://leetcode.com/problems/longest-harmonious-subsequence/solutions/6899953/beginner-freindlyjavacpythonjs-by-ashokv-7can/
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
-    /**
-     * time = O(N)
-     * space = O(N)
-     */
     /**
      * time = O(N)
      * space = O(N)
