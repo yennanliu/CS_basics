@@ -416,6 +416,10 @@ public class MaximumProductSubarray {
     //        But, also needs to consider "minus number"
     //        -> e.g.  (-1) * (-3) = 3
     //        -> so we NEED to track maxSoFar, and minSoFar
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int maxProduct_0_2(int[] nums) {
 
         // null check
@@ -482,6 +486,10 @@ public class MaximumProductSubarray {
 
     // V0-3
     // IDEA: BRUTE FORCE (2 pointers) + boundary handling
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int maxProduct_0_3(int[] nums) {
 
         // edge
@@ -517,6 +525,10 @@ public class MaximumProductSubarray {
     // V1-1
     // https://neetcode.io/problems/maximum-product-subarray
     // IDEA: BRUTE FORCE
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int maxProduct_1_1(int[] nums) {
         int res = nums[0];
 
@@ -535,6 +547,10 @@ public class MaximumProductSubarray {
     // V1-2
     // https://neetcode.io/problems/maximum-product-subarray
     // IDEA: Sliding Window
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int maxProduct_1_2(int[] nums) {
         List<List<Integer>> A = new ArrayList<>();
         List<Integer> cur = new ArrayList<>();
@@ -578,6 +594,10 @@ public class MaximumProductSubarray {
     // V1-3
     // https://neetcode.io/problems/maximum-product-subarray
     // IDEA: Kadane's Algorithm ***
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int maxProduct_1_3(int[] nums) {
         int res = nums[0];
         int curMin = 1, curMax = 1;
@@ -595,6 +615,10 @@ public class MaximumProductSubarray {
     // V1-4
     // https://neetcode.io/problems/maximum-product-subarray
     // IDEA: PREFIX + SUFFIX
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int maxProduct_1_4(int[] nums) {
         int n = nums.length;
         int res = nums[0];
@@ -613,6 +637,10 @@ public class MaximumProductSubarray {
     // IDEA : For each index i keep updating the max and min. We are also keeping min because on multiplying with any negative number your min will become max and max will become min. So for every index i we will take max of (i-th element, prevMax * i-th element, prevMin * i-th element).
     // -> max of (i-th element, prevMax * i-th element, prevMin * i-th element)
     // https://leetcode.com/problems/maximum-product-subarray/solutions/1608862/java-3-solutions-detailed-explanation-using-image/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int maxProduct_2(int[] nums) {
 
         int max = nums[0], min = nums[0], ans = nums[0];
@@ -635,6 +663,10 @@ public class MaximumProductSubarray {
     // V3
     // IDEA : Just the slight modification of previous approach.As we know that on multiplying with negative number max will become min and min will become max, so why not as soon as we encounter negative element, we swap the max and min already.
     // https://leetcode.com/problems/maximum-product-subarray/solutions/1608862/java-3-solutions-detailed-explanation-using-image/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int maxProduct_3(int[] nums) {
 
         int max = nums[0], min = nums[0], ans = nums[0];
@@ -661,6 +693,10 @@ public class MaximumProductSubarray {
     // V4
     // IDEA : 2 POINTERS
     // https://leetcode.com/problems/maximum-product-subarray/solutions/1608862/java-3-solutions-detailed-explanation-using-image/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int maxProduct_4(int[] nums) {
 
         int n = nums.length;

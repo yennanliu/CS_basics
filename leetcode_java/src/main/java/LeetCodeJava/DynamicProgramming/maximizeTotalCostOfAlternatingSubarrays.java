@@ -59,6 +59,10 @@ public class maximizeTotalCostOfAlternatingSubarrays {
     // V1
     // IDEA : DP
     // https://leetcode.com/problems/maximize-total-cost-of-alternating-subarrays/solutions/5355800/simple-dp-approach-memorization-java-c-python/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public long maximumTotalCost_1(int[] nums) {
         if (nums.length == 1) {
             return nums[0];
@@ -82,6 +86,10 @@ public class maximizeTotalCostOfAlternatingSubarrays {
     // V2
     // IDEA : DP
     // https://leetcode.com/problems/maximize-total-cost-of-alternating-subarrays/solutions/5355138/dynamic-programming-and-space-optimized-beats-100-easy-to-understand/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public long maximumTotalCost_2(int[] nums) {
         int n = nums.length;
         long addResult = nums[0];

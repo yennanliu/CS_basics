@@ -46,6 +46,10 @@ public class MaximalSquare {
     // V1
     // IDEA : DP
     // https://leetcode.com/problems/maximal-square/solutions/61876/accepted-clean-java-dp-solution/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int maximalSquare_1(char[][] a) {
         if (a == null || a.length == 0 || a[0].length == 0)
             return 0;
@@ -120,6 +124,10 @@ public class MaximalSquare {
     // V2
     // IDEA : DP
     // https://leetcode.com/problems/maximal-square/solutions/61805/evolve-from-brute-force-to-dp/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int maximalSquare_2(char[][] matrix) {
         int r=matrix.length;
         if(r==0) return 0;
@@ -137,6 +145,10 @@ public class MaximalSquare {
     // V3_1
     // IDEA : DP
     // https://leetcode.com/problems/maximal-square/solutions/61828/my-java-dp-ac-solution-simple-and-easy-to-understand-with-explanation/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int maximalSquare_3_1(char[][] matrix) {
 
         //illegal check - no square can be formed
@@ -189,6 +201,10 @@ public class MaximalSquare {
 
     // V3_2
     // https://leetcode.com/problems/maximal-square/solutions/61828/my-java-dp-ac-solution-simple-and-easy-to-understand-with-explanation/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int maximalSquare_3_2(char[][] matrix) {
 
         if(matrix == null || matrix.length == 0) return 0;

@@ -54,6 +54,10 @@ public class MaxSumOfRectangleNoLargerThanK {
     // V1
     // IDEA : DP
     // https://leetcode.com/problems/max-sum-of-rectangle-no-larger-than-k/solutions/2492107/easy-dp-beginner-level-easy-solution/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int maxSumSubmatrix_1(int[][] matrix, int tar) {
         int n=matrix.length,m=matrix[0].length,i,j,k,l,dp[][] = new int[n][m],val,max=Integer.MIN_VALUE,target=tar;
         for(i=0;i<n;i++){
@@ -86,6 +90,10 @@ public class MaxSumOfRectangleNoLargerThanK {
     // V2_1
     // IDEA : DP
     // https://leetcode.com/problems/max-sum-of-rectangle-no-larger-than-k/solutions/2488344/java-easy-and-simple-solution-90-faster-code/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int maxSumSubmatrix_2_1(int[][] arr, int k) {
         int rows = arr.length;
         int cols = arr[0].length;
@@ -104,6 +112,10 @@ public class MaxSumOfRectangleNoLargerThanK {
         }
         return maxK;
     }
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int maxSubArray(int[] arr, int k) {
         int max = Integer.MIN_VALUE;
         int currSum = 0;
@@ -123,6 +135,10 @@ public class MaxSumOfRectangleNoLargerThanK {
     // V3_1
     // https://leetcode.com/problems/max-sum-of-rectangle-no-larger-than-k/solutions/2488527/java-beats-100-32ms-kadane-s-algorithm-and-faster-approach-w-video-explanation/
     // IDEA : Kadane's Algorithm
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int maxSumSubmatrix_3_1(int[][] matrix, int k) {
         int result = Integer.MIN_VALUE;
 
@@ -160,6 +176,10 @@ public class MaxSumOfRectangleNoLargerThanK {
 
     // V3_2
     // https://leetcode.com/problems/max-sum-of-rectangle-no-larger-than-k/solutions/2488527/java-beats-100-32ms-kadane-s-algorithm-and-faster-approach-w-video-explanation/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int maxSumSubmatrix_3_2(int[][] matrix, int k) {
         for (int i = 0; i < matrix.length; i++) {
             for (int j = 0; j < matrix[0].length; j++) {

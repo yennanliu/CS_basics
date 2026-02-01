@@ -104,6 +104,10 @@ public class LongestIncreasingPathInAMatrix {
      */
     private int[][] memo;
 
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public int longestIncreasingPath_0_1(int[][] matrix) {
         if (matrix == null || matrix.length == 0)
             return 0;
@@ -239,6 +243,10 @@ public class LongestIncreasingPathInAMatrix {
     private int[][] memo_0_2;
     private int rows, cols;
 
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public int longestIncreasingPath_0_2(int[][] matrix) {
         if (matrix == null || matrix.length == 0 || matrix[0].length == 0)
             return 0;
@@ -337,6 +345,10 @@ public class LongestIncreasingPathInAMatrix {
         return res;
     }
 
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public int longestIncreasingPath_1_1(int[][] matrix) {
         int ROWS = matrix.length, COLS = matrix[0].length;
         int LIP = 0;
@@ -370,6 +382,10 @@ public class LongestIncreasingPathInAMatrix {
         return dp[r][c] = res;
     }
 
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public int longestIncreasingPath_1_2(int[][] matrix) {
         int ROWS = matrix.length, COLS = matrix[0].length;
         int LIP = 0;
@@ -390,6 +406,10 @@ public class LongestIncreasingPathInAMatrix {
     // V1-3
     // https://neetcode.io/problems/longest-increasing-path-in-matrix
     // IDEA:  Topological Sort (Kahn's Algorithm)
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public int longestIncreasingPath_1_3(int[][] matrix) {
         int ROWS = matrix.length, COLS = matrix[0].length;
         int[][] indegree = new int[ROWS][COLS];

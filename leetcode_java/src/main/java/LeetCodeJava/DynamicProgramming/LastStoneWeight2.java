@@ -56,6 +56,10 @@ public class LastStoneWeight2 {
     // V2-1
     // IDEA: 2D DP
     // https://leetcode.com/problems/last-stone-weight-ii/solutions/6703781/3-ways-1d-and-2d-tabulation-and-recursiv-6wbl/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int lastStoneWeightII_2_1(int[] stones) {
         int sum = 0;
         // Step 1: Calculate total sum
@@ -94,6 +98,10 @@ public class LastStoneWeight2 {
     // V2-2
     // https://leetcode.com/problems/last-stone-weight-ii/solutions/6703781/3-ways-1d-and-2d-tabulation-and-recursiv-6wbl/
     // IDEA:  (Optimized 1D DP Approach)
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int lastStoneWeightII_2_2(int[] stones) {
         int n = stones.length, sum = 0;
         for (int w : stones)
@@ -121,6 +129,10 @@ public class LastStoneWeight2 {
     // V2-3
     // https://leetcode.com/problems/last-stone-weight-ii/solutions/6703781/3-ways-1d-and-2d-tabulation-and-recursiv-6wbl/
     // IDEA: 2D DP with Explicit Recursive Check
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int lastStoneWeightII_2_3(int[] stones) {
         int sum = 0;
         for (int stone : stones) {
@@ -165,6 +177,10 @@ public class LastStoneWeight2 {
     // V3
     // https://leetcode.com/problems/last-stone-weight-ii/solutions/1272897/simple-java-implementation-knapsack-by-p-yuov/
     // IDEA: DP
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int lastStoneWeightII_3(int[] stones) {
         int sumStWt = 0;
         for (int stone : stones) {
@@ -190,6 +206,10 @@ public class LastStoneWeight2 {
 
     // V4
     // IDEA: DP (gpt)
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int lastStoneWeightII_4(int[] stones) {
         int total = 0;
         for (int stone : stones) {

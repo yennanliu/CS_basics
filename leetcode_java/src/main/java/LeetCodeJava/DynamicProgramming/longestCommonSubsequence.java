@@ -103,6 +103,10 @@ public class longestCommonSubsequence {
 
     // V0-0-1
     // IDEA: BOTTOM UP 2D DP (gemini)
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public int longestCommonSubsequence_0_0_1(String text1, String text2) {
         int l1 = text1.length();
         int l2 = text2.length();
@@ -174,6 +178,10 @@ public class longestCommonSubsequence {
 
     // V0-1
     // IDEA: RECURSION (gpt) (TLE)
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public int longestCommonSubsequence_0_1(String text1, String text2) {
         return lcs(text1, text2, 0, 0);
     }
@@ -191,6 +199,10 @@ public class longestCommonSubsequence {
 
     // V0-2
     // IDEA: TOP DOWN DP (gpt)
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public int longestCommonSubsequence_0_2(String text1, String text2) {
         int[][] memo = new int[text1.length()][text2.length()];
         for (int[] row : memo) {
@@ -217,6 +229,10 @@ public class longestCommonSubsequence {
 
     // V0-3
     // IDEA: BOTTOM UP 2D DP (GPT)
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public int longestCommonSubsequence_0_3(String text1, String text2) {
         int m = text1.length();
         int n = text2.length();
@@ -238,6 +254,10 @@ public class longestCommonSubsequence {
 
     //  V0-4
     // IDEA: BOTTOM UP 2D DP WITH SPACE OPTIMIZATION (GPT)
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public int longestCommonSubsequence_0_4(String text1, String text2) {
         int m = text1.length();
         int n = text2.length();
@@ -264,6 +284,10 @@ public class longestCommonSubsequence {
     // V1-1
     // https://neetcode.io/problems/longest-common-subsequence
     // IDEA: RECURSION
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public int longestCommonSubsequence_1_1(String text1, String text2) {
         return dfs(text1, text2, 0, 0);
     }
@@ -284,6 +308,10 @@ public class longestCommonSubsequence {
     // IDEA:  Dynamic Programming (Top-Down)
     private int[][] memo;
 
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public int longestCommonSubsequence_1_2(String text1, String text2) {
         memo = new int[text1.length()][text2.length()];
         for (int i = 0; i < text1.length(); i++) {
@@ -314,6 +342,10 @@ public class longestCommonSubsequence {
     // V1-3
     // https://neetcode.io/problems/longest-common-subsequence
     // IDEA: Dynamic Programming (Bottom-Up)
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public int longestCommonSubsequence_1_3(String text1, String text2) {
         int[][] dp = new int[text1.length() + 1][text2.length() + 1];
 
@@ -333,6 +365,10 @@ public class longestCommonSubsequence {
     // V1-4
     // https://neetcode.io/problems/longest-common-subsequence
     // IDEA: Dynamic Programming (Space Optimized)
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public int longestCommonSubsequence_1_4(String text1, String text2) {
         if (text1.length() < text2.length()) {
             String temp = text1;
@@ -363,6 +399,10 @@ public class longestCommonSubsequence {
     // V1-5
     // https://neetcode.io/problems/longest-common-subsequence
     // IDEA: Dynamic Programming (Optimal)
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public int longestCommonSubsequence_1_5(String text1, String text2) {
         if (text1.length() < text2.length()) {
             String temp = text1;
@@ -392,6 +432,10 @@ public class longestCommonSubsequence {
     // V2
     // IDEA: DP
     // https://leetcode.com/problems/longest-common-subsequence/solutions/4622129/beats-100-dynamic-programming-cjavapytho-dqsy/
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public int longestCommonSubsequence_2(String text1, String text2) {
         // Lengths of the input strings
         int length1 = text1.length();
@@ -423,6 +467,10 @@ public class longestCommonSubsequence {
     // V3
     // IDEA: DP
     // https://leetcode.com/problems/longest-common-subsequence/solutions/6027437/video-dynamic-programming-solution-by-ni-9sc6/
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public int longestCommonSubsequence_3(String text1, String text2) {
         int[] dp = new int[text1.length()];
         int longest = 0;
