@@ -78,6 +78,10 @@ public class MaximumNumberOfMovesInAGrid {
 
    // V0-0-1
    // IDEA: BFS + NOT VISITED (fixed by gemini)
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public int maxMoves_0_0_1(int[][] grid) {
         // Edge cases
         if (grid == null || grid.length == 0 || grid[0].length == 0) {
@@ -193,6 +197,10 @@ public class MaximumNumberOfMovesInAGrid {
     // IDEA: DFS (fixed by gpt)
     // TLE error -> should use `DFS + MEMORIZATION` (as below)
     int maxMoveCnt = 0;
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public int maxMoves_0_0_2(int[][] grid) {
         int m = grid.length;
         int n = grid[0].length;
@@ -224,6 +232,10 @@ public class MaximumNumberOfMovesInAGrid {
 
     // V0-0-3
     // IDEA: DFS + MEMORIZATION (fixed by gpt)
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public int maxMoves(int[][] grid) {
         int m = grid.length;
         int n = grid[0].length;
@@ -269,6 +281,10 @@ public class MaximumNumberOfMovesInAGrid {
     // V0-4
     // IDEA: DP (gemini)
     // https://buildmoat.teachable.com/courses/7a7af3/lectures/63789835
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     /**
      *  IDEA:
      *
@@ -413,6 +429,10 @@ public class MaximumNumberOfMovesInAGrid {
     private int rows, cols;
     private int[][] directions = { { -1, 1 }, { 0, 1 }, { 1, 1 } }; // right-up, right, right-down
 
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public int maxMoves_0_1(int[][] grid) {
         this.grid = grid;
         this.rows = grid.length;
@@ -454,6 +474,10 @@ public class MaximumNumberOfMovesInAGrid {
 
     // V0-2
     // IDEA: BFS (gpt)
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public int maxMoves_0_2(int[][] grid) {
         int rows = grid.length;
         int cols = grid[0].length;
@@ -491,6 +515,10 @@ public class MaximumNumberOfMovesInAGrid {
 
     // V0-3
     // IDEA: DP (gemini)
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public int maxMoves_0_3(int[][] grid) {
         if (grid == null || grid.length == 0 || grid[0].length == 0) {
             return 0;
@@ -650,6 +678,10 @@ public class MaximumNumberOfMovesInAGrid {
     // https://leetcode.com/problems/maximum-number-of-moves-in-a-grid/editorial/
     // The three possible directions for the next column.
     private final int[] dirs = { -1, 0, 1 };
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public int maxMoves_1_1(int[][] grid) {
         int M = grid.length, N = grid[0].length;
 
@@ -706,6 +738,10 @@ public class MaximumNumberOfMovesInAGrid {
 
     // The three possible directions for the next column.
     //private final int[] dirs = { -1, 0, 1 };
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     private int DFS(int row, int col, int[][] grid, int[][] dp) {
         int M = grid.length, N = grid[0].length;
 
@@ -739,6 +775,10 @@ public class MaximumNumberOfMovesInAGrid {
         return maxMoves;
     }
 
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public int maxMoves_1_2(int[][] grid) {
         int M = grid.length, N = grid[0].length;
 
@@ -761,6 +801,10 @@ public class MaximumNumberOfMovesInAGrid {
     // V1-3
     // IDEA:  Bottom-up Dynamic Programming
     // https://leetcode.com/problems/maximum-number-of-moves-in-a-grid/editorial/
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public int maxMoves_1_3(int[][] grid) {
         int M = grid.length, N = grid[0].length;
 
@@ -808,6 +852,10 @@ public class MaximumNumberOfMovesInAGrid {
     // V1-4
     // IDEA: Space-Optimized Bottom-up Dynamic Programming
     // https://leetcode.com/problems/maximum-number-of-moves-in-a-grid/editorial/
+    /**
+     * time = O(M * N)
+     * space = O(M)
+     */
     public int maxMoves_1_4(int[][] grid) {
         int M = grid.length, N = grid[0].length;
 

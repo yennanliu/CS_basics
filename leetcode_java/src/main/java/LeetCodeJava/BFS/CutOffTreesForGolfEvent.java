@@ -68,6 +68,10 @@ public class CutOffTreesForGolfEvent {
     private int cols;
     private final int[][] MOVES = new int[][] { { 0, 1 }, { 0, -1 }, { 1, 0 }, { -1, 0 } };
 
+    /**
+     * time = O(M * N * M * N)
+     * space = O(M * N)
+     */
     public int cutOffTree_0_0_1(List<List<Integer>> forest) {
         if (forest == null || forest.isEmpty() || forest.get(0).isEmpty()) {
             return 0;
@@ -216,6 +220,10 @@ public class CutOffTreesForGolfEvent {
 
     // V0-1
     // IDEA: val Sort + Loop & call BFS (fixed by gpt)
+    /**
+     * time = O(M * N * M * N)
+     * space = O(M * N)
+     */
     public int cutOffTree_0_1(List<List<Integer>> forest) {
         if (forest == null || forest.size() == 0 || forest.get(0).size() == 0) {
             return -1;
@@ -304,6 +312,10 @@ public class CutOffTreesForGolfEvent {
     // IDEA: val Sort + Loop & call BFS (fixed by gemini)
     // Global variables for grid dimensions
     private int R, C;
+    /**
+     * time = O(M * N * M * N)
+     * space = O(M * N)
+     */
     public int cutOffTree_0_2(List<List<Integer>> forest) {
         if (forest == null || forest.isEmpty() || forest.get(0).isEmpty()) {
             return 0;
@@ -419,6 +431,10 @@ public class CutOffTreesForGolfEvent {
     private int m;
     private int n;
 
+    /**
+     * time = O((V + E) log V)
+     * space = O(V)
+     */
     public int cutOffTree_1(List<List<Integer>> forest) {
         this.forest = forest;
         m = forest.size();
@@ -484,6 +500,10 @@ public class CutOffTreesForGolfEvent {
     int[] dx = { 0, 0, 1, -1 };
     int[] dy = { 1, -1, 0, 0 };
 
+    /**
+     * time = O(M * N * M * N)
+     * space = O(M * N)
+     */
     public int cutOffTree_2(List<List<Integer>> forest) {
         if (forest.get(0).get(0) == 0)
             return -1;
@@ -561,6 +581,10 @@ public class CutOffTreesForGolfEvent {
 //    private int cols;
 //    private final int[][] MOVES = new int[][] { { 0, 1 }, { 0, -1 }, { 1, 0 }, { -1, 0 } };
 
+    /**
+     * time = O((V + E) log V)
+     * space = O(V)
+     */
     public int cutOffTree_5(List<List<Integer>> forest) {
         if (forest == null || forest.isEmpty() || forest.get(0).isEmpty()) {
             return 0;

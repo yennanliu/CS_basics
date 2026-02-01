@@ -11,6 +11,10 @@ public class DeleteNodesAndReturnForest {
     // V0
     // IDEA : BFS
     // TODO : implement by my way
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public List<TreeNode> delNodes(TreeNode root, int[] to_delete) {
         if (root == null) {
             return new ArrayList<>();
@@ -124,10 +128,14 @@ public class DeleteNodesAndReturnForest {
      *       - handle to-delete node and its sub tree
      *       - collect node when node is/isn't in to-delete list
      *
-     *   3. Why Nodes Aren’t Missed:
+     *   3. Why Nodes Aren't Missed:
      * 	    - Root Node: If the root is not deleted, it is added to the forest. If it is deleted, any non-null children of the root will be added to the forest as new tree roots during the BFS traversal.
      *      - Other Nodes: During the BFS traversal, every node is processed. If a node is not in the toDeleteSet, it remains connected to its parent. If the node is in the toDeleteSet, its children (if any) are added to the forest.
      *
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
      */
     public List<TreeNode> delNodes_1(TreeNode root, int[] to_delete) {
         List<TreeNode> result = new ArrayList<>();
@@ -188,14 +196,14 @@ public class DeleteNodesAndReturnForest {
      *    when forest.add(root); is outside of wheile loop
      *
      * 	1.	Handling the Root Node:
-     * 	    •	The root node is special because it’s the starting point of the tree. If the root node is not in the toDeleteSet, it means the entire original tree (minus any deleted nodes) should be part of the resulting forest. Therefore, adding the root node to the forest outside the loop is correct.
+     * 	    •	The root node is special because it's the starting point of the tree. If the root node is not in the toDeleteSet, it means the entire original tree (minus any deleted nodes) should be part of the resulting forest. Therefore, adding the root node to the forest outside the loop is correct.
      *
      *  2.	Processing All Other Nodes:
      * 	    •	Inside the while loop, the BFS traversal ensures that every node in the tree is visited.
-     * 	    •	For each node that needs to be deleted (i.e., if it’s in the toDeleteSet), its non-null children are added to the forest if they exist. This ensures that any subtree roots formed by deleting nodes are included in the forest.
+     * 	    •	For each node that needs to be deleted (i.e., if it's in the toDeleteSet), its non-null children are added to the forest if they exist. This ensures that any subtree roots formed by deleting nodes are included in the forest.
      * 	    •	For nodes that are not in the toDeleteSet, they remain part of the tree rooted at the original root, and since the root is checked outside the loop, the entire connected component of nodes is correctly handled.
      *
-     * 	3.	Why Nodes Aren’t Missed:
+     * 	3.	Why Nodes Aren't Missed:
      * 	    •	Root Node: If the root is not deleted, it is added to the forest. If it is deleted, any non-null children of the root will be added to the forest as new tree roots during the BFS traversal.
      * 	    •	Other Nodes: During the BFS traversal, every node is processed. If a node is not in the toDeleteSet, it remains connected to its parent. If the node is in the toDeleteSet, its children (if any) are added to the forest.
      *
@@ -206,6 +214,10 @@ public class DeleteNodesAndReturnForest {
      *    is correctly added to the forest.
      *    Since BFS covers all nodes, no nodes are missed.
      *
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
      */
     public List<TreeNode> delNodes_2(TreeNode root, int[] to_delete) {
         if (root == null) {
@@ -263,6 +275,10 @@ public class DeleteNodesAndReturnForest {
     // V2_1
     // IDEA :  Recursion (Postorder Traversal)
     // https://leetcode.com/problems/delete-nodes-and-return-forest/editorial/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public List<TreeNode> delNodes_2_1(TreeNode root, int[] to_delete) {
         Set<Integer> toDeleteSet = new HashSet<>();
         for (int val : to_delete) {

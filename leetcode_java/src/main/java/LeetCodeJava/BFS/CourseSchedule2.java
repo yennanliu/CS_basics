@@ -57,6 +57,10 @@ public class CourseSchedule2 {
     // V0
     // IDEA : TOPOLOGICAL SORT (cur - pre map) (fixed by gpt)
     /** NOTE !!! we CAN'T use `quick union` for this problem */
+    /**
+     * time = O(V + E)
+     * space = O(V + E)
+     */
     public int[] findOrder(int numCourses, int[][] prerequisites) {
         // edge
         if (numCourses == 0) {
@@ -176,6 +180,10 @@ public class CourseSchedule2 {
     // V0-1
     // IDEA : TOPOLOGICAL SORT (fixed by gpt)
     /** NOTE !!! we CAN'T use `quick union` for this problem */
+    /**
+     * time = O(V + E)
+     * space = O(V + E)
+     */
     public int[] findOrder_0_1_1(int numCourses, int[][] prerequisites) {
         // Edge case: no prerequisites
         if (prerequisites == null || prerequisites.length == 0) {
@@ -265,6 +273,10 @@ public class CourseSchedule2 {
     // V0-1
     // IDEA : TOPOLOGICAL SORT (fixed by gpt)
     // ref : https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/AlgorithmJava/TopologicalSortV2.java
+    /**
+     * time = O(V + E)
+     * space = O(V + E)
+     */
     public int[] findOrder_0_1(int numCourses, int[][] prerequisites) {
         if (numCourses == 1) {
             return new int[]{0};
@@ -359,6 +371,10 @@ public class CourseSchedule2 {
     // V1-1
     // https://neetcode.io/problems/course-schedule-ii
     // IDEA:  Cycle Detection (DFS)
+    /**
+     * time = O(V + E)
+     * space = O(V + E)
+     */
     public int[] findOrder_1_1(int numCourses, int[][] prerequisites) {
         Map<Integer, List<Integer>> prereq = new HashMap<>();
         for (int[] pair : prerequisites) {
@@ -409,6 +425,10 @@ public class CourseSchedule2 {
     // V1-2
     // https://neetcode.io/problems/course-schedule-ii
     // IDEA:  Topological Sort (Kahn's Algorithm)
+    /**
+     * time = O(V + E)
+     * space = O(V + E)
+     */
     public int[] findOrder_1_2(int numCourses, int[][] prerequisites) {
         int[] indegree = new int[numCourses];
         List<List<Integer>> adj = new ArrayList<>();
@@ -455,6 +475,10 @@ public class CourseSchedule2 {
     private int[] indegree;
     private List<List<Integer>> adj;
 
+    /**
+     * time = O(V + E)
+     * space = O(V + E)
+     */
     private void dfs(int node) {
         output.add(node);
         indegree[node]--;
@@ -466,6 +490,10 @@ public class CourseSchedule2 {
         }
     }
 
+    /**
+     * time = O(V + E)
+     * space = O(V + E)
+     */
     public int[] findOrder_1_3(int numCourses, int[][] prerequisites) {
         adj = new ArrayList<>();
         for (int i = 0; i < numCourses; i++) {

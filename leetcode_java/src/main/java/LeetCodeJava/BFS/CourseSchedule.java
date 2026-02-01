@@ -54,6 +54,10 @@ public class CourseSchedule {
 
     // V0
     // IDEA: DFS + 3-state coloring (cycle detection) (gpt)
+    /**
+     * time = O(V + E)
+     * space = O(V + E)
+     */
     public boolean canFinish(int numCourses, int[][] prerequisites) {
 
         // adjacency list: pre -> course
@@ -126,6 +130,10 @@ public class CourseSchedule {
     // https://github.com/yennanliu/CS_basics/blob/master/doc/pic/lc_207_1.png
     // https://github.com/yennanliu/CS_basics/blob/master/doc/pic/lc_207_1.png
     /** NOTE !!! we CAN'T use `quick union` for this problem */
+    /**
+     * time = O(V + E)
+     * space = O(V + E)
+     */
     public boolean canFinish_0_0_0_1(int numCourses, int[][] prerequisites) {
         if (prerequisites.length == 0){
             return true;
@@ -263,6 +271,10 @@ public class CourseSchedule {
     private Map<Integer, List<Integer>> preMap;
     // Status array: 0=Unvisited, 1=Visiting, 2=Finished
     private int[] statusList;
+    /**
+     * time = O(V + E)
+     * space = O(V + E)
+     */
     public boolean canFinish_0_0_1(int numCourses, int[][] prerequisites) {
 
         // Edge case: If there are no prerequisites, we can always finish.
@@ -371,6 +383,10 @@ public class CourseSchedule {
     // LC 210 (NOTE !, we can use same approach for LC 207, LC 210)
     // IDEA : TOPOLOGICAL SORT (cur - pre map) (fixed by gpt)
     /** NOTE !!! we CAN'T use `quick union` for this problem */
+    /**
+     * time = O(V + E)
+     * space = O(V + E)
+     */
     public boolean canFinish_0_1(int numCourses, int[][] prerequisites) {
         if (prerequisites.length <= 1) {
             return true;
@@ -489,6 +505,10 @@ public class CourseSchedule {
     //      -> e.g. use a set, recording the current visiting course, if ANY duplicated (already in set) course being met,
     //      -> means "cyclic", so return false directly
     // https://www.youtube.com/watch?v=EgI5nU9etnU
+    /**
+     * time = O(V + E)
+     * space = O(V + E)
+     */
     public boolean canFinish_0_1_1(int numCourses, int[][] prerequisites) {
         // Initialize adjacency list for storing prerequisites
         /**
@@ -583,6 +603,10 @@ public class CourseSchedule {
     // IDEA : DFS
     // https://github.com/neetcode-gh/leetcode/blob/main/java/0207-course-schedule.java
     // https://www.youtube.com/watch?v=EgI5nU9etnU
+    /**
+     * time = O(V + E)
+     * space = O(V + E)
+     */
     public boolean canFinish_0_2(int numCourses, int[][] prerequisites) {
         List<List<Integer>> adj = new ArrayList<>();
         for (int i = 0; i < numCourses; i++) {
@@ -624,6 +648,10 @@ public class CourseSchedule {
     // V0-3
     // IDEA : DFS
     // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Breadth-First-Search/course-schedule.py
+    /**
+     * time = O(V + E)
+     * space = O(V + E)
+     */
     public boolean canFinish_0_3(int numCourses, int[][] prerequisites) {
         Map<Integer, List<Integer>> graph = new HashMap<>();
         for (int[] prerequisite : prerequisites) {
@@ -722,6 +750,10 @@ public class CourseSchedule {
     // V0-4
     // IDEA : BFS
     // NOTE !!! we have 3 loop : numCourses, prerequisites, numCourses
+    /**
+     * time = O(V + E)
+     * space = O(V + E)
+     */
     public boolean canFinish_0_4(int numCourses, int[][] prerequisites) {
 
         // save course - prerequisites info
@@ -800,6 +832,10 @@ public class CourseSchedule {
 
     // V0-5
     // IDEA: BFS (Kahn's Algorithm - Recommended) (fixed by gemini)
+    /**
+     * time = O(V + E)
+     * space = O(V + E)
+     */
     public boolean canFinish_0_5(int numCourses, int[][] prerequisites) {
         // 1. Build Adjacency List and In-Degree array
         List<List<Integer>> adj = new ArrayList<>();
@@ -844,6 +880,10 @@ public class CourseSchedule {
 
     // V0-6
     // IDEA: TOPOLOGICAL SORT (fixed by gpt)
+    /**
+     * time = O(V + E)
+     * space = O(V + E)
+     */
     public boolean canFinish_0_6(int numCourses, int[][] prerequisites) {
         if (prerequisites.length == 0) {
             return true;
@@ -910,6 +950,10 @@ public class CourseSchedule {
     // Store all courses along the current DFS path
     private Set<Integer> visiting = new HashSet<>();
 
+    /**
+     * time = O(V + E)
+     * space = O(V + E)
+     */
     public boolean canFinish_1_1(int numCourses, int[][] prerequisites) {
         for (int i = 0; i < numCourses; i++) {
             preMap_1_1.put(i, new ArrayList<>());
@@ -949,6 +993,10 @@ public class CourseSchedule {
     // V1-2
     // https://neetcode.io/problems/course-schedule
     // IDEA: Topological Sort (Kahn's Algorithm)
+    /**
+     * time = O(V + E)
+     * space = O(V + E)
+     */
     public boolean canFinish_1_2(int numCourses, int[][] prerequisites) {
         int[] indegree = new int[numCourses];
         List<List<Integer>> adj = new ArrayList<>();
@@ -986,6 +1034,10 @@ public class CourseSchedule {
     // V2
     // IDEA : BFS
     // https://leetcode.com/problems/course-schedule/solutions/58775/my-java-bfs-solution/
+    /**
+     * time = O(V + E)
+     * space = O(V + E)
+     */
     public boolean canFinish_2(int numCourses, int[][] prerequisites) {
         Map<Integer, ArrayList<Integer>> map = new HashMap<Integer, ArrayList<Integer>>();
         int[] indegree = new int[numCourses];
@@ -1043,6 +1095,10 @@ public class CourseSchedule {
     // V3
     // IDEA : BFS
     // https://leetcode.com/problems/course-schedule/solutions/58524/java-dfs-and-bfs-solution/
+    /**
+     * time = O(V + E)
+     * space = O(V + E)
+     */
     public boolean canFinish_3(int numCourses, int[][] prerequisites) {
         ArrayList[] graph = new ArrayList[numCourses];
         int[] degree = new int[numCourses];
@@ -1087,6 +1143,10 @@ public class CourseSchedule {
         NOT_VISITED, VISITED, VISITING;
     }
 
+    /**
+     * time = O(V + E)
+     * space = O(V + E)
+     */
     public boolean canFinish_4(int numCourses, int[][] prerequisites) {
         if(prerequisites == null || prerequisites.length == 0 || prerequisites[0].length == 0) return true;
         // building graph
