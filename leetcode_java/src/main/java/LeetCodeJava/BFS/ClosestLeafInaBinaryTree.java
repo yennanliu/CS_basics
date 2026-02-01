@@ -44,6 +44,10 @@ public class ClosestLeafInaBinaryTree {
         TreeNode(int x) { val = x; }
     }
 
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int findClosestLeaf(TreeNode root, int k) {
         this.start = null;
         this.graph = new HashMap<>();
@@ -85,6 +89,10 @@ public class ClosestLeafInaBinaryTree {
         TreeNode2(int x) { val = x; }
     }
 
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int findClosestLeaf_0_1(TreeNode2 root, int k) {
         // Map to store the parent of each node
         Map<TreeNode2, TreeNode2> parentMap = new HashMap<>();
@@ -127,6 +135,10 @@ public class ClosestLeafInaBinaryTree {
         return -1; // Should never reach here as there is always a leaf node in the tree
     }
 
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     private TreeNode2 findTargetNode2(TreeNode2 root, int k, Map<TreeNode2, TreeNode2> parentMap) {
         Queue<TreeNode2> queue = new LinkedList<>();
         queue.add(root);
@@ -155,6 +167,10 @@ public class ClosestLeafInaBinaryTree {
     // IDEA : BFS + DFS
     private Map<TreeNode, List<TreeNode>> g;
 
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int findClosestLeaf_1(TreeNode root, int k) {
         g = new HashMap<>();
         dfs(root, null);
@@ -210,6 +226,10 @@ public class ClosestLeafInaBinaryTree {
      *     3 -> [1]
      *    }
      *
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
      */
     private void dfs(TreeNode root, TreeNode p) {
         if (root != null) {
