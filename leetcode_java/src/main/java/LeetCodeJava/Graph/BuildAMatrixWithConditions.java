@@ -71,6 +71,10 @@ public class BuildAMatrixWithConditions {
     // V2-1
     // https://leetcode.com/problems/build-a-matrix-with-conditions/editorial/
     // IDEA:  DFS
+    /**
+     * time = O(k + E)
+     * space = O(k + E)
+     */
     public int[][] buildMatrix_2_1(
             int k,
             int[][] rowConditions,
@@ -94,6 +98,10 @@ public class BuildAMatrixWithConditions {
         return matrix;
     }
 
+    /**
+     * time = O(V + E)
+     * space = O(V + E)
+     */
     private List<Integer> topoSort(int[][] edges, int n) {
         // Build adjacency list
         List<List<Integer>> adj = new ArrayList<>();
@@ -124,6 +132,10 @@ public class BuildAMatrixWithConditions {
         return order;
     }
 
+    /**
+     * time = O(V + E)
+     * space = O(V)
+     */
     private boolean dfs(
             int node,
             List<List<Integer>> adj,
@@ -150,6 +162,10 @@ public class BuildAMatrixWithConditions {
     // https://leetcode.com/problems/build-a-matrix-with-conditions/editorial/
     // IDEA: Kahn's Algorithm
 
+    /**
+     * time = O(k + E)
+     * space = O(k + E)
+     */
     public int[][] buildMatrix_2_2(
             int k,
             int[][] rowConditions,
@@ -169,6 +185,10 @@ public class BuildAMatrixWithConditions {
         return matrix;
     }
 
+    /**
+     * time = O(V + E)
+     * space = O(V + E)
+     */
     private int[] topoSort_2_2(int[][] edges, int n) {
         List<Integer>[] adj = new ArrayList[n + 1];
         for (int i = 0; i <= n; i++) {
