@@ -128,8 +128,11 @@ public class LetterCombinationsOfAPhoneNumber {
 
     // V0-1
     // IDEA: BACKTRACK (fixed by gpt)
-    // time: O(3^N * 4^M), space: O(3^N * 4^M)
-    public List<String> letterCombinations_0_1(String digits) {
+    /**
+     * time = O(3^N * 4^M)
+     * space = O(3^N * 4^M)
+     */
+        public List<String> letterCombinations_0_1(String digits) {
         // Mapping of digit to letters
         HashMap<Character, String> letters = new HashMap<>();
         letters.put('2', "abc");
@@ -284,8 +287,11 @@ public class LetterCombinationsOfAPhoneNumber {
     // V1-2
     // https://neetcode.io/problems/combinations-of-a-phone-number
     // IDEA: Iteration
-    // time: O(3^N * 4^M), space: O(3^N * 4^M)
-    public List<String> letterCombinations_1_2(String digits) {
+    /**
+     * time = O(3^N * 4^M)
+     * space = O(3^N * 4^M)
+     */
+        public List<String> letterCombinations_1_2(String digits) {
         if (digits.isEmpty()) return new ArrayList<>();
 
         List<String> res = new ArrayList<>();

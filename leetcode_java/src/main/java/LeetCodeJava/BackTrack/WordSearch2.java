@@ -51,8 +51,11 @@ public class WordSearch2 {
 
     // V0-1
     // IDEA:  for loop + LC 79 (TLE)
-    // time: O(M * N * W * 4^L), space: O(L)
-    public List<String> findWords_0_1(char[][] board, String[] words) {
+    /**
+     * time = O(M * N * W * 4^L)
+     * space = O(L)
+     */
+        public List<String> findWords_0_1(char[][] board, String[] words) {
 
         // edge
         if (board.length == 0 || board[0].length == 0) {
@@ -230,8 +233,11 @@ public class WordSearch2 {
     // V1
     // IDEA : BACKTRACK + TRIE
     // https://leetcode.com/problems/word-search-ii/solutions/59780/java-15ms-easiest-solution-100-00/
-    // time: O(M * N * 4^L + W * L), space: O(W * L)
-    public List<String> findWords2(char[][] board, String[] words) {
+    /**
+     * time = O(M * N * 4^L + W * L)
+     * space = O(W * L)
+     */
+        public List<String> findWords2(char[][] board, String[] words) {
         List<String> res = new ArrayList<>();
         TrieNode root = buildTrie(words);
         for (int i = 0; i < board.length; i++) {

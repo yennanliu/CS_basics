@@ -372,8 +372,11 @@ public class CombinationSum2 {
     // V2
     // IDEA : Backtracking with Counters
     // https://leetcode.com/problems/combination-sum-ii/editorial/
-    // time: O(2^N), space: O(2^N)
-    public List<List<Integer>> combinationSum2_2(int[] candidates, int target) {
+    /**
+     * time = O(2^N)
+     * space = O(2^N)
+     */
+        public List<List<Integer>> combinationSum2_2(int[] candidates, int target) {
         // container to hold the final combinations
         List<List<Integer>> results = new ArrayList<>();
         LinkedList<Integer> comb = new LinkedList<>();
@@ -432,8 +435,11 @@ public class CombinationSum2 {
     // V3
     // IDEA : Backtracking with Index
     // https://leetcode.com/problems/combination-sum-ii/editorial/
-    // time: O(2^N), space: O(2^N)
-    public List<List<Integer>> combinationSum2_3(int[] candidates, int target) {
+    /**
+     * time = O(2^N)
+     * space = O(2^N)
+     */
+        public List<List<Integer>> combinationSum2_3(int[] candidates, int target) {
         List<List<Integer>> results = new ArrayList<>();
         LinkedList<Integer> comb = new LinkedList<>();
 
@@ -469,8 +475,11 @@ public class CombinationSum2 {
 
     // V4
     // https://leetcode.com/problems/subsets/solutions/27281/a-general-approach-to-backtracking-questions-in-java-subsets-permutations-combination-sum-palindrome-partitioning/
-    // time: O(2^N), space: O(2^N)
-    public List<List<Integer>> combinationSum2_4(int[] nums, int target) {
+    /**
+     * time = O(2^N)
+     * space = O(2^N)
+     */
+        public List<List<Integer>> combinationSum2_4(int[] nums, int target) {
         List<List<Integer>> list = new ArrayList<>();
         Arrays.sort(nums);
         backtrack(list, new ArrayList<>(), nums, target, 0);
@@ -494,8 +503,11 @@ public class CombinationSum2 {
     // V5
     // https://www.youtube.com/watch?v=rSA3t6BDDwg
     // https://github.com/neetcode-gh/leetcode/blob/main/java/0040-combination-sum-ii.java
-    // time: O(2^N), space: O(2^N)
-    public List<List<Integer>> combinationSum2_5(int[] candidates, int target) {
+    /**
+     * time = O(2^N)
+     * space = O(2^N)
+     */
+        public List<List<Integer>> combinationSum2_5(int[] candidates, int target) {
         Arrays.sort(candidates);
         List<List<Integer>> ans = new ArrayList<List<Integer>>();
         List<Integer> ls = new ArrayList<Integer>();

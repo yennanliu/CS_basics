@@ -40,12 +40,14 @@ public class Combinations {
     // V0
     // IDEA: BACKTRACK + START_IDX (fixed by gpt)
     /**
+     * time = O(C(N,K) * K)
+     * space = O(C(N,K) * K)
+     *
      *  NOTE !!!
      *
      *   -> for combine, we need "start_idx"
      *
      */
-    // time: O(C(N,K) * K), space: O(C(N,K) * K)
     public List<List<Integer>> combine(int n, int k) {
         List<List<Integer>> res = new ArrayList<>();
 

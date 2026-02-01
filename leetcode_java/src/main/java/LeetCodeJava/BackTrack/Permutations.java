@@ -99,8 +99,11 @@ public class Permutations {
 
     // V0-1
     // IDEA : BACKTRACK
-    // time: O(N! * N), space: O(N! * N)
-    public List<List<Integer>> permute_0_1(int[] nums) {
+    /**
+     * time = O(N! * N)
+     * space = O(N! * N)
+     */
+        public List<List<Integer>> permute_0_1(int[] nums) {
 
         if (nums.length == 1){
             List<List<Integer>> _ans = new ArrayList<>();
@@ -147,8 +150,11 @@ public class Permutations {
     // V1-1
     // https://neetcode.io/problems/permutations
     // IDEA: RECURSION
-    // time: O(N! * N), space: O(N! * N)
-    public List<List<Integer>> permute_1_1(int[] nums) {
+    /**
+     * time = O(N! * N)
+     * space = O(N! * N)
+     */
+        public List<List<Integer>> permute_1_1(int[] nums) {
         if (nums.length == 0) {
             return Arrays.asList(new ArrayList<>());
         }
@@ -168,8 +174,11 @@ public class Permutations {
     // V1-2
     // https://neetcode.io/problems/permutations
     // IDEA: Iteration
-    // time: O(N! * N), space: O(N! * N)
-    public List<List<Integer>> permute_1_2(int[] nums) {
+    /**
+     * time = O(N! * N)
+     * space = O(N! * N)
+     */
+        public List<List<Integer>> permute_1_2(int[] nums) {
         List<List<Integer>> perms = new ArrayList<>();
         perms.add(new ArrayList<>());
 
@@ -276,8 +285,11 @@ public class Permutations {
     // V2
     // IDEA : BACKTRACK
     // https://leetcode.com/problems/subsets/solutions/27281/a-general-approach-to-backtracking-questions-in-java-subsets-permutations-combination-sum-palindrome-partitioning/
-    // time: O(N! * N), space: O(N! * N)
-    public List<List<Integer>> permute_2(int[] nums) {
+    /**
+     * time = O(N! * N)
+     * space = O(N! * N)
+     */
+        public List<List<Integer>> permute_2(int[] nums) {
         List<List<Integer>> list = new ArrayList<>();
         // Arrays.sort(nums); // not necessary
         backtrack_(list, new ArrayList<>(), nums);
@@ -300,8 +312,11 @@ public class Permutations {
     // V3
     // IDEA : BACKTRACK
     // https://leetcode.com/problems/permutations/editorial/
-    // time: O(N! * N), space: O(N! * N)
-    public List<List<Integer>> permute_3(int[] nums) {
+    /**
+     * time = O(N! * N)
+     * space = O(N! * N)
+     */
+        public List<List<Integer>> permute_3(int[] nums) {
         List<List<Integer>> ans = new ArrayList<>();
         backtrack(new ArrayList<>(), ans, nums);
         return ans;

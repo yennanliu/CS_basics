@@ -42,8 +42,11 @@ public class WordSearch {
 
     // V0
     // IDEA : DFS + BACKTRACK
-    // time: O(M * N * 4^L), space: O(L)
-    public boolean exist(char[][] board, String word) {
+    /**
+     * time = O(M * N * 4^L)
+     * space = O(L)
+     */
+        public boolean exist(char[][] board, String word) {
 
         int n = board.length;
         int m = board[0].length;
@@ -169,8 +172,11 @@ public class WordSearch {
 
     // V0-1
     // IDEA: DFS + BACKTRACK (GPT)
-    // time: O(M * N * 4^L), space: O(L)
-    public boolean exist_0_1(char[][] board, String word) {
+    /**
+     * time = O(M * N * 4^L)
+     * space = O(L)
+     */
+        public boolean exist_0_1(char[][] board, String word) {
         // Edge case: empty board
         if (board.length == 0 || board[0].length == 0) {
             return false;
@@ -226,8 +232,11 @@ public class WordSearch {
 
     // V0-2
     // IDEA : DFS + BACKTRACK (modified by GPT)
-    // time: O(M * N * 4^L), space: O(L)
-    public boolean exist_0_2(char[][] board, String word) {
+    /**
+     * time = O(M * N * 4^L)
+     * space = O(L)
+     */
+        public boolean exist_0_2(char[][] board, String word) {
         if (board == null || board.length == 0) {
             return false;
         }
@@ -358,8 +367,11 @@ public class WordSearch {
 
     // V0-3
     // IDEA : modified version of v0' (gpt)
-    // time: O(M * N * 4^L), space: O(L)
-    public boolean exist_0_3(char[][] board, String word) {
+    /**
+     * time = O(M * N * 4^L)
+     * space = O(L)
+     */
+        public boolean exist_0_3(char[][] board, String word) {
         if (board == null || board.length == 0) {
             return false;
         }
@@ -424,8 +436,11 @@ public class WordSearch {
 
     // V0-4
     // IDEA: DFS + BACKTRACK (fixed by gpt)
-    // time: O(M * N * 4^L), space: O(L)
-    public boolean exist_0_4(char[][] board, String word) {
+    /**
+     * time = O(M * N * 4^L)
+     * space = O(L)
+     */
+        public boolean exist_0_4(char[][] board, String word) {
         // edge
         if (board.length == 0 || board[0].length == 0) {
             return false;
@@ -639,8 +654,11 @@ public class WordSearch {
     // V2
     // IDEA : DFS + BACKTRACK
     // https://leetcode.com/problems/word-search/solutions/4791515/java-easy-solution-dfs-backtracking/
-    // time: O(M * N * 4^L), space: O(L)
-    public boolean exist_2(char[][] board, String word) {
+    /**
+     * time = O(M * N * 4^L)
+     * space = O(L)
+     */
+        public boolean exist_2(char[][] board, String word) {
         int n = board.length;
         int m = board[0].length;
 
@@ -684,8 +702,11 @@ public class WordSearch {
 
     // V3
     // IDEA : V1 variation
-    // time: O(M * N * 4^L), space: O(L)
-    public boolean exist_3(char[][] board, String word) {
+    /**
+     * time = O(M * N * 4^L)
+     * space = O(L)
+     */
+        public boolean exist_3(char[][] board, String word) {
         int n = board.length;
         int m = board[0].length;
 

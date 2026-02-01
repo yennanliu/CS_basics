@@ -41,8 +41,11 @@ public class Subsets {
     // IDEA : BACKTRACK
     // NOTE !!! ONLY permutation (全排列) DON'T NEED "start_idx"
     // NOTE !!! for subset, we need "!cur.contains(nums[i])" to NOT add duplicated element
-    // time: O(N * 2^N), space: O(N * 2^N)
-    public List<List<Integer>> subsets(int[] nums) {
+    /**
+     * time = O(N * 2^N)
+     * space = O(N * 2^N)
+     */
+        public List<List<Integer>> subsets(int[] nums) {
 
         List<List<Integer>> res = new ArrayList<>();
         if (nums.length == 0){
@@ -100,8 +103,11 @@ public class Subsets {
     // V0-1
     // IDEA : BACKTRACK
     // https://leetcode.com/problems/subsets/solutions/27281/a-general-approach-to-backtracking-questions-in-java-subsets-permutations-combination-sum-palindrome-partitioning/
-    // time: O(N * 2^N), space: O(N * 2^N)
-    public List<List<Integer>> subsets_0_1(int[] nums) {
+    /**
+     * time = O(N * 2^N)
+     * space = O(N * 2^N)
+     */
+        public List<List<Integer>> subsets_0_1(int[] nums) {
         List<List<Integer>> list = new ArrayList<>();
         Arrays.sort(nums); // optional
         _backtrack(list, new ArrayList<>(), nums, 0);
@@ -120,8 +126,11 @@ public class Subsets {
     // V1-1
     // https://neetcode.io/problems/subsets
     // IDEA: BACKTRACK
-    // time: O(N * 2^N), space: O(N * 2^N)
-    public List<List<Integer>> subsets_1_1(int[] nums) {
+    /**
+     * time = O(N * 2^N)
+     * space = O(N * 2^N)
+     */
+        public List<List<Integer>> subsets_1_1(int[] nums) {
         List<List<Integer>> res = new ArrayList<>();
         List<Integer> subset = new ArrayList<>();
         dfs(nums, 0, subset, res);
@@ -142,8 +151,11 @@ public class Subsets {
     // V1-2
     // https://neetcode.io/problems/subsets
     // IDEA: ITERATION
-    // time: O(N * 2^N), space: O(N * 2^N)
-    public List<List<Integer>> subsets_1_2(int[] nums) {
+    /**
+     * time = O(N * 2^N)
+     * space = O(N * 2^N)
+     */
+        public List<List<Integer>> subsets_1_2(int[] nums) {
         List<List<Integer>> res = new ArrayList<>();
         res.add(new ArrayList<>());
 
@@ -162,8 +174,11 @@ public class Subsets {
     // V1-3
     // https://neetcode.io/problems/subsets
     // IDEA: BIT OP
-    // time: O(N * 2^N), space: O(N * 2^N)
-    public List<List<Integer>> subsets_1_3(int[] nums) {
+    /**
+     * time = O(N * 2^N)
+     * space = O(N * 2^N)
+     */
+        public List<List<Integer>> subsets_1_3(int[] nums) {
         int n = nums.length;
         List<List<Integer>> res = new ArrayList<>();
         for (int i = 0; i < (1 << n); i++) {
@@ -182,8 +197,11 @@ public class Subsets {
     // V2
     // IDEA : BACKTRACK
     // https://leetcode.com/problems/subsets/solutions/27281/a-general-approach-to-backtracking-questions-in-java-subsets-permutations-combination-sum-palindrome-partitioning/
-    // time: O(N * 2^N), space: O(N * 2^N)
-    public List<List<Integer>> subsets_2(int[] nums) {
+    /**
+     * time = O(N * 2^N)
+     * space = O(N * 2^N)
+     */
+        public List<List<Integer>> subsets_2(int[] nums) {
         List<List<Integer>> list = new ArrayList<>();
         Arrays.sort(nums);
         backtrack(list, new ArrayList<>(), nums, 0);
@@ -203,8 +221,11 @@ public class Subsets {
     // IDEA : BACKTRACK
     // https://www.youtube.com/watch?v=REOH22Xwdkk&t=4s
     // https://github.com/neetcode-gh/leetcode/blob/main/java/0078-subsets.java
-    // time: O(N * 2^N), space: O(N * 2^N)
-    public List<List<Integer>> subsets_3(int[] nums) {
+    /**
+     * time = O(N * 2^N)
+     * space = O(N * 2^N)
+     */
+        public List<List<Integer>> subsets_3(int[] nums) {
         List<List<Integer>> ans = new ArrayList<>();
         List<Integer> list = new ArrayList<>();
         helper(ans, 0, nums, list);
@@ -229,8 +250,11 @@ public class Subsets {
     // V4
     // IDEA : Cascading
     // https://leetcode.com/problems/subsets/editorial/
-    // time: O(N * 2^N), space: O(N * 2^N)
-    public List<List<Integer>> subsets_4(int[] nums) {
+    /**
+     * time = O(N * 2^N)
+     * space = O(N * 2^N)
+     */
+        public List<List<Integer>> subsets_4(int[] nums) {
         List<List<Integer>> output = new ArrayList();
         output.add(new ArrayList<Integer>());
 
@@ -249,8 +273,11 @@ public class Subsets {
     // V5
     // IDEA : Lexicographic (Binary Sorted) Subsets
     // https://leetcode.com/problems/subsets/editorial/
-    // time: O(N * 2^N), space: O(N * 2^N)
-    public List<List<Integer>> subsets_5(int[] nums) {
+    /**
+     * time = O(N * 2^N)
+     * space = O(N * 2^N)
+     */
+        public List<List<Integer>> subsets_5(int[] nums) {
         List<List<Integer>> output = new ArrayList();
         int n = nums.length;
 
