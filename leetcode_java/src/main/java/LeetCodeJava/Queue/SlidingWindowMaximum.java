@@ -46,6 +46,10 @@ public class SlidingWindowMaximum {
 
     // V0
     // IDEA: DEQUE + SLIDING WINDOW (fixed by gpt)
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public int[] maxSlidingWindow(int[] nums, int k) {
         // Edge case: empty array or k is zero
         if (nums == null || nums.length == 0 || k == 0) {
@@ -143,6 +147,10 @@ public class SlidingWindowMaximum {
 
     // V0-1
     // IDEA: HASHMAP + PQ (GPT)
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public int[] maxSlidingWindow_0_1(int[] nums, int k) {
         if (nums == null || nums.length == 0) {
             return new int[] {};
@@ -240,6 +248,10 @@ public class SlidingWindowMaximum {
 
     // V0-2
     // IDEA: DEQUEUE + PQ (TLE)
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public int[] maxSlidingWindow_0_2(int[] nums, int k) {
         // edge
         if (nums.length == 0) {
@@ -295,6 +307,10 @@ public class SlidingWindowMaximum {
         // PQ: big -> small
         PriorityQueue<Integer> pq = new PriorityQueue<>(new Comparator<Integer>() {
             @Override
+            /**
+             * time = O(1)
+             * space = O(1)
+             */
             public int compare(Integer o1, Integer o2) {
                 int diff = o2 - o1;
                 return diff;
@@ -314,6 +330,10 @@ public class SlidingWindowMaximum {
      * However, since Java’s PriorityQueue does not support efficient removal of
      * arbitrary elements,
      * we use a frequency map (freqMap) to track elements that should be removed.
+     */
+    /**
+     * time = O(1)
+     * space = O(1)
      */
     public int[] maxSlidingWindow_1(int[] nums, int k) {
         if (nums == null || nums.length == 0) {
@@ -374,6 +394,10 @@ public class SlidingWindowMaximum {
 
     // V1-2
     // IDEA: Deque (gpt)
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public int[] maxSlidingWindow_1_2(int[] nums, int k) {
         if (nums == null || nums.length == 0) {
             return new int[] {};
@@ -409,6 +433,10 @@ public class SlidingWindowMaximum {
     // https://youtu.be/DfljaUwZsOk?si=0ZPA9MEoW1bXvnu6
     // https://neetcode.io/problems/sliding-window-maximum
     // IDEA: BRUTE FORCE
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public int[] maxSlidingWindow_2_1(int[] nums, int k) {
         int n = nums.length;
         int[] output = new int[n - k + 1];
@@ -461,6 +489,10 @@ public class SlidingWindowMaximum {
         }
     }
 
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public int[] maxSlidingWindow_2_2(int[] nums, int k) {
         int n = nums.length;
         SegmentTree segTree = new SegmentTree(n, nums);
@@ -476,6 +508,10 @@ public class SlidingWindowMaximum {
     // https://youtu.be/DfljaUwZsOk?si=0ZPA9MEoW1bXvnu6
     // https://neetcode.io/problems/sliding-window-maximum
     // IDEA: HEAP
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public int[] maxSlidingWindow_2_3(int[] nums, int k) {
 
         /**
@@ -534,6 +570,10 @@ public class SlidingWindowMaximum {
     // https://youtu.be/DfljaUwZsOk?si=0ZPA9MEoW1bXvnu6
     // https://neetcode.io/problems/sliding-window-maximum
     // IDEA: DP
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public int[] maxSlidingWindow_2_4(int[] nums, int k) {
         int n = nums.length;
         int[] leftMax = new int[n];

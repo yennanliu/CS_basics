@@ -18,10 +18,18 @@ public class MovingAverageFromDataStream {
     int size, windowSum = 0, count = 0;
     Deque queue = new ArrayDeque<Integer>();
 
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public void MovingAverage(int size) {
         this.size = size;
     }
 
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     public double next(int val) {
         ++count;
         // calculate the new sum by shifting the window
@@ -37,10 +45,18 @@ public class MovingAverageFromDataStream {
         int size, windowSum = 0, count = 0;
         Deque queue = new ArrayDeque<Integer>();
 
+        /**
+         * time = O(1)
+         * space = O(k)
+         */
         public MovingAverage(int size) {
             this.size = size;
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public double next(int val) {
             ++count;
             // calculate the new sum by shifting the window
@@ -56,11 +72,19 @@ public class MovingAverageFromDataStream {
     class MovingAverage3 {
         int size, head = 0, windowSum = 0, count = 0;
         int[] queue;
+        /**
+         * time = O(1)
+         * space = O(k)
+         */
         public MovingAverage3(int size) {
             this.size = size;
             queue = new int[size];
         }
 
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public double next(int val) {
             ++count;
             // calculate the new sum by shifting the window
