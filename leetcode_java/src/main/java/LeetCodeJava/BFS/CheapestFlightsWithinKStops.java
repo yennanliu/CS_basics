@@ -66,6 +66,10 @@ public class CheapestFlightsWithinKStops {
 
     // V0-1
     // IDEA: Dijkstra (fixed by gpt)
+    /**
+     * time = O((V + E) * log V)
+     * space = O(V * K)
+     */
     public int findCheapestPrice_0_1(int n, int[][] flights, int src, int dst, int k) {
         // Edge case: no flights or invalid input
         if (n == 0 || flights == null || flights.length == 0) {
@@ -87,6 +91,10 @@ public class CheapestFlightsWithinKStops {
         int n; // Number of nodes (cities)
 
         // Constructor to initialize the flight times and number of nodes
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
         public Dijkstra_3(int[][] times, int n) {
             this.times = times;
             this.n = n;
@@ -94,6 +102,10 @@ public class CheapestFlightsWithinKStops {
 
         // Method to find the shortest path using Dijkstra's algorithm, considering at
         // most k stops
+        /**
+         * time = O((V + E) * log V)
+         * space = O(V * K)
+         */
         public int getShortestPath(int src, int dst, int k) {
             // Step 1: Build the graph
             Map<Integer, List<int[]>> edges = new HashMap<>();
@@ -227,6 +239,10 @@ public class CheapestFlightsWithinKStops {
 
     // V0-2
     // IDEA: Dijkstra (fixed by gpt) (TLE)
+    /**
+     * time = O((V + E) * log V)
+     * space = O(V + E)
+     */
     public int findCheapestPrice_0_2(int n, int[][] flights, int src, int dst, int k) {
         // Graph: Map<source, List of [destination, cost]>
         Map<Integer, List<int[]>> graph = new HashMap<>();
@@ -264,6 +280,10 @@ public class CheapestFlightsWithinKStops {
     // V1-1
     // https://neetcode.io/problems/cheapest-flight-path
     // IDEA: Dijkstra
+    /**
+     * time = O((V + E) * log V)
+     * space = O(V * K)
+     */
     public int findCheapestPrice_1_1(int n, int[][] flights, int src, int dst, int k) {
         int INF = Integer.MAX_VALUE;
         List<int[]>[] adj = new ArrayList[n];
@@ -303,6 +323,10 @@ public class CheapestFlightsWithinKStops {
     // V1-2
     // https://neetcode.io/problems/cheapest-flight-path
     // IDEA: Bellman Ford Algorithm
+    /**
+     * time = O(K * E)
+     * space = O(V)
+     */
     public int findCheapestPrice_1_2(int n, int[][] flights, int src, int dst, int k) {
         int[] prices = new int[n];
         Arrays.fill(prices, Integer.MAX_VALUE);
@@ -335,6 +359,10 @@ public class CheapestFlightsWithinKStops {
     // V1-3
     // https://neetcode.io/problems/cheapest-flight-path
     // IDEA: Shortest Path Faster Algorithm
+    /**
+     * time = O(V + E)
+     * space = O(V + E)
+     */
     public int findCheapestPrice_1_3(int n, int[][] flights, int src, int dst, int k) {
         int[] prices = new int[n];
         Arrays.fill(prices, Integer.MAX_VALUE);

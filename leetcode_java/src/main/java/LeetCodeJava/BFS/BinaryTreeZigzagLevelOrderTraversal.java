@@ -41,6 +41,10 @@ public class BinaryTreeZigzagLevelOrderTraversal {
 
     // V0
     // IDEA: BFS + LAYER TRAVERSE + REVERSE
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
         List<List<Integer>> res = new ArrayList<>();
         List<List<Integer>> cache = new ArrayList<>();
@@ -83,6 +87,10 @@ public class BinaryTreeZigzagLevelOrderTraversal {
 
     // V1-1
     // https://leetcode.ca/2016-03-12-103-Binary-Tree-Zigzag-Level-Order-Traversal/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public List<List<Integer>> zigzagLevelOrder_1_1(TreeNode root) {
         List<List<Integer>> ans = new ArrayList<>();
         if (root == null) {
@@ -114,6 +122,10 @@ public class BinaryTreeZigzagLevelOrderTraversal {
 
     // V1-2
     // https://leetcode.ca/2016-03-12-103-Binary-Tree-Zigzag-Level-Order-Traversal/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public List<List<Integer>> zigzagLevelOrder_1_2(TreeNode root) {
 
         List<List<Integer>> result = new ArrayList<>();
@@ -167,6 +179,10 @@ public class BinaryTreeZigzagLevelOrderTraversal {
 
     // V1-3
     // https://leetcode.ca/2016-03-12-103-Binary-Tree-Zigzag-Level-Order-Traversal/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public List<List<Integer>> zigzagLevelOrder_1_3(TreeNode root) {
 
         List<List<Integer>> list = new ArrayList<List<Integer>>();
@@ -226,6 +242,10 @@ public class BinaryTreeZigzagLevelOrderTraversal {
 
     // V2
     // https://leetcode.com/problems/binary-tree-zigzag-level-order-traversal/solutions/7262597/non-ai-sol-java-by-aadi_dayal08-e654/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public List<List<Integer>> zigzagLevelOrder_2(TreeNode root) {
         Queue<TreeNode> q = new LinkedList<>();
         List<List<Integer>> list = new ArrayList<>();
