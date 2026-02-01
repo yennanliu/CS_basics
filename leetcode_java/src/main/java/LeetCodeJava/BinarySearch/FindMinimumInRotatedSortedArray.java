@@ -63,6 +63,11 @@ public class FindMinimumInRotatedSortedArray {
      *  else, `at right part`
      *   -> need to search `LEFT part`
      */
+    /**
+     * time = O(log N)
+     * space = O(1)
+     */
+
     public int findMin(int[] nums) {
         int l = 0;
         int r = nums.length - 1;
@@ -154,6 +159,11 @@ public class FindMinimumInRotatedSortedArray {
 
     // V0-0-1
     // IDEA: BINARY SEARCH (r > l)
+    /**
+     * time = O(log N)
+     * space = O(1)
+     */
+
     public int findMin_0_0_1(int[] nums) {
         // edge
         if (nums.length == 1) {
@@ -213,6 +223,11 @@ public class FindMinimumInRotatedSortedArray {
      *        Math.min(nums[l], nums[r])
      *        );
      */
+    /**
+     * time = O(log N)
+     * space = O(1)
+     */
+
     public int findMin_0_0_2(int[] nums) {
         // edge
         if (nums.length == 1) {
@@ -246,6 +261,11 @@ public class FindMinimumInRotatedSortedArray {
 
     // V0-1
     // IDEA : BINARY SEARCH (CLOSED BOUNDARY)
+    /**
+     * time = O(log N)
+     * space = O(1)
+     */
+
     public int findMin_0_1(int[] nums) {
 
         // edge case 1): if len == 1
@@ -297,6 +317,11 @@ public class FindMinimumInRotatedSortedArray {
      * case 1) check turing point
      * case 2) check if left / right sub array is in Ascending order
      */
+    /**
+     * time = O(log N)
+     * space = O(1)
+     */
+
     public int findMin_0_2(int[] nums) {
 
         if (nums.length == 0 || nums.equals(null)) {
@@ -357,6 +382,11 @@ public class FindMinimumInRotatedSortedArray {
 
     // V0-3
     // IDEA : BINARY SEARCH (OPEN BOUNDARY)
+    /**
+     * time = O(log N)
+     * space = O(1)
+     */
+
     public int findMin_0_3(int[] nums) {
 
         if (nums.length == 0 || nums.equals(null)) {
@@ -388,6 +418,11 @@ public class FindMinimumInRotatedSortedArray {
 
     // V0-4
     // IDEA: BINARY SEARCH + `rotate array` property
+    /**
+     * time = O(log N)
+     * space = O(1)
+     */
+
     public int findMin_0_4(int[] nums) {
         // edge
         if (nums == null || nums.length == 0) {
@@ -480,6 +515,11 @@ public class FindMinimumInRotatedSortedArray {
     // https://youtu.be/nIVW4P8b1VA?si=AMhTJOUhDziBz-CV
     // IDEA : BINARY SEARCH (CLOSED BOUNDARY)
     // https://neetcode.io/solutions/find-minimum-in-rotated-sorted-array
+    /**
+     * time = O(log N)
+     * space = O(1)
+     */
+
     public int findMin_1(int[] nums) {
         int l = 0;
         int r = nums.length - 1;
@@ -505,6 +545,11 @@ public class FindMinimumInRotatedSortedArray {
     // V2
     // IDEA : BINARY SEARCH (CLOSED BOUNDARY)
     // https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/editorial/
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
+
     public int findMin_2(int[] nums) {
         // If the list has just one element then return that element.
         if (nums.length == 1) {

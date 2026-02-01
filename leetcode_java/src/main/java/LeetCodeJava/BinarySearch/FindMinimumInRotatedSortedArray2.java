@@ -45,6 +45,11 @@ public class FindMinimumInRotatedSortedArray2 {
 
     // V1
     // https://leetcode.ca/2016-05-02-154-Find-Minimum-in-Rotated-Sorted-Array-II/
+    /**
+     * time = O(log N)
+     * space = O(1)
+     */
+
     public int findMin_1(int[] nums) {
         int left = 0, right = nums.length - 1;
         while (left < right) {
@@ -62,6 +67,11 @@ public class FindMinimumInRotatedSortedArray2 {
 
     // V2
     // https://leetcode.com/problems/find-minimum-in-rotated-sorted-array-ii/solutions/7157901/easy-code-for-solve-this-problem-by-4_k4-5p13/
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
+
     public int findMin_2(int[] nums) {
         int min = Integer.MAX_VALUE;
         for (int i : nums) {
@@ -75,6 +85,11 @@ public class FindMinimumInRotatedSortedArray2 {
 
     // V3
     // https://leetcode.com/problems/find-minimum-in-rotated-sorted-array-ii/solutions/7135635/java-solution-beats-100-proof-concise-co-2vpe/
+    /**
+     * time = O(log N)
+     * space = O(1)
+     */
+
     public int findMin_3(int[] nums) {
         int min = Integer.MAX_VALUE;
         int left = 0;
