@@ -55,6 +55,10 @@ public class New21Game {
 
     // V1
     // https://leetcode.com/problems/new-21-game/solutions/3560518/image-explanation-complete-intuition-maths-probability-dp-sliding-window-c-java-python/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public double new21Game_1(int N, int K, int maxPts) {
         // Corner cases
         if (K == 0) return 1.0;
@@ -82,6 +86,10 @@ public class New21Game {
     // V2
     // IDEA : DP
     // https://leetcode.com/problems/new-21-game/solutions/3560251/python-java-c-simple-solution-easy-to-understand/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public double new21Game_2(int n, int k, int maxPts) {
         if (k == 0 || n >= k + maxPts) {
             return 1.0;
@@ -113,6 +121,10 @@ public class New21Game {
     // V3
     // IDEA : DP
     // https://leetcode.com/problems/new-21-game/solutions/3560479/java-solution-for-new-21-game-problem/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public double new21Game_3(int n, int k, int maxPts) {
         if (k == 0 || n >= k + maxPts)
             return 1.0;

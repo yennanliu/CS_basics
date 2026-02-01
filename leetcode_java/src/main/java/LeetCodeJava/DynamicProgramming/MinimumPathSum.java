@@ -86,6 +86,10 @@ public class MinimumPathSum {
 
   // V0-1
   // IDEA: MIN PQ + BFS (fixed by gpt)
+  /**
+   * time = O(N)
+   * space = O(N)
+   */
   public int minPathSum_0_1(int[][] grid) {
         if (grid == null || grid.length == 0 || grid[0].length == 0) {
             return 0;
@@ -132,6 +136,10 @@ public class MinimumPathSum {
     // V1
     // https://www.youtube.com/watch?v=pGMsrvt0fpk
     // https://github.com/neetcode-gh/leetcode/blob/main/java%2F0064-minimum-path-sum.java
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int minPathSum_1(int[][] grid) {
         int m = grid.length - 1;
         int n = grid[0].length - 1;
@@ -142,6 +150,10 @@ public class MinimumPathSum {
         return helper(grid, m, n, dp);
     }
 
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int helper(int[][] grid, int m, int n, int[][] dp) {
         if (m == 0 && n == 0) return grid[0][0];
         if (m == 0) {
@@ -166,6 +178,10 @@ public class MinimumPathSum {
 
     // V2
     // https://leetcode.com/problems/minimum-path-sum/solutions/3345656/pythonjava-csimple-solutioneasy-to-under-occy/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int minPathSum_2(int[][] grid) {
         int m = grid.length;
         int n = grid[0].length;
@@ -194,6 +210,10 @@ public class MinimumPathSum {
 
     // V3-1
     // https://leetcode.com/problems/minimum-path-sum/solutions/3345863/image-explanation-recursion-dp-4-methods-pyw1/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int minPathSum_3_1(int[][] grid) {
         int m = grid.length, n = grid[0].length;
 
@@ -212,6 +232,10 @@ public class MinimumPathSum {
 
     // V3-2
     // https://leetcode.com/problems/minimum-path-sum/solutions/3345863/image-explanation-recursion-dp-4-methods-pyw1/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int minPathSum_3_2(int[][] grid) {
         int m = grid.length, n = grid[0].length;
         int[] cur = new int[m];

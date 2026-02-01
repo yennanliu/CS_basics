@@ -53,6 +53,10 @@ public class MinimumNumberOfRefuelingStops {
   // V1
   // IDEA : DP
   // https://leetcode.com/problems/minimum-number-of-refueling-stops/editorial/
+  /**
+   * time = O(N)
+   * space = O(N)
+   */
   public int minRefuelStops_1(int target, int startFuel, int[][] stations) {
     int N = stations.length;
     long[] dp = new long[N + 1];
@@ -68,6 +72,10 @@ public class MinimumNumberOfRefuelingStops {
   // V2
   // IDEA : HEAP
   // https://leetcode.com/problems/minimum-number-of-refueling-stops/editorial/
+  /**
+   * time = O(N)
+   * space = O(N)
+   */
   public int minRefuelStops(int target, int tank, int[][] stations) {
     // pq is a maxheap of gas station capacities
     PriorityQueue<Integer> pq = new PriorityQueue(Collections.reverseOrder());

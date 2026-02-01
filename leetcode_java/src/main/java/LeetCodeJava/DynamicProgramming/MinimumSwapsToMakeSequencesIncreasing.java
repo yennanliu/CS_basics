@@ -52,6 +52,10 @@ public class MinimumSwapsToMakeSequencesIncreasing {
     // V1
     // IDEA : DP
     // https://leetcode.com/problems/minimum-swaps-to-make-sequences-increasing/solutions/3471328/solution/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int minSwap_1(int[] A, int[] B) {
         int swapRecord = 1, fixRecord = 0;
         for (int i = 1; i < A.length; i++) {
@@ -78,6 +82,10 @@ public class MinimumSwapsToMakeSequencesIncreasing {
     int NOT_SWAPPED = 1;
 
     int NOT_VALID = (int) Math.pow(10, 6);
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int minSwap_2(int[] nums1, int[] nums2) {
         this.memo = new Integer[nums1.length][2];
         return dfs(nums1, nums2, 0, NOT_SWAPPED);
@@ -129,6 +137,10 @@ public class MinimumSwapsToMakeSequencesIncreasing {
 
     // V3
     // https://leetcode.com/problems/minimum-swaps-to-make-sequences-increasing/solutions/1849616/fully-explained-solution-for-beginner-recursion-memoization/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int minSwap_3(int[] nums1, int[] nums2) {
         int dp[] = new int[nums1.length];
         Arrays.fill(dp, -1);
@@ -136,6 +148,10 @@ public class MinimumSwapsToMakeSequencesIncreasing {
         return ans;
     }
 
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int solve(int nums1[], int nums2[], int ind, int[] dp) {
 
         if (ind == nums1.length) return 0;

@@ -32,6 +32,10 @@ public class PaintHouse {
     // V0-1
     // TODO: validate
     // IDEA: DP (fixed by gpt)
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int minCost_0_1(int[][] costs) {
         // edge case
         if (costs == null || costs.length == 0 || costs[0].length == 0) {
@@ -74,6 +78,10 @@ public class PaintHouse {
     // IDEA: DP (gpt)
     // IDEA 2) DP Solution (optimal)
     // TODO: validate
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int minCost_0_2(int[][] costs) {
         if (costs == null || costs.length == 0 || costs[0].length == 0) {
             return 0;
@@ -111,6 +119,10 @@ public class PaintHouse {
 
     // V1
     // https://leetcode.ca/2016-08-12-256-Paint-House/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int minCost_1(int[][] costs) {
         int r = 0, g = 0, b = 0;
         for (int[] cost : costs) {
