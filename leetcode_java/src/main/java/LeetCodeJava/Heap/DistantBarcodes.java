@@ -41,6 +41,10 @@ public class DistantBarcodes {
 
     // V0-1
     // IDEA: PQ, LC 767 (fixed by gpt)
+    /**
+     * time = O(N log K)
+     * space = O(K)
+     */
     public int[] rearrangeBarcodes_0_1(int[] barcodes) {
         if (barcodes == null || barcodes.length <= 1) return barcodes;
 
@@ -109,6 +113,10 @@ public class DistantBarcodes {
 
     // V0-2
     // IDEA: PQ (fixed by gemini)
+    /**
+     * time = O(N log K)
+     * space = O(K)
+     */
     public int[] rearrangeBarcodes_0_2(int[] barcodes) {
         if (barcodes == null || barcodes.length <= 1) {
             return barcodes;
@@ -175,6 +183,10 @@ public class DistantBarcodes {
     // V1
     // IDEA: SORT + DOUBLE LOOP
     // https://leetcode.ca/2018-10-19-1054-Distant-Barcodes/
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public int[] rearrangeBarcodes_1(int[] barcodes) {
         int n = barcodes.length;
         Integer[] t = new Integer[n];
@@ -200,6 +212,10 @@ public class DistantBarcodes {
     // V2
     // IDEA: PQ + HASHMAP
     // https://leetcode.com/problems/distant-barcodes/solutions/7184883/fast-and-clear-with-iterations-in-tables-78o8/
+    /**
+     * time = O(N log K)
+     * space = O(K)
+     */
     public int[] rearrangeBarcodes_2(int[] barcodes) {
         int n = barcodes.length; // How many items total? Let's remember that.
 
@@ -249,6 +265,10 @@ public class DistantBarcodes {
     // V3
     // IDEA: PQ
     // https://leetcode.com/problems/distant-barcodes/solutions/6954453/34-ms-beats-5284-with-indian-tadka-cpp-j-4ih9/
+    /**
+     * time = O(N log K)
+     * space = O(K)
+     */
     public int[] rearrangeBarcodes_3(int[] barcodes) {
         Map<Integer, Integer> freq = new HashMap<>();
         for (int code : barcodes) {
