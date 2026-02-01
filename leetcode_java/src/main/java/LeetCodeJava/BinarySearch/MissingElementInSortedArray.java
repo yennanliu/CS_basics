@@ -46,6 +46,10 @@ import java.util.Set;
 public class MissingElementInSortedArray {
 
     // V0
+/**
+ * time = O(log N)
+ * space = O(1)
+ */
 //    public int missingElement(int[] nums, int k) {
 //
 //    }
@@ -238,6 +242,10 @@ public class MissingElementInSortedArray {
 
     // V1
     //https://leetcode.ca/2018-10-25-1060-Missing-Element-in-Sorted-Array/
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int missingElement_1(int[] nums, int k) {
         int n = nums.length;
         if (k > missing(nums, n - 1)) {

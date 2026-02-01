@@ -55,6 +55,10 @@ import java.util.PriorityQueue;
 public class MinimumTimeToRepairCars {
 
     // V0
+/**
+ * time = O(N * log M)
+ * space = O(1)
+ */
 //    public long repairCars(int[] ranks, int cars) {
 //
 //    }

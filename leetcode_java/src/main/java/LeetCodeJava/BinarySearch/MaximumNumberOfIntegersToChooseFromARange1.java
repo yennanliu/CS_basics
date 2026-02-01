@@ -56,6 +56,10 @@ public class MaximumNumberOfIntegersToChooseFromARange1 {
 
     // V0-1
     // IDEA: GREEDY (fixed by gpt)
+    /**
+     * time = O(N)
+     * space = O(M)
+     */
     public int maxCount_0_1(int[] banned, int n, int maxSum) {
         // Edge cases
         if (n <= 0 || maxSum <= 0) {
@@ -111,6 +115,10 @@ public class MaximumNumberOfIntegersToChooseFromARange1 {
 
     // V0-2
     // IDEA: GREEDY (gpt)
+    /**
+     * time = O(N)
+     * space = O(M)
+     */
     public int maxCount_0_2(int[] banned, int n, int maxSum) {
         // Use a set for fast banned lookups
         Set<Integer> bannedSet = new HashSet<>();
@@ -141,6 +149,10 @@ public class MaximumNumberOfIntegersToChooseFromARange1 {
     // V1-1
     // IDEA:  BINARY SEARCH
     // https://leetcode.com/problems/maximum-number-of-integers-to-choose-from-a-range-i/editorial/
+    /**
+     * time = O(N log M)
+     * space = O(1)
+     */
     public int maxCount_1_1(int[] banned, int n, int maxSum) {
         // Sort banned array to enable binary search
         Arrays.sort(banned);
@@ -165,6 +177,10 @@ public class MaximumNumberOfIntegersToChooseFromARange1 {
     }
 
     // Helper method to check if value exists in sorted array
+    /**
+     * time = O(log M)
+     * space = O(1)
+     */
     private boolean customBinarySearch(int[] arr, int target) {
         int left = 0;
         int right = arr.length - 1;
@@ -187,6 +203,10 @@ public class MaximumNumberOfIntegersToChooseFromARange1 {
     // V1-2
     // IDEA: SWEEP
     // https://leetcode.com/problems/maximum-number-of-integers-to-choose-from-a-range-i/editorial/
+    /**
+     * time = O(M log M + N)
+     * space = O(1)
+     */
     public int maxCount_1_2(int[] banned, int n, int maxSum) {
         Arrays.sort(banned);
 
@@ -215,6 +235,10 @@ public class MaximumNumberOfIntegersToChooseFromARange1 {
     // V1-3
     // IDEA: HASH SET
     // https://leetcode.com/problems/maximum-number-of-integers-to-choose-from-a-range-i/editorial/
+    /**
+     * time = O(N)
+     * space = O(M)
+     */
     public int maxCount_1_3(int[] banned, int n, int maxSum) {
         // Store banned numbers in HashSet
         Set<Integer> bannedSet = new HashSet<>();
@@ -246,6 +270,10 @@ public class MaximumNumberOfIntegersToChooseFromARange1 {
     // V2
     // IDEA: ARRAY
     // https://leetcode.com/problems/maximum-number-of-integers-to-choose-from-a-range-i/solutions/6117769/beats-100-array-solution-for-leetcode255-fvz6/
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public int maxCount_2(int[] banned, int n, int maxSum) {
         int[] arr = new int[10001];
         for (int i = 0; i < banned.length; i++) {
@@ -272,6 +300,10 @@ public class MaximumNumberOfIntegersToChooseFromARange1 {
     // V3-1
     // IDEA: HASH MAP
     // https://leetcode.com/problems/maximum-number-of-integers-to-choose-from-a-range-i/solutions/6118408/mastering-maximum-count-of-integers-map-pznsh/
+    /**
+     * time = O(N)
+     * space = O(M)
+     */
     public int maxCount_3_1(int[] banned, int n, int maxSum) {
         HashMap<Integer, Integer> mp = new HashMap<>();
         for (int i : banned) {
@@ -294,6 +326,10 @@ public class MaximumNumberOfIntegersToChooseFromARange1 {
     // V3-2
     // IDEA: BINARY SEARCH
     // https://leetcode.com/problems/maximum-number-of-integers-to-choose-from-a-range-i/solutions/6118408/mastering-maximum-count-of-integers-map-pznsh/
+    /**
+     * time = O(N log M)
+     * space = O(1)
+     */
     public int maxCount_3_2(int[] banned, int n, int maxSum) {
         Arrays.sort(banned);
         int total = 0, count = 0;
@@ -309,6 +345,10 @@ public class MaximumNumberOfIntegersToChooseFromARange1 {
         return count;
     }
 
+    /**
+     * time = O(log M)
+     * space = O(1)
+     */
     private boolean binarySearch(int[] arr, int target) {
         int left = 0, right = arr.length - 1;
         while (left <= right) {

@@ -73,6 +73,10 @@ public class LongestIncreasingSubsequence {
      *  but LIS doesn't care about ranges; it cares about
      *  the "previous smallest number" you can attach the current number to.
      */
+    /**
+     * time = O(N^2)
+     * space = O(N)
+     */
     public int lengthOfLIS(int[] nums) {
 
         if(nums == null || nums.length == 0){
@@ -504,6 +508,10 @@ public class LongestIncreasingSubsequence {
    *
    *
    */
+  /**
+   * time = O(N^2)
+   * space = O(N)
+   */
   public int lengthOfLIS_0_0_1(int[] nums) {
       if (nums == null || nums.length == 0) {
           return 0;
@@ -535,6 +543,10 @@ public class LongestIncreasingSubsequence {
 
   // V0-0-2
   // IDEA: 1D DP (fixed by GPT)
+  /**
+   * time = O(N^2)
+   * space = O(N)
+   */
   public int lengthOfLIS_0_0_2(int[] nums) {
       if (nums == null || nums.length == 0)
           return 0;
@@ -560,6 +572,10 @@ public class LongestIncreasingSubsequence {
 
   // V0-1
   // IDEA: 1D DP (fixed by gpt)
+  /**
+   * time = O(N^2)
+   * space = O(N)
+   */
   public int lengthOfLIS_0_1(int[] nums) {
       // edge case: if the input array is null or has no elements
       if (nums == null || nums.length == 0) {
@@ -630,6 +646,10 @@ public class LongestIncreasingSubsequence {
    *
    *
    */
+  /**
+   * time = O(N log N)
+   * space = O(N)
+   */
   public int lengthOfLIS_0_3(int[] nums) {
         if (nums == null || nums.length == 0) {
             return 0;
@@ -664,6 +684,10 @@ public class LongestIncreasingSubsequence {
 
     // V0-4
     // IDEA: BINARY SEARCH (gpt)
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public int lengthOfLIS_0_4(int[] nums) {
         List<Integer> sub = new ArrayList<>();
         for (int num : nums) {
@@ -692,6 +716,10 @@ public class LongestIncreasingSubsequence {
     // NOTE !!!   this is an `overkill` idea,
     //            we should use 1D DP, which is clean and simple
     //            this 2D DP code is just for an reference
+    /**
+     * time = O(N * M)
+     * space = O(N * M)
+     */
     public int lengthOfLIS_0_5(int[] nums) {
         int[] sorted = nums.clone();
         Arrays.sort(sorted);
@@ -725,6 +753,10 @@ public class LongestIncreasingSubsequence {
     // V1-1
     // https://neetcode.io/problems/longest-increasing-subsequence
     // IDEA: RECURSION
+    /**
+     * time = O(2^N)
+     * space = O(N)
+     */
     public int lengthOfLIS_1_1(int[] nums) {
         return dfs(nums, 0, -1);
     }
@@ -748,6 +780,10 @@ public class LongestIncreasingSubsequence {
     // IDEA: Dynamic Programming (Top-Down)
     private int[][] memo;
 
+    /**
+     * time = O(N^2)
+     * space = O(N^2)
+     */
     private int dfs(int i, int j, int[] nums) {
         if (i == nums.length) {
             return 0;
@@ -766,6 +802,10 @@ public class LongestIncreasingSubsequence {
         return LIS;
     }
 
+    /**
+     * time = O(N^2)
+     * space = O(N^2)
+     */
     public int lengthOfLIS_1_2(int[] nums) {
         int n = nums.length;
         memo = new int[n][n + 1];
@@ -778,6 +818,10 @@ public class LongestIncreasingSubsequence {
     // V1-3
     // https://neetcode.io/problems/longest-increasing-subsequence
     // IDEA: Dynamic Programming (Bottom-Up)
+    /**
+     * time = O(N^2)
+     * space = O(N)
+     */
     public int lengthOfLIS_1_3(int[] nums) {
         int[] LIS = new int[nums.length];
         Arrays.fill(LIS, 1);
@@ -839,6 +883,10 @@ public class LongestIncreasingSubsequence {
         }
     }
 
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public int lengthOfLIS_1_4(int[] nums) {
         int[] sortedArr = Arrays.stream(nums).distinct().sorted().toArray();
         int[] order = new int[nums.length];
@@ -861,6 +909,10 @@ public class LongestIncreasingSubsequence {
     // V1-5
     // https://neetcode.io/problems/longest-increasing-subsequence
     // IDEA: Binary Search
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public int lengthOfLIS_1_5(int[] nums) {
         List<Integer> dp = new ArrayList<>();
         dp.add(nums[0]);
@@ -885,6 +937,10 @@ public class LongestIncreasingSubsequence {
     // V2
     // IDEA : DP
     // https://leetcode.com/problems/longest-increasing-subsequence/solutions/4509493/300/
+    /**
+     * time = O(N^2)
+     * space = O(N)
+     */
     public int lengthOfLIS_2(int[] nums) {
         if(nums == null || nums.length == 0)return 0;
         int n=nums.length;
@@ -907,6 +963,10 @@ public class LongestIncreasingSubsequence {
     // V3
     // IDEA : BINARY SEARCH
     // https://leetcode.com/problems/longest-increasing-subsequence/solutions/4509303/beats-100-binary-search-explained-with-video-c-java-python-js/
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public int lengthOfLIS_3(int[] nums) {
         int[] tails = new int[nums.length];
         int size = 0;
@@ -928,6 +988,10 @@ public class LongestIncreasingSubsequence {
     // V4
     // IDEA : DP
     // https://leetcode.com/problems/longest-increasing-subsequence/solutions/4510776/java-solution-explained-in-hindi/
+    /**
+     * time = O(N^2)
+     * space = O(N)
+     */
     public int lengthOfLIS_4(int[] nums) {
         if (nums == null || nums.length == 0) {
             return 0;

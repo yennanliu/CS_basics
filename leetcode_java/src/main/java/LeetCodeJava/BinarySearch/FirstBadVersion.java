@@ -40,6 +40,10 @@ public class FirstBadVersion {
 
     // V0
     // IDEA : BINARY SEARCH ( r >= l )
+    /**
+     * time = O(log N)
+     * space = O(1)
+     */
     public int firstBadVersion(int n) {
 
         if (n == 1) {
@@ -82,12 +86,20 @@ public class FirstBadVersion {
     }
 
     // dummy method avoid func not found alert in IntelliJ
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
     private Boolean isBadVersion(int n) {
         return true;
     }
 
     // V0-1
     // IDEA: BINARY SEARCH ( r > l) (gpt)
+    /**
+     * time = O(log N)
+     * space = O(1)
+     */
     public int firstBadVersion_0_1(int n) {
         int l = 1; // versions start at 1
         int r = n;
@@ -114,6 +126,10 @@ public class FirstBadVersion {
 
     // V0-2
     // IDEA: BINARY SEARCH ( r > l) (fixed by gpt)
+    /**
+     * time = O(log N)
+     * space = O(1)
+     */
     public int firstBadVersion_0_2(int n) {
         // edge
         if (n <= 1) {
@@ -144,6 +160,10 @@ public class FirstBadVersion {
     // V1
     // IDEA : Binary Search
     // https://leetcode.com/problems/first-bad-version/editorial/
+    /**
+     * time = O(log N)
+     * space = O(1)
+     */
     public int firstBadVersion_2(int n) {
         int left = 1;
         int right = n;

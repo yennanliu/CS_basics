@@ -51,6 +51,10 @@ public class FindPeakElement {
      *
      *    https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/binary_search.md
      */
+    /**
+     * time = O(log N)
+     * space = O(1)
+     */
     public int findPeakElement(int[] nums) {
         int l = 0;
         int r = nums.length - 1;
@@ -66,6 +70,10 @@ public class FindPeakElement {
 
     // V0-0-1
     // IDEA: ITERATIVE BINARY SEARCH
+    /**
+     * time = O(log N)
+     * space = O(1)
+     */
     public int findPeakElement_0_0_1(int[] nums) {
 
         int l = 0;
@@ -136,6 +144,10 @@ public class FindPeakElement {
     // https://leetcode.com/problems/find-peak-element/editorial/
     // NOTE : ONLY have to compare index i with index i + 1 (its right element)
     //        ; otherwise, i-1 already returned as answer
+    /**
+     * time = O(log N)
+     * space = O(log N)
+     */
     public int findPeakElement_2(int[] nums) {
         return search(nums, 0, nums.length - 1);
     }
@@ -151,6 +163,10 @@ public class FindPeakElement {
     // V3
     // IDEA: ITERATIVE BINARY SEARCH
     // https://leetcode.com/problems/find-peak-element/editorial/
+    /**
+     * time = O(log N)
+     * space = O(1)
+     */
     public int findPeakElement_3(int[] nums) {
         int l = 0, r = nums.length - 1;
         while (l < r) {
