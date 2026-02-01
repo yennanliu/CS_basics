@@ -76,6 +76,10 @@ public class MultiplyStrings {
     // V1-1
     // https://neetcode.io/problems/multiply-strings
     // IDEA: Multiplication & Addition
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public String multiply_1_1(String num1, String num2) {
         if (num1.equals("0") || num2.equals("0")) return "0";
 
@@ -139,6 +143,10 @@ public class MultiplyStrings {
     // V1-2
     // https://neetcode.io/problems/multiply-strings
     // IDEA: Multiplication
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public String multiply_1_2(String num1, String num2) {
         if (num1.equals("0") || num2.equals("0")) {
             return "0";
@@ -170,6 +178,10 @@ public class MultiplyStrings {
 
     // V2
     // IDEA : BRUTE FORCE + STRING OP (gpt)
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public String multiply_2(String num1, String num2) {
         if (num1.equals("0") || num2.equals("0")) {
             return "0";
@@ -282,6 +294,10 @@ public class MultiplyStrings {
         return currentResult;
     }
 
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public String multiply_3(String num1, String num2) {
         if (num1.equals("0") || num2.equals("0")) {
             return "0";
@@ -319,6 +335,10 @@ public class MultiplyStrings {
     // V4
     // https://leetcode.com/problems/multiply-strings/editorial/
     // IDEA : Sum the products from all pairs of digits
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public String multiply_4(String num1, String num2) {
         if (num1.equals("0") || num2.equals("0")) {
             return "0";

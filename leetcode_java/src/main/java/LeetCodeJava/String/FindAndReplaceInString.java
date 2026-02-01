@@ -83,6 +83,10 @@ public class FindAndReplaceInString {
 
     // V0-1
     // IDEA : MAP + startsWith (fixed by GPT)
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public String findReplaceString_0_1(String s, int[] indices, String[] sources, String[] targets) {
         // Map to store valid replacement indices and their respective replacement info
         Map<Integer, Integer> map = new HashMap<>();
@@ -126,6 +130,10 @@ public class FindAndReplaceInString {
     // V1
     // IDEA : HASHMAP
     // https://leetcode.com/problems/find-and-replace-in-string/submissions/1454170265/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public String findReplaceString_1(String s, int[] indices, String[] sources, String[] targets) {
         /**
          * 	•	Purpose:
@@ -192,6 +200,10 @@ public class FindAndReplaceInString {
      * 	3.	StringBuilder for Efficient Modifications:
      * 	    •	Use StringBuilder to perform in-place modifications on the string, which is more efficient than creating new strings repeatedly.
      *
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
      */
     public String findReplaceString_2(String s, int[] indices, String[] sources, String[] targets) {
         // Create an array of indices and sort them in descending order

@@ -76,6 +76,10 @@ public class CompareVersionNumbers {
 
     // V0-1
     // IDEA: STR OP (fixed by gemini)
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int compareVersion_0_1(String version1, String version2) {
         // 1. Split by dot (regex needs \\.)
         /** NOTE !!!
@@ -117,6 +121,10 @@ public class CompareVersionNumbers {
 
     // V0-2
     // IDEA: STR OP (gpt)
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int compareVersion_0_2(String version1, String version2) {
 
         List<Integer> list1 = new ArrayList<>();
@@ -148,6 +156,10 @@ public class CompareVersionNumbers {
 
     // V1
     // https://leetcode.com/problems/compare-version-numbers/solutions/50788/my-java-solution-without-split-by-lucife-0yk4/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int compareVersion_1(String version1, String version2) {
         int temp1 = 0, temp2 = 0;
         int len1 = version1.length(), len2 = version2.length();
@@ -179,6 +191,10 @@ public class CompareVersionNumbers {
 
     // V2-1
     // https://leetcode.com/problems/compare-version-numbers/solutions/5104397/beats-10000-of-users-with-java2-methods-2dyv2/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int compareVersion_2_1(String version1, String version2) {
         int i = 0, j = 0;
         while (i < version1.length() || j < version2.length()) {
@@ -203,6 +219,10 @@ public class CompareVersionNumbers {
 
     // V2-2
     // https://leetcode.com/problems/compare-version-numbers/solutions/5104397/beats-10000-of-users-with-java2-methods-2dyv2/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int compareVersion_2_2(String version1, String version2) {
         String[] v1 = version1.split("\\.");
         String[] v2 = version2.split("\\.");

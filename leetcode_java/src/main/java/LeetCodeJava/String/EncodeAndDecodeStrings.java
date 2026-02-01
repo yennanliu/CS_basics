@@ -67,6 +67,10 @@ public class EncodeAndDecodeStrings {
     // V0-0-1
     // IDEA: STRING OP
     // TODO: validate below:
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public String encode_0_0_1(List<String> strs) {
         // edge
         if(strs == null || strs.isEmpty()){
@@ -82,6 +86,10 @@ public class EncodeAndDecodeStrings {
         return sb.toString();
     }
 
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public List<String> decode_0_0_1(String s) {
         // edge
         if(s.isEmpty()){
@@ -104,6 +112,10 @@ public class EncodeAndDecodeStrings {
     // V0-1
     // IDEA: STRING OP (fixed by gpt)
     // Encodes a list of strings to a single string.
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public String encode_0_1(List<String> strs) {
         if (strs == null || strs.isEmpty()) {
             return "";
@@ -117,6 +129,10 @@ public class EncodeAndDecodeStrings {
     }
 
     // Decodes a single string to a list of strings.
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public List<String> decode_0_1(String s) {
         List<String> res = new ArrayList<>();
         if (s == null || s.isEmpty()) {
@@ -137,6 +153,10 @@ public class EncodeAndDecodeStrings {
 
     // V0-2
     // IDEA : STRING, ARRAY OP
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public String encode_0_2(List<String> strs) {
         StringBuilder encodedString = new StringBuilder();
         // Iterate through the list of strings
@@ -150,6 +170,10 @@ public class EncodeAndDecodeStrings {
     }
 
     // Decodes a single string to a list of strings.
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public List<String> decode_0_2(String s) {
         // Split the encoded string at each occurrence of the delimiter
         // Note: We use -1 as the limit parameter to ensure trailing empty strings are included
@@ -188,6 +212,10 @@ public class EncodeAndDecodeStrings {
     // IDEA :  Non-ASCII delimiter
     // https://leetcode.com/problems/encode-and-decode-strings/editorial/
     // Encodes a list of strings to a single string.
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public String encode_1(List<String> strs) {
         StringBuilder encodedString = new StringBuilder();
         // Iterate through the list of strings
@@ -201,6 +229,10 @@ public class EncodeAndDecodeStrings {
     }
 
     // Decodes a single string to a list of strings.
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public List<String> decode_1(String s) {
         // Split the encoded string at each occurrence of the delimiter
         // Note: We use -1 as the limit parameter to ensure trailing empty strings are included
@@ -239,6 +271,10 @@ public class EncodeAndDecodeStrings {
     // IDEA : Escaping
     // https://leetcode.com/problems/encode-and-decode-strings/editorial/
     // Encodes a list of strings to a single string.
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public String encode_2(List<String> strs) {
         // Initialize a StringBuilder to hold the encoded strings
         StringBuilder encodedString = new StringBuilder();
@@ -256,6 +292,10 @@ public class EncodeAndDecodeStrings {
     }
 
     // Decodes a single string to a list of strings.
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public List<String> decode_2(String s) {
         // Initialize a List to hold the decoded strings
         List<String> decodedStrings = new ArrayList<>();
@@ -301,6 +341,10 @@ public class EncodeAndDecodeStrings {
     // V3
     // IDEA : Chunked Transfer Encoding
     // https://leetcode.com/problems/encode-and-decode-strings/editorial/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public String encode_3(List<String> strs) {
         // Initialize a StringBuilder to hold the encoded string.
         StringBuilder encodedString = new StringBuilder();
@@ -311,6 +355,10 @@ public class EncodeAndDecodeStrings {
         return encodedString.toString();
     }
 
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public List<String> decode_3(String s) {
         // Initialize a list to hold the decoded strings.
         List<String> decodedStrings = new ArrayList<>();
@@ -335,6 +383,10 @@ public class EncodeAndDecodeStrings {
     public class Codec {
 
         // Encodes a list of strings to a single string.
+        /**
+         * time = O(N)
+         * space = O(N)
+         */
         public String encode(List<String> strs) {
             StringBuilder ans = new StringBuilder();
             for (String s : strs) {
@@ -344,6 +396,10 @@ public class EncodeAndDecodeStrings {
         }
 
         // Decodes a single string to a list of strings.
+        /**
+         * time = O(N)
+         * space = O(N)
+         */
         public List<String> decode(String s) {
             List<String> ans = new ArrayList<>();
             int i = 0, n = s.length();

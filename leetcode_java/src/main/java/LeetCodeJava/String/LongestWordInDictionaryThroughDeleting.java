@@ -36,6 +36,10 @@ public class LongestWordInDictionaryThroughDeleting {
 
     // V0
     // TODO: implement
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public String findLongestWord(String s, List<String> dictionary) {
         if (dictionary.size() == 0 && s != null){
             return "";
@@ -63,6 +67,10 @@ public class LongestWordInDictionaryThroughDeleting {
          */
         Collections.sort(collected, new Comparator<String>() {
             @Override
+            /**
+             * time = O(N)
+             * space = O(N)
+             */
             public int compare(String o1, String o2) {
                 /**
                  * // First compare by length
@@ -147,6 +155,10 @@ public class LongestWordInDictionaryThroughDeleting {
     // V1_1
     // IDEA : Brute Force
     // https://leetcode.com/problems/longest-word-in-dictionary-through-deleting/editorial/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public String findLongestWord_1(String s, List< String > d) {
         HashSet< String > set = new HashSet < > (d);
         List < String > l = new ArrayList< >();
@@ -159,6 +171,10 @@ public class LongestWordInDictionaryThroughDeleting {
         }
         return max_str;
     }
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public void generate(String s, String str, int i, List < String > l) {
         if (i == s.length())
             l.add(str);
@@ -171,6 +187,10 @@ public class LongestWordInDictionaryThroughDeleting {
     // V1_2
     // IDEA : Iterative Brute Force
     // https://leetcode.com/problems/longest-word-in-dictionary-through-deleting/editorial/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public String findLongestWord_1_2(String s, List < String > d) {
         HashSet < String > set = new HashSet < > (d);
         List < String > l = new ArrayList < > ();
@@ -194,6 +214,10 @@ public class LongestWordInDictionaryThroughDeleting {
     // V1_3
     // IDEA : Sorting and Checking Subsequence
     // https://leetcode.com/problems/longest-word-in-dictionary-through-deleting/editorial/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public boolean isSubsequence_3(String x, String y) {
         int j = 0;
         for (int i = 0; i < y.length() && j < x.length(); i++)
@@ -201,8 +225,16 @@ public class LongestWordInDictionaryThroughDeleting {
                 j++;
         return j == x.length();
     }
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public String findLongestWord_1_3(String s, List < String > d) {
         Collections.sort(d, new Comparator< String >() {
+            /**
+             * time = O(N)
+             * space = O(N)
+             */
             public int compare(String s1, String s2) {
                 return s2.length() != s1.length() ? s2.length() - s1.length() : s1.compareTo(s2);
             }
@@ -217,6 +249,10 @@ public class LongestWordInDictionaryThroughDeleting {
     // V1_4
     // IDEA : Without Sorting
     // https://leetcode.com/problems/longest-word-in-dictionary-through-deleting/editorial/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public boolean isSubsequence_4(String x, String y) {
         int j = 0;
         for (int i = 0; i < y.length() && j < x.length(); i++)
@@ -224,6 +260,10 @@ public class LongestWordInDictionaryThroughDeleting {
                 j++;
         return j == x.length();
     }
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public String findLongestWord_1_4(String s, List < String > d) {
         String max_str = "";
         for (String str: d) {

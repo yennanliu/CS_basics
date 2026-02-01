@@ -47,6 +47,10 @@ public class VerifyingAnAlienDictionary {
 
     // V0
     // IDEA:  HASHMAP + string op (fixed by gpt)
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public boolean isAlienSorted(String[] words, String order) {
         if (words == null || words.length <= 1)
             return true;
@@ -89,6 +93,10 @@ public class VerifyingAnAlienDictionary {
 
     // V0-1
     // IDEA: HASHMAP + BRUTE FORCE + COMPARE adjacent WORD (fixed by gpt)
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public boolean isAlienSorted_0_1(String[] words, String order) {
         // Edge case
         if (words == null || words.length <= 1) {
@@ -162,6 +170,10 @@ public class VerifyingAnAlienDictionary {
 
     // V1
     // https://github.com/neetcode-gh/leetcode/blob/main/java%2F0953-verifying-an-alien-dictionary.java
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public boolean isAlienSorted_1(String[] words, String order) {
         Map<Character, Integer> orderInd = new HashMap<>(); {
             int ind = 0;
@@ -189,6 +201,10 @@ public class VerifyingAnAlienDictionary {
     // V2
     // https://leetcode.com/problems/verifying-an-alien-dictionary/editorial/
     // IDEA:  Compare adjacent words
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public boolean isAlienSorted_2(String[] words, String order) {
         int[] orderMap = new int[26];
         for (int i = 0; i < order.length(); i++) {

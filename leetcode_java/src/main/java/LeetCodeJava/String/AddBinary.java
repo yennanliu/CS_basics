@@ -5,6 +5,10 @@ package LeetCodeJava.String;
 public class AddBinary {
 
     // V0
+    /**
+     * time = O(log N)
+     * space = O(1)
+     */
     public String addBinary(String a, String b) {
 
         //System.out.println("(before) a = " + a + " b = " + b);
@@ -38,6 +42,10 @@ public class AddBinary {
         return reverseString(res);
     }
 
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public static String reverseString(String str) {
         return new StringBuilder(str).reverse().toString();
     }
@@ -52,6 +60,10 @@ public class AddBinary {
 
     // V1
     // https://leetcode.com/problems/add-binary/solutions/3183205/1ms-beats-100-full-explanation-append-reverse-c-java-python3/
+    /**
+     * time = O(log N)
+     * space = O(1)
+     */
     public String addBinary_1(String a, String b)
     {
         StringBuilder sb = new StringBuilder();

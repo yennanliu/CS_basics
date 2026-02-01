@@ -16,6 +16,10 @@ public class RemoveComments {
     // V1
     // IDEA : PARSING
     // https://leetcode.com/problems/remove-comments/editorial/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public List<String> removeComments_1(String[] source) {
         boolean inBlock = false;
         StringBuilder newline = new StringBuilder();
@@ -50,6 +54,10 @@ public class RemoveComments {
 
     // V2
     // https://leetcode.ca/2017-11-21-722-Remove-Comments/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public List<String> removeComments_2(String[] source) {
         List<String> ans = new ArrayList<>();
         StringBuilder sb = new StringBuilder();

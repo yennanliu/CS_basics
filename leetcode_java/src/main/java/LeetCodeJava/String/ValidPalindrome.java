@@ -55,6 +55,10 @@ public class ValidPalindrome {
 
     // V0
     // IDEA: STR OP
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public boolean isPalindrome(String s) {
 
         if (s == null || s.length() == 0){
@@ -85,6 +89,10 @@ public class ValidPalindrome {
 
     // VO-1
     // IDEA: Str op + alpha, num check + stringBuilder
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public boolean isPalindrome_0_1(String s) {
         // edge
         if (s.isEmpty()) {
@@ -113,6 +121,10 @@ public class ValidPalindrome {
     }
 
     // V0-2
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public boolean isPalindrome_0_2(String s) {
 
         if (s == null || s.length() == 0){
@@ -144,6 +156,10 @@ public class ValidPalindrome {
 
     // V1
     // https://leetcode.com/problems/valid-palindrome/solutions/4787889/simple-solution-using-java/?envType=list&envId=xoqag3yj
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public boolean isPalindrome_1(String s) {
         String str=s.replaceAll("[^a-zA-Z0-9]","").toLowerCase();
         StringBuilder sb=new StringBuilder(str);

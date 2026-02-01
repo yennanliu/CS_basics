@@ -42,6 +42,10 @@ public class LongestPalindromicSubstring {
     // IDEA : SLIDING WINDOW : for - while
     // Time complexity : O(n^2), Space complexity: O(n)
     // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/String/longest-palindromic-substring.py
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public String longestPalindrome(String s) {
 
         if (s == null || s.length() == 0) {
@@ -92,6 +96,10 @@ public class LongestPalindromicSubstring {
 
     // V0-0-1
     // IDEA: SLIDE WINDOW (fixed by gpt)
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public String longestPalindrome_0_0_1(String s) {
         if (s == null || s.length() == 0)
             return "";
@@ -128,6 +136,10 @@ public class LongestPalindromicSubstring {
 
     // V0-1
     // IDEA: 2 POINTERS + Palindrome check (fixed by gpt)
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public String longestPalindrome_0_1(String s) {
 
         // edge case: empty string or null input
@@ -160,6 +172,10 @@ public class LongestPalindromicSubstring {
     }
 
     // Function to find the longest odd-length palindrome centered at `start`
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public String getOddPalindromic(String s, int start) {
         int left = start;
         int right = start;
@@ -176,6 +192,10 @@ public class LongestPalindromicSubstring {
 
     // Function to find the longest even-length palindrome centered between
     // `start-1` and `start`
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public String getEvenPalindromic(String s, int start) {
         int left = start - 1;
         int right = start;
@@ -468,6 +488,10 @@ public class LongestPalindromicSubstring {
      *
      *
      */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public String longestPalindrome_0_2(String s) {
         if (s == null || s.length() < 2) {
             return s;
@@ -525,6 +549,10 @@ public class LongestPalindromicSubstring {
      *
      *   dp[i][j]: "Is the substring starting at [i,j] a palindrome?"
      *
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
      */
     public String longestPalindrome_0_3(String s) {
         // 1. Handle empty strings
@@ -593,6 +621,10 @@ public class LongestPalindromicSubstring {
     // V1
     // IDEA : BRUTE FORCE + isPalindrome check
     // https://leetcode.com/problems/longest-palindromic-substring/solutions/4212564/beats-96-49-5-different-approaches-brute-force-eac-dp-ma-recursion/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public String longestPalindrome_1(String s) {
         if (s.length() <= 1) {
             return s;
@@ -633,6 +665,10 @@ public class LongestPalindromicSubstring {
     // https://leetcode.com/problems/longest-palindromic-substring/solutions/3401644/detailed-recursive-explaination-with-pictures-in-c-java-python-dp-two-pointers/
     int maxLen = 0;
     int lo = 0;
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public String longestPalindrome_2(String s) {
         char[] input = s.toCharArray();
         if(s.length() < 2) {
@@ -646,6 +682,10 @@ public class LongestPalindromicSubstring {
         return s.substring(lo, lo+maxLen);
     }
 
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public void expandPalindrome(char[] s, int j, int k) {
         while(j >= 0 && k < s.length && s[j] == s[k]) {
             j--;
@@ -660,6 +700,10 @@ public class LongestPalindromicSubstring {
     // V3
     // IDEA: DP
     // https://leetcode.com/problems/longest-palindromic-substring/solutions/4212564/beats-9649-5-different-approaches-brute-u46gf/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public String longestPalindrome_3(String s) {
         if (s.length() <= 1) {
             return s;
