@@ -40,6 +40,10 @@ public class SortAnArray {
 
     // V0
     // IDEA: int -> Integer, Comparator sorting
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public int[] sortArray(int[] nums) {
 
         Integer[] nums_ = new Integer[nums.length];
@@ -63,6 +67,10 @@ public class SortAnArray {
          */
         Arrays.sort(nums_, new Comparator<Integer>() {
             @Override
+            /**
+             * time = O(N)
+             * space = O(N)
+             */
             public int compare(Integer a, Integer b) {
                 return a - b; // This will sort in descending order
             }

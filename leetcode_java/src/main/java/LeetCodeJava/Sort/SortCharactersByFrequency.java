@@ -47,6 +47,10 @@ public class SortCharactersByFrequency {
 
     // V0
     // IDEA: HASHMAP + PQ CUSTOM SORT (sort on map val)
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public String frequencySort(String s) {
         // edge
         if (s.isEmpty()) {
@@ -65,6 +69,10 @@ public class SortCharactersByFrequency {
         // pq [v1, v2..] : sort on map val, big -> small
         PriorityQueue<String> pq = new PriorityQueue<>(new Comparator<String>() {
             @Override
+            /**
+             * time = O(N)
+             * space = O(N)
+             */
             public int compare(String o1, String o2) {
                 int diff = cnt_map.get(o2) - cnt_map.get(o1);
                 return diff;
@@ -95,6 +103,10 @@ public class SortCharactersByFrequency {
 
     // V1
     // https://leetcode.ca/2017-02-23-451-Sort-Characters-By-Frequency/
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public String frequencySort_1(String s) {
         Map<Character, Integer> cnt = new HashMap<>(52);
         for (int i = 0; i < s.length(); ++i) {
@@ -114,6 +126,10 @@ public class SortCharactersByFrequency {
     // V2
     // IDEA: PQ
     // https://leetcode.com/problems/sort-characters-by-frequency/solutions/4689154/beats-100-users-cjavapythonjavascript-2-ye8s3/
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public String frequencySort_2(String s) {
         Map<Character, Integer> hm = new HashMap<>();
 
@@ -139,6 +155,10 @@ public class SortCharactersByFrequency {
     // V3-1
     // IDEA: HASHSET + SORT
     // https://leetcode.com/problems/sort-characters-by-frequency/solutions/615846/pythonjava-hashtable-heapsort-easy-to-un-89y3/
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public String frequencySort_3_1(String s) {
         // Count the occurence on each character
         HashMap<Character, Integer> cnt = new HashMap<>();
@@ -163,6 +183,10 @@ public class SortCharactersByFrequency {
     // V3-2
     // https://leetcode.com/problems/sort-characters-by-frequency/solutions/615846/pythonjava-hashtable-heapsort-easy-to-un-89y3/
     // IDEA: HASHTABLE + PQ
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public String frequencySort_3_2(String s) {
         // Count the occurence on each character
         HashMap<Character, Integer> cnt = new HashMap<>();

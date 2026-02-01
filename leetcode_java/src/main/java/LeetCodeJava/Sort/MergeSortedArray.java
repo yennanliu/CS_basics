@@ -56,6 +56,10 @@ public class MergeSortedArray {
 
     // V0
     // IDEA: ARRAY OP + SORT
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public void merge(int[] nums1, int m, int[] nums2, int n) {
         /**
          *   NOTE !!! we loop from 0  to `n`
@@ -82,6 +86,10 @@ public class MergeSortedArray {
      *  -> m : nums1 element cnt
      *  -> n : nums2 element cnt
      */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public void merge_2(int[] nums1, int m, int[] nums2, int n) {
         for (int i = 0; i < n; i++) {
             nums1[i + m] = nums2[i];
@@ -93,6 +101,10 @@ public class MergeSortedArray {
     // V1
     // IDEA : 2 POINTERS
     // https://leetcode.com/problems/merge-sorted-array/editorial/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public void merge_3(int[] nums1, int m, int[] nums2, int n) {
         // Make a copy of the first m elements of nums1.
         int[] nums1Copy = new int[m];

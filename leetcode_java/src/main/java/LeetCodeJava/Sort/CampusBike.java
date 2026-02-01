@@ -60,6 +60,10 @@ public class CampusBike {
     // V1
     // IDEA : sorting
     // https://leetcode.ca/2018-10-22-1057-Campus-Bikes/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int[] assignBikes_1(int[][] workers, int[][] bikes) {
         int n = workers.length;
         int m = bikes.length;

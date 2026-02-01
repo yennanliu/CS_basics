@@ -76,6 +76,10 @@ public class MeetingRooms3 {
     // V2-1
     // https://leetcode.com/problems/meeting-rooms-iii/editorial/
     // IDEA: Sorting and Counting
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int mostBooked_2_1(int n, int[][] meetings) {
         long[] roomAvailabilityTime = new long[n];
         int[] meetingCount = new int[n];
@@ -122,6 +126,10 @@ public class MeetingRooms3 {
     // V2-2
     // https://leetcode.com/problems/meeting-rooms-iii/editorial/
     // IDEA: Sorting, Counting using Priority Queues
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public int mostBooked_2_2(int n, int[][] meetings) {
         int[] meetingCount = new int[n];
         PriorityQueue<long[]> usedRooms = new PriorityQueue<long[]>(

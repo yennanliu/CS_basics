@@ -34,6 +34,10 @@ public class MeetingRooms {
     // V0
     // IDEA : SORT
     // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Sort/meeting-rooms.py
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public boolean canAttendMeetings(int[][] intervals) {
         // SORT ON 1st element (idx = 0)
         Arrays.sort(intervals, (a, b) -> Integer.compare(a[0], b[0]));
@@ -48,6 +52,10 @@ public class MeetingRooms {
 
     // V0-1
     // IDEA: LC 235 (SCANNING LINE) (fixed by gpt)
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public boolean canAttendMeetings_0_1(int[][] intervals) {
         if (intervals == null || intervals.length <= 1) {
             return true;
@@ -91,6 +99,10 @@ public class MeetingRooms {
     // V0-2
     // IDEA: SCANNING LINE (GPT) (same idea as Meeting room II, LC 253)
     // TODO: validate
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public boolean canAttendMeetings_0_2(int[][] intervals) {
         // Edge cases
         if (intervals == null || intervals.length == 0) {
@@ -146,6 +158,10 @@ public class MeetingRooms {
 
     // V1
     // IDEA : SORT
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public boolean canAttendMeetings_(int[][] intervals) {
 
         // sort
@@ -185,6 +201,10 @@ public class MeetingRooms {
     // V3
     // IDEA : SORTING
     // https://leetcode.com/problems/meeting-rooms/editorial/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public boolean canAttendMeetings_2(int[][] intervals) {
         Arrays.sort(intervals, (a, b) -> Integer.compare(a[0], b[0]));
         for (int i = 0; i < intervals.length - 1; i++) {
