@@ -72,21 +72,15 @@ public class LowestCommonAncestorOfABinarySearchTree {
 
         // V0
         // IDEA : RECURSIVE + BST PROPERTY
+        /**
+         * time = O(H)
+         * space = O(H)
+         */
         public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
 
             // if root equals p or q, return root as LCA
             if (root.equals(p) || root.equals(q)) {
                 return root;
-            }
-
-            /** NOTE !!! BST property : right > root > left */
-            // search on right sub tree
-            if (p.val > root.val && q.val > root.val){
-                return this.lowestCommonAncestor(root.right, p, q);
-            }
-            // search on left sub tree
-            if (p.val < root.val && q.val < root.val){
-                return this.lowestCommonAncestor(root.left, p, q);
             }
 
             /**
@@ -101,6 +95,10 @@ public class LowestCommonAncestorOfABinarySearchTree {
 
         // V0-0-1
         // IDEA: DFS + EARLY QUIT (fixed by gpt)
+        /**
+         * time = O(H)
+         * space = O(H)
+         */
         public TreeNode lowestCommonAncestor_0_0_1(TreeNode root, TreeNode p, TreeNode q) {
             if (root == null)
                 return null;
@@ -109,29 +107,10 @@ public class LowestCommonAncestorOfABinarySearchTree {
             if (root.val == p.val || root.val == q.val)
                 return root;
 
-            /** NOTE !!! EARLY QUIT condition */
-            // Check if p and q are on different sides of root
-            if (isBigger(root.val, p.val) * isBigger(root.val, q.val) < 0) {
-                return root;
-            }
-
-            // If both are smaller, go left
-            if (root.val > p.val && root.val > q.val) {
-                return lowestCommonAncestor_0_0_1(root.left, p, q);
-            }
-
-            // If both are bigger, go right
-            return lowestCommonAncestor_0_0_1(root.right, p, q);
-        }
-
-        /** NOTE !!! helper func check if p, q are on the DIFFERENT side of node */
-        // Helper function: 1 if a > b, -1 if a <= b
-        private int isBigger(int a, int b) {
-            return a > b ? 1 : -1;
-        }
-
-        // V0-1
-        // IDEA : RECURSIVE + BST PROPERTY
+        /**
+         * time = O(H)
+         * space = O(H)
+         */
         public TreeNode lowestCommonAncestor_0_1(TreeNode root, TreeNode p, TreeNode q) {
 
             // below logic is optional
@@ -160,6 +139,10 @@ public class LowestCommonAncestorOfABinarySearchTree {
 
         // V0-2
         // IDEA: RECURSIVE + BST property (GPT)
+        /**
+         * time = O(H)
+         * space = O(H)
+         */
         public TreeNode lowestCommonAncestor_0_2(TreeNode root, TreeNode p, TreeNode q) {
             // Base case: if root is null, return null
             if (root == null) {
@@ -190,6 +173,10 @@ public class LowestCommonAncestorOfABinarySearchTree {
 
         // V0-3
         // IDEA: DFS (gpt)
+        /**
+         * time = O(H)
+         * space = O(H)
+         */
         public TreeNode lowestCommonAncestor_0_3(TreeNode root, TreeNode p, TreeNode q) {
             // Base case
             if (root == null)
@@ -213,6 +200,10 @@ public class LowestCommonAncestorOfABinarySearchTree {
         // V1
         // IDEA : Recursive Approach
         // https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/editorial/
+        /**
+         * time = O(H)
+         * space = O(H)
+         */
         public TreeNode lowestCommonAncestor_2(TreeNode root, TreeNode p, TreeNode q) {
 
             // Value of current node or parent node.
@@ -240,6 +231,10 @@ public class LowestCommonAncestorOfABinarySearchTree {
         // V2
         // IDEA : Iterative Approach
         // https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/editorial/
+        /**
+         * time = O(H)
+         * space = O(1)
+         */
         public TreeNode lowestCommonAncestor_3(TreeNode root, TreeNode p, TreeNode q) {
 
             // Value of p

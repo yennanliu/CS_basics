@@ -44,6 +44,14 @@ public class MinimumAbsoluteDifferenceInBST {
     // IDEA: DFS
     List<Integer> nodes = new ArrayList<>();
 
+    /**
+
+     * time = O(N)
+
+     * space = O(N)
+     */
+
+
     public int getMinimumDifference(TreeNode root) {
         // edge
         if (root == null) {
@@ -80,6 +88,11 @@ public class MinimumAbsoluteDifferenceInBST {
 
     // V0-1
     // IDEA: BFS + SORT
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+
     public int getMinimumDifference_0_1(TreeNode root) {
         if (root == null) {
             return -1; // ????
@@ -115,6 +128,14 @@ public class MinimumAbsoluteDifferenceInBST {
     private int prev;
     private int inf = Integer.MAX_VALUE;
 
+    /**
+
+     * time = O(N)
+
+     * space = O(H)
+     */
+
+
     public int getMinimumDifference_1(TreeNode root) {
         ans = inf;
         prev = inf;
@@ -135,6 +156,11 @@ public class MinimumAbsoluteDifferenceInBST {
     // V2
     // https://leetcode.com/problems/minimum-absolute-difference-in-bst/solutions/7207279/minimum-absolute-difference-in-bst-2ms-j-pxeo/
     List<Integer> list;
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+
     public int getMinimumDifference_2(TreeNode root) {
         list = new ArrayList<>();
         inOrder(root, list);
@@ -145,6 +171,14 @@ public class MinimumAbsoluteDifferenceInBST {
         }
         return min;
     }
+
+    /**
+
+     * time = O(N)
+
+     * space = O(H)
+     */
+
 
     public void inOrder(TreeNode node, List<Integer> list) {
         if (node == null) {
@@ -159,6 +193,14 @@ public class MinimumAbsoluteDifferenceInBST {
     // https://leetcode.com/problems/minimum-absolute-difference-in-bst/solutions/6961212/minimum-absolute-difference-in-bst-by-sh-xlgt/
     TreeNode pre = null;
     int min = Integer.MAX_VALUE;
+
+    /**
+
+     * time = O(N)
+
+     * space = O(H)
+     */
+
 
     public int getMinimumDifference_3(TreeNode root) {
         if (root == null)

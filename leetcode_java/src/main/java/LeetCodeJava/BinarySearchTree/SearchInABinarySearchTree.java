@@ -43,6 +43,11 @@ public class SearchInABinarySearchTree {
 
     // V0
     // IDEA: DFS + BST PROPERTY
+    /**
+     * time = O(H)
+     * space = O(H)
+     */
+
     public TreeNode searchBST(TreeNode root, int val) {
         // edge
         if (root == null) {
@@ -62,6 +67,11 @@ public class SearchInABinarySearchTree {
 
     // V0-1
     // IDEA: ITERATIVE + BST PROPERTY
+    /**
+     * time = O(H)
+     * space = O(1)
+     */
+
     public TreeNode searchBST_0_1(TreeNode root, int val) {
         // edge
         if (root == null) {
@@ -83,6 +93,11 @@ public class SearchInABinarySearchTree {
 
     // V0-2
     // IDEA : RECURSION
+    /**
+     * time = O(H)
+     * space = O(H)
+     */
+
     public TreeNode searchBST_0_2(TreeNode root, int val) {
 
         if (root.left == null && root.right == null){
@@ -130,6 +145,11 @@ public class SearchInABinarySearchTree {
 
     // V0-3
     // IDEA: BFS
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+
     public TreeNode searchBST_0_3(TreeNode root, int val) {
         // edge
         if(root == null){
@@ -155,6 +175,11 @@ public class SearchInABinarySearchTree {
 
     // V0-4
     // IDEA: PURE DFS (without use BST property)
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
+
     public TreeNode searchBST_0_4(TreeNode root, int val) {
         // edge
         if (root == null) {
@@ -188,6 +213,11 @@ public class SearchInABinarySearchTree {
 
     // V0-5
     // IDEA: DFS + BST (fixed by gpt)
+    /**
+     * time = O(H)
+     * space = O(H)
+     */
+
     public TreeNode searchBST_0_5(TreeNode root, int val) {
         if (root == null) {
             return null;
@@ -225,6 +255,11 @@ public class SearchInABinarySearchTree {
     // V1
     // IDEA : RECURSION
     // https://leetcode.com/problems/search-in-a-binary-search-tree/editorial/
+    /**
+     * time = O(H)
+     * space = O(H)
+     */
+
     public TreeNode searchBST_1(TreeNode root, int val) {
         if (root == null || val == root.val) return root;
 
@@ -235,6 +270,11 @@ public class SearchInABinarySearchTree {
     // V2
     // IDEA : ITERATION
     // https://leetcode.com/problems/search-in-a-binary-search-tree/editorial/
+    /**
+     * time = O(H)
+     * space = O(1)
+     */
+
     public TreeNode searchBST_2(TreeNode root, int val) {
         while (root != null && val != root.val)
             root = val < root.val ? root.left : root.right;

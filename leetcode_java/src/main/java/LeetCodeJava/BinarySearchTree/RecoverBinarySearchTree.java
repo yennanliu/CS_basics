@@ -42,7 +42,11 @@ import LeetCodeJava.DataStructure.TreeNode;
 public class RecoverBinarySearchTree {
 
     // V0
-//    public void recoverTree(TreeNode root) {
+//    /**
+     * time = O(N)
+     * space = O(H)
+     */
+    public void recoverTree(TreeNode root) {
 //
 //    }
 
@@ -66,6 +70,14 @@ public class RecoverBinarySearchTree {
     private TreeNode first = null;
     private TreeNode second = null;
     private TreeNode prev = new TreeNode(Integer.MIN_VALUE);
+
+    /**
+
+     * time = O(N)
+
+     * space = O(H)
+     */
+
 
     public void recoverTree_0_1(TreeNode root) {
         if (root == null)
@@ -111,38 +123,13 @@ public class RecoverBinarySearchTree {
         // If prevNode is null, this is the first (smallest) node.
         if (prev != null && root.val < prev.val) {
 
-            /** First time violation → mark prev */
-            // If this is the *first* violation we've seen,
-            // the 'prevNode' is the first node of the swapped pair.
-            if (first == null)
-                first = prev;
+    /**
 
-            /** Second time (or same if adjacent swap) → mark current node */
-            // The 'currentNode' is the second node of the swapped pair.
-            // If there's a second, non-adjacent violation, this will
-            // correctly update 'secondViolation' to the new 'currentNode'.
-            second = root;
-        }
+     * time = O(N)
 
-        // Update prevNode to the current node for the next comparison.
-        prev = root; // update previous node
+     * space = O(H)
+     */
 
-        inorder_0_1(root.right);
-    }
-
-    // V0-2
-    // IDEA: (gemini)
-    // We use instance variables to keep track of the nodes during the
-    // recursive in-order traversal.
-
-    // Tracks the previous node in the in-order sequence.
-    private TreeNode prevNode;
-
-    // Tracks the first node that is out of order.
-    private TreeNode firstViolation;
-
-    // Tracks the second node that is out of order.
-    private TreeNode secondViolation;
 
     public void recoverTree(TreeNode root) {
         if (root == null) {
@@ -212,6 +199,11 @@ public class RecoverBinarySearchTree {
     TreeNode first_1;
     TreeNode second_1;
     TreeNode prev_1;
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
+
     public void recoverTree_1(TreeNode root) {
         helper(root);
         // Swap the values of the two misplaced nodes
@@ -259,6 +251,14 @@ public class RecoverBinarySearchTree {
         prev_2 = root;
         inorder(root.right);
     }
+
+    /**
+
+     * time = O(N)
+
+     * space = O(H)
+     */
+
 
     public void recoverTree_2(TreeNode root) {
         if (root == null)

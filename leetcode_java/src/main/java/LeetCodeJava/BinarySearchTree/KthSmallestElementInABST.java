@@ -59,6 +59,10 @@ public class KthSmallestElementInABST {
      */
     // V0
     // IDEA : BFS + PQ
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public int kthSmallest(TreeNode root, int k) {
 
         if (root.left == null && root.right == null){
@@ -106,6 +110,10 @@ public class KthSmallestElementInABST {
 
     // V-0-1
     List<Integer> treeVal = new ArrayList<>();
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public int kthSmallest_0_1(TreeNode root, int k) {
 
         //edge
@@ -138,6 +146,10 @@ public class KthSmallestElementInABST {
     // V0-2
     // IDEA : DFS
     List<Integer> cache = new ArrayList();
+    /**
+     * time = O(N log N)
+     * space = O(N)
+     */
     public int kthSmallest_0_2(TreeNode root, int k) {
 
         if (root.left == null && root.right == null){
@@ -175,6 +187,10 @@ public class KthSmallestElementInABST {
     // V1
     // IDEA : Recursive Inorder Traversal + STACK
     // https://leetcode.com/problems/kth-smallest-element-in-a-bst/editorial/
+    /**
+     * time = O(H + K)
+     * space = O(H)
+     */
     public int kthSmallest_1(TreeNode root, int k) {
         LinkedList<TreeNode> stack = new LinkedList<>();
 

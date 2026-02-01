@@ -75,6 +75,7 @@ public class InorderSuccessorInBST2 {
 
 
     // V0
+    // Commented out - no implementation
 //    public Node inorderSuccessor(Node node) {
 //
 //    }
@@ -96,16 +97,14 @@ public class InorderSuccessorInBST2 {
      */
     /**
      *  NOTE !!!
-     *
      *  key:
-     *
      *  - Each node has a parent pointer.
      * 	- We do not have access to the root.
      * 	- The goal is to find the in-order successor,
      * 	   i.e., the node with the smallest value greater than p.val.
-     *
      *  -> We can solve this without comparing values by using `BST in-order traversal` logic.
-     *
+     * time = O(H)
+     * space = O(1)
      */
     // TODO: validate
     public Node inorderSuccessor_0_1(Node node) {
@@ -133,6 +132,10 @@ public class InorderSuccessorInBST2 {
     // V0-2
     // IDEA: BST in-order traversal, node op (gpt)
     // Could you solve it without looking up any of the node's values?
+    /**
+     * time = O(H)
+     * space = O(1)
+     */
     public Node inorderSuccessor_0_2(Node node) {
         if (node == null) return null;
 
@@ -156,6 +159,10 @@ public class InorderSuccessorInBST2 {
     // V0-3
     // IDEA: node op (gemini)
     // TODO: validate
+    /**
+     * time = O(H)
+     * space = O(1)
+     */
     public Node inorderSuccessor_0_3(Node p) {
         if (p == null) {
             return null;
@@ -191,6 +198,10 @@ public class InorderSuccessorInBST2 {
 
     // V1
     // https://leetcode.ca/2017-04-23-510-Inorder-Successor-in-BST-II/
+    /**
+     * time = O(H)
+     * space = O(1)
+     */
     public Node inorderSuccessor_1(Node node) {
         if (node.right != null) {
             node = node.right;

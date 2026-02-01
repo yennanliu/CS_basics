@@ -79,7 +79,10 @@ public class DeleteNodeInABST {
      *
      *  `in-order successor`:  Left → root → Right
      */
-
+    /**
+     * time = O(H)
+     * space = O(H)
+     */
     public TreeNode deleteNode(TreeNode root, int key) {
         return deleteNodeHelper_0(root, key);
     }
@@ -181,15 +184,12 @@ public class DeleteNodeInABST {
   // V0-1
   // IDEA: DFS + BST property
   /**
-   *
    * (when found a node to delete)
-   *
    *  // Case 1: No children
-   *
    *  // Case 2: One child
-   *
    *  // Case 3: Two children
-   *
+   * time = O(H)
+   * space = O(H)
    */
   public TreeNode deleteNode_0_1(TreeNode root, int key) {
       // edge
@@ -245,6 +245,10 @@ public class DeleteNodeInABST {
 
   // V0-2
   // IDEA: DFS + BST property (gpt)
+  /**
+   * time = O(H)
+   * space = O(H)
+   */
   public TreeNode deleteNode_0_2(TreeNode root, int key) {
       return deleteNodeHelper(root, key);
   }
@@ -293,16 +297,14 @@ public class DeleteNodeInABST {
   // https://youtu.be/LFzAoJJt92M?feature=shared
   // https://github.com/neetcode-gh/leetcode/blob/main/java%2F0450-delete-node-in-a-bst.java
   /**
-   *
    *  Summary of Deletion Strategy:
-   *  
-   *
    *  | Case         | Description        | What Happens                                  |
    * |--------------|--------------------|-----------------------------------------------|
    * | Leaf         | No children         | Return `null`                                 |
    * | One Child    | One child           | Replace node with its child                   |
    * | Two Children | Both children       | Replace with in-order successor, then delete the successor |
-   *
+   * time = O(H)
+   * space = O(H)
    */
   public TreeNode deleteNode_1_1(TreeNode root, int key) {
         // edge (base case)
@@ -360,11 +362,10 @@ public class DeleteNodeInABST {
             }
         }
 
-        /** NOTE !!! DON'T forget to return root as final result */
-        return root;
-    }
-
-    // helper func
+    /**
+     * time = O(H)
+     * space = O(1)
+     */
     public TreeNode minimumVal(TreeNode root) {
         TreeNode curr = root;
         while (curr != null && curr.left != null) {
@@ -375,6 +376,10 @@ public class DeleteNodeInABST {
 
     // V2
     // https://leetcode.com/problems/delete-node-in-a-bst/solutions/6532656/simple-solution-in-java-baet-100-users-b-70nb/
+    /**
+     * time = O(H)
+     * space = O(1)
+     */
     public TreeNode deleteNode_2(TreeNode root, int key) {
         if (root == null)
             return null;
@@ -399,6 +404,10 @@ public class DeleteNodeInABST {
         return dummy;
     }
 
+    /**
+     * time = O(H)
+     * space = O(H)
+     */
     public TreeNode linker(TreeNode root) {
         if (root.left == null)
             return root.right;
@@ -410,6 +419,10 @@ public class DeleteNodeInABST {
         return root.left;
     }
 
+    /**
+     * time = O(H)
+     * space = O(H)
+     */
     public TreeNode f(TreeNode root) {
         if (root.right == null)
             return root;
@@ -417,6 +430,10 @@ public class DeleteNodeInABST {
     }
 
     // V3
+    /**
+     * time = O(H)
+     * space = O(H)
+     */
     public TreeNode deleteNode_3(TreeNode root, int key) {
         //search
         if (root == null) {
@@ -447,6 +464,10 @@ public class DeleteNodeInABST {
 
     }
 
+    /**
+     * time = O(H)
+     * space = O(1)
+     */
     private TreeNode findInOrderSuccessor(TreeNode root) {
         while (root.left != null) {
             root = root.left;
@@ -456,6 +477,10 @@ public class DeleteNodeInABST {
 
     // V4
     // https://leetcode.com/problems/delete-node-in-a-bst/solutions/6504555/full-explanation-100-beat-python-c-java-1kcmz/
+    /**
+     * time = O(H)
+     * space = O(H)
+     */
     public TreeNode deleteNode_4(TreeNode root, int key) {
         if (root == null)
             return root;

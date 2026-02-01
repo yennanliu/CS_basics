@@ -53,6 +53,10 @@ public class BalanceABinarySearchTree {
     // V0
     // IDEA: BST + `mid point` built BST + DFS
     // LC 105, 106
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public TreeNode balanceBST(TreeNode root) {
 
         List<TreeNode> nodes = new ArrayList<>();
@@ -63,10 +67,6 @@ public class BalanceABinarySearchTree {
          *  by `in order traverse`. e.g. left -> root -> right
          */
         inorder_0(root, nodes);
-        /** build tree */
-        return rebuildBST(nodes, 0, nodes.size() - 1);
-    }
-
     /**
      * help func get list of node via inrder traverse
      */
@@ -129,6 +129,10 @@ public class BalanceABinarySearchTree {
     // V0-1
     // IDEA: BST + DFS (fixed by gpt)
     // Step 1: collect inorder traversal (sorted values)
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public TreeNode balanceBST_0_1(TreeNode root) {
         List<TreeNode> nodes = new ArrayList<>();
         inorder(root, nodes);
@@ -159,6 +163,10 @@ public class BalanceABinarySearchTree {
     // List to store the node values in sorted order
     private List<Integer> sortedValues = new ArrayList<>();
 
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public TreeNode balanceBST_0_2(TreeNode root) {
         if (root == null) {
             return null;
@@ -215,6 +223,10 @@ public class BalanceABinarySearchTree {
     // https://buildmoat.teachable.com/courses/7a7af3/lectures/64296433
     private List<Integer> v = new ArrayList<>();
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     private void dfs_0_3(TreeNode n) {
         if (n == null) {
             return;
@@ -224,6 +236,10 @@ public class BalanceABinarySearchTree {
         dfs_0_3(n.right);
     }
 
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
     private TreeNode build_0_3(int l, int r) {
         if (l > r) {
             return null;
@@ -235,6 +251,10 @@ public class BalanceABinarySearchTree {
         return res;
     }
 
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public TreeNode balanceBST_0_3(TreeNode root) {
         dfs_0_3(root);
         return build_0_3(0, v.size() - 1);
@@ -244,6 +264,10 @@ public class BalanceABinarySearchTree {
     // V1-1
     // IDEA: Inorder Traversal + Recursive Construction
     // https://leetcode.com/problems/balance-a-binary-search-tree/solutions/
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public TreeNode balanceBST_1_1(TreeNode root) {
         // Create a list to store the inorder traversal of the BST
         List<Integer> inorder = new ArrayList<>();
@@ -288,6 +312,10 @@ public class BalanceABinarySearchTree {
     // V1-2
     // IDEA: : Day-Stout-Warren Algorithm / In-Place Balancing
     // https://leetcode.com/problems/balance-a-binary-search-tree/solutions/
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
     public TreeNode balanceBST_1_2(TreeNode root) {
         if (root == null)
             return null;
@@ -358,6 +386,10 @@ public class BalanceABinarySearchTree {
     // https://leetcode.ca/2019-09-12-1382-Balance-a-Binary-Search-Tree/
     private List<Integer> nums = new ArrayList<>();
 
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
     public TreeNode balanceBST_2(TreeNode root) {
         dfs(root);
         return build(0, nums.size() - 1);
