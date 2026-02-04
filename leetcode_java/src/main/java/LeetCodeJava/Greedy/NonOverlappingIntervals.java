@@ -42,8 +42,72 @@ import java.util.*;
 public class NonOverlappingIntervals {
 
     // V0
-    // IDEA: SORT + INTETVAL (fixed by gemini)
+    // IDEA: SORT + INTERVAL overlap OP (gemini)
     public int eraseOverlapIntervals(int[][] intervals) {
+        if (intervals == null || intervals.length <= 1) {
+            return 0;
+        }
+
+        // 1. Sort by start time (your current approach)
+        Arrays.sort(intervals, (a, b) -> Integer.compare(a[0], b[0]));
+
+        List<int[]> collected = new ArrayList<>();
+        int op = 0;
+
+        for (int i = 0; i < intervals.length; i++) {
+            int[] cur = intervals[i];
+
+            if (i == 0) {
+                collected.add(cur);
+            } else {
+                int[] prev = collected.get(collected.size() - 1);
+
+                /**  since we ALREADY sort on 1st element (small -> big),
+                 *   below are overlap case:
+                 *
+                 *    |----| prev
+                 *       |---------| cur
+                 *
+                 *   |-----|  prev
+                 *     |--|   cur
+                 *
+                 */
+                // Check if they overlap
+                if (prev[1] > cur[0]) {
+                    /** NOTE
+                     *
+                     *  need to increase op, no matter which type of `overlap`
+                     */
+                    op++; // One MUST be removed
+
+                    /** NOTE
+                     *
+                     *  if below type overlapping,
+                     *  we should remove prev, and add cur to cache
+                     *
+                     *    |------|  prev
+                     *      |--|     cur
+                     *
+                     */
+                    // If current ends EARLIER than prev, it's better to keep current.
+                    // We "remove" prev by replacing it with current.
+                    if (cur[1] < prev[1]) {
+                        collected.set(collected.size() - 1, cur);
+                    }
+                    // If cur ends LATER or SAME as prev, we just "remove" cur (do nothing)
+                } else {
+                    // No overlap: just add it to our "kept" list
+                    collected.add(cur);
+                }
+            }
+        }
+
+        return op;
+    }
+
+    // V0-0-0-1
+    // IDEA: SORT + INTERVAL (fixed by gemini)
+    public int eraseOverlapIntervals_0_0_0_1(int[][] intervals) {
         if (intervals == null || intervals.length <= 1)
             return 0;
 
