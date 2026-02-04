@@ -209,6 +209,135 @@ class Solution {
 }
 ```
 
+### 0-2-2) Move Zeros to End
+```java
+// java
+// LC 283 Move Zeroes
+// https://leetcode.com/problems/move-zeroes/
+/**
+ * Pattern: Move all zeros (or specific elements) to the end while maintaining
+ * the relative order of non-zero elements. Must be done in-place.
+ *
+ * Key Idea:
+ *   - Both pointers (l and r) start from index 0
+ *   - l tracks the position where the next non-zero should be placed
+ *   - r scans through the array
+ *   - When r finds a non-zero, swap with l and move l forward
+ *   - This moves all zeros to the end naturally
+ *
+ * Difference from "Remove Element" pattern:
+ *   - Remove Element: overwrites without caring about moved elements
+ *   - Move Zeros: uses SWAP to preserve all elements in array
+ *
+ *  //--------------------
+ *  Example 1
+ *  //--------------------
+ *
+ *  nums = [0,1,0,3,12]
+ *
+ *  [0,1,0,3,12]
+ *   l
+ *   r
+ *
+ *  [0,1,0,3,12]    nums[r]=0, no swap, move r
+ *   l
+ *     r
+ *
+ *  [1,0,0,3,12]    nums[r]!=0, swap(l,r), move l and r
+ *   l l
+ *     r
+ *
+ *  [1,0,0,3,12]    nums[r]=0, no swap, move r
+ *     l
+ *       r
+ *
+ *  [1,3,0,0,12]    nums[r]!=0, swap(l,r), move l and r
+ *     l l
+ *         r
+ *
+ *  [1,3,12,0,0]    nums[r]!=0, swap(l,r), move l and r
+ *        l  l
+ *            r
+ *
+ *  //--------------------
+ *  Example 2
+ *  //--------------------
+ *
+ *  nums = [0]
+ *  [0]
+ *   l
+ *   r
+ *  -> only one element, no change
+ *
+ *  //--------------------
+ *  Example 3
+ *  //--------------------
+ *
+ *  nums = [1,0,2,0,3]
+ *
+ *  [1,0,2,0,3]    nums[r]!=0, swap(l,r), move l and r
+ *   l l
+ *   r
+ *
+ *  [1,0,2,0,3]    nums[r]=0, no swap, move r
+ *     l
+ *     r
+ *
+ *  [1,2,0,0,3]    nums[r]!=0, swap(l,r), move l and r
+ *     l l
+ *       r
+ *
+ *  [1,2,0,0,3]    nums[r]=0, no swap, move r
+ *       l
+ *         r
+ *
+ *  [1,2,3,0,0]    nums[r]!=0, swap(l,r), move l and r
+ *       l l
+ *           r
+ *
+ * Time: O(N), Space: O(1)
+ */
+class Solution {
+    public void moveZeroes(int[] nums) {
+        if (nums == null || nums.length <= 1)
+            return;
+
+        // 'l' is the position where the next non-zero number should be placed
+        int l = 0;
+
+        /** NOTE !!!
+         *
+         *  BOTH l, r start from idx = 0
+         */
+        // Iterate through the array with 'r'
+        for (int r = 0; r < nums.length; r++) {
+            // If we find a non-zero element
+            if (nums[r] != 0) {
+                // Swap it with the element at position 'l'
+                int tmp = nums[r];
+                nums[r] = nums[l];
+                nums[l] = tmp;
+
+                /** NOTE !!!
+                 *
+                 *  Move 'l' forward if `we swap`
+                 */
+                // Move 'l' forward
+                l++;
+            }
+        }
+    }
+}
+```
+
+**Similar Problems:**
+- LC 283 Move Zeroes (this pattern)
+- LC 27 Remove Element (overwrite version)
+- LC 905 Sort Array By Parity (move even numbers to front)
+- LC 922 Sort Array By Parity II (even/odd positioning)
+- LC 2460 Apply Operations to an Array
+- LC 1089 Duplicate Zeros (expanding array version)
+
 
 #### 0-2-3) for loop + "expand `left`, `right` from center"
 
