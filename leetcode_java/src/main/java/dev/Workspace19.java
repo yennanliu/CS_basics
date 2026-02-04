@@ -4164,6 +4164,75 @@ public class Workspace19 {
 
 
 
+    // LC 283
+    // 9.53 - 10.03 am
+    /**
+     *
+     *  -> move all 0's to the end of it while
+     *    maintaining the relative order
+     *    of the non-zero elements.
+     *
+     *
+     *  Note:
+     *    that you must do this
+     *    `in-place`
+     *    without making a copy of the array.
+     *
+     *
+     *  ------------
+     *
+     *  IDEA 1) 2 POINTERS
+     *
+     */
+    public void moveZeroes(int[] nums) {
+        // edge
+        if(nums.length <= 1){
+            return;
+        }
+
+        int l = 0;
+        int r = nums.length - 1;
+
+        // 1st op
+        while(r > l){
+            if(nums[l] == 0){
+                while(nums[r] == 0){
+                    r -= 1;
+                }
+                int tmp = nums[r];
+                nums[r] = nums[l];
+                nums[l] = tmp;
+            }
+
+            l += 1;
+           // r -= 1;
+        }
+
+        System.out.println(">>> after 1st op, nums = " + Arrays.toString(nums));
+        //System.out.println(">>> l = " + l + ", r = " + r);
+
+        // 2nd op
+        int end = 0;
+        for (int i = 0; i < nums.length; i++){
+            if(nums[i] != 0){
+                end = i;
+                break;
+            }
+        }
+
+        int start = 0;
+        while (end > 0){
+            int tmp = nums[end];
+            nums[end] = nums[start];
+            nums[start] = tmp;
+            start += 1;
+            end -= 1;
+        }
+
+        System.out.println(">>> after 2nd op, nums = " + Arrays.toString(nums));
+
+    }
+
 
 
 
