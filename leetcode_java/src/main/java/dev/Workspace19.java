@@ -3645,7 +3645,76 @@ public class Workspace19 {
      *
      *
      */
+
+    // 10.35 - 47 am
+    /**
+     *  IDEA 1) SORT + 2 POINTER ???
+     *
+     */
     public int eraseOverlapIntervals(int[][] intervals) {
+        // edge
+        if (intervals == null || intervals.length <= 1) {
+            return 0;
+        }
+
+        // sort ??
+        // sort on 1st element (small -> big)
+        Arrays.sort(intervals, new Comparator<int[]>() {
+            @Override
+            public int compare(int[] o1, int[] o2) {
+                return o1[0] - o2[0];
+            }
+        });
+
+        int op = 0;
+        List<int[]> collected = new ArrayList<>();
+        for(int i = 0; i < intervals.length; i++){
+
+            int[] cur = intervals[i];
+
+            if(i == 0){
+                collected.add(cur);
+            }
+            else{
+                int[] prev = collected.get(collected.size() -1);
+                // if overlap, and
+                // if the cur one if `longer` one,
+                // NOT add it
+                // else
+                // remove the prev one
+                /**  since we ALREADY sort on 1st element (small -> big),
+                 *   below are overlap case:
+                 *
+                 *    |----| prev
+                 *       |---------| cur
+                 *
+                 *   |-----|  prev
+                 *     |--|   cur
+                 *
+                 */
+                if(prev[1] > cur[0]){
+                    if(prev[1] > cur[1]){
+                        collected.remove(collected.get(collected.size() -1));
+                        collected.add(cur);
+                        //op += 1;
+                    }else{
+                        collected.add(cur);
+                    }
+                    op += 1;
+                }
+            }
+        }
+
+        return op;
+    }
+
+
+
+
+
+
+
+    public int eraseOverlapIntervals_99(int[][] intervals) {
         // edge
         if(intervals == null || intervals.length == 0){
             return 0;
