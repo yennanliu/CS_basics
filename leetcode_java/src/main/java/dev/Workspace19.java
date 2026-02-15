@@ -4495,17 +4495,26 @@ public class Workspace19 {
 
         int totalSum = 0;
         int[] prefix = new int[nums.length + 1]; // ??
-        for(int i = 0; i < nums.length + 1; i++){
-            if(i < nums.length){
-                totalSum += nums[i];
-            }
+//        for(int i = 0; i < nums.length + 1; i++){
+//            if(i < nums.length){
+//                totalSum += nums[i];
+//            }
+//            prefix[i+1] = totalSum;
+//        }
+        for(int i = 0; i < nums.length ; i++){
+            totalSum += nums[i];
             prefix[i+1] = totalSum;
         }
 
         System.out.println(">>> totalSum = " +  totalSum +
                 ", prefix = " + Arrays.toString(prefix));
 
-        for(int i = 0; i < nums.length + 1; i++){
+        for(int i = 0; i < nums.length; i++){
+
+            int leftSum = prefix[i];
+            //int rightSum = totalSum - leftSum;
+            int rightSum = totalSum - prefix[i] - (nums[i]);
+
             int prefixSum = prefix[i+1];
             if( (prefixSum - nums[i]) * 2  + nums[i] ==  totalSum){
                 return i;
