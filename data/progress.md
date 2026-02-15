@@ -1,5 +1,371 @@
 # Progress
 
+
+# 2026-02-15
+
+- weekly video
+- to review
+- needcode `250` - similar LC by AI
+	- LC 1929
+	 - gpt
+	 	- 1470
+	 	- 1672
+	 	- 1431
+	 	- 66
+	 	- 727
+	 - gemini
+	 	- 1920
+	 	- 1480
+	 	- 1089
+	 	- 189
+	 	- 442
+	 	- 41
+	 	- 42
+	- LC 14
+	  - gpt
+	  	- 383
+	  	- 720
+	  	- 1023
+	  	- 336
+	  	- 1032
+	  - gemini
+	    - 28
+	    - 58
+	    - 214
+	- LC 75
+	  - gpt
+	  	- 1288
+	  	- 163
+	  - gemini
+	    - 27
+	    - 41
+	    - 179
+- needcode `grind 75` - similar LC by AI
+	- https://neetcode.io/practice?tab=blind75
+	- LC 49 Group Anagrams
+	- LC 347 Top K Frequent Elements
+		- 621
+	- LC 271 – Encode and Decode Strings
+	- LC 128 - Longest Consecutive Sequence
+	- LC 125 - Valid Palindrome
+	- LC 11 - Container With Most Water
+	- LC 121 Best Time to Buy and Sell Stock
+	 	- 714
+	 	- 309
+	 	- 123
+	 	- 128
+	 	- 188
+	 	- 1235
+	 - LC 003 Longest Substring Without Repeating Characters 
+	 	- gpt
+		 	- 568 (dp)
+		- gemini
+		 	- 567
+		 	- 424
+	- LC 424. Longest Repeating Character Replacement
+		- gpt
+			- 1004
+		- gemini
+			- 904
+			- 209
+			- 713
+	- LC 20 Valid Parentheses
+		- gpt
+			- 155
+			- 224
+			- 301
+		- gemini
+			- 1249
+			- 856
+			- 71
+	- LC 206 Reverse Linked List
+		- gpt
+			- 25
+			- 61
+		- gemini
+	- LC 143 Reorder List
+		- gpt
+		- gemini
+			- 234
+	- LC 19 Remove Nth Node From End of List
+		- gpt
+			- 143
+			- 23
+			- 25
+		- gemini
+	- LC 226 Invert Binary Tree
+		- gpt
+		- gemini
+	- LC 104 Maximum Depth of Binary Tree
+		- gpt
+			- 297
+		- gemini
+	- LC 100 Same Tree
+		- gpt
+		- gemini
+	- LC 235 Lowest Common Ancestor of a Binary Search Tree
+		- gpt
+		- gemini
+	- LC 102 Binary Tree Level Order Traversal
+		- gpt
+		- gemini
+			- 116
+	- LC 98 Validate Binary Search Tree
+		- gpt
+			- 99
+		- gemini
+	- LC 230 Kth Smallest Element In a Bst 
+		- gpt
+		- gemini
+	- LC 105 Construct Binary Tree from Preorder and Inorder Traversal
+		- gpt
+			- 654
+			- 889
+			- 105,106
+			- 297
+		- gemini
+			- 108
+			- 938
+			- 95
+	- LC 337 House Robber II
+		- note: this is a dp problem
+		- gpt
+			- 198
+			- 213
+			- 1339
+			- 968
+			- 312
+		- gemini
+			- 687
+			- 865
+	- LC 1325 Delete Leaves With a Given Value
+		- gpt
+			- 145
+			- 872
+			- 1325
+			- 814
+			- 404
+			- 968
+			- 1080
+			- 1123
+		- gemini
+			- 226
+			- 669
+			- 450
+	- LC 297 Serialize and Deserialize Binary Tree
+		- gpt
+			- 297
+			- 449
+			- 431
+			- 1166
+		- gemini
+			- 652
+	- LC 703 Kth Largest Element in a Stream
+		- gpt
+			- 295
+			- 480
+			- 352
+		- gemini
+			- 239
+	- LC 1046 Last Stone Weight
+		- gpt
+		- gemini
+	- LC 215 Kth Largest Element in an Array
+		- gpt
+		- gemini
+	- LC 621 Task Scheduler
+		- gpt
+		- gemini
+			- 1383
+	- LC 355 Design Twitter
+		- gpt
+			- 642
+			- 460
+			- 715
+			- 460
+		- gemini
+			- 315
+	- Backtracking (not yet, do `LC similar` later)
+	- LC 208 Implement Trie (Prefix Tree)
+		- gpt
+			- 211
+			- 720
+			- 212
+			- 588
+			- 336
+		- gemini
+			- 211
+			- 642
+	- LC 200 Number of Islands
+		- gpt
+		- gemini
+			- 218
+			- 1697
+	- LC 695 Max Area of Island
+		- gpt
+			- 329
+			- 711 (Number of Distinct Islands II)
+		- gemini
+			- 212
+	- LC 133 Clone Graph
+		- gpt
+			- 133
+			- 269
+		- gemini
+			- 138
+	- LC 286 Walls And Gates
+		- gpt
+			- 1293
+		- gemini
+	- LC 417 Pacific Atlantic Water Flow
+		- gpt
+			- 329
+		- gemini
+			- 827
+			- 980
+	- LC 130 Surrounded Regions
+		- gpt
+			- 329
+		- gemini
+			- 864
+	- LC 207 Course Schedule
+		- gpt
+			- 1136
+			- 1203
+			- 269
+			- 685
+			- 2127
+		- gemini
+			- 329
+			- 2050
+	- LC 261 Graph Valid Tree
+		- gpt
+			- 323
+			- 684
+			- 310
+			- 1192
+		- gemini
+	- (1D DP)
+	- LC 70 Climbing Stairs
+		- gpt
+			- 403
+		- gemini
+			- 322
+			- 691
+	- LC 746 Min Cost Climbing Stairs
+		- gpt
+		- gemini
+			- 322
+			- 64
+			- 1326
+			- 174
+	- LC 198 House Robber
+		- gpt
+			- 2560
+			- 309
+			- 714
+			- 1235
+			- 64 (?)
+		- gemini
+			- 740
+			- 1911
+			- 639
+	- LC 5 Longest Palindromic Substring
+		- gpt
+		- gemini
+			- 516
+			- 132
+	- LC 647 Palindromic Substrings
+		- gpt
+		- gemini
+			- 730
+	- (2D DP)
+	- LC 62 Unique Paths
+		- gpt
+			- 63
+			- 64
+			- 931
+			- 221
+			- 1277
+			- 120
+			- 329
+			- 576
+		- gemini
+			- 1143
+			- 174
+			- 741
+			- 221
+	- LC 1143 Longest Common Subsequence
+		- gpt
+			- 583
+			- 1035
+			- 718
+			- 115
+			- 72
+			- 1092
+			- 97
+			- 10
+		- gemini
+			- 44
+	- LC 57 Insert Interval
+		- gpt
+			- 1288
+			- 163
+			- 1094
+			- 1109
+		- gemini
+			- 88
+			- 986
+			- 435
+			- 759
+			- 715
+	- (greedy)
+	- LC 53 Maximum Subarray
+	  - gpt
+	  - gemini
+	- LC 55 Jump Game
+	  - gpt
+	  - gemini
+	- `google_leetcode_problems_by_tags.md`
+	- others:
+		- Path Signatures
+			- 694,711,652,508
+		- robin karp algo?
+- neetcode 250
+	- https://github.com/yennanliu/CS_basics/blob/master/doc/leetcode_company_V6/LC_goog_all.pdf
+		- 27/66
+			- 335,430,1157,395
+		- review prev LC problems !!!
+	- https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/tree.md
+	- 護城河
+		- video
+			- session 12
+		- pdf
+			- p.7 (sliding window)
+		- LC 2034. Stock Price Fluctuation 
+		- LC 200. Number of Islands `follow up`:
+		 	- 若grid上原先都是水，接著有多次的更新，每次更新為把一格水換成陸地，也就是會給一個座標(x,y)，保證他原先是水，並將他轉換成陸地，每次更新完後請確認目前有幾座島嶼
+		- LC 252 Meeting Rooms `follow up`:
+			- 1. the meeting will be added one by one (dynamically), the func needs to return if it's there is a conflicts, if conflict, NOT add the new meeting
+			- 2.  min meeting needed to remove so there is NO conflicts 
+		 	- https://buildmoat.teachable.com/courses/7a7af3/lectures/62695983
+		- LC 1268 Search Suggestions System `followup`
+			- what if `query`, `insert` happens `interlacely`?
+				- e.g. init, query, insert, insert, query...
+			- https://buildmoat.teachable.com/courses/7a7af3/lectures/62696645
+		- binary search problems:
+	- again:
+	- todo:
+		- (337 similar)
+			- 1770
+			- 1931
+			- 2246
+	- Sys design questions:
+		- https://neetcode.io/practice?tab=systemDesign
+	- crack code book
+		- p.177 (recursion & dp)
+
+
 # 2026-02-04
 
 - weekly video
