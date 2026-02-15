@@ -102,7 +102,120 @@ public class RangeSumQueryImmutable {
         }
     }
 
-    
+    // V0-2
+    // IDEA: DP (GPT)
+    /**
+     * For **LeetCode 303 (Range Sum Query – Immutable)**, the prefix sum solution is actually a **Dynamic Programming (DP)** solution.
+     *
+     * ---
+     *
+     * # 🧠 Why This Is DP
+     *
+     * DP =
+     *
+     * > Solve bigger problems using results of smaller subproblems.
+     *
+     * Here:
+     *
+     * We define a state:
+     *
+     * ```
+     * dp[i] = sum of elements from index 0 to i
+     * ```
+     *
+     * And we build it using:
+     *
+     * ```
+     * dp[i] = dp[i - 1] + nums[i]
+     * ```
+     *
+     * That is classic 1D DP.
+     *
+     *
+     * ---
+     *
+     * # 📌 DP Breakdown
+     *
+     * ### 🔹 State
+     *
+     * ```
+     * dp[i] = sum from 0 → i
+     * ```
+     *
+     * ### 🔹 Base Case
+     *
+     * ```
+     * dp[0] = nums[0]
+     * ```
+     *
+     * ### 🔹 Transition
+     *
+     * ```
+     * dp[i] = dp[i - 1] + nums[i]
+     * ```
+     *
+     * ### 🔹 Answer Query
+     *
+     * ```
+     * sum(left, right) =
+     *     dp[right] - dp[left - 1]  (if left > 0)
+     *     dp[right]                 (if left == 0)
+     * ```
+     *
+     * ---
+     */
+    class NumArray_0_2 {
+
+        private int[] dp;
+
+        public NumArray_0_2(int[] nums) {
+            int n = nums.length;
+            dp = new int[n];
+
+            dp[0] = nums[0]; // base case
+
+            for (int i = 1; i < n; i++) {
+                dp[i] = dp[i - 1] + nums[i]; // state transition
+            }
+        }
+
+        public int sumRange(int left, int right) {
+            if (left == 0) {
+                return dp[right];
+            }
+            return dp[right] - dp[left - 1];
+        }
+    }
+
+
+
+    // V0-3
+    // IDEA: DP (gemini)
+    class NumArray_0_3 {
+        // dp[i] represents the sum of elements nums[0...i-1]
+        private int[] dp;
+
+        public NumArray_0_3(int[] nums) {
+            int n = nums.length;
+            // We use n + 1 to handle the base case (sum of 0 elements is 0)
+            this.dp = new int[n + 1];
+
+            // DP State Transition:
+            // dp[i] = dp[i-1] + nums[i-1]
+            for (int i = 1; i <= n; i++) {
+                dp[i] = dp[i - 1] + nums[i - 1];
+            }
+        }
+
+        public int sumRange(int left, int right) {
+            // The sum of range [left, right] is the sum of first (right + 1) elements
+            // minus the sum of the first (left) elements.
+            return dp[right + 1] - dp[left];
+        }
+    }
+
+
+
     /**
      * Your NumArray object will be instantiated and called as such:
      * NumArray obj = new NumArray(nums);

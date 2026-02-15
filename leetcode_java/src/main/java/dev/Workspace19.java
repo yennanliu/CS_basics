@@ -4347,7 +4347,11 @@ public class Workspace19 {
      *
      *  IDEA 2) DP
      *    - DP def
+     *       - dp[i]: sum in from 0 to i
+     *
      *    - DP eq
+     *       - dp[i] =
+     *           dp[i-1] + nums[i]
      *
      *
      * --------------
@@ -4378,14 +4382,54 @@ public class Workspace19 {
      *
      *
      */
+    // dp
     class NumArray {
+
+        int[] dp;
+
+        public NumArray(int[] nums) {
+            int n = nums.length;
+            // build dp arr
+            this.dp = new int[n]; // ???
+            this.dp[0] = nums[0];
+            for(int i = 1; i < n; i++){
+                this.dp[i] = nums[i] + this.dp[i - 1];
+            }
+        }
+
+        public int sumRange(int left, int right) {
+            if(left > right){
+                return -1;
+            }
+//            if(left == right){
+//                return this.nums[right];
+//            }
+//            if(left == 0){
+//                return this.prefix[right];
+//            }
+
+            return this.dp[right] - this.dp[left - 1];
+        }
+
+    }
+
+
+
+
+
+
+
+
+
+    // prefix sum
+    class NumArray_100 {
 
         // attr
         int[] nums;
         int[] prefix;
         int n;
 
-        public NumArray(int[] nums) {
+        public NumArray_100(int[] nums) {
             this.nums = nums;
             this.n = this.nums.length;
             this.prefix = new int[this.n];
