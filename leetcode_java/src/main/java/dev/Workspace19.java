@@ -4601,19 +4601,86 @@ public class Workspace19 {
 
 
     // LC 449
+    // 16.10 - 20 pm
+    /**
+     *
+     * -> Design an algo
+     *   - to serialize
+     *   - deserialize a binary search tree. (BST)
+     *
+     *
+     *  -----------------
+     *
+     *   IDEA 1) BST property + recursion
+     *
+     *
+     *  -----------------
+     *
+     *
+     */
+    //  BST property + recursion
     public class Codec {
 
+        // attr
+//        String endcode = null; // ??
+//        TreeNode decodeNode = null; // ??
+
         // Encodes a tree to a single string.
+        // pre-order traverse
+        // root -> sub left -> sub right
         public String serialize(TreeNode root) {
-            return null;
+            // edge
+            if(root == null){
+                return "#";
+            }
+            // ???
+            return root.val + "," + serialize(root.left)
+                    + "," + serialize(root.right); // ????? needed ? + "#";
         }
 
         // Decodes your encoded data to tree.
         public TreeNode deserialize(String data) {
+            // edge
+            if(data.equals("#")){
+                return null; // ???
+            }
 
-            return null;
+            // ???
+            Queue<String> q = new LinkedList<>();
+            // V1
+//            for(String x: data.split(",")){
+//                q.add(x);
+//            }
+            // V2
+            q.addAll(Arrays.asList(data.split(",")));
+
+            return helper(q);
         }
+
+        private TreeNode helper(Queue<String> q){
+            // edge
+            if(q.isEmpty()){
+                return null; // ??
+            }
+
+            // ???
+            String node = q.poll();
+            if(node.equals("#")){
+                return null;
+            }
+
+            TreeNode root = new TreeNode(Integer.parseInt(node));
+            root.left = helper(q);
+            root.right = helper(q);
+
+            return root;
+        }
+
     }
+
+
+
+
 
 
 
