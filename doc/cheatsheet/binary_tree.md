@@ -274,6 +274,36 @@ def path_sum_template(root, target):
         dfs(node.right, current_sum, path)
         
         # Backtrack
+        """
+        NOTE !!! why do we need backtrack here ? (gemini)
+        In simple terms, **backtracking** is the "undo" button for your recursion.
+
+
+        ### 3. A Visual Example
+
+        Imagine this tree:
+
+        ```text
+            1
+           / \
+           2   3
+
+        ```
+
+        **Without `path.pop()`:**
+
+        1. Go to `1`: `path = [1]`
+        2. Go to `2`: `path = [1, 2]`
+        3. Finish `2`, go back to `1`.
+        4. Go to `3`: `path = [1, 2, 3]`  <-- **ERROR!** (2 shouldn't be here)
+
+        **With `path.pop()`:**
+
+        1. Go to `1`: `path = [1]`
+        2. Go to `2`: `path = [1, 2]`
+        3. Finish `2`, **`pop()`**: `path = [1]`
+        4. Go to `3`: `path = [1, 3]` <-- **CORRECT!**
+        """
         path.pop()
     
     result = []
