@@ -235,7 +235,30 @@ public class Workspace19 {
      *  -----------------
      */
 
+    // 11.56 - 12.06 pm
+    /**
+     *
+     *  ->  return true
+     *    if you can partition the array into two subsets
+     *    such that the sum of the elements
+     *    in both subsets is equal or false otherwise.
+     *
+     *
+     *   IDEA 1) DP
+     *
+     *
+     */
     public boolean canPartition(int[] nums) {
+        //
+
+        return false;
+    }
+
+
+
+
+
+    public boolean canPartition_98(int[] nums) {
         //edge
         int sum = 0;
         int n = nums.length;
@@ -4301,6 +4324,13 @@ public class Workspace19 {
         System.out.println(">>> after 2nd op, nums = " + Arrays.toString(nums));
 
     }
+
+
+//    // LC 416
+//    public boolean canPartition(int[] nums) {
+//
+//        return false;
+//    }
 
 
 
