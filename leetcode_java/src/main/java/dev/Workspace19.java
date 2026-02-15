@@ -4458,10 +4458,65 @@ public class Workspace19 {
 
 
     // LC 724
+    // 14.55 - 15.05 pm
+    /**
+     *  -> Return the leftmost pivot index.
+     *     If no such index exists, return -1.
+     *
+     *     - pivot index:
+     *         the index where the sum of all the numbers
+     *         strictly to the left of the index is equal
+     *         to the sum of all the numbers strictly to
+     *         the index's right.
+     *
+     * -------------------
+     *
+     *
+     *  IDEA 1) BRUTE FORCE
+     *
+     *  IDEA 2) ARRAY OP
+     *    -  get total sum
+     *    - loop over arr
+     *    - if ( left sub arr ) * 2 + cur val =  total sum
+     *       - add it to cache
+     *
+     *    - ...
+     *    - return the 1st element from cache
+     *      (leftmost)
+     *
+     *
+     *
+     * -------------------
+     *
+     *
+     *
+     */
     public int pivotIndex(int[] nums) {
+
+        int totalSum = 0;
+        int[] prefix = new int[nums.length + 1]; // ??
+        for(int i = 0; i < nums.length + 1; i++){
+            if(i < nums.length){
+                totalSum += nums[i];
+            }
+            prefix[i+1] = totalSum;
+        }
+
+        System.out.println(">>> totalSum = " +  totalSum +
+                ", prefix = " + Arrays.toString(prefix));
+
+        for(int i = 0; i < nums.length + 1; i++){
+            int prefixSum = prefix[i+1];
+            if( (prefixSum - nums[i]) * 2  + nums[i] ==  totalSum){
+                return i;
+            }
+        }
 
         return -1;
     }
+
+
+
 
 
 
