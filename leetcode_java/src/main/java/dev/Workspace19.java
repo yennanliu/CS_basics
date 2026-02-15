@@ -4334,17 +4334,85 @@ public class Workspace19 {
 
 
     // LC 303
+    // 14.12 -22 pm
+    /**
+     * -> int sumRange(int left, int right) Returns the sum of the
+     *    elements of nums between indices left and right
+     *    inclusive (i.e. nums[left] + nums[left + 1] + ... + nums[right]).
+     *
+     *
+     *  -----------------
+     *
+     *  IDEA 1) PRE FIX SUM
+     *
+     *  IDEA 2) DP
+     *    - DP def
+     *    - DP eq
+     *
+     *
+     * --------------
+     *
+     *  ex 1)
+     *
+     * Input
+     * ["NumArray", "sumRange", "sumRange", "sumRange"]
+     *  [[[-2, 0, 3, -5, 2, -1]], [0, 2], [2, 5], [0, 5]]
+     * Output
+     * [null, 1, -1, -3]
+     *
+     *  ->
+     *   arr = [-2, 0, 3, -5, 2, -1]
+     *   pre_fix = [-2, -2, 1, -4, -2, -3]
+     *
+     *   -> sum_r[i, j] = pre_fix[j] - pre_fix[i-1]
+     *
+     *    a0
+     *    a0 + a1 + a2
+     *
+     *   -> sum_r(0,2) = pre_fix[2] - pre_fix[0-1]
+     *                = 1
+     *
+     *   -> sum_r(2,5) = pre_fix[5] - pre_fix[2-1]
+     *                 = -3 - (-2)  = -1
+     *
+     *
+     *
+     */
     class NumArray {
 
-        public NumArray(int[] nums) {
+        // attr
+        int[] nums;
+        int[] prefix;
+        int n;
 
+        public NumArray(int[] nums) {
+            this.nums = nums;
+            this.n = this.nums.length;
+            this.prefix = new int[this.n];
+            // ??
+            int prefixSum = 0;
+            for(int i = 0; i < n; i++){
+                prefixSum += this.nums[i];
+                this.prefix[i] = prefixSum;
+            }
         }
 
         public int sumRange(int left, int right) {
+            if(left > right){
+                return -1;
+            }
+            if(left == right){
+               return this.nums[right];
+            }
+            if(left == 0){
+                return this.prefix[right];
+            }
 
-            return 0;
+            return this.prefix[right] - this.prefix[left - 1];
         }
     }
+
+
 
 
 

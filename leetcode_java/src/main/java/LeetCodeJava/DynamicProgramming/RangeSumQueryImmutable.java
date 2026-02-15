@@ -43,17 +43,66 @@ package LeetCodeJava.DynamicProgramming;
 public class RangeSumQueryImmutable {
 
     // V0
-//    class NumArray {
-//
-//        public NumArray(int[] nums) {
-//
-//        }
-//
-//        public int sumRange(int left, int right) {
-//
-//        }
-//    }
+    // IDEA: PREFIX SUM
+    class NumArray {
 
+        // attr
+        int[] nums;
+        int[] prefix;
+        int n;
+
+        public NumArray(int[] nums) {
+            this.nums = nums;
+            this.n = this.nums.length;
+            this.prefix = new int[this.n];
+            // ??
+            int prefixSum = 0;
+            for (int i = 0; i < n; i++) {
+                prefixSum += this.nums[i];
+                this.prefix[i] = prefixSum;
+            }
+        }
+
+        public int sumRange(int left, int right) {
+            if (left > right) {
+                return -1;
+            }
+            if (left == right) {
+                return this.nums[right];
+            }
+            if (left == 0) {
+                return this.prefix[right];
+            }
+
+            return this.prefix[right] - this.prefix[left - 1];
+        }
+    }
+
+    // V0-1
+    // IDEA: PREFIX SUM (fixed by gemini)
+    class NumArray_0_1 {
+        // We only need the prefix sum array
+        private int[] prefix;
+
+        public NumArray_0_1(int[] nums) {
+            int n = nums.length;
+            // Create prefix array with size n + 1
+            // prefix[i] stores the sum of nums[0...i-1]
+            this.prefix = new int[n + 1];
+
+            for (int i = 0; i < n; i++) {
+                this.prefix[i + 1] = this.prefix[i] + nums[i];
+            }
+        }
+
+        public int sumRange(int left, int right) {
+            // The sum from index left to right is simply:
+            // (Sum of first right+1 elements) - (Sum of first left elements)
+            return prefix[right + 1] - prefix[left];
+        }
+    }
+
+    
     /**
      * Your NumArray object will be instantiated and called as such:
      * NumArray obj = new NumArray(nums);
