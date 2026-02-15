@@ -122,29 +122,37 @@ def two_sum_pattern(nums, target):
 ```
 
 ### Template 3: Prefix Sum with Hash Map
+
+**See detailed pattern explanation in [0-2) Pattern > Subarray Sum Count Pattern](#subarray-sum-count-pattern-lc-560-core-pattern)**
+
 ```python
 # Prefix Sum Pattern Template
 def prefix_sum_pattern(nums, target):
     prefix_sum = 0
     sum_count = {0: 1}  # {sum: count/index}
     result = 0
-    
+
     for num in nums:
         prefix_sum += num
-        
+
         # Check if (prefix_sum - target) exists
         if prefix_sum - target in sum_count:
             result += sum_count[prefix_sum - target]
-        
+
         # Update current prefix sum count
         sum_count[prefix_sum] = sum_count.get(prefix_sum, 0) + 1
-    
+
     return result
 
 # For max length problems, store index instead of count:
 # sum_index = {0: -1}, then calculate i - sum_index[prefix_sum - target]
 # Examples: LC 560, LC 325, LC 525, LC 523
 ```
+
+**Key Differences by Problem Type**:
+- **Count problems** (LC 560, 930, 974): Store `{sum: count}`, check then update
+- **Max length problems** (LC 325, 525): Store `{sum: first_index}`, only update if new
+- **Existence problems** (LC 523): Store `{sum: any_index}`, just need to find one
 
 ### Template 4: Sliding Window with Hash Map
 ```python
@@ -343,6 +351,123 @@ def graph_hashmap_pattern(graph_input):
     - avoid double loop
 
 ### 0-2) Pattern
+
+#### Subarray Sum Count Pattern (LC 560 Core Pattern)
+
+**Core Concept**: Use hashmap to count ALL subarray combinations that sum to target in O(N) time with single loop.
+
+**Key Insight**:
+```
+If we want subarray[i,j] to sum to k:
+  presum[j] - presum[i-1] = k
+  → presum[i-1] = presum[j] - k
+
+So at index j, check if (presum[j] - k) exists in map!
+```
+
+**Critical Implementation Details**:
+
+1. **Use Count, NOT Index**:
+   ```java
+   Map<Integer, Integer> map = new HashMap<>();  // {prefixSum: count}
+   ```
+   - Same prefix sum can occur MULTIPLE times
+   - We need to count ALL valid subarrays, not just find one
+   - Example: `[1, -1, 1, -1]` with k=0 has multiple solutions
+
+2. **Initialize with `map.put(0, 1)`**:
+   ```java
+   map.put(0, 1);  // Handle subarrays starting from index 0
+   ```
+   - When `presum[j] == k`, then `presum[j] - k = 0`
+   - Need to count these subarrays starting from beginning
+
+3. **Check BEFORE Update** (Critical Order):
+   ```java
+   for (int num : nums) {
+       presum += num;
+
+       // 1. CHECK first: count how many previous prefix sums = (presum - k)
+       if (map.containsKey(presum - k)) {
+           count += map.get(presum - k);  // Add ALL occurrences
+       }
+
+       // 2. UPDATE after: add current prefix sum for future iterations
+       map.put(presum, map.getOrDefault(presum, 0) + 1);
+   }
+   ```
+   - **Why this order?** Prevents counting current subarray with itself
+   - Current prefix sum should only be available for FUTURE iterations
+
+**Why This Pattern Gets ALL Combinations**:
+- Map stores ALL previously seen prefix sums with their counts
+- When we check `presum - k`, we get count of ALL previous occurrences
+- Each previous occurrence represents a valid starting point
+- `count += map.get(presum - k)` adds ALL valid subarrays ending at current index
+
+**Example Walkthrough** (`nums = [1,1,1], k = 2`):
+```
+i=0: num=1, presum=1
+  - Check: (1-2)=-1 not in map → count=0
+  - Update: map={0:1, 1:1}
+
+i=1: num=1, presum=2
+  - Check: (2-2)=0 in map, count += map[0] = 1 → count=1
+  - Update: map={0:1, 1:1, 2:1}
+
+i=2: num=1, presum=3
+  - Check: (3-2)=1 in map, count += map[1] = 1 → count=2
+  - Update: map={0:1, 1:1, 2:1, 3:1}
+
+Result: count=2 (subarrays [1,1] and [1,1])
+```
+
+**Related LC Problems (Same Pattern)**:
+- LC 560: Subarray Sum Equals K (exact pattern)
+- LC 325: Maximum Size Subarray Sum Equals k (store index instead of count)
+- LC 930: Binary Subarrays with Sum
+- LC 974: Subarray Sums Divisible by K (use modulo)
+
+**Java Implementation Template**:
+```java
+public int subarraySum(int[] nums, int k) {
+    // Map: {prefixSum: count} - NOT {prefixSum: index}!
+    Map<Integer, Integer> map = new HashMap<>();
+    map.put(0, 1);  // Handle subarrays from index 0
+
+    int presum = 0;
+    int count = 0;
+
+    for (int num : nums) {
+        presum += num;
+
+        // Check if (presum - k) exists: presum - x = k → x = presum - k
+        if (map.containsKey(presum - k)) {
+            count += map.get(presum - k);  // Add ALL occurrences
+        }
+
+        // Update map AFTER checking (critical order!)
+        map.put(presum, map.getOrDefault(presum, 0) + 1);
+    }
+
+    return count;
+}
+```
+
+**When to Use Count vs Index**:
+| Problem Type | Map Value | Example |
+|-------------|-----------|---------|
+| Count ALL subarrays | `count` | LC 560, 930, 974 |
+| Find LONGEST subarray | `index` (first occurrence) | LC 325, 525 |
+| Find if EXISTS | `boolean/index` | LC 523 |
+
+**Common Mistakes**:
+1. ❌ Using `{prefixSum: index}` for counting problems
+2. ❌ Updating map before checking (causes self-counting)
+3. ❌ Forgetting `map.put(0, 1)` initialization
+4. ❌ Not handling the case where prefix sum itself equals k
+
+---
 
 ## 1) General form
 
@@ -1398,17 +1523,19 @@ public String findSmallestRegion_0_1(List<List<String>> regions, String region1,
 | Count Good Meals | 1711 | Medium | Two Sum | Powers of 2 as targets |
 | Count Pairs With XOR in Range | 1803 | Hard | Trie + Two Sum | XOR properties |
 
-### Category 3: Prefix Sum and Subarray (15 problems)
+### Category 3: Prefix Sum and Subarray (17 problems)
 
 | Problem | LC# | Difficulty | Template | Key Insight |
 |---------|-----|------------|----------|-------------|
-| Subarray Sum Equals K | 560 | Medium | Prefix Sum | prefix_sum - k lookup |
-| Continuous Subarray Sum | 523 | Medium | Prefix Sum | Modular arithmetic |
+| **Subarray Sum Equals K** | **560** | **Medium** | **Prefix Sum** | **{sum: count} pattern, check before update** |
+| Maximum Size Subarray Sum Equals k | 325 | Medium | Prefix Sum | Store first occurrence index |
+| Continuous Subarray Sum | 523 | Medium | Prefix Sum | Modular arithmetic, store index |
 | Contiguous Array | 525 | Medium | Prefix Sum | Transform 0→-1, find balance |
-| Maximum Size Subarray Sum Equals k | 325 | Medium | Prefix Sum | Store first occurrence |
-| Minimum Size Subarray Sum | 209 | Medium | Sliding Window | Contract when sum ≥ target |
+| Binary Subarrays with Sum | 930 | Medium | Prefix Sum | Same as LC 560, count pattern |
 | Subarray Sums Divisible by K | 974 | Medium | Prefix Sum | Handle negative remainders |
-| Binary Subarrays with Sum | 930 | Medium | Prefix Sum | Count target prefix sums |
+| Count Number of Nice Subarrays | 1248 | Medium | Prefix Sum | Transform odd→1, even→0 |
+| Subarray Sum Equals K II | 1074 | Hard | Prefix Sum | 2D matrix version |
+| Minimum Size Subarray Sum | 209 | Medium | Sliding Window | Contract when sum ≥ target |
 | Number of Subarrays with Bounded Maximum | 795 | Medium | Prefix Sum | Inclusion-exclusion |
 | Shortest Subarray with Sum at Least K | 862 | Hard | Deque | Monotonic deque optimization |
 | Count of Range Sum | 327 | Hard | Merge Sort | Count inversions variant |
