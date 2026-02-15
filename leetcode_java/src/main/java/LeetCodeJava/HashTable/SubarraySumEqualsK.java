@@ -81,6 +81,11 @@ public class SubarraySumEqualsK {
          *   -> since "same preSum may have multiple combination" within hashMap,
          *      so it's needed to track preSum COUNT, instead of its index
          */
+        /**  NOTE !!! map definition:
+         *
+         *   { prefixSum : how_many_times_it_occurred }
+         *
+         */
         Map<Integer, Integer> map = new HashMap<>();
         int presum = 0;
         int count = 0;
@@ -112,6 +117,8 @@ public class SubarraySumEqualsK {
             presum += num;
 
             // Check if there's a prefix sum such that presum - k exists
+            //  presum - x = k (cur presum subtract x (some val), and its remaining sum equals to k)
+            // -> x = presum - k
             if (map.containsKey(presum - k)) {
                 count += map.get(presum - k);
             }
@@ -328,5 +335,7 @@ public class SubarraySumEqualsK {
 
         return cnt;
     }
+
+
 
 }

@@ -4525,6 +4525,78 @@ public class Workspace19 {
     }
 
 
+    // LC 560
+    // 15.28 - 38
+    /**
+     *
+     *  -> Given an array of integers nums and an integer k,
+     *     return the `total number` of `subarrays` whose `sum equals to k.`
+     *
+     *
+     * NOTE:
+     *   - subarray: contiguous non-empty sequence of elements within an array.
+     *
+     *
+     * -------------
+     *
+     *  IDEA 1) HASHMAP
+     *
+     *  IDEA 2) BRUTE FORCE
+     *
+     *  IDEA 3) DP ???
+     *
+     *
+     *
+     * -------------
+     *
+     * ex 3)
+     *
+     *  nums = [1,1,2,3,1] , k = 2
+     *
+     *   -> [1,1], [2]
+     *
+     *
+     */
+    // HASHMAP
+    public int subarraySum(int[] nums, int k) {
+        // edge
+        int prefixSum = 0;
+        int cnt = 0;
+
+        int totalSum = 0;
+        // ???
+        for(int i = 0; i < nums.length; i++){
+            totalSum += nums[i];
+        }
+
+
+        // map : { idx : prefixsum }
+        Map<Integer, Integer> map = new HashMap<>();
+        for(int i = 0; i < nums.length; i++){
+            prefixSum += nums[i];
+            // case 1) if nums[i] == k
+            if(nums[i] == k){
+                cnt += 1;
+            }
+            // case 2) if sum[0,i] == k
+            if(prefixSum == k){
+                cnt += 1;
+            }
+            // case 3) if sum[i+1, ...] == k
+            if(map.containsKey(totalSum - prefixSum)){
+                cnt += 1;
+            }
+
+            // update map
+            map.put(i, prefixSum);
+        }
+
+        System.out.println(">>> map = " + map);
+
+        return cnt;
+    }
+
+
 
 
 
