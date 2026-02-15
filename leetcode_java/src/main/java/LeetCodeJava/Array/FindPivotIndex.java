@@ -3,10 +3,6 @@ package LeetCodeJava.Array;
 // https://leetcode.com/problems/find-pivot-index/description/
 /**
  *
- Code
- Testcase
- Testcase
- Test Result
  724. Find Pivot Index
  Easy
  Topics
@@ -60,6 +56,62 @@ public class FindPivotIndex {
 //    public int pivotIndex(int[] nums) {
 //
 //    }
+
+    // V0-1
+    // IDEA: PREFIX SUM (gemini)
+    public int pivotIndex_0_1(int[] nums) {
+        int n = nums.length;
+        int totalSum = 0;
+
+        // 1. Build the prefix sum array (size n + 1)
+        int[] prefix = new int[n + 1];
+        for (int i = 0; i < n; i++) {
+            totalSum += nums[i];
+            prefix[i + 1] = totalSum;
+        }
+
+        // 2. Iterate through each index to see if it's the pivot
+        for (int i = 0; i < n; i++) {
+            // Sum of elements strictly to the left of index i
+            int leftSum = prefix[i];
+
+            // Sum of elements strictly to the right of index i
+            // Total - (Everything up to i)
+            int rightSum = totalSum - prefix[i + 1];
+
+            if (leftSum == rightSum) {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
+    // V0-2
+    // IDEA: PREFIX SUM (GPT)
+    public int pivotIndex_0_2(int[] nums) {
+        int totalSum = 0;
+        int leftSum = 0;
+
+        // Calculate total sum of the array
+        for (int num : nums) {
+            totalSum += num;
+        }
+
+        // Check for pivot index
+        for (int i = 0; i < nums.length; i++) {
+            // rightSum is totalSum - leftSum - nums[i]
+            if (leftSum == totalSum - leftSum - nums[i]) {
+                return i;
+            }
+            // Update leftSum for next iteration
+            leftSum += nums[i];
+        }
+
+        return -1; // No pivot index found
+    }
+
+
 
     // V1
     // https://leetcode.com/problems/find-pivot-index/solutions/2470014/very-easy-100-fully-explained-java-c-pyt-01to/
