@@ -45,6 +45,7 @@ import java.util.Queue;
 public class SerializeAndDeserializeBST {
 
     // V0
+    // IDEA: LC 297 (queue + recursion)
     /**
      * Definition for a binary tree node.
      * public class TreeNode {
@@ -54,18 +55,63 @@ public class SerializeAndDeserializeBST {
      *     TreeNode(int x) { val = x; }
      * }
      */
-//    public class Codec {
-//
-//        // Encodes a tree to a single string.
-//        public String serialize(TreeNode root) {
-//
-//        }
-//
-//        // Decodes your encoded data to tree.
-//        public TreeNode deserialize(String data) {
-//
-//        }
-//    }
+    public class Codec {
+
+        // attr
+
+        // Encodes a tree to a single string.
+        // pre-order traverse
+        // root -> sub left -> sub right
+        public String serialize(TreeNode root) {
+            // edge
+            if (root == null) {
+                return "#";
+            }
+            // NOTE !!! no need to add `"#"` at below
+            return root.val + "," + serialize(root.left)
+                    + "," + serialize(root.right); // ????? needed ? + "#";
+        }
+
+        // Decodes your encoded data to tree.
+        public TreeNode deserialize(String data) {
+            // edge
+            if (data.equals("#")) {
+                return null; // ???
+            }
+
+            Queue<String> q = new LinkedList<>();
+
+            /** V1 */
+            //            for(String x: data.split(",")){
+            //                q.add(x);
+            //            }
+            /** V2 */
+            q.addAll(Arrays.asList(data.split(",")));
+
+            return helper(q);
+        }
+
+        private TreeNode helper(Queue<String> q) {
+            // edge
+            if (q.isEmpty()) {
+                return null; // ??
+            }
+
+            // ???
+            String node = q.poll();
+            if (node.equals("#")) {
+                return null;
+            }
+
+            TreeNode root = new TreeNode(Integer.parseInt(node));
+            root.left = helper(q);
+            root.right = helper(q);
+
+            return root;
+        }
+
+    }
+
 
     // Your Codec object will be instantiated and called as such:
     // Codec ser = new Codec();
@@ -73,6 +119,109 @@ public class SerializeAndDeserializeBST {
     // String tree = ser.serialize(root);
     // TreeNode ans = deser.deserialize(tree);
     // return ans;
+
+
+    // V0-1
+    // IDEA: LC 297 (queue + recursion) (GPT)
+    public class Codec_0_1 {
+
+        // Serialize using preorder traversal
+        public String serialize(TreeNode root) {
+            if (root == null) {
+                return "#";
+            }
+
+            return root.val + ","
+                    + serialize(root.left) + ","
+                    + serialize(root.right);
+        }
+
+        // Deserialize using preorder traversal
+        public TreeNode deserialize(String data) {
+            if (data.equals("#")) {
+                return null;
+            }
+
+            Queue<String> q = new LinkedList<>();
+            q.addAll(Arrays.asList(data.split(",")));
+
+            return helper(q);
+        }
+
+        private TreeNode helper(Queue<String> q) {
+            if (q.isEmpty()) {
+                return null;
+            }
+
+            String val = q.poll();
+
+            // ⭐ CRITICAL FIX
+            if (val.equals("#")) {
+                return null;
+            }
+
+            TreeNode root = new TreeNode(Integer.parseInt(val));
+
+            root.left = helper(q);
+            root.right = helper(q);
+
+            return root;
+        }
+    }
+
+
+    // V0-2
+    // IDEA: LC 297 (BST property + queue + recursion) (GPT)
+    public class Codec_0_2 {
+
+        // Encodes a tree to a single string using Pre-order
+        public String serialize(TreeNode root) {
+            if (root == null)
+                return "";
+            StringBuilder sb = new StringBuilder();
+            serializeHelper(root, sb);
+            return sb.toString();
+        }
+
+        private void serializeHelper(TreeNode root, StringBuilder sb) {
+            if (root == null)
+                return;
+            sb.append(root.val).append(",");
+            serializeHelper(root.left, sb);
+            serializeHelper(root.right, sb);
+        }
+
+        // Decodes your encoded data to tree.
+        public TreeNode deserialize(String data) {
+            if (data.isEmpty())
+                return null;
+            Queue<String> q = new LinkedList<>(Arrays.asList(data.split(",")));
+            // We use bounds to decide if a value belongs in the current subtree
+            return deserializeHelper(q, Integer.MIN_VALUE, Integer.MAX_VALUE);
+        }
+
+        private TreeNode deserializeHelper(Queue<String> q, int lower, int upper) {
+            if (q.isEmpty())
+                return null;
+
+            // Peek at the next value
+            int val = Integer.parseInt(q.peek());
+
+            // If the value doesn't fit in the current BST range, it's not part of this subtree
+            if (val < lower || val > upper)
+                return null;
+
+            // It fits! Remove from queue and create the node
+            q.poll();
+            TreeNode root = new TreeNode(val);
+
+            // For BST: Left must be (lower, root.val), Right must be (root.val, upper)
+            root.left = deserializeHelper(q, lower, val);
+            root.right = deserializeHelper(q, val, upper);
+
+            return root;
+        }
+    }
 
 
     // V1
@@ -231,7 +380,7 @@ public class SerializeAndDeserializeBST {
             return root;
         }
 
-        private static void add(TreeNode root, int val) {
+        private void add(TreeNode root, int val) {
             TreeNode cur = root;
             TreeNode parent = null;
             while (cur != null) {
@@ -247,7 +396,5 @@ public class SerializeAndDeserializeBST {
 
     }
 
-
-
-
+    
 }
