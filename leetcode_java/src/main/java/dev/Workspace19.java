@@ -4457,6 +4457,13 @@ public class Workspace19 {
     }
 
 
+    // LC 724
+    public int pivotIndex(int[] nums) {
+
+        return -1;
+    }
+
+
 
 
 
