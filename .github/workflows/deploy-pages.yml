@@ -46,7 +46,7 @@ jobs:
 
     - name: Create website directory and copy images
       run: |
-        mkdir -p _site
+        mkdir -p _site/doc
         # Copy images directory to preserve image links
         cp -r doc/pic _site/doc/pic
 
