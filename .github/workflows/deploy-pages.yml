@@ -68,15 +68,32 @@ jobs:
           permalinkSymbol: '#'
         });
 
+        // Function to process links - convert cheatsheet links to internal, keep GitHub code links as external
+        function processLinks(html) {
+          // Convert cheatsheet GitHub links to internal links
+          html = html.replace(
+            /https:\/\/github\.com\/yennanliu\/CS_basics\/blob\/master\/doc\/cheatsheet\/([^")\s]+\.md)/g,
+            (match, filename) => {
+              const baseName = filename.replace('.md', '');
+              return `${baseName}.html`;
+            }
+          );
+
+          // Ensure all other GitHub links stay as GitHub links (don't transform them)
+          // This includes code files in leetcode_java, leetcode_python, etc.
+
+          return html;
+        }
+
         // Read README
         const readme = fs.readFileSync('README.md', 'utf8');
-        const content = md.render(readme);
+        const content = processLinks(md.render(readme));
 
         // Read Resource.md if exists
         let resourceContent = '';
         if (fs.existsSync('doc/Resource.md')) {
           const resource = fs.readFileSync('doc/Resource.md', 'utf8');
-          resourceContent = md.render(resource);
+          resourceContent = processLinks(md.render(resource));
         }
 
         // Process all cheatsheet files
@@ -100,17 +117,38 @@ jobs:
 
           files.forEach(file => {
             const filePath = path.join(cheatsheetDir, file);
-            const content = fs.readFileSync(filePath, 'utf8');
+            const rawContent = fs.readFileSync(filePath, 'utf8');
             const baseName = path.basename(file, '.md');
             const title = baseName.replace(/_/g, ' ')
               .split(' ')
               .map(word => word.charAt(0).toUpperCase() + word.slice(1))
               .join(' ');
 
+            // Render and process links
+            let htmlContent = md.render(rawContent);
+            htmlContent = processLinks(htmlContent);
+
+            // Wrap content with navigation and better structure
+            const wrappedContent = `
+              <div class="cheatsheet-header">
+                <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+                <h1>${title}</h1>
+              </div>
+              <div class="cheatsheet-content">
+                ${htmlContent}
+              </div>
+              <div class="cheatsheet-footer">
+                <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+                <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/${file}" class="github-edit" target="_blank">
+                  Edit on GitHub →
+                </a>
+              </div>
+            `;
+
             cheatsheets.push({
               file: baseName,
               title: title,
-              content: md.render(content),
+              content: wrappedContent,
               category: null
             });
           });
@@ -409,27 +447,38 @@ jobs:
         /* Code Blocks */
         code {
           background: var(--code-bg);
-          padding: 0.2rem 0.4rem;
+          padding: 0.2rem 0.5rem;
           border-radius: 4px;
           font-family: 'JetBrains Mono', 'Monaco', 'Menlo', monospace;
           font-size: 0.9em;
           color: #e83e8c;
+          font-weight: 500;
         }
 
         pre {
-          background: var(--code-bg);
+          background: #1e293b;
           padding: 1.5rem;
           border-radius: 8px;
           overflow-x: auto;
           margin: 1.5rem 0;
           border-left: 4px solid var(--primary-color);
+          box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
 
         pre code {
           background: none;
           padding: 0;
-          color: var(--text-color);
+          color: #e2e8f0;
           font-size: 0.875rem;
+          font-weight: 400;
+          line-height: 1.6;
+        }
+
+        /* Inline code in headings */
+        h1 code, h2 code, h3 code, h4 code {
+          font-size: 0.9em;
+          background: var(--code-bg);
+          color: var(--primary-color);
         }
 
         /* Lists */
@@ -662,12 +711,190 @@ jobs:
           height: auto;
           border-radius: 8px;
           margin: 1rem 0;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        /* Cheatsheet Page Styling */
+        .cheatsheet-header {
+          margin-bottom: 2rem;
+          padding-bottom: 1rem;
+          border-bottom: 2px solid var(--border-color);
+        }
+
+        .cheatsheet-header h1 {
+          margin-top: 1rem;
+          margin-bottom: 0;
+        }
+
+        .back-link {
+          display: inline-flex;
+          align-items: center;
+          color: var(--primary-color);
+          text-decoration: none;
+          font-weight: 500;
+          padding: 0.5rem 1rem;
+          border-radius: 6px;
+          background: var(--bg-secondary);
+          transition: all 0.2s;
+        }
+
+        .back-link:hover {
+          background: var(--primary-color);
+          color: white;
+          text-decoration: none;
+        }
+
+        .cheatsheet-content {
+          margin: 2rem 0;
+        }
+
+        .cheatsheet-content h2 {
+          margin-top: 3rem;
+          padding-top: 2rem;
+          border-top: 1px solid var(--border-color);
+        }
+
+        .cheatsheet-content h2:first-child {
+          margin-top: 0;
+          padding-top: 0;
+          border-top: none;
+        }
+
+        .cheatsheet-content h3 {
+          color: var(--primary-color);
+          margin-top: 2rem;
+        }
+
+        .cheatsheet-content h4 {
+          color: var(--secondary-color);
+          font-size: 1.1rem;
+        }
+
+        /* Enhanced code blocks */
+        .cheatsheet-content pre {
+          background: #1e293b;
+          color: #e2e8f0;
+          padding: 1.5rem;
+          border-radius: 8px;
+          overflow-x: auto;
+          border-left: 4px solid var(--accent-color);
+          box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .cheatsheet-content pre code {
+          color: #e2e8f0;
+          font-size: 0.9rem;
+          line-height: 1.6;
+        }
+
+        .cheatsheet-content code {
+          background: #f1f5f9;
+          color: #e83e8c;
+          padding: 0.2rem 0.5rem;
+          border-radius: 4px;
+          font-size: 0.9em;
+        }
+
+        .cheatsheet-content pre code {
+          background: transparent;
+          padding: 0;
+        }
+
+        /* Better list styling */
+        .cheatsheet-content ul {
+          list-style: none;
+          padding-left: 0;
+        }
+
+        .cheatsheet-content ul li {
+          padding-left: 1.5rem;
+          position: relative;
+          margin-bottom: 0.75rem;
+        }
+
+        .cheatsheet-content ul li:before {
+          content: "→";
+          position: absolute;
+          left: 0;
+          color: var(--primary-color);
+          font-weight: bold;
+        }
+
+        .cheatsheet-content ul ul {
+          margin-top: 0.5rem;
+          padding-left: 1.5rem;
+        }
+
+        .cheatsheet-content ol {
+          padding-left: 1.5rem;
+        }
+
+        .cheatsheet-content ol li {
+          margin-bottom: 0.75rem;
+        }
+
+        /* Cheatsheet footer */
+        .cheatsheet-footer {
+          margin-top: 3rem;
+          padding-top: 2rem;
+          border-top: 2px solid var(--border-color);
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          flex-wrap: wrap;
+          gap: 1rem;
+        }
+
+        .github-edit {
+          display: inline-flex;
+          align-items: center;
+          color: var(--text-light);
+          text-decoration: none;
+          font-size: 0.9rem;
+          transition: color 0.2s;
+        }
+
+        .github-edit:hover {
+          color: var(--primary-color);
+        }
+
+        /* Blockquote in cheatsheets */
+        .cheatsheet-content blockquote {
+          background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+          border-left-color: var(--primary-color);
+          border-left-width: 4px;
+          color: var(--text-color);
+          font-style: normal;
+          padding: 1rem 1.5rem;
+        }
+
+        .cheatsheet-content blockquote p {
+          margin: 0;
+        }
+
+        /* Table improvements */
+        .cheatsheet-content table {
+          font-size: 0.95rem;
+        }
+
+        .cheatsheet-content table code {
+          font-size: 0.85rem;
         }
 
         @media (max-width: 768px) {
           .cheatsheet-grid {
             grid-template-columns: 1fr;
             gap: 1rem;
+          }
+
+          .cheatsheet-footer {
+            flex-direction: column;
+            align-items: flex-start;
+          }
+
+          .cheatsheet-content pre {
+            padding: 1rem;
+            font-size: 0.85rem;
           }
         }
         EOFCSS
