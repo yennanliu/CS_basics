@@ -44,13 +44,17 @@ jobs:
         PKGJSON
         npm install
 
-    - name: Create website directory
-      run: mkdir -p _site
+    - name: Create website directory and copy images
+      run: |
+        mkdir -p _site
+        # Copy images directory to preserve image links
+        cp -r doc/pic _site/doc/pic
 
     - name: Convert README to HTML
       run: |
         cat > build-site.js << 'BUILDSCRIPT'
         const fs = require('fs');
+        const path = require('path');
         const MarkdownIt = require('markdown-it');
         const markdownItAnchor = require('markdown-it-anchor');
 
@@ -75,17 +79,91 @@ jobs:
           resourceContent = md.render(resource);
         }
 
-        // Read cheatsheet overview if exists
-        let cheatsheetContent = '';
-        const cheatsheetPath = 'doc/cheatsheet/README.md';
-        if (fs.existsSync(cheatsheetPath)) {
-          const cheatsheet = fs.readFileSync(cheatsheetPath, 'utf8');
-          cheatsheetContent = md.render(cheatsheet);
-        } else {
-          // Create a simple cheatsheet page listing available cheatsheets
-          cheatsheetContent = '<h1>Cheat Sheets</h1><p>Collection of algorithm and data structure cheat sheets.</p>';
-          cheatsheetContent += '<p>Available in the <a href="https://github.com/yennanliu/CS_basics/tree/master/doc/cheatsheet">doc/cheatsheet</a> directory.</p>';
+        // Process all cheatsheet files
+        const cheatsheetDir = 'doc/cheatsheet';
+        const cheatsheets = [];
+
+        if (fs.existsSync(cheatsheetDir)) {
+          const files = fs.readdirSync(cheatsheetDir)
+            .filter(f => f.endsWith('.md') && f !== 'README.md' && f !== '00_template.md')
+            .sort();
+
+          // Group cheatsheets by category
+          const categories = {
+            'Core Data Structures': ['array', 'linked_list', 'tree', 'binary_tree', 'bst', 'graph', 'stack', 'queue', 'heap', 'hash_map', 'set', 'trie'],
+            'Search & Sort': ['binary_search', 'dfs', 'bfs', 'sort', 'topology_sorting'],
+            'Algorithm Patterns': ['2_pointers', 'sliding_window', 'backtrack', 'dp', 'greedy', 'recursion'],
+            'Advanced Topics': ['union_find', 'segment_tree', 'binary_indexed_tree', 'monotonic_stack', 'prefix_sum', 'difference_array'],
+            'Graph Algorithms': ['Dijkstra', 'Bellman-Ford', 'Floyd-Warshall'],
+            'Specialized': ['bit_manipulation', 'math', 'string', 'matrix', 'intervals', 'design', 'iterator']
+          };
+
+          files.forEach(file => {
+            const filePath = path.join(cheatsheetDir, file);
+            const content = fs.readFileSync(filePath, 'utf8');
+            const baseName = path.basename(file, '.md');
+            const title = baseName.replace(/_/g, ' ')
+              .split(' ')
+              .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+              .join(' ');
+
+            cheatsheets.push({
+              file: baseName,
+              title: title,
+              content: md.render(content),
+              category: null
+            });
+          });
+
+          // Assign categories
+          cheatsheets.forEach(sheet => {
+            for (const [category, keywords] of Object.entries(categories)) {
+              if (keywords.some(kw => sheet.file.includes(kw) || sheet.file === kw)) {
+                sheet.category = category;
+                break;
+              }
+            }
+            if (!sheet.category) {
+              sheet.category = 'Other';
+            }
+          });
         }
+
+        // Create cheatsheet index
+        let cheatsheetIndexContent = '<h1>Algorithm & Data Structure Cheat Sheets</h1>';
+        cheatsheetIndexContent += '<p class="intro">Comprehensive collection of algorithm patterns, data structures, and problem-solving techniques.</p>';
+
+        // Group by category
+        const grouped = {};
+        cheatsheets.forEach(sheet => {
+          if (!grouped[sheet.category]) {
+            grouped[sheet.category] = [];
+          }
+          grouped[sheet.category].push(sheet);
+        });
+
+        // Generate index with categories
+        const categoryOrder = ['Core Data Structures', 'Search & Sort', 'Algorithm Patterns', 'Advanced Topics', 'Graph Algorithms', 'Specialized', 'Other'];
+
+        categoryOrder.forEach(category => {
+          if (grouped[category] && grouped[category].length > 0) {
+            cheatsheetIndexContent += `<h2>${category}</h2><div class="cheatsheet-grid">`;
+            grouped[category].forEach(sheet => {
+              cheatsheetIndexContent += `
+                <div class="cheatsheet-card">
+                  <h3><a href="cheatsheets/${sheet.file}.html">${sheet.title}</a></h3>
+                  <p><a href="cheatsheets/${sheet.file}.html" class="read-more">Read more →</a></p>
+                </div>`;
+            });
+            cheatsheetIndexContent += '</div>';
+          }
+        });
+
+        cheatsheetIndexContent += `
+        <div style="margin-top: 3rem; padding: 1.5rem; background: var(--bg-secondary); border-radius: 8px;">
+          <p><strong>💡 Tip:</strong> These cheatsheets are designed for quick reference during coding interviews and problem-solving.</p>
+          <p>View all cheatsheets on <a href="https://github.com/yennanliu/CS_basics/tree/master/doc/cheatsheet">GitHub</a>.</p>
+        </div>`;
 
         // Create HTML template
         const htmlTemplate = (title, bodyContent, currentPage = 'home') => `
@@ -152,10 +230,20 @@ jobs:
           console.log('✓ Created resources.html');
         }
 
-        // Write cheatsheets.html
-        if (cheatsheetContent) {
-          fs.writeFileSync('_site/cheatsheets.html', htmlTemplate('Cheat Sheets', cheatsheetContent, 'cheatsheets'));
-          console.log('✓ Created cheatsheets.html');
+        // Write cheatsheets index
+        fs.writeFileSync('_site/cheatsheets.html', htmlTemplate('Cheat Sheets', cheatsheetIndexContent, 'cheatsheets'));
+        console.log('✓ Created cheatsheets.html index');
+
+        // Create cheatsheets directory and write individual pages
+        if (cheatsheets.length > 0) {
+          fs.mkdirSync('_site/cheatsheets', { recursive: true });
+
+          cheatsheets.forEach(sheet => {
+            const cheatsheetHtml = htmlTemplate(sheet.title, sheet.content, 'cheatsheets');
+            fs.writeFileSync(`_site/cheatsheets/${sheet.file}.html`, cheatsheetHtml);
+          });
+
+          console.log(`✓ Created ${cheatsheets.length} individual cheatsheet pages`);
         }
 
         console.log('✓ Website built successfully!');
@@ -514,6 +602,73 @@ jobs:
         ::selection {
           background: var(--primary-color);
           color: white;
+        }
+
+        /* Cheatsheet Grid */
+        .cheatsheet-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+          gap: 1.5rem;
+          margin: 1.5rem 0 2.5rem 0;
+        }
+
+        .cheatsheet-card {
+          background: var(--bg-secondary);
+          padding: 1.5rem;
+          border-radius: 8px;
+          border: 2px solid var(--border-color);
+          transition: all 0.2s ease;
+        }
+
+        .cheatsheet-card:hover {
+          border-color: var(--primary-color);
+          box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+          transform: translateY(-2px);
+        }
+
+        .cheatsheet-card h3 {
+          margin: 0 0 0.5rem 0;
+          font-size: 1.25rem;
+        }
+
+        .cheatsheet-card h3 a {
+          color: var(--text-color);
+          text-decoration: none;
+        }
+
+        .cheatsheet-card h3 a:hover {
+          color: var(--primary-color);
+        }
+
+        .cheatsheet-card p {
+          margin: 0;
+          font-size: 0.9rem;
+        }
+
+        .read-more {
+          color: var(--primary-color);
+          font-weight: 500;
+        }
+
+        .intro {
+          font-size: 1.125rem;
+          color: var(--text-light);
+          margin-bottom: 2rem;
+        }
+
+        /* Images */
+        img {
+          max-width: 100%;
+          height: auto;
+          border-radius: 8px;
+          margin: 1rem 0;
+        }
+
+        @media (max-width: 768px) {
+          .cheatsheet-grid {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+          }
         }
         EOFCSS
 
