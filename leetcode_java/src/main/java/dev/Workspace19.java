@@ -4724,21 +4724,29 @@ public class Workspace19 {
             return null;
         }
 
-        int[] res = new int[n];
+        int[] res = new int[2 * n];
 
-        // ???
-        // 1. add `left half arr` to res
-        for(int i = 0; i < n / 2; i += 1){
-            res[i * 2] = nums[i];
+        for(int i = 0; i < n; i++){
+            // 1) even idx (0, 2, 4,...)
+            res[2 * i] = nums[i];
+
+            // 2) odd idx (1,3,5 ..)
+            res[2 * i + 1] = nums[i + n];
         }
 
-        // /??
-        int k = 1;
-        // 2. add `right half arr` to res
-        for(int i = n / 2 + 1; i < n; i += 1){
-            res[k] = nums[n / 2 + i];
-            k += 2;
-        }
+//        // ???
+//        // 1. add `left half arr` to res
+//        for(int i = 0; i < n / 2; i += 1){
+//            res[i * 2] = nums[i];
+//        }
+//
+//        // /??
+//        int k = 1;
+//        // 2. add `right half arr` to res
+//        for(int i = n / 2 + 1; i < n; i += 1){
+//            res[k] = nums[n / 2 + i];
+//            k += 2;
+//        }
 
         return res;
     }
