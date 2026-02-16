@@ -291,7 +291,17 @@ public class MinimumWindowSubsequence {
             // If T is fully matched ending at i
             if (S.charAt(i - 1) == T.charAt(n - 1) && dp[i][n] != 0) {
                 int windowStart = dp[i][n] - 1; // convert to 0-based index
+                /**
+                 *
+                 * Window ends at index i-1
+                 * Window starts at windowStart
+                 *
+                 * Length = (i-1 - windowStart + 1)
+                 *
+                 * ->  len = i - windowStart
+                 */
                 int length = i - windowStart;
+                // keep the min len
                 if (length < minLen) {
                     minLen = length;
                     start = windowStart;
