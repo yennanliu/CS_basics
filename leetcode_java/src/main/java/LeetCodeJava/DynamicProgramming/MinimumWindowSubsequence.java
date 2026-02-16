@@ -43,6 +43,98 @@ public class MinimumWindowSubsequence {
 //    public String minWindow(String s1, String s2) {
 //    }
 
+
+    // V0-1
+    // IDEA: DP (gemini)
+    public String minWindow_0_1(String s1, String s2) {
+        int m = s1.length();
+        int n = s2.length();
+
+        // dp[i][j] stores the STARTING index of the substring in s1[0...i-1]
+        // that contains s2[0...j-1] as a subsequence.
+        // We use 1-based indexing for the DP table for convenience.
+        int[][] dp = new int[m + 1][n + 1];
+
+        // Base Case: If s2 is empty, any position in s1 can be a "start"
+        // We initialize dp[i][0] with the current position (1-indexed)
+        for (int i = 0; i <= m; i++) {
+            dp[i][0] = i + 1;
+        }
+
+        // Fill DP table
+        for (int i = 1; i <= m; i++) {
+            for (int j = 1; j <= n; j++) {
+                if (s1.charAt(i - 1) == s2.charAt(j - 1)) {
+                    // If characters match, this subsequence starts wherever
+                    // the previous match (j-1) started.
+                    dp[i][j] = dp[i - 1][j - 1];
+                } else {
+                    // If they don't match, we carry over the start index
+                    // from the previous character in s1.
+                    dp[i][j] = dp[i - 1][j];
+                }
+            }
+        }
+
+        int start = -1;
+        int minLen = Integer.MAX_VALUE;
+
+        // Look at the last column (where all of s2 is matched)
+        for (int i = 1; i <= m; i++) {
+            if (dp[i][n] > 0) {
+                int currentStart = dp[i][n] - 1; // back to 0-indexed
+                int currentLen = i - currentStart;
+
+                if (currentLen < minLen) {
+                    minLen = currentLen;
+                    start = currentStart;
+                }
+            }
+        }
+
+        return (start == -1) ? "" : s1.substring(start, start + minLen);
+    }
+
+    // V0-2
+    // IDEA: DP (GPT)
+    public String minWindow_0_2(String S, String T) {
+        int m = S.length(), n = T.length();
+        int[][] dp = new int[m + 1][n + 1];
+
+        // Build the DP table
+        for (int i = 1; i <= m; i++) {
+            for (int j = 1; j <= n; j++) {
+                if (S.charAt(i - 1) == T.charAt(j - 1)) {
+                    if (j == 1) {
+                        dp[i][j] = i; // start new subsequence
+                    } else {
+                        dp[i][j] = dp[i - 1][j - 1];
+                    }
+                } else {
+                    dp[i][j] = dp[i - 1][j];
+                }
+            }
+        }
+
+        // Find the minimum window
+        int start = 0, minLen = m + 1;
+        for (int i = 1; i <= m; i++) {
+            // If T is fully matched ending at i
+            if (S.charAt(i - 1) == T.charAt(n - 1) && dp[i][n] != 0) {
+                int windowStart = dp[i][n] - 1; // convert to 0-based index
+                int length = i - windowStart;
+                if (length < minLen) {
+                    minLen = length;
+                    start = windowStart;
+                }
+            }
+        }
+
+        return minLen <= m ? S.substring(start, start + minLen) : "";
+    }
+
+
+
     // V1
     // https://leetcode.ca/2017-11-26-727-Minimum-Window-Subsequence/
     // IDEA : DP
@@ -188,5 +280,7 @@ public class MinimumWindowSubsequence {
 
         return (start != -1) ? S.substring(start, start + minLen) : "";
     }
+
+
 
 }

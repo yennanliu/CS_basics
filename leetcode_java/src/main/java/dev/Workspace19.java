@@ -4802,6 +4802,112 @@ public class Workspace19 {
     }
 
 
+    // LC 727
+    // 13.47 - 57 pm
+    /**
+     *
+     *  -> Given strings S and T,
+     *    find the minimum (contiguous) substring W of S,
+     *    so that T is a subsequence of W.
+     *
+     *    NOTE:
+     *      - If there is `no such window` in S
+     *        that covers all characters in T, return ""
+     *
+     *      - if there r multiple ans,
+     *        return the LEFTMOST one
+     *
+     *  --------------
+     *
+     *
+     *
+     *  IDEA 1) BRUTE FORCE (double loop)
+     *
+     *  IDEA 2) 2D DP ??
+     *
+     *
+     *    - DP def:
+     *
+     *        boolean dp[i][j]: can s1[i..j] cover s2 ???
+     *
+     *    - DP eq:
+     *
+     *        dp
+     *
+     *  IDEA 3) 2 POINTERS
+     *
+     *
+     * --------------
+     *
+     *
+     */
+    // IDEA: DP
+    public String minWindow(String s1, String s2) {
+        // edge
+        if(s1.isEmpty() && s2.isEmpty()){
+            return "";
+        }
+        if(s2.length() > s1.length()){
+            return "";
+        }
+
+        return null;
+    }
+
+
+
+
+
+    // BRUTE FORCE
+    public String minWindow_1(String s1, String s2) {
+        // edge
+        if(s1.isEmpty() && s2.isEmpty()){
+            return "";
+        }
+        if(s2.length() > s1.length()){
+            return "";
+        }
+
+        int minLen = s2.length();
+        List<String> list = new ArrayList<>();
+
+        for(int i = 0; i < s1.length(); i++){
+            // ???
+            int j = i;
+            int s2Idx = i; // ???
+            while(j < s1.length()){
+                // case 1) j meet s2 final idx
+                if(j == s2.length() - 1){
+                    if(s2.charAt(s2Idx) == s1.charAt(j)){
+                        list.add(s1.substring(i, j));
+                        minLen = Math.min(minLen, j - i + 1);
+                    }
+                    break; // ???
+                }
+                // case 2) s1 j idx == s2 s2Idx idx
+                if(s2.charAt(s2Idx) == s1.charAt(j)){
+                    //j += 1;
+                    s2Idx += 1;
+                    //j += 1;
+                }
+                // move j anyway (s1 right idx)
+                j += 1;
+            }
+        }
+
+        List<String> candidates = new ArrayList<>();
+        for(String x: list){
+            if(x.length() == minLen){
+                candidates.add(x);
+            }
+        }
+
+        return !candidates.isEmpty() ? candidates.get(0) : "";
+    }
+
+
+
+
 
 
 }
