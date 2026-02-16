@@ -5,7 +5,7 @@ Breadth-First Search is a graph traversal algorithm that explores nodes level by
 
 ### Key Properties
 - **Complete**: Always finds a solution if one exists
-- **Optimal**: Finds shortest path in unweighted graphs
+- **Optimal**: Finds shortest path in `unweighted` graphs
 - **Space Complex**: O(b^d) where b=branching factor, d=depth
 - **Time Complex**: O(V + E) for graphs, O(n) for trees
 
