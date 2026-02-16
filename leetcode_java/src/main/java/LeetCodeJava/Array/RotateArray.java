@@ -88,13 +88,45 @@ public class RotateArray {
         }
     }
 
-    // V0-1
+    // V0-2
+    // IDEA: REVERSE ARRAY (gemini)
+    public void rotate_0_2(int[] nums, int k) {
+        if (nums == null || nums.length <= 1)
+            return;
+
+        int n = nums.length;
+        // Step 1: Handle cases where k > n
+        k = k % n;
+        if (k == 0)
+            return;
+
+        // Step 2: Apply the 3-reverse trick
+        // 1. Reverse the whole array
+        reverse_0_2(nums, 0, n - 1);
+        // 2. Reverse the first k elements (0 to k-1)
+        reverse_0_2(nums, 0, k - 1);
+        // 3. Reverse the rest (k to n-1)
+        reverse_0_2(nums, k, n - 1);
+    }
+
+    private void reverse_0_2(int[] nums, int start, int end) {
+        while (start < end) {
+            int temp = nums[start];
+            nums[start] = nums[end];
+            nums[end] = temp;
+            start++;
+            end--;
+        }
+    }
+
+
+    // V0-3
     // IDEA: ARRAY OP (TLE)
     /**
      * time = O(N*K)
      * space = O(N)
      */
-    public void rotate_0_1(int[] nums, int k) {
+    public void rotate_0_3(int[] nums, int k) {
         // edge
         if (nums == null || nums.length == 0) {
             return;
@@ -157,5 +189,7 @@ public class RotateArray {
     }
 
     // V2
+
+
 
 }

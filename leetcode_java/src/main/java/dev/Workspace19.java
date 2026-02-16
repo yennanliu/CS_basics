@@ -2,6 +2,7 @@ package dev;
 
 import LeetCodeJava.DataStructure.TreeNode;
 
+import java.lang.reflect.Array;
 import java.util.*;
 
 public class Workspace19 {
@@ -4957,6 +4958,70 @@ public class Workspace19 {
     }
 
 
+    // LC 189
+    // 14.41 - 15.01 pm
+    /**
+     *  -> rotate the array to the right by `k steps`,
+     *   where k is non-negative.
+     *
+     *   nums: int array
+     *
+     *   --------------
+     *
+     *   IDEA 1) DEQUEUE
+     *
+     *   IDEA 2) array op (split + paste)
+     *
+     *
+     *   --------------
+     *
+     *
+     */
+    //  IDEA 2) array op (split + paste)
+    public void rotate(int[] nums, int k) {
+        // edge
+
+        int len = nums.length;
+        // adjust k
+        k = k % len;
+
+        //int rightArr = Array.
+        List<Integer> right = new ArrayList<>();
+        for(int i = len - k; i < len; i++){
+            right.add(nums[i]);
+        }
+
+
+    }
+
+    // IDEA 1) DEQUEUE
+    public void rotate_99(int[] nums, int k) {
+        // edge
+
+        Deque<Integer> deque = new LinkedList<>();
+        //deque.addAll(nums);
+        for(int x: nums){
+            deque.add(x);
+        }
+
+        int len = nums.length;
+        // adjust k
+        k = k % len;
+
+        while(k > 0 && !deque.isEmpty()){
+            //int val = deque.pollLast();
+            deque.addFirst(deque.pollLast());
+            k -= 1;
+        }
+
+        // ??
+        int i = 0;
+        while(!deque.isEmpty()){
+            nums[i] = deque.pollFirst();
+            i += 1;
+        }
+
+    }
 
 
 
