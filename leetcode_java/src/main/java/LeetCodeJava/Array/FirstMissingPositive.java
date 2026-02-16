@@ -49,11 +49,9 @@ public class FirstMissingPositive {
     // V0
     // IDEA: HASHMAP + MATH
     /**
-
-     * time = O(N)
-
-     * space = O(N)
-
+     *
+     *  - time = O(N)
+     *  - space = O(N)
      */
     public int firstMissingPositive(int[] nums) {
 
@@ -93,6 +91,10 @@ public class FirstMissingPositive {
 
         Set<Integer> set = new HashSet<>();
         for (int x : nums) {
+            /** NOTE !!!
+             *
+             *   ONLY consider `positive` int
+             */
             if (x > 0) {
                 set.add(x);
                 smallest = Math.min(smallest, x);
@@ -105,6 +107,10 @@ public class FirstMissingPositive {
         }
 
         while (smallest <= biggest) {
+            /** NOTE !!!
+             *
+             *   0 is NOT `positive` int
+             */
             if (!set.contains(smallest) && smallest != 0) {
                 return smallest;
             }
@@ -116,7 +122,7 @@ public class FirstMissingPositive {
 
 
     // V0-2
-    // IDEA: (gemini)
+    // IDEA: Cyclic Sort + ARRAY OP (gemini)
     public int firstMissingPositive_0_2(int[] nums) {
         int n = nums.length;
 
