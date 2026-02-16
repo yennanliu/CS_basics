@@ -648,24 +648,24 @@ class Solution:
 class Solution:
     def firstMissingPositive(self, nums: List[int]) -> int:
         n = len(nums)
-        
+
         # Base case.
         if 1 not in nums:
             return 1
-        
+
         # Replace negative numbers, zeros,
         # and numbers larger than n by 1s.
-        # After this convertion nums will contain 
+        # After this convertion nums will contain
         # only positive numbers.
         for i in range(n):
             if nums[i] <= 0 or nums[i] > n:
                 nums[i] = 1
-        
+
         # Use index as a hash key and number sign as a presence detector.
         # For example, if nums[1] is negative that means that number `1`
-        # is present in the array. 
+        # is present in the array.
         # If nums[2] is positive - number 2 is missing.
-        for i in range(n): 
+        for i in range(n):
             a = abs(nums[i])
             # If you meet number a in the array - change the sign of a-th element.
             # Be careful with duplicates : do it only once.
@@ -673,17 +673,71 @@ class Solution:
                 nums[0] = - abs(nums[0])
             else:
                 nums[a] = - abs(nums[a])
-            
-        # Now the index of the first positive number 
+
+        # Now the index of the first positive number
         # is equal to first missing positive.
         for i in range(1, n):
             if nums[i] > 0:
                 return i
-        
+
         if nums[0] > 0:
             return n
-            
+
         return n + 1
+```
+
+```java
+// java
+// LC 41. First Missing Positive
+// V0
+// IDEA: CYCLIC SORT
+/**
+ * Cyclic Sort Pattern:
+ * Place each positive number x at its "correct" index (x - 1)
+ *
+ * Key idea:
+ * - For a valid positive integer x (1 <= x <= n), it should be at index x-1
+ * - Example: number 3 should be at nums[2], number 1 should be at nums[0]
+ *
+ * Algorithm:
+ * 1. For each position i, keep swapping nums[i] to its correct position
+ *    until nums[i] is already at the right place or out of range
+ * 2. After sorting, scan for the first index i where nums[i] != i + 1
+ * 3. That index + 1 is the first missing positive
+ *
+ * Example: nums = [3, 4, -1, 1]
+ * Step 1: Place 3 at index 2 → [-1, 4, 3, 1]
+ * Step 2: Place 4 at index 3 → [-1, 1, 3, 4]
+ * Step 3: Place 1 at index 0 → [1, -1, 3, 4]
+ * Step 4: Scan → nums[1] = -1 ≠ 2, return 2
+ *
+ * Time: O(N) - each element is swapped at most once
+ * Space: O(1) - in-place sorting
+ */
+public int firstMissingPositive(int[] nums) {
+    int n = nums.length;
+
+    // 1. "Cyclic Sort": Place each number x at index x - 1
+    // Example: nums[i] = 3 should be at nums[2]
+    for (int i = 0; i < n; i++) {
+        while (nums[i] > 0 && nums[i] <= n && nums[nums[i] - 1] != nums[i]) {
+            // Swap nums[i] with the element at its target index
+            int temp = nums[nums[i] - 1];
+            nums[nums[i] - 1] = nums[i];
+            nums[i] = temp;
+        }
+    }
+
+    // 2. Scan for the first index where the number is wrong
+    for (int i = 0; i < n; i++) {
+        if (nums[i] != i + 1) {
+            return i + 1; // Found the missing positive!
+        }
+    }
+
+    // 3. If all numbers 1 to n are present, the answer is n + 1
+    return n + 1;
+}
 ```
 
 ### 2-13) Increasing Triplet Subsequence
