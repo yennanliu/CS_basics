@@ -4,7 +4,9 @@ package LeetCodeJava.Array;
 // https://leetcode.ca/all/41.html
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * 41. First Missing Positive
@@ -78,6 +80,40 @@ public class FirstMissingPositive {
 
         return start;
     }
+
+
+    // V0-1
+    // IDEA: SET + MATH
+    public int firstMissingPositive_0_1(int[] nums) {
+        // edge
+
+        // ??
+        int smallest = Integer.MAX_VALUE; // ????
+        int biggest = -1 * Integer.MAX_VALUE; // ????
+
+        Set<Integer> set = new HashSet<>();
+        for (int x : nums) {
+            if (x > 0) {
+                set.add(x);
+                smallest = Math.min(smallest, x);
+                biggest = Math.max(biggest, x);
+            }
+        }
+
+        if (smallest > 1) {
+            return 1;
+        }
+
+        while (smallest <= biggest) {
+            if (!set.contains(smallest) && smallest != 0) {
+                return smallest;
+            }
+            smallest += 1;
+        }
+
+        return Math.max(biggest + 1, 1);
+    }
+
 
     // V1-1
     // IDEA: Boolean Array
@@ -203,6 +239,6 @@ public class FirstMissingPositive {
 
 
     // V3
-    
+
 
 }

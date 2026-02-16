@@ -5064,4 +5064,107 @@ public class Workspace19 {
 
 
 
+    // LC 41
+    // 15.20 - 30 pm
+    /**
+     * -> Return the `smallest` positive integer
+     *    that is NOT present in nums.
+     *
+     *    - nums: `unsorted` int arr
+     *
+     *
+     *    NOTE:
+     *      -  algorithm that runs
+     *         - O(n) time and
+     *         - O(1) auxiliary space.
+     *
+     *
+     *  ---------------------
+     *
+     *  IDEA 1) MATH
+     *
+     *   - get smallest, biggest val
+     *
+     *    sum += val
+     *
+     *    -> sum1 = (smallest + biggest) * (size) / 2
+     *
+     *    ->
+     *       if sum1 == sum, if yes, return biggest + 1
+     *
+     *       else: return sum - sum1
+     *
+     *
+     *  IDEA 2) SET ???
+     *
+     *
+     *   ---------------------
+     *
+     *   ex 1)
+     *
+     *   ex 2)
+     *
+     *    s = -1, b = 4
+     *
+     *    -> sum = 7
+     *    -> sum1 =  ((4 + -1) * 6 ) / 2 = 9
+     *
+     *    sum1 != sum
+     *     -> sum - sum1
+     *
+     *
+     *   ex 3)
+     *
+     *    s = 7, b = 12
+     *
+     *    -> sum = 47
+     *    -> sum1 = ((12 + 7) * 6) / 2 = 57
+     *
+     *    sum1 != sum
+     *      -> sum - sum1 = 10
+     *      if s > 1, return 1 // ????
+     *
+     *
+     *
+     */
+    //  IDEA 2) SET ???
+    public int firstMissingPositive(int[] nums) {
+        // edge
+
+        // ??
+        int smallest = Integer.MAX_VALUE; // ????
+        int biggest = -1 * Integer.MAX_VALUE; // ????
+
+        Set<Integer> set = new HashSet<>();
+        for(int x: nums){
+            if(x > 0){
+                set.add(x);
+                smallest = Math.min(smallest, x);
+                biggest = Math.max(biggest, x);
+            }
+        }
+
+        // if smallest > 1
+        if(smallest > 1){
+            return 1;
+        }
+
+        while(smallest <= biggest){
+            if(!set.contains(smallest) && smallest != 0){
+                return smallest;
+            }
+            smallest += 1;
+        }
+
+
+        return Math.max(biggest + 1, 1); // ?????
+    }
+
+
+
+
+
+
+
+
 }
