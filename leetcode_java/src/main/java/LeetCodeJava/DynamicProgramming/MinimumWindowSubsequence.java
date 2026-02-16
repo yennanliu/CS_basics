@@ -83,6 +83,21 @@ public class MinimumWindowSubsequence {
             }
         }
 
+
+        /** NOTE !!!
+         *
+         * The DP table already told us:
+         *
+         * "If a subsequence T finishes at position i-1, where did it start?"
+         *
+         * Now this loop:
+         *
+         * ✔ Scans all possible ending positions
+         * ✔ Computes window length
+         * ✔ Picks the shortest one
+         */
+        
+
         // Find the minimum window
         /**
          * Great — this is the **most important part** of LC 727.
