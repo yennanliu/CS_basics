@@ -4841,6 +4841,25 @@ public class Workspace19 {
      *
      *
      */
+    /**  NOTE !!!
+     *
+     *  - DP def:
+     *      dp[i][j] = the starting index (1-based)
+     *      of the `shortest window` in S[0…i-1]
+     *      that contains T[0…j-1] as a subsequence.
+     *
+     *   - DP eq:
+     *
+     *    For i ≥ 1 and j ≥ 1:
+     *
+     *     - If S[i−1] == T[j−1]:
+     *         - If j == 1: start a new subsequence → dp[i][j] = i
+     *         - Else: extend existing subsequence → dp[i][j] = dp[i−1][j−1]
+     *
+     *     - Else:
+     *         - Skip this S char → dp[i][j] = dp[i−1][j]
+     *
+     */
     // IDEA: DP
     public String minWindow(String s1, String s2) {
         // edge
@@ -4850,6 +4869,38 @@ public class Workspace19 {
         if(s2.length() > s1.length()){
             return "";
         }
+
+        int size1 = s1.length();
+        int size2 = s2.length();
+        int[][] dp = new int[size1][size2];
+
+        // ??
+        for(int i = 1; i < size1; i++){
+            for(int j = 1; j < size2; j++){
+                if(s1.charAt(i-1) == s2.charAt(j-1)){
+                    if(i == 1){
+                        dp[i][j] = i; // start new subsequence
+                    }else{
+                        dp[i][j] = dp[i - 1][j - 1];
+                    }
+                }else{
+                    dp[i][j] = dp[i - 1][j];
+                }
+
+
+
+//                if(i >= 0 && j > 0){
+//                    // ???
+//                    if(j == 1){
+//                        dp[i][j] = i;
+//                    }else{
+//                        dp[i][j] = dp[i-1][j];
+//                    }
+//                }
+            }
+        }
+
+
 
         return null;
     }
