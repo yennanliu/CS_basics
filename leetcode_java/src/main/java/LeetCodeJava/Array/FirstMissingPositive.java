@@ -115,6 +115,63 @@ public class FirstMissingPositive {
     }
 
 
+    // V0-2
+    // IDEA: (gemini)
+    public int firstMissingPositive_0_2(int[] nums) {
+        int n = nums.length;
+
+        // 1. "Cyclic Sort": Place each number x at index x - 1
+        // Example: nums[i] = 3 should be at nums[2]
+        for (int i = 0; i < n; i++) {
+            while (nums[i] > 0 && nums[i] <= n && nums[nums[i] - 1] != nums[i]) {
+                // Swap nums[i] with the element at its target index
+                int temp = nums[nums[i] - 1];
+                nums[nums[i] - 1] = nums[i];
+                nums[i] = temp;
+            }
+        }
+
+        // 2. Scan for the first index where the number is wrong
+        for (int i = 0; i < n; i++) {
+            if (nums[i] != i + 1) {
+                return i + 1; // Found the missing positive!
+            }
+        }
+
+        // 3. If all numbers 1 to n are present, the answer is n + 1
+        return n + 1;
+    }
+
+
+    // V0-3
+    // IDEA: (gpt)
+    public int firstMissingPositive_0_3(int[] nums) {
+        int n = nums.length;
+
+        // Step 1: Place each number in its correct index
+        for (int i = 0; i < n; i++) {
+            while (nums[i] > 0 &&
+                    nums[i] <= n &&
+                    nums[nums[i] - 1] != nums[i]) {
+                int correctIdx = nums[i] - 1;
+
+                int temp = nums[i];
+                nums[i] = nums[correctIdx];
+                nums[correctIdx] = temp;
+            }
+        }
+
+        // Step 2: Find first index mismatch
+        for (int i = 0; i < n; i++) {
+            if (nums[i] != i + 1) {
+                return i + 1;
+            }
+        }
+
+        return n + 1;
+    }
+
+
     // V1-1
     // IDEA: Boolean Array
     // https://leetcode.com/problems/first-missing-positive/editorial/
