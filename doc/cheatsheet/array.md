@@ -765,6 +765,55 @@ class Solution(object):
         return nums
 ```
 
+```java
+// java
+// LC 189. Rotate Array
+// V0
+// IDEA: REVERSE ARRAY (3-reverse trick)
+/**
+ * The 3-reverse trick:
+ * 1. Reverse the entire array
+ * 2. Reverse the first k elements
+ * 3. Reverse the remaining elements
+ *
+ * Example: nums = [1,2,3,4,5,6,7], k = 3
+ * Step 1: Reverse entire array → [7,6,5,4,3,2,1]
+ * Step 2: Reverse first k=3 elements → [5,6,7,4,3,2,1]
+ * Step 3: Reverse remaining elements → [5,6,7,1,2,3,4]
+ *
+ * Time: O(N) - each element is reversed twice
+ * Space: O(1) - in-place rotation
+ */
+public void rotate(int[] nums, int k) {
+    if (nums == null || nums.length <= 1)
+        return;
+
+    int n = nums.length;
+    // Step 1: Handle cases where k > n
+    k = k % n;
+    if (k == 0)
+        return;
+
+    // Step 2: Apply the 3-reverse trick
+    // 1. Reverse the whole array
+    reverse(nums, 0, n - 1);
+    // 2. Reverse the first k elements (0 to k-1)
+    reverse(nums, 0, k - 1);
+    // 3. Reverse the rest (k to n-1)
+    reverse(nums, k, n - 1);
+}
+
+private void reverse(int[] nums, int start, int end) {
+    while (start < end) {
+        int temp = nums[start];
+        nums[start] = nums[end];
+        nums[end] = temp;
+        start++;
+        end--;
+    }
+}
+```
+
 ### 2-16) Flatten 2D Vector
 ```python
 # LC 251. Flatten 2D Vector
