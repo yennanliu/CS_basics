@@ -4752,6 +4752,55 @@ public class Workspace19 {
     }
 
 
+    // LC 66
+    // 13.26 - 36 pm
+    /**
+     *
+     *  IDEA 1) ARRAY OP
+     *
+     */
+    // IDEA 1) ARRAY OP
+    public int[] plusOne(int[] digits) {
+        // edge
+        if(digits == null || digits.length == 0){
+            return new int[]{1};
+        }
+
+        //int extra = 1;
+        int plus = 1;
+        //int[] res = new int[digits.length];
+        List<Integer> list = new ArrayList<>();
+
+        // `inverse` loop over arr
+        for(int i = digits.length - 1; i >= 0; i--){
+            int val = digits[i] + plus;
+            if(val > 9){
+                plus = 1;
+                val -= 10;
+            }else{
+                plus = 0;
+            }
+            //res[i] = val;
+            list.add(val); // ???
+        }
+
+        if(plus != 0){
+            list.add(plus);
+        }
+
+        // reverse
+        int[] res = new int[list.size()];
+        // ???
+        System.out.println(">>> before reverse: list = " + list);
+        Collections.reverse(list);
+        System.out.println(">>> after reverse: list = " + list);
+        for(int i = 0; i < list.size(); i++){
+            res[i] = list.get(i);
+        }
+
+        return res;
+    }
+
 
 
 

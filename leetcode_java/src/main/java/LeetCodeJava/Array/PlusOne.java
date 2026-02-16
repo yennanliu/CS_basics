@@ -55,12 +55,54 @@ import java.util.List;
 public class PlusOne {
 
     // V0
+    // IDEA: ARRAY OP
+    public int[] plusOne(int[] digits) {
+        // edge
+        if (digits == null || digits.length == 0) {
+            return new int[] { 1 };
+        }
+
+        int plus = 1;
+        List<Integer> list = new ArrayList<>();
+
+        // `inverse` loop over arr
+        for (int i = digits.length - 1; i >= 0; i--) {
+            int val = digits[i] + plus;
+            if (val > 9) {
+                plus = 1;
+                /** NOTE !!! we minus 10, instead of 9 */
+                val -= 10;
+            } else {
+                plus = 0;
+            }
+            list.add(val);
+        }
+
+        /** NOTE !!! below */
+        if (plus != 0) {
+            list.add(plus);
+        }
+
+        // reverse
+        int[] res = new int[list.size()];
+        //System.out.println(">>> before reverse: list = " + list);
+        Collections.reverse(list);
+        //System.out.println(">>> after reverse: list = " + list);
+        for (int i = 0; i < list.size(); i++) {
+            res[i] = list.get(i);
+        }
+
+        return res;
+    }
+
+
+    // V0-1
     // IDEA: reverse loop, `plus one` at iex=len-1, reverse, assign val to array
     /**
      * time = O(N)
      * space = O(N)
      */
-    public int[] plusOne(int[] digits) {
+    public int[] plusOne_0_1(int[] digits) {
         // edge
         if (digits == null || digits.length == 0) {
             return new int[] { 1 };
@@ -99,13 +141,13 @@ public class PlusOne {
         return res;
     }
 
-    // V0-1
+    // V0-2
     // IDEA: MATH ( add per digit, then transform result) (fixed by gpt)
     /**
      * time = O(N)
      * space = O(1)
      */
-    public int[] plusOne_0_1(int[] digits) {
+    public int[] plusOne_0_2(int[] digits) {
         if (digits == null || digits.length == 0) {
             return new int[] { 1 };
         }
@@ -280,6 +322,7 @@ public class PlusOne {
         digits[0] = 1;
         return digits;
     }
+
 
 
 }
