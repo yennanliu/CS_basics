@@ -97,6 +97,25 @@ public class MinimumWindowSubsequence {
 
     // V0-2
     // IDEA: DP (GPT)
+    /**  NOTE !!!
+     *
+     *  - DP def:
+     *      dp[i][j] = the starting index (1-based)
+     *      of the `shortest window` in S[0…i-1]
+     *      that contains T[0…j-1] as a subsequence.
+     *
+     *   - DP eq:
+     *
+     *    For i ≥ 1 and j ≥ 1:
+     *
+     *     - If S[i−1] == T[j−1]:
+     *         - If j == 1: start a new subsequence → dp[i][j] = i
+     *         - Else: extend existing subsequence → dp[i][j] = dp[i−1][j−1]
+     *
+     *     - Else:
+     *         - Skip this S char → dp[i][j] = dp[i−1][j]
+     *
+     */
     public String minWindow_0_2(String S, String T) {
         int m = S.length(), n = T.length();
         int[][] dp = new int[m + 1][n + 1];
