@@ -4697,9 +4697,50 @@ public class Workspace19 {
 
 
     // LC 1470
+    // 13.06 - 16 pm
+    /**
+     * -> Return the array in the
+     *  form [x1,y1,x2,y2,...,xn,yn].
+     *
+     *
+     *  ----------------
+     *
+     *   IDEA 1) ARRAY OP
+     *
+     *
+     *  ----------------
+     *
+     */
     public int[] shuffle(int[] nums, int n) {
+        // edge
+        if(nums == null || nums.length == 0){
+            return nums;
+        }
+        if(nums.length == 1){
+            return nums;
+        }
+        // ??
+        if(n % 2 != 0){
+            return null;
+        }
 
-        return null;
+        int[] res = new int[n];
+
+        // ???
+        // 1. add `left half arr` to res
+        for(int i = 0; i < n / 2; i += 1){
+            res[i * 2] = nums[i];
+        }
+
+        // /??
+        int k = 1;
+        // 2. add `right half arr` to res
+        for(int i = n / 2 + 1; i < n; i += 1){
+            res[k] = nums[n / 2 + i];
+            k += 2;
+        }
+
+        return res;
     }
 
 

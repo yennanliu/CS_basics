@@ -44,6 +44,39 @@ public class ShuffleTheArray {
 //
 //    }
 
+    // V0-1
+    // IDEA: ARRAY OP (gemini)
+    public int[] shuffle_0_1(int[] nums, int n) {
+        // 1. The result array must accommodate all 2n elements
+        int[] res = new int[2 * n];
+
+        // 2. Iterate through the first half (n elements)
+        for (int i = 0; i < n; i++) {
+            // Place x_i at even indices: 0, 2, 4...
+            res[2 * i] = nums[i];
+
+            // Place y_i at odd indices: 1, 3, 5...
+            // y_i is found at index (i + n) in the original array
+            res[2 * i + 1] = nums[i + n];
+        }
+
+        return res;
+    }
+
+    // V0-2
+    // IDEA: ARRAY OP (GPT)
+    public int[] shuffle_0_2(int[] nums, int n) {
+
+        int[] res = new int[2 * n];
+
+        for (int i = 0; i < n; i++) {
+            res[2 * i] = nums[i]; // x_i
+            res[2 * i + 1] = nums[i + n]; // y_i
+        }
+
+        return res;
+    }
+
     // V1-1
     // https://leetcode.com/problems/shuffle-the-array/solutions/1314638/java-c-simple-o1-space-in-place-100-fast-9gr1/
     public int[] shuffle_1_1(int[] nums, int n) {
@@ -96,5 +129,6 @@ public class ShuffleTheArray {
         return result;
     }
 
+    
 
 }
