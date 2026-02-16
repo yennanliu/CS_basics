@@ -4696,6 +4696,12 @@ public class Workspace19 {
 //    }
 
 
+    // LC 1470
+    public int[] shuffle(int[] nums, int n) {
+
+        return null;
+    }
+
 
 
 

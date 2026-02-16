@@ -198,6 +198,17 @@ public int[][] multiSourceBFS_optimized(int[][] mat) {
         int r = cur[0], c = cur[1];
 
         for (int[] d : dirs) {
+            /** NOTE !!!
+             * 
+             * - mat[r][c] + 1: 
+             * This is the "new potential distance" you just calculated
+             * by walking from your current cell (r, c) to its neighbor (nr, nc).
+             *  
+             * 
+             * - mat[nr][nc]: 
+             * This is the "best distance found so far" for that neighb
+             * 
+             */
             int nr = r + d[0];
             int nc = c + d[1];
 
@@ -211,6 +222,10 @@ public int[][] multiSourceBFS_optimized(int[][] mat) {
              * - No need to re-process cells that won't improve
              *
              * This prevents redundant enqueuing and guarantees O(m×n) time
+             */
+            /** e.g.
+             * 
+             * "If the existing distance at the neighbor is worse than the one I just found, update the neighbor and put it in the queue."
              */
             if (mat[nr][nc] > mat[r][c] + 1) {
                 mat[nr][nc] = mat[r][c] + 1;
