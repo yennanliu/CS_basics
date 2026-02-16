@@ -7,7 +7,6 @@
 - needcode `250` - similar LC by AI
 	- LC 1929
 	 - gpt
-	 	- 1470
 	 	- 1672
 	 	- 1431
 	 	- 66
