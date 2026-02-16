@@ -128,6 +128,14 @@ public class FirstMissingPositive {
 
         // 1. "Cyclic Sort": Place each number x at index x - 1
         // Example: nums[i] = 3 should be at nums[2]
+        /**  DEMO
+         *
+         *  - Example: nums = [3, 4, -1, 1]
+         *       * Step 1: Place 3 at index 2 → [-1, 4, 3, 1]
+         *       * Step 2: Place 4 at index 3 → [-1, 1, 3, 4]
+         *       * Step 3: Place 1 at index 0 → [1, -1, 3, 4]
+         *       * Step 4: Scan → nums[1] = -1 ≠ 2, return 2
+         */
         for (int i = 0; i < n; i++) {
             while (nums[i] > 0 && nums[i] <= n && nums[nums[i] - 1] != nums[i]) {
                 // Swap nums[i] with the element at its target index
