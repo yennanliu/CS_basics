@@ -1,3 +1,16 @@
+---
+layout: cheatsheet
+title: "Topological Sorting"
+description: "Linear ordering algorithm for directed acyclic graphs (DAGs)"
+category: "Algorithm"
+difficulty: "Medium"
+tags: ["topological-sort", "dag", "dependency", "ordering"]
+patterns:
+  - Dependency resolution
+  - DAG processing
+  - Linear ordering
+---
+
 # Topological Sorting - Complete Guide
 
 ## Overview
@@ -715,14 +728,14 @@ public class CourseSchedule2 {
     // ref : https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/AlgorithmJava/TopologicalSortV2.java
     public int[] findOrder(int numCourses, int[][] prerequisites) {
         if (numCourses == 1) {
-            return new int[]{0};
+            return new int[]{% raw %}{0}{% endraw %};
         }
 
         // topologic ordering
         List<Integer> ordering = topologicalSort(numCourses, prerequisites);
         //System.out.println(">>> ordering = " + ordering);
         if (ordering == null){
-            return new int[]{};
+            return new int[]{% raw %}{}{% endraw %};
         }
         int[] res = new int[numCourses];
         for (int x = 0; x < ordering.size(); x++) {

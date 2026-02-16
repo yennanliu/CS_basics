@@ -1,3 +1,16 @@
+---
+layout: cheatsheet
+title: "Python Tricks"
+description: "Essential Python programming tricks and patterns for efficient coding"
+category: "Language"
+difficulty: "Medium"
+tags: ["python", "tricks", "patterns", "optimization"]
+patterns:
+  - Pythonic code patterns
+  - Built-in functions
+  - Data structure operations
+---
+
 # Python Tricks
 
 ## 1) Examples

@@ -1,3 +1,16 @@
+---
+layout: cheatsheet
+title: "DP Patterns"
+description: "Common dynamic programming patterns and problem types"
+category: "Algorithm"
+difficulty: "Hard"
+tags: ["dp", "dynamic-programming", "patterns", "optimization"]
+patterns:
+  - Kadane's algorithm
+  - Knapsack problems
+  - Substring patterns
+---
+
 # DP Pattern
 
 - https://leetcode.com/discuss/study-guide/1308617/Dynamic-Programming-Patterns

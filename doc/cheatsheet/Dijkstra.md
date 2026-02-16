@@ -1,3 +1,16 @@
+---
+layout: cheatsheet
+title: "Dijkstra's Algorithm"
+description: "Single-source shortest path algorithm for weighted graphs"
+category: "Algorithm"
+difficulty: "Hard"
+tags: ["dijkstra", "shortest-path", "graph", "greedy", "priority-queue"]
+patterns:
+  - Shortest path finding
+  - Priority queue usage
+  - Greedy selection
+---
+
 # Dijkstra's Algorithm
 
 ## Overview

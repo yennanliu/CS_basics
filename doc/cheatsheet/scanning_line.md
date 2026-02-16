@@ -1,3 +1,16 @@
+---
+layout: cheatsheet
+title: "Scanning Line (Line Sweep)"
+description: "Algorithmic paradigm for processing geometric objects with sweep line technique"
+category: "Algorithm"
+difficulty: "Hard"
+tags: ["scanning-line", "line-sweep", "geometric", "intervals"]
+patterns:
+  - Event-based processing
+  - Geometric problem solving
+  - Interval processing
+---
+
 # Scanning Line (Line Sweep) Algorithm
 
 ## Overview
@@ -123,8 +136,8 @@ public int maxOverlap(int[][] intervals) {
     
     // Create events
     for (int[] interval : intervals) {
-        events.add(new int[]{interval[0], 1});   // Start
-        events.add(new int[]{interval[1], -1});  // End
+        events.add(new int[]{% raw %}{interval[0], 1}{% endraw %});   // Start
+        events.add(new int[]{% raw %}{interval[1], -1}{% endraw %});  // End
     }
     
     // Sort events
@@ -254,8 +267,8 @@ public List<List<Integer>> getSkyline(int[][] buildings) {
     List<int[]> events = new ArrayList<>();
     
     for (int[] b : buildings) {
-        events.add(new int[]{b[0], -b[2]});  // Start
-        events.add(new int[]{b[1], b[2]});   // End
+        events.add(new int[]{% raw %}{b[0], -b[2]}{% endraw %});  // Start
+        events.add(new int[]{% raw %}{b[1], b[2]}{% endraw %});   // End
     }
     
     Collections.sort(events, (a, b) -> {
@@ -327,8 +340,8 @@ class MyCalendarTwo {
     }
     
     public boolean book(int start, int end) {
-        events.add(new int[]{start, 1});
-        events.add(new int[]{end, -1});
+        events.add(new int[]{% raw %}{start, 1}{% endraw %});
+        events.add(new int[]{% raw %}{end, -1}{% endraw %});
         
         Collections.sort(events, (a, b) -> {
             if (a[0] != b[0]) return a[0] - b[0];
@@ -339,8 +352,8 @@ class MyCalendarTwo {
         for (int[] event : events) {
             booked += event[1];
             if (booked >= 3) {
-                events.remove(new int[]{start, 1});
-                events.remove(new int[]{end, -1});
+                events.remove(new int[]{% raw %}{start, 1}{% endraw %});
+                events.remove(new int[]{% raw %}{end, -1}{% endraw %});
                 return false;
             }
         }

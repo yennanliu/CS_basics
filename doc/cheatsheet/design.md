@@ -1,3 +1,16 @@
+---
+layout: cheatsheet
+title: "System Design"
+description: "System design patterns and architectural concepts"
+category: "System Design"
+difficulty: "Hard"
+tags: ["system-design", "architecture", "scalability", "patterns"]
+patterns:
+  - Design patterns
+  - Scalability techniques
+  - System architecture
+---
+
 # Design
 
 ## 0) Concept

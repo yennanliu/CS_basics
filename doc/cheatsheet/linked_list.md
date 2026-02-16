@@ -1,3 +1,16 @@
+---
+layout: cheatsheet
+title: "Linked List"
+description: "Linear data structure with nodes containing data and pointers"
+category: "Data Structure"
+difficulty: "Easy"
+tags: ["linked-list", "pointers", "reversal", "traversal"]
+patterns:
+  - List reversal
+  - Two-pointer techniques
+  - Dummy node usage
+---
+
 # Linked List 
 
 ## 0) Concept

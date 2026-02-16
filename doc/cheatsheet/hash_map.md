@@ -1,3 +1,16 @@
+---
+layout: cheatsheet
+title: "Hash Map"
+description: "Hash table data structure for efficient key-value storage and retrieval"
+category: "Data Structure"
+difficulty: "Easy"
+tags: ["hash-map", "dictionary", "hash-table", "key-value"]
+patterns:
+  - Key-value mapping
+  - Constant time lookup
+  - Collision handling
+---
+
 # Hash Map Cheatsheet
 
 ## Overview

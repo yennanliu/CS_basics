@@ -1,3 +1,16 @@
+---
+layout: cheatsheet
+title: "Binary Indexed Tree (BIT)"
+description: "Fenwick Tree for efficient range queries and point updates"
+category: "Data Structure"
+difficulty: "Hard"
+tags: ["binary-indexed-tree", "fenwick-tree", "range-query", "prefix-sum"]
+patterns:
+  - Point updates
+  - Range queries
+  - Prefix sum computation
+---
+
 A Binary Indexed Tree (BIT), also known as a Fenwick Tree, is a data structure that efficiently supports both:
 
 Point updates (i.e., update an element in the array).

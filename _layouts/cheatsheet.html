@@ -1,0 +1,52 @@
+---
+layout: default
+---
+
+<div class="cheatsheet-page">
+    <header class="cheatsheet-header">
+        <nav class="breadcrumb">
+            <a href="{{ site.url }}{{ site.baseurl }}/" class="breadcrumb-link">Home</a>
+            <span class="breadcrumb-separator">›</span>
+            <a href="{{ site.url }}{{ site.baseurl }}/cheatsheets/" class="breadcrumb-link">Cheatsheets</a>
+            <span class="breadcrumb-separator">›</span>
+            <span class="breadcrumb-current">{{ page.title }}</span>
+        </nav>
+        
+        <div class="cheatsheet-title-section">
+            <h1 class="cheatsheet-title">{{ page.title }}</h1>
+            {% if page.description %}
+                <p class="cheatsheet-description">{{ page.description }}</p>
+            {% endif %}
+            
+            <div class="cheatsheet-meta">
+                {% if page.difficulty %}
+                    <span class="meta-badge difficulty-{{ page.difficulty | downcase }}">{{ page.difficulty }}</span>
+                {% endif %}
+                {% if page.category %}
+                    <span class="meta-badge category">{{ page.category }}</span>
+                {% endif %}
+                {% if page.patterns %}
+                    {% for pattern in page.patterns %}
+                        <span class="meta-badge pattern">{{ pattern }}</span>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    </header>
+
+    <div class="cheatsheet-content">
+        {{ content }}
+    </div>
+
+    <footer class="cheatsheet-footer">
+        <div class="footer-nav">
+            <a href="{{ site.url }}{{ site.baseurl }}/cheatsheets/" class="footer-nav-link">
+                ← Back to Cheatsheets
+            </a>
+            <a href="{{ site.repository_url }}/blob/master/doc/cheatsheet/{{ page.filename }}" 
+               class="footer-nav-link" target="_blank">
+                Edit on GitHub →
+            </a>
+        </div>
+    </footer>
+</div>

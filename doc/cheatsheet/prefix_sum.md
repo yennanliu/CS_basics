@@ -1,3 +1,16 @@
+---
+layout: cheatsheet
+title: "Prefix Sum"
+description: "Preprocessing technique for efficient subarray sum queries"
+category: "Technique"
+difficulty: "Easy"
+tags: ["prefix-sum", "subarray", "range-query", "preprocessing"]
+patterns:
+  - Range sum queries
+  - Subarray operations
+  - Cumulative computation
+---
+
 # Prefix Sum (前缀和)
 
 <img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/prefix_sum.png"></p>

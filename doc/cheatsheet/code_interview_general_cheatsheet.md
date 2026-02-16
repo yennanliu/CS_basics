@@ -1,3 +1,16 @@
+---
+layout: cheatsheet
+title: "General Coding Interview Guide"
+description: "Comprehensive guide for coding interview preparation and strategies"
+category: "Interview"
+difficulty: "Easy"
+tags: ["interview", "strategy", "preparation", "coding"]
+patterns:
+  - Problem-solving approach
+  - Communication techniques
+  - Time management
+---
+
 # Coding Interview Cheatsheet In General
 
 ## Answering Steps 

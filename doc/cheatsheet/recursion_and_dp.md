@@ -1,3 +1,16 @@
+---
+layout: cheatsheet
+title: "Recursion and Dynamic Programming"
+description: "Relationship between recursion and dynamic programming optimization"
+category: "Algorithm"
+difficulty: "Hard"
+tags: ["recursion", "dp", "dynamic-programming", "optimization"]
+patterns:
+  - Recursive to DP conversion
+  - Memoization techniques
+  - Bottom-up optimization
+---
+
 # Dynamic Programming
 
 ## 0) Concept  

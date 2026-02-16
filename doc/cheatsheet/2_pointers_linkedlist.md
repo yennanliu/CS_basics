@@ -1,3 +1,16 @@
+---
+layout: cheatsheet
+title: "Two Pointers - Linked List"
+description: "Two pointer techniques specifically for linked list problems"
+category: "Technique"
+difficulty: "Medium"
+tags: ["two-pointers", "linked-list", "fast-slow", "cycle-detection"]
+patterns:
+  - Fast-slow pointers
+  - Cycle detection
+  - Finding middle node
+---
+
 # Two pointers - Linkedlist
 
 - Ref

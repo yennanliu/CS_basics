@@ -1,3 +1,16 @@
+---
+layout: cheatsheet
+title: "Stack"
+description: "Linear data structure following LIFO (Last In First Out) principle"
+category: "Data Structure"
+difficulty: "Easy"
+tags: ["stack", "lifo", "linear", "push", "pop"]
+patterns:
+  - LIFO processing
+  - Function call management
+  - Expression evaluation
+---
+
 # Stack
 
 <img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/stack.jpeg"></p>
@@ -263,7 +276,7 @@ class MyQueue_3{
     public int[] nextGreaterElement(int[] nums1, int[] nums2) {
 
         if (nums1.length == 1 && nums2.length == 1){
-            return new int[]{-1};
+            return new int[]{% raw %}{-1}{% endraw %};
         }
 
         /**
@@ -503,7 +516,7 @@ class Solution(object):
 public int[] nextGreaterElement(int[] nums1, int[] nums2) {
 
     if (nums1.length == 1 && nums2.length == 1){
-        return new int[]{-1};
+        return new int[]{% raw %}{-1}{% endraw %};
     }
 
     /**

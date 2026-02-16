@@ -1,3 +1,16 @@
+---
+layout: cheatsheet
+title: "Iterator"
+description: "Design pattern for traversing elements in collections"
+category: "Data Structure"
+difficulty: "Easy"
+tags: ["iterator", "traversal", "design-pattern", "collections"]
+patterns:
+  - Sequential access
+  - Collection traversal
+  - Design pattern implementation
+---
+
 # Iterator 
 
 ## 0) Concept  
