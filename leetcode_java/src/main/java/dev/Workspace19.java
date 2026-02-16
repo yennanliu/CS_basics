@@ -5023,6 +5023,12 @@ public class Workspace19 {
 
     }
 
+    // LC 442
+    public List<Integer> findDuplicates(int[] nums) {
+
+        return null;
+    }
+
 
 
 
