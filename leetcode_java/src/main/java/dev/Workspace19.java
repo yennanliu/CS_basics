@@ -5024,9 +5024,41 @@ public class Workspace19 {
     }
 
     // LC 442
+    // 15.10 - 20 pm
+    /**
+     *
+     *
+     *  NOTE:
+     *
+     *   - You must write an algorithm that runs in O(n) time
+     *     and uses only constant auxiliary space,
+     *
+     * --------------------
+     *
+     *  IDEA 1): hashmap
+     *
+     *  IDEA 2): set
+     *
+     *
+     *  --------------------
+     *
+     */
     public List<Integer> findDuplicates(int[] nums) {
+        // edge
+        // map: { val : cnt }
+        Map<Integer, Integer> map = new HashMap<>();
+        for(int x: nums){
+            map.put(x, map.getOrDefault(x, 0) + 1);
+        }
 
-        return null;
+        List<Integer> res = new ArrayList<>();
+        for(int k: map.keySet()){
+            if(map.get(k) > 1){
+                res.add(k);
+            }
+        }
+
+        return res;
     }
 
 

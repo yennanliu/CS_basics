@@ -3,7 +3,9 @@ package LeetCodeJava.Array;
 // https://leetcode.com/problems/find-all-duplicates-in-an-array/description/
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -43,6 +45,24 @@ import java.util.List;
 public class FindAllDuplicatesInAnArray {
 
     // V0
+    // IDEA: HASHMAP
+    public List<Integer> findDuplicates(int[] nums) {
+        // edge
+        // map: { val : cnt }
+        Map<Integer, Integer> map = new HashMap<>();
+        for(int x: nums){
+            map.put(x, map.getOrDefault(x, 0) + 1);
+        }
+
+        List<Integer> res = new ArrayList<>();
+        for(int k: map.keySet()){
+            if(map.get(k) > 1){
+                res.add(k);
+            }
+        }
+
+        return res;
+    }
 
     // V1
     // https://leetcode.com/problems/find-all-duplicates-in-an-array/solutions/4921063/utilizing-integer-range-for-duplicate-id-cah0/
