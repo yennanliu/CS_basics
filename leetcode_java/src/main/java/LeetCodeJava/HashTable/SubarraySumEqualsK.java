@@ -111,18 +111,39 @@ public class SubarraySumEqualsK {
          * 	3.	Count Prefix Sums:
          * 	    •	The value 1 in map.put(0, 1) represents the fact that there is one prefix sum of 0 initially (before processing any elements). This allows the algorithm to correctly count subarrays that sum to  k  as the prefix sum progresses.
          */
+        /** NOTE !!!
+         *
+         *  init map with prefixSum = 0, freq = 1
+         */
         map.put(0, 1);
 
         for (int num : nums) {
             presum += num;
 
+            /** V1 explanation */
             // Check if there's a prefix sum such that presum - k exists
             //  presum - x = k (cur presum subtract x (some val), and its remaining sum equals to k)
             // -> x = presum - k
+            /** V2  explanation  */
+            /**
+             *      *
+             *      *     -> sum ( nums[i..j] ) = k
+             *      *     -> sum ( nums[i..j] ) = prefix[j] - prefix[i]  = k
+             *      *
+             *      *     prefix[j] is cur prefix sum
+             *      *     prefix[i] is some prefix sum that VISITED before
+             *      *
+             *      *     -> so check if map contains (prefix[j] - k)
+             *
+             */
             if (map.containsKey(presum - k)) {
                 count += map.get(presum - k);
             }
 
+            /** NOTE !!! map definition
+             *
+             * map : {prefixSum: count}
+             */
             // Update the map with the current prefix sum
             map.put(presum, map.getOrDefault(presum, 0) + 1);
         }
