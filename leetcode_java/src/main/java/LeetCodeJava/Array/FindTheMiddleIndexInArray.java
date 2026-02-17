@@ -50,9 +50,64 @@ package LeetCodeJava.Array;
 public class FindTheMiddleIndexInArray {
 
     // V0
-//    public int findMiddleIndex(int[] nums) {
-//
-//    }
+    // IDEA: PREFIX SUM
+    public int findMiddleIndex(int[] nums) {
+        // edge
+        if (nums == null || nums.length == 0) {
+            return -1; // ??
+        }
+        if (nums.length == 1) {
+            return 0;
+        }
+
+        int sum = 0;
+        for (int x : nums) {
+            sum += x;
+        }
+        int prefixSum = 0;
+        for (int i = 0; i < nums.length; i++) {
+            int x = nums[i];
+            prefixSum += x;
+            if ((prefixSum - x) * 2 + x == sum) {
+                return i;
+            }
+        }
+
+        // if the `middleIndex` is in the last element
+        if (sum - nums[nums.length - 1] == 0) {
+            return nums.length - 1;
+        }
+
+        return -1;
+    }
+
+    // V0-1
+    // IDEA: LEFT, RIGHT SUM (gemini)
+    public int findMiddleIndex_0_1(int[] nums) {
+        if (nums == null || nums.length == 0)
+            return -1;
+
+        int totalSum = 0;
+        for (int x : nums) {
+            totalSum += x;
+        }
+
+        int leftSum = 0;
+        for (int i = 0; i < nums.length; i++) {
+            // Right sum is everything minus the left side and the current element
+            int rightSum = totalSum - leftSum - nums[i];
+
+            if (leftSum == rightSum) {
+                return i;
+            }
+
+            // Update leftSum for the NEXT index
+            leftSum += nums[i];
+        }
+
+        return -1;
+    }
+
 
     // V1
     // https://leetcode.com/problems/find-the-middle-index-in-array/solutions/1499953/java-easy-to-understand-prefix-and-suffi-js0s/
@@ -94,8 +149,7 @@ public class FindTheMiddleIndexInArray {
         }
         return -1;
     }
-
-
+    
 
 
 }
