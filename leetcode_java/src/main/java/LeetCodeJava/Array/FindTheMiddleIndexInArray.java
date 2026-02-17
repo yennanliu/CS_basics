@@ -149,7 +149,7 @@ public class FindTheMiddleIndexInArray {
         }
         return -1;
     }
-    
+
 
 
 }
