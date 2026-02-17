@@ -4619,7 +4619,88 @@ public class Workspace19 {
      *
      */
     // HASHMAP
+    // 18.07 - 17 pm
+    /**
+     *  -> return the `total number` of `subarrays`
+     *  whose sum equals to k.
+     *
+     *   - NOTE:
+     *      - A subarray is a `contiguous`
+     *        non-empty sequence of elements within an array.
+     *
+     *
+     *  ---------------
+     *
+     *   IDEA 1) HASHMAP + PREFIX SUM ???
+     *     -> prefix - x = k
+     *     -> x = prefix - k
+     *     -> so check if  `prefix - k` in map already
+     *
+     *     -> sum ( nums[i..j] ) = k
+     *     -> sum ( nums[i..j] ) = prefix[j] - prefix[i]  = k
+     *
+     *     prefix[j] is cur prefix sum
+     *     prefix[i] is some prefix sum that VISITED before
+     *
+     *     -> so check if map contains (prefix[j] - k)
+     *
+     *
+     *
+     *     map : {val : cnt } // ???
+     *
+     *
+     *   ---------------
+     *
+     *
+     */
     public int subarraySum(int[] nums, int k) {
+        // edge
+
+
+        // { prefixSum : how_many_times_it_occurred }
+        Map<Integer, Integer> map = new HashMap<>();
+        int prefix = 0;
+        int cnt = 0;
+
+        // ????
+        map.put(0, 1);
+
+
+        for(int i = 0; i < nums.length; i++){
+            int x = nums[i];
+            prefix += x;
+            /**
+             *      *   IDEA 1) HASHMAP + PREFIX SUM ???
+             *      *     -> prefix - x = k
+             *      *     -> x = prefix - k
+             *      *     -> so check if  `prefix - k` in map already
+             */
+            if(map.containsKey(prefix - k)){
+                cnt += map.get(prefix - k);
+                //cnt += 1; // ????
+            }
+//            else{
+//                map.put(prefix - k, map.getOrDefault(prefix - k) + 1); // ????
+//            }
+
+            // ???
+            map.put(prefix, map.getOrDefault(prefix, 0) + 1);
+        }
+
+        return cnt;
+    }
+
+
+
+
+
+
+
+
+
+
+    // HASHMAP
+    public int subarraySum_99(int[] nums, int k) {
         // edge
         int prefixSum = 0;
         int cnt = 0;
