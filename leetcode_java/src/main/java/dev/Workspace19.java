@@ -5405,6 +5405,12 @@ public class Workspace19 {
 
 
 
+    // LC 974
+    public int subarraysDivByK(int[] nums, int k) {
+
+        return 0;
+    }
+
 
 
 
