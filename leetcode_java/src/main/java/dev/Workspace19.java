@@ -5164,9 +5164,80 @@ public class Workspace19 {
 
 
     // LC 1991
+    // 15.07 - 17 pm
+    /**
+     * -> Return the leftmost middleIndex
+     *   that satisfies the condition, or -1 if there is no such index.
+     *
+     *    - 0 based idx
+     *    - middleIndex:
+     *
+     *      nums[0] + nums[1] + ... + nums[middleIndex-1] == nums[middleIndex+1] + nums[middleIndex+2] + ... + nums[nums.length-1].
+     *
+     *
+     *  ----------------------------
+     *
+     *   IDEA 1) PREFIX SUM + ARRAY LOOP
+     *
+     *
+     *  ----------------------------
+     *
+     *   ex 1)
+     *
+     *   Input: nums = [2,3,-1,8,4]
+     *   Output: 3
+     *
+     *   -> sum = 16
+     *
+     *   -> loop over nums
+     *
+     *
+     *   [2,3,-1,8,4]
+     *    i             ps=2
+     *
+     *   [2,3,-1,8,4]
+     *      i            ps=5
+     *
+     *   [2,3,-1,8,4]
+     *         i          ps=4
+     *
+     *
+     *  [2,3,-1,8,4]
+     *          i      ps=12
+     *
+     *
+     *   ex 1)
+     *
+     *
+     */
     public int findMiddleIndex(int[] nums) {
+        // edge
+        if(nums == null || nums.length == 0){
+            return -1; // ??
+        }
+        if(nums.length == 1){
+            return 0;
+        }
 
-        return 0;
+        int sum = 0;
+        for(int x: nums){
+            sum += x;
+        }
+        int prefixSum = 0;
+        for(int i = 0; i < nums.length; i++){
+            int x = nums[i];
+            prefixSum += x;
+            if( (prefixSum - x) * 2 + x == sum ){
+                return i;
+            }
+        }
+
+        // if the `middleIndex` is in the last element
+        if(sum - nums[nums.length - 1] == 0){
+            return nums.length -1;
+        }
+
+        return -1;
     }
 
 
