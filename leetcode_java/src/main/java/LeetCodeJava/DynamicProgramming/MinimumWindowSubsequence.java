@@ -98,15 +98,17 @@ public class MinimumWindowSubsequence {
          *
          * The DP table already told us:
          *
-         * "If a subsequence T finishes at position i-1, where did it start?"
+         * "If a subsequence T finishes at position i-1,
+         * -> `where did it start` ?"
+         * (NOTE !!!    the `starting idx` )
          *
          * Now this loop:
          *
          * ✔ Scans all possible ending positions
          * ✔ Computes window length
          * ✔ Picks the shortest one
+         *
          */
-
 
         // Find the minimum window
         /**
