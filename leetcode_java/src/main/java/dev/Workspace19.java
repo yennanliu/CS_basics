@@ -1,6 +1,7 @@
 package dev;
 
 import LeetCodeJava.DataStructure.TreeNode;
+import jdk.internal.org.objectweb.asm.tree.IincInsnNode;
 
 import javax.print.DocFlavor;
 import java.lang.reflect.Array;
@@ -5304,6 +5305,36 @@ public class Workspace19 {
      *
      */
     // IDEA: HASHMAP
+    /**
+     * 	 IDEA)
+     *
+     * 	 1. Convert the problem into tracking equal number of
+     * 	    1s and 0s as a zero net count.
+     *
+     * 	 2. Maintain a count where:
+     * 	     - Add +1 for each 1
+     * 	     - Subtract -1 for each 0
+     *
+     * 	3.	If the same count value appears again,
+     * 	    the subarray between the first and current index is balanced.
+     *
+     */
+    // Map: {count -> first index where this count occurred}
+    /**
+     *
+     * 	•	We use a map to store the first index
+     * 	     where a specific count value occurs.
+     *
+     * 	•	count = 0 is added with index = -1
+     *    	to handle subarrays starting at index 0.
+     *
+     *
+     * 	•	Why? If from index 0 to i, the net count is 0,
+     * 	    that means the subarray is balanced.
+     *
+     *
+     * 	-> map : { count : first_idx_when_cnt_existed }
+     */
     public int findMaxLength(int[] nums) {
         // edge
         if(nums == null || nums.length == 0){
@@ -5312,10 +5343,36 @@ public class Workspace19 {
         if(nums.length == 1){
             return 0;
         }
+        // -> map : { count : first_idx_when_cnt_existed }
+        Map<Integer, Integer> map = new HashMap<>();
+        //map.put(0, -1); // ????
+        map.put(0, -1); // important: count 0 initially at index -1
 
 
-        return -1;
+        int max_len = 0;
+        int count = 0;
+
+        for (int i = 0; i < nums.length; i++) {
+            if(nums[i] == 0){
+                count -= 1;
+            }else{
+                count += 1;
+            }
+            map.put(i, count); // ???
+
+            if (map.containsKey(count)) {
+                max_len = Math.max(max_len, i - map.get(count));
+            } else {
+                map.put(count, i); // only put the first occurrence
+            }
+
+        }
+
+
+        return max_len;
     }
+
+
 
     // brute force ???
     public int findMaxLength_99(int[] nums) {

@@ -46,6 +46,40 @@ public class ContiguousArray {
 //
 //    }
 
+    // V0-0-1
+    // IDEA: HASHMAP (gemini)
+    public int findMaxLength_0_0_1(int[] nums) {
+        if (nums == null || nums.length == 0)
+            return 0;
+
+        // Map: { PrefixSum : First_Index_It_Occurred }
+        Map<Integer, Integer> map = new HashMap<>();
+
+        // Base Case: A sum of 0 exists at index -1
+        map.put(0, -1);
+
+        int maxLength = 0;
+        int prefixSum = 0;
+
+        for (int i = 0; i < nums.length; i++) {
+            // Transform 0 to -1, 1 stays 1
+            prefixSum += (nums[i] == 1) ? 1 : -1;
+
+            if (map.containsKey(prefixSum)) {
+                // If we've seen this sum before, the subarray between
+                // the previous index and current index has a net sum of 0.
+                int prevIndex = map.get(prefixSum);
+                maxLength = Math.max(maxLength, i - prevIndex);
+            } else {
+                // Only store the FIRST occurrence to maximize the length
+                map.put(prefixSum, i);
+            }
+        }
+
+        return maxLength;
+    }
+
+
     // V0-1
     // IDEA: HASHMAP (fixed by gpt)
     /**
