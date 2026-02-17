@@ -53,9 +53,47 @@ package LeetCodeJava.Array;
 public class FindPivotIndex {
 
     // V0
-//    public int pivotIndex(int[] nums) {
-//
-//    }
+    // IDEA: PREFIX SUM  + LEFT, RIGHT SUB ARR SUM
+    public int pivotIndex(int[] nums) {
+        // edge
+        if (nums == null || nums.length == 0) {
+            return -1;
+        }
+        if (nums.length == 1) {
+            return 0;
+        }
+
+        int sum = 0;
+        for (int x : nums) {
+            sum += x;
+        }
+        // prefix
+        int prefix = 0;
+        for (int i = 0; i < nums.length; i++) {
+            int x = nums[i];
+            prefix += x;
+            /**
+             *   pivot idx:
+             *
+             *   nums = [1,7,3,6,5,6]
+             *                 p
+             *
+             *          |----|   |--|
+             *           left     right
+             *
+             *  -> p is the `pivot point`
+             *  -> so sum(left) == sum(right)
+             *
+             */
+            int left = prefix - x;
+            int right = sum - prefix;
+            if (left == right) {
+                return i;
+            }
+        }
+
+        return -1;
+    }
 
     // V0-1
     // IDEA: PREFIX SUM (gemini)
