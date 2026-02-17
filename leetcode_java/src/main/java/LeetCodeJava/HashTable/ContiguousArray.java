@@ -171,6 +171,37 @@ public class ContiguousArray {
         return max_len;
     }
 
+    // V0-3
+    // IDEA: BRUTE FORCE (TLE)
+    public int findMaxLength_0_3(int[] nums) {
+        // edge
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
+        if (nums.length == 1) {
+            return 0;
+        }
+
+        int maxLen = 0;
+        for (int l = 0; l < nums.length; l++) {
+            int zeroCnt = 0;
+            int oneCnt = 0;
+            for (int r = l; r < nums.length; r++) {
+                if (nums[r] == 0) {
+                    zeroCnt += 1;
+                } else {
+                    oneCnt += 1;
+                }
+                if (zeroCnt == oneCnt) {
+                    maxLen = Math.max(maxLen, r - l + 1);
+                }
+            }
+        }
+
+        return maxLen;
+    }
+
+
     // V1-1
     // https://leetcode.com/problems/contiguous-array/editorial/
     // IDEA: BRUTE FORCE
@@ -218,6 +249,10 @@ public class ContiguousArray {
         return maxlen;
     }
 
+
     // V2
+
+
+
 
 }

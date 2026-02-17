@@ -2,6 +2,7 @@ package dev;
 
 import LeetCodeJava.DataStructure.TreeNode;
 
+import javax.print.DocFlavor;
 import java.lang.reflect.Array;
 import java.util.*;
 
@@ -5239,6 +5240,113 @@ public class Workspace19 {
 
         return -1;
     }
+
+
+
+    // LC 525
+    // 15.19 -29 pm
+    /**
+     *
+     * -> return the `maximum` length of
+     *   a `contiguous` subarray with `an equal number of 0 and 1`.
+     *
+     *
+     *   - nums: binary arr
+     *
+     *
+     *  ----------------
+     *
+     *   IDEA 1) MATH + ARRAY OP
+     *
+     *    -> if `satisfied` (e.g. 0 and 1 cnt eqauls)
+     *       -> sum * 2 = len
+     *
+     *
+     *   IDEA 2) BRUTE FORCE
+     *
+     *   IDEA 3) 2 POINTERS
+     *
+     *   IDEA 4) SLIDE WINDOW
+     *
+     *
+     *   IDEA 5) 2 POINTERS + 0, 1 cnt map
+     *
+     *
+     *   ----------------
+     *
+     *   ex 1)
+     *
+     *   ex 2)
+     *
+     *   ex 3)
+     *   Input: nums = [0,1,1,1,1,1,0,0,0]
+     *   Output: 6
+     *
+     *
+     *   -> total_z_cnt = 4
+     *      total_one_cnt = 5
+     *
+     *   [0,1,1,1,1,1,0,0,0]
+     *    i                    remain_z = 3, remain_one = 5
+     *
+     *   [0,1,1,1,1,1,0,0,0]
+     *      i                remain_z = 4, remain_one = 4
+     *
+     *
+     *  [0,1,1,1,1,1,0,0,0]
+     *       i             remain_z = 3, remain_one = 4
+     *
+     *    ....
+     *
+     *  [0,1,1,1,1,1,0,0,0]
+     *   l         i         remain_z = 3, remain_one = 0
+     *                       one_cnt = 5, remain_z = 3
+     *
+     */
+    // IDEA: HASHMAP
+    public int findMaxLength(int[] nums) {
+        // edge
+        if(nums == null || nums.length == 0){
+            return 0;
+        }
+        if(nums.length == 1){
+            return 0;
+        }
+
+
+        return -1;
+    }
+
+    // brute force ???
+    public int findMaxLength_99(int[] nums) {
+        // edge
+        if(nums == null || nums.length == 0){
+            return 0;
+        }
+        if(nums.length == 1){
+            return 0;
+        }
+
+        int maxLen = 0;
+        for(int l = 0; l < nums.length; l++){
+            int zeroCnt = 0;
+            int oneCnt = 0;
+            for(int r = l; r < nums.length; r++){
+                if(nums[r] == 0){
+                    zeroCnt += 1;
+                }else{
+                    oneCnt += 1;
+                }
+                if(zeroCnt == oneCnt){
+                    maxLen = Math.max(maxLen, r - l + 1);
+                }
+            }
+        }
+
+        return maxLen;
+    }
+
+
 
 
 
