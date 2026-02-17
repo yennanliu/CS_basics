@@ -4490,13 +4490,69 @@ public class Workspace19 {
      *      (leftmost)
      *
      *
+     *  IDEA 3) prefix sum
      *
      * -------------------
      *
      *
      *
      */
+    // 17.52 - 18.02 pm
+    /**
+     *
+     *  -> Return the leftmost pivot index. If no such index exists, return -1.
+     *
+     *
+     */
+    // IDEA 3) prefix sum
     public int pivotIndex(int[] nums) {
+        // edge
+        if(nums == null || nums.length == 0){
+            return -1;
+        }
+        if(nums.length == 1){
+            return 0;
+        }
+
+        int sum = 0;
+        for(int x : nums){
+            sum += x;
+        }
+        // prefix
+        /**
+         *   pivot idx:
+         *
+         *   nums = [1,7,3,6,5,6]
+         *                 p
+         *
+         *          |----|   |--|
+         *           left     right
+         *
+         *  -> so sum(left) == sum(right)
+         *
+         */
+        int prefix = 0;
+        for(int i = 0; i < nums.length; i++){
+            int x = nums[i];
+            prefix += x;
+            int left = prefix - x;
+            int right = sum - prefix;
+            if(left == right){
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
+
+
+
+
+
+
+
+    public int pivotIndex_99(int[] nums) {
 
         int totalSum = 0;
         int[] prefix = new int[nums.length + 1]; // ??
