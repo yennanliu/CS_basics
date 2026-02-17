@@ -44,6 +44,63 @@ public class SubarraySumsDivisibleByK {
 //
 //    }
 
+    // V0-1
+    // IDEA: PREFIX + HASHMAP (gemini)
+    public int subarraysDivByK_0_1(int[] nums, int k) {
+        // Map to store { remainder : frequency }
+        // Since remainders are always 0 to k-1, an array is faster than a HashMap
+        int[] remainderCount = new int[k];
+
+        // Base Case: A prefix sum of 0 has a remainder of 0
+        remainderCount[0] = 1;
+
+        int prefixSum = 0;
+        int count = 0;
+
+        for (int num : nums) {
+            prefixSum += num;
+
+            // Calculate remainder and normalize it for negative numbers
+            int remainder = prefixSum % k;
+            if (remainder < 0) {
+                remainder += k;
+            }
+
+            // If we've seen this remainder before, every previous occurrence
+            // represents a subarray ending here that is divisible by K.
+            count += remainderCount[remainder];
+
+            // Update the frequency of this remainder
+            remainderCount[remainder]++;
+        }
+
+        return count;
+    }
+
+
+    // V0-2
+    // IDEA: PREFIX + HASHMAP (gpt)
+    public int subarraysDivByK_0_2(int[] nums, int k) {
+        int n = nums.length;
+        int count = 0;
+
+        // prefixSum % k frequency array
+        int[] freq = new int[k];
+        freq[0] = 1; // because sum of 0 mod k means a valid subarray from start
+
+        int prefixSum = 0;
+        for (int num : nums) {
+            prefixSum += num;
+            int mod = ((prefixSum % k) + k) % k;
+
+            count += freq[mod];
+            freq[mod]++;
+        }
+
+        return count;
+    }
+
+
     // V1
     // IDEA: Prefix Sums and Counting
     // https://leetcode.com/problems/subarray-sums-divisible-by-k/editorial/

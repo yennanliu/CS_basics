@@ -5406,9 +5406,65 @@ public class Workspace19 {
 
 
     // LC 974
+    // 16.06 - 16 pm
+    /**
+     * -> return the `number` of non-empty
+     *   subarrays that have a sum divisible by k.
+     *
+     *    NOTE: A subarray is a contiguous part of an array.
+     *
+     *    - nums: int arr
+     *    - k: int
+     *
+     *
+     *
+     *  ---------------
+     *
+     *   IDEA 1) HASHMAP + PREFIX SUM ???
+     *
+     *    if  ( prefix_sum - x ) % k == 0
+     *      ->  x % k = prefix_sum % k
+     *      ->
+     *
+     *
+     *  IDEA 2) BRUTE FORCE
+     *
+     *  IDEA 3) slide window ???
+     *
+     *
+     *  IDEA 3) prefix sum + cnt ???
+     *
+     *  ---------------
+     *
+     */
     public int subarraysDivByK(int[] nums, int k) {
+        // edge
 
-        return 0;
+        int cnt = 0;
+
+        // map: { val : cnt }
+        Map<Integer, Integer> map = new HashMap<>();
+        int prefix = 0;
+        for(int x: nums){
+            prefix += x;
+            map.put(prefix, map.getOrDefault(prefix, 0) + 1);
+        }
+        // ???
+        for(int x: nums){
+            // ???
+            if(x % k == 0){
+                cnt += 1;
+            }
+            /**
+             *      *    if  ( prefix_sum - x ) % k == 0
+             *      *      ->  x % k = prefix_sum % k
+             *      *      ->
+             */
+            //if(map.containsKey())
+        }
+
+
+        return cnt;
     }
 
 
