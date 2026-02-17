@@ -151,6 +151,7 @@ def prefix_sum_pattern(nums, target):
 
 **Key Differences by Problem Type**:
 - **Count problems** (LC 560, 930, 974): Store `{sum: count}`, check then update
+  - **LC 974 variant**: Use modulo `{remainder: count}`, **MUST handle negative remainders!**
 - **Max length problems** (LC 325, 525): Store `{sum: first_index}`, only update if new
   - **LC 525 variant**: Transform problem (0→-1, 1→+1), initialize with `{0: -1}`, store first occurrence only
 - **Existence problems** (LC 523): Store `{sum: any_index}`, just need to find one
@@ -311,6 +312,8 @@ def graph_hashmap_pattern(graph_input):
             - `TODO : note this as pattern!!!`
         - LC 325: Maximum Size Subarray Sum Equals k
             - `prefix sum` + hashmap
+        - **LC 974: Subarray Sums Divisible by K** ⭐ **[See detailed pattern](#2-1-1-subarray-sums-divisible-by-k-lc-974)**
+          - Prefix Sum + Modulo: {remainder: count}, **handle negative remainders!**
         ```
        subarray[i,j] = prefixSum[j] - prefixSum[i-1]
 
@@ -428,7 +431,7 @@ Result: count=2 (subarrays [1,1] and [1,1])
 - LC 560: Subarray Sum Equals K (exact pattern)
 - LC 325: Maximum Size Subarray Sum Equals k (store index instead of count)
 - LC 930: Binary Subarrays with Sum
-- LC 974: Subarray Sums Divisible by K (use modulo)
+- **LC 974: Subarray Sums Divisible by K** (use modulo `{remainder: count}`, **handle negatives!**)
 
 **Java Implementation Template**:
 ```java
@@ -460,6 +463,7 @@ public int subarraySum(int[] nums, int k) {
 | Problem Type | Map Value | Example | Special Notes |
 |-------------|-----------|---------|---------------|
 | Count ALL subarrays | `count` | LC 560, 930, 974 | Check before update |
+| Count (with modulo) | `count` | **LC 974** | **Use remainder as key; handle negatives!** |
 | Find LONGEST subarray | `index` (first occurrence) | LC 325, 525 | Store only first occurrence |
 | Find LONGEST (with transformation) | `index` (first occurrence) | **LC 525** | **Transform 0→-1, 1→+1; init {0:-1}** |
 | Find if EXISTS | `boolean/index` | LC 523 | Any occurrence works |
@@ -469,6 +473,7 @@ public int subarraySum(int[] nums, int k) {
 2. ❌ Updating map before checking (causes self-counting)
 3. ❌ Forgetting `map.put(0, 1)` initialization
 4. ❌ Not handling the case where prefix sum itself equals k
+5. ❌ **[LC 974] Forgetting to handle negative remainders** (Java/Python `-7 % 5 = -2`, need to add k to get 3)
 
 ---
 
@@ -950,6 +955,229 @@ class Solution(object):
                 _dict[cur] = k
         return r
 ```
+
+### 2-1-1) Subarray Sums Divisible by K (LC 974)
+
+**Core Pattern: Prefix Sum + Modular Arithmetic + HashMap**
+
+#### Key Concept
+Count ALL subarrays whose sum is divisible by K using remainder tracking.
+
+If two prefix sums have the **same remainder mod K**, their difference is divisible by K.
+
+#### Pattern Breakdown
+
+**1. Mathematical Foundation:**
+```
+If prefix[i] % k == prefix[j] % k  (where j < i)
+
+Then:
+  (prefix[i] - prefix[j]) % k == 0
+
+Which means:
+  prefix[i] - prefix[j] = sum of nums[j+1 .. i]
+
+Therefore:
+  The subarray [j+1, i] has a sum divisible by k
+```
+
+**2. HashMap Structure:**
+```java
+Map<Integer, Integer> map = new HashMap<>();
+// {remainder: count}  ← Store COUNT, not index (similar to LC 560)
+
+map.put(0, 1); // Initialize for subarrays starting from beginning
+```
+
+**3. Why Store Remainder COUNT (Not Index)?**
+```
+This is a "count ALL subarrays" problem (like LC 560).
+
+If remainder 3 appears at indices [2, 5, 8]:
+  - When we reach index 5: add 1 (subarray from index 2 to 5)
+  - When we reach index 8: add 2 (subarrays from 2→8 and 5→8)
+
+Total: 3 valid subarrays
+```
+
+**4. Critical: Handle Negative Remainders**
+```java
+int remainder = prefixSum % k;
+
+// MUST adjust negative remainders to positive
+if (remainder < 0) {
+    remainder += k;
+}
+
+// Or use this one-liner:
+remainder = ((prefixSum % k) + k) % k;
+```
+
+**Why?** In Java/Python, `-7 % 5 = -2`, but we need remainder 3 (since -2 ≡ 3 mod 5).
+
+**5. Initialization: Why map.put(0, 1)?**
+```
+If prefixSum % k == 0 at some index i:
+  → The entire subarray [0, i] is divisible by k
+  → We need to count this case
+
+Without initialization, we'd miss these subarrays.
+```
+
+#### Visual Example
+
+**Input:** `nums = [4, 5, 0, -2, -3, 1]`, `k = 5`
+
+**Prefix sums:** `[4, 9, 9, 7, 4, 5]`
+
+**Remainders (mod 5):** `[4, 4, 4, 2, 4, 0]`
+
+| Index | Num | PrefixSum | Remainder | Map State | Count Added | Total Count |
+|-------|-----|-----------|-----------|-----------|-------------|-------------|
+| - | - | 0 | 0 | {0:1} | - | 0 |
+| 0 | 4 | 4 | 4 | {0:1, 4:1} | 0 | 0 |
+| 1 | 5 | 9 | 4 | {0:1, 4:2} | +1 | 1 |
+| 2 | 0 | 9 | 4 | {0:1, 4:3} | +2 | 3 |
+| 3 | -2 | 7 | 2 | {0:1, 4:3, 2:1} | 0 | 3 |
+| 4 | -3 | 4 | 4 | {0:1, 4:4, 2:1} | +3 | 6 |
+| 5 | 1 | 5 | 0 | {0:2, 4:4, 2:1} | +1 | **7** |
+
+**Result:** 7 subarrays with sum divisible by 5
+
+**Subarrays found:**
+1. `[4,5,0,-2,-3,1]` (entire array, remainder 0 at end)
+2. `[5]` (remainder 4 at indices 0 and 1)
+3. `[5,0]` (remainder 4 at indices 0 and 2)
+4. `[5,0,-2,-3]` (remainder 4 at indices 0 and 4)
+5. `[0]` (remainder 4 at indices 1 and 2)
+6. `[0,-2,-3]` (remainder 4 at indices 1 and 4)
+7. `[-2,-3]` (remainder 4 at indices 2 and 4)
+
+#### Implementation Template
+
+```java
+// Java Template
+public int subarraysDivByK(int[] nums, int k) {
+    // Map: {remainder: count}
+    Map<Integer, Integer> map = new HashMap<>();
+    map.put(0, 1); // Handle subarrays from beginning
+
+    int count = 0;
+    int prefixSum = 0;
+
+    for (int num : nums) {
+        prefixSum += num;
+
+        // Calculate remainder (handle negatives!)
+        int remainder = prefixSum % k;
+        if (remainder < 0) {
+            remainder += k;
+        }
+        // Or: int remainder = ((prefixSum % k) + k) % k;
+
+        // Add count of all previous same remainders
+        count += map.getOrDefault(remainder, 0);
+
+        // Update remainder count
+        map.put(remainder, map.getOrDefault(remainder, 0) + 1);
+    }
+
+    return count;
+}
+```
+
+```python
+# Python Template
+def subarraysDivByK(nums, k):
+    # Map: {remainder: count}
+    remainder_count = {0: 1}
+
+    count = 0
+    prefix_sum = 0
+
+    for num in nums:
+        prefix_sum += num
+
+        # Calculate remainder (Python % handles negatives correctly)
+        remainder = prefix_sum % k
+
+        # Add count of all previous same remainders
+        count += remainder_count.get(remainder, 0)
+
+        # Update remainder count
+        remainder_count[remainder] = remainder_count.get(remainder, 0) + 1
+
+    return count
+```
+
+**Note:** Python's `%` operator always returns positive remainders, so no adjustment needed.
+
+#### Optimization: Array Instead of HashMap
+
+Since remainders are always in range `[0, k-1]`, use an array for better performance:
+
+```java
+public int subarraysDivByK(int[] nums, int k) {
+    int[] remainderCount = new int[k];
+    remainderCount[0] = 1;
+
+    int count = 0;
+    int prefixSum = 0;
+
+    for (int num : nums) {
+        prefixSum += num;
+        int remainder = ((prefixSum % k) + k) % k;
+
+        count += remainderCount[remainder];
+        remainderCount[remainder]++;
+    }
+
+    return count;
+}
+```
+
+**Time Complexity:** O(N)
+**Space Complexity:** O(K) instead of O(N)
+
+#### Key Differences from Related Problems
+
+| Aspect | LC 560 (Sum = K) | LC 974 (Divisible by K) | LC 525 (Equal 0/1) |
+|--------|------------------|-------------------------|---------------------|
+| **Goal** | Count subarrays | Count subarrays | Find longest |
+| **Map Key** | `prefixSum` | `prefixSum % k` | `count` |
+| **Map Value** | `count` | `count` | `first_index` |
+| **Check Formula** | `presum - k` | Same `remainder` | Same `count` |
+| **Special Handling** | None | **Negative remainders!** | Transform 0→-1 |
+| **Initialization** | `{0: 1}` | `{0: 1}` | `{0: -1}` |
+
+#### Critical: Why Negative Remainder Handling Matters
+
+**Example:** `nums = [-1, -2, -3]`, `k = 5`
+
+Without adjustment:
+```
+prefixSum = -1: remainder = -1 (wrong!)
+prefixSum = -3: remainder = -3 (wrong!)
+prefixSum = -6: remainder = -1 (wrong!)
+```
+
+With adjustment:
+```
+prefixSum = -1: remainder = 4 (correct: -1 ≡ 4 mod 5)
+prefixSum = -3: remainder = 2 (correct: -3 ≡ 2 mod 5)
+prefixSum = -6: remainder = 4 (correct: -6 ≡ 4 mod 5)
+```
+
+Now remainders 4 match → subarray `[-1]` and `[-2, -3]` have the same remainder → subarray `[-2, -3]` has sum divisible by 5 ✓
+
+#### Related Problems (Same Pattern)
+
+- **LC 974**: Subarray Sums Divisible by K (exactly this pattern)
+- **LC 523**: Continuous Subarray Sum (divisible, but length ≥ 2 constraint)
+- **LC 560**: Subarray Sum Equals K (no modulo, simpler)
+- **LC 1248**: Count Nice Subarrays (transform + count pattern)
+
+---
 
 ### 2-2) Continuous Subarray Sum
 - Similar concept as Contiguous Array (LC 525)
@@ -1687,7 +1915,7 @@ public String findSmallestRegion_0_1(List<List<String>> regions, String region1,
 | Continuous Subarray Sum | 523 | Medium | Prefix Sum | Modular arithmetic, store index |
 | **Contiguous Array** | **525** | **Medium** | **Prefix Sum + Transform** | **Transform 0→-1, 1→+1; store {count: first_index}** |
 | Binary Subarrays with Sum | 930 | Medium | Prefix Sum | Same as LC 560, count pattern |
-| Subarray Sums Divisible by K | 974 | Medium | Prefix Sum | Handle negative remainders |
+| **Subarray Sums Divisible by K** | **974** | **Medium** | **Prefix Sum + Modulo** | **{remainder: count}; MUST handle negative remainders!** |
 | Count Number of Nice Subarrays | 1248 | Medium | Prefix Sum | Transform odd→1, even→0 |
 | Subarray Sum Equals K II | 1074 | Hard | Prefix Sum | 2D matrix version |
 | Minimum Size Subarray Sum | 209 | Medium | Sliding Window | Contract when sum ≥ target |
