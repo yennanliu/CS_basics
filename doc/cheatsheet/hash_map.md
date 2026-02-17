@@ -152,6 +152,7 @@ def prefix_sum_pattern(nums, target):
 **Key Differences by Problem Type**:
 - **Count problems** (LC 560, 930, 974): Store `{sum: count}`, check then update
 - **Max length problems** (LC 325, 525): Store `{sum: first_index}`, only update if new
+  - **LC 525 variant**: Transform problem (0→-1, 1→+1), initialize with `{0: -1}`, store first occurrence only
 - **Existence problems** (LC 523): Store `{sum: any_index}`, just need to find one
 
 ### Template 4: Sliding Window with Hash Map
@@ -300,7 +301,8 @@ def graph_hashmap_pattern(graph_input):
 - Prefix problems
     - [prefix_sum.md](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/prefix_sum.md)
     - Continous sum
-        - LC 525 : Contiguous Array
+        - **LC 525 : Contiguous Array** ⭐ **[See detailed pattern](#2-1-contiguous-array-lc-525)**
+          - Transform + Prefix Sum: 0→-1, 1→+1, store {count: first_index}
         - LC 523 : Continuous Subarray Sum
     - Pair of sums
         - LC 1010 : Pairs of Songs With Total Durations Divisible by 60
@@ -455,11 +457,12 @@ public int subarraySum(int[] nums, int k) {
 ```
 
 **When to Use Count vs Index**:
-| Problem Type | Map Value | Example |
-|-------------|-----------|---------|
-| Count ALL subarrays | `count` | LC 560, 930, 974 |
-| Find LONGEST subarray | `index` (first occurrence) | LC 325, 525 |
-| Find if EXISTS | `boolean/index` | LC 523 |
+| Problem Type | Map Value | Example | Special Notes |
+|-------------|-----------|---------|---------------|
+| Count ALL subarrays | `count` | LC 560, 930, 974 | Check before update |
+| Find LONGEST subarray | `index` (first occurrence) | LC 325, 525 | Store only first occurrence |
+| Find LONGEST (with transformation) | `index` (first occurrence) | **LC 525** | **Transform 0→-1, 1→+1; init {0:-1}** |
+| Find if EXISTS | `boolean/index` | LC 523 | Any occurrence works |
 
 **Common Mistakes**:
 1. ❌ Using `{prefixSum: index}` for counting problems
@@ -722,12 +725,164 @@ for r in range(len(s)):
 
 ## 2) LC Example
 
-### 2-1) Contiguous Array
-- Core concept : finding if there are `at least 2 indexes` with `SAME sum`
-- Above concept is AS SAME AS finding `any 2 x-axis with same y-axis` in below charts
-- Explanation : Said we have a sequence `[0, 0, 0, 0, 1, 1]`, the count starting from 0, will equal -1, -2, -3, -4, -3, -2 -> we can find : the longest subarray with equal number of 0 and 1 started and ended when count equals -2. Moreover, 1st chart below shows the `changes VS index` of the sequence, We can easily find out `longest subarray length is 4` (index 2 - 6), since `index 2 and index 6 have the same y-axis` -> `sum in index 2, and index 6 are the same`
+### 2-1) Contiguous Array (LC 525)
+
+**Core Pattern: Transform + Prefix Sum + HashMap**
+
+#### Key Concept
+Finding if there are `at least 2 indexes` with `SAME count` (running sum).
+
+This is the same as finding `any 2 x-axis with same y-axis` in the visualization below.
+
+#### Pattern Breakdown
+
+**1. Problem Transformation:**
+```
+Transform the binary array:
+- Treat 0 as -1
+- Treat 1 as +1
+
+Why? Equal 0s and 1s → sum of transformed array = 0
+```
+
+**2. HashMap Structure:**
+```java
+Map<Integer, Integer> map = new HashMap<>();
+// {count: first_index_where_count_occurred}
+
+map.put(0, -1); // Initialize for subarrays starting at index 0
+```
+
+**3. Core Logic:**
+```
+count: running sum (cumulative)
+  - +1 for each 1
+  - -1 for each 0
+
+If count(i) == count(j) where i < j:
+  → Elements between i and j sum to 0
+  → Subarray [i+1, j] is balanced (equal 0s and 1s)
+  → Length = j - i
+```
+
+**4. Why Store FIRST Occurrence Only?**
+```
+To maximize length, we want the earliest index with this count.
+If count appears at indices [3, 7, 10]:
+  - Store index 3
+  - When we see count again at index 10, length = 10 - 3 = 7 (maximum)
+```
+
+**5. Why Initialize map.put(0, -1)?**
+```
+If from index 0 to i, count = 0:
+  → Entire subarray [0, i] is balanced
+  → Length = i - (-1) = i + 1 ✓
+
+Without this initialization, we'd miss subarrays starting at index 0.
+```
+
+#### Visual Example
+Sequence: `[0, 0, 0, 0, 1, 1]`
+Count progression: 0 → -1 → -2 → -3 → -4 → -3 → -2
+
+The longest subarray has equal 0s and 1s when count returns to -2 (indices 1 and 5).
+Length = 5 - 1 = 4: `[0, 1, 1, 1]` wait, that's wrong...
+
+Actually, the charts show `changes VS index` of the sequence. We can find the longest subarray length is 4 (index 2 to 5), since `index 2 and index 5 have the same count` → `count at index 2 and index 5 are the same (-2)`.
+
 <p align="center"><img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/lc_525_1.png" ></p>
 <p align="center"><img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/lc_525_1.png" ></p>
+
+#### Mathematical Reasoning
+
+**Why Same Count Means Balanced Subarray:**
+```
+Let count(i) = cumulative sum at index i
+
+If count(i) == count(j) where i < j:
+  count(j) - count(i) = 0
+
+This means:
+  sum of elements from index (i+1) to j = 0
+
+In transformed array (0→-1, 1→+1):
+  sum = 0 means equal number of -1s and +1s
+  → equal number of 0s and 1s in original array
+```
+
+#### Implementation Template
+
+```java
+// Java Template
+public int findMaxLength(int[] nums) {
+    // Map: {count: first_index_where_count_occurred}
+    Map<Integer, Integer> map = new HashMap<>();
+
+    // Initialize: handle subarrays starting at index 0
+    map.put(0, -1);
+
+    int maxLen = 0;
+    int count = 0;
+
+    for (int i = 0; i < nums.length; i++) {
+        // Transform: 0 → -1, 1 → +1
+        count += (nums[i] == 1) ? 1 : -1;
+
+        // If count seen before: calculate subarray length
+        if (map.containsKey(count)) {
+            maxLen = Math.max(maxLen, i - map.get(count));
+        } else {
+            // Store FIRST occurrence only (for max length)
+            map.put(count, i);
+        }
+    }
+
+    return maxLen;
+}
+```
+
+```python
+# Python Template
+def findMaxLength(nums):
+    # Map: {count: first_index_where_count_occurred}
+    d = {0: -1}  # Initialize for subarrays starting at index 0
+
+    max_len = 0
+    count = 0
+
+    for i, num in enumerate(nums):
+        # Transform: 0 → -1, 1 → +1
+        count += 1 if num == 1 else -1
+
+        # If count seen before: calculate subarray length
+        if count in d:
+            max_len = max(max_len, i - d[count])
+        else:
+            # Store FIRST occurrence only (for max length)
+            d[count] = i
+
+    return max_len
+```
+
+#### Key Differences from LC 560 Pattern
+
+| Aspect | LC 560 (Subarray Sum K) | LC 525 (Contiguous Array) |
+|--------|-------------------------|---------------------------|
+| **Goal** | Count ALL subarrays | Find LONGEST subarray |
+| **Map Value** | `count` (occurrences) | `index` (first occurrence) |
+| **Map Update** | Always increment count | Only if new count |
+| **Check Formula** | `presum - k` | Same `count` |
+| **Initialization** | `{0: 1}` | `{0: -1}` |
+
+#### Related Problems (Same Pattern)
+
+- **LC 525**: Contiguous Array (exactly this pattern)
+- **LC 1124**: Longest Well-Performing Interval (similar transformation)
+- **LC 523**: Continuous Subarray Sum (modulo transformation)
+- **LC 325**: Maximum Size Subarray Sum Equals k (prefix sum + index)
+
+---
 
 ```python
 # 525 Contiguous Array
@@ -1530,7 +1685,7 @@ public String findSmallestRegion_0_1(List<List<String>> regions, String region1,
 | **Subarray Sum Equals K** | **560** | **Medium** | **Prefix Sum** | **{sum: count} pattern, check before update** |
 | Maximum Size Subarray Sum Equals k | 325 | Medium | Prefix Sum | Store first occurrence index |
 | Continuous Subarray Sum | 523 | Medium | Prefix Sum | Modular arithmetic, store index |
-| Contiguous Array | 525 | Medium | Prefix Sum | Transform 0→-1, find balance |
+| **Contiguous Array** | **525** | **Medium** | **Prefix Sum + Transform** | **Transform 0→-1, 1→+1; store {count: first_index}** |
 | Binary Subarrays with Sum | 930 | Medium | Prefix Sum | Same as LC 560, count pattern |
 | Subarray Sums Divisible by K | 974 | Medium | Prefix Sum | Handle negative remainders |
 | Count Number of Nice Subarrays | 1248 | Medium | Prefix Sum | Transform odd→1, even→0 |
