@@ -4864,7 +4864,89 @@ public class Workspace19 {
      *
      */
     // IDEA: DP
+    // 17.20 - 30 pm
+    /**
+     *  IDEA 1) 2D DP
+     *
+     *
+     *  - DP def:
+     *
+     *      dp[i][j] = `the starting index (1-based)` !!!!
+     *      (NOTE !!! idx, NOT len)
+     *
+     *      of the `shortest window` in S[0…i-1]
+     *      that contains T[0…j-1] as a subsequence.
+     *
+     *      e.g. `shortest window` of s[0, ...i-1]  (i)
+     *           that contains T[0…j-1]  (j) as a subsequence.
+     *
+     *  - DP eq
+     *
+     *     if s1[i] == s2[j]
+     *        - dp[i][j] =  dp[i-1][j-1] + 1  // ???
+     *     else
+     *       - dp[i][j] =  dp[i-1][j-1]  // ???
+     *
+     *
+     */
     public String minWindow(String s1, String s2) {
+        // edge
+        if(s1.isEmpty() && s2.isEmpty()){
+            return "";
+        }
+        if(s2.length() > s1.length()){
+            return "";
+        }
+
+        int size1 = s1.length();
+        int size2 = s2.length();
+        int[][] dp = new int[size1 + 1][size2 + 1];
+
+        // init ???
+        // if s2 is null
+        // ??????
+//        for(int i = 0; i < size1; i++){
+//            dp[i][0] = 0;
+//        }
+//        // if s1 is null
+//        for(int j = 0; j < size2; j++){
+//            dp[0][j] = 0;
+//        }
+
+
+        // ???
+        for(int i = 1; i < size1; i++){
+            for(int j = 1; j < size2; j++){
+                //if(s1.charAt(i) == s2.charAt(j)){
+                if(s1.charAt(i-1) == s2.charAt(j-1)){
+                    // ????
+                    if(j == 1){
+                        dp[i][j] = i; // start new subsequence
+                    }else{
+                      // ???  dp[i][j] =  dp[i-1][j-1] + 1; // ??
+                        dp[i][j] =  dp[i-1][j-1];
+                    }
+
+                }else{
+                   // dp[i][j] =  dp[i-1][j-1];
+                    // ???
+                    dp[i][j] = dp[i - 1][j];
+                }
+            }
+        }
+
+
+        return "";
+    }
+
+
+
+
+
+
+
+    // IDEA: DP
+    public String minWindow_99(String s1, String s2) {
         // edge
         if(s1.isEmpty() && s2.isEmpty()){
             return "";

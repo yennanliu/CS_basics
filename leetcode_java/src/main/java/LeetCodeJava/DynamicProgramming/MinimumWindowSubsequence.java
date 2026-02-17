@@ -50,6 +50,7 @@ public class MinimumWindowSubsequence {
      *
      *  - DP def:
      *      dp[i][j] = the starting index (1-based)
+     *      (NOTE !!! starting idx, NOT len)
      *      of the `shortest window` in S[0…i-1]
      *      that contains T[0…j-1] as a subsequence.
      *
@@ -71,13 +72,22 @@ public class MinimumWindowSubsequence {
         // Build the DP table
         for (int i = 1; i <= m; i++) {
             for (int j = 1; j <= n; j++) {
+                /** case 1)  S.charAt(i - 1) == T.charAt(j - 1) */
                 if (S.charAt(i - 1) == T.charAt(j - 1)) {
+                    /** case 1-1)  j == 1 */
                     if (j == 1) {
-                        dp[i][j] = i; // start new subsequence
-                    } else {
+                        // start new subsequence
+                        dp[i][j] = i;
+                    }
+                    /** case 1-2)  j > 1 */
+                    else {
+                        // extend existing subsequence
                         dp[i][j] = dp[i - 1][j - 1];
                     }
-                } else {
+                }
+                /** case 2)  S.charAt(i - 1) != T.charAt(j - 1) */
+                else {
+                    // Skip this S char
                     dp[i][j] = dp[i - 1][j];
                 }
             }
