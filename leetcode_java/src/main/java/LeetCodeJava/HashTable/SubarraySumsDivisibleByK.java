@@ -44,6 +44,93 @@ public class SubarraySumsDivisibleByK {
 //
 //    }
 
+
+    // V0-0-1
+    // IDEA: PREFIX + HASHMAP
+    /**
+     * CORE IDEA:
+     *
+     * If two prefix sums have the same remainder mod k,
+     * their difference is divisible by k.
+     *
+     * Suppose:
+     *     prefix[i] % k == prefix[j] % k  (j < i)
+     *
+     * Then:
+     *     (prefix[i] - prefix[j]) % k == 0
+     *
+     * And:
+     *     prefix[i] - prefix[j] = sum of nums[j+1 .. i]
+     *
+     * That subarray is contiguous and divisible by k.
+     *
+     * Therefore, if this remainder has been seen before,
+     * there exist subarrays ending at index i that are divisible by k.
+     */
+    public int subarraysDivByK_0_0_1(int[] nums, int k) {
+        // Initialize count of subarrays, prefix sum, and hash map for remainders
+        int count = 0;
+        int prefixSum = 0;
+
+        /** NOTE !!! */
+        // map :  {remainders : cnt}
+        // // map: { remainder -> frequency }
+        HashMap<Integer, Integer> prefixMap = new HashMap<>();
+        prefixMap.put(0, 1); // To handle subarrays that start from the beginning
+
+        for (int num : nums) {
+            // Update prefix sum
+            prefixSum += num;
+
+            /** NOTE !!!  trick !!!
+             *
+             *  we get `remainder` here
+             */
+            // Calculate the `remainder` of the prefix sum divided by k
+            int mod = prefixSum % k;
+
+            /** NOTE !!!
+             *
+             *  we adjust negative remainders
+             */
+            // Adjust negative remainders to be positive
+            if (mod < 0) {
+                mod += k;
+            }
+
+            /**
+             * CORE IDEA:
+             *
+             * If two prefix sums have the same remainder mod k,
+             * their difference is divisible by k.
+             *
+             * Suppose:
+             *     prefix[i] % k == prefix[j] % k  (j < i)
+             *
+             * Then:
+             *     (prefix[i] - prefix[j]) % k == 0
+             *
+             * And:
+             *     prefix[i] - prefix[j] = sum of nums[j+1 .. i]
+             *
+             * That subarray is contiguous and divisible by k.
+             *
+             * Therefore, if this remainder has been seen before,
+             * there exist subarrays ending at index i that are divisible by k.
+             */
+            // If this remainder has been seen before, it means there are subarrays ending here that are divisible by k
+            if (prefixMap.containsKey(mod)) {
+                count += prefixMap.get(mod);
+                prefixMap.put(mod, prefixMap.get(mod) + 1);
+            } else {
+                prefixMap.put(mod, 1);
+            }
+        }
+
+        return count; // Total number of subarrays divisible by k
+    }
+
+
     // V0-1
     // IDEA: PREFIX + HASHMAP (gemini)
     public int subarraysDivByK_0_1(int[] nums, int k) {
