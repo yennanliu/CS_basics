@@ -48,6 +48,53 @@ public class ContiguousArray {
 
     // V0-0-1
     // IDEA: HASHMAP (gemini)
+    /**
+     * To solve **LC 525 (Contiguous Array)**, the goal is to find the maximum length of a subarray with an equal number of `0`s and `1`s.
+     *
+     * ### 🧠 The Strategy: Transform and Prefix Sum
+     *
+     * The "equal number" problem becomes much easier if we apply a simple transformation:
+     *
+     * 1. Treat every **`0` as `-1**`.
+     * 2. Treat every **`1` as `+1**`.
+     *
+     * Now, the problem changes to: **"Find the longest subarray whose sum is 0."**
+     *
+     * As we saw in LC 560,
+     * we can use a **HashMap** to store prefix sums.
+     * If we see the same prefix sum twice, it means the elements in between them must have summed to zero.
+     *
+     * ---
+     *
+     * ### 🔍 Why this works
+     *
+     * * **The Zero-Sum Property**: If `prefixSum` at index  is , and at index  it is also , then everything added between  and  must have cancelled out to .
+     * * **Greedy for Length**: We only `put` the prefix sum into the map if it's **not already there**. This ensures we keep the leftmost possible index, making the difference `i - prevIndex` as large as possible.
+     * * **The `-1` Base Case**: By putting `(0, -1)` in the map, we handle subarrays that start from index  correctly. If `prefixSum` is  at index , the length is .
+     *
+     * ### 📈 Complexity
+     *
+     * * **Time Complexity**:  — One pass through the array.
+     * * **Space Complexity**:  — In the worst case, we store  unique prefix sums.
+     *
+     * **This "Map the problem to a Zero-Sum" trick is very powerful. Would you like to see how it's used to solve LC 1124 (Longest Well-Performing Interval)?**
+     *
+     *
+     */
+    /**
+     *  DEMO:
+     *
+     *     * ### 📊 Visualization
+     *      *
+     *      * `nums = [0, 1, 0, 1]`
+     *      *
+     *      * 1. **Initial**: `map = {0: -1}`
+     *      * 2. **i=0 (val 0)**: `sum = -1`. Map: `{0: -1, -1: 0}`
+     *      * 3. **i=1 (val 1)**: `sum = 0`. Seen 0! `len = 1 - (-1) = 2`.
+     *      * 4. **i=2 (val 0)**: `sum = -1`. Seen -1! `len = max(2, 2 - 0) = 2`.
+     *      * 5. **i=3 (val 1)**: `sum = 0`. Seen 0! `len = max(2, 3 - (-1)) = 4`.
+     *
+     */
     public int findMaxLength_0_0_1(int[] nums) {
         if (nums == null || nums.length == 0)
             return 0;
@@ -62,9 +109,23 @@ public class ContiguousArray {
         int prefixSum = 0;
 
         for (int i = 0; i < nums.length; i++) {
+            /** NOTE !!!
+             *
+             *
+             * The -1 Base Case: By putting (0, -1) in the map,
+             * we handle subarrays that start from index $0$ correctly.
+             * If prefixSum is $0$ at index $3$, the length is $3 - (-1) = 4$.
+             */
             // Transform 0 to -1, 1 stays 1
             prefixSum += (nums[i] == 1) ? 1 : -1;
 
+            /** NOTE !!!
+             *
+             * The Zero-Sum Property:
+             *   If prefixSum at index $A$ is $5$, and at index $B$ it is also $5$,
+             *   then everything added between $A$ and $B$
+             *   must have cancelled out to $0$.
+             */
             if (map.containsKey(prefixSum)) {
                 // If we've seen this sum before, the subarray between
                 // the previous index and current index has a net sum of 0.
