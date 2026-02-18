@@ -112,9 +112,11 @@ public class ContiguousArray {
             /** NOTE !!!
              *
              *
-             * The -1 Base Case: By putting (0, -1) in the map,
-             * we handle subarrays that start from index $0$ correctly.
-             * If prefixSum is $0$ at index $3$, the length is $3 - (-1) = 4$.
+             *  -> The -1 Base Case:
+             *       By putting (0, -1) in the map,
+             *       we handle subarrays that start from index 0 correctly.
+             *
+             *      ->  If prefixSum is 0 at index 3, the length is 3 - (-1) = 4.
              */
             // Transform 0 to -1, 1 stays 1
             prefixSum += (nums[i] == 1) ? 1 : -1;
@@ -130,6 +132,17 @@ public class ContiguousArray {
                 // If we've seen this sum before, the subarray between
                 // the previous index and current index has a net sum of 0.
                 int prevIndex = map.get(prefixSum);
+                /** NOTE !!! `i - prevIndex` ,
+                 *
+                 *   (NOT `i - prevIndex + 1`)
+                 *
+                 *
+                 *  -> The -1 Base Case:
+                 *       By putting (0, -1) in the map,
+                 *       we handle subarrays that start from index 0 correctly.
+                 *
+                 *      ->  If prefixSum is 0 at index 3, the length is 3 - (-1) = 4.
+                 */
                 maxLength = Math.max(maxLength, i - prevIndex);
             } else {
                 // Only store the FIRST occurrence to maximize the length
