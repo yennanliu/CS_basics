@@ -5883,5 +5883,11 @@ public class Workspace19 {
 
 
 
+    // LC 992
+    public int subarraysWithKDistinct(int[] nums, int k) {
+
+        return 0;
+    }
+
 
 }
