@@ -6205,10 +6205,46 @@ public class Workspace19 {
 
 
     // LC 1431
+    // 7.50 - 8.00 am
+    /**
+     * -> Return a boolean array result of length n,
+     *    where result[i] is true if, after giving the ith
+     *    kid all the extraCandies,
+     *   they will have the greatest number of candies
+     *   among all the kids, or false otherwise.
+     *
+     *  ----------------------
+     *
+     *   IDEA 1) BRUTE FORCE + ARR OP
+     *
+     *
+     *
+     *  ----------------------
+     *
+     */
     public List<Boolean> kidsWithCandies(int[] candies, int extraCandies) {
+        // edge
+        List<Boolean> res = new ArrayList<>();
 
-        return null;
+        int max = 0;
+        for(int x: candies){
+            max = Math.max(x, max);
+        }
+
+        for(int i = 0; i < candies.length; i++){
+            //max = Math.max(x, max);
+            int x = candies[i];
+            if(x + extraCandies >= max){
+                res.add(true);
+            }else{
+                res.add(false);
+            }
+        }
+
+        return res;
     }
+
+
 
 
 

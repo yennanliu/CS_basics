@@ -60,9 +60,27 @@ import java.util.List;
 public class KidsWithTheGreatestNumberOfCandies {
 
      // V0
-//     public List<Boolean> kidsWithCandies(int[] candies, int extraCandies) {
-//
-//     }
+     public List<Boolean> kidsWithCandies(int[] candies, int extraCandies) {
+         // edge
+         List<Boolean> res = new ArrayList<>();
+
+         int max = 0;
+         for (int x : candies) {
+             max = Math.max(x, max);
+         }
+
+         for (int i = 0; i < candies.length; i++) {
+             //max = Math.max(x, max);
+             int x = candies[i];
+             if (x + extraCandies >= max) {
+                 res.add(true);
+             } else {
+                 res.add(false);
+             }
+         }
+
+         return res;
+     }
 
      // V1
      // IDEA: AD HOC
@@ -106,7 +124,7 @@ public class KidsWithTheGreatestNumberOfCandies {
 
      // V3
      // https://leetcode.com/problems/kids-with-the-greatest-number-of-candies/solutions/7250128/clean-simple-beats-easy-to-understand-ef-wu47/
-     public List<Boolean> kidsWithCandies(int[] candies, int extraCandies) {
+     public List<Boolean> kidsWithCandies_3(int[] candies, int extraCandies) {
          int maxCandy = Arrays.stream(candies).max().getAsInt();
          List<Boolean> result = new ArrayList<>();
 
