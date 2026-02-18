@@ -3,7 +3,9 @@ package LeetCodeJava.HashTable;
 // https://leetcode.com/problems/subarrays-with-k-different-integers/description/
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  *
@@ -53,10 +55,34 @@ public class SubarraysWithKDifferentIntegers {
 //
 //    }
 
-
     // V0-1
-    // IDEA: HASHMAP (gemini)
+    // IDEA: BRUTE FORCE (TLE) (gemini)
     public int subarraysWithKDistinct_0_1(int[] nums, int k) {
+        int cnt = 0;
+        int n = nums.length;
+
+        for (int l = 0; l < n; l++) {
+            Set<Integer> set = new HashSet<>();
+            for (int r = l; r < n; r++) {
+                set.add(nums[r]);
+
+                int distinctCount = set.size();
+
+                if (distinctCount == k) {
+                    cnt++;
+                } else if (distinctCount > k) {
+                    // If we exceed K, no point in moving 'r' further for this 'l'
+                    break;
+                }
+            }
+        }
+        return cnt;
+    }
+
+
+    // V0-2
+    // IDEA: HASHMAP (gemini)
+    public int subarraysWithKDistinct_0_2(int[] nums, int k) {
         return atMost(nums, k) - atMost(nums, k - 1);
     }
 
@@ -160,7 +186,7 @@ public class SubarraysWithKDifferentIntegers {
         return totalCount;
     }
 
-    
+
 
     // V2
 
