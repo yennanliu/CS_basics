@@ -113,6 +113,91 @@ public class SplitArrayIntoConsecutiveSubsequences {
         return true;
     }
 
+
+    // V0-1
+    // IDEA: GREEDY (gemini)
+    public boolean isPossible_0_1(int[] nums) {
+        Map<Integer, Integer> freqMap = new HashMap<>();
+        Map<Integer, Integer> hypotheticalMap = new HashMap<>();
+
+        // 1. Fill the frequency map
+        for (int x : nums) {
+            freqMap.put(x, freqMap.getOrDefault(x, 0) + 1);
+        }
+
+        // 2. Iterate through nums greedily
+        for (int x : nums) {
+            if (freqMap.get(x) == 0)
+                continue; // Already used in a previous subsequence
+
+            if (hypotheticalMap.getOrDefault(x, 0) > 0) {
+                // Option A: Join an existing subsequence that needs 'x'
+                freqMap.put(x, freqMap.get(x) - 1);
+                hypotheticalMap.put(x, hypotheticalMap.get(x) - 1);
+                // Now this subsequence is waiting for 'x + 1'
+                hypotheticalMap.put(x + 1, hypotheticalMap.getOrDefault(x + 1, 0) + 1);
+
+            } else if (freqMap.getOrDefault(x + 1, 0) > 0 && freqMap.getOrDefault(x + 2, 0) > 0) {
+                // Option B: Start a new subsequence of length 3: [x, x+1, x+2]
+                freqMap.put(x, freqMap.get(x) - 1);
+                freqMap.put(x + 1, freqMap.get(x + 1) - 1);
+                freqMap.put(x + 2, freqMap.get(x + 2) - 1);
+                // This new subsequence is now waiting for 'x + 3'
+                hypotheticalMap.put(x + 3, hypotheticalMap.getOrDefault(x + 3, 0) + 1);
+
+            } else {
+                // Option C: Cannot join or start a valid subsequence
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    // V0-2
+    // IDEA: GREEDY + Hashmap (gpt)
+    public boolean isPossible_0_2(int[] nums) {
+        // freq counts how many times a number is still available to use
+        Map<Integer, Integer> freq = new HashMap<>();
+        // need records how many subsequences are waiting for a specific next number
+        Map<Integer, Integer> need = new HashMap<>();
+
+        // build the frequency map
+        for (int v : nums) {
+            freq.put(v, freq.getOrDefault(v, 0) + 1);
+        }
+
+        for (int v : nums) {
+            // if this number has been used up already
+            if (freq.get(v) == 0) {
+                continue;
+            }
+
+            // try to add v to a subsequence that needs v
+            if (need.getOrDefault(v, 0) > 0) {
+                freq.put(v, freq.get(v) - 1);
+                need.put(v, need.get(v) - 1);
+                need.put(v + 1, need.getOrDefault(v + 1, 0) + 1);
+
+                // otherwise try to start a new subsequence v, v+1, v+2
+            } else if (freq.getOrDefault(v + 1, 0) > 0 &&
+                    freq.getOrDefault(v + 2, 0) > 0) {
+                freq.put(v, freq.get(v) - 1);
+                freq.put(v + 1, freq.get(v + 1) - 1);
+                freq.put(v + 2, freq.get(v + 2) - 1);
+                // now we need (v+3) next for this new subsequence
+                need.put(v + 3, need.getOrDefault(v + 3, 0) + 1);
+
+                // if neither is possible, answer is false
+            } else {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+
     // V1
     // IDEA : MAP
     // https://leetcode.com/problems/split-array-into-consecutive-subsequences/solutions/2447905/two-maps-clean/
@@ -397,5 +482,7 @@ public class SplitArrayIntoConsecutiveSubsequences {
         }
         return true;
     }
+
+
 
 }
