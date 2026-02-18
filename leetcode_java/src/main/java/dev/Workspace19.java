@@ -5656,7 +5656,90 @@ public class Workspace19 {
      *  ---------------
      *
      */
+    // LC 974
+    // 17.14 - 24 PM
+    /**
+     *  IDEA 1) MOD + HASHMAP + PREFIX SUM
+     *
+     *  -> if
+     *      prefix[0..i] % k  = a
+     *      prefix[0..j] % k  = a
+     *
+     *      ( j > i )
+     *
+     *      ->
+     *
+     *      ( prefix[0..j] - prefix[0..i] ) % k = 0
+     *
+     *      -> so it is divisible by k !
+     *
+     */
     public int subarraysDivByK(int[] nums, int k) {
+        // edge
+        if(nums == null || nums.length == 0){
+            return 0;
+        }
+        if(nums.length == 1){
+            return nums[0] % k == 0 ? 1 : 0;
+        }
+
+        int cnt = 0;
+
+        // map: { remaining : cnt } // ???
+        // map: { remainder -> frequency }
+        Map<Integer, Integer> map = new HashMap<>();
+        // NOTE !!!
+        map.put(0, 1);
+
+
+        int prefix = 0;
+
+        /**
+         *  IDEA 1) MOD + HASHMAP + PREFIX SUM
+         *
+         *  -> if
+         *      prefix[0..i] % k  = a
+         *      prefix[0..j] % k  = a
+         *
+         *      ( j > i )
+         *
+         *      ->
+         *
+         *      ( prefix[0..j] - prefix[0..i] ) % k = 0
+         *
+         *      -> so it is divisible by k !
+         *
+         */
+
+        for(int x: nums){
+            prefix += x;
+            int mod = prefix % k; // ???
+
+            // NOTE !!!
+            if(mod < 0){
+                mod += k;
+            }
+
+            if(map.containsKey(mod)){
+                // ???
+                cnt += map.get(mod);
+            }
+            // update map
+            map.put(mod, map.getOrDefault(mod, 0) + 1);
+        }
+
+
+        return cnt;
+    }
+
+
+
+
+
+
+
+
+    public int subarraysDivByK_99(int[] nums, int k) {
         // edge
 
         int cnt = 0;
