@@ -6166,6 +6166,41 @@ public class Workspace19 {
     }
 
 
+    // LC 1672
+    // 7.37 - 47 am
+    /**
+     *
+     *  -> . Return the wealth that the richest customer has.
+     *
+     *  -----------
+     *
+     *  IDEA 1) ARRAY OP
+     *
+     */
+    public int maximumWealth(int[][] accounts) {
+        // edge
+
+        int l = accounts.length;
+        int w = accounts[0].length;
+
+        int maxVal = 0;
+        for(int i = 0; i < l; i++){
+            int tmp = getSum(accounts[i]);
+            maxVal = Math.max(maxVal, tmp);
+        }
+
+        return maxVal;
+    }
+
+    private int getSum(int[] x){
+        int res = 0;
+        for(int i: x){
+            res += i;
+        }
+        return res;
+    }
+
+
 
 
 
