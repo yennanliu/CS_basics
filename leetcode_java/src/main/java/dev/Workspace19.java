@@ -5884,10 +5884,111 @@ public class Workspace19 {
 
 
     // LC 992
+    // 16.11 - 21 pm
+    /**
+     *
+     *  ->  return the `number of `good subarrays` of nums.
+     *
+     *   - good array:
+     *      - is an array where the number of different integers
+     *        in that array is `exactly k.`
+     *
+     *   - nums: int arr
+     *   - k: int
+     *
+     *
+     *   -------------
+     *
+     *   IDEA 1) SLIDE WINDOW
+     *
+     *
+     *   IDEA 2) BRUTE FORCE
+     *
+     *
+     *
+     *   -----------------
+     *
+     *   ex 1)
+     *
+     *   Input: nums = [1,2,1,2,3], k = 2
+     *   Output: 7
+     *
+     *
+     *   [1,2,1,2,3]
+     *    l r         [1,2]
+     *
+     *  [1,2,1,2,3]
+     *   l   r        [1,2], [1,2,1]
+     *
+     *  [1,2,1,2,3]
+     *   l     r     [1,2], [1,2,1], [1,2,1,2]
+     *
+     *
+     *  [1,2,1,2,3]
+     *     l r      [1,2], [1,2,1], [1,2,1,2] [2,1]
+     *
+     *
+     *  [1,2,1,2,3]
+     *     l   r     [1,2], [1,2,1], [1,2,1,2] [2,1] [2,1,2]
+     *
+     *
+     *  [1,2,1,2,3]
+     *       l r     [1,2], [1,2,1], [1,2,1,2] [2,1] [2,1,2] [1,2]
+     *
+     *
+     *  [1,2,1,2,3]
+     *         l r   [1,2], [1,2,1], [1,2,1,2] [2,1] [2,1,2] [1,2]
+     *               [2,3]
+     *
+     *
+     */
+    // IDEA 1) SLIDE WINDOW
+    /**  // SLIDE WINDOW pattern:
+     *
+     *  for(int l = 0; l < nums.len; l++){
+     *      // ...
+     *      while( condition ){
+     *          // ...
+     *          r += 1;
+     *      }
+     *      r = l+1; // ???
+     *  }
+     *
+     *
+     *
+     */
     public int subarraysWithKDistinct(int[] nums, int k) {
+        // edge
 
-        return 0;
+        int cnt = 0;
+        //int r = 0; // ??
+        for(int l = 0; l < nums.length; l++){
+            // ???
+            //int r = 0;
+            int r = l; // ???
+            Set<Integer> set = new HashSet<>();
+            while(set.size() <= k && r < nums.length){
+                System.out.println(">>> l = " + l +
+                        ", r = " + r +
+                        ", set = " + set +
+                        ", cnt = " + cnt);
+                if(set.size() == k){
+                    cnt += 1;
+                }
+                set.add(nums[r]);
+                r += 1;
+            }
+        }
+
+
+        return cnt;
     }
+
+
+
+
+
+
 
 
 }
