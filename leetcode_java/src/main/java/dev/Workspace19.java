@@ -6204,6 +6204,12 @@ public class Workspace19 {
 
 
 
+    // LC 1431
+    public List<Boolean> kidsWithCandies(int[] candies, int extraCandies) {
+
+        return null;
+    }
+
 
 
 
