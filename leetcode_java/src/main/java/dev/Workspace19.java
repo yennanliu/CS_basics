@@ -5958,26 +5958,49 @@ public class Workspace19 {
      *
      */
     public int subarraysWithKDistinct(int[] nums, int k) {
+
+
+        return 0;
+    }
+
+
+
+
+
+
+    public int subarraysWithKDistinct_99(int[] nums, int k) {
         // edge
 
         int cnt = 0;
         //int r = 0; // ??
-        for(int l = 0; l < nums.length; l++){
-            // ???
-            //int r = 0;
-            int r = l; // ???
+        int n = nums.length;
+
+        for(int l = 0; l < n; l++){
+           // int distinct = 0;
             Set<Integer> set = new HashSet<>();
-            while(set.size() <= k && r < nums.length){
-                System.out.println(">>> l = " + l +
-                        ", r = " + r +
-                        ", set = " + set +
-                        ", cnt = " + cnt);
+            for (int r = l; r < n; r++){
+                set.add(nums[r]);
                 if(set.size() == k){
                     cnt += 1;
+                }else if(set.size() > k){
+                    break;
                 }
-                set.add(nums[r]);
-                r += 1;
             }
+//            // ???
+//            //int r = 0;
+//            int r = l; // ???
+//            Set<Integer> set = new HashSet<>();
+//            while(set.size() <= k && r < nums.length){
+//                System.out.println(">>> l = " + l +
+//                        ", r = " + r +
+//                        ", set = " + set +
+//                        ", cnt = " + cnt);
+//                if(set.size() == k){
+//                    cnt += 1;
+//                }
+//                set.add(nums[r]);
+//                r += 1;
+//            }
         }
 
 
