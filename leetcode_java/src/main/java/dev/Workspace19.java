@@ -5554,7 +5554,82 @@ public class Workspace19 {
      *
      * 	-> map : { count : first_idx_when_cnt_existed }
      */
+    // LC 525
+    // 17.31 - 44 PM
+    /**
+     *  IDEA 1) HASH MAP + prefix sum
+     *
+     *   -> prefix:
+     *     - 0 : -1
+     *     - 1: + 1
+     *
+     *    map : { prefix: idx } // save left most
+     *
+     *    -> so we loop over nums,
+     *       update prefix, map on the same time
+     *
+     *       when we meet the same `prefix` again
+     *       e.g. map has that prefix
+     *       we are sure there MUST exist a sub array
+     *       that with `equal number of 0 and 1.`
+     *
+     *       ( j > i )
+     *       prefix[0..i] =  prefix_a
+     *
+     *       prefix[0..j] =  prefix_b
+     *
+     *       -> prefix[0..j] - prefix[0..i] = 0
+     *
+     *       -> `equal number of 0 and 1.`
+     *
+     *
+     */
     public int findMaxLength(int[] nums) {
+        // edge
+        if (nums == null || nums.length == 0)
+            return 0;
+
+
+        int prefix = 0;
+        int maxLen = 0;
+
+        // / Map: { PrefixSum : First_Index_It_Occurred }
+        //  map : { prefix: idx } // save left most idx ONLY (given same prefix)
+        Map<Integer, Integer> map = new HashMap<>();
+        // ???? init
+        // ???? // Base Case: A sum of 0 exists at index -1
+       // map.put(0, -1);
+
+
+        for(int i = 0; i < nums.length; i++){
+            int x = nums[i];
+            if(x == 0){
+                prefix -=1;
+            }else{
+                prefix += 1;
+            }
+
+            if(map.containsKey(prefix)){
+                // ???
+                maxLen = Math.max(maxLen, i - map.get(prefix) + 1);
+            }else{
+                map.put(prefix, i);
+            }
+        }
+
+
+        return maxLen;
+    }
+
+
+
+
+
+
+
+
+
+    public int findMaxLength_97(int[] nums) {
         // edge
         if(nums == null || nums.length == 0){
             return 0;
