@@ -5777,10 +5777,75 @@ public class Workspace19 {
      *
      *
      */
+    /**
+     * Gemini
+     * To solve LC 659 (Split Array into Consecutive Subsequences), the most efficient approach is a Greedy Algorithm using two HashMaps.
+     *
+     * The goal is to ensure every subsequence has a length of at least 3.
+     *
+     * 🧠 The Strategy: Greedy with "Future Planning"
+     * We use two maps:
+     *
+     * freqMap: Keeps track of how many of each number are left to be used.
+     *
+     * hypotheticalMap: Keeps track of how many subsequences are "waiting" for a specific number to continue their chain.
+     *
+     * The Greedy Rules:
+     *
+     * If a number x can join an existing subsequence (it was "waiting" for x), prioritize that. This keeps chains long.
+     *
+     * If it can't join one, try to start a new subsequence of length 3 using (x,x+1,x+2).
+     *
+     * If it can't do either, return false.
+     */
     public boolean isPossible(int[] nums) {
+        // edge
 
-        return false;
+        // Keeps track of how many of each number are left to be used.
+        Map<Integer, Integer> freqMap = new HashMap<>();
+        // Keeps track of how many subsequences are "waiting" for a specific number to continue their chain.
+        Map<Integer, Integer> hypoMap = new HashMap<>();
+
+        // 1. Fill the frequency map
+        for (int x : nums) {
+            freqMap.put(x, freqMap.getOrDefault(x, 0) + 1);
+        }
+
+
+        // 2.  loop greedy
+        for (int x : nums) {
+
+            if(freqMap.get(x) == 0){
+                continue;
+            }
+
+            // // Option A: Join an existing subsequence that needs 'x'
+            if(hypoMap.getOrDefault(x, 0) > 0){
+               // ???
+                freqMap.put(x, freqMap.get(x) - 1);
+                // ??
+                hypoMap.put(x, hypoMap.getOrDefault(x, 0) + 1);
+                hypoMap.put(x + 1, hypoMap.getOrDefault(x + 1, 0) + 1);
+            }
+            // // Option B: Start a new subsequence of length 3: [x, x+1, x+2]
+            else if (freqMap.get(x+1) > 0 && freqMap.get(x+2) > 0){
+                freqMap.put(x, freqMap.get(x) - 1);
+                freqMap.put(x + 1, freqMap.get(x + 1) - 1);
+                freqMap.put(x + 2, freqMap.get(x + 2) - 1);
+                //
+                hypoMap.put(x + 3, hypoMap.getOrDefault(x + 3, 0) + 1);
+            }else{
+                return false;
+            }
+
+        }
+
+
+
+        return true;
     }
+
+
 
 
 }

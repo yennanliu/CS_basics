@@ -113,6 +113,40 @@ public class SplitArrayIntoConsecutiveSubsequences {
         return true;
     }
 
+    // V0-0-1
+    // IDEA: HASHMAP + PQ (gemini)
+    public boolean isPossible_0_0_1(int[] nums) {
+        // Map: { LastNumberInSequence : MinHeap of SequenceLengths }
+        Map<Integer, PriorityQueue<Integer>> map = new HashMap<>();
+
+        for (int x : nums) {
+            int length = 0;
+
+            // 1. Can we extend an existing sequence ending in x-1?
+            if (map.containsKey(x - 1)) {
+                PriorityQueue<Integer> pq = map.get(x - 1);
+                length = pq.poll(); // Take the shortest one
+                if (pq.isEmpty())
+                    map.remove(x - 1);
+            }
+
+            // 2. Add current 'x' as the new end of the sequence, with length + 1
+            // (If length was 0, it means we started a new sequence of length 1)
+            map.computeIfAbsent(x, k -> new PriorityQueue<>()).offer(length + 1);
+        }
+
+        // 3. Final validation: Every single length must be >= 3
+        for (PriorityQueue<Integer> pq : map.values()) {
+            for (int len : pq) {
+                if (len < 3)
+                    return false;
+            }
+        }
+
+        return true;
+    }
+
+
 
     // V0-1
     // IDEA: GREEDY (gemini)
