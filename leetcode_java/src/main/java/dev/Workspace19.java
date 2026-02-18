@@ -5798,7 +5798,43 @@ public class Workspace19 {
      *
      * If it can't do either, return false.
      */
+
+    // IDEA: PQ + HASHMAP
+    // PQ : get smallest key,
+    // hashmap : { val : freq }
     public boolean isPossible(int[] nums) {
+        // edge
+        // edge case
+        if (nums == null || nums.length == 0) {
+            return false;
+        }
+
+        // Map to track the subsequences
+        Map<Integer, PriorityQueue<Integer>> map = new HashMap<>();
+
+        for(int x: nums){
+            // ???
+            int subSeqCnt = 0;
+            if(map.containsKey(x - 1)){
+                subSeqCnt = map.get(x - 1).poll();
+                if (map.get(x - 1).isEmpty()) {
+                    map.remove(x - 1);  // Remove if no more subsequences end with x-1
+                }
+            }
+
+            PriorityQueue<Integer> curPQ = map.getOrDefault(x, new PriorityQueue<>());
+            curPQ.offer(subSeqCnt + 1);
+            map.put(x, curPQ);
+        }
+
+
+
+
+        return false;
+    }
+
+
+    public boolean isPossible_99(int[] nums) {
         // edge
 
         // Keeps track of how many of each number are left to be used.
