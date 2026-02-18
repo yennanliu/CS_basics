@@ -81,13 +81,78 @@ public class SubarraysWithKDifferentIntegers {
 
 
     // V0-2
-    // IDEA: HASHMAP (gemini)
+    // IDEA: SLIDE WINDOW  + HASHMAP (gemini)
+    /**
+     *
+     * ### 1. Why `count += (right - left + 1)`?
+     *
+     * When we are at a specific `right` index and our window `[left, right]` is valid (it has  distinct elements), we aren't just finding **one** valid subarray. We are finding **all valid subarrays that END at `right**`.
+     *
+     * **The Rule:** If a window is valid, then any subarray that starts inside that window and ends at `right` is also valid.
+     *
+     * **Example:** Suppose `k = 2` and our window is `[1, 2, 1]` (where `left = 0` and `right = 2`).
+     * The length of this window is .
+     * The subarrays ending at `right` (index 2) are:
+     *
+     * 1. `[1, 2, 1]` (The whole window)
+     * 2. `[2, 1]` (Starting from index 1)
+     * 3. `[1]` (Starting from index 2)
+     *
+     * All **3** of these have  distinct elements.
+     * So, by adding the **window length** (`right - left + 1`), we are effectively counting every possible starting point that results in a valid subarray ending at our current position.
+     *
+     * ---
+     *
+     * ### 2. Why `atMost(k) - atMost(k - 1)`?
+     *
+     * This is a logic trick used because sliding windows are "greedy"—they are great at finding ranges (0 to ), but bad at finding "exactly."
+     *
+     * Think of the "Distinct Count" as a set of buckets:
+     *
+     * * **`atMost(k)`** counts subarrays with **1, 2, 3, ... up to ** distinct elements.
+     * * **`atMost(k - 1)`** counts subarrays with **1, 2, 3, ... up to ** distinct elements.
+     *
+     * If you subtract the two:
+     *
+     *
+     * **Visual Representation:**
+     * Imagine :
+     *
+     * * `atMost(3)` gives you everything in the blue, green, and red zones.
+     * * `atMost(2)` gives you everything in the blue and green zones.
+     * * The difference is **only** the red zone (exactly 3).
+     *
+     * ---
+     *
+     * ### 3. Why can't we just count "Exactly K" in one go?
+     *
+     * In your original  code, you fixed `l` and moved `r`. That works because you are manually checking every single pair.
+     *
+     * In an  sliding window, the `left` pointer only moves forward. If we try to count "Exactly " directly:
+     *
+     * * As we move `right`, we hit  distinct elements.
+     * * But as we move `right` further, we might *still* have  distinct elements (if we hit a duplicate).
+     * * The window doesn't "tell" us how many valid starting positions there were behind us without doing a second inner loop (which would make it  again).
+     *
+     * By using the `atMost` helper, we turn a "Fixed Constraint" (Exactly ) into a "Range Constraint" (Up to ), which sliding windows are mathematically designed to solve in linear time.
+     *
+     * ---
+     *
+     * ### Summary for your interview:
+     *
+     * > "I use the **atMost** helper because a sliding window naturally calculates the number of subarrays within a range. By calculating the number of subarrays with **at most ** distinct elements and subtracting those with **at most **, the remainder is exactly the count of subarrays with **exactly ** elements. For each window, the number of valid subarrays ending at the current `right` pointer is simply the **window size**, because any smaller subarray within that valid window must also be valid."
+     *
+     * **Would you like to try applying this same `atMost(k) - atMost(k-1)` logic to LC 1248 (Nice Subarrays) to see if you've got the pattern down?**
+     *
+     */
     public int subarraysWithKDistinct_0_2(int[] nums, int k) {
         return atMost(nums, k) - atMost(nums, k - 1);
     }
 
     private int atMost(int[] nums, int k) {
         int left = 0, count = 0;
+
+        // map : { val : cnt }
         Map<Integer, Integer> freq = new HashMap<>();
 
         for (int right = 0; right < nums.length; right++) {
