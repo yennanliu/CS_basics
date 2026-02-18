@@ -83,7 +83,33 @@ public class MajorityElement2 {
         return res;
     }
 
+    // V0-1
+    public List<Integer> majorityElement_0_1(int[] nums) {
+        List<Integer> res = new ArrayList<>();
+        // edge
+        if (nums == null || nums.length == 0) {
+            return res;
+        }
+        int n = nums.length;
+        // { val : cnt }
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int x : nums) {
+            map.put(x, map.getOrDefault(x, 0) + 1);
+        }
+        //List<Integer> res = new ArrayList<>();
+        for (int k : map.keySet()) {
+            if (map.get(k) > n / 3) {
+                res.add(k);
+            }
+        }
+
+        return res;
+    }
+
+
     // V1
 
     // V2
+
+
 }
