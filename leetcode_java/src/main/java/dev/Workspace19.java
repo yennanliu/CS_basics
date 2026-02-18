@@ -5732,5 +5732,55 @@ public class Workspace19 {
     }
 
 
+    // LC 659
+    // 15.29 - 39 pm
+    /**
+     *
+     * -> Return
+     *     - true
+     *       - if you can `split` nums according to the above conditions,
+     *         (one or more subsequence)
+     *    -  false otherwise.
+     *
+     *    Conditions:
+     *     - Each subsequence is a `consecutive increasing` sequence
+     *       (i.e. each integer is `exactly one more` than
+     *       the previous integer).
+     *
+     *     - All subsequences have a length of 3 or more.
+     *
+     *
+     *    NOTE:
+     *      - nums is sorted in `ascending` order
+     *
+     *
+     *   -------------------
+     *
+     *   IDEA 1) HASHMAP ?? + GREEDY ???
+     *
+     *    { val : cnt }
+     *
+     *
+     *
+     *    -------------------
+     *
+     *
+     *    ex 1)
+     *
+     * Input: nums = [1,2,3,3,4,5]
+     * Output: true
+     *
+     * -> map : { 1: 1, 2: 1, 3: 2, 4: 1, 5 : 1}
+     *
+     *  -> [1,  2, 3  ], {, 3: 1, 4: 1, 5 : 1}
+     *
+     *
+     *
+     */
+    public boolean isPossible(int[] nums) {
+
+        return false;
+    }
+
 
 }
