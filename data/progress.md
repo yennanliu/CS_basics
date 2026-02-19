@@ -43,10 +43,23 @@
 			- 221
 	- LC 229
 		- gpt
-			- 260
 		- gemini
 			- 1150
 			- 420
+	- LC 41
+		- gpt
+			- 268
+			- 448
+			- 217
+			- 41
+			- 442
+			- 645
+			- 75
+			- 164
+			- 327
+		- gemini
+			- 274
+			- 765
 - needcode `grind 75` - similar LC by AI
 	- https://neetcode.io/practice?tab=blind75
 	- LC 49 Group Anagrams
