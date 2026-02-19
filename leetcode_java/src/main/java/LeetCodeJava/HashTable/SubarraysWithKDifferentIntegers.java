@@ -79,8 +79,48 @@ public class SubarraysWithKDifferentIntegers {
         return cnt;
     }
 
-
     // V0-2
+    // IDEA: HASHMAP + PREFIX (gemini)
+    public int subarraysWithKDistinct_0_2(int[] nums, int k) {
+        int n = nums.length;
+        int left = 0, count = 0, prefix = 0;
+        Map<Integer, Integer> map = new HashMap<>();
+
+        for (int right = 0; right < n; right++) {
+            // 1. Add right element
+            map.put(nums[right], map.getOrDefault(nums[right], 0) + 1);
+
+            // 2. If we have too many distinct elements,
+            // reset prefix and shrink from left until we have exactly k
+            if (map.size() > k) {
+                int leftVal = nums[left++];
+                map.put(leftVal, map.get(leftVal) - 1);
+                if (map.get(leftVal) == 0)
+                    map.remove(leftVal);
+                prefix = 0; // Reset prefix because the window changed distinct count
+            }
+
+            // 3. Key Optimization: Shrink left as much as possible
+            // while maintaining exactly K distinct elements.
+            // These "extra" elements form the 'prefix'.
+            while (map.get(nums[left]) > 1) {
+                prefix++;
+                int leftVal = nums[left++];
+                map.put(leftVal, map.get(leftVal) - 1);
+            }
+
+            // 4. If we have exactly k, add the (current window + all prefix variations)
+            if (map.size() == k) {
+                count += (prefix + 1);
+            }
+        }
+
+        return count;
+    }
+
+
+
+    // V0-3
     // IDEA: SLIDE WINDOW  + HASHMAP (gemini)
     /**
      *
@@ -145,7 +185,7 @@ public class SubarraysWithKDifferentIntegers {
      * **Would you like to try applying this same `atMost(k) - atMost(k-1)` logic to LC 1248 (Nice Subarrays) to see if you've got the pattern down?**
      *
      */
-    public int subarraysWithKDistinct_0_2(int[] nums, int k) {
+    public int subarraysWithKDistinct_0_3(int[] nums, int k) {
         return atMost(nums, k) - atMost(nums, k - 1);
     }
 

@@ -6115,11 +6115,53 @@ public class Workspace19 {
      *
      *
      */
+
+
+    // 9.42 - 52 am
+    /**
+     *
+     *
+     *
+     */
+    // IDEA 1) SLIDE WINDOW
+    // r move first, then adjust l idx ...
     public int subarraysWithKDistinct(int[] nums, int k) {
+        // edge
+
+        int n = nums.length;
+        int cnt = 0;
+
+        //Set<Integer> set = new HashSet<>();
+        Map<Integer, Integer> map = new HashMap<>();
+
+        for(int r = 0; r < n; r++){
+            //Set<Integer> set = new HashSet<>();
+            // ??
+            int l = r;
+            //set.add(nums[r]);
+            map.put(nums[r], map.getOrDefault(nums[r], 0) + 1);
+            // ???
+            if(map.size() == k){
+                cnt += 1;
+            }
+
+            while(map.size() > k){
+                l += 1;
+                // ???
+                //set.remove(nums[l]);
+                map.put(nums[l], map.get(nums[l])  - 1);
+                if(map.get(nums[l]) == 0){
+                    map.remove(nums[l]);
+                }
+            }
+        }
 
 
-        return 0;
+        return cnt;
     }
+
+
+
 
 
 
