@@ -47,12 +47,93 @@ public class HIndex {
 
     // V0-1
     // IDEA: SORT (gemini)
+    /**
+     *   IDEA:
+     *
+     *  This solution is based on the formal definition of the H-index: **"The largest number  such that at least  papers have  or more citations."**
+     *
+     * By sorting the array, we can check this condition very easily without needing any extra data structures.
+     *
+     * ---
+     *
+     * ### 1. The Core Idea:
+     *
+     * When an array is sorted in ascending order (small to big), look at any index :
+     *
+     * * The papers at index  all have **at least** the number of citations found at `citations[i]`.
+     * * How many papers is that? The count is simply ****.
+     *
+     * ### 2. Step-by-Step Logic
+     *
+     * Let's use an example: `citations = [3, 0, 6, 1, 5]`
+     *
+     * #### Step A: Sort the array
+     *
+     * `citations = [0, 1, 3, 5, 6]`  ()
+     *
+     * #### Step B: Loop and check the condition
+     *
+     * We are looking for the first index where the number of citations is  the number of papers remaining.
+     *
+     * 1. **Index **: `citations[0] = 0`.
+     * * Remaining papers () = 5.
+     * * Is ? **No.** (We don't have 5 papers with  citations).
+     *
+     *
+     * 2. **Index **: `citations[1] = 1`.
+     * * Remaining papers () = 4.
+     * * Is ? **No.** (We don't have 4 papers with  citations).
+     *
+     *
+     * 3. **Index **: `citations[2] = 3`.
+     * * Remaining papers () = **3**.
+     * * Is ? **YES!** * This means there are **3** papers (the ones at index 2, 3, and 4) that all have **at least 3** citations.
+     * * We return **3**.
+     *
+     *
+     *
+     * ---
+     *
+     * ### 3. Why it finds the "Largest"
+     *
+     * Because we iterate from the **left** (the smallest values), the first time we satisfy the condition `citations[i] >= (n - i)`, we have found the maximum possible .
+     *
+     * If we kept going to the right, the number of papers () would get smaller (e.g., , then ), so the  value would decrease. Since we want the **maximum** , we stop and return the very first valid -candidate we find.
+     *
+     * ### 4. Comparison to your original idea
+     *
+     * Your original idea tried to find a value **inside** the array that matched the count.
+     *
+     * * **Your code logic:** "Is the citation value  equal to the number of papers?"
+     * * **Correct logic:** "Is the citation value  **at least** the number of papers?"
+     *
+     * The H-index doesn't have to be equal to a value in the array; it just has to be a threshold that  papers cross.
+     *
+     * ---
+     *
+     * ### 📈 Complexity
+     *
+     * * **Time Complexity**:  because of the `Arrays.sort()`. The for-loop itself is only .
+     * * **Space Complexity**:  (or  depending on the sorting implementation), but we aren't using any HashMaps.
+     *
+     */
     public int hIndex_0_1(int[] citations) {
         Arrays.sort(citations);
         int n = citations.length;
 
         // We check each possible h-index from the perspective of the sorted array
         for (int i = 0; i < n; i++) {
+            /** NOTE !!
+             *
+             *   The Core Idea: $n - i$
+             *
+             *   When an array is sorted in ascending order (small to big), look at any index $i$:
+             *
+             *    1.  The papers at index $i, i+1, i+2, \dots, n-1$ all have at least the number of citations found at citations[i]
+             *
+             *    2. How many papers is that? The count is simply $n - i$.
+             *
+             */
             // After sorting, at index i, there are (n - i) papers
             // that have at least citations[i] citations.
             int hCandidate = n - i;
@@ -66,7 +147,7 @@ public class HIndex {
     }
 
     // V0-2
-    // IDEA: SORT (gpt)
+    // IDEA: Bucket SORT (gpt)
     public int hIndex_0_2(int[] citations) {
         int n = citations.length;
         int[] buckets = new int[n + 1];
