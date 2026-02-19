@@ -44,6 +44,54 @@ public class HIndex {
 //
 //    }
 
+
+    // V0-1
+    // IDEA: SORT (gemini)
+    public int hIndex_0_1(int[] citations) {
+        Arrays.sort(citations);
+        int n = citations.length;
+
+        // We check each possible h-index from the perspective of the sorted array
+        for (int i = 0; i < n; i++) {
+            // After sorting, at index i, there are (n - i) papers
+            // that have at least citations[i] citations.
+            int hCandidate = n - i;
+
+            if (citations[i] >= hCandidate) {
+                return hCandidate;
+            }
+        }
+
+        return 0;
+    }
+
+    // V0-2
+    // IDEA: SORT (gpt)
+    public int hIndex_0_2(int[] citations) {
+        int n = citations.length;
+        int[] buckets = new int[n + 1];
+
+        for (int c : citations) {
+            if (c >= n) {
+                buckets[n]++;
+            } else {
+                buckets[c]++;
+            }
+        }
+
+        int count = 0;
+        for (int i = n; i >= 0; i--) {
+            count += buckets[i];
+            if (count >= i) {
+                return i;
+            }
+        }
+
+        return 0;
+    }
+
+
+
     // V1-1
     // https://leetcode.com/problems/h-index/solutions/6743916/video-2-solutions-counting-and-sorting-b-nck3/
     public int hIndex_1_1(int[] citations) {
@@ -102,6 +150,7 @@ public class HIndex {
         }
         return 0;
     }
+
 
 
 

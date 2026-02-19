@@ -6319,9 +6319,97 @@ public class Workspace19 {
     }
 
     // LC 274
+    // 8.33 - 43 am
+    /**
+     *
+     *  -> return the researcher's h-index
+     *
+     *   - citations[i]
+     *     - the number of citations a
+     *       researcher received for their ith paper
+     *
+     *
+     *   - h-idx definition:
+     *       -  maximum value of h such
+     *          that the given researcher
+     *          has published at least h papers
+     *          that have each been cited at least h times.
+     *
+     *
+     *  ----------------
+     *
+     *   IDEA 1) SORT
+     *
+     *
+     *
+     *
+     *  ----------------
+     *
+     *
+     *  ex 1)
+     *
+     *  citations = [3,0,6,1,5]
+     *
+     *  -> (sort)
+     *
+     *   [0,1,3,5,6]
+     *
+     *   -> loop over sorted arr,
+     *      check each val, and see if it is `h-idx`
+     *      e.g.
+     *         1. cnt(x >= val) = h
+     *         2. num above >= h
+     *
+     *
+     *
+     *  ex 2)
+     *
+     *   Input: citations = [1,3,1]
+     *
+     *   -> (sort)
+     *
+     *   [1,1,3]
+     *
+     *
+     *
+     */
     public int hIndex(int[] citations) {
+        // edge ??
 
-        return 0;
+        // sort (small -> big)
+        System.out.println(">>> before sort  citations = " + Arrays.toString(citations));
+        Arrays.sort(citations); // ??
+        System.out.println(">>> after sort  citations = " + Arrays.toString(citations));
+
+        // map: { val : last_seen_idx }
+        Map<Integer, Integer> map = new HashMap<>();
+
+        // map: { val : cnt }
+        Map<Integer, Integer> cntMap = new HashMap<>();
+        int n = citations.length;
+        for(int i = 0; i < n; i++){
+            int val = citations[n];
+            map.put(val, i);
+
+            cntMap.put(val, cntMap.getOrDefault(val, 0) + 1);
+        }
+
+        for(int i = 0; i < n; i++){
+            int val = citations[n];
+            /**
+             *    *   -> loop over sorted arr,
+             *      *      check each val, and see if it is `h-idx`
+             *      *      e.g.
+             *      *         1. cnt(x >= val) = h
+             *      *         2. num above >= h
+             */
+            boolean isHIndex = (n - map.get(val) + cntMap.get(val) == val);
+            if(isHIndex){
+                return val;
+            }
+        }
+
+        return -1;  // ????
     }
 
 
