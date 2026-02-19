@@ -6245,6 +6245,78 @@ public class Workspace19 {
     }
 
 
+    // LC 75
+    // 8.09 - 19 am
+    /**
+     *    -> sort them in-place so that objects
+     *      of the same color are adjacent,
+     *     with the colors in the order red, white, and blue.
+     *
+     *
+     *     NOTE: color needs to be in order:
+     *        -  red, white, and blue.
+     *
+     *        - 0: red, 1: white, 2: blue
+     *
+     *   --------------------------
+     *
+     *    IDEA 1) SORTING
+     *       - any sort algo
+     *        ( small -> big )
+     *
+     *    IDEA 2) 2 POINTERS ???
+     *
+     *
+     *    --------------------------
+     *
+     *
+     *    ex 1)
+     *
+     * Input: nums = [2,0,2,1,1,0]
+     * Output: [0,0,1,1,2,2]
+     *
+     *
+     *    [2,0,2,1,1,0]
+     *     l         r
+     *
+     *    [0,0,2,1,1,2]
+     *       l     r
+     *
+     *   [0,0,2,1,1,2]
+     *        l r
+     *
+     *  [0,0,2,1,1,2]
+     *       l     r
+     *
+     *  [0,0,2,1,1,2]
+     *       l   r
+     *
+     * [0,0,1,1,2,2]
+     *        l r
+     *
+     *
+     */
+    // bubble sort (small -> big)
+    public void sortColors(int[] nums) {
+        // edge
+        if(nums == null || nums.length == 0){
+            return;
+        }
+        if(nums.length == 1){
+            return;
+        }
+        // ??
+        int n = nums.length;
+        for(int l = 0; l < n; l++){
+            for(int r = l + 1; r < n; r++){
+                int tmp = nums[r];
+                if(nums[r] < nums[l]){
+                    nums[r] = nums[l];
+                    nums[l] = tmp;
+                }
+            }
+        }
+    }
 
 
 
