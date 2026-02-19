@@ -51,7 +51,6 @@
 			- 164
 			- 327
 		- gemini
-			- 274
 			- 765
 - needcode `grind 75` - similar LC by AI
 	- https://neetcode.io/practice?tab=blind75
