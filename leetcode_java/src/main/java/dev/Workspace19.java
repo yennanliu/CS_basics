@@ -6131,15 +6131,19 @@ public class Workspace19 {
         int n = nums.length;
         int cnt = 0;
 
+        int l = 0;
+
         //Set<Integer> set = new HashSet<>();
         Map<Integer, Integer> map = new HashMap<>();
 
         for(int r = 0; r < n; r++){
             //Set<Integer> set = new HashSet<>();
             // ??
-            int l = r;
+            // l = r;
             //set.add(nums[r]);
             map.put(nums[r], map.getOrDefault(nums[r], 0) + 1);
+
+
             // ???
             if(map.size() == k){
                 cnt += 1;

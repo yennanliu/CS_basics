@@ -81,6 +81,36 @@ public class SubarraysWithKDifferentIntegers {
 
     // V0-2
     // IDEA: HASHMAP + PREFIX (gemini)
+    /** IDEA: `Prefix` logic
+     *
+     * ### 🔍 How this "Prefix" logic works
+     *
+     * Imagine `nums = [1, 2, 1, 2, 3]` and `k = 2`.
+     * When `right` is at index 3 (the second `2`):
+     *
+     * * The window is `[1, 2, 1, 2]`.
+     * * The `while` loop sees that `nums[left]` (which is `1`) appears more than once in the map.
+     * * It removes the first `1` and increments `prefix` to 1.
+     * * Now the window is `[2, 1, 2]`.
+     * * It checks the new `left` (`2`). It also appears more than once!
+     * * It removes the `2` and increments `prefix` to 2.
+     * * Now the window is `[1, 2]`.
+     *
+     * **Final Step**: Because `prefix` is 2, it means there were **2** extra elements we could have included without changing the distinct count. So we add `prefix + 1` (which is 3) to our total.
+     * Those 3 subarrays are:
+     *
+     * 1. `[1, 2]`
+     * 2. `[2, 1, 2]`
+     * 3. `[1, 2, 1, 2]`
+     *
+     * ### 📊 Comparison
+     *
+     * * **Your Code**: Tries to count 1 per `right` move ( but logically incomplete).
+     * * **Subtraction Trick**: Easy to understand, uses two passes ().
+     * * **This One-Pass**: Very efficient but much harder to explain in an interview.
+     *
+     *
+     */
     public int subarraysWithKDistinct_0_2(int[] nums, int k) {
         int n = nums.length;
         int left = 0, count = 0, prefix = 0;
@@ -104,6 +134,11 @@ public class SubarraysWithKDifferentIntegers {
             // while maintaining exactly K distinct elements.
             // These "extra" elements form the 'prefix'.
             while (map.get(nums[left]) > 1) {
+                /** NOTE !!!
+                 *
+                 *  the `prefix` trick. refer the explanation at top of this code.
+                 *  (// V0-2)
+                 */
                 prefix++;
                 int leftVal = nums[left++];
                 map.put(leftVal, map.get(leftVal) - 1);
