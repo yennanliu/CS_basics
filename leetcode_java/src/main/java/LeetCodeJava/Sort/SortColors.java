@@ -79,7 +79,76 @@ public class SortColors {
         return;
     }
 
+    // V0-1
+    // IDEA: BUBBLE SORT (any sorting algo (small -> big) works!)
+    public void sortColors_0_1(int[] nums) {
+        // edge
+        if (nums == null || nums.length == 0) {
+            return;
+        }
+        if (nums.length == 1) {
+            return;
+        }
+        // ??
+        int n = nums.length;
+        for (int l = 0; l < n; l++) {
+            for (int r = l + 1; r < n; r++) {
+                int tmp = nums[r];
+                if (nums[r] < nums[l]) {
+                    nums[r] = nums[l];
+                    nums[l] = tmp;
+                }
+            }
+        }
+    }
+
+
+
     // V1
+    // https://leetcode.com/problems/sort-colors/solutions/6751648/6-sorting-methods-with-images-cpythonjav-phsy/
+    public void sortColors_1(int[] nums) {
+        int low = 0, mid = 0, high = nums.length - 1;
+        while (mid <= high) {
+            if (nums[mid] == 0) {
+                int tmp = nums[low];
+                nums[low++] = nums[mid];
+                nums[mid++] = tmp;
+            } else if (nums[mid] == 1) {
+                mid++;
+            } else {
+                int tmp = nums[mid];
+                nums[mid] = nums[high];
+                nums[high--] = tmp;
+            }
+        }
+    }
+
 
     // V2
+    // https://leetcode.com/problems/sort-colors/solutions/7588561/lifes-first-dsa-question-by-coder_sach_i-xkha/
+    public void sortColors_2(int[] nums) {
+
+        int r = 0, w = 0, b = nums.length - 1;
+
+        while (w <= b) {
+            if (nums[w] == 0) {
+                int temp = nums[r];
+                nums[r] = nums[w];
+                nums[w] = temp;
+                r++;
+                w++;
+            } else if (nums[w] == 1) {
+                w++;
+            } else {
+                int temp = nums[w];
+                nums[w] = nums[b];
+                nums[b] = temp;
+                b--;
+
+            }
+        }
+    }
+
+
+
 }
