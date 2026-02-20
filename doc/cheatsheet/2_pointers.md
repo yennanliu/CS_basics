@@ -1032,29 +1032,124 @@ class Solution(object):
         num[k + 1:] = num[:k:-1] ### dounle check here ###
 ```
 
-### 2-10) Valid Palindrome II
+### 2-10) Valid Palindrome II (Palindrome with One Deletion)
+
+**Pattern: Two Pointers with Mismatch Handling**
+- Check palindrome from both ends
+- On first mismatch, try TWO possibilities:
+  1. Skip left character (check `s[l+1...r]`)
+  2. Skip right character (check `s[l...r-1]`)
+- If EITHER works, return true
+- Use helper function to check palindrome in range
+
+**Key Insight:**
+- Don't remove character and create new string (O(N) space)
+- Instead, use pointers to check substring in-place (O(1) space)
+
+```java
+// java
+// LC 680. Valid Palindrome II
+/**
+ * Pattern: Palindrome with at most 1 deletion allowed
+ *
+ * Example:
+ *   s = "abca"
+ *
+ *   [a b c a]    l=0, r=3, s[l]=a, s[r]=a, match! l++, r--
+ *    l     r
+ *
+ *   [a b c a]    l=1, r=2, s[l]=b, s[r]=c, MISMATCH!
+ *      l r       Try: skip b (check "ca") OR skip c (check "ba")
+ *                     "ca" is NOT palindrome
+ *                     "ba" is NOT palindrome
+ *                BUT we need to check full substring!
+ *
+ *   Actually for "abca":
+ *   - Try skip l: check "cba" -> isPali("abca", 2, 3) = true (just "a")
+ *   - OR skip r: check "aba" -> isPali("abca", 1, 2) = true (just "b")
+ *
+ *   Either works -> return true
+ *
+ * Time: O(N), Space: O(1)
+ */
+public boolean validPalindrome(String s) {
+    int l = 0;
+    int r = s.length() - 1;
+
+    while (l < r) {
+        if (s.charAt(l) != s.charAt(r)) {
+            /** NOTE !!!
+             *
+             *  On mismatch, try BOTH possibilities:
+             *    1. Skip left char  -> check s[l+1...r]
+             *    2. Skip right char -> check s[l...r-1]
+             *
+             *  If EITHER is palindrome, we can make it work with 1 deletion
+             */
+            return isPalindrome(s, l + 1, r) || isPalindrome(s, l, r - 1);
+        }
+        l++;
+        r--;
+    }
+
+    return true; // Already a perfect palindrome
+}
+
+/** NOTE !!!
+ *
+ *  Helper function with left, right pointers as parameters
+ *  Checks if substring s[l...r] is palindrome
+ *  NO new string created - check in place!
+ */
+private boolean isPalindrome(String s, int l, int r) {
+    while (l < r) {
+        if (s.charAt(l) != s.charAt(r)) {
+            return false;
+        }
+        l++;
+        r--;
+    }
+    return true;
+}
+```
+
 ```python
+# python
 # LC 680. Valid Palindrome II
 class Solution:
     def validPalindrome(self, s):
-        
+
         l, r = 0, len(s) - 1
-        
+
         while l < r:
             if s[l] != s[r]:
                 """
                 # NOTE this !!!!
-                -> break down the problem to even, odd cases
+                -> On mismatch, try skipping left OR right character
+                -> Check if either resulting substring is palindrome
                 """
-                even, odd = s[l:r], s[l+1:r+1]
+                skip_left = s[l+1:r+1]   # skip s[l]
+                skip_right = s[l:r]      # skip s[r]
                 # NOTE this !!!!
-                return even == even[::-1] or odd == odd[::-1]
+                return skip_left == skip_left[::-1] or skip_right == skip_right[::-1]
             else:
                 l += 1
                 r -= 1
-                
-        return True 
+
+        return True
 ```
+
+**Common Mistakes:**
+- ❌ Creating new strings (O(N) space and time)
+- ❌ Only trying to skip one side
+- ✅ Use helper with pointers (O(1) space)
+- ✅ Try BOTH skip possibilities
+
+**Similar Problems:**
+- LC 680 Valid Palindrome II (this pattern)
+- LC 125 Valid Palindrome
+- LC 1216 Valid Palindrome III (k deletions allowed - DP)
+- LC 234 Palindrome Linked List
 
 ### 2-11) Merge Sorted Array
 ```python
@@ -1152,3 +1247,276 @@ class Solution(object):
         return ans.toArray(new int[ans.size()][2]);
     }
 ```
+
+### 2-13) Sort Colors (Dutch National Flag)
+
+**Pattern: Three-Way Partitioning with Two Pointers**
+- Use three pointers: left (0s), mid (current), right (2s)
+- Partition array into three sections
+- Single pass solution
+
+```java
+// java
+// LC 75. Sort Colors
+/**
+ * Pattern: Dutch National Flag - Three-way partitioning
+ *
+ * Goal: Sort array with only 0, 1, 2 in one pass
+ *
+ * Pointers:
+ *   - left: boundary for 0s (everything before left is 0)
+ *   - mid: current element being examined
+ *   - right: boundary for 2s (everything after right is 2)
+ *
+ * Example:
+ *   nums = [2,0,2,1,1,0]
+ *
+ *   [2,0,2,1,1,0]    mid=0, nums[mid]=2, swap with right, right--
+ *    l           r   [0,0,2,1,1,2]
+ *    m
+ *
+ *   [0,0,2,1,1,2]    mid=0, nums[mid]=0, swap with left, left++, mid++
+ *    l         r
+ *    m
+ *
+ *   [0,0,2,1,1,2]    mid=1, nums[mid]=0, swap with left, left++, mid++
+ *      l       r
+ *      m
+ *
+ *   [0,0,2,1,1,2]    mid=2, nums[mid]=2, swap with right, right--
+ *        l     r
+ *        m
+ *
+ *   [0,0,1,1,2,2]    mid=2, nums[mid]=1, mid++
+ *        l   r
+ *        m
+ *
+ *   [0,0,1,1,2,2]    mid=3, nums[mid]=1, mid++
+ *        l r
+ *          m
+ *
+ *   mid > right, done!
+ *
+ * Time: O(N), Space: O(1)
+ */
+public void sortColors(int[] nums) {
+    int left = 0;           // Next position for 0
+    int mid = 0;            // Current examining position
+    int right = nums.length - 1;  // Next position for 2
+
+    while (mid <= right) {
+        if (nums[mid] == 0) {
+            // Found 0, swap to left
+            swap(nums, left, mid);
+            left++;
+            mid++;
+        } else if (nums[mid] == 2) {
+            // Found 2, swap to right
+            // NOTE: Don't increment mid yet, need to check swapped element
+            swap(nums, mid, right);
+            right--;
+        } else {
+            // Found 1, just move mid
+            mid++;
+        }
+    }
+}
+
+private void swap(int[] nums, int i, int j) {
+    int temp = nums[i];
+    nums[i] = nums[j];
+    nums[j] = temp;
+}
+```
+
+**Similar Problems:**
+- LC 75 Sort Colors (this pattern)
+- LC 26 Remove Duplicates from Sorted Array
+- LC 80 Remove Duplicates from Sorted Array II
+- LC 283 Move Zeroes
+
+### 2-14) 3Sum
+
+**Pattern: Two Pointers with Fixed First Element**
+- Fix first element, use two pointers for remaining two
+- Avoid duplicates by skipping same values
+- Sort array first
+
+```java
+// java
+// LC 15. 3Sum
+/**
+ * Pattern: Fixed element + Two pointers
+ *
+ * Steps:
+ *   1. Sort array
+ *   2. Fix first element (i)
+ *   3. Use two pointers (l, r) to find remaining two elements
+ *   4. Skip duplicates
+ *
+ * Example:
+ *   nums = [-1,0,1,2,-1,-4]
+ *   After sort: [-4,-1,-1,0,1,2]
+ *
+ *   i=0, nums[i]=-4, l=1, r=5
+ *   [-4,-1,-1,0,1,2]
+ *     i  l       r    sum=-4+-1+2=-3 < 0, l++
+ *
+ *   i=1, nums[i]=-1, l=2, r=5
+ *   [-4,-1,-1,0,1,2]
+ *        i  l     r   sum=-1+-1+2=0, found! [-1,-1,2]
+ *                     l++, r--, skip duplicates
+ *
+ *   [-4,-1,-1,0,1,2]
+ *        i    l r     sum=-1+0+1=0, found! [-1,0,1]
+ *
+ * Time: O(N^2), Space: O(1) excluding result
+ */
+public List<List<Integer>> threeSum(int[] nums) {
+    List<List<Integer>> result = new ArrayList<>();
+    Arrays.sort(nums);
+
+    for (int i = 0; i < nums.length - 2; i++) {
+        // Skip duplicates for first element
+        if (i > 0 && nums[i] == nums[i - 1]) {
+            continue;
+        }
+
+        int left = i + 1;
+        int right = nums.length - 1;
+        int target = -nums[i];
+
+        while (left < right) {
+            int sum = nums[left] + nums[right];
+
+            if (sum == target) {
+                result.add(Arrays.asList(nums[i], nums[left], nums[right]));
+
+                // Skip duplicates for second element
+                while (left < right && nums[left] == nums[left + 1]) {
+                    left++;
+                }
+                // Skip duplicates for third element
+                while (left < right && nums[right] == nums[right - 1]) {
+                    right--;
+                }
+
+                left++;
+                right--;
+            } else if (sum < target) {
+                left++;
+            } else {
+                right--;
+            }
+        }
+    }
+
+    return result;
+}
+```
+
+**Similar Problems:**
+- LC 15 3Sum (this pattern)
+- LC 16 3Sum Closest
+- LC 18 4Sum
+- LC 259 3Sum Smaller
+- LC 1 Two Sum
+
+### 2-15) Reverse String / Reverse Words
+
+**Pattern: In-place Reversal with Two Pointers**
+
+```java
+// java
+// LC 344. Reverse String
+/**
+ * Pattern: Swap from both ends moving toward center
+ *
+ * Example:
+ *   s = ['h','e','l','l','o']
+ *
+ *   ['h','e','l','l','o']
+ *     l           r       swap, l++, r--
+ *
+ *   ['o','e','l','l','h']
+ *       l       r         swap, l++, r--
+ *
+ *   ['o','l','l','e','h']
+ *           l r           l >= r, done!
+ *
+ * Time: O(N), Space: O(1)
+ */
+public void reverseString(char[] s) {
+    int left = 0;
+    int right = s.length - 1;
+
+    while (left < right) {
+        char temp = s[left];
+        s[left] = s[right];
+        s[right] = temp;
+        left++;
+        right--;
+    }
+}
+```
+
+**Similar Problems:**
+- LC 344 Reverse String
+- LC 345 Reverse Vowels of a String
+- LC 541 Reverse String II
+- LC 186 Reverse Words in a String II
+- LC 151 Reverse Words in a String
+
+## 3) Classic LC Problems Summary
+
+### Easy:
+- LC 26 Remove Duplicates from Sorted Array
+- LC 27 Remove Element
+- LC 125 Valid Palindrome
+- LC 283 Move Zeroes
+- LC 344 Reverse String
+- LC 345 Reverse Vowels of a String
+- LC 349 Intersection of Two Arrays
+- LC 350 Intersection of Two Arrays II
+- LC 392 Is Subsequence
+- LC 680 Valid Palindrome II
+- LC 844 Backspace String Compare
+- LC 977 Squares of a Sorted Array
+
+### Medium:
+- LC 3 Longest Substring Without Repeating Characters (Sliding Window)
+- LC 5 Longest Palindromic Substring
+- LC 11 Container With Most Water
+- LC 15 3Sum
+- LC 16 3Sum Closest
+- LC 18 4Sum
+- LC 75 Sort Colors (Dutch National Flag)
+- LC 80 Remove Duplicates from Sorted Array II
+- LC 86 Partition List
+- LC 88 Merge Sorted Array
+- LC 142 Linked List Cycle II
+- LC 167 Two Sum II - Input Array Is Sorted
+- LC 209 Minimum Size Subarray Sum (Sliding Window)
+- LC 287 Find the Duplicate Number
+- LC 567 Permutation in String (Sliding Window)
+- LC 647 Palindromic Substrings
+- LC 713 Subarray Product Less Than K
+- LC 881 Boats to Save People
+- LC 986 Interval List Intersections
+
+### Hard:
+- LC 42 Trapping Rain Water
+- LC 76 Minimum Window Substring (Sliding Window)
+- LC 828 Count Unique Characters of All Substrings
+
+## 4) Two Pointers Cheat Sheet
+
+| Pattern | When to Use | Example Problems |
+|---------|-------------|------------------|
+| **Opposite Direction** | Sorted array, palindrome check | LC 167, LC 344, LC 125 |
+| **Same Direction (Fast-Slow)** | Remove duplicates, cycle detection | LC 26, LC 27, LC 142 |
+| **Sliding Window** | Subarray/substring problems | LC 3, LC 76, LC 209 |
+| **Merge Two Lists** | Merge sorted arrays/lists | LC 88, LC 21 |
+| **Partition** | Rearrange elements | LC 75, LC 86 |
+| **Palindrome with Deletion** | Allow k changes | LC 680, LC 1216 |
+| **Fixed + Two Pointers** | Sum problems (3Sum, 4Sum) | LC 15, LC 16, LC 18 |
