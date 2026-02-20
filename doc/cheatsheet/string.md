@@ -599,7 +599,7 @@ class Solution(object):
 | Reverse String | 344 | Swap in-place | Easy |
 | Reverse Vowels | 345 | Selective swap | Easy |
 | Valid Palindrome II | 680 | One deletion allowed | Easy |
-| Sort Characters | 917 | Skip special chars | Easy |
+| Reverse Only Letters | 917 | Skip special chars | Easy |
 | Long Pressed Name | 925 | Character matching | Easy |
 | Compare Version | 165 | Split and compare | Medium |
 
@@ -1356,3 +1356,237 @@ class Solution(object):
             i += 1
         return False
 ```
+
+### 2-14) Reverse Only Letters
+
+**Pattern: Selective Character Reversal**
+- Reverse only alphabetic characters
+- Keep non-alphabetic characters in original positions
+- Two approaches: Two Pointers or Stack
+
+#### Approach 1: Two Pointers (Optimal)
+```java
+// java
+// LC 917. Reverse Only Letters
+/**
+ * Pattern: Two pointers with selective swap
+ *
+ * Key Technique:
+ *   - Use Character.isLetter() to check if char is alphabetic
+ *   - Skip non-letters on both sides
+ *   - Swap only when both pointers point to letters
+ *
+ * Example:
+ *   s = "ab-cd"
+ *
+ *   [a,b,-,c,d]    l=0, r=4, both letters, swap
+ *    l       r     -> [d,b,-,c,a]
+ *
+ *   [d,b,-,c,a]    l=1, r=3, both letters, swap
+ *      l   r       -> [d,c,-,b,a]
+ *
+ *   [d,c,-,b,a]    l=2, r=2, l >= r, done!
+ *        lr
+ *
+ * Example 2:
+ *   s = "a-bC-dEf-ghIj"
+ *
+ *   [a,-,b,C,-,d,E,f,-,g,h,I,j]
+ *    l                       r    both letters, swap
+ *   -> [j,-,b,C,-,d,E,f,-,g,h,I,a]
+ *
+ *   [j,-,b,C,-,d,E,f,-,g,h,I,a]
+ *        l                   r    both letters, swap
+ *   -> [j,-,I,C,-,d,E,f,-,g,h,b,a]
+ *   ... continue ...
+ *
+ * Time: O(N), Space: O(N) for char array
+ */
+public String reverseOnlyLetters(String s) {
+    // Convert to char array for easy swapping
+    char[] arr = s.toCharArray();
+    int l = 0;
+    int r = s.length() - 1;
+
+    while (l < r) {
+        /** NOTE !!!
+         *
+         *  Character.isLetter() - Key method to check if char is alphabetic
+         *
+         *  IMPORTANT: Check both conditions:
+         *    1. l < r (pointers haven't crossed)
+         *    2. !Character.isLetter(arr[l]) (current char is not letter)
+         */
+        // Move left pointer until it hits a letter
+        while (l < r && !Character.isLetter(arr[l])) {
+            l++;
+        }
+
+        // Move right pointer until it hits a letter
+        while (l < r && !Character.isLetter(arr[r])) {
+            r--;
+        }
+
+        // Swap the letters
+        char tmp = arr[l];
+        arr[l] = arr[r];
+        arr[r] = tmp;
+
+        // Move pointers inward
+        l++;
+        r--;
+    }
+
+    return new String(arr);
+}
+```
+
+**Character Validation Methods:**
+```java
+// java
+// Key methods for character checking
+
+char x = 'a';
+
+// Check if alphabetic letter (a-z, A-Z)
+Character.isLetter(x);         // true
+
+// Check if digit (0-9)
+Character.isDigit('5');        // true
+
+// Check if letter or digit
+Character.isLetterOrDigit(x);  // true
+
+// Check if whitespace
+Character.isWhitespace(' ');   // true
+
+// Case conversion
+Character.toLowerCase('A');    // 'a'
+Character.toUpperCase('b');    // 'B'
+```
+
+```python
+# python
+# Character checking methods
+
+char = 'a'
+
+# Check if alphabetic
+char.isalpha()      # True
+
+# Check if digit
+'5'.isdigit()       # True
+
+# Check if alphanumeric
+char.isalnum()      # True
+
+# Check if whitespace
+' '.isspace()       # True
+
+# Case conversion
+char.upper()        # 'A'
+char.lower()        # 'a'
+```
+
+#### Approach 2: Stack (FILO)
+```java
+// java
+// LC 917. Reverse Only Letters
+/**  IDEA: Stack-based reversal (FILO - First In Last Out)
+ *
+ *  Steps:
+ *   1. First pass: Loop over string, save only LETTERS in stack
+ *   2. Second pass: Loop over string again
+ *      - For NON-letters: append in original order
+ *      - For letters: pop from stack (reverse order due to FILO)
+ *
+ * Example:
+ *   s = "ab-cd"
+ *
+ *   First pass: Stack = [a, b, c, d]  (top -> d)
+ *
+ *   Second pass:
+ *     i=0, 'a' is letter  -> pop 'd' -> result = "d"
+ *     i=1, 'b' is letter  -> pop 'c' -> result = "dc"
+ *     i=2, '-' NOT letter -> append '-' -> result = "dc-"
+ *     i=3, 'c' is letter  -> pop 'b' -> result = "dc-b"
+ *     i=4, 'd' is letter  -> pop 'a' -> result = "dc-ba"
+ *
+ * Time: O(N), Space: O(N) for stack
+ */
+public String reverseOnlyLetters(String s) {
+    // NOTE !!! Stack: FILO (First In, Last Out)
+    Stack<Character> letters = new Stack<>();
+
+    // First pass: Save all letters in stack
+    for (char c : s.toCharArray()) {
+        if (Character.isLetter(c)) {
+            letters.push(c);
+        }
+    }
+
+    StringBuilder ans = new StringBuilder();
+
+    // Second pass: Build result
+    for (char c : s.toCharArray()) {
+        if (Character.isLetter(c)) {
+            // For letters: pop from stack (reversed order)
+            ans.append(letters.pop());
+        } else {
+            // For non-letters: keep original position
+            ans.append(c);
+        }
+    }
+
+    return ans.toString();
+}
+```
+
+**Stack Pattern Visualization:**
+```
+Input: "Test1ng-Leet=code-Q!"
+
+Step 1: Build Stack (push letters only)
+Stack building:
+  T -> [T]
+  e -> [T, e]
+  s -> [T, e, s]
+  t -> [T, e, s, t]
+  (skip '1')
+  n -> [T, e, s, t, n]
+  g -> [T, e, s, t, n, g]
+  (skip '-')
+  L -> [T, e, s, t, n, g, L]
+  ... continue ...
+
+Final Stack (bottom to top):
+  [T, e, s, t, n, g, L, e, e, t, c, o, d, e, Q]
+   ^                                          ^
+   bottom                                    top
+
+Step 2: Build Result (pop letters, keep non-letters)
+  Position 0: 'T' is letter -> pop 'Q' -> result = "Q"
+  Position 1: 'e' is letter -> pop 'e' -> result = "Qe"
+  Position 2: 's' is letter -> pop 'd' -> result = "Qed"
+  Position 3: 't' is letter -> pop 'o' -> result = "Qedo"
+  Position 4: '1' NOT letter -> append '1' -> result = "Qedo1"
+  Position 5: 'n' is letter -> pop 'c' -> result = "Qedo1c"
+  Position 6: 'g' is letter -> pop 't' -> result = "Qedo1ct"
+  Position 7: '-' NOT letter -> append '-' -> result = "Qedo1ct-"
+  ... continue ...
+
+Final: "Qedo1ct-eeLg=ntse-T!"
+```
+
+**Comparison:**
+| Approach | Time | Space | When to Use |
+|----------|------|-------|-------------|
+| Two Pointers | O(N) | O(N) | In-place modification, optimal |
+| Stack | O(N) | O(N) | Need to preserve original, clearer logic |
+
+**Similar Problems:**
+- LC 917 Reverse Only Letters (this pattern)
+- LC 345 Reverse Vowels of a String (selective reversal)
+- LC 344 Reverse String (full reversal)
+- LC 541 Reverse String II (selective ranges)
+- LC 151 Reverse Words in a String (word-level reversal)
