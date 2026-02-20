@@ -6583,6 +6583,10 @@ public class Workspace19 {
         int l = 0;
         int r = n -1;
 
+        // NOTE !!!!
+        char x = 'x';
+        Character.isLetter(x);
+
         // ???
         String alpha = "abcdefghijklmnopqrstuvwxyz";
 

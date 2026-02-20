@@ -58,10 +58,22 @@ public class ReverseOnlyLetters {
         int r = s.length() - 1;
 
         while (l < r) {
+            /** NOTE !!!
+             *
+             *   1. check if r is still > l
+             *   2. check if cur char is alphabet
+             *
+             */
             // 2. Move left pointer until it hits a letter
             while (l < r && !Character.isLetter(arr[l])) {
                 l++;
             }
+            /** NOTE !!!
+             *
+             *   1. check if r is still > l
+             *   2. check if cur char is alphabet
+             *
+             */
             // 3. Move right pointer until it hits a letter
             while (l < r && !Character.isLetter(arr[r])) {
                 r--;
@@ -112,9 +124,21 @@ public class ReverseOnlyLetters {
 
 
     // V1-1
-    // IDEA: Stack of Letters
+    // IDEA: Stack of Letters + stack (FILO)
+    /**  IDEA
+     *
+     *  1. loop over string
+     *  2. have a stack, save `alphabet` in stack
+     *  3. loop over string again
+     *    - for NON `alphabet`, we append as its original order
+     *    - for  `alphabet`, we  pop in inverse order. (stack : FILO)
+     *
+     *
+     */
     // https://leetcode.com/problems/reverse-only-letters/editorial/
     public String reverseOnlyLetters_1_1(String S) {
+
+        // NOTE !!! stack: FILO
         Stack<Character> letters = new Stack();
         for (char c: S.toCharArray())
             if (Character.isLetter(c))
