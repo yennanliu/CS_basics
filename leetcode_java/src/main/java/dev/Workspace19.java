@@ -6726,10 +6726,126 @@ public class Workspace19 {
 
 
     // LC 214
+    // 12.41 - 51 pm
+    /**
+     *  -> Return the shortest palindrome you
+     *    can find by performing this transformation.
+     *
+     *
+     *    trans:
+     *
+     *     - You can convert s to a palindrome by
+     *       adding characters in front of it
+     *
+     *
+     *  NOTE:
+     *
+     *   A palindrome is a string that reads
+     *   the same forward and backward.
+     *
+     *   ---------------
+     *
+     *    IDEA 1) BRUTE FORCE
+     *
+     *      1. check if already `palindrome`
+     *      2. loop over every element,
+     *         (if can do so by adding in front of it)
+     *         and check how many characters we need to add
+     *         so can make it `palindrome`
+     *
+     *         maintain the `min` characters on the same time
+     *
+     *      3. return `min` characters
+     *
+     *
+     *   IDEA 2) 2 POINTERS ????
+     *
+     *
+     *
+     *   ---------------
+     *
+     *   ex 2)
+     *
+     *   Input: s = "abcd"
+     *
+     *
+     *   abcd       dcbabcd
+     *   i
+     *
+     *   abcd        abcd
+     *    i
+     *
+     *   abcd
+     *     i
+     *
+     *   abcd
+     *      i
+     *
+     */
+    //  IDEA 1) BRUTE FORCE
     public String shortestPalindrome(String s) {
+        // edge
 
-        return null;
+        int n = s.length();
+        if(isPalindrome(s, 0, n-1)){
+            return s;
+        }
+
+        // ????????
+        String res = s + s + s; // ????
+
+        for(int i = 0; i < n; i++){
+            // ???
+//            if(i == 0){
+////                StringBuilder sb = new StringBuilder(s.substring(i+1));
+////                String tmp = sb.reverse().toString() + String.valueOf(s.charAt(i)) + sb.toString();
+//                String tmp = getOpOutput(s, i);
+//                if(tmp.length() < res.length()){
+//                    res = tmp;
+//                }
+//            }else{
+//                if(i == 0 || s.charAt(i-1) == s.charAt(i+1)){
+//                    String tmp = getOpOutput(s, i);
+//                    if(tmp.length() < res.length()){
+//                        res = tmp;
+//                    }
+//                }
+//            }
+
+            if(i == 0 || s.charAt(i-1) == s.charAt(i+1)){
+                String tmp = getOpOutput(s, i);
+                if(tmp.length() < res.length()){
+                    res = tmp;
+                }
+            }
+
+        }
+
+
+        return res;
     }
+
+    private String getOpOutput(String s, int i){
+        StringBuilder sb = new StringBuilder(s.substring(i+1));
+        //String tmp = sb.reverse().toString() + String.valueOf(s.charAt(i)) + sb.toString();
+        return sb.reverse().toString() + String.valueOf(s.charAt(i)) + sb.toString();
+    }
+
+    private boolean isPalindrome(String x, int l, int r){
+        // ???
+        if(x.isEmpty() || x.length() == 1){
+            return true;
+        }
+        while (r > l){
+            if(x.charAt(l) != x.charAt(r)){
+                return false;
+            }
+            l += 1;
+            r -= 1;
+        }
+        return true;
+    }
+
 
 
 }

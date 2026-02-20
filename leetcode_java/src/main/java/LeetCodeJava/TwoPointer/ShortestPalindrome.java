@@ -35,6 +35,41 @@ public class ShortestPalindrome {
 //
 //    }
 
+    // V0-1
+    // IDEA: BRUTE FORCE (TLE) (gemini)
+    public String shortestPalindrome_0_1(String s) {
+        int n = s.length();
+        if (n <= 1)
+            return s;
+
+        // 1. Find the longest prefix that is a palindrome
+        // We start from the end and check [0...i]
+        int end = 0;
+        for (int i = n - 1; i >= 0; i--) {
+            if (isPalindrome(s, 0, i)) {
+                end = i;
+                break;
+            }
+        }
+
+        // 2. The part that is NOT part of the prefix palindrome
+        // needs to be reversed and added to the front.
+        String suffix = s.substring(end + 1);
+        StringBuilder sb = new StringBuilder(suffix);
+        return sb.reverse().toString() + s;
+    }
+
+    private boolean isPalindrome(String x, int l, int r) {
+        while (l < r) {
+            if (x.charAt(l) != x.charAt(r))
+                return false;
+            l++;
+            r--;
+        }
+        return true;
+    }
+
+
     // V1-1
     // IDEA: BRUTE FORCE
     // https://leetcode.com/problems/shortest-palindrome/editorial/
