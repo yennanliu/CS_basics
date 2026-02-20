@@ -5,6 +5,7 @@
 - weekly video
 - to review
 - needcode `250` - similar LC by AI
+    - Arrays & Hashing
 	- LC 1929
 	 - gpt
 	 - gemini
@@ -52,6 +53,22 @@
 			- 327
 		- gemini
 			- 765
+	- Two Pointers
+	- LC 344
+		- gpt
+			- 680
+			- 917
+			- 541
+			- 189
+			- 151
+			- 206
+			- 905
+			- 26
+			- 27
+		- gemini
+			- 345
+			- 25
+			- 214
 - needcode `grind 75` - similar LC by AI
 	- https://neetcode.io/practice?tab=blind75
 	- LC 49 Group Anagrams
