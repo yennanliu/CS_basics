@@ -845,44 +845,45 @@ jobs:
           margin: 2rem 0;
         }
 
-        .cheatsheet-content h2 {
+        /* Section backgrounds */
+        .cheatsheet-content > h2 {
           margin-top: 3rem;
-          padding-top: 2rem;
-          border-top: 2px solid var(--border-color);
+          padding: 1.5rem 1.5rem 1.5rem 2rem;
+          border-top: none;
           font-size: 1.75rem;
-          color: var(--text-color);
+          color: white;
+          background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+          border-radius: 8px;
+          box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
           position: relative;
-          padding-left: 1rem;
+          margin-left: -1rem;
+          margin-right: -1rem;
+          padding-left: 2rem;
+        }
+
+        .cheatsheet-content > h2:first-child {
+          margin-top: 0;
         }
 
         .cheatsheet-content h2:before {
-          content: "";
+          content: "📚";
           position: absolute;
-          left: 0;
-          top: 2rem;
-          bottom: 0;
-          width: 4px;
-          background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
-          border-radius: 2px;
-        }
-
-        .cheatsheet-content h2:first-child {
-          margin-top: 0;
-          padding-top: 0;
-          border-top: none;
-        }
-
-        .cheatsheet-content h2:first-child:before {
-          top: 0;
+          left: 0.75rem;
+          top: 50%;
+          transform: translateY(-50%);
+          font-size: 1.5rem;
         }
 
         .cheatsheet-content h3 {
-          color: var(--primary-color);
+          color: white;
           margin-top: 2rem;
           font-size: 1.35rem;
           font-weight: 600;
-          padding-bottom: 0.5rem;
-          border-bottom: 1px solid var(--border-color);
+          padding: 1rem 1.5rem;
+          background: linear-gradient(135deg, var(--accent-color) 0%, #a855f7 100%);
+          border-radius: 6px;
+          box-shadow: 0 2px 6px rgba(139, 92, 246, 0.15);
+          border: none;
         }
 
         .cheatsheet-content h4 {
@@ -890,69 +891,114 @@ jobs:
           font-size: 1.1rem;
           font-weight: 600;
           margin-top: 1.5rem;
+          padding: 0.75rem 1rem;
+          background: var(--bg-secondary);
+          border-left: 4px solid var(--accent-color);
+          border-radius: 4px;
         }
 
         /* Enhanced code blocks */
         .cheatsheet-content pre {
-          background: #1e293b;
+          background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
           color: #e2e8f0;
           padding: 1.5rem;
           border-radius: 8px;
           overflow-x: auto;
-          border-left: 4px solid var(--accent-color);
-          box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+          border-left: 4px solid #10b981;
+          box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+          margin: 1.5rem 0;
+          position: relative;
+        }
+
+        .cheatsheet-content pre:before {
+          content: "Code";
+          position: absolute;
+          top: 0.5rem;
+          right: 1rem;
+          font-size: 0.75rem;
+          color: #64748b;
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
         }
 
         .cheatsheet-content pre code {
           color: #e2e8f0;
           font-size: 0.9rem;
-          line-height: 1.6;
+          line-height: 1.7;
         }
 
         .cheatsheet-content code {
-          background: #f1f5f9;
+          background: linear-gradient(135deg, #fce7f3 0%, #fbcfe8 100%);
           color: #e83e8c;
-          padding: 0.2rem 0.5rem;
+          padding: 0.25rem 0.6rem;
           border-radius: 4px;
           font-size: 0.9em;
+          font-weight: 500;
+          border: 1px solid #f9a8d4;
         }
 
         .cheatsheet-content pre code {
           background: transparent;
           padding: 0;
+          border: none;
         }
 
         /* Better list styling */
         .cheatsheet-content ul {
           list-style: none;
           padding-left: 0;
+          background: #f8fafc;
+          padding: 1rem 1.5rem;
+          border-radius: 6px;
+          margin: 1rem 0;
+          border-left: 3px solid var(--primary-color);
         }
 
         .cheatsheet-content ul li {
           padding-left: 1.5rem;
           position: relative;
           margin-bottom: 0.75rem;
+          line-height: 1.7;
         }
 
         .cheatsheet-content ul li:before {
-          content: "→";
+          content: "▸";
           position: absolute;
           left: 0;
           color: var(--primary-color);
           font-weight: bold;
+          font-size: 1.1em;
         }
 
         .cheatsheet-content ul ul {
           margin-top: 0.5rem;
-          padding-left: 1.5rem;
+          padding: 0.5rem 0 0.5rem 1.5rem;
+          background: transparent;
+          border-left: 2px solid var(--accent-color);
+        }
+
+        .cheatsheet-content ul ul li:before {
+          content: "◦";
+          color: var(--accent-color);
         }
 
         .cheatsheet-content ol {
-          padding-left: 1.5rem;
+          padding-left: 2rem;
+          background: #fef3c7;
+          padding: 1rem 1.5rem 1rem 3rem;
+          border-radius: 6px;
+          margin: 1rem 0;
+          border-left: 3px solid #f59e0b;
         }
 
         .cheatsheet-content ol li {
           margin-bottom: 0.75rem;
+          line-height: 1.7;
+        }
+
+        .cheatsheet-content ol li::marker {
+          color: #f59e0b;
+          font-weight: bold;
         }
 
         /* Cheatsheet footer */
@@ -980,23 +1026,81 @@ jobs:
           color: var(--primary-color);
         }
 
+        /* Paragraphs in cheatsheet */
+        .cheatsheet-content > p {
+          background: #fefce8;
+          padding: 1rem 1.5rem;
+          border-radius: 6px;
+          margin: 1rem 0;
+          line-height: 1.8;
+          border-left: 3px solid #eab308;
+        }
+
         /* Blockquote in cheatsheets */
         .cheatsheet-content blockquote {
-          background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
-          border-left-color: var(--primary-color);
-          border-left-width: 4px;
+          background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+          border-left: 4px solid #10b981;
           color: var(--text-color);
           font-style: normal;
-          padding: 1rem 1.5rem;
+          padding: 1.25rem 1.75rem;
+          border-radius: 6px;
+          box-shadow: 0 2px 8px rgba(16, 185, 129, 0.1);
+          margin: 1.5rem 0;
+          position: relative;
+        }
+
+        .cheatsheet-content blockquote:before {
+          content: "💡";
+          position: absolute;
+          top: 1.25rem;
+          left: -0.5rem;
+          font-size: 1.5rem;
+          background: white;
+          border-radius: 50%;
+          width: 2rem;
+          height: 2rem;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
         .cheatsheet-content blockquote p {
           margin: 0;
+          padding-left: 1.5rem;
+        }
+
+        .cheatsheet-content blockquote p:first-child {
+          font-weight: 500;
         }
 
         /* Table improvements */
         .cheatsheet-content table {
           font-size: 0.95rem;
+          background: white;
+          margin: 1.5rem 0;
+        }
+
+        .cheatsheet-content table thead {
+          background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+        }
+
+        .cheatsheet-content table th {
+          color: white;
+          font-weight: 600;
+          padding: 1rem 0.75rem;
+        }
+
+        .cheatsheet-content table td {
+          padding: 0.875rem 0.75rem;
+        }
+
+        .cheatsheet-content table tbody tr:nth-child(even) {
+          background: #f8fafc;
+        }
+
+        .cheatsheet-content table tbody tr:hover {
+          background: #e0f2fe;
         }
 
         .cheatsheet-content table code {
@@ -1023,25 +1127,66 @@ jobs:
             font-size: 1.75rem;
           }
 
-          .cheatsheet-content h2 {
+          .cheatsheet-content > h2 {
             font-size: 1.5rem;
-            padding-left: 0.75rem;
+            padding: 1rem 1rem 1rem 2.5rem;
+            margin-left: 0;
+            margin-right: 0;
           }
 
           .cheatsheet-content h2:before {
-            width: 3px;
+            font-size: 1.2rem;
+            left: 0.5rem;
           }
 
           .cheatsheet-content h3 {
-            font-size: 1.25rem;
+            font-size: 1.2rem;
+            padding: 0.875rem 1rem;
+          }
+
+          .cheatsheet-content h4 {
+            font-size: 1rem;
+            padding: 0.625rem 0.875rem;
           }
 
           .toc {
-            padding: 1rem 1.5rem;
+            padding: 1rem 1.25rem;
           }
 
           .toc h2 {
             font-size: 1.1rem;
+          }
+
+          .cheatsheet-content > p {
+            padding: 0.875rem 1rem;
+            font-size: 0.95rem;
+          }
+
+          .cheatsheet-content ul,
+          .cheatsheet-content ol {
+            padding: 0.875rem 1rem;
+            font-size: 0.95rem;
+          }
+
+          .cheatsheet-content blockquote {
+            padding: 1rem 1.25rem;
+            padding-left: 2rem;
+          }
+
+          .cheatsheet-content blockquote:before {
+            left: -0.75rem;
+            font-size: 1.25rem;
+            width: 1.75rem;
+            height: 1.75rem;
+          }
+
+          .cheatsheet-content table {
+            font-size: 0.85rem;
+          }
+
+          .cheatsheet-content table th,
+          .cheatsheet-content table td {
+            padding: 0.625rem 0.5rem;
           }
         }
         EOFCSS
