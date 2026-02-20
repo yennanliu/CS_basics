@@ -96,6 +96,40 @@ jobs:
           resourceContent = processLinks(md.render(resource));
         }
 
+        // Function to generate table of contents
+        function generateTOC(htmlContent) {
+          const headingRegex = /<h([23])[^>]*>(.*?)<\/h\1>/g;
+          const headings = [];
+          let match;
+
+          while ((match = headingRegex.exec(htmlContent)) !== null) {
+            const level = match[1];
+            const text = match[2].replace(/<[^>]*>/g, ''); // Remove HTML tags
+            const id = text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+            headings.push({ level, text, id });
+          }
+
+          if (headings.length < 3) return ''; // Don't show TOC for short documents
+
+          let toc = '<div class="toc"><h2>Table of Contents</h2><ul>';
+          headings.forEach(({ level, text, id }) => {
+            const indent = level === '3' ? ' class="toc-sub"' : '';
+            toc += `<li${indent}><a href="#${id}">${text}</a></li>`;
+          });
+          toc += '</ul></div>';
+
+          return toc;
+        }
+
+        // Function to add IDs to headings for TOC navigation
+        function addHeadingIds(htmlContent) {
+          return htmlContent.replace(/<h([23])([^>]*)>(.*?)<\/h\1>/g, (match, level, attrs, text) => {
+            const cleanText = text.replace(/<[^>]*>/g, '');
+            const id = cleanText.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+            return `<h${level}${attrs} id="${id}">${text}</h${level}>`;
+          });
+        }
+
         // Process all cheatsheet files
         const cheatsheetDir = 'doc/cheatsheet';
         const cheatsheets = [];
@@ -127,6 +161,10 @@ jobs:
             // Render and process links
             let htmlContent = md.render(rawContent);
             htmlContent = processLinks(htmlContent);
+            htmlContent = addHeadingIds(htmlContent);
+
+            // Generate table of contents
+            const toc = generateTOC(htmlContent);
 
             // Wrap content with navigation and better structure
             const wrappedContent = `
@@ -134,6 +172,7 @@ jobs:
                 <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
                 <h1>${title}</h1>
               </div>
+              ${toc}
               <div class="cheatsheet-content">
                 ${htmlContent}
               </div>
@@ -724,6 +763,7 @@ jobs:
         .cheatsheet-header h1 {
           margin-top: 1rem;
           margin-bottom: 0;
+          font-size: 2.25rem;
         }
 
         .back-link {
@@ -744,6 +784,63 @@ jobs:
           text-decoration: none;
         }
 
+        /* Table of Contents */
+        .toc {
+          background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+          padding: 1.5rem 2rem;
+          border-radius: 8px;
+          margin: 2rem 0;
+          border-left: 4px solid var(--primary-color);
+          box-shadow: 0 2px 8px rgba(59, 130, 246, 0.1);
+        }
+
+        .toc h2 {
+          margin: 0 0 1rem 0;
+          font-size: 1.25rem;
+          color: var(--primary-color);
+          border-top: none;
+          padding-top: 0;
+        }
+
+        .toc ul {
+          list-style: none;
+          padding: 0;
+          margin: 0;
+        }
+
+        .toc ul li {
+          padding: 0.5rem 0;
+          margin: 0;
+        }
+
+        .toc ul li:before {
+          content: "▸";
+          margin-right: 0.5rem;
+          color: var(--primary-color);
+          font-weight: bold;
+        }
+
+        .toc ul li.toc-sub {
+          padding-left: 1.5rem;
+          font-size: 0.95rem;
+        }
+
+        .toc ul li.toc-sub:before {
+          content: "◦";
+          color: var(--secondary-color);
+        }
+
+        .toc a {
+          color: var(--text-color);
+          text-decoration: none;
+          transition: color 0.2s;
+        }
+
+        .toc a:hover {
+          color: var(--primary-color);
+          text-decoration: none;
+        }
+
         .cheatsheet-content {
           margin: 2rem 0;
         }
@@ -751,7 +848,22 @@ jobs:
         .cheatsheet-content h2 {
           margin-top: 3rem;
           padding-top: 2rem;
-          border-top: 1px solid var(--border-color);
+          border-top: 2px solid var(--border-color);
+          font-size: 1.75rem;
+          color: var(--text-color);
+          position: relative;
+          padding-left: 1rem;
+        }
+
+        .cheatsheet-content h2:before {
+          content: "";
+          position: absolute;
+          left: 0;
+          top: 2rem;
+          bottom: 0;
+          width: 4px;
+          background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
+          border-radius: 2px;
         }
 
         .cheatsheet-content h2:first-child {
@@ -760,14 +872,24 @@ jobs:
           border-top: none;
         }
 
+        .cheatsheet-content h2:first-child:before {
+          top: 0;
+        }
+
         .cheatsheet-content h3 {
           color: var(--primary-color);
           margin-top: 2rem;
+          font-size: 1.35rem;
+          font-weight: 600;
+          padding-bottom: 0.5rem;
+          border-bottom: 1px solid var(--border-color);
         }
 
         .cheatsheet-content h4 {
           color: var(--secondary-color);
           font-size: 1.1rem;
+          font-weight: 600;
+          margin-top: 1.5rem;
         }
 
         /* Enhanced code blocks */
@@ -895,6 +1017,31 @@ jobs:
           .cheatsheet-content pre {
             padding: 1rem;
             font-size: 0.85rem;
+          }
+
+          .cheatsheet-header h1 {
+            font-size: 1.75rem;
+          }
+
+          .cheatsheet-content h2 {
+            font-size: 1.5rem;
+            padding-left: 0.75rem;
+          }
+
+          .cheatsheet-content h2:before {
+            width: 3px;
+          }
+
+          .cheatsheet-content h3 {
+            font-size: 1.25rem;
+          }
+
+          .toc {
+            padding: 1rem 1.5rem;
+          }
+
+          .toc h2 {
+            font-size: 1.1rem;
           }
         }
         EOFCSS
