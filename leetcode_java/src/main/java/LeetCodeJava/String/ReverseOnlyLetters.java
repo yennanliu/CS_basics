@@ -133,7 +133,6 @@ public class ReverseOnlyLetters {
      *    - for NON `alphabet`, we append as its original order
      *    - for  `alphabet`, we  pop in inverse order. (stack : FILO)
      *
-     *
      */
     // https://leetcode.com/problems/reverse-only-letters/editorial/
     public String reverseOnlyLetters_1_1(String S) {
