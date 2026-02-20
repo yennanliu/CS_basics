@@ -6668,12 +6668,60 @@ public class Workspace19 {
     // 12.06 - 16 am
     /**
      *
+     *  ->  reverse only all the vowels in the string and return it.
+     *
+     *   vowels: a,e,i,o,u
+     *
+     *   --------------
+     *
+     *   IDEA 1) 2 POINTERS
+     *
+     *   --------------
      *
      *
      */
+    //  2 POINTERS
     public String reverseVowels(String s) {
+        // edge
 
-        return null;
+        int n = s.length();
+        char[] chars = s.toCharArray();
+
+       // String[] s_arr = s.split("");
+
+        int l = 0;
+        int r = n - 1;
+        while( r > l ){
+            while(r > l && !isVowels(s.charAt(r))){
+                r -= 1;
+            }
+            while(r > l && !isVowels(s.charAt(l))){
+                l += 1;
+            }
+
+//            String tmp = s_arr[r];
+//            s_arr[r] = s_arr[l];
+//            s_arr[l] = tmp;
+
+            char tmp  = chars[r];
+            chars[r] = chars[l];
+            chars[l] = tmp;
+
+            r -= 1;
+            l += 1;
+        }
+
+        // ???
+        //return s_arr.toString();
+        return String.valueOf(chars); // ??
+    }
+
+    private boolean isVowels(char ch){
+        //char[] chars = new char[]{'a', 'a', 'e', 'i', 'o', 'u'};
+        //return chars.c
+        // ???
+        String vowel = "aeiou";
+        return vowel.contains(String.valueOf(ch).toLowerCase());
     }
 
 

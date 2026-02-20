@@ -45,31 +45,119 @@ public class ReverseVowelsOfAString {
 
 
     // V0
-//    public String reverseVowels(String s) {
-//
-//        if (s == null || s.length() == 0){
-//            return s;
-//        }
-//
-//        char[] _array = s.toCharArray();
-//
-//        String vowels = "aeiou";
-//
-//        int j = s.length()-1;
-//
-//        for (int i = 0; i < _array.length; i++){
-//            String r = String.valueOf(_array[j]);
-//            String l = String.valueOf(_array[i]);
-//
-//            if (vowels.contains(l) && vowels.contains(r)){
-//                char _tmp = _array[i];
-//                _array[j] = _tmp;
-//                _array[i] = l;
-//            }
-//        }
-//
-//        return _array.toString();
-//    }
+    // IDEA: LC 151, 917, 2 POINTERS, CHAR OP
+    public String reverseVowels(String s) {
+        // edge
+
+        int n = s.length();
+        char[] chars = s.toCharArray();
+
+        int l = 0;
+        int r = n - 1;
+        while (r > l) {
+            while (r > l && !isVowels(s.charAt(r))) {
+                r -= 1;
+            }
+            while (r > l && !isVowels(s.charAt(l))) {
+                l += 1;
+            }
+            char tmp = chars[r];
+            chars[r] = chars[l];
+            chars[l] = tmp;
+
+            r -= 1;
+            l += 1;
+        }
+
+        return String.valueOf(chars); // ??
+    }
+
+    private boolean isVowels(char ch) {
+        String vowel = "aeiou";
+        return vowel.contains(String.valueOf(ch).toLowerCase());
+    }
+
+
+    // V0-1
+    // IDEA: CHAR OP + 2 POINTERS (gemini)
+    public String reverseVowels_0_1(String s) {
+        if (s == null || s.length() == 0)
+            return s;
+
+        int n = s.length();
+        char[] chars = s.toCharArray();
+
+        int l = 0;
+        int r = n - 1;
+
+        while (l < r) {
+            // 1. Move left pointer until it finds a vowel
+            while (l < r && !isVowel_0_1(chars[l])) {
+                l++;
+            }
+            // 2. Move right pointer until it finds a vowel
+            while (l < r && !isVowel_0_1(chars[r])) {
+                r--;
+            }
+
+            // 3. Swap the vowels
+            char tmp = chars[l];
+            chars[l] = chars[r];
+            chars[r] = tmp;
+
+            // 4. Important: Move pointers after swap to avoid infinite loop
+            l++;
+            r--;
+        }
+
+        return new String(chars);
+    }
+
+    private boolean isVowel_0_1(char ch) {
+        // Efficiently check both cases without String allocation
+        return "aeiouAEIOU".indexOf(ch) != -1;
+    }
+
+
+    // V0-2
+    // IDEA: CHAR OP + 2 POINTERS (GPT)
+    public String reverseVowels_0_2(String s) {
+        if (s == null || s.length() <= 1) {
+            return s;
+        }
+
+        char[] chars = s.toCharArray();
+        int l = 0;
+        int r = chars.length - 1;
+
+        while (l < r) {
+            while (l < r && !isVowel_0_2(chars[l])) {
+                l++;
+            }
+
+            while (l < r && !isVowel_0_2(chars[r])) {
+                r--;
+            }
+
+            // swap vowels
+            char temp = chars[l];
+            chars[l] = chars[r];
+            chars[r] = temp;
+
+            l++;
+            r--;
+        }
+
+        return new String(chars);
+    }
+
+    private boolean isVowel_0_2(char ch) {
+        ch = Character.toLowerCase(ch);
+        return ch == 'a' || ch == 'e' || ch == 'i' ||
+                ch == 'o' || ch == 'u';
+    }
+
+
 
     // V1
     // IDEA : 2 POINTERS
@@ -92,7 +180,7 @@ public class ReverseVowelsOfAString {
      * time = O(N)
      * space = O(1)
      */
-    public String reverseVowels(String s) {
+    public String reverseVowels_1(String s) {
         int start = 0;
         int end = s.length() - 1;
         // Convert String to char array as String is immutable in Java
@@ -121,41 +209,39 @@ public class ReverseVowelsOfAString {
 
     // V2
     // https://leetcode.com/problems/reverse-vowels-of-a-string/solutions/81221/one-pass-java-solution-13ms/
-    public class Solution {
-        /**
-         * time = O(N)
-         * space = O(1)
-         */
-        public String reverseVowels_2(String s) {
-            char[] list=s.toCharArray();
-            Set<Character> set=new HashSet<>();
-            set.add('a');
-            set.add('e');
-            set.add('i');
-            set.add('o');
-            set.add('u');
-            set.add('A');
-            set.add('E');
-            set.add('I');
-            set.add('O');
-            set.add('U');
-            for (int i=0, j=list.length-1; i<j; ) {
-                if (!set.contains(list[i])) {
-                    i++;
-                    continue;
-                }
-                if (!set.contains(list[j])) {
-                    j--;
-                    continue;
-                }
-                char temp=list[i];
-                list[i]=list[j];
-                list[j]=temp;
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
+    public String reverseVowels_2(String s) {
+        char[] list=s.toCharArray();
+        Set<Character> set=new HashSet<>();
+        set.add('a');
+        set.add('e');
+        set.add('i');
+        set.add('o');
+        set.add('u');
+        set.add('A');
+        set.add('E');
+        set.add('I');
+        set.add('O');
+        set.add('U');
+        for (int i=0, j=list.length-1; i<j; ) {
+            if (!set.contains(list[i])) {
                 i++;
-                j--;
+                continue;
             }
-            return String.valueOf(list);
+            if (!set.contains(list[j])) {
+                j--;
+                continue;
+            }
+            char temp=list[i];
+            list[i]=list[j];
+            list[j]=temp;
+            i++;
+            j--;
         }
+        return String.valueOf(list);
     }
 
 
