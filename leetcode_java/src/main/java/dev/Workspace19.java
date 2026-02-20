@@ -6480,18 +6480,80 @@ public class Workspace19 {
     /**
      *
      * -> Given a string s, return true if
-     *   the s can be palindrome after deleting at most one character from it.
+     *   the s can be palindrome after
+     *   `deleting at most one character from it.`
      *
      *
      *  ----------------
      *
+     *   IDEA 1) 2 POINTERS
+     *    left, right pointers.
+     *    0, n-1.
      *
-     *   ----------------
+     *    if l_val == r_val:
+     *       l++, r--
+     *    else:
+     *       if r != l + 1:
+     *          return false
+     *       return true
+     *
+     *   IDEA 2)  for loop + `extend from middle`
+     *  ----------------
+     *
+     *
+     *   ex 1)
+     *
+     *     s = "abb"
+     *
+     *     ->
+     *
+     *      "abb"
+     *        l
+     *        r
+     *
+     *
+     *      "abb"
+     *       lr
      *
      */
+    // IDEA 2)  for loop + `extend from middle`
     public boolean validPalindrome(String s) {
+        // edge
+        if(s == null || s.isEmpty()){
+            return true;
+        }
+        if(s.length() == 1){
+            return true;
+        }
+
+        for(int i = 0; i < s.length(); i++){
+            // ???
+            //String sub = s.substring(i);
+            String sub = s.substring(0,i) + s.substring(i+1);
+            System.out.println(">>> sub str = " + sub);
+            if(isPali(sub)){
+                return true;
+            }
+        }
+
         return false;
 
+    }
+
+    private boolean isPali(String x){
+        if(x == null || x.isEmpty()){
+            return true;
+        }
+        int l = 0;
+        int r = x.length() -1;
+        while(r > l){
+            if(x.charAt(l) != x.charAt(r)){
+                return false;
+            }
+            l += 1;
+            r -= 1;
+        }
+        return true;
     }
 
 
