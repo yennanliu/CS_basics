@@ -5957,10 +5957,26 @@ public class Workspace19 {
      * If it can't do either, return false.
      */
 
+
+    // 10.18 - 28 am
+    /**
+     *
+     *
+     *
+     */
+    public boolean isPossible(int[] nums) {
+        return false;
+    }
+
+
+
+
+
+
     // IDEA: PQ + HASHMAP
     // PQ : get smallest key,
     // hashmap : { val : freq }
-    public boolean isPossible(int[] nums) {
+    public boolean isPossible_00(int[] nums) {
         // edge
         // edge case
         if (nums == null || nums.length == 0) {
