@@ -1,6 +1,9 @@
 package LeetCodeJava.String;
 
 // https://leetcode.com/problems/reverse-words-in-a-string/description/
+
+import java.util.Arrays;
+
 /**
  * 151. Reverse Words in a String
  * Solved
@@ -49,9 +52,27 @@ package LeetCodeJava.String;
 public class ReverseWordsInAString {
 
     // V0
-//    public String reverseWords(String s) {
-//
-//    }
+    public String reverseWords(String s) {
+        // edge
+
+        /**  NOTE !!!
+         *
+         *       // replace `multiple space` to single space
+         *       // and split
+         */
+        String[] str = s.trim().split("\\s+");
+        //System.out.println(">>> str = " + Arrays.toString(str));
+        int n = str.length;
+
+        StringBuilder sb = new StringBuilder();
+        for (int i = n - 1; i >= 0; i--) {
+            sb.append(str[i]);
+            sb.append(" ");
+        }
+
+        // NOTE !!! via the trim(), we can remove the redundant space added in last idx
+        return sb.toString().trim(); /// ????
+    }
 
     // V1
 
@@ -178,6 +199,5 @@ public class ReverseWordsInAString {
     }
 
 
-
-
+    
 }
