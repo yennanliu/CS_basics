@@ -39,6 +39,47 @@ public class ValidPalindrome2 {
   //
   //    }
 
+  // V0-0-1
+  // IDEA: SUB STRING + Palindrome check (gemini)
+  public boolean validPalindrome_0_0_1(String s) {
+      int l = 0;
+      int r = s.length() - 1;
+
+      while (l < r) {
+          if (s.charAt(l) != s.charAt(r)) {
+              // We found a mismatch!
+              // We can either skip the left character OR the right character.
+              // If either resulting string is a palindrome, we are good.
+              /** NOTE !!!
+               *
+               *  we use left, right pointer as the param of help func
+               */
+              return isPali(s, l + 1, r) || isPali(s, l, r - 1);
+          }
+          l++;
+          r--;
+      }
+
+      return true; // Already a perfect palindrome
+  }
+
+    // Helper that checks a range within the SAME string (No new strings created!)
+    /** NOTE !!!
+     *
+     *  we have left, right pointer as the param of help func
+     */
+    private boolean isPali(String s, int l, int r) {
+        while (l < r) {
+            if (s.charAt(l) != s.charAt(r)) {
+                return false;
+            }
+            l++;
+            r--;
+        }
+        return true;
+    }
+
+
   // V0-1
   // IDEA: SLIDE WINDOW (fixed by gpt)
   /**
@@ -148,6 +189,13 @@ public class ValidPalindrome2 {
 
     // V0-3
     // IDEA: SUB STRING + LOOP (TLE)
+    /**  NOTE !!!
+     *
+     * Your current approach tries to remove every possible character
+     * one by one and check if the result is a palindrome.
+     * This is $O(N^2)$ because substring and isPali both take $O(N)$.
+     * For a string of 100,000 characters, this will crash.
+     */
     public boolean validPalindrome_0_3(String s) {
         // edge
         if (s == null || s.isEmpty()) {
