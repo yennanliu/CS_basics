@@ -146,6 +146,47 @@ public class ValidPalindrome2 {
         return res;
     }
 
+    // V0-3
+    // IDEA: SUB STRING + LOOP (TLE)
+    public boolean validPalindrome_0_3(String s) {
+        // edge
+        if (s == null || s.isEmpty()) {
+            return true;
+        }
+        if (s.length() == 1) {
+            return true;
+        }
+
+        for (int i = 0; i < s.length(); i++) {
+            // ???
+            String sub = s.substring(0, i) + s.substring(i + 1);
+            //System.out.println(">>> sub str = " + sub);
+            if (isPali(sub)) {
+                return true;
+            }
+        }
+
+        return false;
+
+    }
+
+    private boolean isPali(String x) {
+        if (x == null || x.isEmpty()) {
+            return true;
+        }
+        int l = 0;
+        int r = x.length() - 1;
+        while (r > l) {
+            if (x.charAt(l) != x.charAt(r)) {
+                return false;
+            }
+            l += 1;
+            r -= 1;
+        }
+        return true;
+    }
+
+
     // V1
     // IDEA: 2 POINTERS
     // https://leetcode.com/problems/valid-palindrome-ii/solutions/6445414/beats-super-easy-beginners-java-c-c-pyth-2cal/
