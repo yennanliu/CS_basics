@@ -49,6 +49,68 @@ public class ReverseOnlyLetters {
 //
 //    }
 
+    // V0-1
+    // IDEA: 2 POINTERS (gemini)
+    public String reverseOnlyLetters_0_1(String s) {
+        // 1. Convert to char array for easy swapping
+        char[] arr = s.toCharArray();
+        int l = 0;
+        int r = s.length() - 1;
+
+        while (l < r) {
+            // 2. Move left pointer until it hits a letter
+            while (l < r && !Character.isLetter(arr[l])) {
+                l++;
+            }
+            // 3. Move right pointer until it hits a letter
+            while (l < r && !Character.isLetter(arr[r])) {
+                r--;
+            }
+
+            // 4. Swap the letters
+            char tmp = arr[l];
+            arr[l] = arr[r];
+            arr[r] = tmp;
+
+            // 5. Move pointers inward
+            l++;
+            r--;
+        }
+
+        // 6. Convert char array back to String
+        return new String(arr);
+    }
+
+    // V0-2
+    // IDEA: 2 POINTERS (gpt)
+    public String reverseOnlyLetters_0_2(String s) {
+        if (s == null || s.length() <= 1) {
+            return s;
+        }
+
+        char[] arr = s.toCharArray();
+        int l = 0;
+        int r = arr.length - 1;
+
+        while (l < r) {
+            if (!Character.isLetter(arr[l])) {
+                l++;
+            } else if (!Character.isLetter(arr[r])) {
+                r--;
+            } else {
+                char temp = arr[l];
+                arr[l] = arr[r];
+                arr[r] = temp;
+                l++;
+                r--;
+            }
+        }
+
+        return new String(arr);
+    }
+
+
+
     // V1-1
     // IDEA: Stack of Letters
     // https://leetcode.com/problems/reverse-only-letters/editorial/

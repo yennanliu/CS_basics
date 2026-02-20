@@ -6558,9 +6558,63 @@ public class Workspace19 {
 
 
     // LC 917
+    // 11. 24 - 34 am
+    /**
+     *
+     *  -> Return s after reversing it.
+     *
+     *
+     *
+     * ------------------
+     *
+     *  IDEA 1) 2 POINTERS and ONLY
+     *         implement on alphabet element
+     *
+     *
+     * ------------------
+     *
+     *
+     *
+     */
     public String reverseOnlyLetters(String s) {
+        // edge
 
-        return null;
+        int n = s.length();
+        int l = 0;
+        int r = n -1;
+
+        // ???
+        String alpha = "abcdefghijklmnopqrstuvwxyz";
+
+        // ???
+        String[] s_arr = s.split("");
+
+
+        while(r > l && r > 0 && l < n){
+//            String lVal = String.valueOf(s.charAt(l));
+//            String rVal = String.valueOf(s.charAt(r));
+            String lVal = s_arr[l];
+            String rVal = s_arr[r];
+            while(!alpha.contains(lVal)){
+                l += 1;
+            }
+            while(!alpha.contains(rVal)){
+                r -= 1;
+            }
+            // swap
+            String tmp =  s_arr[r];
+            s_arr[r] = s_arr[l];
+            s_arr[l] = tmp;
+
+            l += 1;
+            r -= 1;
+        }
+
+        System.out.println(">>> s_arr = " + s_arr);
+
+        // transform back to string
+        String res = s_arr.toString(); // ???
+        return res;
     }
 
 }
