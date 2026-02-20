@@ -60,13 +60,15 @@
 | 2  | Feb 21 (Sat) | Hard Drill | Two Pointers Hard Variants | LC 15 - 3Sum, LC 42 - Trapping Rain Water |
 | 3  | Feb 22 (Sun) | **🏆 LC Weekly Contest #1** | Unseen Problems | Participate in / simulate LC Weekly Contest |
 | 4  | Feb 23 (Mon) | Pattern | Prefix Sum | LC 238 - Product of Array Except Self, LC 560 - Subarray Sum Equals K |
-| 5  | Feb 24 (Tue) | Pattern | Array Manipulation | LC 53 - Maximum Subarray, LC 48 - Rotate Image |
-| 6  | Feb 25 (Wed) | Pattern | Sorting-Based Array | LC 56 - Merge Intervals, LC 179 - Largest Number |
+| 5  | Feb 24 (Tue) | Pattern | Array Manipulation + **Kadane's Algo** | LC 53 - Maximum Subarray *(Kadane's)*, LC 48 - Rotate Image, LC 152 - Max Product Subarray |
+| 6  | Feb 25 (Wed) | Pattern | Sorting + **Interval Pattern** | LC 56 - Merge Intervals, LC 57 - Insert Interval, LC 435 - Non-overlapping Intervals |
 | 7  | Feb 26 (Thu) | Pattern | Array Hard + Review | LC 128 - Longest Consecutive Sequence, LC 54 - Spiral Matrix |
 
 **Week 1 Core Concepts:**
 - Two pointers: opposite-end scan for sorted arrays; same-direction for window
 - Prefix sum: `pre[i] = pre[i-1] + nums[i]` → range sum in O(1)
+- **Kadane's**: `cur = max(nums[i], cur + nums[i])`; local max decides to extend or restart
+- **Interval Pattern**: sort by start → merge (extend end) or insert; for scheduling sort by end (greedy)
 - Know when to sort first vs. use a hash map
 
 ---
@@ -179,13 +181,15 @@
 | 41 | Apr 1 (Wed)  | Pattern | Topological Sort | LC 207 - Course Schedule, LC 210 - Course Schedule II |
 | 42 | Apr 2 (Thu)  | Pattern | Graph BFS + Multi-source | LC 127 - Word Ladder, LC 310 - Minimum Height Trees |
 | 43 | Apr 3 (Fri)  | Pattern | Union Find (DSU) | LC 684 - Redundant Connection, LC 547 - Number of Provinces, LC 261 - Graph Valid Tree |
-| 44 | Apr 4 (Sat)  | Hard Drill | Shortest Path | LC 743 - Network Delay Time (Dijkstra), LC 787 - Cheapest Flights Within K Stops |
+| 44 | Apr 4 (Sat)  | Hard Drill | Shortest Path (All Variants) | LC 743 - Network Delay (Dijkstra), LC 787 - Cheapest Flights *(Bellman-Ford K-steps)*, LC 1334 - Find City *(Floyd-Warshall)* |
 | 45 | Apr 5 (Sun)  | **🏆 LC Weekly Contest #7** | Unseen Problems | Participate in / simulate LC Weekly Contest |
 
 > **Phase 2 wrap-up**: Review contest + mock performance. List top 3 weak spots.
 
 **Week 7 Core Concepts:**
 - BFS → unweighted shortest path; Dijkstra → non-negative weighted
+- **Bellman-Ford**: relax all edges V-1 times → O(V·E); use when K-hop constraint or negative weights
+- **Floyd-Warshall**: `dp[i][j] = min(dp[i][j], dp[i][k]+dp[k][j])` → O(V³) all-pairs shortest path
 - Topological sort: Kahn's BFS (track in-degree) — handle cycle detection
 - Union Find: path compression + union by rank → near O(1) per op
 
@@ -203,7 +207,7 @@
 | 47 | Apr 7 (Tue)  | Pattern | 1D DP Advanced | LC 300 - Longest Increasing Subsequence, LC 139 - Word Break, LC 152 - Max Product Subarray |
 | 48 | Apr 8 (Wed)  | Pattern | 2D DP Basics | LC 62 - Unique Paths, LC 1143 - Longest Common Subsequence |
 | 49 | Apr 9 (Thu)  | Pattern | 2D DP Advanced | LC 72 - Edit Distance, LC 97 - Interleaving String |
-| 50 | Apr 10 (Fri) | Pattern | Knapsack DP | LC 416 - Partition Equal Subset Sum, LC 518 - Coin Change II |
+| 50 | Apr 10 (Fri) | Pattern | Knapsack + **Interval DP** + **Bitmask DP** | LC 416 - Partition Equal Subset Sum, LC 518 - Coin Change II, LC 312 - Burst Balloons *(Interval DP)*, LC 847 - Shortest Path All Nodes *(Bitmask DP)* |
 | 51 | Apr 11 (Sat) | **🎯 Mini-Mock #4** | Graphs / DP Mixed | 2 unseen problems (1 graph, 1 DP) — 45 min each. Focus on state definition. |
 | 52 | Apr 12 (Sun) | **🏆 LC Weekly Contest #8** | Unseen Problems | Participate in / simulate LC Weekly Contest; then review Stock DP: LC 121, 122, 309 |
 
@@ -211,6 +215,8 @@
 - DP: define state → recurrence → base case → iteration order
 - 1D DP: `dp[i]` = best answer using first `i` elements
 - Knapsack: outer loop = items, inner loop = capacity (0/1: backward; unbounded: forward)
+- **Interval DP**: `dp[i][j]` = optimal answer for sub-range `[i,j]`; iterate by length, not by start
+- **Bitmask DP**: state = bitmask of visited nodes/items; `dp[mask][i]` = best answer visiting nodes in `mask` ending at `i`
 
 ---
 
@@ -261,16 +267,22 @@
 |-----|------|------|-------|----------|
 | 61 | Apr 21 (Tue) | Pattern | Design Basics | LC 146 - LRU Cache, LC 155 - Min Stack |
 | 62 | Apr 22 (Wed) | Pattern | Design Advanced | LC 460 - LFU Cache, LC 380 - Insert Delete GetRandom O(1) |
-| 63 | Apr 23 (Thu) | Pattern | Trie Design | LC 208 - Implement Trie (drill), LC 642 - Design Search Autocomplete System |
-| 64 | Apr 24 (Fri) | Pattern | Bit Manipulation | LC 136 - Single Number, LC 137 - Single Number II, LC 338 - Counting Bits, LC 190 - Reverse Bits |
+| 63 | Apr 23 (Thu) | Pattern | Trie + **Advanced String Algorithms** | LC 208 - Implement Trie, LC 642 - Design Autocomplete; Concepts: **KMP** (LC 28), **Rolling Hash** (LC 1044), **Manacher's** (LC 5 O(n)) |
+| 64 | Apr 24 (Fri) | Pattern | Bit Manipulation + **BIT/Fenwick Tree** | LC 136, LC 137, LC 338, LC 190; **Fenwick Tree**: LC 307 - Range Sum Query Mutable |
 | 65 | Apr 25 (Sat) | **🎯 Full Mock #6** | Mixed Hard (90 min) | 2 Hard problems back-to-back, 45 min each — talk aloud, write clean code |
 | 66 | Apr 26 (Sun) | **🏆 LC Weekly Contest #10** | Unseen Problems | Participate in / simulate LC Weekly Contest |
-| 67 | Apr 27 (Mon) | Pattern | Advanced Graph + Union Find | LC 399 - Evaluate Division, LC 269 - Alien Dictionary, LC 1631 - Path With Minimum Effort |
+| 67 | Apr 27 (Mon) | Pattern | **Sweep Line + Difference Array** | LC 253 - Meeting Rooms II *(sweep)*, LC 218 - Skyline *(sweep+heap)*, LC 759 - Employee Free Time; **Diff Array**: LC 1109 - Corporate Flight Bookings, LC 370 - Range Addition |
 
 **Week 11 Core Concepts:**
 - LRU: `HashMap<key, Node>` + doubly linked list → O(1) get/put
 - LFU: 3 maps — `(key→val)`, `(key→freq)`, `(freq→LinkedHashSet<key>)`
 - Design problems: clarify API → define data structures → implement → analyze edge cases
+- **KMP**: build failure function `lps[]`; avoid redundant comparisons → O(n+m)
+- **Manacher's**: expand around center with mirror trick → O(n) for all palindromes
+- **Rolling Hash**: `hash = (hash * base + char) % mod`; compare substrings in O(1)
+- **Fenwick Tree (BIT)**: point update + prefix query both O(log n); use `i += (i & -i)` to update
+- **Sweep Line**: convert intervals to events `(pos, type)` → sort → process with sorted set or heap
+- **Difference Array**: `diff[l] += v; diff[r+1] -= v`; reconstruct with prefix sum → O(1) range update
 
 ---
 
@@ -278,10 +290,10 @@
 
 | Day | Date | Type | Topic | Problems |
 |-----|------|------|-------|----------|
-| 68 | Apr 28 (Tue) | Pattern | Hard DP | LC 354 - Russian Doll Envelopes, LC 1235 - Max Profit in Job Scheduling |
-| 69 | Apr 29 (Wed) | Pattern | Hard Graph | LC 778 - Swim in Rising Water, LC 329 - Longest Increasing Path in Matrix |
-| 70 | Apr 30 (Thu) | Pattern | Hard Backtracking | LC 282 - Expression Add Operators, LC 126 - Word Ladder II |
-| 71 | May 1 (Fri)  | Pattern | Google Simulation Style | LC 588 - Design In-Memory File System, LC 489 - Robot Room Cleaner |
+| 68 | Apr 28 (Tue) | Pattern | Hard DP + **Divide & Conquer** | LC 354 - Russian Doll Envelopes, LC 1235 - Max Profit in Job Scheduling; **D&C**: LC 315 - Count of Smaller Numbers After Self *(merge sort D&C)* |
+| 69 | Apr 29 (Wed) | Pattern | Hard Graph + Advanced Graph | LC 778 - Swim in Rising Water, LC 329 - Longest Increasing Path in Matrix, LC 399 - Evaluate Division, LC 269 - Alien Dictionary |
+| 70 | Apr 30 (Thu) | Pattern | Hard Backtracking + N-Sum Variants | LC 282 - Expression Add Operators, LC 126 - Word Ladder II; Review N-Sum pattern: 2-Sum/3-Sum/4-Sum generalization |
+| 71 | May 1 (Fri)  | Pattern | Google Simulation + Advanced Intervals | LC 588 - Design In-Memory File System, LC 1631 - Path With Min Effort; **Interval advanced**: LC 1851 - Min Interval per Query |
 | 72 | May 2 (Sat)  | **🎯 Full Mock #7** | Google-Style Full Sim (90 min) | 2 problems: 1 medium + 1 hard. Clarify → brute force → optimize → code → test |
 | 73 | May 3 (Sun)  | **🏆 LC Weekly Contest #11** | Unseen Problems | Participate in / simulate LC Weekly Contest |
 | 74 | May 4 (Mon)  | Review | Phase 4 Wrap-up + Google Classics | LC 68 - Text Justification, LC 149 - Max Points on a Line; review Phase 4 weak spots |
@@ -334,6 +346,57 @@ Use this protocol for every mock session (Mini-Mock and Full Mock):
 - ✅ What did you get right?
 - ❌ Where did you get stuck? (wrong pattern, off-by-one, missed edge case)
 - 📝 Which template/concept to revisit?
+
+---
+
+## Cheatsheet Coverage Map
+
+> Cross-reference with `doc/cheatsheet/` — all patterns below are addressed in the plan.
+> Priority: ⭐ = Google frequently tests | 📌 = know the concept | 🔖 = nice-to-have
+
+| Pattern | Cheatsheet | Covered In Plan | Priority |
+|---------|-----------|-----------------|----------|
+| Two Pointers | `2_pointers.md` | Week 1 | ⭐ |
+| Sliding Window | `sliding_window.md` | Week 2 | ⭐ |
+| Prefix Sum | `prefix_sum.md` | Week 1 | ⭐ |
+| Binary Search | `binary_search.md` | Week 3 | ⭐ |
+| **Kadane's Algorithm** | `kadane_algo.md` | Week 1 Day 5 | ⭐ |
+| **Interval Pattern** | `intervals.md` | Week 1 Day 6, Phase 4 | ⭐ |
+| **Sweep Line** | `scanning_line.md` | Phase 4 Day 67 | ⭐ |
+| **Difference Array** | `difference_array.md` | Phase 4 Day 67 | 📌 |
+| Linked List | `linked_list.md` | Week 4 | ⭐ |
+| Tree / BST | `tree.md`, `bst.md`, `binary_tree.md` | Week 5–6 | ⭐ |
+| DFS | `dfs.md` | Week 5–7 | ⭐ |
+| BFS | `bfs.md` | Week 5–7 | ⭐ |
+| Graph | `graph.md` | Week 7 | ⭐ |
+| Topological Sort | `topology_sorting.md` | Week 7 | ⭐ |
+| Union Find | `union_find.md` | Week 7 | ⭐ |
+| Dijkstra | `Dijkstra.md` | Week 7 | ⭐ |
+| **Bellman-Ford** | `Bellman-Ford.md` | Week 7 Day 44 | 📌 |
+| **Floyd-Warshall** | `Floyd-Warshall.md` | Week 7 Day 44 | 📌 |
+| DP (1D/2D) | `dp.md`, `dp_pattern.md` | Week 8 | ⭐ |
+| Knapsack DP | `dp_pattern.md` | Week 8 | ⭐ |
+| **Interval DP** | `dp_pattern.md` | Week 8 Day 50 | ⭐ |
+| **Bitmask DP** | `dp_pattern.md` | Week 8 Day 50 | 📌 |
+| Stock Trading DP | `stock_trading.md` | Week 8 | ⭐ |
+| Backtracking | `backtrack.md` | Week 9 | ⭐ |
+| Heap / Priority Queue | `heap.md`, `priority_queue.md` | Week 10 | ⭐ |
+| Greedy | `greedy.md` | Week 10 | ⭐ |
+| Monotonic Stack | `monotonic_stack.md` | Week 10 | ⭐ |
+| Design | `design.md` | Phase 4 Week 11 | ⭐ |
+| Trie | `trie.md` | Week 6 + Phase 4 | ⭐ |
+| **Advanced Strings (KMP, Manacher's, Rolling Hash)** | `advanced_string_algorithms.md`, `string_matching_kmp_rolling_hash.md` | Phase 4 Day 63 | 📌 |
+| **Binary Indexed Tree (Fenwick)** | `binary_indexed_tree.md` | Phase 4 Day 64 | 📌 |
+| Segment Tree | `segment_tree.md` | *(not scheduled — know concept)* | 🔖 |
+| Bit Manipulation | `bit_manipulation.md` | Phase 4 Day 64 | 📌 |
+| **Divide & Conquer** | `advanced_divide_and_conquer.md` | Phase 4 Day 68 | 📌 |
+| Matrix Traversal | `matrix.md` | Week 1 + Week 5 | 📌 |
+| N-Sum Variants | `n_sum.md` | Week 1 + Phase 4 Day 70 | 📌 |
+| Hashing / Rolling Hash | `hashing.md` | Phase 4 Day 63 | 📌 |
+| Palindrome | `palindrome.md` | Week 2 + Phase 4 Day 63 | 📌 |
+| String | `string.md` | Week 2 | ⭐ |
+| Recursion + DP | `recursion_and_dp.md` | Week 8 | ⭐ |
+| Scanning Line | `scanning_line.md` | Phase 4 Day 67 | ⭐ |
 
 ---
 
