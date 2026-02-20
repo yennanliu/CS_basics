@@ -62,7 +62,6 @@
 			- 26
 			- 27
 		- gemini
-			- 345
 			- 25
 			- 214
 - needcode `grind 75` - similar LC by AI
