@@ -6475,6 +6475,25 @@ public class Workspace19 {
     }
 
 
+    // LC 680
+    // 10.39 - 49 am
+    /**
+     *
+     * -> Given a string s, return true if
+     *   the s can be palindrome after deleting at most one character from it.
+     *
+     *
+     *  ----------------
+     *
+     *
+     *   ----------------
+     *
+     */
+    public boolean validPalindrome(String s) {
+        return false;
+
+    }
+
 
 
 }
