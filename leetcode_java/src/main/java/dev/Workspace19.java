@@ -6664,6 +6664,17 @@ public class Workspace19 {
     }
 
 
+    // LC 345
+    // 12.06 - 16 am
+    /**
+     *
+     *
+     *
+     */
+    public String reverseVowels(String s) {
+
+        return null;
+    }
 
 
 
