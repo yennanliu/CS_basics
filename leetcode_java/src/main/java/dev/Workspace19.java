@@ -6624,9 +6624,43 @@ public class Workspace19 {
 
 
     // LC 151
+    // 11.54 - 12.04
+    /**
+     *  -> Return a string of the words in reverse
+     *  order concatenated by a single space.
+     *
+     *
+     *  ------------------
+     *
+     *   IDEA 1) str -> arr
+     *           reverse
+     *           and only use single space
+     *
+     *
+     *  ------------------
+     *
+     */
     public String reverseWords(String s) {
+        // edge
 
-        return null;
+        // replace `multiple space` to single space
+        // and split
+        String[] str = s.trim().split("\\s+");
+        // ???
+        System.out.println(">>> str = " + Arrays.toString(str));
+        int n = str.length;
+
+        StringBuilder sb = new StringBuilder();
+        for(int i = n - 1; i >= 0; i--){
+            sb.append(str[i]);
+            // ???
+//            if(i >= 1){
+//                sb.append(" ");
+//            }
+            sb.append(" ");
+        }
+
+        return sb.toString().trim(); /// ????
     }
 
 
