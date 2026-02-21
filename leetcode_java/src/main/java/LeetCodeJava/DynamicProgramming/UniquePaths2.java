@@ -44,12 +44,70 @@ package LeetCodeJava.DynamicProgramming;
 public class UniquePaths2 {
 
     // V0
+    // IDEA: DP, LC 62 (gemini)
+    public int uniquePathsWithObstacles(int[][] obstacleGrid) {
+        if (obstacleGrid == null || obstacleGrid.length == 0 || obstacleGrid[0][0] == 1) {
+            return 0;
+        }
+
+        int m = obstacleGrid.length;
+        int n = obstacleGrid[0].length;
+        int[][] dp = new int[m][n];
+
+        // 1. Initialize First Column
+        // Once we hit an obstacle, all subsequent cells in this column stay 0
+        for (int y = 0; y < m; y++) {
+            /** NOTE !!!
+             *
+             *  we BREAK the loop directly if face an obstacle.
+             *  since it's NOT possible to proceed (in y-axis direction)
+             */
+            if (obstacleGrid[y][0] == 1){
+                break;
+            }
+            dp[y][0] = 1;
+        }
+
+        // 2. Initialize First Row
+        // Once we hit an obstacle, all subsequent cells in this row stay 0
+        for (int x = 0; x < n; x++) {
+            /** NOTE !!!
+             *
+             *  we BREAK the loop directly if face an obstacle.
+             *  since it's NOT possible to proceed (in x-axis direction)
+             */
+            if (obstacleGrid[0][x] == 1){
+                break;
+            }
+            dp[0][x] = 1;
+        }
+
+        // 3. Fill the DP table
+        for (int y = 1; y < m; y++) {
+            for (int x = 1; x < n; x++) {
+                /** NOTE !!!
+                 *
+                 *   ONLY if cell at (x,y) is NOT obstacle,
+                 *   then we update the choice (dp table at (x,y))
+                 */
+                // If current cell is an obstacle, dp[y][x] remains 0
+                if (obstacleGrid[y][x] == 0) {
+                    dp[y][x] = dp[y - 1][x] + dp[y][x - 1];
+                }
+            }
+        }
+
+        return dp[m - 1][n - 1];
+    }
+
+
+    // V0-0-1
     // IDEA: DP, LC 62 (gpt)
     /**
      * time = O(M * N)
      * space = O(N)
      */
-    public int uniquePathsWithObstacles(int[][] obstacleGrid) {
+    public int uniquePathsWithObstacles_0_0_1(int[][] obstacleGrid) {
         int m = obstacleGrid.length;
         int n = obstacleGrid[0].length;
 
@@ -112,45 +170,6 @@ public class UniquePaths2 {
         return dp[m - 1][n - 1];
     }
 
-    // V0-0-1
-    // IDEA: DP, LC 62 (gemini)
-    public int uniquePathsWithObstacles_0_0_1(int[][] obstacleGrid) {
-        if (obstacleGrid == null || obstacleGrid.length == 0 || obstacleGrid[0][0] == 1) {
-            return 0;
-        }
-
-        int m = obstacleGrid.length;
-        int n = obstacleGrid[0].length;
-        int[][] dp = new int[m][n];
-
-        // 1. Initialize First Column
-        // Once we hit an obstacle, all subsequent cells in this column stay 0
-        for (int y = 0; y < m; y++) {
-            if (obstacleGrid[y][0] == 1)
-                break;
-            dp[y][0] = 1;
-        }
-
-        // 2. Initialize First Row
-        // Once we hit an obstacle, all subsequent cells in this row stay 0
-        for (int x = 0; x < n; x++) {
-            if (obstacleGrid[0][x] == 1)
-                break;
-            dp[0][x] = 1;
-        }
-
-        // 3. Fill the DP table
-        for (int y = 1; y < m; y++) {
-            for (int x = 1; x < n; x++) {
-                // If current cell is an obstacle, dp[y][x] remains 0
-                if (obstacleGrid[y][x] == 0) {
-                    dp[y][x] = dp[y - 1][x] + dp[y][x - 1];
-                }
-            }
-        }
-
-        return dp[m - 1][n - 1];
-    }
 
     // V0-0-2
     // IDEA: DP, LC 62 (GPT)
@@ -419,5 +438,5 @@ public class UniquePaths2 {
 
 
 
-    
+
 }
