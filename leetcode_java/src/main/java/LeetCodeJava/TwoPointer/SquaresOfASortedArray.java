@@ -2,7 +2,7 @@ package LeetCodeJava.TwoPointer;
 
 // https://leetcode.com/problems/squares-of-a-sorted-array/description/
 
-import java.util.Arrays;
+import java.util.*;
 
 /**
  * 977. Squares of a Sorted Array
@@ -41,9 +41,28 @@ import java.util.Arrays;
 public class SquaresOfASortedArray {
 
     // V0
-//    public int[] sortedSquares(int[] nums) {
-//
-//    }
+    // IDEA: SORT
+    public int[] sortedSquares(int[] nums) {
+        // edge
+
+        List<Integer> list = new ArrayList<>();
+        for (int x : nums) {
+            list.add(x * x);
+        }
+        Collections.sort(list, new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                int diff = o1 - o2;
+                return diff;
+            }
+        });
+        int[] res = new int[list.size()];
+        for (int i = 0; i < list.size(); i++) {
+            res[i] = list.get(i);
+        }
+
+        return res;
+    }
 
     // V1
     // IDEA: 2 POINTERS
