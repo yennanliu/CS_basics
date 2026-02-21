@@ -6906,12 +6906,35 @@ public class Workspace19 {
 
 
 
-
     // LC 977
+    // 15.35 - 45 pm
     public int[] sortedSquares(int[] nums) {
+        // edge
+        if(nums == null || nums.length <= 1){
+            return nums;
+        }
 
-        return null;
+        List<Integer> list = new ArrayList<>();
+        for(int x: nums){
+            list.add(x * x);
+        }
+        Collections.sort(list, new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                //int diff = o1 * o1 - o2 * o2;
+                int diff = o1 - o2;
+                return diff;
+            }
+        });
+        int[] res = new int[list.size()];
+        for(int i = 0; i < list.size(); i++){
+            res[i] = list.get(i);
+        }
+
+        return res;
     }
+
+
 
 
 
