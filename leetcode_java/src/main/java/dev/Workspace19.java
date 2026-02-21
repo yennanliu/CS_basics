@@ -6944,9 +6944,45 @@ public class Workspace19 {
 
 
     // LC 164
+    // 16.04 - 14 pm
+    /**
+     *
+     *
+     *  -> return the maximum difference
+     *     between two successive elements in its sorted form
+     *
+     *     - if less < 2 elements
+     *        - return 0
+     *
+     *
+     *  nums: int arr
+     *
+     *
+     *  NOTE:
+     *    - You must write an algorithm that
+     *     runs in linear time and uses linear extra space.
+     *
+     *  ---------------
+     *
+     *   IDEA 1) SORT
+     */
+    // IDEA 1) SORT
     public int maximumGap(int[] nums) {
+        // edge
+        if(nums.length < 2){
+            return 0;
+        }
 
-        return 0;
+        System.out.println(">>> (before sort) nums = " + Arrays.toString(nums));
+        Arrays.sort(nums); // /??
+        System.out.println(">>> (after sort) nums = " + Arrays.toString(nums));
+
+        int biggestGap = 0;
+        for(int i = 1; i < nums.length; i++){
+            biggestGap = Math.max(biggestGap, nums[i] - nums[i-1]);
+        }
+
+        return biggestGap;
     }
 
 
