@@ -6907,6 +6907,11 @@ public class Workspace19 {
 
 
 
+    // LC 977
+    public int[] sortedSquares(int[] nums) {
+
+        return null;
+    }
 
 
 

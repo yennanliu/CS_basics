@@ -65,7 +65,6 @@
 		- gemini
 	- LC 88
 		- gpt
-			- 977
 			- 493
 			- 88
 		- gemini
