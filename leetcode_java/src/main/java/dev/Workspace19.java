@@ -6987,7 +6987,11 @@ public class Workspace19 {
 
 
 
+    // LC 327
+    public int countRangeSum(int[] nums, int lower, int upper) {
 
+        return 0;
+    }
 
 
 }
