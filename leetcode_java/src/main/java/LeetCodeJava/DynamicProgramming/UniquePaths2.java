@@ -112,6 +112,102 @@ public class UniquePaths2 {
         return dp[m - 1][n - 1];
     }
 
+    // V0-0-1
+    // IDEA: DP, LC 62 (gemini)
+    public int uniquePathsWithObstacles_0_0_1(int[][] obstacleGrid) {
+        if (obstacleGrid == null || obstacleGrid.length == 0 || obstacleGrid[0][0] == 1) {
+            return 0;
+        }
+
+        int m = obstacleGrid.length;
+        int n = obstacleGrid[0].length;
+        int[][] dp = new int[m][n];
+
+        // 1. Initialize First Column
+        // Once we hit an obstacle, all subsequent cells in this column stay 0
+        for (int y = 0; y < m; y++) {
+            if (obstacleGrid[y][0] == 1)
+                break;
+            dp[y][0] = 1;
+        }
+
+        // 2. Initialize First Row
+        // Once we hit an obstacle, all subsequent cells in this row stay 0
+        for (int x = 0; x < n; x++) {
+            if (obstacleGrid[0][x] == 1)
+                break;
+            dp[0][x] = 1;
+        }
+
+        // 3. Fill the DP table
+        for (int y = 1; y < m; y++) {
+            for (int x = 1; x < n; x++) {
+                // If current cell is an obstacle, dp[y][x] remains 0
+                if (obstacleGrid[y][x] == 0) {
+                    dp[y][x] = dp[y - 1][x] + dp[y][x - 1];
+                }
+            }
+        }
+
+        return dp[m - 1][n - 1];
+    }
+
+    // V0-0-2
+    // IDEA: DP, LC 62 (GPT)
+    public int uniquePathsWithObstacles_0_0_2(int[][] obstacleGrid) {
+
+        if (obstacleGrid == null || obstacleGrid.length == 0
+                || obstacleGrid[0].length == 0) {
+            return 0;
+        }
+
+        int m = obstacleGrid.length;
+        int n = obstacleGrid[0].length;
+
+        // If start OR end is blocked → no path
+        if (obstacleGrid[0][0] == 1 || obstacleGrid[m - 1][n - 1] == 1) {
+            return 0;
+        }
+
+        int[][] dp = new int[m][n];
+
+        dp[0][0] = 1;
+
+        // First column
+        for (int i = 1; i < m; i++) {
+            if (obstacleGrid[i][0] == 0) {
+                dp[i][0] = dp[i - 1][0];
+            } else {
+                dp[i][0] = 0;
+            }
+        }
+
+        // First row
+        for (int j = 1; j < n; j++) {
+            if (obstacleGrid[0][j] == 0) {
+                dp[0][j] = dp[0][j - 1];
+            } else {
+                dp[0][j] = 0;
+            }
+        }
+
+        // Fill rest
+        for (int i = 1; i < m; i++) {
+            for (int j = 1; j < n; j++) {
+
+                if (obstacleGrid[i][j] == 1) {
+                    dp[i][j] = 0;
+                } else {
+                    dp[i][j] = dp[i - 1][j] + dp[i][j - 1];
+                }
+            }
+        }
+
+        return dp[m - 1][n - 1];
+    }
+
+
+
     // V0-1
     // IDEA: DFS (fixed by gpt) (TLE)
     int pathCnt = 0;
@@ -321,4 +417,7 @@ public class UniquePaths2 {
         return path[m - 1][n - 1];
     }
 
+
+
+    
 }
