@@ -74,6 +74,58 @@ public class MergeSortedArray {
         Arrays.sort(nums1);
     }
 
+    // V0-1
+    // IDEA: 2 POINTERS (gemini)
+    public void merge_0_1(int[] nums1, int m, int[] nums2, int n) {
+        // Pointers for the ends of the actual data
+        int i = m - 1; // Last valid element in nums1
+        int j = n - 1; // Last element in nums2
+        int k = m + n - 1; // Last position in the nums1 array total capacity
+
+        // Merge from back to front
+        while (j >= 0) {
+            // If nums1 still has elements and its current element is larger
+            if (i >= 0 && nums1[i] > nums2[j]) {
+                nums1[k] = nums1[i];
+                i--;
+            } else {
+                // Either nums1 is empty or nums2 element is larger/equal
+                nums1[k] = nums2[j];
+                j--;
+            }
+            k--;
+        }
+    }
+
+
+    // V0-2
+    // IDEA: 2 POINTERS (gpt)
+    public void merge_0_2(int[] nums1, int m, int[] nums2, int n) {
+
+        int i = m - 1; // last valid element in nums1
+        int j = n - 1; // last element in nums2
+        int k = m + n - 1; // last position in nums1
+
+        while (i >= 0 && j >= 0) {
+            if (nums1[i] > nums2[j]) {
+                nums1[k] = nums1[i];
+                i--;
+            } else {
+                nums1[k] = nums2[j];
+                j--;
+            }
+            k--;
+        }
+
+        // If nums2 still has elements left
+        while (j >= 0) {
+            nums1[k] = nums2[j];
+            j--;
+            k--;
+        }
+    }
+
+
     // V1
     // IDEA : MERGE AND SORT
     // https://leetcode.com/problems/merge-sorted-array/editorial/
@@ -129,5 +181,8 @@ public class MergeSortedArray {
             }
         }
     }
+
+
+    
 
 }
