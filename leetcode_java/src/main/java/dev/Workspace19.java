@@ -6847,5 +6847,68 @@ public class Workspace19 {
     }
 
 
+    // LC 88
+    // 15.11 -21 pm
+    /**
+     *  -> Merge nums1 and nums2 into a
+     *     single array sorted
+     *     in `non-decreasing` order.
+     *
+     *
+     *   - nums1, nums2 in increasing order
+     *   - m, n: number of elemets in nums1, nums2
+     *
+     *
+     *  -------------------
+     *
+     *
+     *  IDEA 1) 2 POINTERS
+     *
+     *
+     *  -------------------
+     *
+     */
+    public void merge(int[] nums1, int m, int[] nums2, int n) {
+        // edge
+        if(n == 0){
+            return;
+        }
+        if(m == 0){
+            for(int i = 0; i < n - 1; i++){
+                nums1[i] = nums2[i];
+            }
+        }
+
+        int i = 0;
+        int j = 0;
+
+        // ???
+        List<Integer> list = new ArrayList<>();
+
+        // ???
+        while(i < m - 1 || j < n - 1){
+            if(i < m - 1 && nums1[i] <= nums2[j]){
+                list.add(nums1[i]);
+                i += 1;
+            }else if(j < n - 1 && nums1[i] > nums2[j]){
+                list.add(nums2[j]);
+                j += 1;
+            }
+        }
+
+        // ???
+        for(int x = 0; x < nums1.length; x++){
+            nums1[x] = list.get(x);
+        }
+
+
+    }
+
+
+
+
+
+
+
 
 }
