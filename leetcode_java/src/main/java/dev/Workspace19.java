@@ -6935,6 +6935,11 @@ public class Workspace19 {
     }
 
 
+    // LC 493
+    public int reversePairs(int[] nums) {
+
+        return 0;
+    }
 
 
 
