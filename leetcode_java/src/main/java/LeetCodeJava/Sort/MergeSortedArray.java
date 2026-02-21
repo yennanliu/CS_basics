@@ -75,14 +75,17 @@ public class MergeSortedArray {
     }
 
     // V0-1
-    // IDEA: 2 POINTERS (gemini)
+    // IDEA: 2 POINTERS (Merge from back to front) (gemini)
     public void merge_0_1(int[] nums1, int m, int[] nums2, int n) {
         // Pointers for the ends of the actual data
         int i = m - 1; // Last valid element in nums1
         int j = n - 1; // Last element in nums2
         int k = m + n - 1; // Last position in the nums1 array total capacity
 
-        // Merge from back to front
+        /** NOTE !!!
+         *
+         * Merge from back to front
+         */
         while (j >= 0) {
             // If nums1 still has elements and its current element is larger
             if (i >= 0 && nums1[i] > nums2[j]) {
@@ -99,7 +102,7 @@ public class MergeSortedArray {
 
 
     // V0-2
-    // IDEA: 2 POINTERS (gpt)
+    // IDEA: 2 POINTERS (Merge from back to front) (gpt)
     public void merge_0_2(int[] nums1, int m, int[] nums2, int n) {
 
         int i = m - 1; // last valid element in nums1
@@ -183,6 +186,6 @@ public class MergeSortedArray {
     }
 
 
-    
+
 
 }

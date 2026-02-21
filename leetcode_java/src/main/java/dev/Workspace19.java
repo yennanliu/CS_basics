@@ -6852,7 +6852,7 @@ public class Workspace19 {
     /**
      *  -> Merge nums1 and nums2 into a
      *     single array sorted
-     *     in `non-decreasing` order.
+     *     in `increasing` order.
      *
      *
      *   - nums1, nums2 in increasing order
