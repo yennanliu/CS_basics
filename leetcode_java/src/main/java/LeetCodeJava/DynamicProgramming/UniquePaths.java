@@ -96,6 +96,12 @@ public class UniquePaths {
          */
         for (int y = 1; y < m; y++) {
             for (int x = 1; x < n; x++) {
+                /** NOTE !!!
+                 *
+                 *
+                 *   dp[y][x] is the sum of choics from
+                 *   dp[y - 1][x],  dp[y][x - 1]
+                 */
                 // The ways to reach current cell = ways from top + ways from left
                 dp[y][x] = dp[y - 1][x] + dp[y][x - 1];
             }
