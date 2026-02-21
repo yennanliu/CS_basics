@@ -6988,6 +6988,26 @@ public class Workspace19 {
 
 
     // LC 327
+    // 16.42 - 52 pm
+    /**
+     *  -> return the number of `range
+     *    sums` that lie in [lower, upper] inclusive.
+     *
+     *    - Range sum S(i, j):
+     *
+     *        - The sum of the elements in nums
+     *          between indices i and j inclusive, where i <= j.
+     *
+     *     nums: int arr
+     *     lower, upper
+     *
+     *
+     *  ----------------
+     *
+     *
+     *   ----------------
+     *
+     */
     public int countRangeSum(int[] nums, int lower, int upper) {
 
         return 0;

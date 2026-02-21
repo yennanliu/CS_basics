@@ -1,6 +1,7 @@
 package LeetCodeJava.Sort;
 
 // https://leetcode.com/problems/count-of-range-sum/description/
+// https://leetcode.cn/problems/count-of-range-sum/
 /**
  * 327. Count of Range Sum
  * Hard
@@ -35,6 +36,13 @@ package LeetCodeJava.Sort;
  *
  */
 public class CountOfRangeSum {
+
+    /** NOTE !!!
+     *
+     *  return the number of range `sums` that lie in [lower, upper] inclusive.
+     *
+     *  -> NOTE !!! the range `sums`, but not val at idx
+     */
 
     // V0
 //    public int countRangeSum(int[] nums, int lower, int upper) {
