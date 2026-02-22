@@ -38,6 +38,79 @@ public class DuplicateZeros {
 //
 //    }
 
+    // V0-1
+    // IDEA: 2 PASS (gemini)
+    public void duplicateZeros_0_1(int[] arr) {
+        int n = arr.length;
+        int zeros = 0;
+
+        // 1. First pass: Count how many zeros we can actually duplicate
+        // within the bounds of the original array length.
+        int length = n + countZeros(arr); // Theoretical length
+
+        // 2. Second pass: Move elements from back to front
+        // We use two pointers: 'i' for the original elements, 'j' for the new positions
+        for (int i = n - 1, j = n + countZeros(arr) - 1; i >= 0; i--, j--) {
+            if (arr[i] == 0) {
+                // If it's a zero, we write it twice (if within bounds)
+                if (j < n)
+                    arr[j] = 0;
+                j--; // Decrement j for the "duplicated" zero
+                if (j < n)
+                    arr[j] = 0;
+            } else {
+                // If it's not a zero, just copy it (if within bounds)
+                if (j < n)
+                    arr[j] = arr[i];
+            }
+        }
+    }
+
+    // Helper to count zeros
+    private int countZeros(int[] arr) {
+        int count = 0;
+        for (int x : arr)
+            if (x == 0)
+                count++;
+        return count;
+    }
+
+    // V0-2
+    // IDEA: (gpt)
+    public void duplicateZeros_0_2(int[] arr) {
+        int n = arr.length;
+        int zeros = 0;
+
+        // Count zeros that can be duplicated
+        for (int i = 0; i < n; i++) {
+            if (arr[i] == 0) {
+                zeros++;
+            }
+        }
+
+        int i = n - 1;
+        int j = n + zeros - 1;
+
+        // Work backwards
+        while (i >= 0) {
+            if (j < n) {
+                arr[j] = arr[i];
+            }
+
+            if (arr[i] == 0) {
+                j--;
+                if (j < n) {
+                    arr[j] = 0;
+                }
+            }
+
+            i--;
+            j--;
+        }
+    }
+
+
+
     // V1
     // IDEA: TWO PASS
     // https://leetcode.com/problems/duplicate-zeros/editorial/
@@ -134,4 +207,5 @@ public class DuplicateZeros {
     // V3
 
 
+    
 }
