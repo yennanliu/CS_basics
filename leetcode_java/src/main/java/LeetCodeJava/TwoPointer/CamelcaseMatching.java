@@ -55,7 +55,7 @@ public class CamelcaseMatching {
 //    }
 
     // V0-1
-    // IDEA: PATTERN MATCH (gemini)
+    // IDEA: 2 POINTERS + PATTERN MATCH (gemini)
     public List<Boolean> camelMatch_0_1(String[] queries, String pattern) {
         List<Boolean> result = new ArrayList<>();
 
@@ -67,6 +67,13 @@ public class CamelcaseMatching {
     }
 
     private boolean isMatch_0_1(String query, String pattern) {
+        /** NOTE !!! below
+         *
+         *
+         *   i:  query pointer
+         *   j:  pattern pointer
+         *
+         */
         int i = 0; // Pointer for query
         int j = 0; // Pointer for pattern
 
