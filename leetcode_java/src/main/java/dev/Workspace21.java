@@ -189,7 +189,11 @@ public class Workspace21 {
 
 
 
+    // LC 720
+    public String longestWord(String[] words) {
 
+        return null;
+    }
 
 
 }
