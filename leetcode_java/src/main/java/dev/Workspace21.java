@@ -1,7 +1,6 @@
 package dev;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class Workspace21 {
 
@@ -190,10 +189,108 @@ public class Workspace21 {
 
 
     // LC 720
+    // 13.02 - 12 pm
+    /**
+     *
+     *  -> return the longest word in words that can
+     *   be built one character at a time by other words in words.
+     *
+     *
+     *   NOTE:
+     *
+     *    - If there is more than one possible answer,
+     *        - return the longest word with the smallest lexicographical order.
+     *
+     *    - If there is no answer,
+     *       - return the empty string.
+     *
+     *  ---------------------
+     *
+     *   IDEA 1) BRUTE FORCE
+     *
+     *     - loop over word in words,
+     *     - check if the `word` can be built from remaining word
+     *     - maintain the candidate on the same time:
+     *        { len : [w1, w2, ...] }
+     *     - get the longest word, if there is a tie
+     *       , return the one with smallest lexicographical order
+     *
+     *   IDEA 2) TRIE + DFS ????
+     *
+     *
+     *  ---------------------
+     *
+     */
+    // IDEA 1) BRUTE FORCE
     public String longestWord(String[] words) {
+        // edge
+        if(words == null || words.length == 0){
+            return ""; // ???
+        }
+        if(words.length == 1){
+            return ""; // /??
+        }
 
-        return null;
+        // cache
+        // map: { len : [w1, w2, .. ] }
+        Map<Integer, List<String>> map = new HashMap<>();
+
+        int maxLen = 0;
+
+        for(String w: words){
+            if(canBuilt(w, words)){
+                int len = w.length();
+                if(!map.containsKey(len)){
+                    map.put(len, new ArrayList<>());
+                }
+                List<String> list = map.get(len);
+                list.add(w);
+                map.put(len, list);
+                maxLen = Math.max(maxLen, len);
+            }
+        }
+
+        List<String> list = map.get(maxLen);
+
+        if(list.isEmpty()){
+            return ""; // /??
+        }
+
+
+        // sort on lexicographical (small -> big)
+        // ??
+        // sort anyway
+        Collections.sort(list, new Comparator<String>() {
+            @Override
+            public int compare(String o1, String o2) {
+                // ????
+                int diff = o1.compareTo(o2); // /???
+                return diff;
+            }
+        });
+
+
+        return list.get(0);
     }
+
+
+
+    private boolean canBuilt(String word, String[] words){
+        for(String w: words){
+            if(!word.startsWith(w)){
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+
+
+
+
+
+
 
 
 }
