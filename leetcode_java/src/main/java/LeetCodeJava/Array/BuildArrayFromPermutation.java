@@ -46,9 +46,19 @@ package LeetCodeJava.Array;
 public class BuildArrayFromPermutation {
 
     // V0
-//    public int[] buildArray(int[] nums) {
-//
-//    }
+    // IDEA: ARRAY OP
+    public int[] buildArray(int[] nums) {
+        // edge
+        if (nums == null || nums.length == 0) {
+            return null;
+        }
+        int[] res = new int[nums.length];
+        for (int i = 0; i < nums.length; i++) {
+            res[i] = nums[nums[i]];
+        }
+
+        return res;
+    }
 
     // V1-1
     // IDEA: Build As Required
@@ -79,5 +89,6 @@ public class BuildArrayFromPermutation {
     }
 
     // V2
+
 
 }
