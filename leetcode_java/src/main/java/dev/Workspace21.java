@@ -231,6 +231,13 @@ public class Workspace21 {
             return ""; // /??
         }
 
+        // NOTE !!!
+        // 1. Sort words:
+        // Primary: by length (small to large)
+        // Secondary: lexicographical (alphabetical)
+        Arrays.sort(words);
+
+
         // cache
         // map: { len : [w1, w2, .. ] }
         Map<Integer, List<String>> map = new HashMap<>();
