@@ -5,7 +5,7 @@ package LeetCodeJava.String;
 import java.util.*;
 
 /**
- *  720. Longest Word in Dictionary
+ * 720. Longest Word in Dictionary
  * Attempted
  * Medium
  * Topics
@@ -13,31 +13,30 @@ import java.util.*;
  * Companies
  * Hint
  * Given an array of strings words representing an English Dictionary, return the longest word in words that can be built one character at a time by other words in words.
- *
+ * <p>
  * If there is more than one possible answer, return the longest word with the smallest lexicographical order. If there is no answer, return the empty string.
- *
+ * <p>
  * Note that the word should be built from left to right with each additional character being added to the end of a previous word.
- *
- *
- *
+ * <p>
+ * <p>
+ * <p>
  * Example 1:
- *
+ * <p>
  * Input: words = ["w","wo","wor","worl","world"]
  * Output: "world"
  * Explanation: The word "world" can be built one character at a time by "w", "wo", "wor", and "worl".
  * Example 2:
- *
+ * <p>
  * Input: words = ["a","banana","app","appl","ap","apply","apple"]
  * Output: "apple"
  * Explanation: Both "apply" and "apple" can be built from other words in the dictionary. However, "apple" is lexicographically smaller than "apply".
- *
- *
+ * <p>
+ * <p>
  * Constraints:
- *
+ * <p>
  * 1 <= words.length <= 1000
  * 1 <= words[i].length <= 30
  * words[i] consists of lowercase English letters.
- *
  */
 public class LongestWordInDictionary {
 
@@ -48,28 +47,30 @@ public class LongestWordInDictionary {
 
     // V0-1
     // IDEA: BRUTE FORCE (gemini)
-    /**  NOTE !!!
-     *
+
+    /**
+     * NOTE !!!
+     * <p>
      * Core idea:
-     *
+     * <p>
      * For LeetCode 720 – Longest Word in Dictionary, a
-     *
-     *   word is valid if:
-     *
-     *   -> `Every prefix of the word exists in the dictionary.`
-     *
-     *
+     * <p>
+     * word is valid if:
+     * <p>
+     * -> `Every prefix of the word exists in the dictionary.`
+     * <p>
+     * <p>
      * Example:
-     *
+     * <p>
      * ["w","wo","wor","worl","world"]
-     *
-     *  -> "world" is valid because:
-     *
-     *    "w" exists
-     *    "wo" exists
-     *    "wor" exists
-     *    "worl" exists
-     *    "world" exists
+     * <p>
+     * -> "world" is valid because:
+     * <p>
+     * "w" exists
+     * "wo" exists
+     * "wor" exists
+     * "worl" exists
+     * "world" exists
      */
     public String longestWord_0_1(String[] words) {
         // 1. Sort words:
@@ -344,7 +345,6 @@ public class LongestWordInDictionary {
     }
 
 
-
     // V1-1
     // IDEA: BRUTE FORCE
     // https://leetcode.com/problems/longest-word-in-dictionary/editorial/
@@ -437,7 +437,6 @@ class Trie {
     }
 
 
-
     // V2
     // IDEA: TRIE + DFS
     // https://leetcode.com/problems/longest-word-in-dictionary/solutions/634793/java-the-easiest-to-understand-trie-solu-qbqi/
@@ -479,16 +478,16 @@ class Trie {
             current = current.children[c - 'a'];
         }
         current.word = word;
+        }
+
     }
 
-}
+    class TreeNode {
+        TreeNode[] children = new TreeNode[26];
+        String word;
 
-class TreeNode {
-    TreeNode[] children = new TreeNode[26];
-    String word;
-
-    TreeNode() {
-    }
+        TreeNode() {
+        }
 
 
     // V3

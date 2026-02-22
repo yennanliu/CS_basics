@@ -49,6 +49,12 @@
 - **Examples**: LC 10, 44, 72, 115, 583, 1143
 - **Pattern**: 2D DP table for string comparison
 
+### **Pattern 7: Incremental Prefix Validation**
+- **Description**: Validate words can be built character-by-character from prefixes
+- **Examples**: LC 720
+- **Pattern**: Sort words + HashSet to track buildable words + check immediate prefix
+- **Key Trick**: Only need to check if `word.substring(0, word.length() - 1)` exists
+
 ## Templates & Algorithms
 
 ### Template Comparison Table
@@ -60,6 +66,7 @@
 | **Rolling Hash** | Pattern/duplicate | O(n) | Multiple pattern search |
 | **Trie** | Prefix matching | O(m) | Multiple string search |
 | **DP** | Edit distance | O(n²) | String comparison |
+| **Prefix Validation** | Word building validation | O(n log n) | Check all prefixes exist |
 
 ### Template 1: Two Pointers Pattern
 ```python
@@ -451,6 +458,187 @@ def longestCommonSubsequence(text1, text2):
     return dp[m][n]
 ```
 
+### Template 7: Incremental Prefix Validation
+```python
+# Python - LC 720 Longest Word in Dictionary
+def longestWord(words):
+    """
+    Pattern: Build words incrementally by validating immediate prefix
+
+    Key Insight:
+      - A word is valid if ALL its prefixes exist in dictionary
+      - Instead of checking all prefixes, we only check the immediate prefix
+      - This works because we process words in sorted order (shorter first)
+      - If "worl" is valid, then "wor", "wo", "w" must already be valid
+
+    Example:
+      words = ["w","wo","wor","worl","world"]
+
+      After sorting: ["w","wo","wor","worl","world"]
+
+      Process:
+        "w"     -> len==1, add to built, result="w"
+        "wo"    -> "w" in built ✓, add "wo", result="wo"
+        "wor"   -> "wo" in built ✓, add "wor", result="wor"
+        "worl"  -> "wor" in built ✓, add "worl", result="worl"
+        "world" -> "worl" in built ✓, add "world", result="world"
+
+    Time: O(n log n) for sorting + O(n*m) for processing (m = avg word length)
+    Space: O(n*m) for storing all words in set
+    """
+    if not words:
+        return ""
+
+    # Sort lexicographically (automatically handles tie-breaking)
+    words.sort()
+
+    built = set()
+    result = ""
+
+    for word in words:
+        # Word is valid if:
+        # 1. Single character (base case), OR
+        # 2. Its immediate prefix exists in built set
+        if len(word) == 1 or word[:-1] in built:
+            built.add(word)
+
+            # Update result if current word is longer
+            # (sorting ensures alphabetical order for ties)
+            if len(word) > len(result):
+                result = word
+
+    return result
+
+# Alternative with explicit substring
+def longestWord_v2(words):
+    words.sort()
+    built = set()
+    result = ""
+
+    for word in words:
+        # Check immediate prefix: word.substring(0, word.length() - 1)
+        if len(word) == 1 or word[:len(word)-1] in built:
+            built.add(word)
+            if len(word) > len(result):
+                result = word
+
+    return result
+```
+
+```java
+// Java - LC 720 Longest Word in Dictionary
+public String longestWord(String[] words) {
+    /**
+     * Pattern: Incremental Prefix Validation
+     *
+     * Core Trick:
+     *   word.substring(0, word.length() - 1)
+     *
+     *   Only check if the IMMEDIATE prefix exists (not all prefixes)
+     *   This works because sorting guarantees shorter words are processed first
+     *
+     * Why Sorting is Critical:
+     *   Arrays.sort(words) ensures:
+     *   1. Shorter words come before longer words (alphabetically)
+     *   2. When we reach "world", "worl" has already been validated
+     *   3. If "worl" wasn't valid, it wouldn't be in builtWords
+     *
+     * Example:
+     *   Input: ["a","banana","app","appl","ap","apply","apple"]
+     *   After sort: ["a","ap","app","appl","apple","apply","banana"]
+     *
+     *   Process:
+     *     "a"      -> len==1, add ✓
+     *     "ap"     -> "a" exists ✓, add ✓
+     *     "app"    -> "ap" exists ✓, add ✓
+     *     "appl"   -> "app" exists ✓, add ✓
+     *     "apple"  -> "appl" exists ✓, add ✓
+     *     "apply"  -> "appl" exists ✓, add ✓
+     *     "banana" -> "banan" NOT exists ✗, skip
+     *
+     *   Result: "apple" (longer and lexicographically smaller than "apply")
+     *
+     * time = O(N log N) for sorting + O(N*M) for processing
+     * space = O(N*M) for HashSet storage
+     */
+    if (words == null || words.length == 0) {
+        return "";
+    }
+
+    // Sort lexicographically (handles both length and alphabetical order)
+    Arrays.sort(words);
+
+    Set<String> built = new HashSet<>();
+    String result = "";
+
+    for (String word : words) {
+        // Word is valid if:
+        // 1. Length == 1 (base case: single char always buildable), OR
+        // 2. Its prefix (all chars except last) exists in built set
+
+        /** NOTE !!! KEY TRICK
+         *
+         * word.substring(0, word.length() - 1)
+         *
+         * Get the immediate prefix (remove last character)
+         *
+         * Why not check ALL prefixes?
+         *   - We could do:
+         *     for (int i = 1; i < word.length(); i++) {
+         *         if (!built.contains(word.substring(0, i))) return false;
+         *     }
+         *
+         *   - But that's unnecessary because:
+         *     If "worl" is valid, then "wor", "wo", "w" must already be valid
+         *     (due to incremental building from sorted order)
+         *
+         * Inductive Logic:
+         *   If immediate prefix exists AND is valid,
+         *   Then all shorter prefixes must also exist (by induction)
+         */
+        if (word.length() == 1 || built.contains(word.substring(0, word.length() - 1))) {
+            built.add(word);
+
+            // Update result if current word is longer
+            // (sorting ensures lexicographical order is maintained)
+            if (word.length() > result.length()) {
+                result = word;
+            }
+        }
+    }
+
+    return result;
+}
+```
+
+**Key Insights:**
+
+1. **Why Only Check Immediate Prefix:**
+   - Sorting ensures shorter words are processed first
+   - If "worl" is valid, all its prefixes ("wor", "wo", "w") must already be valid
+   - This is **inductive reasoning**: checking immediate prefix is sufficient
+
+2. **Why Sorting Works:**
+   ```
+   Before: ["world","worl","wor","wo","w"]
+   After:  ["w","wo","wor","worl","world"]
+
+   When processing "world":
+     - "worl" has already been processed
+     - If "worl" is in built, all shorter prefixes are guaranteed valid
+   ```
+
+3. **Complexity Breakdown:**
+   - Sorting: O(N log N)
+   - Processing: O(N * M) where M = average word length
+   - Space: O(N * M) for HashSet
+   - Overall: O(N log N + N*M)
+
+4. **Similar Problems:**
+   - LC 720 Longest Word in Dictionary (this pattern)
+   - LC 745 Prefix and Suffix Search (Trie variation)
+   - LC 648 Replace Words (Trie + prefix matching)
+
 ## Basic String Operations
 ### Python String Operations
 ```python
@@ -659,6 +847,33 @@ class Solution(object):
 | Longest Common Subsequence | 1143 | Classic DP | Medium |
 | Interleaving String | 97 | 2D DP | Hard |
 
+#### **Incremental Prefix Validation Problems**
+| Problem | LC # | Key Technique | Difficulty |
+|---------|------|---------------|------------|
+| Longest Word in Dictionary | 720 | Sort + immediate prefix check | Medium |
+| Implement Trie (Prefix Tree) | 208 | Trie data structure | Medium |
+| Replace Words | 648 | Trie + prefix matching | Medium |
+| Word Search II | 212 | Trie + DFS | Hard |
+
+**Pattern Recognition:**
+- Need to validate if all prefixes of a word exist
+- Multiple words share common prefixes
+- Building words character-by-character
+- Dictionary-based word validation
+
+**Key Trick:**
+```java
+// Instead of checking ALL prefixes (O(M²) per word):
+for (int i = 1; i < word.length(); i++) {
+    if (!dict.contains(word.substring(0, i))) return false;
+}
+
+// Only check IMMEDIATE prefix (O(M) per word):
+if (word.length() == 1 || dict.contains(word.substring(0, word.length() - 1))) {
+    // Valid!
+}
+```
+
 ## Pattern Selection Strategy
 
 ```
@@ -698,6 +913,12 @@ Problem Analysis Flowchart:
    ├── YES → Dynamic Programming
    │         ├── Edit operations → Edit distance
    │         └── Subsequence → LCS variations
+   └── NO → Continue to 7
+
+7. Validate word building from prefixes?
+   ├── YES → Incremental Prefix Validation
+   │         ├── Sort + HashSet → O(N log N)
+   │         └── Check immediate prefix only
    └── NO → Use appropriate combination
 ```
 
