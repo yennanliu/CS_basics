@@ -54,13 +54,83 @@ public class CamelcaseMatching {
 //
 //    }
 
+    // V0-1
+    // IDEA: PATTERN MATCH (gemini)
+    public List<Boolean> camelMatch_0_1(String[] queries, String pattern) {
+        List<Boolean> result = new ArrayList<>();
+
+        for (String query : queries) {
+            result.add(isMatch_0_1(query, pattern));
+        }
+
+        return result;
+    }
+
+    private boolean isMatch_0_1(String query, String pattern) {
+        int i = 0; // Pointer for query
+        int j = 0; // Pointer for pattern
+
+        while (i < query.length()) {
+            char qChar = query.charAt(i);
+
+            // If characters match, move the pattern pointer
+            if (j < pattern.length() && qChar == pattern.charAt(j)) {
+                j++;
+            }
+            // If characters don't match, the extra character MUST be lowercase
+            else if (Character.isUpperCase(qChar)) {
+                return false;
+            }
+
+            // Always move the query pointer
+            i++;
+        }
+
+        // Match is only valid if we successfully navigated through the entire pattern
+        return j == pattern.length();
+    }
+
+
+    // V0-2
+    // IDEA: 2 POINTERS (gpt)
+    public List<Boolean> camelMatch_0_2(String[] queries, String pattern) {
+        List<Boolean> ans = new ArrayList<>();
+        for (String query : queries) {
+            ans.add(isMatch_0_2(query, pattern));
+        }
+        return ans;
+    }
+
+    private boolean isMatch_0_2(String query, String pattern) {
+        int i = 0, j = 0;
+        int m = query.length(), n = pattern.length();
+
+        while (i < m) {
+            if (j < n && query.charAt(i) == pattern.charAt(j)) {
+                // match current pattern char
+                i++;
+                j++;
+            } else if (Character.isLowerCase(query.charAt(i))) {
+                // skip lowercase letters
+                i++;
+            } else {
+                // uppercase not matching pattern → fail
+                return false;
+            }
+        }
+
+        // success only if all pattern chars were matched
+        return j == n;
+    }
+
+
     // V1
     // IDEA: DP
     // https://leetcode.com/problems/camelcase-matching/solutions/270742/java-4ms-dp-solution-and-summarization-o-clpi/
     public List<Boolean> camelMatch(String[] queries, String pattern) {
         List<Boolean> resultList = new ArrayList<Boolean>();
         for (int i = 0; i < queries.length; i++) {
-            if (isMatch(queries[i], pattern))
+            if (isMatch_1(queries[i], pattern))
                 resultList.add(true);
             else
                 resultList.add(false);
@@ -68,7 +138,7 @@ public class CamelcaseMatching {
         return resultList;
     }
 
-    public boolean isMatch(String query, String pattern) {
+    public boolean isMatch_1(String query, String pattern) {
         boolean dp[][] = new boolean[query.length() + 1][pattern.length() + 1];
         dp[0][0] = true;
         for (int i = 0; i < query.length(); i++)

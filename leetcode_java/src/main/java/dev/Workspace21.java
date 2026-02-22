@@ -296,6 +296,40 @@ public class Workspace21 {
 
 
     // LC 1023
+    // 13.50 - 14.09 PM
+    /**
+     *
+     *  ->  return
+     *        true: if queries[i] matches pattern
+     *        false: otherwise.
+     *
+     *     queries: query list
+     *     pattern: str
+     *
+     *     NOTE:
+     *
+     *        `query matches word`
+     *          -  if you can insert lowercase English letters
+     *             into the pattern so that it equals the query.
+     *
+     *          - You may insert a character `at any position in pattern `
+     *             or you may choose NOT to insert any characters at all.
+     *
+     *
+     *  --------------
+     *
+     *   IDEA 1) BRUTE FORCE
+     *
+     *   IDEA 2) 2 POINTERS ????
+     *
+     *   IDEA 3) DP ???
+     *
+     *    -
+     *
+     *  --------------
+     *
+     *
+     */
     public List<Boolean> camelMatch(String[] queries, String pattern) {
 
         return null;
