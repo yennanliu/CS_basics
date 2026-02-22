@@ -40,6 +40,12 @@
     - LC 567
     - LC 209 (see `sliding window cheatsheet`)
 
+- `Subsequence Matching` with character type constraints
+    - One pointer always moves, one conditionally moves
+    - Extra validation on non-matching characters
+    - LC 392 (Is Subsequence)
+    - LC 1023 (Camelcase Matching - with uppercase/lowercase constraint)
+
 - Algorithm
     - binary search
     - sliding window
@@ -472,6 +478,229 @@ public boolean isSubsequence(String s, String t) {
 
 **Classic Problems:**
 - LC 392 Is Subsequence
+- LC 524 Longest Word in Dictionary through Deleting
+- LC 792 Number of Matching Subsequences
+
+#### 0-2-6) Pattern Matching with Character Type Constraints (CamelCase Matching)
+
+```java
+// java
+// LC 1023 Camelcase Matching
+// https://leetcode.com/problems/camelcase-matching/
+
+/**
+ * Pattern: Subsequence matching with character type validation
+ *
+ * Key Idea:
+ *   - Similar to subsequence matching, but with EXTRA CONSTRAINT
+ *   - Use two pointers: i for query, j for pattern
+ *   - ALWAYS move i (scan through entire query)
+ *   - ONLY move j when characters match
+ *   - CRITICAL: Any non-matching character in query MUST be lowercase
+ *     (uppercase non-match = invalid)
+ *
+ * Core Logic:
+ *   1. All pattern characters must appear in query in same order (subsequence)
+ *   2. Any extra characters in query MUST be lowercase
+ *   3. If we encounter an extra uppercase letter → immediate failure
+ *
+ * Example 1:
+ *   query = "FooBar", pattern = "FB"
+ *
+ *   [F o o B a r]    i=0, j=0, query[i]=F, pattern[j]=F, match! j++
+ *    i j
+ *
+ *   [F o o B a r]    i=1, j=1, query[i]=o, pattern[j]=B, no match
+ *      i j           but 'o' is lowercase → OK, i++
+ *
+ *   [F o o B a r]    i=2, j=1, query[i]=o, pattern[j]=B, no match
+ *        i j         but 'o' is lowercase → OK, i++
+ *
+ *   [F o o B a r]    i=3, j=1, query[i]=B, pattern[j]=B, match! j++
+ *          i j
+ *
+ *   [F o o B a r]    i=4, j=2, query[i]=a, pattern[j]=none, no match
+ *            i       but 'a' is lowercase → OK, i++
+ *
+ *   [F o o B a r]    i=5, j=2, query[i]=r, pattern[j]=none, no match
+ *              i     but 'r' is lowercase → OK, i++
+ *
+ *   j == pattern.length() → return true
+ *
+ * Example 2:
+ *   query = "FooBarTest", pattern = "FB"
+ *
+ *   ... (matches F, o, o, B, a, r) ...
+ *
+ *   [F o o B a r T e s t]    i=6, j=2, query[i]=T
+ *                  i         'T' is UPPERCASE but not in pattern
+ *                            → return false immediately!
+ *
+ * Pointer Behavior:
+ *   - i (Explorer): Moves EVERY step, scans all characters
+ *   - j (Goal Tracker): ONLY moves when finding matching character
+ *   - Safety Check: Non-matching uppercase → instant failure
+ *
+ * Time: O(M) where M = query length
+ * Space: O(1)
+ */
+public List<Boolean> camelMatch(String[] queries, String pattern) {
+    List<Boolean> result = new ArrayList<>();
+
+    for (String query : queries) {
+        result.add(isMatch(query, pattern));
+    }
+
+    return result;
+}
+
+private boolean isMatch(String query, String pattern) {
+    /** NOTE !!!
+     *
+     *  Two pointers:
+     *    i: query pointer (always moves)
+     *    j: pattern pointer (conditionally moves)
+     */
+    int i = 0; // Pointer for query
+    int j = 0; // Pointer for pattern
+
+    while (i < query.length()) {
+        char qChar = query.charAt(i);
+
+        /** NOTE !!!
+         *
+         *  Three cases:
+         *
+         *  Case 1: Characters match
+         *    → Move both pointers
+         *
+         *  Case 2: Characters don't match AND query char is lowercase
+         *    → OK! This is allowed insertion, move i only
+         *
+         *  Case 3: Characters don't match AND query char is UPPERCASE
+         *    → FAIL! Extra uppercase not allowed
+         */
+
+        // Case 1: If characters match, move the pattern pointer
+        if (j < pattern.length() && qChar == pattern.charAt(j)) {
+            j++;
+        }
+        // Case 3: If characters don't match, the extra character MUST be lowercase
+        else if (Character.isUpperCase(qChar)) {
+            return false;
+        }
+        // Case 2: Lowercase character that doesn't match → skip it
+
+        // Always move the query pointer
+        i++;
+    }
+
+    // Match is only valid if we successfully navigated through the entire pattern
+    return j == pattern.length();
+}
+```
+
+```python
+# python
+# LC 1023 Camelcase Matching
+
+def camelMatch(queries, pattern):
+    """
+    Pattern: Subsequence with character type constraints
+
+    Core Trick:
+      - query pointer ALWAYS moves (explorer)
+      - pattern pointer ONLY moves on match (goal tracker)
+      - Extra validation: non-matching chars MUST be lowercase
+
+    Example:
+      query = "FooBar", pattern = "FB"
+
+      'F' == 'F' → match, j++
+      'o' != 'B' → but lowercase, OK
+      'o' != 'B' → but lowercase, OK
+      'B' == 'B' → match, j++
+      'a' (no pattern) → but lowercase, OK
+      'r' (no pattern) → but lowercase, OK
+
+      j reached end → True
+    """
+    result = []
+
+    for query in queries:
+        i, j = 0, 0
+        is_valid = True
+
+        while i < len(query):
+            # Case 1: Match found
+            if j < len(pattern) and query[i] == pattern[j]:
+                j += 1
+            # Case 2: Uppercase non-match → fail
+            elif query[i].isupper():
+                is_valid = False
+                break
+            # Case 3: Lowercase non-match → skip
+
+            i += 1
+
+        # Valid only if all pattern chars matched
+        result.append(is_valid and j == len(pattern))
+
+    return result
+```
+
+**Key Differences from Standard Subsequence:**
+
+| Aspect | Subsequence (LC 392) | CamelCase Matching (LC 1023) |
+|--------|---------------------|------------------------------|
+| **Pattern** | Any subsequence | Subsequence with type constraint |
+| **Non-match chars** | Ignored | MUST be lowercase |
+| **Uppercase non-match** | Ignored | **Instant failure** |
+| **Use case** | General matching | Identifier/name matching |
+
+**Visualization:**
+
+```
+Pattern = "FB"
+
+Query 1: "FooBar"
+  F → match ✓
+  o → lowercase non-match ✓
+  o → lowercase non-match ✓
+  B → match ✓
+  a → lowercase non-match ✓
+  r → lowercase non-match ✓
+  Result: TRUE
+
+Query 2: "FooBarTest"
+  F → match ✓
+  o → lowercase non-match ✓
+  o → lowercase non-match ✓
+  B → match ✓
+  a → lowercase non-match ✓
+  r → lowercase non-match ✓
+  T → UPPERCASE non-match ✗ FAIL!
+  Result: FALSE
+```
+
+**Pointer Movement Rules:**
+
+1. **i (Query Explorer):**
+   - Moves forward **EVERY step**
+   - Scans every character in query
+   - Never goes backward
+
+2. **j (Pattern Goal Tracker):**
+   - **ONLY moves** when finding matching character
+   - If `j == pattern.length()`, all pattern chars found
+
+3. **Safety Check:**
+   - Non-matching uppercase → **immediate return false**
+   - Non-matching lowercase → **continue** (allowed insertion)
+
+**Classic Problems:**
+- LC 1023 Camelcase Matching (this pattern)
+- LC 392 Is Subsequence (simpler version)
 - LC 524 Longest Word in Dictionary through Deleting
 - LC 792 Number of Matching Subsequences
 
@@ -1503,6 +1732,7 @@ public void reverseString(char[] s) {
 - LC 713 Subarray Product Less Than K
 - LC 881 Boats to Save People
 - LC 986 Interval List Intersections
+- LC 1023 Camelcase Matching
 
 ### Hard:
 - LC 42 Trapping Rain Water
@@ -1520,3 +1750,5 @@ public void reverseString(char[] s) {
 | **Partition** | Rearrange elements | LC 75, LC 86 |
 | **Palindrome with Deletion** | Allow k changes | LC 680, LC 1216 |
 | **Fixed + Two Pointers** | Sum problems (3Sum, 4Sum) | LC 15, LC 16, LC 18 |
+| **Subsequence Matching** | Check if one string is subsequence of another | LC 392, LC 524, LC 792 |
+| **Pattern Match with Constraints** | Subsequence + character type validation | LC 1023 |

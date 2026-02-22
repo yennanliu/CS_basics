@@ -110,10 +110,95 @@ public class Workspace21 {
 
 
     // LC 980
-    public int uniquePathsIII(int[][] grid) {
+    // 14.35 - 45 pm
+    /**
+     *
+     *   -> Return the `number` of 4-directional walks from the starting square to
+     *     the ending square,
+     *     that walk over every non-obstacle square exactly once.
+     *
+     *     - m x n matrix
+     *     - 1:  start
+     *     - 2: end
+     *     - 0: empty
+     *     - -1: obstacles
+     *
+     *
+     *     NOTE !!!
+     *
+     *      1. 4-directional walk
+     *      2. can visit `obstacle` once
+     *
+     *
+     *
+     *  -----------------
+     *
+     *   IDEA 1) MULTI SOURCE BFS ???
+     *   IDEA 2) 2D DP
+     *
+     *   IDEA 3) DFS ????
+     *
+     *
+     *  -----------------
+     *
+     *
+     *
+     */
+    // IDEA 2) 2D DP
+    public int uniquePathsIII_99(int[][] grid) {
 
-        return 0;
+        // edge
+
+        int m = grid.length;
+        int n = grid[0].length;
+
+        int[] start = null; // ???
+        int[] end = null; // ???
+
+        // 0. get start, end cell
+        for (int y = 0; y < m; y++) {
+            for (int x = 0; x < n; x++) {
+                if(grid[y][x] == 1){
+                   start = new int[]{x, y};
+                }
+                if(grid[y][x] == 2){
+                    end = new int[]{x, y};
+                }
+            }
+        }
+
+        System.out.println(">>> start = " + Arrays.toString(start) +
+                ", end = " + Arrays.toString(end));
+
+        // 1. Define DP table: dp[y][x] is the number of ways to reach cell (y, x)
+        int[][] dp = new int[m][n];
+
+        // 2. Initialize first column: only one way (keep going down)
+        for (int y = 0; y < m; y++) {
+            // ????
+//            if(dp[y][0] == -1){
+//                break;
+//            }
+            dp[y][0] = 1;
+        }
+
+        // 3. Initialize first row: only one way (keep going right)
+        for (int x = 0; x < n; x++) {
+//            if(dp[0][x] == -1){
+//                break;
+//            }
+            dp[0][x] = 1;
+        }
+
+
+        // ???
+        return dp[end[1]][end[0]];
     }
+
+
+
+
+
 
 
     // LC 1920

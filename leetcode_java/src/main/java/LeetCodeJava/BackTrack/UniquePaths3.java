@@ -58,6 +58,53 @@ package LeetCodeJava.BackTrack;
  */
 public class UniquePaths3 {
 
+    /** NOTE !!!
+     *
+     *
+     *
+     *  why CAN'T solve this LC (LC 980) with DP ?
+     *
+     * -> (gemini)
+     *
+     * The short answer is: **No,
+     * you CAN NOT solve it with standard Grid DP**
+     * (like the ones we did for LC 62 and 63).
+     * You must use **Backtracking** (DFS) or **DP with Bitmasking**.
+     *
+     * Here is why:
+     *
+     * ### 1. The "Visit Every Square" Constraint
+     *
+     * In LC 62 and 63, the robot could only move **Right** and **Down**. This created a "topological order"—you always know that `dp[y][x]` only depends on `dp[y-1][x]` and `dp[y][x-1]`.
+     *
+     * In LC 980, the robot can move **Up, Down, Left, and Right**, and it **must visit every empty square exactly once**.
+     *
+     * * **Cycles:** Because you can move in all four directions, you can go in circles. Standard DP can't handle cycles because it doesn't know which squares you have already visited.
+     * * **State:** To use DP, the "state" isn't just your current position `(y, x)`. The state must include **every single square you have visited so far**.
+     *
+     * ---
+     *
+     * ### 2. Why "Standard" DP Fails
+     *
+     * Imagine you are at square `(2, 2)`.
+     *
+     * * In LC 62, there is only one way to reach `(2, 2)`'s logic: from the top or left.
+     * * In LC 980, you could have reached `(2, 2)` after visiting 5 squares, or 10 squares, or via a "S" shape or a "U" shape.
+     * * The number of paths to the end depends on **which squares are left empty**. Standard DP doesn't store the "map of empty squares" in its table.
+     *
+     * ---
+     *
+     * ### 3. The "State" Problem (The Math)
+     *
+     * If you really wanted to use DP, your table would look like this:
+     * `dp[y][x][visited_mask]`
+     * Where `visited_mask` is a bitmask representing every square on the grid.
+     *
+     * * For a  grid (20 squares), the mask would be  (about 1 million states).
+     * * This is called **DP with Bitmasking**, but for this specific problem size, a simple **Backtracking (DFS)** is more intuitive and usually faster.
+     *
+     */
+
     // V0
 //    public int uniquePathsIII(int[][] grid) {
 //
