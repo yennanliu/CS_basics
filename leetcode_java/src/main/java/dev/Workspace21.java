@@ -115,9 +115,33 @@ public class Workspace21 {
 
 
     // LC 1920
+    // 12.34 - 12.44 PM
+    /**
+     *  -> build an array ans of the same length where ans[i] = nums[nums[i]]
+     *   for each 0 <= i < nums.length and return it.
+     *
+     *    nums: zero based arr
+     *
+     *
+     *  --------------------
+     *
+     *
+     *
+     *  --------------------
+     *
+     *
+     */
     public int[] buildArray(int[] nums) {
+        // edge
+        if(nums == null || nums.length == 0){
+            return null;
+        }
+        int[] res = new int[nums.length];
+        for(int i = 0; i < nums.length; i++){
+            res[i] = nums[nums[i]];
+        }
 
-        return null;
+        return res;
     }
 
 
