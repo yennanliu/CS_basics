@@ -295,6 +295,11 @@ public class Workspace21 {
 
 
 
+    // LC 1023
+    public List<Boolean> camelMatch(String[] queries, String pattern) {
+
+        return null;
+    }
 
 
 
