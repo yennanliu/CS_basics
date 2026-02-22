@@ -114,5 +114,11 @@ public class Workspace21 {
     }
 
 
+    // LC 1920
+    public int[] buildArray(int[] nums) {
+
+        return null;
+    }
+
 
 }
