@@ -56,6 +56,60 @@ public class CamelcaseMatching {
 
     // V0-1
     // IDEA: 2 POINTERS + PATTERN MATCH (gemini)
+    /**  CORE LOGIC:
+     *
+     * -> To solve **LC 1023 (CamelCase Matching)**,
+     *
+     * we need to check if a `query` string
+     * can be transformed into a `pattern` string
+     * by adding only **lowercase** letters.
+     *
+     * ### 💡 The Logic
+     *
+     * For a `query` to match a `pattern`:
+     *
+     * 1. All characters of the `pattern` must appear in the
+     *    `query` in the **same order** (standard subsequence check).
+     *
+     *
+     * 2. Any characters in the `query` that are **not**
+     *     part of the `pattern` **must be lowercase**.
+     *     If we encounter an extra uppercase letter in the
+     *     `query` that isn't required by the `pattern`,
+     *     the match is impossible.
+     *
+     *
+     */
+    /**  DEMO (dry run)
+     *
+     * ### 🔍 Dry Run Example
+     *
+     * **Pattern:** `"FB"`
+     * **Query 1:** `"FooBar"`
+     *
+     * 1. `'F'` == `'F'`: Match! Move pattern pointer to `j=1`.
+     * 2. `'o'`: Not in pattern, but it's lowercase. Continue.
+     * 3. `'o'`: Not in pattern, but it's lowercase. Continue.
+     * 4. `'B'` == `'B'`: Match! Move pattern pointer to `j=2`.
+     * 5. `'a'`: Lowercase. Continue.
+     * 6. `'r'`: Lowercase. Continue.
+     * 7. End of query, `j` reached the end of pattern. **Result: True**.
+     *
+     * **Query 2:** `"FootBall"`
+     *
+     * 1. ... Matches up to `'B'`.
+     * 2. Next char is `'a'` (lowercase).
+     * 3. Next char is `'l'` (lowercase).
+     * 4. Next char is **`'L'`** (Uppercase): This is an extra uppercase letter not in "FB". **Result: False**.
+     *
+     * ---
+     *
+     * ### 📊 Complexity
+     *
+     * * **Time Complexity**: , where  is the number of queries and  is the average length of a query. We look at each character of every query exactly once.
+     * * **Space Complexity**:  (excluding the result list), as we only use two pointers.
+     *
+     */
     public List<Boolean> camelMatch_0_1(String[] queries, String pattern) {
         List<Boolean> result = new ArrayList<>();
 
@@ -73,6 +127,46 @@ public class CamelcaseMatching {
          *   i:  query pointer
          *   j:  pattern pointer
          *
+         *
+         * ------
+         *
+         * Exactly! You've got it.
+         *
+         * In your example `query = "abc"`,
+         * the pointer `i` will start at **0**,
+         * then move to **1**, then **2**, and finally the
+         * loop ends when `i` reaches **3** (the length of the string).
+         *
+         * Here is the step-by-step breakdown of how the pointers behave during the loop:
+         *
+         * ### 📊 Pointer Trace Example
+         *
+         * Let's say **query** = `"aBc"` and **pattern** = `"ac"`
+         *
+         * | Step | `i` (Query) | `query.charAt(i)` | `j` (Pattern) | `pattern.charAt(j)` | Action |
+         * | --- | --- | --- | --- | --- | --- |
+         * | 1 | **0** | `'a'` | **0** | `'a'` | **Match!** Both `i` and `j` move forward. |
+         * | 2 | **1** | `'B'` | **1** | *(No more chars)* | **Mismatch!** But wait, `'B'` is **Uppercase**. |
+         * | 3 | **Result** |  |  |  | **FAIL**: Because an extra uppercase letter was found. |
+         *
+         * ---
+         *
+         * ### 💡 Key Pointer Rules for this Code:
+         *
+         * 1. **`i` (The Explorer):**
+         * * Moves forward **every single step**, no matter what.
+         * * It "scans" every character in the query to see if it's either a match for the pattern or a safe lowercase letter.
+         *
+         *
+         * 2. **`j` (The Goal Tracker):**
+         * * **Only moves** when it finds its matching partner in the query.
+         * * If `j` reaches the end of the pattern (i.e., `j == pattern.length()`), it means we found the full subsequence.
+         *
+         *
+         * 3. **The "Safety Check":**
+         * * If `query.charAt(i)` is **not** the character `j` is looking for, the code checks: *"Is this character an Uppercase letter?"*
+         * * If yes: **Instant Game Over** (`return false`).
+         * * If no: **Keep going** (it's just a lowercase filler).
          */
         int i = 0; // Pointer for query
         int j = 0; // Pointer for pattern
