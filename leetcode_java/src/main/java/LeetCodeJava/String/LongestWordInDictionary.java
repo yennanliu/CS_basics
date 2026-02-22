@@ -48,10 +48,58 @@ public class LongestWordInDictionary {
 
     // V0-1
     // IDEA: BRUTE FORCE (gemini)
+    /**  NOTE !!!
+     *
+     * Core idea:
+     *
+     * For LeetCode 720 – Longest Word in Dictionary, a
+     *
+     *   word is valid if:
+     *
+     *   -> `Every prefix of the word exists in the dictionary.`
+     *
+     *
+     * Example:
+     *
+     * ["w","wo","wor","worl","world"]
+     *
+     *  -> "world" is valid because:
+     *
+     *    "w" exists
+     *    "wo" exists
+     *    "wor" exists
+     *    "worl" exists
+     *    "world" exists
+     */
     public String longestWord_0_1(String[] words) {
         // 1. Sort words:
         // Primary: by length (small to large)
         // Secondary: lexicographical (alphabetical)
+        /**  NOTE !!!  why need to sort ??
+         *
+         *
+         *       * # 📌 Why Sorting Is Critical
+         *              *
+         *              * We sort first:
+         *              *
+         *              * ```java
+         *              * Arrays.sort(words);
+         *              * ```
+         *              *
+         *              * That ensures:
+         *              *
+         *              * ```
+         *              * ["w","wo","wor","worl","world"]
+         *              * ```
+         *              *
+         *              * comes in this order.
+         *              *
+         *              * So when we reach `"world"`:
+         *              *
+         *              * * `"worl"` has already been processed
+         *              * * If `"worl"` wasn’t valid, it wouldn’t be in `builtWords`
+         *
+         */
         Arrays.sort(words);
 
         Set<String> builtWords = new HashSet<>();
@@ -61,6 +109,196 @@ public class LongestWordInDictionary {
         for (String w : words) {
             // Base case: words of length 1 are always "buildable"
             // Recursive case: word is buildable if its prefix (all but last char) exists in set
+            /**  NOTE !!!  why `builtWords.contains(w.substring(0, w.length() - 1))` ?
+             *
+             *
+             *  - 1) Short answer
+             *
+             *   - given ["w","wo","wor","worl","world"]
+             *
+             *   -> If:
+             *
+             *     "w" is valid
+             *     "wo" is valid
+             *     "wor" is valid
+             *     "worl" is valid
+             *
+             *   -> Then to verify "world"
+             *      -> we only need to check:
+             *         "worl"
+             *
+             *
+             *  - 2) Long answer
+             *
+             *  Great question 👍 — this line is the **core trick** of LC 720.
+             *
+             * ```java
+             * builtWords.contains(w.substring(0, w.length() - 1))
+             * ```
+             *
+             * Let’s break it down clearly.
+             *
+             * ---
+             *
+             * # 🎯 What the problem requires
+             *
+             * A word is valid only if:
+             *
+             * > **All its prefixes exist in the dictionary.**
+             *
+             * Example:
+             *
+             * ```
+             * ["w","wo","wor","worl","world"]
+             * ```
+             *
+             * To accept `"world"`:
+             *
+             * * `"w"` must exist
+             * * `"wo"` must exist
+             * * `"wor"` must exist
+             * * `"worl"` must exist
+             *
+             * ---
+             *
+             * # 🔥 Why Only Check `length - 1` Prefix?
+             *
+             * You might think we need to check *all* prefixes.
+             *
+             * But we **don’t**.
+             *
+             * Because we build words **incrementally**.
+             *
+             * ---
+             *
+             * ## 🧠 Key Idea (Inductive Logic)
+             *
+             * If:
+             *
+             * * `"w"` is valid
+             * * `"wo"` is valid
+             * * `"wor"` is valid
+             * * `"worl"` is valid
+             *
+             * Then to verify `"world"`
+             * we only need to check:
+             *
+             * ```
+             * "worl"
+             * ```
+             *
+             * Because:
+             *
+             * * If `"worl"` was valid,
+             * * Then `"wor"` must already have been valid,
+             * * And `"wo"`,
+             * * And `"w"`.
+             *
+             * So checking the immediate shorter prefix is enough.
+             *
+             * ---
+             *
+             * # 📌 Why Sorting Is Critical
+             *
+             * We sort first:
+             *
+             * ```java
+             * Arrays.sort(words);
+             * ```
+             *
+             * That ensures:
+             *
+             * ```
+             * ["w","wo","wor","worl","world"]
+             * ```
+             *
+             * comes in this order.
+             *
+             * So when we reach `"world"`:
+             *
+             * * `"worl"` has already been processed
+             * * If `"worl"` wasn’t valid, it wouldn’t be in `builtWords`
+             *
+             * So this line:
+             *
+             * ```java
+             * builtWords.contains(w.substring(0, w.length() - 1))
+             * ```
+             *
+             * means:
+             *
+             * > “Was the word formed by removing the last character already buildable?”
+             *
+             * ---
+             *
+             * # 📎 Concrete Example
+             *
+             * Input:
+             *
+             * ```
+             * ["a", "banana", "app", "appl", "ap", "apply", "apple"]
+             * ```
+             *
+             * After sorting:
+             *
+             * ```
+             * ["a","ap","app","appl","apple","apply","banana"]
+             * ```
+             *
+             * Now iteration:
+             *
+             * | Word     | Prefix Checked | Exists? | Add? |
+             * | -------- | -------------- | ------- | ---- |
+             * | "a"      | —              | —       | ✅    |
+             * | "ap"     | "a"            | ✅       | ✅    |
+             * | "app"    | "ap"           | ✅       | ✅    |
+             * | "appl"   | "app"          | ✅       | ✅    |
+             * | "apple"  | "appl"         | ✅       | ✅    |
+             * | "apply"  | "appl"         | ✅       | ✅    |
+             * | "banana" | "banan"        | ❌       | ❌    |
+             *
+             * We never needed to check all prefixes manually.
+             *
+             * ---
+             *
+             * # ❓ Why Not Check All Prefixes?
+             *
+             * We could do:
+             *
+             * ```java
+             * for (int i = 1; i < w.length(); i++) {
+             *     if (!set.contains(w.substring(0, i))) return false;
+             * }
+             * ```
+             *
+             * But that’s:
+             *
+             * * More code
+             * * Less efficient
+             * * Unnecessary
+             *
+             * Because the sorted + incremental build already guarantees correctness.
+             *
+             * ---
+             *
+             * # ⚡ Final Summary
+             *
+             * We check:
+             *
+             * ```java
+             * w.substring(0, w.length() - 1)
+             * ```
+             *
+             * because:
+             *
+             * 1. Sorting ensures smaller prefixes are processed first
+             * 2. If the immediate prefix exists, all smaller prefixes must already exist
+             * 3. That makes this a clean O(n log n) solution
+             *
+             *
+             *
+             */
+
             if (w.length() == 1 || builtWords.contains(w.substring(0, w.length() - 1))) {
                 builtWords.add(w);
 
@@ -259,5 +497,5 @@ class TreeNode {
 
 
 
-    
+
 }
