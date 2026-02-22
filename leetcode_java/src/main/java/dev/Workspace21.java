@@ -1,5 +1,8 @@
 package dev;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Workspace21 {
 
     // LC 62
@@ -146,9 +149,47 @@ public class Workspace21 {
 
 
     // LC 1089
+    // 12.43 - 53 PM
+    /**
+     *
+     *  -> Given a fixed-length integer array arr,
+     *     duplicate each occurrence of zero,
+     *     shifting the remaining elements to the right.
+     *
+     *  --------------------
+     *
+     *   IDEA 1) 2 POINTER
+     *
+     *   IDEA 2) LIST ???
+     *
+     *
+     *  --------------------
+     */
     public void duplicateZeros(int[] arr) {
+        // edge
+        if(arr == null || arr.length == 0){
+            return;
+        }
 
+        List<Integer> list = new ArrayList<>();
+        for(int x: arr){
+            System.out.println(">>> x = " + x +
+                    ", x == 0 ?" + (x==0) );
+            list.add(x);
+            if(x == 0){
+                list.add(0);
+            }
+        }
+
+        arr = new int[list.size()]; // ???
+        for(int i = 0; i < list.size(); i++){
+            arr[i] = list.get(i);
+        }
     }
+
+
+
+
 
 
 }
