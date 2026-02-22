@@ -145,4 +145,10 @@ public class Workspace21 {
     }
 
 
+    // LC 1089
+    public void duplicateZeros(int[] arr) {
+
+    }
+
+
 }
