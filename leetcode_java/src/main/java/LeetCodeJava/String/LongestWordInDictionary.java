@@ -2,10 +2,7 @@ package LeetCodeJava.String;
 
 // https://leetcode.com/problems/longest-word-in-dictionary/description/
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.Stack;
+import java.util.*;
 
 /**
  *  720. Longest Word in Dictionary
@@ -48,6 +45,67 @@ public class LongestWordInDictionary {
 //    public String longestWord(String[] words) {
 //
 //    }
+
+    // V0-1
+    // IDEA: BRUTE FORCE (gemini)
+    public String longestWord_0_1(String[] words) {
+        // 1. Sort words:
+        // Primary: by length (small to large)
+        // Secondary: lexicographical (alphabetical)
+        Arrays.sort(words);
+
+        Set<String> builtWords = new HashSet<>();
+        String result = "";
+
+        // 2. Iterate through sorted words
+        for (String w : words) {
+            // Base case: words of length 1 are always "buildable"
+            // Recursive case: word is buildable if its prefix (all but last char) exists in set
+            if (w.length() == 1 || builtWords.contains(w.substring(0, w.length() - 1))) {
+                builtWords.add(w);
+
+                // 3. Update result if current word is longer
+                // (Sorting ensures alphabetical order is handled naturally)
+                if (w.length() > result.length()) {
+                    result = w;
+                }
+            }
+        }
+
+        return result;
+    }
+
+    // V0-2
+    // IDEA: BRUTE FORCE (GPT)
+    public String longestWord_0_2(String[] words) {
+
+        if (words == null || words.length == 0) {
+            return "";
+        }
+
+        Arrays.sort(words); // lexicographical order
+
+        Set<String> built = new HashSet<>();
+        String result = "";
+
+        for (String word : words) {
+
+            // word is valid if:
+            // length == 1 OR its prefix exists
+            if (word.length() == 1 || built.contains(word.substring(0, word.length() - 1))) {
+
+                built.add(word);
+
+                if (word.length() > result.length()) {
+                    result = word;
+                }
+            }
+        }
+
+        return result;
+    }
+
+
 
     // V1-1
     // IDEA: BRUTE FORCE
@@ -201,4 +259,5 @@ class TreeNode {
 
 
 
+    
 }
