@@ -505,7 +505,7 @@ public class Workspace21 {
      *
      */
     // IDEA 1) SORT ????
-    public int findContentChildren(int[] g, int[] s) {
+    public int findContentChildren_99(int[] g, int[] s) {
         // edge
 
         // ??? sort (small -> big)
@@ -531,6 +531,38 @@ public class Workspace21 {
 
         return cnt;
     }
+
+
+
+
+    public int findContentChildren(int[] g, int[] s) {
+        // edge
+
+        // ??? sort (small -> big)
+        Arrays.sort(g);
+        Arrays.sort(s);
+
+        int cnt = 0;
+
+        // g pointer
+        int i = 0;
+        // s pointer
+        int j = 0;
+
+        while (i < g.length && j < s.length) {
+            if (s[j] >= g[i]) {
+                i += 1;
+                //j += 1;
+                cnt += 1;
+            }
+
+            j += 1;
+        }
+
+        return cnt;
+    }
+
+
 
 
 
