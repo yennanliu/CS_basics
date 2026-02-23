@@ -51,6 +51,52 @@ public class AssignCookies {
 //    }
 
 
+    // V0-1
+    // IDEA: SORT + 2 POINTERS (GEMINI)
+    public int findContentChildren_0_1(int[] g, int[] s) {
+        Arrays.sort(g);
+        Arrays.sort(s);
+
+        int i = 0; // child pointer (start at smallest)
+        int j = 0; // cookie pointer (start at smallest)
+
+        while (i < g.length && j < s.length) {
+            if (s[j] >= g[i]) {
+                i++; // child satisfied
+            }
+            j++; // move to next cookie regardless
+        }
+        return i;
+    }
+
+
+    // V0-2
+    // IDEA: SORT + 2 POINTERS (GPT)
+    public int findContentChildren_0_2(int[] g, int[] s) {
+
+        Arrays.sort(g);
+        Arrays.sort(s);
+
+        int cnt = 0;
+
+        int i = g.length - 1; // largest child
+        int j = s.length - 1; // largest cookie
+
+        while (i >= 0 && j >= 0) {
+
+            if (s[j] >= g[i]) { // cookie can satisfy child
+                cnt++;
+                j--; // use this cookie
+            }
+
+            i--; // move to next largest child
+        }
+
+        return cnt;
+    }
+
+
+
     // V1
     // IDEA
     // https://leetcode.com/problems/assign-cookies/editorial/
@@ -94,6 +140,7 @@ public class AssignCookies {
         return maxNum;
     }
 
+    
 
 
 }
