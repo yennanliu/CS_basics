@@ -482,10 +482,59 @@ public class Workspace21 {
 
 
     // LC 455
+    // 16.19 - 29 pm
+    /**
+     *  ->  Your goal is to maximize the
+     *    number of your content children
+     *    and output the maximum number.
+     *
+     *
+     *
+     *
+     *  But, you should give each child at most one cookie.
+     *
+     *  -------------
+     *
+     *   IDEA 1) SORT ????
+     *
+     *
+     *  -------------
+     *
+     *
+     *
+     *
+     */
+    // IDEA 1) SORT ????
     public int findContentChildren(int[] g, int[] s) {
+        // edge
 
-        return 0;
+        // ??? sort (small -> big)
+        Arrays.sort(g);
+        Arrays.sort(s);
+
+        int cnt = 0;
+
+        // g pointer
+        int i = 0;
+        // s pointer
+        int j = s.length -1;
+
+        while(i < g.length && j > 0){
+            if(s[j] >= g[i]){
+                i += 1;
+                j -= 1;
+                cnt += 1;
+            }else{
+                j -= 1;
+            }
+        }
+
+        return cnt;
     }
+
+
+
+
 
 
 }
