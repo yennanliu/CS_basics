@@ -93,6 +93,44 @@ public class BoatsToSavePeople {
 
     // V0-0-1
     // IDEA: SORT + 2 POINTERS (gemini)
+    /**  IDEA:
+     *
+     * In **LC 881**, there is a very specific constraint: **Each boat can carry at most two people at the same time.**
+     *
+     * ---
+     *
+     * ### 🔍 Why the Two-Pointer logic works
+     *
+     * Imagine `people = [1, 2, 4, 5]` and `limit = 6`.
+     *
+     * 1. **Sort**: `[1, 2, 4, 5]`
+     * 2. **Step 1**: `left(1)` + `right(5)` = 6. (Valid!)
+     * * Both 1 and 5 get on the boat.
+     * * `left` moves to 2, `right` moves to 4. `boats = 1`.
+     *
+     *
+     * 3. **Step 2**: `left(2)` + `right(4)` = 6. (Valid!)
+     * * Both 2 and 4 get on the boat.
+     * * `left` moves to index 2, `right` moves to index 1. Loop ends. `boats = 2`.
+     *
+     *
+     *
+     * **If you had paired the lightest people first (1+2=3):**
+     *
+     * 1. 1 and 2 take a boat.
+     * 2. 4 is too heavy to fit with 5 (4+5=9 > 6), so 4 takes a boat alone.
+     * 3. 5 takes a boat alone.
+     * 4. **Total: 3 boats.** (Worse!)
+     *
+     * ### 📊 Summary
+     *
+     * * **Sort** the array.
+     * * **Heaviest person** is the "bottleneck." They are the most likely to need a boat alone.
+     * * If they can "carry" the **lightest person** with them without hitting the limit, do it!
+     * * If not, the heavy person must go alone, and the light person waits for someone slightly lighter.
+     *
+     *
+     */
     public int numRescueBoats_0_0_1(int[] people, int limit) {
         // 1. Sort the people by weight
         Arrays.sort(people);
