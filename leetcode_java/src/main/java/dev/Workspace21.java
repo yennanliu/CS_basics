@@ -564,6 +564,75 @@ public class Workspace21 {
 
 
 
+    // LC 1094
+    // 16.55 - 17.05 pm
+    /**
+     *
+     *   -> Return true if it is possible to pick up
+     *     and drop off all passengers for all the given trips,
+     *     or false otherwise.
+     *
+     *     - trips[i] = [numPassengersi, fromi, toi]
+     *
+     *     - car can ONLY drive to `east`
+     *     -
+     *
+     *
+     *
+     *   --------------------
+     *
+     *    IDEA 1) PREFIX SUM
+     *
+     *
+     *   --------------------
+     */
+    //  IDEA 1) PREFIX SUM
+    public boolean carPooling(int[][] trips, int capacity) {
+        // edge
+
+        int globalEnd = 0;
+        for(int i = 0; i < trips.length; i++){
+            globalEnd = Math.max(globalEnd, trips[i][2]);
+        }
+
+
+        // prefix sum
+        int[] prefix = new int[globalEnd]; // ???
+        // ??
+        for(int i = 0; i < globalEnd; i++){
+            int[] trip = trips[i];
+            int cap = trip[0];
+            int start = trip[1];
+            int end = trip[2];
+
+            // ????
+            prefix[start] += cap;
+            prefix[end] -= cap;
+        }
+
+        // update prefix sum arr
+        int prefixSum = 0;
+        for(int i = 0; i < prefix.length; i++){
+            prefixSum += prefix[i];
+            prefix[i] = prefixSum;
+        }
+
+        System.out.println(">>> prefix =  " + Arrays.toString(prefix));
+
+        // validate
+        for(int i = 0; i < prefix.length; i++){
+            if(prefix[i] > capacity){
+                return false;
+            }
+        }
+
+
+        return true;
+    }
+
+
+
+
 
 
 
