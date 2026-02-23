@@ -151,6 +151,41 @@ public class CarPooling {
     }
 
 
+    // V0-0-2
+    // IDEA: PREFIX SUM (gemini)
+    public boolean carPooling_0_0_2(int[][] trips, int capacity) {
+        int globalEnd = 0;
+        for (int i = 0; i < trips.length; i++) {
+            globalEnd = Math.max(globalEnd, trips[i][2]);
+        }
+
+        // 1. Size must be globalEnd + 1 to accommodate the 'end' index
+        int[] prefix = new int[globalEnd + 1];
+
+        // 2. Loop through the TRIPS, not the distance
+        for (int i = 0; i < trips.length; i++) {
+            int cap = trips[i][0];
+            int start = trips[i][1];
+            int end = trips[i][2];
+
+            prefix[start] += cap;
+            prefix[end] -= cap;
+        }
+
+        // 3. Update prefix sum and validate
+        int prefixSum = 0;
+        for (int i = 0; i < prefix.length; i++) {
+            prefixSum += prefix[i];
+            // We can check immediately to save time
+            if (prefixSum > capacity) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+
     // V0-1
     // IDEA: PREFIX SUM
     // time: O(N + M), space: O(M)
@@ -373,4 +408,5 @@ public class CarPooling {
 
 
 
+    
 }
