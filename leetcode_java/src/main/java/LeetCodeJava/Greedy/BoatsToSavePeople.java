@@ -135,6 +135,10 @@ public class BoatsToSavePeople {
         // 1. Sort the people by weight
         Arrays.sort(people);
 
+        /** NOTE !!!
+         *
+         *  2 pointers
+         */
         int left = 0; // Lightest person
         int right = people.length - 1; // Heaviest person
         int boats = 0;
