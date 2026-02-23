@@ -38,6 +38,63 @@ package LeetCodeJava.Array;
 public class CarPooling {
 
     // V0
+    // IDEA: PREFIX SUM (gemini)
+    public boolean carPooling(int[][] trips, int capacity) {
+        int globalEnd = 0;
+        for (int i = 0; i < trips.length; i++) {
+            globalEnd = Math.max(globalEnd, trips[i][2]);
+        }
+
+        /** NOTE !!!
+         *
+         *  set `globalEnd + 1` as prefix size,
+         *  so can cover `end idx`
+         */
+        // 1. Size must be globalEnd + 1 to accommodate the 'end' index
+        int[] prefix = new int[globalEnd + 1];
+
+        // 2. Loop through the TRIPS, not the distance
+        for (int i = 0; i < trips.length; i++) {
+            int cap = trips[i][0];
+            int start = trips[i][1];
+            int end = trips[i][2];
+
+            prefix[start] += cap;
+            prefix[end] -= cap;
+        }
+
+        /** NOTE !!!
+         *
+         *  how we update prefix,
+         *  and validate if it's capable
+         *
+         *  NOTE !!!
+         *  
+         *  we DON'T need below:
+         *
+         *   ```
+         *     //        for(int i = 0; i < prefix.length; i++){
+         *     //            prefixSum += prefix[i];
+         *     //            prefix[i] = prefixSum;
+         *     //        }
+         *   ```
+         *
+         */
+        // 3. Update prefix sum and validate
+        int prefixSum = 0;
+        for (int i = 0; i < prefix.length; i++) {
+            prefixSum += prefix[i];
+            // We can check immediately to save time
+            if (prefixSum > capacity) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+
+    // V0-0-1
     // IDEA: PREFIX SUM + `prefix interval handling` (improve efficience)
     /**
 
@@ -46,7 +103,7 @@ public class CarPooling {
      * space = O(M)
 
      */
-    public boolean carPooling(int[][] trips, int capacity) {
+    public boolean carPooling_0_0_1(int[][] trips, int capacity) {
         // edge
         if (trips == null || trips.length == 0) {
             return true;
@@ -98,9 +155,9 @@ public class CarPooling {
         return true;
     }
 
-    // V0-0-1
+    // V0-0-2
     // IDEA: PREFIX SUM (fixed by gpt)
-    public boolean carPooling_0_0_1(int[][] trips, int capacity) {
+    public boolean carPooling_0_0_2(int[][] trips, int capacity) {
         // Edge cases
         if (trips == null || trips.length == 0)
             return true;
@@ -148,41 +205,6 @@ public class CarPooling {
         }
 
         return true; // ✅ all trips fit within capacity
-    }
-
-
-    // V0-0-2
-    // IDEA: PREFIX SUM (gemini)
-    public boolean carPooling_0_0_2(int[][] trips, int capacity) {
-        int globalEnd = 0;
-        for (int i = 0; i < trips.length; i++) {
-            globalEnd = Math.max(globalEnd, trips[i][2]);
-        }
-
-        // 1. Size must be globalEnd + 1 to accommodate the 'end' index
-        int[] prefix = new int[globalEnd + 1];
-
-        // 2. Loop through the TRIPS, not the distance
-        for (int i = 0; i < trips.length; i++) {
-            int cap = trips[i][0];
-            int start = trips[i][1];
-            int end = trips[i][2];
-
-            prefix[start] += cap;
-            prefix[end] -= cap;
-        }
-
-        // 3. Update prefix sum and validate
-        int prefixSum = 0;
-        for (int i = 0; i < prefix.length; i++) {
-            prefixSum += prefix[i];
-            // We can check immediately to save time
-            if (prefixSum > capacity) {
-                return false;
-            }
-        }
-
-        return true;
     }
 
 
@@ -408,5 +430,5 @@ public class CarPooling {
 
 
 
-    
+
 }
