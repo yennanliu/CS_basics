@@ -46,10 +46,32 @@ import java.util.Arrays;
 public class AssignCookies {
 
     // V0
-//    public int findContentChildren(int[] g, int[] s) {
-//
-//    }
+    public int findContentChildren(int[] g, int[] s) {
+        // edge
 
+        //  sort (small -> big)
+        Arrays.sort(g);
+        Arrays.sort(s);
+
+        int cnt = 0;
+
+        // g pointer
+        int i = 0;
+        // s pointer
+        int j = 0;
+
+        while (i < g.length && j < s.length) {
+            if (s[j] >= g[i]) {
+                i += 1;
+                cnt += 1;
+            }
+
+            j += 1;
+        }
+
+        return cnt;
+    }
+    
 
     // V0-1
     // IDEA: SORT + 2 POINTERS (GEMINI)
@@ -140,7 +162,7 @@ public class AssignCookies {
         return maxNum;
     }
 
-    
+
 
 
 }
