@@ -421,6 +421,65 @@ public class Workspace21 {
     }
 
 
+    // LC 881
+    // 15.50 - 16.00
+    /**
+     *
+     *  -> Return the minimum number
+     *  of boats to carry every given person.
+     *
+     *  - people[i] is the weight of i person
+     *  - infinite number of boats
+     *  - limit:  each boat can carry a maximum weight
+     *
+     *   NOTE:
+     *    -  Each boat carries
+     *      `at most` two people at the same time
+     *
+     *
+     *  -----------------------
+     *
+     *
+     *   IDEA 1) SORTING + BRUTE FORCE
+     *
+     *   IDEA 2) SORTING + GREEDY
+     *
+     *
+     *
+     *  -----------------------
+     *
+     *
+     *
+     *
+     */
+    public int numRescueBoats(int[] people, int limit) {
+        // edge
+
+        // sort (small -> big)
+        // ???
+        Arrays.sort(people);
+        System.out.println(">>> (after sort) people = " + Arrays.toString(people));
+
+        int i = 0;
+        int weightSum = 0;
+        int cnt  = 0;
+        int boat = 1;
+
+        while(i < people.length){
+            weightSum += people[i];
+            cnt += 1;
+            if(weightSum >= limit || cnt > 2){
+                boat += 1;
+                // reset
+                weightSum = people[i];
+                cnt = 1;
+            }
+            i += 1;
+        }
+
+        return boat;
+    }
+
 
 
 

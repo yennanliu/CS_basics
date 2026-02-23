@@ -91,6 +91,35 @@ public class BoatsToSavePeople {
         return cnt;
     }
 
+    // V0-0-1
+    // IDEA: SORT + 2 POINTERS (gemini)
+    public int numRescueBoats_0_0_1(int[] people, int limit) {
+        // 1. Sort the people by weight
+        Arrays.sort(people);
+
+        int left = 0; // Lightest person
+        int right = people.length - 1; // Heaviest person
+        int boats = 0;
+
+        while (left <= right) {
+            // Every time we loop, a boat will be used
+            boats++;
+
+            // 2. Can the lightest person fit with the heaviest person?
+            if (people[left] + people[right] <= limit) {
+                // If they fit, they both take the boat
+                left++;
+            }
+
+            // 3. The heaviest person always takes a boat
+            // (either alone or with the lightest person)
+            right--;
+        }
+
+        return boats;
+    }
+
+
     // V0-1
     // IDEA: 2 POINTERS (gpt)
     public int numRescueBoats_0_1(int[] people, int limit) {
@@ -205,5 +234,8 @@ public class BoatsToSavePeople {
     }
 
     // V5
+
+
+
 
 }
