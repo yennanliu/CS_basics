@@ -589,6 +589,9 @@ public class Workspace21 {
     //  IDEA 1) PREFIX SUM
     public boolean carPooling(int[][] trips, int capacity) {
         // edge
+        if (trips == null || trips.length == 0)
+            return true;
+
 
         int globalEnd = 0;
         for(int i = 0; i < trips.length; i++){
@@ -597,7 +600,11 @@ public class Workspace21 {
 
 
         // prefix sum
-        int[] prefix = new int[globalEnd]; // ???
+        //int[] prefix = new int[globalEnd]; // ???
+        int[] prefix = new int[globalEnd + 1]; // ???
+
+
+
         // ??
         for(int i = 0; i < globalEnd; i++){
             int[] trip = trips[i];
@@ -607,15 +614,23 @@ public class Workspace21 {
 
             // ????
             prefix[start] += cap;
-            prefix[end] -= cap;
+            //prefix[end] -= cap;
+            /** NOTE !!!
+             *
+             *  since `DROP OFF` at `end` index
+             *  -> so we should do the `minus op` at `end` index (instead of `end + 1`)
+             */
+            if (end < prefix.length) {
+                prefix[end] -= cap; // drop them off before `end`
+            }
         }
 
         // update prefix sum arr
         int prefixSum = 0;
-        for(int i = 0; i < prefix.length; i++){
-            prefixSum += prefix[i];
-            prefix[i] = prefixSum;
-        }
+//        for(int i = 0; i < prefix.length; i++){
+//            prefixSum += prefix[i];
+//            prefix[i] = prefixSum;
+//        }
 
         System.out.println(">>> prefix =  " + Arrays.toString(prefix));
 
