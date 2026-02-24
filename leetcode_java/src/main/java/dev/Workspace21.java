@@ -678,18 +678,27 @@ public class Workspace21 {
                 }
             }else if(op.equals("D")){
                 if(!st.isEmpty()){
-                    int prev = st.peek();
-                    st.add(prev * 2);
+//                    int prev = st.peek();
+//                    st.add(prev * 2);
+                    st.push(st.peek() * 2);
                 }
             }else if(op.equals("+")){
                 if(st.size() >= 2){
-                    int prev1 = st.pop();
-                    int prev2 = st.pop();
-                    int newVal = prev1 + prev2;
-                    //st.add(prev1 + prev2);
-                    st.add(prev1);
-                    st.add(prev2);
-                    st.add(newVal);
+//                    int prev1 = st.pop();
+//                    int prev2 = st.pop();
+//                    int newVal = prev1 + prev2;
+//                    //st.add(prev1 + prev2);
+//                    st.add(prev1);
+//                    st.add(prev2);
+//                    st.add(newVal);
+                    int last = st.pop();
+                    int secondLast = st.peek();
+                    int newScore = last + secondLast;
+
+                    // Put 'last' back, then add the 'newScore'
+                    st.push(last);
+                    st.push(newScore);
+
                 }
             }else{
                 st.add(Integer.parseInt(op));
