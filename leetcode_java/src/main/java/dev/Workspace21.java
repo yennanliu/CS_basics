@@ -867,6 +867,62 @@ public class Workspace21 {
     }
 
 
+    // LC 901
+    // 10.35 - 10 am
+    /**
+     *
+     *  -> Implement the StockSpanner class:
+     *
+     * StockSpanner() Initializes the object of the class.
+     * int next(int price) Returns the span of the
+     * stock's price given that today's price is price.
+     *
+     *
+     * --------------------
+     *
+     *  IDEA 1) MONO STACK
+     *
+     *
+     * --------------------
+     *
+     */
+    // IDEA 1) MONO STACK
+    class StockSpanner {
+
+        // attr
+        //Stack<Integer> st;
+        Deque<Integer> deque;
+
+        public StockSpanner() {
+            this.deque = new ArrayDeque<>();
+        }
+
+        public int next(int price) {
+            // MONO STACK
+            if(this.deque.isEmpty()){
+                this.deque.add(price);
+                return 1;
+            }
+
+            List<Integer> cache = new ArrayList<>();
+            int cnt = 0;
+            while(this.deque.peek() <= price){
+                // ???
+                cache.add(this.deque.pollLast());
+                cnt += 1;
+            }
+            // add them back
+            for(int x: cache){
+                this.deque.addLast(x);
+            }
+            this.deque.addLast(price);
+
+            return cnt;
+        }
+
+    }
+
+
 
 
 

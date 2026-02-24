@@ -3,6 +3,8 @@ package LeetCodeJava.Stack;
 // https://leetcode.com/problems/online-stock-span/description/
 // https://leetcode.cn/problems/online-stock-span/
 
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.Stack;
 
 /**
@@ -56,16 +58,56 @@ public class OnlineStockSpan {
      */
 
     // V0
-//    class StockSpanner {
-//
-//        public StockSpanner() {
-//
-//        }
-//
-//        public int next(int price) {
-//
-//        }
-//    }
+    // IDEA: DEQUEUE (gemini)
+    class StockSpanner {
+        // We store int[] where:
+        // index 0 = price
+        // index 1 = span of that price
+        Deque<int[]> stack;
+
+        public StockSpanner() {
+            this.stack = new ArrayDeque<>();
+        }
+
+        public int next(int price) {
+            int span = 1; // Today counts as 1
+
+            // While the previous price is less than or equal to current price
+            while (!stack.isEmpty() && stack.peek()[0] <= price) {
+                // "Absorb" the previous span into the current one
+                span += stack.pop()[1];
+            }
+
+            // Push the price and its accumulated span onto the stack
+            stack.push(new int[] { price, span });
+
+            return span;
+        }
+    }
+
+    // V0-1
+    // IDEA: DEQUEUE (GPT)
+    class StockSpanner_0_1 {
+
+        private Deque<int[]> stack; // {price, span}
+
+        public StockSpanner_0_1() {
+            stack = new ArrayDeque<>();
+        }
+
+        public int next(int price) {
+            int span = 1;
+
+            // Pop smaller or equal prices and accumulate span
+            while (!stack.isEmpty() && stack.peek()[0] <= price) {
+                span += stack.pop()[1];
+            }
+
+            stack.push(new int[] { price, span });
+            return span;
+        }
+    }
+
 
     // V1
     // https://www.youtube.com/watch?v=slYh0ZNEqSw
@@ -159,5 +201,8 @@ public class OnlineStockSpan {
             return span;
         }
     }
+
+
+
 
 }
