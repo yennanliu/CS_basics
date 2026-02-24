@@ -144,6 +144,85 @@ public class Workspace21 {
      *
      *
      */
+
+    // 11.35 - 45 am
+    /**
+     *
+     *
+     *
+     */
+    // IDEA 1) DFS
+    int pathCnt;
+    public int uniquePathsIII(int[][] grid) {
+        int m = grid.length;
+        int n = grid[0].length;
+
+        int[] start = null; // ???
+        int[] end = null; // ???
+
+        // 0. get start, end cell
+        for (int y = 0; y < m; y++) {
+            for (int x = 0; x < n; x++) {
+                if(grid[y][x] == 1){
+                    start = new int[]{x, y};
+                }
+                if(grid[y][x] == 2){
+                    end = new int[]{x, y};
+                }
+            }
+        }
+
+        //int cnt = 0;
+       // canReachEnd(start[0], start[1], end[0], end[1]);
+//        for (int y = 0; y < m; y++) {
+//            for (int x = 0; x < n; x++) {
+//                if(canReachEnd(x, y, end[0], end[1])){
+//                    cnt += 1;
+//                }
+//            }
+//        }
+
+        canReachEnd(grid, start[0], start[1], end[0], end[1]);
+
+        return pathCnt;
+    }
+
+
+    private void canReachEnd(int[][] grid, int startX, int startY, int endX, int endY){
+
+        int m = grid.length;
+        int n = grid[0].length;
+        int[][] moves = new int[][] { {0,1}, {0,-1}, {1,0}, {-1,0} };
+
+        if(startX == endX && startY == endY){
+            // ??
+           // return cnt + 1;
+            pathCnt += 1;
+        }
+
+        for(int[] move: moves){
+            int x_ = startX + move[1];
+            int y_ = startY + move[0];
+
+            if(x_ >= 0 && x_ < m && y_ >= 0 && y_ < n){
+                // visited check ??
+                canReachEnd(grid, x_, y_, endX, endY);
+            }
+
+        }
+
+       // return cnt;
+    }
+
+
+
+
+
+
+
+
+
+
     // IDEA 2) 2D DP
     public int uniquePathsIII_99(int[][] grid) {
 

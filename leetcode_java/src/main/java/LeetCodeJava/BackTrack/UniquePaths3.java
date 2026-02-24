@@ -110,6 +110,127 @@ public class UniquePaths3 {
 //
 //    }
 
+
+    // V0-1
+    // IDEA: DFS (gemini)
+    int pathCnt = 0;
+    int targetEmptyCells = 0;
+
+    public int uniquePathsIII(int[][] grid) {
+        int m = grid.length;
+        int n = grid[0].length;
+        int startX = 0, startY = 0;
+
+        // 1. Count total empty cells (0) and find the starting point (1)
+        // We include the starting cell in our "must visit" count.
+        for (int r = 0; r < m; r++) {
+            for (int c = 0; c < n; c++) {
+                if (grid[r][c] == 0) {
+                    targetEmptyCells++;
+                } else if (grid[r][c] == 1) {
+                    startY = r;
+                    startX = c;
+                }
+            }
+        }
+
+        // Start DFS. We need to visit targetEmptyCells + 1 (the start itself).
+        backtrack_0_1(grid, startX, startY, 0);
+        return pathCnt;
+    }
+
+    private void backtrack_0_1(int[][] grid, int x, int y, int visitedCount) {
+        // 2. Boundary and Obstacle Check
+        if (y < 0 || y >= grid.length || x < 0 || x >= grid[0].length || grid[y][x] == -1) {
+            return;
+        }
+
+        // 3. Target Reached Check
+        if (grid[y][x] == 2) {
+            // Check if we visited all the 0s before hitting the end
+            if (visitedCount == targetEmptyCells + 1) {
+                pathCnt++;
+            }
+            return;
+        }
+
+        // 4. Mark current cell as visited (-1)
+        int temp = grid[y][x];
+        grid[y][x] = -1;
+
+        // 5. Explore 4 neighbors
+        backtrack_0_1(grid, x + 1, y, visitedCount + 1);
+        backtrack_0_1(grid, x - 1, y, visitedCount + 1);
+        backtrack_0_1(grid, x, y + 1, visitedCount + 1);
+        backtrack_0_1(grid, x, y - 1, visitedCount + 1);
+
+        // 6. Backtrack: Restore cell for other potential paths
+        grid[y][x] = temp;
+    }
+
+
+    // V0-2
+    // IDEA: DFS (gpt)
+    int pathCnt_0_2 = 0;
+    int emptyCells = 0; // number of 0 cells
+
+    public int uniquePathsIII_0_2(int[][] grid) {
+        int m = grid.length;
+        int n = grid[0].length;
+
+        int startX = 0, startY = 0;
+
+        // 1. Find start & count empty cells
+        for (int y = 0; y < m; y++) {
+            for (int x = 0; x < n; x++) {
+                if (grid[y][x] == 1) {
+                    startX = x;
+                    startY = y;
+                }
+                if (grid[y][x] == 0) {
+                    emptyCells++;
+                }
+            }
+        }
+
+        // 2. DFS from start
+        dfs_0_2(grid, startX, startY, emptyCells);
+
+        return pathCnt_0_2;
+    }
+
+    private void dfs_0_2(int[][] grid, int x, int y, int remain) {
+
+        int m = grid.length;
+        int n = grid[0].length;
+
+        // boundary or obstacle or visited
+        if (x < 0 || x >= n || y < 0 || y >= m || grid[y][x] == -1) {
+            return;
+        }
+
+        // reached end
+        if (grid[y][x] == 2) {
+            if (remain == -1) { // visited all empty cells + start
+                pathCnt_0_2++;
+            }
+            return;
+        }
+
+        // mark visited
+        grid[y][x] = -1;
+
+        int[][] dirs = { { 0, 1 }, { 0, -1 }, { 1, 0 }, { -1, 0 } };
+
+        for (int[] d : dirs) {
+            dfs_0_2(grid, x + d[0], y + d[1], remain - 1);
+        }
+
+        // backtrack
+        grid[y][x] = 0;
+    }
+
+
     // V1
     // IDEA: DFS
     // https://leetcode.com/problems/unique-paths-iii/solutions/2973622/java-code-with-dfs-and-backtracking100-f-dmgw/
