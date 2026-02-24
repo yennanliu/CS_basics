@@ -716,6 +716,49 @@ public class Workspace21 {
 
 
 
+    // LC 402
+    // 9.11 am - 21 am
+    /**
+     *  ->  return the smallest possible
+     *    integer after removing k digits from num.
+     *
+     *    - num: int
+     *    - k: int
+     *
+     *
+     *  ------------------
+     *
+     *   IDEA 1) BRUTE FORCE
+     *
+     *   IDEA 2) 2 POINTERS ???
+     *
+     *   IDEA 3) greedy ???
+     *
+     *
+     *  ------------------
+     *
+     *   ex 1)
+     *
+     *   Input: num = "1432219", k = 3
+     *   Output: "1219"
+     *
+     *
+     *  ->
+     *
+     *    1432219
+     *
+     *    order from big -> small
+     *      9432211
+     *
+     *
+     *
+     */
+    public String removeKdigits(String num, int k) {
+
+        return null;
+    }
+
+
 
 
 

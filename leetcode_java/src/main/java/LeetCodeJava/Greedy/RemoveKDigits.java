@@ -2,6 +2,8 @@ package LeetCodeJava.Greedy;
 
 // https://leetcode.com/problems/remove-k-digits/description/
 
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.Stack;
 
 /**
@@ -44,6 +46,90 @@ public class RemoveKDigits {
 //    public String removeKdigits(String num, int k) {
 //
 //    }
+
+
+    // V0-1
+    // IDEA: MONO STACK (gemini)
+    public String removeKdigits_0_1(String num, int k) {
+        int n = num.length();
+        if (k == n)
+            return "0";
+
+        // We use a Deque as a stack for efficient iteration and removal
+        Deque<Character> stack = new ArrayDeque<>();
+
+        for (int i = 0; i < n; i++) {
+            char digit = num.charAt(i);
+
+            // While we still need to remove digits and the current digit
+            // is smaller than the top of the stack, pop the stack.
+            while (k > 0 && !stack.isEmpty() && stack.peekLast() > digit) {
+                stack.removeLast();
+                k--;
+            }
+            stack.addLast(digit);
+        }
+
+        // If k is still > 0, remove digits from the tail
+        while (k > 0) {
+            stack.removeLast();
+            k--;
+        }
+
+        // Build the string and remove leading zeros
+        StringBuilder sb = new StringBuilder();
+        boolean leadingZero = true;
+        while (!stack.isEmpty()) {
+            char c = stack.removeFirst();
+            if (leadingZero && c == '0')
+                continue;
+            leadingZero = false;
+            sb.append(c);
+        }
+
+        return sb.length() == 0 ? "0" : sb.toString();
+    }
+
+
+    // V0-2
+    // IDEA: MONO STACK (GPT)
+    public String removeKdigits_0_2(String num, int k) {
+        if (k == num.length())
+            return "0"; // remove all digits
+
+        Deque<Character> stack = new ArrayDeque<>();
+
+        for (char c : num.toCharArray()) {
+            // While we still can remove digits (k > 0) and the last digit in stack
+            // is greater than the current digit, pop it (to make number smaller).
+            while (k > 0 && !stack.isEmpty() && stack.peekLast() > c) {
+                stack.pollLast();
+                k--;
+            }
+            stack.addLast(c);
+        }
+
+        // If k > 0, remove from the end (largest remaining)
+        while (k > 0 && !stack.isEmpty()) {
+            stack.pollLast();
+            k--;
+        }
+
+        // Build result while removing leading zeros
+        StringBuilder sb = new StringBuilder();
+        while (!stack.isEmpty()) {
+            char ch = stack.pollFirst();
+            // skip leading zeros
+            if (sb.length() == 0 && ch == '0')
+                continue;
+            sb.append(ch);
+        }
+
+        // If empty, result is "0"
+        return sb.length() == 0 ? "0" : sb.toString();
+    }
+
+
 
     // V1
     // IDEA: STACK
