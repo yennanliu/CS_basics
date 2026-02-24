@@ -648,6 +648,64 @@ public class Workspace21 {
 
 
 
+    // LC 682
+    // 8.51 - 9.01 am
+    /**
+     *  -> Return the sum of all the scores
+     *  on the record after applying all the operations.
+     *
+     *
+     *  ----------------
+     *
+     *  IDEA 1) STACK (FILO)
+     *
+     *  ----------------
+     *
+     */
+    // IDEA 1) STACK (FILO)
+    public int calPoints(String[] operations) {
+        // edge
+        if(operations == null || operations.length == 0){
+            return 0;
+        }
+
+        Stack<Integer> st = new Stack<>();
+
+        for(String op: operations){
+            if(op.equals("C")){
+                if(!st.isEmpty()){
+                    st.pop();
+                }
+            }else if(op.equals("D")){
+                if(!st.isEmpty()){
+                    int prev = st.peek();
+                    st.add(prev * 2);
+                }
+            }else if(op.equals("+")){
+                if(st.size() >= 2){
+                    int prev1 = st.pop();
+                    int prev2 = st.pop();
+                    int newVal = prev1 + prev2;
+                    //st.add(prev1 + prev2);
+                    st.add(prev1);
+                    st.add(prev2);
+                    st.add(newVal);
+                }
+            }else{
+                st.add(Integer.parseInt(op));
+            }
+        }
+
+        int res = 0;
+        while(!st.isEmpty()){
+            res += st.pop();
+        }
+
+        return res;
+    }
+
+
+
 
 
 
