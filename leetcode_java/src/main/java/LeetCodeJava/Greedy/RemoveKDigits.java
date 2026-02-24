@@ -50,6 +50,51 @@ public class RemoveKDigits {
 
     // V0-1
     // IDEA: MONO STACK (gemini)
+    /**  IDEA:
+     *
+     * To solve **LC 402 (Remove K Digits)**,
+     * the goal is to make the number as small as possible.
+     * To achieve this, we want the digits at the beginning
+     * (the most significant positions) to be as small as possible.
+     *
+     * ### 💡 The Greedy Strategy
+     *
+     * We use a **Monotonic Stack** approach:
+     *
+     * 1. Iterate through the digits. If the current digit is **smaller** than the previous digit (the top of the stack), we should remove the previous digit because replacing a large digit with a smaller one at a higher power of ten always results in a smaller number.
+     * 2. We repeat this "pop" process as long as .
+     * 3. **Edge Case 1:** If we finish the loop and still need to remove digits (), we remove them from the end (since the stack is now in non-decreasing order).
+     * 4. **Edge Case 2:** Remove leading zeros from the final result.
+     * 5. **Edge Case 3:** If the result is empty, return `"0"`.
+     *
+     *
+     * ---
+     *
+     * ### 🔍 Dry Run Example
+     *
+     * **Input:** `num = "1432219"`, `k = 3`
+     *
+     * 1. Push `1`: `[1]`
+     * 2. Push `4`: `[1, 4]`
+     * 3. `3` < `4`: Pop `4`, Push `3`, `k=2`. Stack: `[1, 3]`
+     * 4. `2` < `3`: Pop `3`, Push `2`, `k=1`. Stack: `[1, 2]`
+     * 5. Push `2`: `[1, 2, 2]`
+     * 6. `1` < `2`: Pop `2`, Push `1`, `k=0`. Stack: `[1, 2, 1]`
+     * 7. `k` is now 0. Push `9`: `[1, 2, 1, 9]`
+     * 8. **Result:** `"1219"`
+     *
+     * ---
+     *
+     * ### 📊 Complexity
+     *
+     * * **Time Complexity:** . Each digit is pushed and popped from the stack at most once.
+     * * **Space Complexity:**  to store the stack/StringBuilder.
+     *
+     * ### 💡 Why `ArrayDeque`?
+     *
+     * In Java, `Stack<Character>` is synchronized and slow. `ArrayDeque` is the modern, faster alternative for stack operations. Using `removeFirst()` also allows us to build the string in the correct order without needing to `reverse()` it.
+     *
+     */
     public String removeKdigits_0_1(String num, int k) {
         int n = num.length();
         if (k == n)
