@@ -898,7 +898,16 @@ public class Workspace21 {
         }
 
         public int next(int price) {
+
+            int span = 1; // Today counts as 1
+
+
             // MONO STACK
+            while (!this.deque.isEmpty() && this.deque.peek() <= price){
+                span += this.deque.pop();
+
+            }
+
             if(this.deque.isEmpty()){
                 this.deque.add(price);
                 return 1;
