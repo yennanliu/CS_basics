@@ -60,6 +60,12 @@ public class OnlineStockSpan {
     // V0
     // IDEA: DEQUEUE (gemini)
     class StockSpanner {
+
+
+        /**  NOTE !!!
+         *
+         *  we init Deque as { [price, span] }
+         */
         // We store int[] where:
         // index 0 = price
         // index 1 = span of that price
@@ -89,6 +95,11 @@ public class OnlineStockSpan {
     // IDEA: DEQUEUE (GPT)
     class StockSpanner_0_1 {
 
+
+        /**  NOTE !!!
+         *
+         *  we init Deque as { [price, span] }
+         */
         private Deque<int[]> stack; // {price, span}
 
         public StockSpanner_0_1() {
