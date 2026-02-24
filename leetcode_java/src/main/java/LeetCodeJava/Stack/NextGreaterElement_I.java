@@ -235,6 +235,45 @@ public class NextGreaterElement_I {
     }
 
 
+    // V0-3
+    // IDEA: QUEUE + BRUTE FORCE
+    // IDEA 3)  brute force ??
+    public int[] nextGreaterElement_0_0_3(int[] nums1, int[] nums2) {
+        // edge
+
+        int[] res = new int[nums1.length];
+        Arrays.fill(res, -1);
+
+        for (int i = 0; i < nums1.length; i++) {
+            int x1 = nums1[i];
+            Queue<Integer> q = arrToQueue(nums2);
+            boolean found = false;
+            // int j = 0;
+            while (!q.isEmpty()) {
+                int val = q.poll();
+                if (val == x1) {
+                    found = true;
+                }
+                if (val > x1 && found) {
+                    res[i] = val;
+                    break;
+                }
+            }
+        }
+
+        return res;
+    }
+
+    private Queue<Integer> arrToQueue(int[] nums) {
+        Queue<Integer> q = new LinkedList<>();
+        for (int x : nums) {
+            q.add(x);
+        }
+        return q;
+    }
+
+    
+
     // V0-1
     // IDEA : BRUTE FORCE
     // https://www.youtube.com/watch?v=68a1Dc_qVq4

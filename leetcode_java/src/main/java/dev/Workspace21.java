@@ -811,13 +811,59 @@ public class Workspace21 {
     // LC 496
     // 9.50 - 10.00 am
     /**
+     *  -> Return an array ans of length nums1.length
+     *    such that ans[i] is the next greater
+     *    element as described above.
      *
+     *
+     *  ------------------
+     *
+     *   IDEA 1) 2 POINTERS ???
+     *
+     *   IDEA 2)  STACK ???
+     *
+     *   IDEA 3)  brute force ??
+     *
+     *
+     *  ------------------
      *
      *
      */
+    // IDEA 3)  brute force ??
     public int[] nextGreaterElement(int[] nums1, int[] nums2) {
+        // edge
 
-        return null;
+        int[] res = new int[nums1.length];
+        Arrays.fill(res, - 1);
+
+        for(int i = 0; i < nums1.length; i++){
+            int x1 = nums1[i];
+            Queue<Integer> q = arrToQueue(nums2);
+            boolean found = false;
+           // int j = 0;
+            while(!q.isEmpty()){
+                int val = q.poll();
+                if(val == x1){
+                    found = true;
+                }
+                if(val > x1 && found){
+                    res[i] = val;
+                    break;
+                }
+               // j += 1;
+            }
+        }
+
+        return res;
+    }
+
+
+    private Queue<Integer> arrToQueue(int[] nums){
+        Queue<Integer> q = new LinkedList<>();
+        for(int x: nums){
+            q.add(x);
+        }
+        return q;
     }
 
 
