@@ -29,6 +29,8 @@
     - monotonic stack
         - LC 2104
         - LC 239
+        - LC 402 (greedy removal - Remove K Digits)
+        - LC 316 (Remove Duplicate Letters)
 
 ## 0) Concept
 - [Java Stack](https://blog.csdn.net/oChangWen/article/details/72859556)
@@ -136,6 +138,51 @@ for (int j = 0; j < temperatures.length; j++) {
     // Push the current temperature and its index to the stack
     st.push(new Pair<>(x, j));
 }
+```
+
+- monotonic stack (greedy removal pattern - Remove K Digits)
+
+```java
+// java
+// LC 402 Remove K Digits
+// Pattern: Maintain monotonic increasing stack by greedily removing larger digits
+
+Deque<Character> stack = new ArrayDeque<>();
+
+for (int i = 0; i < num.length(); i++) {
+    char digit = num.charAt(i);
+
+    /**
+     * NOTE !!!
+     * Greedy removal: while we can still remove digits (k > 0)
+     * and current digit is smaller than stack top,
+     * pop the larger digit to make the number smaller
+     */
+    while (k > 0 && !stack.isEmpty() && stack.peekLast() > digit) {
+        stack.removeLast();
+        k--;
+    }
+    stack.addLast(digit);
+}
+
+// If k > 0, remove remaining digits from the end
+while (k > 0) {
+    stack.removeLast();
+    k--;
+}
+
+// Remove leading zeros
+StringBuilder sb = new StringBuilder();
+boolean leadingZero = true;
+while (!stack.isEmpty()) {
+    char c = stack.removeFirst();
+    if (leadingZero && c == '0')
+        continue;
+    leadingZero = false;
+    sb.append(c);
+}
+
+return sb.length() == 0 ? "0" : sb.toString();
 ```
 
 - Implement Queue using Stacks
@@ -1297,4 +1344,96 @@ for (char c : s.toCharArray()) {
 
   return sb.toString();
 }
+```
+
+### 2-13) Remove K Digits
+
+```java
+// java
+// LC 402. Remove K Digits
+
+/**
+ * Problem: Given a non-negative integer num and an integer k,
+ * return the smallest possible integer after removing k digits from num.
+ *
+ * Key Insight:
+ * To make the number as small as possible, we want smaller digits
+ * at the beginning (most significant positions).
+ *
+ * Greedy Strategy:
+ * - Use a monotonic increasing stack
+ * - If current digit is smaller than stack top, pop the larger digit
+ * - Continue popping while k > 0 and current digit < stack top
+ * - This ensures we remove larger digits from higher positions
+ *
+ * Time: O(N) - each digit pushed/popped at most once
+ * Space: O(N) - stack size
+ */
+
+// V0-1
+// IDEA: MONOTONIC STACK (increasing)
+public String removeKdigits(String num, int k) {
+    int n = num.length();
+    if (k == n)
+        return "0";
+
+    // Use Deque as stack for efficient operations
+    Deque<Character> stack = new ArrayDeque<>();
+
+    for (int i = 0; i < n; i++) {
+        char digit = num.charAt(i);
+
+        /**
+         * NOTE !!!
+         * While we can still remove digits (k > 0)
+         * and current digit is smaller than stack top,
+         * pop the stack (greedy removal of larger digits)
+         */
+        while (k > 0 && !stack.isEmpty() && stack.peekLast() > digit) {
+            stack.removeLast();
+            k--;
+        }
+        stack.addLast(digit);
+    }
+
+    // Edge case: if k > 0, remove digits from end (e.g., "1111")
+    while (k > 0) {
+        stack.removeLast();
+        k--;
+    }
+
+    // Build result and remove leading zeros
+    StringBuilder sb = new StringBuilder();
+    boolean leadingZero = true;
+    while (!stack.isEmpty()) {
+        char c = stack.removeFirst();
+        if (leadingZero && c == '0')
+            continue;
+        leadingZero = false;
+        sb.append(c);
+    }
+
+    return sb.length() == 0 ? "0" : sb.toString();
+}
+
+/**
+ * Example Walkthrough:
+ *
+ * Input: num = "1432219", k = 3
+ *
+ * Step-by-step:
+ * 1. Push '1': [1]
+ * 2. Push '4': [1, 4]
+ * 3. '3' < '4': Pop '4', push '3', k=2. Stack: [1, 3]
+ * 4. '2' < '3': Pop '3', push '2', k=1. Stack: [1, 2]
+ * 5. Push '2': [1, 2, 2]
+ * 6. '1' < '2': Pop '2', push '1', k=0. Stack: [1, 2, 1]
+ * 7. k=0, push '9': [1, 2, 1, 9]
+ *
+ * Result: "1219"
+ *
+ * Why ArrayDeque?
+ * - Stack<Character> is synchronized and slow
+ * - ArrayDeque is faster and modern alternative for stack operations
+ */
 ```
