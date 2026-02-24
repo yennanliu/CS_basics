@@ -753,7 +753,56 @@ public class Workspace21 {
      *
      *
      */
+    // IDEA 1) MONO STACK
     public String removeKdigits(String num, int k) {
+        // edge
+        int n = num.length();
+        if (k == n)
+            return "0";
+
+        //Deque<Integer> deque = new ArrayDeque<>();
+        Deque<Character> stack = new ArrayDeque<>();
+        for(int i = 0; i < n; i++){
+            //int val = Integer.parseInt(x);
+
+           char digit = num.charAt(i);
+
+
+            // While we still need to remove digits and the current digit
+            // is smaller than the top of the stack, pop the stack.
+            while (k > 0 && !stack.isEmpty() && stack.peekLast() > digit) {
+                stack.removeLast();
+                k--;
+            }
+            stack.addLast(digit);
+
+
+            // If k is still > 0, remove digits from the tail
+            while (k > 0) {
+                stack.removeLast();
+                k--;
+            }
+
+
+//            if(deque.isEmpty()){
+//                deque.addLast(val);
+//            }
+//            else{
+//                if(val < deque.peek() && k > 0){
+//                    deque.pop();
+//                    deque.addLast(val);
+//                    k -= 1;
+//                }
+//                else{
+//                    deque.addLast(val);
+//                }
+//            }
+
+
+        }
+
+        // edge case
+
 
         return null;
     }
