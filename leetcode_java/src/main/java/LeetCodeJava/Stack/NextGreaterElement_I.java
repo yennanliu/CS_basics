@@ -272,7 +272,7 @@ public class NextGreaterElement_I {
         return q;
     }
 
-    
+
 
     // V0-1
     // IDEA : BRUTE FORCE
