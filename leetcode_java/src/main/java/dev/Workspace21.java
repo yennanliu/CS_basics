@@ -808,6 +808,18 @@ public class Workspace21 {
     }
 
 
+    // LC 496
+    // 9.50 - 10.00 am
+    /**
+     *
+     *
+     *
+     */
+    public int[] nextGreaterElement(int[] nums1, int[] nums2) {
+
+        return null;
+    }
+
 
 
 
