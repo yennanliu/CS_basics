@@ -105,12 +105,44 @@ public class UniquePaths3 {
      *
      */
 
+
+    /** NOTE !!!
+     *
+     * we need to walk through
+     * `non-obstacle square exactly once`
+     * (CAN'T pass 0 times; need pass exactly once)
+     *
+     * -> e.g. pass `0` exactly once
+     *
+     *    - 0 representing empty squares we can walk over.
+     *
+     * ---
+     *
+     * `... that walk over every non-obstacle square exactly once.`
+     *
+     */
     // V0
 //    public int uniquePathsIII(int[][] grid) {
 //
 //    }
 
 
+
+    /** NOTE !!!
+     *
+     * we need to walk through
+     * `non-obstacle square exactly once`
+     * (CAN'T pass 0 times; need pass exactly once)
+     *
+     * -> e.g. pass `0` exactly once
+     *
+     *    - 0 representing empty squares we can walk over.
+     *
+     * ---
+     *
+     * `... that walk over every non-obstacle square exactly once.`
+     *
+     */
     // V0-1
     // IDEA: DFS (gemini)
     int pathCnt = 0;
@@ -134,6 +166,10 @@ public class UniquePaths3 {
             }
         }
 
+        /** NOTE !!!
+         *
+         *  `need to visit targetEmptyCells + 1 (the start itself).`
+         */
         // Start DFS. We need to visit targetEmptyCells + 1 (the start itself).
         backtrack_0_1(grid, startX, startY, 0);
         return pathCnt;
