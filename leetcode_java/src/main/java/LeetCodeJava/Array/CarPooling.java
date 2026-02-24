@@ -69,7 +69,7 @@ public class CarPooling {
          *  and validate if it's capable
          *
          *  NOTE !!!
-         *  
+         *
          *  we DON'T need below:
          *
          *   ```
