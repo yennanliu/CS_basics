@@ -59,6 +59,21 @@ public class OnlineStockSpan {
 
     // V0
     // IDEA: DEQUEUE (gemini)
+    /**  IDEA:
+     *
+     *
+     * ### 📊 Visualization
+     *
+     * `next(100)`, `next(80)`, `next(120)`
+     *
+     * 1. `next(100)` -> Stack: `[[100, 1]]`, Returns **1**
+     * 2. `next(80)`  -> Stack: `[[100, 1], [80, 1]]`, Returns **1**
+     * 3. `next(120)`:
+     * * `120 > 80`: `span = 1 + 1 = 2`. Pop `[80, 1]`.
+     * * `120 > 100`: `span = 2 + 1 = 3`. Pop `[100, 1]`.
+     * * Stack: `[[120, 3]]`. Returns **3**.
+     *
+     */
     class StockSpanner {
 
 
