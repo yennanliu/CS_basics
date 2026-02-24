@@ -31,6 +31,7 @@
         - LC 239
         - LC 402 (greedy removal - Remove K Digits)
         - LC 316 (Remove Duplicate Letters)
+        - LC 901 (Online Stock Span - streaming data)
 
 ## 0) Concept
 - [Java Stack](https://blog.csdn.net/oChangWen/article/details/72859556)
@@ -183,6 +184,40 @@ while (!stack.isEmpty()) {
 }
 
 return sb.length() == 0 ? "0" : sb.toString();
+```
+
+- monotonic stack (span accumulation pattern - Online Stock Span)
+
+```java
+// java
+// LC 901 Online Stock Span
+// Pattern: Monotonic decreasing stack with span accumulation for streaming data
+
+Deque<int[]> stack = new ArrayDeque<>(); // {price, span}
+
+public int next(int price) {
+    int span = 1; // Today always counts
+
+    /**
+     * NOTE !!!
+     * Pop all smaller/equal prices and accumulate their spans
+     * This gives us the count of consecutive days with price <= current
+     */
+    while (!stack.isEmpty() && stack.peek()[0] <= price) {
+        span += stack.pop()[1]; // Absorb previous span
+    }
+
+    stack.push(new int[] { price, span });
+    return span;
+}
+
+/**
+ * Key differences from other monotonic stack patterns:
+ * 1. Streaming/online: processes data one at a time (not batch)
+ * 2. Span accumulation: accumulates counts rather than finding next element
+ * 3. Stateful: maintains stack across multiple calls
+ * 4. Stack stores pairs: [value, accumulated_count]
+ */
 ```
 
 - Implement Queue using Stacks
@@ -1435,5 +1470,147 @@ public String removeKdigits(String num, int k) {
  * Why ArrayDeque?
  * - Stack<Character> is synchronized and slow
  * - ArrayDeque is faster and modern alternative for stack operations
+ */
+```
+
+### 2-14) Online Stock Span
+
+```java
+// java
+// LC 901. Online Stock Span
+
+/**
+ * Problem: Design an algorithm that collects daily price quotes for some stock
+ * and returns the span of that stock's price for the current day.
+ *
+ * The span is the maximum number of consecutive days (starting from today and going backward)
+ * for which the stock price was less than or equal to today's price.
+ *
+ * Example:
+ * Prices: [100, 80, 60, 70, 60, 75, 85]
+ * Spans:  [1,   1,  1,  2,  1,  4,  6]
+ *
+ * Key Insight:
+ * - Use monotonic decreasing stack to track [price, span] pairs
+ * - When new price arrives, pop all smaller/equal prices
+ * - Accumulate their spans into current span
+ * - This gives us the count of consecutive days with price <= current
+ *
+ * Time: O(1) amortized per next() call (each element pushed/popped once)
+ * Space: O(N) for the stack
+ */
+
+// V0
+// IDEA: MONOTONIC STACK (decreasing) + SPAN ACCUMULATION
+class StockSpanner {
+
+    /**
+     * NOTE !!!
+     * Stack stores [price, span] pairs
+     * - price: the stock price
+     * - span: how many consecutive days (including itself) had price <= this price
+     */
+    private Deque<int[]> stack; // {price, span}
+
+    public StockSpanner() {
+        stack = new ArrayDeque<>();
+    }
+
+    /**
+     * NOTE !!!
+     * Monotonic decreasing stack pattern:
+     * 1. Start with span = 1 (today counts)
+     * 2. While stack top has price <= current price:
+     *    - Pop it and add its span to current span
+     * 3. Push [current price, accumulated span]
+     * 4. Return span
+     */
+    public int next(int price) {
+        int span = 1; // Today always counts as 1
+
+        /**
+         * Pop all prices that are less than or equal to current price
+         * and accumulate their spans
+         */
+        while (!stack.isEmpty() && stack.peek()[0] <= price) {
+            // "Absorb" the previous span into current span
+            span += stack.pop()[1];
+        }
+
+        // Push current price with its accumulated span
+        stack.push(new int[] { price, span });
+
+        return span;
+    }
+}
+
+/**
+ * Example Walkthrough:
+ *
+ * Input: [100, 80, 60, 70, 60, 75, 85]
+ *
+ * next(100):
+ *   - span = 1, stack is empty
+ *   - Push [100, 1]
+ *   - Return 1
+ *   Stack: [[100, 1]]
+ *
+ * next(80):
+ *   - span = 1, stack top is [100, 1], 100 > 80, don't pop
+ *   - Push [80, 1]
+ *   - Return 1
+ *   Stack: [[80, 1], [100, 1]]
+ *
+ * next(60):
+ *   - span = 1, stack top is [80, 1], 80 > 60, don't pop
+ *   - Push [60, 1]
+ *   - Return 1
+ *   Stack: [[60, 1], [80, 1], [100, 1]]
+ *
+ * next(70):
+ *   - span = 1
+ *   - stack top is [60, 1], 60 <= 70, pop and add span: span = 1 + 1 = 2
+ *   - stack top is [80, 1], 80 > 70, stop
+ *   - Push [70, 2]
+ *   - Return 2
+ *   Stack: [[70, 2], [80, 1], [100, 1]]
+ *
+ * next(60):
+ *   - span = 1
+ *   - stack top is [70, 2], 70 > 60, don't pop
+ *   - Push [60, 1]
+ *   - Return 1
+ *   Stack: [[60, 1], [70, 2], [80, 1], [100, 1]]
+ *
+ * next(75):
+ *   - span = 1
+ *   - stack top is [60, 1], 60 <= 75, pop and add: span = 1 + 1 = 2
+ *   - stack top is [70, 2], 70 <= 75, pop and add: span = 2 + 2 = 4
+ *   - stack top is [80, 1], 80 > 75, stop
+ *   - Push [75, 4]
+ *   - Return 4 (covers prices: 60, 70, 60, 75)
+ *   Stack: [[75, 4], [80, 1], [100, 1]]
+ *
+ * next(85):
+ *   - span = 1
+ *   - stack top is [75, 4], 75 <= 85, pop and add: span = 1 + 4 = 5
+ *   - stack top is [80, 1], 80 <= 85, pop and add: span = 5 + 1 = 6
+ *   - stack top is [100, 1], 100 > 85, stop
+ *   - Push [85, 6]
+ *   - Return 6 (covers prices: 60, 70, 60, 75, 80, 85)
+ *   Stack: [[85, 6], [100, 1]]
+ *
+ * Why this works:
+ * - When we pop [60, 1] and [70, 2], we're saying:
+ *   "60 had 1 consecutive day <= 60 (itself)"
+ *   "70 had 2 consecutive days <= 70 (60, 70)"
+ * - By accumulating: span = 1 + 1 + 2 = 4
+ *   We get: "75 has 4 consecutive days <= 75 (60, 70, 60, 75)"
+ */
+
+/**
+ * Usage:
+ * StockSpanner obj = new StockSpanner();
+ * int span = obj.next(price);
  */
 ```
