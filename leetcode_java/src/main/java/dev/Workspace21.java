@@ -1075,6 +1075,45 @@ public class Workspace21 {
     }
 
 
+    // LC 316
+    // 9.52 - 10.02 am
+    /**
+     *
+     *  -> remove duplicate letters so
+     *  that every letter appears once and only once.
+     *
+     *  -------------------
+     *
+     *   IDEA 1) SET + REORDER ???
+     *
+     *
+     *  -------------------
+     *
+     *
+     *
+     */
+    // IDEA 1) SET + REORDER ???
+    public String removeDuplicateLetters(String s) {
+        // edge
+        Set<String> set = new HashSet<>();
+        for(String x: s.split("")){
+            set.add(x);
+        }
+        System.out.println(">>> set = " + set);
+        StringBuilder sb = new StringBuilder();
+        //char[] chars = new char[];
+        for(String x: set){
+            sb.append(x);
+        }
+        // ???
+        String res = sb.toString();
+        char[] chars = res.toCharArray();
+        Arrays.sort(chars);
+
+        // ???
+        return String.valueOf(chars); // ???
+    }
+
 
 
 

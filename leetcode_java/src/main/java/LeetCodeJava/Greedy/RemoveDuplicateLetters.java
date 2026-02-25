@@ -56,6 +56,7 @@ public class RemoveDuplicateLetters {
   //
   //    }
 
+
   // V0-1
   // IDEA: STACK (fixed by gpt)
   // Time: O(n) — one pass over the string and each character is pushed/popped at most once.
@@ -226,6 +227,83 @@ public class RemoveDuplicateLetters {
       return sb.toString();
   }
 
+
+    // V0-3
+    // IDEA: MONO STACK (fixed by gemini)
+    public String removeDuplicateLetters_0_3(String s) {
+        int[] lastIndex = new int[26];
+        for (int i = 0; i < s.length(); i++) {
+            lastIndex[s.charAt(i) - 'a'] = i; // Store the LAST index of each char
+        }
+
+        boolean[] seen = new boolean[26]; // Track if char is currently in our stack
+        Stack<Character> stack = new Stack<>();
+
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+
+            // If we already have this char in our stack, skip it
+            if (seen[c - 'a']) continue;
+
+            // While:
+            // 1. Stack isn't empty
+            // 2. Current char 'c' is smaller than the top of the stack (Lexicographical check)
+            // 3. The top char of the stack appears again LATER in the string
+            while (!stack.isEmpty() && c < stack.peek() && lastIndex[stack.peek() - 'a'] > i) {
+                seen[stack.pop() - 'a'] = false;
+            }
+
+            stack.push(c);
+            seen[c - 'a'] = true;
+        }
+
+        StringBuilder sb = new StringBuilder();
+        for (char c : stack) sb.append(c);
+        return sb.toString();
+    }
+
+
+    // V0-4
+    // IDEA: MONO STACK (fixed by GPT)
+    public String removeDuplicateLetters_0_4(String s) {
+
+        int[] lastIndex = new int[26];
+        boolean[] used = new boolean[26];
+
+        // Step 1: record last occurrence
+        for (int i = 0; i < s.length(); i++) {
+            lastIndex[s.charAt(i) - 'a'] = i;
+        }
+
+        Stack<Character> stack = new Stack<>();
+
+        // Step 2: build result using greedy
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+
+            if (used[c - 'a'])
+                continue;
+
+            while (!stack.isEmpty()
+                    && stack.peek() > c
+                    && lastIndex[stack.peek() - 'a'] > i) {
+
+                used[stack.pop() - 'a'] = false;
+            }
+
+            stack.push(c);
+            used[c - 'a'] = true;
+        }
+
+        // Step 3: build string
+        StringBuilder sb = new StringBuilder();
+        for (char c : stack) {
+            sb.append(c);
+        }
+
+        return sb.toString();
+    }
+
   // V1
   // IDEA: STACK
   // https://leetcode.com/problems/remove-duplicate-letters/solutions/76762/java-on-solution-using-stack-with-detail-z3nb/
@@ -320,6 +398,8 @@ public class RemoveDuplicateLetters {
     }
 
     // V3
+
+
 
 
 }
