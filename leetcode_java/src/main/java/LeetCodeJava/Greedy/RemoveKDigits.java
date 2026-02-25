@@ -82,6 +82,11 @@ public class RemoveKDigits {
             sb.append(x);
         }
 
+        /** NOTE !!!
+         *
+         *  via below, we get the `non zero idx`
+         *  , and will use so to `cut` and get the final valid sub digit
+         */
         // 4. Remove leading zeros correctly
         String res = sb.toString();
         int nonZeroIndex = 0;
@@ -89,8 +94,19 @@ public class RemoveKDigits {
             nonZeroIndex++;
         }
 
+
+        /** NOTE !!!
+         *
+         *  we get sub string via nonZeroIndex
+         */
         res = res.substring(nonZeroIndex);
 
+
+
+        /** NOTE !!!
+         *
+         *  if res is empty, return "0"
+         */
         // 5. Final check: if the string is now empty, it means the result is 0
         return res.isEmpty() ? "0" : res;
     }

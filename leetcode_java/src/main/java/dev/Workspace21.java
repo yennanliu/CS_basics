@@ -865,6 +865,22 @@ public class Workspace21 {
         }
 
         StringBuilder sb = new StringBuilder();
+
+        /** NOTE !!!
+         *
+         *  below:
+         *
+         */
+
+
+        // 4. Remove leading zeros correctly
+//        String res = sb.toString();
+//        int nonZeroIndex = 0;
+//        while (nonZeroIndex < res.length() && res.charAt(nonZeroIndex) == '0') {
+//            nonZeroIndex++;
+//        }
+
+
         // edge: stack size = 0
         // ???
         if(st.isEmpty()){
