@@ -995,8 +995,56 @@ public class Workspace21 {
      *
      *
      */
-    // IDEA 3)  brute force ??
+
+    // 18.21 - 31 pm
+    /**
+     *  IDEA 1) MONO STACK
+     *
+     */
     public int[] nextGreaterElement(int[] nums1, int[] nums2) {
+        // edge
+
+        int[] res = new int[nums1.length];
+        Arrays.fill(res, - 1);
+
+        // map : { val : next_big_index } nums2
+        Map<Integer, Integer> map = new HashMap<>();
+
+        // loop over nums2
+        // mono st ???
+        // small -> big
+        Stack<Integer> st = new Stack<>();
+
+        for(int i = 0; i < nums2.length; i++){
+            int x = nums2[i];
+            while(!st.isEmpty() && st.peek() < x){
+                int val = st.pop(); // ??
+                if(!map.containsKey(x)){
+                    map.put(val, i);
+                }
+            }
+            st.add(x);
+        }
+
+        for(int i = 0; i < nums1.length; i++){
+            int x = nums1[i];
+            if(map.containsKey(x)){
+                res[i] = map.get(x);
+            }
+        }
+
+
+        return res;
+    }
+
+
+
+
+
+
+
+    // IDEA 3)  brute force ??
+    public int[] nextGreaterElement_99(int[] nums1, int[] nums2) {
         // edge
 
         int[] res = new int[nums1.length];
