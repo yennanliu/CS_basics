@@ -1162,5 +1162,74 @@ public class Workspace21 {
 
 
 
+    // LC 71
+    // 10.46 - 56 am
+    /** *
+     *
+     *  -> Return the simplified canonical path.
+     *
+     *
+     *  ---------------
+     *
+     *   IDEA 1) STACK
+     *
+     *
+     *  ---------------
+     *
+     *
+     */
+    public String simplifyPath(String path) {
+        // edge
+        if(path.isEmpty()){
+            return path;
+        }
+        if(path.equals("/../")){
+            return "/";
+        }
+        // ???
+        if(path.equals("..") || path.equals(".")){
+            return ".";
+        }
+
+        //Stack<String> st = new Stack<>();
+        Deque<String> deque = new ArrayDeque<>();
+
+        // 2. loop over element
+        for(String p: path.split("/")){
+            System.out.println(">>> p = " + p);
+            if(p.equals("..")){
+                if(!deque.isEmpty()){
+                    deque.pollLast();
+                }
+            }
+            // ???
+            else if(p.equals(".") || p.isEmpty()){
+                continue;
+            }else{
+                //st.add(p);
+                deque.addLast(p);
+            }
+        }
+
+        StringBuilder sb = new StringBuilder();
+        // transform to str
+        int cnt = 0;
+        while(!deque.isEmpty()){
+            sb.append(deque.pollFirst());
+            if(cnt < deque.size()){
+                sb.append("/");
+            }
+            cnt += 1;
+        }
+
+
+        return sb.toString();
+    }
+
+
+
+
+
+
 
 }

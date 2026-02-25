@@ -91,9 +91,72 @@ import java.util.*;
 public class SimplifyPath {
 
     // V0
-//    public String simplifyPath(String path) {
-//
-//    }
+    // IDEA: Deque (gemini)
+    public String simplifyPath(String path) {
+        // 1. Clean up edge cases/logic: split("/") handles empty segments and slashes
+        Deque<String> deque = new ArrayDeque<>();
+
+        for (String p : path.split("/")) {
+            if (p.equals("..")) {
+                if (!deque.isEmpty()) {
+                    deque.pollLast(); // Go up one directory
+                }
+            } else if (p.equals(".") || p.isEmpty()) {
+                continue; // Ignore current directory or empty splits
+            } else {
+                deque.addLast(p); // Valid folder name
+            }
+        }
+
+        // 2. If the deque is empty, the simplified path is just the root "/"
+        if (deque.isEmpty()) {
+            return "/";
+        }
+
+        // 3. Build the path using pollFirst to maintain correct order
+        StringBuilder sb = new StringBuilder();
+        while (!deque.isEmpty()) {
+            sb.append("/"); // Prepend the slash
+            sb.append(deque.pollFirst());
+        }
+
+        return sb.toString();
+    }
+
+
+    // V0-0-1
+    // IDEA: Deque (GPT)
+    public String simplifyPath_0_0_1(String path) {
+
+        if (path == null || path.length() == 0) {
+            return "/";
+        }
+
+        Deque<String> deque = new ArrayDeque<>();
+
+        for (String p : path.split("/")) {
+
+            if (p.equals("..")) {
+                if (!deque.isEmpty()) {
+                    deque.pollLast();
+                }
+            } else if (p.equals(".") || p.isEmpty()) {
+                continue;
+            } else {
+                deque.addLast(p);
+            }
+        }
+
+        // build result
+        StringBuilder sb = new StringBuilder();
+
+        for (String dir : deque) {
+            sb.append("/").append(dir);
+        }
+
+        return sb.length() == 0 ? "/" : sb.toString();
+    }
+
 
     // V0-1
     // IDEA: STACK (fixed by gpt)
@@ -224,5 +287,8 @@ public class SimplifyPath {
 
         return sb.length() == 0 ? "/" : sb.toString();
     }
+
+
+
 
 }
