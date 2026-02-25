@@ -186,6 +186,93 @@ while (!stack.isEmpty()) {
 return sb.length() == 0 ? "0" : sb.toString();
 ```
 
+- monotonic stack (lexicographical order with deduplication - Remove Duplicate Letters)
+
+```java
+// java
+// LC 316 Remove Duplicate Letters (same as LC 1081)
+// Pattern: Monotonic increasing stack with "will appear later" check for lexicographical smallest result
+
+/**
+ * Key differences from basic greedy removal:
+ * 1. Track which characters are already in result (inStack/seen)
+ * 2. Only remove if character will appear again later (lastOccurrence)
+ * 3. Each character must appear exactly once
+ */
+
+// Step 1: Store the LAST index where each character appears
+int[] lastOccurrence = new int[26];
+for (int i = 0; i < s.length(); i++) {
+    lastOccurrence[s.charAt(i) - 'a'] = i;
+}
+
+Stack<Character> stack = new Stack<>();
+// Use boolean array for O(1) "contains" check
+boolean[] inStack = new boolean[26];
+
+for (int i = 0; i < s.length(); i++) {
+    char c = s.charAt(i);
+
+    // If character already in stack, skip it (each char appears once)
+    if (inStack[c - 'a'])
+        continue;
+
+    /**
+     * NOTE !!! MONO STACK LOGIC with "will appear later" check
+     *
+     * We can safely remove stack top if ALL conditions met:
+     * 0. Stack is NOT empty
+     * 1. Stack top is BIGGER than current char (for lexicographical order)
+     * 2. Stack top will appear AGAIN LATER (lastOccurrence[stack.peek()] > i)
+     *
+     * This ensures we get the lexicographically smallest result
+     */
+    while (!stack.isEmpty() && stack.peek() > c && lastOccurrence[stack.peek() - 'a'] > i) {
+        char removed = stack.pop();
+        inStack[removed - 'a'] = false;  // Mark as not in stack
+    }
+
+    stack.push(c);
+    inStack[c - 'a'] = true;  // Mark as in stack
+}
+
+// Build result from stack
+StringBuilder sb = new StringBuilder();
+for (char c : stack) {
+    sb.append(c);
+}
+return sb.toString();
+```
+
+**Explanation of "will appear later" logic:**
+
+```java
+/**
+ * lastOccurrence array tracks the LAST index of each character
+ *
+ * Example: s = "cbacdcbc"
+ *
+ * lastOccurrence['c' - 'a'] = 7  (last 'c' at index 7)
+ * lastOccurrence['b' - 'a'] = 6  (last 'b' at index 6)
+ * lastOccurrence['a' - 'a'] = 2  (last 'a' at index 2)
+ * lastOccurrence['d' - 'a'] = 4  (last 'd' at index 4)
+ *
+ * When at index i = 1 (char 'b'):
+ * - Stack has 'c', current char is 'b'
+ * - 'c' > 'b' (can potentially remove 'c')
+ * - lastOccurrence['c'] = 7 > 1 (YES, 'c' appears later)
+ * - Safe to remove 'c' and add 'b' first
+ *
+ * When at index i = 2 (char 'a'):
+ * - Stack has 'b', current char is 'a'
+ * - 'b' > 'a' (can potentially remove 'b')
+ * - lastOccurrence['b'] = 6 > 2 (YES, 'b' appears later)
+ * - Safe to remove 'b' and add 'a' first
+ *
+ * Result: "acdb" (lexicographically smallest)
+ */
+```
+
 - monotonic stack (span accumulation pattern - Online Stock Span)
 
 ```java
