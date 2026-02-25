@@ -1237,6 +1237,11 @@ public class Workspace21 {
 
 
 
+    // LC 591
+    public boolean isValid(String code) {
+
+        return false;
+    }
 
 
 
