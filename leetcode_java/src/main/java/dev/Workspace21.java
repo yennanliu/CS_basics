@@ -1092,8 +1092,54 @@ public class Workspace21 {
      *
      *
      */
-    // IDEA 1) SET + REORDER ???
+    // IDEA 1) MONO STACK
     public String removeDuplicateLetters(String s) {
+        // edge
+        if(s.isEmpty()){
+            return s;
+        }
+        if(s.length() == 1){
+            return s;
+        }
+
+        // ???
+        //Set<String> set = new HashSet<>();
+        HashMap<String, Integer> map = new HashMap<>();
+
+        // mono stack
+        // small -> big
+        Stack<String> st = new Stack<>();
+
+        for(String x: s.split("")){
+            // last element in stack is `bigger` then x
+            while(!st.isEmpty() && st.peek().compareTo(x) > 0) {
+                String val = st.pop();
+                map.remove(val);
+            }
+
+            if(!map.containsKey(x)){
+                st.add(x);
+                map.put(x, 1);
+            }
+        }
+
+        StringBuilder sb = new StringBuilder();
+        while(!st.isEmpty()){
+            sb.append(st.pop());
+        }
+
+
+        return sb.reverse().toString();
+    }
+
+
+
+
+
+
+
+    // IDEA 1) SET + REORDER ???
+    public String removeDuplicateLetters_99(String s) {
         // edge
         Set<String> set = new HashSet<>();
         for(String x: s.split("")){
