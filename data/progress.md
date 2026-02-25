@@ -86,8 +86,7 @@
 			- 316
 			- 1081
 		- gemini
-			- 844
-			- 591
+		- 591
 - needcode `grind 75` - similar LC by AI
 	- https://neetcode.io/practice?tab=blind75
 	- LC 49 Group Anagrams

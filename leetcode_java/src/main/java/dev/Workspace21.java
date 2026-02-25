@@ -1012,6 +1012,70 @@ public class Workspace21 {
 
 
 
+    // LC 844
+    // 9.39 - 49 am
+    /**
+     *
+     *  -> return true if they are equal when both
+     *  are typed into empty text editors.
+     *  '#' means a backspace character.
+     *
+     *
+     * ----------------
+     *
+     *  IDEA 1) STACK
+     *
+     *
+     * ----------------
+     *
+     *
+     */
+    // IDEA 1) STACK
+    public boolean backspaceCompare(String s, String t) {
+        // edge
+
+        Stack<String> st1 = new Stack<>();
+        Stack<String> st2 = new Stack<>();
+
+        for(String x: s.split("")){
+            if(x.equals("#")){
+                if(!st1.isEmpty()){
+                    st1.pop();
+                }
+            }else{
+                st1.push(x); // ???
+            }
+        }
+
+        for(String x: t.split("")){
+            if(x.equals("#")){
+                if(!st2.isEmpty()){
+                    st2.pop();
+                }
+            }else{
+                st2.push(x); // ???
+            }
+        }
+
+        StringBuilder sb1 = new StringBuilder();
+        StringBuilder sb2 = new StringBuilder();
+
+        while (!st1.isEmpty()){
+            sb1.append(st1.pop());
+        }
+
+        while (!st2.isEmpty()){
+            sb2.append(st2.pop());
+        }
+
+        System.out.println(">>> sb1 = " + sb1.toString());
+        System.out.println(">>> sb2 = " + sb2.toString());
+
+        return sb1.toString().contentEquals(sb2);
+    }
+
+
+
 
 
 }
