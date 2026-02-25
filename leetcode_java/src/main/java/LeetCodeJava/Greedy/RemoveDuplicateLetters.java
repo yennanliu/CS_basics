@@ -75,9 +75,12 @@ public class RemoveDuplicateLetters {
             if (inStack[c - 'a'])
                 continue;
 
+
+            /** NOTE !!! below MONO STACK logic */
             // MONO STACK LOGIC:
-            // While the top of the stack is BIGGER than the current char...
-            // AND the top of the stack will appear again later (lastOccurrence > i)
+            // 0. stack is NOT empty
+            // 1. While the top of the stack is BIGGER than the current char...
+            // 2. AND `the top of the stack` will appear `again` `later` (lastOccurrence > i)
             while (!st.isEmpty() && st.peek() > c && lastOccurrence[st.peek() - 'a'] > i) {
                 char removed = st.pop();
                 inStack[removed - 'a'] = false;
