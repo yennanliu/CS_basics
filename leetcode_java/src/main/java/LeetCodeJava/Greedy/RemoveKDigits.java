@@ -48,6 +48,55 @@ public class RemoveKDigits {
 //    }
 
 
+    // V0-0-1
+    // IDEA: MONO STACK (gemini)
+    public String removeKdigits_0_0_1(String num, int k) {
+        int n = num.length();
+        if (k == n){
+            return "0";
+        }
+
+        // Use Deque for better performance and easier iteration
+        Deque<Integer> st = new ArrayDeque<>();
+
+        // 1. Process string character by character
+        for (char c : num.toCharArray()) {
+            int val = Character.getNumericValue(c);
+            while (k > 0 && !st.isEmpty() && st.peekLast() > val) {
+                st.removeLast();
+                k--;
+            }
+            st.addLast(val);
+        }
+
+        // 2. IMPORTANT: If k is still > 0, remove digits from the end
+        // (Example: num = "123", k = 1 -> result should be "12")
+        while (k > 0 && !st.isEmpty()) {
+            st.removeLast();
+            k--;
+        }
+
+        // 3. Build the string
+        StringBuilder sb = new StringBuilder();
+        for (Integer x : st) {
+            sb.append(x);
+        }
+
+        // 4. Remove leading zeros correctly
+        String res = sb.toString();
+        int nonZeroIndex = 0;
+        while (nonZeroIndex < res.length() && res.charAt(nonZeroIndex) == '0') {
+            nonZeroIndex++;
+        }
+
+        res = res.substring(nonZeroIndex);
+
+        // 5. Final check: if the string is now empty, it means the result is 0
+        return res.isEmpty() ? "0" : res;
+    }
+
+
+
     // V0-1
     // IDEA: MONO STACK (gemini)
     /**  IDEA:

@@ -832,8 +832,79 @@ public class Workspace21 {
      *
      *
      */
+
     // IDEA 1) MONO STACK
+    // 17.44 - 54 pm
+    /**
+     *
+     *   ->
+     *
+     *    return the smallest possible integer
+     *    after removing k digits from num.
+     *
+     *
+     */
     public String removeKdigits(String num, int k) {
+        // edge
+        int n = num.length();
+        if (k == n){
+            return "0";
+        }
+
+        // mono stack
+        // big -> small
+        Stack<Integer> st = new Stack<>();
+
+        for(String x: num.split("")){
+            int val = Integer.parseInt(x);
+            while(k > 0 && !st.isEmpty() && st.peek() > val){
+                st.pop();
+                k -= 1;
+            }
+            st.add(val);
+        }
+
+        StringBuilder sb = new StringBuilder();
+        // edge: stack size = 0
+        // ???
+        if(st.isEmpty()){
+            return null;
+        }
+
+        // edge: stack size = 1
+        if(st.size() == 1){
+            sb.append(st.pop());
+            return sb.toString();
+        }
+
+        // edge: handle `0` start
+      //  int cnt = 0;
+        for(Integer x: st){
+//            if(cnt == 0 && x == 0){
+//                continue;
+//            }
+            sb.append(x);
+           // cnt += 1;
+        }
+
+       // ??? remove start from 0
+        String res = sb.toString();
+        while(res.startsWith("0")){
+            res = res.substring(1, res.length()-1);
+        }
+
+
+        return res;
+    }
+
+
+
+
+
+
+
+    // IDEA 1) MONO STACK
+    public String removeKdigits_99(String num, int k) {
         // edge
         int n = num.length();
         if (k == n)
