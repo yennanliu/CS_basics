@@ -1211,15 +1211,24 @@ public class Workspace21 {
             }
         }
 
+
+        // 2. If the deque is empty, the simplified path is just the root "/"
+        if (deque.isEmpty()) {
+            return "/";
+        }
+
         StringBuilder sb = new StringBuilder();
         // transform to str
         int cnt = 0;
         while(!deque.isEmpty()){
+//            sb.append(deque.pollFirst());
+//            if(cnt < deque.size()){
+//                sb.append("/");
+//            }
+//            cnt += 1;
+
+            sb.append("/"); // Prepend the slash
             sb.append(deque.pollFirst());
-            if(cnt < deque.size()){
-                sb.append("/");
-            }
-            cnt += 1;
         }
 
 

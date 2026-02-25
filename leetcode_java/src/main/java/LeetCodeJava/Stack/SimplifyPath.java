@@ -108,6 +108,10 @@ public class SimplifyPath {
             }
         }
 
+        /** NOTE !!!
+         *
+         *  edge case: if deque is empty, return "/" directly
+         */
         // 2. If the deque is empty, the simplified path is just the root "/"
         if (deque.isEmpty()) {
             return "/";
@@ -116,6 +120,10 @@ public class SimplifyPath {
         // 3. Build the path using pollFirst to maintain correct order
         StringBuilder sb = new StringBuilder();
         while (!deque.isEmpty()) {
+            /** NOTE !!!
+             *
+             *  the append order
+             */
             sb.append("/"); // Prepend the slash
             sb.append(deque.pollFirst());
         }
