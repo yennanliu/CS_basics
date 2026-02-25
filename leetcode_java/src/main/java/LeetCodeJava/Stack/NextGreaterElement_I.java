@@ -87,13 +87,45 @@ public class NextGreaterElement_I {
         return res;
     }
 
-    // V-0-0-1
+    // V0-0-1
+    // IDEA: MONO STACK (fixed by gemini)
+    public int[] nextGreaterElement_0_0_1(int[] nums1, int[] nums2) {
+        int[] res = new int[nums1.length];
+
+        /** NOTE !!!! { value : next_greater_value } */
+        // map : { value : next_greater_value }
+        Map<Integer, Integer> map = new HashMap<>();
+        Stack<Integer> st = new Stack<>();
+
+        /** NOTE !!!!  Process nums2  */
+        // 1. Process nums2 to find the next greater element for everyone
+        for (int x : nums2) {
+            // While the current number is bigger than the top of our stack...
+            while (!st.isEmpty() && st.peek() < x) {
+                // ...the current number 'x' is the next greater element for 'st.pop()'
+                map.put(st.pop(), x);
+            }
+            st.push(x);
+        }
+
+        // 2. Build the result for nums1
+        for (int i = 0; i < nums1.length; i++) {
+            /** NOTE !!!!  how will fill the val in res  */
+            // If it's in the map, we have the value. Otherwise, use -1.
+            res[i] = map.getOrDefault(nums1[i], -1);
+        }
+
+        return res;
+    }
+
+
+    // V-0-0-2
     // IDEA : STACK
     /**
      * time = O(1)
      * space = O(1)
      */
-    public int[] nextGreaterElement_0_0_1(int[] nums1, int[] nums2) {
+    public int[] nextGreaterElement_0_0_2(int[] nums1, int[] nums2) {
         int[] res = new int[nums1.length];
         Arrays.fill(res, -1);
 
@@ -126,7 +158,7 @@ public class NextGreaterElement_I {
     }
 
 
-    // V0-0-2
+    // V0-0-3
     // IDEA : STACK
     // https://www.youtube.com/watch?v=68a1Dc_qVq4
     /** NOTE !!!
@@ -183,7 +215,7 @@ public class NextGreaterElement_I {
      * time = O(1)
      * space = O(1)
      */
-    public int[] nextGreaterElement_0_0_2(int[] nums1, int[] nums2) {
+    public int[] nextGreaterElement_0_0_3(int[] nums1, int[] nums2) {
 
         if (nums1.length == 1 && nums2.length == 1){
             return new int[]{-1};
@@ -235,10 +267,10 @@ public class NextGreaterElement_I {
     }
 
 
-    // V0-3
+    // V0-0-4
     // IDEA: QUEUE + BRUTE FORCE
     // IDEA 3)  brute force ??
-    public int[] nextGreaterElement_0_0_3(int[] nums1, int[] nums2) {
+    public int[] nextGreaterElement_0_0_4(int[] nums1, int[] nums2) {
         // edge
 
         int[] res = new int[nums1.length];
