@@ -1,18 +1,105 @@
 package LeetCodeJava.TwoPointer;
 
 // https://leetcode.com/problems/backspace-string-compare/
+/**
+ *
 
+ 844. Backspace String Compare
+ Solved
+ Easy
+ Topics
+ premium lock icon
+ Companies
+ Given two strings s and t, return true if they are equal when both are typed into empty text editors. '#' means a backspace character.
+
+ Note that after backspacing an empty text, the text will continue empty.
+
+
+
+ Example 1:
+
+ Input: s = "ab#c", t = "ad#c"
+ Output: true
+ Explanation: Both s and t become "ac".
+ Example 2:
+
+ Input: s = "ab##", t = "c#d#"
+ Output: true
+ Explanation: Both s and t become "".
+ Example 3:
+
+ Input: s = "a#c", t = "b"
+ Output: false
+ Explanation: s becomes "c" while t becomes "b".
+
+
+ Constraints:
+
+ 1 <= s.length, t.length <= 200
+ s and t only contain lowercase letters and '#' characters.
+
+
+ Follow up: Can you solve it in O(n) time and O(1) space?
+ *
+ *
+ *
+ */
 import java.util.Stack;
 
 public class BackspaceStringCompare {
 
     // V0
+    // IDEA: STACK + SB
+    public boolean backspaceCompare(String s, String t) {
+        // edge
+
+        Stack<String> st1 = new Stack<>();
+        Stack<String> st2 = new Stack<>();
+
+        for (String x : s.split("")) {
+            if (x.equals("#")) {
+                if (!st1.isEmpty()) {
+                    st1.pop();
+                }
+            } else {
+                st1.push(x);
+            }
+        }
+
+        for (String x : t.split("")) {
+            if (x.equals("#")) {
+                if (!st2.isEmpty()) {
+                    st2.pop();
+                }
+            } else {
+                st2.push(x);
+            }
+        }
+
+        StringBuilder sb1 = new StringBuilder();
+        StringBuilder sb2 = new StringBuilder();
+
+        while (!st1.isEmpty()) {
+            sb1.append(st1.pop());
+        }
+
+        while (!st2.isEmpty()) {
+            sb2.append(st2.pop());
+        }
+
+//        System.out.println(">>> sb1 = " + sb1.toString());
+//        System.out.println(">>> sb2 = " + sb2.toString());
+
+        return sb1.toString().contentEquals(sb2);
+    }
+
+    // V0-1
     // IDEA : STACK + stringBuilder
     /**
      * time = O(N)
      * space = O(1)
      */
-    public boolean backspaceCompare(String s, String t) {
+    public boolean backspaceCompare_0_1(String s, String t) {
 
         if (s == null && t == null){
             return true;
@@ -133,5 +220,8 @@ public class BackspaceStringCompare {
         }
         return String.valueOf(ans);
     }
+
+
+
     
 }
