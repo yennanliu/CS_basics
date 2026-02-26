@@ -53,9 +53,28 @@ public class GuessNumberHigherOrLower {
      * int guess(int num);
      */
     // V0
-//    public int guessNumber(int n) {
-//
-//    }
+    public int guessNumber(int n) {
+        // edge
+
+        int l = 0;
+        int r = n; // ???
+        while (r >= l) {
+            //int mid = (l + r) / 2;
+            // use below trick to avoid overflow error
+            int mid = l + ((r - l) / 2);
+            int resp = guess(mid);
+            if (resp == 0) {
+                return mid;
+            } else if (resp == -1) {
+                r = mid - 1;
+            } else {
+                l = mid + 1;
+            }
+        }
+
+        // ???
+        return -1;
+    }
 
     // V1
 
@@ -113,5 +132,7 @@ public class GuessNumberHigherOrLower {
     public int guess(int num){
         return 0;
     }
+
+
 
 }

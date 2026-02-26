@@ -1435,7 +1435,47 @@ public class Workspace21 {
     }
 
 
+    // LC 374
+    // 18.50 - 19.00
+    /**
+     *  -> Return the number that I picked.
+     *
+     *   - I pick a number from 1 to n.
+     *
+     *
+     *  ----------------
+     *
+     *  ----------------
+     *
+     */
+    public int guessNumber(int n) {
+        // edge
 
+        int l = 0;
+        int r = n; // ???
+        while(r >= l){
+            //int mid = (l + r) / 2;
+            int mid =  l +  ( (r - l) / 2 ); // ???
+            int resp = guess(mid);
+            if(resp == 0){
+                return mid;
+            }else if(resp == -1){
+                r = mid -1;
+            }else{
+                l = mid + 1;
+            }
+        }
+
+        // ???
+        return -1;
+    }
+
+    // NOTE !! below is just a placeholder func
+    // so in LC console, it has pre-defined guess func
+    // we have below func just for avoid java syntax complaining.
+    private int guess(int num){
+        return 0;
+    }
 
 
 
