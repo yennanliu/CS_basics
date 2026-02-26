@@ -1227,8 +1227,78 @@ public class Workspace21 {
      *
      *
      */
-    // IDEA 1) MONO STACK
+    // 19.51 - 20.00 pm
+    /**
+     *  -> remove duplicate letters
+     *  so that every letter appears once and only once.
+     *
+     *  ------------
+     *
+     *   IDEA 1)
+     *
+     *    MONO STACK + MAP record `last idx`
+     *
+     */
     public String removeDuplicateLetters(String s) {
+        // edge
+        if (s == null || s.length() == 0) {
+            return "";
+        }
+
+
+        // ???
+        // { val : last_exist_idx }
+        Map<String, Integer> map = new HashMap<>();
+        int i = 0;
+        for(String x: s.split("")){
+            map.put(x, i);
+            i += 1;
+        }
+
+        // 2. We need a way to check if a character is already in our result stack
+        Set<String> inStack = new HashSet<>();
+
+
+        Stack<String> st = new Stack<>();
+        int j = 0; // ???
+        for(String x: s.split("")){
+            // ???
+            /**  pop last element from stack when all below condition met
+             *
+             *  1. stack is NOT empty
+             *  2. stack last element > new element (lexicographically)
+             *  3. stack last element last idx > cur idx (will appear again later)
+             *
+             */
+            while(!st.isEmpty() && st.peek().compareTo(x) > 0 && map.get(st.peek()) > j ){
+                st.pop();
+            }
+            // ???
+            if(!inStack.contains(x)){
+                st.add(x);
+                inStack.add(x);
+            }
+            j += 1;
+        }
+
+        StringBuilder sb = new StringBuilder();
+        for(String y: st){
+            sb.append(y);
+        }
+
+
+        return sb.toString();
+    }
+
+
+
+
+
+
+
+
+    // IDEA 1) MONO STACK
+    public String removeDuplicateLetters_98(String s) {
         // edge
         if(s.isEmpty()){
             return s;
