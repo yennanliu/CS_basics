@@ -79,7 +79,7 @@ public class OnlineStockSpan {
 
         /**  NOTE !!!
          *
-         *  we init Deque as { [price, span] }
+         *  we define Deque structure as { [price, span] }
          */
         // We store int[] where:
         // index 0 = price
@@ -95,6 +95,15 @@ public class OnlineStockSpan {
 
             // While the previous price is less than or equal to current price
             while (!stack.isEmpty() && stack.peek()[0] <= price) {
+                /** NOTE !!!
+                 *
+                 *   below trick:
+                 *
+                 *   `Absorb` the prev span to the cur one.
+                 *   (span += stack.pop()[1];)
+                 *    so we DON'T need to maintain the `span` for every price
+                 *    e.g. NO need to use hashmap
+                 */
                 // "Absorb" the previous span into the current one
                 span += stack.pop()[1];
             }
