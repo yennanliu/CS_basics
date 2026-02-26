@@ -2,9 +2,7 @@ package LeetCodeJava.Greedy;
 
 // https://leetcode.com/problems/remove-duplicate-letters/description/
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Stack;
+import java.util.*;
 
 /**
  * 316. Remove Duplicate Letters
@@ -51,9 +49,81 @@ public class RemoveDuplicateLetters {
      */
 
     // V0
-    //    public String removeDuplicateLetters(String s) {
-    //
-    //    }
+    // IDEA: MONO STACK + SET + MAP (gemini)
+    public String removeDuplicateLetters(String s) {
+        // edge
+        if (s == null || s.length() == 0){
+            return "";
+        }
+
+        /** NOTE !!!
+         *
+         *  map : { val : last_existed_idx }
+         */
+        // 1. Map to store the LAST index of each character
+        Map<Character, Integer> lastIndexMap = new HashMap<>();
+        for (int i = 0; i < s.length(); i++) {
+            lastIndexMap.put(s.charAt(i), i);
+        }
+
+        Stack<Character> st = new Stack<>();
+
+        /** NOTE !!!
+         *
+         *  inStack: check if already same element to stack
+         */
+        // 2. We need a way to check if a character is already in our result stack
+        Set<Character> inStack = new HashSet<>();
+
+        for (int i = 0; i < s.length(); i++) {
+            char x = s.charAt(i);
+
+            /** NOTE !!!
+             *
+             *  If 'x' is already in the stack, skip.
+             *  -> to avoid duplicates
+             */
+            // If 'x' is already in the stack, skip it to avoid duplicates
+            if (inStack.contains(x)) {
+                continue;
+            }
+
+
+            /** NOTE !!!
+             *
+             *  Core Monotonic logic
+             *
+             *  pop last element from stack when all below condition met
+             *
+             *    1. stack is NOT empty
+             *    2. stack last element > new element (lexicographically)
+             *    3. stack last element last idx > cur idx (will appear again later)
+             *
+             */
+            // 3. Monotonic logic: Pop if top is bigger AND will appear later
+            while (!st.isEmpty() && st.peek() > x && lastIndexMap.get(st.peek()) > i) {
+                char removed = st.pop();
+                inStack.remove(removed); // Remember to remove from the set too!
+            }
+
+            st.push(x);
+            inStack.add(x);
+        }
+
+        // 4. Build the final string
+        StringBuilder sb = new StringBuilder();
+        /** NOTE !!
+         *
+         *  the trick we can `traverse` stack
+         *  in `FIFO` order
+         *  (NOT `FILO` order)
+         */
+        for (char y : st) {
+            sb.append(y);
+        }
+
+        return sb.toString();
+    }
 
     // V0-0-1
     // IDEA: MONO STACK (gemini)
