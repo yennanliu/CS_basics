@@ -85,6 +85,17 @@
 			- 1047
 			- 1081
 		- gemini
+	- LC 35
+		- gpt
+			- 374
+			- 852
+			- 34
+			- 153
+			- 33
+			- 162
+			- 410
+			- 1011
+		- gemini
 - needcode `grind 75` - similar LC by AI
 	- https://neetcode.io/practice?tab=blind75
 	- LC 49 Group Anagrams
