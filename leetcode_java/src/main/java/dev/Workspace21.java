@@ -1100,14 +1100,85 @@ public class Workspace21 {
      * --------------------
      *
      */
-    // IDEA 1) MONO STACK
+    // 20.21 - 31 pm
+    /**
+     *
+     *
+     *  - the span of the stock's price in one day
+     *   is the maximum number of consecutive days
+     *   (starting from that day and going backward)
+     *  for which the stock price was less than
+     *   or equal to the price of that day.
+     *
+     *
+     *   ---------------
+     *
+     *   IDEA 1)
+     *
+     *    MONO STACK + HASHMAP (record next bigger val idx )
+     *
+     *    { val : next_bigger_val_idx }
+     *
+     *   ---------------
+     *
+     */
     class StockSpanner {
+
+        // attr
+        Map<Integer, Integer> map;
+        // ???
+        //Stack<Integer> st;
+        // stack : { [idx, val] } // ????
+        Stack<Integer[]> st;
+
+        public StockSpanner() {
+            this.map = new HashMap<>();
+            this.st = new Stack<>();
+        }
+
+        public int next(int price) {
+//            // ??
+//            if(this.st.isEmpty()){
+//                // ???
+//                this.st.add(new Integer[]{0, price}); // ???
+//                return 0;
+//            }
+
+            // ???
+            int span = 1;
+
+            // mono stack
+            // small -> big
+            // ???
+            Integer[] val = null; // /?
+            while(!st.isEmpty() && st.peek()[1] <= price){
+//                val = st.pop();
+//                // record via map ????
+//                map.put(val[1], 1);
+                span += st.pop()[0];
+            }
+            st.add(new Integer[]{span, price } );
+
+            return span;
+        }
+
+    }
+
+
+
+
+
+
+
+
+    // IDEA 1) MONO STACK
+    class StockSpanner_99 {
 
         // attr
         //Stack<Integer> st;
         Deque<Integer> deque;
 
-        public StockSpanner() {
+        public StockSpanner_99() {
             this.deque = new ArrayDeque<>();
         }
 
