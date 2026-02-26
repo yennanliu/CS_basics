@@ -230,7 +230,28 @@ public class PeakIndexInAMountainArray {
             if (mid < arr.length-1 && arr[mid] > arr[mid - 1] && arr[mid] > arr[mid + 1]) {
                 return mid;
             }
-            // If the element at mid is smaller than the next element, peak is on the right
+            // If the element at mid is smaller
+            // than the next element, peak is on the right
+            /** NOTE !!!
+             *
+             *
+             *  1) we use `arr[mid] < arr[mid + 1]`
+             *     to check if `left sub arr` is increasing
+             *
+             *
+             *  2) the valid input is like below:
+             *
+             *    [3,4,5,7,4,3]   (ONLY 1 peak)
+             *
+             *    so our code works.
+             *
+             *
+             *  -> [3, 6, 5, 7, 4, 3]
+             *
+             *    is NOT an valid input
+             *    because it has 2 peak
+             *
+             */
             else if (arr[mid] < arr[mid + 1]) {
                 l = mid + 1;
             }
@@ -401,5 +422,8 @@ public class PeakIndexInAMountainArray {
         }
         return start;
     }
+
+
+
 
 }
