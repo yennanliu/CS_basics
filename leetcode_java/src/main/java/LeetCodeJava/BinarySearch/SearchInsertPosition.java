@@ -39,12 +39,188 @@ package LeetCodeJava.BinarySearch;
 public class SearchInsertPosition {
 
     // V0
+    // IDEA: BINARY SEARCH on left item (gemini)
+    /** NOTE !!!
+     *
+     *  when ` while (r >= l) loop end`
+     *
+     *    - r is the last element smaller than target
+     *    - l is the first element greater than target
+     *
+     * And the insertion position must be:
+     *    `between r and l`
+     *
+     * but since `r = l - 1`
+     *   -> so the correct idx is: `l`
+     *   -> since there is NO space between r, and l:
+     *
+     *   - So visually:
+     *
+     *     ... r | l ...
+     *
+     *    There is no index between them anymore.
+     *
+     *
+     *
+     *  ----------
+     *
+     *  NOTE !!!
+     *
+     *   when while loop is running:
+     *      ->
+     *        - l is the first element smaller than target
+     *        - r is the last element greater than target
+     *
+     *   when while loop end:
+     *      ->
+     *        - l is the first element greater than target
+     *        - r is the last element smaller than target
+     *
+     *
+     *
+     *  ----------
+     *
+     *
+     *
+     * Core idea:
+     *
+     *
+     *
+     *
+     * The most elegant and reliable fix is to simply **return `l**`.
+     * When a binary search loop (`while (l <= r)`)
+     * finishes without finding the target, the `l`
+     * pointer always lands exactly on the index
+     * where the target should be inserted.
+     *
+
+     *
+     * ---
+     *
+     * Great question — this is the key binary search insight that makes LC 35 trivial once you truly understand it.
+     *
+     * Let’s break it down carefully.
+     *
+     * ---
+     *
+     * # 🔎 Core Idea
+     *
+     * When using this pattern:
+     *
+     * ```java
+     * while (l <= r) {
+     *     int mid = l + (r - l) / 2;
+     *
+     *     if (nums[mid] == target) return mid;
+     *     else if (nums[mid] < target) l = mid + 1;
+     *     else r = mid - 1;
+     * }
+     * ```
+     *
+     * If the loop exits, it means:
+     *
+     * ```
+     * l > r
+     * ```
+     *
+     * At that exact moment:
+     *
+     * ```
+     * r < l
+     * ```
+     *
+     * And the search space has collapsed.
+     *
+     * ---
+     *
+     * # 🧠 What Do `l` and `r` Actually Mean?
+     *
+     * Throughout the search:
+     *
+     * * Everything **left of `l`** is strictly `< target`
+     * * Everything **right of `r`** is strictly `> target`
+     * * The possible location of `target` is always inside `[l, r]`
+     *
+     * Each step removes half the search space while preserving this invariant.
+     *
+     * ---
+     *
+     * # 📌 What Happens When the Loop Ends?
+     *
+     * The loop stops when:
+     *
+     * ```
+     * l == r + 1
+     * ```
+     *
+     * That means the array is effectively split like this:
+     *
+     * ```
+     * [ elements < target ]  l  r  [ elements > target ]
+     * ```
+     *
+     * More precisely:
+     *
+     * ```
+     * index:     0   ...   r   l   ...   n-1
+     * value:    <target    gap     >target
+     * ```
+     *
+     * So:
+     *
+     * * `r` is the last element smaller than target
+     * * `l` is the first element greater than target
+     *
+     * And that is **exactly** where the target belongs.
+     *
+     * ---
+     *
+     */
+    public int searchInsert(int[] nums, int target) {
+        // edge
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
+
+        int l = 0;
+        int r = nums.length - 1;
+
+        while (l <= r) {
+            int mid = l + (r - l) / 2; // avoid overflow
+            if (nums[mid] == target) {
+                return mid;
+            } else if (nums[mid] < target) {
+                l = mid + 1;
+            } else {
+                r = mid - 1;
+            }
+        }
+
+        /**
+         *  NOTE !!!!
+         */
+        // if not found, l is the correct insert position
+        /**
+         * 🟣 Why is this guaranteed?
+         * 	  - Binary search shrinks the search range until l > r.
+         * 	  - By construction:
+         * 	      - nums[0..l-1] < target
+         * 	      - nums[l..end] >= target
+         * 	  - So when the loop ends, l is either:
+         * 	      - The index where the target was found, or
+         * 	      - The index where it should be inserted.
+         */
+        return l;
+    }
+
+
+    // V0-0-1
     // IDEA: BINARY SEARCH ( r >= l)
     /**
      * time = O(log N)
      * space = O(1)
      */
-    public int searchInsert(int[] nums, int target) {
+    public int searchInsert_0_0_1(int[] nums, int target) {
         // edge
         if (nums == null) {
             return 0; // ??
@@ -237,5 +413,8 @@ public class SearchInsertPosition {
 
         return -1;//Unreachable statement
     }
+
+
+
 
 }
