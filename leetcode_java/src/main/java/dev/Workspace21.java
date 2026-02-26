@@ -1478,5 +1478,104 @@ public class Workspace21 {
     }
 
 
+    // LC 852
+    // 19.00 -18 pm
+    /**
+     *
+     *  -> Return the index of the peak element.
+     *
+     *  - where the values increase
+     *    to a peak element and then decrease.
+     *
+     *  ------------
+     *
+     *  IDEA 1) BINARY SEARCH
+     *
+     *     - case 1)
+     *         mid is part of `left increase` sub arr
+     *           - if mid < right
+     *           - if mid > left
+     *
+     *     - case 2)
+     *         mid is part of `right decrease` sub arr
+     *            - if mid < right
+     *            - if mid > left
+     *
+     *  ------------
+     */
+    // IDEA 1) BINARY SEARCH
+    public int peakIndexInMountainArray(int[] arr) {
+        // edge
+        if (arr == null || arr.length < 3) {
+            return -1; // Return -1 if the array length is less than 3
+        }
+
+        //int l = 0;
+        int l = 1; // ?????
+        //int r = arr.length - 1; // ??
+        int r = arr.length - 2; // ??
+
+
+        while(r >= l){
+
+            int mid =  l +  ( (r - l) / 2 ); // ???
+
+            // ???
+            /**
+             *  case 1) peak is found
+             */
+            // if found ??
+            if(arr[mid] > arr[mid - 1] && arr[mid] > arr[mid + 1]){
+                return mid;
+            }
+
+            /**
+             *  case 2) `left` part is increasing. peak in on the `right` part
+             *
+             *   345 7 43
+             *
+             *   345 4 43
+             *
+             *   365743
+             */
+            if(arr[mid] < arr[mid + 1]){
+                l = mid + 1;
+            }else{
+                r = mid - 1;
+            }
+
+
+            /**
+             *      *     - case 1)
+             *      *         mid is part of `left increase` sub arr
+             *      *           - if mid < right
+             *      *           - if mid > left
+             */
+            // ???
+//            if(arr[mid] >= arr[l]){
+//              //  if()
+//            }
+
+            /**
+             *     *     - case 2)
+             *      *         mid is part of `right decrease` sub arr
+             *      *            - if mid < right
+             *      *            - if mid > left
+             *
+             */
+        }
+
+
+
+        // ???
+        return -1;
+    }
+
+
+
+
+
+
+
 
 }
