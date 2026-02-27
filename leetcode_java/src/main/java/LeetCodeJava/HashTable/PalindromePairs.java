@@ -55,6 +55,49 @@ public class PalindromePairs {
 //
 //    }
 
+
+    // V0-0-3
+    // IDEA: BRUTE FORCE (TLE) (gemini)
+    public List<List<Integer>> palindromePairs_0_0_3(String[] words) {
+        List<List<Integer>> res = new ArrayList<>();
+        if (words == null || words.length == 0)
+            return res;
+
+        for (int i = 0; i < words.length; i++) {
+            for (int j = i + 1; j < words.length; j++) {
+
+                // Test Combination 1: words[i] + words[j]
+                String s1 = words[i] + words[j];
+                if (isPalindrome_0_0_3(s1)) {
+                    res.add(Arrays.asList(i, j));
+                }
+
+                // Test Combination 2: words[j] + words[i]
+                String s2 = words[j] + words[i];
+                if (isPalindrome_0_0_3(s2)) {
+                    res.add(Arrays.asList(j, i));
+                }
+            }
+        }
+
+        // Optional: Sort result by first index
+        res.sort((a, b) -> a.get(0).compareTo(b.get(0)));
+
+        return res;
+    }
+
+    private boolean isPalindrome_0_0_3(String x) {
+        int l = 0;
+        int r = x.length() - 1;
+        while (l < r) {
+            if (x.charAt(l++) != x.charAt(r--)) {
+                return false;
+            }
+        }
+        return true; // Corrected: return true if loop finishes
+    }
+
+
     // V0-1
     // IDEA: HASHMAP (fixed by gemini)
     /**
@@ -534,6 +577,8 @@ public class PalindromePairs {
         }
         return true;
     }
+
+
 
 
 }
