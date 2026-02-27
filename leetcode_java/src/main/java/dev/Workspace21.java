@@ -1872,6 +1872,97 @@ public class Workspace21 {
     }
 
 
+    // LC 336
+    // 15.31 - 41 pm
+    /**
+     *  -> Return an array of
+     *     ALL the `palindrome` pairs of words.
+     *
+     *  - palindrome pair:
+     *    - (i, j)
+     *    - 0 <= i, j < words.length,
+     *    - i != j
+     *    - words[i] + words[j]
+     *      (the concatenation of the two strings)
+     *      is a` palindrome.`
+     *
+     *
+     *   NOTE:
+     *    - A palindrome is a string
+     *      that reads the same forward and backward.
+     *
+     *  --------------
+     *
+     *   IDEA 1) BRUTE FORCE
+     *
+     *   IDEA 2) HASHMAP ???
+     *
+     *  --------------
+     *
+     *
+     */
+    // IDEA 1) BRUTE FORCE
+    public List<List<Integer>> palindromePairs(String[] words) {
+        List<List<Integer>> res = new ArrayList<>();
+        // edge
+        if(words == null || words.length == 0){
+            return res;
+        }
+
+
+        // double loop
+        for(int i = 0; i < words.length; i++){
+            for(int j = i+1; j < words.length; j++){
+                StringBuilder sb = new StringBuilder();
+                // normal order
+                sb.append(words[i]);
+                sb.append(words[j]);
+                if(isPalindrome(sb.toString())){
+                    List<Integer> tmp1 = new ArrayList<>();
+                    tmp1.add(i);
+                    tmp1.add(j);
+                    res.add(tmp1);
+                }
+
+                //StringBuilder sb2 = new StringBuilder();
+                // rever order
+                if(isPalindrome(sb.reverse().toString())){
+                    List<Integer> tmp2= new ArrayList<>();
+                    tmp2.add(j);
+                    tmp2.add(i);
+                    res.add(tmp2);
+                }
+
+            }
+        }
+
+        // sort
+        Collections.sort(res, new Comparator<List<Integer>>() {
+            @Override
+            public int compare(List<Integer> o1, List<Integer> o2) {
+                int diff = o1.get(0).compareTo(o2.get(0));
+                return diff;
+            }
+        });
+        return res;
+    }
+
+    private boolean isPalindrome(String x){
+        int l = 0;
+        int r = x.length() - 1;
+        while(r > l){
+            if(x.charAt(l) != x.charAt(r)){
+                return false;
+            }
+            l += 1;
+            r -= 1;
+        }
+        return true;
+    }
+
+
+
+
 
 
 
