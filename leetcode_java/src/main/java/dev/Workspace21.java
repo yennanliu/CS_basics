@@ -1713,6 +1713,76 @@ public class Workspace21 {
     }
 
 
+    // LC 33
+    // 14.28 - 38 pm
+    /**
+     *  -> Given the array nums after the possible rotation and an integer target,
+     *  return the index of target
+     *  if it is in nums, or -1 if it is not in nums.
+     *
+     * nums:  sorted in ascending order
+     *
+     * --------------------
+     *
+     *  IDEA 1) BINARY SEARCH
+     *    case 1) target is in left ascending order
+     *        target < mid
+     *        target > mid
+     *
+     *    case 1) target is in right ascending order
+     *         target < mid
+     *
+     * --------------------
+     */
+    public int search(int[] nums, int target) {
+        // edge
+        if(nums == null || nums.length == 0){
+            return -1;
+        }
+        if(nums.length == 1){
+            return nums[0] == target ? 0 : -1;
+        }
+
+
+        // ???
+//        int l = 1;
+//        int r = nums.length -2;
+        int l = 0;                     // FIXED
+        int r = nums.length - 1;       // FIXED
+
+
+        while(r >= l){
+
+            int mid =  l +  ( (r - l) / 2 ); // ???
+            int val = nums[mid];
+            if(val == target){
+                return mid;
+            }
+            // ???
+            // else if(nums[mid] < nums[mid + 1]){
+            else if(nums[mid] >= nums[l]){
+                // /?? ???
+                if(nums[l] <= target && target < val){
+                    r = mid - 1;
+                }else{
+                    l = mid + 1;
+                }
+            }else{
+                // if(target > nums[mid]){
+                if(target > val && target <= nums[r]){
+                    l = mid + 1;
+                }else{
+                    r = mid - 1;
+                }
+            }
+
+        }
+
+
+        return -1;
+    }
+
+
 
 
 

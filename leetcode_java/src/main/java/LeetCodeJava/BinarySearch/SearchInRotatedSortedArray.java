@@ -48,6 +48,10 @@ public class SearchInRotatedSortedArray {
     // CASE 2) sub array right is sorted
     // https://www.youtube.com/watch?v=U8XENwh8Oy8
     // https://github.com/yennanliu/CS_basics/blob/master/doc/pic/lc_33.png
+    /**  NOTE !!!
+     *
+     *   compare LC 33 with LC 852
+     */
     /**
      * time = O(log N)
      * space = O(1)
@@ -138,6 +142,54 @@ public class SearchInRotatedSortedArray {
 
         return -1;
     }
+
+    // V0-0-1
+    // IDEA: BINARY SEARCH (gemini)
+    public int search_0_0_1(int[] nums, int target) {
+        // edge
+        if (nums == null || nums.length == 0) {
+            return -1;
+        }
+        if (nums.length == 1) {
+            return nums[0] == target ? 0 : -1;
+        }
+
+        int l = 0; // FIXED
+        int r = nums.length - 1; // FIXED
+
+        while (r >= l) {
+
+            int mid = l + ((r - l) / 2);
+            int val = nums[mid];
+            if (val == target) {
+                return mid;
+            }
+
+            /** NOTE !!! case 1) mid is in left sub array and left sub array is ascending order */
+            else if (nums[mid] >= nums[l]) {
+                // /?? ???
+                if (nums[l] <= target && target < val) {
+                    r = mid - 1;
+                } else {
+                    l = mid + 1;
+                }
+            }
+            /** NOTE !!! case 2) mid is in right sub array */
+            else {
+                // if(target > nums[mid]){
+                if (target > val && target <= nums[r]) {
+                    l = mid + 1;
+                } else {
+                    r = mid - 1;
+                }
+            }
+
+        }
+
+        return -1;
+    }
+
+
 
     // V0-1
     // IDEA : BINARY SEARCH
@@ -476,5 +528,8 @@ public class SearchInRotatedSortedArray {
 
         return -1;
     }
+
+
+
 
 }
