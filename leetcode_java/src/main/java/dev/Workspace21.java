@@ -1961,6 +1961,124 @@ public class Workspace21 {
     }
 
 
+    // LC 1032
+    // 16.03 - 37 pm
+    /**
+     *
+     *
+     *  -> Design an algorithm that accepts a stream
+     *     of characters and checks if a `suffix`
+     *     of these characters is a string of a
+     *     given array of strings words.
+     *
+     *
+     *  ---------------
+     *
+     *   IDEA 1) trie ?? (inverse)
+     *
+     *   IDEA 2) brute force  ?? (inverse)
+     *
+     *   IDEA 3) dfs ?????
+     *
+     *
+     *
+     *  ---------------
+     */
+    class MyNode{
+        // /??
+        Map<String, MyNode> child;
+        boolean isEnd;
+
+        MyNode(){
+            this.child = new HashMap<>();
+            this.isEnd = false; // ??
+        }
+
+    }
+    class MyTrie{
+        // ???
+        MyNode node;
+
+        MyTrie(){
+            this.node = new MyNode(); // /??
+        }
+
+        // ???
+        public void add(String word){
+            MyNode node = this.node;
+            // /??
+            if(word == null){
+               // return true;
+                return; // ???
+            }
+            for(String x: word.split("")){
+                if(node.child.containsKey(x)){
+                    node.child.put(x, new MyNode());
+                }
+                node = node.child.get(x);
+            }
+
+            node.isEnd = true;
+           // return true;
+        }
+
+        private boolean isCotain(String word){
+            MyNode node = this.node;
+            // /??
+            if(word == null){
+                return true; // ???
+            }
+            for(String x: word.split("")){
+                if(!node.child.containsKey(x)){
+                    return false;
+                }
+                node = node.child.get(x);
+            }
+            return node.isEnd;
+        }
+
+        private boolean isStartWith(String word){
+            MyNode node = this.node;
+            if(word == null){
+                return true; // ???
+            }
+            for(String x: word.split("")){
+                if(!node.child.containsKey(x)){
+                    return false;
+                }
+                node = node.child.get(x);
+            }
+            return true;
+        }
+
+    }
+
+
+    class StreamChecker {
+
+        MyTrie trie;
+        String[] words;
+        // ???
+        StringBuilder sb;
+
+        public StreamChecker(String[] words) {
+            this.trie = new MyTrie();
+            this.words = words;
+            this.sb = new StringBuilder();
+        }
+
+        public boolean query(char letter) {
+            sb.append(letter);
+
+            // /?? reverse
+            String str = sb.reverse().toString();
+            // add again to trie
+          //  for(String st)
+
+            return false;
+        }
+    }
+
 
 
 
