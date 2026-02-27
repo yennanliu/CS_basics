@@ -51,9 +51,48 @@ import java.util.*;
 public class PalindromePairs {
 
     // V0
-//    public List<List<Integer>> palindromePairs(String[] words) {
-//
-//    }
+    // IDEA: HASHMAP + SUB STRING + Palindrome CHECK  (gemini)
+    public List<List<Integer>> palindromePairs_0(String[] words) {
+        List<List<Integer>> res = new ArrayList<>();
+        Map<String, Integer> map = new HashMap<>();
+        for (int i = 0; i < words.length; i++)
+            map.put(words[i], i);
+
+        for (int i = 0; i < words.length; i++) {
+            String word = words[i];
+            for (int j = 0; j <= word.length(); j++) {
+                String str1 = word.substring(0, j);
+                String str2 = word.substring(j);
+
+                // Case 1: If str1 is a palindrome, find the reverse of str2
+                if (isPalindrome_0(str1)) {
+                    String reversedStr2 = new StringBuilder(str2).reverse().toString();
+                    if (map.containsKey(reversedStr2) && map.get(reversedStr2) != i) {
+                        res.add(Arrays.asList(map.get(reversedStr2), i));
+                    }
+                }
+
+                // Case 2: If str2 is a palindrome, find the reverse of str1
+                // (j < word.length() prevents duplicate results when str1 is the whole word)
+                if (isPalindrome_0(str2) && j < word.length()) {
+                    String reversedStr1 = new StringBuilder(str1).reverse().toString();
+                    if (map.containsKey(reversedStr1) && map.get(reversedStr1) != i) {
+                        res.add(Arrays.asList(i, map.get(reversedStr1)));
+                    }
+                }
+            }
+        }
+        return res;
+    }
+
+    private boolean isPalindrome_0(String s) {
+        int l = 0, r = s.length() - 1;
+        while (l < r) {
+            if (s.charAt(l++) != s.charAt(r--))
+                return false;
+        }
+        return true; // Fixed: Should return true!
+    }
 
 
     // V0-0-3
@@ -109,6 +148,10 @@ public class PalindromePairs {
     public List<List<Integer>> palindromePairs_0_1(String[] words) {
         List<List<Integer>> res = new ArrayList<>();
 
+        /** NOTE !!!
+         *
+         *  map to store `word` so O(1) lookup
+         */
         // 1. Map to store word -> index for O(1) lookup
         Map<String, Integer> map = new HashMap<>();
         for (int i = 0; i < words.length; i++) {
@@ -119,10 +162,22 @@ public class PalindromePairs {
         for (int i = 0; i < words.length; i++) {
             String word = words[i];
 
+            /** NOTE !!!
+             *
+             *  split the word to
+             *   1.  prefix (s1)
+             *   2.  suffix (s2)
+             *
+             */
             // Split 'word' into two parts: prefix (s1) and suffix (s2)
             // s1 = word.substring(0, j)
             // s2 = word.substring(j)
             // The split point 'j' goes from 0 to word.length() (inclusive)
+            /**
+             *   we loop over `split idx` : `j`
+             *
+             * -> The split point 'j' goes from 0 to word.length() (inclusive)
+             */
             for (int j = 0; j <= word.length(); j++) {
                 String s1 = word.substring(0, j);
                 String s2 = word.substring(j);
@@ -139,7 +194,11 @@ public class PalindromePairs {
                 //   - Example: word[i]="s-e-e-s" (s2="s-e-e-s", s1=""), reverse(s1)="" exists at k. Result: "" + "s-e-e-s"
                 //   - The correct logic is simpler:
 
-                /**  Check 1.2: If s1 is a palindrome, check if reverse(s2) exists in the map */
+                /**  Check 1.2:
+                 *
+                 * If s1 is a palindrome,
+                 * check if reverse(s2) exists in the map
+                 */
                 // If s1 is a palindrome, we need words[k] to be reverse(s2) such that
                 // words[i] + words[k] = s1 + s2 + reverse(s2) is a palindrome.
                 if (isPalindrome_0_1(s1)) {
@@ -159,11 +218,14 @@ public class PalindromePairs {
                     }
                 }
 
-                /** Case 2: w1 = reverse(s1), w2 = s2. We want w1 + w2 to be a palindrome.  */
+                // Case 2:  w1 = reverse(s1), w2 = s2. We want w1 + w2 to be a palindrome.
                 // words[k] + words[i] = reverse(s1) + s1 + s2
                 // For this to be a palindrome, s2 must be a palindrome.
 
-                /** Check 2.1: If s2 is a palindrome, check if reverse(s1) exists in the map */
+                /** Check 2.1:
+                 *
+                 * If s2 is a palindrome, check if reverse(s1) exists in the map
+                 */
                 // Note: s2 must not be empty. If j=0, s2=word, s1="". This case is covered by Case 1 with j=word.length() (s1=word, s2="").
                 if (s2.length() != 0 && isPalindrome_0_1(s2)) {
                     String s1Reversed = reverseStr_0_1(s1);
