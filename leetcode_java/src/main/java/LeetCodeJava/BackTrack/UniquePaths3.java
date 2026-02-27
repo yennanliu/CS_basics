@@ -122,9 +122,99 @@ public class UniquePaths3 {
      *
      */
     // V0
-//    public int uniquePathsIII(int[][] grid) {
-//
-//    }
+    // IDEA: DFS + BACKTRACK (gemini)
+    int totalPaths = 0;
+
+    public int uniquePathsIII(int[][] grid) {
+        int m = grid.length;
+        int n = grid[0].length;
+        int startX = 0, startY = 0;
+        int emptySquares = 0;
+
+        /** NOTE !!
+         *
+         *   we get below first
+         *
+         *   1. start cell
+         *   2. emptySquares
+         *       - since we NEED to visit ALL empty cell when arriving destination
+         */
+        // 1. Find start and count all '0' squares
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (grid[i][j] == 0) {
+                    emptySquares++;
+                } else if (grid[i][j] == 1) {
+                    startY = i;
+                    startX = j;
+                }
+            }
+        }
+
+        // We need to visit emptySquares + 1 (the '2' square)
+        dfs_0(grid, startX, startY, emptySquares + 1);
+        return totalPaths;
+    }
+
+    private void dfs_0(int[][] grid, int x, int y, int remaining) {
+
+        /** NOTE !!
+         *
+         *  we `valid` cur cell first
+         */
+        // 2. Base Case: Out of bounds or blocked/visited
+        if (x < 0 || x >= grid[0].length || y < 0 || y >= grid.length || grid[y][x] == -1) {
+            return;
+        }
+
+        /** NOTE !!
+         *
+         *  check if it's a `valid path` when we reach destination.
+         *   1. grid[y][x] == 2
+         *   2. all empty cell are visited (remaining=0)
+         */
+        // 3. Base Case: Reached Target
+        if (grid[y][x] == 2) {
+            if (remaining == 0){
+                totalPaths++;
+            }
+            return;
+        }
+
+        /** NOTE !!
+         *
+         *  mark cell as -1, to avoid `repeating visit`
+         */
+        // 4. Mark as visited
+        int temp = grid[y][x];
+        grid[y][x] = -1; // Use -1 to mark visited
+
+        /** NOTE !!
+         *
+         *  1. we explore 4 dirs
+         *  2. we update `remaining` empty cell at the same time
+         *      -> cell value can only be 1,2,0,-1.
+         *         and we already exclude 1, 2, -1,
+         *         so the ONLY remaining case is cell val = 0 (e.g. empty cell).
+         */
+        // 5. Explore 4 directions
+        dfs_0(grid, x + 1, y, remaining - 1);
+        dfs_0(grid, x - 1, y, remaining - 1);
+        dfs_0(grid, x, y + 1, remaining - 1);
+        dfs_0(grid, x, y - 1, remaining - 1);
+
+
+        /** NOTE !!
+         *
+         *   need to UNDO the `mark` we made (e.g. backtrack)
+         *   (the `visited mark` we made above)
+         *   ```
+         *   grid[y][x] = -1; // Use -1 to mark visited
+         *   ```
+         */
+        // 6. BACKTRACK: Restore the cell for other path options
+        grid[y][x] = temp;
+    }
 
 
 
@@ -148,7 +238,7 @@ public class UniquePaths3 {
     int pathCnt = 0;
     int targetEmptyCells = 0;
 
-    public int uniquePathsIII(int[][] grid) {
+    public int uniquePathsIII_0_1(int[][] grid) {
         int m = grid.length;
         int n = grid[0].length;
         int startX = 0, startY = 0;
