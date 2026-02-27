@@ -148,6 +148,37 @@ public class FindMinimumInRotatedSortedArray {
              *
              *  example: [3,4,5,1,2]
              */
+            /**  NOTE !!!
+             *
+             * since we already exclude the `already in increasing order` case
+             * so if `nums[m] >= nums[l]`, the ONLY case is like  [3,4,5,1,2]
+             *
+             *
+             *  -> Explanation (gemini)
+             *
+             * By including that `if (nums[l] < nums[r])`
+             * check inside the loop, you are effectively saying:
+             * *"If the current window is already sorted,
+             * the smallest value is at the far left, so we can stop."*
+             *
+             * In a rotated window, the array looks like this:
+             *
+             *  `[Left Sorted Part] > [Right Sorted Part]`.
+             *
+             * If `nums[m] >= nums[l]`,
+             * the only possible configuration is that
+             * `m` is still on that **"Left Higher Plateau."
+             *
+             *
+             * ** **Example: `[3, 4, 5, 1, 2]**`
+             *
+             * * `l=0 (3)`, `r=4 (2)`, `m=2 (5)`.
+             * * `5 >= 3` is **True**.
+             * * Since the whole window is rotated, and `m` is on the left plateau, the "drop-off" (the minimum) **must** be to the right of `m`.
+             * * Therefore, `l = m + 1` is the correct move to find the smaller values.
+             *
+             *
+             */
             if (nums[m] >= nums[l]) {
                 l = m + 1;
             }
