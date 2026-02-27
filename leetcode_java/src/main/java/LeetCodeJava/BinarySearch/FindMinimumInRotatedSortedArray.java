@@ -144,12 +144,18 @@ public class FindMinimumInRotatedSortedArray {
             res = Math.min(res, nums[m]);
 
             // case 1) mid point is at `LEFT part`
-            // e.g. [3,4,5,1,2]
+            /** NOTE !!!
+             *
+             *  example: [3,4,5,1,2]
+             */
             if (nums[m] >= nums[l]) {
                 l = m + 1;
             }
             // case 2) mid point is at `RIGHT part`
-            // e.g. [5,1,2,3,4]
+            /** NOTE !!!
+             *
+             *  example: [5,1,2,3,4]
+             */
             else {
                 r = m - 1;
             }
@@ -600,5 +606,8 @@ public class FindMinimumInRotatedSortedArray {
         }
         return Integer.MAX_VALUE;
     }
+
+
+
 
 }

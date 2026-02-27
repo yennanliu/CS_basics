@@ -1783,6 +1783,93 @@ public class Workspace21 {
     }
 
 
+    // LC 153
+    // 14.53 - 15.03 pm
+    /**
+     *
+     *  Given the sorted rotated array nums of unique elements,
+     *
+     *  -> return the minimum element of this array.
+     *
+     *
+     *  -----------------
+     *
+     *  IDEA 1) BINARY SEARCH
+     *   -> find pivot
+     *
+     *    case 1) mid is in `left increasing sub arr`
+     *
+     *    case 2) mid is in `right decreasing sub arr`
+     *
+     *
+     *  -----------------
+     *
+     */
+    public int findMin(int[] nums) {
+        // edge
+        if(nums == null || nums.length == 0){
+            return -1;
+        }
+        if(nums.length == 1){
+            return nums[0];
+        }
+        // if already sort
+        if(nums[0] < nums[nums.length - 1]){
+            return nums[0];
+        }
+
+        int l = 0;
+        int r = nums.length - 1;
+
+        while(r >= l){
+
+            int mid =  l +  ( (r - l) / 2 ); // ???
+            int val = nums[mid];
+
+            if(nums[l] < nums[r]){
+                return Math.min(val, nums[l]);
+            }
+
+            // case 0) found a pivot ???
+
+            // case 1) mid is in `left increasing sub arr`
+            if(val >= nums[l]){
+                l = mid + 1;
+            }else{
+                r = mid - 1;
+            }
+        }
+
+            // case 2) mid is in `right decreasing sub arr`
+
+//            // case 1) mid is in `left increasing sub arr`
+//            // ???
+//            if(val > nums[l]){
+//                // ???
+//                if(nums[l] < nums[r]){
+//                    r = mid - 1;
+//                }else{
+//                    l = mid + 1;
+//                }
+//            }
+//            /**
+//             *
+//             * [5,6,7,0,1,2,4]
+//             */
+//            // case 2) mid is in `right decreasing sub arr`
+//            else{
+//                if(nums[r] < nums[l]){
+//                    l = mid + 1;
+//                }else{
+//                    r = mid - 1;
+//                }
+//            }
+//        }
+
+
+
+        return nums[l]; // /??
+    }
 
 
 
