@@ -151,9 +151,106 @@ public class Workspace21 {
      *
      *
      */
+    // 17.01 - 11 pm
+    /**
+     *
+     * -> Return the number of 4-directional walks from the starting
+     *    square to the ending square,
+     *
+     *    NOTE !!!
+     *
+     *       that walk over` every non-obstacle` square `exactly once.`
+     *
+     * ----------
+     *  IDEA 1) DFS
+     *
+     */
+    int pathCnt0;
+    public int uniquePathsIII(int[][] grid) {
+        // edge
+
+        int m = grid.length;
+        int n = grid[0].length;
+
+        int[] start = null; // ???
+        int emptyCnt = 0;
+
+        // 1. get start, emptyCnt
+        for (int y = 0; y < m; y++) {
+            for (int x = 0; x < n; x++) {
+                if(grid[y][x] == 0){
+                    emptyCnt += 1;
+                }
+                if(grid[y][x] == 1){
+                    start = new int[]{x, y};
+                }
+            }
+        }
+
+        System.out.println(">>>> emptyCnt = " + emptyCnt);
+        System.out.println(">>>> start = " + String.valueOf(start)); // ??
+
+        dfsHelper(start[0], start[1], grid, emptyCnt, 0);
+
+        return pathCnt0;
+    }
+
+
+    private void dfsHelper(int x, int y, int[][] grid, int emptyCnt, int visitedEmpty){
+        // ???
+        int m = grid.length;
+        int n = grid[0].length;
+
+        // valid
+        if(x < 0 || x >= n || y < 0 || y >= m || grid[y][x] == -1){
+            return;
+        }
+
+        if(grid[y][x] == 2 && emptyCnt == visitedEmpty){
+            pathCnt0 += 1;
+            return;
+        }
+
+        // mark as visited // ????
+        int cntVal = grid[y][x];
+        grid[y][x] = 100;
+        //boolean isEmpty = false;
+
+        // if visit empty, update cnt
+        if(cntVal == 0){
+            visitedEmpty += 1;
+            //isEmpty = true;
+        }
+
+        int[][] moves = new int[][] { {0,1}, {0,-1}, {1,0}, {-1,0} };
+
+        for(int[] move: moves){
+            int x_ = x + move[1];
+            int y_ = y + move[0];
+
+            if(grid[y_][x_] != 100){
+                dfsHelper(x_, y_, grid, emptyCnt, visitedEmpty );
+            }
+
+            // backtrack ????
+            grid[y][x] = cntVal;
+            // ???
+            if(cntVal == 0){
+                visitedEmpty -= 1;
+            }
+
+        }
+    }
+
+
+
+
+
+
+
     // IDEA 1) DFS
     int pathCnt;
-    public int uniquePathsIII(int[][] grid) {
+    public int uniquePathsIII_97(int[][] grid) {
         int m = grid.length;
         int n = grid[0].length;
 
