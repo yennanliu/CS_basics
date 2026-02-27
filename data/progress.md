@@ -1,7 +1,6 @@
 # Progress
 
-
-# 2026-02-26
+# 2026-02-27
 
 - weekly video
 - to review
@@ -94,6 +93,15 @@
 			- 410
 			- 1011
 		- gemini
+	- LC 1011
+		- gpt
+			- 1482
+			- 1552
+			- 1231
+			- 1283
+			- 1891
+		- gemini
+			- 1761
 - needcode `grind 75` - similar LC by AI
 	- https://neetcode.io/practice?tab=blind75
 	- LC 49 Group Anagrams
