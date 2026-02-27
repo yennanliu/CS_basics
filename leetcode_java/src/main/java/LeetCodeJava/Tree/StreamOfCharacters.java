@@ -3,7 +3,9 @@ package LeetCodeJava.Tree;
 // https://leetcode.com/problems/stream-of-characters/description/
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 1032. Stream of Characters
@@ -73,6 +75,119 @@ public class StreamOfCharacters {
 //
 //        }
 //    }
+
+
+    // V0-1
+    // IDEA: node + trie (GEMINI)
+    class StreamChecker_0_1 {
+        class MyNode {
+            MyNode[] children = new MyNode[26];
+            boolean isEnd = false;
+        }
+
+        MyNode root;
+        StringBuilder history;
+
+        public StreamChecker_0_1(String[] words) {
+            root = new MyNode();
+            history = new StringBuilder();
+
+            // 1. Insert words into Trie REVERSED
+            for (String word : words) {
+                MyNode curr = root;
+                for (int i = word.length() - 1; i >= 0; i--) {
+                    int idx = word.charAt(i) - 'a';
+                    if (curr.children[idx] == null) {
+                        curr.children[idx] = new MyNode();
+                    }
+                    curr = curr.children[idx];
+                }
+                curr.isEnd = true;
+            }
+        }
+
+        public boolean query(char letter) {
+            history.append(letter);
+            MyNode curr = root;
+
+            // 2. Search backward from the latest character added
+            for (int i = history.length() - 1; i >= 0; i--) {
+                int idx = history.charAt(i) - 'a';
+
+                // If the path breaks, no suffix matches
+                if (curr.children[idx] == null) {
+                    return false;
+                }
+
+                curr = curr.children[idx];
+
+                // If we hit an isEnd, a suffix of the stream is a word!
+                if (curr.isEnd) {
+                    return true;
+                }
+            }
+            return false;
+        }
+    }
+
+    // V0-2
+    // IDEA: node + trie (GPT)
+    class MyNode {
+        Map<Character, MyNode> child = new HashMap<>();
+        boolean isEnd = false;
+    }
+
+    class StreamChecker_0_2 {
+
+        private MyNode root;
+        private StringBuilder stream;
+
+        public StreamChecker_0_2(String[] words) {
+            root = new MyNode();
+            stream = new StringBuilder();
+
+            // Insert reversed words into trie
+            for (String word : words) {
+                add(word);
+            }
+        }
+
+        private void add(String word) {
+            MyNode node = root;
+
+            // Insert reversed
+            for (int i = word.length() - 1; i >= 0; i--) {
+                char c = word.charAt(i);
+                node.child.putIfAbsent(c, new MyNode());
+                node = node.child.get(c);
+            }
+
+            node.isEnd = true;
+        }
+
+        public boolean query(char letter) {
+            stream.append(letter);
+
+            MyNode node = root;
+
+            // Traverse stream from newest to oldest
+            for (int i = stream.length() - 1; i >= 0; i--) {
+                char c = stream.charAt(i);
+
+                if (!node.child.containsKey(c)) {
+                    return false;
+                }
+
+                node = node.child.get(c);
+
+                if (node.isEnd) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+    }
 
 
     // V1
@@ -284,5 +399,8 @@ public class StreamOfCharacters {
             return match;
         }
     }
+
+
+
 
 }
