@@ -265,6 +265,348 @@ def graph_hashmap_pattern(graph_input):
 # Examples: LC 133, LC 200, LC 694, LC 1257
 ```
 
+### Template 7: TreeMap Pattern (Ordered Map)
+```python
+# Python - SortedDict (from sortedcontainers)
+from sortedcontainers import SortedDict
+
+# TreeMap Pattern Template
+def treemap_pattern(data):
+    # TreeMap maintains sorted order by key
+    tree_map = SortedDict()
+
+    # Basic operations
+    tree_map[key] = value           # O(log n) insert
+    value = tree_map.get(key)       # O(log n) search
+    del tree_map[key]               # O(log n) delete
+
+    # Ordered operations
+    first_key = tree_map.keys()[0] if tree_map else None    # Min key
+    last_key = tree_map.keys()[-1] if tree_map else None    # Max key
+
+    # Range queries
+    # Get all keys in sorted order
+    for key in tree_map.keys():
+        process(key, tree_map[key])
+
+    # Find floor/ceiling (closest keys)
+    # bisect_left/bisect_right for approximate match
+    import bisect
+    keys = list(tree_map.keys())
+    idx = bisect.bisect_left(keys, target)  # Floor index
+
+    return tree_map
+
+# Examples: LC 853, LC 729/731/732, LC 846, LC 352, LC 981
+```
+
+```java
+// Java - TreeMap Pattern
+import java.util.*;
+
+// TreeMap Pattern Template
+public void treeMapPattern(int[] data) {
+    // TreeMap maintains sorted order by key (Red-Black Tree)
+    TreeMap<Integer, Integer> treeMap = new TreeMap<>();
+
+    // Basic operations - O(log n)
+    treeMap.put(key, value);        // Insert
+    Integer value = treeMap.get(key);  // Search
+    treeMap.remove(key);            // Delete
+
+    // Ordered operations - O(log n)
+    Integer firstKey = treeMap.firstKey();   // Min key
+    Integer lastKey = treeMap.lastKey();     // Max key
+    Integer floorKey = treeMap.floorKey(k);  // Largest key <= k
+    Integer ceilKey = treeMap.ceilingKey(k); // Smallest key >= k
+
+    // Lower/Higher (exclusive)
+    Integer lower = treeMap.lowerKey(k);     // Largest key < k
+    Integer higher = treeMap.higherKey(k);   // Smallest key > k
+
+    // Range queries - O(k log n) where k is range size
+    Map.Entry<Integer, Integer> firstEntry = treeMap.firstEntry();
+    Map.Entry<Integer, Integer> lastEntry = treeMap.lastEntry();
+
+    // Iterate in sorted order - O(n)
+    for (Map.Entry<Integer, Integer> entry : treeMap.entrySet()) {
+        int key = entry.getKey();
+        int val = entry.getValue();
+        // Process in sorted order
+    }
+
+    // SubMap views (range queries)
+    SortedMap<Integer, Integer> subMap = treeMap.subMap(fromKey, toKey);
+    SortedMap<Integer, Integer> headMap = treeMap.headMap(toKey);
+    SortedMap<Integer, Integer> tailMap = treeMap.tailMap(fromKey);
+}
+```
+
+**TreeMap vs HashMap Comparison:**
+
+| Feature | HashMap | TreeMap |
+|---------|---------|---------|
+| **Ordering** | No ordering | Sorted by key |
+| **Underlying Structure** | Hash Table + Linked List/Red-Black Tree (collision) | Red-Black Tree |
+| **Insert/Delete/Search** | O(1) average, O(n) worst | O(log n) |
+| **Iteration** | No specific order | Sorted order by key |
+| **Floor/Ceiling** | Not supported | O(log n) |
+| **Range Queries** | Not supported | O(k log n) |
+| **Use Case** | Fast lookups, no ordering needed | Ordered iteration, range queries, floor/ceiling |
+| **Memory** | Less (hash table) | More (tree nodes + pointers) |
+
+**When to Use TreeMap:**
+- Need keys in sorted order
+- Need floor/ceiling operations (closest key)
+- Need range queries (all keys in [a, b])
+- Need first/last key efficiently
+- Problems involving intervals, ranges, or ordering constraints
+
+**When NOT to Use TreeMap:**
+- Only need fast O(1) lookups without ordering
+- Memory is constrained (TreeMap uses more memory)
+- Don't need ordered operations (HashMap is faster)
+
+**Common TreeMap Patterns:**
+
+1. **Pattern 1: Ordered Map for Sorting**
+   ```java
+   // LC 853 - Car Fleet
+   // Convert HashMap to TreeMap for sorted iteration
+   Map<Integer, Integer> map = new HashMap<>();
+   // ... populate map ...
+   TreeMap<Integer, Integer> sorted = new TreeMap<>(map);
+   ```
+
+2. **Pattern 2: Interval Management**
+   ```java
+   // LC 729/731/732 - My Calendar series
+   // Use TreeMap to check overlapping intervals
+   TreeMap<Integer, Integer> calendar = new TreeMap<>();
+
+   public boolean book(int start, int end) {
+       Integer prev = calendar.floorKey(start);
+       Integer next = calendar.ceilingKey(start);
+
+       if ((prev == null || calendar.get(prev) <= start) &&
+           (next == null || end <= next)) {
+           calendar.put(start, end);
+           return true;
+       }
+       return false;
+   }
+   ```
+
+3. **Pattern 3: Consecutive Elements**
+   ```java
+   // LC 846 - Hand of Straights
+   // Use TreeMap to process smallest elements first
+   TreeMap<Integer, Integer> count = new TreeMap<>();
+   // ... count frequency ...
+
+   while (!count.isEmpty()) {
+       int first = count.firstKey();
+       // Process consecutive sequence starting from first
+   }
+   ```
+
+4. **Pattern 4: Range/Stream Problems**
+   ```java
+   // LC 352 - Data Stream as Disjoint Intervals
+   // Maintain disjoint intervals in sorted order
+   TreeMap<Integer, int[]> intervals = new TreeMap<>();
+
+   public void addNum(int val) {
+       Integer lower = intervals.floorKey(val);
+       Integer higher = intervals.ceilingKey(val);
+       // Merge intervals if needed
+   }
+   ```
+
+**Classic LeetCode Problems:**
+
+| Problem | LC# | Difficulty | Key TreeMap Operation |
+|---------|-----|------------|----------------------|
+| Car Fleet | 853 | Medium | Sort by position (key) |
+| My Calendar I | 729 | Medium | floorKey/ceilingKey for overlap check |
+| My Calendar II | 731 | Medium | Count overlapping bookings |
+| My Calendar III | 732 | Hard | Maximum overlapping count |
+| Hand of Straights | 846 | Medium | firstKey for smallest element |
+| Data Stream as Disjoint Intervals | 352 | Hard | Merge intervals with floor/ceiling |
+| Time Based Key-Value Store | 981 | Medium | floorKey for timestamp lookup |
+| Count of Smaller Numbers After Self | 315 | Hard | Ordered iteration |
+| Contains Duplicate III | 220 | Medium | floorKey/ceilingKey for range check |
+| The Skyline Problem | 218 | Hard | Multiset with TreeMap |
+
+**Example: LC 853 - Car Fleet**
+
+```python
+# Python - LC 853 Car Fleet
+def carFleet(target, position, speed):
+    # Use sorted iteration (similar to TreeMap)
+    cars = sorted(zip(position, speed), reverse=True)  # Sort by position descending
+
+    stack = []
+    for pos, spd in cars:
+        time = (target - pos) / spd  # Time to reach target
+        if not stack or time > stack[-1]:
+            stack.append(time)
+
+    return len(stack)
+
+# Alternative using SortedDict
+from sortedcontainers import SortedDict
+
+def carFleet_v2(target, position, speed):
+    car_map = SortedDict()
+    for p, s in zip(position, speed):
+        car_map[-p] = s  # Negative for reverse order
+
+    fleets = 0
+    prev_time = 0
+
+    for neg_pos, spd in car_map.items():
+        pos = -neg_pos
+        time = (target - pos) / spd
+        if time > prev_time:
+            fleets += 1
+            prev_time = time
+
+    return fleets
+```
+
+```java
+// Java - LC 853 Car Fleet
+/**
+ * time = O(N log N)
+ * space = O(N)
+ */
+public int carFleet(int target, int[] position, int[] speed) {
+    // Build HashMap first
+    Map<Integer, Integer> map = new HashMap<>();
+    for (int i = 0; i < position.length; i++) {
+        map.put(position[i], speed[i]);
+    }
+
+    // Convert to TreeMap for sorted iteration (descending order)
+    TreeMap<Integer, Integer> treeMap = new TreeMap<>(Collections.reverseOrder());
+    treeMap.putAll(map);
+
+    int fleets = 0;
+    double prevTime = 0;
+
+    // Iterate from position closest to target (sorted order)
+    for (Map.Entry<Integer, Integer> entry : treeMap.entrySet()) {
+        int pos = entry.getKey();
+        int spd = entry.getValue();
+        double time = (double)(target - pos) / spd;
+
+        // If current car takes longer, it forms a new fleet
+        if (time > prevTime) {
+            fleets++;
+            prevTime = time;
+        }
+    }
+
+    return fleets;
+}
+```
+
+**Example: LC 729 - My Calendar I**
+
+```java
+// Java - LC 729 My Calendar I
+/**
+ * time = O(log N) per operation
+ * space = O(N)
+ */
+class MyCalendar {
+    TreeMap<Integer, Integer> calendar;
+
+    public MyCalendar() {
+        calendar = new TreeMap<>();
+    }
+
+    public boolean book(int start, int end) {
+        // Find largest start time <= current start
+        Integer prev = calendar.floorKey(start);
+
+        // Find smallest start time >= current start
+        Integer next = calendar.ceilingKey(start);
+
+        // Check no overlap with previous booking
+        if (prev != null && calendar.get(prev) > start) {
+            return false;
+        }
+
+        // Check no overlap with next booking
+        if (next != null && next < end) {
+            return false;
+        }
+
+        calendar.put(start, end);
+        return true;
+    }
+}
+```
+
+```python
+# Python - LC 729 My Calendar I
+from sortedcontainers import SortedDict
+
+class MyCalendar:
+    """
+    time = O(log N) per operation
+    space = O(N)
+    """
+    def __init__(self):
+        self.calendar = SortedDict()
+
+    def book(self, start: int, end: int) -> bool:
+        # Find previous and next bookings
+        idx = self.calendar.bisect_left(start)
+
+        # Check previous booking
+        if idx > 0:
+            prev_start = self.calendar.keys()[idx - 1]
+            if self.calendar[prev_start] > start:
+                return False
+
+        # Check next booking
+        if idx < len(self.calendar):
+            next_start = self.calendar.keys()[idx]
+            if next_start < end:
+                return False
+
+        self.calendar[start] = end
+        return True
+```
+
+**Interview Tips for TreeMap Problems:**
+
+1. **Recognition Patterns:**
+   - "sorted order", "smallest/largest", "floor/ceiling" → Think TreeMap
+   - "overlapping intervals" → TreeMap with floorKey/ceilingKey
+   - "consecutive elements" → TreeMap.firstKey() for greedy processing
+   - "range queries" → TreeMap.subMap()
+
+2. **Common Mistakes:**
+   - Forgetting O(log n) complexity vs O(1) for HashMap
+   - Not handling null returns from floor/ceiling operations
+   - Using TreeMap when HashMap would suffice
+   - Not considering memory overhead of tree structure
+
+3. **Optimization:**
+   - If only need sorted iteration once, sort array instead (O(n log n) vs maintaining TreeMap)
+   - If range queries are rare, consider lazy sorting
+   - For Python, `sortedcontainers` library provides efficient SortedDict
+
+4. **Edge Cases:**
+   - Empty TreeMap (firstKey/lastKey throw exceptions)
+   - Null values from floor/ceiling operations
+   - Duplicate keys (TreeMap doesn't allow, use value as counter)
+   - Reverse order iteration (use descendingMap() in Java)
+
 ## 0) Concept
 
 - [Java HashMap](https://bbs.huaweicloud.com/blogs/276884?utm_source=juejin&utm_medium=bbs-ex&utm_campaign=other&utm_content=content)
