@@ -4,7 +4,8 @@
 
 - weekly video
 - cheatsheet (LC examples)
-	- hashmap.md
+	- hashmap.md (OK)
+	- set.md (todo)
 - to review
 - needcode `250` - similar LC by AI
     - Arrays & Hashing
