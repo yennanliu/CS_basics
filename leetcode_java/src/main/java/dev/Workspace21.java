@@ -2311,10 +2311,54 @@ public class Workspace21 {
 
 
     // LC 1209
+    // 12.47 - 13.04 pm
+    /**
+     *
+     *  IDEA 1) STACK ???
+     *
+     */
+    // IDEA 1) STACK ???
     public String removeDuplicates(String s, int k) {
+        // edge
 
-        return null;
+        // ???
+        //Stack<Character> st = new Stack<>();
+        Deque<Character> st = new LinkedList<>();
+        for(char ch: s.toCharArray()){
+            // ??
+            // ???
+            int adjDup = 1;
+            // ???
+            // need to cover 2 cases
+            // 1. only has 1 duplicates in stack
+            // 2. has multiple duplicates in stack
+            List<Character> cache = new ArrayList<>();
+            if(!st.isEmpty() && st.peek().equals(ch)){
+                // ??
+               //  adjDup += 1;
+                while(st.peek().equals(ch)){
+                    cache.add(st.pop());
+                    adjDup += 1;
+                }
+            }
+            // ???
+            if(!st.isEmpty() && adjDup == k){
+                st.pop();
+            }else{
+                st.add(ch);
+            }
+        }
+
+        StringBuilder sb = new StringBuilder();
+        for(char y: st){
+            sb.append(y);
+        }
+
+        return sb.toString();
     }
+
+
+
 
 
 
