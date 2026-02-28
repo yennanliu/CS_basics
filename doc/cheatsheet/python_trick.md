@@ -1048,6 +1048,274 @@ In [7]: import bisect
 [2, 4, 4, 6, 8]
 ```
 
+### 1-27-1) heapq : Priority Queue (Min Heap by default)
+
+**heapq** - Heap queue algorithm (priority queue)
+- Min Heap by default (smallest element at index 0)
+- For Max Heap, negate values or use custom comparison
+- Common interview use cases: Top K elements, Kth largest/smallest, merge K sorted lists
+
+**References:**
+- https://docs.python.org/3/library/heapq.html
+- https://github.com/python/cpython/blob/3.10/Lib/heapq.py
+
+```python
+import heapq
+
+#-------------------------------
+# Basic Heap Operations
+#-------------------------------
+
+# Create empty heap
+heap = []
+
+# heappush: Add element to heap
+# Time: O(log n)
+heapq.heappush(heap, 5)
+heapq.heappush(heap, 3)
+heapq.heappush(heap, 7)
+heapq.heappush(heap, 1)
+print(heap)  # [1, 3, 7, 5] - min heap property maintained
+
+# heappop: Remove and return smallest element
+# Time: O(log n)
+smallest = heapq.heappop(heap)
+print(smallest)  # 1
+print(heap)      # [3, 5, 7]
+
+# heappushpop: Push then pop (more efficient than separate operations)
+# Time: O(log n)
+result = heapq.heappushpop(heap, 2)  # Push 2, then pop smallest
+print(result)  # 2
+print(heap)    # [3, 5, 7]
+
+# heapreplace: Pop then push (more efficient than separate operations)
+# Time: O(log n)
+result = heapq.heapreplace(heap, 4)  # Pop smallest, then push 4
+print(result)  # 3
+print(heap)    # [4, 5, 7]
+
+#-------------------------------
+# Convert List to Heap
+#-------------------------------
+
+# heapify: Transform list into heap in-place
+# Time: O(n) - more efficient than n × heappush
+nums = [5, 7, 9, 1, 3]
+heapq.heapify(nums)
+print(nums)  # [1, 3, 9, 7, 5] - min heap
+
+#-------------------------------
+# Top K Elements (Most Common Interview Pattern)
+#-------------------------------
+
+# nsmallest: Find k smallest elements
+# Time: O(n log k)
+nums = [5, 7, 9, 1, 3, 4, 6, 8, 2]
+k_smallest = heapq.nsmallest(3, nums)
+print(k_smallest)  # [1, 2, 3]
+
+# nlargest: Find k largest elements
+# Time: O(n log k)
+k_largest = heapq.nlargest(3, nums)
+print(k_largest)  # [9, 8, 7]
+
+# With key function (common in LC problems)
+people = [(1, 'Alice'), (3, 'Bob'), (2, 'Charlie')]
+top_2_by_id = heapq.nsmallest(2, people, key=lambda x: x[0])
+print(top_2_by_id)  # [(1, 'Alice'), (2, 'Charlie')]
+
+#-------------------------------
+# Max Heap Pattern (Negate Values)
+#-------------------------------
+
+# Python heapq is min heap, for max heap: negate values
+max_heap = []
+for val in [5, 7, 9, 1, 3]:
+    heapq.heappush(max_heap, -val)  # Negate for max heap
+
+# Get largest element
+largest = -heapq.heappop(max_heap)
+print(largest)  # 9
+
+# Example: Top K Frequent Elements
+from collections import Counter
+def topKFrequent(nums, k):
+    count = Counter(nums)
+    # Use negative frequency for max heap
+    return heapq.nlargest(k, count.keys(), key=count.get)
+
+#-------------------------------
+# Merge K Sorted Lists/Arrays
+#-------------------------------
+
+# merge: Merge multiple sorted iterables
+# Time: O(n log k) where k = number of iterables
+list1 = [1, 3, 5]
+list2 = [2, 4, 6]
+list3 = [0, 7, 8]
+merged = list(heapq.merge(list1, list2, list3))
+print(merged)  # [0, 1, 2, 3, 4, 5, 6, 7, 8]
+
+# Custom comparison for merge
+# Example: Merge by second element of tuple
+data1 = [(1, 'a'), (3, 'c')]
+data2 = [(2, 'b'), (4, 'd')]
+merged = list(heapq.merge(data1, data2, key=lambda x: x[0]))
+print(merged)  # [(1, 'a'), (2, 'b'), (3, 'c'), (4, 'd')]
+
+#-------------------------------
+# Common LeetCode Patterns
+#-------------------------------
+
+# Pattern 1: Kth Largest Element (LC 215)
+def findKthLargest(nums, k):
+    # Use min heap of size k
+    heap = nums[:k]
+    heapq.heapify(heap)
+
+    for num in nums[k:]:
+        if num > heap[0]:
+            heapq.heapreplace(heap, num)
+
+    return heap[0]
+
+# Pattern 2: Top K Frequent Elements (LC 347)
+def topKFrequent(nums, k):
+    count = Counter(nums)
+    return heapq.nlargest(k, count.keys(), key=count.get)
+
+# Pattern 3: Kth Smallest in Sorted Matrix (LC 378)
+def kthSmallest(matrix, k):
+    """
+    Use heap to track smallest elements across rows
+    """
+    n = len(matrix)
+    heap = []
+
+    # Add first element from each row
+    for r in range(min(k, n)):
+        heapq.heappush(heap, (matrix[r][0], r, 0))
+
+    result = 0
+    for _ in range(k):
+        result, r, c = heapq.heappop(heap)
+        if c + 1 < len(matrix[0]):
+            heapq.heappush(heap, (matrix[r][c+1], r, c+1))
+
+    return result
+
+# Pattern 4: Merge K Sorted Lists (LC 23)
+def mergeKLists(lists):
+    """
+    Merge k sorted linked lists
+    """
+    heap = []
+    # Initialize heap with first node from each list
+    for i, lst in enumerate(lists):
+        if lst:
+            heapq.heappush(heap, (lst.val, i, lst))
+
+    dummy = ListNode(0)
+    current = dummy
+
+    while heap:
+        val, i, node = heapq.heappop(heap)
+        current.next = node
+        current = current.next
+
+        if node.next:
+            heapq.heappush(heap, (node.next.val, i, node.next))
+
+    return dummy.next
+
+# Pattern 5: Sliding Window Maximum (LC 239)
+# Note: Usually solved with deque, but can use heap
+def maxSlidingWindow(nums, k):
+    """
+    Use max heap (negate values) with index tracking
+    """
+    heap = []
+    result = []
+
+    for i, num in enumerate(nums):
+        # Add to max heap (negate for max heap)
+        heapq.heappush(heap, (-num, i))
+
+        # Remove elements outside window
+        while heap[0][1] <= i - k:
+            heapq.heappop(heap)
+
+        # Window is full
+        if i >= k - 1:
+            result.append(-heap[0][0])
+
+    return result
+
+#-------------------------------
+# Advanced: Custom Comparison with Classes
+#-------------------------------
+
+# For complex objects, use tuples or dataclass with functools.total_ordering
+from dataclasses import dataclass
+from functools import total_ordering
+
+@total_ordering
+@dataclass
+class Task:
+    priority: int
+    name: str
+
+    def __lt__(self, other):
+        return self.priority < other.priority
+
+# Use with heapq
+task_heap = []
+heapq.heappush(task_heap, Task(3, "Low priority"))
+heapq.heappush(task_heap, Task(1, "High priority"))
+heapq.heappush(task_heap, Task(2, "Medium priority"))
+
+top_task = heapq.heappop(task_heap)
+print(top_task)  # Task(priority=1, name='High priority')
+
+#-------------------------------
+# Performance Tips
+#-------------------------------
+
+# 1. Use heapify() instead of repeated heappush() - O(n) vs O(n log n)
+# SLOW:
+heap = []
+for num in nums:
+    heapq.heappush(heap, num)  # O(n log n)
+
+# FAST:
+heap = nums[:]
+heapq.heapify(heap)  # O(n)
+
+# 2. Use nsmallest/nlargest for small k
+# When k << n: nsmallest/nlargest are optimized
+# When k ≈ n: just sort the array
+
+# 3. For Top K problems with streaming data: maintain heap of size k
+```
+
+**Common Interview Problems Using heapq:**
+- LC 215: Kth Largest Element in an Array
+- LC 347: Top K Frequent Elements
+- LC 373: Find K Pairs with Smallest Sums
+- LC 378: Kth Smallest Element in a Sorted Matrix
+- LC 23: Merge k Sorted Lists
+- LC 295: Find Median from Data Stream (use 2 heaps)
+- LC 253: Meeting Rooms II (interval scheduling)
+- LC 767: Reorganize String (greedy + heap)
+
+**Summary:**
+- ✅ heapq provides efficient min heap (priority queue)
+- ✅ O(log n) for push/pop, O(1) for peek (heap[0])
+- ✅ O(n) for heapify, O(n log k) for nsmallest/nlargest
+- ✅ For max heap: negate values or use `-val`
+- ✅ For custom comparison: use tuple ordering or implement `__lt__`
+
 
 ### 1-28) useful `functools` modules
 - functools.lru_cache
