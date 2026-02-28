@@ -364,9 +364,417 @@ def countSubstrings(s):
     for i in range(len(s)):
         expandFromCenter(i, i)      # Odd length
         expandFromCenter(i, i + 1)  # Even length
-    
+
     return count
 ```
+
+---
+
+#### Template 4.1: Manacher's Algorithm (O(n) Palindrome Detection)
+
+**Core Concept:**
+Manacher's algorithm finds the longest palindromic substring in **linear time O(n)** by avoiding redundant comparisons using previously computed palindrome information.
+
+**Key Insight:**
+- Standard expand-from-center: O(n²) worst case
+- Manacher's: O(n) by reusing palindrome boundaries
+- Uses concept of "mirror" positions across palindrome center
+
+**Why It's Faster:**
+```
+Standard approach: Check each center independently → O(n²)
+Manacher's: Use already-found palindromes to skip comparisons → O(n)
+
+Example: If we know s[5..15] is palindrome with center at 10:
+When checking position 12, we can use info from mirror position 8!
+```
+
+**Algorithm Overview:**
+1. Transform string to handle even/odd lengths uniformly: "aba" → "#a#b#a#"
+2. For each position, maintain:
+   - `P[i]`: radius of palindrome centered at i
+   - `C`: center of rightmost palindrome found
+   - `R`: right boundary of rightmost palindrome
+3. Use mirror property to initialize `P[i]` when `i < R`
+4. Expand from `i` only when necessary
+
+---
+
+##### Python Implementation
+
+```python
+# Manacher's Algorithm - Longest Palindromic Substring
+def longestPalindrome_manacher(s):
+    """
+    Find longest palindromic substring using Manacher's algorithm.
+
+    Time: O(n) - each position expanded at most once
+    Space: O(n) - for transformed string and P array
+
+    Returns: longest palindromic substring
+    """
+    if not s:
+        return ""
+
+    # Step 1: Transform string to handle even/odd uniformly
+    # "aba" → "#a#b#a#"
+    # "abba" → "#a#b#b#a#"
+    T = '#'.join('^{}$'.format(s))
+    n = len(T)
+    P = [0] * n  # P[i] = radius of palindrome centered at i
+    C = R = 0    # Center and right boundary of current rightmost palindrome
+
+    # Step 2: Fill P array using mirror property
+    for i in range(1, n - 1):
+        # Mirror of i across center C
+        mirror = 2 * C - i
+
+        # Initialize P[i] using mirror when i < R
+        if i < R:
+            P[i] = min(R - i, P[mirror])
+
+        # Try to expand palindrome centered at i
+        try:
+            while T[i + P[i] + 1] == T[i - P[i] - 1]:
+                P[i] += 1
+        except IndexError:
+            pass
+
+        # Update center and right boundary if palindrome extends beyond R
+        if i + P[i] > R:
+            C, R = i, i + P[i]
+
+    # Step 3: Find longest palindrome
+    max_len, center_idx = max((length, idx) for idx, length in enumerate(P))
+
+    # Step 4: Extract substring from original string
+    start = (center_idx - max_len) // 2
+    return s[start:start + max_len]
+
+# Alternative: Find all palindrome radii
+def manacher_array(s):
+    """
+    Compute palindrome radius array using Manacher's algorithm.
+
+    Returns: P array where P[i] = radius at position i in transformed string
+    """
+    T = '#'.join('^{}$'.format(s))
+    n = len(T)
+    P = [0] * n
+    C = R = 0
+
+    for i in range(1, n - 1):
+        mirror = 2 * C - i
+
+        if i < R:
+            P[i] = min(R - i, P[mirror])
+
+        # Expand palindrome
+        try:
+            while T[i + P[i] + 1] == T[i - P[i] - 1]:
+                P[i] += 1
+        except IndexError:
+            pass
+
+        # Update C and R
+        if i + P[i] > R:
+            C, R = i, i + P[i]
+
+    return P
+
+# Count all palindromic substrings - O(n)
+def countSubstrings_manacher(s):
+    """
+    Count all palindromic substrings in O(n) time.
+
+    Each P[i] represents a palindrome of radius P[i]
+    Number of palindromes centered at i = (P[i] + 1) // 2
+    """
+    P = manacher_array(s)
+
+    # Each radius P[i] contributes (P[i] + 1) // 2 palindromes
+    # Example: radius 3 in "#a#b#a#" → palindromes: "a", "aba"
+    return sum((p + 1) // 2 for p in P)
+```
+
+##### Java Implementation
+
+```java
+// LC 5 - Longest Palindromic Substring (Manacher's)
+/**
+ * time = O(N)
+ * space = O(N)
+ */
+class Solution {
+    public String longestPalindrome(String s) {
+        if (s == null || s.length() == 0) return "";
+
+        // Transform string: "aba" → "^#a#b#a#$"
+        StringBuilder T = new StringBuilder("^");
+        for (char c : s.toCharArray()) {
+            T.append("#").append(c);
+        }
+        T.append("#$");
+
+        int n = T.length();
+        int[] P = new int[n];  // Palindrome radius array
+        int C = 0, R = 0;      // Center and right boundary
+
+        // Compute palindrome radii
+        for (int i = 1; i < n - 1; i++) {
+            int mirror = 2 * C - i;
+
+            // Initialize P[i] using mirror
+            if (i < R) {
+                P[i] = Math.min(R - i, P[mirror]);
+            }
+
+            // Try to expand palindrome at i
+            while (T.charAt(i + P[i] + 1) == T.charAt(i - P[i] - 1)) {
+                P[i]++;
+            }
+
+            // Update center and right boundary
+            if (i + P[i] > R) {
+                C = i;
+                R = i + P[i];
+            }
+        }
+
+        // Find longest palindrome
+        int maxLen = 0;
+        int centerIndex = 0;
+        for (int i = 1; i < n - 1; i++) {
+            if (P[i] > maxLen) {
+                maxLen = P[i];
+                centerIndex = i;
+            }
+        }
+
+        // Extract substring from original string
+        int start = (centerIndex - maxLen) / 2;
+        return s.substring(start, start + maxLen);
+    }
+}
+```
+
+---
+
+##### Visual Example: Step-by-Step Walkthrough
+
+```
+Input: s = "babcbabcbaccba"
+
+Step 1: Transform string
+s = "babcbabcbaccba"
+T = "^#b#a#b#c#b#a#b#c#b#a#c#c#b#a#$"
+     0 1 2 3 4 5 6 7 8 9...
+
+Step 2: Compute P array (palindrome radii)
+
+i=1 (T[1]='#'):
+  mirror=2*0-1=-1 (outside)
+  Expand: '#b#' → P[1]=1
+  Update: C=1, R=2
+
+i=2 (T[2]='b'):
+  mirror=2*1-2=0
+  i<R (2<2 False), P[2]=0
+  Expand: 'b' → no match → P[2]=0
+
+i=3 (T[3]='#'):
+  mirror=2*1-3=-1
+  Expand: '#b#a#b#' → P[3]=3
+  Update: C=3, R=6
+
+i=7 (T[7]='c'):
+  mirror=2*3-7=-1
+  Expand: 'c' → P[7]=0
+
+i=9 (T[9]='#'):
+  Inside previous palindrome
+  mirror=2*3-9=-3
+  Can use mirror info!
+  P[9] = min(R-9, P[mirror])
+       = min(6-9, P[-3]) → initialize, then expand
+
+... continue for all positions
+
+Final P array:
+Position: 0  1  2  3  4  5  6  7  8  9 10 11 12 ...
+T:        ^  #  b  #  a  #  b  #  c  #  b  #  a  ...
+P:        0  1  0  3  0  1  0  7  0  1  0  3  0  ...
+
+Maximum: P[7]=7 (center at position 7)
+Longest palindrome: "babcbab" (length 7)
+```
+
+---
+
+##### Mirror Property Explanation
+
+```
+Key Concept: If we know palindrome boundaries, we can use symmetry!
+
+Example:
+    Center C=10, Right boundary R=15
+    Current position i=13
+    Mirror position i'=7 (mirror of 13 across 10)
+
+    Left Boundary      Center      Right Boundary
+          |              |              |
+    ...  7 ...          10 ...         13 ... 15
+         i'                            i      R
+
+If P[i']=2 (palindrome of radius 2 at position 7):
+Then P[i] >= min(R-i, P[i']) = min(15-13, 2) = min(2, 2) = 2
+
+Why? Because everything inside the large palindrome is mirrored!
+
+We still need to try expanding beyond this initial value,
+but we skip redundant comparisons within the mirror region.
+```
+
+---
+
+##### Complexity Analysis
+
+**Time Complexity: O(n)**
+```
+Each character is visited at most twice:
+1. Once when updating C and R (moving R forward)
+2. Once when checking as center i
+
+Key insight: R only moves forward, never backward
+Total expansions across all positions ≤ n
+```
+
+**Space Complexity: O(n)**
+```
+- Transformed string T: O(n)
+- Palindrome array P: O(n)
+- Total: O(n)
+```
+
+**Comparison:**
+
+| Approach | Time | Space | When to Use |
+|----------|------|-------|-------------|
+| **Expand from Center** | **O(n²)** | **O(1)** | Simple, short code, small strings |
+| **Manacher's Algorithm** | **O(n)** | **O(n)** | Large strings, optimal complexity required |
+| **DP (2D array)** | O(n²) | O(n²) | Need all palindrome info |
+
+---
+
+##### Classic LeetCode Problems
+
+| Problem | LC# | Difficulty | Manacher's Benefit | Standard Approach |
+|---------|-----|------------|-------------------|-------------------|
+| **Longest Palindromic Substring** | **5** | **Medium** | **O(n) vs O(n²)** | Expand from center |
+| Palindromic Substrings | 647 | Medium | O(n) counting | O(n²) expand |
+| Shortest Palindrome | 214 | Hard | O(n) prefix check | O(n²) KMP |
+| Longest Palindromic Subsequence | 516 | Medium | Not applicable | DP O(n²) |
+| Palindrome Partitioning | 131 | Medium | O(n) palindrome check | O(n²) precompute |
+
+---
+
+##### Interview Tips
+
+**1. Recognition:**
+```
+Follow-up: "Can you do better than O(n²)?"
+→ Think Manacher's algorithm for palindrome problems
+
+Interviewer: "What's the optimal time complexity?"
+→ O(n) with Manacher's for longest palindrome
+```
+
+**2. When to Use:**
+```
+✅ Large input strings (n > 10,000)
+✅ Follow-up asks for O(n) solution
+✅ Need to find longest palindrome
+✅ Want to show advanced knowledge
+
+❌ Short strings (expand from center is simpler)
+❌ Need all palindromic substrings (Manacher's doesn't help much)
+❌ Interview time is limited (complex implementation)
+```
+
+**3. Common Mistakes:**
+- Off-by-one errors in mirror calculation: `mirror = 2*C - i`
+- Forgetting boundary markers '^' and '$' to avoid index checks
+- Wrong extraction from transformed string back to original
+- Not updating C and R correctly
+
+**4. Simplified Implementation:**
+```python
+# Minimal Manacher's (easier to code in interview)
+def longestPalindrome(s):
+    T = '#'.join('^{}$'.format(s))
+    n = len(T)
+    P, C, R = [0]*n, 0, 0
+
+    for i in range(1, n-1):
+        if i < R:
+            P[i] = min(R-i, P[2*C-i])
+
+        while T[i+P[i]+1] == T[i-P[i]-1]:
+            P[i] += 1
+
+        if i + P[i] > R:
+            C, R = i, i + P[i]
+
+    max_len, idx = max((l, i) for i, l in enumerate(P))
+    return s[(idx-max_len)//2:(idx+max_len)//2]
+```
+
+**5. Talking Points:**
+- "Manacher's uses mirror symmetry to avoid redundant expansions"
+- "Each position expanded at most once → amortized O(n)"
+- "Transform string to handle even/odd lengths uniformly"
+- "Trade-off: O(n) time for O(n) space and implementation complexity"
+
+**6. Alternative for Interviews:**
+```
+If time is limited, mention Manacher's exists but implement O(n²):
+"The optimal O(n) solution uses Manacher's algorithm, but
+I'll implement the O(n²) expand-from-center approach which
+is more straightforward and works well for most cases."
+
+Then demonstrate understanding by explaining Manacher's concept.
+```
+
+---
+
+##### Advanced: Why Manacher's Works (Proof Sketch)
+
+**Claim**: Total number of character comparisons is O(n).
+
+**Proof**:
+```
+Let R be the right boundary of the rightmost palindrome found.
+
+Key observations:
+1. R never decreases (only moves forward or stays same)
+2. R can increase by at most n total across all iterations
+3. Each expansion at position i increases R by at most the expansion amount
+
+For position i:
+- If i >= R: We expand from scratch
+  → These expansions increase R
+
+- If i < R: We use P[mirror] to skip known palindrome
+  → We only expand beyond R
+  → These expansions also increase R
+
+Since R increases from 0 to at most n, and each character
+comparison increases R by 1, total comparisons ≤ n.
+
+Therefore, time complexity is O(n). □
+```
+
+---
 
 ### Template 5: String Transformation
 ```python
