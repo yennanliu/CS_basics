@@ -244,6 +244,9 @@ def has_cycle(graph):
 ```
 
 ### Template 3: Path Finding
+
+**📚 Related Patterns**: For comprehensive path problem patterns with multiple variations (path sum, max path, consecutive sequences, prefix sum technique), see **bst.md Template 7 (Path Problems)** which provides 7 detailed path patterns with full implementations.
+
 ```python
 def find_paths(root, target):
     """
@@ -4187,6 +4190,129 @@ visited = set()  # Track visited nodes
 import sys
 sys.setrecursionlimit(10000)
 ```
+
+---
+
+## Quick Decision Tree: Which DFS Pattern to Use?
+
+### Decision Flowchart
+
+```
+START: What are you trying to do with the graph/tree?
+│
+├─ Need to VISIT ALL NODES in specific order?
+│  │
+│  ├─ Yes, in preorder/inorder/postorder → Pattern 1 (Tree Traversal)
+│  │                                        Examples: LC 94, 144, 145
+│  │
+│  └─ Yes, but need to TRY ALL COMBINATIONS → Pattern 4 (Backtracking)
+│                                              Examples: LC 46, 78, 39, 17
+│
+├─ Working with PATHS in tree/graph?
+│  │
+│  ├─ Need specific path with sum/property → Pattern 2 (Path Problems)
+│  │                                          Examples: LC 112, 113, 257
+│  │
+│  └─ Need to AGGREGATE from subtrees → Pattern 6 (Subtree Problems)
+│                                        Examples: LC 508, 652, 236
+│
+├─ Working with GRAPH structure?
+│  │
+│  ├─ Need to find components/islands → Pattern 3 (Graph Traversal)
+│  │                                     Examples: LC 200, 695, 133
+│  │
+│  ├─ Need to eliminate boundary first → Pattern 7 (Boundary Elimination)
+│  │                                      Examples: LC 1254, 130, 417
+│  │
+│  ├─ Need to identify unique shapes → Pattern 8 (Path Signatures)
+│  │                                    Examples: LC 694, 711, 652
+│  │
+│  ├─ Need to validate sub-components → Pattern 9 (DFS with Validation)
+│  │                                     Examples: LC 1905
+│  │
+│  ├─ Need to count edge reversals → Pattern 10 (Bidirectional Direction Tracking)
+│  │                                  Examples: LC 1466
+│  │
+│  └─ Need to count unreachable pairs → Pattern 11 (Component Pair Counting)
+│                                        Examples: LC 2316
+│
+└─ Need to MODIFY tree structure?
+   │
+   └─ Delete/insert/trim nodes → Pattern 5 (Tree Modification)
+                                  Examples: LC 450, 701, 669
+```
+
+### Quick Pattern Selection Table
+
+| Problem Type | Recognition Keywords | Template | Example Problems |
+|--------------|---------------------|----------|------------------|
+| **Tree Traversal** | "traverse", "visit all", "serialize" | Pattern 1 | LC 94, 144, 145, 297 |
+| **Path Sum/Finding** | "path sum", "root to leaf", "all paths" | Pattern 2 | LC 112, 113, 257, 124 |
+| **Islands/Components** | "islands", "connected components", "regions" | Pattern 3 | LC 200, 695, 133 |
+| **Combinations/Permutations** | "all combinations", "permutations", "subsets" | Pattern 4 | LC 46, 78, 39, 17 |
+| **Tree Modification** | "delete", "insert", "trim", "convert" | Pattern 5 | LC 450, 701, 669 |
+| **Subtree Aggregation** | "subtree sum", "duplicate subtrees", "LCA" | Pattern 6 | LC 508, 652, 236 |
+| **Closed Regions** | "closed islands", "surrounded regions", "captured" | Pattern 7 | LC 1254, 130, 417 |
+| **Distinct Shapes** | "distinct islands", "unique shapes", "same shape" | Pattern 8 | LC 694, 711, 652 |
+| **Sub-component Check** | "sub-islands", "subset validation", "inclusion" | Pattern 9 | LC 1905 |
+| **Edge Direction** | "reorder edges", "reverse routes", "orient edges" | Pattern 10 | LC 1466 |
+| **Unreachable Pairs** | "unreachable pairs", "disconnected nodes" | Pattern 11 | LC 2316 |
+
+### Recognition Patterns by Keywords
+
+**Tree-focused keywords** → Patterns 1, 2, 5, 6
+- "traverse", "preorder", "inorder", "postorder"
+- "path sum", "root to leaf", "longest path"
+- "delete node", "insert", "trim", "convert BST"
+- "subtree", "duplicate", "LCA"
+
+**Graph-focused keywords** → Patterns 3, 7, 8, 9, 10, 11
+- "islands", "connected components", "explore graph"
+- "closed", "surrounded", "boundary", "escape"
+- "distinct", "unique shapes", "same structure"
+- "sub-island", "validate subset"
+- "reorder", "reverse direction", "make paths lead to"
+- "unreachable", "count pairs"
+
+**Backtracking keywords** → Pattern 4
+- "all combinations", "permutations", "subsets"
+- "generate all", "find all solutions"
+
+### Quick Decision Examples
+
+1. **"Find all root-to-leaf paths"**
+   - Keywords: "root to leaf", "paths"
+   - Decision: Pattern 2 (Path Problems)
+   - Template: Path DFS with backtracking
+
+2. **"Count number of closed islands"**
+   - Keywords: "closed", "islands"
+   - Decision: Pattern 7 (Boundary Elimination)
+   - Template: 2-Pass DFS (eliminate boundary first)
+
+3. **"Find number of distinct islands"**
+   - Keywords: "distinct", "islands"
+   - Decision: Pattern 8 (Path Signatures)
+   - Template: DFS with path encoding
+
+4. **"Generate all permutations"**
+   - Keywords: "all permutations", "generate"
+   - Decision: Pattern 4 (Backtracking)
+   - Template: Backtracking with visited tracking
+
+5. **"Find lowest common ancestor"**
+   - Keywords: "LCA", "ancestor"
+   - Decision: Pattern 6 (Subtree Problems)
+   - Template: Bottom-up DFS with result aggregation
+
+### Pro Tips for Pattern Selection
+
+- **Two-pass problems**: If you need to eliminate something first (boundary, edges), use Pattern 7 or 10
+- **Shape comparison**: If comparing structures/shapes, use Pattern 8 (Path Signatures)
+- **Validation against reference**: If checking one structure against another, use Pattern 9
+- **Bottom-up aggregation**: If answer depends on processing children first, use Pattern 6
+- **Try all possibilities**: If problem asks for "all" solutions/combinations, use Pattern 4 (Backtracking)
+- **Edge directions matter**: If working with directed edges in undirected representation, use Pattern 10
 
 ---
 **Must-Know Problems for Interviews**: LC 94, 104, 112, 113, 124, 200, 236, 297, 399, 694

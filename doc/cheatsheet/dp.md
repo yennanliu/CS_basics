@@ -53,6 +53,7 @@ Step 4. get the result
 - **Description**: DP on tree structures
 - **Examples**: LC 337 (House Robber III), LC 968 (Binary Tree Cameras)
 - **Pattern**: State at each node depends on children
+- **📚 Implementation**: Tree DP problems use DFS traversal for implementation. See **dfs.md Template 6 (Bottom-up DFS)** for the DFS traversal patterns used in tree DP solutions
 
 ### **Category 5: State Machine DP**
 - **Description**: Problems with multiple states and transitions
@@ -2258,6 +2259,338 @@ while submask:
     submask = (submask - 1) & mask
 ```
 
+**Java Bitmask Operations**:
+```java
+// Check if i-th bit is set
+if ((mask & (1 << i)) != 0) {
+    // i-th item is included
+}
+
+// Set i-th bit
+int newMask = mask | (1 << i);
+
+// Unset i-th bit
+int newMask = mask & ~(1 << i);
+
+// Toggle i-th bit
+int newMask = mask ^ (1 << i);
+
+// Count number of set bits
+int count = Integer.bitCount(mask);
+
+// Get lowest set bit
+int lowestBit = mask & (-mask);
+
+// Iterate through all subsets
+for (int mask = 0; mask < (1 << n); mask++) {
+    // Process mask
+}
+
+// Iterate through all submasks of mask
+for (int submask = mask; submask > 0; submask = (submask - 1) & mask) {
+    // Process submask
+}
+```
+
+---
+
+#### **Pattern 1: Visit All Nodes (TSP Variant)**
+
+**Problem Type**: Find shortest path visiting all nodes exactly once
+
+**State Definition**: `dp[mask][i]` = minimum cost to visit all nodes in `mask`, ending at node `i`
+
+**Transition**: For each unvisited node `j`, try visiting it from current node `i`
+
+**Time Complexity**: O(2^n × n²)
+**Space Complexity**: O(2^n × n)
+
+**Example**: LC 847 - Shortest Path Visiting All Nodes
+
+```java
+// Java Implementation
+public int shortestPathLength(int[][] graph) {
+    int n = graph.length;
+    int[][] dp = new int[1 << n][n];
+    Queue<int[]> queue = new LinkedList<>();
+
+    // Initialize: start from any node
+    for (int i = 0; i < n; i++) {
+        Arrays.fill(dp[1 << i], Integer.MAX_VALUE);
+        dp[1 << i][i] = 0;
+        queue.offer(new int[]{1 << i, i});
+    }
+
+    int target = (1 << n) - 1;
+
+    while (!queue.isEmpty()) {
+        int[] curr = queue.poll();
+        int mask = curr[0], node = curr[1];
+        int dist = dp[mask][node];
+
+        if (mask == target) {
+            return dist;
+        }
+
+        for (int next : graph[node]) {
+            int nextMask = mask | (1 << next);
+            if (dp[nextMask][next] > dist + 1) {
+                dp[nextMask][next] = dist + 1;
+                queue.offer(new int[]{nextMask, next});
+            }
+        }
+    }
+
+    return -1;
+}
+```
+
+---
+
+#### **Pattern 2: Assignment Problems**
+
+**Problem Type**: Assign n tasks to n workers, minimize/maximize total cost
+
+**State Definition**: `dp[mask]` = min/max cost to assign tasks in `mask` to first k workers (where k = number of bits set in mask)
+
+**Transition**: For each worker, try assigning an unassigned task
+
+**Time Complexity**: O(2^n × n)
+**Space Complexity**: O(2^n)
+
+**Example**: LC 1723 - Find Minimum Time to Finish All Jobs
+
+```java
+// Java Implementation
+public int minimumTimeRequired(int[] jobs, int k) {
+    int n = jobs.length;
+    int[] dp = new int[1 << n];
+    int[] subsetSum = new int[1 << n];
+
+    // Precompute sum for each subset
+    for (int mask = 0; mask < (1 << n); mask++) {
+        for (int i = 0; i < n; i++) {
+            if ((mask & (1 << i)) != 0) {
+                subsetSum[mask] += jobs[i];
+            }
+        }
+    }
+
+    // dp[mask] = min time to finish jobs in mask
+    Arrays.fill(dp, Integer.MAX_VALUE);
+    dp[0] = 0;
+
+    for (int mask = 0; mask < (1 << n); mask++) {
+        // Try all submasks
+        for (int submask = mask; submask > 0; submask = (submask - 1) & mask) {
+            dp[mask] = Math.min(dp[mask],
+                               Math.max(dp[mask ^ submask], subsetSum[submask]));
+        }
+    }
+
+    return dp[(1 << n) - 1];
+}
+```
+
+---
+
+#### **Pattern 3: Subset Selection with Constraints**
+
+**Problem Type**: Select subsets satisfying specific constraints
+
+**State Definition**: `dp[mask]` = number of ways / min cost to achieve state represented by `mask`
+
+**Transition**: For each item, decide whether to include it based on current mask
+
+**Time Complexity**: O(2^n × n) or O(3^n) for submask iteration
+**Space Complexity**: O(2^n)
+
+**Example**: LC 691 - Stickers to Spell Word
+
+```java
+// Java Implementation - Subset DP
+public int minStickers(String[] stickers, String target) {
+    int n = target.length();
+    int[] dp = new int[1 << n];
+    Arrays.fill(dp, -1);
+    dp[0] = 0;
+
+    for (int mask = 0; mask < (1 << n); mask++) {
+        if (dp[mask] == -1) continue;
+
+        for (String sticker : stickers) {
+            int newMask = mask;
+            int[] counts = new int[26];
+
+            for (char c : sticker.toCharArray()) {
+                counts[c - 'a']++;
+            }
+
+            for (int i = 0; i < n; i++) {
+                if ((mask & (1 << i)) == 0) {
+                    char c = target.charAt(i);
+                    if (counts[c - 'a'] > 0) {
+                        counts[c - 'a']--;
+                        newMask |= (1 << i);
+                    }
+                }
+            }
+
+            if (dp[newMask] == -1 || dp[newMask] > dp[mask] + 1) {
+                dp[newMask] = dp[mask] + 1;
+            }
+        }
+    }
+
+    return dp[(1 << n) - 1];
+}
+```
+
+---
+
+#### **Pattern 4: Partition into K Subsets**
+
+**Problem Type**: Partition n items into k groups with constraints
+
+**State Definition**: `dp[mask]` = true if items in `mask` can be partitioned into complete groups
+
+**Transition**: Try forming complete groups from current state
+
+**Time Complexity**: O(2^n × n)
+**Space Complexity**: O(2^n)
+
+**Example**: LC 698 - Partition to K Equal Sum Subsets
+
+```java
+// Java Implementation
+public boolean canPartitionKSubsets(int[] nums, int k) {
+    int sum = 0;
+    for (int num : nums) sum += num;
+
+    if (sum % k != 0) return false;
+
+    int target = sum / k;
+    int n = nums.length;
+    boolean[] dp = new boolean[1 << n];
+    int[] total = new int[1 << n];
+    dp[0] = true;
+
+    for (int mask = 0; mask < (1 << n); mask++) {
+        if (!dp[mask]) continue;
+
+        for (int i = 0; i < n; i++) {
+            if ((mask & (1 << i)) != 0) continue;
+
+            int newMask = mask | (1 << i);
+
+            if (total[mask] % target + nums[i] <= target) {
+                dp[newMask] = true;
+                total[newMask] = total[mask] + nums[i];
+            }
+        }
+    }
+
+    return dp[(1 << n) - 1];
+}
+```
+
+---
+
+#### **Bitmask DP Common Patterns Summary**
+
+| Pattern | State Definition | Transition | Example Problems |
+|---------|-----------------|------------|------------------|
+| **Visit All Nodes** | dp[mask][i] = cost to visit mask, end at i | Try next unvisited node | LC 847, LC 943 |
+| **Assignment** | dp[mask] = cost to assign tasks in mask | Assign next task to worker | LC 1723, LC 1986 |
+| **Subset Selection** | dp[mask] = ways/cost for subset mask | Include/exclude next item | LC 691, LC 1434 |
+| **Partition** | dp[mask] = can partition mask into groups | Form complete groups | LC 698, LC 1681 |
+| **Profile DP** | dp[i][mask] = state at row i with column mask | Process row by row | Tiling problems |
+
+---
+
+#### **Advanced Techniques**
+
+**1. Precomputing Subset Properties**:
+```java
+// Precompute sum for all subsets - O(2^n × n)
+int[] subsetSum = new int[1 << n];
+for (int mask = 0; mask < (1 << n); mask++) {
+    for (int i = 0; i < n; i++) {
+        if ((mask & (1 << i)) != 0) {
+            subsetSum[mask] += arr[i];
+        }
+    }
+}
+```
+
+**2. Submask Enumeration - O(3^n)**:
+```java
+// For each mask, iterate through all its submasks
+for (int mask = 0; mask < (1 << n); mask++) {
+    for (int submask = mask; submask > 0; submask = (submask - 1) & mask) {
+        // dp[mask] can be computed from dp[submask] and dp[mask ^ submask]
+        dp[mask] = Math.min(dp[mask], dp[submask] + dp[mask ^ submask]);
+    }
+}
+```
+
+**3. SOS (Sum Over Subsets) DP - O(2^n × n)**:
+```java
+// For each mask, sum values of all its submasks
+int[] dp = new int[1 << n];
+// ... initialize dp ...
+
+for (int i = 0; i < n; i++) {
+    for (int mask = 0; mask < (1 << n); mask++) {
+        if ((mask & (1 << i)) != 0) {
+            dp[mask] += dp[mask ^ (1 << i)];
+        }
+    }
+}
+```
+
+---
+
+#### **Complexity Analysis**
+
+| Technique | Time Complexity | Space Complexity | Use Case |
+|-----------|----------------|------------------|----------|
+| **Basic Bitmask** | O(2^n × n) | O(2^n) | Visit all, assignment |
+| **Submask Enumeration** | O(3^n) | O(2^n) | Partition, subset sum |
+| **SOS DP** | O(2^n × n) | O(2^n) | Sum over subsets |
+| **Profile DP** | O(2^m × n) | O(2^m) | Grid tiling (m = width) |
+
+**Feasibility Limits**:
+- n ≤ 15: Very safe, ~32K states
+- n ≤ 20: Feasible, ~1M states
+- n ≤ 24: Tight, ~16M states (watch TLE)
+- n > 24: Usually too large for bitmask DP
+
+---
+
+#### **Interview Tips**
+
+1. **Recognize State Compression**:
+   - Keywords: "visit all", "assign", "partition into k groups"
+   - Constraints: n ≤ 20
+   - Need to track subsets/visited items
+
+2. **Choose Right State**:
+   - TSP-style: `dp[mask][last_node]`
+   - Assignment: `dp[mask]` (implicitly assign to worker k)
+   - Partition: `dp[mask]` with modulo check
+
+3. **Optimize**:
+   - Precompute subset properties
+   - Use BFS for shortest path problems
+   - Consider SOS DP for subset sum queries
+
+4. **Common Mistakes**:
+   - Forgetting to initialize `dp[0]`
+   - Wrong submask iteration: use `(submask - 1) & mask`
+   - Not checking if bit is set before using it
+   - Integer overflow with `1 << n` (use `1L << n` for n ≥ 31)
+
 ### **Advanced DP Patterns**
 
 #### **Interval DP Template**:
@@ -3719,3 +4052,182 @@ Are there any constraints on transactions?
 - **Divide & Conquer**: No overlapping subproblems
 - **Graph Algorithms**: DP on graphs (shortest path)
 - **Binary Search**: Optimization problems with monotonicity
+
+---
+
+## Quick Decision Tree: Which DP Pattern to Use?
+
+### Decision Flowchart
+
+```
+START: What type of problem are you solving?
+│
+├─ Working with a SINGLE SEQUENCE/ARRAY?
+│  │
+│  ├─ Linear dependencies (dp[i] from dp[i-1]) → Category 1 (Linear DP)
+│  │                                               Examples: LC 70, 198, 300
+│  │
+│  └─ Selection with constraints → Category 6 (Knapsack DP)
+│                                    Examples: LC 416, 494, 518
+│
+├─ Working with a 2D GRID/MATRIX?
+│  │
+│  └─ Path counting, min/max path → Category 2 (Grid/2D DP)
+│                                     Examples: LC 62, 64, 221
+│
+├─ Working with INTERVALS/SUBARRAYS?
+│  │
+│  └─ Optimal split, merge, or partition → Category 3 (Interval DP)
+│                                           Examples: LC 312, 1000, 516
+│
+├─ Working with TREE structures?
+│  │
+│  └─ State at node depends on children → Category 4 (Tree DP)
+│                                          Examples: LC 337, 968, 124
+│
+├─ Working with STRINGS?
+│  │
+│  ├─ Two strings (matching/alignment) → Category 7 (String DP)
+│  │                                      Examples: LC 72, 1143, 583
+│  │
+│  └─ Single string (palindrome, split) → Also Category 7
+│                                          Examples: LC 5, 131, 647
+│
+├─ Problem has MULTIPLE STATES with transitions?
+│  │
+│  └─ Stock trading, state machines → Category 5 (State Machine DP)
+│                                      Examples: LC 122, 309, 714
+│
+└─ Need to track SUBSET/VISITED items efficiently?
+   │
+   └─ Use bitmask to compress state → Category 8 (State Compression DP)
+                                       Examples: LC 691, 847, 1723
+```
+
+### Quick Pattern Selection Table
+
+| Problem Type | Recognition Keywords | DP Category | Example Problems |
+|--------------|---------------------|-------------|------------------|
+| **Fibonacci-like** | "nth number", "climbing stairs", "decode ways" | Linear DP | LC 70, 91, 746 |
+| **House Robber** | "non-adjacent", "cannot pick consecutive" | Linear DP | LC 198, 213, 337 |
+| **Longest Increasing** | "longest increasing", "LIS", "envelope" | Linear DP | LC 300, 354, 673 |
+| **Path Counting** | "unique paths", "number of ways to reach" | Grid DP | LC 62, 63, 980 |
+| **Path Sum (Min/Max)** | "minimum path sum", "maximum sum" | Grid DP | LC 64, 120, 174 |
+| **Square/Rectangle** | "maximal square", "largest rectangle" | Grid DP | LC 221, 85 |
+| **Interval Problems** | "burst balloons", "merge stones", "palindrome partition" | Interval DP | LC 312, 1000, 516 |
+| **Tree Problems** | "house robber on tree", "tree cameras" | Tree DP | LC 337, 968 |
+| **Stock Trading** | "buy and sell stock", "transaction", "cooldown" | State Machine | LC 122, 309, 714 |
+| **Knapsack (0/1)** | "subset sum", "partition", "target sum" | Knapsack DP | LC 416, 494 |
+| **Knapsack (Unbounded)** | "coin change", "unlimited supply" | Knapsack DP | LC 322, 518 |
+| **Edit Distance** | "edit distance", "minimum operations" | String DP | LC 72, 583, 712 |
+| **LCS/LPS** | "longest common subsequence", "palindrome" | String DP | LC 1143, 516, 647 |
+| **Bitmask/Subset** | "visit all nodes", "assign tasks", "TSP" | State Compression | LC 847, 1723, 691 |
+
+### Recognition Patterns by Keywords
+
+**Linear sequence keywords** → Category 1 (Linear DP)
+- "nth Fibonacci", "climbing stairs", "decode ways"
+- "house robber", "non-adjacent", "skip adjacent"
+- "longest increasing subsequence", "LIS"
+
+**Grid/Matrix keywords** → Category 2 (Grid/2D DP)
+- "grid", "matrix", "m x n"
+- "unique paths", "number of ways"
+- "minimum/maximum path sum"
+- "maximal square", "largest rectangle"
+
+**Interval/Subarray keywords** → Category 3 (Interval DP)
+- "burst", "merge", "split", "partition"
+- "optimal way to cut/divide"
+- "minimum cost to merge"
+- "palindrome partitioning"
+
+**Tree keywords** → Category 4 (Tree DP)
+- "binary tree", "tree structure"
+- "each node", "children", "parent"
+- "rob houses on tree", "cameras on tree"
+
+**State transition keywords** → Category 5 (State Machine DP)
+- "buy and sell stock"
+- "cooldown", "transaction fee"
+- "at most k transactions"
+- "multiple states"
+
+**Selection with constraints** → Category 6 (Knapsack DP)
+- "subset sum", "partition equal"
+- "target sum", "combination sum"
+- "0/1 knapsack", "unbounded knapsack"
+- "coin change", "unlimited supply"
+
+**String matching keywords** → Category 7 (String DP)
+- "edit distance", "minimum operations"
+- "longest common subsequence (LCS)"
+- "palindrome subsequence/substring"
+- "string transformation"
+
+**Subset/Visited tracking** → Category 8 (State Compression DP)
+- "visit all nodes", "shortest path visiting all"
+- "assign tasks", "match workers"
+- "traveling salesman problem (TSP)"
+- "subset enumeration with constraints"
+
+### Quick Decision Examples
+
+1. **"Find minimum path sum in a grid"**
+   - Keywords: "grid", "minimum path sum"
+   - Decision: Category 2 (Grid/2D DP)
+   - Template: dp[i][j] = min(dp[i-1][j], dp[i][j-1]) + grid[i][j]
+
+2. **"Count ways to make change with coins"**
+   - Keywords: "coin change", "unlimited supply"
+   - Decision: Category 6 (Unbounded Knapsack DP)
+   - Template: dp[amount] = sum of dp[amount - coin]
+
+3. **"Find edit distance between two strings"**
+   - Keywords: "edit distance", "two strings"
+   - Decision: Category 7 (String DP)
+   - Template: dp[i][j] with insert/delete/replace operations
+
+4. **"Buy and sell stock with cooldown"**
+   - Keywords: "stock", "cooldown"
+   - Decision: Category 5 (State Machine DP)
+   - Template: 3 states (hold, sold, rest)
+
+5. **"Shortest path visiting all nodes in graph"**
+   - Keywords: "visit all nodes", "shortest path"
+   - Decision: Category 8 (State Compression DP)
+   - Template: dp[mask][node] with bitmask for visited nodes
+
+6. **"Burst balloons to maximize coins"**
+   - Keywords: "burst", "maximize"
+   - Decision: Category 3 (Interval DP)
+   - Template: dp[i][j] for interval [i, j]
+
+7. **"Rob houses on a binary tree"**
+   - Keywords: "tree", "rob", "non-adjacent"
+   - Decision: Category 4 (Tree DP)
+   - Template: Bottom-up DFS with two states per node
+
+### Pro Tips for Pattern Selection
+
+- **One sequence** → Linear DP (Category 1)
+- **Two sequences** → Usually String DP (Category 7) or 2D DP
+- **Grid movement** → Grid DP (Category 2)
+- **Interval splitting** → Interval DP (Category 3) - often O(n³)
+- **Tree traversal** → Tree DP (Category 4) - use DFS
+- **Multiple states** → State Machine (Category 5) - draw state diagram first
+- **Weight/capacity constraint** → Knapsack (Category 6)
+- **String matching/transform** → String DP (Category 7)
+- **Visit all/subset** → State Compression (Category 8) - use bitmask
+
+### Common Pitfalls
+
+- **Interval DP**: Remember to iterate length from small to large
+- **Knapsack**: 0/1 requires reverse iteration for space optimization
+- **State Machine**: Draw state transition diagram before coding
+- **Tree DP**: Use bottom-up DFS (postorder traversal)
+- **State Compression**: Check if n ≤ 20 (2^20 states is feasible)
+- **String DP**: Define dp[i][j] carefully (length vs index)
+
+---
+**Keywords**: DP, dynamic programming, memoization, tabulation, optimal substructure, overlapping subproblems, state transition, knapsack, LCS, LIS, interval DP, tree DP, state machine, bitmask
