@@ -388,7 +388,401 @@ class Solution(object):
         return int("".join(ans))
 ```
 
- 
+---
+
+### 1-2) Special Array Algorithms
+
+#### 1-2-1) Boyer-Moore Majority Vote Algorithm
+
+**Concept:**
+- Find element(s) appearing more than ⌊n/k⌋ times in an array
+- **Key Idea**: Pair different elements and cancel them out
+- Majority element survives cancellation
+- **Two-phase**: (1) Find candidates, (2) Verify counts
+- **Space**: O(k) for k-1 candidates
+
+**When to Use:**
+- "Find majority element" → element appearing > n/2 times
+- "Find all elements appearing more than n/3 times"
+- "Heavy hitters" or "frequent elements" problems
+- Need O(1) space (better than HashMap O(n))
+
+**Related:** See [streaming_algorithms.md](./streaming_algorithms.md) for detailed explanation.
+
+---
+
+##### **Pattern 1: Standard Majority Element (> n/2) - LC 169**
+
+**Algorithm:**
+- Maintain one candidate and count
+- When count=0, select new candidate
+- Increment count for same element, decrement for different
+- Majority element survives
+
+```python
+# Python - LC 169
+def majorityElement(nums):
+    """
+    Find element appearing > n/2 times
+    Time: O(n)
+    Space: O(1)
+    """
+    candidate = None
+    count = 0
+
+    # Phase 1: Find candidate
+    for num in nums:
+        if count == 0:
+            candidate = num
+            count = 1
+        elif num == candidate:
+            count += 1
+        else:
+            count -= 1  # Cancel out
+
+    # Phase 2: Verify (can skip if majority guaranteed)
+    # return candidate
+
+    # If not guaranteed, verify:
+    if nums.count(candidate) > len(nums) // 2:
+        return candidate
+    return None
+```
+
+```java
+// Java - LC 169
+// V0
+// IDEA: Boyer-Moore Majority Vote
+/**
+ * Key Insight:
+ * - Pair different elements and cancel them out
+ * - Majority element will survive cancellation
+ * - Works because majority element appears > n/2 times
+ *
+ * Time: O(n)
+ * Space: O(1)
+ */
+public int majorityElement(int[] nums) {
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
+    int candidate = nums[0];
+    int count = 1;
+
+    // Phase 1: Find candidate by cancellation
+    for (int i = 1; i < nums.length; i++) {
+        if (count == 0) {
+            // Start new candidate when count reaches 0
+            candidate = nums[i];
+            count = 1;
+        } else if (nums[i] == candidate) {
+            // Same element: increment count
+            count++;
+        } else {
+            // Different element: cancel out
+            count--;
+        }
+    }
+
+    // Phase 2: Verify (optional if majority guaranteed)
+    // If problem guarantees majority exists, return candidate directly
+    return candidate;
+
+    // Otherwise, verify:
+    // int actualCount = 0;
+    // for (int num : nums) {
+    //     if (num == candidate) actualCount++;
+    // }
+    // return actualCount > nums.length / 2 ? candidate : -1;
+}
+```
+
+**Example Trace:** `nums = [2,2,1,1,1,2,2]`
+
+```
+Index | num | candidate | count | Action
+--------------------------------------------
+  0   |  2  |     2     |   1   | Initialize
+  1   |  2  |     2     |   2   | Same, increment
+  2   |  1  |     2     |   1   | Different, decrement
+  3   |  1  |     2     |   0   | Different, decrement
+  4   |  1  |     1     |   1   | Count=0, new candidate
+  5   |  2  |     1     |   0   | Different, decrement
+  6   |  2  |     2     |   1   | Count=0, new candidate
+
+Result: 2 (appears 4 times > 7/2 = 3.5)
+```
+
+---
+
+##### **Pattern 2: Elements Appearing > n/3 Times - LC 229**
+
+**Key Insight:** At most 2 elements can appear more than n/3 times.
+
+**Algorithm:**
+- Maintain two candidates and two counts
+- Cancellation requires decrementing both counts
+- Must verify both candidates in phase 2
+
+```python
+# Python - LC 229
+def majorityElement(nums):
+    """
+    Find all elements appearing > n/3 times
+    Time: O(n)
+    Space: O(1)
+    """
+    # Phase 1: Find up to 2 candidates
+    candidate1, candidate2 = None, None
+    count1, count2 = 0, 0
+
+    for num in nums:
+        if num == candidate1:
+            count1 += 1
+        elif num == candidate2:
+            count2 += 1
+        elif count1 == 0:
+            candidate1, count1 = num, 1
+        elif count2 == 0:
+            candidate2, count2 = num, 1
+        else:
+            # Different from both: cancel out
+            count1 -= 1
+            count2 -= 1
+
+    # Phase 2: Verify candidates
+    result = []
+    for candidate in [candidate1, candidate2]:
+        if candidate is not None and nums.count(candidate) > len(nums) // 3:
+            result.append(candidate)
+
+    return result
+```
+
+```java
+// Java - LC 229
+// V0
+// IDEA: Boyer-Moore Majority Vote (Generalized)
+/**
+ * Key Insight:
+ * - At most 2 elements can appear > n/3 times
+ * - Use 2 candidates and 2 counts
+ * - Cancellation decrements both counts
+ * - MUST verify both candidates
+ *
+ * Time: O(n)
+ * Space: O(1)
+ */
+public List<Integer> majorityElement(int[] nums) {
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
+    int candidate1 = 0, candidate2 = 0;
+    int count1 = 0, count2 = 0;
+
+    // Phase 1: Find up to 2 candidates
+    for (int num : nums) {
+        if (num == candidate1) {
+            count1++;
+        } else if (num == candidate2) {
+            count2++;
+        } else if (count1 == 0) {
+            candidate1 = num;
+            count1 = 1;
+        } else if (count2 == 0) {
+            candidate2 = num;
+            count2 = 1;
+        } else {
+            // Different from both: cancel out
+            count1--;
+            count2--;
+        }
+    }
+
+    // Phase 2: Verify candidates (REQUIRED!)
+    count1 = 0;
+    count2 = 0;
+    for (int num : nums) {
+        if (num == candidate1) count1++;
+        else if (num == candidate2) count2++;
+    }
+
+    List<Integer> result = new ArrayList<>();
+    if (count1 > nums.length / 3) result.add(candidate1);
+    if (count2 > nums.length / 3) result.add(candidate2);
+
+    return result;
+}
+```
+
+**Example Trace:** `nums = [3,2,3]`
+
+```
+Index | num | c1 | cnt1 | c2 | cnt2 | Action
+-------------------------------------------------
+  0   |  3  | 3  |  1   | 0  |  0   | Set candidate1
+  1   |  2  | 3  |  1   | 2  |  1   | Set candidate2
+  2   |  3  | 3  |  2   | 2  |  1   | Match candidate1
+
+Verification:
+- candidate1=3: appears 2 times > 3/3 = 1 ✓
+- candidate2=2: appears 1 time ≤ 3/3 = 1 ✗
+
+Result: [3]
+```
+
+---
+
+##### **Pattern 3: Generalized k-Majority (> n/k times)**
+
+**Concept:** For elements appearing more than n/k times, at most k-1 candidates exist.
+
+```java
+// Generalized Boyer-Moore for n/k threshold
+import java.util.*;
+
+class BoyerMooreGeneralized {
+    /**
+     * Find all elements appearing > n/k times
+     * time = O(N × k)
+     * space = O(k)
+     */
+    public List<Integer> majorityElement(int[] nums, int k) {
+        // At most k-1 candidates for n/k threshold
+        Map<Integer, Integer> candidates = new HashMap<>();
+
+        // Phase 1: Find up to k-1 candidates
+        for (int num : nums) {
+            if (candidates.containsKey(num)) {
+                candidates.put(num, candidates.get(num) + 1);
+            } else if (candidates.size() < k - 1) {
+                candidates.put(num, 1);
+            } else {
+                // Decrement all counts (cancellation)
+                List<Integer> toRemove = new ArrayList<>();
+                for (Map.Entry<Integer, Integer> entry : candidates.entrySet()) {
+                    int count = entry.getValue() - 1;
+                    if (count == 0) {
+                        toRemove.add(entry.getKey());
+                    } else {
+                        candidates.put(entry.getKey(), count);
+                    }
+                }
+                for (int key : toRemove) {
+                    candidates.remove(key);
+                }
+            }
+        }
+
+        // Phase 2: Verify all candidates
+        Map<Integer, Integer> counts = new HashMap<>();
+        for (int num : nums) {
+            if (candidates.containsKey(num)) {
+                counts.put(num, counts.getOrDefault(num, 0) + 1);
+            }
+        }
+
+        List<Integer> result = new ArrayList<>();
+        for (Map.Entry<Integer, Integer> entry : counts.entrySet()) {
+            if (entry.getValue() > nums.length / k) {
+                result.add(entry.getKey());
+            }
+        }
+
+        return result;
+    }
+}
+```
+
+---
+
+#### **Boyer-Moore: Common Mistakes & Tips**
+
+**🚫 Common Mistakes:**
+
+1. **Missing Verification Phase**
+   ```java
+   // ❌ WRONG: Assuming candidate is always majority
+   return candidate;
+
+   // ✅ CORRECT: Verify count (if not guaranteed)
+   int actualCount = 0;
+   for (int num : nums) {
+       if (num == candidate) actualCount++;
+   }
+   return actualCount > nums.length / 2 ? candidate : -1;
+   ```
+
+2. **Wrong Cancellation Logic for LC 229**
+   ```java
+   // ❌ WRONG: Only checking candidate1
+   if (num != candidate1) count1--;
+
+   // ✅ CORRECT: Check both, reset on count=0
+   if (num == candidate1) {
+       count1++;
+   } else if (num == candidate2) {
+       count2++;
+   } else if (count1 == 0) {
+       candidate1 = num; count1 = 1;
+   } else if (count2 == 0) {
+       candidate2 = num; count2 = 1;
+   } else {
+       count1--; count2--;
+   }
+   ```
+
+3. **Not Handling Duplicate Candidates (LC 229)**
+   ```java
+   // ❌ WRONG: candidate1 and candidate2 can be same initially
+
+   // ✅ CORRECT: Check candidate1 first, then candidate2
+   if (num == candidate1) count1++;
+   else if (num == candidate2) count2++;
+   // ... rest of logic
+   ```
+
+**💡 Interview Tips:**
+
+1. **When to Use:**
+   - "Find majority element" keywords
+   - Need O(1) space (vs HashMap O(n))
+   - Guaranteed majority exists
+
+2. **Talking Points:**
+   - "Pairing and cancellation eliminates non-majority elements"
+   - "At most k-1 elements can appear more than n/k times"
+   - "Two-phase: find candidates, then verify"
+
+3. **Complexity:**
+   - Time: O(n) single pass (+ O(n) for verification = O(n) total)
+   - Space: O(1) for standard, O(k) for generalized
+
+---
+
+#### **Related LeetCode Problems:**
+
+| Problem | Difficulty | Threshold | Candidates | Verify? |
+|---------|------------|-----------|------------|---------|
+| LC 169 | Easy | > n/2 | 1 | Optional* |
+| LC 229 | Medium | > n/3 | 2 | Required |
+| General | - | > n/k | k-1 | Required |
+
+*Optional if problem guarantees majority element exists.
+
+---
+
+**Summary:**
+- ✅ Boyer-Moore: O(n) time, O(1) space majority finding
+- ✅ Key insight: Cancellation eliminates non-majority elements
+- ✅ Two-phase: (1) Find candidates, (2) Verify counts
+- ✅ For > n/2: 1 candidate, for > n/3: 2 candidates, for > n/k: k-1 candidates
+- ✅ Alternative: HashMap O(n) space for exact counts
+
+---
+
 ## 2) LC Example
 
 ### 2-1) Queue Reconstruction by Height

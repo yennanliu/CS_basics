@@ -10,7 +10,90 @@
 
 ## 0) Concept
 
-### 0-0) Key Optimizations
+### 0-0) Union-Find Variants
+
+#### Quick Find vs Quick Union
+
+**Quick Find:**
+- **Find**: O(1) - Direct array lookup
+- **Union**: O(n) - Update all elements in component
+- **Use Case**: When find operations greatly outnumber union operations
+- **Implementation**: Store component ID directly for each element
+
+```java
+// Quick Find Implementation
+class QuickFind {
+    private int[] id;
+    private int count; // number of components
+
+    public QuickFind(int n) {
+        id = new int[n];
+        count = n;
+        for (int i = 0; i < n; i++) {
+            id[i] = i; // Each element is its own component
+        }
+    }
+
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
+    public int find(int p) {
+        return id[p]; // Direct lookup
+    }
+
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
+    public void union(int p, int q) {
+        int pID = find(p);
+        int qID = find(q);
+
+        if (pID == qID) return;
+
+        // Change all entries with id[p] to id[q]
+        for (int i = 0; i < id.length; i++) {
+            if (id[i] == pID) {
+                id[i] = qID;
+            }
+        }
+        count--;
+    }
+
+    public boolean connected(int p, int q) {
+        return find(p) == find(q);
+    }
+}
+```
+
+**Quick Union (with optimizations):**
+- **Find**: O(α(n)) ≈ O(1) with path compression
+- **Union**: O(α(n)) ≈ O(1) with union by rank/size
+- **Use Case**: General purpose, balanced find/union operations
+- **Implementation**: Store parent pointers, build tree structure
+
+**Comparison:**
+
+| Operation | Quick Find | Quick Union | Quick Union + Optimizations |
+|-----------|------------|-------------|---------------------------|
+| Initialize | O(n) | O(n) | O(n) |
+| Find | O(1) | O(n) worst | O(α(n)) ≈ O(1) |
+| Union | O(n) | O(n) worst | O(α(n)) ≈ O(1) |
+| Space | O(n) | O(n) | O(n) |
+| Best For | Many finds | Balanced | General purpose |
+
+**When to Use Quick Find:**
+- Very rare union operations
+- Real-time find queries required
+- Small datasets where O(n) union is acceptable
+
+**When to Use Quick Union (Optimized):**
+- Balanced mix of find and union operations
+- Large datasets (millions of elements)
+- Most practical applications (recommended)
+
+### 0-1) Key Optimizations
 Union Find achieves nearly O(1) performance through two critical optimizations:
 
 **Path Compression**: Applied in `find()` operation
