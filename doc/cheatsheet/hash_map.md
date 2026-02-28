@@ -1256,6 +1256,11 @@ class Solution(object):
         # left pointer
         l = 0
         res = 0
+        """
+        NOTE !!!
+
+        we move right pointer first, then left pointer
+        """
         # NOTE !!! right pointer
         for r in range(len(s)):
             """
