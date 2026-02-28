@@ -3,6 +3,8 @@ package LeetCodeJava.Stack;
 // https://leetcode.com/problems/remove-all-adjacent-duplicates-in-string-ii/description/
 
 import java.util.ArrayDeque;
+import java.util.Deque;
+import java.util.LinkedList;
 import java.util.Stack;
 
 /**
@@ -55,6 +57,75 @@ public class RemoveAllAdjacentDuplicatesInString2 {
 //
 //    }
 
+    // V0-1
+    // IDEA: STACK (gemini)
+    public String removeDuplicates_0_1(String s, int k) {
+        // We store an int array: {character_as_int, count}
+        Stack<int[]> st = new Stack<>();
+
+        for (char ch : s.toCharArray()) {
+            if (!st.isEmpty() && st.peek()[0] == ch) {
+                // If it matches the top, increment the count
+                st.peek()[1]++;
+
+                // If the count reaches K, remove the whole block
+                if (st.peek()[1] == k) {
+                    st.pop();
+                }
+            } else {
+                // Otherwise, it's a new character, start count at 1
+                st.push(new int[] { ch, 1 });
+            }
+        }
+
+        // Build the final string
+        StringBuilder sb = new StringBuilder();
+        for (int[] pair : st) {
+            char c = (char) pair[0];
+            int count = pair[1];
+            for (int i = 0; i < count; i++) {
+                sb.append(c);
+            }
+        }
+
+        return sb.toString();
+    }
+
+
+    // V0-2
+    // IDEA: Deque (GPT)
+    public String removeDuplicates_0_2(String s, int k) {
+
+        Deque<int[]> stack = new LinkedList<>();
+        // int[0] = char
+        // int[1] = frequency
+
+        for (char c : s.toCharArray()) {
+
+            if (!stack.isEmpty() && stack.peek()[0] == c) {
+                stack.peek()[1]++;
+
+                if (stack.peek()[1] == k) {
+                    stack.pop(); // remove when count hits k
+                }
+            } else {
+                stack.push(new int[] { c, 1 });
+            }
+        }
+
+        // rebuild string
+        StringBuilder sb = new StringBuilder();
+        for (int[] pair : stack) {
+            for (int i = 0; i < pair[1]; i++) {
+                sb.append((char) pair[0]);
+            }
+        }
+
+        return sb.reverse().toString();
+    }
+
+
+
     // V1
     // https://leetcode.com/problems/remove-all-adjacent-duplicates-in-string-ii/solutions/1161097/java-stack-easy-by-himanshuchhikara-f923/
     public String removeDuplicates_1(String s, int k) {
@@ -88,7 +159,7 @@ public class RemoveAllAdjacentDuplicatesInString2 {
 
     // V3
     // https://leetcode.com/problems/remove-all-adjacent-duplicates-in-string-ii/solutions/392939/pythoncjava-stack-based-solution-clean-c-3xk5/
-    public String removeDuplicates(String s, int k) {
+    public String removeDuplicates_3(String s, int k) {
         // ArrayDeque has better performance than Stack and LinkedList
         ArrayDeque<Adjacent> st = new ArrayDeque<>(s.length());
         for (char c : s.toCharArray()) {
