@@ -3,6 +3,8 @@
 # 2026-02-28
 
 - weekly video
+- cheatsheet (LC examples)
+	- hashmap.md
 - to review
 - needcode `250` - similar LC by AI
     - Arrays & Hashing

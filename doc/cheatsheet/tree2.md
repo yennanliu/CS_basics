@@ -1,5 +1,7 @@
 # Tree Pattern Templates - Comprehensive Guide
 
+> **Note:** This file contains detailed traversal templates and implementation code. For tree concepts, types, and algorithm patterns, see [tree.md](./tree.md).
+
 ## Overview
 
 This document provides detailed templates for all tree problem patterns, organized by categories with example code, explanations, and corresponding LeetCode problems.
