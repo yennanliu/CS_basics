@@ -1394,6 +1394,51 @@ class Solution:
 ```
 
 ### 2-8) Remove All Adjacent Duplicates in String II
+
+**Pattern: Stack with Character-Count Pairs**
+
+This pattern uses `Stack<int[]>` or `Stack<[char, count]>` to efficiently track consecutive duplicates and their counts. It's particularly useful when you need to remove k consecutive equal elements.
+
+**When to Use This Pattern:**
+
+1. **Problem mentions "k consecutive/adjacent equal elements"**
+   - Remove k duplicates: LC 1209
+   - Count k consecutive: various counting problems
+
+2. **Need to track both character AND its frequency**
+   - Can't just track character (need count for k-removal)
+   - Can't just track count (need to know which character)
+
+3. **Removal happens when count reaches threshold k**
+   - Unlike LC 1047 (k=2, simple stack.pop()), k is variable
+   - Need to track partial progress (e.g., "aa" in "aaab" with k=3)
+
+4. **One-pass solution required with O(n) space**
+   - Stack stores compressed form: {char, count}
+   - More efficient than storing all characters
+
+**Recognition Signs:**
+- ✓ Keywords: "k adjacent", "k consecutive", "k duplicates"
+- ✓ Remove/count when reaching exactly k occurrences
+- ✓ Need to handle partial sequences (count < k)
+- ✓ Input constraint: k >= 2 (if k=1, different approach needed)
+
+**Structure:**
+```java
+// Core data structure
+Stack<int[]> stack = new Stack<>();
+// Each element: {character_as_int, count}
+
+// Or for clarity
+Stack<Pair<Character, Integer>> stack = new Stack<>();
+```
+
+**Similar Problems:**
+- LC 1047: Remove All Adjacent Duplicates in String (k=2 special case)
+- LC 1544: Make The String Great (remove adjacent opposite case)
+- LC 316: Remove Duplicate Letters (lexicographical order with stack)
+- LC 394: Decode String (stack with count, but for repetition)
+
 ```python
 # LC 1209. Remove All Adjacent Duplicates in String II
 # V0
@@ -1443,6 +1488,202 @@ class Solution:
                 else:
                     stack.append([c, 1])
             return ''.join(c * k for c, k in stack)
+```
+
+```java
+// java
+// LC 1209. Remove All Adjacent Duplicates in String II
+
+/**
+ * Problem: Remove k consecutive equal characters repeatedly until no more removals possible.
+ *
+ * Examples:
+ * - s = "deeedbbcccbdaa", k = 3
+ *   "deeedbbcccbdaa" → "ddbbbdaa" (remove "eee", "ccc")
+ *   "ddbbbdaa" → "dddaa" (remove "bbb")
+ *   "dddaa" → "aa" (remove "ddd")
+ *
+ * - s = "pbbcggttciiippooaais", k = 2
+ *   Output: "ps"
+ *
+ * Key Insight:
+ * - Use Stack<int[]> to store {character, count} pairs
+ * - When char matches stack top: increment count
+ * - When count reaches k: pop (remove k consecutive chars)
+ * - This handles cascading removals naturally
+ *
+ * Time: O(N) - single pass through string
+ * Space: O(N) - worst case all different characters
+ */
+
+// V0
+// IDEA: STACK with {char, count} pairs
+/**
+ * time = O(N)
+ * space = O(N)
+ */
+public String removeDuplicates(String s, int k) {
+    if (s == null || s.length() == 0 || k <= 0) {
+        return s;
+    }
+
+    /**
+     * NOTE !!!
+     * Stack stores int array: {character_as_int, count}
+     *
+     * Why int[] instead of Pair<Character, Integer>?
+     * - More memory efficient (no object wrapper overhead)
+     * - Direct access: pair[0] = char, pair[1] = count
+     * - Java doesn't have built-in Pair in older versions
+     */
+    Stack<int[]> st = new Stack<>();
+
+    for (char ch : s.toCharArray()) {
+        /**
+         * Case 1: Character matches stack top
+         * Increment the count of consecutive occurrences
+         */
+        if (!st.isEmpty() && st.peek()[0] == ch) {
+            st.peek()[1]++;
+
+            /**
+             * NOTE !!!
+             * When count reaches k, remove the entire block
+             * This triggers potential cascading removals
+             */
+            if (st.peek()[1] == k) {
+                st.pop();
+            }
+        }
+        /**
+         * Case 2: New character (different from stack top)
+         * Start a new block with count = 1
+         */
+        else {
+            st.push(new int[] { ch, 1 });
+        }
+    }
+
+    /**
+     * Build final string from remaining characters in stack
+     * Each stack element may have count > 1
+     */
+    StringBuilder sb = new StringBuilder();
+    for (int[] pair : st) {
+        char c = (char) pair[0];
+        int count = pair[1];
+
+        // Append character 'count' times
+        for (int i = 0; i < count; i++) {
+            sb.append(c);
+        }
+    }
+
+    return sb.toString();
+}
+
+/**
+ * Example Walkthrough: s = "deeedbbcccbdaa", k = 3
+ *
+ * Iteration:
+ * ch='d': st = [{d,1}]
+ * ch='e': st = [{d,1}, {e,1}]
+ * ch='e': st = [{d,1}, {e,2}]
+ * ch='e': st = [{d,1}, {e,3}] → count==k, pop → st = [{d,1}]
+ * ch='d': st = [{d,2}]
+ * ch='b': st = [{d,2}, {b,1}]
+ * ch='b': st = [{d,2}, {b,2}]
+ * ch='c': st = [{d,2}, {b,2}, {c,1}]
+ * ch='c': st = [{d,2}, {b,2}, {c,2}]
+ * ch='c': st = [{d,2}, {b,2}, {c,3}] → pop → st = [{d,2}, {b,2}]
+ * ch='b': st = [{d,2}, {b,3}] → pop → st = [{d,2}]
+ * ch='d': st = [{d,3}] → pop → st = []
+ * ch='a': st = [{a,1}]
+ * ch='a': st = [{a,2}]
+ *
+ * Result: "aa"
+ */
+
+// V1
+// IDEA: Two separate stacks (cleaner type safety)
+/**
+ * time = O(N)
+ * space = O(N)
+ */
+public String removeDuplicates_v1(String s, int k) {
+    Stack<Character> charStack = new Stack<>();
+    Stack<Integer> countStack = new Stack<>();
+
+    for (char ch : s.toCharArray()) {
+        if (!charStack.isEmpty() && charStack.peek() == ch) {
+            countStack.push(countStack.peek() + 1);
+        } else {
+            countStack.push(1);
+        }
+
+        charStack.push(ch);
+
+        // Remove k characters when count reaches k
+        if (countStack.peek() == k) {
+            for (int i = 0; i < k; i++) {
+                charStack.pop();
+                countStack.pop();
+            }
+        }
+    }
+
+    // Build result
+    StringBuilder sb = new StringBuilder();
+    while (!charStack.isEmpty()) {
+        sb.append(charStack.pop());
+    }
+
+    return sb.reverse().toString();
+}
+
+/**
+ * Common Mistakes:
+ *
+ * 1. Forgetting to check !st.isEmpty() before peek()
+ *    ✗ if (st.peek()[0] == ch)  // NPE if stack empty!
+ *    ✓ if (!st.isEmpty() && st.peek()[0] == ch)
+ *
+ * 2. Removing only one character instead of the whole block
+ *    ✗ if (st.peek()[1] == k) st.peek()[1] = 0;  // Wrong!
+ *    ✓ if (st.peek()[1] == k) st.pop();
+ *
+ * 3. Not handling count correctly when building result
+ *    ✗ sb.append((char) pair[0]);  // Only appends once!
+ *    ✓ for (int i = 0; i < count; i++) sb.append(c);
+ *
+ * 4. Using wrong data structure (List instead of Stack)
+ *    ✗ List doesn't support peek() efficiently
+ *    ✓ Stack or Deque for O(1) peek/pop
+ */
+
+/**
+ * Interview Tips:
+ *
+ * 1. Clarify edge cases:
+ *    - What if k > s.length()? (no removal possible)
+ *    - What if k == 1? (all characters removed)
+ *    - Empty string input?
+ *
+ * 2. Discuss trade-offs:
+ *    - Stack<int[]> vs two separate stacks
+ *      • int[]: more memory efficient, less readable
+ *      • Two stacks: cleaner, type-safe, slightly more space
+ *
+ * 3. Follow-up optimizations:
+ *    - Can we do it in-place? (tricky, but possible with two pointers)
+ *    - What if k is very large? (same approach works)
+ *    - What if we need to track which removals were made? (add to result list)
+ *
+ * 4. Related patterns:
+ *    - LC 1047 (k=2): simpler, can use single stack
+ *    - LC 394 (Decode String): similar stack with count pattern
+ *    - LC 316 (Remove Duplicate Letters): stack with different removal criteria
+ */
 ```
 
 ### 2-9) Simplify Path
