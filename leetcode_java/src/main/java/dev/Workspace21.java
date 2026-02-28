@@ -2215,6 +2215,10 @@ public class Workspace21 {
     // IDEA 1) STACK ???
     public String decodeString(String s) {
         // edge
+        if (s == null || s.isEmpty()) {
+            return "";
+        }
+
 
         // ???
         String digits = "0123456789";
@@ -2224,9 +2228,17 @@ public class Workspace21 {
             if(!x.equals("]")){
                 st.add(x);
             }else{
+                // ????
+                StringBuilder segment = new StringBuilder();
+                while(!st.isEmpty() && !st.peek().equals("[")){
+                    segment.insert(0, st.pop());
+                }
+                st.pop();
+
+
                 // ???
                 String cache = "";
-                while(!st.isEmpty() && !st.peek().equals("[")){
+                while(!st.isEmpty() && !st.peek().equals("]")){
                     String cur = st.pop();
                     if(!digits.contains(cur)){
                         cache += cur;
@@ -2256,7 +2268,7 @@ public class Workspace21 {
 
 
 
-    
+
 
 
 
