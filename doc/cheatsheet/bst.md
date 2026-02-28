@@ -514,6 +514,8 @@ private TreeNode build(int[] preorder, int min, int max) {
 - **Time Complexity**: O(n) for visiting all nodes
 - **Space Complexity**: O(h) for recursion stack + path storage
 
+**📚 Related Patterns**: These path problems use DFS traversal. For general tree path-finding patterns and techniques, see **dfs.md Template 3 (Path Finding)**. The examples here focus on common path problems that work for both BST and general binary trees.
+
 #### **Core Path Patterns**
 
 ##### **Pattern 7.1: Simple Path Sum** (LC 112)
@@ -2020,6 +2022,115 @@ def inorder_generator(root):
         yield root.val
         yield from inorder_generator(root.right)
 ```
+
+## 🚀 Quick Decision Tree: Choosing the Right BST Template
+
+Use this flowchart to quickly identify which template to use for your BST problem:
+
+```
+┌─────────────────────────────────────────────────┐
+│ START: Analyze the BST Problem                  │
+└──────────────────┬──────────────────────────────┘
+                   │
+                   ▼
+        ┌──────────────────────┐
+        │ What's the main task? │
+        └──────┬───────────────┘
+               │
+      ┌────────┴────────┐
+      │                  │
+      ▼                  ▼
+┌──────────┐      ┌──────────┐
+│ SEARCH?  │      │ MODIFY?  │
+└────┬─────┘      └────┬─────┘
+     │                 │
+     │                 ├─► Insert node? → Template 2 (Insertion)
+     │                 ├─► Delete node? → Template 3 (Deletion)
+     │                 └─► Trim/Balance? → Template 3 or 6.4 (Balance BST)
+     │
+     ├─► Find value? → Template 1 (Search)
+     ├─► Validate BST? → Template 4 (Validation)
+     └─► Closest value? → Template 1 with tracking
+
+      ▼
+┌─────────────┐      ┌──────────────┐      ┌──────────────┐
+│ TRAVERSAL?  │      │ CONSTRUCT?   │      │ PATH-BASED?  │
+└──────┬──────┘      └──────┬───────┘      └──────┬───────┘
+       │                     │                      │
+       │                     │                      ├─► Root-to-leaf sum? → Template 7.1
+       │                     │                      ├─► All paths? → Template 7.2
+       │                     │                      ├─► Max path sum? → Template 7.5
+       │                     │                      └─► Any path (prefix sum)? → Template 7.7
+       │                     │
+       │                     ├─► From sorted array? → Template 6.1
+       │                     ├─► From sorted list? → Template 6.2
+       │                     ├─► From preorder? → Template 6.3
+       │                     ├─► Balance existing BST? → Template 6.4
+       │                     ├─► Generate all unique? → Template 6.5
+       │                     └─► Count unique? → Template 6.6
+       │
+       ├─► Kth smallest? → Template 5 (Inorder)
+       ├─► Convert to list? → Template 5 (Inorder)
+       ├─► Range sum/query? → Template 1 with pruning
+       └─► Iterator? → Template 5 (Stack-based inorder)
+```
+
+### 📋 Quick Template Selection Table
+
+| If Problem Asks... | Use Template | Key Technique | Typical LC Problems |
+|-------------------|--------------|---------------|---------------------|
+| "Find/search value" | Template 1 | Binary search property | 700, 270, 938 |
+| "Insert into BST" | Template 2 | Recursive insertion | 701 |
+| "Delete from BST" | Template 3 | Three-case handling | 450, 669 |
+| "Is valid BST?" | Template 4 | Min/max bounds | 98, 333 |
+| "Kth smallest/largest" | Template 5 | Inorder traversal | 230, 173 |
+| "Convert sorted array" | Template 6.1 | Binary search middle | 108 |
+| "Balance BST" | Template 6.4 | Inorder + rebuild | 1382 |
+| "Path with target sum" | Template 7.1 | DFS + reduce sum | 112 |
+| "All paths with sum" | Template 7.2 | DFS + backtracking | 113 |
+| "Max path sum" | Template 7.5 | DFS + global max | 124 |
+| "Any path with sum" | Template 7.7 | Prefix sum | 437 |
+
+### 🎯 Recognition Patterns
+
+**Keywords → Template Mapping:**
+- **"Search", "find", "closest"** → Template 1 (Search)
+- **"Insert", "add node"** → Template 2 (Insertion)
+- **"Delete", "remove", "trim"** → Template 3 (Deletion)
+- **"Valid", "validate", "is BST"** → Template 4 (Validation)
+- **"Kth", "sorted", "inorder", "iterator"** → Template 5 (Inorder)
+- **"Construct", "build", "convert", "balance", "generate"** → Template 6 (Construction)
+- **"Path", "sum", "maximum path", "consecutive"** → Template 7 (Path Problems)
+
+### ⚡ Quick Decision Examples
+
+**Example 1**: "Find the kth smallest element in a BST"
+- Keyword: "kth" + "smallest"
+- Answer: **Template 5** (Inorder traversal gives sorted order)
+
+**Example 2**: "Convert a sorted array to a height-balanced BST"
+- Keywords: "convert" + "sorted array"
+- Answer: **Template 6.1** (Pick middle as root)
+
+**Example 3**: "Find if there's a root-to-leaf path with given sum"
+- Keywords: "path" + "sum"
+- Answer: **Template 7.1** (Simple path sum)
+
+**Example 4**: "Balance an existing BST"
+- Keywords: "balance" + "existing BST"
+- Answer: **Template 6.4** (Inorder + rebuild)
+
+**Example 5**: "Count paths with given sum (not necessarily root-to-leaf)"
+- Keywords: "any path" + "sum"
+- Answer: **Template 7.7** (Prefix sum technique)
+
+### 💡 Pro Tips for Template Selection
+
+1. **Leverage BST Property**: If problem can use `left < root < right`, use Templates 1-6
+2. **Path Problems**: Most work on any binary tree, not just BST (Template 7)
+3. **Construction**: Check input type (array/list/traversal) → different template variant
+4. **Modification**: Always return root after modification (Templates 2, 3, 6)
+5. **When in Doubt**: Check if inorder traversal helps (Template 5)
 
 ---
 **Must-Know Problems for Interviews**: LC 98, 108, 112, 113, 124, 173, 230, 235, 450, 700, 701, 1382
