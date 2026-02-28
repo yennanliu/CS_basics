@@ -570,7 +570,7 @@ class Solution:
             3) alphabet
             4) "]"
 
-        NOTE : 
+        NOTE :
             we use pre_num, pre_string for dealing with previous result
         """
         for c in s:
@@ -592,6 +592,241 @@ class Solution:
                 pre_string = stack.pop()
                 string = pre_string + pre_num * string
         return string
+```
+
+```java
+// java
+// LC 394 Decode String
+
+/**
+ * Problem: Given an encoded string, return its decoded string.
+ *
+ * Encoding rule: k[encoded_string] means repeat encoded_string k times
+ *
+ * Examples:
+ * - "3[a]2[bc]" → "aaabcbc"
+ * - "3[a2[c]]" → "accaccacc"
+ * - "2[abc]3[cd]ef" → "abcabccdcdcdef"
+ *
+ * Key Insight:
+ * - Use stack to handle nested brackets
+ * - Process 4 cases: digit, '[', letter, ']'
+ * - Build number incrementally (e.g., "100" = 1*10 + 0*10 + 0)
+ * - On ']': pop count and previous string, build result
+ *
+ * Time: O(maxK * N) where maxK is max k value and N is length of decoded string
+ * Space: O(N) for the stack
+ */
+
+// V0
+// IDEA: STACK + 4 CASES (digit, '[', letter, ']')
+public String decodeString(String s) {
+    if (s == null || s.length() == 0) {
+        return "";
+    }
+
+    /**
+     * NOTE !!!
+     * Stack stores alternating pattern:
+     * - String (previous accumulated string)
+     * - Integer (repeat count)
+     * - String (next accumulated string)
+     * - Integer (next repeat count)
+     * ...
+     *
+     * Example for "3[a2[c]]":
+     * When processing '2[c]':
+     *   Stack bottom: ["", 3, "a", 2] Stack top
+     */
+    Stack<Object> stack = new Stack<>();
+
+    int num = 0;              // Current number being built
+    String currentString = ""; // Current string being built
+
+    for (char c : s.toCharArray()) {
+
+        /**
+         * Case 1: Digit
+         * Build multi-digit numbers (e.g., "100")
+         */
+        if (Character.isDigit(c)) {
+            num = num * 10 + (c - '0');
+        }
+
+        /**
+         * Case 2: '['
+         * Push current string and number to stack
+         * Reset for new nested level
+         */
+        else if (c == '[') {
+            // Push current string first, then number
+            stack.push(currentString);
+            stack.push(num);
+
+            // Reset for new level
+            currentString = "";
+            num = 0;
+        }
+
+        /**
+         * Case 3: Letter
+         * Append to current string
+         */
+        else if (Character.isLetter(c)) {
+            currentString += c;
+        }
+
+        /**
+         * Case 4: ']'
+         * Pop count and previous string
+         * Build repeated string and concatenate
+         */
+        else if (c == ']') {
+            // Pop in reverse order of push
+            int repeatCount = (int) stack.pop();
+            String prevString = (String) stack.pop();
+
+            /**
+             * NOTE !!!
+             * Repeat current string repeatCount times
+             * Then prepend previous string
+             */
+            StringBuilder temp = new StringBuilder(prevString);
+            for (int i = 0; i < repeatCount; i++) {
+                temp.append(currentString);
+            }
+
+            currentString = temp.toString();
+        }
+    }
+
+    return currentString;
+}
+
+/**
+ * Example Walkthrough: s = "3[a2[c]]"
+ *
+ * Step 1: c='3' (digit)
+ *   num = 3
+ *
+ * Step 2: c='[' (open bracket)
+ *   stack.push("") → stack: [""]
+ *   stack.push(3)  → stack: ["", 3]
+ *   currentString = "", num = 0
+ *
+ * Step 3: c='a' (letter)
+ *   currentString = "a"
+ *
+ * Step 4: c='2' (digit)
+ *   num = 2
+ *
+ * Step 5: c='[' (open bracket)
+ *   stack.push("a") → stack: ["", 3, "a"]
+ *   stack.push(2)   → stack: ["", 3, "a", 2]
+ *   currentString = "", num = 0
+ *
+ * Step 6: c='c' (letter)
+ *   currentString = "c"
+ *
+ * Step 7: c=']' (close bracket)
+ *   repeatCount = stack.pop() = 2
+ *   prevString = stack.pop() = "a"
+ *   temp = "a" + "c" * 2 = "acc"
+ *   currentString = "acc"
+ *   stack: ["", 3]
+ *
+ * Step 8: c=']' (close bracket)
+ *   repeatCount = stack.pop() = 3
+ *   prevString = stack.pop() = ""
+ *   temp = "" + "acc" * 3 = "accaccacc"
+ *   currentString = "accaccacc"
+ *   stack: []
+ *
+ * Result: "accaccacc"
+ */
+
+// V1
+// IDEA: STACK with separate stacks for counts and strings (cleaner approach)
+public String decodeString_v1(String s) {
+    Stack<Integer> countStack = new Stack<>();
+    Stack<String> stringStack = new Stack<>();
+
+    String currentString = "";
+    int num = 0;
+
+    for (char c : s.toCharArray()) {
+        if (Character.isDigit(c)) {
+            num = num * 10 + (c - '0');
+        }
+        else if (c == '[') {
+            // Push current state to stacks
+            countStack.push(num);
+            stringStack.push(currentString);
+
+            // Reset for nested level
+            currentString = "";
+            num = 0;
+        }
+        else if (c == ']') {
+            // Build decoded string for this level
+            int repeatCount = countStack.pop();
+            StringBuilder temp = new StringBuilder(stringStack.pop());
+
+            for (int i = 0; i < repeatCount; i++) {
+                temp.append(currentString);
+            }
+
+            currentString = temp.toString();
+        }
+        else {
+            // Letter
+            currentString += c;
+        }
+    }
+
+    return currentString;
+}
+
+/**
+ * Common Mistakes:
+ *
+ * 1. Not handling multi-digit numbers (e.g., "100[a]")
+ *    ✗ num = c - '0'
+ *    ✓ num = num * 10 + (c - '0')
+ *
+ * 2. Wrong stack push/pop order
+ *    ✗ push(num, string) → pop(string, num)  // Wrong!
+ *    ✓ push(string, num) → pop(num, string)  // Correct LIFO
+ *
+ * 3. Forgetting to reset num and currentString after '['
+ *    ✗ Only reset one of them
+ *    ✓ Reset both: num = 0; currentString = "";
+ *
+ * 4. Not handling strings outside brackets (e.g., "2[abc]3[cd]ef")
+ *    ✓ Continue building currentString for letters outside brackets
+ *
+ * 5. Using Stack<Object> without proper casting
+ *    ✓ Use separate stacks (countStack, stringStack) for type safety
+ */
+
+/**
+ * Interview Tips:
+ *
+ * 1. Clarify constraints:
+ *    - Is input always valid? (no unmatched brackets)
+ *    - Max value of k? (affects overflow considerations)
+ *
+ * 2. Edge cases to test:
+ *    - No brackets: "abc" → "abc"
+ *    - Nested brackets: "2[a2[b]]" → "abbabb"
+ *    - Multi-digit numbers: "100[a]"
+ *    - Mixed: "2[abc]3[cd]ef" → "abcabccdcdcdef"
+ *
+ * 3. Follow-up questions:
+ *    - What if string is invalid? (add validation)
+ *    - Can we decode in-place? (no, need stack for nesting)
+ *    - How to handle very large k values? (streaming approach)
+ */
 ```
 
 ### 2-2) Next Greater Element I
