@@ -151,10 +151,29 @@ public class DecodeString {
         StringBuilder sb = new StringBuilder();
 
         for (String x : s.split("")) {
+            /** NOTE !!!
+             *
+             *  case 1) x != "]"
+             */
             if (!x.equals("]")) {
                 // push everything except we ignore "]"
                 stack.push(x);
-            } else {
+            }
+            /** NOTE !!!
+             *
+             *  case 2) x == "]"
+             *
+             *  -> NOTE !!! if meet "]"
+             *          -> we need to
+             *             1. init a new StringBuilder (sb1)
+             *             2. pop from stack till pop a "[" element
+             *                (so we have a `closed` bracket)
+             *
+             *             3. init the other StringBuilder (sb2)
+             *             4. deal with `multiply op`
+             *             5. add res back to stack
+             */
+            else {
                 // pop until "["
                 /**
                  *  NOTE !!!
