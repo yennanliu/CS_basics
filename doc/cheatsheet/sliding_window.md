@@ -287,9 +287,403 @@ def count_subarrays(nums, condition):
         
         # Count valid subarrays ending at 'right'
         count += right - left + 1
-    
+
     return count
 ```
+
+### 1.7) Technique: Exactly K Problems (At Most K Transformation)
+
+**Core Insight:**
+"Exactly K" problems are often difficult to solve directly, but can be transformed using the powerful formula:
+
+```
+Exactly K = At Most K - At Most (K-1)
+```
+
+**Why This Works:**
+```
+At Most K: All subarrays with ≤ K distinct/count
+At Most (K-1): All subarrays with ≤ K-1 distinct/count
+
+Difference: Only subarrays with EXACTLY K distinct/count
+```
+
+**Proof by Example:**
+```
+Array: [1, 2, 1, 2, 3]
+K = 2 (exactly 2 distinct integers)
+
+At Most 2 distinct:
+[1], [1,2], [1,2,1], [1,2,1,2], [2], [2,1], [2,1,2], [1], [1,2], [2], [2,3], [3]
+Count = 12
+
+At Most 1 distinct:
+[1], [2], [1], [2], [3]
+Count = 5
+
+Exactly 2 distinct = 12 - 5 = 7 ✓
+[1,2], [1,2,1], [1,2,1,2], [2,1], [2,1,2], [1,2], [2,3]
+```
+
+---
+
+#### Template: At Most K Pattern
+
+```python
+# Universal At Most K Template
+def at_most_k(nums, k):
+    """
+    Count subarrays with AT MOST K distinct/elements/condition.
+
+    Time: O(n)
+    Space: O(k) for tracking state
+
+    Key: Window is valid when condition ≤ k
+    """
+    left = 0
+    count = 0
+    window_map = {}  # Track state (frequency, distinct, etc.)
+
+    for right in range(len(nums)):
+        # Expand window: add nums[right]
+        window_map[nums[right]] = window_map.get(nums[right], 0) + 1
+
+        # Shrink window while invalid (> k)
+        while len(window_map) > k:  # Or other condition > k
+            window_map[nums[left]] -= 1
+            if window_map[nums[left]] == 0:
+                del window_map[nums[left]]
+            left += 1
+
+        # Count all valid subarrays ending at 'right'
+        # All subarrays from [left, right], [left+1, right], ..., [right, right]
+        count += right - left + 1
+
+    return count
+```
+
+```python
+# Transform to Exactly K
+def exactly_k(nums, k):
+    """
+    Count subarrays with EXACTLY K distinct/elements/condition.
+
+    Time: O(n) - at_most_k called twice
+    Space: O(k)
+    """
+    if k == 0:
+        return 0
+
+    # Exactly K = At Most K - At Most (K-1)
+    return at_most_k(nums, k) - at_most_k(nums, k - 1)
+```
+
+---
+
+#### Full Example: LC 992 - Subarrays with K Different Integers
+
+**Problem:** Count subarrays with exactly K distinct integers.
+
+```python
+# Python - LC 992 Subarrays with K Different Integers
+def subarraysWithKDistinct(nums, k):
+    """
+    Count subarrays with exactly K distinct integers.
+
+    Time: O(n)
+    Space: O(k)
+
+    Key: Use Exactly K = At Most K - At Most (K-1) transformation
+    """
+    def at_most_k_distinct(k):
+        """Count subarrays with at most K distinct integers."""
+        left = 0
+        count = 0
+        freq = {}
+
+        for right in range(len(nums)):
+            # Add right element
+            freq[nums[right]] = freq.get(nums[right], 0) + 1
+
+            # Shrink while > k distinct
+            while len(freq) > k:
+                freq[nums[left]] -= 1
+                if freq[nums[left]] == 0:
+                    del freq[nums[left]]
+                left += 1
+
+            # Count subarrays ending at right
+            count += right - left + 1
+
+        return count
+
+    # Edge case
+    if k == 0:
+        return 0
+
+    # Exactly K = At Most K - At Most (K-1)
+    return at_most_k_distinct(k) - at_most_k_distinct(k - 1)
+
+# Example:
+# nums = [1,2,1,2,3], k = 2
+# at_most_k(2) = 12
+# at_most_k(1) = 5
+# exactly_k(2) = 12 - 5 = 7 ✓
+```
+
+```java
+// Java - LC 992 Subarrays with K Different Integers
+/**
+ * time = O(N)
+ * space = O(K)
+ */
+public int subarraysWithKDistinct(int[] nums, int k) {
+    // Exactly K = At Most K - At Most (K-1)
+    return atMostK(nums, k) - atMostK(nums, k - 1);
+}
+
+private int atMostK(int[] nums, int k) {
+    if (k == 0) return 0;
+
+    int left = 0;
+    int count = 0;
+    Map<Integer, Integer> freq = new HashMap<>();
+
+    for (int right = 0; right < nums.length; right++) {
+        // Add right element
+        freq.put(nums[right], freq.getOrDefault(nums[right], 0) + 1);
+
+        // Shrink while > k distinct
+        while (freq.size() > k) {
+            freq.put(nums[left], freq.get(nums[left]) - 1);
+            if (freq.get(nums[left]) == 0) {
+                freq.remove(nums[left]);
+            }
+            left++;
+        }
+
+        // Count subarrays ending at right
+        count += right - left + 1;
+    }
+
+    return count;
+}
+```
+
+---
+
+#### Visual Example: Why "At Most K - At Most (K-1)" Works
+
+```
+Array: [1, 2, 1, 3], K = 2 (exactly 2 distinct)
+
+At Most 2 Distinct:
+Index 0 (1): [1] ✓                                 → count = 1
+Index 1 (2): [2] ✓, [1,2] ✓                        → count = 2
+Index 2 (1): [1] ✓, [2,1] ✓, [1,2,1] ✓             → count = 3
+Index 3 (3): [3] ✓, [1,3] ✓, but NOT [2,1,3] ❌    → count = 2
+                   (window shrinks to [1,3])
+
+Total At Most 2: 1 + 2 + 3 + 2 = 8
+
+At Most 1 Distinct:
+Index 0 (1): [1] ✓                                 → count = 1
+Index 1 (2): [2] ✓, but NOT [1,2] ❌               → count = 1
+                   (window shrinks to [2])
+Index 2 (1): [1] ✓, but NOT [2,1] ❌               → count = 1
+                   (window shrinks to [1])
+Index 3 (3): [3] ✓, but NOT [1,3] ❌               → count = 1
+                   (window shrinks to [3])
+
+Total At Most 1: 1 + 1 + 1 + 1 = 4
+
+Exactly 2 Distinct = 8 - 4 = 4 ✓
+
+The 4 subarrays with exactly 2 distinct:
+[1,2], [1,2,1], [2,1], [1,3]
+```
+
+---
+
+#### Classic Problems Using This Technique
+
+| Problem | LC# | Difficulty | Transformation | Key Insight |
+|---------|-----|------------|----------------|-------------|
+| **Subarrays with K Different Integers** | **992** | **Hard** | Exactly K distinct = atMost(K) - atMost(K-1) | Core example |
+| Count Nice Subarrays | 1248 | Medium | Exactly K odds = atMost(K) - atMost(K-1) | Transform odd→1, even→0 |
+| Binary Subarrays With Sum | 930 | Medium | Exactly sum K = atMost(K) - atMost(K-1) | Subarray sum |
+| Longest Substring with At Most K Distinct | 340 | Medium | Direct atMost(K) for max length | No subtraction needed |
+| Fruits Into Baskets | 904 | Medium | atMost(2) distinct for max length | Simplified K=2 |
+| Max Consecutive Ones III | 1004 | Medium | atMost(K) zeros for max length | Count zeros ≤ K |
+
+---
+
+#### Pattern Recognition: When to Use This Technique
+
+**Use "Exactly K" transformation when you see:**
+```
+✅ "exactly K distinct/different"
+✅ "exactly K times"
+✅ "exactly K occurrences"
+✅ "subarrays with exactly K ..."
+✅ COUNTING problems (not max/min length)
+```
+
+**Direct sliding window works when:**
+```
+✅ "at most K"
+✅ "maximum length with ≤ K"
+✅ "minimum length with ≥ K"
+✅ "longest substring with at most K"
+```
+
+---
+
+#### Common Mistakes
+
+**1. Forgetting k=0 Edge Case:**
+```python
+# Wrong: Doesn't handle k=0
+def exactly_k(nums, k):
+    return at_most_k(nums, k) - at_most_k(nums, k - 1)
+    # at_most_k(nums, -1) may fail!
+
+# Right: Handle k=0 explicitly
+def exactly_k(nums, k):
+    if k == 0:
+        return 0
+    return at_most_k(nums, k) - at_most_k(nums, k - 1)
+```
+
+**2. Using Wrong Approach for Max/Min Length:**
+```python
+# Wrong: Using "exactly K" transformation for max length
+def longest_k_distinct(s, k):
+    # This gives COUNT, not LENGTH!
+    return at_most_k(s, k) - at_most_k(s, k - 1)  ❌
+
+# Right: Direct at_most_k for max length
+def longest_k_distinct(s, k):
+    # Track max window size during at_most_k
+    return at_most_k_max_length(s, k)  ✓
+```
+
+**3. Confusing Count vs Length:**
+```python
+# For COUNTING subarrays: use right - left + 1
+count += right - left + 1
+
+# For MAX LENGTH: track max window size
+max_length = max(max_length, right - left + 1)
+```
+
+---
+
+#### Interview Tips
+
+**1. Recognition:**
+```
+Interviewer: "Count subarrays with exactly K ..."
+→ Think: "Exactly K = At Most K - At Most (K-1)"
+
+Interviewer: "Find longest substring with at most K ..."
+→ Think: "Direct sliding window, no subtraction needed"
+```
+
+**2. Complexity Analysis:**
+```
+Time: O(n) - each element added once, removed at most once in each pass
+      Total: 2 passes × O(n) = O(n)
+
+Space: O(k) - HashMap stores at most K distinct elements
+```
+
+**3. Template Code to Memorize:**
+```python
+def exactly_k(nums, k):
+    def at_most_k(limit):
+        left = 0
+        count = 0
+        window = {}
+
+        for right in range(len(nums)):
+            window[nums[right]] = window.get(nums[right], 0) + 1
+
+            while len(window) > limit:
+                window[nums[left]] -= 1
+                if window[nums[left]] == 0:
+                    del window[nums[left]]
+                left += 1
+
+            count += right - left + 1
+
+        return count
+
+    if k == 0:
+        return 0
+    return at_most_k(k) - at_most_k(k - 1)
+```
+
+**4. Talking Points:**
+- "Direct 'exactly K' is hard because window validity changes non-monotonically"
+- "At most K is monotonic - once valid, stays valid until we shrink"
+- "Subtracting at most (K-1) removes all overcounting"
+- "This transforms a hard problem into two medium problems"
+
+---
+
+#### Advanced: Why Direct "Exactly K" is Hard
+
+**Problem with direct approach:**
+```python
+# Naive attempt (WRONG!)
+def exactly_k_direct(nums, k):
+    left = 0
+    count = 0
+    window = {}
+
+    for right in range(len(nums)):
+        window[nums[right]] = window.get(nums[right], 0) + 1
+
+        # When to shrink? This is tricky!
+        # If len(window) > k: shrink (too many distinct)
+        # If len(window) < k: can't count yet (too few distinct)
+        # If len(window) == k: count, but should we shrink?
+
+        # If we shrink when == k, we might miss valid subarrays
+        # If we don't shrink, we might count invalid subarrays
+
+        # There's no clean condition! ❌
+
+    return count
+```
+
+**Why "at most K" works:**
+```python
+# Window validity is monotonic:
+# - If window is valid (≤ K), all sub-windows are valid
+# - If window becomes invalid (> K), shrink until valid
+# - Clear shrinking condition: while len(window) > k
+
+# This monotonic property makes sliding window perfect!
+```
+
+**Mathematical proof of transformation:**
+```
+Let S(k) = set of all subarrays with at most k distinct elements
+
+S(2) = {[1], [1,2], [1,2,1], [2], [2,1], [1], [1,3], [3], ...}
+S(1) = {[1], [2], [1], [3], ...}  (only single-element subarrays)
+
+S(2) \ S(1) = subarrays in S(2) but not in S(1)
+            = subarrays with MORE than 1 but AT MOST 2 distinct
+            = subarrays with EXACTLY 2 distinct ✓
+
+Generalized: S(k) \ S(k-1) = subarrays with exactly k distinct
+```
+
+---
+
 ## 2) Problems by Template Pattern
 
 ### 2.1) Template Classification Guide

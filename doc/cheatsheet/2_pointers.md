@@ -704,6 +704,508 @@ Query 2: "FooBarTest"
 - LC 524 Longest Word in Dictionary through Deleting
 - LC 792 Number of Matching Subsequences
 
+### 0-2-3) QuickSelect (Partition Algorithm for Kth Element)
+
+**Pattern Overview:**
+QuickSelect is a selection algorithm to find the Kth smallest/largest element in an unordered list. It's related to QuickSort but only recurses into one side of the partition. This makes it **O(n) average time** instead of O(n log n).
+
+**Core Concept:**
+```
+Given array: [3, 2, 1, 5, 6, 4], find 2nd largest (k=2)
+
+QuickSort: Sorts entire array → O(n log n)
+QuickSelect: Only finds the Kth element position → O(n) average
+```
+
+**Key Insight:**
+- After partitioning around a pivot, the pivot is in its final sorted position
+- If pivot index = k, we found the answer
+- If pivot index < k, search right partition
+- If pivot index > k, search left partition
+
+**Algorithm Steps:**
+1. Choose a pivot (usually last element, or random for better performance)
+2. Partition array: elements < pivot on left, elements > pivot on right
+3. If pivot position == k, return pivot value
+4. If pivot position < k, recursively search right partition
+5. If pivot position > k, recursively search left partition
+
+---
+
+#### Template 1: Kth Largest Element
+
+```python
+# Python - QuickSelect for Kth Largest
+def findKthLargest(nums, k):
+    """
+    Find Kth largest element using QuickSelect.
+
+    Time: O(n) average, O(n^2) worst (if bad pivots)
+    Space: O(1) iterative, O(log n) recursive
+
+    Key: Kth largest means (n - k)th smallest in 0-indexed array
+    """
+    def partition(left, right):
+        """
+        Partition using last element as pivot.
+        Returns pivot's final position.
+        """
+        pivot = nums[right]
+        i = left  # Position where elements < pivot should go
+
+        # Move all elements < pivot to the left
+        for j in range(left, right):
+            if nums[j] < pivot:
+                nums[i], nums[j] = nums[j], nums[i]
+                i += 1
+
+        # Place pivot in correct position
+        nums[i], nums[right] = nums[right], nums[i]
+        return i
+
+    def quickselect(left, right, k_smallest):
+        """
+        QuickSelect to find k_smallest element (0-indexed).
+        """
+        if left == right:  # Only one element
+            return nums[left]
+
+        # Partition and get pivot position
+        pivot_idx = partition(left, right)
+
+        # Check if we found the answer
+        if pivot_idx == k_smallest:
+            return nums[pivot_idx]
+        elif pivot_idx < k_smallest:
+            # Search right partition
+            return quickselect(pivot_idx + 1, right, k_smallest)
+        else:
+            # Search left partition
+            return quickselect(left, pivot_idx - 1, k_smallest)
+
+    # Kth largest = (n - k)th smallest (0-indexed)
+    n = len(nums)
+    return quickselect(0, n - 1, n - k)
+
+# Example usage:
+# nums = [3, 2, 1, 5, 6, 4], k = 2
+# Result: 5 (2nd largest)
+```
+
+```java
+// Java - QuickSelect for Kth Largest
+/**
+ * LC 215 - Kth Largest Element in an Array
+ *
+ * time = O(N) average, O(N^2) worst
+ * space = O(1) iterative, O(log N) recursive
+ */
+class Solution {
+    public int findKthLargest(int[] nums, int k) {
+        int n = nums.length;
+        // Kth largest = (n - k)th smallest (0-indexed)
+        return quickSelect(nums, 0, n - 1, n - k);
+    }
+
+    private int quickSelect(int[] nums, int left, int right, int kSmallest) {
+        if (left == right) {
+            return nums[left];
+        }
+
+        // Partition and get pivot position
+        int pivotIdx = partition(nums, left, right);
+
+        // Check if we found the answer
+        if (pivotIdx == kSmallest) {
+            return nums[pivotIdx];
+        } else if (pivotIdx < kSmallest) {
+            // Search right partition
+            return quickSelect(nums, pivotIdx + 1, right, kSmallest);
+        } else {
+            // Search left partition
+            return quickSelect(nums, left, pivotIdx - 1, kSmallest);
+        }
+    }
+
+    private int partition(int[] nums, int left, int right) {
+        // Use last element as pivot
+        int pivot = nums[right];
+        int i = left;  // Position for elements < pivot
+
+        // Move all elements < pivot to the left
+        for (int j = left; j < right; j++) {
+            if (nums[j] < pivot) {
+                swap(nums, i, j);
+                i++;
+            }
+        }
+
+        // Place pivot in correct position
+        swap(nums, i, right);
+        return i;
+    }
+
+    private void swap(int[] nums, int i, int j) {
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
+    }
+}
+```
+
+---
+
+#### Visual Example: Finding 2nd Largest in [3, 2, 1, 5, 6, 4]
+
+```
+Target: k = 2 (2nd largest)
+Array: [3, 2, 1, 5, 6, 4]
+n = 6, so we need (n - k) = 4th smallest element (0-indexed)
+
+Step 1: Partition with pivot = 4 (last element)
+[3, 2, 1, 4, 6, 5]
+         ↑
+    pivot_idx = 3
+
+  Elements < 4: [3, 2, 1]
+  Pivot: 4 (at index 3)
+  Elements > 4: [6, 5]
+
+Check: pivot_idx (3) < k_smallest (4)
+Action: Search right partition [6, 5]
+
+Step 2: Partition right side [6, 5] with pivot = 5
+[3, 2, 1, 4, 5, 6]
+            ↑
+    pivot_idx = 4
+
+Check: pivot_idx (4) == k_smallest (4) ✓
+Answer: nums[4] = 5 (2nd largest element)
+```
+
+---
+
+#### Template 2: K Closest Points to Origin (LC 973)
+
+```python
+# Python - K Closest Points using QuickSelect
+def kClosest(points, k):
+    """
+    Find K closest points to origin using QuickSelect.
+
+    Time: O(n) average
+    Space: O(1)
+    """
+    def distance(point):
+        return point[0] ** 2 + point[1] ** 2
+
+    def partition(left, right):
+        pivot_dist = distance(points[right])
+        i = left
+
+        for j in range(left, right):
+            if distance(points[j]) < pivot_dist:
+                points[i], points[j] = points[j], points[i]
+                i += 1
+
+        points[i], points[right] = points[right], points[i]
+        return i
+
+    def quickselect(left, right, k):
+        if left == right:
+            return
+
+        pivot_idx = partition(left, right)
+
+        if pivot_idx == k:
+            return
+        elif pivot_idx < k:
+            quickselect(pivot_idx + 1, right, k)
+        else:
+            quickselect(left, pivot_idx - 1, k)
+
+    # Find K smallest distances
+    quickselect(0, len(points) - 1, k - 1)
+    return points[:k]
+```
+
+```java
+// Java - K Closest Points
+/**
+ * LC 973 - K Closest Points to Origin
+ *
+ * time = O(N) average
+ * space = O(1)
+ */
+class Solution {
+    public int[][] kClosest(int[][] points, int k) {
+        quickSelect(points, 0, points.length - 1, k - 1);
+        return Arrays.copyOfRange(points, 0, k);
+    }
+
+    private void quickSelect(int[][] points, int left, int right, int k) {
+        if (left >= right) return;
+
+        int pivotIdx = partition(points, left, right);
+
+        if (pivotIdx == k) {
+            return;
+        } else if (pivotIdx < k) {
+            quickSelect(points, pivotIdx + 1, right, k);
+        } else {
+            quickSelect(points, left, pivotIdx - 1, k);
+        }
+    }
+
+    private int partition(int[][] points, int left, int right) {
+        int[] pivot = points[right];
+        int pivotDist = distance(pivot);
+        int i = left;
+
+        for (int j = left; j < right; j++) {
+            if (distance(points[j]) < pivotDist) {
+                swap(points, i, j);
+                i++;
+            }
+        }
+
+        swap(points, i, right);
+        return i;
+    }
+
+    private int distance(int[] point) {
+        return point[0] * point[0] + point[1] * point[1];
+    }
+
+    private void swap(int[][] points, int i, int j) {
+        int[] temp = points[i];
+        points[i] = points[j];
+        points[j] = temp;
+    }
+}
+```
+
+---
+
+#### Optimization: Randomized Pivot
+
+```python
+# Randomized QuickSelect for better average performance
+import random
+
+def findKthLargest_randomized(nums, k):
+    """
+    Randomized pivot selection reduces worst-case probability.
+
+    Time: O(n) average with high probability
+    """
+    def partition(left, right):
+        # RANDOM pivot selection
+        random_idx = random.randint(left, right)
+        nums[random_idx], nums[right] = nums[right], nums[random_idx]
+
+        pivot = nums[right]
+        i = left
+
+        for j in range(left, right):
+            if nums[j] < pivot:
+                nums[i], nums[j] = nums[j], nums[i]
+                i += 1
+
+        nums[i], nums[right] = nums[right], nums[i]
+        return i
+
+    def quickselect(left, right, k_smallest):
+        if left == right:
+            return nums[left]
+
+        pivot_idx = partition(left, right)
+
+        if pivot_idx == k_smallest:
+            return nums[pivot_idx]
+        elif pivot_idx < k_smallest:
+            return quickselect(pivot_idx + 1, right, k_smallest)
+        else:
+            return quickselect(left, pivot_idx - 1, k_smallest)
+
+    n = len(nums)
+    return quickselect(0, n - 1, n - k)
+```
+
+---
+
+#### Partition Algorithm Variants
+
+**1. Hoare Partition (Two-Pointer from Ends):**
+```python
+def partition_hoare(nums, left, right):
+    """
+    Hoare's partition: pointers move from both ends.
+    More efficient with fewer swaps.
+    """
+    pivot = nums[(left + right) // 2]  # Middle element as pivot
+    i, j = left - 1, right + 1
+
+    while True:
+        # Move i right until element >= pivot
+        i += 1
+        while nums[i] < pivot:
+            i += 1
+
+        # Move j left until element <= pivot
+        j -= 1
+        while nums[j] > pivot:
+            j -= 1
+
+        if i >= j:
+            return j
+
+        nums[i], nums[j] = nums[j], nums[i]
+```
+
+**2. Lomuto Partition (Single Pass):**
+```python
+def partition_lomuto(nums, left, right):
+    """
+    Lomuto's partition: single pointer from left.
+    Simpler but may do more swaps.
+    """
+    pivot = nums[right]
+    i = left
+
+    for j in range(left, right):
+        if nums[j] <= pivot:
+            nums[i], nums[j] = nums[j], nums[i]
+            i += 1
+
+    nums[i], nums[right] = nums[right], nums[i]
+    return i
+```
+
+---
+
+#### Classic LeetCode Problems
+
+| Problem | LC# | Difficulty | Variant | Key Insight |
+|---------|-----|------------|---------|-------------|
+| Kth Largest Element in Array | 215 | Medium | Basic QuickSelect | Find (n-k)th smallest |
+| K Closest Points to Origin | 973 | Medium | Custom comparator | Partition by distance |
+| Top K Frequent Elements | 347 | Medium | With frequency map | QuickSelect on frequencies |
+| Top K Frequent Words | 692 | Medium | With frequency + trie | QuickSelect + lexicographic order |
+| Kth Largest Element in Stream | 703 | Easy | Min heap alternative | QuickSelect for initialization |
+| Find Kth Smallest Pair Distance | 719 | Hard | Binary search on answer | Not direct QuickSelect |
+| Wiggle Sort II | 324 | Medium | 3-way partition | Dutch national flag variant |
+| Sort Colors | 75 | Medium | 3-way partition | Dutch national flag |
+| Kth Smallest Element in BST | 230 | Medium | In-order traversal | Not QuickSelect (tree structure) |
+| Find Median from Data Stream | 295 | Hard | Two heaps | QuickSelect alternative |
+
+---
+
+#### Performance Comparison
+
+| Algorithm | Average Time | Worst Time | Space | Use Case |
+|-----------|--------------|------------|-------|----------|
+| **QuickSelect** | **O(n)** | O(n²) | O(1) | Find Kth element (unsorted) |
+| QuickSelect (Randomized) | O(n) | O(n²) low prob | O(1) | Better average performance |
+| Heap (Min/Max) | O(n log k) | O(n log k) | O(k) | Online/streaming data |
+| Full Sort | O(n log n) | O(n log n) | O(1) or O(n) | Need sorted array anyway |
+| Counting Sort | O(n + k) | O(n + k) | O(k) | Small integer range |
+
+**When to Use QuickSelect:**
+- ✅ Need exactly Kth element, don't need full sort
+- ✅ Can modify input array (in-place)
+- ✅ Offline algorithm (all data available)
+- ✅ Large dataset where O(n) vs O(n log n) matters
+
+**When NOT to Use QuickSelect:**
+- ❌ Need all K elements in sorted order → Use heap or full sort
+- ❌ Online/streaming data → Use heap
+- ❌ Cannot modify input array → Use heap
+- ❌ Worst-case guarantee needed → Use Median of Medians (O(n) worst-case)
+
+---
+
+#### Interview Tips
+
+**1. Common Mistakes:**
+- Forgetting to convert "Kth largest" → "(n - k)th smallest"
+- Off-by-one errors with 0-indexed vs 1-indexed k
+- Not handling left == right base case
+- Infinite recursion when partition doesn't move pivot
+
+**2. Optimization Techniques:**
+- **Randomized pivot**: Reduces worst-case probability
+- **Median-of-three**: Choose median of first, middle, last elements as pivot
+- **Iterative version**: Avoid stack overflow for very large arrays
+- **Tail recursion**: Only recurse into smaller partition
+
+**3. Complexity Analysis:**
+```
+Best/Average Case: O(n + n/2 + n/4 + ... + 1) = O(2n) = O(n)
+
+Worst Case (bad pivots every time):
+  O(n + (n-1) + (n-2) + ... + 1) = O(n²)
+
+With randomized pivot:
+  Worst case O(n²) probability → near zero for large n
+```
+
+**4. Interview Talking Points:**
+- "QuickSelect is like QuickSort but only recurses into one partition"
+- "Average O(n) is better than O(n log k) heap for finding single Kth element"
+- "Trade-off: Modifies array vs. heap keeps original"
+- "Randomized pivot gives O(n) with high probability"
+
+**5. Follow-up Questions:**
+- Q: "What if we need all K elements sorted?"
+  - A: Use heap (O(n log k)) or partial QuickSort
+- Q: "What if array is read-only?"
+  - A: Copy to new array or use heap
+- Q: "Can we guarantee O(n) worst-case?"
+  - A: Yes, using Median of Medians algorithm (complex, rarely asked)
+
+---
+
+#### Advanced: Median of Medians (O(n) Worst-Case)
+
+```python
+def findKthLargest_median_of_medians(nums, k):
+    """
+    Guaranteed O(n) worst-case using Median of Medians pivot selection.
+    More complex but theoretically optimal.
+
+    Time: O(n) worst-case
+    Space: O(log n) recursion
+    """
+    def median_of_medians(left, right):
+        """Find approximate median for good pivot."""
+        if right - left < 5:
+            return sorted(nums[left:right + 1])[len(nums[left:right + 1]) // 2]
+
+        # Divide into groups of 5, find median of each
+        medians = []
+        for i in range(left, right + 1, 5):
+            sub_right = min(i + 4, right)
+            median = sorted(nums[i:sub_right + 1])[(sub_right - i) // 2]
+            medians.append(median)
+
+        # Recursively find median of medians
+        return median_of_medians_list(medians)
+
+    def partition(left, right, pivot_value):
+        # Partition around pivot_value
+        # ... implementation ...
+        pass
+
+    # Main quickselect with median of medians pivot
+    # ... implementation ...
+    pass
+```
+
+**Note:** Median of Medians is rarely implemented in interviews due to complexity. Randomized QuickSelect is preferred in practice.
+
+---
+
 ## 1) General form
 
 ### 1-1) Basic OP

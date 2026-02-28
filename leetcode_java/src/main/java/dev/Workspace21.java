@@ -2183,17 +2183,80 @@ public class Workspace21 {
      * -> Given an encoded string,
      *  return its decoded string.
      *
+     *
+     *  NOTE:
+     *   input is ALWAYS valid.
+     *   e.g. below input will not exist:
+     *      -  there will not be input like 3a or 2[4].
+     *
      * --------------
+     *
+     *  IDEA 1) STACK ???
+     *     - FILO
+     *     - if 1,2,.. .or [
+     *       -> save to stack
+     *
+     *     - if ]
+     *       - pop item from stack, till meet [
+     *       - maintain `cache`, if meet `digit`
+     *          - do `mutiply op`
+     *          - append result back to stack
+     *
+     *     ....
+     *
+     *     return final res
+     *
+     *  IDEA 2) BRUTE FORCE ???
      *
      *
      * --------------
      *
      */
+    // IDEA 1) STACK ???
     public String decodeString(String s) {
+        // edge
 
-        return null;
+        // ???
+        String digits = "0123456789";
+
+        Stack<String> st = new Stack<>();
+        for(String x: s.split("")){
+            if(!x.equals("]")){
+                st.add(x);
+            }else{
+                // ???
+                String cache = "";
+                while(!st.isEmpty() && !st.peek().equals("[")){
+                    String cur = st.pop();
+                    if(!digits.contains(cur)){
+                        cache += cur;
+                    }else{
+                        cache = multiply(cur, cache);
+                    }
+                }
+            }
+        }
+
+        StringBuilder sb = new StringBuilder();
+        for(String y: st){
+            sb.append(y);
+        }
+
+        return sb.toString();
     }
 
+    private String multiply(String times, String x){
+        int timesVal = Integer.parseInt(times);
+        StringBuilder res = new StringBuilder();
+        for(int i = 0; i < timesVal; i++){
+            res.append(x);
+        }
+        return res.toString();
+    }
+
+
+
+    
 
 
 
