@@ -40,12 +40,87 @@ import java.util.Stack;
 public class RemoveAllAdjacentDuplicatesInString {
 
     // V0
+    // IDEA: STACK + isAdjDup flag (gemini)
+    public String removeDuplicates(String s) {
+        // edge
+        Stack<String> st = new Stack<>();
+        for (String x : s.split("")) {
+            /** NOTE !!!
+             *
+             * isAdjDup flag, so we can know
+             * whether should `last` top element in stack
+             */
+            boolean isAdjDup = false;
+            /** NOTE !!!
+             *
+             *  we use `if` instead of `while` loop
+             *  to avoid `infinite`  loop
+             */
+            if (!st.isEmpty() && st.peek().equals(x)) {
+                isAdjDup = true;
+            } else {
+                st.add(x);
+            }
+            /** NOTE !!!
+             *
+             * pop the `last` duplicate from stack
+             */
+            if (isAdjDup && !st.isEmpty()) {
+                st.pop();
+            }
+        }
+
+        StringBuilder sb = new StringBuilder();
+        for (String y : st) {
+            sb.append(y);
+        }
+
+        return sb.toString();
+    }
+
+    // V0-0-1
+    // IDEA: STACK (gemini)
+    /** NOTE !!!
+     *
+     *  LC 1047 is ONLY remove `Adjacent` duplicated elements,
+     *  so below code works here.
+     *  However, for LC 1209, we may need the other approaches.
+     */
+    public String removeDuplicates_0_0_1(String s) {
+        if (s == null || s.length() == 0){
+            return "";
+        }
+
+        Stack<Character> st = new Stack<>();
+
+        for (char x : s.toCharArray()) {
+            // If stack is NOT empty and the top matches current char
+            if (!st.isEmpty() && st.peek() == x) {
+                st.pop(); // Remove the existing one, and don't add the current one
+            } else {
+                st.push(x); // Not a duplicate, add it to stack
+            }
+        }
+
+        // Build the final string from the remaining characters
+        StringBuilder sb = new StringBuilder();
+        for (char y : st) {
+            sb.append(y);
+        }
+
+        return sb.toString();
+    }
+
+
+
+
+    // V0-0-0-2
     // IDEA: STACK
     /**
      * time = O(1)
      * space = O(1)
      */
-    public String removeDuplicates(String s) {
+    public String removeDuplicates_0_0_2(String s) {
         // edge
         if (s.isEmpty() || s.length() == 1) {
             return s;
@@ -82,6 +157,7 @@ public class RemoveAllAdjacentDuplicatesInString {
         //System.out.println(">>> sb.toString() = " + sb.toString());
         return sb.toString();
     }
+
 
     // V0-1
     // IDEA : STACK + STRING
@@ -266,6 +342,8 @@ public class RemoveAllAdjacentDuplicatesInString {
         // reverse it as stack is first in last out
         return ans.reverse().toString() ;
     }
+
+
 
 
 }
