@@ -184,18 +184,28 @@ public class DecodeString {
                  */
                 StringBuilder segment = new StringBuilder();
                 while (!stack.isEmpty() && !stack.peek().equals("[")) {
+                    /** NOTE !!!
+                     *
+                     * we append to beginning of StringBuilder  (offset = 0 )
+                     *
+                     * or, we can reverse the result
+                     */
                     segment.insert(0, stack.pop());
                 }
                 stack.pop(); // remove "["
 
                 // now get the number (could be multi-digit, but we’ll read digits one by one)
                 StringBuilder numSb = new StringBuilder();
-                 String nums = "0123456789";
+                String nums = "0123456789";
 
                 // below 2 approaches are OK
                 //  while(!stack.isEmpty() && stack.peek().matches("\\d")){} ..
                 // 	.matches("\\d") → checks if that string is a single digit (0–9).
                 while (!stack.isEmpty() && nums.contains(stack.peek())) {
+                    /** NOTE !!!
+                     *
+                     * we append to beginning of StringBuilder  (offset = 0 )
+                     */
                     numSb.insert(0, stack.pop()); // prepend digit
                 }
                 int repeat = Integer.parseInt(numSb.toString());
