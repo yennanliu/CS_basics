@@ -2268,6 +2268,46 @@ public class Workspace21 {
 
 
 
+    // LC 1047
+    // 11.55- 12.15 pm
+    /**
+     *  -> Return the final string after all such duplicate removals
+     *    have been made. It can be proven that the answer is unique.
+     *
+     *  ----------
+     *  IDEA 1) STACK
+     *
+     *  ----------
+     *
+     */
+    // IDEA 1) STACK
+    public String removeDuplicates(String s) {
+        // edge
+        Stack<String> st = new Stack<>();
+        for(String x: s.split("")){
+            // ??
+            boolean isAdjDup = false;
+            // ????
+            if(!st.isEmpty() && st.peek().equals(x)){
+                isAdjDup = true;
+            }else{
+                st.add(x);
+            }
+//            // ?? pop the `last` duplicate from stack
+            if(isAdjDup && !st.isEmpty()){
+                st.pop();
+            }
+//            st.add(x);
+        }
+
+        StringBuilder sb = new StringBuilder();
+        for(String y: st){
+            sb.append(y);
+        }
+
+        return sb.toString();
+    }
+
 
 
 
