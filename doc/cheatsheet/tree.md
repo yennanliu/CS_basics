@@ -1,4 +1,6 @@
-# Tree Data Structure
+# Tree Data Structure - Concepts & Patterns
+
+> **Note:** This file covers tree concepts, types, and algorithm patterns. For detailed traversal templates and code examples, see [tree2.md](./tree2.md).
 
 ## Overview
 
