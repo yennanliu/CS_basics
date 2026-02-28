@@ -2177,6 +2177,22 @@ public class Workspace21 {
     }
 
 
+    // LC 394
+    // 11.22 - 32 pm
+    /**
+     * -> Given an encoded string,
+     *  return its decoded string.
+     *
+     * --------------
+     *
+     *
+     * --------------
+     *
+     */
+    public String decodeString(String s) {
+
+        return null;
+    }
 
 
 
