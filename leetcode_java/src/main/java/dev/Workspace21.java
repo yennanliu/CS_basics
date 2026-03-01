@@ -2358,6 +2358,44 @@ public class Workspace21 {
     }
 
 
+    // LC 540
+    // 11.26 - 36 am
+    /**
+     * -> Return the single
+     * element that appears only once.
+     *
+     *  -  sorted array consisting of only integers
+     *     where every element appears exactly twice
+     *
+     *  - except for one element which appears exactly once.
+     *
+     * ----------------
+     *
+     *  IDEA 1) HASHMAP
+     *
+     *  IDEA 2) BINARY SEARCH
+     *
+     * ----------------
+     *
+     */
+    // IDEA 1) HASHMAP
+    public int singleNonDuplicate_99(int[] nums) {
+        // edge
+        Map<Integer, Integer> map = new HashMap<>();
+        for(int x: nums){
+            map.put(x, map.getOrDefault(x, 0) + 1);
+        }
+
+        for(int k: map.keySet()){
+            if(map.get(k) == 1){
+                return k;
+            }
+        }
+
+
+        return -1;
+    }
+
 
 
 

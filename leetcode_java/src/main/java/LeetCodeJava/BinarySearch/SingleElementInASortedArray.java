@@ -67,6 +67,7 @@ public class SingleElementInASortedArray {
     // V1
 
     // V2
+    // IDEA: BINARY SEARCH
     // https://leetcode.com/problems/single-element-in-a-sorted-array/solutions/3212178/day-52-binary-search-easiest-beginner-fr-sqyl/
     /**
      * time = O(N)
@@ -89,6 +90,7 @@ public class SingleElementInASortedArray {
     }
 
     // V3
+    // IDEA: BINARY SEARCH
     // https://leetcode.com/problems/single-element-in-a-sorted-array/solutions/627921/java-c-python3-easy-explanation-ologn-o1-71nt/
     public int singleNonDuplicate_3(int[] nums) {
         int left = 0, right = nums.length - 1;
@@ -101,6 +103,8 @@ public class SingleElementInASortedArray {
         }
         return nums[left];
     }
+
+
 
 
 }
