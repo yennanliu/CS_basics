@@ -48,6 +48,16 @@
 - **Examples**: LC 236, LC 235, LC 863
 - **Template**: Use LCA Template
 
+### **Pattern 6: Binary Search on Trees**
+- **Description**: Apply binary search technique on tree properties (height, node count, structure)
+- **Recognition**: "O(log n) time", "complete binary tree", "count nodes", "find kth element"
+- **Examples**: LC 222 (Count Complete Tree Nodes), LC 230 (Kth Smallest in BST)
+- **Template**: Use Binary Search + Tree Properties Template
+- **Key Insight**:
+  - For complete binary trees, can use binary search on tree structure
+  - Check left/right subtree properties to decide search direction
+  - Time complexity can be reduced from O(n) to O(log²n)
+
 ### Complete Tree to Array Representation
 
 -  Note if we use an `array` to represent the `complete binary tree`,and `store the root node at index 1`
@@ -123,6 +133,7 @@ Relationships:
 | **Iterative Traversal** | Memory limited | Stack/Queue | O(n) | O(h) | Avoid recursion overhead |
 | **Morris Traversal** | Space limited | Threading | O(n) | O(1) | Constant space required |
 | **Level Order** | BFS problems | Queue | O(n) | O(w) | Level-by-level processing |
+| **Binary Search on Trees** | Complete/Balanced tree | Binary Search | O(log²n) | O(log n) | Optimize with tree structure |
 
 ### Universal Tree Template
 ```python
@@ -346,16 +357,49 @@ def find_lca(root, p, q):
     """
     if not root or root == p or root == q:
         return root
-    
+
     left = find_lca(root.left, p, q)
     right = find_lca(root.right, p, q)
-    
+
     # Both found in different subtrees -> current is LCA
     if left and right:
         return root
-    
+
     # One or both found in same subtree
     return left if left else right
+```
+
+### Template 7: Binary Search on Trees
+```python
+def count_complete_tree_nodes(root):
+    """
+    Count nodes in complete binary tree in O(log²n) time
+    Key: Use binary search on tree structure
+    """
+    if not root:
+        return 0
+
+    def get_height(node):
+        """Get height by going left"""
+        height = 0
+        while node:
+            height += 1
+            node = node.left
+        return height
+
+    left_height = get_height(root.left)
+    right_height = get_height(root.right)
+
+    if left_height == right_height:
+        # Left subtree is perfect binary tree
+        # Nodes in left = 2^left_height - 1
+        # Plus root = 2^left_height
+        return (1 << left_height) + count_complete_tree_nodes(root.right)
+    else:
+        # Right subtree is perfect binary tree
+        # Height = right_height, nodes = 2^right_height - 1
+        # Plus root = 2^right_height
+        return (1 << right_height) + count_complete_tree_nodes(root.left)
 ```
 
 
@@ -405,7 +449,6 @@ def find_lca(root, p, q):
 | Diameter of Binary Tree | 543 | Easy | DFS + Max | Template 5 |
 | Symmetric Tree | 101 | Easy | Mirror Check | Template 5 |
 | Same Tree | 100 | Easy | Simultaneous DFS | Template 5 |
-| Count Complete Tree Nodes | 222 | Medium | Binary Search | Template 5 |
 
 #### **Pattern 5: LCA & Distance Problems**
 | Problem | LC # | Difficulty | Key Technique | Template |
@@ -414,6 +457,14 @@ def find_lca(root, p, q):
 | LCA of BST | 235 | Easy | BST Property | Template 6 |
 | Distance K from Target | 863 | Medium | Graph Convert | Template 6 |
 | LCA of Deepest Leaves | 1123 | Medium | DFS + Depth | Template 6 |
+
+#### **Pattern 6: Binary Search on Trees Problems**
+| Problem | LC # | Difficulty | Key Technique | Template |
+|---------|------|------------|---------------|----------|
+| Count Complete Tree Nodes | 222 | Medium | Binary Search on Height | Template 7 |
+| Kth Smallest in BST | 230 | Medium | Inorder + Binary Search | Template 7 |
+| Closest BST Value | 270 | Easy | Binary Search on BST | Template 7 |
+| Closest BST Value II | 272 | Hard | Inorder + Two Pointers | Template 7 |
 
 ### Complete Problem List by Difficulty
 
@@ -636,14 +687,14 @@ class BSTIterator(object):
         """
         self.stack = []
         self.inOrder(root)
-    
+
     def inOrder(self, root):
         if not root:
             return
         self.inOrder(root.right)
         self.stack.append(root.val)
         self.inOrder(root.left)
-    
+
     def hasNext(self):
         """
         :rtype: bool
@@ -654,7 +705,107 @@ class BSTIterator(object):
         """
         :rtype: int
         """
-        return self.stack.pop() 
+        return self.stack.pop()
+```
+
+### 2-6) Count Complete Tree Nodes (Binary Search on Trees)
+```java
+// LC 222. Count Complete Tree Nodes
+// Java Implementation
+
+// V0 - BFS Approach
+// IDEA: Level-order traversal to count all nodes
+/**
+ * time = O(N)
+ * space = O(N)
+ */
+public int countNodes_BFS(TreeNode root) {
+    if (root == null) {
+        return 0;
+    }
+
+    List<TreeNode> collected = new ArrayList<>();
+    Queue<TreeNode> q = new LinkedList<>();
+    q.add(root);
+
+    while (!q.isEmpty()) {
+        TreeNode cur = q.poll();
+        collected.add(cur);
+
+        if (cur.left != null) {
+            q.add(cur.left);
+        }
+        if (cur.right != null) {
+            q.add(cur.right);
+        }
+    }
+
+    return collected.size();
+}
+
+// V1 - DFS Approach
+// IDEA: Recursively count nodes in left and right subtrees
+/**
+ * time = O(N)
+ * space = O(log N)
+ */
+public int countNodes_DFS(TreeNode root) {
+    if (root == null) {
+        return 0;
+    }
+
+    // Recursively count the nodes in the left subtree
+    int leftCount = countNodes_DFS(root.left);
+
+    // Recursively count the nodes in the right subtree
+    int rightCount = countNodes_DFS(root.right);
+
+    // Return the total count (current node + left subtree + right subtree)
+    return 1 + leftCount + rightCount;
+}
+
+// V2 - Optimized Binary Search Approach for Complete Binary Tree
+// IDEA: Use complete tree property + binary search on height
+/**
+ * time = O(log²N)
+ * space = O(log N)
+ *
+ * Key Insight:
+ * - In a complete binary tree, at least one subtree is a perfect binary tree
+ * - For perfect binary tree with height h: nodes = 2^h - 1
+ * - Check left and right subtree heights to determine which is perfect
+ */
+public int countNodes_Optimized(TreeNode root) {
+    if (root == null) {
+        return 0;
+    }
+
+    int leftHeight = getHeight(root.left);
+    int rightHeight = getHeight(root.right);
+
+    if (leftHeight == rightHeight) {
+        // Left subtree is perfect binary tree
+        // Nodes in left = 2^leftHeight - 1, plus root = 2^leftHeight
+        return (1 << leftHeight) + countNodes_Optimized(root.right);
+    } else {
+        // Right subtree is perfect binary tree
+        // Height = rightHeight, nodes = 2^rightHeight - 1, plus root = 2^rightHeight
+        return (1 << rightHeight) + countNodes_Optimized(root.left);
+    }
+}
+
+/**
+ * Helper: Get height by traversing left path only
+ * Works because in complete tree, leftmost path gives height
+ */
+private int getHeight(TreeNode node) {
+    int height = 0;
+    while (node != null) {
+        height++;
+        node = node.left;
+    }
+    return height;
+}
 ```
 
 ## Pattern Selection Strategy
@@ -694,6 +845,13 @@ Problem Analysis Flowchart:
    ├── YES → Use LCA Template (6)
    │   ├── Common ancestor? → Template 6
    │   └── Distance between nodes? → Template 6 + path tracking
+   └── NO → Continue to 6
+
+6. Does the problem require O(log n) time or involve complete/balanced tree optimization?
+   ├── YES → Use Binary Search on Trees Template (7)
+   │   ├── Complete binary tree? → Template 7 with height optimization
+   │   ├── BST with kth element? → Template 7 with inorder traversal
+   │   └── Need log time complexity? → Template 7 with binary search
    └── NO → Use Universal Template or reconsider problem type
 ```
 
@@ -714,6 +872,7 @@ Problem Analysis Flowchart:
 | Path Finding | O(n) | O(h) | May need O(n) for all paths |
 | Property Check | O(n) | O(h) | Single pass usually sufficient |
 | LCA | O(n) | O(h) | Can optimize to O(log n) for BST |
+| Binary Search on Trees | O(log²n) | O(log n) | For complete/balanced trees |
 | Serialize/Deserialize | O(n) | O(n) | String representation |
 
 ### Template Quick Reference
@@ -726,6 +885,7 @@ Problem Analysis Flowchart:
 | Path | Root-to-leaf | Any path in tree | Backtracking pattern |
 | Property | Tree metrics | Path problems | Bottom-up calculation |
 | LCA | Common ancestors | Simple traversal | Return early pattern |
+| Binary Search on Trees | Complete/Balanced trees | General trees | Height comparison + recursion |
 
 ### Common Patterns & Tricks
 
@@ -840,6 +1000,6 @@ stack = []
 ```
 
 ---
-**Must-Know Problems for Interviews**: LC 94, 102, 104, 105, 110, 124, 226, 236, 297, 543
-**Advanced Problems**: LC 124, 297, 437, 863, 968
-**Keywords**: binary tree, traversal, DFS, BFS, recursion, path, LCA, construction
+**Must-Know Problems for Interviews**: LC 94, 102, 104, 105, 110, 124, 222, 226, 236, 297, 543
+**Advanced Problems**: LC 124, 222 (optimized), 297, 437, 863, 968
+**Keywords**: binary tree, traversal, DFS, BFS, recursion, path, LCA, construction, binary search on trees, complete tree

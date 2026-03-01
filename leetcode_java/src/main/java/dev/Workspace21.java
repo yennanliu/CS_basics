@@ -2659,6 +2659,66 @@ public class Workspace21 {
 
 
 
+    // 13.18 - 34 pm
+    /**
+     *  ->  determine if two sentences are similar.
+     *
+     *
+     *  ------------
+     *
+     *   // IDEA 1) BRUTE FORCE
+     *
+     *   IDEA 2) HASHMAP
+     *
+     *
+     *  ------------
+     *
+     *
+     */
+    public boolean areSentencesSimilar(
+            String[] sentence1, String[] sentence2, List<List<String>> similarPairs) {
+
+        // edge
+        if(sentence1.length != sentence2.length){
+            return false;
+        }
+
+
+        Map<String, String> map = new HashMap<>();
+//        for(List<String> list: similarPairs){
+//            map.put(list.get(0), list.get(1));
+//        }
+
+        for (List<String> pair : similarPairs) {
+            map.put(pair.get(0), pair.get(1));
+            map.put(pair.get(1), pair.get(0)); // Ensure both directions are stored
+        }
+
+        for(int i = 0; i < sentence1.length; i++){
+            String s1 = sentence1[i];
+            String s2 = sentence2[i];
+
+            // NOTE !!! BELOW
+
+            if (!s1.equals(s2) &&
+                    !(map.containsKey(s1) && map.get(s1).equals(s2)) &&
+                    !(map.containsKey(s2) && map.get(s2).equals(s1))) {
+                return false;
+            }
+//
+//            if(!map.get(s1).equals(s2)){
+//                return false;
+//            }
+
+        }
+
+
+
+        return true;
+    }
+
+
+
 
 
 
