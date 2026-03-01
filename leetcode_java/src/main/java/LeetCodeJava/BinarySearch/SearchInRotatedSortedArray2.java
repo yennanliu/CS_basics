@@ -121,6 +121,12 @@ public class SearchInRotatedSortedArray2 {
             if (cur == target)
                 return true;
 
+            /** NOTE !!!
+             *
+             *  The ONLY difference (fix) for LC 81 (compare with LC 33)
+             *
+             *  -> shrink both (l, r) pointer if they have the same value
+             */
             // --- THE KEY FIX FOR LC 81 ---
             // If we can't tell which side is sorted because of duplicates,
             // just shrink the window from both sides.
@@ -171,6 +177,12 @@ public class SearchInRotatedSortedArray2 {
                 return true;
             }
 
+            /** NOTE !!!
+             *
+             *  The ONLY difference (fix) for LC 81 (compare with LC 33)
+             *
+             *  -> shrink both (l, r) pointer if they have the same value
+             */
             // Handle duplicates (key difference from LC 33)
             if (nums[l] == nums[mid] && nums[mid] == nums[r]) {
                 l++;
