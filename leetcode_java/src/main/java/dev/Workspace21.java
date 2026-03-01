@@ -2457,13 +2457,22 @@ public class Workspace21 {
             r = Math.max(r, b);
         }
 
+        // note !!!
+        int midDays = r; //????
+
         int l = 0;
 
         while(r >= l){
             int mid = l + (r - l) / 2;
-            int cnt = getFlowers(bloomDay, m, k, mid);
+            // NOTE !!!!
+            int cnt = getBouquets(bloomDay, m, k, mid) * k;
             if(cnt == needFollower){
-                return mid;
+                midDays = Math.min(midDays, mid);
+                //return mid;
+                // found a valid solution, but try to find
+                // if there is a smaller one
+                // ????
+                r = mid - 1;
             }else if(cnt > needFollower){
                 r = mid - 1;
             }else{
@@ -2472,13 +2481,18 @@ public class Workspace21 {
         }
 
 
-        return -1;
+        return midDays; // ???
     }
 
-    private int getFlowers(int[] bloomDay, int m, int k, int mid){
+
+
+    private int getBouquets(int[] bloomDay, int m, int k, int mid){
         // ???
         int cnt = 0;
-        int[] tmp = bloomDay;
+        // ???? use deep copy instead
+        // or we don't even need `int[] tmp ` ???
+        //int[] tmp = bloomDay;
+        int[] tmp = new int[bloomDay.length];
         // /??
         int adjCnt = 0;
         for(int i = 0; i < tmp.length; i++){

@@ -56,9 +56,60 @@ package LeetCodeJava.BinarySearch;
 public class MinimumNumberOfDaysToMakeMBouquets {
 
     // V0
-//    public int minDays(int[] bloomDay, int m, int k) {
-//
-//    }
+    // IDEA: BINARY SEARCH (gemini)
+    public int minDays(int[] bloomDay, int m, int k) {
+        // 1. Use long to prevent overflow
+        if ((long) m * k > bloomDay.length)
+            return -1;
+
+        int l = 1, r = 1000000000; // Max value from constraints
+        int ans = -1;
+
+        while (l <= r) {
+            int mid = l + (r - l) / 2;
+
+            // 2. Logic: If we can make AT LEAST m bouquets, try a smaller day
+            /** NOTE !!!
+             *
+             *  `>=`, but not `==`
+             */
+            if (getBouquets(bloomDay, k, mid) >= m) {
+                ans = mid;
+                /** NOTE !!!
+                 *
+                 *  even we found a valid solution,
+                 *  we still want to find a better one (smaller day)
+                 */
+                r = mid - 1;
+            } else {
+                l = mid + 1;
+            }
+        }
+        return ans;
+    }
+
+    /** NOTE !!!
+     *
+     *  1. the help func get `Bouquets` cnt
+     *  2. we DON'T need to copy `int[] bloomDay`
+     *     -> all we need is: adj valid day count (e.g. adj)
+     */
+    private int getBouquets(int[] bloomDay, int k, int mid) {
+        int count = 0;
+        int adj = 0;
+        for (int day : bloomDay) {
+            if (day <= mid) {
+                adj++;
+                if (adj == k) {
+                    count++;
+                    adj = 0;
+                }
+            } else {
+                adj = 0;
+            }
+        }
+        return count;
+    }
 
     // V0-1
     // IDEA: BINARY SEARCH (gemini)
@@ -253,7 +304,7 @@ public class MinimumNumberOfDaysToMakeMBouquets {
         return false;
     }
 
-    
+
 
 
 }
