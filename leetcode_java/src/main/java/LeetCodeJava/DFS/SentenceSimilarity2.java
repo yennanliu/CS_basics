@@ -40,6 +40,13 @@ public class SentenceSimilarity2 {
     public boolean areSentencesSimilarTwo_0_1(String[] sentence1, String[] sentence2, List<List<String>> similarPairs) {
         if (sentence1.length != sentence2.length) return false;
 
+        /** NOTE !!!
+         *
+         *  the map structure: Map<String, List<String>>.
+         *
+         *  we CAN'T use this structure: Map<String, String>.
+         *
+         */
         // 1. Build an Adjacency List (Graph) instead of a simple Map
         Map<String, List<String>> adj = new HashMap<>();
         for (List<String> pair : similarPairs) {
@@ -51,8 +58,10 @@ public class SentenceSimilarity2 {
             String s1 = sentence1[i];
             String s2 = sentence2[i];
 
+            /** NOTE !!! below */
             if (s1.equals(s2)) continue;
 
+            /** NOTE !!! below */
             // 2. Perform DFS to see if s1 and s2 are in the same connected component
             if (!dfsCheck(adj, new HashSet<>(), s1, s2)) {
                 return false;
@@ -64,6 +73,7 @@ public class SentenceSimilarity2 {
     private boolean dfsCheck(Map<String, List<String>> adj, Set<String> visited, String curr, String target) {
         if (curr.equals(target)) return true;
 
+        /** mark as visited */
         visited.add(curr);
 
         // Visit all neighbors of the current word
