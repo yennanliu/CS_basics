@@ -2399,15 +2399,115 @@ public class Workspace21 {
 
 
     // LC 1482
-    // 11.38 - 48 am
+    // 11.38 - 55 am
     /**
      *
+     * -> Return the `minimum` number of days
+     *    you need to wait to be able to make m bouquets
+     *   from the garden.
+     *    - If it is impossible to make m bouquets
+     *       - return -1.
+     *
+     *
+     *   - want to make m bouquets.
+     *     - To make a bouquet,
+     *       you need to use
+     *       `k adjacent flowers` from the garden.
+     *
+     *   - garden has n flowers
+     *   - i flower will bloom in the bloomDay[i] day
+     *      - can be used in exactly one bouquet.
+     *
+     *
+     *   - int arr: bloomday
+     *   - int: m
+     *   - int: k
+     *
+     *   - bouquets(花束)
+     *
+     *  -----------------
+     *
+     *   IDEA 1) BRUTE FORCE
+     *
+     *   IDEA 2) BINARY SEARCH ???
+     *
+     *    -> find ` `minimum` number of days`
+     *      via binary search
+     *
+     *    - l = 0
+     *    - r = biggest num in arr ??? (worst case)
+     *    - then have a way to compute `cur  bouquet`
+     *
+     *
+     *  -----------------
      *
      */
     public int minDays(int[] bloomDay, int m, int k) {
+        // edge
 
-        return 0;
+        int needFollower = m * k;
+        int n = bloomDay.length;
+        if( n < needFollower ){
+            return -1;
+        }
+
+        int r = 0;
+        // ???
+        for(int b: bloomDay){
+            r = Math.max(r, b);
+        }
+
+        int l = 0;
+
+        while(r >= l){
+            int mid = l + (r - l) / 2;
+            int cnt = getFlowers(bloomDay, m, k, mid);
+            if(cnt == needFollower){
+                return mid;
+            }else if(cnt > needFollower){
+                r = mid - 1;
+            }else{
+                l = mid + 1;
+            }
+        }
+
+
+        return -1;
     }
+
+    private int getFlowers(int[] bloomDay, int m, int k, int mid){
+        // ???
+        int cnt = 0;
+        int[] tmp = bloomDay;
+        // /??
+        int adjCnt = 0;
+        for(int i = 0; i < tmp.length; i++){
+
+            System.out.println(">>> i = " + i +
+                    ", tmp = " + Arrays.toString(tmp));
+
+            int x = tmp[i];
+            if(x <= mid){
+                tmp[i] = 0;
+                adjCnt += 1;
+            }
+            // if `not continuous`, reset adjCnt
+            else{
+                adjCnt = 0;
+            }
+
+
+            if(adjCnt == k){
+                adjCnt = 0;
+                cnt += 1;
+            }
+        }
+
+
+        return cnt;
+    }
+
+
 
 
 

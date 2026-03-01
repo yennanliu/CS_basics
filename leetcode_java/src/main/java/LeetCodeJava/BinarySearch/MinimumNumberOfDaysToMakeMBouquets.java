@@ -60,6 +60,107 @@ public class MinimumNumberOfDaysToMakeMBouquets {
 //
 //    }
 
+    // V0-1
+    // IDEA: BINARY SEARCH (gemini)
+    public int minDays_0_1(int[] bloomDay, int m, int k) {
+        // 1. Edge case: if we need more flowers than we have
+        // Using long to avoid overflow for m * k
+        if ((long) m * k > bloomDay.length) {
+            return -1;
+        }
+
+        int l = Integer.MAX_VALUE;
+        int r = 0;
+        for (int b : bloomDay) {
+            l = Math.min(l, b);
+            r = Math.max(r, b);
+        }
+
+        int ans = -1;
+        while (l <= r) {
+            int mid = l + (r - l) / 2;
+
+            // 2. If we can make at least m bouquets on 'mid' day
+            if (canMake(bloomDay, m, k, mid)) {
+                ans = mid; // This day works!
+                r = mid - 1; // But can we do it in fewer days?
+            } else {
+                l = mid + 1; // Not enough flowers, need more days
+            }
+        }
+        return ans;
+    }
+
+    private boolean canMake(int[] bloomDay, int m, int k, int day) {
+        int bouquets = 0;
+        int flowers = 0;
+
+        for (int b : bloomDay) {
+            if (b <= day) {
+                flowers++;
+                // If we have enough adjacent flowers for one bouquet
+                if (flowers == k) {
+                    bouquets++;
+                    flowers = 0; // Reset for the next bouquet
+                }
+            } else {
+                // Not adjacent anymore, reset flower count
+                flowers = 0;
+            }
+        }
+        return bouquets >= m;
+    }
+
+
+    // V0-2
+    public int minDays_0_2(int[] bloomDay, int m, int k) {
+        int n = bloomDay.length;
+
+        // Not enough flowers
+        if ((long) m * k > n) {
+            return -1;
+        }
+
+        int left = 1;
+        int right = 0;
+
+        for (int day : bloomDay) {
+            right = Math.max(right, day);
+        }
+
+        while (left < right) {
+            int mid = left + (right - left) / 2;
+
+            if (canMake_0_2(bloomDay, m, k, mid)) {
+                right = mid; // try smaller day
+            } else {
+                left = mid + 1;
+            }
+        }
+
+        return left;
+    }
+
+    private boolean canMake_0_2(int[] bloomDay, int m, int k, int day) {
+        int bouquets = 0;
+        int flowers = 0;
+
+        for (int bloom : bloomDay) {
+            if (bloom <= day) {
+                flowers++;
+                if (flowers == k) {
+                    bouquets++;
+                    flowers = 0;
+                }
+            } else {
+                flowers = 0;
+            }
+        }
+
+        return bouquets >= m;
+    }
+
+
     // V1
     // IDEA: BINARY SEARCH
     // https://leetcode.com/problems/minimum-number-of-days-to-make-m-bouquets/editorial/
@@ -152,6 +253,7 @@ public class MinimumNumberOfDaysToMakeMBouquets {
         return false;
     }
 
+    
 
 
 }
