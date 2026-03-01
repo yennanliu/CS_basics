@@ -2398,6 +2398,17 @@ public class Workspace21 {
 
 
 
+    // LC 1482
+    // 11.38 - 48 am
+    /**
+     *
+     *
+     */
+    public int minDays(int[] bloomDay, int m, int k) {
+
+        return 0;
+    }
+
 
 
 
