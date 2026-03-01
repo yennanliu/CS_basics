@@ -1,11 +1,12 @@
 # Progress
 
-# 2026-02-28
+# 2026-02-29
 
 - weekly video
 - cheatsheet (LC examples)
 	- hashmap.md (OK)
-	- set.md (todo)
+	- set.md (OK)
+	- string.md (todo)
 - to review
 - needcode `250` - similar LC by AI
     - Arrays & Hashing
@@ -98,6 +99,14 @@
 			- 1891
 		- gemini
 			- 1761
+	- LC 33
+		- gpt
+			- 34
+			- 410
+			- 154
+		- gemini
+			- 540
+			- 162
 - needcode `grind 75` - similar LC by AI
 	- https://neetcode.io/practice?tab=blind75
 	- LC 49 Group Anagrams
