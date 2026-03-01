@@ -2718,7 +2718,80 @@ public class Workspace21 {
     }
 
 
+    // LC 737
+    // 14.02 - 22 PM
+    /**
+     *
+     * -> Note that the similarity relation is `transitive.`
+     *  For example, if "great" and "good" are similar,
+     *  and "fine" and "good" are similar,
+     * then "great" and "fine" are similar.
+     *
+     *
+     */
+    // IDEA: HASHMAP + DFS ???
+    public boolean areSentencesSimilarTwo_1(
+            String[] sentence1, String[] sentence2, List<List<String>> similarPairs) {
+        // Check if sentences are of different lengths
+        if (sentence1.length != sentence2.length) {
+            return false;
+        }
 
+        // Create a map to store similar pairs
+        Map<String, String> map = new HashMap<>();
+        for (List<String> pair : similarPairs) {
+            /** NOTE !!!
+             *
+             *  Ensure both directions are stored
+             */
+            map.put(pair.get(0), pair.get(1));
+            map.put(pair.get(1), pair.get(0)); // Ensure both directions are stored
+        }
+
+        // Check if sentences are similar
+        for (int j = 0; j < sentence1.length; j++) {
+            String s1 = sentence1[j];
+            String s2 = sentence2[j];
+
+            /** NOTE !!!
+             *
+             *  below checking logic
+             */
+//            if (!s1.equals(s2) &&
+//                    !(map.containsKey(s1) && map.get(s1).equals(s2)) &&
+//                    !(map.containsKey(s2) && map.get(s2).equals(s1))) {
+//                return false;
+//            }
+
+            Set<String> visited = new HashSet<>();
+            if (!s1.equals(s2) &&
+                    !(dfsCheck(map, visited, s1, s2)) &&
+                    !(dfsCheck(map, visited, s2, s1))) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private boolean dfsCheck(Map<String, String> map, Set<String> visited, String x, String y){
+        // edge
+
+        if(x.equals(y)){
+            return true;
+        }
+
+
+        // visit `child`
+        if(map.containsKey(x)){
+            String next  = map.get(x);
+            if(!visited.contains(next) && dfsCheck(map, visited, next, y)){
+                return true;
+            }
+        }
+
+        return false;
+    }
 
 
 

@@ -3,10 +3,7 @@ package LeetCodeJava.DFS;
 // https://leetcode.com/problems/sentence-similarity-ii/editorial/
 // https://leetcode.ca/all/737.html
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * 737. Sentence Similarity II
@@ -35,6 +32,119 @@ public class SentenceSimilarity2 {
     // V0
     // TODO : implement
 //    public boolean areSentencesSimilarTwo(){}
+
+
+    // V0-1
+    // IDEA: DFS (gemini)
+    // TODO: validate
+    public boolean areSentencesSimilarTwo_0_1(String[] sentence1, String[] sentence2, List<List<String>> similarPairs) {
+        if (sentence1.length != sentence2.length) return false;
+
+        // 1. Build an Adjacency List (Graph) instead of a simple Map
+        Map<String, List<String>> adj = new HashMap<>();
+        for (List<String> pair : similarPairs) {
+            adj.computeIfAbsent(pair.get(0), k -> new ArrayList<>()).add(pair.get(1));
+            adj.computeIfAbsent(pair.get(1), k -> new ArrayList<>()).add(pair.get(0));
+        }
+
+        for (int i = 0; i < sentence1.length; i++) {
+            String s1 = sentence1[i];
+            String s2 = sentence2[i];
+
+            if (s1.equals(s2)) continue;
+
+            // 2. Perform DFS to see if s1 and s2 are in the same connected component
+            if (!dfsCheck(adj, new HashSet<>(), s1, s2)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean dfsCheck(Map<String, List<String>> adj, Set<String> visited, String curr, String target) {
+        if (curr.equals(target)) return true;
+
+        visited.add(curr);
+
+        // Visit all neighbors of the current word
+        if (adj.containsKey(curr)) {
+            for (String next : adj.get(curr)) {
+                if (!visited.contains(next)) {
+                    if (dfsCheck(adj, visited, next, target)) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+
+    // V0-2
+    // IDEA: DFS (gpt)
+    // TODO: validate
+    public boolean areSentencesSimilarTwo_0_2(
+            String[] sentence1,
+            String[] sentence2,
+            List<List<String>> similarPairs) {
+
+        if (sentence1.length != sentence2.length) {
+            return false;
+        }
+
+        // Build graph
+        Map<String, Set<String>> graph = new HashMap<>();
+
+        for (List<String> pair : similarPairs) {
+            String a = pair.get(0);
+            String b = pair.get(1);
+
+            graph.computeIfAbsent(a, k -> new HashSet<>()).add(b);
+            graph.computeIfAbsent(b, k -> new HashSet<>()).add(a);
+        }
+
+        for (int i = 0; i < sentence1.length; i++) {
+            String s1 = sentence1[i];
+            String s2 = sentence2[i];
+
+            if (s1.equals(s2)) {
+                continue;
+            }
+
+            if (!dfs(graph, s1, s2, new HashSet<>())) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private boolean dfs(Map<String, Set<String>> graph,
+                        String current,
+                        String target,
+                        Set<String> visited) {
+
+        if (current.equals(target)) {
+            return true;
+        }
+
+        visited.add(current);
+
+        if (!graph.containsKey(current)) {
+            return false;
+        }
+
+        for (String neighbor : graph.get(current)) {
+            if (!visited.contains(neighbor)) {
+                if (dfs(graph, neighbor, target, visited)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
 
     // V1
     // https://leetcode.ca/2017-12-06-737-Sentence-Similarity-II/
