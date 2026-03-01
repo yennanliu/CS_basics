@@ -104,6 +104,102 @@ public class SearchInRotatedSortedArray2 {
         return false;
     }
 
+
+    // V0-0-1
+    // IDEA: PURE BINARY SEARCH (no dedup) (gemini)
+    public boolean search_0_0_1(int[] nums, int target) {
+        if (nums == null || nums.length == 0)
+            return false;
+
+        int l = 0;
+        int r = nums.length - 1;
+
+        while (l <= r) {
+            int mid = l + (r - l) / 2;
+            int cur = nums[mid];
+
+            if (cur == target)
+                return true;
+
+            // --- THE KEY FIX FOR LC 81 ---
+            // If we can't tell which side is sorted because of duplicates,
+            // just shrink the window from both sides.
+            if (nums[l] == cur && nums[r] == cur) {
+                l++;
+                r--;
+            }
+            // Case 1: Left side is sorted
+            else if (nums[l] <= cur) {
+                // Check if target is within the sorted left half
+                if (target >= nums[l] && target < cur) {
+                    r = mid - 1;
+                } else {
+                    l = mid + 1;
+                }
+            }
+            // Case 2: Right side is sorted
+            else {
+                // Check if target is within the sorted right half
+                if (target > cur && target <= nums[r]) {
+                    l = mid + 1;
+                } else {
+                    r = mid - 1;
+                }
+            }
+        }
+
+        return false;
+    }
+
+
+    // V0-0-2
+    // IDEA: PURE BINARY SEARCH (no dedup) (GPT)
+    public boolean search_0_0_2(int[] nums, int target) {
+
+        if (nums == null || nums.length == 0) {
+            return false;
+        }
+
+        int l = 0;
+        int r = nums.length - 1;
+
+        while (l <= r) {
+
+            int mid = l + (r - l) / 2;
+
+            if (nums[mid] == target) {
+                return true;
+            }
+
+            // Handle duplicates (key difference from LC 33)
+            if (nums[l] == nums[mid] && nums[mid] == nums[r]) {
+                l++;
+                r--;
+            }
+            // Left half is sorted
+            else if (nums[l] <= nums[mid]) {
+
+                if (nums[l] <= target && target < nums[mid]) {
+                    r = mid - 1;
+                } else {
+                    l = mid + 1;
+                }
+            }
+            // Right half is sorted
+            else {
+
+                if (nums[mid] < target && target <= nums[r]) {
+                    l = mid + 1;
+                } else {
+                    r = mid - 1;
+                }
+            }
+        }
+
+        return false;
+    }
+
+
     // V0-1
     // IDEA: BINARY SEARCH + `DEDUP` + LC 33
     /**
@@ -232,5 +328,9 @@ public class SearchInRotatedSortedArray2 {
         }
         return false;
     }
+
+
+
+
 
 }
