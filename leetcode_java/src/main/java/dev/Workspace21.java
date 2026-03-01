@@ -2523,6 +2523,141 @@ public class Workspace21 {
 
 
 
+    // LC 33
+    public int search_98(int[] nums, int target) {
+        // edge
+
+        if (nums.length == 0 || nums.equals(null)){
+            return -1;
+        }
+
+        int l = 0;
+        int r = nums.length - 1;
+
+        while(r >= l){
+
+           // int mid = (l + r) / 2;
+            int mid = l + (r - l) / 2;
+            int cur = nums[mid];
+
+            if (cur == target){
+                return mid;
+            }
+
+            // case 1) mid is in left increasing arr
+            // if(cur > nums[l]){
+            if(cur >= nums[l]){
+                // if target < mid
+                if(target < mid && target >= nums[l]){
+                    r = mid -1;
+                }else{
+                    l = mid + 1;
+                }
+            }
+            // case 2) mid is in right increasing arr
+            else{
+                // if target < r
+                if(target <= nums[r] && target > cur){
+                    l = mid + 1;
+                }else{
+                    r = mid - 1;
+                }
+            }
+        }
+
+        return -1;
+    }
+
+
+
+
+
+    // LC 81
+    // 12.40 - 50 pm
+    /**
+     *  -> Given the array nums after the rotation and an integer target,
+     *       - return true if target is in nums,
+     *       - false if it is not in nums.
+     *
+     *
+     *     - nums sorted in non-decreasing
+     *     - NOTE: element could be duplicated
+     *
+     *
+     *     [0,1,2,4,4,4,5,6,6,7]
+     *     (after rotate)
+     *      ->  [4,5,6,6,7,0,1,2,4,4]
+     *
+     *
+     *   -----------
+     *
+     *    IDEA 1) BRUTE FORCE
+     *
+     *
+     *    IDEA 2)  BINARY SEARCH V1
+     *     -> duplicated array -> non duplicated
+     *       -> binary search check
+     *
+     *
+     *   IDEA 2-2)  BINARY SEARCH V2
+     *     (pivot)
+     *     1. mid is in left increasing arr
+     *
+     *     1. mid is in right increasing arr
+     *
+     *
+     *   IDEA 3)  hashset
+     *
+     *
+     *    -----------
+     *
+     */
+    // IDEA 2-2)  BINARY SEARCH V2
+    public boolean search_99(int[] nums, int target) {
+        // edge
+        if (nums.length == 0 || nums.equals(null)){
+            return false;
+        }
+
+        int l = 0;
+        int r = nums.length - 1;
+
+        while(r >= l){
+
+            // int mid = (l + r) / 2;
+            int mid = l + (r - l) / 2;
+            int cur = nums[mid];
+
+            if (cur == target){
+                return true;
+            }
+
+            // case 1) mid is in left increasing arr
+            // if(cur > nums[l]){
+            if(cur >= nums[l]){
+                // if target < mid
+                if(target < mid && target >= nums[l]){
+                    r = mid -1;
+                }else{
+                    l = mid + 1;
+                }
+            }
+            // case 2) mid is in right increasing arr
+            else{
+                // if target < r
+                if(target <= nums[r] && target > cur){
+                    l = mid + 1;
+                }else{
+                    r = mid - 1;
+                }
+            }
+        }
+
+
+        return false;
+    }
+
+
 
 
 
