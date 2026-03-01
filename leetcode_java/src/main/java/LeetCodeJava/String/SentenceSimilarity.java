@@ -125,5 +125,5 @@ public class SentenceSimilarity {
 
     // V2
 
-    
+
 }
