@@ -72,6 +72,10 @@ public class SentenceSimilarity {
         // Create a map to store similar pairs
         Map<String, String> map = new HashMap<>();
         for (List<String> pair : similarPairs) {
+            /** NOTE !!!
+             *
+             *  Ensure both directions are stored
+             */
             map.put(pair.get(0), pair.get(1));
             map.put(pair.get(1), pair.get(0)); // Ensure both directions are stored
         }
@@ -81,6 +85,10 @@ public class SentenceSimilarity {
             String s1 = sentence1[j];
             String s2 = sentence2[j];
 
+            /** NOTE !!!
+             *
+             *  below checking logic
+             */
             if (!s1.equals(s2) &&
                     !(map.containsKey(s1) && map.get(s1).equals(s2)) &&
                     !(map.containsKey(s2) && map.get(s2).equals(s1))) {
@@ -116,4 +124,6 @@ public class SentenceSimilarity {
     }
 
     // V2
+
+    
 }
