@@ -60,6 +60,30 @@ package LeetCodeJava.Array;
 class RemoveElement {
 
     // V0
+    // IDEA: 2 POINTERS (gemini)
+    public int removeElement(int[] nums, int val) {
+        int l = 0;
+        int r = nums.length - 1;
+
+        while (l <= r) {
+            if (nums[l] == val) {
+                // If the left element is the one we want to remove,
+                // replace it with whatever is at the right pointer.
+                nums[l] = nums[r];
+                // We don't move 'l' yet because the NEW nums[l] might also be 'val'.
+                // We just shrink the right boundary.
+                r--;
+            } else {
+                // Only if nums[l] is a "good" element do we move forward.
+                l++;
+            }
+        }
+
+        // When l > r, 'l' is exactly the number of non-val elements.
+        return l;
+    }
+
+    // V0-0-1
     // IDEA : 2 POINTERS
     /**
      * time = O(N)
@@ -127,7 +151,7 @@ class RemoveElement {
      *             s
      *                 f
      */
-    public int removeElement(int[] nums, int val) {
+    public int removeElement_0_0_1(int[] nums, int val) {
         int s = 0;
         for (int f = 0; f < nums.length; f++){
             if (nums[f] != val){
@@ -208,7 +232,7 @@ class RemoveElement {
         return i;
     }
 
-    
+
 
 
 }
