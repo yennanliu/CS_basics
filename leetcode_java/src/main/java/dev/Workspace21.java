@@ -2847,5 +2847,12 @@ public class Workspace21 {
     }
 
 
+    // LC 541
+    public String reverseStr(String s, int k) {
+
+        return null;
+    }
+
+
 
 }
