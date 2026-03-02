@@ -138,6 +138,38 @@ class RemoveElement {
         return s;
     }
 
+    // V0-1
+    // IDEA: 2 POINTERS (gemini)
+    public int removeElement_0_1(int[] nums, int val) {
+        int i = 0; // Pointer for the next position of a non-val element
+        for (int j = 0; j < nums.length; j++) {
+            if (nums[j] != val) {
+                nums[i] = nums[j];
+                i++;
+            }
+        }
+        return i; // i is exactly the count of elements not equal to val
+    }
+
+    // V0-2
+    // IDEA: 2 POINTERS (gpt)
+    public int removeElement_0_2(int[] nums, int val) {
+        int l = 0;
+        int r = nums.length - 1;
+
+        while (l <= r) {
+            if (nums[l] == val) {
+                nums[l] = nums[r];
+                r--;
+            } else {
+                l++;
+            }
+        }
+
+        return l;
+    }
+
+
     // V1
     // IDEA : 2 POINTERS
     // https://leetcode.com/problems/remove-element/solutions/3670940/best-100-c-java-python-beginner-friendly/
@@ -175,4 +207,8 @@ class RemoveElement {
         }
         return i;
     }
+
+    
+
+
 }

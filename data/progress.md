@@ -6,7 +6,7 @@
 - cheatsheet (LC examples)
 	- hashmap.md (OK)
 	- set.md (OK)
-	- string.md (todo)
+	- string.md (ing)
 - to review
 - needcode `250` - similar LC by AI
     - Arrays & Hashing
@@ -25,7 +25,6 @@
 	  	- 1288
 	  	- 163
 	  - gemini
-	    - 27
 	    - 41
 	    - 179
 	- LC 304

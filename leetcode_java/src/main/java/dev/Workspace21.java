@@ -2793,6 +2793,58 @@ public class Workspace21 {
         return false;
     }
 
+    // LC 27
+    // 10.04 - 14 am
+    /**
+     *  ->
+     *   Given an integer array nums and an integer val,
+     *   remove all occurrences of val in nums in-place.
+     *
+     *  -------------
+     *
+     *   IDEA 1) 2 POINTERS
+     *
+     *
+     *  -------------
+     */
+    //   IDEA 1) 2 POINTERS
+    public int removeElement(int[] nums, int val) {
+        // edge
+        if(nums == null || nums.length == 0){
+            return 0; // ???
+        }
+        if(nums.length == 1){
+            return nums[0] == val ? 0 : 1;
+        }
+
+        int l = 0;
+        int r = nums.length - 1;
+
+        while(r > l){
+            // ???
+            while(nums[r] == val){
+                r -= 1;
+                // edge
+                if (r == 0){
+                    return 0;
+                }
+            }
+            if(nums[l] == val && nums[r] != val){
+                int tmp = nums[r];
+                nums[r] = nums[l];
+                nums[l] = tmp;
+                l += 1;
+                r -= 1;
+            }else{
+                l += 1;
+            }
+        }
+
+
+        // ???
+        return l > 0 ? l + 1: 0; // ???
+    }
+
 
 
 }
