@@ -2820,7 +2820,7 @@ public class Workspace21 {
         int l = 0;
         int r = nums.length - 1;
 
-        while(r > l){
+        while(r >= l){
             // ???
             while(nums[r] == val){
                 r -= 1;
@@ -2842,7 +2842,8 @@ public class Workspace21 {
 
 
         // ???
-        return l > 0 ? l + 1: 0; // ???
+        //return l > 0 ? l + 1: 0; // ???
+        return l;
     }
 
 
