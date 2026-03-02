@@ -58,6 +58,7 @@ public class MagneticForceBetweenTwoBalls {
 
         int n = position.length;
         int l = 1; // Minimum possible force
+        /** NOTE !!! Maximum possible force */
         int r = position[n - 1] - position[0]; // Maximum possible force
 
         int ans = 0;
@@ -67,7 +68,9 @@ public class MagneticForceBetweenTwoBalls {
 
             // 2. If we can place 'm' balls with at least 'mid' distance
             if (canPlace(position, m, mid)) {
+                /** NOTE !!! maintain the minimum force  */
                 ans = mid; // This force works, save it
+                /** NOTE !!! Try to see if a LARGER force works  */
                 l = mid + 1; // Try to see if a LARGER force works
             } else {
                 r = mid - 1; // Force is too large, try smaller
