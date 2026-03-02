@@ -1,6 +1,6 @@
 # Progress
 
-# 2026-03-02
+# 2026-03-03
 
 - weekly video
 - cheatsheet (LC examples)
@@ -113,6 +113,23 @@
 		- gemini
 			- 1631
 			- 715
+	- Linkedlist (pass)
+	- tree
+	- LC 710
+		- gpt
+			- 700
+			- 938
+			- 530
+			- 450
+			- 108
+			- 235
+			- 173
+			- 99
+			- 449
+			- 285
+			- 776
+		- gemini
+			- 1569
 - needcode `grind 75` - similar LC by AI
 	- https://neetcode.io/practice?tab=blind75
 	- LC 49 Group Anagrams
