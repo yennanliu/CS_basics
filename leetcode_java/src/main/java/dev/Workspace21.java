@@ -2962,6 +2962,55 @@ public class Workspace21 {
         return searchBST(root.left, val);
     }
 
+    // LC 701
+    // 7.26 - 36 am
+    /**
+     *  -> return the root node of the BST after the insertion.
+     *  It is guaranteed that the new value
+     *  not exist in the original BST.
+     *
+     *   - root: BST
+     *   - val
+     *
+     *
+     *  ----------------
+     *  IDEA 1) BST PROPERTY
+     *
+     *  ----------------
+     *
+     *
+     */
+    // IDEA 1) BST PROPERTY
+    // time: O( log N )
+    // space: O(N)
+    public TreeNode insertIntoBST(TreeNode root, int val) {
+        // edge
+        if(root == null){
+            // ????
+            return new TreeNode(val);
+        }
+
+        /**
+         *  NOTE !!
+         *
+         *  It is guaranteed that the new value does
+         *  NOT exist in the original BST.
+         *
+         */
+        if(root.val < val){
+            root.right = insertIntoBST(root.right, val);
+        }else{
+            root.left = insertIntoBST(root.left, val);
+        }
+
+
+        // note: return root as final step
+        return root;
+    }
+
+
+
+
 
 
 }
