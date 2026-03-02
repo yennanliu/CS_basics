@@ -123,9 +123,13 @@ public class InsertIntoABinarySearchTree {
     // time: O( log N ),  In the average case (balanced tree), this is $O(\log N)$.
     // space: O( log N ),  Average Case: $O(\log N)$ for a balanced tree.
     /**
-     * Complexity,Worst Case,Average Case,Why?
-     * Time,O(N),O(logN),"In a ""skewed"" tree (like a linked list), you must visit every node to reach the bottom."
-     * Space,O(N),O(logN),"For recursion, the stack depth equals the height. In a skewed tree, this is N."
+     *
+     * | Case               | Time      | Space          |
+     * | ------------------ | --------- | -------------- |
+     * | Average (balanced) | O(log N)  | O(log N)       |
+     * | Worst (skewed)     | O(N)      | O(N)           |
+     * | Iterative space    | O(N) time | **O(1) space** |
+     *
      */
     public TreeNode insertIntoBST_0_0_1(TreeNode root, int val) {
         // 1. Base Case: We found an empty spot (null), insert the new node here.
