@@ -1,5 +1,7 @@
 package dev;
 
+import LeetCodeJava.DataStructure.TreeNode;
+
 import java.util.*;
 
 public class Workspace21 {
@@ -2925,6 +2927,39 @@ public class Workspace21 {
 
     private int getDis(int[] position, int m, int force){
         return 0;
+    }
+
+
+
+    // LC 700
+    // 7.14 - 24 am
+    /**
+     *  IDEA 1) BST -> ARRAY
+     *
+     *  IDEA 2) DFS
+     *
+     *  IDEA 1) BST PROPERTY
+     *
+     *
+     */
+    // IDEA 1) BST PROPERTY
+    public TreeNode searchBST(TreeNode root, int val) {
+        // edge
+        if(root == null){
+            return null;
+        }
+
+        System.out.println(">>> root = " + root.val);
+
+        // found
+        if(root.val == val){
+            return root;
+        }
+        if(root.val < val){
+            return searchBST(root.right, val);
+        }
+
+        return searchBST(root.left, val);
     }
 
 
