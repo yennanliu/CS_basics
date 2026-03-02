@@ -215,6 +215,115 @@ class Solution {
 }
 ```
 
+### 0-2-1b) Remove Element (Bidirectional Two Pointers)
+
+**Pattern: Left-Right pointers, shrink from both ends**
+
+Key difference from the fast-slow (0-2-1) approach:
+- Fast-slow overwrites sequentially → **preserves relative order**
+- Bidirectional replaces `nums[l]` with `nums[r]` → **does NOT preserve order**, but may do fewer writes (good when `val` is rare)
+
+```java
+// java
+// LC 27 Remove Element - Bidirectional variant
+/**
+ * Key Idea:
+ *   - l starts at 0, r starts at nums.length - 1
+ *   - If nums[l] == val, OVERWRITE it with nums[r] and shrink r
+ *     (do NOT advance l yet — the new nums[l] might also be val)
+ *   - If nums[l] != val, it is a "good" element → advance l
+ *   - When l > r, l equals the count of valid elements
+ *
+ * //--------------------
+ * Example 1
+ * //--------------------
+ * nums = [3,2,2,3], val = 3
+ *
+ * [3,2,2,3]   nums[l]=3==val, nums[l]=nums[r]=3, r--
+ *  l     r
+ *
+ * [3,2,2,3]   nums[l]=3==val, nums[l]=nums[r]=2, r--
+ *  l   r
+ *
+ * [2,2,2,3]   nums[l]=2!=val, l++
+ *  l r
+ *
+ * [2,2,2,3]   nums[l]=2!=val, l++
+ *    lr
+ *
+ * l(2) > r(1), return l = 2
+ *
+ * //--------------------
+ * Example 2
+ * //--------------------
+ * nums = [0,1,2,2,3,0,4,2], val = 2
+ *
+ * [0,1,2,2,3,0,4,2]   nums[l]=0!=val, l++
+ *  l               r
+ *
+ * [0,1,2,2,3,0,4,2]   nums[l]=1!=val, l++
+ *    l             r
+ *
+ * [0,1,2,2,3,0,4,2]   nums[l]=2==val, nums[l]=nums[r]=2, r--
+ *      l           r
+ *
+ * [0,1,2,2,3,0,4,2]   nums[l]=2==val, nums[l]=nums[r]=4, r--
+ *      l         r
+ *
+ * [0,1,4,2,3,0,4,2]   nums[l]=4!=val, l++
+ *      l       r
+ *
+ * [0,1,4,2,3,0,4,2]   nums[l]=2==val, nums[l]=nums[r]=0, r--
+ *        l     r
+ *
+ * [0,1,4,0,3,0,4,2]   nums[l]=0!=val, l++
+ *        l   r
+ *
+ * [0,1,4,0,3,0,4,2]   nums[l]=3!=val, l++
+ *          l r
+ *
+ * l(5) > r(4), return l = 5
+ *
+ * Time: O(N), Space: O(1)
+ */
+public int removeElement(int[] nums, int val) {
+    int l = 0;
+    int r = nums.length - 1;
+
+    while (l <= r) {
+        if (nums[l] == val) {
+            // Overwrite with rightmost element, shrink right boundary
+            // NOTE: do NOT advance l — new nums[l] might also be val
+            nums[l] = nums[r];
+            r--;
+        } else {
+            // Good element confirmed, advance left
+            l++;
+        }
+    }
+
+    // l is exactly the count of non-val elements
+    return l;
+}
+```
+
+**Comparison: Fast-Slow vs Bidirectional**
+
+| Aspect | Fast-Slow (0-2-1) | Bidirectional (this) |
+|--------|-------------------|----------------------|
+| **Order** | Preserves relative order | Does NOT preserve order |
+| **Writes** | One write per valid element | Fewer writes when val is rare |
+| **Loop style** | `for` loop (fast advances always) | `while (l <= r)` |
+| **When to use** | Order matters | Order doesn't matter, minimal writes |
+
+**Similar Problems:**
+- LC 27 Remove Element (this pattern)
+- LC 905 Sort Array By Parity — move evens left, odds right (same bidirectional shrink idea)
+- LC 75 Sort Colors (Dutch National Flag) — three-way bidirectional partition
+- LC 283 Move Zeroes — order matters, use fast-slow instead
+- LC 26 Remove Duplicates from Sorted Array — order matters, use fast-slow instead
+- LC 80 Remove Duplicates from Sorted Array II — order matters, use fast-slow instead
+
 ### 0-2-2) Move Zeros to End
 ```java
 // java
