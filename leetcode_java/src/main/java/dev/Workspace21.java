@@ -2868,8 +2868,62 @@ public class Workspace21 {
 
 
     // LC 1552
+    // 11.14 - 45 am
+    /**
+     * -> Given the integer array position
+     * and the integer m. Return the required force.
+     *
+     *  - Rick has n empty baskets,
+     *  - the ith basket is at position[i],
+     *
+     *   Morty has m balls and needs to
+     *   distribute the balls into the baskets
+     *
+     *   -> such that the `minimum ` magnetic force
+     *     between any two balls is `maximum.`
+     *
+     *
+     *
+     *
+     *  - magnetic force between two different
+     *     balls at positions x and y is |x - y|.
+     *
+     * -----------------
+     *
+     *  IDEA 1) BINARY SEARCH
+     *
+     *
+     * -----------------
+     *
+     */
+    // IDEA 1) BINARY SEARCH
     public int maxDistance(int[] position, int m) {
+        // edge
 
+        // force
+        int l = 0;
+        int r = position.length - 1; // ??
+
+        int minForce = r; // ??????
+        int c = 0; // ???
+
+        while(r >= l){
+
+            int mid = l + (r - l) / 2;
+            // if ...
+            int dist = getDis(position, m, mid);
+            if(dist == 0){
+                minForce = Math.min(minForce, mid);
+                r = mid - 1; // try to find smaller ans
+            }
+            //else if(dist > )
+        }
+
+
+        return minForce; // ????
+    }
+
+    private int getDis(int[] position, int m, int force){
         return 0;
     }
 
