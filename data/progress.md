@@ -48,7 +48,6 @@
 	- Two Pointers
 	- LC 344
 		- gpt
-			- 541
 			- 206
 			- 905
 			- 26
