@@ -47,9 +47,9 @@ public class SearchInABinarySearchTree {
      * time = O(H)
      * space = O(H)
      */
-
     public TreeNode searchBST(TreeNode root, int val) {
         // edge
+        /** NOTE !!! root is null handling */
         if (root == null) {
             return null;
         }
@@ -59,11 +59,13 @@ public class SearchInABinarySearchTree {
         }
 
         if (root.val < val) {
+            /** NOTE !!! below */
             return searchBST(root.right, val);
         }
 
         return searchBST(root.left, val);
     }
+
 
     // V0-1
     // IDEA: ITERATIVE + BST PROPERTY
@@ -280,6 +282,8 @@ public class SearchInABinarySearchTree {
             root = val < root.val ? root.left : root.right;
         return root;
     }
+
+
 
 
 }
