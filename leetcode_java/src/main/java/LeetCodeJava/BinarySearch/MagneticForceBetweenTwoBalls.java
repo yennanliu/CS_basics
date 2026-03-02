@@ -49,6 +49,53 @@ public class MagneticForceBetweenTwoBalls {
 //
 //    }
 
+
+    // V0-1
+    // IDEA: BINARY SEARCH
+    public int maxDistance_0_1(int[] position, int m) {
+        // 1. MUST SORT to calculate distances correctly
+        Arrays.sort(position);
+
+        int n = position.length;
+        int l = 1; // Minimum possible force
+        int r = position[n - 1] - position[0]; // Maximum possible force
+
+        int ans = 0;
+
+        while (l <= r) {
+            int mid = l + (r - l) / 2;
+
+            // 2. If we can place 'm' balls with at least 'mid' distance
+            if (canPlace(position, m, mid)) {
+                ans = mid; // This force works, save it
+                l = mid + 1; // Try to see if a LARGER force works
+            } else {
+                r = mid - 1; // Force is too large, try smaller
+            }
+        }
+
+        return ans;
+    }
+
+    private boolean canPlace(int[] position, int m, int force) {
+        int count = 1; // Place the first ball in the first position
+        int lastPos = position[0];
+
+        for (int i = 1; i < position.length; i++) {
+            // If the distance from the last placed ball is >= force
+            if (position[i] - lastPos >= force) {
+                count++;
+                lastPos = position[i]; // Update the last placed position
+
+                if (count >= m)
+                    return true; // We successfully placed all balls
+            }
+        }
+
+        return count >= m;
+    }
+
+
     // V1
     // IDEA: BINARY SEARCH
     // https://leetcode.com/problems/magnetic-force-between-two-balls/editorial/
