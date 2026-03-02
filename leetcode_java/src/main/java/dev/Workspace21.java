@@ -2867,5 +2867,12 @@ public class Workspace21 {
     }
 
 
+    // LC 1552
+    public int maxDistance(int[] position, int m) {
+
+        return 0;
+    }
+
+
 
 }
