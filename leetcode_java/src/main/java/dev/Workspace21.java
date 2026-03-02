@@ -2848,6 +2848,19 @@ public class Workspace21 {
 
 
     // LC 541
+    // 10.43 - 53 am
+    /**
+     *  ->
+     *  Given a string s and an integer k,
+     *  reverse the first k characters for every 2k
+     *  characters counting from the start of the string.
+     *
+     *
+     *  -----------------
+     *
+     *
+     *  -----------------
+     */
     public String reverseStr(String s, int k) {
 
         return null;
