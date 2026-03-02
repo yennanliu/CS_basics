@@ -118,6 +118,43 @@ public class InsertIntoABinarySearchTree {
         }
     }
 
+    // V-0-0-1
+    // IDEA 1) BST PROPERTY (GEMINI)
+    // time: O( log N ),  In the average case (balanced tree), this is $O(\log N)$.
+    // space: O( log N ),  Average Case: $O(\log N)$ for a balanced tree.
+    /**
+     * Complexity,Worst Case,Average Case,Why?
+     * Time,O(N),O(logN),"In a ""skewed"" tree (like a linked list), you must visit every node to reach the bottom."
+     * Space,O(N),O(logN),"For recursion, the stack depth equals the height. In a skewed tree, this is N."
+     */
+    public TreeNode insertIntoBST_0_0_1(TreeNode root, int val) {
+        // 1. Base Case: We found an empty spot (null), insert the new node here.
+        if (root == null) {
+            return new TreeNode(val);
+        }
+
+        /**
+         *  NOTE !!
+         *
+         *  It is guaranteed that the new value does
+         *  NOT exist in the original BST.
+         *
+         */
+
+        // 2. BST Property: If new value is GREATER than current, go RIGHT.
+        if (root.val < val) {
+            root.right = insertIntoBST_0_0_1(root.right, val);
+        }
+        // 3. BST Property: If new value is SMALLER than current, go LEFT.
+        else {
+            root.left = insertIntoBST_0_0_1(root.left, val);
+        }
+
+        // 4. Return the (potentially updated) current node.
+        return root;
+    }
+
+
     // V0-1
     // IDEA: RECURSION (fixed by gpt)
     /**
@@ -300,5 +337,8 @@ public class InsertIntoABinarySearchTree {
 
         return root;
     }
+
+
+
 
 }

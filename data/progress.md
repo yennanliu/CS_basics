@@ -115,7 +115,7 @@
 			- 715
 	- Linkedlist (pass)
 	- tree
-	- LC 710
+	- LC 701
 		- gpt
 			- 938
 			- 530
