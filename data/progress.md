@@ -7,7 +7,8 @@
 	- hashmap.md (OK)
 	- set.md (OK)
 	- string.md (OK)
-	- queue.md (TODO)
+	- queue.md (OK)
+	- stack.md (todo)
 - to review
 - needcode `250` - similar LC by AI
     - Arrays & Hashing
