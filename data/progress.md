@@ -6,7 +6,8 @@
 - cheatsheet (LC examples)
 	- hashmap.md (OK)
 	- set.md (OK)
-	- string.md (ing)
+	- string.md (OK)
+	- queue.md (TODO)
 - to review
 - needcode `250` - similar LC by AI
     - Arrays & Hashing
