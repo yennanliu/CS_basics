@@ -61,45 +61,74 @@ import LeetCodeJava.DataStructure.TreeNode;
 public class LowestCommonAncestorOfABinarySearchTree {
 
     // V0
-    // IDEA : RECURSIVE + BST PROPERTY
+    // IDEA: BST PROPERTY + DFS
     /**
-     * time = O(H)
-     * space = O(H)
+     *  Complexity:Time: $O(H)$ where $H$ is the height of the tree
+     *  ($O(\log N)$ average, $O(N)$ worst).
+     *
+     *  Space: $O(H)$ due to the recursion stack.
      */
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        // 1. Base case
+        if (root == null) {
+            return null;
+        }
 
-        // if root equals p or q, return root as LCA
-        if (root.equals(p) || root.equals(q)) {
+        // 2. Determine directions: 1 for Right, -1 for Left, 0 for Match
+        // Using Integer.compare or simple if-else to handle the 0 case
+        int res1 = (p.val > root.val) ? 1 : (p.val < root.val ? -1 : 0);
+        int res2 = (q.val > root.val) ? 1 : (q.val < root.val ? -1 : 0);
+
+        // 3. If they are on different sides (one -1, one 1)
+        // OR if one of them IS the current root (one of them is 0)
+        // The product will be <= 0.
+        if (res1 * res2 <= 0) {
             return root;
         }
 
-        /**
-         * NOTE !!!
-         *
-         * if can reach below
-         * -> p, q are in different side (sub tree)
-         * -> then return root as LCA directly
-         */
+        // 4. If both are on the left side (both are -1)
+        if (res1 < 0) {
+            return lowestCommonAncestor(root.left, p, q);
+        }
+
+        // 5. Otherwise, both must be on the right side (both are 1)
+        return lowestCommonAncestor(root.right, p, q);
+    }
+
+
+    // V0-0-1
+    // IDEA 1) BST PROPERTY + DFS (GPT)
+    // Average time: O(log N)
+    // Worst time: O(N)
+    // Space: O(H)
+    public TreeNode lowestCommonAncestor_0_0_1(TreeNode root, TreeNode p, TreeNode q) {
+
+        // edge
+        if (root == null) {
+            return null;
+        }
+
+        // if root equals p or q
+        if (root.val == p.val || root.val == q.val) {
+            return root;
+        }
+
+        // both nodes in left subtree
+        if (p.val < root.val && q.val < root.val) {
+            return lowestCommonAncestor_0_0_1(root.left, p, q);
+        }
+
+        // both nodes in right subtree
+        if (p.val > root.val && q.val > root.val) {
+            return lowestCommonAncestor_0_0_1(root.right, p, q);
+        }
+
+        // split point → this is LCA
         return root;
     }
 
-    // V0-0-1
-    // IDEA: DFS + EARLY QUIT (fixed by gpt)
-    /**
-     * time = O(H)
-     * space = O(H)
-     */
-    public TreeNode lowestCommonAncestor_0_0_1(TreeNode root, TreeNode p, TreeNode q) {
-        if (root == null)
-            return null;
 
-        // Early exit: if root matches p or q
-        if (root.val == p.val || root.val == q.val)
-            return root;
-
-        return root; // Placeholder logic based on original structure
-    }
-
+    // V0-1
     /**
      * time = O(H)
      * space = O(H)
@@ -258,7 +287,6 @@ public class LowestCommonAncestorOfABinarySearchTree {
         }
         return null;
     }
-
 
     
 

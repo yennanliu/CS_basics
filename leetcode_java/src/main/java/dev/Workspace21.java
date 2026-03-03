@@ -1618,7 +1618,7 @@ public class Workspace21 {
         return false;
     }
 
-    
+
     // LC 35
     // 18.08-18
     /**
@@ -3007,6 +3007,59 @@ public class Workspace21 {
         // note: return root as final step
         return root;
     }
+
+
+    // LC 235
+    // 9.44 - 54 am
+    /**
+     *  -> find the lowest common ancestor (LCA)
+     *  node of two given nodes in the BST.
+     *
+     *
+     *  --------------
+     *
+     *   IDEA 1) BST PROPERTY + DFS
+     *
+     *
+     *  --------------
+     *
+     *
+     */
+    // DEA 1) BST PROPERTY + DFS
+    // time: O ( log N)
+    // space: O (log N)
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        // edge
+        if(root == null){
+            return null; // ???
+        }
+        // ?????
+        if(p.val == root.val || q.val == root.val || p.val == q.val){
+            return root;
+        }
+//        if(p.val == q.val){
+//            return root;
+//        }
+
+        // ???
+        int res1 = p.val > root.val ? 1 : -1;
+        int res2 = q.val > root.val ? 1 : -1;
+        if(res1 * res2 < 0){
+            return root;
+        }
+
+        if(res1 < 1 && res2 < 1){
+            return lowestCommonAncestor(root.left, p, q);
+        }
+//        else{
+//            return lowestCommonAncestor(root.right, p, q);
+//        }
+
+
+        return lowestCommonAncestor(root.right, p, q);
+        //return root;
+    }
+
 
 
 
