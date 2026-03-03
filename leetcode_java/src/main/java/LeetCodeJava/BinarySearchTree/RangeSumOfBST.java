@@ -43,9 +43,67 @@ import java.util.Stack;
 public class RangeSumOfBST {
 
     // V0
-//    public int rangeSumBST(TreeNode root, int low, int high) {
-//
-//    }
+    // IDEA: DFS
+    // Time: O(N) - visits each node once in worst case
+    // Space: O(H) - where H is height, O(N) in worst case (skewed tree)
+    /**
+     * Metric,Complexity,Explanation
+     * Time,O(N),"In the worst case, every single node in the tree must be visited to check if its value falls within the [low, high] range."
+     * Space,O(H),This is the space used by the recursion stack. H is the height of the tree.
+     * Space (Worst),O(N),"If the tree is ""skewed"" (like a linked list), the recursion depth reaches N."
+     * Space (Average),O(logN),"For a balanced BST, the height is logarithmic."
+     *
+     */
+    int nodeSum = 0;
+    public int rangeSumBST(TreeNode root, int low, int high) {
+        // edge
+        if (root == null) {
+            return 0;
+        }
+        // pre-order traverse + BST
+        if (root.val <= high && root.val >= low) {
+            nodeSum += root.val;
+        }
+        // ??
+        rangeSumBST(root.left, low, high);
+        rangeSumBST(root.right, low, high);
+
+        return nodeSum;
+    }
+
+    // V0-1
+    // IDEA 2) DFS + BST (GEMINI)
+    // Time: O(N) - visits each node once in worst case
+    // Space: O(H) - where H is height, O(N) in worst case (skewed tree)
+    public int rangeSumBST_0_1(TreeNode root, int low, int high) {
+        // 1. Base case
+        if (root == null) {
+            return 0;
+        }
+
+        int currentSum = 0;
+
+        // 2. Check current node
+        if (root.val >= low && root.val <= high) {
+            currentSum = root.val;
+        }
+
+        // 3. Optimization using BST properties:
+        // Only search left if the current value is greater than 'low'
+        // (If root.val <= low, there's no need to look at anything smaller on the left)
+        if (root.val > low) {
+            currentSum += rangeSumBST_0_1(root.left, low, high);
+        }
+
+        // 4. Only search right if the current value is smaller than 'high'
+        // (If root.val >= high, there's no need to look at anything larger on the right)
+        if (root.val < high) {
+            currentSum += rangeSumBST_0_1(root.right, low, high);
+        }
+
+        return currentSum;
+    }
+
 
     // V1
     // https://leetcode.com/problems/range-sum-of-bst/solutions/4525606/9943easy-solutionwith-explanation-by-mra-ecci/
@@ -133,5 +191,6 @@ public class RangeSumOfBST {
     // V3
 
 
+    
 
 }

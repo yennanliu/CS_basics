@@ -3063,10 +3063,48 @@ public class Workspace21 {
 
 
     // LC 938
+    // 10.16 - 26 am
+    /**
+     *
+     *  -> return the sum of values of all
+     *  nodes with a value in the inclusive range [low, high].
+     *
+     *  --------------
+     *
+     *   IDEA 1) DFS
+     *
+     *   IDEA 2) BST + dfs
+     *
+     *
+     *  --------------
+     *
+     *
+     *
+     *
+     */
+    // IDEA 2) DFS
+    // time: O (N)
+    // space: O (N)
+    int nodeSum = 0;
     public int rangeSumBST(TreeNode root, int low, int high) {
+        // edge
+        if(root == null){
+            return 0;
+        }
+        // pre-order traverse + BST
+        if(root.val <= high && root.val >= low){
+            nodeSum += root.val;
+        }
+        // ??
+        rangeSumBST(root.left, low, high);
+        rangeSumBST(root.right, low, high);
 
-        return 0;
+        return nodeSum;
     }
+
+
+
+
 
 
 
