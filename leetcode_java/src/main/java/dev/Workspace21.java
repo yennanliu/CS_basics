@@ -3104,6 +3104,103 @@ public class Workspace21 {
 
 
 
+    // LC 450
+    // 10.50 - 11.00 am
+    /**
+     *  -> delete the node with the given key in the BST.
+     *  Return the root node reference (possibly updated) of the BST..
+     *
+     *
+     *  -----------------
+     *
+     *   IDEA 1) BST + DFS + `delete op`
+     *     - 1. found to-delete node
+     *         - if sub left, right are null
+     *            - return node directly
+     *        -  if sub left or right is null
+     *           - return the sub node which is NOT null
+     *        - if both sub left and right are NOT null
+     *           - go to right sub node
+     *           - recursively go to left sub node
+     *           - swap cur node with the left sub node (from above)
+     *           - apply delete_func on left sub node and re-point
+     *               node.right = delete_func(left_sub_node)
+     *
+     *     - 2. NOT found to-delete node
+     *         - if root.val < key
+     *            - search on right sub node
+     *        - else
+     *            - search on left sub node
+     *
+     *  -----------------
+     *
+     *
+     */
+    // IDEA 1) BST + DFS + `delete op`
+    // time: O(log N + N)  // /??
+    // space: O(N) // ?????
+    public TreeNode deleteNode(TreeNode root, int key) {
+        // edge
+        if(root == null){
+            return null;
+        }
+
+        if(root.val == key){
+            if(root.left == null && root.right == null){
+                return null; // ???
+            }
+            if(root.left == null){
+                return root.right; // ???
+            }
+            else if (root.right == null){
+                return root.left; // ???
+            }
+            // - if both sub left and right are NOT null
+            else{
+                TreeNode right = root.right; // ???
+                TreeNode leftMost = findLeftMostNode(right);
+                // swap
+                // ??? cache
+//                TreeNode cache = root;
+//                root = leftMost; // ??
+//                leftMost = cache; // ?? needed ????
+
+                TreeNode cache = root;
+                root.val = leftMost.val; // ??
+               // leftMost = cache; // ?? needed ????
+
+
+                // delete
+                right.left = deleteNode(right, leftMost.val); // /?????
+            }
+        }
+        else{
+            if(root.val < key){
+                root.right = deleteNode(root.right, key);
+            }else{
+                root.left = deleteNode(root.left, key);
+            }
+        }
+
+
+        // ???
+        return root;
+    }
+
+
+    // ???
+    private TreeNode findLeftMostNode(TreeNode root){
+        // edge // ????
+        if(root == null){
+            return null;
+        }
+        while (root.left != null){
+            root = root.left;
+        }
+        return root;
+    }
+
+
 
 
 

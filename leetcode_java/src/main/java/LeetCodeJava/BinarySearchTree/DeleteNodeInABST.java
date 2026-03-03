@@ -56,8 +56,8 @@ public class DeleteNodeInABST {
      * | Two Children | Both children       | Replace with in-order successor, then delete the successor |
      *
      * `in-order successor`: Left → root → Right
-     * * time = O(H)
-     * space = O(H)
+     *    time = O(H)
+     *    space = O(H)
      */
     public TreeNode deleteNode(TreeNode root, int key) {
         return deleteNodeHelper_0(root, key);
@@ -121,6 +121,80 @@ public class DeleteNodeInABST {
         }
         return node;
     }
+
+
+    // V0-0-1
+    // IDEA: BST + DFS (fixed by gemini)
+    /**
+     * ### 📊 Complexity Analysis
+     *
+     * #### **Time Complexity: $O(H)$**
+     *
+     * * $H$ is the height of the tree.
+     * * In the **average case** (balanced tree), this is **$O(\log N)$**.
+     * * In the **worst case** (skewed tree), this is **$O(N)$**.
+     * * **Why?** We first spend $O(H)$ to find the node. If it has two children, we spend another $O(H)$ to find the successor and delete it. Since these are sequential or nested within the same path, the total time remains proportional to the height.
+     *
+     * #### **Space Complexity: $O(H)$**
+     *
+     * * This is the space used by the **recursion stack**.
+     * * **Average Case**: $O(\log N)$.
+     * * **Worst Case**: $O(N)$ for a skewed tree.
+     * * **Why?** Each recursive call adds a frame to the stack until we reach the node to be deleted or a leaf.
+     *
+     *
+     */
+    public TreeNode deleteNode_0_0_1(TreeNode root, int key) {
+        if (root == null) {
+            return null;
+        }
+
+        if (root.val == key) {
+            // Case 1: No children or Case 2: One child (Right)
+            if (root.left == null) {
+                return root.right;
+            }
+            // Case 2: One child (Left)
+            else if (root.right == null) {
+                return root.left;
+            }
+            /** NOTE !!!  below */
+            // Case 3: Two children
+            else {
+                /** NOTE !!!
+                 *
+                 *   1 go right sub node, and find `left most` sub left node
+                 *   2. `swap` -> NOTE !!! swap node val
+                 *   3. run delete op on sub right node (delete the `leftMostNode` node)
+                 */
+                // 1. Find the in-order successor (leftmost node in the right subtree)
+                TreeNode leftMostNode = findLeftMostNode(root.right);
+
+                /** NOTE !!!  how we `swap` node */
+                // 2. Overwrite current root's value with successor's value
+                root.val = leftMostNode.val;
+
+                // 3. Delete the successor node from the right subtree
+                root.right = deleteNode_0_0_1(root.right, leftMostNode.val);
+            }
+        } else {
+            if (root.val < key) {
+                root.right = deleteNode_0_0_1(root.right, key);
+            } else {
+                root.left = deleteNode_0_0_1(root.left, key);
+            }
+        }
+
+        return root;
+    }
+
+    private TreeNode findLeftMostNode(TreeNode node) {
+        while (node.left != null) {
+            node = node.left;
+        }
+        return node;
+    }
+
 
     // V0-1
     // IDEA: DFS + BST property
