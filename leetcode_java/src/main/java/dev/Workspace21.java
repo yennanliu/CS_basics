@@ -3385,6 +3385,58 @@ public class Workspace21 {
     }
 
 
+    // LC 525
+    // 16.20 - 32 pm
+    /**
+     *  IDEA 1) PREFIX SUM + HASHMAP
+     *
+     *   map :  { prefix_sum : idx }
+     *
+     *
+     */
+    // IDEA 1) PREFIX SUM + HASHMAP
+    public int findMaxLength(int[] nums) {
+        // edge
+
+        int maxLen = 0;
+
+        // init ???
+        // init ???
+       // map.put(0, -1); // ????
+
+
+        int prefix = 0;
+        Map<Integer, Integer> map = new HashMap<>();
+        for(int i = 0; i < nums.length; i++){
+            int val = nums[i];
+            // ???
+            // prefix_b - x = 0
+            // x = prefix_b
+            //prefix += val;
+            if(val == 1){
+                prefix += 1;
+            }else{
+                prefix -= 1;
+            }
+
+            if(map.containsKey(prefix)){
+               // maxLen = Math.max(maxLen, i - map.get(prefix) + 1);
+                maxLen = Math.max(maxLen, i - map.get(prefix));
+            }
+
+            // update to map ??? (if not existed yet ???)
+            // if existed, we are NOT update/append
+            // since what we want if `longest contiguous array` ???
+            // so idx is smaller, is better
+            if(!map.containsKey(prefix)){
+                map.put(prefix, i);
+            }
+
+        }
+
+
+        return maxLen;
+    }
 
 
 
