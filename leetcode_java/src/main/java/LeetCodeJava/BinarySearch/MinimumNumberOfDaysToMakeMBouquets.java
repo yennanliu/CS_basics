@@ -57,7 +57,84 @@ public class MinimumNumberOfDaysToMakeMBouquets {
 
     // V0
     // IDEA: BINARY SEARCH (gemini)
+    // time: O(N * log N)
+    // space: O(1)
+    /**
+     *
+     * // Time:  O(N * log D)
+     * // Space: O(1)
+     *
+     *  Where D = max bloom day.
+     */
     public int minDays(int[] bloomDay, int m, int k) {
+        // 1. Quick check: If we don't have enough flowers total, it's impossible.
+        // Use long to avoid overflow if m and k are large
+        if ((long) m * k > bloomDay.length) {
+            return -1;
+        }
+
+        int l = 1; // Minimum possible day
+        int r = 0; // Maximum possible day
+        for (int b : bloomDay) {
+            r = Math.max(r, b);
+        }
+
+        int minDate = -1;
+
+        while (l <= r) {
+            int mid = l + (r - l) / 2;
+
+            /** NOTE !!!
+             *
+             *  `>=`, but not `==`,
+             *   since get more bouquets if also acceptable
+             */
+            // If we can make AT LEAST m bouquets, this day works.
+            if (getBouquets_2(bloomDay, k, mid) >= m) {
+                minDate = mid; // Save the day
+                r = mid - 1; // Try to find an even smaller (earlier) day
+            } else {
+                l = mid + 1; // Not enough flowers yet, must wait longer
+            }
+        }
+
+        return minDate;
+    }
+
+    /** NOTE !!!
+     *
+     *   we pass `middle` (day) to help func (3rd param)
+     *   and return bouquets as result
+     */
+    private int getBouquets_2(int[] bloomDay, int k, int day) {
+        int bouquets = 0;
+        int count = 0;
+
+        for (int bloom : bloomDay) {
+            if (bloom <= day) {
+                count++;
+                /** NOTE !!!
+                 *
+                 *   we check `continuous count`
+                 *   right after `bloom <= day`
+                 */
+                // If we have k adjacent flowers, we made 1 bouquet
+                if (count == k) {
+                    bouquets++;
+                    count = 0; // Reset count for the next bouquet
+                }
+            } else {
+                // Flowers must be ADJACENT. If one isn't bloomed, reset.
+                count = 0;
+            }
+        }
+        return bouquets;
+    }
+
+
+    // V0-0-1
+    // IDEA: BINARY SEARCH (gemini)
+    public int minDays_0_0_1(int[] bloomDay, int m, int k) {
         // 1. Use long to prevent overflow
         if ((long) m * k > bloomDay.length)
             return -1;
@@ -71,7 +148,8 @@ public class MinimumNumberOfDaysToMakeMBouquets {
             // 2. Logic: If we can make AT LEAST m bouquets, try a smaller day
             /** NOTE !!!
              *
-             *  `>=`, but not `==`
+             *  `>=`, but not `==`,
+             *   since get more bouquets if also acceptable
              */
             if (getBouquets(bloomDay, k, mid) >= m) {
                 ans = mid;
@@ -110,6 +188,7 @@ public class MinimumNumberOfDaysToMakeMBouquets {
         }
         return count;
     }
+
 
     // V0-1
     // IDEA: BINARY SEARCH (gemini)
