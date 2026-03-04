@@ -3439,6 +3439,12 @@ public class Workspace21 {
     }
 
 
+    // LC 738
+    public int monotoneIncreasingDigits(int n) {
+
+        return 0;
+    }
+
 
 
 
