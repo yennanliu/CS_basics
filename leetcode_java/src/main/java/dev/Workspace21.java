@@ -2444,7 +2444,92 @@ public class Workspace21 {
      *  -----------------
      *
      */
+    // LC 1482
+    // 15.43 - 53 pm
+    /**
+     *  -> Return the minimum number
+     *  of days you need to wait to be able to make m
+     *
+     *
+     *  - IDEA 2) BINARY SEARCH ???
+     *
+     *
+     *
+     */
+    // IDEA 2) BINARY SEARCH ???
     public int minDays(int[] bloomDay, int m, int k) {
+        // edge
+        int neededFollower = m * k;
+        int n = bloomDay.length;
+        if( n < neededFollower ){
+            return -1;
+        }
+
+        int l = 0;
+        int r = 0;
+        // ???
+        for(int b: bloomDay){
+            r = Math.max(r, b);
+        }
+
+        //int minDate = r; // ???
+        // note !!
+        int minDate = -1;
+
+        while( r >= l ){
+            // mid : days
+            int mid = l + (r - l) / 2;
+            int bouquets = getBouquets_2(bloomDay, m, k, mid);
+            // NOTE !!! >=
+            if(bouquets >= m){
+                minDate = Math.min(minDate, mid); // ???
+                // NOTE !!! still try to find if there is shorted day
+                r = mid - 1;
+            }
+            else{
+                l = mid + 1;
+            }
+        }
+
+
+        //return minDate > 0 ? minDate : -1;
+        return minDate;
+    }
+
+
+    private int getBouquets_2(int[] bloomDay, int m, int k, int mid){
+        //int days = 0;
+        // ???
+        int bouquets = 0;
+        int cnt = 0;
+        for(int i = 0; i < bloomDay.length; i++){
+            int val = bloomDay[i];
+            if(mid >= val){
+                cnt += 1;
+            }else{
+                cnt = 0;
+            }
+
+            // ??
+            if(cnt == k){
+                bouquets += 1;
+                // reset
+                cnt = 0;
+            }
+        }
+
+        return bouquets;
+    }
+
+
+
+
+
+
+
+
+
+    public int minDays_99(int[] bloomDay, int m, int k) {
         // edge
 
         int needFollower = m * k;
