@@ -38,9 +38,56 @@ package LeetCodeJava.Greedy;
 public class MonotoneIncreasingDigits {
 
     // V0
-//    public int monotoneIncreasingDigits(int n) {
-//
-//    }
+    // IDEA: BRUTE FORCE (fixed by gemini)
+    public int monotoneIncreasingDigits(int n) {
+        char[] digits = String.valueOf(n).toCharArray();
+
+        // 1. Find the first cliff (where digits start decreasing)
+        // We want to mark the start of the "9s"
+        int marker = digits.length;
+
+        for (int i = digits.length - 1; i > 0; i--) {
+            // If current digit is smaller than the previous one
+            if (digits[i - 1] > digits[i]) {
+                // Decrease the previous digit
+                digits[i - 1]--;
+                // Mark that every digit from index i onwards should become '9'
+                marker = i;
+            }
+        }
+
+        // 2. Set all digits after the modified position to 9
+        for (int i = marker; i < digits.length; i++) {
+            digits[i] = '9';
+        }
+
+        return Integer.parseInt(new String(digits));
+    }
+
+    // V0-1
+    // IDEA: BRUTE FORCE (fixed by GPT)
+    public int monotoneIncreasingDigits_0_1(int n) {
+
+        char[] arr = String.valueOf(n).toCharArray();
+
+        int mark = arr.length;
+
+        // Traverse from right to left
+        for (int i = arr.length - 1; i > 0; i--) {
+            if (arr[i] < arr[i - 1]) {
+                arr[i - 1]--; // decrease previous digit
+                mark = i; // mark position
+            }
+        }
+
+        // Fill everything after mark with 9
+        for (int i = mark; i < arr.length; i++) {
+            arr[i] = '9';
+        }
+
+        return Integer.parseInt(new String(arr));
+    }
+
 
 
     // V1-1
