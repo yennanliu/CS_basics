@@ -3440,9 +3440,64 @@ public class Workspace21 {
 
 
     // LC 738
+    // 17.00 - 10 pm
+    /**
+     *
+     * -> Given an integer n, return the largest
+     *  number that is less than
+     *  or equal to n with monotone increasing digits.
+     *
+     *  -----------
+     *
+     *   IDEA 1) BRUTE FORCE ????
+     *
+     *
+     *  -----------
+     *
+     */
+    // IDEA 1) BRUTE FORCE ????
     public int monotoneIncreasingDigits(int n) {
+        // edge ???
+        if( n <= 10 ){
+            return baseCheck(n);
+        }
+        // ???
+        while(n > 10){
+            if(isMonoIncrease(n)){
+                return n;
+            }
+            n -= 1;
+        }
 
-        return 0;
+        // ????
+        return baseCheck(n);
+    }
+
+    private boolean isMonoIncrease(int x){
+        // ??
+       // int prev = -1;
+        String str = String.valueOf(x);
+        for(int i = 1; i < str.length(); i++){
+            int cur = str.charAt(i); // ???
+            int prev = str.charAt(i-1);
+            if(cur < prev){
+                return false;
+            }
+          //  prev = cur;
+        }
+        return true;
+    }
+
+
+    private int baseCheck(int n){
+        // edge
+        if(n == 10){
+            return 9;
+        }
+//        if(n < 10){
+//            return n; // ???
+//        }
+        return n; // ???
     }
 
 
