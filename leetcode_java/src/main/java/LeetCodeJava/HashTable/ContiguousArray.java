@@ -102,6 +102,7 @@ public class ContiguousArray {
         // Map: { PrefixSum : First_Index_It_Occurred }
         Map<Integer, Integer> map = new HashMap<>();
 
+        /** NOTE !!! init map as {0: -1} */
         // Base Case: A sum of 0 exists at index -1
         map.put(0, -1);
 
@@ -136,12 +137,33 @@ public class ContiguousArray {
                  *
                  *   (NOT `i - prevIndex + 1`)
                  *
+                 *  V1
                  *
                  *  -> The -1 Base Case:
                  *       By putting (0, -1) in the map,
                  *       we handle subarrays that start from index 0 correctly.
                  *
                  *      ->  If prefixSum is 0 at index 3, the length is 3 - (-1) = 4.
+                 *
+                 *  ------------
+                 *
+                 *  V2:
+                 *
+                 *  ### 2. Why Prefix Sums use $i - j$
+                 *
+                 * When we find that the prefix sum at index $i$ is the same as the prefix sum at index $j$, it means the sum of elements **after** $j$ up to $i$ is zero.
+                 *
+                 * > **Example:** `nums = [1, 0]` $\rightarrow$ interpreted as `[1, -1]`
+                 * > * `prefixSum` at index **-1**: `0` (Initial state)
+                 * > * `prefixSum` at index **0**: `1`
+                 * > * `prefixSum` at index **1**: `0`
+                 * >
+                 * >
+                 * > When we see `0` at index $1$, we look back and see `0` was at index $-1$.
+                 * > Calculation: $1 - (-1) = 2$. **Correct.**
+                 *
+                 * If you tried to use `+ 1`, the math would be $1 - (-1) + 1 = 3$, which is **wrong**.
+                 *
                  */
                 maxLength = Math.max(maxLength, i - prevIndex);
             } else {
