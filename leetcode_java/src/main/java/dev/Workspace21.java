@@ -2731,6 +2731,105 @@ public class Workspace21 {
      *
      *
      */
+    // LC 737
+    // 15.07 - 17 PM
+    /**
+     *  IDEA 1) HASHMAP + DFS
+     *
+     *   map: { val : [similar_1, similar_2, ...] }
+     *
+     */
+     public boolean areSentencesSimilarTwo(String[] sentence1, String[] sentence2, List<List<String>> similarPairs){
+         // edge
+         if(sentence1.length != sentence2.length){
+             return false;
+         }
+
+         // map: { val : [similar_1, similar_2, ...] }
+         Map<String, List<String>> map = new HashMap<>();
+         for(int i = 0; i < similarPairs.size(); i++){
+
+             String w1 = similarPairs.get(i).get(0);
+             String w2 = similarPairs.get(i).get(1);
+
+             List<String> list1 = map.getOrDefault(w1, new ArrayList<>());
+             list1.add(w2);
+             map.put(w1, list1);
+
+             List<String> list2 = map.getOrDefault(w2, new ArrayList<>());
+             list2.add(w1);
+             map.put(w2, list2);
+         }
+
+
+         for(int i = 0; i < sentence1.length; i++){
+             String w1 = sentence1[i];
+             String w2 = sentence2[i];
+
+             // ??? edge
+             if(w1.equals(w2)){
+                 continue;
+             }
+
+             // ?????
+             // If one word is NOT in the map
+             // and they aren't equal, they can't be similar
+             if (!map.containsKey(w1) || !map.containsKey(w2)){
+                 return false;
+             }
+
+             // /?????
+             if(!dfsSimilar2(w1, w2, map, new HashSet<>())){
+                 return false;
+             }
+         }
+
+
+         return true;
+    }
+
+    private boolean dfsSimilar2(String cur, String target, Map<String, List<String>> map, Set<String> visited){
+         // edge
+        if(cur.equals(target)){
+            return true; //????
+        }
+//        visited.contains(y){
+//            return
+//        }
+
+        // ???
+//        if(!map.containsKey(x)){
+//            return false;
+//        }
+
+        // mark as visited
+        visited.add(cur);
+
+        // NOTE !!!
+        if(map.containsKey(cur)){
+
+            for(String next: map.get(cur)){
+                // ???
+                if(!visited.contains(next) && dfsSimilar2(next, target, map, visited)){
+                    return true;
+                }
+            }
+
+        }
+
+
+         return false;
+    }
+
+
+
+
+
+
+
+
+
+
     // IDEA: HASHMAP + DFS ???
     public boolean areSentencesSimilarTwo_1(
             String[] sentence1, String[] sentence2, List<List<String>> similarPairs) {
