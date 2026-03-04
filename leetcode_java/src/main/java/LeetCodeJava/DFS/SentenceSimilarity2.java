@@ -31,7 +31,75 @@ public class SentenceSimilarity2 {
 
     // V0
     // TODO : implement
-//    public boolean areSentencesSimilarTwo(){}
+//    public boolean areSentencesSimilarTwo(String[] sentence1, String[] sentence2, List<List<String>> similarPairs){
+//    }
+
+    // V0-0-1
+    // IDEA: HASHMAP + DFS (GPT)
+    // TODO: validate
+    public boolean areSentencesSimilarTwo_0_0_1(String[] sentence1, String[] sentence2, List<List<String>> similarPairs) {
+
+        if (sentence1.length != sentence2.length) {
+            return false;
+        }
+
+        // Build graph from similarPairs (NOT from sentences)
+        Map<String, List<String>> map = new HashMap<>();
+
+        /** NOTE !!! build map via `similarPairs` */
+        for (List<String> pair : similarPairs) {
+            String w1 = pair.get(0);
+            String w2 = pair.get(1);
+
+            map.computeIfAbsent(w1, k -> new ArrayList<>()).add(w2);
+            map.computeIfAbsent(w2, k -> new ArrayList<>()).add(w1);
+        }
+
+        // Check each word pair
+        for (int i = 0; i < sentence1.length; i++) {
+            String w1 = sentence1[i];
+            String w2 = sentence2[i];
+
+            if (!dfsSimilar2(w1, w2, map, new HashSet<>())) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private boolean dfsSimilar2(String x, String y,
+                                Map<String, List<String>> map,
+                                Set<String> visited) {
+
+        if (x.equals(y)) {
+            return true;
+        }
+
+        /** NOTE !!!
+         *
+         * if NOT in similar relations
+         *  -> NOT possible to form a `similar word pair`
+         */
+        if (!map.containsKey(x)) {
+            return false;
+        }
+
+        /** NOTE !!! add to visited */
+        visited.add(x);
+
+        for (String next : map.get(x)) {
+            /** NOTE !!! check if already visited */
+            if (!visited.contains(next)) {
+                if (dfsSimilar2(next, y, map, visited)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
 
 
     // V0-1
@@ -42,9 +110,12 @@ public class SentenceSimilarity2 {
 
         /** NOTE !!!
          *
-         *  the map structure: Map<String, List<String>>.
+         *  1. the map structure: Map<String, List<String>>.
          *
          *  we CAN'T use this structure: Map<String, String>.
+         *
+         *
+         *  2. we build map via `similarPairs`
          *
          */
         // 1. Build an Adjacency List (Graph) instead of a simple Map
@@ -61,7 +132,17 @@ public class SentenceSimilarity2 {
             /** NOTE !!! below */
             if (s1.equals(s2)) continue;
 
-            /** NOTE !!! below */
+            /**  NOTE !!
+             *
+             *   // If one word is not in the map and they aren't equal, they can't be similar
+             *
+             */
+            if (!adj.containsKey(s1) || !adj.containsKey(s2)){
+                return false;
+            }
+
+            /** NOTE !!! below
+             */
             // 2. Perform DFS to see if s1 and s2 are in the same connected component
             if (!dfsCheck(adj, new HashSet<>(), s1, s2)) {
                 return false;
