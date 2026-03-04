@@ -3502,8 +3502,28 @@ public class Workspace21 {
 
 
     // LC 28
+    // 7.38 - 48
     public int strStr(String haystack, String needle) {
-        return 0;
+        // ???
+        // edge
+        if(haystack.isEmpty() && !needle.isEmpty()){
+            return -1;
+        }
+
+//        if(haystack.isEmpty() && needle.isEmpty()){
+//            return 0;
+//        }
+
+        for(int i = 0; i < haystack.length(); i++){
+            // get sub str
+            String sub =  haystack.substring(i);
+            // ????
+            if(sub.startsWith(needle)){
+                return i; // ????
+            }
+        }
+
+        return -1;
     }
 
 
