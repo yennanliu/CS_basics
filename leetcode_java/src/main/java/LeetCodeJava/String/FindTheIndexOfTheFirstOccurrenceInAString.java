@@ -53,7 +53,7 @@ public class FindTheIndexOfTheFirstOccurrenceInAString {
             if (haystack.substring(i).startsWith(needle)) {
                 return i;
             }
-            
+
         }
 
         return -1;

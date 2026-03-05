@@ -86,6 +86,42 @@ public class MinimumAbsoluteDifferenceInBST {
         getNodesDFS(root.right);
     }
 
+
+    // V0-0-1
+    // IDEA: BST PROPERTY (gemini)
+    // Member variables to track the previous value and the result
+    private Integer prev = null;
+    private int minDiff = Integer.MAX_VALUE;
+
+    public int getMinimumDifference_0_0_1(TreeNode root) {
+        // Reset variables for each call (important for LeetCode's persistence)
+        prev = null;
+        minDiff = Integer.MAX_VALUE;
+
+        inOrder_0_0_1(root);
+        return minDiff;
+    }
+
+    private void inOrder_0_0_1(TreeNode node) {
+        if (node == null) {
+            return;
+        }
+
+        // 1. Left subtree
+        inOrder_0_0_1(node.left);
+
+        // 2. Current node
+        if (prev != null) {
+            // Since it's a BST, in-order values are sorted
+            minDiff = Math.min(minDiff, node.val - prev);
+        }
+        prev = node.val;
+
+        // 3. Right subtree
+        inOrder_0_0_1(node.right);
+    }
+
+
     // V0-1
     // IDEA: BFS + SORT
     /**
@@ -120,6 +156,49 @@ public class MinimumAbsoluteDifferenceInBST {
 
         return minDiff;
     }
+
+
+    // V0-3
+    // IDEA: BFS + SORT
+    // time: O(N + logN)
+    // space: O(N)
+    public int getMinimumDifference_0_3(TreeNode root) {
+        // edge
+        if (root == null) {
+            return -1; // ???
+        }
+        if (root.right == null && root.left == null) {
+            return 0;
+        }
+        // BFS
+        List<Integer> list = new ArrayList<>();
+        Queue<TreeNode> q = new LinkedList<>();
+        q.add(root);
+        while (!q.isEmpty()) {
+            int size = q.size();
+            for (int i = 0; i < size; i++) {
+                TreeNode cur = q.poll();
+                list.add(cur.val);
+                if (cur.left != null) {
+                    q.add(cur.left);
+                }
+                if (cur.right != null) {
+                    q.add(cur.right);
+                }
+            }
+        }
+
+        // sort
+        Collections.sort(list);
+        int midDiff = Integer.MAX_VALUE;
+        for (int i = 1; i < list.size(); i++) {
+            midDiff = Math.min(list.get(i) - list.get(i - 1), midDiff);
+        }
+
+        return midDiff;
+    }
+
+
 
     // V1
     // https://leetcode.ca/2017-05-13-530-Minimum-Absolute-Difference-in-BST/
@@ -193,14 +272,12 @@ public class MinimumAbsoluteDifferenceInBST {
     // https://leetcode.com/problems/minimum-absolute-difference-in-bst/solutions/6961212/minimum-absolute-difference-in-bst-by-sh-xlgt/
     TreeNode pre = null;
     int min = Integer.MAX_VALUE;
-
     /**
 
      * time = O(N)
 
      * space = O(H)
      */
-
 
     public int getMinimumDifference_3(TreeNode root) {
         if (root == null)
@@ -225,6 +302,8 @@ public class MinimumAbsoluteDifferenceInBST {
         // Visit right subtree
         inOrder(root.right);
     }
+
+
 
 
 }

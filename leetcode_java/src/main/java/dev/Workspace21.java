@@ -3527,6 +3527,60 @@ public class Workspace21 {
     }
 
 
+    // LC 530
+    // 7.49 - 8.09 am
+    /**
+     *  -> , return the
+     *  `minimum absolute difference` between the
+     *  values of any two different nodes in the tree.
+     *
+     *
+     *  ------------
+     *
+     *  IDEA 1) GET ALL NODES -> ARRAY -> SORT
+     *
+     *  IDEA 2) BST PROPERTY  ???
+     *    - calculate and maintain the min diff
+     *      within visit nodes in BST
+     *
+     *
+     */
+    public int getMinimumDifference(TreeNode root) {
+        // edge
+        if(root == null){
+            return -1; // ???
+        }
+        if(root.right == null && root.left == null){
+            return 0;
+        }
+        // BFS
+        List<Integer> list = new ArrayList<>();
+        Queue<TreeNode> q = new LinkedList<>();
+        q.add(root);
+        while(!q.isEmpty()){
+            int size = q.size();
+            for(int i = 0; i < size; i++){
+                TreeNode cur = q.poll();
+                list.add(cur.val);
+                if(cur.left != null){
+                    q.add(cur.left);
+                }
+                if(cur.right != null){
+                    q.add(cur.right);
+                }
+            }
+        }
+
+        // sort
+        Collections.sort(list);
+        int midDiff = Integer.MAX_VALUE;
+        for(int i = 1; i < list.size(); i++){
+            midDiff = Math.min(list.get(i) - list.get(i-1), midDiff);
+        }
+
+        return midDiff;
+    }
+
 
 
 }
