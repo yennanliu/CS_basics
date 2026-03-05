@@ -1002,27 +1002,6 @@ class Solution:
         return res
 ```
 
-```c++
-// c++
-// LC 503. Next Greater Element II
-// Algorithm book (labu) p. 276
-vector<int> nextGreaterElements(vector<int> & nums){
-    int n = nums.size();
-    // save the result
-    vector<int> res(n);
-    stack<int> s;
-    // `simulate` the stack has length double
-    for (int i = 2 * n - 1; i >= 0; i --){
-        while (!s.empty() && s.top() <= nums[i % n]){
-            s.pop();
-        }
-        res[i % n] = s.empty() ? -1 : s.top();
-        s.push(nums[i % n]);
-    }
-    return res;
-}
-```
-
 ### 2-4) Daily Temperatures
 ```python
 # LC 739. Daily Temperatures
