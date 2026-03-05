@@ -102,6 +102,13 @@ public class MinimumAbsoluteDifferenceInBST {
         return minDiff;
     }
 
+    /** NOTE !!!
+     *
+     *   1. we use `in-order` traverse,  (pre, post order may work, but NOT straightforward)
+     *   2. we get `diff` via cur node and prev node
+     *   3. we can also do it in `right -> cur -> left ` node order
+     * 
+     */
     private void inOrder_0_0_1(TreeNode node) {
         if (node == null) {
             return;
@@ -160,7 +167,7 @@ public class MinimumAbsoluteDifferenceInBST {
 
     // V0-3
     // IDEA: BFS + SORT
-    // time: O(N + logN)
+    // time: O(N + N * logN)
     // space: O(N)
     public int getMinimumDifference_0_3(TreeNode root) {
         // edge
@@ -204,7 +211,7 @@ public class MinimumAbsoluteDifferenceInBST {
     // https://leetcode.ca/2017-05-13-530-Minimum-Absolute-Difference-in-BST/
     // IDEA: DFS
     private int ans;
-    private int prev;
+    private int prev_1;
     private int inf = Integer.MAX_VALUE;
 
     /**
@@ -217,7 +224,7 @@ public class MinimumAbsoluteDifferenceInBST {
 
     public int getMinimumDifference_1(TreeNode root) {
         ans = inf;
-        prev = inf;
+        prev_1 = inf;
         dfs(root);
         return ans;
     }
@@ -227,8 +234,8 @@ public class MinimumAbsoluteDifferenceInBST {
             return;
         }
         dfs(root.left);
-        ans = Math.min(ans, Math.abs(root.val - prev));
-        prev = root.val;
+        ans = Math.min(ans, Math.abs(root.val - prev_1));
+        prev_1 = root.val;
         dfs(root.right);
     }
 
