@@ -2215,7 +2215,117 @@ public class Workspace21 {
      *
      */
     // IDEA 1) STACK ???
+    // 10.08 - 18 am
+    /**
+     *  IDEA 1) STACK
+     *
+     *   case 1)  String digits = "0123456789";
+     *       add to st
+     *
+     *   case 2) [
+     *        add the next items to st
+     *
+     *   case 3) ]
+     *      pop all element in st, till meet [
+     *      and do below op:
+     *         - if prev is digits
+     *           - do `multiply op`
+     *         - else
+     *           - do nothing
+     *      append res to final res
+     *
+     *
+     */
+    // TIME: O(N) // /??
+    // SPACE : O(N)
     public String decodeString(String s) {
+        // edge
+        if (s == null || s.isEmpty()) {
+            return "";
+        }
+
+        String digits = "0123456789";
+
+        //Stack<String> st = new Stack<>();
+        Deque<String> deque = new LinkedList<>();
+
+
+        for(String x: s.split("")){
+            // case 1) x is in
+            //          - ` digits = "0123456789";`
+            //          -  or [
+            if(!x.equals("]")){
+                deque.add(x);
+            }
+            // case 2) x is [
+            else{
+                StringBuilder sb = new StringBuilder();
+                // /??
+                while(!deque.isEmpty() && !deque.peek().equals("[")){
+                   // String cur = st.pop();
+                   // sb.append(deque.pop());
+                    sb.insert(0, deque.pop());
+                }
+                // POP the [ /// ???
+                deque.pop();
+
+                // NOTE !!! below
+                // now get the number (could be multi-digit, but we’ll read digits one by one)
+                StringBuilder numSb = new StringBuilder();
+                String nums = "0123456789";
+
+                while(!deque.isEmpty() && nums.contains(deque.peek())){
+                    numSb.insert(0, deque.poll());
+                }
+
+                // NOTE !!!!
+                int repeat = Integer.parseInt(numSb.toString());
+               // deque.add(multiply(repeat, sb))
+
+
+
+                // check if `prev` is digit
+//                if(digits.contains(deque.peek())){
+//                    //int times = Integer.parseInt(st.pop());
+//                    //tring multiplyRes = multiply2(st.pop(), sb.toString());
+//                    // NOTE !!!!
+//                    deque.add(multiply2(deque.pop(), sb.toString()).reverse().toString());
+//                }else{
+//                    deque.add(sb.reverse().toString());
+//                }
+            }
+        }
+
+        // prepare res
+        StringBuilder sb2 = new StringBuilder();
+        // /?
+        for(String x: deque){
+            sb2.append(x);
+        }
+
+        return sb2.toString();
+    }
+
+
+    private StringBuilder multiply2(String times, String x){
+        int timesVal = Integer.parseInt(times);
+        StringBuilder res = new StringBuilder();
+        for(int i = 0; i < timesVal; i++){
+            res.append(x);
+        }
+        //return res.toString();
+        return res;
+    }
+
+
+
+
+
+
+
+
+    // IDEA 1) STACK ???
+    public String decodeString_99(String s) {
         // edge
         if (s == null || s.isEmpty()) {
             return "";

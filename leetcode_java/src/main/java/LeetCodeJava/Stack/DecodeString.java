@@ -147,10 +147,24 @@ public class DecodeString {
             return "";
         }
 
+        /** NOTE !!!
+         *
+         *  a `stack` is OK to deal with this LC,
+         *  deque may be a bit overhead.
+         */
         Stack<String> stack = new Stack<>();
         StringBuilder sb = new StringBuilder();
 
         for (String x : s.split("")) {
+            /** NOTE !!!
+             *
+             *   ONLY 2 CASES
+             *
+             *    1. x != "]"
+             *
+             *    2. x == "]"
+             */
+
             /** NOTE !!!
              *
              *  case 1) x != "]"
@@ -186,6 +200,10 @@ public class DecodeString {
                 while (!stack.isEmpty() && !stack.peek().equals("[")) {
                     /** NOTE !!!
                      *
+                     *   INSERT at 0 idx !!!!
+                     *
+                     *
+                     * 
                      * we append to beginning of StringBuilder  (offset = 0 )
                      *
                      * or, we can reverse the result
@@ -198,6 +216,12 @@ public class DecodeString {
                 StringBuilder numSb = new StringBuilder();
                 String nums = "0123456789";
 
+                /** NOTE !!!
+                 *
+                 *   need to use `while` loop check all `num` element in stack prior to current `[`
+                 *   so the input could as it: 123[abc],
+                 *   below code is capable to handle such case.
+                 */
                 // below 2 approaches are OK
                 //  while(!stack.isEmpty() && stack.peek().matches("\\d")){} ..
                 // 	.matches("\\d") → checks if that string is a single digit (0–9).
