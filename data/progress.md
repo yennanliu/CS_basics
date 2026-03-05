@@ -142,6 +142,11 @@
 			- 2246
 		- gemini
 			- 687
+	- LC 1047 (review)
+		- 1209
+		- 1544
+		- 316
+		- 394
 - needcode `grind 75` - similar LC by AI
 	- https://neetcode.io/practice?tab=blind75
 	- LC 49 Group Anagrams
