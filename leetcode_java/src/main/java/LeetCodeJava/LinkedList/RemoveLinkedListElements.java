@@ -41,39 +41,8 @@ public class RemoveLinkedListElements {
 
 
     // V0
-    /**
-     * time = O(N)
-     * space = O(1)
-     */
-    public ListNode removeElements(ListNode head, int val) {
-
-        if (head == null){
-            return null;
-        }
-
-        if (String.valueOf(val).equals(null)){
-            return head;
-        }
-
-        ListNode ans = new ListNode();
-        ListNode res = ans;
-
-        while(head != null){
-            if (head.val != val){
-                ans.next = new ListNode(head.val);
-                ans = ans.next;
-            }
-
-            head = head.next;
-        }
-
-        return res.next;
-    }
-
-
-    // V0-1
     // IDEA: LINKED LIST (gemini)
-    public ListNode removeElements_0_1(ListNode head, int val) {
+    public ListNode removeElements(ListNode head, int val) {
         // 1. Create a dummy node that points to the head
         // This helps if we need to delete the very first node
         ListNode dummy = new ListNode(0);
@@ -98,9 +67,9 @@ public class RemoveLinkedListElements {
     }
 
 
-    // V0-2
+    // V0-1
     // IDEA: LINKED LIST (GPT)
-    public ListNode removeElements_0_2(ListNode head, int val) {
+    public ListNode removeElements_0_1(ListNode head, int val) {
         ListNode dummy = new ListNode(0);
         dummy.next = head;
 
@@ -118,6 +87,36 @@ public class RemoveLinkedListElements {
     }
 
 
+
+    // V0-5
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
+    public ListNode removeElements_0_5(ListNode head, int val) {
+
+        if (head == null){
+            return null;
+        }
+
+        if (String.valueOf(val).equals(null)){
+            return head;
+        }
+
+        ListNode ans = new ListNode();
+        ListNode res = ans;
+
+        while(head != null){
+            if (head.val != val){
+                ans.next = new ListNode(head.val);
+                ans = ans.next;
+            }
+
+            head = head.next;
+        }
+
+        return res.next;
+    }
 
 
     // V1

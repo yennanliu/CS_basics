@@ -3702,51 +3702,73 @@ public class Workspace21 {
      */
     public ListNode removeElements(ListNode head, int val) {
         // edge
-        if(head == null){
-            return head;
-        }
-        if(head.next == null){
-            if(head.val == val){
-                return null;
+//        if(head == null){
+//            return head;
+//        }
+//        if(head.next == null){
+//            if(head.val == val){
+//                return null;
+//            }
+//            return head;
+//        }
+
+        // 1. Create a dummy node that points to the head
+        // This helps if we need to delete the very first node
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+
+        // 2. Use a 'curr' pointer to traverse the list
+        ListNode cur = dummy;
+
+        while (cur.next != null){
+            if(cur.next.val == val){
+                cur = cur.next.next;
+            }else{
+                cur = cur.next;
             }
-            return head;
         }
+
+        return dummy.next;
+
+
 
         //???
-        ListNode node = new ListNode();
-        node.next = head;
-        ListNode res = node; // ???
+//        ListNode node = new ListNode();
+//        node.next = head;
+//        ListNode res = node; // ???
+//
+//        ListNode head2 = head;
+//
+//        // get node has `val` first
+//        List<Integer> list = new ArrayList<>();
+//        int idx = 0;
+//        while(head2 != null){
+//            if(head2.val == val){
+//                list.add(idx);
+//            }
+//            head2 = head2.next;
+//            idx += 1;
+//        }
+//
+//
+//        // ???
+//        int idx2 = 0;
+//        while(node != null){
+//            // ???
+//            if(list.contains(idx2 + 1) || list.contains(0)){
+//                node = node.next.next;
+//            }else{
+//                node = node.next;
+//            }
+//
+//            idx2 += 1;
+//        }
+//
+//
+//
+//        return res.next;
 
-        ListNode head2 = head;
 
-        // get node has `val` first
-        List<Integer> list = new ArrayList<>();
-        int idx = 0;
-        while(head2 != null){
-            if(head2.val == val){
-                list.add(idx);
-            }
-            head2 = head2.next;
-            idx += 1;
-        }
-
-
-        // ???
-        int idx2 = 0;
-        while(node != null){
-            // ???
-            if(list.contains(idx2 + 1) || list.contains(0)){
-                node = node.next.next;
-            }else{
-                node = node.next;
-            }
-
-            idx2 += 1;
-        }
-
-
-
-        return res.next;
     }
 
 
