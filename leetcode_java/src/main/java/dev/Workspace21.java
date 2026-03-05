@@ -1,5 +1,6 @@
 package dev;
 
+import LeetCodeJava.DataStructure.ListNode;
 import LeetCodeJava.DataStructure.TreeNode;
 
 import java.util.*;
@@ -3690,6 +3691,67 @@ public class Workspace21 {
 
         return midDiff;
     }
+
+
+    // LC 203
+    // 7.34 -44 AM
+    /**
+     *
+     *
+     *
+     */
+    public ListNode removeElements(ListNode head, int val) {
+        // edge
+        if(head == null){
+            return head;
+        }
+        if(head.next == null){
+            if(head.val == val){
+                return null;
+            }
+            return head;
+        }
+
+        //???
+        ListNode node = new ListNode();
+        node.next = head;
+        ListNode res = node; // ???
+
+        ListNode head2 = head;
+
+        // get node has `val` first
+        List<Integer> list = new ArrayList<>();
+        int idx = 0;
+        while(head2 != null){
+            if(head2.val == val){
+                list.add(idx);
+            }
+            head2 = head2.next;
+            idx += 1;
+        }
+
+
+        // ???
+        int idx2 = 0;
+        while(node != null){
+            // ???
+            if(list.contains(idx2 + 1) || list.contains(0)){
+                node = node.next.next;
+            }else{
+                node = node.next;
+            }
+
+            idx2 += 1;
+        }
+
+
+
+        return res.next;
+    }
+
+
+
+
 
 
 
