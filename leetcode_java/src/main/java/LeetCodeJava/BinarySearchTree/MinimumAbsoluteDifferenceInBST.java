@@ -107,7 +107,7 @@ public class MinimumAbsoluteDifferenceInBST {
      *   1. we use `in-order` traverse,  (pre, post order may work, but NOT straightforward)
      *   2. we get `diff` via cur node and prev node
      *   3. we can also do it in `right -> cur -> left ` node order
-     * 
+     *
      */
     private void inOrder_0_0_1(TreeNode node) {
         if (node == null) {
