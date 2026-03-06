@@ -65,18 +65,18 @@ public class ExamRoom {
 //        }
 //
 //        /**
-         * time = O(N log N)
-         * space = O(1)
-         */
-        public int seat() {
+//         * time = O(N log N)
+//         * space = O(1)
+//         */
+//        public int seat() {
 //
 //        }
 //
 //        /**
-         * time = O(log N)
-         * space = O(1)
-         */
-        public void leave(int p) {
+//         * time = O(log N)
+//         * space = O(1)
+//         */
+//        public void leave(int p) {
 //
 //        }
 //    }

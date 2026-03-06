@@ -51,10 +51,10 @@ public class RelativeRanks {
 
     // LC 506
 //    /**
-     * time = O(N log N)
-     * space = O(N)
-     */
-    public String[] findRelativeRanks(int[] score) {
+//     * time = O(N log N)
+//     * space = O(N)
+//     */
+//    public String[] findRelativeRanks(int[] score) {
 //
 //    }
 

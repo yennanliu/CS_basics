@@ -67,9 +67,10 @@ public class BalanceABinarySearchTree {
          *  by `in order traverse`. e.g. left -> root -> right
          */
         inorder_0(root, nodes);
-    /**
-     * help func get list of node via inrder traverse
-     */
+        return rebuildBST(nodes, 0, nodes.size() - 1);
+    }
+
+    // help func get list of node via inorder traverse
     private void inorder_0(TreeNode root, List<TreeNode> nodes) {
         if (root == null) {
             return;

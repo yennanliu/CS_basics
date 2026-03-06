@@ -61,24 +61,18 @@ public class PopulatingNextRightPointersInEachNode2 {
         public Node right;
         public Node next;
 
-        /**
-         * time = O(N)
-         * space = O(H)
-         */
+        // time = O(N)
+        // space = O(H)
         public Node() {}
 
-        /**
-         * time = O(N)
-         * space = O(H)
-         */
+        // time = O(N)
+        // space = O(H)
         public Node(int _val) {
             val = _val;
         }
 
-        /**
-         * time = O(N)
-         * space = O(H)
-         */
+        // time = O(N)
+        // space = O(H)
         public Node(int _val, Node _left, Node _right, Node _next) {
             val = _val;
             left = _left;
