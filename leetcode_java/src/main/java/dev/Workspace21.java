@@ -3941,6 +3941,54 @@ public class Workspace21 {
 
 
 
+    // LC 1325
+    // 10.30 - 44 am
+    /**
+     * -> , delete all the
+     * leaf nodes with value target.
+     *
+     * --------
+     *
+     *  IDEA 1) DFS (POST ORDER TRAVERSE)
+     *
+     *
+     */
+    // IDEA 1) DFS (POST ORDER TRAVERSE)
+    public TreeNode removeLeafNodes(TreeNode root, int target) {
+        // edge
+        if(root == null){
+            return null;
+        }
+        // /??
+        if(root.val == target && (root.left == null && root.right == null)){
+            return null;
+        }
+
+        TreeNode _left = removeLeafNodes(root.left, target);
+        TreeNode _right = removeLeafNodes(root.right, target);
+
+        // ???
+//        if(_left != null && _left.val == target){
+//            _left = null;
+//        }
+//        if(_right != null && _right.val == target){
+//            _right = null;
+//        }
+//        if(root.val == target){
+//            return null;
+//        }
+
+
+        root.left = _left;
+        root.right = _right;
+
+        return root;
+    }
+
+
+
+
+
 
 
 
