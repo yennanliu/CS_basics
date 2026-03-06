@@ -314,6 +314,109 @@ public ListNode removeElements(ListNode head, int val) {
 - LC 203: Remove Linked List Elements
 - LC 328: Odd Even Linked List
 
+---
+
+#### **Remove Elements by Value Pattern**
+
+**Definition**: Remove all nodes from a linked list that match a specific value. Uses dummy head and a "look ahead" technique where the current pointer examines `curr.next` rather than `curr` itself.
+
+**Core Concept**:
+- **Key Insight**: When we find a node to remove, we ONLY update the pointer connection (`curr.next = curr.next.next`), but the `curr` pointer itself does NOT move forward
+- This allows handling consecutive matching nodes (e.g., `[6,6,6,3]` with val=6)
+- Only move `curr` forward when `curr.next.val != val`
+
+**When to Use**:
+- Removing nodes by value from anywhere in the list
+- Handling cases where head node(s) might need removal
+- Removing consecutive duplicate values
+
+**Time Complexity**: O(n)
+**Space Complexity**: O(1)
+
+**Template Pattern**:
+```java
+// Java
+public ListNode removeElements(ListNode head, int val) {
+    // 1. Create dummy node pointing to head
+    ListNode dummy = new ListNode(0);
+    dummy.next = head;
+
+    // 2. Use curr pointer (starts at dummy, looks ahead)
+    ListNode curr = dummy;
+
+    // 3. Look ahead at NEXT node
+    while (curr.next != null) {
+        if (curr.next.val == val) {
+            // Found match - skip the next node
+            // NOTE: curr does NOT move!
+            curr.next = curr.next.next;
+        } else {
+            // No match - move pointer forward
+            curr = curr.next;
+        }
+    }
+
+    // 4. Return actual head
+    return dummy.next;
+}
+```
+
+```python
+# Python
+def removeElements(self, head: ListNode, val: int) -> ListNode:
+    dummy = ListNode(0)
+    dummy.next = head
+    curr = dummy
+
+    while curr.next:
+        if curr.next.val == val:
+            curr.next = curr.next.next  # skip, don't move curr
+        else:
+            curr = curr.next  # move forward
+
+    return dummy.next
+```
+
+**Dry Run Example** (`[6,6,6,3]`, val=6):
+```
+Initial: dummy -> 6 -> 6 -> 6 -> 3, curr at dummy
+
+Step 1: curr.next.val = 6 (match!)
+  Action: curr.next = curr.next.next
+  Result: dummy -> 6 -> 6 -> 3 (curr STAYS at dummy)
+
+Step 2: curr.next.val = 6 (match!)
+  Action: curr.next = curr.next.next
+  Result: dummy -> 6 -> 3 (curr STAYS at dummy)
+
+Step 3: curr.next.val = 6 (match!)
+  Action: curr.next = curr.next.next
+  Result: dummy -> 3 (curr STAYS at dummy)
+
+Step 4: curr.next.val = 3 (no match)
+  Action: curr = curr.next
+  Result: curr moves to node 3
+
+Step 5: curr.next = null, exit loop
+Return: dummy.next = [3]
+```
+
+**Why This Works for Consecutive Matches**:
+| Scenario | Without "stay in place" | With "stay in place" |
+|----------|------------------------|---------------------|
+| `[6,6,3]` val=6 | Would skip second 6 | Catches all 6s |
+| Head removal | Needs special case | Handled uniformly |
+
+**Similar LC Problems**:
+- LC 203: Remove Linked List Elements (exact pattern)
+- LC 83: Remove Duplicates from Sorted List (similar, compare adjacent)
+- LC 82: Remove Duplicates from Sorted List II (remove all duplicates)
+- LC 237: Delete Node in a Linked List (different - no access to prev)
+- LC 1474: Delete N Nodes After M Nodes (pattern variation)
+- LC 2487: Remove Nodes From Linked List (stack-based variation)
+
+---
+
 ## 1) General form
 ```java
 // java
