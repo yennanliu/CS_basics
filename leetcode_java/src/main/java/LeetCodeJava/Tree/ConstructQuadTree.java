@@ -81,11 +81,8 @@ public class ConstructQuadTree {
         public Node bottomLeft;
         public Node bottomRight;
 
-
-        /**
-         * time = O(N)
-         * space = O(H)
-         */
+        // time = O(N)
+        // space = O(H)
         public Node() {
             this.val = false;
             this.isLeaf = false;
@@ -95,10 +92,8 @@ public class ConstructQuadTree {
             this.bottomRight = null;
         }
 
-        /**
-         * time = O(N)
-         * space = O(H)
-         */
+        // time = O(N)
+        // space = O(H)
         public Node(boolean val, boolean isLeaf) {
             this.val = val;
             this.isLeaf = isLeaf;
@@ -108,10 +103,8 @@ public class ConstructQuadTree {
             this.bottomRight = null;
         }
 
-        /**
-         * time = O(N)
-         * space = O(H)
-         */
+        // time = O(N)
+        // space = O(H)
         public Node(boolean val, boolean isLeaf, Node topLeft, Node topRight, Node bottomLeft, Node bottomRight) {
             this.val = val;
             this.isLeaf = isLeaf;
