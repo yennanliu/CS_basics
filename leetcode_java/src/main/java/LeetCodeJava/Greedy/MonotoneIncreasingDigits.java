@@ -116,6 +116,46 @@ public class MonotoneIncreasingDigits {
     }
 
 
+    // V0-2
+    // IDEA: BRUTE FORCE (TLE)
+    // IDEA 1) BRUTE FORCE ????
+    public int monotoneIncreasingDigits_0_2(int n) {
+        // edge ???
+        if( n <= 10 ){
+            return baseCheck(n);
+        }
+
+        while(n > 10){
+            if(isMonoIncrease(n)){
+                return n;
+            }
+            n -= 1;
+        }
+
+        return baseCheck(n);
+    }
+
+    private boolean isMonoIncrease(int x){
+        String str = String.valueOf(x);
+        for(int i = 1; i < str.length(); i++){
+            int cur = str.charAt(i); // ???
+            int prev = str.charAt(i-1);
+            if(cur < prev){
+                return false;
+            }
+        }
+        return true;
+    }
+
+
+    private int baseCheck(int n){
+        // edge
+        if(n == 10){
+            return 9;
+        }
+        return n;
+    }
+
 
     // V1-2
     // IDEA: Truncate After Cliff
