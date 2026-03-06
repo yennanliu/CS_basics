@@ -779,3 +779,954 @@ if len(large) > len(small) + 1:
 - **Graph Algorithms**: Dijkstra, Prim's MST
 - **Greedy Algorithms**: Often use PQ for optimal selection
 - **Data Streams**: Real-time processing with PQ
+
+---
+
+## Classic LC Problems with Java Solutions
+
+### 2-1) Kth Largest Element in an Array (LC 215)
+```java
+// Java
+// LC 215 - Find the kth largest element in an unsorted array
+// IDEA: Use min-heap of size K
+// Time: O(N log K), Space: O(K)
+
+public int findKthLargest(int[] nums, int k) {
+    // Min heap - keeps k largest elements
+    PriorityQueue<Integer> minHeap = new PriorityQueue<>();
+
+    for (int num : nums) {
+        minHeap.offer(num);
+        // Maintain size k
+        if (minHeap.size() > k) {
+            minHeap.poll();  // Remove smallest
+        }
+    }
+
+    // Top of heap is kth largest
+    return minHeap.peek();
+}
+
+// Alternative: Quick Select (O(N) average)
+public int findKthLargest_QuickSelect(int[] nums, int k) {
+    // Convert to find (n-k)th smallest (0-indexed)
+    int targetIdx = nums.length - k;
+    return quickSelect(nums, 0, nums.length - 1, targetIdx);
+}
+
+private int quickSelect(int[] nums, int left, int right, int k) {
+    if (left == right) return nums[left];
+
+    int pivotIdx = partition(nums, left, right);
+
+    if (k == pivotIdx) {
+        return nums[k];
+    } else if (k < pivotIdx) {
+        return quickSelect(nums, left, pivotIdx - 1, k);
+    } else {
+        return quickSelect(nums, pivotIdx + 1, right, k);
+    }
+}
+
+private int partition(int[] nums, int left, int right) {
+    int pivot = nums[right];
+    int i = left;
+    for (int j = left; j < right; j++) {
+        if (nums[j] <= pivot) {
+            swap(nums, i, j);
+            i++;
+        }
+    }
+    swap(nums, i, right);
+    return i;
+}
+
+private void swap(int[] nums, int i, int j) {
+    int temp = nums[i];
+    nums[i] = nums[j];
+    nums[j] = temp;
+}
+```
+
+### 2-2) Top K Frequent Elements (LC 347)
+```java
+// Java
+// LC 347 - Return the k most frequent elements
+// IDEA: HashMap for frequency + Min heap of size K
+// Time: O(N log K), Space: O(N)
+
+public int[] topKFrequent(int[] nums, int k) {
+    // Step 1: Count frequency
+    Map<Integer, Integer> freqMap = new HashMap<>();
+    for (int num : nums) {
+        freqMap.put(num, freqMap.getOrDefault(num, 0) + 1);
+    }
+
+    // Step 2: Min heap based on frequency (keep k largest frequencies)
+    PriorityQueue<Integer> minHeap = new PriorityQueue<>(
+        (a, b) -> freqMap.get(a) - freqMap.get(b)
+    );
+
+    for (int num : freqMap.keySet()) {
+        minHeap.offer(num);
+        if (minHeap.size() > k) {
+            minHeap.poll();  // Remove element with smallest frequency
+        }
+    }
+
+    // Step 3: Build result
+    int[] result = new int[k];
+    for (int i = k - 1; i >= 0; i--) {
+        result[i] = minHeap.poll();
+    }
+
+    return result;
+}
+
+// Alternative: Bucket Sort (O(N) time)
+public int[] topKFrequent_BucketSort(int[] nums, int k) {
+    Map<Integer, Integer> freqMap = new HashMap<>();
+    for (int num : nums) {
+        freqMap.put(num, freqMap.getOrDefault(num, 0) + 1);
+    }
+
+    // Buckets: index = frequency, value = list of numbers with that frequency
+    List<Integer>[] buckets = new List[nums.length + 1];
+    for (int i = 0; i < buckets.length; i++) {
+        buckets[i] = new ArrayList<>();
+    }
+
+    for (Map.Entry<Integer, Integer> entry : freqMap.entrySet()) {
+        buckets[entry.getValue()].add(entry.getKey());
+    }
+
+    // Collect k most frequent from highest frequency bucket
+    int[] result = new int[k];
+    int idx = 0;
+    for (int i = buckets.length - 1; i >= 0 && idx < k; i--) {
+        for (int num : buckets[i]) {
+            result[idx++] = num;
+            if (idx == k) break;
+        }
+    }
+
+    return result;
+}
+```
+
+### 2-3) Merge K Sorted Lists (LC 23)
+```java
+// Java
+// LC 23 - Merge k sorted linked lists
+// IDEA: Min heap to always get the smallest node
+// Time: O(N log K) where N = total nodes, K = number of lists
+// Space: O(K) for the heap
+
+public ListNode mergeKLists(ListNode[] lists) {
+    if (lists == null || lists.length == 0) {
+        return null;
+    }
+
+    // Min heap: compare by node value
+    PriorityQueue<ListNode> minHeap = new PriorityQueue<>(
+        (a, b) -> a.val - b.val
+    );
+
+    // Add first node of each list to heap
+    for (ListNode node : lists) {
+        if (node != null) {
+            minHeap.offer(node);
+        }
+    }
+
+    // Dummy head for result
+    ListNode dummy = new ListNode(0);
+    ListNode curr = dummy;
+
+    while (!minHeap.isEmpty()) {
+        // Get smallest node
+        ListNode smallest = minHeap.poll();
+        curr.next = smallest;
+        curr = curr.next;
+
+        // Add next node from same list
+        if (smallest.next != null) {
+            minHeap.offer(smallest.next);
+        }
+    }
+
+    return dummy.next;
+}
+
+// Alternative: Divide and Conquer
+public ListNode mergeKLists_DivideConquer(ListNode[] lists) {
+    if (lists == null || lists.length == 0) return null;
+    return mergeRange(lists, 0, lists.length - 1);
+}
+
+private ListNode mergeRange(ListNode[] lists, int start, int end) {
+    if (start == end) return lists[start];
+
+    int mid = start + (end - start) / 2;
+    ListNode left = mergeRange(lists, start, mid);
+    ListNode right = mergeRange(lists, mid + 1, end);
+
+    return mergeTwoLists(left, right);
+}
+
+private ListNode mergeTwoLists(ListNode l1, ListNode l2) {
+    ListNode dummy = new ListNode(0);
+    ListNode curr = dummy;
+
+    while (l1 != null && l2 != null) {
+        if (l1.val <= l2.val) {
+            curr.next = l1;
+            l1 = l1.next;
+        } else {
+            curr.next = l2;
+            l2 = l2.next;
+        }
+        curr = curr.next;
+    }
+
+    curr.next = (l1 != null) ? l1 : l2;
+    return dummy.next;
+}
+```
+
+### 2-4) Find Median from Data Stream (LC 295)
+```java
+// Java
+// LC 295 - Design a data structure to find median from a stream
+// IDEA: Two heaps - max heap for smaller half, min heap for larger half
+// Time: O(log N) for addNum, O(1) for findMedian
+// Space: O(N)
+
+class MedianFinder {
+    // Max heap for smaller half (largest of small at top)
+    private PriorityQueue<Integer> small;
+    // Min heap for larger half (smallest of large at top)
+    private PriorityQueue<Integer> large;
+
+    public MedianFinder() {
+        small = new PriorityQueue<>(Collections.reverseOrder());
+        large = new PriorityQueue<>();
+    }
+
+    public void addNum(int num) {
+        // Add to small (max heap) first
+        small.offer(num);
+
+        // Balance property: max of small <= min of large
+        if (!small.isEmpty() && !large.isEmpty() &&
+            small.peek() > large.peek()) {
+            large.offer(small.poll());
+        }
+
+        // Size property: sizes differ by at most 1
+        if (small.size() > large.size() + 1) {
+            large.offer(small.poll());
+        }
+        if (large.size() > small.size() + 1) {
+            small.offer(large.poll());
+        }
+    }
+
+    public double findMedian() {
+        if (small.size() > large.size()) {
+            return small.peek();
+        }
+        if (large.size() > small.size()) {
+            return large.peek();
+        }
+        // Equal sizes - average of two middle elements
+        return (small.peek() + large.peek()) / 2.0;
+    }
+}
+
+/**
+ * Dry Run Example:
+ * addNum(1): small=[1], large=[]           → median=1
+ * addNum(2): small=[1], large=[2]          → median=1.5
+ * addNum(3): small=[1], large=[2,3]        → rebalance → small=[2,1], large=[3] → median=2
+ * addNum(4): small=[2,1], large=[3,4]      → median=2.5
+ */
+```
+
+### 2-5) Meeting Rooms II (LC 253)
+```java
+// Java
+// LC 253 - Find minimum number of conference rooms required
+// IDEA: Sort by start time, use min heap to track end times
+// Time: O(N log N), Space: O(N)
+
+public int minMeetingRooms(int[][] intervals) {
+    if (intervals == null || intervals.length == 0) {
+        return 0;
+    }
+
+    // Sort by start time
+    Arrays.sort(intervals, (a, b) -> a[0] - b[0]);
+
+    // Min heap to track end times of ongoing meetings
+    PriorityQueue<Integer> endTimes = new PriorityQueue<>();
+
+    // First meeting
+    endTimes.offer(intervals[0][1]);
+
+    for (int i = 1; i < intervals.length; i++) {
+        int start = intervals[i][0];
+        int end = intervals[i][1];
+
+        // If current meeting starts after earliest ending meeting
+        // Reuse that room (remove from heap)
+        if (start >= endTimes.peek()) {
+            endTimes.poll();
+        }
+
+        // Add current meeting's end time
+        endTimes.offer(end);
+    }
+
+    // Heap size = number of rooms needed
+    return endTimes.size();
+}
+
+// Alternative: Two Arrays (Chronological Ordering)
+public int minMeetingRooms_TwoArrays(int[][] intervals) {
+    int n = intervals.length;
+    int[] starts = new int[n];
+    int[] ends = new int[n];
+
+    for (int i = 0; i < n; i++) {
+        starts[i] = intervals[i][0];
+        ends[i] = intervals[i][1];
+    }
+
+    Arrays.sort(starts);
+    Arrays.sort(ends);
+
+    int rooms = 0;
+    int endPtr = 0;
+
+    for (int i = 0; i < n; i++) {
+        if (starts[i] < ends[endPtr]) {
+            rooms++;  // Need new room
+        } else {
+            endPtr++;  // Reuse room
+        }
+    }
+
+    return rooms;
+}
+```
+
+### 2-6) Kth Largest Element in a Stream (LC 703)
+```java
+// Java
+// LC 703 - Design a class to find kth largest element in a stream
+// IDEA: Min heap of size K - top is always kth largest
+// Time: O(log K) for add, Space: O(K)
+
+class KthLargest {
+    private PriorityQueue<Integer> minHeap;
+    private int k;
+
+    public KthLargest(int k, int[] nums) {
+        this.k = k;
+        this.minHeap = new PriorityQueue<>();
+
+        for (int num : nums) {
+            add(num);
+        }
+    }
+
+    public int add(int val) {
+        minHeap.offer(val);
+
+        // Maintain size k
+        if (minHeap.size() > k) {
+            minHeap.poll();
+        }
+
+        // Top of min heap is kth largest
+        return minHeap.peek();
+    }
+}
+
+/**
+ * Example:
+ * KthLargest kthLargest = new KthLargest(3, [4, 5, 8, 2]);
+ * Heap after init: [4, 5, 8] (size 3, sorted as min-heap)
+ *
+ * kthLargest.add(3);  // heap=[4,5,8], return 4
+ * kthLargest.add(5);  // heap=[5,5,8], return 5
+ * kthLargest.add(10); // heap=[5,8,10], return 5
+ * kthLargest.add(9);  // heap=[8,9,10], return 8
+ * kthLargest.add(4);  // heap=[8,9,10], return 8
+ */
+```
+
+### 2-7) K Closest Points to Origin (LC 973)
+```java
+// Java
+// LC 973 - Find K closest points to origin (0,0)
+// IDEA: Max heap of size K (to keep K smallest distances)
+// Time: O(N log K), Space: O(K)
+
+public int[][] kClosest(int[][] points, int k) {
+    // Max heap based on distance (squared, no need for sqrt)
+    PriorityQueue<int[]> maxHeap = new PriorityQueue<>(
+        (a, b) -> (b[0]*b[0] + b[1]*b[1]) - (a[0]*a[0] + a[1]*a[1])
+    );
+
+    for (int[] point : points) {
+        maxHeap.offer(point);
+        if (maxHeap.size() > k) {
+            maxHeap.poll();  // Remove farthest point
+        }
+    }
+
+    // Convert heap to result array
+    int[][] result = new int[k][2];
+    for (int i = 0; i < k; i++) {
+        result[i] = maxHeap.poll();
+    }
+
+    return result;
+}
+
+// Alternative: Min heap (push all, pop k)
+public int[][] kClosest_MinHeap(int[][] points, int k) {
+    PriorityQueue<int[]> minHeap = new PriorityQueue<>(
+        (a, b) -> (a[0]*a[0] + a[1]*a[1]) - (b[0]*b[0] + b[1]*b[1])
+    );
+
+    for (int[] point : points) {
+        minHeap.offer(point);
+    }
+
+    int[][] result = new int[k][2];
+    for (int i = 0; i < k; i++) {
+        result[i] = minHeap.poll();
+    }
+
+    return result;
+}
+```
+
+### 2-8) Kth Smallest Element in a Sorted Matrix (LC 378)
+```java
+// Java
+// LC 378 - Find kth smallest element in n x n sorted matrix
+// IDEA: Min heap with (value, row, col)
+// Time: O(K log N), Space: O(N)
+
+public int kthSmallest(int[][] matrix, int k) {
+    int n = matrix.length;
+
+    // Min heap: [value, row, col]
+    PriorityQueue<int[]> minHeap = new PriorityQueue<>(
+        (a, b) -> a[0] - b[0]
+    );
+
+    // Add first element of each row
+    for (int i = 0; i < Math.min(n, k); i++) {
+        minHeap.offer(new int[]{matrix[i][0], i, 0});
+    }
+
+    int result = 0;
+    // Pop k times
+    for (int i = 0; i < k; i++) {
+        int[] curr = minHeap.poll();
+        result = curr[0];
+        int row = curr[1];
+        int col = curr[2];
+
+        // Add next element from same row
+        if (col + 1 < n) {
+            minHeap.offer(new int[]{matrix[row][col + 1], row, col + 1});
+        }
+    }
+
+    return result;
+}
+
+// Alternative: Binary Search
+public int kthSmallest_BinarySearch(int[][] matrix, int k) {
+    int n = matrix.length;
+    int lo = matrix[0][0];
+    int hi = matrix[n - 1][n - 1];
+
+    while (lo < hi) {
+        int mid = lo + (hi - lo) / 2;
+        int count = countLessOrEqual(matrix, mid);
+
+        if (count < k) {
+            lo = mid + 1;
+        } else {
+            hi = mid;
+        }
+    }
+
+    return lo;
+}
+
+private int countLessOrEqual(int[][] matrix, int target) {
+    int n = matrix.length;
+    int count = 0;
+    int row = n - 1;
+    int col = 0;
+
+    // Start from bottom-left corner
+    while (row >= 0 && col < n) {
+        if (matrix[row][col] <= target) {
+            count += row + 1;  // All elements in this column up to row
+            col++;
+        } else {
+            row--;
+        }
+    }
+
+    return count;
+}
+```
+
+### 2-9) Task Scheduler (LC 621)
+```java
+// Java
+// LC 621 - Return minimum intervals to finish all tasks with cooldown
+// IDEA: Greedy - always execute most frequent task
+// Time: O(N), Space: O(1) - only 26 letters
+
+public int leastInterval(char[] tasks, int n) {
+    // Count frequency of each task
+    int[] freq = new int[26];
+    for (char task : tasks) {
+        freq[task - 'A']++;
+    }
+
+    // Max heap for task frequencies
+    PriorityQueue<Integer> maxHeap = new PriorityQueue<>(Collections.reverseOrder());
+    for (int f : freq) {
+        if (f > 0) {
+            maxHeap.offer(f);
+        }
+    }
+
+    int time = 0;
+
+    while (!maxHeap.isEmpty()) {
+        List<Integer> temp = new ArrayList<>();
+
+        // Process n+1 tasks (cooldown cycle)
+        for (int i = 0; i <= n; i++) {
+            if (!maxHeap.isEmpty()) {
+                int f = maxHeap.poll();
+                if (f > 1) {
+                    temp.add(f - 1);  // Task still has remaining count
+                }
+            }
+            time++;
+
+            // If all tasks done, break
+            if (maxHeap.isEmpty() && temp.isEmpty()) {
+                break;
+            }
+        }
+
+        // Add back remaining tasks
+        for (int f : temp) {
+            maxHeap.offer(f);
+        }
+    }
+
+    return time;
+}
+
+// Mathematical Approach (O(N) time, O(1) space)
+public int leastInterval_Math(char[] tasks, int n) {
+    int[] freq = new int[26];
+    int maxFreq = 0;
+    int maxCount = 0;
+
+    for (char task : tasks) {
+        freq[task - 'A']++;
+        if (freq[task - 'A'] > maxFreq) {
+            maxFreq = freq[task - 'A'];
+            maxCount = 1;
+        } else if (freq[task - 'A'] == maxFreq) {
+            maxCount++;
+        }
+    }
+
+    // (maxFreq - 1) full cycles + last partial cycle
+    int partCount = (maxFreq - 1) * (n + 1) + maxCount;
+
+    // Result is max of calculated intervals or total tasks
+    return Math.max(partCount, tasks.length);
+}
+```
+
+### 2-10) Reorganize String (LC 767)
+```java
+// Java
+// LC 767 - Rearrange string so no adjacent characters are same
+// IDEA: Max heap - always pick most frequent, alternate placement
+// Time: O(N log 26) = O(N), Space: O(26) = O(1)
+
+public String reorganizeString(String s) {
+    // Count frequency
+    int[] freq = new int[26];
+    for (char c : s.toCharArray()) {
+        freq[c - 'a']++;
+    }
+
+    // Check if possible: no char should appear more than (n+1)/2 times
+    int n = s.length();
+    for (int f : freq) {
+        if (f > (n + 1) / 2) {
+            return "";
+        }
+    }
+
+    // Max heap: [frequency, char]
+    PriorityQueue<int[]> maxHeap = new PriorityQueue<>(
+        (a, b) -> b[0] - a[0]
+    );
+
+    for (int i = 0; i < 26; i++) {
+        if (freq[i] > 0) {
+            maxHeap.offer(new int[]{freq[i], i});
+        }
+    }
+
+    StringBuilder sb = new StringBuilder();
+
+    while (maxHeap.size() >= 2) {
+        // Take two most frequent characters
+        int[] first = maxHeap.poll();
+        int[] second = maxHeap.poll();
+
+        sb.append((char) (first[1] + 'a'));
+        sb.append((char) (second[1] + 'a'));
+
+        // Put back if remaining
+        if (--first[0] > 0) maxHeap.offer(first);
+        if (--second[0] > 0) maxHeap.offer(second);
+    }
+
+    // Handle last character if any
+    if (!maxHeap.isEmpty()) {
+        sb.append((char) (maxHeap.poll()[1] + 'a'));
+    }
+
+    return sb.toString();
+}
+```
+
+### 2-11) Sliding Window Median (LC 480)
+```java
+// Java
+// LC 480 - Return median of each sliding window of size k
+// IDEA: Two heaps (TreeMap/Multiset for lazy removal)
+// Time: O(N log K), Space: O(K)
+
+public double[] medianSlidingWindow(int[] nums, int k) {
+    // Use TreeMap to support removal
+    TreeMap<Integer, Integer> small = new TreeMap<>(Collections.reverseOrder()); // max heap
+    TreeMap<Integer, Integer> large = new TreeMap<>(); // min heap
+
+    int smallSize = 0, largeSize = 0;
+    double[] result = new double[nums.length - k + 1];
+
+    for (int i = 0; i < nums.length; i++) {
+        // Add to appropriate heap
+        if (small.isEmpty() || nums[i] <= small.firstKey()) {
+            add(small, nums[i]);
+            smallSize++;
+        } else {
+            add(large, nums[i]);
+            largeSize++;
+        }
+
+        // Rebalance
+        while (smallSize > largeSize + 1) {
+            int val = small.firstKey();
+            remove(small, val);
+            smallSize--;
+            add(large, val);
+            largeSize++;
+        }
+        while (largeSize > smallSize) {
+            int val = large.firstKey();
+            remove(large, val);
+            largeSize--;
+            add(small, val);
+            smallSize++;
+        }
+
+        // Window is full
+        if (i >= k - 1) {
+            // Calculate median
+            if (k % 2 == 1) {
+                result[i - k + 1] = small.firstKey();
+            } else {
+                result[i - k + 1] = ((double) small.firstKey() + large.firstKey()) / 2.0;
+            }
+
+            // Remove element leaving window
+            int toRemove = nums[i - k + 1];
+            if (toRemove <= small.firstKey()) {
+                remove(small, toRemove);
+                smallSize--;
+            } else {
+                remove(large, toRemove);
+                largeSize--;
+            }
+        }
+    }
+
+    return result;
+}
+
+private void add(TreeMap<Integer, Integer> map, int val) {
+    map.put(val, map.getOrDefault(val, 0) + 1);
+}
+
+private void remove(TreeMap<Integer, Integer> map, int val) {
+    int count = map.get(val);
+    if (count == 1) {
+        map.remove(val);
+    } else {
+        map.put(val, count - 1);
+    }
+}
+```
+
+### 2-12) Ugly Number II (LC 264)
+```java
+// Java
+// LC 264 - Find nth ugly number (only prime factors 2, 3, 5)
+// IDEA: Min heap to generate ugly numbers in order
+// Time: O(N log N), Space: O(N)
+
+public int nthUglyNumber(int n) {
+    PriorityQueue<Long> minHeap = new PriorityQueue<>();
+    Set<Long> seen = new HashSet<>();
+
+    minHeap.offer(1L);
+    seen.add(1L);
+
+    int[] primes = {2, 3, 5};
+    long ugly = 1;
+
+    for (int i = 0; i < n; i++) {
+        ugly = minHeap.poll();
+
+        for (int prime : primes) {
+            long next = ugly * prime;
+            if (!seen.contains(next)) {
+                seen.add(next);
+                minHeap.offer(next);
+            }
+        }
+    }
+
+    return (int) ugly;
+}
+
+// Three Pointers Approach (O(N) time, O(N) space)
+public int nthUglyNumber_ThreePointers(int n) {
+    int[] ugly = new int[n];
+    ugly[0] = 1;
+
+    int p2 = 0, p3 = 0, p5 = 0;
+
+    for (int i = 1; i < n; i++) {
+        int next2 = ugly[p2] * 2;
+        int next3 = ugly[p3] * 3;
+        int next5 = ugly[p5] * 5;
+
+        int next = Math.min(next2, Math.min(next3, next5));
+        ugly[i] = next;
+
+        // Move pointers (handle duplicates)
+        if (next == next2) p2++;
+        if (next == next3) p3++;
+        if (next == next5) p5++;
+    }
+
+    return ugly[n - 1];
+}
+```
+
+### 2-13) Network Delay Time (LC 743 - Dijkstra)
+```java
+// Java
+// LC 743 - Find time for all nodes to receive signal
+// IDEA: Dijkstra's shortest path algorithm
+// Time: O(E log V), Space: O(V + E)
+
+public int networkDelayTime(int[][] times, int n, int k) {
+    // Build adjacency list
+    Map<Integer, List<int[]>> graph = new HashMap<>();
+    for (int[] time : times) {
+        graph.computeIfAbsent(time[0], x -> new ArrayList<>())
+             .add(new int[]{time[1], time[2]});
+    }
+
+    // Min heap: [distance, node]
+    PriorityQueue<int[]> minHeap = new PriorityQueue<>(
+        (a, b) -> a[0] - b[0]
+    );
+
+    int[] dist = new int[n + 1];
+    Arrays.fill(dist, Integer.MAX_VALUE);
+    dist[k] = 0;
+
+    minHeap.offer(new int[]{0, k});
+
+    while (!minHeap.isEmpty()) {
+        int[] curr = minHeap.poll();
+        int d = curr[0];
+        int node = curr[1];
+
+        // Skip if already processed with shorter distance
+        if (d > dist[node]) continue;
+
+        if (graph.containsKey(node)) {
+            for (int[] edge : graph.get(node)) {
+                int neighbor = edge[0];
+                int weight = edge[1];
+                int newDist = d + weight;
+
+                if (newDist < dist[neighbor]) {
+                    dist[neighbor] = newDist;
+                    minHeap.offer(new int[]{newDist, neighbor});
+                }
+            }
+        }
+    }
+
+    // Find max distance (time for all nodes to receive)
+    int maxDist = 0;
+    for (int i = 1; i <= n; i++) {
+        if (dist[i] == Integer.MAX_VALUE) {
+            return -1;  // Unreachable node
+        }
+        maxDist = Math.max(maxDist, dist[i]);
+    }
+
+    return maxDist;
+}
+```
+
+### 2-14) Sort Characters By Frequency (LC 451)
+```java
+// Java
+// LC 451 - Sort characters in string by frequency (descending)
+// IDEA: Count frequency, use max heap to build result
+// Time: O(N log K) where K = unique chars, Space: O(N)
+
+public String frequencySort(String s) {
+    // Count frequency
+    Map<Character, Integer> freq = new HashMap<>();
+    for (char c : s.toCharArray()) {
+        freq.put(c, freq.getOrDefault(c, 0) + 1);
+    }
+
+    // Max heap based on frequency
+    PriorityQueue<Character> maxHeap = new PriorityQueue<>(
+        (a, b) -> freq.get(b) - freq.get(a)
+    );
+
+    maxHeap.addAll(freq.keySet());
+
+    // Build result
+    StringBuilder sb = new StringBuilder();
+    while (!maxHeap.isEmpty()) {
+        char c = maxHeap.poll();
+        int count = freq.get(c);
+        for (int i = 0; i < count; i++) {
+            sb.append(c);
+        }
+    }
+
+    return sb.toString();
+}
+
+// Bucket Sort Alternative (O(N) time)
+public String frequencySort_Bucket(String s) {
+    Map<Character, Integer> freq = new HashMap<>();
+    for (char c : s.toCharArray()) {
+        freq.put(c, freq.getOrDefault(c, 0) + 1);
+    }
+
+    // Bucket: index = frequency
+    List<Character>[] buckets = new List[s.length() + 1];
+    for (int i = 0; i < buckets.length; i++) {
+        buckets[i] = new ArrayList<>();
+    }
+
+    for (Map.Entry<Character, Integer> entry : freq.entrySet()) {
+        buckets[entry.getValue()].add(entry.getKey());
+    }
+
+    StringBuilder sb = new StringBuilder();
+    for (int i = buckets.length - 1; i >= 0; i--) {
+        for (char c : buckets[i]) {
+            for (int j = 0; j < i; j++) {
+                sb.append(c);
+            }
+        }
+    }
+
+    return sb.toString();
+}
+```
+
+### 2-15) Last Stone Weight (LC 1046)
+```java
+// Java
+// LC 1046 - Smash two heaviest stones, return remaining weight
+// IDEA: Max heap - always get two largest
+// Time: O(N log N), Space: O(N)
+
+public int lastStoneWeight(int[] stones) {
+    // Max heap
+    PriorityQueue<Integer> maxHeap = new PriorityQueue<>(
+        Collections.reverseOrder()
+    );
+
+    for (int stone : stones) {
+        maxHeap.offer(stone);
+    }
+
+    while (maxHeap.size() > 1) {
+        int stone1 = maxHeap.poll();  // Heaviest
+        int stone2 = maxHeap.poll();  // Second heaviest
+
+        if (stone1 != stone2) {
+            maxHeap.offer(stone1 - stone2);  // Remaining weight
+        }
+        // If equal, both destroyed
+    }
+
+    return maxHeap.isEmpty() ? 0 : maxHeap.peek();
+}
+```
+
+---
+
+## Quick Reference: PQ Pattern → Problem Mapping
+
+| Pattern | Classic Problems | Key Insight |
+|---------|-----------------|-------------|
+| **Top K** | LC 215, 347, 692, 973, 1046 | Min heap size K for K largest |
+| **K-Way Merge** | LC 23, 378, 373 | Track (value, source_index) |
+| **Two Heaps** | LC 295, 480 | Max heap for small, min heap for large |
+| **Scheduling** | LC 253, 621, 767 | Sort by start/priority, heap for end times |
+| **Dijkstra** | LC 743, 787, 1514, 1631 | Min heap with (distance, node) |
+| **Stream** | LC 703, 295, 346 | Fixed size heap or two heaps |
+| **Ugly Numbers** | LC 264, 313, 373 | Generate in sorted order |
