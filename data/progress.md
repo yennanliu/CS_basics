@@ -9,7 +9,8 @@
 	- string.md (OK)
 	- queue.md (OK)
 	- stack.md (OK)
-	- priority_queue.md (todo)
+	- priority_queue.md (add LC problems)
+	- array.md (todo)
 - to review
 - needcode `250` - similar LC by AI
     - Arrays & Hashing
