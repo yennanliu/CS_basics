@@ -177,8 +177,9 @@ public class DeleteLeavesWithAGivenValue {
     }
 
     // V0-0-1
-    // IDEA: DFS (fixed by gemini)
+    // IDEA: DFS (post-order traverse) (fixed by gemini)
     public TreeNode removeLeafNodes_0_0_1(TreeNode root, int target) {
+        // edge
         // 1. Base Case
         if (root == null) {
             return null;
@@ -189,6 +190,15 @@ public class DeleteLeavesWithAGivenValue {
         root.left = removeLeafNodes_0_0_1(root.left, target);
         root.right = removeLeafNodes_0_0_1(root.right, target);
 
+        /** NOTE !!!
+         *
+         *  we need to below check AFTER recursion call,
+         *  so we can check all cur root children,
+         *  to decide whether you should remove cur root or not
+         *
+         *  (check V0-0-X)
+         *
+         */
         // 3. Current node check:
         // If after pruning children, this node is now a leaf AND matches target...
         if (root.left == null && root.right == null && root.val == target) {
@@ -199,6 +209,58 @@ public class DeleteLeavesWithAGivenValue {
         // Otherwise, keep this node
         return root;
     }
+
+
+
+    // NOTE !!! below is WRONG !!!
+    // V0-0-X
+    /**
+     *  1. we SHOULD NOT below check before recursion call,
+     *     since we ONLY check cur sub left, right node,
+     *     NOT all of its children.
+     *     e.g. we miss the "cascade effect"
+     *
+     *
+     *  Detail explanation: (gemini)
+     *
+
+     *
+     *  In your updated code,
+     *  the **base case** is slightly off.
+     *  By checking `if(root.val == target && (root.left == null && root.right == null))`
+     *  **before** the recursive calls, you only catch the
+     *  leaves that were *already* leaves at the start.
+     *
+     *
+     *  ->
+     *
+     * You miss the **"cascade effect"**—where
+     * a parent becomes a leaf *after* its children are removed.
+     * To fix this, the leaf-check must happen **after**
+     * you assign the results of `_left` and `_right` back to the root.
+     *
+     *
+     */
+//    public TreeNode removeLeafNodes(TreeNode root, int target) {
+//        // edge
+//        if(root == null){
+//            return null;
+//        }
+//        //??
+//        if(root.val == target && (root.left == null && root.right == null)){
+//            return null;
+//        }
+//
+//        TreeNode _left = removeLeafNodes(root.left, target);
+//        TreeNode _right = removeLeafNodes(root.right, target);
+//
+//
+//        root.left = _left;
+//        root.right = _right;
+//
+//
+//        return root;
+//    }
 
 
     // V0-0-2

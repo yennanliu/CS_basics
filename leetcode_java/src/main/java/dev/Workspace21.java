@@ -3959,7 +3959,7 @@ public class Workspace21 {
         if(root == null){
             return null;
         }
-        // /??
+        //??
         if(root.val == target && (root.left == null && root.right == null)){
             return null;
         }
@@ -3967,20 +3967,10 @@ public class Workspace21 {
         TreeNode _left = removeLeafNodes(root.left, target);
         TreeNode _right = removeLeafNodes(root.right, target);
 
-        // ???
-//        if(_left != null && _left.val == target){
-//            _left = null;
-//        }
-//        if(_right != null && _right.val == target){
-//            _right = null;
-//        }
-//        if(root.val == target){
-//            return null;
-//        }
-
 
         root.left = _left;
         root.right = _right;
+
 
         return root;
     }
