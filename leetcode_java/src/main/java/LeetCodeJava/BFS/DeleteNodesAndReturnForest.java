@@ -43,13 +43,105 @@ import java.util.*;
 public class DeleteNodesAndReturnForest {
 
     // V0
+//    public List<TreeNode> delNodes(TreeNode root, int[] to_delete) {
+//
+//    }
+
+
+    // V0-0-1
+    // IDEA: DFS (gpt)
+    List<TreeNode> res = new ArrayList<>();
+
+    public List<TreeNode> delNodes_0_0_1(TreeNode root, int[] to_delete) {
+
+        Set<Integer> set = new HashSet<>();
+        for (int x : to_delete) {
+            set.add(x);
+        }
+
+        root = dfsDel(root, set);
+
+        if (root != null) {
+            res.add(root);
+        }
+
+        return res;
+    }
+
+    private TreeNode dfsDel(TreeNode root, Set<Integer> set) {
+
+        if (root == null) {
+            return null;
+        }
+
+        root.left = dfsDel(root.left, set);
+        root.right = dfsDel(root.right, set);
+
+        if (set.contains(root.val)) {
+
+            if (root.left != null) {
+                res.add(root.left);
+            }
+
+            if (root.right != null) {
+                res.add(root.right);
+            }
+
+            return null;
+        }
+
+        return root;
+    }
+
+
+    // V0-0-2
+    // IDEA: DFS (gemini)
+    List<TreeNode> res_0_0_2 = new ArrayList<>();
+    Set<Integer> deleteSet = new HashSet<>();
+
+    public List<TreeNode> delNodes_0_0_2(TreeNode root, int[] to_delete) {
+        res_0_0_2.clear(); // Reset for clean execution
+        deleteSet.clear();
+        for (int val : to_delete)
+            deleteSet.add(val);
+
+        // 1. We call the helper.
+        // 2. We pass "true" for isRoot because the original root
+        //    is a root if it's not deleted.
+        dfs(root, true);
+        return res_0_0_2;
+    }
+
+    private TreeNode dfs(TreeNode node, boolean isRoot) {
+        if (node == null)
+            return null;
+
+        // Check if current node needs to be deleted
+        boolean toDelete = deleteSet.contains(node.val);
+
+        // If it's a root and NOT deleted, add it to forest
+        if (isRoot && !toDelete) {
+            res_0_0_2.add(node);
+        }
+
+        // Post-Order: Process children.
+        // If current node is deleted, its children become potential roots.
+        node.left = dfs(node.left, toDelete);
+        node.right = dfs(node.right, toDelete);
+
+        // Return null to parent if this node is deleted, else return the node
+        return toDelete ? null : node;
+    }
+
+
+    // V0-0-5
     // IDEA : BFS
     // TODO : implement by my way
     /**
      * time = O(N)
      * space = O(N)
      */
-    public List<TreeNode> delNodes(TreeNode root, int[] to_delete) {
+    public List<TreeNode> delNodes_0_0_5(TreeNode root, int[] to_delete) {
         if (root == null) {
             return new ArrayList<>();
         }
@@ -358,10 +450,11 @@ public class DeleteNodesAndReturnForest {
         return node;
     }
 
+
+
     // V2
 
 
-
-
+    
 
 }
