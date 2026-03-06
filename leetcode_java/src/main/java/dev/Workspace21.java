@@ -4274,7 +4274,62 @@ public class Workspace21 {
 
 
 
+    // LC 703
+    // 7.26 - 36 am
+    /**
+     *
+     * ->
+     * int add(int val) Adds a new test
+     * score val to the stream and returns the element
+     * representing the kth largest element in the pool
+     * of test scores so far.
+     *
+     *  ---------------
+     *
+     *
+     *  IDEA: PQ  (small PQ)
+     */
+    class KthLargest {
 
+        // attr
+        int k;
+        PriorityQueue<Integer> pq;
+        int[] nums;
+
+        public KthLargest(int k, int[] nums) {
+            this.k = k;
+            this.nums = nums;
+            this.pq = new PriorityQueue<>(new Comparator<Integer>() {
+                @Override
+                public int compare(Integer o1, Integer o2) {
+                    int diff = o1 - o2;
+                    return diff;
+                }
+            });
+            // add to pq ???
+            for(int x: nums){
+                this.pq.add(x);
+            }
+
+        }
+
+        public int add(int val) {
+            this.pq.add(val);
+            while (this.pq.size() > k){
+                this.pq.poll();
+            }
+
+            return this.pq.isEmpty() ? -1 : this.pq.peek();
+        }
+
+    }
+
+
+    // LC 865
+    public TreeNode subtreeWithAllDeepest(TreeNode root) {
+
+        return null;
+    }
 
 
 

@@ -80,7 +80,6 @@ public class KthLargestElementInAStream {
         PriorityQueue<Integer> heap;
         int k;
 
-        // constructor
         /**
          * time = O(N log k)
          * space = O(k)
@@ -97,13 +96,13 @@ public class KthLargestElementInAStream {
              * -> e.g. (k-big, k-1 big, k-2 big, ...., 2 big, 1 big)
              */
             this.heap = new PriorityQueue<>();
-            for (int x : nums){
+            for (int x : nums) {
                 //this.heap.add(x); // this one is OK as well
                 this.heap.offer(x);
             }
 
             // pop elements if heap size > k
-            while(this.heap.size() > k){
+            while (this.heap.size() > k) {
                 //this.heap.remove(); // this one is OK as well
                 this.heap.poll();
             }
@@ -113,18 +112,12 @@ public class KthLargestElementInAStream {
          * time = O(log k)
          * space = O(1)
          */
-        /**
-     * time = O(log k)
-     * space = O(1)
-     */
-    public int add(int val) {
-
+        public int add(int val) {
             this.heap.offer(val);
-            if (heap.size() > k){
+            if (heap.size() > k) {
                 //this.heap.remove(); // this one is OK as well
                 this.heap.poll();
             }
-
             return this.heap.peek();
         }
     }
@@ -150,7 +143,7 @@ public class KthLargestElementInAStream {
             // so we need `SMALL PQ` and keep max size as `k`
             // PQ in java is small PQ by default ?????
             this.pq = new PriorityQueue<>();
-            for(int x: nums){
+            for (int x : nums) {
                 this.size += 1;
                 pq.add(x);
             }
@@ -160,18 +153,14 @@ public class KthLargestElementInAStream {
          * time = O(log k)
          * space = O(1)
          */
-        /**
-     * time = O(log k)
-     * space = O(1)
-     */
-    public int add(int val) {
+        public int add(int val) {
             this.pq.add(val);
             // pop
-            while(this.pq.size() > k){
+            while (this.pq.size() > k) {
                 this.size -= 1;
                 this.pq.poll();
             }
-            if(this.pq.isEmpty()){
+            if (this.pq.isEmpty()) {
                 throw new RuntimeException("empty PQ");
             }
 
@@ -213,11 +202,7 @@ public class KthLargestElementInAStream {
          * time = O(log k)
          * space = O(1)
          */
-        /**
-     * time = O(log k)
-     * space = O(1)
-     */
-    public int add(int val) {
+        public int add(int val) {
             this.pq.add(val);
             // NOTE !!! need to remove elements when PQ size > k
             while (this.pq.size() > k) {
@@ -253,11 +238,7 @@ public class KthLargestElementInAStream {
          * time = O(log k)
          * space = O(1)
          */
-        /**
-     * time = O(log k)
-     * space = O(1)
-     */
-    public int add(int val) {
+        public int add(int val) {
             pq.add(val);
 
             if (pq.size() > k) {
@@ -277,7 +258,6 @@ public class KthLargestElementInAStream {
     private PriorityQueue<Integer> heap;
 
     // replace with name as KthLargest when run at LC
-    // constructor
     /**
      * time = O(N log k)
      * space = O(k)
@@ -287,7 +267,7 @@ public class KthLargestElementInAStream {
         this.k = k;
         heap = new PriorityQueue<>();
 
-        for (int num: nums) {
+        for (int num : nums) {
             // https://docs.oracle.com/javase/7/docs/api/java/util/PriorityQueue.html
             // offer : Inserts the specified element into this priority queue.
             heap.offer(num);
@@ -324,15 +304,13 @@ public class KthLargestElementInAStream {
 //    }
 //
 //    /**
-     * time = O(log k)
-     * space = O(1)
-     */
-    public int add(int val) {
+//     * time = O(log k)
+//     * space = O(1)
+//     */
+//    public int add(int val) {
 //        heap.offer(val);
 //        if (heap.size() > k) heap.poll();
 //        return heap.peek();
 //    }
-
-
 
 }
