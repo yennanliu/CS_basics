@@ -3977,11 +3977,82 @@ public class Workspace21 {
 
 
 
-    
-    // LC 1110
-    public List<TreeNode> delNodes(TreeNode root, int[] to_delete) {
 
-        return null;
+    // LC 1110
+    // 11.09 - 35 am
+    /**
+     *
+     *  -> Return the roots of the trees in the
+     *  remaining forest.
+     *  may return the result in any order.
+     *
+     *
+     *  --------------------
+     *
+     *
+     *   --------------------
+     *
+     *
+     *
+     */
+    List<TreeNode> res = new ArrayList<>();
+    public List<TreeNode> delNodes(TreeNode root, int[] to_delete) {
+        // edge
+        if(root == null){
+            return res;
+        }
+
+        List<Integer> list = new ArrayList<>();
+        for(int x: to_delete){
+            list.add(x);
+        }
+
+        if(root.left == null && root.right == null){
+            if(list.contains(root.val)){
+                return res;
+            }
+            res.add(root);
+            return res;
+        }
+
+        // dfs call
+        dfsDel(root, list);
+
+        return res;
+    }
+
+
+    // post order traverse + DFS
+    private TreeNode dfsDel(TreeNode root, List<Integer> list){
+        // edge
+        if(root == null){
+            return root;
+        }
+
+        TreeNode _left = dfsDel(root.left, list);
+        TreeNode _right = dfsDel(root.right, list);
+
+        // ???
+        if(list.contains(root.val)){
+            // add `split` sub root to list ???
+            // ??????????
+            if(_left != null){
+                res.add(_left);
+            }
+            if(_right != null){
+                res.add(_right);
+            }
+            return null; // ????
+        }
+
+        root.left = _left;
+        root.right = _right;
+        // /?? add to list
+        res.add(root);
+
+
+        // ???
+        return root;
     }
 
 
