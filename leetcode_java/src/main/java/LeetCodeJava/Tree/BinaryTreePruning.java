@@ -58,11 +58,20 @@ public class BinaryTreePruning {
             return null;
         }
 
+        /** NOTE !!! post order DFS traverse  (left -> right -> root) */
         // 2. Process children first (Bottom-Up / Post-Order)
         // We assign the result of the recursion back to the left/right pointers.
         root.left = pruneTree_0_1(root.left);
         root.right = pruneTree_0_1(root.right);
 
+        /**  NOTE !!!
+         *
+         *   the condition whether you should prune a node
+         *
+         *        // - Its value is 0
+         *        // - AND it has no left child (either originally or just pruned)
+         *        // - AND it has no right child (either originally or just pruned)
+         */
         // 3. Decide if the current node should be pruned:
         // We prune this node (return null) IF:
         // - Its value is 0
@@ -94,12 +103,22 @@ public class BinaryTreePruning {
             return null;
         }
 
+
+        /** NOTE !!! post order DFS traverse  (left -> right -> root) */
         TreeNode _left = helper2(root.left);
         TreeNode _right = helper2(root.right);
 
         root.left = _left;
         root.right = _right;
 
+        /**  NOTE !!!
+         *
+         *   the condition whether you should prune a node
+         *
+         *        // - Its value is 0
+         *        // - AND it has no left child (either originally or just pruned)
+         *        // - AND it has no right child (either originally or just pruned)
+         */
         // prune if subtree has no 1
         if (root.val == 0 && _left == null && _right == null) {
             return null;
@@ -154,6 +173,6 @@ public class BinaryTreePruning {
 
 
 
-    
+
 
 }
