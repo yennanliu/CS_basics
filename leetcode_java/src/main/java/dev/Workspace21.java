@@ -3773,6 +3773,11 @@ public class Workspace21 {
 
 
 
+    // LC 2331
+    public boolean evaluateTree(TreeNode root) {
+
+        return false;
+    }
 
 
 

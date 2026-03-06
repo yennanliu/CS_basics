@@ -50,7 +50,7 @@ public class RemoveLinkedListElements {
      *
      *  NOTE:
      *    1. when we meet `val`, we ONLY update the `point connection`,
-     *       -> the `cur` node still NOT move, till next `curr.next.val != val` 
+     *       -> the `cur` node still NOT move, till next `curr.next.val != val`
      *
      *  -------
      *
