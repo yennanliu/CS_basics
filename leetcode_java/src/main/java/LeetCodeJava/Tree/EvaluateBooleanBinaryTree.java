@@ -5,6 +5,7 @@ package LeetCodeJava.Tree;
 import LeetCodeJava.DataStructure.TreeNode;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Stack;
 
 /**
@@ -59,9 +60,98 @@ import java.util.Stack;
 public class EvaluateBooleanBinaryTree {
 
     // V0
-//    public boolean evaluateTree(TreeNode root) {
-//
-//    }
+    // IDEA: HASHMAP + DFS
+    public boolean evaluateTree(TreeNode root) {
+        // edge
+        Map<Integer, Boolean> leafMap = new HashMap<>();
+        Map<Integer, String> nonLeafMap = new HashMap<>();
+
+        leafMap.put(0, false);
+        leafMap.put(1, true);
+
+        nonLeafMap.put(2, "OR");
+        nonLeafMap.put(3, "AND");
+
+        if (root == null) {
+            return true; // ????
+        }
+
+        return helper(root, leafMap, nonLeafMap);
+    }
+
+    private boolean helper(TreeNode root, Map<Integer, Boolean> leafMap, Map<Integer, String> nonLeafMap) {
+        // edge
+        if (root == null) {
+            return true; // ???
+        }
+
+        // leaf node
+        if (root.left == null && root.right == null) {
+            return leafMap.get(root.val);
+        }
+
+        // non leaf node
+        // dfs check its children nodes
+        if (nonLeafMap.get(root.val).equals("AND")) {
+            return helper(root.left, leafMap, nonLeafMap)
+                    && helper(root.right, leafMap, nonLeafMap);
+        }
+
+        return helper(root.left, leafMap, nonLeafMap)
+                || helper(root.right, leafMap, nonLeafMap);
+    }
+
+
+    // V0-1
+    // IDEA: DFS (GEMINI)
+    public boolean evaluateTree_0_1(TreeNode root) {
+        // 1. Base Case: Leaf Node
+        // Leaf nodes contain boolean values: 0 for False, 1 for True
+        if (root.left == null && root.right == null) {
+            return root.val == 1;
+        }
+
+        // 2. Recursive Case: Non-Leaf Node
+        // Non-leaf nodes contain operators: 2 for OR, 3 for AND
+        boolean leftVal = evaluateTree_0_1(root.left);
+        boolean rightVal = evaluateTree_0_1(root.right);
+
+        if (root.val == 2) {
+            // Operator OR
+            return leftVal || rightVal;
+        } else {
+            // Operator AND (root.val == 3)
+            return leftVal && rightVal;
+        }
+    }
+
+
+    // V0-2
+    // IDEA: DFS (GPT)
+    public boolean evaluateTree_0_2(TreeNode root) {
+        if (root == null) {
+            return false;
+        }
+
+        return helper_0_2(root);
+    }
+
+    private boolean helper_0_2(TreeNode root) {
+
+        // leaf node
+        if (root.left == null && root.right == null) {
+            return root.val == 1;
+        }
+
+        // OR
+        if (root.val == 2) {
+            return helper_0_2(root.left) || helper_0_2(root.right);
+        }
+
+        // AND
+        return helper_0_2(root.left) && helper_0_2(root.right);
+    }
+
 
     // V1-1
     // IDEA: Recursion + DFS
