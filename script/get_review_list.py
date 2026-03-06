@@ -18,7 +18,10 @@ class GetReviewList:
         """
         transform datetime str to datetime object for datetime op
         """
-        return datetime.strptime(datestring,'%Y%m%d')
+        try:
+            return datetime.strptime(datestring,'%Y%m%d')
+        except ValueError:
+            return None
 
     def fib(self, n):
         """
@@ -57,6 +60,8 @@ class GetReviewList:
                 if line and ':' in line:
                     date, lc_ids= line.split(":")[0], str(line.split(":")[1].strip())
                     date_fix=self.process_datetime(date)
+                    if date_fix is None:
+                        continue
                     sequence_date= [(date_fix + timedelta(days=day)).strftime('%Y-%m-%d') for day in fib_seq]
                     data="{} : {}\n".format(lc_ids, sequence_date)
                     print (data)
