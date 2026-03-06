@@ -1,6 +1,6 @@
 # Progress
 
-# 2026-03-06
+# 2026-03-07
 
 - weekly video
 - cheatsheet (LC examples)
