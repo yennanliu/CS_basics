@@ -50,6 +50,7 @@ public class DeleteNodesAndReturnForest {
 
     // V0-0-1
     // IDEA: DFS (gpt)
+    /** NOTE !!! compare V0-0-1 and V0-0-2 */
     List<TreeNode> res = new ArrayList<>();
 
     public List<TreeNode> delNodes_0_0_1(TreeNode root, int[] to_delete) {
@@ -59,6 +60,7 @@ public class DeleteNodesAndReturnForest {
             set.add(x);
         }
 
+        /** NOTE !!! compare V0-0-1 and V0-0-2 */
         root = dfsDel(root, set);
 
         if (root != null) {
@@ -102,8 +104,9 @@ public class DeleteNodesAndReturnForest {
     public List<TreeNode> delNodes_0_0_2(TreeNode root, int[] to_delete) {
         res_0_0_2.clear(); // Reset for clean execution
         deleteSet.clear();
-        for (int val : to_delete)
+        for (int val : to_delete){
             deleteSet.add(val);
+        }
 
         // 1. We call the helper.
         // 2. We pass "true" for isRoot because the original root
@@ -112,10 +115,21 @@ public class DeleteNodesAndReturnForest {
         return res_0_0_2;
     }
 
+    /** NOTE !!!
+     *
+     *   key param: `isRoot`
+     *
+     *    -> If it's a root and NOT deleted, add it to forest
+     *
+     */
     private TreeNode dfs(TreeNode node, boolean isRoot) {
         if (node == null)
             return null;
 
+        /** NOTE !!!
+         *
+         *  how we determine `toDelete` val
+         */
         // Check if current node needs to be deleted
         boolean toDelete = deleteSet.contains(node.val);
 
@@ -126,6 +140,15 @@ public class DeleteNodesAndReturnForest {
 
         // Post-Order: Process children.
         // If current node is deleted, its children become potential roots.
+        /** NOTE !!!
+         *
+         *  we pass toDelete as `isRoot` param
+         *  in recursion call (DFS)
+         *
+         *
+         *  -> so if cur node is `to delete`,
+         *     -> its sub node (left, right) becomes `root` potentially (isRoot=true)
+         */
         node.left = dfs(node.left, toDelete);
         node.right = dfs(node.right, toDelete);
 
@@ -455,6 +478,6 @@ public class DeleteNodesAndReturnForest {
     // V2
 
 
-    
+
 
 }

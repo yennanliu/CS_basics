@@ -3996,31 +3996,45 @@ public class Workspace21 {
      *
      */
     List<TreeNode> res = new ArrayList<>();
+
+    Set<Integer> deleteSet = new HashSet<>();
+
+
     public List<TreeNode> delNodes(TreeNode root, int[] to_delete) {
         // edge
         if(root == null){
             return res;
         }
 
-        List<Integer> list = new ArrayList<>();
-        for(int x: to_delete){
-            list.add(x);
-        }
+        res.clear(); // Reset for clean execution
+        deleteSet.clear();
+        for (int val : to_delete) deleteSet.add(val);
 
-        if(root.left == null && root.right == null){
-            if(list.contains(root.val)){
-                return res;
-            }
-            res.add(root);
-            return res;
-        }
+//
+//
+//        //
+//        List<Integer> list = new ArrayList<>();
+//        for(int x: to_delete){
+//            list.add(x);
+//        }
+//
+//        if(root.left == null && root.right == null){
+//            if(list.contains(root.val)){
+//                return res;
+//            }
+//            res.add(root);
+//            return res;
+//        }
 
         // dfs call
-        dfsDel(root, list);
+       // dfsDel2(root, deleteSet);
 
         return res;
     }
 
+//    private TreeNode dfsDel2(TreeNode node, boolean isRoot) {
+//        return null;
+//    }
 
     // post order traverse + DFS
     private TreeNode dfsDel(TreeNode root, List<Integer> list){
@@ -4036,12 +4050,21 @@ public class Workspace21 {
         if(list.contains(root.val)){
             // add `split` sub root to list ???
             // ??????????
-            if(_left != null){
+//            if(_left != null ){
+//                res.add(_left);
+//            }
+//            if(_right != null){
+//                res.add(_right);
+//            }
+
+            if(_left != null ){
                 res.add(_left);
             }
             if(_right != null){
                 res.add(_right);
             }
+
+
             return null; // ????
         }
 
