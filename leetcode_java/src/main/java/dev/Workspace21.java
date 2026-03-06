@@ -3851,10 +3851,96 @@ public class Workspace21 {
 
 
     // LC 814
+    // 10.04 - 14 am
+    /**
+     *
+     *    ->
+     *    return the same tree where every subtree
+     *    (of the given tree) not containing
+     *    a 1 has been removed.
+     *
+     *
+     *    -> remove a root is there is NO `1` node in its children
+     *
+     *
+     *    - root: binary tree
+     *
+     *
+     *    --------------------
+     *
+     *
+     *    IDEA 1) DFS
+     *
+     *
+     *    --------------------
+     *
+     *
+     */
+    // IDEA 1) DFS
+    // (post order traverse ???)
+    // left -> right -> root
     public TreeNode pruneTree(TreeNode root) {
+        // edge
+        if(root == null){
+            return root; // ???
+        }
+        if(root.left == null && root.right == null){
+            return root; // ???
+        }
 
-        return null;
+
+        return helper2(root);
     }
+
+    // ??????
+    private TreeNode helper2(TreeNode root){
+        // edge
+        if(root == null){
+            return root; // ???
+        }
+
+        // /??
+        TreeNode _left = helper2(root.left);
+        TreeNode _right = helper2(root.right);
+        if( ( _left != null && _left.val == 1 ) ||  ( _right != null && _right.val == 1)  ){
+            return null;
+        }
+
+        root.left = _left;
+        root.right = _right;
+
+        return root;
+    }
+
+
+
+
+
+
+
+    // contain `1` ???
+    // true: NO need to remove
+    // false: need to remove
+    private boolean helper(TreeNode root){
+        // edge
+        if(root == null){
+            return true; // ???
+        }
+
+        // /??
+        boolean _left = helper(root.left);
+        boolean _right = helper(root.right);
+        if(_left || _right){
+            return false;
+        }
+
+
+       //return null;
+        return false;
+    }
+
+
+
 
 
 

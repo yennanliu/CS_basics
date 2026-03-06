@@ -50,6 +50,65 @@ public class BinaryTreePruning {
 //
 //    }
 
+    // V0-1
+    // IDEA: DFS (gemini)
+    public TreeNode pruneTree_0_1(TreeNode root) {
+        // 1. Base Case: if the node is null, we return null.
+        if (root == null) {
+            return null;
+        }
+
+        // 2. Process children first (Bottom-Up / Post-Order)
+        // We assign the result of the recursion back to the left/right pointers.
+        root.left = pruneTree_0_1(root.left);
+        root.right = pruneTree_0_1(root.right);
+
+        // 3. Decide if the current node should be pruned:
+        // We prune this node (return null) IF:
+        // - Its value is 0
+        // - AND it has no left child (either originally or just pruned)
+        // - AND it has no right child (either originally or just pruned)
+        if (root.val == 0 && root.left == null && root.right == null) {
+            return null;
+        }
+
+        // 4. If it's a 1, or it's a 0 that still has a 1-containing child, keep it.
+        return root;
+    }
+
+
+    // V0-2
+    // IDEA: DFS (gpt)
+    public TreeNode pruneTree_0_2(TreeNode root) {
+
+        if (root == null) {
+            return null;
+        }
+
+        return helper2(root);
+    }
+
+    private TreeNode helper2(TreeNode root) {
+
+        if (root == null) {
+            return null;
+        }
+
+        TreeNode _left = helper2(root.left);
+        TreeNode _right = helper2(root.right);
+
+        root.left = _left;
+        root.right = _right;
+
+        // prune if subtree has no 1
+        if (root.val == 0 && _left == null && _right == null) {
+            return null;
+        }
+
+        return root;
+    }
+
+
 
     // V1
     // https://leetcode.com/problems/binary-tree-pruning/solutions/7520786/simple-postorder-dfs-approach-by-gopal_v-2l8i/
@@ -94,5 +153,7 @@ public class BinaryTreePruning {
 
 
 
+
+    
 
 }
