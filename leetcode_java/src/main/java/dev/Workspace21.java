@@ -2237,9 +2237,91 @@ public class Workspace21 {
      *
      *
      */
+    // 17.00 - 10 pm
+    /**
+     *
+     *
+     *
+     */
+    public String decodeString(String s) {
+        // edge
+        if (s == null || s.isEmpty()) {
+            return "";
+        }
+
+        String digits = "0123456789";
+        Stack<String> st = new Stack<>();
+
+        // ???
+        StringBuilder sb = new StringBuilder();
+
+
+
+        for(String x: s.split("")){
+            if(!x.equals("]")){
+                st.add(x);
+               // st.push(x);
+            }else{
+
+                StringBuilder sbAlpha = new StringBuilder();
+                StringBuilder sbDigit = new StringBuilder();
+
+                // deal with `alphabet`
+                while(!st.isEmpty() && !st.peek().equals("[")){
+                   // sbAlpha.append(st.pop());
+                    // NOTE !! append to idx=0
+                   // sbAlpha.add
+                    sbAlpha.insert(0, st.pop());
+                }
+
+                // NOTE !!!
+                st.pop(); // remove "["
+
+                // deal with digits`
+                while(!st.isEmpty() && digits.contains(st.peek())){
+                    //sbDigit.append(st.pop());
+                    sbDigit.insert(0, st.pop());
+                }
+
+                String cur = multiply3(sbDigit.toString(), sbAlpha.toString());
+                // ???
+                st.add(cur);
+            }
+        }
+
+
+
+        // prepare res
+        StringBuilder sb2 = new StringBuilder();
+        // /?
+        for(String x: st){
+           // sb2.append(x);
+            sb2.insert(0, x);
+        }
+
+        return sb2.toString();
+    }
+
+
+
+    private String multiply3(String times, String x){
+        int timesVal = Integer.parseInt(times);
+        StringBuilder res = new StringBuilder();
+        for(int i = 0; i < timesVal; i++){
+            res.append(x);
+        }
+        return res.toString();
+        //return res;
+    }
+
+
+
+
+
+
     // TIME: O(N) // /??
     // SPACE : O(N)
-    public String decodeString(String s) {
+    public String decodeString_98(String s) {
         // edge
         if (s == null || s.isEmpty()) {
             return "";

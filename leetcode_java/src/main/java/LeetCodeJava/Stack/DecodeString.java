@@ -202,6 +202,8 @@ public class DecodeString {
                      *
                      *   INSERT at 0 idx !!!!
                      *
+                     *   (sb.insert(0, val))
+                     *
                      *
                      * 
                      * we append to beginning of StringBuilder  (offset = 0 )
@@ -229,6 +231,8 @@ public class DecodeString {
                     /** NOTE !!!
                      *
                      * we append to beginning of StringBuilder  (offset = 0 )
+                     *
+                     *  (sb.insert(0, val))
                      */
                     numSb.insert(0, stack.pop()); // prepend digit
                 }
@@ -242,6 +246,7 @@ public class DecodeString {
 
         // build result from stack
         while (!stack.isEmpty()) {
+            /** NOTE! !!!  (sb.insert(0, val)) */
             sb.insert(0, stack.pop());
         }
 
