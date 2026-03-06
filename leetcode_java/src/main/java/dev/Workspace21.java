@@ -3186,8 +3186,120 @@ public class Workspace21 {
      *
      *  -------------
      */
-    //   IDEA 1) 2 POINTERS
+
+    // LC 27
+    // 17.20 - 30 pm
+    /**
+     *
+     *
+     *  // IDEA 1) 2 POINTERS
+     *
+     *   -> NOTE !!!
+     *     if  nums[right] == val
+     *        we will move right pointer no matter what
+     *        , then compare  nums[left],  nums[right] again
+     *        in next integration
+     *
+     *  ------------------
+     *
+     *  ex 1)
+     *   Input: nums = [3,2,2,3], val = 3
+     *
+     *   ->
+     *
+     *    [3,2,2,3]
+     *     l     r
+     *
+     *    [3,2,2,3]          [2,2,3,3]
+     *     l   r    swap        l r
+     *
+     *    [2,2,3,3]
+     *       r
+     *       l
+     *
+     *
+     *
+     *   ex 2)
+     *
+     *   Input: nums = [0,1,2,2,3,0,4,2], val = 2
+     *
+     *
+     *   [0,1,2,2,3,0,4,2]
+     *    l             r
+     *
+     *   [0,1,2,2,3,0,4,2]
+     *    l           r
+     *
+     *    [0,1,2,2,3,0,4,2]                 [0,1,4,2,3,0,2,2]
+     *         l       r      swap               l       r
+     *
+     *    [0,1,4,2,3,0,2,2]
+     *           l     r
+     *
+     *   [0,1,4,2,3,0,2,2]               [0,1,4,0,3,2,2,2]
+     *          l   r        swap               l   r
+     *
+     *   [0,1,4,0,3,2,2,2]
+     *            l r
+     *
+     *  [0,1,4,0,3,2,2,2]
+     *           l
+     *           r
+     *
+     *
+     */
+    // IDEA 1) 2 POINTERS
     public int removeElement(int[] nums, int val) {
+        // edge
+        if(nums == null || nums.length == 0){
+            return 0; // ???
+        }
+        if(nums.length == 1){
+            return nums[0] == val ? 0 : 1;
+        }
+
+        // ??? right, left pointer
+        int l = 0;
+        int r = nums.length - 1;
+
+        // ???
+        while( r >= l ){
+            // ????
+            while(r > 0 && nums[r] == val){
+                r -= 1;
+            }
+            // ???
+//            if(nums[r] == val){
+//                r -= 1;
+//            }
+            // if nums[l] == val), swap
+            if(nums[l] == val){
+                int tmp = nums[r];
+                nums[r] = nums[l];
+                nums[l] = tmp;
+                l += 1; // /???
+                // ??? need to move right as well ???
+                r -= 1;
+            }
+            // /??
+            else{
+                l += 1;
+            }
+
+        }
+
+        return l + 1; /// /???
+    }
+
+
+
+
+
+
+
+
+    //   IDEA 1) 2 POINTERS
+    public int removeElement_99(int[] nums, int val) {
         // edge
         if(nums == null || nums.length == 0){
             return 0; // ???

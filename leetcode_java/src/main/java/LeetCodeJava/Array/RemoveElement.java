@@ -193,6 +193,41 @@ class RemoveElement {
         return l;
     }
 
+    // V0-3
+    // IDEA: 2 POINTERS (fixed by gpt)
+    public int removeElement_0_3(int[] nums, int val) {
+        if (nums == null || nums.length == 0)
+            return 0;
+        if (nums.length == 1)
+            return nums[0] == val ? 0 : 1;
+
+        int l = 0;
+        int r = nums.length - 1;
+
+        while (l <= r) {
+            // move r left if nums[r] == val
+            while (r >= l && nums[r] == val) {
+                r--;
+            }
+
+            // now r >= l or loop ends
+            if (l < r && nums[l] == val) {
+                // swap nums[l] and nums[r]
+                int tmp = nums[l];
+                nums[l] = nums[r];
+                nums[r] = tmp;
+                r--; // move r
+            } else if (nums[l] != val) {
+                l++; // only move l if nums[l] is valid
+            } else {
+                // l == r and nums[l] == val → finished
+                break;
+            }
+        }
+
+        return l;
+    }
+
 
     // V1
     // IDEA : 2 POINTERS
