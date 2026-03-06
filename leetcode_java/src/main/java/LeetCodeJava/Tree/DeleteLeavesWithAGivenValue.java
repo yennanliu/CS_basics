@@ -176,6 +176,54 @@ public class DeleteLeavesWithAGivenValue {
         return root;
     }
 
+    // V0-0-1
+    // IDEA: DFS (fixed by gemini)
+    public TreeNode removeLeafNodes_0_0_1(TreeNode root, int target) {
+        // 1. Base Case
+        if (root == null) {
+            return null;
+        }
+
+        // 2. Post-Order: Process children first
+        // This allows the "bottom-up" pruning effect
+        root.left = removeLeafNodes_0_0_1(root.left, target);
+        root.right = removeLeafNodes_0_0_1(root.right, target);
+
+        // 3. Current node check:
+        // If after pruning children, this node is now a leaf AND matches target...
+        if (root.left == null && root.right == null && root.val == target) {
+            // ...prune this node by returning null to its parent
+            return null;
+        }
+
+        // Otherwise, keep this node
+        return root;
+    }
+
+
+    // V0-0-2
+    // IDEA: DFS (fixed by GPT)
+    public TreeNode removeLeafNodes_0_0_2(TreeNode root, int target) {
+
+        if (root == null) {
+            return null;
+        }
+
+        TreeNode _left = removeLeafNodes_0_0_2(root.left, target);
+        TreeNode _right = removeLeafNodes_0_0_2(root.right, target);
+
+        root.left = _left;
+        root.right = _right;
+
+        // check AFTER children are processed
+        if (root.val == target && root.left == null && root.right == null) {
+            return null;
+        }
+
+        return root;
+    }
+
+
     // V0-1
     // IDEA: DFS (fixed by gpt)
     /**
@@ -323,5 +371,9 @@ public class DeleteLeavesWithAGivenValue {
         }
         return root; // Return the modified tree.
     }
+
+
+
+
 
 }
