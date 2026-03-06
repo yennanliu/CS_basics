@@ -217,10 +217,10 @@ public class MostFrequentIDs {
      */
     // NOTE !!! below is WRONG !!!!
 //    /**
-     * time = O(N log N)
-     * space = O(N)
-     */
-    public long[] mostFrequentIDs(int[] nums, int[] freq) {
+//     * time = O(N log N)
+//     * space = O(N)
+//     */
+//    public long[] mostFrequentIDs(int[] nums, int[] freq) {
 //        int n = nums.length;
 //
 //        // map: { val : cnt }

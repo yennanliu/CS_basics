@@ -56,10 +56,10 @@ public class FindScoreOfAnArrayAfterMarkingAllElements {
 
     // VO
 //    /**
-     * time = O(N log N)
-     * space = O(N)
-     */
-    public long findScore(int[] nums) {
+//     * time = O(N log N)
+//     * space = O(N)
+//     */
+//    public long findScore(int[] nums) {
 //
 //    }
 

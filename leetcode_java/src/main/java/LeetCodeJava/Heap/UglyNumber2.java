@@ -41,10 +41,10 @@ public class UglyNumber2 {
 
     // V0
 //    /**
-     * time = O(N log N)
-     * space = O(N)
-     */
-    public int nthUglyNumber(int n) {
+//     * time = O(N log N)
+//     * space = O(N)
+//     */
+//    public int nthUglyNumber(int n) {
 //
 //    }
 

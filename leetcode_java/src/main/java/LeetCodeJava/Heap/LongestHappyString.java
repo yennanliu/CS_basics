@@ -45,10 +45,10 @@ public class LongestHappyString {
 
     // V0
 //    /**
-     * time = O(a + b + c)
-     * space = O(a + b + c)
-     */
-    public String longestDiverseString(int a, int b, int c) {
+//     * time = O(a + b + c)
+//     * space = O(a + b + c)
+//     */
+//    public String longestDiverseString(int a, int b, int c) {
 //
 //    }
 
@@ -56,10 +56,10 @@ public class LongestHappyString {
     // https://www.youtube.com/watch?v=8u-H6O_XQKE
     // https://github.com/neetcode-gh/leetcode/blob/main/java%2F1405-longest-happy-string.java
 //    /**
-     * time = O(a + b + c)
-     * space = O(a + b + c)
-     */
-    public String longestDiverseString_1(int a, int b, int c) {
+//     * time = O(a + b + c)
+//     * space = O(a + b + c)
+//     */
+//    public String longestDiverseString_1(int a, int b, int c) {
 //        String res = "";
 //        PriorityQueue<Pair<Integer, Character>> maxHeap = new PriorityQueue<>(
 //                (i1, i2) -> i2.getKey() - i1.getKey());

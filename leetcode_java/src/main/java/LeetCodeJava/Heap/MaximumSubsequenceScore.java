@@ -58,10 +58,10 @@ public class MaximumSubsequenceScore {
 
     // V0
 //    /**
-     * time = O(N log N)
-     * space = O(N)
-     */
-    public long maxScore(int[] nums1, int[] nums2, int k) {
+//     * time = O(N log N)
+//     * space = O(N)
+//     */
+//    public long maxScore(int[] nums1, int[] nums2, int k) {
 //
 //    }
 
@@ -186,10 +186,10 @@ public class MaximumSubsequenceScore {
      *
      */
 //    /**
-     * time = O(N log N)
-     * space = O(N)
-     */
-    public long maxScore(int[] nums1, int[] nums2, int k) {
+//     * time = O(N log N)
+//     * space = O(N)
+//     */
+//    public long maxScore(int[] nums1, int[] nums2, int k) {
 //        // edge
 //        if(nums1.length == 1){
 //            if(k == 1){

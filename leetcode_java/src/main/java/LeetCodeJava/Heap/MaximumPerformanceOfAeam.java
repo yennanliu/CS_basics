@@ -52,10 +52,10 @@ public class MaximumPerformanceOfAeam {
 
     // V0
 //    /**
-     * time = O(N log N)
-     * space = O(N)
-     */
-    public int maxPerformance(int n, int[] speed, int[] efficiency, int k) {
+//     * time = O(N log N)
+//     * space = O(N)
+//     */
+//    public int maxPerformance(int n, int[] speed, int[] efficiency, int k) {
 //
 //    }
 
