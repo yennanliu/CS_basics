@@ -3774,10 +3774,79 @@ public class Workspace21 {
 
 
     // LC 2331
+    // 8.10 - 20 am
+    /**
+     *  -> Return the boolean result
+     *  of evaluating the root node.
+     *
+     *  LEAF node:
+     *    - 0 represents False
+     *    - 1 represents True.
+     *
+     *  NON LEAF node:
+     *    - 2 represents the boolean OR
+     *    - 3 represents the boolean AND.
+     *
+     *
+     *  - NOTE:
+     *    - A full binary tree is a binary tree
+     *    where each node has either 0 or 2 children.
+     *
+     *    - leaf node:
+     *       - has 0 child
+     *
+     *
+     *  --------------------
+     *
+     *
+     *  --------------------
+     *
+     *
+     */
     public boolean evaluateTree(TreeNode root) {
+        // edge
+        Map<Integer, Boolean> leafMap = new HashMap<>();
+        Map<Integer, String> nonLeafMap = new HashMap<>();
 
-        return false;
+        leafMap.put(0, false);
+        leafMap.put(1, true);
+
+        nonLeafMap.put(2, "OR");
+        nonLeafMap.put(3, "AND");
+
+        if(root == null){
+            return true; // ????
+        }
+
+
+        return helper(root, leafMap, nonLeafMap);
     }
+
+
+
+    private boolean helper(TreeNode root, Map<Integer, Boolean> leafMap, Map<Integer, String> nonLeafMap){
+        // edge
+        if(root == null){
+            return true; // ???
+        }
+
+        // leaf node
+        if(root.left == null && root.right == null){
+            return leafMap.get(root.val);
+        }
+
+        // non leaf node
+        // dfs check its children nodes
+        if(nonLeafMap.get(root.val).equals("AND")){
+            return helper(root.left, leafMap, nonLeafMap)
+                    && helper(root.right, leafMap, nonLeafMap);
+        }
+
+        return helper(root.left, leafMap, nonLeafMap)
+                || helper(root.right, leafMap, nonLeafMap);
+    }
+
+
 
 
 
