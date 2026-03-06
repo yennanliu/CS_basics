@@ -4,6 +4,9 @@ package LeetCodeJava.Tree;
 
 import LeetCodeJava.DataStructure.TreeNode;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  *  865. Smallest Subtree with all the Deepest Nodes
  * Medium
@@ -58,7 +61,77 @@ public class SmallestSubtreeWithAllTheDeepestNodes {
 //
 //    }
 
-    // V1
+    // V1-1
+    // IDEA: Paint Deepest Nodes
+    // https://leetcode.com/problems/smallest-subtree-with-all-the-deepest-nodes/editorial/
+    Map<TreeNode, Integer> depth;
+    int max_depth;
+
+    public TreeNode subtreeWithAllDeepest_1_1(TreeNode root) {
+        depth = new HashMap();
+        depth.put(null, -1);
+        dfs(root, null);
+        max_depth = -1;
+        for (Integer d : depth.values())
+            max_depth = Math.max(max_depth, d);
+
+        return answer(root);
+    }
+
+    public void dfs(TreeNode node, TreeNode parent) {
+        if (node != null) {
+            depth.put(node, depth.get(parent) + 1);
+            dfs(node.left, node);
+            dfs(node.right, node);
+        }
+    }
+
+    public TreeNode answer(TreeNode node) {
+        if (node == null || depth.get(node) == max_depth)
+            return node;
+        TreeNode L = answer(node.left),
+                R = answer(node.right);
+        if (L != null && R != null)
+            return node;
+        if (L != null)
+            return L;
+        if (R != null)
+            return R;
+        return null;
+    }
+
+
+    // V1-2
+    // IDEA: RECURSION
+    // https://leetcode.com/problems/smallest-subtree-with-all-the-deepest-nodes/editorial/
+    class Result {
+        TreeNode node;
+        int dist;
+
+        Result(TreeNode n, int d) {
+            node = n;
+            dist = d;
+        }
+    }
+
+    public TreeNode subtreeWithAllDeepest_1_2(TreeNode root) {
+        return dfs(root).node;
+    }
+
+    // Return the result of the subtree at this node.
+    public Result dfs(TreeNode node) {
+        if (node == null)
+            return new Result(null, 0);
+        Result L = dfs(node.left),
+                R = dfs(node.right);
+        if (L.dist > R.dist)
+            return new Result(L.node, L.dist + 1);
+        if (L.dist < R.dist)
+            return new Result(R.node, R.dist + 1);
+        return new Result(node, L.dist + 1);
+    }
+
+
 
     // V2
 

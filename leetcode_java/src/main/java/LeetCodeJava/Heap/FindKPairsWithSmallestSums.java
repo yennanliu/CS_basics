@@ -45,10 +45,10 @@ public class FindKPairsWithSmallestSums {
 
     // V0
 //    /**
-     * time = O(k log k)
-     * space = O(k)
-     */
-    public List<List<Integer>> kSmallestPairs(int[] nums1, int[] nums2, int k) {
+//     * time = O(k log k)
+//     * space = O(k)
+//     */
+//    public List<List<Integer>> kSmallestPairs(int[] nums1, int[] nums2, int k) {
 //
 //    }
 
@@ -317,10 +317,10 @@ public class FindKPairsWithSmallestSums {
     // https://leetcode.com/problems/find-k-pairs-with-smallest-sums/editorial/
     // IDEA: PQ
 //    /**
-     * time = O(k log k)
-     * space = O(k)
-     */
-    public List<List<Integer>> kSmallestPairs_1(int[] nums1, int[] nums2, int k) {
+//     * time = O(k log k)
+//     * space = O(k)
+//     */
+//    public List<List<Integer>> kSmallestPairs_1(int[] nums1, int[] nums2, int k) {
 //        int m = nums1.length;
 //        int n = nums2.length;
 //
@@ -395,10 +395,10 @@ public class FindKPairsWithSmallestSums {
     // https://leetcode.com/problems/find-k-pairs-with-smallest-sums/solutions/6616196/simple-min-heap-priority-queue-by-kdhaka-8np5/
     // IDEA: PQ
 //    /**
-     * time = O(k log k)
-     * space = O(k)
-     */
-    public List<List<Integer>> kSmallestPairs_3(int[] nums1, int[] nums2, int k) {
+//     * time = O(k log k)
+//     * space = O(k)
+//     */
+//    public List<List<Integer>> kSmallestPairs_3(int[] nums1, int[] nums2, int k) {
 //        List<List<Integer>> list = new ArrayList<>();
 //
 //        PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[0] - b[0]);
@@ -422,8 +422,6 @@ public class FindKPairsWithSmallestSums {
 //
 //        return list;
 //    }
-
-
 
 
 }
