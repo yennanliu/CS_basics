@@ -4486,6 +4486,26 @@ public class Workspace21 {
             intervalList.add(new Integer[]{x[1], -1});
         }
 
+//        // Start = 1, End = -1
+//        List<int[]> events = new ArrayList<>();
+//        for (int[] interval : intervals) {
+//            events.add(new int[]{interval[0], 1});  // Start
+//            events.add(new int[]{interval[1], -1}); // End
+//        }
+//
+
+
+        // NOTE !!!! below
+//        // 2. Sort events by time
+//        Collections.sort(events, (a, b) -> {
+//            if (a[0] != b[0]) {
+//                return a[0] - b[0]; // Sort by timestamp
+//            }
+//            // IMPORTANT: If times are equal, process End (-1) before Start (1)
+//            return a[1] - b[1];
+//        });
+
+
         // sort (sort on timestamp, small -> big)
         Collections.sort(intervalList, new Comparator<Integer[]>() {
             @Override

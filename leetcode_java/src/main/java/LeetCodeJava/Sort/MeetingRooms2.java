@@ -55,7 +55,8 @@ public class MeetingRooms2 {
         /**
          * NOTE !!!
          *
-         *  we sort 1) on val,
+         *  we sort
+         *    1) on val,
          *    if val are the same,
          *    2) then sort on open / close status
          *
