@@ -4456,17 +4456,74 @@ public class Workspace21 {
     // 9.19 - 29 am
     /**
      *
+     *  -> Given an array of meeting time intervals intervals
+     *  where intervals[i] = [starti, endi],
+     *  return the `minimum` number of conference rooms required.
      *
+     *  --------------
      *
+     *  IDEA 1)   PQ ????? + SORT ???
      *
+     *  IDEA 2)  BRUTE FORCE ????
      *
      */
     public int minMeetingRooms(int[][] intervals) {
-        return 0;
+        // edge
+        if(intervals == null || intervals.length == 0){
+            return 0;
+        }
+        if(intervals.length == 1){
+            return 1;
+        }
+
+        // ?????
+        // { [timestamp, type] }
+        // start: +1
+        // end : -1
+        List<Integer[]> intervalList = new ArrayList<>();
+        for(int[] x: intervals){
+            intervalList.add(new Integer[]{x[0], 1});
+            intervalList.add(new Integer[]{x[1], -1});
+        }
+
+        // sort (sort on timestamp, small -> big)
+        Collections.sort(intervalList, new Comparator<Integer[]>() {
+            @Override
+            public int compare(Integer[] o1, Integer[] o2) {
+                int diff = o1[0] - o2[0];
+                return diff;
+            }
+        });
+
+        int minRoom = 0;
+        int curRoom = 0;
+
+        for(Integer[] x: intervalList){
+            int timestamp = x[0];
+            int status = x[1];
+            if(status == 1){
+                curRoom += 1;
+            }else{
+                curRoom -= 1;
+                // ???
+                if(curRoom < 0){
+                    curRoom = 0;
+                }
+            }
+
+
+            minRoom = Math.min(curRoom, minRoom);
+        }
+
+
+
+        return minRoom;
     }
 
 
 
-    
+
+
+
 
 }
