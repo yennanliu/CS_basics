@@ -4452,5 +4452,21 @@ public class Workspace21 {
         return res;
     }
 
+    // LC 253
+    // 9.19 - 29 am
+    /**
+     *
+     *
+     *
+     *
+     *
+     */
+    public int minMeetingRooms(int[][] intervals) {
+        return 0;
+    }
+
+
+
+    
 
 }
