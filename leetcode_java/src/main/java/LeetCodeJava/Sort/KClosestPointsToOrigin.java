@@ -45,12 +45,66 @@ import java.util.concurrent.ThreadLocalRandom;
 public class KClosestPointsToOrigin {
 
     // V0
+    // IDEA: MAX PQ + [x,y,dist] structure (GEMINI)
+    public int[][] kClosest(int[][] points, int k) {
+        // edge
+        if (points == null || points.length == 0 || points[0].length == 0) {
+            return null; // ????
+        }
+        if (k >= points.length) {
+            return points;
+        }
+
+        // { [x,y,dist] }
+        /** NOTE !!! big PQ */
+        PriorityQueue<Integer[]> pq = new PriorityQueue<>(new Comparator<Integer[]>() {
+            @Override
+            public int compare(Integer[] o1, Integer[] o2) {
+                int diff = o2[2] - o1[2];
+                return diff;
+            }
+        });
+
+        int[][] res = new int[k][2];
+
+        for (int[] p : points) {
+            int x = p[0];
+            int y = p[1];
+            int dist = (x * x) + (y * y);
+            pq.add(new Integer[] { x, y, dist });
+
+            /** NOTE
+             *  We poll from the priority queue immediately once its size exceeds k.
+             *  Do NOT delay this by removing elements later
+             *  with a while loop outside the for-loop.
+             */
+            // NOTE !!! below
+            if (pq.size() > k) {
+                pq.poll();
+            }
+        }
+
+        while (pq.size() > k) {
+            pq.poll();
+        }
+
+        int i = 0;
+        for (Integer[] x : pq) {
+            res[i] = new int[] { x[0], x[1] };
+            i += 1;
+        }
+
+        return res;
+    }
+
+
+    // V0-0-0-0-1
     // IDEA: MAX PQ + custom sorting (with function) (fixed by gpt)
     /**
      * time = O(N)
      * space = O(N)
      */
-    public int[][] kClosest(int[][] points, int k) {
+    public int[][] kClosest_0_0_0_1(int[][] points, int k) {
         if (points == null || points.length == 0 || k <= 0) {
             return new int[0][];
         }
@@ -345,6 +399,8 @@ public class KClosestPointsToOrigin {
         points[j][0] = t0;
         points[j][1] = t1;
     }
+
+
 
 
 
