@@ -60,6 +60,81 @@ public class SmallestSubtreeWithAllTheDeepestNodes {
 //    public TreeNode subtreeWithAllDeepest(TreeNode root) {
 //
 //    }
+    
+
+    // V0-1
+    // We create a simple helper class to return both the Node and its max Depth
+    class Result_0_1 {
+        TreeNode node;
+        int dist;
+        Result_0_1(TreeNode node, int dist) {
+            this.node = node;
+            this.dist = dist;
+        }
+    }
+
+    public TreeNode subtreeWithAllDeepest(TreeNode root) {
+        return dfs_0_1(root).node;
+    }
+
+    private Result_0_1 dfs_0_1(TreeNode node) {
+        if (node == null) {
+            return new Result_0_1(null, 0);
+        }
+
+        Result_0_1 left = dfs_0_1(node.left);
+        Result_0_1 right = dfs_0_1(node.right);
+
+        // Case 1: Left side is deeper. The result must be in the left subtree.
+        if (left.dist > right.dist) {
+            return new Result_0_1(left.node, left.dist + 1);
+        }
+
+        // Case 2: Right side is deeper. The result must be in the right subtree.
+        if (right.dist > left.dist) {
+            return new Result_0_1(right.node, right.dist + 1);
+        }
+
+        // Case 3: Depths are EQUAL.
+        // This current node is the "Lowest Common Ancestor" for all deepest
+        // nodes found so far in its subtrees.
+        return new Result_0_1(node, left.dist + 1);
+    }
+
+
+    // V0-2
+    public TreeNode subtreeWithAllDeepest_0_2(TreeNode root) {
+        return dfs_0_2(root).node;
+    }
+
+    private Pair dfs_0_2(TreeNode node) {
+        if (node == null) {
+            return new Pair(null, 0);
+        }
+
+        Pair left = dfs_0_2(node.left);
+        Pair right = dfs_0_2(node.right);
+
+        if (left.depth > right.depth) {
+            return new Pair(left.node, left.depth + 1);
+        } else if (right.depth > left.depth) {
+            return new Pair(right.node, right.depth + 1);
+        } else {
+            return new Pair(node, left.depth + 1);
+        }
+    }
+
+    class Pair {
+        TreeNode node;
+        int depth;
+
+        Pair(TreeNode node, int depth) {
+            this.node = node;
+            this.depth = depth;
+        }
+    }
+
+
 
     // V1-1
     // IDEA: Paint Deepest Nodes
@@ -134,6 +209,8 @@ public class SmallestSubtreeWithAllTheDeepestNodes {
 
 
     // V2
+
+
 
 
 

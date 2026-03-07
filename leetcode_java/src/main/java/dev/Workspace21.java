@@ -4335,11 +4335,59 @@ public class Workspace21 {
      *
      *  --------------------
      *
+     *  IDEA 1) DFS (post order traverse)
+     *    -> track `depth` and if there is no child
+     *
+     *
+     *
      *
      */
+    // /??
+    Map<TreeNode, Integer> depthMap = new HashMap<>(); // ???
+    Map<TreeNode, TreeNode> parentMap = new HashMap<>();  // { node : parent }
     public TreeNode subtreeWithAllDeepest(TreeNode root) {
+        // edge
+        if(root == null){
+            return root; // ???
+        }
 
-        return null;
+        deepestHelper(root, 0, null); // ???
+
+        // get the deepest child ???
+        int maxDepth = 0;
+        TreeNode res = root;
+
+        for(TreeNode node: parentMap.keySet()){
+
+            int depth = depthMap.get(node);
+
+            if(depth > maxDepth){
+                maxDepth = depth;
+                res = node;
+            }
+        }
+
+
+        return res;
+    }
+
+    private TreeNode deepestHelper(TreeNode root, int depth, TreeNode parent){
+        // edge
+        if(root == null){
+            return root; // ???
+        }
+
+        TreeNode _left = deepestHelper(root.left, depth + 1, root);
+        TreeNode _right = deepestHelper(root.right, depth + 1, root);
+
+        // ???/record parent, depth
+        parentMap.put(root, parent);
+        depthMap.put(root, depth);
+
+        root.left = _left;
+        root.right = _right;
+
+        return root; // ???
     }
 
 
