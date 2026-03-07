@@ -1,0 +1,159 @@
+name: Java Syntax & Javadoc Format Check
+
+on:
+  push:
+    branches: [ master ]
+    paths:
+      - 'leetcode_java/**/*.java'
+  pull_request:
+    branches: [ master ]
+    paths:
+      - 'leetcode_java/**/*.java'
+  workflow_dispatch:
+
+jobs:
+  java-syntax-check:
+    name: Java Syntax & Javadoc Format Check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      # ---------------------------------------------------------------
+      # Step 1: Compile every .java file under src/main/java
+      #   - Uses src/main/java as classpath so cross-package imports
+      #     (DataStructure.*, AlgorithmJava.*, etc.) resolve correctly.
+      #   - dev/Sorting files are excluded from the error gate because
+      #     they depend on JUnit jars not on the compile classpath.
+      # ---------------------------------------------------------------
+      - name: Compile all Java files (syntax check)
+        working-directory: leetcode_java
+        run: |
+          echo "=== Java Syntax Check ==="
+          find src/main/java -name "*.java" > /tmp/java_files.txt
+          TOTAL=$(wc -l < /tmp/java_files.txt)
+          echo "Scanning ${TOTAL} Java files..."
+          echo ""
+
+          xargs javac -cp src/main/java < /tmp/java_files.txt 2>&1 \
+            | tee /tmp/compile_output.txt || true
+
+          # Extract files with real errors, ignoring dev/Sorting (JUnit classpath issue)
+          ERROR_FILES=$(grep "^src.*error:" /tmp/compile_output.txt \
+            | grep -v "dev/Sorting/" \
+            | sed 's/:[0-9]*: error:.*//' \
+            | sort -u)
+
+          echo ""
+          echo "=== Results ==="
+          if [ -n "$ERROR_FILES" ]; then
+            ERROR_COUNT=$(echo "$ERROR_FILES" | wc -l)
+            echo "❌ Syntax errors found in ${ERROR_COUNT} file(s):"
+            echo ""
+            echo "$ERROR_FILES"
+            echo ""
+            echo "Full compiler output:"
+            grep -v "dev/Sorting/" /tmp/compile_output.txt | grep "error:" || true
+            exit 1
+          else
+            echo "✅ All Java files pass syntax check! (${TOTAL} files scanned)"
+          fi
+
+      # ---------------------------------------------------------------
+      # Step 2: Detect "leaked Javadoc" pattern
+      #   Catches the case where a commented-out stub like:
+      #
+      #     //    /**
+      #            * time = O(N)    <-- this line has no // prefix → leaks
+      #            * space = O(N)
+      #            */
+      #       public ReturnType method() {   <-- signature uncommented
+      #
+      #   These cause compilation errors (unclosed methods, duplicates).
+      #   The fix is to add '//' to each leaking line.
+      # ---------------------------------------------------------------
+      - name: Check for leaked Javadoc patterns
+        working-directory: leetcode_java
+        run: |
+          echo "=== Leaked Javadoc Format Check ==="
+          python3 - << 'PYEOF'
+          import os
+          import re
+          import sys
+
+          # Matches lines like "     * time = O(...)" or "     * space = O(...)"
+          LEAKED = re.compile(r'^\s+\*\s+(time|space)\s*=\s*O\(')
+
+          issues = []
+          files_checked = 0
+
+          for root, _, files in os.walk('src/main/java'):
+              for fname in sorted(files):
+                  if not fname.endswith('.java'):
+                      continue
+                  fpath = os.path.join(root, fname)
+                  files_checked += 1
+
+                  with open(fpath, encoding='utf-8', errors='replace') as f:
+                      lines = f.readlines()
+
+                  in_block = False
+                  for lineno, line in enumerate(lines, 1):
+                      stripped = line.strip()
+
+                      # Enter a block comment (/* or /**) only if the line itself
+                      # is not already a line-comment (//)
+                      if not in_block and '/*' in line and not stripped.startswith('//'):
+                          in_block = True
+
+                      # Exit block comment
+                      if in_block and '*/' in line:
+                          in_block = False
+                          continue
+
+                      # Skip line-comments and lines already inside a block comment
+                      if stripped.startswith('//') or in_block:
+                          continue
+
+                      # Flag any "* time = O(...)" / "* space = O(...)" that sits
+                      # outside a proper block comment — these are leaked Javadoc lines
+                      if LEAKED.match(line):
+                          issues.append((fpath, lineno, line.rstrip()))
+
+          print(f"Checked {files_checked} Java files\n")
+
+          if issues:
+              print(f"❌ Found {len(issues)} leaked Javadoc line(s):\n")
+              current_file = None
+              for fpath, lineno, text in issues:
+                  if fpath != current_file:
+                      print(f"  {fpath}")
+                      current_file = fpath
+                  print(f"    line {lineno}: {text}")
+              print()
+              print("Fix: add '//' prefix to each flagged line,")
+              print("     or wrap the Javadoc in a proper /** ... */ block.")
+              sys.exit(1)
+          else:
+              print("✅ No leaked Javadoc comments detected!")
+          PYEOF
+
+      # ---------------------------------------------------------------
+      # Step 3: Upload compiler output as an artifact on failure
+      #   so the full error log is available for download from the
+      #   GitHub Actions UI without having to re-run locally.
+      # ---------------------------------------------------------------
+      - name: Upload compiler error report
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: java-compile-errors
+          path: /tmp/compile_output.txt
+          retention-days: 7
