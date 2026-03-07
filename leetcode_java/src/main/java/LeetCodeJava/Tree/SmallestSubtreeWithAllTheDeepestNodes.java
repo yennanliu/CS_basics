@@ -4,8 +4,7 @@ package LeetCodeJava.Tree;
 
 import LeetCodeJava.DataStructure.TreeNode;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  *  865. Smallest Subtree with all the Deepest Nodes
@@ -209,6 +208,86 @@ public class SmallestSubtreeWithAllTheDeepestNodes {
             this.node = node;
             this.depth = depth;
         }
+    }
+
+
+    // V0-3
+    // IDEA: LCA + DFS (GPT)
+    public TreeNode subtreeWithAllDeepest_0_3(TreeNode root) {
+        return dfs_0_3(root).node;
+    }
+
+    private Pair dfs_0_3(TreeNode node) {
+        if (node == null)
+            return new Pair(null, 0);
+
+        Pair L = dfs_0_3(node.left), R = dfs_0_3(node.right);
+
+        if (L.depth > R.depth)
+            return new Pair(L.node, L.depth + 1);
+        if (L.depth < R.depth)
+            return new Pair(R.node, R.depth + 1);
+
+        return new Pair(node, L.depth + 1);
+    }
+
+//    class Pair {
+//        TreeNode node;
+//        int depth;
+//
+//        Pair(TreeNode n, int d) {
+//            node = n;
+//            depth = d;
+//        }
+//    }
+
+    // V0-4
+    // IDEA: LCA + BFS (GPT)
+    public TreeNode subtreeWithAllDeepest_0_4(TreeNode root) {
+
+        Map<TreeNode, TreeNode> parent = new HashMap<>();
+        Queue<TreeNode> q = new LinkedList<>();
+
+        q.offer(root);
+        parent.put(root, null);
+
+        List<TreeNode> level = new ArrayList<>();
+
+        // BFS
+        while (!q.isEmpty()) {
+            int size = q.size();
+            level = new ArrayList<>();
+
+            for (int i = 0; i < size; i++) {
+                TreeNode cur = q.poll();
+                level.add(cur);
+
+                if (cur.left != null) {
+                    parent.put(cur.left, cur);
+                    q.offer(cur.left);
+                }
+
+                if (cur.right != null) {
+                    parent.put(cur.right, cur);
+                    q.offer(cur.right);
+                }
+            }
+        }
+
+        // move upward until all nodes equal
+        Set<TreeNode> set = new HashSet<>(level);
+
+        while (set.size() > 1) {
+            Set<TreeNode> next = new HashSet<>();
+
+            for (TreeNode node : set) {
+                next.add(parent.get(node));
+            }
+
+            set = next;
+        }
+
+        return set.iterator().next();
     }
 
 

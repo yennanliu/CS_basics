@@ -1124,6 +1124,7 @@ public class TreeNode {
 | LCA of BST | 235 | BST Property | Value Comparison | Easy |
 | Distance in Binary Tree | 1740 | LCA + Distance | Path Distance | Medium |
 | All Nodes Distance K | 863 | Graph + BFS | Tree to Graph | Medium |
+| Smallest Subtree w/ Deepest Nodes | 865/1123 | LCA + Depth Comparison | Result(node, dist) DFS | Medium |
 
 #### **Height and Depth Problems**
 | Problem | LC # | Pattern | Template | Difficulty |
@@ -1466,6 +1467,85 @@ TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q){
     return left == null ? right: left;
 }
 ```
+
+#### 1-1-4-1) LCA Variant — Smallest Subtree with All Deepest Nodes (LC 865 / LC 1123)
+
+**Key Insight**: This is LCA in disguise. Instead of being given target nodes `p` and `q`, the targets are **implicitly** all nodes at the maximum depth.
+
+```
+Standard LCA (LC 236)                 Deepest Subtree LCA (LC 865)
+-----------------------               --------------------------------
+Targets p, q are GIVEN                Targets = nodes at max depth (discovered)
+Find where p and q paths meet         Find where left/right deepest paths meet
+```
+
+**Algorithm**: Post-order DFS returning `Result(node, dist)`:
+- `node` = candidate LCA for deepest nodes in this subtree
+- `dist` = max depth seen below this node
+
+**Three Cases:**
+1. `left.dist > right.dist` → deepest nodes all on left → return left's result
+2. `right.dist > left.dist` → deepest nodes all on right → return right's result
+3. `left.dist == right.dist` → deepest nodes on **both** sides → **current node is LCA**
+
+```java
+// java
+// LC 865 / LC 1123 — Smallest Subtree with All the Deepest Nodes
+// Same as: LCA of the deepest leaves
+
+// Helper class carries both the LCA candidate and its max depth below
+class Result {
+    TreeNode node;
+    int dist;
+    Result(TreeNode node, int dist) {
+        this.node = node;
+        this.dist = dist;
+    }
+}
+
+/**
+ * time = O(N)
+ * space = O(H)  — recursion stack; O(log N) balanced, O(N) skewed
+ */
+public TreeNode subtreeWithAllDeepest(TreeNode root) {
+    return dfs(root).node;
+}
+
+private Result dfs(TreeNode node) {
+    if (node == null) {
+        return new Result(null, 0);
+    }
+
+    Result left  = dfs(node.left);
+    Result right = dfs(node.right);
+
+    // Case 1: left subtree is deeper — LCA is buried there
+    if (left.dist > right.dist) {
+        return new Result(left.node, left.dist + 1);
+    }
+
+    // Case 2: right subtree is deeper — LCA is buried there
+    if (right.dist > left.dist) {
+        return new Result(right.node, right.dist + 1);
+    }
+
+    // Case 3: equal depth — current node is the LCA of all deepest nodes
+    return new Result(node, left.dist + 1);
+}
+```
+
+**Visualization:**
+```
+        [3]          ← left.dist(3) == right.dist(2)? No → left wins
+       /   \
+     [5]   [1]       ← left.dist(2) == right.dist(1)? No → left wins
+    /   \
+  [6]  [2]           ← left.dist(0) == right.dist(1)? No → right wins
+       /  \
+      [7] [4]        ← both null, dist=0 → node [2] is LCA ✓
+```
+
+**Pro Tip**: Whenever a problem asks for the "smallest subtree containing [condition X]", think **Post-Order DFS + LCA logic**.
 
 #### 1-1-5) Merge Two Binary Trees
 ```python
