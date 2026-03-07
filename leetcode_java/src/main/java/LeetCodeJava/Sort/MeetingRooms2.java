@@ -81,6 +81,41 @@ public class MeetingRooms2 {
         return cnt;
     }
 
+    // V0-0-1
+    // IDEA: PQ + SCANNING LINE (GEMINI)
+    // TODO: validate
+    public int minMeetingRooms_0_0_1(int[][] intervals) {
+        if (intervals == null || intervals.length == 0) return 0;
+
+        // 1. Create a list of events: [time, type]
+        // Start = 1, End = -1
+        List<int[]> events = new ArrayList<>();
+        for (int[] interval : intervals) {
+            events.add(new int[]{interval[0], 1});  // Start
+            events.add(new int[]{interval[1], -1}); // End
+        }
+
+        // 2. Sort events by time
+        Collections.sort(events, (a, b) -> {
+            if (a[0] != b[0]) {
+                return a[0] - b[0]; // Sort by timestamp
+            }
+            // IMPORTANT: If times are equal, process End (-1) before Start (1)
+            return a[1] - b[1];
+        });
+
+        int maxRooms = 0;
+        int curRooms = 0;
+
+        for (int[] event : events) {
+            curRooms += event[1]; // Add 1 for start, subtract 1 for end
+            maxRooms = Math.max(maxRooms, curRooms);
+        }
+
+        return maxRooms;
+    }
+
+
     // V0-1
     // IDEA : ARRAY SORT + BOUNDARY OP
     // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Sort/meeting-rooms-ii.py#L90
@@ -200,54 +235,49 @@ public class MeetingRooms2 {
         }
     }
 
-    // V0'
-    // TODO : validate
-    // IDEA : ARRAY SORT + BOUNDARY OP
-    // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Sort/meeting-rooms-ii.py#L90
-    // IDEA : CREATE A NEW ARRAY WITH
-    //        (intervals[i][0], 1) // if start point
-    //        (intervals[i][1], -1) // if end point
-//    public int minMeetingRooms(int[][] intervals) {
-//
-//        if (intervals == null || intervals.length == 0) {
-//            return 0;
-//        }
-//
-//        // Convert intervals to a list of start and end points
-//        int n = intervals.length;
-//        int[][] points = new int[n * 2][2];
-//        for (int i = 0; i < n; i++) {
-//            points[i * 2] = new int[]{intervals[i][0], 1}; // start point
-//            points[i * 2 + 1] = new int[]{intervals[i][1], -1}; // end point
-//        }
-//
-//        // Sort the points based on their time, if time is same then process end point first
-//        Arrays.sort(points, new Comparator<int[]>() {
-//            public int compare(int[] a, int[] b) {
-//                if (a[0] != b[0]) {
-//                    return a[0] - b[0];
-//                } else {
-//                    return a[1] - b[1];
-//                }
-//            }
-//        });
-//
-//        // Use a min heap to track the end times of ongoing meetings
-//        PriorityQueue<Integer> minHeap = new PriorityQueue<>();
-//        int rooms = 0;
-//        int maxRooms = 0;
-//
-//        for (int[] point : points) {
-//            if (point[1] == 1) { // start point
-//                rooms++;
-//            } else { // end point
-//                rooms--;
-//            }
-//            maxRooms = Math.max(maxRooms, rooms);
-//        }
-//
-//        return maxRooms;
-//    }
+
+    // V0-3
+    // IDEA: PQ + SCAN LINE (gpt)
+    // TODO: validate
+    public int minMeetingRooms_0_3(int[][] intervals) {
+
+        if (intervals == null || intervals.length == 0) {
+            return 0;
+        }
+
+        List<Integer[]> intervalList = new ArrayList<>();
+
+        for (int[] x : intervals) {
+            intervalList.add(new Integer[]{x[0], 1});   // start
+            intervalList.add(new Integer[]{x[1], -1});  // end
+        }
+
+        Collections.sort(intervalList, new Comparator<Integer[]>() {
+            @Override
+            public int compare(Integer[] o1, Integer[] o2) {
+
+                if (o1[0].equals(o2[0])) {
+                    return o1[1] - o2[1]; // end before start
+                }
+
+                return o1[0] - o2[0];
+            }
+        });
+
+        int minRoom = 0;
+        int curRoom = 0;
+
+        for (Integer[] x : intervalList) {
+
+            curRoom += x[1];
+
+            minRoom = Math.max(minRoom, curRoom);
+        }
+
+        return minRoom;
+    }
+
+
 
     // V1
     // IDEA : HEAP (PQ) (priority queue)
