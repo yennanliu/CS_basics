@@ -56,14 +56,43 @@ import java.util.Map;
  */
 public class SmallestSubtreeWithAllTheDeepestNodes {
 
+    /** NOTE !!! this is a LCA (Lowest Common Ancestor) problem */
     // V0
 //    public TreeNode subtreeWithAllDeepest(TreeNode root) {
 //
 //    }
-    
+
 
     // V0-1
+    // IDEA: LCA + DFS (GEMINI)
     // We create a simple helper class to return both the Node and its max Depth
+    // time: O(N), N: number of nodes in the tree
+    // space: O(H), H: height of the tree (recursion stack)
+    /**
+     * You are mostly correct!
+     * Here is the precise breakdown for the provided recursive solution:
+     *
+     * ### **Time Complexity: $O(N)$**
+     *
+     * * **Why:** The algorithm performs a **Post-Order DFS traversal**. We visit every single node in the tree exactly once.
+     * * **Work per node:** At each node, we perform a constant number of operations (comparing two integers and creating a new `Result` object).
+     * * **Total:** $O(N)$, where $N$ is the number of nodes in the tree.
+     *
+     * ---
+     *
+     * ### **Space Complexity: $O(H)$**
+     *
+     * * **Why:** This is the space used by the **Recursion Stack**.
+     * * **$H$ (Height):** In the worst-case scenario (a "skewed" tree like a linked list), $H$ can be equal to $N$, making it $O(N)$. In a balanced tree, $H$ would be $O(\log N)$.
+     * * **Objects:** While we create a `Result` object for each node, these are short-lived. In most modern JVMs, the memory used by these objects doesn't change the asymptotic space complexity, but the depth of the recursive calls (the call stack) is the primary factor.
+     *
+     * | Scenario | Time | Space |
+     * | --- | --- | --- |
+     * | **Best Case (Balanced)** | $O(N)$ | $O(\log N)$ |
+     * | **Worst Case (Skewed)** | $O(N)$ | $O(N)$ |
+     *
+     *
+     */
     class Result_0_1 {
         TreeNode node;
         int dist;
@@ -77,6 +106,51 @@ public class SmallestSubtreeWithAllTheDeepestNodes {
         return dfs_0_1(root).node;
     }
 
+    /**
+     *Spot on! You nailed the intuition. This is exactly an **LCA (Lowest Common Ancestor)** problem, but with a slight twist.
+     *
+     * In a standard LCA problem (like **LC 236**), you are given two specific nodes (e.g., node $p$ and node $q$) and asked to find their common ancestor. In this problem (**LC 865**), the "target nodes" aren't given to you—they are **implicitly** defined as "all nodes at the maximum depth."
+     *
+     * ### 🔗 How the two are connected:
+     *
+     * | Standard LCA (LC 236) | Deepest Subtree LCA (LC 865) |
+     * | --- | --- |
+     * | Targets $p$ and $q$ are **given**. | Targets are **discovered** (the nodes at `maxDepth`). |
+     * | You look for where $p$ and $q$ "meet." | You look for where the deepest paths from the left and right "meet." |
+     * | Return the node that sees $p$ on one side and $q$ on the other. | Return the node that sees the same `maxDist` on both sides. |
+     *
+     * ---
+     *
+     * ### 🧠 Why the "Depth" logic works as an LCA:
+     *
+     * Think of the recursion as a search party:
+     *
+     * 1. **If the left subtree is deeper**: It means all the "deepest nodes" are buried somewhere down the left branch. The LCA **must** be in there.
+     * 2. **If the right subtree is deeper**: Same thing; the LCA must be somewhere in the right branch.
+     * 3. **If both subtrees have the same maximum depth**: This is the "Eureka!" moment. It means there is at least one "deepest node" to my left and at least one to my right. Since I am the first node (from the bottom up) that connects these two deepest paths, **I am their Lowest Common Ancestor.**
+     *
+     * ### 📊 Visualization of the LCA meeting point:
+     *
+     * ```text
+     *        [Root] (LCA!) <--- Both sides returned dist=3. I am the winner!
+     *       /      \
+     *     [A]      [B]
+     *     /        / \
+     *  [D1]      [E] [D2]  <--- D1 and D2 are the "deepest nodes"
+     *
+     * ```
+     *
+     * * `D1` and `D2` are at the same depth.
+     * * The path to `D1` goes through `A`.
+     * * The path to `D2` goes through `B`.
+     * * The **first node** where these two paths merge as you go up is `Root`.
+     *
+     * ### 💡 Pro Tip
+     *
+     * Many "Subtree" problems on LeetCode are just LCA problems in disguise. If a problem asks for a "Smallest subtree that contains [Condition X]," your brain should immediately jump to **Post-Order Traversal** and **LCA logic**
+     *
+     *
+     */
     private Result_0_1 dfs_0_1(TreeNode node) {
         if (node == null) {
             return new Result_0_1(null, 0);
@@ -103,6 +177,9 @@ public class SmallestSubtreeWithAllTheDeepestNodes {
 
 
     // V0-2
+    // IDEA: LCA + DFS (GPT)
+    // time: O(N), N: number of nodes in the tree
+    // space: O(H), H: height of the tree (recursion stack)
     public TreeNode subtreeWithAllDeepest_0_2(TreeNode root) {
         return dfs_0_2(root).node;
     }
