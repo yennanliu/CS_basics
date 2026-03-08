@@ -4541,6 +4541,58 @@ public class Workspace21 {
     }
 
 
+    // LC 506
+    // 9.47 - 57 am
+    /**
+     * IDEA: PQ (bit PQ)
+     *
+     *
+     */
+    // IDEA: PQ (bit PQ)
+    public String[] findRelativeRanks(int[] score) {
+        // edge
+
+        PriorityQueue<Integer> pq = new PriorityQueue<>(new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                int diff = o2 - o1;
+                return diff;
+            }
+        });
+
+        // map:  { val : idx }
+        Map<Integer, Integer> map = new HashMap<>();
+
+        for(int i = 0; i < score.length; i++){
+            int x = score[i];
+            pq.add(x);
+            map.put(x, i);
+        }
+
+
+        // "Gold Medal","Silver Medal","Bronze Medal"
+        String[] res = new String[pq.size()];
+        int i = 0;
+        while(!pq.isEmpty()){
+            i += 1;
+            int val = pq.poll();
+            if(i == 1){
+                res[map.get(val)] = "Gold Medal";
+            }else if(i == 2){
+                res[map.get(val)] = "Silver Medal";
+            } else if(i == 3){
+                res[map.get(val)] = "Bronze Medal";
+            }else{
+                res[map.get(val)] = String.valueOf(i);
+            }
+        }
+
+
+        return res;
+    }
+
+
+
 
 
 
