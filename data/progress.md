@@ -10,7 +10,8 @@
 	- queue.md (OK)
 	- stack.md (OK)
 	- priority_queue.md (OK)
-	- array.md (todo)
+	- array.md (OK)
+	- matrix.md (todo)
 - to review
 - needcode `250` - similar LC by AI
     - Arrays & Hashing
@@ -168,6 +169,8 @@
 		- 1544
 		- 316
 		- 394
+	- todo (20260308)
+		- 670,1041,1109,41,334,251,849
 - needcode `grind 75` - similar LC by AI
 	- https://neetcode.io/practice?tab=blind75
 	- LC 49 Group Anagrams
