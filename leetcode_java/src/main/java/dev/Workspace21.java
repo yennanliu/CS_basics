@@ -4759,6 +4759,41 @@ public class Workspace21 {
 
 
 
+    // LC 334
+    // 15.13 - 23 pm
+    /**
+     *
+     *
+     *
+     */
+    public boolean increasingTriplet(int[] nums) {
+        // edge
+        if(nums == null || nums.length < 3){
+            return false;
+        }
+
+        // ???
+        int first = -1 * Integer.MAX_VALUE;
+        int second = -1 * Integer.MAX_VALUE;
+        int third = -1 * Integer.MAX_VALUE;
+
+        for(int i = 0; i < nums.length; i++){
+            int val = nums[i];
+            // ?? ???
+            if(val > first){
+                first = val;
+            }else if(val > first){
+                second = val;
+            }else if(val > second){
+                third = val;
+                return true;
+            }
+
+        }
+
+        return false;
+    }
+
 
 
 
