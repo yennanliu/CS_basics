@@ -39,6 +39,97 @@ public class MaximumSwap {
 //
 //    }
 
+    // V0-1
+    // IDEA: BRUTE FORCE
+    public int maximumSwap(int num) {
+        // edge
+        if (num < 10) {
+            return num;
+        }
+
+        int maxRes = num;
+        String numStr = String.valueOf(num);
+        for (int i = 0; i < numStr.length(); i++) {
+            for (int j = i + 1; j < numStr.length(); j++) {
+                /** NOTE !!! swap OP */
+                String swapStr = swap(numStr, i, j);
+                maxRes = Math.max(maxRes, Integer.parseInt(swapStr));
+//                System.out.println(">>> i = " + i
+//                        + ", j = " + j
+//                        + ", swapStr = " + swapStr
+//                        + ", maxRes = " + maxRes);
+            }
+        }
+
+        return maxRes;
+    }
+
+    /** NOTE !!! swap help func */
+    private String swap(String x, int i, int j) {
+        char[] arr = x.toCharArray(); // ???
+        char tmp = arr[i]; // ???
+        arr[i] = arr[j];
+        arr[j] = tmp;
+        return String.valueOf(arr);
+    }
+
+
+    // V0-2
+    // IDEA: BRUTE FORCE (GEMINI)
+    public int maximumSwap_0_2(int num) {
+        char[] digits = String.valueOf(num).toCharArray();
+        int maxVal = num;
+
+        // Try every possible swap
+        for (int i = 0; i < digits.length; i++) {
+            for (int j = i + 1; j < digits.length; j++) {
+                // 1. Swap
+                char tmp = digits[i];
+                digits[i] = digits[j];
+                digits[j] = tmp;
+
+                // 2. Convert to int and compare
+                int currentVal = Integer.parseInt(new String(digits));
+                maxVal = Math.max(maxVal, currentVal);
+
+                // 3. Swap BACK (Reset for next iteration)
+                digits[j] = digits[i];
+                digits[i] = tmp;
+            }
+        }
+
+        return maxVal;
+    }
+
+
+    // V0-2
+    // IDEA: OPTIMIZED (Greedy) (GEMINI)
+    public int maximumSwap_0_3(int num) {
+        char[] digits = String.valueOf(num).toCharArray();
+        int[] last = new int[10];
+
+        // Record the last occurrence of each digit
+        for (int i = 0; i < digits.length; i++) {
+            last[digits[i] - '0'] = i;
+        }
+
+        // Traverse from left to right
+        for (int i = 0; i < digits.length; i++) {
+            // Look for a larger digit (9 down to current+1) appearing later
+            for (int d = 9; d > digits[i] - '0'; d--) {
+                if (last[d] > i) {
+                    // Swap found! This is the best we can do.
+                    char tmp = digits[i];
+                    digits[i] = digits[last[d]];
+                    digits[last[d]] = tmp;
+                    return Integer.parseInt(new String(digits));
+                }
+            }
+        }
+        return num;
+    }
+
+
     // V1-1
     // IDEA: BRUTE FORCE
     // https://leetcode.com/problems/maximum-swap/editorial/
