@@ -4796,6 +4796,12 @@ public class Workspace21 {
 
 
 
+    // LC 670
+    public int maximumSwap(int num) {
+
+        return 0;
+    }
+
 
 
 
