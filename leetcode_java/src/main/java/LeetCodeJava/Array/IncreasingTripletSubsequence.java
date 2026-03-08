@@ -42,6 +42,7 @@ import java.util.Arrays;
 public class IncreasingTripletSubsequence {
 
     // V0
+    // IDEA: first, second biggest val
     /**
      * time = O(N)
      * space = O(1)
@@ -68,12 +69,53 @@ public class IncreasingTripletSubsequence {
     }
 
     // V0-1
+    // IDEA: first, second biggest val (GPT)
+    public boolean increasingTriplet_0_1(int[] nums) {
+
+        if (nums == null || nums.length < 3) {
+            return false;
+        }
+
+        /** NOTE !!!
+         *
+         *  we init first, second as Integer.MAX_VALUE
+         */
+        int first = Integer.MAX_VALUE;
+        int second = Integer.MAX_VALUE;
+
+        for (int val : nums) {
+
+            /** NOTE !!!
+             *
+             *  val <= first
+             */
+            if (val <= first) {
+                first = val; // smallest so far
+            }
+
+            /** NOTE !!!
+             *
+             *  val <= second
+             */
+            else if (val <= second) {
+                second = val; // second smallest
+            } else {
+                return true; // val > first && val > second
+            }
+
+        }
+
+        return false;
+    }
+
+
+    // V0-2
     // IDEA: DP (LC 300) (fixed by gpt) (TLE)
     /**
      * time = O(N^2)
      * space = O(N)
      */
-    public boolean increasingTriplet_0_1(int[] nums) {
+    public boolean increasingTriplet_0_2(int[] nums) {
         if (nums == null || nums.length < 3) {
             return false;
         }
@@ -159,5 +201,8 @@ public class IncreasingTripletSubsequence {
 //
 //        return false;
 //    }
+
+
+
 
 }
