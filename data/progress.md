@@ -156,7 +156,6 @@
 	- Heap / Priority Queue
 	- LC 1834
 		- gpt
-			- 1094
 			- 759
 			- 857
 			- 407
