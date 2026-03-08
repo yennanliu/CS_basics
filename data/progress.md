@@ -1,6 +1,6 @@
 # Progress
 
-# 2026-03-07
+# 2026-03-08
 
 - weekly video
 - cheatsheet (LC examples)
@@ -156,7 +156,6 @@
 	- Heap / Priority Queue
 	- LC 1834
 		- gpt
-			- 506
 			- 1094
 			- 759
 			- 857

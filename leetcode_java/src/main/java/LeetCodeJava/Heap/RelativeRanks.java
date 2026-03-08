@@ -49,14 +49,48 @@ import java.util.*;
  */
 public class RelativeRanks {
 
-    // LC 506
-//    /**
-//     * time = O(N log N)
-//     * space = O(N)
-//     */
-//    public String[] findRelativeRanks(int[] score) {
-//
-//    }
+    // V0
+    // IDEA: PQ (big PQ)
+    public String[] findRelativeRanks(int[] score) {
+        // edge
+        PriorityQueue<Integer> pq = new PriorityQueue<>(new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                int diff = o2 - o1;
+                return diff;
+            }
+        });
+
+        // map:  { val : idx }
+        Map<Integer, Integer> map = new HashMap<>();
+
+        for (int i = 0; i < score.length; i++) {
+            int x = score[i];
+            pq.add(x);
+            map.put(x, i);
+        }
+
+        // "Gold Medal","Silver Medal","Bronze Medal"
+        String[] res = new String[pq.size()];
+        int i = 0;
+        while (!pq.isEmpty()) {
+            i += 1;
+            int val = pq.poll();
+            if (i == 1) {
+                res[map.get(val)] = "Gold Medal";
+            } else if (i == 2) {
+                res[map.get(val)] = "Silver Medal";
+            } else if (i == 3) {
+                res[map.get(val)] = "Bronze Medal";
+            } else {
+                res[map.get(val)] = String.valueOf(i);
+            }
+        }
+
+        return res;
+    }
+
+
 
     // V0-1
     // IDEA: PQ
@@ -86,6 +120,11 @@ public class RelativeRanks {
 
         for(int i = 0; i < score.length; i++){
             int s = score[i];
+            /** NOTE !!!
+             *
+             *   PQ structure: { idx, val }
+             *
+             */
             pq.add(new Integer[] {i, s});
         }
 
@@ -248,6 +287,8 @@ public class RelativeRanks {
 
 
     // V2
+
+
 
 
 }
