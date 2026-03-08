@@ -52,7 +52,91 @@ public class AddOneRowToTree {
 //
 //    }
 
+    // V0-1
+    // IDEA: DFS (GEMINI)
+    public TreeNode addOneRow_0_1(TreeNode root, int val, int depth) {
+        // Special Case: depth 1 means a new root is created
+        if (depth == 1) {
+            TreeNode newRoot = new TreeNode(val);
+            newRoot.left = root;
+            return newRoot;
+        }
+
+        dfsAddRowHelper(root, val, 1, depth);
+        return root;
+    }
+
+    private void dfsAddRowHelper(TreeNode node, int val, int curDepth, int targetDepth) {
+        if (node == null)
+            return;
+
+        // Logic: If we are at the row right ABOVE the target depth...
+        if (curDepth == targetDepth - 1) {
+            // 1. Save existing children
+            TreeNode oldLeft = node.left;
+            TreeNode oldRight = node.right;
+
+            // 2. Insert new nodes
+            node.left = new TreeNode(val);
+            node.right = new TreeNode(val);
+
+            // 3. Reattach old children to the new nodes
+            node.left.left = oldLeft;
+            node.right.right = oldRight;
+        } else {
+            // Keep digging until we reach targetDepth - 1
+            dfsAddRowHelper(node.left, val, curDepth + 1, targetDepth);
+            dfsAddRowHelper(node.right, val, curDepth + 1, targetDepth);
+        }
+    }
+
+    // V0-2
+    // IDEA: DFS (gpt)
+    public TreeNode addOneRow_0_2(TreeNode root, int val, int depth) {
+
+        // special case
+        if (depth == 1) {
+            TreeNode newRoot = new TreeNode(val);
+            newRoot.left = root;
+            return newRoot;
+        }
+
+        dfsAddRowHelper_0_2(root, val, 1, depth);
+        return root;
+    }
+
+    private void dfsAddRowHelper_0_2(TreeNode root, int val, int curDepth, int depth) {
+
+        if (root == null) {
+            return;
+        }
+
+        // when reaching parent of target depth
+        if (curDepth == depth - 1) {
+
+            TreeNode oldLeft = root.left;
+            TreeNode oldRight = root.right;
+
+            TreeNode newLeft = new TreeNode(val);
+            TreeNode newRight = new TreeNode(val);
+
+            root.left = newLeft;
+            root.right = newRight;
+
+            newLeft.left = oldLeft;
+            newRight.right = oldRight;
+
+            return;
+        }
+
+        dfsAddRowHelper_0_2(root.left, val, curDepth + 1, depth);
+        dfsAddRowHelper_0_2(root.right, val, curDepth + 1, depth);
+    }
+
+
     // V1
+
+    
 
     // V2
     // IDEA: DFS
