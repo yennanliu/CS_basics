@@ -176,7 +176,7 @@ public class RobotBoundedInCircle {
          *
          * Imagine a car. If you drive 10 feet and turn the wheel $90^\circ$ and repeat that 4 times, you've driven in a **square**. You are bounded. The only way to escape is to drive 10 feet and **not turn at all** (staying North).
          *
-         * 
+         *
          */
         // A robot is bounded if:
         // 1. It returns to the origin (0,0)

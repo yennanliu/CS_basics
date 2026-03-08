@@ -39,7 +39,7 @@ public class HouseRobber {
     // IDEA: DP (fixed by gemini)
     /**
      * time = O(N)
-     * space = O(1)
+     * space = O(N)
      */
     public int rob(int[] nums) {
         if (nums == null || nums.length == 0)
@@ -78,13 +78,80 @@ public class HouseRobber {
         return dp[n - 1];
     }
 
+    // V0-0-1
+    // IDEA: 1D DP
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    public int rob_0_0_1(int[] nums) {
+        // edge
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
+        if (nums.length == 1) {
+            return nums[0];
+        }
+
+        // ??
+        int[] dp = new int[nums.length];
+        dp[0] = nums[0];
+        dp[1] = Math.max(nums[0], nums[1]);
+
+        for (int i = 2; i < nums.length; i++) {
+            // dp[i] = max( dp[i-2] + nums[i], dp[i-1] )
+            dp[i] = Math.max(dp[i - 2] + nums[i], dp[i - 1]);
+        }
+
+        return dp[nums.length - 1];
+    }
+
+
+    // V0-0-2
+    // IDEA: 1D DP WITH O(1) space complexity (gemini)
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
+    public int rob_0_0_2(int[] nums) {
+        // 1. Edge Case: No houses to rob
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
+
+        // 2. Variables to track the results of the sub-problems
+        // prev2 represents dp[i - 2] (the max money from 2 houses ago)
+        // prev1 represents dp[i - 1] (the max money from 1 house ago)
+        int prev2 = 0;
+        int prev1 = 0;
+
+        // 3. Iterate through each house
+        for (int num : nums) {
+            // Logic: Should I rob this house?
+            // Option A: Rob current house (num) + whatever I got from 2 houses ago (prev2)
+            // Option B: Skip current house and keep whatever I got from 1 house ago (prev1)
+            int currentMax = Math.max(num + prev2, prev1);
+
+            // 4. "Slide" the window forward for the next iteration
+            // The old 'prev1' now becomes 'prev2' for the next house
+            prev2 = prev1;
+            // The 'currentMax' we just found becomes 'prev1' for the next house
+            prev1 = currentMax;
+        }
+
+        // 5. After the loop, prev1 contains the max money for all houses
+        return prev1;
+    }
+
+
+
 
     // V0-1
     // IDEA : DP
     // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Dynamic_Programming/house-robber.py
     /**
      * time = O(N)
-     * space = O(1)
+     * space = O(N)
      */
     public int rob_0_1(int[] nums) {
 
@@ -118,7 +185,7 @@ public class HouseRobber {
     // IDEA: DP (GPT)
     /**
      * time = O(N)
-     * space = O(1)
+     * space = O(N)
      */
     public int rob_0_2(int[] nums) {
         // Edge cases

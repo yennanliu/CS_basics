@@ -1,4 +1,4 @@
-package dev;
+package ws;
 
 import LeetCodeJava.DataStructure.ListNode;
 import LeetCodeJava.DataStructure.TreeNode;
@@ -4966,9 +4966,6 @@ public class Workspace21 {
 
         return true;
     }
-
-
-
 
 
 
