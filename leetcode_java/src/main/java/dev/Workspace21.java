@@ -4797,10 +4797,82 @@ public class Workspace21 {
 
 
     // LC 670
+    // 16.02 - 12 pm
+    /**
+     *  -> Return the maximum valued number you can get.
+     *
+     *
+     *    - You can swap `two digits` `at most once `
+     *        to get the `maximum `valued number.
+     *
+     *
+     *  --------------
+     *
+     *  IDEA 1) BRUTE FORCE
+     *
+     *   ->  time: O (N!) ????
+     *       space: O(N)
+     *
+     *  IDEA 2) 2 POINTERS ???
+     *
+     *
+     * IDEA 3)  DP ???
+     *
+     *
+     *
+     *  --------------
+     *
+     *   ex 1)
+     *   Input: num = 2736
+     *   Output: 7236
+     *
+     *   ->
+     *
+     *      2736    7236
+     *      ij
+     *
+     *     2736    3726
+     *     i j
+     *
+     *
+     */
+    // IDEA 1) BRUTE FORCE
     public int maximumSwap(int num) {
+        // edge
+        if(num < 10){
+            return num;
+        }
 
-        return 0;
+        int maxRes = num;
+        String numStr = String.valueOf(num);
+        for(int i = 0; i < numStr.length(); i++){
+            for(int j = i + 1; j < numStr.length(); j++){
+                // swap ???
+                String swapStr = swap(numStr, i, j);
+                maxRes = Math.max(maxRes, Integer.parseInt(swapStr));
+                System.out.println(">>> i = " + i
+                        + ", j = " + j
+                        + ", swapStr = " + swapStr
+                        + ", maxRes = " + maxRes);
+            }
+        }
+
+
+        return maxRes;
     }
+
+
+    private String swap(String x, int i, int j){
+        //String res = "";
+        // ???
+        char[] arr = x.toCharArray(); // ???
+        //char tmp = x.charAt(i);
+        char tmp = arr[i]; // ???
+        arr[i] = arr[j];
+        arr[j] = tmp;
+        return String.valueOf(arr); // ???
+    }
+
 
 
 
