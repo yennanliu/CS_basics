@@ -4875,10 +4875,102 @@ public class Workspace21 {
 
 
     // LC 1041
+    // 6.51 - 7.01 am
+    /**
+     *
+     *  -> Return true if and only if there exists
+     *  a circle in the plane such that the
+     *  robot never leaves the circle.
+     *
+     *
+     *  -----------------
+     *
+     *   IDEA 1) ARRAY OP + HASHSET ???
+     *
+     *  -----------------
+     *
+     */
     public boolean isRobotBounded(String instructions) {
+        // edge
+        if(instructions == null || instructions.isEmpty()){
+            return false;
+        }
+        if(!instructions.equals("G")){
+            return true;
+        }
+        boolean l_existed = false;
+        boolean r_existed = false;
 
-        return false;
+        for(String x: instructions.split("")){
+            if(x.equals("L")){
+                l_existed = true;
+            }
+            if(x.equals("R")){
+                r_existed = true;
+            }
+        }
+        if(!l_existed && !r_existed){
+            return false;
+        }
+
+
+        // ???  4 * cmd
+        // and see if visit same `cell` ???
+        StringBuilder newCmd = new StringBuilder();
+        for(int i = 0; i < 4; i++){
+            newCmd.append(instructions); // ??
+        }
+
+        int x = 0;
+        int y = 0;
+        int degree = 90; // ???
+
+        HashSet<String> visited = new HashSet<>();
+
+        visited.add(x + "-" +  y);
+
+        for(String cmd: newCmd.toString().split("")){
+            degree = degree % 360;
+            if(cmd.equals("G")){
+                // ???
+//                if(degree >= 360){
+//                    degree = degree % 360;
+//                }
+              //  degree = degree % 360;
+                if(degree == 0){
+                    x += 1;
+                }
+                else if(degree == 90){
+                    y += 1;
+                }
+                else if(degree == 180){
+                    x -= 1;
+                }else{
+                    y -= 1;
+                }
+            }
+            else if(cmd.equals("L")){
+                degree += 90;
+            }else{
+                degree -= 90;
+            }
+
+            String cellStr = x + "-" +  y;
+            if(visited.contains(cellStr)){
+                return false;
+            }
+            visited.add(cellStr);
+        }
+
+
+
+        return true;
     }
+
+
+
+
+
 
 
 
