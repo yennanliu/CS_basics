@@ -80,6 +80,66 @@ public class RobotBoundedInCircle {
 //
 //    }
 
+    // V0-1
+    // IDEA: ARRAY OP (gemini)
+    public boolean isRobotBounded_0_1(String instructions) {
+        // 1. Directions: North, East, South, West (clockwise)
+        // index: 0=N, 1=E, 2=S, 3=W
+        int[][] dirs = { { 0, 1 }, { 1, 0 }, { 0, -1 }, { -1, 0 } };
+
+        int x = 0, y = 0;
+        int idx = 0; // Starting direction is North (index 0)
+
+        for (char c : instructions.toCharArray()) {
+            if (c == 'L') {
+                // Turning Left is moving counter-clockwise in our array
+                idx = (idx + 3) % 4;
+            } else if (c == 'R') {
+                // Turning Right is moving clockwise
+                idx = (idx + 1) % 4;
+            } else {
+                // Move in the current direction
+                x += dirs[idx][0];
+                y += dirs[idx][1];
+            }
+        }
+
+        // A robot is bounded if:
+        // 1. It returns to the origin (0,0)
+        // 2. OR it is NOT facing North (idx != 0)
+        return (x == 0 && y == 0) || (idx != 0);
+    }
+
+
+    // V0-2
+    // IDEA: ARRAY OP (gpt)
+    public boolean isRobotBounded_0_2(String instructions) {
+
+        int x = 0, y = 0;
+        int dir = 0; // 0=N, 1=E, 2=S, 3=W
+
+        int[][] moves = {
+                { 0, 1 }, // N
+                { 1, 0 }, // E
+                { 0, -1 }, // S
+                { -1, 0 } // W
+        };
+
+        for (char c : instructions.toCharArray()) {
+            if (c == 'G') {
+                x += moves[dir][0];
+                y += moves[dir][1];
+            } else if (c == 'L') {
+                dir = (dir + 3) % 4; // turn left
+            } else if (c == 'R') {
+                dir = (dir + 1) % 4; // turn right
+            }
+        }
+
+        return (x == 0 && y == 0) || dir != 0;
+    }
+
+
     // V1
     // https://leetcode.com/problems/robot-bounded-in-circle/solutions/1676710/well-detailed-explaination-java-c-easy-f-u8r4/
     public boolean isRobotBounded_1(String instructions) {
@@ -199,5 +259,7 @@ public class RobotBoundedInCircle {
     }
 
 
+
+    
 
 }
