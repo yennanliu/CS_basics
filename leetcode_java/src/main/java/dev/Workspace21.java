@@ -4691,10 +4691,70 @@ public class Workspace21 {
 
 
     // LC 623
+    // 10.34 - 44 am
+    /**
+     *
+     *  ---------------
+     *
+     *
+     *  // IDEA 1) DFS
+     *
+     *
+     *  ---------------
+     *
+     */
+    // IDEA 1) DFS (post order traverse ??? left -> right -> root )
     public TreeNode addOneRow(TreeNode root, int val, int depth) {
+        // edge
+        if(root == null){
+            return root; // /???
+        }
 
-        return null;
+
+        // ???
+        //dfsAddRowHelper(root, val, 1, depth);
+        return dfsAddRowHelper(root, val, 1, depth);
     }
+
+    private TreeNode dfsAddRowHelper(TreeNode root, int val, int curDepth, int depth){
+
+        TreeNode _left = dfsAddRowHelper(root.left, val, curDepth+1, depth + 1);
+        TreeNode _right = dfsAddRowHelper(root.right, val, curDepth+1, depth + 1);
+
+        // ???
+        if(curDepth == depth){
+            // ???
+            TreeNode newLeft = new TreeNode(val);
+            TreeNode newRight = new TreeNode(val);
+
+
+            if(_left == null){
+                root.left = newLeft;
+            }else{
+                root.left = newLeft;
+                newLeft.left = _left; // ?????
+            }
+
+            if(_right == null){
+                root.right = newRight;
+            }else{
+                root.right = newRight;
+                newRight.right = _right; // ?????
+            }
+        }
+
+            // ???
+        root.left = _left;
+        root.right = _right;
+
+
+
+        return root;
+    }
+
+
+
+
 
 
 
