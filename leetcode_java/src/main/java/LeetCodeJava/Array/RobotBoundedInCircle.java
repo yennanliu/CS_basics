@@ -85,11 +85,30 @@ public class RobotBoundedInCircle {
     public boolean isRobotBounded_0_1(String instructions) {
         // 1. Directions: North, East, South, West (clockwise)
         // index: 0=N, 1=E, 2=S, 3=W
+        /**  NOTE !!
+         *
+         *  we can also represent `index VS move` relation as below:
+         *
+         *   { 0: { 0, 1 },
+         *    1: { 1, 0 },
+         *    2: { 0, -1 },
+         *    3 : { -1, 0 }
+         *    }
+         *
+         */
         int[][] dirs = { { 0, 1 }, { 1, 0 }, { 0, -1 }, { -1, 0 } };
 
         int x = 0, y = 0;
         int idx = 0; // Starting direction is North (index 0)
 
+        /** NOTE !!!
+         *
+         *   // index: 0=N, 1=E, 2=S, 3=W.
+         *
+         *   so
+         *      when `L` dir, index += 3
+         *      when `R` dir, index += 1
+         */
         for (char c : instructions.toCharArray()) {
             if (c == 'L') {
                 // Turning Left is moving counter-clockwise in our array
@@ -104,6 +123,61 @@ public class RobotBoundedInCircle {
             }
         }
 
+        /** NOTE !!!
+         *
+         *   1. since bot ALWAYS starts from origin (0,0) cell,
+         *      so when it visits (0,0) again, we know it `move` as
+         *      circle possibly.
+         *
+         *  2. `(idx != 0)` condition (explaination as below)
+         *
+         */
+        /**
+         *
+         *This is the "aha!" moment of the problem. It comes down to **vector rotation**.
+         *
+         * Think of one full set of instructions as a single **net displacement** (a jump from point $A$ to point $B$) and a **net change in direction**.
+         *
+         * ### 1. If the Robot faces North ($idx = 0$)
+         *
+         * If the robot ends at $(x, y)$ and is still facing North, it means every time it repeats the instructions, it will move **the exact same distance in the exact same direction**.
+         *
+         * * Cycle 1: Ends at $(2, 2)$
+         * * Cycle 2: Ends at $(4, 4)$
+         * * Cycle 3: Ends at $(6, 6)$...
+         * It's a straight line to infinity. **Not bounded.**
+         *
+         * ---
+         *
+         * ### 2. If the Robot faces any OTHER direction ($idx \neq 0$)
+         *
+         * If the direction changes, the "jump" rotates every time the instructions repeat. Let's see what happens if the robot ends facing **East** ($90^\circ$ right):
+         *
+         * * **Cycle 1:** Moves "North-ish" to $(2, 2)$. (Now facing East).
+         * * **Cycle 2:** Since it's facing East, the "North-ish" instructions now actually move it "East-ish." It ends at $(4, 0)$. (Now facing South).
+         * * **Cycle 3:** Now facing South, the instructions move it "South-ish." It ends at $(2, -2)$. (Now facing West).
+         * * **Cycle 4:** Now facing West, it moves "West-ish" and ends back at **$(0, 0)$**! (Back to facing North).
+         *
+         * **Mathematically:**
+         *
+         * * If the net rotation is $90^\circ$ or $270^\circ$, it takes **4 cycles** to return to the origin.
+         * * If the net rotation is $180^\circ$ (facing South), it takes **2 cycles** to return to the origin (it goes out, then comes right back).
+         *
+         * ---
+         *
+         * ### 📊 The "Bounded" Rule Summary
+         *
+         * A robot is trapped in a circle if and only if:
+         *
+         * 1. **Distance is 0:** It's already back where it started.
+         * 2. **Direction $\neq$ North:** It is "turning." Even if it's currently far away, that turn guarantees it will eventually point back toward $(0,0)$ and close the loop.
+         *
+         * ### 💡 Visualizing the "Turn"
+         *
+         * Imagine a car. If you drive 10 feet and turn the wheel $90^\circ$ and repeat that 4 times, you've driven in a **square**. You are bounded. The only way to escape is to drive 10 feet and **not turn at all** (staying North).
+         *
+         * 
+         */
         // A robot is bounded if:
         // 1. It returns to the origin (0,0)
         // 2. OR it is NOT facing North (idx != 0)
@@ -260,6 +334,6 @@ public class RobotBoundedInCircle {
 
 
 
-    
+
 
 }
