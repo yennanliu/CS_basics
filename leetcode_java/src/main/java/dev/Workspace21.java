@@ -4690,6 +4690,12 @@ public class Workspace21 {
 //    }
 
 
+    // LC 623
+    public TreeNode addOneRow(TreeNode root, int val, int depth) {
+
+        return null;
+    }
+
 
 
 
