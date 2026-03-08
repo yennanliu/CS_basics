@@ -765,8 +765,98 @@ public class Workspace21 {
      *
      *   --------------------
      */
-    //  IDEA 1) PREFIX SUM
+
+    // 10.03 - 10.13 am
+    /**
+     *  -> Return true if it is possible to pick up
+     *  and drop off all passengers
+     *  for all the given trips, or false otherwise.
+     *
+     *
+     *  -----------------
+     *
+     *   IDEA 1) PREFIX SUM ???
+     *
+     *
+     *  -----------------
+     *
+     *
+     */
     public boolean carPooling(int[][] trips, int capacity) {
+        // edge
+        if (trips == null || trips.length == 0){
+            return true;
+        }
+
+        // ???
+        // { [num_of_passenger, start, end]  }
+
+        // { [num_of_passenger, idx, type]  }
+        // tyope
+        List<Integer[]> list = new ArrayList<>();
+        for(int i = 0; i < trips.length; i++){
+            int[] t = trips[i];
+            list.add(new Integer[]{t[0], t[1], t[2]}); // ???
+        }
+
+        // sort ???? (start : small -> big)
+        Collections.sort(list, new Comparator<Integer[]>() {
+            @Override
+            public int compare(Integer[] o1, Integer[] o2) {
+                int diff = o1[1] - o2[1];
+                return diff;
+            }
+        });
+
+        int globalEnd = 0;
+        for(int i = 0; i < trips.length; i++){
+            globalEnd = Math.max(globalEnd, trips[i][2]);
+        }
+
+        ///  ???
+       // int prefixSum = 0;
+        // NOTE !!!!!
+       // int[] prefix = new int[globalEnd];
+        int[] prefix = new int[globalEnd + 1];
+
+
+
+        for(int i = 0; i < list.size(); i++){
+            Integer[] x = list.get(i);
+            int amt = x[0];
+            int start = x[1];
+            int end = x[2];
+            // ????
+           // prefixSum += amt;
+            prefix[start] += amt;
+            prefix[end] -= amt;
+        }
+
+        // ???
+        int prefixSum = 0;
+        for(int j = 0; j < prefix.length; j++){
+            // ???
+            prefixSum += prefix[j];
+            if(prefixSum > capacity){
+                return false;
+            }
+        }
+
+
+
+        return false;
+    }
+
+
+
+
+
+
+
+
+
+    //  IDEA 1) PREFIX SUM
+    public boolean carPooling_99(int[][] trips, int capacity) {
         // edge
         if (trips == null || trips.length == 0)
             return true;
@@ -4593,6 +4683,11 @@ public class Workspace21 {
 
 
 
+//    // LC 1094
+//    public boolean carPooling(int[][] trips, int capacity) {
+//
+//        return false;
+//    }
 
 
 

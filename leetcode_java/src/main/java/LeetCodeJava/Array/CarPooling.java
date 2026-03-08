@@ -53,7 +53,9 @@ public class CarPooling {
         // 1. Size must be globalEnd + 1 to accommodate the 'end' index
         int[] prefix = new int[globalEnd + 1];
 
+
         // 2. Loop through the TRIPS, not the distance
+        /** NOTE !!! No need to `sort` the trip array */
         for (int i = 0; i < trips.length; i++) {
             int cap = trips[i][0];
             int start = trips[i][1];
@@ -83,6 +85,11 @@ public class CarPooling {
         // 3. Update prefix sum and validate
         int prefixSum = 0;
         for (int i = 0; i < prefix.length; i++) {
+            /** NOTE !!!
+             *
+             *  we simply append cur prefix i val to prefixSum,
+             *  then check if prefixSum is bigger than capacity.
+             */
             prefixSum += prefix[i];
             // We can check immediately to save time
             if (prefixSum > capacity) {
@@ -427,6 +434,7 @@ public class CarPooling {
         }
         return true;
     }
+
 
 
 
