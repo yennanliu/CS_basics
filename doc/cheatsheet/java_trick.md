@@ -1010,6 +1010,84 @@ Collections.sort(collected, new Comparator<String>() {
 });
 ```
 
+### 1-4-4-1) Custom Sort — Comparator Return Value Rules ⭐
+
+> **Core Rule**: The sign of the comparator's return value determines element order.
+
+| Return Value | Meaning | Effect |
+|---|---|---|
+| **negative** (e.g. -1) | o1 < o2 | o1 comes **before** o2 |
+| **positive** (e.g. +1) | o1 > o2 | o1 comes **after** o2 |
+| **0** | o1 == o2 | order **unchanged** |
+
+```java
+// LC 905 - Sort Array By Parity
+// IDEA: Custom Comparator — return -1/0/1 to control ordering
+// Even numbers before odd numbers using explicit return values
+
+// Method 1: Explicit -1 / 0 / 1 (most readable for interviews)
+Collections.sort(list, new Comparator<Integer>() {
+    @Override
+    public int compare(Integer o1, Integer o2) {
+        // o1 even, o2 odd  → o1 should come first  → return negative
+        if (o1 % 2 == 0 && o2 % 2 == 1) return -1;
+        // o1 odd,  o2 even → o2 should come first  → return positive
+        if (o1 % 2 == 1 && o2 % 2 == 0) return 1;
+        // both same parity → order unchanged
+        return 0;
+    }
+});
+
+// Method 2: Lambda shorthand — compare parity values directly (0=even, 1=odd)
+// Integer.compare(v1, v2):  returns -1 if v1 < v2, 0 if equal, +1 if v1 > v2
+Collections.sort(list, (o1, o2) -> Integer.compare(o1 % 2, o2 % 2));
+// even(0) before odd(1) → ascending parity order = evens first ✓
+
+// Method 3: Two-pointer in-place (O(N) time, O(1) space — most efficient)
+public int[] sortArrayByParity(int[] nums) {
+    int l = 0, r = nums.length - 1;
+    while (l < r) {
+        if (nums[l] % 2 > nums[r] % 2) { // l is odd, r is even → swap
+            int tmp = nums[l]; nums[l] = nums[r]; nums[r] = tmp;
+        }
+        if (nums[l] % 2 == 0) l++;  // l is even → move right
+        if (nums[r] % 2 == 1) r--;  // r is odd  → move left
+    }
+    return nums;
+}
+```
+
+#### Comparator Mental Model
+```
+compare(o1, o2):
+  return NEGATIVE  →  keep o1 before o2   (o1 is "smaller")
+  return POSITIVE  →  move o1 after  o2   (o1 is "larger")
+  return 0         →  no change
+
+Tip: think of it as: "what is o1 - o2?"
+  o1 < o2  →  negative  →  ascending order (small first)
+  o1 > o2  →  positive  →  o2 goes first  (for descending: flip to o2 - o1)
+```
+
+#### Common Patterns Summary
+```java
+// Ascending (natural order)
+(a, b) -> a - b                          // ⚠ may overflow for large ints
+(a, b) -> Integer.compare(a, b)          // ✅ safe
+
+// Descending
+(a, b) -> b - a                          // ⚠ may overflow
+(a, b) -> Integer.compare(b, a)          // ✅ safe
+
+// Multi-criteria: primary DESC, secondary ASC
+(a, b) -> a[0] != b[0] ? b[0] - a[0] : a[1] - b[1]
+
+// Custom property (e.g. sort by string length, then lexicographic)
+(s1, s2) -> s1.length() != s2.length()
+    ? s2.length() - s1.length()          // longer first
+    : s1.compareTo(s2)                   // lexicographic if same length
+```
+
 ### 1-4-5) Sort on `Hash Map's key and value` *****
 
 
