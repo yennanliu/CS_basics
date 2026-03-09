@@ -48,7 +48,21 @@ public class PathSum3 {
 //    }
 
     // V0-0-1
-    // IDEA: PREFIX SUM + DFS (fixed by gemini)
+    // IDEA: PREFIX SUM + DFS + `pre-order traverse` (fixed by gemini)
+    /**  NOTE !!!
+     *
+     *  if use `prefix sum` + DFS,
+     *  we MUST use `pre-order traverse` (e.g. root -> left -> right)
+     *
+     *  Reason:
+     *
+     *  Top-Down vs. Bottom-Up:
+     *
+     *   Prefix sums must be calculated Top-Down (Pre-Order).
+     *   You are currently doing it Bottom-Up (Post-Order),
+     *   which calculates sums of subtrees rather
+     *   than paths from the root.
+     */
     int count_0_0_1 = 0;
     Map<Long, Integer> map = new HashMap<>(); // {prefixSum : frequency}
 
@@ -71,6 +85,23 @@ public class PathSum3 {
 
         // 2. Check if a valid sub-path exists
         // If curSum - targetSum exists in map, it means there's a path ending here
+        /**
+         *  NOTE !!!
+         *
+         *    (prefix sum + hashmap idea)
+         *
+         *   // cumsum_x - cumsum_y = target
+         *   // -> cumsum_x - target = cumsum_y
+         *
+         * -----
+         *
+         *
+         *  The "Complement" Logic:
+         *
+         *  If the current total sum is curSum,
+         *  we are looking for a previous prefix sum that equals curSum - targetSum.
+         *  (Because curSum - (curSum - targetSum) = targetSum).
+         */
         if (map.containsKey(curSum - targetSum)) {
             count_0_0_1 += map.get(curSum - targetSum);
         }
@@ -78,10 +109,13 @@ public class PathSum3 {
         // 3. Add current prefix sum to map to help children
         map.put(curSum, map.getOrDefault(curSum, 0) + 1);
 
+        /** NOTE !!! `pre-order traverse`  */
         // 4. Recurse down
         dfs_0_0_1(node.left, curSum, targetSum);
         dfs_0_0_1(node.right, curSum, targetSum);
 
+
+        /** NOTE !!! UNDO last op (BACKTRACK)  */
         // 5. BACKTRACK: Remove curSum so it doesn't affect other branches
         map.put(curSum, map.get(curSum) - 1);
     }
@@ -310,9 +344,10 @@ public class PathSum3 {
         return count;
     }
 
+
     // V3
 
-
+    
 
 
 }

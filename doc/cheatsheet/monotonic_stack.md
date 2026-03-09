@@ -730,3 +730,211 @@ public int[] nextGreaterElement(int[] nums1, int[] nums2) {
     return ans;
 }
 ```
+
+### 2-4) Trapping Rain Water (LC 42) — Monotonic Stack
+> Pop a bar when a taller bar arrives; water trapped = (min height difference) * width.
+
+```java
+// LC 42 - Trapping Rain Water
+// IDEA: Monotonic stack — pop when taller bar found, water fills between boundaries
+// time = O(N), space = O(N)
+public int trap(int[] height) {
+    Deque<Integer> stack = new ArrayDeque<>();
+    int water = 0;
+    for (int i = 0; i < height.length; i++) {
+        while (!stack.isEmpty() && height[i] > height[stack.peek()]) {
+            int bottom = stack.pop();
+            if (stack.isEmpty()) break;
+            int left = stack.peek();
+            int width = i - left - 1;
+            int boundedHeight = Math.min(height[left], height[i]) - height[bottom];
+            water += width * boundedHeight;
+        }
+        stack.push(i);
+    }
+    return water;
+}
+```
+
+### 2-5) Next Greater Element II (LC 503) — Circular Monotonic Stack
+> Process array twice (or use modulo) to handle circular next-greater queries.
+
+```java
+// LC 503 - Next Greater Element II (circular array)
+// IDEA: Monotonic stack — traverse 2n indices with modulo for circular effect
+// time = O(N), space = O(N)
+public int[] nextGreaterElements(int[] nums) {
+    int n = nums.length;
+    int[] ans = new int[n];
+    Arrays.fill(ans, -1);
+    Deque<Integer> stack = new ArrayDeque<>();
+    for (int i = 0; i < 2 * n; i++) {
+        while (!stack.isEmpty() && nums[i % n] > nums[stack.peek()]) {
+            ans[stack.pop()] = nums[i % n];
+        }
+        if (i < n) stack.push(i);
+    }
+    return ans;
+}
+```
+
+### 2-6) Online Stock Span (LC 901) — Monotonic Decreasing Stack
+> Pop all previous prices <= current; span = days since last greater price.
+
+```java
+// LC 901 - Online Stock Span
+// IDEA: Monotonic decreasing stack storing [price, span] pairs
+// time = O(1) amortized per call, space = O(N)
+class StockSpanner {
+    Deque<int[]> stack = new ArrayDeque<>(); // [price, span]
+    public int next(int price) {
+        int span = 1;
+        while (!stack.isEmpty() && stack.peek()[0] <= price) {
+            span += stack.pop()[1];
+        }
+        stack.push(new int[]{price, span});
+        return span;
+    }
+}
+```
+
+### 2-7) Sum of Subarray Minimums (LC 907) — Monotonic Stack
+> For each element, find left/right boundaries where it is the minimum; use monotonic stack.
+
+```java
+// LC 907 - Sum of Subarray Minimums
+// IDEA: Monotonic stack — for each element find left & right span as minimum
+// time = O(N), space = O(N)
+public int sumSubarrayMins(int[] arr) {
+    int n = arr.length;
+    int MOD = 1_000_000_007;
+    int[] left = new int[n], right = new int[n];
+    Deque<Integer> stack = new ArrayDeque<>();
+    // left[i] = distance to previous smaller element
+    for (int i = 0; i < n; i++) {
+        while (!stack.isEmpty() && arr[stack.peek()] >= arr[i]) stack.pop();
+        left[i] = stack.isEmpty() ? i + 1 : i - stack.peek();
+        stack.push(i);
+    }
+    stack.clear();
+    // right[i] = distance to next smaller or equal element
+    for (int i = n-1; i >= 0; i--) {
+        while (!stack.isEmpty() && arr[stack.peek()] > arr[i]) stack.pop();
+        right[i] = stack.isEmpty() ? n - i : stack.peek() - i;
+        stack.push(i);
+    }
+    long ans = 0;
+    for (int i = 0; i < n; i++) ans = (ans + (long) arr[i] * left[i] * right[i]) % MOD;
+    return (int) ans;
+}
+```
+
+### 2-8) Remove K Digits (LC 402) — Monotonic Increasing Stack
+> Maintain increasing stack; remove digits when a smaller digit arrives.
+
+```java
+// LC 402 - Remove K Digits
+// IDEA: Greedy + monotonic increasing stack — remove larger digits greedily
+// time = O(N), space = O(N)
+public String removeKdigits(String num, int k) {
+    Deque<Character> stack = new ArrayDeque<>();
+    for (char c : num.toCharArray()) {
+        while (k > 0 && !stack.isEmpty() && stack.peek() > c) {
+            stack.pop(); k--;
+        }
+        stack.push(c);
+    }
+    while (k-- > 0) stack.pop(); // remove from top if k still > 0
+    // reconstruct result in correct order (bottom to top of stack)
+    Deque<Character> result = new ArrayDeque<>(stack);
+    StringBuilder sb = new StringBuilder();
+    boolean leadingZero = true;
+    while (!result.isEmpty()) {
+        char c = result.pollFirst();
+        if (leadingZero && c == '0') continue;
+        leadingZero = false;
+        sb.append(c);
+    }
+    return sb.length() == 0 ? "0" : sb.toString();
+}
+```
+
+### 2-9) Maximal Rectangle (LC 85) — Histogram + Monotonic Stack
+> For each row, compute histogram heights; apply LC 84 largest rectangle logic per row.
+
+```java
+// LC 85 - Maximal Rectangle
+// IDEA: For each row build histogram; apply largestRectangleArea (LC 84) logic
+// time = O(M*N), space = O(N)
+public int maximalRectangle(char[][] matrix) {
+    if (matrix.length == 0) return 0;
+    int n = matrix[0].length, maxArea = 0;
+    int[] heights = new int[n];
+    for (char[] row : matrix) {
+        for (int j = 0; j < n; j++)
+            heights[j] = row[j] == '0' ? 0 : heights[j] + 1;
+        maxArea = Math.max(maxArea, largestRectangle(heights));
+    }
+    return maxArea;
+}
+private int largestRectangle(int[] heights) {
+    Deque<Integer> stack = new ArrayDeque<>();
+    int max = 0;
+    for (int i = 0; i <= heights.length; i++) {
+        int h = i == heights.length ? 0 : heights[i];
+        while (!stack.isEmpty() && h < heights[stack.peek()]) {
+            int height = heights[stack.pop()];
+            int width = stack.isEmpty() ? i : i - stack.peek() - 1;
+            max = Math.max(max, height * width);
+        }
+        stack.push(i);
+    }
+    return max;
+}
+```
+
+### 2-10) Car Fleet (LC 853) — Monotonic Stack on Speed
+> Sort by position; stack tracks fleets — a car joining a fleet is removed.
+
+```java
+// LC 853 - Car Fleet
+// IDEA: Sort by position DESC; use stack to count distinct fleets
+// time = O(N log N), space = O(N)
+public int carFleet(int target, int[] position, int[] speed) {
+    int n = position.length;
+    Integer[] idx = new Integer[n];
+    for (int i = 0; i < n; i++) idx[i] = i;
+    Arrays.sort(idx, (a, b) -> position[b] - position[a]);
+    Deque<Double> stack = new ArrayDeque<>();
+    for (int i : idx) {
+        double time = (double)(target - position[i]) / speed[i];
+        if (stack.isEmpty() || time > stack.peek()) stack.push(time);
+        // if time <= top, this car catches up (joins the fleet)
+    }
+    return stack.size();
+}
+```
+
+### 2-11) Asteroid Collision (LC 735) — Stack Simulation
+> Right-moving asteroids stay on stack; left-moving collide with top until stable.
+
+```java
+// LC 735 - Asteroid Collision
+// IDEA: Stack — simulate collisions between right (+) and left (-) asteroids
+// time = O(N), space = O(N)
+public int[] asteroidCollision(int[] asteroids) {
+    Deque<Integer> stack = new ArrayDeque<>();
+    for (int a : asteroids) {
+        boolean alive = true;
+        while (alive && a < 0 && !stack.isEmpty() && stack.peek() > 0) {
+            if (stack.peek() < -a) { stack.pop(); }      // stack top destroyed
+            else if (stack.peek() == -a) { stack.pop(); alive = false; } // both destroyed
+            else alive = false;                             // incoming destroyed
+        }
+        if (alive) stack.push(a);
+    }
+    int[] res = new int[stack.size()];
+    for (int i = res.length - 1; i >= 0; i--) res[i] = stack.pop();
+    return res;
+}
+```

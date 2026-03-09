@@ -1650,3 +1650,175 @@ public String minWindow(String s, String t) {
     return minLen == Integer.MAX_VALUE ? "" : s.substring(start, start + minLen);
 }
 ```
+
+### 2-4) Permutation in String (LC 567) — Fixed Window Anagram Check
+> Maintain character frequency of window size len(s1); check if it matches s1's freq.
+
+```java
+// LC 567 - Permutation in String
+// IDEA: Fixed sliding window — track char frequencies, check match
+// time = O(N), space = O(1)
+public boolean checkInclusion(String s1, String s2) {
+    if (s1.length() > s2.length()) return false;
+    int[] need = new int[26], window = new int[26];
+    for (char c : s1.toCharArray()) need[c-'a']++;
+    int k = s1.length();
+    for (int i = 0; i < s2.length(); i++) {
+        window[s2.charAt(i)-'a']++;
+        if (i >= k) window[s2.charAt(i-k)-'a']--;
+        if (Arrays.equals(need, window)) return true;
+    }
+    return false;
+}
+```
+
+### 2-5) Find All Anagrams in a String (LC 438) — Fixed Window
+> Same as LC 567 but collect all starting indices where anagram window matches.
+
+```java
+// LC 438 - Find All Anagrams in a String
+// IDEA: Fixed sliding window — collect all positions where window = anagram
+// time = O(N), space = O(1)
+public List<Integer> findAnagrams(String s, String p) {
+    List<Integer> result = new ArrayList<>();
+    if (s.length() < p.length()) return result;
+    int[] need = new int[26], window = new int[26];
+    for (char c : p.toCharArray()) need[c-'a']++;
+    int k = p.length();
+    for (int i = 0; i < s.length(); i++) {
+        window[s.charAt(i)-'a']++;
+        if (i >= k) window[s.charAt(i-k)-'a']--;
+        if (Arrays.equals(need, window)) result.add(i - k + 1);
+    }
+    return result;
+}
+```
+
+### 2-6) Minimum Size Subarray Sum (LC 209) — Variable Window (Min Length)
+> Expand right; once sum >= target, shrink left to find minimum window length.
+
+```java
+// LC 209 - Minimum Size Subarray Sum
+// IDEA: Sliding window — shrink left when sum >= target, record min length
+// time = O(N), space = O(1)
+public int minSubArrayLen(int target, int[] nums) {
+    int l = 0, sum = 0, minLen = Integer.MAX_VALUE;
+    for (int r = 0; r < nums.length; r++) {
+        sum += nums[r];
+        while (sum >= target) {
+            minLen = Math.min(minLen, r - l + 1);
+            sum -= nums[l++];
+        }
+    }
+    return minLen == Integer.MAX_VALUE ? 0 : minLen;
+}
+```
+
+### 2-7) Longest Repeating Character Replacement (LC 424) — Variable Window
+> Window is valid if (window size - max frequency) <= k; expand and track max freq.
+
+```java
+// LC 424 - Longest Repeating Character Replacement
+// IDEA: Sliding window — valid if windowSize - maxFreq <= k
+// time = O(N), space = O(1)
+public int characterReplacement(String s, int k) {
+    int[] freq = new int[26];
+    int l = 0, maxFreq = 0, ans = 0;
+    for (int r = 0; r < s.length(); r++) {
+        freq[s.charAt(r)-'A']++;
+        maxFreq = Math.max(maxFreq, freq[s.charAt(r)-'A']);
+        while ((r - l + 1) - maxFreq > k) freq[s.charAt(l++)-'A']--;
+        ans = Math.max(ans, r - l + 1);
+    }
+    return ans;
+}
+```
+
+### 2-8) Subarray Product Less Than K (LC 713) — Sliding Window Count
+> Shrink left when product >= k; each valid right position contributes (r-l+1) subarrays.
+
+```java
+// LC 713 - Subarray Product Less Than K
+// IDEA: Sliding window — count subarrays ending at r with product < k
+// time = O(N), space = O(1)
+public int numSubarrayProductLessThanK(int[] nums, int k) {
+    if (k <= 1) return 0;
+    int l = 0, product = 1, count = 0;
+    for (int r = 0; r < nums.length; r++) {
+        product *= nums[r];
+        while (product >= k) product /= nums[l++];
+        count += r - l + 1; // all subarrays ending at r with left in [l, r]
+    }
+    return count;
+}
+```
+
+### 2-9) Sliding Window Maximum (LC 239) — Monotonic Deque
+> Maintain a decreasing deque of indices; front is always the max of current window.
+
+```java
+// LC 239 - Sliding Window Maximum
+// IDEA: Monotonic decreasing deque — front = max of current window
+// time = O(N), space = O(k)
+public int[] maxSlidingWindow(int[] nums, int k) {
+    int n = nums.length;
+    int[] ans = new int[n - k + 1];
+    Deque<Integer> deque = new ArrayDeque<>(); // stores indices
+    for (int i = 0; i < n; i++) {
+        // remove out-of-window indices
+        while (!deque.isEmpty() && deque.peekFirst() < i - k + 1) deque.pollFirst();
+        // maintain decreasing order
+        while (!deque.isEmpty() && nums[deque.peekLast()] < nums[i]) deque.pollLast();
+        deque.offerLast(i);
+        if (i >= k - 1) ans[i - k + 1] = nums[deque.peekFirst()];
+    }
+    return ans;
+}
+```
+
+### 2-10) Frequency of the Most Frequent Element (LC 1838) — Sliding Window
+> Sort array; expand right, shrink left when cost to equalize window exceeds k.
+
+```java
+// LC 1838 - Frequency of the Most Frequent Element
+// IDEA: Sort + sliding window — equalize all elements in window to nums[r]
+// time = O(N log N), space = O(1)
+public int maxFrequency(int[] nums, int k) {
+    Arrays.sort(nums);
+    int l = 0, ans = 1;
+    long windowSum = 0;
+    for (int r = 1; r < nums.length; r++) {
+        windowSum += nums[r];
+        // cost to raise all window elements to nums[r]
+        while ((long) nums[r] * (r - l + 1) - windowSum > k) {
+            windowSum -= nums[l++];
+        }
+        ans = Math.max(ans, r - l + 1);
+    }
+    return ans;
+}
+```
+
+### 2-11) Longest Substring with At Most Two Distinct Characters (LC 159) — Variable Window
+> Shrink left when distinct chars in window exceed 2; use frequency map.
+
+```java
+// LC 159 - Longest Substring with At Most Two Distinct Characters
+// IDEA: Sliding window with HashMap — shrink when distinct > 2
+// time = O(N), space = O(1)
+public int lengthOfLongestSubstringTwoDistinct(String s) {
+    Map<Character, Integer> freq = new HashMap<>();
+    int l = 0, ans = 0;
+    for (int r = 0; r < s.length(); r++) {
+        freq.merge(s.charAt(r), 1, Integer::sum);
+        while (freq.size() > 2) {
+            char lc = s.charAt(l);
+            freq.merge(lc, -1, Integer::sum);
+            if (freq.get(lc) == 0) freq.remove(lc);
+            l++;
+        }
+        ans = Math.max(ans, r - l + 1);
+    }
+    return ans;
+}
+```
