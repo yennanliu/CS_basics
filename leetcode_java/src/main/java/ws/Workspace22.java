@@ -146,5 +146,63 @@ public class Workspace22 {
     }
 
 
+    // LC 437
+    // 8.45 - 55 am
+    /**
+     *  -> return the number of paths
+     *  where the sum of the values
+     *  along the path equals targetSum.
+     *
+     *
+     *
+     *  -------------
+     *
+     *  IDEA 1) DFS (post order traverse)
+     *
+     *  IDEA 2) DFS (post order traverse) + prefix sum + hashmap ???????
+     *
+     *
+     */
+    int nodeCnt = 0; // ???
+    // ????
+    Map<Integer, Integer> map = new HashMap<>(); // { prefix_sum : cnt }
+    public int pathSum(TreeNode root, int targetSum) {
+        // edge
+        if(root == null){
+            return 0;
+        }
+
+        nodeSumDfs(root, targetSum, 0);
+        return nodeCnt;
+    }
+
+    private void nodeSumDfs(TreeNode root, int targetSum, int curSum){
+        if(root == null){
+            return;
+        }
+
+        nodeSumDfs(root.left, targetSum, curSum);
+        nodeSumDfs(root.right, targetSum, curSum);
+
+        // ???
+        curSum += root.val;
+        // ???
+
+        if(root.val == targetSum){
+            nodeCnt += 1;
+        }
+
+        // ???
+        if(map.containsKey(targetSum - curSum)){
+            nodeCnt += map.get(targetSum - curSum);
+        }
+
+        // update map
+        map.put(curSum, map.getOrDefault(curSum, 0) + 1);
+
+
+    }
+
+
 
 }
