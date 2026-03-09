@@ -101,3 +101,187 @@ private int query(int[] bit, int i) {
     return sum;
 }
 ```
+
+### 2-3) BIT Generic Template — Point Update + Prefix/Range Query
+> Reusable BIT class supporting point updates and prefix-sum queries.
+
+```java
+// BIT (Fenwick Tree) — Generic Template
+// time = O(log N) per update/query, space = O(N)
+class BIT {
+    int[] tree;
+    int n;
+    BIT(int n) { this.n = n; tree = new int[n + 1]; }
+    void update(int i, int delta) {          // 1-indexed; add delta at position i
+        for (; i <= n; i += i & -i) tree[i] += delta;
+    }
+    int query(int i) {                        // prefix sum [1..i]
+        int sum = 0;
+        for (; i > 0; i -= i & -i) sum += tree[i];
+        return sum;
+    }
+    int query(int l, int r) { return query(r) - query(l - 1); } // range [l..r]
+}
+```
+
+### 2-4) Reverse Pairs (LC 493) — BIT with Coordinate Compression
+> For each nums[i] (right to left), count previously inserted values < nums[i]; then insert 2*nums[i].
+
+```java
+// LC 493 - Reverse Pairs
+// IDEA: BIT + coordinate compression — process right to left; query then update
+// time = O(N log N), space = O(N)
+public int reversePairs(int[] nums) {
+    int n = nums.length;
+    long[] sorted = new long[2 * n];
+    for (int i = 0; i < n; i++) { sorted[i] = nums[i]; sorted[n+i] = 2L * nums[i]; }
+    Arrays.sort(sorted);
+    Map<Long, Integer> rank = new HashMap<>();
+    int r = 1;
+    for (long v : sorted) if (!rank.containsKey(v)) rank.put(v, r++);
+    int[] bit = new int[r];
+    int count = 0;
+    for (int i = n - 1; i >= 0; i--) {
+        count += queryBIT(bit, rank.get((long)nums[i]) - 1);
+        updateBIT(bit, rank.get(2L * nums[i]), r - 1);
+    }
+    return count;
+}
+private void updateBIT(int[] b, int i, int n) { for (; i <= n; i += i&-i) b[i]++; }
+private int  queryBIT(int[] b, int i)         { int s=0; for(;i>0;i-=i&-i) s+=b[i]; return s; }
+```
+
+### 2-5) Count of Range Sum (LC 327) — BIT / Merge Sort
+> For each prefix sum, count how many previous prefix sums fall in [prefixSum-upper, prefixSum-lower].
+
+```java
+// LC 327 - Count of Range Sum (merge sort approach)
+// IDEA: Merge sort — count valid pairs during the merge step
+// time = O(N log N), space = O(N)
+public int countRangeSum(int[] nums, int lower, int upper) {
+    int n = nums.length;
+    long[] prefix = new long[n + 1];
+    for (int i = 0; i < n; i++) prefix[i+1] = prefix[i] + nums[i];
+    return mergeCount(prefix, 0, n + 1, lower, upper);
+}
+private int mergeCount(long[] arr, int l, int r, int lo, int hi) {
+    if (r - l <= 1) return 0;
+    int mid = (l + r) / 2;
+    int count = mergeCount(arr, l, mid, lo, hi) + mergeCount(arr, mid, r, lo, hi);
+    int j = mid, k = mid;
+    for (int i = l; i < mid; i++) {
+        while (j < r && arr[j] - arr[i] < lo) j++;
+        while (k < r && arr[k] - arr[i] <= hi) k++;
+        count += k - j;
+    }
+    long[] tmp = Arrays.copyOfRange(arr, l, r);
+    Arrays.sort(tmp);
+    System.arraycopy(tmp, 0, arr, l, tmp.length);
+    return count;
+}
+```
+
+### 2-6) Queue Reconstruction by Height (LC 406) — Greedy Insertion
+> Sort by height DESC (k ASC for ties); insert each person at index k — taller already placed.
+
+```java
+// LC 406 - Queue Reconstruction by Height
+// IDEA: Sort height DESC (k ASC); insert at index k — taller people already positioned
+// time = O(N^2), space = O(N)
+public int[][] reconstructQueue(int[][] people) {
+    Arrays.sort(people, (a, b) -> a[0] != b[0] ? b[0] - a[0] : a[1] - b[1]);
+    List<int[]> res = new ArrayList<>();
+    for (int[] p : people) res.add(p[1], p);
+    return res.toArray(new int[res.size()][]);
+}
+```
+
+### 2-7) Range Sum Query Mutable — BIT vs Segment Tree Comparison
+> BIT for point update + prefix query; Segment Tree for arbitrary range query/update.
+
+```java
+// LC 307 - Range Sum Query Mutable (BIT version)
+// IDEA: BIT — O(log N) point update and prefix sum; range via subtraction
+// time = O(log N) per update/query, space = O(N)
+class NumArray {
+    int[] bit, nums;
+    int n;
+    public NumArray(int[] nums) {
+        n = nums.length;
+        this.nums = new int[n];
+        bit = new int[n + 1];
+        for (int i = 0; i < n; i++) update(i, nums[i]);
+    }
+    public void update(int i, int val) {
+        int delta = val - nums[i];
+        nums[i] = val;
+        for (int x = i + 1; x <= n; x += x & -x) bit[x] += delta;
+    }
+    public int sumRange(int l, int r) { return prefix(r+1) - prefix(l); }
+    private int prefix(int i) { int s=0; for(;i>0;i-=i&-i) s+=bit[i]; return s; }
+}
+```
+
+### 2-8) Number of Longest Increasing Subsequences (LC 673) — DP
+> Track both length and count at each position; update count when equal-length path found.
+
+```java
+// LC 673 - Number of Longest Increasing Subsequences
+// IDEA: DP — (len[i], cnt[i]) = (LIS length at i, number of such LIS)
+// time = O(N^2), space = O(N)
+public int findNumberOfLIS(int[] nums) {
+    int n = nums.length, maxLen = 0, result = 0;
+    int[] len = new int[n], cnt = new int[n];
+    for (int i = 0; i < n; i++) {
+        len[i] = cnt[i] = 1;
+        for (int j = 0; j < i; j++) {
+            if (nums[j] < nums[i]) {
+                if (len[j] + 1 > len[i]) { len[i] = len[j]+1; cnt[i] = cnt[j]; }
+                else if (len[j] + 1 == len[i]) cnt[i] += cnt[j];
+            }
+        }
+        if (len[i] > maxLen) { maxLen = len[i]; result = cnt[i]; }
+        else if (len[i] == maxLen) result += cnt[i];
+    }
+    return result;
+}
+```
+
+### 2-9) Create Sorted Array through Instructions (LC 1649) — BIT
+> For each instruction, cost = min(count smaller, count larger) already inserted; use BIT.
+
+```java
+// LC 1649 - Create Sorted Array through Instructions
+// IDEA: BIT on value range — count smaller and greater elements already inserted
+// time = O(N log M), space = O(M)  M = max value
+public int createSortedArray(int[] instructions) {
+    int MOD = 1_000_000_007, n = 100001;
+    int[] bit = new int[n + 1];
+    long cost = 0;
+    for (int i = 0; i < instructions.length; i++) {
+        int x = instructions[i];
+        int smaller = query(bit, x - 1);
+        int larger  = i - query(bit, x);
+        cost = (cost + Math.min(smaller, larger)) % MOD;
+        update(bit, x, n);
+    }
+    return (int) cost;
+}
+private void update(int[] b, int i, int n) { for (; i <= n; i += i&-i) b[i]++; }
+private int  query(int[] b, int i)         { int s=0; for(;i>0;i-=i&-i) s+=b[i]; return s; }
+```
+
+### 2-10) Global and Local Inversions (LC 775) — BIT
+> Global inversions >= local inversions always; equal iff no non-adjacent inversion exists.
+
+```java
+// LC 775 - Global and Local Inversions
+// IDEA: Global inversions == local iff no nums[i] > nums[j] for j >= i+2
+// time = O(N), space = O(1)
+public boolean isIdealPermutation(int[] nums) {
+    // global == local iff every element is within 1 of its sorted position
+    for (int i = 0; i < nums.length; i++)
+        if (Math.abs(nums[i] - i) > 1) return false;
+    return true;
+}
+```

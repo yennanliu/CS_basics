@@ -671,3 +671,174 @@ public int[][] insert(int[][] intervals, int[] newInterval) {
     return result.toArray(new int[result.size()][]);
 }
 ```
+
+### 2-4) Meeting Rooms II (LC 253) — Min-Heap on End Times
+> Sort by start; heap tracks earliest ending room — reuse if room ends before next meeting.
+
+```java
+// LC 253 - Meeting Rooms II
+// IDEA: Sort by start; min-heap of end times — reuse room if heap.peek() <= start
+// time = O(N log N), space = O(N)
+public int minMeetingRooms(int[][] intervals) {
+    Arrays.sort(intervals, (a, b) -> a[0] - b[0]);
+    PriorityQueue<Integer> heap = new PriorityQueue<>();
+    for (int[] iv : intervals) {
+        if (!heap.isEmpty() && heap.peek() <= iv[0]) heap.poll();
+        heap.offer(iv[1]);
+    }
+    return heap.size();
+}
+```
+
+### 2-5) Minimum Number of Arrows to Burst Balloons (LC 452) — Greedy
+> Sort by end; one arrow at interval's end bursts all overlapping; advance when gap appears.
+
+```java
+// LC 452 - Minimum Number of Arrows to Burst Balloons
+// IDEA: Greedy — sort by end; new arrow only when next start > current end
+// time = O(N log N), space = O(1)
+public int findMinArrowShots(int[][] points) {
+    Arrays.sort(points, (a, b) -> Integer.compare(a[1], b[1]));
+    int arrows = 1, end = points[0][1];
+    for (int i = 1; i < points.length; i++)
+        if (points[i][0] > end) { arrows++; end = points[i][1]; }
+    return arrows;
+}
+```
+
+### 2-6) Non-Overlapping Intervals (LC 435) — Greedy
+> Sort by end; keep interval with earliest end greedily; count how many must be removed.
+
+```java
+// LC 435 - Non-Overlapping Intervals
+// IDEA: Greedy — sort by end; skip (remove) overlapping intervals
+// time = O(N log N), space = O(1)
+public int eraseOverlapIntervals(int[][] intervals) {
+    Arrays.sort(intervals, (a, b) -> a[1] - b[1]);
+    int removals = 0, end = Integer.MIN_VALUE;
+    for (int[] iv : intervals) {
+        if (iv[0] >= end) end = iv[1];
+        else removals++;
+    }
+    return removals;
+}
+```
+
+### 2-7) Interval List Intersections (LC 986) — Two Pointers
+> Advance the pointer whose interval ends first; record overlap when ranges intersect.
+
+```java
+// LC 986 - Interval List Intersections
+// IDEA: Two pointers — compute intersection, advance pointer with smaller end
+// time = O(M+N), space = O(M+N)
+public int[][] intervalIntersection(int[][] A, int[][] B) {
+    List<int[]> res = new ArrayList<>();
+    int i = 0, j = 0;
+    while (i < A.length && j < B.length) {
+        int lo = Math.max(A[i][0], B[j][0]);
+        int hi = Math.min(A[i][1], B[j][1]);
+        if (lo <= hi) res.add(new int[]{lo, hi});
+        if (A[i][1] < B[j][1]) i++;
+        else j++;
+    }
+    return res.toArray(new int[res.size()][]);
+}
+```
+
+### 2-8) Remove Covered Intervals (LC 1288) — Sort + Greedy
+> Sort by start asc, end desc; interval is covered if its end ≤ current max end.
+
+```java
+// LC 1288 - Remove Covered Intervals
+// IDEA: Sort start ASC, end DESC; count intervals not covered by running maxEnd
+// time = O(N log N), space = O(1)
+public int removeCoveredIntervals(int[][] intervals) {
+    Arrays.sort(intervals, (a, b) -> a[0] != b[0] ? a[0] - b[0] : b[1] - a[1]);
+    int count = 0, maxEnd = 0;
+    for (int[] iv : intervals)
+        if (iv[1] > maxEnd) { count++; maxEnd = iv[1]; }
+    return count;
+}
+```
+
+### 2-9) Video Stitching (LC 1024) — Greedy Interval Cover
+> Sort by start; at each frontier pick the clip extending coverage the furthest.
+
+```java
+// LC 1024 - Video Stitching
+// IDEA: Greedy — at current end, pick clip reaching farthest next position
+// time = O(N log N), space = O(1)
+public int videoStitching(int[][] clips, int time) {
+    Arrays.sort(clips, (a, b) -> a[0] - b[0]);
+    int count = 0, curEnd = 0, farthest = 0, i = 0;
+    while (i < clips.length && curEnd < time) {
+        while (i < clips.length && clips[i][0] <= curEnd)
+            farthest = Math.max(farthest, clips[i++][1]);
+        if (farthest == curEnd) return -1;
+        curEnd = farthest;
+        count++;
+    }
+    return curEnd >= time ? count : -1;
+}
+```
+
+### 2-10) Maximum Profit in Job Scheduling (LC 1235) — DP + Binary Search
+> Sort jobs by end; dp[i] = max profit using first i jobs; binary search for last non-conflicting job.
+
+```java
+// LC 1235 - Maximum Profit in Job Scheduling
+// IDEA: Sort by end; DP + binary search for latest non-overlapping job
+// time = O(N log N), space = O(N)
+public int jobScheduling(int[] startTime, int[] endTime, int[] profit) {
+    int n = startTime.length;
+    int[][] jobs = new int[n][3];
+    for (int i = 0; i < n; i++) jobs[i] = new int[]{endTime[i], startTime[i], profit[i]};
+    Arrays.sort(jobs, (a, b) -> a[0] - b[0]);
+    int[] dp = new int[n + 1];
+    for (int i = 0; i < n; i++) {
+        int lo = 0, hi = i;
+        while (lo < hi) {
+            int mid = (lo + hi + 1) / 2;
+            if (jobs[mid-1][0] <= jobs[i][1]) lo = mid;
+            else hi = mid - 1;
+        }
+        dp[i+1] = Math.max(dp[i], dp[lo] + jobs[i][2]);
+    }
+    return dp[n];
+}
+```
+
+### 2-11) My Calendar I (LC 729) — TreeMap Overlap Check
+> TreeMap floor/ceiling gives O(log N) overlap detection per booking.
+
+```java
+// LC 729 - My Calendar I
+// IDEA: TreeMap — O(log N) overlap check with floorKey / ceilingKey
+// time = O(log N) per booking, space = O(N)
+class MyCalendar {
+    TreeMap<Integer, Integer> cal = new TreeMap<>();
+    public boolean book(int start, int end) {
+        Integer prev = cal.floorKey(start), next = cal.ceilingKey(start);
+        if ((prev == null || cal.get(prev) <= start) && (next == null || next >= end)) {
+            cal.put(start, end);
+            return true;
+        }
+        return false;
+    }
+}
+```
+
+### 2-12) Meeting Rooms I (LC 252) — Sort + Adjacent Check
+> Sort by start time; if any meeting starts before previous ends, overlap exists.
+
+```java
+// LC 252 - Meeting Rooms
+// IDEA: Sort by start; adjacent overlap check
+// time = O(N log N), space = O(1)
+public boolean canAttendMeetings(int[][] intervals) {
+    Arrays.sort(intervals, (a, b) -> a[0] - b[0]);
+    for (int i = 1; i < intervals.length; i++)
+        if (intervals[i][0] < intervals[i-1][1]) return false;
+    return true;
+}
+```

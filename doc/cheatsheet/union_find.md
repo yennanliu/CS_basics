@@ -666,3 +666,185 @@ private void union(Map<String, String> parent, String x, String y) {
     parent.put(find(parent, x), find(parent, y));
 }
 ```
+
+### 2-4) Graph Valid Tree (LC 261) — Union-Find
+> Tree has exactly N-1 edges and no cycle; union each edge, return false on same-component edge.
+
+```java
+// LC 261 - Graph Valid Tree
+// IDEA: Union-Find — N-1 edges + no cycle = valid tree
+// time = O(N * α(N)), space = O(N)
+public boolean validTree(int n, int[][] edges) {
+    if (edges.length != n - 1) return false;
+    int[] p = new int[n];
+    for (int i = 0; i < n; i++) p[i] = i;
+    for (int[] e : edges) {
+        if (find(p, e[0]) == find(p, e[1])) return false;
+        p[find(p, e[0])] = find(p, e[1]);
+    }
+    return true;
+}
+private int find(int[] p, int x) { return p[x] == x ? x : (p[x] = find(p, p[x])); }
+```
+
+### 2-5) Number of Connected Components in Undirected Graph (LC 323) — Union-Find
+> Union each edge; count remaining distinct roots as connected components.
+
+```java
+// LC 323 - Number of Connected Components in Undirected Graph
+// IDEA: Union-Find — count distinct roots after unioning all edges
+// time = O(N * α(N)), space = O(N)
+public int countComponents(int n, int[][] edges) {
+    int[] p = new int[n];
+    for (int i = 0; i < n; i++) p[i] = i;
+    int components = n;
+    for (int[] e : edges) {
+        int a = find(p, e[0]), b = find(p, e[1]);
+        if (a != b) { p[a] = b; components--; }
+    }
+    return components;
+}
+private int find(int[] p, int x) { return p[x] == x ? x : (p[x] = find(p, p[x])); }
+```
+
+### 2-6) Surrounded Regions (LC 130) — Union-Find with Virtual Border Node
+> Union all border 'O' cells to a virtual node; any 'O' not connected gets flipped to 'X'.
+
+```java
+// LC 130 - Surrounded Regions
+// IDEA: Union-Find — connect border O cells to virtual node; flip disconnected O cells
+// time = O(M*N), space = O(M*N)
+public void solve(char[][] board) {
+    int m = board.length, n = board[0].length, virtual = m * n;
+    int[] p = new int[virtual + 1];
+    for (int i = 0; i <= virtual; i++) p[i] = i;
+    int[][] dirs = {{1,0},{-1,0},{0,1},{0,-1}};
+    for (int i = 0; i < m; i++) for (int j = 0; j < n; j++) if (board[i][j] == 'O') {
+        int id = i * n + j;
+        if (i == 0 || i == m-1 || j == 0 || j == n-1) union(p, id, virtual);
+        else for (int[] d : dirs) {
+            int ni = i+d[0], nj = j+d[1];
+            if (board[ni][nj] == 'O') union(p, id, ni*n+nj);
+        }
+    }
+    for (int i = 0; i < m; i++) for (int j = 0; j < n; j++)
+        if (board[i][j] == 'O' && find(p, i*n+j) != find(p, virtual)) board[i][j] = 'X';
+}
+private int find(int[] p, int x) { return p[x]==x ? x : (p[x]=find(p,p[x])); }
+private void union(int[] p, int x, int y) { p[find(p,x)] = find(p,y); }
+```
+
+### 2-7) Smallest String with Swaps (LC 1202) — Union-Find + Sorting
+> Union swap pairs; sort characters within each component; place sorted chars back.
+
+```java
+// LC 1202 - Smallest String with Swaps
+// IDEA: Union-Find — group indices; sort chars in each group and reassign
+// time = O(N log N), space = O(N)
+public String smallestStringWithSwaps(String s, List<List<Integer>> pairs) {
+    int n = s.length();
+    int[] p = new int[n];
+    for (int i = 0; i < n; i++) p[i] = i;
+    for (List<Integer> pair : pairs) union(p, pair.get(0), pair.get(1));
+    Map<Integer, List<Integer>> groups = new HashMap<>();
+    for (int i = 0; i < n; i++) groups.computeIfAbsent(find(p, i), k -> new ArrayList<>()).add(i);
+    char[] res = s.toCharArray();
+    for (List<Integer> idx : groups.values()) {
+        char[] chars = new char[idx.size()];
+        for (int i = 0; i < idx.size(); i++) chars[i] = s.charAt(idx.get(i));
+        Arrays.sort(chars);
+        Collections.sort(idx);
+        for (int i = 0; i < idx.size(); i++) res[idx.get(i)] = chars[i];
+    }
+    return new String(res);
+}
+private int find(int[] p, int x) { return p[x]==x ? x : (p[x]=find(p,p[x])); }
+private void union(int[] p, int x, int y) { p[find(p,x)] = find(p,y); }
+```
+
+### 2-8) Most Stones Removed with Same Row or Column (LC 947) — Union-Find
+> Union stones in the same row or column; answer = stones − number of components.
+
+```java
+// LC 947 - Most Stones Removed with Same Row or Column
+// IDEA: Union-Find — stones sharing row/column are in same component; remove all but one
+// time = O(N^2 * α(N)), space = O(N)
+public int removeStones(int[][] stones) {
+    int n = stones.length;
+    int[] p = new int[n];
+    for (int i = 0; i < n; i++) p[i] = i;
+    for (int i = 0; i < n; i++)
+        for (int j = i+1; j < n; j++)
+            if (stones[i][0] == stones[j][0] || stones[i][1] == stones[j][1])
+                union(p, i, j);
+    Set<Integer> roots = new HashSet<>();
+    for (int i = 0; i < n; i++) roots.add(find(p, i));
+    return n - roots.size();
+}
+private int find(int[] p, int x) { return p[x]==x ? x : (p[x]=find(p,p[x])); }
+private void union(int[] p, int x, int y) { p[find(p,x)] = find(p,y); }
+```
+
+### 2-9) Satisfiability of Equality Equations (LC 990) — Union-Find
+> Process '==' edges first; then check '!=' pairs for contradiction.
+
+```java
+// LC 990 - Satisfiability of Equality Equations
+// IDEA: Union-Find — union on ==, validate != pairs for contradiction
+// time = O(N), space = O(26)
+public boolean equationsPossible(String[] equations) {
+    int[] p = new int[26];
+    for (int i = 0; i < 26; i++) p[i] = i;
+    for (String eq : equations)
+        if (eq.charAt(1) == '=') union(p, eq.charAt(0)-'a', eq.charAt(3)-'a');
+    for (String eq : equations)
+        if (eq.charAt(1) == '!' && find(p, eq.charAt(0)-'a') == find(p, eq.charAt(3)-'a'))
+            return false;
+    return true;
+}
+private int find(int[] p, int x) { return p[x]==x ? x : (p[x]=find(p,p[x])); }
+private void union(int[] p, int x, int y) { p[find(p,x)] = find(p,y); }
+```
+
+### 2-10) Number of Operations to Make Network Connected (LC 1319) — Union-Find
+> Need at least N-1 edges; count components; extra edges reconnect disconnected components.
+
+```java
+// LC 1319 - Number of Operations to Make Network Connected
+// IDEA: Union-Find — count components; need (components-1) extra cables
+// time = O(N * α(N)), space = O(N)
+public int makeConnected(int n, int[][] connections) {
+    if (connections.length < n - 1) return -1;
+    int[] p = new int[n];
+    for (int i = 0; i < n; i++) p[i] = i;
+    int components = n;
+    for (int[] c : connections) {
+        int a = find(p, c[0]), b = find(p, c[1]);
+        if (a != b) { p[a] = b; components--; }
+    }
+    return components - 1;
+}
+private int find(int[] p, int x) { return p[x]==x ? x : (p[x]=find(p,p[x])); }
+```
+
+### 2-11) Longest Consecutive Sequence (LC 128) — HashSet O(N)
+> For each number, only start counting if (num-1) is absent — marks sequence start.
+
+```java
+// LC 128 - Longest Consecutive Sequence
+// IDEA: HashSet — only extend sequences from their start element
+// time = O(N), space = O(N)
+public int longestConsecutive(int[] nums) {
+    Set<Integer> set = new HashSet<>();
+    for (int n : nums) set.add(n);
+    int longest = 0;
+    for (int n : set) {
+        if (!set.contains(n - 1)) {   // sequence start
+            int len = 1;
+            while (set.contains(n + len)) len++;
+            longest = Math.max(longest, len);
+        }
+    }
+    return longest;
+}
+```

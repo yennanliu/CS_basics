@@ -697,3 +697,166 @@ public int maxSubarraySumCircular(int[] nums) {
     return maxSum > 0 ? Math.max(maxSum, totalSum - minSum) : maxSum;
 }
 ```
+
+### 2-4) Best Time to Buy and Sell Stock (LC 121) — Kadane Variant
+> Track running minimum price; max profit = current price − running minimum.
+
+```java
+// LC 121 - Best Time to Buy and Sell Stock
+// IDEA: Kadane variant — running minimum, update max profit each step
+// time = O(N), space = O(1)
+public int maxProfit(int[] prices) {
+    int minPrice = Integer.MAX_VALUE, maxProfit = 0;
+    for (int price : prices) {
+        minPrice = Math.min(minPrice, price);
+        maxProfit = Math.max(maxProfit, price - minPrice);
+    }
+    return maxProfit;
+}
+```
+
+### 2-5) Maximum Subarray Sum with One Deletion (LC 1186)
+> dp0[i] = max sum ending at i (no deletion); dp1[i] = max sum with one deletion used.
+
+```java
+// LC 1186 - Maximum Subarray Sum with One Deletion
+// IDEA: Two DP states — dp0 (no deletion), dp1 (one deletion used)
+// time = O(N), space = O(1)
+public int maximumSum(int[] arr) {
+    int dp0 = arr[0], dp1 = 0, ans = arr[0];
+    for (int i = 1; i < arr.length; i++) {
+        dp1 = Math.max(dp0, dp1 + arr[i]);  // delete arr[i] or extend with deletion
+        dp0 = Math.max(arr[i], dp0 + arr[i]);
+        ans = Math.max(ans, Math.max(dp0, dp1));
+    }
+    return ans;
+}
+```
+
+### 2-6) Longest Turbulent Subarray (LC 978) — Kadane Variant
+> Track lengths of increasing and decreasing alternating windows; reset on equality.
+
+```java
+// LC 978 - Longest Turbulent Subarray
+// IDEA: Kadane variant — track alternating inc/dec window lengths
+// time = O(N), space = O(1)
+public int maxTurbulenceSize(int[] arr) {
+    int inc = 1, dec = 1, ans = 1;
+    for (int i = 1; i < arr.length; i++) {
+        if (arr[i] > arr[i-1])      { inc = dec + 1; dec = 1; }
+        else if (arr[i] < arr[i-1]) { dec = inc + 1; inc = 1; }
+        else                         { inc = 1; dec = 1; }
+        ans = Math.max(ans, Math.max(inc, dec));
+    }
+    return ans;
+}
+```
+
+### 2-7) Gas Station (LC 134) — Greedy / Kadane on Circular
+> If total gas >= total cost, a solution exists; start from the first surplus reset point.
+
+```java
+// LC 134 - Gas Station
+// IDEA: Greedy — if total surplus >= 0, start from where tank went negative
+// time = O(N), space = O(1)
+public int canCompleteCircuit(int[] gas, int[] cost) {
+    int total = 0, curr = 0, start = 0;
+    for (int i = 0; i < gas.length; i++) {
+        int diff = gas[i] - cost[i];
+        total += diff;
+        curr  += diff;
+        if (curr < 0) { start = i + 1; curr = 0; }
+    }
+    return total >= 0 ? start : -1;
+}
+```
+
+### 2-8) Maximum Length of Subarray with Positive Product (LC 1567)
+> Track lengths with positive and negative product separately; swap on negative number.
+
+```java
+// LC 1567 - Maximum Length of Subarray with Positive Product
+// IDEA: pos = length with positive product, neg = with negative product; swap on negatives
+// time = O(N), space = O(1)
+public int getMaxLen(int[] nums) {
+    int pos = 0, neg = 0, ans = 0;
+    for (int num : nums) {
+        if (num == 0) { pos = 0; neg = 0; }
+        else if (num > 0) { pos++; neg = neg > 0 ? neg + 1 : 0; }
+        else { int tmp = pos; pos = neg > 0 ? neg + 1 : 0; neg = tmp + 1; }
+        ans = Math.max(ans, pos);
+    }
+    return ans;
+}
+```
+
+### 2-9) Maximum Score of Spliced Array (LC 2321) — Kadane on Difference
+> Max gain from swapping subarray = max subarray sum of (nums2[i] - nums1[i]).
+
+```java
+// LC 2321 - Maximum Score of Spliced Array
+// IDEA: Kadane on difference arrays — gain from swapping a subarray
+// time = O(N), space = O(1)
+public int[] maximumsSplicedArray(int[] nums1, int[] nums2) {
+    int sum1 = 0, sum2 = 0;
+    for (int i = 0; i < nums1.length; i++) { sum1 += nums1[i]; sum2 += nums2[i]; }
+    return new int[]{ sum1 + maxGain(nums2, nums1), sum2 + maxGain(nums1, nums2) };
+}
+private int maxGain(int[] a, int[] b) {  // max(b[i]-a[i]) subarray sum
+    int curr = 0, best = 0;
+    for (int i = 0; i < a.length; i++) {
+        curr = Math.max(0, curr + b[i] - a[i]);
+        best = Math.max(best, curr);
+    }
+    return best;
+}
+```
+
+### 2-10) K-Concatenation Maximum Sum (LC 1191) — Kadane + Math
+> For k >= 2: answer = maxSubarray(2 copies) + max(0, totalSum) × (k − 2).
+
+```java
+// LC 1191 - K-Concatenation Maximum Sum
+// IDEA: Kadane on 1 or 2 copies; if total positive, add total*(k-2)
+// time = O(N), space = O(1)
+public int kConcatenationMaxSum(int[] arr, int k) {
+    int MOD = 1_000_000_007;
+    long total = 0;
+    for (int x : arr) total += x;
+    long base = kadane(arr, Math.min(k, 2));
+    long ans = base + (k > 2 && total > 0 ? total % MOD * (k - 2) % MOD : 0);
+    return (int)(ans % MOD);
+}
+private long kadane(int[] arr, int repeat) {
+    long curr = 0, best = 0;
+    for (int t = 0; t < repeat; t++)
+        for (int x : arr) { curr = Math.max(x, curr + x); best = Math.max(best, curr); }
+    return best;
+}
+```
+
+### 2-11) Find Maximum Sum of Almost Unique Subarray (LC 2841) — Sliding Window Kadane
+> Fixed-size window of length k; count distinct elements using HashMap; maximize sum.
+
+```java
+// LC 2841 - Almost Unique Subarray (fixed window Kadane variant)
+// IDEA: Sliding window — maintain sum and frequency map for window of size k
+// time = O(N), space = O(k)
+public long maxSum(List<Integer> nums, int m, int k) {
+    Map<Integer, Integer> freq = new HashMap<>();
+    long windowSum = 0, ans = 0;
+    int n = nums.size();
+    for (int i = 0; i < n; i++) {
+        freq.merge(nums.get(i), 1, Integer::sum);
+        windowSum += nums.get(i);
+        if (i >= k) {
+            int out = nums.get(i - k);
+            windowSum -= out;
+            freq.merge(out, -1, Integer::sum);
+            if (freq.get(out) == 0) freq.remove(out);
+        }
+        if (i >= k - 1 && freq.size() >= m) ans = Math.max(ans, windowSum);
+    }
+    return ans;
+}
+```
