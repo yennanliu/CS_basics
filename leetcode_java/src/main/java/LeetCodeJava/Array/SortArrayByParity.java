@@ -47,8 +47,66 @@ public class SortArrayByParity {
 //
 
     // V0-1
-    // IDEA: CUSTOM SORT (gemini)
+    // IDEA: CUSTOM SORT (gpt)
     public int[] sortArrayByParity_0_1(int[] nums) {
+        // edge
+        if (nums == null || nums.length <= 1) {
+            return nums;
+        }
+
+        List<Integer> list = new ArrayList<>();
+        for (int x : nums) {
+            list.add(x);
+        }
+
+        // custom sort
+        Collections.sort(list, new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+
+                /** NOTE !!!
+                 *
+                 *  1.   below, how we do custom order
+                 *   by return custom val (e.g. 1 or -1)
+                 *
+                 *  2.
+                 *
+                 *  In a Java Comparator:
+                 *
+                 *    negative → o1 comes before o2
+                 *    positive → o1 comes after o2
+                 *    0 → order unchanged
+                 *
+                 */
+                // o1 even, o2 odd -> o1 should come first
+                if (o1 % 2 == 0 && o2 % 2 == 1) {
+                    return -1;
+                }
+
+                // o1 odd, o2 even -> o2 should come first
+                if (o1 % 2 == 1 && o2 % 2 == 0) {
+                    return 1;
+                }
+
+                // both even or both odd
+                return 0;
+            }
+        });
+
+        int[] res = new int[list.size()];
+        int i = 0;
+        for (int x : list) {
+            res[i++] = x;
+        }
+
+        return res;
+    }
+
+
+
+    // V0-2
+    // IDEA: CUSTOM SORT (gemini)
+    public int[] sortArrayByParity_0_2(int[] nums) {
         if (nums == null || nums.length <= 1)
             return nums;
 
@@ -74,46 +132,26 @@ public class SortArrayByParity {
 
 
     // V0-2
-    // IDEA: CUSTOM SORT (gpt)
-    public int[] sortArrayByParity_0_2(int[] nums) {
-        // edge
-        if (nums == null || nums.length <= 1) {
-            return nums;
-        }
+    // IDEA: 2 POINTERS (gpt)
+    public int[] sortArrayByParity_0_3(int[] nums) {
+        int l = 0, r = nums.length - 1;
 
-        List<Integer> list = new ArrayList<>();
-        for (int x : nums) {
-            list.add(x);
-        }
-
-        // custom sort
-        Collections.sort(list, new Comparator<Integer>() {
-            @Override
-            public int compare(Integer o1, Integer o2) {
-
-                // o1 even, o2 odd -> o1 should come first
-                if (o1 % 2 == 0 && o2 % 2 == 1) {
-                    return -1;
-                }
-
-                // o1 odd, o2 even -> o2 should come first
-                if (o1 % 2 == 1 && o2 % 2 == 0) {
-                    return 1;
-                }
-
-                // both even or both odd
-                return 0;
+        while (l < r) {
+            if (nums[l] % 2 > nums[r] % 2) {
+                int tmp = nums[l];
+                nums[l] = nums[r];
+                nums[r] = tmp;
             }
-        });
 
-        int[] res = new int[list.size()];
-        int i = 0;
-        for (int x : list) {
-            res[i++] = x;
+            if (nums[l] % 2 == 0)
+                l++;
+            if (nums[r] % 2 == 1)
+                r--;
         }
 
-        return res;
+        return nums;
     }
+
 
 
     // V1
