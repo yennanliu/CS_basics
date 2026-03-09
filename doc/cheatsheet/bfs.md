@@ -1246,3 +1246,263 @@ public int shortestPathBinaryMatrix(int[][] grid) {
     return -1;
 }
 ```
+
+### 2-4) 01 Matrix (LC 542) — Multi-source BFS from All Zeros
+> Start BFS from all 0-cells simultaneously; distance propagates outward.
+
+```java
+// LC 542 - 01 Matrix
+// IDEA: Multi-source BFS — enqueue all 0s first, then expand
+// time = O(M*N), space = O(M*N)
+public int[][] updateMatrix(int[][] mat) {
+    int m = mat.length, n = mat[0].length;
+    int[][] dist = new int[m][n];
+    Queue<int[]> queue = new LinkedList<>();
+    for (int i = 0; i < m; i++)
+        for (int j = 0; j < n; j++) {
+            if (mat[i][j] == 0) queue.offer(new int[]{i, j});
+            else dist[i][j] = Integer.MAX_VALUE;
+        }
+    int[][] dirs = {{1,0},{-1,0},{0,1},{0,-1}};
+    while (!queue.isEmpty()) {
+        int[] cell = queue.poll();
+        for (int[] d : dirs) {
+            int nr = cell[0]+d[0], nc = cell[1]+d[1];
+            if (nr>=0 && nr<m && nc>=0 && nc<n && dist[nr][nc] > dist[cell[0]][cell[1]]+1) {
+                dist[nr][nc] = dist[cell[0]][cell[1]] + 1;
+                queue.offer(new int[]{nr, nc});
+            }
+        }
+    }
+    return dist;
+}
+```
+
+### 2-5) Open the Lock (LC 752) — BFS on State Space
+> Model each lock combination as a node; BFS finds minimum turns to reach target.
+
+```java
+// LC 752 - Open the Lock
+// IDEA: BFS on 4-digit combinations; each turn = 1 step
+// time = O(10^4 * 4 * 2), space = O(10^4)
+public int openLock(String[] deadends, String target) {
+    Set<String> dead = new HashSet<>(Arrays.asList(deadends));
+    Set<String> visited = new HashSet<>();
+    Queue<String> queue = new LinkedList<>();
+    String start = "0000";
+    if (dead.contains(start)) return -1;
+    queue.offer(start);
+    visited.add(start);
+    int steps = 0;
+    while (!queue.isEmpty()) {
+        int size = queue.size();
+        for (int i = 0; i < size; i++) {
+            String curr = queue.poll();
+            if (curr.equals(target)) return steps;
+            char[] chars = curr.toCharArray();
+            for (int j = 0; j < 4; j++) {
+                char orig = chars[j];
+                for (int delta : new int[]{1, -1}) {
+                    chars[j] = (char)((orig - '0' + delta + 10) % 10 + '0');
+                    String next = new String(chars);
+                    if (!visited.contains(next) && !dead.contains(next)) {
+                        visited.add(next); queue.offer(next);
+                    }
+                    chars[j] = orig;
+                }
+            }
+        }
+        steps++;
+    }
+    return -1;
+}
+```
+
+### 2-6) Surrounded Regions (LC 130) — BFS from Border
+> BFS from all border 'O' cells; mark reachable ones safe; flip the rest.
+
+```java
+// LC 130 - Surrounded Regions
+// IDEA: BFS from border O-cells to find non-surrounded regions
+// time = O(M*N), space = O(M*N)
+public void solve(char[][] board) {
+    int m = board.length, n = board[0].length;
+    Queue<int[]> queue = new LinkedList<>();
+    for (int i = 0; i < m; i++)
+        for (int j = 0; j < n; j++)
+            if ((i==0||i==m-1||j==0||j==n-1) && board[i][j]=='O') {
+                board[i][j] = 'S'; queue.offer(new int[]{i,j});
+            }
+    int[][] dirs = {{1,0},{-1,0},{0,1},{0,-1}};
+    while (!queue.isEmpty()) {
+        int[] c = queue.poll();
+        for (int[] d : dirs) {
+            int nr=c[0]+d[0], nc=c[1]+d[1];
+            if (nr>=0&&nr<m&&nc>=0&&nc<n&&board[nr][nc]=='O') {
+                board[nr][nc]='S'; queue.offer(new int[]{nr,nc});
+            }
+        }
+    }
+    for (int i=0;i<m;i++) for (int j=0;j<n;j++)
+        board[i][j] = board[i][j]=='S' ? 'O' : (board[i][j]=='O' ? 'X' : board[i][j]);
+}
+```
+
+### 2-7) Course Schedule (LC 207) — BFS Topological Sort (Kahn's)
+> Build in-degree array; BFS processes nodes with zero in-degree iteratively.
+
+```java
+// LC 207 - Course Schedule
+// IDEA: Kahn's BFS topological sort — detect cycle in directed graph
+// time = O(V+E), space = O(V+E)
+public boolean canFinish(int numCourses, int[][] prerequisites) {
+    int[] inDegree = new int[numCourses];
+    List<List<Integer>> adj = new ArrayList<>();
+    for (int i = 0; i < numCourses; i++) adj.add(new ArrayList<>());
+    for (int[] pre : prerequisites) {
+        adj.get(pre[1]).add(pre[0]);
+        inDegree[pre[0]]++;
+    }
+    Queue<Integer> queue = new LinkedList<>();
+    for (int i = 0; i < numCourses; i++) if (inDegree[i] == 0) queue.offer(i);
+    int processed = 0;
+    while (!queue.isEmpty()) {
+        int course = queue.poll();
+        processed++;
+        for (int next : adj.get(course))
+            if (--inDegree[next] == 0) queue.offer(next);
+    }
+    return processed == numCourses;
+}
+```
+
+### 2-8) Walls and Gates (LC 286) — Multi-source BFS
+> Start BFS from all gates (0s) simultaneously; fill rooms with shortest distance.
+
+```java
+// LC 286 - Walls and Gates
+// IDEA: Multi-source BFS from all gates — propagate distances
+// time = O(M*N), space = O(M*N)
+public void wallsAndGates(int[][] rooms) {
+    int m = rooms.length, n = rooms[0].length;
+    int INF = Integer.MAX_VALUE;
+    Queue<int[]> queue = new LinkedList<>();
+    for (int i = 0; i < m; i++)
+        for (int j = 0; j < n; j++)
+            if (rooms[i][j] == 0) queue.offer(new int[]{i, j});
+    int[][] dirs = {{1,0},{-1,0},{0,1},{0,-1}};
+    while (!queue.isEmpty()) {
+        int[] cell = queue.poll();
+        for (int[] d : dirs) {
+            int nr = cell[0]+d[0], nc = cell[1]+d[1];
+            if (nr>=0&&nr<m&&nc>=0&&nc<n&&rooms[nr][nc]==INF) {
+                rooms[nr][nc] = rooms[cell[0]][cell[1]] + 1;
+                queue.offer(new int[]{nr, nc});
+            }
+        }
+    }
+}
+```
+
+### 2-9) Minimum Height Trees (LC 310) — BFS Leaf Trimming
+> Repeatedly remove leaf nodes; the remaining 1-2 nodes are the roots of MHTs.
+
+```java
+// LC 310 - Minimum Height Trees
+// IDEA: BFS — trim leaves layer by layer until 1 or 2 nodes remain
+// time = O(N), space = O(N)
+public List<Integer> findMinHeightTrees(int n, int[][] edges) {
+    if (n == 1) return Collections.singletonList(0);
+    List<Set<Integer>> adj = new ArrayList<>();
+    for (int i = 0; i < n; i++) adj.add(new HashSet<>());
+    for (int[] e : edges) { adj.get(e[0]).add(e[1]); adj.get(e[1]).add(e[0]); }
+    Queue<Integer> leaves = new LinkedList<>();
+    for (int i = 0; i < n; i++) if (adj.get(i).size() == 1) leaves.offer(i);
+    int remaining = n;
+    while (remaining > 2) {
+        int size = leaves.size();
+        remaining -= size;
+        for (int i = 0; i < size; i++) {
+            int leaf = leaves.poll();
+            int neighbor = adj.get(leaf).iterator().next();
+            adj.get(neighbor).remove(leaf);
+            if (adj.get(neighbor).size() == 1) leaves.offer(neighbor);
+        }
+    }
+    return new ArrayList<>(leaves);
+}
+```
+
+### 2-10) Snakes and Ladders (LC 909) — BFS on Board
+> Model board as graph; BFS finds minimum dice rolls to reach final square.
+
+```java
+// LC 909 - Snakes and Ladders
+// IDEA: BFS — each square is a node, dice roll = edges
+// time = O(N^2), space = O(N^2)
+public int snakesAndLadders(int[][] board) {
+    int n = board.length;
+    int[] flat = new int[n * n + 1];
+    int idx = 1; boolean leftToRight = true;
+    for (int r = n-1; r >= 0; r--) {
+        if (leftToRight) for (int c = 0; c < n; c++) flat[idx++] = board[r][c];
+        else for (int c = n-1; c >= 0; c--) flat[idx++] = board[r][c];
+        leftToRight = !leftToRight;
+    }
+    boolean[] visited = new boolean[n*n+1];
+    Queue<int[]> queue = new LinkedList<>();
+    queue.offer(new int[]{1, 0});
+    visited[1] = true;
+    while (!queue.isEmpty()) {
+        int[] curr = queue.poll();
+        int pos = curr[0], steps = curr[1];
+        for (int dice = 1; dice <= 6 && pos+dice <= n*n; dice++) {
+            int next = pos + dice;
+            if (flat[next] != -1) next = flat[next];
+            if (next == n*n) return steps + 1;
+            if (!visited[next]) { visited[next] = true; queue.offer(new int[]{next, steps+1}); }
+        }
+    }
+    return -1;
+}
+```
+
+### 2-11) Pacific Atlantic Water Flow (LC 417) — BFS from Both Oceans
+> BFS backward from Pacific and Atlantic borders; cells in both sets can flow to both.
+
+```java
+// LC 417 - Pacific Atlantic Water Flow
+// IDEA: BFS from Pacific border + Atlantic border; intersection = answer
+// time = O(M*N), space = O(M*N)
+public List<List<Integer>> pacificAtlantic(int[][] heights) {
+    int m = heights.length, n = heights[0].length;
+    boolean[][] pac = new boolean[m][n], atl = new boolean[m][n];
+    Queue<int[]> pq = new LinkedList<>(), aq = new LinkedList<>();
+    for (int i = 0; i < m; i++) {
+        pq.offer(new int[]{i,0}); pac[i][0]=true;
+        aq.offer(new int[]{i,n-1}); atl[i][n-1]=true;
+    }
+    for (int j = 0; j < n; j++) {
+        pq.offer(new int[]{0,j}); pac[0][j]=true;
+        aq.offer(new int[]{m-1,j}); atl[m-1][j]=true;
+    }
+    bfs(heights, pq, pac, m, n);
+    bfs(heights, aq, atl, m, n);
+    List<List<Integer>> res = new ArrayList<>();
+    for (int i=0;i<m;i++) for (int j=0;j<n;j++)
+        if (pac[i][j]&&atl[i][j]) res.add(Arrays.asList(i,j));
+    return res;
+}
+private void bfs(int[][] h, Queue<int[]> q, boolean[][] visited, int m, int n) {
+    int[][] dirs={{1,0},{-1,0},{0,1},{0,-1}};
+    while (!q.isEmpty()) {
+        int[] c=q.poll();
+        for (int[] d:dirs) {
+            int nr=c[0]+d[0],nc=c[1]+d[1];
+            if (nr>=0&&nr<m&&nc>=0&&nc<n&&!visited[nr][nc]&&h[nr][nc]>=h[c[0]][c[1]]) {
+                visited[nr][nc]=true; q.offer(new int[]{nr,nc});
+            }
+        }
+    }
+}
+```

@@ -2059,3 +2059,216 @@ private boolean canFinish(int[] piles, int speed, int h) {
     return hours <= h;
 }
 ```
+
+### 2-4) Find Minimum in Rotated Sorted Array (LC 153) — Binary Search
+> The minimum is always in the unsorted half; compare mid with right boundary.
+
+```java
+// LC 153 - Find Minimum in Rotated Sorted Array
+// IDEA: Binary search — minimum is in the unsorted half
+// time = O(log N), space = O(1)
+public int findMin(int[] nums) {
+    int l = 0, r = nums.length - 1;
+    while (l < r) {
+        int mid = (l + r) / 2;
+        if (nums[mid] > nums[r]) l = mid + 1; // min in right half
+        else r = mid;                           // min in left half (including mid)
+    }
+    return nums[l];
+}
+```
+
+### 2-5) Capacity to Ship Packages Within D Days (LC 1011) — Binary Search on Answer
+> Binary search on ship capacity; check if all packages can be shipped in D days.
+
+```java
+// LC 1011 - Capacity to Ship Packages Within D Days
+// IDEA: Binary search on capacity range [max(weights), sum(weights)]
+// time = O(N log S), space = O(1)  S = sum of weights
+public int shipWithinDays(int[] weights, int days) {
+    int l = 0, r = 0;
+    for (int w : weights) { l = Math.max(l, w); r += w; }
+    while (l < r) {
+        int mid = (l + r) / 2;
+        if (canShip(weights, days, mid)) r = mid;
+        else l = mid + 1;
+    }
+    return l;
+}
+private boolean canShip(int[] weights, int days, int cap) {
+    int daysNeeded = 1, currLoad = 0;
+    for (int w : weights) {
+        if (currLoad + w > cap) { daysNeeded++; currLoad = 0; }
+        currLoad += w;
+    }
+    return daysNeeded <= days;
+}
+```
+
+### 2-6) Find Peak Element (LC 162) — Binary Search on Peak
+> If mid < mid+1, peak is to the right; otherwise peak is to the left or at mid.
+
+```java
+// LC 162 - Find Peak Element
+// IDEA: Binary search — move toward the rising side
+// time = O(log N), space = O(1)
+public int findPeakElement(int[] nums) {
+    int l = 0, r = nums.length - 1;
+    while (l < r) {
+        int mid = (l + r) / 2;
+        if (nums[mid] < nums[mid + 1]) l = mid + 1;
+        else r = mid;
+    }
+    return l;
+}
+```
+
+### 2-7) Split Array Largest Sum (LC 410) — Binary Search on Answer
+> Binary search on the maximum subarray sum; check if array can be split into m parts.
+
+```java
+// LC 410 - Split Array Largest Sum
+// IDEA: Binary search on answer [max, sum]; check if k splits are sufficient
+// time = O(N log S), space = O(1)
+public int splitArray(int[] nums, int k) {
+    int l = 0, r = 0;
+    for (int n : nums) { l = Math.max(l, n); r += n; }
+    while (l < r) {
+        int mid = (l + r) / 2;
+        if (canSplit(nums, k, mid)) r = mid;
+        else l = mid + 1;
+    }
+    return l;
+}
+private boolean canSplit(int[] nums, int k, int maxSum) {
+    int parts = 1, curr = 0;
+    for (int n : nums) {
+        if (curr + n > maxSum) { parts++; curr = 0; }
+        curr += n;
+    }
+    return parts <= k;
+}
+```
+
+### 2-8) First Bad Version (LC 278) — Classic Binary Search
+> Find the leftmost bad version without calling the API more than necessary.
+
+```java
+// LC 278 - First Bad Version
+// IDEA: Binary search for left boundary — first bad version
+// time = O(log N), space = O(1)
+public int firstBadVersion(int n) {
+    int l = 1, r = n;
+    while (l < r) {
+        int mid = l + (r - l) / 2;
+        if (isBadVersion(mid)) r = mid;
+        else l = mid + 1;
+    }
+    return l;
+}
+```
+
+### 2-9) Median of Two Sorted Arrays (LC 4) — Binary Search on Partition
+> Binary search on partition of smaller array to find median in O(log(min(M,N))).
+
+```java
+// LC 4 - Median of Two Sorted Arrays
+// IDEA: Binary search partition on smaller array
+// time = O(log(min(M,N))), space = O(1)
+public double findMedianSortedArrays(int[] nums1, int[] nums2) {
+    if (nums1.length > nums2.length) return findMedianSortedArrays(nums2, nums1);
+    int m = nums1.length, n = nums2.length;
+    int l = 0, r = m;
+    while (l <= r) {
+        int partX = (l + r) / 2;
+        int partY = (m + n + 1) / 2 - partX;
+        int maxLeftX  = partX == 0 ? Integer.MIN_VALUE : nums1[partX-1];
+        int minRightX = partX == m ? Integer.MAX_VALUE : nums1[partX];
+        int maxLeftY  = partY == 0 ? Integer.MIN_VALUE : nums2[partY-1];
+        int minRightY = partY == n ? Integer.MAX_VALUE : nums2[partY];
+        if (maxLeftX <= minRightY && maxLeftY <= minRightX) {
+            if ((m + n) % 2 == 0)
+                return (Math.max(maxLeftX, maxLeftY) + Math.min(minRightX, minRightY)) / 2.0;
+            else
+                return Math.max(maxLeftX, maxLeftY);
+        } else if (maxLeftX > minRightY) r = partX - 1;
+        else l = partX + 1;
+    }
+    return 0;
+}
+```
+
+### 2-10) Time Based Key-Value Store (LC 981) — Binary Search on Timestamps
+> For each key, binary search on sorted timestamps to find the largest <= given time.
+
+```java
+// LC 981 - Time Based Key-Value Store
+// IDEA: HashMap of key -> sorted list of (timestamp, value); binary search on query
+// time = O(log N) per get, O(1) per set, space = O(N)
+class TimeMap {
+    Map<String, List<int[]>> map = new HashMap<>(); // val stored as [timestamp, valueIndex]
+    Map<String, List<String>> vals = new HashMap<>();
+    public void set(String key, String value, int timestamp) {
+        map.computeIfAbsent(key, k -> new ArrayList<>()).add(new int[]{timestamp});
+        vals.computeIfAbsent(key, k -> new ArrayList<>()).add(value);
+    }
+    public String get(String key, int timestamp) {
+        if (!map.containsKey(key)) return "";
+        List<int[]> times = map.get(key);
+        int l = 0, r = times.size() - 1, idx = -1;
+        while (l <= r) {
+            int mid = (l + r) / 2;
+            if (times.get(mid)[0] <= timestamp) { idx = mid; l = mid + 1; }
+            else r = mid - 1;
+        }
+        return idx == -1 ? "" : vals.get(key).get(idx);
+    }
+}
+```
+
+### 2-11) Minimum Number of Days to Make m Bouquets (LC 1482) — Binary Search on Days
+> Binary search on the number of days; check if m bouquets of k adjacent flowers can be made.
+
+```java
+// LC 1482 - Minimum Number of Days to Make m Bouquets
+// IDEA: Binary search on days [min, max]; check feasibility
+// time = O(N log D), space = O(1)
+public int minDays(int[] bloomDay, int m, int k) {
+    if ((long) m * k > bloomDay.length) return -1;
+    int l = 1, r = 0;
+    for (int d : bloomDay) r = Math.max(r, d);
+    while (l < r) {
+        int mid = (l + r) / 2;
+        if (canMake(bloomDay, m, k, mid)) r = mid;
+        else l = mid + 1;
+    }
+    return l;
+}
+private boolean canMake(int[] bloomDay, int m, int k, int day) {
+    int bouquets = 0, consecutive = 0;
+    for (int d : bloomDay) {
+        if (d <= day) { if (++consecutive == k) { bouquets++; consecutive = 0; } }
+        else consecutive = 0;
+    }
+    return bouquets >= m;
+}
+```
+
+### 2-12) Single Element in a Sorted Array (LC 540) — Binary Search
+> Pair pattern breaks after the single element; binary search on even indices.
+
+```java
+// LC 540 - Single Element in a Sorted Array
+// IDEA: Binary search — check if pair pattern holds at mid (even index)
+// time = O(log N), space = O(1)
+public int singleNonDuplicate(int[] nums) {
+    int l = 0, r = nums.length - 1;
+    while (l < r) {
+        int mid = (l + r) / 2;
+        if (mid % 2 == 1) mid--; // ensure mid is even
+        if (nums[mid] == nums[mid + 1]) l = mid + 2; // pair intact, single is to the right
+        else r = mid;                                  // pair broken, single is here or left
+    }
+    return nums[l];
+}
+```
