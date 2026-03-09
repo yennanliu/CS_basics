@@ -115,7 +115,9 @@ public class Workspace22 {
         int[] dp2 = new int[nums.length]; // ???
 
         dp[0] = nums[0]; // ??
-        dp[1] = 0;
+        //dp[1] = 0;
+        // NOTE !!! below
+        dp[1] = Math.max(nums[0], nums[1]);
 
         dp2[0] = 0;
         dp2[1] = nums[1];
