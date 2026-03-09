@@ -11,7 +11,8 @@
 	- stack.md (OK)
 	- priority_queue.md (OK)
 	- array.md (OK)
-	- matrix.md (todo)
+	- matrix.md (OK)
+	- 2_pointers.md (todo)
 - to review
 - needcode `250` - similar LC by AI
     - Arrays & Hashing

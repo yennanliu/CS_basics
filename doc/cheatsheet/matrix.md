@@ -790,3 +790,267 @@ first_col_zero = any(matrix[i][0] == 0 for i in range(rows))
 - **Practice Platforms**: LeetCode matrix problems by difficulty
 - **Mathematical Background**: Linear algebra for advanced matrix operations
 - **Algorithm Analysis**: Big-O notation for matrix algorithm complexity
+
+
+## LC Examples
+
+### 2-1) Spiral Matrix (LC 54) — Pattern: Traversal
+> Traverse matrix in spiral order using boundary pointers.
+
+```python
+# LC 54 - Spiral Matrix
+# V0
+# IDEA : 4 cases: right, down, left, up + boundary condition
+class Solution(object):
+    def spiralOrder(self, matrix):
+        if not matrix:
+            return []
+        res = []
+        left, right = 0, len(matrix[0]) - 1
+        top, bottom = 0, len(matrix) - 1
+        while left <= right and top <= bottom:
+            # right
+            for j in range(left, right + 1):
+                res.append(matrix[top][j])
+            # down
+            for i in range(top + 1, bottom):
+                res.append(matrix[i][right])
+            # left
+            for j in range(left, right + 1)[::-1]:
+                if top < bottom:
+                    res.append(matrix[bottom][j])
+            # up
+            for i in range(top + 1, bottom)[::-1]:
+                if left < right:
+                    res.append(matrix[i][left])
+            left += 1
+            right -= 1
+            top += 1
+            bottom -= 1
+        return res
+```
+
+---
+
+### 2-2) Rotate Image (LC 48) — Pattern: Transformation
+> Rotate matrix 90° clockwise in-place: Transpose then reverse each row.
+
+```python
+# LC 48 - Rotate Image
+# V0
+# IDEA : TRANSPOSE (i,j -> j,i) -> REVERSE each row
+class Solution(object):
+    def rotate(self, matrix):
+        if not matrix:
+            return
+        l = len(matrix)
+        w = len(matrix[0])
+        # Step 1: Transpose — swap matrix[i][j] with matrix[j][i]
+        for i in range(l):
+            for j in range(i + 1, w):
+                matrix[i][j], matrix[j][i] = matrix[j][i], matrix[i][j]
+        # Step 2: Reverse each row
+        for i in range(l):
+            matrix[i] = matrix[i][::-1]
+        return matrix
+```
+
+---
+
+### 2-3) Search a 2D Matrix (LC 74) — Pattern: Search (Binary Search)
+> Treat the fully sorted matrix as a 1D array and binary search.
+
+```python
+# LC 74 - Search a 2D Matrix
+# V0
+# IDEA : BINARY SEARCH — treat matrix as flat sorted array
+# Time: O(log(m*n)), Space: O(1)
+class Solution(object):
+    def searchMatrix(self, matrix, target):
+        if not matrix:
+            return False
+        m, n = len(matrix), len(matrix[0])
+        left, right = 0, m * n - 1
+        while left <= right:
+            mid = (left + right) // 2
+            val = matrix[mid // n][mid % n]
+            if val == target:
+                return True
+            elif val < target:
+                left = mid + 1
+            else:
+                right = mid - 1
+        return False
+```
+
+---
+
+### 2-4) Search a 2D Matrix II (LC 240) — Pattern: Search (Elimination)
+> Start from top-right corner; eliminate a row or column each step.
+
+```python
+# LC 240 - Search a 2D Matrix II
+# V0
+# IDEA : Start from top-right, eliminate row/col each iteration
+# Time: O(m+n), Space: O(1)
+class Solution:
+    def searchMatrix(self, matrix, target):
+        if not matrix or not matrix[0]:
+            return False
+        row, col = 0, len(matrix[0]) - 1
+        while row < len(matrix) and col >= 0:
+            if matrix[row][col] == target:
+                return True
+            elif matrix[row][col] < target:
+                row += 1      # eliminate current row
+            else:
+                col -= 1      # eliminate current column
+        return False
+```
+
+---
+
+### 2-5) Set Matrix Zeroes (LC 73) — Pattern: Modification
+> Mark which rows/columns need zeroing, then apply in two passes.
+
+```python
+# LC 73 - Set Matrix Zeroes
+# V0
+# IDEA : collect zero positions first, then set rows/cols to 0
+# Time: O(m*n), Space: O(m+n)
+class Solution(object):
+    def setZeroes(self, matrix):
+        if not matrix:
+            return
+        l, w = len(matrix), len(matrix[0])
+        x_zeros = set()  # columns to zero
+        y_zeros = set()  # rows to zero
+        for i in range(l):
+            for j in range(w):
+                if matrix[i][j] == 0:
+                    x_zeros.add(j)
+                    y_zeros.add(i)
+        # zero entire rows
+        for i in y_zeros:
+            matrix[i] = [0] * w
+        # zero entire columns
+        for j in x_zeros:
+            for i in range(l):
+                matrix[i][j] = 0
+```
+
+---
+
+### 2-6) Number of Islands (LC 200) — Pattern: DFS/BFS on Matrix
+> Count connected components of '1's by DFS-sinking each island.
+
+```python
+# LC 200 - Number of Islands
+# V0
+# IDEA : DFS — sink each visited land cell to '0'
+# Time: O(m*n), Space: O(m*n) recursion stack
+class Solution(object):
+    def numIslands(self, grid):
+        def dfs(grid, x, y):
+            if grid[y][x] == "0":
+                return
+            grid[y][x] = "0"
+            for dx, dy in [(0,1),(0,-1),(1,0),(-1,0)]:
+                nx, ny = x + dx, y + dy
+                if 0 <= nx < w and 0 <= ny < l and grid[ny][nx] == "1":
+                    dfs(grid, nx, ny)
+        if not grid:
+            return 0
+        l, w = len(grid), len(grid[0])
+        count = 0
+        for i in range(l):
+            for j in range(w):
+                if grid[i][j] == "1":
+                    count += 1
+                    dfs(grid, j, i)
+        return count
+```
+
+---
+
+### 2-7) Minimum Path Sum (LC 64) — Pattern: Matrix Path DP
+> DP where each cell accumulates the minimum cost to reach it.
+
+```python
+# LC 64 - Minimum Path Sum
+# V0
+# IDEA : DP — dp[i][j] = grid[i][j] + min(dp[i-1][j], dp[i][j-1])
+# Time: O(m*n), Space: O(1) (modify grid in-place)
+class Solution:
+    def minPathSum(self, grid):
+        if not grid:
+            return 0
+        m, n = len(grid), len(grid[0])
+        # fill first column
+        for i in range(1, m):
+            grid[i][0] += grid[i-1][0]
+        # fill first row
+        for j in range(1, n):
+            grid[0][j] += grid[0][j-1]
+        # fill rest
+        for i in range(1, m):
+            for j in range(1, n):
+                grid[i][j] += min(grid[i-1][j], grid[i][j-1])
+        return grid[-1][-1]
+```
+
+---
+
+### 2-8) Maximal Square (LC 221) — Pattern: 2D DP
+> `dp[i][j]` = side length of largest square with bottom-right at (i,j).
+
+```python
+# LC 221 - Maximal Square
+# V0
+# IDEA : DP — dp[i][j] = min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1]) + 1
+# Time: O(m*n), Space: O(m*n)
+class Solution:
+    def maximalSquare(self, matrix):
+        if not matrix:
+            return 0
+        m, n = len(matrix), len(matrix[0])
+        dp = [[0] * n for _ in range(m)]
+        ans = 0
+        for i in range(m):
+            for j in range(n):
+                dp[i][j] = int(matrix[i][j])
+                if i and j and dp[i][j]:
+                    dp[i][j] = min(dp[i-1][j-1], dp[i][j-1], dp[i-1][j]) + 1
+                ans = max(ans, dp[i][j])
+        return ans * ans
+```
+
+---
+
+### 2-9) Game of Life (LC 289) — Pattern: In-Place State Transition
+> Simulate next state for all cells simultaneously using 8-neighbor rules.
+
+```python
+# LC 289 - Game of Life
+# V0
+# IDEA : copy board, apply all 4 rules using 8-directional neighbors
+# Time: O(m*n), Space: O(m*n)
+class Solution:
+    def gameOfLife(self, board) -> None:
+        neighbors = [(1,0),(1,-1),(0,-1),(-1,-1),(-1,0),(-1,1),(0,1),(1,1)]
+        rows, cols = len(board), len(board[0])
+        copy_board = [[board[r][c] for c in range(cols)] for r in range(rows)]
+        for row in range(rows):
+            for col in range(cols):
+                live_neighbors = sum(
+                    copy_board[row + dr][col + dc]
+                    for dr, dc in neighbors
+                    if 0 <= row + dr < rows and 0 <= col + dc < cols
+                )
+                # Rule 1 & 3: live cell dies
+                if copy_board[row][col] == 1 and (live_neighbors < 2 or live_neighbors > 3):
+                    board[row][col] = 0
+                # Rule 4: dead cell becomes alive
+                elif copy_board[row][col] == 0 and live_neighbors == 3:
+                    board[row][col] = 1
+```
