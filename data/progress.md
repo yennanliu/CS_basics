@@ -148,7 +148,6 @@
 			- 979
 			- 156
 		- gemini
-			- 652
 			- 1448
 			- 894
 	- Heap / Priority Queue

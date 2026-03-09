@@ -212,5 +212,81 @@ public class Workspace22 {
     }
 
 
+    // LC 652
+    // 11.02 - 12 am
+    /**
+     *  ->  all duplicate subtrees.
+     *
+     *  Two trees are duplicate if they
+     *  have the same structure with the same node values.
+     *
+     *  ----------------
+     *
+     *   IDEA 1) DFS + POST order traverse
+     *
+     *
+     *  ----------------
+     *
+     *
+     */
+    // IDEA 1) DFS + POST order traverse
+    List<TreeNode> res = new ArrayList<>();
+    // ???
+    // { path : cnt }
+    // /??
+    // v2: { path: [node_1, node_2 ,.. ] }
+    Map<String, List<TreeNode>> pathMap = new HashMap<>();
+    public List<TreeNode> findDuplicateSubtrees(TreeNode root) {
+        // edge
+        if(root == null){
+            // return null;
+            return res;
+        }
+
+        getDuplicatedNode(root, new StringBuilder());
+
+        for(String p: pathMap.keySet()){
+            if(pathMap.get(p).size() > 1){
+                for(TreeNode t: pathMap.get(p)){
+                    res.add(t);
+                }
+            }
+        }
+
+        return res;
+    }
+
+    private void getDuplicatedNode(TreeNode root, StringBuilder sb){
+        if(root == null){
+           // return null;
+            return;
+        }
+
+//        TreeNode _left = getDuplicatedNode(root.left, sb);
+//        TreeNode _right = getDuplicatedNode(root.right, sb);
+
+        getDuplicatedNode(root.left, sb);
+        getDuplicatedNode(root.right, sb);
+
+        // ???
+        sb.append(root.val);
+        // ???
+        List<TreeNode> list = new ArrayList<>();
+        if(pathMap.containsKey(sb.toString())){
+            list = pathMap.get(sb.toString());
+        }
+
+        list.add(root);
+        pathMap.put(sb.toString(), list);
+        // undo ??? (backtrack)
+        sb.deleteCharAt(sb.length() - 1); // ???
+
+
+        // ???
+       // return root;
+    }
+
+
+
 
 }
