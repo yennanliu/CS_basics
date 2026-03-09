@@ -569,3 +569,100 @@ After:   A → E
 - Need shortest paths (use Dijkstra/Floyd-Warshall)
 - Directed graph strongly connected components (use Tarjan's)
 - Small graphs where simple adjacency checks work
+
+## LC Examples
+
+### 2-1) Redundant Connection (LC 684) — Union-Find Cycle Detection
+> Add edges one by one; if two nodes are already connected, this edge is redundant.
+
+```java
+// LC 684 - Redundant Connection
+// IDEA: Union-Find — detect cycle; redundant edge connects already-connected nodes
+// time = O(N * α(N)), space = O(N)
+public int[] findRedundantConnection(int[][] edges) {
+    int n = edges.length;
+    int[] parent = new int[n + 1];
+    for (int i = 0; i <= n; i++) parent[i] = i;
+    for (int[] edge : edges) {
+        if (find(parent, edge[0]) == find(parent, edge[1])) return edge;
+        union(parent, edge[0], edge[1]);
+    }
+    return new int[]{};
+}
+private int find(int[] parent, int x) {
+    if (parent[x] != x) parent[x] = find(parent, parent[x]); // path compression
+    return parent[x];
+}
+private void union(int[] parent, int x, int y) {
+    parent[find(parent, x)] = find(parent, y);
+}
+```
+
+### 2-2) Number of Provinces (LC 547) — Count Connected Components
+> Count the number of distinct roots after unioning all direct friendships.
+
+```java
+// LC 547 - Number of Provinces
+// IDEA: Union-Find — count distinct components (roots)
+// time = O(N^2 * α(N)), space = O(N)
+public int findCircleNum(int[][] isConnected) {
+    int n = isConnected.length;
+    int[] parent = new int[n];
+    for (int i = 0; i < n; i++) parent[i] = i;
+    for (int i = 0; i < n; i++)
+        for (int j = i + 1; j < n; j++)
+            if (isConnected[i][j] == 1) union(parent, i, j);
+    int count = 0;
+    for (int i = 0; i < n; i++) if (find(parent, i) == i) count++;
+    return count;
+}
+private int find(int[] parent, int x) {
+    if (parent[x] != x) parent[x] = find(parent, parent[x]);
+    return parent[x];
+}
+private void union(int[] parent, int x, int y) {
+    parent[find(parent, x)] = find(parent, y);
+}
+```
+
+### 2-3) Accounts Merge (LC 721) — Union-Find on Emails
+> Union emails belonging to the same person; group by root; sort and format.
+
+```java
+// LC 721 - Accounts Merge
+// IDEA: Union-Find — union all emails in same account; group by root
+// time = O(N * M * α(N*M)), space = O(N*M)
+public List<List<String>> accountsMerge(List<List<String>> accounts) {
+    Map<String, String> parent = new HashMap<>();
+    Map<String, String> emailToName = new HashMap<>();
+    // init
+    for (List<String> acc : accounts)
+        for (int i = 1; i < acc.size(); i++) {
+            parent.put(acc.get(i), acc.get(i));
+            emailToName.put(acc.get(i), acc.get(0));
+        }
+    // union
+    for (List<String> acc : accounts)
+        for (int i = 2; i < acc.size(); i++)
+            union(parent, acc.get(1), acc.get(i));
+    // group by root
+    Map<String, TreeSet<String>> groups = new HashMap<>();
+    for (String email : parent.keySet())
+        groups.computeIfAbsent(find(parent, email), k -> new TreeSet<>()).add(email);
+    List<List<String>> result = new ArrayList<>();
+    for (Map.Entry<String, TreeSet<String>> entry : groups.entrySet()) {
+        List<String> list = new ArrayList<>();
+        list.add(emailToName.get(entry.getKey()));
+        list.addAll(entry.getValue());
+        result.add(list);
+    }
+    return result;
+}
+private String find(Map<String, String> parent, String x) {
+    if (!parent.get(x).equals(x)) parent.put(x, find(parent, parent.get(x)));
+    return parent.get(x);
+}
+private void union(Map<String, String> parent, String x, String y) {
+    parent.put(find(parent, x), find(parent, y));
+}
+```

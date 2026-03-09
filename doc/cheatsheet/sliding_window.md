@@ -1578,3 +1578,75 @@ count += right - left + 1  # All subarrays ending at 'right'
 - **Hash Table**: For frequency tracking
 - **Deque**: For sliding window maximum/minimum
 - **Prefix Sum**: For sum-based sliding window problems
+
+## LC Examples
+
+### 2-1) Max Consecutive Ones III (LC 1004) — Variable Window (Max Length)
+> Expand right, shrink left when zero count exceeds k.
+
+```java
+// LC 1004 - Max Consecutive Ones III
+// IDEA: Sliding window — track zero count, shrink when zeroCnt > k
+// time = O(N), space = O(1)
+public int longestOnes(int[] nums, int k) {
+    int l = 0, zeroCnt = 0, ans = 0;
+    for (int r = 0; r < nums.length; r++) {
+        if (nums[r] == 0) zeroCnt++;
+        while (zeroCnt > k) {
+            if (nums[l] == 0) zeroCnt--;
+            l++;
+        }
+        ans = Math.max(ans, r - l + 1);
+    }
+    return ans;
+}
+```
+
+### 2-2) Longest Substring Without Repeating Characters (LC 3) — Variable Window
+> Shrink left pointer whenever a duplicate character enters the window.
+
+```java
+// LC 3 - Longest Substring Without Repeating Characters
+// IDEA: Sliding window with HashSet to track characters in window
+// time = O(N), space = O(min(N, charset))
+public int lengthOfLongestSubstring(String s) {
+    Set<Character> set = new HashSet<>();
+    int l = 0, ans = 0;
+    for (int r = 0; r < s.length(); r++) {
+        while (set.contains(s.charAt(r))) {
+            set.remove(s.charAt(l++));
+        }
+        set.add(s.charAt(r));
+        ans = Math.max(ans, r - l + 1);
+    }
+    return ans;
+}
+```
+
+### 2-3) Minimum Window Substring (LC 76) — Variable Window (Min Length)
+> Expand to include all required chars, then shrink to minimize window.
+
+```java
+// LC 76 - Minimum Window Substring
+// IDEA: Sliding window with frequency maps; shrink when window is valid
+// time = O(N + M), space = O(N + M)
+public String minWindow(String s, String t) {
+    Map<Character, Integer> need = new HashMap<>(), window = new HashMap<>();
+    for (char c : t.toCharArray()) need.merge(c, 1, Integer::sum);
+    int l = 0, valid = 0, start = 0, minLen = Integer.MAX_VALUE;
+    for (int r = 0; r < s.length(); r++) {
+        char c = s.charAt(r);
+        window.merge(c, 1, Integer::sum);
+        if (need.containsKey(c) && window.get(c).equals(need.get(c))) valid++;
+        while (valid == need.size()) {
+            if (r - l + 1 < minLen) { minLen = r - l + 1; start = l; }
+            char d = s.charAt(l++);
+            if (need.containsKey(d)) {
+                if (window.get(d).equals(need.get(d))) valid--;
+                window.merge(d, -1, Integer::sum);
+            }
+        }
+    }
+    return minLen == Integer.MAX_VALUE ? "" : s.substring(start, start + minLen);
+}
+```

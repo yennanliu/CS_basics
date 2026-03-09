@@ -2111,3 +2111,94 @@ class TreeNode {
     TreeNode(int x) { val = x; }
 }
 ```
+
+## LC Examples
+
+### 2-1) Binary Tree Level Order Traversal (LC 102) — BFS
+> Use a queue; process all nodes at each level before advancing.
+
+```java
+// LC 102 - Binary Tree Level Order Traversal
+// IDEA: BFS — process level by level using queue size
+// time = O(N), space = O(N)
+public List<List<Integer>> levelOrder(TreeNode root) {
+    List<List<Integer>> result = new ArrayList<>();
+    if (root == null) return result;
+    Queue<TreeNode> queue = new LinkedList<>();
+    queue.offer(root);
+    while (!queue.isEmpty()) {
+        int size = queue.size();
+        List<Integer> level = new ArrayList<>();
+        for (int i = 0; i < size; i++) {
+            TreeNode node = queue.poll();
+            level.add(node.val);
+            if (node.left != null) queue.offer(node.left);
+            if (node.right != null) queue.offer(node.right);
+        }
+        result.add(level);
+    }
+    return result;
+}
+```
+
+### 2-2) Construct Binary Tree from Preorder and Inorder (LC 105) — Recursion
+> Root is preorder[0]; find root in inorder to split left/right subtrees.
+
+```java
+// LC 105 - Construct Binary Tree from Preorder and Inorder Traversal
+// IDEA: Recursion — preorder gives root, inorder gives left/right split
+// time = O(N), space = O(N)
+public TreeNode buildTree(int[] preorder, int[] inorder) {
+    Map<Integer, Integer> inMap = new HashMap<>();
+    for (int i = 0; i < inorder.length; i++) inMap.put(inorder[i], i);
+    return build(preorder, 0, preorder.length - 1, inorder, 0, inorder.length - 1, inMap);
+}
+private TreeNode build(int[] pre, int preL, int preR, int[] in, int inL, int inR, Map<Integer, Integer> map) {
+    if (preL > preR) return null;
+    TreeNode root = new TreeNode(pre[preL]);
+    int inRoot = map.get(pre[preL]);
+    int leftSize = inRoot - inL;
+    root.left = build(pre, preL + 1, preL + leftSize, in, inL, inRoot - 1, map);
+    root.right = build(pre, preL + leftSize + 1, preR, in, inRoot + 1, inR, map);
+    return root;
+}
+```
+
+### 2-3) Serialize and Deserialize Binary Tree (LC 297) — BFS / DFS
+> Encode tree as level-order string; decode by reconstructing node by node.
+
+```java
+// LC 297 - Serialize and Deserialize Binary Tree
+// IDEA: Level-order BFS for serialize; reconstruct with queue for deserialize
+// time = O(N), space = O(N)
+public String serialize(TreeNode root) {
+    if (root == null) return "";
+    StringBuilder sb = new StringBuilder();
+    Queue<TreeNode> q = new LinkedList<>();
+    q.offer(root);
+    while (!q.isEmpty()) {
+        TreeNode node = q.poll();
+        if (node == null) { sb.append("null,"); continue; }
+        sb.append(node.val).append(",");
+        q.offer(node.left);
+        q.offer(node.right);
+    }
+    return sb.toString();
+}
+public TreeNode deserialize(String data) {
+    if (data.isEmpty()) return null;
+    String[] vals = data.split(",");
+    TreeNode root = new TreeNode(Integer.parseInt(vals[0]));
+    Queue<TreeNode> q = new LinkedList<>();
+    q.offer(root);
+    int i = 1;
+    while (!q.isEmpty() && i < vals.length) {
+        TreeNode node = q.poll();
+        if (!vals[i].equals("null")) { node.left = new TreeNode(Integer.parseInt(vals[i])); q.offer(node.left); }
+        i++;
+        if (i < vals.length && !vals[i].equals("null")) { node.right = new TreeNode(Integer.parseInt(vals[i])); q.offer(node.right); }
+        i++;
+    }
+    return root;
+}
+```

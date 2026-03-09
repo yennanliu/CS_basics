@@ -1980,3 +1980,82 @@ class Solution(object):
         # The k-th missing number is between nums[l] and nums[r]
         return nums[l] + k - missing_count(l)
 ```
+
+## LC Examples
+
+### 2-1) Find First and Last Position (LC 34) — Left/Right Binary Search
+> Two binary searches: one for left boundary, one for right boundary.
+
+```java
+// LC 34 - Find First and Last Position of Element in Sorted Array
+// IDEA: Binary search for left bound + right bound separately
+// time = O(log N), space = O(1)
+public int[] searchRange(int[] nums, int target) {
+    return new int[]{leftBound(nums, target), rightBound(nums, target)};
+}
+private int leftBound(int[] nums, int target) {
+    int l = 0, r = nums.length - 1;
+    while (l < r) {
+        int mid = (l + r) / 2;
+        if (nums[mid] < target) l = mid + 1;
+        else r = mid;
+    }
+    return nums[l] == target ? l : -1;
+}
+private int rightBound(int[] nums, int target) {
+    int l = 0, r = nums.length - 1;
+    while (l < r) {
+        int mid = (l + r + 1) / 2;
+        if (nums[mid] > target) r = mid - 1;
+        else l = mid;
+    }
+    return nums[l] == target ? l : -1;
+}
+```
+
+### 2-2) Search in Rotated Sorted Array (LC 33) — Binary Search on Rotated Array
+> Determine which half is sorted, then decide which half contains the target.
+
+```java
+// LC 33 - Search in Rotated Sorted Array
+// IDEA: Binary search — identify sorted half, narrow range
+// time = O(log N), space = O(1)
+public int search(int[] nums, int target) {
+    int l = 0, r = nums.length - 1;
+    while (l <= r) {
+        int mid = (l + r) / 2;
+        if (nums[mid] == target) return mid;
+        if (nums[l] <= nums[mid]) {           // left half is sorted
+            if (nums[l] <= target && target < nums[mid]) r = mid - 1;
+            else l = mid + 1;
+        } else {                               // right half is sorted
+            if (nums[mid] < target && target <= nums[r]) l = mid + 1;
+            else r = mid - 1;
+        }
+    }
+    return -1;
+}
+```
+
+### 2-3) Koko Eating Bananas (LC 875) — Binary Search on Answer
+> Binary search on the eating speed; check if all bananas can be eaten in H hours.
+
+```java
+// LC 875 - Koko Eating Bananas
+// IDEA: Binary search on answer space [1, max(piles)]
+// time = O(N log M), space = O(1)  M = max pile size
+public int minEatingSpeed(int[] piles, int h) {
+    int l = 1, r = Arrays.stream(piles).max().getAsInt();
+    while (l < r) {
+        int mid = (l + r) / 2;
+        if (canFinish(piles, mid, h)) r = mid;
+        else l = mid + 1;
+    }
+    return l;
+}
+private boolean canFinish(int[] piles, int speed, int h) {
+    int hours = 0;
+    for (int pile : piles) hours += (pile + speed - 1) / speed;
+    return hours <= h;
+}
+```

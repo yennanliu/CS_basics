@@ -1141,3 +1141,108 @@ Calculate shortest distance from each cell to ANY source cell in a grid.
 | Hard | LC 675 | Sort + Repeated BFS (sequential targets) | Pattern 6 (Sort + Repeated BFS) |
 | Hard | LC 864 | BFS with state (key collection) | Pattern 3 + State |
 | Hard | LC 1293 | BFS with state (obstacle elimination) | Pattern 3 + State |
+
+## LC Examples
+
+### 2-1) Rotting Oranges (LC 994) — Multi-source BFS
+> Spread rot from all initial rotten oranges simultaneously level by level.
+
+```java
+// LC 994 - Rotting Oranges
+// IDEA: Multi-source BFS
+// time = O(M*N), space = O(M*N)
+public int orangesRotting(int[][] grid) {
+    int rows = grid.length, cols = grid[0].length;
+    Queue<int[]> queue = new LinkedList<>();
+    int fresh = 0;
+    for (int r = 0; r < rows; r++)
+        for (int c = 0; c < cols; c++) {
+            if (grid[r][c] == 2) queue.offer(new int[]{r, c});
+            else if (grid[r][c] == 1) fresh++;
+        }
+    if (fresh == 0) return 0;
+    int[][] dirs = {{1,0},{-1,0},{0,1},{0,-1}};
+    int minutes = 0;
+    while (!queue.isEmpty() && fresh > 0) {
+        minutes++;
+        int size = queue.size();
+        for (int i = 0; i < size; i++) {
+            int[] cell = queue.poll();
+            for (int[] d : dirs) {
+                int nr = cell[0] + d[0], nc = cell[1] + d[1];
+                if (nr >= 0 && nr < rows && nc >= 0 && nc < cols && grid[nr][nc] == 1) {
+                    grid[nr][nc] = 2;
+                    fresh--;
+                    queue.offer(new int[]{nr, nc});
+                }
+            }
+        }
+    }
+    return fresh == 0 ? minutes : -1;
+}
+```
+
+### 2-2) Word Ladder (LC 127) — BFS Shortest Transformation
+> BFS on word graph; each edge connects words differing by one letter.
+
+```java
+// LC 127 - Word Ladder
+// IDEA: BFS level by level on word transformations
+// time = O(M^2 * N), space = O(M^2 * N)  M=word length, N=wordList size
+public int ladderLength(String beginWord, String endWord, List<String> wordList) {
+    Set<String> wordSet = new HashSet<>(wordList);
+    if (!wordSet.contains(endWord)) return 0;
+    Queue<String> queue = new LinkedList<>();
+    queue.offer(beginWord);
+    int steps = 1;
+    while (!queue.isEmpty()) {
+        int size = queue.size();
+        for (int i = 0; i < size; i++) {
+            String word = queue.poll();
+            char[] chars = word.toCharArray();
+            for (int j = 0; j < chars.length; j++) {
+                char orig = chars[j];
+                for (char c = 'a'; c <= 'z'; c++) {
+                    chars[j] = c;
+                    String next = new String(chars);
+                    if (next.equals(endWord)) return steps + 1;
+                    if (wordSet.remove(next)) queue.offer(next);
+                }
+                chars[j] = orig;
+            }
+        }
+        steps++;
+    }
+    return 0;
+}
+```
+
+### 2-3) Shortest Path in Binary Matrix (LC 1091) — BFS Shortest Path
+> BFS from top-left to bottom-right through 0-cells (8-directional).
+
+```java
+// LC 1091 - Shortest Path in Binary Matrix
+// IDEA: BFS — shortest path in unweighted graph
+// time = O(N^2), space = O(N^2)
+public int shortestPathBinaryMatrix(int[][] grid) {
+    int n = grid.length;
+    if (grid[0][0] == 1 || grid[n-1][n-1] == 1) return -1;
+    int[][] dirs = {{0,1},{1,0},{0,-1},{-1,0},{1,1},{1,-1},{-1,1},{-1,-1}};
+    Queue<int[]> queue = new LinkedList<>();
+    queue.offer(new int[]{0, 0, 1});
+    grid[0][0] = 1; // mark visited
+    while (!queue.isEmpty()) {
+        int[] curr = queue.poll();
+        int r = curr[0], c = curr[1], dist = curr[2];
+        if (r == n-1 && c == n-1) return dist;
+        for (int[] d : dirs) {
+            int nr = r + d[0], nc = c + d[1];
+            if (nr >= 0 && nr < n && nc >= 0 && nc < n && grid[nr][nc] == 0) {
+                grid[nr][nc] = 1;
+                queue.offer(new int[]{nr, nc, dist + 1});
+            }
+        }
+    }
+    return -1;
+}
+```

@@ -607,4 +607,63 @@ def segment_tree_tips():
 - **Dynamic Programming**: Range DP with RMQ optimization
 - **Geometry**: 2D range queries, rectangle problems
 
+## LC Examples
+
+### 2-1) Range Sum Query - Mutable (LC 307) — Segment Tree
+> Segment tree supports O(log N) range sum query and point update.
+
+```java
+// LC 307 - Range Sum Query - Mutable
+// IDEA: Segment Tree — build, update, query in O(log N)
+// time = O(log N) per op, space = O(N)
+class NumArray {
+    int[] tree;
+    int n;
+    public NumArray(int[] nums) {
+        n = nums.length;
+        tree = new int[2 * n];
+        // build leaves
+        for (int i = 0; i < n; i++) tree[n + i] = nums[i];
+        // build internal nodes
+        for (int i = n - 1; i >= 1; i--) tree[i] = tree[2*i] + tree[2*i+1];
+    }
+    public void update(int i, int val) {
+        tree[n + i] = val;
+        for (int pos = (n + i) >> 1; pos >= 1; pos >>= 1)
+            tree[pos] = tree[2*pos] + tree[2*pos+1];
+    }
+    public int sumRange(int l, int r) {
+        int sum = 0;
+        for (l += n, r += n + 1; l < r; l >>= 1, r >>= 1) {
+            if ((l & 1) == 1) sum += tree[l++];
+            if ((r & 1) == 1) sum += tree[--r];
+        }
+        return sum;
+    }
+}
+```
+
+### 2-2) My Calendar I (LC 729) — Segment Tree / TreeMap for Interval Booking
+> Use TreeMap to check if new booking overlaps with any existing booking.
+
+```java
+// LC 729 - My Calendar I
+// IDEA: TreeMap — check overlap with floorKey and ceilingKey
+// time = O(log N) per booking, space = O(N)
+class MyCalendar {
+    TreeMap<Integer, Integer> calendar = new TreeMap<>();
+    public boolean book(int start, int end) {
+        Integer prev = calendar.floorKey(start);
+        Integer next = calendar.ceilingKey(start);
+        // No overlap if: prev booking ends before start, AND next booking starts after end
+        if ((prev == null || calendar.get(prev) <= start) &&
+            (next == null || next >= end)) {
+            calendar.put(start, end);
+            return true;
+        }
+        return false;
+    }
+}
+```
+
 This comprehensive guide covers the essential concepts and implementations for Segment Trees and Binary Indexed Trees, with practical examples from LeetCode problems.

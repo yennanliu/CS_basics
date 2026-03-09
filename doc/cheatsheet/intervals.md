@@ -602,3 +602,72 @@ def merge_intervals(intervals):
 - **Two Pointers**: Intersection and comparison problems
 - **Sweep Line**: Advanced problems like skyline and rectangles
 - **Segment Trees**: Range updates and queries on intervals
+
+## LC Examples
+
+### 2-1) Merge Intervals (LC 56) — Sort + Merge
+> Sort by start time; merge overlapping intervals by comparing with last merged.
+
+```java
+// LC 56 - Merge Intervals
+// IDEA: Sort by start, merge when current.start <= last.end
+// time = O(N log N), space = O(N)
+public int[][] merge(int[][] intervals) {
+    Arrays.sort(intervals, (a, b) -> a[0] - b[0]);
+    List<int[]> merged = new ArrayList<>();
+    for (int[] interval : intervals) {
+        if (merged.isEmpty() || merged.get(merged.size()-1)[1] < interval[0]) {
+            merged.add(interval);
+        } else {
+            merged.get(merged.size()-1)[1] = Math.max(merged.get(merged.size()-1)[1], interval[1]);
+        }
+    }
+    return merged.toArray(new int[merged.size()][]);
+}
+```
+
+### 2-2) Non-overlapping Intervals (LC 435) — Greedy Interval Scheduling
+> Sort by end time; greedily keep intervals that end earliest to minimize removals.
+
+```java
+// LC 435 - Non-overlapping Intervals
+// IDEA: Greedy — sort by end, count overlapping intervals to remove
+// time = O(N log N), space = O(1)
+public int eraseOverlapIntervals(int[][] intervals) {
+    Arrays.sort(intervals, (a, b) -> a[1] - b[1]);
+    int removals = 0, prevEnd = Integer.MIN_VALUE;
+    for (int[] interval : intervals) {
+        if (interval[0] < prevEnd) {
+            removals++;   // overlap: remove current (keep the one ending earlier)
+        } else {
+            prevEnd = interval[1];
+        }
+    }
+    return removals;
+}
+```
+
+### 2-3) Insert Interval (LC 57) — Linear Scan + Merge
+> Insert new interval and merge all overlapping intervals in one pass.
+
+```java
+// LC 57 - Insert Interval
+// IDEA: Three phases — add non-overlapping left, merge overlapping, add right
+// time = O(N), space = O(N)
+public int[][] insert(int[][] intervals, int[] newInterval) {
+    List<int[]> result = new ArrayList<>();
+    int i = 0, n = intervals.length;
+    // Phase 1: add all intervals that end before newInterval starts
+    while (i < n && intervals[i][1] < newInterval[0]) result.add(intervals[i++]);
+    // Phase 2: merge overlapping intervals
+    while (i < n && intervals[i][0] <= newInterval[1]) {
+        newInterval[0] = Math.min(newInterval[0], intervals[i][0]);
+        newInterval[1] = Math.max(newInterval[1], intervals[i][1]);
+        i++;
+    }
+    result.add(newInterval);
+    // Phase 3: add remaining intervals
+    while (i < n) result.add(intervals[i++]);
+    return result.toArray(new int[result.size()][]);
+}
+```

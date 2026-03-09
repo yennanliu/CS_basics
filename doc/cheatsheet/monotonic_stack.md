@@ -654,8 +654,79 @@ def largest_rectangle_area(heights):
 ### Related Topics
 
 - **Stack**: Monotonic stack is a specialized application of stack data structure
-- **Deque**: Monotonic deque for sliding window maximum problems  
+- **Deque**: Monotonic deque for sliding window maximum problems
 - **Two Pointers**: Alternative approach for some area calculation problems
 - **Dynamic Programming**: Some optimization problems combine DP with monotonic stacks
 - **Binary Search**: Finding boundaries in sorted structures
 - **Segment Tree**: Advanced queries on range maximum/minimum
+
+## LC Examples
+
+### 2-1) Daily Temperatures (LC 739) — Monotonic Decreasing Stack
+> Stack stores indices; pop when a warmer day is found.
+
+```java
+// LC 739 - Daily Temperatures
+// IDEA: Monotonic decreasing stack — pop when current > stack top
+// time = O(N), space = O(N)
+public int[] dailyTemperatures(int[] temperatures) {
+    int n = temperatures.length;
+    int[] ans = new int[n];
+    Deque<Integer> stack = new ArrayDeque<>(); // stores indices
+    for (int i = 0; i < n; i++) {
+        while (!stack.isEmpty() && temperatures[i] > temperatures[stack.peek()]) {
+            int idx = stack.pop();
+            ans[idx] = i - idx;
+        }
+        stack.push(i);
+    }
+    return ans;
+}
+```
+
+### 2-2) Largest Rectangle in Histogram (LC 84) — Monotonic Increasing Stack
+> Pop a bar when a shorter bar arrives; compute area using width from stack.
+
+```java
+// LC 84 - Largest Rectangle in Histogram
+// IDEA: Monotonic increasing stack — pop and compute area on shorter bar
+// time = O(N), space = O(N)
+public int largestRectangleArea(int[] heights) {
+    Deque<Integer> stack = new ArrayDeque<>();
+    int maxArea = 0;
+    for (int i = 0; i <= heights.length; i++) {
+        int h = (i == heights.length) ? 0 : heights[i];
+        while (!stack.isEmpty() && h < heights[stack.peek()]) {
+            int height = heights[stack.pop()];
+            int width = stack.isEmpty() ? i : i - stack.peek() - 1;
+            maxArea = Math.max(maxArea, height * width);
+        }
+        stack.push(i);
+    }
+    return maxArea;
+}
+```
+
+### 2-3) Next Greater Element I (LC 496) — Monotonic Stack + HashMap
+> Precompute next greater element for nums2, then answer queries for nums1.
+
+```java
+// LC 496 - Next Greater Element I
+// IDEA: Monotonic decreasing stack on nums2; store results in map
+// time = O(M + N), space = O(M)
+public int[] nextGreaterElement(int[] nums1, int[] nums2) {
+    Map<Integer, Integer> map = new HashMap<>(); // val -> next greater val
+    Deque<Integer> stack = new ArrayDeque<>();
+    for (int num : nums2) {
+        while (!stack.isEmpty() && num > stack.peek()) {
+            map.put(stack.pop(), num);
+        }
+        stack.push(num);
+    }
+    int[] ans = new int[nums1.length];
+    for (int i = 0; i < nums1.length; i++) {
+        ans[i] = map.getOrDefault(nums1[i], -1);
+    }
+    return ans;
+}
+```

@@ -172,6 +172,10 @@ public class Workspace22 {
             return 0;
         }
 
+        // NOTE !!!
+        // Base case: a prefix sum of 0 has occurred once (the empty path)
+        map.put(0, 1);
+
         nodeSumDfs(root, targetSum, 0);
         return nodeCnt;
     }
@@ -188,11 +192,15 @@ public class Workspace22 {
         curSum += root.val;
         // ???
 
-        if(root.val == targetSum){
-            nodeCnt += 1;
-        }
+        // cumsum_x - cumsum_y = target
+        // -> cumsum_x - target = cumsum_y
+//        if(root.val == targetSum){
+//            nodeCnt += 1;
+//        }
 
         // ???
+        // cumsum_x - cumsum_y = target
+        // -> cumsum_x - target = cumsum_y
         if(map.containsKey(targetSum - curSum)){
             nodeCnt += map.get(targetSum - curSum);
         }
