@@ -47,6 +47,46 @@ public class PathSum3 {
 //
 //    }
 
+    // V0-0-1
+    // IDEA: PREFIX SUM + DFS (fixed by gemini)
+    int count_0_0_1 = 0;
+    Map<Long, Integer> map = new HashMap<>(); // {prefixSum : frequency}
+
+    public int pathSum_0_0_1(TreeNode root, int targetSum) {
+        if (root == null)
+            return 0;
+
+        // Base case: a prefix sum of 0 has occurred once (the empty path)
+        map.put(0L, 1);
+        dfs_0_0_1(root, 0L, targetSum);
+        return count_0_0_1;
+    }
+
+    private void dfs_0_0_1(TreeNode node, long curSum, int targetSum) {
+        if (node == null)
+            return;
+
+        // 1. Update current prefix sum
+        curSum += node.val;
+
+        // 2. Check if a valid sub-path exists
+        // If curSum - targetSum exists in map, it means there's a path ending here
+        if (map.containsKey(curSum - targetSum)) {
+            count_0_0_1 += map.get(curSum - targetSum);
+        }
+
+        // 3. Add current prefix sum to map to help children
+        map.put(curSum, map.getOrDefault(curSum, 0) + 1);
+
+        // 4. Recurse down
+        dfs_0_0_1(node.left, curSum, targetSum);
+        dfs_0_0_1(node.right, curSum, targetSum);
+
+        // 5. BACKTRACK: Remove curSum so it doesn't affect other branches
+        map.put(curSum, map.get(curSum) - 1);
+    }
+
+
     // V0-1
     // IDEA: DFS + HASHMAP (fixed by gpt)
     /**
