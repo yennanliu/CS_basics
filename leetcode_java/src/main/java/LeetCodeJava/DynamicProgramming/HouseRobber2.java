@@ -93,6 +93,75 @@ public class HouseRobber2 {
         return dp[end];
     }
 
+    // V0-0-1
+    // IDEA: 1D DP + LC 198 + 2 cases (rob 0 or n-1 idx) (fixed by GEMINI)
+    public int rob_0_0_1(int[] nums) {
+        int n = nums.length;
+        if (n == 0)
+            return 0;
+        if (n == 1)
+            return nums[0];
+        if (n == 2)
+            return Math.max(nums[0], nums[1]);
+
+        // Case 1: Rob index 0 to n-2 (Ignoring the last house)
+        int[] dp1 = new int[n];
+        dp1[0] = nums[0];
+        dp1[1] = Math.max(nums[0], nums[1]);
+        for (int i = 2; i < n - 1; i++) {
+            dp1[i] = Math.max(dp1[i - 1], dp1[i - 2] + nums[i]);
+        }
+
+        // Case 2: Rob index 1 to n-1 (Ignoring the first house)
+        int[] dp2 = new int[n];
+        dp2[0] = 0; // Skip house 0
+        dp2[1] = nums[1];
+        dp2[2] = Math.max(nums[1], nums[2]);
+        for (int i = 3; i < n; i++) {
+            dp2[i] = Math.max(dp2[i - 1], dp2[i - 2] + nums[i]);
+        }
+
+        // Compare the end of the first path (n-2) and the second path (n-1)
+        return Math.max(dp1[n - 2], dp2[n - 1]);
+    }
+
+
+    // V0-0-2
+    // IDEA: 1D DP + LC 198 + 2 cases (rob 0 or n-1 idx) (fixed by GPT)
+    public int rob_0_0_2(int[] nums) {
+
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
+
+        if (nums.length == 1) {
+            return nums[0];
+        }
+
+        int n = nums.length;
+
+        // case1: rob house 0, cannot rob house n-1
+        int[] dp = new int[n];
+        dp[0] = nums[0];
+        dp[1] = Math.max(nums[0], nums[1]);
+
+        for (int i = 2; i < n - 1; i++) {
+            dp[i] = Math.max(dp[i - 2] + nums[i], dp[i - 1]);
+        }
+
+        // case2: skip house 0, can rob house n-1
+        int[] dp2 = new int[n];
+        dp2[0] = 0;
+        dp2[1] = nums[1];
+
+        for (int i = 2; i < n; i++) {
+            dp2[i] = Math.max(dp2[i - 2] + nums[i], dp2[i - 1]);
+        }
+
+        return Math.max(dp[n - 2], dp2[n - 1]);
+    }
+
+
     // V0-1
     // IDEA: 1D DP + LC 198 (fixed by gemini)
     /**
