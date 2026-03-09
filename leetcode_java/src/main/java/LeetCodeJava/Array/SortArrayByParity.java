@@ -1,6 +1,12 @@
 package LeetCodeJava.Array;
 
 // https://leetcode.com/problems/sort-array-by-parity/description/
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
 /**
  *  905. Sort Array By Parity
  * Easy
@@ -39,6 +45,77 @@ public class SortArrayByParity {
 //
 //    }
 //
+
+    // V0-1
+    // IDEA: CUSTOM SORT (gemini)
+    public int[] sortArrayByParity_0_1(int[] nums) {
+        if (nums == null || nums.length <= 1)
+            return nums;
+
+        List<Integer> list = new ArrayList<>();
+        for (int x : nums)
+            list.add(x);
+
+        Collections.sort(list, (o1, o2) -> {
+            int v1 = o1 % 2;
+            int v2 = o2 % 2;
+            // Integer.compare returns:
+            // -1 if v1 < v2 (o1 is even 0, o2 is odd 1) -> Correct!
+            //  0 if same parity
+            //  1 if v1 > v2 (o1 is odd 1, o2 is even 0) -> Correct!
+            return Integer.compare(v1, v2);
+        });
+
+        int[] res = new int[nums.length];
+        for (int i = 0; i < nums.length; i++)
+            res[i] = list.get(i);
+        return res;
+    }
+
+
+    // V0-2
+    // IDEA: CUSTOM SORT (gpt)
+    public int[] sortArrayByParity_0_2(int[] nums) {
+        // edge
+        if (nums == null || nums.length <= 1) {
+            return nums;
+        }
+
+        List<Integer> list = new ArrayList<>();
+        for (int x : nums) {
+            list.add(x);
+        }
+
+        // custom sort
+        Collections.sort(list, new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+
+                // o1 even, o2 odd -> o1 should come first
+                if (o1 % 2 == 0 && o2 % 2 == 1) {
+                    return -1;
+                }
+
+                // o1 odd, o2 even -> o2 should come first
+                if (o1 % 2 == 1 && o2 % 2 == 0) {
+                    return 1;
+                }
+
+                // both even or both odd
+                return 0;
+            }
+        });
+
+        int[] res = new int[list.size()];
+        int i = 0;
+        for (int x : list) {
+            res[i++] = x;
+        }
+
+        return res;
+    }
+
+
     // V1
     // https://leetcode.com/problems/sort-array-by-parity/solutions/6280114/video-how-we-think-about-a-solution-one-0ks18/
     public int[] sortArrayByParity_1(int[] nums) {

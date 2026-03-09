@@ -288,10 +288,69 @@ public class Workspace22 {
 
 
     // LC 905
+    // 7.19 - 29 am
+    /**
+     *  -> Return any array
+     *  that satisfies this condition.
+     *
+     *
+     *  --------------------
+     *
+     *  IDEA 1) 2 POINTERS ???
+     *
+     *  IDEA 2) BRUTE FORCE
+     *
+     *  IDEA 3) CUSTOM SORTING ??
+     *
+     *  --------------------
+     *
+     */
+    // IDEA 3) CUSTOM SORTING ??
     public int[] sortArrayByParity(int[] nums) {
+        // edge
+        if(nums == null || nums.length <= 1){
+            return nums; // ??
+        }
 
-        return null;
+        List<Integer> list = new ArrayList<>();
+        for(int x: nums){
+            list.add(x);
+        }
+        // custom sort
+        Collections.sort(list, new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                // ????
+                // 4 cases:
+                /**
+                 *
+                 * // o1 is even, o2 is odd
+                 * // o1 is even, o2 is even
+                 * // o1 is odd, o2 is even
+                 * // o1 is odd, o2 is odd
+                 */
+                int diff = 0; // /??
+                if(o1 % 2 == 0 && o2 % 2 == 1){
+                    diff = 1;
+                }else if(o1 % 2 == 1 && o2 % 2 == 0){
+                    diff = 1;
+                }
+                return diff;
+            }
+        });
+
+        // prepare res
+        int[] res= new int[list.size()];
+        int i = 0;
+        for(int x: list){
+            res[i] = x; //list.get(i);
+            i += 1;
+        }
+
+        return res;
     }
+
+
 
 
 
