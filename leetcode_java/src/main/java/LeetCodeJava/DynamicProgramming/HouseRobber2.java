@@ -97,6 +97,7 @@ public class HouseRobber2 {
     // IDEA: 1D DP + LC 198 + 2 cases (rob 0 or n-1 idx) (fixed by GEMINI)
     public int rob_0_0_1(int[] nums) {
         int n = nums.length;
+        // edge
         if (n == 0)
             return 0;
         if (n == 1)
@@ -104,23 +105,57 @@ public class HouseRobber2 {
         if (n == 2)
             return Math.max(nums[0], nums[1]);
 
+        /** NOTE !!!
+         *
+         *  Case 1: Rob index 0 to n-2 (Ignoring the last house)
+         */
         // Case 1: Rob index 0 to n-2 (Ignoring the last house)
         int[] dp1 = new int[n];
         dp1[0] = nums[0];
+        /**
+         *  NOTE !!! below
+         *
+         *  -> dp[1] is NOT 0, but should be the max in (nums[0], nums[1]),
+         *     since dp[i] is max robbed money `till` idx=i
+         */
         dp1[1] = Math.max(nums[0], nums[1]);
+        /**
+         *  NOTE !!!
+         *
+         *   the `range` for case 1:
+         *
+         *     i = [2, n-2]
+         */
         for (int i = 2; i < n - 1; i++) {
             dp1[i] = Math.max(dp1[i - 1], dp1[i - 2] + nums[i]);
         }
 
+        /** NOTE !!!
+         *
+         *  Case 2: Rob index 1 to n-1 (Ignoring the first house)
+         */
         // Case 2: Rob index 1 to n-1 (Ignoring the first house)
         int[] dp2 = new int[n];
         dp2[0] = 0; // Skip house 0
         dp2[1] = nums[1];
         dp2[2] = Math.max(nums[1], nums[2]);
+        /**
+         *  NOTE !!!
+         *
+         *   the `range` for case 1:
+         *
+         *     i = [3, n-1]
+         *
+         */
         for (int i = 3; i < n; i++) {
             dp2[i] = Math.max(dp2[i - 1], dp2[i - 2] + nums[i]);
         }
 
+        /**
+         *  NOTE !!!
+         *
+         *   the final max is the bigger val from 2 dp arr at their last idx
+         */
         // Compare the end of the first path (n-2) and the second path (n-1)
         return Math.max(dp1[n - 2], dp2[n - 1]);
     }
@@ -363,4 +398,5 @@ public class HouseRobber2 {
 
 
 
+    
 }
