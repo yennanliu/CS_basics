@@ -1269,4 +1269,163 @@ public int lengthOfLIS(int[] nums) {
     return tails.size();
 }
 ```
+
+### 2-4) Partition Equal Subset Sum (LC 416) — 0/1 Knapsack DP
+> dp[j] = true if subset summing to j exists; iterate items and update dp right to left.
+
+```java
+// LC 416 - Partition Equal Subset Sum
+// IDEA: 0/1 Knapsack — dp[j] = can we reach sum j using subset of nums
+// time = O(N * sum), space = O(sum)
+public boolean canPartition(int[] nums) {
+    int sum = 0;
+    for (int n : nums) sum += n;
+    if ((sum & 1) == 1) return false;
+    int target = sum / 2;
+    boolean[] dp = new boolean[target + 1];
+    dp[0] = true;
+    for (int num : nums)
+        for (int j = target; j >= num; j--)
+            dp[j] = dp[j] || dp[j - num];
+    return dp[target];
+}
+```
+
+### 2-5) Unique Paths (LC 62) — 2D Grid DP
+> dp[i][j] = paths to reach (i,j) = dp[i-1][j] + dp[i][j-1]; first row/col = 1.
+
+```java
+// LC 62 - Unique Paths
+// IDEA: 2D DP — dp[i][j] = dp[i-1][j] + dp[i][j-1]
+// time = O(M*N), space = O(N) with row compression
+public int uniquePaths(int m, int n) {
+    int[] dp = new int[n];
+    Arrays.fill(dp, 1);
+    for (int i = 1; i < m; i++)
+        for (int j = 1; j < n; j++)
+            dp[j] += dp[j-1];
+    return dp[n-1];
+}
+```
+
+### 2-6) Decode Ways (LC 91) — 1D DP
+> dp[i] = number of ways to decode s[0..i-1]; consider 1-digit and 2-digit decodings.
+
+```java
+// LC 91 - Decode Ways
+// IDEA: DP — dp[i] = ways to decode s[0..i-1]; check 1-char and 2-char decodings
+// time = O(N), space = O(1)
+public int numDecodings(String s) {
+    int n = s.length(), prev2 = 1, prev1 = s.charAt(0) == '0' ? 0 : 1;
+    for (int i = 2; i <= n; i++) {
+        int curr = 0;
+        int one = s.charAt(i-1) - '0';
+        int two = Integer.parseInt(s.substring(i-2, i));
+        if (one != 0) curr += prev1;
+        if (two >= 10 && two <= 26) curr += prev2;
+        prev2 = prev1; prev1 = curr;
+    }
+    return n == 1 ? prev1 : prev1;
+}
+```
+
+### 2-7) Longest Common Subsequence (LC 1143) — 2D String DP
+> dp[i][j] = LCS of s1[0..i-1] and s2[0..j-1]; diagonal + 1 on match, else max of neighbors.
+
+```java
+// LC 1143 - Longest Common Subsequence
+// IDEA: 2D DP — dp[i][j] = LCS length for s1[0..i-1] and s2[0..j-1]
+// time = O(M*N), space = O(M*N)
+public int longestCommonSubsequence(String text1, String text2) {
+    int m = text1.length(), n = text2.length();
+    int[][] dp = new int[m+1][n+1];
+    for (int i = 1; i <= m; i++)
+        for (int j = 1; j <= n; j++)
+            dp[i][j] = text1.charAt(i-1) == text2.charAt(j-1)
+                ? dp[i-1][j-1] + 1
+                : Math.max(dp[i-1][j], dp[i][j-1]);
+    return dp[m][n];
+}
+```
+
+### 2-8) Burst Balloons (LC 312) — Interval DP
+> dp[i][j] = max coins from bursting all balloons between i and j; try each as last to burst.
+
+```java
+// LC 312 - Burst Balloons
+// IDEA: Interval DP — dp[i][j] = max coins when k is the LAST balloon burst in (i,j)
+// time = O(N^3), space = O(N^2)
+public int maxCoins(int[] nums) {
+    int n = nums.length;
+    int[] arr = new int[n+2];
+    arr[0] = arr[n+1] = 1;
+    for (int i = 0; i < n; i++) arr[i+1] = nums[i];
+    int[][] dp = new int[n+2][n+2];
+    for (int len = 1; len <= n; len++)
+        for (int l = 1; l <= n-len+1; l++) {
+            int r = l + len - 1;
+            for (int k = l; k <= r; k++)
+                dp[l][r] = Math.max(dp[l][r], dp[l][k-1] + arr[l-1]*arr[k]*arr[r+1] + dp[k+1][r]);
+        }
+    return dp[1][n];
+}
+```
+
+### 2-9) Best Time to Buy and Sell Stock with Cooldown (LC 309) — State Machine DP
+> Three states: hold, sold, rest; transitions enforce cooldown after selling.
+
+```java
+// LC 309 - Best Time to Buy and Sell Stock with Cooldown
+// IDEA: State machine DP — hold, sold, rest states
+// time = O(N), space = O(1)
+public int maxProfit(int[] prices) {
+    int hold = Integer.MIN_VALUE, sold = 0, rest = 0;
+    for (int price : prices) {
+        int prevSold = sold;
+        hold = Math.max(hold, rest - price);   // buy from rest state
+        sold = hold + price;                    // sell
+        rest = Math.max(rest, prevSold);        // cooldown or stay rest
+    }
+    return Math.max(sold, rest);
+}
+```
+
+### 2-10) Minimum Path Sum (LC 64) — Grid DP
+> dp[i][j] = grid[i][j] + min(dp[i-1][j], dp[i][j-1]); initialize borders first.
+
+```java
+// LC 64 - Minimum Path Sum
+// IDEA: DP — dp[i][j] = min cost to reach (i,j); modify grid in-place
+// time = O(M*N), space = O(1)
+public int minPathSum(int[][] grid) {
+    int m = grid.length, n = grid[0].length;
+    for (int i = 1; i < m; i++) grid[i][0] += grid[i-1][0];
+    for (int j = 1; j < n; j++) grid[0][j] += grid[0][j-1];
+    for (int i = 1; i < m; i++)
+        for (int j = 1; j < n; j++)
+            grid[i][j] += Math.min(grid[i-1][j], grid[i][j-1]);
+    return grid[m-1][n-1];
+}
+```
+
+### 2-11) Target Sum (LC 494) — DP / DFS with Memo
+> Assign + or − to each number; dp[j] = number of ways to reach sum j.
+
+```java
+// LC 494 - Target Sum
+// IDEA: DP — equivalent to subset sum with positive/negative assignment
+// time = O(N * sum), space = O(sum)
+public int findTargetSumWays(int[] nums, int target) {
+    int sum = 0;
+    for (int n : nums) sum += n;
+    if (Math.abs(target) > sum || (sum + target) % 2 != 0) return 0;
+    int pos = (sum + target) / 2;
+    int[] dp = new int[pos + 1];
+    dp[0] = 1;
+    for (int num : nums)
+        for (int j = pos; j >= num; j--)
+            dp[j] += dp[j - num];
+    return dp[pos];
+}
+```
 - **Convex Hull Trick**: For optimizing certain recurrence relations

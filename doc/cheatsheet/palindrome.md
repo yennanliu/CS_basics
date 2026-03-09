@@ -927,4 +927,185 @@ private int expand(String s, int l, int r) {
     return cnt;
 }
 ```
+
+### 2-4) Palindrome Number (LC 9) — Math Reversal
+> Reverse second half of number and compare; negative or trailing-zero numbers are not palindromes.
+
+```java
+// LC 9 - Palindrome Number
+// IDEA: Reverse second half; compare with first half (avoids string conversion)
+// time = O(log N), space = O(1)
+public boolean isPalindrome(int x) {
+    if (x < 0 || (x % 10 == 0 && x != 0)) return false;
+    int rev = 0;
+    while (x > rev) { rev = rev * 10 + x % 10; x /= 10; }
+    return x == rev || x == rev / 10;  // even/odd length
+}
+```
+
+### 2-5) Valid Palindrome II (LC 680) — Two Pointers with One Skip
+> Two pointers; when mismatch, try skipping left or right character and check rest.
+
+```java
+// LC 680 - Valid Palindrome II
+// IDEA: Two pointers — on mismatch, try skipping left or right character
+// time = O(N), space = O(1)
+public boolean validPalindrome(String s) {
+    int l = 0, r = s.length() - 1;
+    while (l < r) {
+        if (s.charAt(l) != s.charAt(r))
+            return isPalin(s, l+1, r) || isPalin(s, l, r-1);
+        l++; r--;
+    }
+    return true;
+}
+private boolean isPalin(String s, int l, int r) {
+    while (l < r) { if (s.charAt(l++) != s.charAt(r--)) return false; }
+    return true;
+}
+```
+
+### 2-6) Palindrome Linked List (LC 234) — Fast/Slow Pointer + Reverse
+> Find middle with slow/fast pointers; reverse second half; compare both halves.
+
+```java
+// LC 234 - Palindrome Linked List
+// IDEA: Find mid (slow/fast), reverse second half, compare with first half
+// time = O(N), space = O(1)
+public boolean isPalindrome(ListNode head) {
+    ListNode slow = head, fast = head;
+    while (fast != null && fast.next != null) { slow = slow.next; fast = fast.next.next; }
+    ListNode rev = reverse(slow);
+    ListNode p = head, q = rev;
+    while (q != null) { if (p.val != q.val) return false; p = p.next; q = q.next; }
+    return true;
+}
+private ListNode reverse(ListNode head) {
+    ListNode prev = null;
+    while (head != null) { ListNode next = head.next; head.next = prev; prev = head; head = next; }
+    return prev;
+}
+```
+
+### 2-7) Longest Palindromic Subsequence (LC 516) — Interval DP
+> dp[i][j] = LPS length in s[i..j]; match endpoints add 2, else take max of subproblems.
+
+```java
+// LC 516 - Longest Palindromic Subsequence
+// IDEA: Interval DP — dp[i][j] = LPS length of s[i..j]
+// time = O(N^2), space = O(N^2)
+public int longestPalindromeSubseq(String s) {
+    int n = s.length();
+    int[][] dp = new int[n][n];
+    for (int i = 0; i < n; i++) dp[i][i] = 1;
+    for (int len = 2; len <= n; len++)
+        for (int i = 0; i <= n - len; i++) {
+            int j = i + len - 1;
+            dp[i][j] = s.charAt(i) == s.charAt(j)
+                ? dp[i+1][j-1] + 2
+                : Math.max(dp[i+1][j], dp[i][j-1]);
+        }
+    return dp[0][n-1];
+}
+```
+
+### 2-8) Minimum Insertion Steps to Make a String Palindrome (LC 1312) — Interval DP
+> Minimum insertions = N − LPS length; equivalent to inserting to make palindrome.
+
+```java
+// LC 1312 - Minimum Insertion Steps to Make String Palindrome
+// IDEA: minInsertions = s.length() - LPS(s)
+// time = O(N^2), space = O(N^2)
+public int minInsertions(String s) {
+    int n = s.length();
+    int[][] dp = new int[n][n];
+    for (int len = 2; len <= n; len++)
+        for (int i = 0; i <= n - len; i++) {
+            int j = i + len - 1;
+            dp[i][j] = s.charAt(i) == s.charAt(j)
+                ? dp[i+1][j-1]
+                : Math.min(dp[i+1][j], dp[i][j-1]) + 1;
+        }
+    return dp[0][n-1];
+}
+```
+
+### 2-9) Palindrome Partitioning (LC 131) — Backtracking
+> DFS with backtracking; at each index try all palindromic prefixes as next partition.
+
+```java
+// LC 131 - Palindrome Partitioning
+// IDEA: Backtracking — at each position try all palindromic prefixes; recurse on suffix
+// time = O(N * 2^N), space = O(N)
+public List<List<String>> partition(String s) {
+    List<List<String>> res = new ArrayList<>();
+    backtrack(s, 0, new ArrayList<>(), res);
+    return res;
+}
+private void backtrack(String s, int start, List<String> path, List<List<String>> res) {
+    if (start == s.length()) { res.add(new ArrayList<>(path)); return; }
+    for (int end = start + 1; end <= s.length(); end++) {
+        String sub = s.substring(start, end);
+        if (isPalin(sub)) {
+            path.add(sub);
+            backtrack(s, end, path, res);
+            path.remove(path.size() - 1);
+        }
+    }
+}
+private boolean isPalin(String s) {
+    int l = 0, r = s.length() - 1;
+    while (l < r) if (s.charAt(l++) != s.charAt(r--)) return false;
+    return true;
+}
+```
+
+### 2-10) Palindrome Partitioning II (LC 132) — DP
+> dp[i] = minimum cuts for s[0..i]; precompute palindrome table or expand-around-center.
+
+```java
+// LC 132 - Palindrome Partitioning II
+// IDEA: DP — dp[i] = min cuts for s[0..i]; precompute isPalin table
+// time = O(N^2), space = O(N^2)
+public int minCut(String s) {
+    int n = s.length();
+    boolean[][] isPalin = new boolean[n][n];
+    for (int i = n-1; i >= 0; i--)
+        for (int j = i; j < n; j++)
+            isPalin[i][j] = s.charAt(i) == s.charAt(j) && (j - i < 2 || isPalin[i+1][j-1]);
+    int[] dp = new int[n];
+    Arrays.fill(dp, Integer.MAX_VALUE);
+    for (int i = 0; i < n; i++) {
+        if (isPalin[0][i]) { dp[i] = 0; continue; }
+        for (int j = 1; j <= i; j++)
+            if (isPalin[j][i]) dp[i] = Math.min(dp[i], dp[j-1] + 1);
+    }
+    return dp[n-1];
+}
+```
+
+### 2-11) Find Longest Awesome Substring (LC 1542) — Bitmask + Prefix XOR
+> Awesome = at most one character with odd frequency; track prefix XOR states.
+
+```java
+// LC 1542 - Find Longest Awesome Substring
+// IDEA: Prefix XOR bitmask; awesome substring iff XOR has at most 1 set bit
+// time = O(10 * N), space = O(1024)
+public int longestAwesome(String s) {
+    int[] seen = new int[1024];
+    Arrays.fill(seen, s.length());
+    seen[0] = -1;
+    int prefix = 0, ans = 0;
+    for (int i = 0; i < s.length(); i++) {
+        prefix ^= 1 << (s.charAt(i) - '0');
+        if (seen[prefix] <= s.length()) ans = Math.max(ans, i - seen[prefix]);
+        else seen[prefix] = i;
+        for (int d = 0; d <= 9; d++) {  // try one odd-count digit
+            int mask = prefix ^ (1 << d);
+            if (seen[mask] <= s.length()) ans = Math.max(ans, i - seen[mask]);
+        }
+    }
+    return ans;
+}
+```
 - **Tree Algorithms**: Path problems, symmetric tree validation

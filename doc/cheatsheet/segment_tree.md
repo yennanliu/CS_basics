@@ -667,3 +667,227 @@ class MyCalendar {
 ```
 
 This comprehensive guide covers the essential concepts and implementations for Segment Trees and Binary Indexed Trees, with practical examples from LeetCode problems.
+
+### 2-3) Segment Tree Template — Range Sum with Lazy Propagation
+> Full segment tree with range-update and range-query in O(log N).
+
+```java
+// Segment Tree — Lazy Propagation Template
+// time = O(log N) per update/query, space = O(N)
+class SegTree {
+    int[] tree, lazy;
+    int n;
+    SegTree(int[] nums) {
+        n = nums.length;
+        tree = new int[4 * n];
+        lazy = new int[4 * n];
+        build(nums, 0, 0, n - 1);
+    }
+    private void build(int[] nums, int node, int l, int r) {
+        if (l == r) { tree[node] = nums[l]; return; }
+        int mid = (l + r) / 2;
+        build(nums, 2*node+1, l, mid);
+        build(nums, 2*node+2, mid+1, r);
+        tree[node] = tree[2*node+1] + tree[2*node+2];
+    }
+    private void pushDown(int node, int l, int r) {
+        if (lazy[node] != 0) {
+            int mid = (l + r) / 2;
+            tree[2*node+1] += (mid-l+1) * lazy[node]; lazy[2*node+1] += lazy[node];
+            tree[2*node+2] += (r-mid)   * lazy[node]; lazy[2*node+2] += lazy[node];
+            lazy[node] = 0;
+        }
+    }
+    void update(int node, int l, int r, int ql, int qr, int val) {
+        if (ql > r || qr < l) return;
+        if (ql <= l && r <= qr) { tree[node] += (r-l+1)*val; lazy[node] += val; return; }
+        pushDown(node, l, r);
+        int mid = (l + r) / 2;
+        update(2*node+1, l, mid, ql, qr, val);
+        update(2*node+2, mid+1, r, ql, qr, val);
+        tree[node] = tree[2*node+1] + tree[2*node+2];
+    }
+    int query(int node, int l, int r, int ql, int qr) {
+        if (ql > r || qr < l) return 0;
+        if (ql <= l && r <= qr) return tree[node];
+        pushDown(node, l, r);
+        int mid = (l + r) / 2;
+        return query(2*node+1, l, mid, ql, qr) + query(2*node+2, mid+1, r, ql, qr);
+    }
+}
+```
+
+### 2-4) Corporate Flight Bookings (LC 1109) — Difference Array
+> Range-add passengers [first, last]; prefix-sum to get totals per flight.
+
+```java
+// LC 1109 - Corporate Flight Bookings
+// IDEA: Difference array — range add O(1), prefix sum O(N) for result
+// time = O(N + Q), space = O(N)
+public int[] corpFlightBookings(int[][] bookings, int n) {
+    int[] diff = new int[n + 1];
+    for (int[] b : bookings) {
+        diff[b[0] - 1] += b[2];
+        if (b[1] < n) diff[b[1]] -= b[2];
+    }
+    for (int i = 1; i < n; i++) diff[i] += diff[i-1];
+    return Arrays.copyOf(diff, n);
+}
+```
+
+### 2-5) Count of Smaller Numbers After Self (LC 315) — Iterative Segment Tree
+> Build segment tree on value range; insert from right to left; query smaller prefix count.
+
+```java
+// LC 315 - Count of Smaller Numbers After Self (Segment Tree on values)
+// IDEA: Iterative seg tree on [0, 20001] value range; query prefix, then update
+// time = O(N log M), space = O(M)
+public List<Integer> countSmaller(int[] nums) {
+    int offset = 10001, size = 2 * offset + 1;
+    int[] tree = new int[2 * size];
+    Integer[] res = new Integer[nums.length];
+    for (int i = nums.length - 1; i >= 0; i--) {
+        int val = nums[i] + offset;
+        res[i] = queryTree(tree, size, 0, val - 1);
+        updateTree(tree, size, val);
+    }
+    return Arrays.asList(res);
+}
+private void updateTree(int[] t, int n, int i) { for (i+=n; i>0; i>>=1) t[i]++; }
+private int  queryTree(int[] t, int n, int l, int r) {
+    int s=0; for(l+=n,r+=n+1; l<r; l>>=1,r>>=1) {if((l&1)==1)s+=t[l++];if((r&1)==1)s+=t[--r];} return s;
+}
+```
+
+### 2-6) Falling Squares (LC 699) — Segment Tree Max
+> Each square lands on the highest existing height in its range; track running max height.
+
+```java
+// LC 699 - Falling Squares (naive O(N^2); segment tree gives O(N log N))
+// IDEA: For each square compute max height in its column range, then update
+// time = O(N^2), space = O(N)
+public List<Integer> fallingSquares(int[][] positions) {
+    List<Integer> ans = new ArrayList<>();
+    int[] heights = new int[positions.length];
+    int maxH = 0;
+    for (int i = 0; i < positions.length; i++) {
+        int l = positions[i][0], sz = positions[i][1], r = l + sz;
+        heights[i] = sz;
+        for (int j = 0; j < i; j++) {
+            int lj = positions[j][0], rj = lj + positions[j][1];
+            if (lj < r && l < rj)                    // overlap
+                heights[i] = Math.max(heights[i], heights[j] + sz);
+        }
+        maxH = Math.max(maxH, heights[i]);
+        ans.add(maxH);
+    }
+    return ans;
+}
+```
+
+### 2-7) Maximum Sum Rectangle No Larger Than K (LC 363) — Prefix Sum + TreeSet
+> Fix column bounds; compress to 1D row sums; use TreeSet to find max sum ≤ k.
+
+```java
+// LC 363 - Max Sum of Rectangle No Larger Than K
+// IDEA: Fix left/right cols; 1D Kadane + TreeSet for sum <= k constraint
+// time = O(M^2 * N log N), space = O(N)
+public int maxSumSubmatrix(int[][] matrix, int k) {
+    int m = matrix.length, n = matrix[0].length, ans = Integer.MIN_VALUE;
+    for (int l = 0; l < n; l++) {
+        int[] rowSum = new int[m];
+        for (int r = l; r < n; r++) {
+            for (int i = 0; i < m; i++) rowSum[i] += matrix[i][r];
+            TreeSet<Integer> set = new TreeSet<>();
+            set.add(0);
+            int curr = 0;
+            for (int s : rowSum) {
+                curr += s;
+                Integer ceiling = set.ceiling(curr - k);
+                if (ceiling != null) ans = Math.max(ans, curr - ceiling);
+                set.add(curr);
+            }
+        }
+    }
+    return ans;
+}
+```
+
+### 2-8) Range Module (LC 715) — Segment Tree / TreeMap
+> Track which ranges are tracked; add, remove, and query ranges efficiently.
+
+```java
+// LC 715 - Range Module (TreeMap approach)
+// IDEA: TreeMap<start, end> — merge on addRange, split on removeRange
+// time = O(N log N) per op, space = O(N)
+class RangeModule {
+    TreeMap<Integer, Integer> map = new TreeMap<>();
+    public void addRange(int left, int right) {
+        Integer lo = map.floorKey(left), hi = map.floorKey(right);
+        if (lo != null && map.get(lo) >= left) left = lo;
+        if (hi != null && map.get(hi) > right) right = map.get(hi);
+        map.subMap(left, right).clear();
+        map.put(left, right);
+    }
+    public boolean queryRange(int left, int right) {
+        Integer lo = map.floorKey(left);
+        return lo != null && map.get(lo) >= right;
+    }
+    public void removeRange(int left, int right) {
+        Integer lo = map.floorKey(left), hi = map.floorKey(right);
+        if (hi != null && map.get(hi) > right) map.put(right, map.get(hi));
+        if (lo != null && map.get(lo) > left)  map.put(lo, left);
+        map.subMap(left, right).clear();
+    }
+}
+```
+
+### 2-9) Longest Increasing Subsequence (LC 300) — Segment Tree on Values
+> Segment tree on compressed values; query max LIS length for values < current, then update.
+
+```java
+// LC 300 - LIS via Segment Tree (max query on value range)
+// IDEA: Compress values; seg tree max query for all smaller values; update at current
+// time = O(N log N), space = O(N)
+public int lengthOfLIS(int[] nums) {
+    int[] sorted = nums.clone();
+    Arrays.sort(sorted);
+    Map<Integer, Integer> rank = new HashMap<>();
+    int r = 1;
+    for (int v : sorted) if (!rank.containsKey(v)) rank.put(v, r++);
+    int n = r - 1;
+    int[] tree = new int[2 * (n + 1)];
+    int ans = 0;
+    for (int num : nums) {
+        int pos = rank.get(num);
+        int best = qmax(tree, n, 1, pos - 1) + 1;
+        ans = Math.max(ans, best);
+        umax(tree, n, pos, best);
+    }
+    return ans;
+}
+private int  qmax(int[] t, int n, int l, int r) { int res=0; for(l+=n,r+=n+1;l<r;l>>=1,r>>=1){if((l&1)==1)res=Math.max(res,t[l++]);if((r&1)==1)res=Math.max(res,t[--r]);}return res; }
+private void umax(int[] t, int n, int i, int v) { for(i+=n;i>0;i>>=1) t[i]=Math.max(t[i],v); }
+```
+
+### 2-10) My Calendar II (LC 731) — Segment Tree / TreeMap
+> Allow at most 2 overlapping bookings; reject if a third overlap would occur.
+
+```java
+// LC 731 - My Calendar II
+// IDEA: Two TreeMaps — bookings and double-bookings; reject if new interval hits double-booked region
+// time = O(N^2) worst, space = O(N)
+class MyCalendarTwo {
+    List<int[]> single = new ArrayList<>(), overlap = new ArrayList<>();
+    public boolean book(int start, int end) {
+        for (int[] o : overlap)
+            if (o[0] < end && start < o[1]) return false;
+        for (int[] s : single) {
+            int lo = Math.max(s[0], start), hi = Math.min(s[1], end);
+            if (lo < hi) overlap.add(new int[]{lo, hi});
+        }
+        single.add(new int[]{start, end});
+        return true;
+    }
+}
+```

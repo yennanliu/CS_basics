@@ -688,3 +688,159 @@ public int minDistance(String word1, String word2) {
     return dp[m][n];
 }
 ```
+
+### 2-4) Fibonacci Number (LC 509) — Recursion → Memoization → DP → O(1)
+> Classic example showing all 4 levels of optimization from naive recursion.
+
+```java
+// LC 509 - Fibonacci Number
+// IDEA: Iterative DP — O(N) time, O(1) space (vs O(2^N) naive recursion)
+// time = O(N), space = O(1)
+public int fib(int n) {
+    if (n <= 1) return n;
+    int prev2 = 0, prev1 = 1;
+    for (int i = 2; i <= n; i++) {
+        int curr = prev1 + prev2;
+        prev2 = prev1;
+        prev1 = curr;
+    }
+    return prev1;
+}
+```
+
+### 2-5) Unique Paths (LC 62) — 2D Recursion → DP
+> Recursion `f(i,j) = f(i-1,j) + f(i,j-1)` → bottom-up DP with row compression.
+
+```java
+// LC 62 - Unique Paths
+// IDEA: DP with 1D rolling array — dp[j] = paths to reach column j in current row
+// time = O(M*N), space = O(N)
+public int uniquePaths(int m, int n) {
+    int[] dp = new int[n];
+    Arrays.fill(dp, 1);
+    for (int i = 1; i < m; i++)
+        for (int j = 1; j < n; j++)
+            dp[j] += dp[j-1];
+    return dp[n-1];
+}
+```
+
+### 2-6) Triangle (LC 120) — Top-Down Recursion → Bottom-Up DP
+> dp[i][j] = min path sum from (i,j) to bottom; convert triangle recursion bottom-up.
+
+```java
+// LC 120 - Triangle
+// IDEA: Bottom-up DP in-place — start from second-to-last row, accumulate minimum path
+// time = O(N^2), space = O(1) modifying input
+public int minimumTotal(List<List<Integer>> triangle) {
+    int n = triangle.size();
+    int[] dp = new int[n];
+    for (int i = 0; i < n; i++) dp[i] = triangle.get(n-1).get(i);
+    for (int row = n-2; row >= 0; row--)
+        for (int col = 0; col <= row; col++)
+            dp[col] = triangle.get(row).get(col) + Math.min(dp[col], dp[col+1]);
+    return dp[0];
+}
+```
+
+### 2-7) Longest Palindromic Subsequence (LC 516) — Interval DP
+> `dp[i][j]` = LPS length in s[i..j]; recursion `f(i,j)` → bottom-up by increasing length.
+
+```java
+// LC 516 - Longest Palindromic Subsequence
+// IDEA: Interval DP — dp[i][j] = LPS in s[i..j]
+// time = O(N^2), space = O(N^2)
+public int longestPalindromeSubseq(String s) {
+    int n = s.length();
+    int[][] dp = new int[n][n];
+    for (int i = 0; i < n; i++) dp[i][i] = 1;
+    for (int len = 2; len <= n; len++)
+        for (int i = 0; i <= n - len; i++) {
+            int j = i + len - 1;
+            if (s.charAt(i) == s.charAt(j)) dp[i][j] = dp[i+1][j-1] + 2;
+            else dp[i][j] = Math.max(dp[i+1][j], dp[i][j-1]);
+        }
+    return dp[0][n-1];
+}
+```
+
+### 2-8) Coin Change (LC 322) — Recursion with Pruning → DP
+> Recursion `f(amount) = 1 + min(f(amount-coin))` → bottom-up unbounded knapsack DP.
+
+```java
+// LC 322 - Coin Change
+// IDEA: Bottom-up DP — dp[i] = min coins for amount i; unbounded knapsack
+// time = O(amount * |coins|), space = O(amount)
+public int coinChange(int[] coins, int amount) {
+    int[] dp = new int[amount + 1];
+    Arrays.fill(dp, amount + 1);
+    dp[0] = 0;
+    for (int i = 1; i <= amount; i++)
+        for (int coin : coins)
+            if (coin <= i) dp[i] = Math.min(dp[i], dp[i - coin] + 1);
+    return dp[amount] > amount ? -1 : dp[amount];
+}
+```
+
+### 2-9) Combination Sum IV (LC 377) — Recursion → DP (Order Matters)
+> dp[i] = number of ordered combinations summing to i; unlike knapsack, order of adding matters.
+
+```java
+// LC 377 - Combination Sum IV
+// IDEA: DP — dp[i] = number of ordered ways to reach sum i
+// time = O(target * |nums|), space = O(target)
+public int combinationSum4(int[] nums, int target) {
+    int[] dp = new int[target + 1];
+    dp[0] = 1;
+    for (int i = 1; i <= target; i++)
+        for (int num : nums)
+            if (num <= i) dp[i] += dp[i - num];
+    return dp[target];
+}
+```
+
+### 2-10) Minimum Cost to Cut a Stick (LC 1547) — Interval DP
+> dp[i][j] = min cost to make all cuts between cut[i] and cut[j]; try each middle cut.
+
+```java
+// LC 1547 - Minimum Cost to Cut a Stick
+// IDEA: Interval DP — insert endpoints; dp[i][j] = min cost for cuts between i and j
+// time = O(M^3), space = O(M^2)  M = cuts.length
+public int minCost(int n, int[] cuts) {
+    int m = cuts.length;
+    int[] c = new int[m + 2];
+    c[0] = 0; c[m+1] = n;
+    for (int i = 0; i < m; i++) c[i+1] = cuts[i];
+    Arrays.sort(c);
+    int[][] dp = new int[m+2][m+2];
+    for (int len = 2; len <= m+1; len++)
+        for (int i = 0; i + len <= m+1; i++) {
+            int j = i + len;
+            dp[i][j] = Integer.MAX_VALUE;
+            for (int k = i+1; k < j; k++)
+                dp[i][j] = Math.min(dp[i][j], c[j]-c[i] + dp[i][k] + dp[k][j]);
+        }
+    return dp[0][m+1];
+}
+```
+
+### 2-11) Partition Array for Maximum Sum (LC 1043) — 1D DP
+> dp[i] = max sum of partitioning array up to index i; try all sub-partitions of size 1..k.
+
+```java
+// LC 1043 - Partition Array for Maximum Sum
+// IDEA: DP — dp[i] = max sum when array[0..i-1] is partitioned
+// time = O(N * k), space = O(N)
+public int maxSumAfterPartitioning(int[] arr, int k) {
+    int n = arr.length;
+    int[] dp = new int[n + 1];
+    for (int i = 1; i <= n; i++) {
+        int maxVal = 0;
+        for (int j = 1; j <= k && i - j >= 0; j++) {
+            maxVal = Math.max(maxVal, arr[i-j]);
+            dp[i] = Math.max(dp[i], dp[i-j] + maxVal * j);
+        }
+    }
+    return dp[n];
+}
+```
