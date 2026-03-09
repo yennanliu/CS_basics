@@ -50,9 +50,77 @@ import java.util.Map;
 public class FindDuplicateSubtrees {
 
     // V0
-//    public List<TreeNode> findDuplicateSubtrees(TreeNode root) {
-//        return null;
-//    }
+    // IDEA: HASHMAP + DFS (post order traverse) + NODE PATH (gemini)
+    List<TreeNode> res_0 = new ArrayList<>();
+    // { serialized_subtree_string : count }
+    /**  NOTE !!!
+     *
+     *   the structure of map:   { path_of_node : count }
+     */
+    Map<String, Integer> pathMap_0 = new HashMap<>();
+
+    public List<TreeNode> findDuplicateSubtrees(TreeNode root) {
+        if (root == null)
+            return res_0;
+        serialize(root);
+        return res_0;
+    }
+
+    /**  NOTE !!!
+     *
+     *  below path helper func
+     *   - serialize
+     *   - dfs (post order)
+     *   - node cnt
+     *   - result update
+     */
+    private String serialize(TreeNode node) {
+        if (node == null) {
+            return "#"; // Special char for null to preserve tree structure
+        }
+
+        // 1. Get the identity of the subtrees (Post-Order)
+        String left = serialize(node.left);
+        String right = serialize(node.right);
+
+        // 2. Build the current subtree's unique identity
+        // Use commas to separate values (prevents "1,11" looking like "11,1")
+        /**  NOTE !!!
+         *
+         *  we need below structure to calculate the `node path`,
+         *  so a simple stringBuilder is NOT enough,
+         *  we need a structure that can BOTH trace
+         *  left, and right sub tree
+         *
+         *   e.g.
+         *     - node.val + "," + left + "," + right;
+         *     - node.val + "?" + left + "?" + right;
+         *     ....
+         *
+         */
+        String currentSubtree = node.val + "," + left + "," + right;
+
+        // 3. Count occurrences
+        int count = pathMap_0.getOrDefault(currentSubtree, 0);
+
+        // 4. Add to result ONLY the first time we find a duplicate
+        /**  NOTE !!!
+         *
+         *   if cnt already == 1,
+         *   we append cur node to res directly
+         *   since the duplicated node already
+         *   existed before at some point.
+         */
+        if (count == 1) {
+            res_0.add(node);
+        }
+
+        // still need to update map anyway
+        pathMap_0.put(currentSubtree, count + 1);
+
+        return currentSubtree;
+    }
+    
 
     // V0-1
     // IDEA: HASHMAP + DFS + NODE PATH
@@ -107,6 +175,7 @@ public class FindDuplicateSubtrees {
         }
         return v;
     }
+
 
     // V0-2
     // IDEA: DFS (Post-order traversal)  + MAP
@@ -391,6 +460,8 @@ public class FindDuplicateSubtrees {
             ans.add(root);//add the roots
         return encoded;
     }
+
+
 
 
 
