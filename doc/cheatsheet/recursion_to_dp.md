@@ -623,3 +623,68 @@ public int coinChange(int[] coins, int amount) {
 5. Optimize space if possible
 
 **Key Insight:** Every DP problem can be solved recursively first, then optimized with memoization/tabulation.
+
+## LC Examples
+
+### 2-1) House Robber (LC 198) — Recursion → Memoization → DP
+> Cannot rob two adjacent houses; dp[i] = max(dp[i-1], dp[i-2] + nums[i]).
+
+```java
+// LC 198 - House Robber
+// IDEA: DP — dp[i] = max money robbing up to house i
+// time = O(N), space = O(1)
+public int rob(int[] nums) {
+    if (nums.length == 1) return nums[0];
+    int prev2 = nums[0], prev1 = Math.max(nums[0], nums[1]);
+    for (int i = 2; i < nums.length; i++) {
+        int curr = Math.max(prev1, prev2 + nums[i]);
+        prev2 = prev1;
+        prev1 = curr;
+    }
+    return prev1;
+}
+```
+
+### 2-2) Word Break (LC 139) — Top-down Recursion → DP
+> dp[i] = true if s[0..i] can be segmented using wordDict.
+
+```java
+// LC 139 - Word Break
+// IDEA: DP — dp[i] means s[0..i-1] can be segmented
+// time = O(N^2), space = O(N)
+public boolean wordBreak(String s, List<String> wordDict) {
+    Set<String> dict = new HashSet<>(wordDict);
+    int n = s.length();
+    boolean[] dp = new boolean[n + 1];
+    dp[0] = true;
+    for (int i = 1; i <= n; i++)
+        for (int j = 0; j < i; j++)
+            if (dp[j] && dict.contains(s.substring(j, i))) {
+                dp[i] = true;
+                break;
+            }
+    return dp[n];
+}
+```
+
+### 2-3) Edit Distance (LC 72) — 2D DP (String → String)
+> dp[i][j] = min operations to convert s1[0..i] to s2[0..j].
+
+```java
+// LC 72 - Edit Distance
+// IDEA: 2D DP — dp[i][j] = min ops to convert word1[0..i-1] to word2[0..j-1]
+// time = O(M*N), space = O(M*N)
+public int minDistance(String word1, String word2) {
+    int m = word1.length(), n = word2.length();
+    int[][] dp = new int[m + 1][n + 1];
+    for (int i = 0; i <= m; i++) dp[i][0] = i;
+    for (int j = 0; j <= n; j++) dp[0][j] = j;
+    for (int i = 1; i <= m; i++)
+        for (int j = 1; j <= n; j++)
+            if (word1.charAt(i-1) == word2.charAt(j-1))
+                dp[i][j] = dp[i-1][j-1];
+            else
+                dp[i][j] = 1 + Math.min(dp[i-1][j-1], Math.min(dp[i-1][j], dp[i][j-1]));
+    return dp[m][n];
+}
+```

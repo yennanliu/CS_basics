@@ -1730,3 +1730,69 @@ public int lastStoneWeight(int[] stones) {
 | **Dijkstra** | LC 743, 787, 1514, 1631 | Min heap with (distance, node) |
 | **Stream** | LC 703, 295, 346 | Fixed size heap or two heaps |
 | **Ugly Numbers** | LC 264, 313, 373 | Generate in sorted order |
+
+## LC Examples
+
+### 2-1) Kth Largest Element in a Stream (LC 703) — Min-Heap of Size K
+> Maintain a min-heap of size k; the top is always the kth largest element.
+
+```java
+// LC 703 - Kth Largest Element in a Stream
+// IDEA: Min-heap of size k — top = kth largest
+// time = O(N log k), space = O(k)
+class KthLargest {
+    PriorityQueue<Integer> heap;
+    int k;
+    public KthLargest(int k, int[] nums) {
+        this.k = k;
+        this.heap = new PriorityQueue<>();
+        for (int num : nums) add(num);
+    }
+    public int add(int val) {
+        heap.offer(val);
+        if (heap.size() > k) heap.poll();
+        return heap.peek();
+    }
+}
+```
+
+### 2-2) Top K Frequent Elements (LC 347) — Min-Heap with Frequency
+> Count frequencies with HashMap, then maintain min-heap of size k by frequency.
+
+```java
+// LC 347 - Top K Frequent Elements
+// IDEA: HashMap for frequency + min-heap of size k ordered by frequency
+// time = O(N log k), space = O(N)
+public int[] topKFrequent(int[] nums, int k) {
+    Map<Integer, Integer> freq = new HashMap<>();
+    for (int num : nums) freq.merge(num, 1, Integer::sum);
+    PriorityQueue<Integer> pq = new PriorityQueue<>((a, b) -> freq.get(a) - freq.get(b));
+    for (int key : freq.keySet()) {
+        pq.offer(key);
+        if (pq.size() > k) pq.poll();
+    }
+    int[] ans = new int[k];
+    for (int i = k - 1; i >= 0; i--) ans[i] = pq.poll();
+    return ans;
+}
+```
+
+### 2-3) Merge K Sorted Lists (LC 23) — Min-Heap
+> Use min-heap to always extract the global minimum node across all lists.
+
+```java
+// LC 23 - Merge K Sorted Lists
+// IDEA: Min-heap ordered by node value; pop min, push its next
+// time = O(N log k), space = O(k)  N = total nodes, k = number of lists
+public ListNode mergeKLists(ListNode[] lists) {
+    PriorityQueue<ListNode> pq = new PriorityQueue<>((a, b) -> a.val - b.val);
+    for (ListNode node : lists) if (node != null) pq.offer(node);
+    ListNode dummy = new ListNode(0), curr = dummy;
+    while (!pq.isEmpty()) {
+        curr.next = pq.poll();
+        curr = curr.next;
+        if (curr.next != null) pq.offer(curr.next);
+    }
+    return dummy.next;
+}
+```

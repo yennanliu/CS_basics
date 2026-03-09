@@ -1207,4 +1207,66 @@ private int dfs(TreeNode node) {
 - **State Compression**: Use bitmask to compress states
 - **Monotonic Queue/Stack**: Optimize window-based DP (sliding window maximum)
 - **Matrix Exponentiation**: For linear recurrences with large n
+
+## LC Examples
+
+### 2-1) Climbing Stairs (LC 70) — 1D Linear DP
+> dp[i] = dp[i-1] + dp[i-2]; classic Fibonacci-style DP.
+
+```java
+// LC 70 - Climbing Stairs
+// IDEA: dp[i] = number of ways to reach step i
+// time = O(N), space = O(1)
+public int climbStairs(int n) {
+    if (n <= 2) return n;
+    int prev2 = 1, prev1 = 2;
+    for (int i = 3; i <= n; i++) {
+        int curr = prev1 + prev2;
+        prev2 = prev1;
+        prev1 = curr;
+    }
+    return prev1;
+}
+```
+
+### 2-2) Coin Change (LC 322) — Unbounded Knapsack DP
+> dp[i] = minimum coins needed to make amount i; try all coin denominations.
+
+```java
+// LC 322 - Coin Change
+// IDEA: dp[i] = min coins for amount i; dp[i] = min(dp[i], dp[i-coin] + 1)
+// time = O(amount * coins), space = O(amount)
+public int coinChange(int[] coins, int amount) {
+    int[] dp = new int[amount + 1];
+    Arrays.fill(dp, amount + 1);
+    dp[0] = 0;
+    for (int i = 1; i <= amount; i++)
+        for (int coin : coins)
+            if (coin <= i) dp[i] = Math.min(dp[i], dp[i - coin] + 1);
+    return dp[amount] > amount ? -1 : dp[amount];
+}
+```
+
+### 2-3) Longest Increasing Subsequence (LC 300) — LIS DP / Binary Search
+> dp[i] = length of LIS ending at index i; optimized with patience sorting.
+
+```java
+// LC 300 - Longest Increasing Subsequence
+// IDEA: Binary search + tails array (patience sorting)
+// time = O(N log N), space = O(N)
+public int lengthOfLIS(int[] nums) {
+    List<Integer> tails = new ArrayList<>();
+    for (int num : nums) {
+        int l = 0, r = tails.size();
+        while (l < r) {
+            int mid = (l + r) / 2;
+            if (tails.get(mid) < num) l = mid + 1;
+            else r = mid;
+        }
+        if (l == tails.size()) tails.add(num);
+        else tails.set(l, num);
+    }
+    return tails.size();
+}
+```
 - **Convex Hull Trick**: For optimizing certain recurrence relations

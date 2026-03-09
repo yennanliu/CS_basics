@@ -34,3 +34,70 @@ Prefix Sum Query: To find the sum from index 1 to i, you sum the relevant BIT va
 
 
 - LC 307
+
+## LC Examples
+
+### 2-1) Range Sum Query - Mutable (LC 307) — BIT Point Update + Prefix Sum
+> BIT supports O(log N) point update and prefix sum query.
+
+```java
+// LC 307 - Range Sum Query - Mutable
+// IDEA: Binary Indexed Tree (Fenwick Tree)
+// time = O(log N) per update/query, space = O(N)
+class NumArray {
+    int[] bit, nums;
+    int n;
+    public NumArray(int[] nums) {
+        this.n = nums.length;
+        this.nums = new int[n];
+        this.bit = new int[n + 1];
+        for (int i = 0; i < n; i++) update(i, nums[i]);
+    }
+    public void update(int i, int val) {
+        int delta = val - nums[i];
+        nums[i] = val;
+        for (int x = i + 1; x <= n; x += x & (-x)) bit[x] += delta;
+    }
+    public int sumRange(int left, int right) {
+        return prefixSum(right + 1) - prefixSum(left);
+    }
+    private int prefixSum(int i) {
+        int sum = 0;
+        for (int x = i; x > 0; x -= x & (-x)) sum += bit[x];
+        return sum;
+    }
+}
+```
+
+### 2-2) Count of Smaller Numbers After Self (LC 315) — BIT with Coordinate Compression
+> Map values to ranks; for each element query how many smaller are already inserted.
+
+```java
+// LC 315 - Count of Smaller Numbers After Self
+// IDEA: BIT + coordinate compression — process right to left
+// time = O(N log N), space = O(N)
+public List<Integer> countSmaller(int[] nums) {
+    int n = nums.length;
+    int[] sorted = nums.clone();
+    Arrays.sort(sorted);
+    Map<Integer, Integer> rank = new HashMap<>();
+    int r = 1;
+    for (int v : sorted) if (!rank.containsKey(v)) rank.put(v, r++);
+    int[] bit = new int[r];
+    Integer[] result = new Integer[n];
+    for (int i = n - 1; i >= 0; i--) {
+        int pos = rank.get(nums[i]);
+        result[i] = query(bit, pos - 1);
+        update(bit, pos, r - 1);
+    }
+    return Arrays.asList(result);
+}
+private void update(int[] bit, int i, int n) {
+    for (; i <= n; i += i & (-i)) bit[i]++;
+}
+private int query(int[] bit, int i) {
+    int sum = 0;
+    for (; i > 0; i -= i & (-i)) sum += bit[i];
+    return sum;
+}
+```

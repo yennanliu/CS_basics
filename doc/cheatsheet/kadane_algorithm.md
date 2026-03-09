@@ -638,3 +638,62 @@ public int maximumSum(int[] arr) {
 - Handle edge cases (all negative, empty, single element)
 - Know product variant requires min tracking
 - Master circular array approach (total - minimum)
+
+## LC Examples
+
+### 2-1) Maximum Subarray (LC 53) — Kadane's Algorithm
+> Track local max ending at each index; reset when local max drops below current element.
+
+```java
+// LC 53 - Maximum Subarray
+// IDEA: Kadane — localMax = max(nums[i], nums[i] + localMax)
+// time = O(N), space = O(1)
+public int maxSubArray(int[] nums) {
+    int localMax = nums[0], globalMax = nums[0];
+    for (int i = 1; i < nums.length; i++) {
+        localMax = Math.max(nums[i], nums[i] + localMax);
+        globalMax = Math.max(globalMax, localMax);
+    }
+    return globalMax;
+}
+```
+
+### 2-2) Maximum Product Subarray (LC 152) — Track Min & Max
+> Track both max and min product (min can become max when multiplied by negative).
+
+```java
+// LC 152 - Maximum Product Subarray
+// IDEA: Kadane variant — track both curMax and curMin for sign flips
+// time = O(N), space = O(1)
+public int maxProduct(int[] nums) {
+    int curMax = nums[0], curMin = nums[0], globalMax = nums[0];
+    for (int i = 1; i < nums.length; i++) {
+        int temp = curMax;
+        curMax = Math.max(nums[i], Math.max(curMax * nums[i], curMin * nums[i]));
+        curMin = Math.min(nums[i], Math.min(temp * nums[i], curMin * nums[i]));
+        globalMax = Math.max(globalMax, curMax);
+    }
+    return globalMax;
+}
+```
+
+### 2-3) Maximum Sum Circular Subarray (LC 918) — Kadane + Total Sum Trick
+> Max circular subarray = max(normal max subarray, total sum - min subarray).
+
+```java
+// LC 918 - Maximum Sum Circular Subarray
+// IDEA: max circular = max(kadane result, total - minSubarray)
+// time = O(N), space = O(1)
+public int maxSubarraySumCircular(int[] nums) {
+    int totalSum = 0, curMax = 0, curMin = 0, maxSum = nums[0], minSum = nums[0];
+    for (int num : nums) {
+        curMax = Math.max(curMax + num, num);
+        maxSum = Math.max(maxSum, curMax);
+        curMin = Math.min(curMin + num, num);
+        minSum = Math.min(minSum, curMin);
+        totalSum += num;
+    }
+    // if all negative, maxSum is the answer (totalSum - minSum = 0 is invalid)
+    return maxSum > 0 ? Math.max(maxSum, totalSum - minSum) : maxSum;
+}
+```

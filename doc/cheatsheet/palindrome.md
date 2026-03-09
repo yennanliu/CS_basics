@@ -854,4 +854,77 @@ def precompute_palindromes(s):
 - **Backtracking**: Constraint satisfaction, combinatorial problems  
 - **Hash Tables**: Character frequency counting, anagram problems
 - **Sliding Window**: Substring problems with constraints
+
+## LC Examples
+
+### 2-1) Longest Palindromic Substring (LC 5) — Expand Around Center
+> For each center (char or between chars), expand outward while palindrome holds.
+
+```java
+// LC 5 - Longest Palindromic Substring
+// IDEA: Expand around center — O(N^2) with O(1) space
+// time = O(N^2), space = O(1)
+public String longestPalindrome(String s) {
+    int start = 0, maxLen = 1;
+    for (int i = 0; i < s.length(); i++) {
+        // odd length
+        int len1 = expand(s, i, i);
+        // even length
+        int len2 = expand(s, i, i + 1);
+        int len = Math.max(len1, len2);
+        if (len > maxLen) {
+            maxLen = len;
+            start = i - (len - 1) / 2;
+        }
+    }
+    return s.substring(start, start + maxLen);
+}
+private int expand(String s, int l, int r) {
+    while (l >= 0 && r < s.length() && s.charAt(l) == s.charAt(r)) { l--; r++; }
+    return r - l - 1;
+}
+```
+
+### 2-2) Valid Palindrome (LC 125) — Two Pointers
+> Skip non-alphanumeric characters and compare from both ends.
+
+```java
+// LC 125 - Valid Palindrome
+// IDEA: Two pointers — skip non-alphanumeric, compare chars
+// time = O(N), space = O(1)
+public boolean isPalindrome(String s) {
+    int l = 0, r = s.length() - 1;
+    while (l < r) {
+        while (l < r && !Character.isLetterOrDigit(s.charAt(l))) l++;
+        while (l < r && !Character.isLetterOrDigit(s.charAt(r))) r--;
+        if (Character.toLowerCase(s.charAt(l)) != Character.toLowerCase(s.charAt(r))) return false;
+        l++; r--;
+    }
+    return true;
+}
+```
+
+### 2-3) Palindromic Substrings (LC 647) — Count All Palindromes
+> Expand around each center; count every valid palindrome expansion.
+
+```java
+// LC 647 - Palindromic Substrings
+// IDEA: Expand around center — count all palindromes
+// time = O(N^2), space = O(1)
+public int countSubstrings(String s) {
+    int count = 0;
+    for (int i = 0; i < s.length(); i++) {
+        count += expand(s, i, i);     // odd length
+        count += expand(s, i, i + 1); // even length
+    }
+    return count;
+}
+private int expand(String s, int l, int r) {
+    int cnt = 0;
+    while (l >= 0 && r < s.length() && s.charAt(l) == s.charAt(r)) {
+        cnt++; l--; r++;
+    }
+    return cnt;
+}
+```
 - **Tree Algorithms**: Path problems, symmetric tree validation
