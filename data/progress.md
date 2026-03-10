@@ -1,6 +1,6 @@
 # Progress
 
-# 2026-03-10
+# 2026-03-11
 
 - weekly video
 - cheatsheet (LC examples)
@@ -177,7 +177,6 @@
 			- 1074
 	- LC 1047 (review)
 		- 1209
-		- 1544
 		- 316
 		- 394
 	- todo (20260308)
