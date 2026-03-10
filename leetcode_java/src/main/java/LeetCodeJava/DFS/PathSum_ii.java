@@ -50,6 +50,211 @@ import java.util.Map;
 
 public class PathSum_ii {
 
+    /** NOTE !!!
+     *
+     *  why we need `pre-order` traverse (TOP -> DOWN)
+     *  for this LC (but NOT `post-order`
+     *
+     *
+     *  also note that this is NOT a `prefix sum` LC problem.
+     *
+     *
+     *  | Traversal  | Use case                                  |
+     * | ---------- | ----------------------------------------- |
+     * | Pre-order  | build path top-down                       |
+     * | Post-order | compute subtree results (height, sum, DP) |
+     * | In-order   | BST problems                              |
+     *
+     *
+     *  -> (gpt)
+     *
+     *  Yes — your intuition is mostly correct.
+     *  For LeetCode 113 Path Sum II
+     *  we typically use **pre-order (top-down DFS)**.
+     *  Let's clarify **why**.
+     *
+     * ---
+     *
+     * # 1️⃣ Why Pre-Order (Top → Down)?
+     *
+     * In this problem we must build the **path from root → leaf**.
+     *
+     * At each step we need to:
+     *
+     * 1. **Add the current node to the path**
+     * 2. **Update the running sum**
+     * 3. **Check if we reached a leaf**
+     * 4. Continue exploring children
+     * 5. **Backtrack**
+     *
+     * That naturally matches **pre-order traversal**:
+     *
+     * ```
+     * process node
+     * → go left
+     * → go right
+     * ```
+     *
+     * Example tree:
+     *
+     * ```
+     *       5
+     *      / \
+     *     4   8
+     *    /
+     *  11
+     * ```
+     *
+     * DFS flow:
+     *
+     * ```
+     * 5
+     * 5 -> 4
+     * 5 -> 4 -> 11
+     * ```
+     *
+     * We build the **path progressively downward**.
+     *
+     * ---
+     *
+     * # 2️⃣ Why Post-Order Doesn't Fit Well
+     *
+     * Post-order order:
+     *
+     * ```
+     * left
+     * right
+     * node
+     * ```
+     *
+     * That means the **node is processed after its children**.
+     *
+     * But the path we need is:
+     *
+     * ```
+     * root → ... → leaf
+     * ```
+     *
+     * If using post-order:
+     *
+     * * You visit **children first**
+     * * But you **haven't added the parent to the path yet**
+     *
+     * Example problem:
+     *
+     * ```
+     * root = 5
+     * child = 4
+     * leaf = 11
+     * ```
+     *
+     * Post-order visits:
+     *
+     * ```
+     * 11
+     * 4
+     * 5
+     * ```
+     *
+     * But the required path must be:
+     *
+     * ```
+     * 5 → 4 → 11
+     * ```
+     *
+     * So you'd need to **reconstruct the path backwards**, which becomes messy.
+     *
+     * ---
+     *
+     * # 3️⃣ Why We Check Leaf After Adding Node
+     *
+     * Typical template:
+     *
+     * ```java
+     * path.add(node.val);
+     * remain -= node.val;
+     *
+     * if (leaf && remain == 0)
+     *     save path
+     * ```
+     *
+     * Because we want to verify:
+     *
+     * ```
+     * sum(root → leaf) == target
+     * ```
+     *
+     * We only know that **after including the leaf value**.
+     *
+     * ---
+     *
+     * # 4️⃣ Standard DFS + Backtracking Pattern
+     *
+     * This pattern appears in many tree problems:
+     *
+     * ```
+     * process node
+     * add to path
+     *
+     * if leaf:
+     *     check condition
+     *
+     * dfs(left)
+     * dfs(right)
+     *
+     * remove from path  // backtrack
+     * ```
+     *
+     * ---
+     *
+     * # 5️⃣ Visual Execution
+     *
+     * Example:
+     *
+     * ```
+     * target = 22
+     *
+     *       5
+     *      / \
+     *     4   8
+     *    /
+     *  11
+     * ```
+     *
+     * Execution:
+     *
+     * ```
+     * path=[5]
+     * path=[5,4]
+     * path=[5,4,11]
+     * leaf && sum=22 → save
+     * ```
+     *
+     * Then:
+     *
+     * ```
+     * backtrack → path=[5,4]
+     * backtrack → path=[5]
+     * ```
+     *
+     * ---
+     *
+     * ✅ **Key rule to remember**
+     *
+     * | Traversal  | Use case                                  |
+     * | ---------- | ----------------------------------------- |
+     * | Pre-order  | build path top-down                       |
+     * | Post-order | compute subtree results (height, sum, DP) |
+     * | In-order   | BST problems                              |
+     *
+     * ---
+     *
+     * ⭐ **Interview trick:**
+     * If a problem asks for **"root → leaf path"**,
+     * it is **almost always pre-order DFS + backtracking**.
+     *
+     */
+
     // V0
     // IDEA : DFS (pre-order traverse) + backtracking
     // NOTE !!! we have res attr, so can use this.res collect result
@@ -98,7 +303,6 @@ public class PathSum_ii {
     // V0-0-1
     // IDEA: DFS (pre-order traverse) + backtrack (gpt)
     // IDEA 1) DFS + backtracking
-
     List<List<Integer>> nodeList = new ArrayList<>();
 
     public List<List<Integer>> pathSum_0_0_1(TreeNode root, int targetSum) {
