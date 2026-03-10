@@ -1355,6 +1355,90 @@ Problem Analysis Flowchart:
 
 ### Common Patterns & Tricks
 
+#### **ASCII Case Difference Trick (|char1 - char2| == 32)**
+
+A powerful trick for detecting **same letter but different case** (e.g., `'a'` vs `'A'`):
+
+```
+Math.abs('a' - 'A') == 32   // true
+Math.abs('z' - 'Z') == 32   // true
+Math.abs('a' - 'B') == 33   // false (different letters)
+```
+
+**Why 32?** In ASCII, lowercase letters start at 97 (`'a'`) and uppercase at 65 (`'A'`). The difference is always exactly 32 for the same letter.
+
+**Classic Use Case: LC 1544 - Make The String Great (Stack)**
+> Remove adjacent pairs where same letter but different case until no such pair remains.
+
+```java
+// Java - Stack approach using |char1 - char2| == 32
+public String makeGood(String s) {
+    Stack<Character> stack = new Stack<>();
+
+    for (char curr : s.toCharArray()) {
+        if (!stack.isEmpty()) {
+            char prev = stack.peek();
+
+            /** NOTE !!
+             *  core idea:
+             *   The "Great" Condition: A pair is bad if |char1 - char2| == 32.
+             *   Math.abs('a' - 'A') == 32.
+             *   This checks if they are the same letter but different case.
+             */
+            if (Math.abs(curr - prev) == 32) {
+                stack.pop(); // They cancel out — remove the pair
+                continue;    // Move to next character
+            }
+        }
+        stack.push(curr);
+    }
+
+    StringBuilder sb = new StringBuilder();
+    for (char c : stack) {
+        sb.append(c);
+    }
+    return sb.toString();
+}
+```
+
+```java
+// Java - StringBuilder variant (more concise)
+public String makeGood(String s) {
+    StringBuilder sb = new StringBuilder();
+    for (char c : s.toCharArray()) {
+        int len = sb.length();
+        if (len > 0 && Math.abs(sb.charAt(len - 1) - c) == 32) {
+            sb.deleteCharAt(len - 1); // Remove last char (cancel pair)
+        } else {
+            sb.append(c);
+        }
+    }
+    return sb.toString();
+}
+```
+
+```python
+# Python equivalent
+def makeGood(s: str) -> str:
+    stack = []
+    for c in s:
+        if stack and abs(ord(stack[-1]) - ord(c)) == 32:
+            stack.pop()  # Cancel the pair
+        else:
+            stack.append(c)
+    return ''.join(stack)
+```
+
+**Key Insight:** This trick generalizes to any problem requiring adjacent pair cancellation where pairs are defined by ASCII distance. Combine with a Stack for O(N) time, O(N) space.
+
+| Check | Meaning | Example |
+|-------|---------|---------|
+| `Math.abs(a - b) == 32` | Same letter, different case | `'a'` and `'A'` |
+| `Character.toLowerCase(a) == Character.toLowerCase(b)` | Same letter (any case) | `'a'` and `'A'` |
+| `a == b` | Exact same character | `'a'` and `'a'` |
+
+---
+
 #### **String Building Performance**
 ```python
 # Python: Use list and join

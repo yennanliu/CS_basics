@@ -268,7 +268,6 @@
 			- 105,106
 			- 297
 		- gemini
-			- 108
 			- 938
 			- 95
 	- LC 337 House Robber II
