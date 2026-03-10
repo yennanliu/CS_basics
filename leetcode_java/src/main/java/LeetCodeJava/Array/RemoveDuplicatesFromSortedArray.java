@@ -141,6 +141,55 @@ public class RemoveDuplicatesFromSortedArray {
         return s+1;
     }
 
+    // V0-1
+    // IDEA: 2 POINTERS (gemini)
+    public int removeDuplicates_0_1(int[] nums) {
+        // 1. Edge Case: If empty or 1 element, it's already "unique"
+        if (nums == null || nums.length == 0)
+            return 0;
+        if (nums.length == 1)
+            return 1;
+
+        // 2. Two Pointers
+        // 'l' is the index of the last known unique element
+        int l = 0;
+
+        // 'r' scans the rest of the array
+        for (int r = 1; r < nums.length; r++) {
+            // If we find a value that is NOT a duplicate of our current unique element...
+            if (nums[r] != nums[l]) {
+                l++; // Move to the next "empty" slot for a unique value
+                nums[l] = nums[r]; // Copy the new unique value into that slot
+            }
+        }
+
+        // 3. Return the COUNT of unique elements (index + 1)
+        return l + 1;
+    }
+
+
+    // V0-2
+    // IDEA: 2 POINTERS (GPT)
+    public int removeDuplicates_0_2(int[] nums) {
+
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
+
+        int l = 0;
+
+        for (int r = 1; r < nums.length; r++) {
+            if (nums[r] != nums[l]) {
+                l++;
+                nums[l] = nums[r];
+            }
+        }
+
+        return l + 1;
+    }
+
+
+
     // V1
     // https://leetcode.com/problems/remove-duplicates-from-sorted-array/solutions/3416595/c-java-python-javascript-fully-explained-two-pointer/
     /**

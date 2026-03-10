@@ -372,11 +372,36 @@ public class Workspace22 {
     // 10.20 - 30 am
     public int removeDuplicates(int[] nums) {
         // edge
+        if(nums == null || nums.length <= 1){
+            return 0;
+        }
+
+        // 2 pointers (fast - slow ???)
+        int l = 0;
+        int r = 1;
+
+        while(r < nums.length){
+            // ???
+            if(nums[r] == nums[l]){
+                r += 1;
+            }
+            // ??? swap
+            // and move left pointer  ???
+            else{
+                int tmp = nums[r];
+                nums[r] = l;
+                nums[l] = tmp;
+                l += 1;
+            }
+        }
 
 
-
-        return 0;
+        return l;
     }
+
+
+
+
 
 
     // LC 113
