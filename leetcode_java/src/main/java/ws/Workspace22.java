@@ -556,6 +556,13 @@ public class Workspace22 {
 
 
 
+    // LC 1544
+    public String makeGood(String s) {
+
+        return null;
+    }
+
+
 
 
 
