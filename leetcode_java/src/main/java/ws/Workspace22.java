@@ -372,8 +372,11 @@ public class Workspace22 {
     // 10.20 - 30 am
     public int removeDuplicates(int[] nums) {
         // edge
-        if(nums == null || nums.length <= 1){
+        if(nums == null || nums.length == 0){
             return 0;
+        }
+        if(nums.length == 1){
+            return 1;
         }
 
         // 2 pointers (fast - slow ???)
@@ -388,16 +391,32 @@ public class Workspace22 {
             // ??? swap
             // and move left pointer  ???
             else{
-                int tmp = nums[r];
-                nums[r] = l;
-                nums[l] = tmp;
+                // note !!! WE MOVE left pointer first
                 l += 1;
+                /**  NOTE !!
+                 *
+                 * Overwriting vs. Swapping:
+                 * You don't actually need to swap.
+                 * Since the array is sorted,
+                 * you just need to copy the next unique element to the position
+                 * right after the current unique element.
+                 *
+                 */
+                int tmp = nums[r];
+                //nums[r] = l;
+                //nums[l] = tmp;
+                //l += 1;
+                nums[l] = nums[r]; // ???
             }
         }
 
 
-        return l;
+        // note !!! return `l+1` instead
+        return l + 1;
+        //return l;
     }
+
+
 
 
 
