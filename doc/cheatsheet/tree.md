@@ -217,15 +217,16 @@ When to use which traversal:
 
 **Step 1 — What does the problem ask for?**
 
-| Problem asks for...                        | Use                            |
-|--------------------------------------------|--------------------------------|
-| All root-to-leaf paths / path with sum     | Pre-order DFS + backtracking   |
-| Tree height / max depth                    | Post-order DFS                 |
-| Subtree property (sum, size, max)          | Post-order DFS                 |
-| BST sorted order / kth smallest            | In-order DFS                   |
-| Validate BST                               | In-order DFS                   |
-| Level-by-level / min depth                 | BFS                            |
-| Connect same-level nodes                   | BFS                            |
+| Problem asks for...                                    | Use                                          |
+|--------------------------------------------------------|----------------------------------------------|
+| All root-to-leaf paths / path with sum                 | Pre-order DFS + backtracking                 |
+| Count paths (any start/end) with target sum            | Pre-order DFS + prefix sum HashMap           |
+| Tree height / max depth                                | Post-order DFS                               |
+| Subtree property (sum, size, max)                      | Post-order DFS                               |
+| BST sorted order / kth smallest                        | In-order DFS                                 |
+| Validate BST                                           | In-order DFS                                 |
+| Level-by-level / min depth                             | BFS                                          |
+| Connect same-level nodes                               | BFS                                          |
 
 **Step 2 — Apply the pattern:**
 
@@ -233,6 +234,11 @@ When to use which traversal:
 Root-to-leaf path problem?
   → Pre-order DFS + backtracking
   → Pattern: add node → check leaf → recurse → remove node (backtrack)
+
+Path sum from ANY node to ANY node (downward)?
+  → Pre-order DFS + prefix sum HashMap (2-sum trick)
+  → Pattern: map.put(0,1) → curSum += val → check (curSum-target) in map
+             → add to map → recurse → backtrack (decrement map)
 
 Subtree computation (bottom-up)?
   → Post-order DFS
@@ -246,10 +252,14 @@ BST / sorted property?
 **Interview Trick (from LC 113):**
 > If the problem asks for **"root → leaf path"**, it is **almost always pre-order DFS + backtracking**.
 
+**Interview Trick (from LC 437):**
+> If the path **does NOT need to start/end at root/leaf** and asks for count,
+> use **Pre-order DFS + Prefix Sum HashMap** (the "2-sum on tree" pattern).
+
 #### Pre-order DFS + Backtracking Template (Java)
 
 ```java
-// Template for root-to-leaf path collection
+// Template for root-to-leaf path collection (LC 112 / 113 / 257)
 void dfs(TreeNode node, int remaining, List<Integer> path, List<List<Integer>> result) {
     if (node == null) return;
 
@@ -271,6 +281,62 @@ void dfs(TreeNode node, int remaining, List<Integer> path, List<List<Integer>> r
 }
 ```
 
+#### Pre-order DFS + Prefix Sum HashMap Template (Java)
+
+> Used when path can start/end at **any node** (not just root-to-leaf).
+> Inspired by LC 437 Path Sum III.
+
+**Core Idea — "2-Sum on Tree":**
+```
+curSum - targetSum = ancestorSum
+→ if ancestorSum exists in map, a valid sub-path ends at current node
+```
+
+**Why Pre-order?**
+- Prefix sums must be calculated **top-down** (pre-order)
+- Post-order would calculate subtree sums, not root-to-node prefix sums
+
+```java
+// Template: Pre-order DFS + Prefix Sum HashMap (LC 437)
+int count = 0;
+Map<Long, Integer> prefixMap = new HashMap<>();
+
+int pathSum(TreeNode root, int targetSum) {
+    prefixMap.put(0L, 1);  // base case: empty path has sum 0
+    dfs(root, 0L, targetSum);
+    return count;
+}
+
+void dfs(TreeNode node, long curSum, int targetSum) {
+    if (node == null) return;
+
+    // 1. Pre-order: update prefix sum with current node
+    curSum += node.val;
+
+    // 2. Check: curSum - targetSum = a previous prefix sum?
+    //    → means a valid sub-path ends here
+    //    (2-sum trick: curSum - ancestorSum = targetSum)
+    count += prefixMap.getOrDefault(curSum - targetSum, 0);
+
+    // 3. Record current prefix sum BEFORE recursing into children
+    prefixMap.put(curSum, prefixMap.getOrDefault(curSum, 0) + 1);
+
+    // 4. Recurse (pre-order: process node before children)
+    dfs(node.left, curSum, targetSum);
+    dfs(node.right, curSum, targetSum);
+
+    // 5. BACKTRACK: remove curSum so sibling branches are not affected
+    prefixMap.put(curSum, prefixMap.get(curSum) - 1);
+}
+```
+
+**Key differences vs. root-to-leaf backtracking:**
+
+| Pattern                      | Path constraint          | Data structure        | Backtrack what?         |
+|------------------------------|--------------------------|-----------------------|-------------------------|
+| DFS + path list + backtrack  | Root → leaf only         | `List<Integer>` path  | Remove last element     |
+| DFS + prefix sum + backtrack | Any node → any node ↓   | `Map<Long, Integer>`  | Decrement map count     |
+
 #### Classic LC Problems by Traversal Type
 
 **Pre-order DFS + Backtracking (root → leaf path)**
@@ -280,7 +346,7 @@ void dfs(TreeNode node, int remaining, List<Integer> path, List<List<Integer>> r
 | 112   | Path Sum                       | Pre-order DFS, check leaf with remaining sum  |
 | 113   | Path Sum II                    | Pre-order DFS + backtrack, collect all paths  |
 | 257   | Binary Tree Paths              | Pre-order DFS + backtrack, build string paths |
-| 437   | Path Sum III                   | Pre-order DFS + prefix sum map                |
+| 437   | Path Sum III                   | Pre-order DFS + prefix sum HashMap, 2-sum trick: check (curSum-target) in map |
 | 129   | Sum Root to Leaf Numbers       | Pre-order DFS, carry running number           |
 
 **Post-order DFS (bottom-up subtree computation)**
