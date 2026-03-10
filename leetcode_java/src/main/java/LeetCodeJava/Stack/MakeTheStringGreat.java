@@ -60,6 +60,12 @@ public class MakeTheStringGreat {
 
     // V0-1
     // IDEA: STACK (gemini)
+    /** NOTE !!
+     *
+     *  core idea:
+     *
+     *   The "Great" Condition: A pair is bad if |char1 - char2| == 32.
+     */
     public String makeGood_0_1(String s) {
         // 1. Edge cases
         if (s == null || s.length() < 2) {
@@ -73,6 +79,12 @@ public class MakeTheStringGreat {
             if (!stack.isEmpty()) {
                 char prev = stack.peek();
 
+                /** NOTE !!
+                 *
+                 *  core idea:
+                 *
+                 *   The "Great" Condition: A pair is bad if |char1 - char2| == 32.
+                 */
                 // The "Bad Pair" check:
                 // Math.abs('a' - 'A') is 32.
                 // This checks if they are the same letter but different case.
@@ -95,8 +107,25 @@ public class MakeTheStringGreat {
 
 
     // V0-2
-    // IDEA: STACK (GPT)
+    // IDEA: STRING  + |char1 - char2| == 32. check (gemini)
     public String makeGood_0_2(String s) {
+
+        StringBuilder sb = new StringBuilder();
+        for (char c : s.toCharArray()) {
+            int len = sb.length();
+            if (len > 0 && Math.abs(sb.charAt(len - 1) - c) == 32) {
+                sb.deleteCharAt(len - 1);
+            } else {
+                sb.append(c);
+            }
+        }
+        return sb.toString();
+
+    }
+
+    // V0-3
+    // IDEA: STACK (GPT)
+    public String makeGood_0_3(String s) {
 
         if (s == null || s.length() <= 1) {
             return s;
@@ -106,6 +135,12 @@ public class MakeTheStringGreat {
 
         for (char ch : s.toCharArray()) {
 
+            /** NOTE !!
+             *
+             *  core idea:
+             *
+             *   The "Great" Condition: A pair is bad if |char1 - char2| == 32.
+             */
             if (!st.isEmpty() && Math.abs(st.peek() - ch) == 32) {
                 st.pop();
             } else {
@@ -200,6 +235,6 @@ public class MakeTheStringGreat {
     // V3
 
 
-    
+
 
 }
