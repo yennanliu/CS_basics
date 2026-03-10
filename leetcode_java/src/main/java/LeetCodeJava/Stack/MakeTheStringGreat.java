@@ -58,6 +58,71 @@ public class MakeTheStringGreat {
 //
 //    }
 
+    // V0-1
+    // IDEA: STACK (gemini)
+    public String makeGood_0_1(String s) {
+        // 1. Edge cases
+        if (s == null || s.length() < 2) {
+            return s;
+        }
+
+        // 2. Use a Stack (or a Deque for better performance in Java)
+        Stack<Character> stack = new Stack<>();
+
+        for (char curr : s.toCharArray()) {
+            if (!stack.isEmpty()) {
+                char prev = stack.peek();
+
+                // The "Bad Pair" check:
+                // Math.abs('a' - 'A') is 32.
+                // This checks if they are the same letter but different case.
+                if (Math.abs(curr - prev) == 32) {
+                    stack.pop(); // They react! Remove them.
+                    continue; // Move to next character
+                }
+            }
+            stack.push(curr);
+        }
+
+        // 3. Build result from the remaining characters in the stack
+        StringBuilder sb = new StringBuilder();
+        for (char c : stack) {
+            sb.append(c);
+        }
+
+        return sb.toString();
+    }
+
+
+    // V0-2
+    // IDEA: STACK (GPT)
+    public String makeGood_0_2(String s) {
+
+        if (s == null || s.length() <= 1) {
+            return s;
+        }
+
+        Stack<Character> st = new Stack<>();
+
+        for (char ch : s.toCharArray()) {
+
+            if (!st.isEmpty() && Math.abs(st.peek() - ch) == 32) {
+                st.pop();
+            } else {
+                st.push(ch);
+            }
+        }
+
+        StringBuilder sb = new StringBuilder();
+
+        for (char c : st) {
+            sb.append(c);
+        }
+
+        return sb.toString();
+    }
+
+
     // V1
     // IDEA: STACK
     // https://leetcode.com/problems/make-the-string-great/solutions/4975146/9844easy-soluitonwith-explanation-by-mra-mqgb/
@@ -135,5 +200,6 @@ public class MakeTheStringGreat {
     // V3
 
 
+    
 
 }
