@@ -202,6 +202,118 @@ When to use which traversal:
    → Use NODE PATH pattern (Subtree serialization with post-order)
 ```
 
+### 0-4) Traversal Quick-Reference Table (Interview Cheat Sheet)
+
+> Inspired by LC 113 Path Sum II — key insight: the traversal choice determines the algorithm structure.
+
+| Traversal  | Order              | Core Use Case                              | When to Choose                                                      |
+|------------|--------------------|--------------------------------------------|---------------------------------------------------------------------|
+| Pre-order  | root → left → right | Build path **top-down**                  | root-to-leaf paths, carry parent info to children, DFS + backtrack  |
+| Post-order | left → right → root | Compute subtree results **bottom-up**    | height/depth, subtree sum, max path, DP on trees                    |
+| In-order   | left → root → right | Process nodes in **sorted order**        | BST validation, kth smallest, sorted traversal                      |
+| BFS        | level by level      | Level-by-level processing                | min depth, zigzag, right side view, connect next pointer            |
+
+#### Interview Quick-Check Tips
+
+**Step 1 — What does the problem ask for?**
+
+| Problem asks for...                        | Use                            |
+|--------------------------------------------|--------------------------------|
+| All root-to-leaf paths / path with sum     | Pre-order DFS + backtracking   |
+| Tree height / max depth                    | Post-order DFS                 |
+| Subtree property (sum, size, max)          | Post-order DFS                 |
+| BST sorted order / kth smallest            | In-order DFS                   |
+| Validate BST                               | In-order DFS                   |
+| Level-by-level / min depth                 | BFS                            |
+| Connect same-level nodes                   | BFS                            |
+
+**Step 2 — Apply the pattern:**
+
+```
+Root-to-leaf path problem?
+  → Pre-order DFS + backtracking
+  → Pattern: add node → check leaf → recurse → remove node (backtrack)
+
+Subtree computation (bottom-up)?
+  → Post-order DFS
+  → Pattern: recurse left, recurse right → combine at current node
+
+BST / sorted property?
+  → In-order DFS
+  → Pattern: recurse left → process node → recurse right
+```
+
+**Interview Trick (from LC 113):**
+> If the problem asks for **"root → leaf path"**, it is **almost always pre-order DFS + backtracking**.
+
+#### Pre-order DFS + Backtracking Template (Java)
+
+```java
+// Template for root-to-leaf path collection
+void dfs(TreeNode node, int remaining, List<Integer> path, List<List<Integer>> result) {
+    if (node == null) return;
+
+    // 1. Pre-order: add current node FIRST
+    path.add(node.val);
+    remaining -= node.val;
+
+    // 2. Check leaf condition
+    if (node.left == null && node.right == null && remaining == 0) {
+        result.add(new ArrayList<>(path));  // save a COPY
+    } else {
+        // 3. Recurse
+        dfs(node.left, remaining, path, result);
+        dfs(node.right, remaining, path, result);
+    }
+
+    // 4. Backtrack: remove current node
+    path.remove(path.size() - 1);
+}
+```
+
+#### Classic LC Problems by Traversal Type
+
+**Pre-order DFS + Backtracking (root → leaf path)**
+
+| LC #  | Problem                        | Key Idea                                      |
+|-------|--------------------------------|-----------------------------------------------|
+| 112   | Path Sum                       | Pre-order DFS, check leaf with remaining sum  |
+| 113   | Path Sum II                    | Pre-order DFS + backtrack, collect all paths  |
+| 257   | Binary Tree Paths              | Pre-order DFS + backtrack, build string paths |
+| 437   | Path Sum III                   | Pre-order DFS + prefix sum map                |
+| 129   | Sum Root to Leaf Numbers       | Pre-order DFS, carry running number           |
+
+**Post-order DFS (bottom-up subtree computation)**
+
+| LC #  | Problem                              | Key Idea                                         |
+|-------|--------------------------------------|--------------------------------------------------|
+| 104   | Maximum Depth of Binary Tree         | Post-order, return max(left, right) + 1          |
+| 543   | Diameter of Binary Tree              | Post-order, track max left+right at each node    |
+| 124   | Binary Tree Maximum Path Sum         | Post-order, track global max through root        |
+| 110   | Balanced Binary Tree                 | Post-order, return height or -1 if unbalanced    |
+| 572   | Subtree of Another Tree              | Post-order serialization or recursive match      |
+| 236   | Lowest Common Ancestor               | Post-order, return node when both targets found  |
+
+**In-order DFS (BST / sorted order)**
+
+| LC #  | Problem                              | Key Idea                                         |
+|-------|--------------------------------------|--------------------------------------------------|
+| 98    | Validate Binary Search Tree          | In-order, check ascending order                  |
+| 230   | Kth Smallest Element in BST          | In-order traversal, count to k                   |
+| 501   | Find Mode in BST                     | In-order, track current/prev with count          |
+| 538   | Convert BST to Greater Tree          | Reverse in-order (right → root → left)           |
+| 700   | Search in a Binary Search Tree       | In-order search leveraging BST property          |
+
+**BFS / Level-order**
+
+| LC #  | Problem                              | Key Idea                                         |
+|-------|--------------------------------------|--------------------------------------------------|
+| 102   | Binary Tree Level Order Traversal    | BFS with queue, collect each level               |
+| 111   | Minimum Depth of Binary Tree         | BFS, return level when first leaf found          |
+| 116   | Populating Next Right Pointers       | BFS level-order, connect siblings                |
+| 199   | Binary Tree Right Side View          | BFS, take last node of each level                |
+| 103   | Zigzag Level Order Traversal         | BFS + alternate direction per level              |
+
 ## 1) Tree Templates & Algorithms
 
 ### 1.1) Universal Tree Template
