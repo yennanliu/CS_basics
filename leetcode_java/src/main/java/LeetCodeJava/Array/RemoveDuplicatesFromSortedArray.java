@@ -141,6 +141,56 @@ public class RemoveDuplicatesFromSortedArray {
         return s+1;
     }
 
+    // V0-0-1
+    // IDEA: 2 POINTERS (fixed by gemini)
+    public int removeDuplicates_0_0_1(int[] nums) {
+        // edge
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
+        if (nums.length == 1) {
+            return 1;
+        }
+
+        // 2 pointers (fast - slow ???)
+        int l = 0;
+        int r = 1;
+
+        /** NOTE: we can go with `for loop` below as well (V0-0-1) */
+        while (r < nums.length) {
+            // case 1) nums[r] == nums[l]
+            if (nums[r] == nums[l]) {
+                r += 1;
+            }
+            // case 2) nums[r] != nums[l]
+            else {
+                // note !!! WE MOVE left pointer first
+                l += 1;
+                /**  NOTE !!
+                 *
+                 *  NO need to `swap`
+                 *
+                 * Overwriting vs. Swapping:
+                 * You don't actually need to swap.
+                 * Since the array is sorted,
+                 * you just need to copy the next unique element to the position
+                 * right after the current unique element.
+                 *
+                 */
+//                int tmp = nums[r];
+//                //nums[r] = l;
+//                //nums[l] = tmp;
+//                //l += 1;
+                nums[l] = nums[r]; // ???
+            }
+        }
+
+        // note !!! return `l+1` instead
+        return l + 1;
+        //return l;
+    }
+
+
     // V0-1
     // IDEA: 2 POINTERS (gemini)
     public int removeDuplicates_0_1(int[] nums) {
