@@ -609,11 +609,65 @@ public class Workspace22 {
     // 7.28 - 38 am
     /**
      *
+     *  ->  convert it to a height-balanced binary search tree.
      *
+     *  NOTE:
+     *   - nums: where the elements are sorted in ascending order,
+     *
+     *   - A height-balanced binary tree is a
+     *    binary tree in which the depth of
+     *   the two subtrees of every node
+     *   never differs by more than one.
+     *
+     *
+     *  ---------------
+     *
+     *   IDEA 1) DFS (inorder traverse ????)
+     *
+     *     BST:  left < root < right
+     *      -> so if visit in `in-order traverse`,
+     *         the value is an ascending arr (small-> big)
+     *
+     *  ---------------
      */
     public TreeNode sortedArrayToBST(int[] nums) {
+        // edge
+        if(nums == null || nums.length == 0){
+            return null;
+        }
+        if(nums.length == 1){
+            return new TreeNode(nums[0]);
+        }
 
-        return null;
+        // ????
+        List<Integer> list = new ArrayList<>();
+        for(int x: nums){
+            list.add(x);
+        }
+
+        return buildBST(list);
+    }
+
+    private TreeNode buildBST(List<Integer> list){
+        // edge
+        if(list == null || list.size() == 0){
+            return null;
+        }
+
+        // ????
+      //  TreeNode _left = buildBST(nums)
+        TreeNode root = new TreeNode(list.get(0));
+        int rootIdx = list.indexOf(root.val); // ??????
+        // /???
+        TreeNode _left = buildBST(list.subList(rootIdx + 1, list.size() -1));
+        TreeNode _right = buildBST(list.subList(rootIdx + 1, list.size() -1));
+
+        // ???
+        root.left = _left;
+        root.right = _right;
+
+
+        return root;
     }
 
 

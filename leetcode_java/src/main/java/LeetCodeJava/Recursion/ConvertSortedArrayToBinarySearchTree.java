@@ -43,9 +43,37 @@ import java.util.Queue;
 public class ConvertSortedArrayToBinarySearchTree {
 
     // V0
-//    public TreeNode sortedArrayToBST(int[] nums) {
-//
-//    }
+    // IDEA: DFS build tree + `MID point` + BST property (fixed by gemini)
+    public TreeNode sortedArrayToBST(int[] nums) {
+        if (nums == null || nums.length == 0)
+            return null;
+
+        // Use a helper that works with indices instead of creating new lists
+        return buildHelper(nums, 0, nums.length - 1);
+    }
+
+    private TreeNode buildHelper(int[] nums, int left, int right) {
+        // Base Case: If the range is invalid, return null
+        if (left > right) {
+            return null;
+        }
+
+        /** NOTE !!! core trick
+         *
+         *   -> Pick the middle element to ensure height balance
+         */
+        // 1. Pick the middle element to ensure height balance
+        int mid = left + (right - left) / 2;
+        TreeNode root = new TreeNode(nums[mid]);
+
+        // 2. Recursively build the left subtree using the left half
+        root.left = buildHelper(nums, left, mid - 1);
+
+        // 3. Recursively build the right subtree using the right half
+        root.right = buildHelper(nums, mid + 1, right);
+
+        return root;
+    }
 
     // V0-0-1
     // IDEA: DFS build tree + BST property (fixed by gemini)
