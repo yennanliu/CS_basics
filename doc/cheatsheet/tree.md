@@ -217,16 +217,18 @@ When to use which traversal:
 
 **Step 1 — What does the problem ask for?**
 
-| Problem asks for...                                    | Use                                          |
-|--------------------------------------------------------|----------------------------------------------|
-| All root-to-leaf paths / path with sum                 | Pre-order DFS + backtracking                 |
-| Count paths (any start/end) with target sum            | Pre-order DFS + prefix sum HashMap           |
-| Tree height / max depth                                | Post-order DFS                               |
-| Subtree property (sum, size, max)                      | Post-order DFS                               |
-| BST sorted order / kth smallest                        | In-order DFS                                 |
-| Validate BST                                           | In-order DFS                                 |
-| Level-by-level / min depth                             | BFS                                          |
-| Connect same-level nodes                               | BFS                                          |
+| Problem asks for...                                    | Use                                                    |
+|--------------------------------------------------------|--------------------------------------------------------|
+| All root-to-leaf paths / path with sum                 | Pre-order DFS + backtracking                           |
+| Count paths (any start/end) with target sum            | Pre-order DFS + prefix sum HashMap                     |
+| Tree height / max depth                                | Post-order DFS                                         |
+| Subtree property (sum, size, max)                      | Post-order DFS                                         |
+| Identify / compare subtrees by structure               | Post-order DFS + serialize `val,left,right` + HashMap  |
+| Find duplicate subtrees                                | Post-order DFS + subtree serialization + HashMap count |
+| BST sorted order / kth smallest                        | In-order DFS                                           |
+| Validate BST                                           | In-order DFS                                           |
+| Level-by-level / min depth                             | BFS                                                    |
+| Connect same-level nodes                               | BFS                                                    |
 
 **Step 2 — Apply the pattern:**
 
@@ -243,6 +245,12 @@ Path sum from ANY node to ANY node (downward)?
 Subtree computation (bottom-up)?
   → Post-order DFS
   → Pattern: recurse left, recurse right → combine at current node
+
+Identify or compare subtrees by structure?
+  → Post-order DFS + serialize "val,left,right" + HashMap
+  → Pattern: serialize(left) + serialize(right) → build key "val,L,R"
+             → map.getOrDefault(key,0) == 1 → duplicate! → add to result
+             → map.put(key, count+1) → return key to parent
 
 BST / sorted property?
   → In-order DFS
@@ -337,6 +345,103 @@ void dfs(TreeNode node, long curSum, int targetSum) {
 | DFS + path list + backtrack  | Root → leaf only         | `List<Integer>` path  | Remove last element     |
 | DFS + prefix sum + backtrack | Any node → any node ↓   | `Map<Long, Integer>`  | Decrement map count     |
 
+#### Post-order DFS + Node Path Serialization Template (Java)
+
+> Used when you need to **identify or compare subtrees** by structure + values.
+> Inspired by LC 652 Find Duplicate Subtrees.
+
+**Core Idea — Subtree Fingerprinting:**
+```
+Serialize each subtree as a unique string: "val,left,right"
+  → null nodes become "#" (marker) to preserve tree structure
+  → Store in Map<String, Integer> to count occurrences
+  → If count reaches 2, it's a duplicate → add to result
+```
+
+**Why Post-order?**
+- Must know left and right subtree identities **before** building current node's string
+- Children are processed first (bottom-up) → then combined at parent
+- Pre-order would build the string before knowing children's structure
+
+**Why include `#` for null?**
+- Prevents ambiguity: `"1,2"` vs `"12"` — delimiter alone is not enough
+- `"1,#,#"` vs `"1,2,#"` — null markers distinguish leaf from internal node
+
+```java
+// Template: Post-order DFS + Subtree Serialization (LC 652)
+Map<String, Integer> pathMap = new HashMap<>();  // { serialized_string : count }
+List<TreeNode> result = new ArrayList<>();
+
+List<TreeNode> findDuplicateSubtrees(TreeNode root) {
+    serialize(root);
+    return result;
+}
+
+private String serialize(TreeNode node) {
+    if (node == null) {
+        return "#";  // null marker — preserves tree structure
+    }
+
+    // 1. Post-order: recurse into children FIRST
+    String left  = serialize(node.left);
+    String right = serialize(node.right);
+
+    // 2. Build current subtree's unique identity
+    //    Use delimiter to prevent "1,11" vs "11,1" ambiguity
+    String key = node.val + "," + left + "," + right;
+
+    // 3. Count occurrences
+    int count = pathMap.getOrDefault(key, 0);
+
+    // 4. Add to result ONLY when count == 1 (second occurrence = first duplicate)
+    //    count == 1 means: this subtree appeared before, so current is a duplicate
+    if (count == 1) {
+        result.add(node);
+    }
+
+    // 5. Update count regardless
+    pathMap.put(key, count + 1);
+
+    // 6. Return serialization so parent can use it
+    return key;
+}
+```
+
+**Serialization format — why `val,left,right` works:**
+
+```
+Tree:       1
+           / \
+          2   3
+         /
+        4
+
+Serialization (post-order):
+  node 4 → "4,#,#"
+  node 2 → "2,4,#,#,#"    (val=2, left="4,#,#", right="#")
+  node 3 → "3,#,#"
+  node 1 → "1,2,4,#,#,#,3,#,#"
+```
+
+**Duplicate detection logic:**
+```
+count == 0  → first time seen, just record
+count == 1  → seen exactly once before → current is a DUPLICATE → add to result
+count >= 2  → already recorded, skip (avoid adding same duplicate multiple times)
+```
+
+**Interview Trick (from LC 652):**
+> If the problem asks to **identify/compare subtrees by structure**,
+> use **Post-order DFS + serialize as `"val,left,right"` string + HashMap**.
+
+**Pattern summary — 3 post-order DFS variants:**
+
+| Pattern                           | Returns from DFS   | Map key            | Use case                          |
+|-----------------------------------|--------------------|--------------------|------------------------------------|
+| Height computation                | `int` (height)     | —                  | Depth, balance, diameter           |
+| Subtree serialization + count     | `String` (serial)  | serialized string  | Duplicate subtrees (LC 652)        |
+| Subtree sum / DP                  | `int` (result)     | —                  | Max path sum, subtree sum (LC 124) |
+
 #### Classic LC Problems by Traversal Type
 
 **Pre-order DFS + Backtracking (root → leaf path)**
@@ -351,14 +456,15 @@ void dfs(TreeNode node, long curSum, int targetSum) {
 
 **Post-order DFS (bottom-up subtree computation)**
 
-| LC #  | Problem                              | Key Idea                                         |
-|-------|--------------------------------------|--------------------------------------------------|
-| 104   | Maximum Depth of Binary Tree         | Post-order, return max(left, right) + 1          |
-| 543   | Diameter of Binary Tree              | Post-order, track max left+right at each node    |
-| 124   | Binary Tree Maximum Path Sum         | Post-order, track global max through root        |
-| 110   | Balanced Binary Tree                 | Post-order, return height or -1 if unbalanced    |
-| 572   | Subtree of Another Tree              | Post-order serialization or recursive match      |
-| 236   | Lowest Common Ancestor               | Post-order, return node when both targets found  |
+| LC #  | Problem                              | Key Idea                                                     |
+|-------|--------------------------------------|--------------------------------------------------------------|
+| 104   | Maximum Depth of Binary Tree         | Post-order, return max(left, right) + 1                      |
+| 543   | Diameter of Binary Tree              | Post-order, track max left+right at each node                |
+| 124   | Binary Tree Maximum Path Sum         | Post-order, track global max through root                    |
+| 110   | Balanced Binary Tree                 | Post-order, return height or -1 if unbalanced                |
+| 572   | Subtree of Another Tree              | Post-order serialization or recursive match                  |
+| 236   | Lowest Common Ancestor               | Post-order, return node when both targets found              |
+| 652   | Find Duplicate Subtrees              | Post-order + serialize subtree → `val,left,right` + HashMap |
 
 **In-order DFS (BST / sorted order)**
 
