@@ -557,10 +557,53 @@ public class Workspace22 {
 
 
     // LC 1544
+    // 7.07 m- 17 am
+    /**
+     * -> Return the string after making it good.
+     * The answer is guaranteed to be unique
+     * under the given constraints.
+     *
+     * Notice that an empty string is also good.
+     *
+     *
+     * ---------------
+     *
+     *  IDEA 1) STACK
+     *
+     *
+     * ---------------
+     *
+     *
+     */
     public String makeGood(String s) {
+        // edge
+        if(s == null || s.isEmpty() || s.length() == 1){
+            return s;
+        }
 
-        return null;
+        Stack<String> st = new Stack<>();
+        for(char ch: s.toCharArray()){
+            // ????
+            String str = String.valueOf(ch);
+            if(!st.isEmpty() && ( st.peek().toLowerCase().equals(str) || st.peek().toUpperCase().equals(str) )){
+                // ???
+                if(!st.peek().equals(str)){
+                    st.pop();
+                }
+            }else{
+                st.add(str);
+            }
+        }
+
+        StringBuilder sb = new StringBuilder();
+        for(String x: st){
+            sb.append(x);
+        }
+
+        return sb.toString();
     }
+
+
 
 
 
