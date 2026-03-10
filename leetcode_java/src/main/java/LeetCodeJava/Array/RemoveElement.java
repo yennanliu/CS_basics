@@ -83,6 +83,61 @@ class RemoveElement {
         return l;
     }
 
+    // V0-0-0-1
+    // IDEA: 2 POINTERS ( left, right pointer (0, n-1) )
+    // IDEA 1) 2 POINTERS
+    public int removeElement_0_0_0_1(int[] nums, int val) {
+        // edge
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
+        if (nums.length == 1) {
+            return nums[0] == val ? 0 : 1;
+        }
+
+        int n = nums.length;
+        int l = 0;
+        int r = n - 1;
+
+        //  >= ????
+        while (r >= l) {
+            /** NOTE !!!
+             *
+             *  there are ONLY 2 simple cases:
+             *
+             *   1. nums[l] == val
+             *   2. nums[l] != val
+             *
+             *
+             *   NOTE !!!
+             *      -> we are NOT taking `nums[r] val` as one of the cases,
+             *         nums[r] just serves as a `candidate list` that can be used
+             *         for nums[l] val replacement (when `val` is met)
+             */
+            if (nums[l] == val) {
+                int tmp = nums[l];
+                nums[l] = nums[r];
+                nums[r] = tmp;
+                // ???
+                // since nums[l] == val, so we are sure the
+                // swapped nums[r] MUST == val,
+                // so we need to move right pointer (r -= 1)
+                r -= 1;
+            }
+
+            //  ???
+            // if(nums[l] != val)
+            else {
+                l += 1;
+            }
+
+        }
+
+        // NOTE !!! // When l > r, 'l' is exactly the number of non-val elements.
+        return l; // ???
+    }
+
+
     // V0-0-1
     // IDEA : 2 POINTERS
     /**

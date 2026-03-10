@@ -54,7 +54,6 @@
 	- LC 344
 		- gpt
 			- 206
-			- 27
 		- gemini
 	- LC 88
 		- gpt

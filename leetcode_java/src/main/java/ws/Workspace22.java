@@ -417,6 +417,69 @@ public class Workspace22 {
     }
 
 
+    // LC 27
+    // 10.57 - 11.07 am
+    /**
+     *
+     *  -------------------
+     *
+     *  IDEA 1) 2 POINTERS
+     *    - left, right pointer ???
+     *    - 0, nume.len - 1
+     *
+     *  -------------------
+     *
+     */
+    // IDEA 1) 2 POINTERS
+    public int removeElement(int[] nums, int val) {
+        // edge
+        if(nums == null || nums.length == 0){
+            return 0;
+        }
+        if(nums.length == 1){
+            return nums[0] == val ? 0: 1;
+        }
+
+        int n = nums.length;
+        int l = 0;
+        int r = n - 1;
+
+        //  >= ????
+        while(r >= l){
+
+//            if(nums[r] != val){
+//                r -= 1;
+//            }
+//
+//            // ????
+//            if(nums[l] != val){
+//                l += 1;
+//            }
+            if(nums[l] == val){
+                int tmp = nums[l];
+                nums[l] = nums[r];
+                nums[r] = tmp;
+                // ???
+                // since nums[l] == val, so we are sure the
+                // swapped nums[r] MUST == val,
+                // so we need to move right pointer (r -= 1)
+                r -= 1;
+            }
+
+            //  ???
+            // if(nums[l] != val)
+            else{
+                l += 1;
+            }
+
+
+        }
+
+        return l + 1; // ???
+    }
+
+
+
 
 
 
