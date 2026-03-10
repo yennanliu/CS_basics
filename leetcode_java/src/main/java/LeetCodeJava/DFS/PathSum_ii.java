@@ -51,7 +51,7 @@ import java.util.Map;
 public class PathSum_ii {
 
     // V0
-    // IDEA : DFS + backtracking
+    // IDEA : DFS (pre-order traverse) + backtracking
     // NOTE !!! we have res attr, so can use this.res collect result
     private List<List<Integer>> res = new ArrayList<>();
 
@@ -94,6 +94,55 @@ public class PathSum_ii {
          cur.remove(cur.size() - 1);
     }
 
+
+    // V0-0-1
+    // IDEA: DFS (pre-order traverse) + backtrack (gpt)
+    // IDEA 1) DFS + backtracking
+
+    List<List<Integer>> nodeList = new ArrayList<>();
+
+    public List<List<Integer>> pathSum_0_0_1(TreeNode root, int targetSum) {
+
+        if (root == null) {
+            return nodeList;
+        }
+
+        pathSumHelper(root, targetSum, 0, new ArrayList<>());
+
+        return nodeList;
+    }
+
+    private void pathSumHelper(TreeNode root, int targetSum, int curSum, List<Integer> cache) {
+
+        if (root == null) {
+            return;
+        }
+
+        /** NOTE !!!
+         *
+         *  DFS (pre-order traverse) !!!!
+         *
+         *  (NOT post-order)
+         */
+        // add current node
+        curSum += root.val;
+        cache.add(root.val);
+
+        // check leaf
+        if (root.left == null && root.right == null && curSum == targetSum) {
+            nodeList.add(new ArrayList<>(cache));
+        }
+
+        // DFS
+        pathSumHelper(root.left, targetSum, curSum, cache);
+        pathSumHelper(root.right, targetSum, curSum, cache);
+
+        // backtrack
+        cache.remove(cache.size() - 1);
+    }
+
+
+
     // V0-1
     // IDEA: DFS + MAP record path + backtrack (fixed by gpt)
     /**
@@ -121,7 +170,7 @@ public class PathSum_ii {
         // DFS
         getPathHelper(root, 0, new ArrayList<>());
 
-        System.out.println(">>> sumToPathsMap = " + sumToPathsMap);
+        //System.out.println(">>> sumToPathsMap = " + sumToPathsMap);
 
         // retrieve paths for targetSum
         if (sumToPathsMap.containsKey(targetSum)) {
@@ -265,6 +314,9 @@ public class PathSum_ii {
         this.recurseTree(root, sum, pathNodes, pathsList);
         return pathsList;
     }
+
+
+
 
 
 }

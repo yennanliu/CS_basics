@@ -166,7 +166,7 @@ public class Workspace22 {
     int nodeCnt = 0; // ???
     // ????
     Map<Integer, Integer> map = new HashMap<>(); // { prefix_sum : cnt }
-    public int pathSum(TreeNode root, int targetSum) {
+    public int pathSum_99(TreeNode root, int targetSum) {
         // edge
         if(root == null){
             return 0;
@@ -354,13 +354,96 @@ public class Workspace22 {
     // LC 26
     // 7.40 - 8.00 am
     /**
+     *  -> remove the duplicates in-place such that each unique
+     *  element appears only once.
+     *  The relative order of the elements should be kept the same.
+     *
+     *  --------------
+     *
+     *   IDEA 1) 2 POINTERS ???
+     *     - slow - fast pointers
+     *
+     *   IDEA 2) BRUTE FORCE ???
      *
      *
+     *  --------------
      *
      */
     public int removeDuplicates(int[] nums) {
+        // edge
+
+
 
         return 0;
+    }
+
+
+    // LC 113
+    // 7.55 - 8.05 am
+    /**
+     *  -> return all root-to-leaf paths
+     *  where the sum of the node values
+     *  in the path equals targetSum.
+     *
+     *
+     *  ---------------
+     *
+     *   IDEA 1) DFS (post traverse) + path sum + hashmap + backtrack ????
+     *
+     *
+     *  ---------------
+     *
+     */
+    // IDEA 1) DFS (post traverse) + path sum + hashmap + backtrack ????
+    //Map<I>
+    List<List<Integer>> nodeList = new ArrayList<>();
+    public List<List<Integer>> pathSum(TreeNode root, int targetSum) {
+        // edge
+        if(root == null){
+            return nodeList;
+        }
+
+        pathSumHelper(root, targetSum, 0, new ArrayList<>());
+
+        return nodeList;
+    }
+
+    // ???
+    private void pathSumHelper(TreeNode root, int targetSum, int curSum, List<Integer> cache){
+        System.out.println(">>> root = " + root.val
+        + ", cursum =" + curSum
+        + ", cache = " + cache);
+
+        // edge
+        if(root == null){
+            return;
+        }
+        // ????
+        if(curSum > targetSum){
+            // ????
+            return;
+        }
+
+        // post order traverse
+        pathSumHelper(root.left, targetSum, curSum, cache);
+        pathSumHelper(root.right, targetSum, curSum, cache);
+
+        // ???
+        curSum += root.val;
+        // ???
+//        deque.add(root.val);
+//        List<Integer> test = new ArrayList<>();
+        cache.add(root.val);
+
+        if(curSum == targetSum){
+            // ????
+            nodeList.add(new ArrayList<>(cache));
+        }
+
+
+        // backtrack ??? undo
+        cache.remove(cache.size() - 1);
+        curSum -= root.val;
     }
 
 
