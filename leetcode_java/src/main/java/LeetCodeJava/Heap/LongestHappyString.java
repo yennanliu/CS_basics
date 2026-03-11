@@ -44,13 +44,106 @@ import java.util.PriorityQueue;
 public class LongestHappyString {
 
     // V0
-//    /**
-//     * time = O(a + b + c)
-//     * space = O(a + b + c)
-//     */
 //    public String longestDiverseString(int a, int b, int c) {
 //
 //    }
+
+    // V0-0-1
+    // IDEA: CUSTOM CLASS + PQ (gpt)
+    /** NOTE !!! we define custom class to trace both val and cnt */
+    class ValCnt {
+        char val;
+        int cnt;
+
+        ValCnt(char val, int cnt) {
+            this.val = val;
+            this.cnt = cnt;
+        }
+    }
+
+    public String longestDiverseString_0_0_1(int a, int b, int c) {
+
+        /** NOTE !!! we define custom class to trace both val and cnt */
+        PriorityQueue<ValCnt> pq = new PriorityQueue<>(
+                (x, y) -> y.cnt - x.cnt);
+
+        if (a > 0)
+            pq.add(new ValCnt('a', a));
+        if (b > 0)
+            pq.add(new ValCnt('b', b));
+        if (c > 0)
+            pq.add(new ValCnt('c', c));
+
+        StringBuilder sb = new StringBuilder();
+
+        while (!pq.isEmpty()) {
+
+            ValCnt first = pq.poll();
+            int len = sb.length();
+
+            /** NOTE !!!
+             *
+             *   ONLY 2 cases below:
+             *
+             *   1. if adding this char causes 3 consecutive
+             *   2. else (can add cur char)
+             */
+            // case 1) if adding this char causes 3 consecutive
+            if (len >= 2
+                    && sb.charAt(len - 1) == first.val
+                    && sb.charAt(len - 2) == first.val) {
+
+                /** NOTE !!! edge case */
+                if (pq.isEmpty()){
+                    break;
+                }
+
+                /** NOTE !!!
+                 *
+                 *   if use cur val may cause `3 consecutive`,
+                 *   we'll pop the `next` element in PQ
+                 */
+                ValCnt second = pq.poll();
+
+                sb.append(second.val);
+                second.cnt--;
+
+                /** NOTE !!!
+                 *
+                 *  ONLY add `second` element back to PQ
+                 *  if its count still > 0
+                 */
+                if (second.cnt > 0){
+                    pq.add(second);
+                }
+
+                /** NOTE !!!
+                 *
+                 *  DON'T forget to add `first` element back to PQ,
+                 *  since it was NOT used
+                 */
+                pq.add(first);
+
+            }
+            // case 2)  else (can add cur char)
+            else {
+
+                sb.append(first.val);
+                first.cnt--;
+
+                /** NOTE !!!
+                 *
+                 *  ONLY add `first` element back to PQ
+                 *  if its count still > 0
+                 */
+                if (first.cnt > 0)
+                    pq.add(first);
+            }
+        }
+
+        return sb.toString();
+    }
+
 
 
     // V0-1
