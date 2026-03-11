@@ -12,7 +12,8 @@
 	- priority_queue.md (OK)
 	- array.md (OK)
 	- matrix.md (OK)
-	- 2_pointers.md (todo, LC examples)
+	- 2_pointers.md (OK)
+	- advanced_string_algorithms.md (todo)
 - to review
 - needcode `250` - similar LC by AI
     - Arrays & Hashing
@@ -192,6 +193,7 @@
 	- todo (20260310)
 		- 124,113,257,437,129,1023(todo),215(todo)
 	- todo (20260311)
+		- 680,986,2104,31
  	==================================
 - needcode `grind 75` - similar LC by AI
 	- https://neetcode.io/practice?tab=blind75
