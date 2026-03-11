@@ -1065,10 +1065,17 @@ public class Workspace22 {
      *
      *
      */
-//    class valCnt{
-//        String
-//    }
-    public String longestDiverseString(int a, int b, int c) {
+    class valCnt{
+        char val;
+        int cnt;
+
+        valCnt(char val, int cnt){
+            this.val = val;
+            this.cnt = cnt;
+        }
+    }
+
+    public String longestDiverseString_99(int a, int b, int c) {
         // edge
 
         /**
@@ -1084,6 +1091,12 @@ public class Workspace22 {
             }
         });
 
+        PriorityQueue<int[]> pq2 = new PriorityQueue<>((o1, o2) -> o2[1] - o1[1]);
+
+        // ????
+        if (a > 0) pq2.add(new int[]{'a', a});
+        if (b > 0) pq2.add(new int[]{'b', b});
+        if (c > 0) pq2.add(new int[]{'c', c});
 
         // ???
         pq.add(new Integer[]{a, a});
