@@ -88,14 +88,22 @@ public class RangeSumOfBST {
             currentSum = root.val;
         }
 
+        /** NOTE !!
+         *
+         *  ONLY search `left sub tree` if root.val > low
+         */
         // 3. Optimization using BST properties:
-        // Only search left if the current value is greater than 'low'
+        // `Only` search left if the current value is greater than 'low'
         // (If root.val <= low, there's no need to look at anything smaller on the left)
         if (root.val > low) {
             currentSum += rangeSumBST_0_1(root.left, low, high);
         }
 
-        // 4. Only search right if the current value is smaller than 'high'
+        /** NOTE !!
+         *
+         *  ONLY search `right sub tree` if root.val < high
+         */
+        // 4. `Only` search right if the current value is smaller than 'high'
         // (If root.val >= high, there's no need to look at anything larger on the right)
         if (root.val < high) {
             currentSum += rangeSumBST_0_1(root.right, low, high);

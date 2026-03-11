@@ -671,6 +671,28 @@ public class Workspace22 {
     }
 
 
+    // LC 938
+    // 7.58 - 8.08 AM
+    /**
+     *
+     *
+     */
+    int nodeSum = 0;
+    public int rangeSumBST(TreeNode root, int low, int high) {
+        // edge
+        if(root == null){
+            return 0;
+        }
+        if(root.val <= high && low <= root.val){
+            nodeSum += root.val;
+        }
+        rangeSumBST(root.left, low, high);
+        rangeSumBST(root.right, low, high);
+
+        return nodeSum;
+    }
+
+
 
 
 
