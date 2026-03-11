@@ -45,6 +45,82 @@ public class ConvertSortedListToBinarySearchTree {
 
     // V0-1
     // IDEA: DFS + MID POINT + LINKED LIST + LC 108 (GPT)
+    /**
+     * Time:  O(n log n)
+     * Space: O(log n)
+     * ---
+     *
+     * # Time Complexity
+     *
+     * Key operation:
+     *
+     * ```java
+     * ListNode midNode = getNodeByIdx(head, mid);
+     * ```
+     *
+     * `getNodeByIdx()` traverses the
+     * linked list from the head each time.
+     *
+     * ### Cost per recursion level
+     *
+     * * Finding the mid node → `O(N)`
+     *
+     * ### Recursion tree
+     *
+     * The tree height is roughly:
+     *
+     * ```
+     * log N
+     * ```
+     *
+     * But each level still does list traversal.
+     *
+     * Total work:
+     *
+     * ```
+     * N + N/2 + N/4 + ... ≈ N log N
+     * ```
+     *
+     * ✅ **Time Complexity**
+     *
+     * ```java
+     * // time: O(N log N)
+     * ```
+     *
+     * ---
+     *
+     * # Space Complexity
+     *
+     * Space comes from recursion stack.
+     *
+     * Balanced BST height:
+     *
+     * ```
+     * log N
+     * ```
+     *
+     * So recursion depth = `log N`.
+     *
+     * ✅ **Space Complexity**
+     *
+     * ```java
+     * // space: O(log N)
+     * ```
+     * ---
+     *
+     * # Why LC109 Has a Better Solution
+     *
+     * There is a well-known **optimal solution**
+     * for **LeetCode 109 – Convert Sorted List
+     * to Binary Search Tree** that avoids repeated scans.
+     *
+     * Using **inorder traversal simulation**:
+     *
+     * ```
+     * Time:  O(N)
+     * Space: O(log N)
+     * ```
+     */
     public TreeNode sortedListToBST_0_1(ListNode head) {
         if (head == null) {
             return null;
