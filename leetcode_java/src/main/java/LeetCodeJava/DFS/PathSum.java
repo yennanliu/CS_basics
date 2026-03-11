@@ -52,50 +52,86 @@ import java.util.Map;
 
 public class PathSum {
 
+
+
     // V0
-    // IDEA: pre-order DFS
-    /**
-     * time = O(N)
-     * space = O(H)
-     */
-    /** NOTE !!! pre-order DFS */
-    public boolean hasPathSum(TreeNode root, int targetSum) {
-
-        if (root == null){
-            return false;
-        }
-
-        if (root.left == null && root.right == null){
-            return root.val == targetSum;
-        }
-
-        return checkSum(root, targetSum);
-    }
-
-    private Boolean checkSum(TreeNode root, int targetSum){
-
-        if (root == null){
-            return false;
-        }
-
-        /** NOTE !!! we deduct root.val */
-        targetSum -= root.val;
-
-        /** NOTE !!! pre-order DFS */
-        if (root.left == null && root.right == null){
-            return targetSum == 0;
-        }
-
-        /** NOTE !!! below trick */
-        return checkSum(root.left ,targetSum) || checkSum(root.right ,targetSum);
-    }
-
-
-
-    // V0-1
     // IDEA: HASHMAP + DFS (pre order)
+    /**  NOTE !!!
+     *
+     *  the reason we don't need to do backtrack on `numSum` is that:
+     *    ->  numSum is basic data type in java,
+     *        so it is NOT `accumulated
+     *        its value` to next recursion.
+     *
+     * --------
+     *
+     *
+     *  Explanation (gemini):
+     *
+     *  Exactly! You are thinking along the right lines. Let me explain carefully.
+     *
+     * ---
+     *
+     * ### **Why we don’t need to backtrack `curSum` (or `numSum`) in Java**
+     *
+     * 1. In Java, **primitive types** (`int`, `long`, `double`, etc.)
+     *    are **passed by value**, not by reference.
+     *
+     * 2. This means **each recursive call gets its own copy of
+     *    `curSum`**. Any modifications inside the recursion
+     *    **do not affect the parent call**.
+     *
+     * In your code:
+     *
+     * ```java
+     * private void getPathHelper(TreeNode root, Integer curSum) {
+     *     int newSum = curSum + root.val;
+     *     getPathHelper(root.left, newSum);
+     *     getPathHelper(root.right, newSum);
+     * }
+     * ```
+     *
+     * * `curSum` is **copied** for each recursion.
+     * * `newSum` is a new variable in that stack frame.
+     * * When the function returns, the parent call’s `curSum` is unchanged.
+     *
+     * ✅ Therefore, **no backtracking is needed**.
+     * Each path maintains its own sum independently.
+     *
+     * ---
+     *
+     * ### **Contrast with using a global variable**
+     *
+     * If you used a global variable like:
+     *
+     * ```java
+     * int pathSum = 0;
+     * ```
+     *
+     * Then every recursion modifies the **same shared variable**.
+     * this case, you **must backtrack** (`pathSum -= root.val`)
+     * when returning from recursion, otherwise the sum accumulates
+     * incorrectly across different paths.
+     *
+     * ---
+     *
+     * ### **Your HashMap + DFS approach**
+     *
+     * Your `hasPathSum_0_1` works correctly because:
+     *
+     * 1. `curSum` is local to each recursion.
+     * 2. You calculate `newSum = curSum + root.val` in each recursive call.
+     * 3. Leaf nodes store `newSum` into the `pathSumMap`.
+     * 4. No backtracking is required.
+     *
+     * 💡 Extra tip: You could simplify it even more by *
+     * *not using a HashMap**, and just return `true/false`
+     * directly when a leaf equals `targetSum`. Using a map is overkill
+     * for LC 112, but it’s fine if you want to record all path sums.
+     *
+     */
     Map<Integer, Integer> pathSumMap = new HashMap<>();
-    public boolean hasPathSum_0_1(TreeNode root, int targetSum) {
+    public boolean hasPathSum(TreeNode root, int targetSum) {
         // edge
         if (root == null) {
             return false;
@@ -135,6 +171,45 @@ public class PathSum {
          */
         getPathHelper(root.left, newSum);
         getPathHelper(root.right, newSum);
+    }
+
+
+    // V0-1
+    // IDEA: pre-order DFS + targetSum deduction
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
+    /** NOTE !!! pre-order DFS */
+    public boolean hasPathSum_0_1(TreeNode root, int targetSum) {
+
+        if (root == null){
+            return false;
+        }
+
+        if (root.left == null && root.right == null){
+            return root.val == targetSum;
+        }
+
+        return checkSum(root, targetSum);
+    }
+
+    private Boolean checkSum(TreeNode root, int targetSum){
+
+        if (root == null){
+            return false;
+        }
+
+        /** NOTE !!! we deduct root.val */
+        targetSum -= root.val;
+
+        /** NOTE !!! pre-order DFS */
+        if (root.left == null && root.right == null){
+            return targetSum == 0;
+        }
+
+        /** NOTE !!! below trick */
+        return checkSum(root.left ,targetSum) || checkSum(root.right ,targetSum);
     }
 
 
