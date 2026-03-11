@@ -305,8 +305,56 @@ public class Workspace22 {
      *  --------------------
      *
      */
-    // IDEA 3) CUSTOM SORTING ??
+    // LC 905
     public int[] sortArrayByParity(int[] nums) {
+        // edge
+        if(nums == null || nums.length <= 1){
+            return nums; // ??
+        }
+
+        List<Integer> list = new ArrayList<>();
+        for(int x: nums){
+            list.add(x);
+        }
+
+        Collections.sort(list, new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                /**
+                 *
+                 * // o1 is even, o2 is odd
+                 * // o1 is even, o2 is even
+                 * // o1 is odd, o2 is even
+                 * // o1 is odd, o2 is odd
+                 */
+                // ???
+                boolean isEven1 = o1 % 2 == 0;
+                boolean isEven2 = o2 % 2 == 0;
+                //return o1.compareTo(o2); // ????
+                if(isEven1 && !isEven2){
+                    return -1;
+                }else if(!isEven1 && isEven2){
+                    return 1;
+                }
+                return 0;
+            }
+        });
+
+        // prepare res
+        int[] res= new int[list.size()];
+        int i = 0;
+        for(int x: list){
+            res[i] = x; //list.get(i);
+            i += 1;
+        }
+
+        return res;
+    }
+
+
+
+    // IDEA 3) CUSTOM SORTING ??
+    public int[] sortArrayByParity_99(int[] nums) {
         // edge
         if(nums == null || nums.length <= 1){
             return nums; // ??
