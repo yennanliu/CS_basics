@@ -192,7 +192,12 @@
 	- todo (20260310)
 		- 124,113,257,437,129,1023(todo),215(todo)
 	- todo (20260311)
-		- 680,986,2104,31
+		- 680,986,2104,112,113
+		- LC tree: post VS pre order
+			- pre: path LC
+			- post: depth, height ... LC
+
+
  	==================================
 - needcode `grind 75` - similar LC by AI
 	- https://neetcode.io/practice?tab=blind75
