@@ -52,6 +52,111 @@ public class LongestHappyString {
 //
 //    }
 
+
+    // V0-1
+    // IDEA: PQ (gemini)
+    public String longestDiverseString_0_1(int a, int b, int c) {
+        // 1. PQ stores [character_as_int, count], sorted by count descending
+        PriorityQueue<int[]> pq = new PriorityQueue<>((o1, o2) -> o2[1] - o1[1]);
+
+        if (a > 0)
+            pq.add(new int[] { 'a', a });
+        if (b > 0)
+            pq.add(new int[] { 'b', b });
+        if (c > 0)
+            pq.add(new int[] { 'c', c });
+
+        StringBuilder sb = new StringBuilder();
+
+        while (!pq.isEmpty()) {
+            int[] first = pq.poll();
+            int n = sb.length();
+
+            // Check if the most frequent character would cause "three in a row"
+            if (n >= 2 && sb.charAt(n - 1) == first[0] && sb.charAt(n - 2) == first[0]) {
+                if (pq.isEmpty())
+                    break; // No other characters left to break the streak
+
+                // Pick the second most frequent character instead
+                int[] second = pq.poll();
+                sb.append((char) second[0]);
+                second[1]--;
+
+                // Put both back to re-sort
+                if (second[1] > 0)
+                    pq.add(second);
+                pq.add(first);
+            } else {
+                // Safe to use the most frequent character
+                sb.append((char) first[0]);
+                first[1]--;
+                if (first[1] > 0)
+                    pq.add(first);
+            }
+        }
+
+        return sb.toString();
+    }
+
+
+    // V0-2
+    // IDEA: PQ (GPT)
+    public String longestDiverseString_0_2(int a, int b, int c) {
+
+        PriorityQueue<int[]> pq = new PriorityQueue<>(
+                (x, y) -> y[1] - x[1]);
+
+        if (a > 0)
+            pq.add(new int[] { 'a', a });
+        if (b > 0)
+            pq.add(new int[] { 'b', b });
+        if (c > 0)
+            pq.add(new int[] { 'c', c });
+
+        StringBuilder sb = new StringBuilder();
+
+        while (!pq.isEmpty()) {
+
+            int[] first = pq.poll();
+            char ch = (char) first[0];
+            int count = first[1];
+
+            int len = sb.length();
+
+            // avoid 3 consecutive
+            if (len >= 2 &&
+                    sb.charAt(len - 1) == ch &&
+                    sb.charAt(len - 2) == ch) {
+
+                if (pq.isEmpty())
+                    break;
+
+                int[] second = pq.poll();
+                char ch2 = (char) second[0];
+                int count2 = second[1];
+
+                sb.append(ch2);
+                count2--;
+
+                if (count2 > 0)
+                    pq.add(new int[] { ch2, count2 });
+                pq.add(first);
+
+            } else {
+
+                sb.append(ch);
+                count--;
+
+                if (count > 0)
+                    pq.add(new int[] { ch, count });
+            }
+        }
+
+        return sb.toString();
+    }
+
+
+
     // V1
     // https://www.youtube.com/watch?v=8u-H6O_XQKE
     // https://github.com/neetcode-gh/leetcode/blob/main/java%2F1405-longest-happy-string.java
@@ -317,5 +422,9 @@ public class LongestHappyString {
         }
         return sb.toString();
     }
+
+
+
+
 
 }

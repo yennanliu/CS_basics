@@ -1038,6 +1038,99 @@ public class Workspace22 {
     }
 
 
+    // LC 1405
+    // 7,10 - 20 am
+    /**
+     *  -> return the longest possible happy string.
+     *  If there are multiple longest happy strings,
+     *  return any of them.
+     *     - If there is no such string,
+     *        - return the empty string "".
+     *
+     *  ------------------
+     *
+     *   IDEA 1) BRUTE FORCE
+     *
+     *   IDEA 2) PQ ????
+     *
+     *     -> hashmap : { val : cnt }
+     *
+     *     PQ: { [val, cnt ]  }   // ????
+     *     // sort on cnt ( big -> small )
+     *
+     *     put `aa`, `bb` ... at once if possible
+     *
+     *
+     *  ------------------
+     *
+     *
+     */
+//    class valCnt{
+//        String
+//    }
+    public String longestDiverseString(int a, int b, int c) {
+        // edge
+
+        /**
+         *
+         *    *     PQ: { [val, cnt ]  }   // ????
+         *      *     // sort on cnt ( big -> small )
+         */
+        PriorityQueue<Integer[]> pq = new PriorityQueue<>(new Comparator<Integer[]>() {
+            @Override
+            public int compare(Integer[] o1, Integer[] o2) {
+                int diff = o2[1] - o1[1];
+                return diff;
+            }
+        });
+
+
+        // ???
+        pq.add(new Integer[]{a, a});
+        pq.add(new Integer[]{b, b});
+        pq.add(new Integer[]{c, c});
+
+        // ???
+        StringBuilder sb = new StringBuilder();
+
+        // ??
+        int prev = -1;
+
+        // ???
+        boolean canProceed = true;
+
+        // ????
+        while(!pq.isEmpty() && canProceed){
+            // ???
+            Integer[] item = pq.poll();
+            // ?? to avoid `poll` same element again
+            if(item[0] == prev){
+                Integer[] item2 = pq.poll();
+                pq.add(item);
+                item = item2;
+            }
+
+            int val = item[0];
+            int cnt = item[1];
+            if(cnt >= 2){
+                sb.append(val);
+                sb.append(val);
+
+                if(cnt - 2 > 0){
+                    pq.add(new Integer[]{val, cnt - 2});
+                }
+
+            }else if (cnt == 1){
+                sb.append(val);
+            }
+        }
+
+        // ???
+
+        return pq.isEmpty() ? sb.toString() : "";
+    }
+
+
 
 
 
