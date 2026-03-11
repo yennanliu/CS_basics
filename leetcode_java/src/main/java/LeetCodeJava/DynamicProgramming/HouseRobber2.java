@@ -43,13 +43,74 @@ import java.util.Arrays;
 public class HouseRobber2 {
 
     // V0
+    // IDEA: 1D DP + 2 cases (rob idx=0 or rob idx=nums.len-1)
+    public int rob(int[] nums) {
+        // edge
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
+
+        if (nums.length == 1) {
+            return nums[0];
+        }
+
+        if (nums.length == 2) {
+            return Math.max(nums[0], nums[1]);
+        }
+
+        int n = nums.length;
+
+        // ??
+        // dp: rob idx = 0, but NOT rob idx = n-1
+        /**  NOTE !!!
+         *
+         * dp size = n
+         */
+        int[] dp1 = new int[n];
+        // init !!!
+        dp1[0] = nums[0];
+        /**  NOTE !!!
+         *
+         * -> this is WRONG:   `dp1[1] = nums[0];`
+         */
+        dp1[1] = Math.max(nums[0], nums[1]);
+        
+
+        /**  NOTE !!!
+         *
+         *  -> for dp1,
+         *     we loop from 2 to `n-1`
+         */
+        for (int i = 2; i < n - 1; i++) {
+            dp1[i] = Math.max(dp1[i - 2] + nums[i], dp1[i - 1]);
+        }
+
+        // dp2: NOT rob idx = 0, but rob idx = n-1
+        int[] dp2 = new int[n]; // ???
+        dp2[0] = 0;
+        dp2[1] = nums[1];
+
+        for (int i = 2; i < n; i++) {
+            dp2[i] = Math.max(dp2[i - 2] + nums[i], dp2[i - 1]);
+        }
+
+        /**  NOTE !!!
+         *
+         *  -> for dp1,
+         *     take `dp1[n - 2]` as dp1 max
+         */
+        return Math.max(dp1[n - 2], dp2[n - 1]);
+    }
+
+
+    // V0-0-0-1
     // IDEA : DP, LC 198
     // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Dynamic_Programming/house-robber-ii.py
     /**
      * time = O(N)
      * space = O(1)
      */
-    public int rob(int[] nums) {
+    public int rob_0_0_0_1(int[] nums) {
 
         if (nums.length == 1) {
             return nums[0];
