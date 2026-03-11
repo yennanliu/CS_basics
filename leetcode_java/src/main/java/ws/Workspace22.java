@@ -550,10 +550,82 @@ public class Workspace22 {
      *  ---------------
      *
      */
+    // LC 113
+    // 18.04 - 14 pm
+    // IDEA 1) DFS (PRE ORDER traverse) + path sum + hashmap
+    Map<Integer, List<List<Integer>>> pathMap3 = new HashMap<>();
+    public List<List<Integer>> pathSum(TreeNode root, int targetSum) {
+        // edge
+        if(root == null){
+            return new ArrayList<>();
+        }
+
+        getPathBySum(root, targetSum, new ArrayList<>());
+
+        // edge
+        if(pathMap3.isEmpty() || !pathMap3.containsKey(targetSum)){
+            return new ArrayList<>();
+        }
+
+        return pathMap3.get(targetSum);
+    }
+
+    // ???
+    private void getPathBySum(TreeNode root, int targetSum, List<Integer> list){
+        // edge
+        if(root == null){
+            return;
+        }
+
+        // update cur sum
+        //accSum += root.val;
+        list.add(root.val);
+        int accSum = getArrSum(list);
+
+        // ??
+        if(accSum == targetSum){
+            if(root.left == null && root.right == null){
+                if(!pathMap3.containsKey(accSum)){
+                    pathMap3.put(accSum, new ArrayList<>());
+                }
+                List<List<Integer>> tmp = pathMap3.get(accSum);
+                tmp.add(new ArrayList<>(list)); // ????
+                pathMap3.put(targetSum, tmp);
+                // ???
+                //pathMap3.get(targetSum).add(list);
+            }
+        }
+
+        getPathBySum(root.left, targetSum, list);
+        getPathBySum(root.right, targetSum, list);
+
+        // undo ??? backtrack
+        list.remove(list.size() - 1);
+
+    }
+
+    private int getArrSum(List<Integer> list){
+        int res = 0;
+        for(int x: list){
+            res += x;
+        }
+        return res;
+    }
+
+
+
+
+
+
+
+
+
+
+
     // IDEA 1) DFS (post traverse) + path sum + hashmap + backtrack ????
     //Map<I>
     List<List<Integer>> nodeList = new ArrayList<>();
-    public List<List<Integer>> pathSum(TreeNode root, int targetSum) {
+    public List<List<Integer>> pathSum_90(TreeNode root, int targetSum) {
         // edge
         if(root == null){
             return nodeList;
