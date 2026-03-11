@@ -305,6 +305,132 @@ Sum ≈ 2N  ✓ O(N)            Sum = N × log N  ✓ O(N log N)
 
 ---
 
+### 3-2b) Case Study: LC 109 — Convert Sorted List to BST (O(N log N) time, O(log N) space)
+
+> This is the **canonical example** of the "N work per level × log N levels = O(N log N)" pattern,
+> AND the classic illustration of why recursive space = tree height, NOT number of nodes.
+
+#### Why Time = O(N log N)
+
+The algorithm does two things:
+1. Find the middle node via `getNodeByIdx()` — scans from head each time → **O(N)**
+2. Recursively build left and right subtrees
+
+**The expensive part:** finding the middle node scans from head every call.
+
+```
+N = 8, getNodeByIdx(head, mid) ≈ O(N) per call
+
+Level 0:  build(0..7)                             → scan ~N    = N
+Level 1:  build(0..2) + build(4..7)               → N/2 + N/2  = N
+Level 2:  build(0..0)+build(2..2)+build(4..5)+... → N/4×4      = N
+Level 3:  8 leaf calls                             → N/8×8      = N
+```
+
+Visual:
+```
+                N
+           /         \
+        N/2           N/2
+       /   \         /   \
+     N/4   N/4    N/4   N/4
+```
+
+Each level = **N total work**. Number of levels = **log N** (balanced BST height).
+
+```
+Total = N + N + N + ... (log N times) = N × log N → O(N log N)
+```
+
+**Compare to geometric series (heapify):**
+```
+Heapify:        N/2 + N/4 + N/8 + ... = N  →  O(N)      (work HALVES per level)
+BST from list:  N   + N   + N   + ... = N log N → O(N log N) (work CONSTANT per level)
+```
+
+#### Why Space = O(log N)  ← recursion stack depth, NOT number of nodes
+
+**Key Rule:**
+```
+Space complexity for DFS recursion = maximum recursion stack depth
+                                    = tree height
+```
+
+Recursion does NOT hold both branches on the stack simultaneously.
+It goes **one branch at a time** (depth-first):
+
+```
+build(root)           ← frame 1 on stack
+  -> build(left)      ← frame 2 on stack
+       -> build(left) ← frame 3 on stack
+            -> null   ← returns, pops frame 3
+```
+
+**Visual for N = 7 (sorted list: 1→2→3→4→5→6→7):**
+
+```
+Balanced BST built:
+        4
+      /   \
+     2     6
+    / \   / \
+   1   3 5   7
+
+Tree height = 3
+
+Max stack at any moment (going down leftmost path):
+  build(0,6)  → root 4   ← frame 1
+  build(0,2)  → root 2   ← frame 2
+  build(0,0)  → root 1   ← frame 3
+  build(0,-1) → null     ← frame 4, then returns
+
+Stack depth ≈ log₂(7) ≈ 3
+```
+
+**N vs height:**
+
+| N         | Height (stack depth) |
+|-----------|----------------------|
+| 8         | 3                    |
+| 16        | 4                    |
+| 1,024     | 10                   |
+| 1,000,000 | ~20                  |
+
+**Why NOT O(N)?** O(N) stack only occurs with a **skewed** tree:
+```
+1
+ \
+  2
+   \
+    3       ← each node is a stack frame → O(N) depth
+     \
+      4
+```
+LC 109 always picks the **middle** → guaranteed balanced → stack depth = O(log N).
+
+#### Summary
+
+```
+Algorithm Variant              | Time        | Space    | How?
+-------------------------------|-------------|----------|--------------------------------------
+V0-1: getNodeByIdx (from head) | O(N log N)  | O(log N) | N scan × log N levels; balanced tree
+V0-2: slow/fast pointer        | O(N log N)  | O(log N) | O(N) per split × log N levels
+V0-3: in-order simulation      | O(N)        | O(log N) | advance pointer once per node (!)
+```
+
+> **Interview tip:** V0-3 (in-order simulation with a shared pointer) is the **optimal O(N)** approach.
+> It avoids re-scanning by advancing the list pointer in sync with BST in-order traversal.
+
+```
+Interview rule of thumb for recursion:
+  Space = recursion stack depth
+  Balanced tree → O(log N)
+  Skewed tree   → O(N)
+  N work per level × log N levels → O(N log N)  ← "merge sort" pattern
+```
+
+---
+
 ### 3-3) Arithmetic Series — Why 1 + 2 + 3 + ... + N = N(N+1)/2 ≈ N²/2
 
 ```
