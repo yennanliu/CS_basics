@@ -695,11 +695,76 @@ public class Workspace22 {
 
 
     // LC 109
+    // 8.11 - 21 am
+    /**
+     *  -> convert it to a height-balanced binary search tree.
+     *
+     *
+     *  ----------
+     *
+     *  IDEA 1)  DFS + MID INDEX + LINKED LIST OP
+     */
+    // IDEA 1)  DFS + MID INDEX + LINKED LIST OP
     public TreeNode sortedListToBST(ListNode head) {
+        // edge
+        if(head == null){
+            return null;
+        }
 
+        return buildBSTFromLinkedList(head, 0, getNodeLen(head));
+    }
+
+    private TreeNode buildBSTFromLinkedList(ListNode head, int left, int right){
+        // edge
+        if(head == null){
+            return null;
+        }
+        if(right < left){
+            return null;
+        }
+
+        // /????
+        int mid = left + (right - left) / 2;
+        ListNode midNode = getNodeByIdx(head, mid);
+        if(midNode == null){
+            return null;
+        }
+
+        TreeNode root = new TreeNode(midNode.val);
+
+        // ??? pre-order traverse ???
+        TreeNode _left = buildBSTFromLinkedList(head, left, mid);
+        TreeNode _right = buildBSTFromLinkedList(head, mid + 1, right);
+
+        // ????
+        root.left = _left;
+        root.right = _right;
+
+
+        return root;
+    }
+
+
+    private ListNode getNodeByIdx(ListNode head, int idx){
+        // edge
+        while (head != null){
+            head = head.next;
+            idx -= 1;
+            if(idx == 0){
+                return head;
+            }
+        }
         return null;
     }
 
+    private int getNodeLen(ListNode head){
+        int len = 0;
+        while(head != null){
+            head = head.next;
+            len += 1;
+        }
+        return len;
+    }
 
 
 
