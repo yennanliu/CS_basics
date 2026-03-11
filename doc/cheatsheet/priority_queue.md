@@ -56,6 +56,14 @@
 - **Examples**: LC 295, 346, 352, 703, 1825
 - **Pattern**: Two-heap technique for median, PQ for percentiles
 
+### **Pattern 7: Greedy String/Sequence Building with Constraint**
+- **Description**: Build a string/sequence greedily using the most frequent element, but skip it when adding it would violate a constraint (e.g., 3 consecutive same chars). Use a max-heap to always have the current most frequent element ready.
+- **Examples**: LC 1405 (Longest Happy String), LC 767 (Reorganize String), LC 621 (Task Scheduler), LC 358 (Rearrange String k Distance Apart)
+- **Pattern**: Max-heap ordered by count; on each step try the top element — if it violates the constraint, temporarily use the 2nd element, then put the 1st back
+- **Key Trick**: Two-case loop
+  1. **Case 1 — constraint violated**: poll `second`, append it, decrement, re-add if > 0; then re-add `first` (it was NOT consumed)
+  2. **Case 2 — safe**: append `first`, decrement, re-add if > 0
+
 ## Templates & Algorithms
 
 ### Template Comparison Table
@@ -67,6 +75,7 @@
 | **Interval Scheduling** | Process intervals | Min heap | O(n log n) | Meeting rooms, events |
 | **Graph Shortest Path** | Dijkstra's | Min heap | O(E log V) | Weighted graphs |
 | **Custom Priority** | Complex ordering | Custom comparator | O(log n) | Multi-criteria sorting |
+| **Greedy + Constraint** | Build string avoiding consecutive repeats | Max heap | O(n log k) | Reorganize/happy string |
 
 ### Template 1: Top K Elements Pattern
 ```python
@@ -457,6 +466,70 @@ public List<String> processTasks(List<Task> tasks) {
 }
 ```
 
+### Template 7: Greedy String Building with Consecutive Constraint
+```java
+// Java - Longest Happy String (LC 1405) / Reorganize String (LC 767)
+// IDEA: Max-heap by count; two-case loop:
+//   Case 1: top char would create 3 consecutive → use 2nd, put 1st back
+//   Case 2: safe → use top char directly
+// time = O((a+b+c) * log(3)) = O(n), space = O(1) heap size bounded by alphabet
+
+class ValCnt {
+    char val;
+    int cnt;
+    ValCnt(char val, int cnt) { this.val = val; this.cnt = cnt; }
+}
+
+public String longestDiverseString(int a, int b, int c) {
+    PriorityQueue<ValCnt> pq = new PriorityQueue<>((x, y) -> y.cnt - x.cnt);
+    if (a > 0) pq.add(new ValCnt('a', a));
+    if (b > 0) pq.add(new ValCnt('b', b));
+    if (c > 0) pq.add(new ValCnt('c', c));
+
+    StringBuilder sb = new StringBuilder();
+
+    while (!pq.isEmpty()) {
+        ValCnt first = pq.poll();
+        int len = sb.length();
+
+        // Case 1: adding `first` would create 3 consecutive → use second instead
+        if (len >= 2
+                && sb.charAt(len - 1) == first.val
+                && sb.charAt(len - 2) == first.val) {
+
+            if (pq.isEmpty()) break;          // no alternative → stop
+
+            ValCnt second = pq.poll();        // use 2nd most frequent
+            sb.append(second.val);
+            second.cnt--;
+
+            if (second.cnt > 0) pq.add(second);
+            pq.add(first);                    // first was NOT used, put it back
+
+        // Case 2: safe to use the most frequent character
+        } else {
+            sb.append(first.val);
+            first.cnt--;
+            if (first.cnt > 0) pq.add(first);
+        }
+    }
+
+    return sb.toString();
+}
+```
+
+**Key Observations:**
+- Always greedily pick the most frequent (max-heap ensures this).
+- When the constraint is about to be violated, **temporarily skip** the top element and use the next — then **put the top back unchanged**.
+- `first` is only consumed in Case 2; in Case 1 it is re-inserted untouched.
+- Works for any "at most K consecutive" constraint by changing the look-back window check.
+
+**Variant: Reorganize String (LC 767) — at most 1 consecutive**
+```java
+// Only Case 1 check changes: len >= 1 && sb.charAt(len-1) == first.val
+// Everything else is identical to the template above.
+```
+
 ## Basic Operations
 
 ### Python heapq Operations
@@ -595,6 +668,15 @@ PriorityQueue<int[]> customPQ = new PriorityQueue<>(
 | Kth Largest Element in a Stream | 703 | Min heap | Easy |
 | Finding MK Average | 1825 | Multiset simulation | Hard |
 
+#### **Greedy + Consecutive Constraint Problems**
+| Problem | LC # | Key Technique | Difficulty |
+|---------|------|---------------|------------|
+| Longest Happy String | 1405 | Max heap + greedy two-case loop | Medium |
+| Reorganize String | 767 | Max heap + greedy (no adjacent same) | Medium |
+| Task Scheduler | 621 | Max heap + greedy cooldown | Medium |
+| Rearrange String k Distance Apart | 358 | Max heap + greedy (k-distance) | Hard |
+| Distant Barcodes | 1054 | Max heap + greedy (no adjacent same) | Medium |
+
 ## Pattern Selection Strategy
 
 ```
@@ -631,6 +713,13 @@ Problem Analysis Flowchart:
    ├── YES → Use Data Stream pattern
    │         ├── Median → Two heaps
    │         └── Top K → Fixed size heap
+   └── NO → Continue to 7
+
+7. Build string/sequence with "no K consecutive same" constraint?
+   ├── YES → Use Greedy + Constraint pattern
+   │         ├── Max-heap ordered by frequency
+   │         ├── Case 1 (constraint violated): use 2nd element, put 1st back
+   │         └── Case 2 (safe): use 1st element
    └── NO → Use Custom Priority pattern
 ```
 
@@ -658,6 +747,7 @@ Problem Analysis Flowchart:
 | **Intervals** | Sort + heap | `sort by start, heap for end times` |
 | **Dijkstra** | Min distance | `(distance, node)` in heap |
 | **Custom** | Comparator | `__lt__` in Python, `Comparator` in Java |
+| **Greedy+Constraint** | Two-case loop | case1: use 2nd, put 1st back; case2: use 1st |
 
 ### Common Patterns & Tricks
 
@@ -726,6 +816,7 @@ if len(large) > len(small) + 1:
 - Not handling empty heap before peek
 - Wrong comparator direction
 - Not considering duplicates in custom comparators
+- In greedy+constraint pattern: forgetting to re-add `first` back to PQ in Case 1 (it was NOT consumed)
 
 **✅ Best Practices:**
 - Always check heap empty before peek/pop
@@ -1730,6 +1821,7 @@ public int lastStoneWeight(int[] stones) {
 | **Dijkstra** | LC 743, 787, 1514, 1631 | Min heap with (distance, node) |
 | **Stream** | LC 703, 295, 346 | Fixed size heap or two heaps |
 | **Ugly Numbers** | LC 264, 313, 373 | Generate in sorted order |
+| **Greedy+Constraint** | LC 1405, 767, 621, 358, 1054 | Max-heap + two-case loop (use 2nd if constraint violated, put 1st back) |
 
 ## LC Examples
 
