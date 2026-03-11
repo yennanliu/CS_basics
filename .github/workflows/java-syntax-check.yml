@@ -30,14 +30,16 @@ jobs:
       # Step 1: Compile every .java file under src/main/java
       #   - Uses src/main/java as classpath so cross-package imports
       #     (DataStructure.*, AlgorithmJava.*, etc.) resolve correctly.
-      #   - dev/Sorting files are excluded from the error gate because
-      #     they depend on JUnit jars not on the compile classpath.
+      #   - dev/Sorting is excluded because those are JUnit test files
+      #     that require junit.jar which is not on the compile classpath.
       # ---------------------------------------------------------------
       - name: Compile all Java files (syntax check)
         working-directory: leetcode_java
         run: |
           echo "=== Java Syntax Check ==="
-          find src/main/java -name "*.java" > /tmp/java_files.txt
+          # Exclude dev/Sorting (JUnit test files that require JUnit on classpath)
+          find src/main/java -name "*.java" \
+            ! -path "*/dev/Sorting/*" > /tmp/java_files.txt
           TOTAL=$(wc -l < /tmp/java_files.txt)
           echo "Scanning ${TOTAL} Java files..."
           echo ""
@@ -45,9 +47,8 @@ jobs:
           xargs javac -cp src/main/java < /tmp/java_files.txt 2>&1 \
             | tee /tmp/compile_output.txt || true
 
-          # Extract files with real errors, ignoring dev/Sorting (JUnit classpath issue)
+          # Extract files with real errors
           ERROR_FILES=$(grep "^src.*error:" /tmp/compile_output.txt \
-            | grep -v "dev/Sorting/" \
             | sed 's/:[0-9]*: error:.*//' \
             | sort -u)
 
@@ -60,7 +61,7 @@ jobs:
             echo "$ERROR_FILES"
             echo ""
             echo "Full compiler output:"
-            grep -v "dev/Sorting/" /tmp/compile_output.txt | grep "error:" || true
+            grep "error:" /tmp/compile_output.txt || true
             exit 1
           else
             echo "✅ All Java files pass syntax check! (${TOTAL} files scanned)"
