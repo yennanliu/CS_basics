@@ -141,12 +141,15 @@ jobs:
 
           // Group cheatsheets by category
           const categories = {
-            'Core Data Structures': ['array', 'linked_list', 'tree', 'binary_tree', 'bst', 'graph', 'stack', 'queue', 'heap', 'hash_map', 'set', 'trie'],
+            'Core Data Structures': ['array', 'linked_list', 'tree', 'binary_tree', 'bst', 'graph', 'stack', 'queue', 'heap', 'hash_map', 'hashing', 'set', 'trie', 'Collection'],
             'Search & Sort': ['binary_search', 'dfs', 'bfs', 'sort', 'topology_sorting'],
-            'Algorithm Patterns': ['2_pointers', 'sliding_window', 'backtrack', 'dp', 'greedy', 'recursion'],
-            'Advanced Topics': ['union_find', 'segment_tree', 'binary_indexed_tree', 'monotonic_stack', 'prefix_sum', 'difference_array'],
-            'Graph Algorithms': ['Dijkstra', 'Bellman-Ford', 'Floyd-Warshall'],
-            'Specialized': ['bit_manipulation', 'math', 'string', 'matrix', 'intervals', 'design', 'iterator']
+            'Algorithm Patterns': ['2_pointers', 'sliding_window', 'backtrack', 'dp', 'greedy', 'recursion', 'palindrome', 'scanning_line', 'n_sum', 'add_x_sum', 'kadane', 'divide_and_conquer'],
+            'Advanced Topics': ['union_find', 'segment_tree', 'binary_indexed_tree', 'monotonic_stack', 'prefix_sum', 'difference_array', 'advanced_simulation', 'streaming_algorithms'],
+            'Graph Algorithms': ['Dijkstra', 'Bellman-Ford', 'Floyd-Warshall', 'diff_toposort', 'topology'],
+            'Complexity & Math': ['complexity_cheatsheet', 'math', 'bit_manipulation'],
+            'Strings & Patterns': ['string', 'kmp', 'rolling_hash'],
+            'Specialized': ['matrix', 'intervals', 'design', 'iterator', 'stock_trading'],
+            'Interview Prep': ['java_trick', 'python_trick', 'lc_pattern', 'lc_category', 'code_interview', 'diff_toposort_quickunion', 'Collection']
           };
 
           files.forEach(file => {
@@ -220,7 +223,7 @@ jobs:
         });
 
         // Generate index with categories
-        const categoryOrder = ['Core Data Structures', 'Search & Sort', 'Algorithm Patterns', 'Advanced Topics', 'Graph Algorithms', 'Specialized', 'Other'];
+        const categoryOrder = ['Core Data Structures', 'Search & Sort', 'Algorithm Patterns', 'Advanced Topics', 'Graph Algorithms', 'Complexity & Math', 'Strings & Patterns', 'Specialized', 'Interview Prep', 'Other'];
 
         categoryOrder.forEach(category => {
           if (grouped[category] && grouped[category].length > 0) {
