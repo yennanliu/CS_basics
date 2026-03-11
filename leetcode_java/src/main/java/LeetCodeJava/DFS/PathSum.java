@@ -59,7 +59,7 @@ public class PathSum {
     /**  NOTE !!!
      *
      *  the reason we don't need to do backtrack on `numSum` is that:
-     *    ->  numSum is basic data type in java,
+     *    ->  numSum is `primitive` data type in java,
      *        so it is NOT `accumulated
      *        its value` to next recursion.
      *
