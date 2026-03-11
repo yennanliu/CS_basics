@@ -1,6 +1,6 @@
 # Progress
 
-# 2026-03-11
+# 2026-03-12
 
 - weekly video
 - cheatsheet (LC examples)
@@ -187,6 +187,23 @@
 		- gemini
 			- 1382
 			- 106
+	- LC 767
+		- gpt
+			- 383
+			- 387
+			- 1405
+			- 984
+			- 358
+			- 1647
+			- 2182
+			- 451
+			- 857
+			- 358
+		- gemini
+			- 455
+			- 1054
+			- 871
+
 	- todo (20260308)
 		- 1109,41,251,849
 	- todo (20260310)
@@ -199,6 +216,7 @@
 
 
  	==================================
+
 - needcode `grind 75` - similar LC by AI
 	- https://neetcode.io/practice?tab=blind75
 	- LC 49 Group Anagrams
