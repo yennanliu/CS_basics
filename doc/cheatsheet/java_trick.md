@@ -2059,6 +2059,165 @@ public int maxDepth(TreeNode root) {
 **Key Takeaway**: When you need to track state across recursive calls, either use instance variables or design the recursion to return and combine values.
 
 
+### 8.2) Primitive vs Reference Types in Recursion — Backtracking Rule ⭐
+
+> **Core Rule**: Primitives are pass-by-value → each call gets its own copy → **no backtracking needed**.
+> Reference types (collections, arrays, objects) are pass-by-reference → shared state → **must backtrack**.
+
+#### The Rule
+
+```
+Primitive param (int, long, double...)  →  copy per call  →  NO backtrack needed
+Reference param (List, int[], HashMap)  →  shared object  →  MUST backtrack (add + remove)
+Global / instance variable              →  shared state   →  MUST backtrack
+```
+
+#### Case 1: Primitive — No Backtracking Needed (LC 112 Path Sum)
+
+```java
+// LC 112 - Path Sum
+// curSum is a primitive int → each recursive call gets its OWN COPY
+// → no backtracking needed
+
+public boolean hasPathSum(TreeNode root, int targetSum) {
+    if (root == null) return false;
+    if (root.left == null && root.right == null) return root.val == targetSum;
+    getPathHelper(root, 0);
+    return pathSumMap.containsValue(targetSum);
+}
+
+private void getPathHelper(TreeNode root, Integer curSum) {
+    if (root == null) return;
+
+    int newSum = curSum + root.val;  // new local variable — does NOT affect parent's curSum
+
+    if (root.left == null && root.right == null) {
+        pathSumMap.put(newSum, newSum);
+    }
+
+    /** NOTE !!!
+     *
+     *  No backtrack on curSum / newSum needed!
+     *
+     *  Reason:
+     *   - curSum is a primitive (int / Integer with autoboxing creates a new object).
+     *   - Each recursive call receives its OWN COPY of curSum.
+     *   - Modifying newSum inside the call does NOT affect the parent's curSum.
+     *   - When the call returns, the parent's curSum is completely unchanged.
+     *
+     *  Stack visualization for tree 5 -> 4 -> 11 -> 7:
+     *
+     *    getPathHelper(5,   curSum=0)    newSum=5
+     *      getPathHelper(4,  curSum=5)   newSum=9
+     *        getPathHelper(11, curSum=9) newSum=20
+     *          getPathHelper(7, curSum=20) newSum=27  ← leaf, store 27
+     *          ← returns, parent curSum still 20 ✅
+     *        ← returns, parent curSum still 9 ✅
+     *      ← returns, parent curSum still 5 ✅
+     */
+    getPathHelper(root.left, newSum);
+    getPathHelper(root.right, newSum);
+}
+```
+
+**Memory model:**
+```
+Stack frame:  getPathHelper(node=4, curSum=5)
+              ├── newSum = 9     ← local to THIS frame
+              ├── calls getPathHelper(node.left, newSum=9)
+              │     └── newSum = 20  ← different frame, isolated
+              └── curSum is still 5 when left call returns ✅
+```
+
+#### Case 2: Global Variable — Backtracking IS Needed (LC 112 V0-2)
+
+```java
+// BAD pattern: using an instance variable for path sum
+// → ALL recursive calls share the SAME curSum → must backtrack!
+
+private int curSum = 0;  // shared across ALL calls ← danger!
+
+public boolean hasPathSum_0_2(TreeNode root, int targetSum) {
+    curSum += root.val;  // modifies shared state
+
+    if (root.left == null && root.right == null) {
+        if (curSum == targetSum) {
+            curSum -= root.val;  // MUST backtrack before returning
+            return true;
+        }
+    }
+
+    if (hasPathSum_0_2(root.left, targetSum)) {
+        curSum -= root.val;  // MUST backtrack
+        return true;
+    }
+    if (hasPathSum_0_2(root.right, targetSum)) {
+        curSum -= root.val;  // MUST backtrack
+        return true;
+    }
+
+    curSum -= root.val;  // MUST backtrack on failure path too
+    return false;
+}
+```
+
+#### Case 3: Reference Type (List) — Backtracking IS Needed (LC 113 Path Sum II)
+
+```java
+// List is passed by reference → shared object → must backtrack
+private void dfs(TreeNode node, int remain, List<Integer> path, List<List<Integer>> res) {
+    if (node == null) return;
+
+    path.add(node.val);          // ← mutates shared list
+
+    if (node.left == null && node.right == null && remain == node.val) {
+        res.add(new ArrayList<>(path));  // snapshot before backtrack
+    } else {
+        dfs(node.left,  remain - node.val, path, res);
+        dfs(node.right, remain - node.val, path, res);
+    }
+
+    path.remove(path.size() - 1);  // ← MUST backtrack: undo the add
+}
+```
+
+#### Summary Table
+
+| State Type | Example | Backtrack? | Reason |
+|---|---|---|---|
+| Primitive param | `int curSum` | **No** | Each call gets own copy |
+| Wrapper param (autoboxed) | `Integer curSum` | **No** | Autoboxing creates new object |
+| Local variable | `int newSum = curSum + val` | **No** | Belongs to current stack frame only |
+| Instance/global variable | `this.curSum` | **Yes** | Shared across all calls |
+| Collection param | `List<Integer> path` | **Yes** | Reference, mutated in-place |
+| Array param | `int[] path` | **Yes** | Reference, mutated in-place |
+
+#### Interview Tips
+
+```
+Q: "Do I need to backtrack this variable?"
+
+Decision tree:
+1. Is it a primitive (int, long, boolean, char...)?
+   → Passed as value → NO backtrack needed
+
+2. Is it a local variable inside the current stack frame?
+   → NOT shared → NO backtrack needed
+
+3. Is it an instance/class variable?
+   → Shared → YES, must backtrack
+
+4. Is it a collection or array passed as parameter?
+   → Reference = shared → YES, must backtrack
+
+Quick mental model:
+  "If I change this variable, will the CALLER see the change?"
+  YES → backtrack required
+  NO  → no backtrack needed
+```
+
+---
+
 ## 9) Others
 
 ### 9.1) Java `value` assign
