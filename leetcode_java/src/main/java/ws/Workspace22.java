@@ -767,6 +767,92 @@ public class Workspace22 {
     }
 
 
+    // LC 112
+    // 11.02 - 12 am
+    /**
+     *  -> return true if the tree has a root-to-leaf path
+     *  such that adding up all the values
+     *  along the path equals targetSum.
+     *
+     *
+     *  ------------------
+     *
+     *   IDEA 1) DFS + POST ORDER ??? + BACKTRACK
+     *
+     *
+     *   ------------------
+     *
+     */
+    int pathSum = 0; /// /?????
+    // NOTE !!! should use `pre-order` for path sum LC problems
+    public boolean hasPathSum(TreeNode root, int targetSum) {
+        // edge
+        // ????
+        if(root == null){
+            //return targetSum == 0 ? true : false;
+            return false;
+        }
+
+        ///  ???
+        // ???
+        pathSum += root.val;
+        if(root.left == null && root.right == null){
+            if(pathSum == targetSum){
+                return true;
+            }
+        }
+
+        hasPathSum(root.left, targetSum);
+        hasPathSum(root.right, targetSum);
+
+        // backtrack ??? undo ???
+        pathSum -= root.val;
+
+        return false;
+    }
+
+
+
+
+
+
+
+    // IDEA 1) DFS + POST ORDER ??? + BACKTRACK
+    //boolean isFound = fa
+    public boolean hasPathSum_99(TreeNode root, int targetSum) {
+        // edge
+        if(root == null){
+            //return targetSum == 0 ? true : false;
+            return targetSum == 0;
+        }
+
+        return checkPathSum(root, targetSum, 0);
+    }
+
+    private boolean checkPathSum(TreeNode root, int targetSum, int curSum){
+        if(root == null){
+            return false; // ???
+        }
+
+        checkPathSum(root.left, targetSum, curSum);
+        checkPathSum(root.right, targetSum, curSum);
+
+        // ???
+        curSum += root.val;
+        if(root.left == null && root.right == null){
+            if(curSum == targetSum){
+                return true;
+            }
+        }
+
+        // undo ??? backtrack
+
+
+        return false;
+    }
+
+
+
 
 
 }
