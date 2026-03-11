@@ -42,9 +42,67 @@ public class ConvertSortedListToBinarySearchTree {
 //
 //    }
 
+
     // V0-1
-    // IDEA: DFS + MID POINT + LINKED LIST (GEMINI)
+    // IDEA: DFS + MID POINT + LINKED LIST + LC 108 (GPT)
     public TreeNode sortedListToBST_0_1(ListNode head) {
+        if (head == null) {
+            return null;
+        }
+
+        int len = getNodeLen(head);
+        return buildBSTFromLinkedList(head, 0, len - 1);
+    }
+
+    private TreeNode buildBSTFromLinkedList(ListNode head, int left, int right) {
+
+        if (left > right) {
+            return null;
+        }
+
+        int mid = left + (right - left) / 2;
+
+        ListNode midNode = getNodeByIdx(head, mid);
+
+        TreeNode root = new TreeNode(midNode.val);
+
+        /** NOTE !!! below */
+        root.left = buildBSTFromLinkedList(head, left, mid - 1);
+        root.right = buildBSTFromLinkedList(head, mid + 1, right);
+
+        return root;
+    }
+
+    private ListNode getNodeByIdx(ListNode head, int idx) {
+
+        while (idx > 0 && head != null) {
+            head = head.next;
+            idx--;
+        }
+
+        return head;
+    }
+
+    private int getNodeLen(ListNode head) {
+        int len = 0;
+
+        while (head != null) {
+            head = head.next;
+            len++;
+        }
+
+        return len;
+    }
+
+
+    // V0-2
+    // IDEA: DFS + (Slow & Fast Pointers) + LINKED LIST (GEMINI)
+    /** NOTE !!!
+     *
+     * in V0-2, we are NOT using `MID POINT` approach,
+     * but a slow-fast pointer idea
+     */
+    public TreeNode sortedListToBST_0_2(ListNode head) {
         // 1. Base cases
         if (head == null)
             return null;
@@ -73,60 +131,64 @@ public class ConvertSortedListToBinarySearchTree {
 
         // 4. Recursively build left and right subtrees
         // Left half starts at 'head', right half starts at 'slow.next'
-        root.left = sortedListToBST_0_1(head);
-        root.right = sortedListToBST_0_1(slow.next);
+        root.left = sortedListToBST_0_2(head);
+        root.right = sortedListToBST_0_2(slow.next);
 
         return root;
     }
 
-    // V0-2
-    // IDEA: DFS + MID POINT + LINKED LIST (GPT)
-    public TreeNode sortedListToBST(ListNode head) {
-        if (head == null) {
-            return null;
-        }
 
-        int len = getNodeLen(head);
-        return buildBSTFromLinkedList(head, 0, len - 1);
+    // V0-3
+    // IDEA:  recursion + $O(N)$ In-Order Simulation (gemini)
+    private ListNode currentHead;
+    public TreeNode sortedListToBST_0_3(ListNode head) {
+        if (head == null)
+            return null;
+
+        // 1. Calculate the total length of the list (O(N))
+        int size = countNodes(head);
+
+        // 2. Set the global/class-level head to track our position
+        this.currentHead = head;
+
+        // 3. Build the tree using the size to define boundaries
+        return buildInOrder(0, size - 1);
     }
 
-    private TreeNode buildBSTFromLinkedList(ListNode head, int left, int right) {
-
+    private TreeNode buildInOrder(int left, int right) {
+        // Base case: No nodes left in this range
         if (left > right) {
             return null;
         }
 
+        // Find the middle to keep the tree height-balanced
         int mid = left + (right - left) / 2;
 
-        ListNode midNode = getNodeByIdx(head, mid);
+        // A) Recursively build the LEFT subtree
+        // We don't assign values yet; we just build the structure
+        TreeNode leftChild = buildInOrder(left, mid - 1);
 
-        TreeNode root = new TreeNode(midNode.val);
+        // B) Create the ROOT node
+        // In-order means we process the current node AFTER the left child
+        TreeNode root = new TreeNode(this.currentHead.val);
+        root.left = leftChild;
 
-        root.left = buildBSTFromLinkedList(head, left, mid - 1);
-        root.right = buildBSTFromLinkedList(head, mid + 1, right);
+        // MOVE the global head to the next list node
+        this.currentHead = this.currentHead.next;
+
+        // C) Recursively build the RIGHT subtree
+        root.right = buildInOrder(mid + 1, right);
 
         return root;
     }
 
-    private ListNode getNodeByIdx(ListNode head, int idx) {
-
-        while (idx > 0 && head != null) {
-            head = head.next;
-            idx--;
-        }
-
-        return head;
-    }
-
-    private int getNodeLen(ListNode head) {
-        int len = 0;
-
+    private int countNodes(ListNode head) {
+        int count = 0;
         while (head != null) {
+            count++;
             head = head.next;
-            len++;
         }
-
-        return len;
+        return count;
     }
 
 
