@@ -41,11 +41,63 @@ import java.util.List;
 public class SortArrayByParity {
 
     // V0
-//    public int[] sortArrayByParity(int[] nums) {
-//
-//    }
-//
+    public int[] sortArrayByParity(int[] nums) {
+        // edge
+        if (nums == null || nums.length <= 1) {
+            return nums;
+        }
 
+        List<Integer> list = new ArrayList<>();
+        for (int x : nums) {
+            list.add(x);
+        }
+
+        Collections.sort(list, new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                /** NOTE !!!
+                 *
+                 *  0.
+                 *
+                 *   - if we want to put o1 BEFORE o2,
+                 *     `isEven1 && !isEven2` should return -1
+                 *
+                 *   - if we want to put o1 AFTER o2,
+                 *       `!isEven1 && isEven2` should return 1
+                 *
+                 *
+                 *  1.   below, how we do custom order
+                 *   by return custom val (e.g. 1 or -1)
+                 *
+                 *  2.  In a Java Comparator:
+                 *
+                 *    negative → o1 comes before o2
+                 *    positive → o1 comes after o2
+                 *    0 → order unchanged
+                 *
+                 */
+                boolean isEven1 = o1 % 2 == 0;
+                boolean isEven2 = o2 % 2 == 0;
+                //return o1.compareTo(o2); // ????
+                if (isEven1 && !isEven2) {
+                    return -1;
+                } else if (!isEven1 && isEven2) {
+                    return 1;
+                }
+                return 0;
+            }
+        });
+
+        // prepare res
+        int[] res = new int[list.size()];
+        int i = 0;
+        for (int x : list) {
+            res[i] = x; //list.get(i);
+            i += 1;
+        }
+
+        return res;
+    }
     // V0-1
     // IDEA: CUSTOM SORT (gpt)
     public int[] sortArrayByParity_0_1(int[] nums) {
