@@ -42,6 +42,94 @@ public class ConvertSortedListToBinarySearchTree {
 //
 //    }
 
+    // V0-1
+    // IDEA: DFS + MID POINT + LINKED LIST (GEMINI)
+    public TreeNode sortedListToBST_0_1(ListNode head) {
+        // 1. Base cases
+        if (head == null)
+            return null;
+        if (head.next == null)
+            return new TreeNode(head.val);
+
+        // 2. Find the middle of the list to use as root
+        // We use 'prev' to disconnect the left half from the middle
+        ListNode prev = null;
+        ListNode slow = head;
+        ListNode fast = head;
+
+        while (fast != null && fast.next != null) {
+            prev = slow;
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+
+        // 'slow' is now the middle node
+        TreeNode root = new TreeNode(slow.val);
+
+        // 3. Disconnect the left half from the middle node
+        if (prev != null) {
+            prev.next = null;
+        }
+
+        // 4. Recursively build left and right subtrees
+        // Left half starts at 'head', right half starts at 'slow.next'
+        root.left = sortedListToBST_0_1(head);
+        root.right = sortedListToBST_0_1(slow.next);
+
+        return root;
+    }
+
+    // V0-2
+    // IDEA: DFS + MID POINT + LINKED LIST (GPT)
+    public TreeNode sortedListToBST(ListNode head) {
+        if (head == null) {
+            return null;
+        }
+
+        int len = getNodeLen(head);
+        return buildBSTFromLinkedList(head, 0, len - 1);
+    }
+
+    private TreeNode buildBSTFromLinkedList(ListNode head, int left, int right) {
+
+        if (left > right) {
+            return null;
+        }
+
+        int mid = left + (right - left) / 2;
+
+        ListNode midNode = getNodeByIdx(head, mid);
+
+        TreeNode root = new TreeNode(midNode.val);
+
+        root.left = buildBSTFromLinkedList(head, left, mid - 1);
+        root.right = buildBSTFromLinkedList(head, mid + 1, right);
+
+        return root;
+    }
+
+    private ListNode getNodeByIdx(ListNode head, int idx) {
+
+        while (idx > 0 && head != null) {
+            head = head.next;
+            idx--;
+        }
+
+        return head;
+    }
+
+    private int getNodeLen(ListNode head) {
+        int len = 0;
+
+        while (head != null) {
+            head = head.next;
+            len++;
+        }
+
+        return len;
+    }
+
+
 
     // V1
 
