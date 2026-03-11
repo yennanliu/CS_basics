@@ -53,10 +53,12 @@ import java.util.Map;
 public class PathSum {
 
     // V0
+    // IDEA: pre-order DFS
     /**
      * time = O(N)
      * space = O(H)
      */
+    /** NOTE !!! pre-order DFS */
     public boolean hasPathSum(TreeNode root, int targetSum) {
 
         if (root == null){
@@ -76,8 +78,10 @@ public class PathSum {
             return false;
         }
 
+        /** NOTE !!! we deduct root.val */
         targetSum -= root.val;
 
+        /** NOTE !!! pre-order DFS */
         if (root.left == null && root.right == null){
             return targetSum == 0;
         }
@@ -86,8 +90,10 @@ public class PathSum {
         return checkSum(root.left ,targetSum) || checkSum(root.right ,targetSum);
     }
 
+
+
     // V0-1
-    // IDEA: HASHMAP + DFS (post order)
+    // IDEA: HASHMAP + DFS (pre order)
     Map<Integer, Integer> pathSumMap = new HashMap<>();
     public boolean hasPathSum_0_1(TreeNode root, int targetSum) {
         // edge
@@ -129,6 +135,52 @@ public class PathSum {
          */
         getPathHelper(root.left, newSum);
         getPathHelper(root.right, newSum);
+    }
+
+
+    // V0-2
+    // IDEA: PRE-ORDER DFS (GEMINI)
+    private int curSum = 0;
+
+    public boolean hasPathSum_0_2(TreeNode root, int targetSum) {
+        // 1. Base Case: An empty tree has no path
+        if (root == null) {
+            return false;
+        }
+
+        // 2. Pre-Order: Process the current node
+        curSum += root.val;
+
+        // 3. Leaf Check
+        if (root.left == null && root.right == null) {
+            if (curSum == targetSum) {
+                /** NOTE !!! */
+                // IMPORTANT: We found it, but we still need to backtrack
+                // before returning true to keep curSum clean for other branches
+                curSum -= root.val;
+                return true;
+            }
+        }
+
+        // 4. Recursive Step: Capture the result from children
+        // If the LEFT side finds it, we stop and return true
+        if (hasPathSum_0_2(root.left, targetSum)) {
+            /** NOTE !!! */
+            curSum -= root.val; // Backtrack before returning!
+            return true;
+        }
+
+        // If the RIGHT side finds it, we stop and return true
+        if (hasPathSum_0_2(root.right, targetSum)) {
+            /** NOTE !!! */
+            curSum -= root.val; // Backtrack before returning!
+            return true;
+        }
+
+        /** NOTE !!! */
+        // 5. Backtrack: If neither side found it, undo the addition for this node
+        curSum -= root.val;
+        return false;
     }
 
 
@@ -184,6 +236,8 @@ public class PathSum {
         }
         return false;
     }
+
+
 
 
 }
