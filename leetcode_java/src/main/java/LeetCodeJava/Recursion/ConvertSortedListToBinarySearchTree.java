@@ -48,78 +48,344 @@ public class ConvertSortedListToBinarySearchTree {
     /**
      * Time:  O(n log n)
      * Space: O(log n)
+     *
+     */
+    /**
+     *
+     *   Q:  WHY Space: O(log n) ? (gpt)
+     *
+     *
+     * Let’s visualize **why the time complexity is `O(N log N)`** for your approach in
+     * **LeetCode 109 – Convert Sorted List to Binary Search Tree**.
+     *
+     * Your algorithm does two main things:
+     *
+     * 1. **Find the middle node** using `getNodeByIdx()` → this scans the list.
+     * 2. **Recursively build left and right subtrees**.
+     *
+     * The expensive part is **finding the middle node repeatedly**.
+     *
      * ---
      *
-     * # Time Complexity
-     *
-     * Key operation:
+     * # 1️⃣ Cost of `getNodeByIdx()`
      *
      * ```java
-     * ListNode midNode = getNodeByIdx(head, mid);
+     * private ListNode getNodeByIdx(ListNode head, int idx)
      * ```
      *
-     * `getNodeByIdx()` traverses the
-     * linked list from the head each time.
+     * This starts from the **head every time** and walks forward.
      *
-     * ### Cost per recursion level
+     * If the list has `N` nodes:
      *
-     * * Finding the mid node → `O(N)`
+     * ```
+     * getNodeByIdx(head, mid)  ≈  O(N)
+     * ```
      *
-     * ### Recursion tree
+     * ---
      *
-     * The tree height is roughly:
+     * # 2️⃣ Recursion Tree Visualization
+     *
+     * Suppose:
+     *
+     * ```
+     * N = 8
+     * ```
+     *
+     * The recursion splits like a balanced BST.
+     *
+     * ### Level 0
+     *
+     * ```
+     * build(0..7)
+     * ```
+     *
+     * Work:
+     *
+     * ```
+     * scan list to index 3 → O(N)
+     * ```
+     *
+     * ---
+     *
+     * ### Level 1
+     *
+     * Two recursive calls:
+     *
+     * ```
+     * build(0..2)
+     * build(4..7)
+     * ```
+     *
+     * Each again scans from head.
+     *
+     * Work:
+     *
+     * ```
+     * O(N/2) + O(N/2) = O(N)
+     * ```
+     *
+     * ---
+     *
+     * ### Level 2
+     *
+     * ```
+     * build(0..0)
+     * build(2..2)
+     * build(4..5)
+     * build(6..7)
+     * ```
+     *
+     * Work:
+     *
+     * ```
+     * O(N/4) + O(N/4) + O(N/4) + O(N/4) = O(N)
+     * ```
+     *
+     * ---
+     *
+     * # 3️⃣ Key Pattern
+     *
+     * Each level costs **about `O(N)` total work**.
+     *
+     * | Level | Work |
+     * | ----- | ---- |
+     * | 0     | N    |
+     * | 1     | N    |
+     * | 2     | N    |
+     * | 3     | N    |
+     *
+     * How many levels?
+     *
+     * Balanced tree height:
      *
      * ```
      * log N
      * ```
      *
-     * But each level still does list traversal.
+     * ---
      *
-     * Total work:
+     * # 4️⃣ Total Work
      *
      * ```
-     * N + N/2 + N/4 + ... ≈ N log N
+     * N + N + N + ... (log N times)
      * ```
      *
-     * ✅ **Time Complexity**
+     * So:
      *
-     * ```java
-     * // time: O(N log N)
+     * ```
+     * Time = N × log N
+     * ```
+     *
+     * ```
+     * Time Complexity = O(N log N)
      * ```
      *
      * ---
      *
-     * # Space Complexity
+     * # 5️⃣ Visual Diagram
      *
-     * Space comes from recursion stack.
+     * ```
+     *                 N
+     *            /         \
+     *         N/2           N/2
+     *        /   \         /   \
+     *      N/4   N/4    N/4   N/4
+     * ```
      *
-     * Balanced BST height:
+     * Sum per level:
+     *
+     * ```
+     * N
+     * ```
+     *
+     * Levels:
      *
      * ```
      * log N
      * ```
      *
-     * So recursion depth = `log N`.
+     * Total:
      *
-     * ✅ **Space Complexity**
-     *
-     * ```java
-     * // space: O(log N)
      * ```
+     * N log N
+     * ```
+     *
+     */
+    /**
+     *  Q:  WHY Space: O(log n) ? (gpt)
+     *
+     *
+     *  NOTE !!!!!
+     *
+     *   Space complexity comes from the `recursion call STACK depth`,
+     *   NOT the number of nodes created.
+     *
+     *
+     *   (For DFS implemented with recursion:
+     *     - Space Complexity = maximum recursion stack depth
+     *       because every recursive call adds one stack frame to the call stack.
+     *  )
+     *
+     *
+     *
+     *  Great question 👍 Let’s **visualize why the space complexity is `O(log N)`** for **LeetCode 109 – Convert Sorted List to Binary Search Tree**.
+     *
+     * The key idea:
+     *
+     * > Space complexity comes from the **recursion call stack depth**,
+     * not the number of nodes created.
+     *
+     * The tree we build is **height-balanced**,
+     * so its height determines the stack depth.
+     *
      * ---
      *
-     * # Why LC109 Has a Better Solution
+     * # 1️⃣ Recursion Stack = Tree Height
      *
-     * There is a well-known **optimal solution**
-     * for **LeetCode 109 – Convert Sorted List
-     * to Binary Search Tree** that avoids repeated scans.
-     *
-     * Using **inorder traversal simulation**:
+     * Each recursive call builds one node and then calls:
      *
      * ```
-     * Time:  O(N)
+     * build(left subtree)
+     * build(right subtree)
+     * ```
+     *
+     * But recursion **does not run both simultaneously** on the stack.
+     *
+     * Execution flow is like:
+     *
+     * ```
+     * build(root)
+     *   -> build(left)
+     *        -> build(left)
+     *            -> build(left)
+     * ```
+     *
+     * So the stack grows only **along one branch**.
+     *
+     * ---
+     *
+     * # 2️⃣ Visual Example (N = 7)
+     *
+     * Sorted list:
+     *
+     * ```
+     * 1 → 2 → 3 → 4 → 5 → 6 → 7
+     * ```
+     *
+     * Balanced BST:
+     *
+     * ```
+     *         4
+     *       /   \
+     *      2     6
+     *     / \   / \
+     *    1   3 5   7
+     * ```
+     *
+     * Tree height:
+     *
+     * ```
+     * 3
+     * ```
+     *
+     * ---
+     *
+     * # 3️⃣ Recursion Stack Visualization
+     *
+     * While building the **leftmost path**, the stack becomes:
+     *
+     * ```
+     * build(0,6)   -> root 4
+     * build(0,2)   -> root 2
+     * build(0,0)   -> root 1
+     * build(0,-1)  -> null
+     * ```
+     *
+     * Stack depth:
+     *
+     * ```
+     * 4 calls
+     * ```
+     *
+     * Which is approximately:
+     *
+     * ```
+     * log₂(7) ≈ 3
+     * ```
+     *
+     * ---
+     *
+     * # 4️⃣ General Case
+     *
+     * For a **balanced BST**:
+     *
+     * ```
+     * height ≈ log₂(N)
+     * ```
+     *
+     * Example sizes:
+     *
+     * | N         | Height |
+     * | --------- | ------ |
+     * | 8         | 3      |
+     * | 16        | 4      |
+     * | 1024      | 10     |
+     * | 1,000,000 | ~20    |
+     *
+     * So recursion stack grows **very slowly**.
+     *
+     * ---
+     *
+     * # 5️⃣ Why It’s NOT `O(N)`
+     *
+     * Worst case recursion stack `O(N)` only happens when the tree is **skewed**:
+     *
+     * ```
+     * 1
+     *  \
+     *   2
+     *    \
+     *     3
+     *      \
+     *       4
+     * ```
+     *
+     * But in **LeetCode 109 – Convert Sorted List to Binary Search Tree**,
+     * we **always choose the middle**, guaranteeing a **balanced tree**.
+     *
+     * So the recursion depth is:
+     *
+     * ```
+     * log N
+     * ```
+     *
+     * ---
+     *
+     * # Final Complexity
+     *
+     * ```
+     * Time:  O(N log N)
      * Space: O(log N)
      * ```
+     *
+     * ---
+     *
+     * ✅ **Interview tip**
+     *
+     * When analyzing recursion:
+     *
+     * ```
+     * Space = recursion depth
+     * ```
+     *
+     * For tree problems:
+     *
+     * ```
+     * Balanced tree  -> O(log N)
+     * Skewed tree    -> O(N)
+     * ```
+     *
+     *
      */
     public TreeNode sortedListToBST_0_1(ListNode head) {
         if (head == null) {
