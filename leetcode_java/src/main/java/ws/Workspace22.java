@@ -1159,9 +1159,15 @@ public class Workspace22 {
 
     public String reorganizeString(String s) {
         // edge
-        if(s.isEmpty() || s.length() == 0){
+//        if(s.isEmpty() || s.length() == 0){
+//            return s;
+//        }
+
+        if (s == null || s.length() == 0) {
             return s;
         }
+
+
 
         Map<String, Integer> map = new HashMap<>();
         for(String x: s.split("")){
@@ -1192,6 +1198,7 @@ public class Workspace22 {
 //
 //            }
             // case 1) if cur val != prev val
+            // if (res.length() == 0 || pq.peek().val != res.charAt(res.length() - 1))
             if(res.equals("") ||  !pq.peek().val.equals(res.charAt(res.length()-1))){
                 ValCnt2 valCnt2 = pq.poll();
                 // ??

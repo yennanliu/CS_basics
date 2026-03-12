@@ -2220,6 +2220,105 @@ Quick mental model:
 
 ## 9) Others
 
+### 9.0) Modifying Custom Class Fields Directly (`v.field -= 1`) ⭐
+
+> **Core Question**: When can you write `v.cnt -= 1` and when can't you?
+
+#### When you CAN modify directly
+
+All three conditions must hold:
+
+1. **Field is accessible** (not `private`, or you are inside the class)
+2. **Field is not `final`**
+3. **Reference is not `null`**
+
+```java
+class ValCnt {
+    char val;
+    int cnt;           // package-private, non-final
+    ValCnt(char val, int cnt) { this.val = val; this.cnt = cnt; }
+}
+
+ValCnt v = new ValCnt('a', 3);
+v.cnt -= 1;   // ✅ allowed: accessible + non-final + non-null
+```
+
+#### When you CANNOT modify directly
+
+**Case 1 — `private` field** (outside the class)
+```java
+class ValCnt {
+    private int cnt;   // private!
+}
+
+v.cnt -= 1;   // ❌ compile error — use a setter/method instead
+```
+
+**Case 2 — `final` field**
+```java
+class ValCnt {
+    final int cnt;
+}
+
+v.cnt -= 1;   // ❌ compile error — cannot assign to final variable
+```
+
+**Case 3 — null reference**
+```java
+ValCnt v = null;
+v.cnt -= 1;   // ❌ NullPointerException at runtime
+```
+
+#### Common misconception: `final` reference vs `final` field
+
+```java
+final ValCnt v = new ValCnt('a', 3);
+
+v.cnt -= 1;              // ✅ allowed — final only locks the REFERENCE
+v = new ValCnt('b', 1);  // ❌ compile error — cannot reassign final reference
+```
+
+`final` on the variable means you cannot point `v` to a different object.
+It does **not** prevent mutating the object's fields.
+
+#### `Integer` (wrapper) field — works but autoboxes
+
+```java
+class Holder { Integer cnt; }
+
+Holder h = new Holder();
+h.cnt = 3;
+h.cnt -= 1;  // ✅ works, but really: h.cnt = Integer.valueOf(h.cnt.intValue() - 1)
+             //    creates a new Integer object; fails if field is final
+```
+
+#### Summary table
+
+| Situation | `v.cnt -= 1` allowed? |
+|-----------|----------------------|
+| `int cnt` (package-private) | ✅ yes |
+| `private int cnt` (outside class) | ❌ compile error |
+| `final int cnt` | ❌ compile error |
+| `final ValCnt v` (reference is final) | ✅ yes — field still mutable |
+| `v == null` | ❌ NullPointerException |
+| `Integer cnt` (wrapper) | ✅ works, autoboxes to new object |
+
+#### Interview trap: `v.cnt--` vs `--v.cnt` vs `v.cnt -= 1`
+
+All three decrement `cnt` by 1. The difference is the **returned expression value**:
+
+```java
+v.cnt = 3;
+
+int a = v.cnt--;   // a = 3  (returns BEFORE decrement), v.cnt = 2
+int b = --v.cnt;   // b = 1  (returns AFTER  decrement), v.cnt = 1
+v.cnt -= 1;        // no return value used, v.cnt = 0
+```
+
+Use `v.cnt -= 1` when you only care about the side-effect, not the return value.
+
+---
+
 ### 9.1) Java `value` assign
 
 - https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/LinkedList/ReverseLinkedList.java
