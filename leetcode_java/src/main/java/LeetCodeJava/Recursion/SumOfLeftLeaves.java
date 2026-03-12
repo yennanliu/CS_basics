@@ -89,11 +89,48 @@ public class SumOfLeftLeaves {
             return isLeft ? node.val : 0;
         }
 
+        /** NOTE !!!
+         *
+         *  we still call dfs func with `left, right` sub tree,
+         *  and sum over them (recursive func call),
+         *  since we the logic above to check if it's `left leaf`,
+         *  to decide whether append val to result.
+         *
+         *   e.g.
+         *   ```
+         *     if (node.left == null && node.right == null) {
+         *             // Only return the value if it's a leaf AND it's a left child
+         *             return isLeft ? node.val : 0;
+         *         }
+         *   ```
+         *
+         */
         // Standard DFS: sum up results from left and right subtrees
         // When we go left, we set the flag to true
         // When we go right, we set the flag to false
         return helper(node.left, true) + helper(node.right, false);
     }
+
+
+    // V0-2
+    // IDEA + PRE ORDER TRAVERSE !! (GPT)
+    public int sumOfLeftLeaves_0_2(TreeNode root) {
+        return helper_0_2(root, false);
+    }
+
+    private int helper_0_2(TreeNode node, boolean isLeft) {
+        if (node == null) {
+            return 0;
+        }
+
+        // if it's a leaf
+        if (node.left == null && node.right == null) {
+            return isLeft ? node.val : 0;
+        }
+
+        return helper_0_2(node.left, true) + helper_0_2(node.right, false);
+    }
+
 
 
     // VO-7
