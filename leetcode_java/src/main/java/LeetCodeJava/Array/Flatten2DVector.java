@@ -65,6 +65,70 @@ public class Flatten2DVector {
 //    }
 
     // V0-1
+    // IDEA: 2D matrix (array) gemini
+    class Vector2D_0_1 {
+        private int[][] vec;
+        private int row = 0;
+        private int col = 0;
+
+        public Vector2D_0_1(int[][] vec) {
+            this.vec = vec;
+        }
+
+        public int next() {
+            // In Java Iterators, it's a best practice to call hasNext()
+            // inside next() to ensure the pointers are at a valid element.
+            if (!hasNext()) return -1;
+            return vec[row][col++];
+        }
+
+        public boolean hasNext() {
+            // Move the row pointer forward if we are at the end of a sub-array
+            // or if the current sub-array is empty.
+            while (row < vec.length && col == vec[row].length) {
+                row++;
+                col = 0;
+            }
+            return row < vec.length;
+        }
+    }
+
+    // V0-2
+    // IDEA: 2D matrix (array) GPT
+    class Vector2D_0_2 {
+
+        List<Integer> list;
+        int idx;
+
+        public Vector2D_0_2(int[][] vec) {
+
+            this.list = new ArrayList<>();
+            this.idx = 0;
+
+            for (int[] arr : vec) {
+                for (int x : arr) {
+                    this.list.add(x);
+                }
+            }
+        }
+
+        public int next() {
+
+            if (!hasNext()) {
+                return -1;
+            }
+
+            return list.get(idx++);
+        }
+
+        public boolean hasNext() {
+            return idx < list.size();
+        }
+    }
+
+
+
+    // V0-1
     // TODO: fix & validate below
 //    class Vector2D{
 //
@@ -106,18 +170,18 @@ public class Flatten2DVector {
 //        private void forward() {
 //        }
 
-    // V0-2
+    // V0-5
     // IDEA: (fixed by gpt)
     // TODO: fix & validate below
     /**
      * time = O(N*M) for constructor, O(1) for next/hasNext
      * space = O(N*M)
      */
-    class Vector2D_0_2 {
+    class Vector2D_0_5 {
         private List<Integer> collected;
         private int pointer;
 
-        public Vector2D_0_2(int[][] vec) {
+        public Vector2D_0_5(int[][] vec) {
             collected = new ArrayList<>();
             pointer = 0;
 
@@ -212,5 +276,8 @@ public class Flatten2DVector {
 
 
     // V2
+
+
+
 
 }

@@ -1331,5 +1331,65 @@ public class Workspace22 {
     }
 
 
+    // LC 251
+    // 10.47 - 57 AM
+    /**
+     *
+     * -> Design and implement an iterator to flatten a 2d vector.
+     * It should support the following operations: next and hasNext.
+     *
+     * ------------------
+     *
+     *   IDEA 1) RECURSION ??
+     *
+     *   IDEA 2) ARRAY OP ???
+     *
+     *
+     * ------------------
+     *
+     */
+    // IDEA 2) ARRAY OP ???
+    class Vector2D_99{
+
+        // attr
+        List<Integer> list;
+        int[][] twoDArr;
+        int idx;
+
+
+        public Vector2D_99(int[][] vec) {
+            this.list = new ArrayList<>();
+            this.twoDArr = vec;
+            this.idx = 0;
+
+            // ???
+            for(int[] arr: this.twoDArr){
+                for(int x: arr){
+                    this.list.add(x);
+                }
+            }
+        }
+
+        public int next() {
+            // edge
+            if(this.idx >= this.list.size()){
+                return -1; // ??
+            }
+            idx += 1;
+            return this.list.get(idx - 1);
+        }
+
+        public boolean hasNext() {
+            return this.idx >= this.list.size();
+        }
+
+//        private void forward() {
+//        }
+
+
+    }
+
+
+
 
 }
