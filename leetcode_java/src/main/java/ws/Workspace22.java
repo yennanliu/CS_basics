@@ -483,8 +483,97 @@ public class Workspace22 {
      *  --------------
      *
      */
+
+    // LC 1209
+    // 8.33 - 43 am
+    /**
+     *  IDEA 1) STACK
+     *
+     *   FILO
+     *
+     *   stack: { [val : cnt ]  }
+     */
+    class ValCnt3{
+        String val;
+        int cnt;
+
+        ValCnt3(String s, int cnt){
+            this.val = s;
+            this.cnt = cnt;
+        }
+    }
+
+    // IDEA 1) STACK
+    public String removeDuplicates(String s, int k) {
+        // edge
+        if(s == null || s.length() == 0){
+            return "";
+        }
+        if(s.length() == 1){
+            return s;
+        }
+
+        //Stack<ValCnt3> st = new Stack<>();
+        Deque<ValCnt3> deque = new LinkedList<>();
+
+        for(String x: s.split("")){
+            // case 1) st is empty
+            if(deque.isEmpty()){
+                deque.add(new ValCnt3(x, 1));
+            }else{
+                // case 2) st is NOT empty && prev != cur
+                if(!deque.peek().val.equals(x)){
+                    deque.add(new ValCnt3(x, 1));
+                }
+                // case 3) st is NOT empty && prev == cur
+                else{
+                    // case 3-1) continuous val cnt < k
+                    if(deque.peek().cnt < k){
+                        // ????
+                        ValCnt3 tmp = deque.poll();
+                        tmp.val += 1;
+                        deque.addLast(tmp);
+                    }
+                    // case 3-2) continuous val cnt >= k
+                    else{
+                        ValCnt3 tmp = deque.poll();
+                        tmp.val += k;
+                        if(tmp.cnt > 0){
+                            deque.addLast(tmp);
+                        }
+                    }
+
+                }
+            }
+        }
+
+        StringBuilder sb = new StringBuilder();
+        // ???
+        for(ValCnt3 v: deque){
+            sb.append(multiplyStr(v.val, v.cnt));
+        }
+
+
+        return sb.toString();
+    }
+
+    private String multiplyStr(String str, int cnt){
+        String res = "";
+        for(int i = 0; i < cnt; i++){
+            res += str;
+        }
+        return res;
+    }
+
+
+
+
+
+
+
+
     // 10.20 - 30 am
-    public int removeDuplicates(int[] nums) {
+    public int removeDuplicates_99(int[] nums) {
         // edge
         if(nums == null || nums.length == 0){
             return 0;
