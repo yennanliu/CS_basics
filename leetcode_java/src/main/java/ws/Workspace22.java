@@ -527,14 +527,14 @@ public class Workspace22 {
                 }
                 // case 3) st is NOT empty && prev == cur
                 else{
-                    // case 3-1) continuous val cnt < k
-                    if(deque.peek().cnt < k){
+                    // case 3-1) continuous val cnt + 1 < k
+                    if(deque.peek().cnt + 1 < k){
                         // ????
                         ValCnt3 tmp = deque.poll();
                         tmp.val += 1;
                         deque.addLast(tmp);
                     }
-                    // case 3-2) continuous val cnt >= k
+                    // case 3-2) continuous val cnt + 1 >= k
                     else{
                         ValCnt3 tmp = deque.poll();
                         tmp.val += k;

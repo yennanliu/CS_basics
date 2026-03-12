@@ -53,9 +53,56 @@ import java.util.Stack;
 public class RemoveAllAdjacentDuplicatesInString2 {
 
     // V0
-//    public String removeDuplicates(String s, int k) {
-//
-//    }
+    // IDEA: STACK + CUSTOM CLASS (gemini)
+    class ValCnt3 {
+        char ch;
+        int cnt;
+
+        ValCnt3(char ch, int cnt) {
+            this.ch = ch;
+            this.cnt = cnt;
+        }
+    }
+    public String removeDuplicates(String s, int k) {
+        if (s == null || s.length() == 0)
+            return "";
+
+        /** NOTE !!!
+         *
+         *   the dequeue structure:
+         *
+         *    { [val_1, cnt_1], [val_2, cnt_2], ... }
+         */
+        // Use ArrayDeque for better performance as a Stack
+        Deque<ValCnt3> stack = new ArrayDeque<>();
+
+        for (char c : s.toCharArray()) {
+            if (!stack.isEmpty() && stack.peekLast().ch == c) {
+                // If current char matches the top of stack, increment count
+                stack.peekLast().cnt++;
+
+                // If count reaches k, remove it from the stack entirely
+                if (stack.peekLast().cnt == k) {
+                    stack.pollLast();
+                }
+            } else {
+                // New character encountered
+                stack.addLast(new ValCnt3(c, 1));
+            }
+        }
+
+        // Build the final string
+        StringBuilder sb = new StringBuilder();
+        for (ValCnt3 item : stack) {
+            for (int i = 0; i < item.cnt; i++) {
+                sb.append(item.ch);
+            }
+        }
+
+        return sb.toString();
+    }
+
+
 
     // V0-1
     // IDEA: STACK (gemini)
