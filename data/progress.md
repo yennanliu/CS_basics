@@ -13,7 +13,7 @@
 	- array.md (OK)
 	- matrix.md (OK)
 	- 2_pointers.md (OK)
-	- advanced_string_algorithms.md (todo)
+	- backtrack.md (todo, Visual Guide: Recursion Index Patterns in LeetCode Problems)
 - to review
 - needcode `250` - similar LC by AI
     - Arrays & Hashing
@@ -201,7 +201,7 @@
 			- 871
 
 	- todo (20260308)
-		- 1109,41,251,849
+		- 1109,41,849
 	- todo (20260310)
 		- 124,113,257,437,129,1023(todo),215(todo)
 	- todo (20260311)
