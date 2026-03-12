@@ -1,6 +1,6 @@
 # Progress
 
-# 2026-03-12
+# 2026-03-13
 
 - weekly video
 - cheatsheet (LC examples)
@@ -162,7 +162,6 @@
 	- LC 437
 		- gpt
 			- 257
-			- 404
 			- 124
 			- 129
 			- 687
