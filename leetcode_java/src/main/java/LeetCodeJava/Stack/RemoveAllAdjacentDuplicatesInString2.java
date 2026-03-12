@@ -74,26 +74,39 @@ public class RemoveAllAdjacentDuplicatesInString2 {
          *    { [val_1, cnt_1], [val_2, cnt_2], ... }
          */
         // Use ArrayDeque for better performance as a Stack
-        Deque<ValCnt3> stack = new ArrayDeque<>();
+        Deque<ValCnt3> deque = new ArrayDeque<>();
 
         for (char c : s.toCharArray()) {
-            if (!stack.isEmpty() && stack.peekLast().ch == c) {
+            /** NOTE !!!
+             *
+             *  1.  there are ONLY 2 cases
+             *
+             *     case 1. st is NOT empty and `last` element == new str
+             *
+             *     case 2. either st is  empty or `last` element != new str
+             *
+             *
+             *  2. for case 1), we will add element to stack ANYWAY,
+             *     then if cnt > k, we deduct it, and do corresponding op
+             *
+             */
+            if (!deque.isEmpty() && deque.peekLast().ch == c) {
                 // If current char matches the top of stack, increment count
-                stack.peekLast().cnt++;
+                deque.peekLast().cnt++;
 
                 // If count reaches k, remove it from the stack entirely
-                if (stack.peekLast().cnt == k) {
-                    stack.pollLast();
+                if (deque.peekLast().cnt == k) {
+                    deque.pollLast();
                 }
             } else {
                 // New character encountered
-                stack.addLast(new ValCnt3(c, 1));
+                deque.addLast(new ValCnt3(c, 1));
             }
         }
 
         // Build the final string
         StringBuilder sb = new StringBuilder();
-        for (ValCnt3 item : stack) {
+        for (ValCnt3 item : deque) {
             for (int i = 0; i < item.cnt; i++) {
                 sb.append(item.ch);
             }
