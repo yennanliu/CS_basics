@@ -1145,6 +1145,95 @@ public class Workspace22 {
 
 
 
+    // LC 767
+    // 7.55 - 8.10 am
+    class ValCnt2{
+        String val;
+        int cnt;
+
+        ValCnt2(String val, int cnt){
+            this.val = val;
+            this.cnt = cnt;
+        }
+    }
+
+    public String reorganizeString(String s) {
+        // edge
+        if(s.isEmpty() || s.length() == 0){
+            return s;
+        }
+
+        Map<String, Integer> map = new HashMap<>();
+        for(String x: s.split("")){
+            map.put(x, map.getOrDefault(x, 0) + 1);
+        }
+
+        // bit PQ: sort on cnt (big -> small)
+        PriorityQueue<ValCnt2> pq  = new PriorityQueue<>(new Comparator<ValCnt2>() {
+            @Override
+            public int compare(ValCnt2 o1, ValCnt2 o2) {
+                int diff = o2.cnt - o1.cnt;
+                return diff;
+            }
+        });
+
+        // ??
+        for(String val: map.keySet()){
+            pq.add(new ValCnt2(val, map.get(val)));
+        }
+
+        //StringBuilder sb = new StringBuilder();
+        String res = ""; //????
+
+        // ???
+        while(!pq.isEmpty()){
+//            // case 0) res is ""
+//            if(res.equals("")){
+//
+//            }
+            // case 1) if cur val != prev val
+            if(res.equals("") ||  !pq.peek().val.equals(res.charAt(res.length()-1))){
+                ValCnt2 valCnt2 = pq.poll();
+                // ??
+                int newCnt = valCnt2.cnt -= 1;
+                res += valCnt2.val;
+                if(newCnt > 0){
+                    // ???
+                    // can we deduct the attr directly ?
+                    pq.add(new ValCnt2(valCnt2.val, newCnt ));
+                }
+            }
+            // case 2)  if cur val == prev val
+            else{
+
+                ValCnt2 valCnt2 = pq.poll();
+
+                // NOTE !!! if NOT possible to form a valid str
+                // break the while loop directly
+                if(pq.isEmpty()){
+                    break;
+                }
+
+                ValCnt2 valCnt2_2 = pq.poll();
+
+                int newCnt = valCnt2_2.cnt -= 1;
+                res += valCnt2_2.val;
+                if(newCnt > 0){
+                    // ???
+                    // can we deduct the attr directly ?
+                    pq.add(new ValCnt2(valCnt2_2.val, newCnt ));
+                }
+
+                pq.add(valCnt2);
+
+            }
+        }
+
+
+
+        return res.length() == s.length() ? res : "";
+    }
+
 
 
 }
