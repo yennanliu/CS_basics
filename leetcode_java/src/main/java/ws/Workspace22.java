@@ -1516,6 +1516,68 @@ public class Workspace22 {
     }
 
 
+    // LC 1634
+    // 7.39 - 49 am
+    /**
+     *
+     *  -> Given a sorted integer array nums,
+     *  where the range of elements are in the inclusive
+     *  range [lower, upper],
+     *
+     *    -> return its missing ranges.
+     *
+     *  -----------------------
+     *
+     *   IDEA 1) INTERVAL OP + 2 pointers ??
+     *
+     *
+     *  -----------------------
+     *
+     */
+    // IDEA 1) INTERVAL OP + 2 pointers ??
+    public List<List<Integer>> findMissingRanges(int[] nums, int lower, int upper) {
+        List<List<Integer>> res = new ArrayList<>();
+        // edge
+        if(nums == null || nums.length == 0){
+            return res;
+        }
+        if(lower > upper){
+            return res;
+        }
+
+       // int prev = lower - 1; // ????
+
+        List<Integer> list = new ArrayList<>();
+        list.add(lower);
+        for(int x: nums){
+            list.add(x);
+        }
+        list.add(upper);
+
+        // add lower, upper to arr
+        for(int i = 1; i < list.size(); i++){
+            int diff = list.get(i) - list.get(i-1);
+           if(diff != 1){
+               if(diff == 2){
+                   //list.add(diff); // ???
+                   res.add(new ArrayList<>(diff));
+               }else{
+                   int start = list.get(i-1) + 1;
+                   int end = list.get(i) - 1;
+                   // ???
+                   //list.add(Integer.valueOf(start + "->" + end));
+                   res.add(new ArrayList<>(
+                           Integer.valueOf(start + "->" + end)));
+               }
+           }
+        }
+
+
+
+        return res;
+    }
+
+
 
 
 

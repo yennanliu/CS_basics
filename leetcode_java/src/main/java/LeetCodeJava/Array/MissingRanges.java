@@ -4,6 +4,7 @@ package LeetCodeJava.Array;
 // https://leetcode.ca/all/163.html
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -70,6 +71,68 @@ public class MissingRanges {
         res.add(range);
     }
 
+    // V0-1
+    // IDEA: ARRAY OP (gemini)
+    // TODO: validate
+    public List<List<Integer>> findMissingRanges_0_1(int[] nums, int lower, int upper) {
+        List<List<Integer>> res = new ArrayList<>();
+
+        // 1. Handle empty nums array
+        if (nums == null || nums.length == 0) {
+            res.add(Arrays.asList(lower, upper));
+            return res;
+        }
+
+        // 2. Check gap between 'lower' and the first element
+        if (nums[0] > lower) {
+            res.add(Arrays.asList(lower, nums[0] - 1));
+        }
+
+        // 3. Check gaps between adjacent elements in nums
+        for (int i = 0; i < nums.length - 1; i++) {
+            // If there's a gap (diff > 1)
+            if (nums[i + 1] > nums[i] + 1) {
+                res.add(Arrays.asList(nums[i] + 1, nums[i + 1] - 1));
+            }
+        }
+
+        // 4. Check gap between the last element and 'upper'
+        if (nums[nums.length - 1] < upper) {
+            res.add(Arrays.asList(nums[nums.length - 1] + 1, upper));
+        }
+
+        return res;
+    }
+
+
+    // V0-2
+    // IDEA: ARRAY OP (GPT)
+    // TODO: validate
+    public List<String> findMissingRanges_0_2(int[] nums, int lower, int upper) {
+        List<String> res = new ArrayList<>();
+
+        long prev = (long) lower - 1;
+
+        for (int i = 0; i <= nums.length; i++) {
+            long curr = (i == nums.length) ? (long) upper + 1 : nums[i];
+
+            if (curr - prev >= 2) {
+                res.add(formatRange(prev + 1, curr - 1));
+            }
+
+            prev = curr;
+        }
+
+        return res;
+    }
+
+    private String formatRange(long start, long end) {
+        if (start == end) {
+            return String.valueOf(start);
+        }
+        return start + "->" + end;
+    }
+
 
     // V1
     // https://leetcode.ca/2016-05-11-163-Missing-Ranges/
@@ -93,5 +156,12 @@ public class MissingRanges {
 //        return ans;
 //    }
 
+
+
     // V2
+
+
+    
+
+
 }
