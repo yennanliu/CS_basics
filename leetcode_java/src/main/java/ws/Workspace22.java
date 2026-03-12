@@ -295,6 +295,69 @@ public class Workspace22 {
      *
      *
      */
+
+    // LC 652
+    // 10.48 - 58 AM
+    // POST ORDER ???
+    // -> path root.val + "," + _left + "," + _right // ???
+    // ????
+    // NOTE !!! Map to store: SerializedPath -> Count
+    Map<String, Integer> pathCntMap = new HashMap<>();
+    List<TreeNode> duplicatedNode = new ArrayList<>();
+    public List<TreeNode> findDuplicateSubtrees(TreeNode root) {
+//        // edge
+//        if(root == null){
+//            // return null;
+//            return duplicatedNode;
+//        }
+//        if(root.left == null && root.right == null){
+//            // return null;
+//            return duplicatedNode;
+//        }
+
+        // ???
+        dfsHelper(root, "");
+
+        return duplicatedNode;
+    }
+
+    private String dfsHelper(TreeNode root, String path){
+        // ??
+        if(root == null){
+            // return null;
+           // return res;
+           // return null;
+            return "#"; // ????
+        }
+
+        String _left = dfsHelper(root.left, path);
+        String _right = dfsHelper(root.right, path);
+
+        // ???
+        path = root.val + "," + _left + "," + _right;
+
+        // note !!!
+        // update to map
+        pathCntMap.put(path,
+                pathCntMap.getOrDefault(path, 0) + 1);
+
+        // ???
+        // only add to res when cnt == 2
+        if(pathCntMap.get(path) == 2){
+            duplicatedNode.add(root);
+        }
+
+       // return root;
+
+        return path; // ???
+    }
+
+
+
+
+
+
+
     // IDEA 1) DFS + POST order traverse
     List<TreeNode> res = new ArrayList<>();
     // ???
@@ -302,7 +365,7 @@ public class Workspace22 {
     // /??
     // v2: { path: [node_1, node_2 ,.. ] }
     Map<String, List<TreeNode>> pathMap = new HashMap<>();
-    public List<TreeNode> findDuplicateSubtrees(TreeNode root) {
+    public List<TreeNode> findDuplicateSubtrees_99(TreeNode root) {
         // edge
         if(root == null){
             // return null;
