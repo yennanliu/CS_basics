@@ -1453,6 +1453,72 @@ public class Workspace22 {
     }
 
 
+    // LC 404
+    // 7.18 - 28 am
+    /**
+     *  ->
+     *  Given the root of a binary tree,
+     *  return the sum of all `left` leaves.
+     *
+     *   NOTE:
+     *     1.  A leaf is a node with no children
+     *
+     *     2. A left leaf is a leaf that is the
+     *        left child of another node.
+     *
+     *
+     *  --------
+     *
+     *  IDEA 1) DFS ????
+     *
+     *
+     *  IDEA 2) BFS ????
+     *
+     *
+     */
+    //  IDEA 1) DFS ???? + pre-order traverse
+    // ???
+    int leftLeavesSum = 0;
+    public int sumOfLeftLeaves(TreeNode root) {
+        // edge
+        if(root == null){
+            return 0;
+        }
+
+//        // pre-order !!!
+//        if(root.left == null && root.right == null){
+//          // return root.val; // ????
+//            leftLeavesSum += root.val;
+//        }
+
+      //  sumOfLeftLeaves(root.left);
+        // ????
+        getLeftNodesHelper(root, "");
+
+        // ??????
+        return leftLeavesSum;
+    }
+
+    // ???
+    private void getLeftNodesHelper(TreeNode root, String preOp){
+        if(root == null){
+            return; //0;
+        }
+
+        // pre-order !!!
+        if(root.left == null && root.right == null && preOp.equals("left")){
+            // return root.val; // ????
+            leftLeavesSum += root.val;
+        }
+
+        getLeftNodesHelper(root.left, "left");
+        getLeftNodesHelper(root.right, "right");
+    }
+
+
+
+
+
 
 
 }

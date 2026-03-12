@@ -1,7 +1,38 @@
 package LeetCodeJava.Recursion;
 
 // https://leetcode.com/problems/sum-of-left-leaves/
-
+/**
+ * 404. Sum of Left Leaves
+ * Solved
+ * Easy
+ * Topics
+ * premium lock icon
+ * Companies
+ * Given the root of a binary tree, return the sum of all left leaves.
+ *
+ * A leaf is a node with no children. A left leaf is a leaf that is the left child of another node.
+ *
+ *
+ *
+ * Example 1:
+ *
+ *
+ * Input: root = [3,9,20,null,null,15,7]
+ * Output: 24
+ * Explanation: There are two left leaves in the binary tree, with values 9 and 15 respectively.
+ * Example 2:
+ *
+ * Input: root = [1]
+ * Output: 0
+ *
+ *
+ * Constraints:
+ *
+ * The number of nodes in the tree is in the range [1, 1000].
+ * -1000 <= Node.val <= 1000
+ *
+ *
+ */
 import LeetCodeJava.DataStructure.TreeNode;
 
 import java.util.ArrayDeque;
@@ -9,14 +40,70 @@ import java.util.Deque;
 
 public class SumOfLeftLeaves {
 
-    // VO
+    // V0
+    // IDEA + PRE ORDER TRAVERSE !!
+    int leftLeavesSum = 0;
+
+    public int sumOfLeftLeaves(TreeNode root) {
+        // edge
+        if (root == null) {
+            return 0;
+        }
+
+        getLeftNodesHelper(root, "");
+
+        return leftLeavesSum;
+    }
+
+    // ???
+    private void getLeftNodesHelper(TreeNode root, String preOp) {
+        if (root == null) {
+            return; //0;
+        }
+
+        // pre-order !!!
+        if (root.left == null && root.right == null && preOp.equals("left")) {
+            leftLeavesSum += root.val;
+        }
+
+        getLeftNodesHelper(root.left, "left");
+        getLeftNodesHelper(root.right, "right");
+    }
+
+
+    // V0-1
+    // IDEA + PRE ORDER TRAVERSE !! (GEMINI)
+    public int sumOfLeftLeaves_0_1(TreeNode root) {
+        if (root == null)
+            return 0;
+        return helper(root, false); // Initial call: root is not a left child
+    }
+
+    private int helper(TreeNode node, boolean isLeft) {
+        if (node == null)
+            return 0;
+
+        // Check if current node is a leaf
+        if (node.left == null && node.right == null) {
+            // Only return the value if it's a leaf AND it's a left child
+            return isLeft ? node.val : 0;
+        }
+
+        // Standard DFS: sum up results from left and right subtrees
+        // When we go left, we set the flag to true
+        // When we go right, we set the flag to false
+        return helper(node.left, true) + helper(node.right, false);
+    }
+
+
+    // VO-7
     // IDEA: DFS (post order traverse)
     int res = 0;
     /**
      * time = O(N)
      * space = O(H)
      */
-    public int sumOfLeftLeaves(TreeNode root) {
+    public int sumOfLeftLeaves_0_7(TreeNode root) {
 
         if (root == null){
             return this.res;
@@ -51,7 +138,7 @@ public class SumOfLeftLeaves {
         }
     }
 
-    // V0'
+    // V0-8
     // IDEA : BFS (Pre-order)
     private boolean isLeaf(TreeNode node) {
         return node != null && node.left == null && node.right == null;
@@ -61,7 +148,7 @@ public class SumOfLeftLeaves {
      * time = O(N)
      * space = O(H)
      */
-    public int sumOfLeftLeaves_0_1(TreeNode root) {
+    public int sumOfLeftLeaves_0_8(TreeNode root) {
 
         if (root == null) {
             return 0;
@@ -238,5 +325,9 @@ public class SumOfLeftLeaves {
         }
         return totalSum;
     }
+
+
+
+
 
 }
