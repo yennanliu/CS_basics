@@ -139,6 +139,80 @@ public class ReorganizeString {
         return res.toString();
     }
 
+    // V0-0-0-1
+    // IDEA: HASHMAP + CUSTOM CLASS + PQ + LC 1405 (fixed by gpt)
+    class ValCnt2 {
+        char val;
+        int cnt;
+
+        ValCnt2(char val, int cnt) {
+            this.val = val;
+            this.cnt = cnt;
+        }
+    }
+
+    public String reorganizeString_0_0_0_1(String s) {
+
+        if (s == null || s.length() == 0) {
+            return s;
+        }
+
+        Map<Character, Integer> map = new HashMap<>();
+
+        for (char c : s.toCharArray()) {
+            map.put(c, map.getOrDefault(c, 0) + 1);
+        }
+
+        PriorityQueue<ValCnt2> pq = new PriorityQueue<>(
+                (o1, o2) -> o2.cnt - o1.cnt);
+
+        for (char val : map.keySet()) {
+            pq.add(new ValCnt2(val, map.get(val)));
+        }
+
+        StringBuilder res = new StringBuilder();
+
+        while (!pq.isEmpty()) {
+
+            // case 1: safe to append
+            if (res.length() == 0 || pq.peek().val != res.charAt(res.length() - 1)) {
+
+                ValCnt2 cur = pq.poll();
+                res.append(cur.val);
+
+                cur.cnt--;
+
+                if (cur.cnt > 0) {
+                    pq.add(cur);
+                }
+
+            }
+            // case 2: same as previous char
+            else {
+
+                ValCnt2 first = pq.poll();
+
+                if (pq.isEmpty()) {
+                    break;
+                }
+
+                ValCnt2 second = pq.poll();
+
+                res.append(second.val);
+                second.cnt--;
+
+                if (second.cnt > 0) {
+                    pq.add(second);
+                }
+
+                pq.add(first);
+            }
+        }
+
+        return res.length() == s.length() ? res.toString() : "";
+    }
+
+
     // V0-0-1
     // IDEA: HASHMAP + PQ
     public String reorganizeString_0_0_1(String s) {
@@ -908,6 +982,8 @@ public class ReorganizeString {
         }
         return ans.toString();
     }
+
+
 
 
 }
