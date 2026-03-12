@@ -363,6 +363,28 @@ Serialize each subtree as a unique string: "val,left,right"
 - Children are processed first (bottom-up) → then combined at parent
 - Pre-order would build the string before knowing children's structure
 
+**Visual: Why pre-order fails for LC 652**
+```
+Tree:        1
+            / \
+           2   2
+          /     \
+         4       4
+
+Pre-order serialization (WRONG — builds string top-down):
+  node 2 (left)  → "2,4,#"   ← built before knowing full subtree
+  node 2 (right) → "2,#,4"   ← different string, but structurally different → OK here
+
+Post-order serialization (CORRECT — builds string bottom-up):
+  node 4 (left)  → "4,#,#"
+  node 4 (right) → "4,#,#"   ← same! correctly identified as duplicate
+  node 2 (left)  → "2,4,#,#,#"
+  node 2 (right) → "2,#,4,#,#"  ← different (4 is left child vs right child)
+
+Key insight: only post-order guarantees the full subtree structure is
+captured before building the parent's key.
+```
+
 **Why include `#` for null?**
 - Prevents ambiguity: `"1,2"` vs `"12"` — delimiter alone is not enough
 - `"1,#,#"` vs `"1,2,#"` — null markers distinguish leaf from internal node
@@ -430,6 +452,16 @@ count == 1  → seen exactly once before → current is a DUPLICATE → add to r
 count >= 2  → already recorded, skip (avoid adding same duplicate multiple times)
 ```
 
+**Delimiter variants (all work, pick one and be consistent):**
+```java
+// All of these produce unambiguous serializations:
+node.val + "," + left + "," + right   // V0, V1 in FindDuplicateSubtrees.java
+node.val + "$" + left + "$" + right   // V2
+node.val + " "  + left + " "  + right // V3
+node.val + "#"  + left + "#"  + right // V4
+// Avoid concatenating without delimiter: "112" is ambiguous (1+12 vs 11+2)
+```
+
 **Interview Trick (from LC 652):**
 > If the problem asks to **identify/compare subtrees by structure**,
 > use **Post-order DFS + serialize as `"val,left,right"` string + HashMap**.
@@ -441,6 +473,37 @@ count >= 2  → already recorded, skip (avoid adding same duplicate multiple tim
 | Height computation                | `int` (height)     | —                  | Depth, balance, diameter           |
 | Subtree serialization + count     | `String` (serial)  | serialized string  | Duplicate subtrees (LC 652)        |
 | Subtree sum / DP                  | `int` (result)     | —                  | Max path sum, subtree sum (LC 124) |
+
+**Similar LC Problems using post-order + subtree serialization:**
+
+| LC #  | Problem                              | Pattern Variant                                                    | Difficulty |
+|-------|--------------------------------------|--------------------------------------------------------------------|------------|
+| 652   | Find Duplicate Subtrees              | Serialize → HashMap count; add node when count == 1               | Medium     |
+| 572   | Subtree of Another Tree              | Serialize both trees; check if serialized `s` contains serialized `t` | Easy   |
+| 508   | Most Frequent Subtree Sum            | Post-order compute subtree sum → HashMap freq → return max freq keys | Medium  |
+| 250   | Count Univalue Subtrees              | Post-order: leaf OR (children univalue AND val matches parent)     | Medium     |
+| 297   | Serialize and Deserialize Binary Tree| Pre/post-order encode tree as string, then reconstruct             | Hard       |
+| 449   | Serialize and Deserialize BST        | Post-order serialization leveraging BST ordering property          | Medium     |
+| 1948  | Delete Duplicate Folders in System   | Trie + post-order subtree hashing — advanced LC 652 variant        | Hard       |
+
+**Why LC 652 specifically requires post-order:**
+```
+Goal: build a unique "fingerprint" string for each subtree.
+
+Pre-order (root → left → right):
+  → builds the key at the ROOT first, before children are known
+  → can't include children's serialized forms at build time
+  → would require a separate recursive pass → O(N²) and messy
+
+Post-order (left → right → root):
+  → left child already returned its serialized string
+  → right child already returned its serialized string
+  → current key = val + "," + leftKey + "," + rightKey   ← O(1) to build
+  → naturally bubbles the full subtree fingerprint up to the parent
+  → one DFS pass is enough: O(N) time
+
+Rule: if you need the COMPLETE subtree structure in the key, use post-order.
+```
 
 #### Classic LC Problems by Traversal Type
 
