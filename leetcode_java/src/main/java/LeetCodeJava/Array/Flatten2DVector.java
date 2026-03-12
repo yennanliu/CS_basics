@@ -67,6 +67,14 @@ public class Flatten2DVector {
     // V0-1
     // IDEA: 2D matrix (array) gemini
     class Vector2D_0_1 {
+        /** NOTE !!!
+         *
+         *   we have below 3 attr:
+         *
+         *    1. row
+         *    2. col
+         *    3. vec
+         */
         private int[][] vec;
         private int row = 0;
         private int col = 0;
@@ -76,6 +84,15 @@ public class Flatten2DVector {
         }
 
         public int next() {
+            /** NOTE !!!
+             *
+             *
+             *  we call `hasNext()` first in next() method.
+             *  so it will
+             *    - move idx to next row
+             *    - if unable to do above op, return -1 directly
+             *
+             */
             // In Java Iterators, it's a best practice to call hasNext()
             // inside next() to ensure the pointers are at a valid element.
             if (!hasNext()) return -1;
