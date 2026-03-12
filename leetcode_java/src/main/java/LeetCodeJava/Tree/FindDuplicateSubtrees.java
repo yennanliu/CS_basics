@@ -120,7 +120,64 @@ public class FindDuplicateSubtrees {
 
         return currentSubtree;
     }
-    
+
+
+    // V0-0-0-1
+    // IDEA: DFS (POST ORDER) + HASHMAP (gemini)
+    // Map to store: SerializedPath -> Count
+    Map<String, Integer> pathCntMap = new HashMap<>();
+    List<TreeNode> result = new ArrayList<>();
+
+    public List<TreeNode> findDuplicateSubtrees_0_0_0_1(TreeNode root) {
+        serialize_0_0_0_1(root);
+        return result;
+    }
+
+    /** NOTE !!!
+     *
+     *  help func return `String` (path);
+     *  but NOT TreeNode type
+     */
+    private String serialize_0_0_0_1(TreeNode node) {
+        if (node == null) {
+            return "#"; // Represent null nodes
+        }
+
+        /** NOTE !!!
+         *
+         *  DFS (POST ORDER traversal)
+         */
+        // Post-order traversal: Left -> Right -> Root
+        // We need the full structure of the children to build the current node's path
+        /** NOTE !!!
+         *
+         *  serialize_0_0_0_1 returns String type
+         *  but NOT TreeNode type
+         */
+        String leftPath = serialize_0_0_0_1(node.left);
+        String rightPath = serialize_0_0_0_1(node.right);
+
+        // Create a unique string representing this specific subtree
+        String path = node.val + "," + leftPath + "," + rightPath;
+
+        // Count occurrences
+        int count = pathCntMap.getOrDefault(path, 0);
+
+        /** NOTE !!!
+         *
+         *  Only add to result when count is exactly 1
+         */
+        // IMPORTANT: Only add to result when count is exactly 1 (the 2nd time we see it)
+        // This prevents adding the same duplicate multiple times.
+        if (count == 1) {
+            result.add(node);
+        }
+
+        pathCntMap.put(path, count + 1);
+
+        return path;
+    }
+
 
     // V0-1
     // IDEA: HASHMAP + DFS + NODE PATH
