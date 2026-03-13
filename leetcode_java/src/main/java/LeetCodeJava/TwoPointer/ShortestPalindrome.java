@@ -35,8 +35,240 @@ public class ShortestPalindrome {
 //
 //    }
 
-
-
+    /** NOTE !!!
+     *
+     *  why we CAN'T use `left, right pointer` approach ?
+     *
+     *   (left = 0, right = s.len() - 1)
+     *
+     *   -------------------
+     *
+     *   Explanation (gpt):
+     *
+     *   You **can use a two-pointer idea**, but the way your original code uses `left` and `right` **cannot guarantee correctness or efficiency** for **LeetCode 214 Shortest Palindrome**. Let's break down **why it fails**.
+     *
+     * ---
+     *
+     * # 1️⃣ Your algorithm changes the string while scanning
+     *
+     * This is the biggest issue.
+     *
+     * You do:
+     *
+     * ```java
+     * s = s.substring(0, l-1) + right + s.substring(l, r);
+     * ```
+     *
+     * This **modifies the string while the pointers are still based on the old string**.
+     *
+     * Example:
+     *
+     * ```
+     * s = "abcd"
+     * ```
+     *
+     * Your algorithm might try to insert characters while `l` and `r` still assume the original indices. After modification:
+     *
+     * * indices shift
+     * * pointer positions become invalid
+     * * comparisons become meaningless
+     *
+     * So the pointer logic **breaks immediately**.
+     *
+     * ---
+     *
+     * # 2️⃣ The problem is not a normal palindrome check
+     *
+     * Typical two-pointer palindrome problems (like **LeetCode 125 Valid Palindrome**) work because:
+     *
+     * ```
+     * compare left ↔ right
+     * ```
+     *
+     * But **LC 214** is different:
+     *
+     * > You can only **add characters to the FRONT**.
+     *
+     * So the goal is actually:
+     *
+     * ```
+     * find the longest PALINDROME PREFIX
+     * ```
+     *
+     * Example:
+     *
+     * ```
+     * s = "abcd"
+     * ```
+     *
+     * Possible results:
+     *
+     * ```
+     * dcbabcd
+     * ```
+     *
+     * Notice:
+     *
+     * ```
+     * abcd   ❌ not palindrome
+     * abc    ❌
+     * ab     ❌
+     * a      ✅ longest prefix palindrome
+     * ```
+     *
+     * Two pointers comparing ends **cannot detect this prefix property correctly**.
+     *
+     * ---
+     *
+     * # 3️⃣ Your `isPalindrome(s)` check is too expensive
+     *
+     * Inside your loop you do:
+     *
+     * ```java
+     * if(isPalindrome(s))
+     * ```
+     *
+     * Your complexity becomes roughly:
+     *
+     * ```
+     * O(n) loop
+     *   × O(n) palindrome check
+     * ```
+     *
+     * Total:
+     *
+     * ```
+     * O(n²)
+     * ```
+     *
+     * And because you **modify the string**, it can even degrade further.
+     *
+     * ---
+     *
+     * # 4️⃣ Two pointers cannot decide where to insert
+     *
+     * Consider:
+     *
+     * ```
+     * s = "aacecaaa"
+     * ```
+     *
+     * Correct answer:
+     *
+     * ```
+     * aaacecaaa
+     * ```
+     *
+     * Two pointers see:
+     *
+     * ```
+     * a a c e c a a a
+     * ^             ^
+     * ```
+     *
+     * But they **cannot determine which prefix is the maximal palindrome**.
+     *
+     * The real solution must find:
+     *
+     * ```
+     * longest prefix palindrome
+     * ```
+     *
+     * which requires **global prefix information**, not just local pointer comparison.
+     *
+     * ---
+     *
+     * # 5️⃣ Counterexample where your logic breaks
+     *
+     * Example:
+     *
+     * ```
+     * s = "abbacd"
+     * ```
+     *
+     * Correct result:
+     *
+     * ```
+     * dcabbacd
+     * ```
+     *
+     * Two pointers:
+     *
+     * ```
+     * a b b a c d
+     * ^         ^
+     * ```
+     *
+     * Mismatch occurs but **you cannot know how many characters to prepend**.
+     *
+     * ---
+     *
+     * # 6️⃣ What the correct algorithm actually does
+     *
+     * The key step is:
+     *
+     * ```
+     * scan from right → find longest prefix palindrome
+     * ```
+     *
+     * Example:
+     *
+     * ```
+     * s = aacecaaa
+     * ```
+     *
+     * Compare mirrored characters:
+     *
+     * ```
+     * i ↓
+     * j ↑
+     * ```
+     *
+     * When characters match → extend palindrome prefix.
+     *
+     * ---
+     *
+     * # 7️⃣ Two pointers CAN be used, but differently
+     *
+     * A valid two-pointer-like solution is:
+     *
+     * ```java
+     * int j = 0;
+     * for(int i = s.length()-1; i >= 0; i--){
+     *     if(s.charAt(i) == s.charAt(j)){
+     *         j++;
+     *     }
+     * }
+     * ```
+     *
+     * This works because it finds the **longest prefix palindrome**.
+     *
+     * ---
+     *
+     * ✅ **Summary**
+     *
+     * Your original approach fails because:
+     *
+     * 1. It **mutates the string while iterating**
+     * 2. It **checks full palindrome instead of prefix**
+     * 3. Two pointers **cannot determine insertion length**
+     * 4. Pointer indices **break after modification**
+     *
+     * ---
+     *
+     * 💡 **Interview insight**
+     *
+     * For **LeetCode 214 Shortest Palindrome**, interviewers expect one of these:
+     *
+     * | Approach                 | Complexity      |
+     * | ------------------------ | --------------- |
+     * | Brute force prefix check | O(n²)           |
+     * | Two-pointer prefix scan  | O(n²) worst     |
+     * | KMP trick                | **O(n)** (best) |
+     *
+     * ---
+     *
+     */
 
     // V0-0-1
     // IDEA: BRUTE FORCE (TLE) (gemini)
@@ -184,7 +416,7 @@ public class ShortestPalindrome {
         }
 
         String suffix = s.substring(j);
-        
+
         /** NOTE !!!
          *
          * how we build prefix
