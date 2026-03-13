@@ -1579,8 +1579,35 @@ public class Workspace22 {
 
 
     // LC 1150
+    // 8.11 - 21 am
+    /**
+     *
+     *  IDEA 1) HASHMAP
+     *
+     *  IDEA 2) BINARY SEARCH
+     *
+     */
     public boolean isMajorityElement(int[] nums, int target) {
-        return false;
+        // edge
+        if(nums == null){
+            return false;
+        }
+        if(nums.length == 1){
+            return nums[0] == target;
+        }
+
+        // map: { val : cnt }
+        Map<Integer, Integer> map = new HashMap<>();
+        for(int x: nums){
+            map.put(x, map.getOrDefault(x, 0) + 1);
+        }
+
+        // edge
+        if(!map.containsKey(target)){
+            return false;
+        }
+
+        return map.get(target) > nums.length / 2;
     }
 
 
