@@ -26,12 +26,67 @@ import java.util.List;
 public class MissingRanges {
 
     // V0
+    // IDEA: ARRAY OP (gemini)
+    // TODO: validate
+    public List<List<Integer>> findMissingRanges(int[] nums, int lower, int upper) {
+        List<List<Integer>> res = new ArrayList<>();
+
+        /** NOTE !!!
+         *
+         *  how we handle edge case (nums is empty)
+         */
+        // 1. Handle empty nums array
+        if (nums == null || nums.length == 0) {
+            res.add(Arrays.asList(lower, upper));
+            return res;
+        }
+
+        /**  NOTE !!
+         *
+         * In the context of LC 163,
+         *  -> the input nums is `guaranteed `
+         *     to be sorted and within the range [lower, upper].
+         *
+         *     -> Therefore, the only other possibility is lower == nums[0].
+         *
+         */
+        /** NOTE !!!
+         *
+         *  ONLY deal with `lower` if it's smaller than nums[0]
+         */
+        // 2. Check gap between 'lower' and the first element
+        if (nums[0] > lower) {
+            res.add(Arrays.asList(lower, nums[0] - 1));
+        }
+
+        // 3. Check gaps between adjacent elements in nums
+        for (int i = 0; i < nums.length - 1; i++) {
+            // If there's a gap (diff > 1)
+            if (nums[i + 1] > nums[i] + 1) {
+                res.add(Arrays.asList(nums[i] + 1, nums[i + 1] - 1));
+            }
+        }
+
+        /** NOTE !!!
+         *
+         *  ONLY deal with `upper` if it's bigger than nums[nums.length - 1]
+         */
+        // 4. Check gap between the last element and 'upper'
+        if (nums[nums.length - 1] < upper) {
+            res.add(Arrays.asList(nums[nums.length - 1] + 1, upper));
+        }
+
+        return res;
+    }
+
+
+    // V0-0-1
     // IDEA : ARRAY + BOUNDARY HANDLING (fix by gpt)
     /**
      * time = O(N)
      * space = O(K) where K is number of missing ranges
      */
-    public List<List<Integer>> findMissingRanges(int[] nums, int lower, int upper) {
+    public List<List<Integer>> findMissingRanges_0_1(int[] nums, int lower, int upper) {
 
         List<List<Integer>> res = new ArrayList<>();
 
@@ -69,39 +124,6 @@ public class MissingRanges {
             range.add(end);
         }
         res.add(range);
-    }
-
-    // V0-1
-    // IDEA: ARRAY OP (gemini)
-    // TODO: validate
-    public List<List<Integer>> findMissingRanges_0_1(int[] nums, int lower, int upper) {
-        List<List<Integer>> res = new ArrayList<>();
-
-        // 1. Handle empty nums array
-        if (nums == null || nums.length == 0) {
-            res.add(Arrays.asList(lower, upper));
-            return res;
-        }
-
-        // 2. Check gap between 'lower' and the first element
-        if (nums[0] > lower) {
-            res.add(Arrays.asList(lower, nums[0] - 1));
-        }
-
-        // 3. Check gaps between adjacent elements in nums
-        for (int i = 0; i < nums.length - 1; i++) {
-            // If there's a gap (diff > 1)
-            if (nums[i + 1] > nums[i] + 1) {
-                res.add(Arrays.asList(nums[i] + 1, nums[i + 1] - 1));
-            }
-        }
-
-        // 4. Check gap between the last element and 'upper'
-        if (nums[nums.length - 1] < upper) {
-            res.add(Arrays.asList(nums[nums.length - 1] + 1, upper));
-        }
-
-        return res;
     }
 
 
@@ -161,7 +183,7 @@ public class MissingRanges {
     // V2
 
 
-    
+
 
 
 }
