@@ -13,7 +13,7 @@
 	- array.md (OK)
 	- matrix.md (OK)
 	- 2_pointers.md (OK)
-	- backtrack.md (todo, Visual Guide: Recursion Index Patterns in LeetCode Problems)
+	- backtrack.md (todo, Partitioning Patterns)
 - to review
 - needcode `250` - similar LC by AI
     - Arrays & Hashing
@@ -25,7 +25,6 @@
 	  - gpt
 	  - gemini
 	    - 58
-	    - 214
 	- LC 75
 	  - gpt
 	  	- 1288
