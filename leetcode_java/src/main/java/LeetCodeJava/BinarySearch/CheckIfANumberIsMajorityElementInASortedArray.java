@@ -2,6 +2,10 @@ package LeetCodeJava.BinarySearch;
 
 // https://leetcode.com/problems/check-if-a-number-is-majority-element-in-a-sorted-array/description/
 // https://leetcode.ca/2019-01-23-1150-Check-If-a-Number-Is-Majority-Element-in-a-Sorted-Array/
+
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * 1150. Check If a Number Is Majority Element in a Sorted Array
  * Given an array nums sorted in non-decreasing order, and a number target, return True if and only if target is a majority element.
@@ -46,14 +50,103 @@ package LeetCodeJava.BinarySearch;
 public class CheckIfANumberIsMajorityElementInASortedArray {
 
     // V0
-//    public boolean isMajorityElement(int[] nums, int target) {
-//    }
+    // IDEA: HASHMAP
+    // time: O(N)
+    // space: O(N)
+    // TODO: validate
+    public boolean isMajorityElement(int[] nums, int target) {
+        // edge
+        if(nums == null){
+            return false;
+        }
+        if(nums.length == 1){
+            return nums[0] == target;
+        }
+
+        // map: { val : cnt }
+        Map<Integer, Integer> map = new HashMap<>();
+        for(int x: nums){
+            map.put(x, map.getOrDefault(x, 0) + 1);
+        }
+
+        // edge
+        if(!map.containsKey(target)){
+            return false;
+        }
+
+        return map.get(target) > nums.length / 2;
+    }
+
+
+    // V0-1
+    // IDEA: BINARY SEARCH (GEMINI)
+    // time: O(log N)
+    // space: O(1)
+    public boolean isMajorityElement_0_1(int[] nums, int target) {
+        int n = nums.length;
+        int firstIdx = findFirst(nums, target);
+
+        // If target is not found or the "jump" index is out of bounds
+        int majorityIdx = firstIdx + n / 2;
+        return firstIdx != -1 && majorityIdx < n && nums[majorityIdx] == target;
+    }
+
+    private int findFirst(int[] nums, int target) {
+        int low = 0, high = nums.length - 1;
+        int res = -1;
+
+        while (low <= high) {
+            int mid = low + (high - low) / 2;
+            if (nums[mid] >= target) {
+                if (nums[mid] == target) res = mid;
+                high = mid - 1; // Keep looking left for the 'first' one
+            } else {
+                low = mid + 1;
+            }
+        }
+        return res;
+    }
+
+
+    // V0-2
+    // IDEA: BINARY SEARCH (GPT)
+    // time: O(log N)
+    // space: O(1)
+    public boolean isMajorityElement_0_2(int[] nums, int target) {
+        int n = nums.length;
+        int first = firstOccurrence(nums, target);
+
+        if(first == -1) return false;
+
+        return first + n/2 < n && nums[first + n/2] == target;
+    }
+
+    private int firstOccurrence(int[] nums, int target){
+        int left = 0, right = nums.length - 1;
+
+        while(left <= right){
+            int mid = left + (right - left) / 2;
+
+            if(nums[mid] >= target){
+                right = mid - 1;
+            } else {
+                left = mid + 1;
+            }
+        }
+
+        if(left < nums.length && nums[left] == target){
+            return left;
+        }
+
+        return -1;
+    }
+
 
 
     // V1
     // IDEA: BINARY SEARCH
     // https://leetcode.ca/2019-01-23-1150-Check-If-a-Number-Is-Majority-Element-in-a-Sorted-Array/
-    public boolean isMajorityElement(int[] nums, int target) {
+    public boolean isMajorityElement_1(int[] nums, int target) {
         int left = search(nums, target);
         int right = search(nums, target + 1);
         return right - left > nums.length / 2;
@@ -77,6 +170,8 @@ public class CheckIfANumberIsMajorityElementInASortedArray {
 
 
     // V3
+
+    
 
 
 }
