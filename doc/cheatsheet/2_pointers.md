@@ -2307,6 +2307,168 @@ public void reverseString(char[] s) {
 - LC 186 Reverse Words in a String II
 - LC 151 Reverse Words in a String
 
+### 2-16) Shortest Palindrome (Find Longest Palindromic Prefix)
+
+**Pattern: Scan from right, track left pointer to find longest palindromic prefix**
+
+**Core Idea:**
+- Find the longest prefix of `s` that is already a palindrome
+- Reverse the remaining suffix and prepend it to `s`
+- Use two pointers: `j` anchored at 0 (left), `i` scans right-to-left
+- When `s[i] == s[j]`, advance `j` — after the scan `s[0..j-1]` is the matched prefix
+- If `j < n`, recurse on `s[0..j]` and sandwich the non-palindrome suffix around it
+
+**Dry Run — `s = "aacecaaa"`:**
+```
+i scans right-to-left, j starts at 0
+
+i=7 s[7]='a' == s[0]='a'  -> j=1
+i=6 s[6]='a' == s[1]='a'  -> j=2
+i=5 s[5]='a' != s[2]='c'  -> skip
+i=4 s[4]='c' == s[2]='c'  -> j=3
+i=3 s[3]='e' != s[3]='e'  -> j=4  (wait — equal!) -> j=4
+i=2 s[2]='c' != s[4]='c'  -> j=5  -> j=5
+i=1 s[1]='a' != s[5]='a'  -> j=6
+i=0 s[0]='a' != s[6]='a'  -> j=7
+
+j == n? No (j=7 < 8). suffix = s.substring(7) = "a"
+reversed("a") + shortestPalindrome("aacecaa") + "a"
+```
+
+**Key Insight — why does `j` track the prefix?**
+```
+Scanning i from right to left acts like a "sieve":
+- Every time s[i] matches s[j], j advances one step right
+- After the full scan, s[0..j-1] is the longest possible palindromic prefix
+  (not a strict palindrome proof, but works with the recursive structure)
+- The characters NOT in the prefix (s[j..n-1]) form the suffix that
+  must be reversed and prepended to make the whole string a palindrome
+```
+
+```java
+// java
+// LC 214. Shortest Palindrome
+/**
+ * Pattern: Find longest palindromic prefix via right-to-left scan
+ *
+ * Step 1: Scan i from n-1 to 0, advance j when s[i] == s[j]
+ * Step 2: j is now the length of the "matched" prefix
+ * Step 3: suffix  = s.substring(j)        (non-palindrome tail)
+ *         prefix  = reverse(suffix)        (chars to prepend)
+ * Step 4: return prefix + shortestPalindrome(s[0..j]) + suffix
+ *
+ * Time: O(N^2) average (O(N) per recursion level, O(N) depth)
+ * Space: O(N) recursion stack
+ *
+ * Example 1: s = "aacecaaa" -> "aaacecaaa"
+ * Example 2: s = "abcd"     -> "dcbabcd"
+ */
+public String shortestPalindrome(String s) {
+    if (s == null || s.length() <= 1) return s;
+
+    int j = 0;
+
+    /** NOTE !!!
+     *  Scan from the RIGHT end toward left.
+     *  j tracks how far into s we've "matched" from the front.
+     */
+    for (int i = s.length() - 1; i >= 0; i--) {
+        if (s.charAt(i) == s.charAt(j)) {
+            j++;
+        }
+    }
+
+    // Whole string is already a palindrome
+    if (j == s.length()) return s;
+
+    // suffix is the part NOT covered by the palindromic prefix
+    String suffix = s.substring(j);
+    String prefix = new StringBuilder(suffix).reverse().toString();
+
+    /** NOTE !!!
+     *  Recurse on s[0..j] to handle the inner part,
+     *  then sandwich the current suffix around it.
+     */
+    return prefix + shortestPalindrome(s.substring(0, j)) + suffix;
+}
+```
+
+```java
+// java
+// LC 214. Shortest Palindrome — KMP approach (O(N) time)
+/**
+ * IDEA: KMP Prefix Table
+ *
+ * Combine s + "#" + reverse(s) into one string.
+ * The KMP prefix table's last value gives the length of the
+ * longest palindromic prefix of s.
+ *
+ * Time: O(N), Space: O(N)
+ */
+public String shortestPalindromeKMP(String s) {
+    String rev = new StringBuilder(s).reverse().toString();
+    String combined = s + "#" + rev;
+    int[] table = buildPrefixTable(combined);
+
+    int palindromeLen = table[combined.length() - 1];
+    String suffix = new StringBuilder(s.substring(palindromeLen)).reverse().toString();
+    return suffix + s;
+}
+
+private int[] buildPrefixTable(String s) {
+    int[] table = new int[s.length()];
+    int len = 0;
+    for (int i = 1; i < s.length(); i++) {
+        while (len > 0 && s.charAt(i) != s.charAt(len))
+            len = table[len - 1];
+        if (s.charAt(i) == s.charAt(len))
+            len++;
+        table[i] = len;
+    }
+    return table;
+}
+```
+
+**Brute-force version (TLE on large inputs):**
+```java
+// java — O(N^2) brute force
+// Find largest i such that s[0..i] is a palindrome, then prepend reverse(s[i+1..n-1])
+public String shortestPalindromeBrute(String s) {
+    int n = s.length();
+    if (n <= 1) return s;
+    int end = 0;
+    for (int i = n - 1; i >= 0; i--) {
+        if (isPalindrome(s, 0, i)) { end = i; break; }
+    }
+    String suffix = s.substring(end + 1);
+    return new StringBuilder(suffix).reverse() + s;
+}
+
+private boolean isPalindrome(String s, int l, int r) {
+    while (l < r) {
+        if (s.charAt(l++) != s.charAt(r--)) return false;
+    }
+    return true;
+}
+```
+
+**Pointer Movement Comparison:**
+
+| Approach | Left pointer `j` | Right pointer `i` | When `j` advances |
+|----------|-----------------|-------------------|-------------------|
+| Right-to-left scan | Anchored at 0, moves right | Scans n-1 → 0 | `s[i] == s[j]` |
+| Brute force isPalindrome | Expands from both ends | Starts at n-1, decrements | Always (matching chars) |
+| KMP | N/A — uses prefix table | N/A | N/A |
+
+**Similar Problems:**
+- LC 214 Shortest Palindrome (this pattern)
+- LC 5 Longest Palindromic Substring (expand from center)
+- LC 647 Palindromic Substrings (expand from center)
+- LC 680 Valid Palindrome II (skip one char)
+- LC 516 Longest Palindromic Subsequence (DP)
+- LC 132 Palindrome Partitioning II (DP + palindrome check)
+- LC 336 Palindrome Pairs (hash map + palindrome prefix/suffix)
+
 ## 3) Classic LC Problems Summary
 
 ### Easy:
@@ -2348,6 +2510,7 @@ public void reverseString(char[] s) {
 ### Hard:
 - LC 42 Trapping Rain Water
 - LC 76 Minimum Window Substring (Sliding Window)
+- LC 214 Shortest Palindrome
 - LC 828 Count Unique Characters of All Substrings
 
 ## 4) Two Pointers Cheat Sheet
@@ -2363,3 +2526,4 @@ public void reverseString(char[] s) {
 | **Fixed + Two Pointers** | Sum problems (3Sum, 4Sum) | LC 15, LC 16, LC 18 |
 | **Subsequence Matching** | Check if one string is subsequence of another | LC 392, LC 524, LC 792 |
 | **Pattern Match with Constraints** | Subsequence + character type validation | LC 1023 |
+| **Longest Palindromic Prefix** | Find longest palindromic prefix, prepend reversed suffix | LC 214, LC 336 |
