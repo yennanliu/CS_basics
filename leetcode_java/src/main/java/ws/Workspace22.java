@@ -1765,10 +1765,91 @@ public class Workspace22 {
 
 
     // LC 1288
+    // 11.35 - 45 am
+    /**
+     *
+     *  -> Return the number of remaining intervals.
+     *
+     *    remove all intervals that are
+     *    covered by another interval in the list.
+     *
+     *
+     *  ------------------
+     *
+     *   IDEA 1) SORT + INTERVAL OP
+     *
+     *
+     *  ------------------
+     *
+     */
+    // IDEA 1) SORT + INTERVAL OP
     public int removeCoveredIntervals(int[][] intervals) {
+        // edge
+        if(intervals == null || intervals.length == 0){
+            return 0;
+        }
+        if(intervals.length == 1){
+            return 1;
+        }
 
-        return 0;
+        // sort
+        // 1. start (small -> big)
+        // 2. end (big -> small) // ?????
+        /**  NOTE !!!
+         *  if we sort on `start (small -> big)`,
+         *  there will ONLY be below cases:
+         *
+         *   1.   |----|             old
+         *                |----|     new
+         *
+         *   2.   |----------|       old
+         *          |----|           new
+         *
+         *   3.  |----|                 old
+         *         |------|              new
+         *
+         */
+        // so, we ONLY need to remove an interval
+        // when case 2)
+        List<int[]> list = new ArrayList<>();
+        for(int[] x: intervals){
+            list.add(x);
+        }
+
+        // ???
+        Collections.sort(list, new Comparator<int[]>() {
+            @Override
+            public int compare(int[] o1, int[] o2) {
+//                int diff = o1[0] - o2[0];
+//                return diff;
+                return  o1[0] - o2[0] != 0 ?  o1[0] - o2[0] :  o2[1] - o1[1];
+            }
+        });
+
+        List<int[]> cache = new ArrayList<>();
+        for(int[] x: list){
+            if(cache.isEmpty()){
+                cache.add(x);
+            }else{
+                int[] prev = cache.get(cache.size() - 1);
+                // case 1) `new` is included in `old`
+                if(prev[0] <= x[0] && prev[1] >= x[1]){
+                    continue;
+                }
+                // case 2) `new` is NOT included in `old`
+                else{
+                    cache.add(x);
+                }
+            }
+        }
+
+
+        return cache.size();
     }
+
+
+
+
 
 
     // LC 179
@@ -1776,6 +1857,10 @@ public class Workspace22 {
 
         return null;
     }
+
+
+
+
 
 
 }
