@@ -1578,6 +1578,10 @@ public class Workspace22 {
     }
 
 
+    // LC 1150
+    public boolean isMajorityElement(int[] nums, int target) {
+        return false;
+    }
 
 
 
