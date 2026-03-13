@@ -2,17 +2,10 @@ package LeetCodeJava.Sort;
 
 // https://leetcode.com/problems/largest-number/description/
 
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
-import java.util.PriorityQueue;
+import java.util.*;
 
 /**
  *
- Code
- Testcase
- Testcase
- Test Result
  179. Largest Number
  Solved
  Medium
@@ -47,9 +40,133 @@ import java.util.PriorityQueue;
 public class LargestNumber {
 
     // V0
-//    public String largestNumber(int[] nums) {
-//
-//    }
+    // IDEA 1) SORT + INTERVAL OP
+    public int removeCoveredIntervals(int[][] intervals) {
+        // edge
+        if (intervals == null || intervals.length == 0) {
+            return 0;
+        }
+        if (intervals.length == 1) {
+            return 1;
+        }
+
+        // sort
+        // 1. start (small -> big)
+        // 2. end (big -> small) // ?????
+        /**  NOTE !!!
+         *  if we sort on `start (small -> big)`,
+         *  there will ONLY be below cases:
+         *
+         *   1.   |----|             old
+         *                |----|     new
+         *
+         *   2.   |----------|       old
+         *          |----|           new
+         *
+         *   3.  |----|                 old
+         *         |------|              new
+         *
+         */
+        // so, we ONLY need to remove an interval
+        // when case 2)
+        List<int[]> list = new ArrayList<>();
+        for (int[] x : intervals) {
+            list.add(x);
+        }
+
+        /**  NOTE !!!
+         *
+         *  custom sort
+         *
+         *  // 1. start (small -> big)
+         *  // 2. end (big -> small)
+         *
+         */
+        Collections.sort(list, new Comparator<int[]>() {
+            @Override
+            public int compare(int[] o1, int[] o2) {
+                // V1
+                if(o1[0] - o2[0] != 0){
+                    return o1[0] - o2[0];
+                }
+                return o2[1] - o1[1];
+              // V2
+              // return o1[0] - o2[0] != 0 ? o1[0] - o2[0] : o2[1] - o1[1];
+            }
+        });
+
+        List<int[]> cache = new ArrayList<>();
+        for (int[] x : list) {
+            if (cache.isEmpty()) {
+                cache.add(x);
+            } else {
+                int[] prev = cache.get(cache.size() - 1);
+                // case 1) `new` is included in `old`
+                if (prev[0] <= x[0] && prev[1] >= x[1]) {
+                    continue;
+                }
+                // case 2) `new` is NOT included in `old`
+                else {
+                    cache.add(x);
+                }
+            }
+        }
+
+        return cache.size();
+    }
+
+
+    // V0-1
+    // IDEA: CUSTOM SORT + INTERVAL (gpt)
+    public int removeCoveredIntervals_0_1(int[][] intervals) {
+
+        if (intervals == null || intervals.length == 0) {
+            return 0;
+        }
+
+        List<int[]> list = new ArrayList<>();
+        for (int[] x : intervals) {
+            list.add(x);
+        }
+
+        /**  NOTE !!!
+         *
+         *  custom sort
+         *
+         *  // 1. start (small -> big)
+         *  // 2. end (big -> small)
+         *
+         */
+        // FIX: start ASC, end DESC
+        Collections.sort(list, new Comparator<int[]>() {
+            @Override
+            public int compare(int[] a, int[] b) {
+                if (a[0] != b[0]) {
+                    return a[0] - b[0];
+                }
+                return b[1] - a[1];
+            }
+        });
+
+        List<int[]> cache = new ArrayList<>();
+
+        for (int[] x : list) {
+            if (cache.isEmpty()) {
+                cache.add(x);
+            } else {
+                int[] prev = cache.get(cache.size() - 1);
+
+                if (prev[1] >= x[1]) {
+                    continue; // covered
+                } else {
+                    cache.add(x);
+                }
+            }
+        }
+
+        return cache.size();
+    }
+
 
 
     // V1-1
