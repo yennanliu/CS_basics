@@ -91,6 +91,11 @@ public class CheckIfANumberIsMajorityElementInASortedArray {
         return firstIdx != -1 && majorityIdx < n && nums[majorityIdx] == target;
     }
 
+    /** NOTE !!!
+     *
+     *   this help func tends to find the `first idx` of target in nums,
+     *   via binary search
+     */
     private int findFirst(int[] nums, int target) {
         int low = 0, high = nums.length - 1;
         int res = -1;
@@ -98,8 +103,10 @@ public class CheckIfANumberIsMajorityElementInASortedArray {
         while (low <= high) {
             int mid = low + (high - low) / 2;
             if (nums[mid] >= target) {
-                if (nums[mid] == target) res = mid;
-                high = mid - 1; // Keep looking left for the 'first' one
+                if (nums[mid] == target){
+                    res = mid;
+                    high = mid - 1; // Keep looking left for the 'first' one
+                }
             } else {
                 low = mid + 1;
             }
@@ -121,6 +128,11 @@ public class CheckIfANumberIsMajorityElementInASortedArray {
         return first + n/2 < n && nums[first + n/2] == target;
     }
 
+    /** NOTE !!!
+     *
+     *   this help func tends to find the `first idx` of target in nums,
+     *   via binary search
+     */
     private int firstOccurrence(int[] nums, int target){
         int left = 0, right = nums.length - 1;
 
@@ -171,7 +183,7 @@ public class CheckIfANumberIsMajorityElementInASortedArray {
 
     // V3
 
-    
+
 
 
 }
