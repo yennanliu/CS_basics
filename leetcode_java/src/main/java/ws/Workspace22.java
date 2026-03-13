@@ -1683,8 +1683,16 @@ public class Workspace22 {
      *
      *
      */
-    //  IDEA 2) 2 POINTERS ??? (l, r)
     public String shortestPalindrome(String s) {
+
+        return null;
+    }
+
+
+
+
+    //  IDEA 2) 2 POINTERS ??? (l, r)
+    public String shortestPalindrome_99(String s) {
         // edge
         if(s.isEmpty() || s.length() <= 1){
             return s;
@@ -1730,6 +1738,14 @@ public class Workspace22 {
 
 
 
+    /**  NOTE !!
+     *
+     * You check the whole string every iteration,
+     * but the algorithm should check prefix palindromes,
+     * not the entire string repeatedly.
+     *
+     *
+     */
     private boolean isPalindrome(String s){
         if(s.isEmpty() || s.length() <= 1){
             return true;

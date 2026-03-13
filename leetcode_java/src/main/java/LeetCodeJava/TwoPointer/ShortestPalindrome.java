@@ -36,8 +36,129 @@ public class ShortestPalindrome {
 //    }
 
 
+
+
+    // V0-0-1
+    // IDEA: BRUTE FORCE (TLE) (gemini)
+    /**  NOTE !!!  Dry run demo (a bit tricky)
+     *
+     *  input = "aacecaaa"
+     *
+     *   -> end = 6 (via isPalindrome)
+     *   -> suffix = "a"
+     *   -> res = suffix.reverse() + input
+     *          = "a" + "aacecaaa"
+     *          = "aaacecaaa"
+     *
+     * -----------------
+     *
+     *  -> dry run
+     *
+     *
+     * ### Why start from the right?
+     *
+     * We start `i` at `n - 1` because we are greedy.
+     * We want to find the **largest** possible chunk
+     * at the front that is already a palindrome.
+     *
+     * 1. If the loop finds a palindrome at `i = 7`, we add nothing to the front.
+     * 2. If it finds one at `i = 6` (like in our example), we only have to add **one** character to the front.
+     * 3. If it doesn't find one until `i = 0`, we have to reverse and add **almost the whole string**.
+     *
+     * ### Let's trace "aacecaaa" with your loop:
+     *
+     * * **Iteration 1: `i = 7**`
+     * * Check `isPalindrome(s, 0, 7)` $\rightarrow$ `"aacecaaa"`
+     * * Result: **False** (Index 2 is 'c', Index 5 is 'a').
+     *
+     *
+     * * **Iteration 2: `i = 6**`
+     * * Check `isPalindrome(s, 0, 6)` $\rightarrow$ `"aacecaa"`
+     * * Result: **True**!
+     * * `end = 6`.
+     * * **Break.**
+     *
+     *
+     *
+     * ### Now, where is the suffix?
+     *
+     * The suffix is everything **after** our `end` index.
+     *
+     * ```java
+     * // Our string: a a c e c a a [a]
+     * // Indices:    0 1 2 3 4 5 6  7
+     * //                          ^
+     * //                         end
+     *
+     * String suffix = s.substring(end + 1); // substring(7)
+     * // suffix is "a"
+     *
+     * ```
+     *
+     * ---
+     *
+     * ### 💡 Summary of the logic
+     *
+     * * The **loop** finds the "Anchor" (the biggest palindrome we already have at the start).
+     * * The **suffix** is everything that was "left out" of that anchor.
+     * * We reverse the "left out" part and put it at the front to balance the scales.
+     *
+     */
+    public String shortestPalindrome_0_0_1(String s) {
+        int n = s.length();
+        if (n <= 1)
+            return s;
+
+        // 1. Find the longest prefix that is a palindrome
+        // We start from the end and check [0...i]
+        /**
+         *  NOTE !!!
+         *
+         *   We start from the `end` and check `[0...i]`
+         *
+         */
+        int end = 0;
+        for (int i = n - 1; i >= 0; i--) {
+            if (isPalindrome(s, 0, i)) {
+                end = i;
+                break;
+            }
+        }
+
+        // 2. The part that is NOT part of the prefix palindrome
+        // needs to be reversed and added to the front.
+        /**
+         *  NOTE !!!
+         *
+         *   We get suffix (sub-string) with begin idx =  `end + 1`
+         *
+         */
+        String suffix = s.substring(end + 1);
+        StringBuilder sb = new StringBuilder(suffix);
+        return sb.reverse().toString() + s;
+    }
+
+    private boolean isPalindrome(String x, int l, int r) {
+        while (l < r) {
+            if (x.charAt(l) != x.charAt(r))
+                return false;
+            l++;
+            r--;
+        }
+        return true;
+    }
+
+
     // V0-1
-    // IDEA: 2 POINTERS (gpt)
+    // IDEA: Find the longest prefix that is a palindrome + 2 POINTERS (gpt)
+    /**  NOTE !!!
+     *
+     *  core idea:
+     *    Find the longest prefix that is a palindrome.
+     *
+     *      -> Then add the reverse of the
+     *         remaining suffix to the front.
+     */
     public String shortestPalindrome_0_1(String s) {
 
         if (s == null || s.length() <= 1) {
@@ -94,39 +215,49 @@ public class ShortestPalindrome {
     }
 
 
-    // V0-3
-    // IDEA: BRUTE FORCE (TLE) (gemini)
-    public String shortestPalindrome_0_3(String s) {
-        int n = s.length();
-        if (n <= 1)
-            return s;
 
-        // 1. Find the longest prefix that is a palindrome
-        // We start from the end and check [0...i]
-        int end = 0;
-        for (int i = n - 1; i >= 0; i--) {
-            if (isPalindrome(s, 0, i)) {
-                end = i;
-                break;
-            }
+    // V0-4
+    // IDEA: 2 POINTER AND palindrome check (gemini) (TLE)
+    public String shortestPalindrome_0_4(String s) {
+        // 1. Edge Case
+        if (s == null || s.length() <= 1) {
+            return s;
         }
 
-        // 2. The part that is NOT part of the prefix palindrome
-        // needs to be reversed and added to the front.
-        String suffix = s.substring(end + 1);
+        int n = s.length();
+        // 2. We use 'r' to find the largest prefix [0...r] that is a palindrome
+        // We start from the very end and move backwards
+        int r = n - 1;
+
+        while (r >= 0) {
+            // If the current substring from 0 to r is a palindrome, we found our anchor!
+            if (isPalindrome_0_4(s, 0, r)) {
+                break;
+            }
+            r--;
+        }
+
+        // 3. Everything from index (r + 1) to the end is the "non-palindrome" part
+        // We need to reverse this part and put it at the very beginning
+        String suffix = s.substring(r + 1);
         StringBuilder sb = new StringBuilder(suffix);
-        return sb.reverse().toString() + s;
+        String reversedSuffix = sb.reverse().toString();
+
+        return reversedSuffix + s;
     }
 
-    private boolean isPalindrome(String x, int l, int r) {
+    // Optimized isPalindrome to use pointers instead of creating new substrings
+    private boolean isPalindrome_0_4(String s, int l, int r) {
         while (l < r) {
-            if (x.charAt(l) != x.charAt(r))
+            if (s.charAt(l) != s.charAt(r)) {
                 return false;
+            }
             l++;
             r--;
         }
         return true;
     }
+
 
 
     // V1-1
