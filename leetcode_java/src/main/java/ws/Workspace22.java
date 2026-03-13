@@ -1764,7 +1764,11 @@ public class Workspace22 {
 
 
 
+    // LC 1288
+    public int removeCoveredIntervals(int[][] intervals) {
 
+        return 0;
+    }
 
 
 }
