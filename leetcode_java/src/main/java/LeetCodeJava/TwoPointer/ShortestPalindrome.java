@@ -167,6 +167,11 @@ public class ShortestPalindrome {
 
         int j = 0;
 
+        /** NOTE !!!
+         *
+         * start from right hand side (s.length() - 1)
+         *
+         */
         for (int i = s.length() - 1; i >= 0; i--) {
             if (s.charAt(i) == s.charAt(j)) {
                 j++;
@@ -179,8 +184,19 @@ public class ShortestPalindrome {
         }
 
         String suffix = s.substring(j);
+        
+        /** NOTE !!!
+         *
+         * how we build prefix
+         *
+         */
         String prefix = new StringBuilder(suffix).reverse().toString();
 
+        /** NOTE !!!
+         *
+         * how we prepare final res
+         *
+         */
         return prefix + shortestPalindrome_0_1(s.substring(0, j)) + suffix;
     }
 
