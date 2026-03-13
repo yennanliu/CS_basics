@@ -35,9 +35,68 @@ public class ShortestPalindrome {
 //
 //    }
 
+
     // V0-1
-    // IDEA: BRUTE FORCE (TLE) (gemini)
+    // IDEA: 2 POINTERS (gpt)
     public String shortestPalindrome_0_1(String s) {
+
+        if (s == null || s.length() <= 1) {
+            return s;
+        }
+
+        int j = 0;
+
+        for (int i = s.length() - 1; i >= 0; i--) {
+            if (s.charAt(i) == s.charAt(j)) {
+                j++;
+            }
+        }
+
+        // already palindrome
+        if (j == s.length()) {
+            return s;
+        }
+
+        String suffix = s.substring(j);
+        String prefix = new StringBuilder(suffix).reverse().toString();
+
+        return prefix + shortestPalindrome_0_1(s.substring(0, j)) + suffix;
+    }
+
+
+    // V0-2
+    // IDEA: PREFIX (gemini)
+    public String shortestPalindrome_0_2(String s) {
+        int n = s.length();
+        if (n <= 1)
+            return s;
+
+        // 1. Find the longest palindromic prefix
+        // We use a pointer 'j' to see how much of the start of 's' matches the end of 's'
+        int j = 0;
+        for (int i = n - 1; i >= 0; i--) {
+            if (s.charAt(i) == s.charAt(j)) {
+                j++;
+            }
+        }
+
+        // 2. If j reached the end, the whole string is already a palindrome
+        if (j == n)
+            return s;
+
+        // 3. Everything from index j to the end is the "non-palindrome" part
+        String suffix = s.substring(j);
+        String reverseSuffix = new StringBuilder(suffix).reverse().toString();
+
+        // 4. Recurse on the prefix part to find the shortest within that,
+        // then sandwich the current non-palindrome part around it.
+        return reverseSuffix + shortestPalindrome_0_2(s.substring(0, j)) + suffix;
+    }
+
+
+    // V0-3
+    // IDEA: BRUTE FORCE (TLE) (gemini)
+    public String shortestPalindrome_0_3(String s) {
         int n = s.length();
         if (n <= 1)
             return s;
@@ -258,7 +317,10 @@ public class ShortestPalindrome {
 
     // V2
 
+
+
     // V3
+
 
 
 

@@ -1612,6 +1612,143 @@ public class Workspace22 {
 
 
 
+    // LC 214
+    // 10.08 - 18 am
+    /**
+     *
+     *  -> Return the shortest palindrome
+     *  you can find by performing this transformation.
+     *
+     *   NOTE:
+     *
+     *    You can convert s to a
+     *    palindrome by adding characters in front of it.
+     *
+     *
+     *  -----------------
+     *
+     *   IDEA 1) BRUTE FORCE ???
+     *
+     *   IDEA 2) 2 POINTERS ???
+     *     l, r
+     *
+     *
+     *
+     *  -----------------
+     *
+     *  ex 1)
+     *
+     *   Input: s = "aacecaaa"
+     *   Output: "aaacecaaa"
+     *
+     *    "aacecaaa"
+     *     l      r
+     *
+     *    "aacecaaa"
+     *      l    r
+     *
+     *    "aacecaaa"
+     *       l  r       c != a, so add `a` at left
+     *
+     *     "aaacecaaa"
+     *        l   r
+     *
+     *     "aaacecaaa"
+     *         l r
+     *
+     *
+     *   ex 2)
+     *
+     *   Input: s = "abcd"
+     *   Output: "dcbabcd"
+     *
+     *
+     *    "abcd"
+     *     l  r         a != d,  so add a
+     *
+     *    "dabcd"
+     *     l   r
+     *
+     *    "dabcd"
+     *      l r        a != c, so add c
+     *
+     *    "dcabcd"
+     *      l  r
+     *
+     *     "dcabcd"
+     *        lr          a != b, so add b
+     *
+     *     "dcbabcd"
+     *        s l
+     *
+     *
+     */
+    //  IDEA 2) 2 POINTERS ??? (l, r)
+    public String shortestPalindrome(String s) {
+        // edge
+        if(s.isEmpty() || s.length() <= 1){
+            return s;
+        }
+        if(isPalindrome(s)){
+            return s;
+        }
+
+        // ????
+        int l = 0;
+        int r = s.length() - 1;
+
+        // ???
+        //char[] chars = s.toCharArray();
+        //char z = chars[2];
+
+        while (r > l){
+
+            if(isPalindrome(s)){
+                return s;
+            }
+//            char left = chars[l]; //s.charAt(l);
+//            char right = chars[r]; //s.charAt(r);
+            char left = s.charAt(l);
+            char right = s.charAt(r);
+
+            // case 1) equals
+            if(left == right){
+                l += 1;
+                r -= 1;
+            }
+            // case 2) NOT equals
+            else{
+                // NOTE !!! `insert` new element to str
+                //  via substring
+                // ???
+                s = s.substring(0, l-1) + right + s.substring(l, r);
+            }
+        }
+
+        return s;
+    }
+
+
+
+    private boolean isPalindrome(String s){
+        if(s.isEmpty() || s.length() <= 1){
+            return true;
+        }
+        int l = 0;
+        int r = s.length() - 1;
+        while (r > l){
+            if(s.charAt(l) != s.charAt(r)){
+                return false;
+            }
+            l += 1;
+            r -= 1;
+        }
+        return true;
+    }
+
+
+
+
 
 
 }
