@@ -51,7 +51,17 @@ public class PrimeInDiagonal {
 
 
     // V0-1
-    // IDEA: MATH (gemini)
+    // IDEA: MATH + Diagonal (gemini)
+    /**
+     *  NOTE !!!
+     *
+     *    Diagonal cell format:
+     *
+     *     1. (i, i)
+     *
+     *     2. (i, n - i - 1)
+     *
+     */
     public int diagonalPrime_0_1(int[][] nums) {
         int n = nums.length;
         int maxPrime = 0;
@@ -64,6 +74,79 @@ public class PrimeInDiagonal {
             }
 
             // 2. Secondary Diagonal: (i, n - 1 - i)
+            /**
+             *  NOTE !!!
+             *
+             *   the format for `2nd diagonal` is (i, n - 1 - i)
+             *
+             *
+             *  ---------
+             *
+             *
+             *
+             *
+             *  Yes, exactly! In any square matrix of size $n \times n$,
+             *  the secondary diagonal (also called the anti-diagonal)
+             *
+             *  follows the rule that the row index $i$ and column index $j$ always add up to $n - 1$:
+             *
+             * $$i + j = n - 1 \implies j = n - 1 - i$$
+             *
+             * ### 🖼️ Visualization ($4 \times 4$ Matrix)
+             *
+             * Let’s look at a $4 \times 4$ matrix ($n = 4$).
+             * The secondary diagonal is where $j = 3 - i$.
+             *
+             * | Row ($i$) | Column ($j = 3 - i$) | Coordinate |
+             * | --- | --- | --- |
+             * | **0** | $3 - 0 = 3$ | `(0, 3)` |
+             * | **1** | $3 - 1 = 2$ | `(1, 2)` |
+             * | **2** | $3 - 2 = 1$ | `(2, 1)` |
+             * | **3** | $3 - 3 = 0$ | `(3, 0)` |
+             *
+             * **Visual Grid:**
+             *
+             * ```text
+             *       Col 0   Col 1   Col 2   Col 3
+             * Row 0 [ . ]   [ . ]   [ . ]   [ X ]  <-- (0, 3)
+             * Row 1 [ . ]   [ . ]   [ X ]   [ . ]  <-- (1, 2)
+             * Row 2 [ . ]   [ X ]   [ . ]   [ . ]  <-- (2, 1)
+             * Row 3 [ X ]   [ . ]   [ . ]   [ . ]  <-- (3, 0)
+             *
+             * ```
+             *
+             * ---
+             *
+             * ### 🧩 How both Diagonals look together
+             *
+             * If you use a single loop `for (int i = 0; i < n; i++)`,
+             * you can grab both values at once:
+             *
+             * ```text
+             * (0,0) . . (0,3)
+             *  . (1,1)(1,2) .
+             *  . (2,1)(2,2) .
+             * (3,0) . . (3,3)
+             *
+             * ```
+             *
+             * * **Primary Diagonal (`i, i`):** Top-left to bottom-right.
+             * * **Secondary Diagonal (`i, n - 1 - i`):** Top-right to bottom-left.
+             *
+             * ### ⚠️ One Important Edge Case
+             *
+             * If the matrix size $n$ is **odd** (e.g., $3 \times 3$),
+             * the primary and secondary diagonals **intersect** at the exact center.
+             *
+             * ```text
+             * [X] [ ] [X]  (0,0) and (0,2)
+             * [ ] [X] [ ]  (1,1) is BOTH (i,i) AND (i, n-1-i)
+             * [X] [ ] [X]  (2,0) and (2,2)
+             *
+             * ```
+             *
+             *
+             */
             int val2 = nums[i][n - 1 - i];
             if (val2 > maxPrime && isPrime(val2)) {
                 maxPrime = val2;
@@ -137,6 +220,7 @@ public class PrimeInDiagonal {
     }
 
 
+    
     // V3
 
 
