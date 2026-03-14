@@ -105,9 +105,13 @@ public class Weekly340 {
     }
 
     private boolean isPrime(int val){
-        if(val == 1){
-            return true; // ??
-        }
+//        if(val == 1){
+//            return true; // ??
+//        }
+        if (val < 2)
+            return false;
+
+
         for(int i = 2; i < Math.sqrt(val); i++){
             if(val % i == 0){
                 return true;
