@@ -1,6 +1,6 @@
 # Progress
 
-# 2026-03-13
+# 2026-03-14
 
 - weekly video
 - cheatsheet (LC examples)
@@ -13,7 +13,8 @@
 	- array.md (OK)
 	- matrix.md (OK)
 	- 2_pointers.md (OK)
-	- backtrack.md (todo, Partitioning Patterns)
+	- backtrack.md (OK)
+	- bfs.md (todo)
 - to review
 - needcode `250` - similar LC by AI
     - Arrays & Hashing
@@ -206,7 +207,8 @@
 			- post: depth, height ... LC
 	- todo (20260312)
 		- 341
-
+	- todo (20260314)
+		- 22,93,207
 
  	==================================
 
