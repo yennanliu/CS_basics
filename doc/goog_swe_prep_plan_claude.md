@@ -80,9 +80,10 @@
 - Topics: Palindrome expand, rolling hash, string comparison
 - LC: 5 (Longest Palindromic Substring), 647 (Palindromic Substrings), 387 (First Unique Char), 165 (Compare Version Numbers)
 
-**2026-03-15 (Sun)**: LC Weekly Contest — participate live, 90 min timed
+**2026-03-15 (Sun)**: LC **Weekly Contest 340** (Virtual) — 90 min timed
+- Problems: LC 2614-2617 (Array, Hash Map, Binary Search, Prime Sieve)
 - Strategy: attempt all 4 problems; focus on Q1–Q2 first, attempt Q3
-- After: note which patterns appeared
+- After: note which patterns appeared, compare with editorial
 
 **2026-03-16**: Review + Array Hard
 - Topics: Matrix traversal, spiral, in-place rotation
@@ -110,8 +111,9 @@
 - Topics: Merge intervals, sort colors, merge sort linked list
 - LC: 56 (Merge Intervals), 57 (Insert Interval), 75 (Sort Colors), 148 (Sort List)
 
-**2026-03-22 (Sun)**: LC Weekly Contest — 90 min timed
-- After: identify which Week 2 patterns showed up
+**2026-03-22 (Sun)**: LC **Biweekly Contest 100** (Virtual) — 90 min timed
+- Problems: LC 2591-2594 (Greedy, Binary Search, BFS, Graph)
+- After: identify which Week 2 patterns showed up, review sorting/BS problems
 
 **2026-03-23**: Review Week 1–2 + Weak Spot Drill
 - Revisit 2–3 problems you struggled with in Week 1–2
@@ -143,7 +145,8 @@
 - Topics: Construct from traversal, vertical order, all-dist-K
 - LC: 105 (Build from Pre+In), 106 (Build from In+Post), 987 (Vertical Order Traversal), 863 (All Nodes Dist K)
 
-**2026-03-29 (Sun)**: LC Weekly Contest — 90 min timed
+**2026-03-29 (Sun)**: LC **Weekly Contest 350** (Virtual) — 90 min timed
+- Problems: LC 2739-2742 (Tree DFS, Math, DP on Trees)
 
 **2026-03-30**: Review Week 3 + Tree Mock
 - Self-mock: pick 2 medium tree problems, solve without hints in 45 min total
@@ -171,7 +174,8 @@
 - Topics: Dijkstra with heap, Bellman-Ford, BFS weighted
 - LC: 743 (Network Delay Time), 787 (Cheapest Flights K Stops), 1631 (Path Min Effort), 778 (Swim Rising Water)
 
-**2026-04-05 (Sun)**: LC Weekly Contest — 90 min timed
+**2026-04-05 (Sun)**: LC **Weekly Contest 360** (Virtual) — 90 min timed
+- Problems: LC 2833-2836 (Graph BFS, Shortest Path, Union-Find)
 
 **2026-04-06**: Review Week 4 + Graph Mock
 - Self-mock: 1 medium graph + 1 medium tree under 30 min each
@@ -203,7 +207,8 @@
 - Topics: Burst balloons, matrix chain, scramble string
 - LC: 312 (Burst Balloons), 132 (Palindrome Partitioning II), 188 (Stock IV), 354 (Russian Doll Envelopes), 1235 (Max Profit Job Schedule)
 
-**2026-04-12 (Sun)**: LC Weekly Contest — 90 min timed
+**2026-04-12 (Sun)**: LC **Weekly Contest 380** (Virtual) — 90 min timed
+- Problems: LC 3005-3008 (DP 1D/2D, Greedy, Optimization)
 
 **2026-04-13**: Review Week 5 + DP Mock
 - Self-mock: 2 DP mediums without hints, 45 min each
@@ -231,7 +236,8 @@
 - Topics: XOR tricks, bit counting, interval greedy
 - LC: 136 (Single Number), 191 (Number of 1 Bits), 338 (Counting Bits), 55 (Jump Game), 45 (Jump Game II), 435 (Non-overlapping Intervals)
 
-**2026-04-19 (Sun)**: LC Weekly Contest — 90 min timed
+**2026-04-19 (Sun)**: LC **Biweekly Contest 110** (Virtual) — 90 min timed
+- Problems: LC 2815-2818 (Heap, Priority Queue, Backtracking, Monotonic Stack)
 
 **2026-04-20**: Review Week 6 + Mixed Mock
 - Full 45-min mock: 2 problems from different topics
@@ -264,20 +270,138 @@
 
 ## LC Weekly Contest Schedule
 
-| Date (Sunday) | Contest | Notes |
-|---|---|---|
-| 2026-03-15 | Weekly Contest | Phase 1 check |
-| 2026-03-22 | Weekly Contest | Phase 1 finish |
-| 2026-03-29 | Weekly Contest | Phase 2 mid |
-| 2026-04-05 | Weekly Contest | Phase 2 finish |
-| 2026-04-12 | Weekly Contest | Phase 3 mid |
-| 2026-04-19 | Weekly Contest | Phase 3 finish |
+| Date (Sunday) | Recommended Classic Contest | Focus Patterns | Notes |
+|---|---|---|---|
+| 2026-03-15 | **Weekly Contest 340** | Array, Hash Map, Sliding Window | Phase 1 check |
+| 2026-03-22 | **Biweekly Contest 100** | Binary Search, Two Pointers, Sorting | Phase 1 finish |
+| 2026-03-29 | **Weekly Contest 350** | Tree DFS/BFS, BST | Phase 2 mid |
+| 2026-04-05 | **Weekly Contest 360** | Graph BFS/DFS, Union-Find, Topo Sort | Phase 2 finish |
+| 2026-04-12 | **Weekly Contest 380** | DP (1D/2D), Greedy | Phase 3 mid |
+| 2026-04-19 | **Biweekly Contest 110** | Backtracking, Heap, Monotonic Stack | Phase 3 finish |
 
-**Why LC Weekly?**
+**Why LC Weekly/Biweekly Contests?**
 - Forces you to solve problems you've **never seen** under time pressure
 - Prevents pattern-matching on memorized solutions
 - Mirrors real Google interview conditions (you won't have seen the exact problem)
 - Rating feedback shows whether you're actually improving
+
+---
+
+## Classic LC Contests for Interview Prep (Virtual Practice)
+
+These classic contests are highly recommended for **virtual practice** — problems cover core interview patterns and are frequently referenced in Google SWE prep discussions.
+
+### Tier 1: Must-Do Classic Contests (Core Patterns)
+
+| Contest | Key Problems | Patterns Covered | Difficulty |
+|---------|--------------|------------------|------------|
+| **Weekly Contest 300** | LC 2325, 2326, 2327, 2328 | Array, Matrix, BFS, Binary Search | ⭐⭐⭐ |
+| **Weekly Contest 320** | LC 2475, 2476, 2477, 2478 | Two Pointers, Sliding Window, DP | ⭐⭐⭐ |
+| **Weekly Contest 340** | LC 2614, 2615, 2616, 2617 | Hash Map, Binary Search, Prime Sieve | ⭐⭐⭐ |
+| **Weekly Contest 350** | LC 2739, 2740, 2741, 2742 | Tree DFS, Math, DP on Trees | ⭐⭐⭐ |
+| **Biweekly Contest 100** | LC 2591, 2592, 2593, 2594 | Greedy, Binary Search, BFS | ⭐⭐⭐ |
+
+### Tier 2: Pattern-Specific Classic Contests
+
+#### Arrays, Strings & Sliding Window
+| Contest | Patterns | Notable Problems |
+|---------|----------|------------------|
+| **Weekly Contest 310** | Prefix Sum, Sliding Window | LC 2405 (Optimal Partition String) |
+| **Weekly Contest 330** | Array Manipulation, Sorting | LC 2551 (Put Marbles in Bags) |
+| **Biweekly Contest 90** | Two Pointers, Greedy | LC 2410 (Max Matching Players) |
+| **Weekly Contest 295** | Hash Map, Counting | LC 2287 (Rearrange Chars) |
+
+#### Binary Search & Sorting
+| Contest | Patterns | Notable Problems |
+|---------|----------|------------------|
+| **Weekly Contest 325** | Binary Search on Answer | LC 2517 (Max Tastiness of Candy) |
+| **Weekly Contest 335** | Binary Search, Greedy | LC 2576 (Max Pairs in Array) |
+| **Biweekly Contest 95** | Sorting, Two Pointers | LC 2491 (Divide Players into Teams) |
+| **Weekly Contest 305** | Binary Search, DP | LC 2389 (Longest Subsequence) |
+
+#### Trees & BST
+| Contest | Patterns | Notable Problems |
+|---------|----------|------------------|
+| **Weekly Contest 345** | Tree DFS, Path Sum | LC 2673 (Min Cost Tree from Leaf) |
+| **Weekly Contest 355** | BST, In-order Traversal | LC 2791 (Count Paths Tree) |
+| **Biweekly Contest 102** | LCA, Tree DP | LC 2581 (Possible Combinations) |
+| **Weekly Contest 315** | Tree BFS, Level Order | LC 2445 (Nodes Pairs with Values) |
+
+#### Graphs & Union-Find
+| Contest | Patterns | Notable Problems |
+|---------|----------|------------------|
+| **Weekly Contest 360** | Graph BFS, Shortest Path | LC 2834 (Min Sum After Operations) |
+| **Weekly Contest 370** | Union-Find, MST | LC 2924 (Find Champion II) |
+| **Biweekly Contest 105** | Topological Sort, DAG | LC 2642 (Graph Shortest Path) |
+| **Weekly Contest 290** | Graph DFS, Cycle Detection | LC 2246 (Longest Path Different Chars) |
+
+#### Dynamic Programming
+| Contest | Patterns | Notable Problems |
+|---------|----------|------------------|
+| **Weekly Contest 380** | DP 1D/2D, Optimization | LC 3006 (Find Beautiful Indices) |
+| **Weekly Contest 365** | DP on Subsequence | LC 2873 (Max Value Expression) |
+| **Biweekly Contest 108** | Knapsack Variant, DP | LC 2771 (Longest Non-decreasing Subarray) |
+| **Weekly Contest 375** | Interval DP, Greedy | LC 2962 (Count Subarrays) |
+
+#### Backtracking & Heap
+| Contest | Patterns | Notable Problems |
+|---------|----------|------------------|
+| **Weekly Contest 385** | Backtracking, Pruning | LC 3040 (Max Operations Subsequence) |
+| **Biweekly Contest 110** | Heap, Priority Queue | LC 2817 (Min Absolute Diff) |
+| **Weekly Contest 390** | Combination Search, BT | LC 3091 (Apply Operations Max Score) |
+| **Weekly Contest 345** | Monotonic Stack, Heap | LC 2672 (Adj Colored Cells) |
+
+#### Trie & String Algorithms
+| Contest | Patterns | Notable Problems |
+|---------|----------|------------------|
+| **Weekly Contest 295** | Trie, String Processing | LC 2287 (Rearrange Characters) |
+| **Biweekly Contest 85** | Rolling Hash, KMP | LC 2430 (Max Deletions String) |
+| **Weekly Contest 310** | Trie, DFS | LC 2416 (Sum Prefix Scores) |
+
+### Tier 3: Hard Mode Contests (For Advanced Practice)
+
+| Contest | Why It's Hard | Target Patterns |
+|---------|--------------|-----------------|
+| **Weekly Contest 400** | Q4 requires advanced DP | Interval DP, Bitmask DP |
+| **Weekly Contest 395** | Graph + DP combo | Shortest Path + State DP |
+| **Biweekly Contest 115** | Geometry + Math heavy | Computational Geometry |
+| **Weekly Contest 375** | Segment Tree needed | Range Queries, Lazy Propagation |
+
+---
+
+## How to Use Classic Contests for Practice
+
+### Virtual Contest Strategy
+```
+1. Go to: leetcode.com/contest/weekly-contest-XXX
+2. Click "Virtual Contest"
+3. Treat it as a real contest (90 min timer, no hints)
+4. After: Review all 4 solutions, note patterns you missed
+```
+
+### Weekly Practice Schedule
+| Day | Activity |
+|-----|----------|
+| Sunday | Take virtual contest (90 min) |
+| Monday | Review Q1-Q2 solutions, optimize |
+| Tuesday | Deep dive Q3 solution + similar problems |
+| Wednesday | Attempt Q4, read editorial if stuck |
+| Thursday-Saturday | Daily topic practice as per plan |
+
+### Contest Difficulty Guide
+- **Q1**: Easy warm-up, should solve in 5-10 min
+- **Q2**: Medium, core interview level, 15-20 min target
+- **Q3**: Medium-Hard, often the "Google interview" level, 25-30 min
+- **Q4**: Hard, competitive programming level, stretch goal
+
+### Rating Benchmarks
+| Rating | Interview Readiness |
+|--------|---------------------|
+| < 1400 | Keep practicing fundamentals |
+| 1400-1600 | Can pass most phone screens |
+| 1600-1800 | Solid for Google L3/L4 onsite |
+| 1800-2000 | Strong candidate, can handle hard problems |
+| > 2000 | Competitive programming level |
 
 ---
 
