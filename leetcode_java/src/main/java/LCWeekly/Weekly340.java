@@ -335,9 +335,43 @@ public class Weekly340 {
     // Q4
     // LC 2617
     // https://leetcode.com/problems/minimum-number-of-visited-cells-in-a-grid/
-//    public int minimumVisitedCells(int[][] grid) {
-//
-//    }
+    // 15.19 - 29 pm
+    /**
+     *  -> Return the `minimum` number of cells
+     *     you need to visit to reach the `bottom-right` cell
+     *     (m - 1, n - 1).
+     *       - If there is no valid path, return -1.
+     *
+     *
+     *       - 0 idx: m x n matrix
+     *
+     *       - Your initial position is at the top-left cell (0, 0).
+     *
+     *       - you can ONLY move one of the ways as below:
+     *
+     *          -  if j < k <= grid[i][j] + j:
+     *             - `right`
+     *
+     *          - if  i < k <= grid[i][j] + i
+     *             - `down`
+     *
+     *    ------------------
+     *
+     *    IDEA 1) GREEDY ???
+     *
+     *
+     *    IDEA 2) DP ????
+     *
+     *
+     *    ------------------
+     *
+     *
+     */
+    public int minimumVisitedCells(int[][] grid) {
+
+
+        return 0;
+    }
 
 
 
