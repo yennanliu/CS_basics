@@ -54,6 +54,85 @@ public class SumOfDistances {
 
     // V0-1
     // IDEA: PREFIX SUM (gemini)
+    /** NOTE !!!  Core idea:
+     *
+     *
+     * For a list of indices:
+     *
+     *   [i0, i1, i2, ..., ik]
+     *
+     * For a specific index ij, we want the sum of distances to every other index:
+     *
+     *   sum |ij - i_other|
+     *
+     * Instead of computing each absolute difference individually, split the indices
+     * into two groups:
+     *
+     *   1. Indices before ij
+     *   2. Indices after ij
+     *
+     * Distance to indices before ij:
+     *
+     *   countBefore = number of indices before ij
+     *   sumBefore   = sum of those indices
+     *
+     *   distanceBefore = ij * countBefore - sumBefore
+     *
+     * Distance to indices after ij:
+     *
+     *   countAfter = number of indices after ij
+     *   sumAfter   = sum of those indices
+     *
+     *   distanceAfter = sumAfter - ij * countAfter
+     *
+     * ->
+     *
+     * -------------------------
+     *  ### Final result:
+     * -------------------------
+     *
+     *  ```
+     *   totalDistance =
+     *       (ij * countBefore - sumBefore)
+     *     + (sumAfter - ij * countAfter)
+     *  ```
+     *
+     * Using prefix sums allows computing the distance for each index in O(1).
+     *
+     *
+     *
+     */
+    /**
+     *  Explanation (gemini)
+     *
+     *
+     * ### 🛠️ Fixed Java Solution ($O(N)$ with Prefix Sums)
+     *
+     * For a list of indices $[i_0, i_1, i_2, \dots, i_k]$,
+     * the sum of distances for index $i_j$ is:
+     *
+     *
+     * $$\sum |i_j - i_{other}| =
+     *   (i_j \times \text{count\_before} - \text{sum\_before}) + (\text{sum\_after} - i_j \times \text{count\_after})$$
+     *
+     *
+     * ---
+     *
+     * ### 🔍 Key Logic Fixes Explained
+     *
+     * * **`computeIfAbsent`**: This is a cleaner, more "Senior" way to handle Map initialization.
+     * * **Prefix Sum Strategy**: Instead of a nested loop, we pre-calculate the `totalSum` of indices. As we iterate through the list of indices, we track the `prefixSum`. This allows us to calculate the distance to all other identical values in **$O(1)$** per index.
+     * * **Long Precision**: We use `long` for all calculations involving sums and counts to prevent overflow, as the problem specifies `long[]`.
+     *
+     * ### 📊 Complexity Analysis
+     *
+     * | Metric | Complexity | Explanation |
+     * | --- | --- | --- |
+     * | **Time** | **$O(N)$** | One pass to group, one pass to calculate using prefix sums. |
+     * | **Space** | **$O(N)$** | To store the Map and the result array. |
+     *
+     *
+     */
     public long[] distance_0_1(int[] nums) {
         int n = nums.length;
         long[] res = new long[n];
