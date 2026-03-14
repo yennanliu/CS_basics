@@ -338,10 +338,132 @@ def unique_paths(m, n):
 ### Essential Matrix Properties
 
 #### Diagonal Properties
-- **Main Diagonal**: For position (i,j), i - j = constant
-  - Elements where row - col = 0: (0,0), (1,1), (2,2)...
-- **Anti-Diagonal**: For position (i,j), i + j = constant  
-  - Elements where row + col = n-1: (0,n-1), (1,n-2)...
+
+##### Primary Diagonal (Main Diagonal)
+- **Formula**: `matrix[i][i]` — row index equals column index
+- **Property**: For position (i,j), `i - j = constant` (always 0 for main diagonal)
+- **Direction**: Top-left → Bottom-right
+- **Elements**: (0,0), (1,1), (2,2), ..., (n-1,n-1)
+
+##### Secondary Diagonal (Anti-Diagonal)
+- **Formula**: `matrix[i][n - 1 - i]` — row + column = n - 1
+- **Property**: For position (i,j), `i + j = n - 1`
+- **Direction**: Top-right → Bottom-left
+- **Elements**: (0,n-1), (1,n-2), (2,n-3), ..., (n-1,0)
+
+##### Visual Example (4×4 Matrix, n=4)
+
+```text
+Primary Diagonal (i, i):           Secondary Diagonal (i, n-1-i):
+
+      Col 0   Col 1   Col 2   Col 3        Col 0   Col 1   Col 2   Col 3
+Row 0 [ X ]   [ . ]   [ . ]   [ . ]  Row 0 [ . ]   [ . ]   [ . ]   [ X ]  ← (0, 3)
+Row 1 [ . ]   [ X ]   [ . ]   [ . ]  Row 1 [ . ]   [ . ]   [ X ]   [ . ]  ← (1, 2)
+Row 2 [ . ]   [ . ]   [ X ]   [ . ]  Row 2 [ . ]   [ X ]   [ . ]   [ . ]  ← (2, 1)
+Row 3 [ . ]   [ . ]   [ . ]   [ X ]  Row 3 [ X ]   [ . ]   [ . ]   [ . ]  ← (3, 0)
+        ↓       ↓       ↓       ↓
+      (0,0)   (1,1)   (2,2)   (3,3)
+
+Both Diagonals Together:
+      Col 0   Col 1   Col 2   Col 3
+Row 0 [ P ]   [ . ]   [ . ]   [ S ]    P = Primary, S = Secondary
+Row 1 [ . ]   [ P ]   [ S ]   [ . ]
+Row 2 [ . ]   [ S ]   [ P ]   [ . ]
+Row 3 [ S ]   [ . ]   [ . ]   [ P ]
+```
+
+##### Edge Case: Odd-Sized Matrix (Diagonals Intersect)
+When matrix size `n` is **odd**, the primary and secondary diagonals **intersect** at the center cell.
+
+```text
+3×3 Matrix (n=3):
+      Col 0   Col 1   Col 2
+Row 0 [ P ]   [ . ]   [ S ]    (0,0) and (0,2)
+Row 1 [ . ]   [P&S]   [ . ]    (1,1) is BOTH primary AND secondary!
+Row 2 [ S ]   [ . ]   [ P ]    (2,0) and (2,2)
+
+Center cell (1,1): i=1, i=1 (primary) AND n-1-i=3-1-1=1 (secondary)
+```
+
+**Important**: When iterating both diagonals, avoid double-counting the center cell!
+
+##### Diagonal Access Template (Python)
+```python
+def get_diagonal_elements(matrix):
+    """
+    Get all elements on both diagonals of a square matrix.
+    """
+    if not matrix or not matrix[0]:
+        return []
+
+    n = len(matrix)
+    elements = set()  # Use set to avoid double-counting center in odd-sized matrix
+
+    for i in range(n):
+        # Primary diagonal: (i, i)
+        elements.add(matrix[i][i])
+
+        # Secondary diagonal: (i, n - 1 - i)
+        elements.add(matrix[i][n - 1 - i])
+
+    return list(elements)
+
+def process_diagonals(matrix):
+    """
+    Process both diagonals with explicit handling of intersection.
+    """
+    n = len(matrix)
+    result = 0
+
+    for i in range(n):
+        # Process primary diagonal
+        result = process(matrix[i][i], result)
+
+        # Process secondary diagonal (skip if same as primary to avoid double-processing)
+        if i != n - 1 - i:  # Not the center cell
+            result = process(matrix[i][n - 1 - i], result)
+
+    return result
+```
+
+##### Diagonal Access Template (Java)
+```java
+// From LC 2614 - Prime In Diagonal
+public int diagonalPrime(int[][] nums) {
+    int n = nums.length;
+    int maxPrime = 0;
+
+    for (int i = 0; i < n; i++) {
+        // 1. Primary Diagonal: (i, i)
+        int val1 = nums[i][i];
+        if (val1 > maxPrime && isPrime(val1)) {
+            maxPrime = val1;
+        }
+
+        // 2. Secondary Diagonal: (i, n - 1 - i)
+        int val2 = nums[i][n - 1 - i];
+        if (val2 > maxPrime && isPrime(val2)) {
+            maxPrime = val2;
+        }
+    }
+    return maxPrime;
+}
+```
+
+##### Diagonal Coordinate Summary Table
+| Diagonal Type | Cell Format | Property | Direction |
+|---------------|-------------|----------|-----------|
+| **Primary** | `(i, i)` | `row == col` | ↘ (top-left to bottom-right) |
+| **Secondary** | `(i, n-1-i)` | `row + col == n-1` | ↙ (top-right to bottom-left) |
+
+##### Related Problems
+| Problem | LC # | Diagonal Usage |
+|---------|------|----------------|
+| Prime In Diagonal | 2614 | Find max prime on any diagonal |
+| Diagonal Traverse | 498 | Traverse all diagonals |
+| Matrix Diagonal Sum | 1572 | Sum of both diagonals |
+| Toeplitz Matrix | 766 | Check diagonal constancy |
+| Sort Matrix Diagonally | 1329 | Sort each diagonal independently |
 
 #### Coordinate System
 ```python

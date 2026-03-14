@@ -220,7 +220,7 @@ public class PrimeInDiagonal {
     }
 
 
-    
+
     // V3
 
 
