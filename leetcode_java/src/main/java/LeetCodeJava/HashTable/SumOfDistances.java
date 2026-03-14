@@ -51,8 +51,193 @@ public class SumOfDistances {
 //
 //    }
 
-
     // V0-1
+    // IDEA: 2 pass - 2 HASHMAP + MATH (gpt)
+    /**
+     *  IDEA:
+     *
+     *  Here is the **clean 2-pass solution** for **LeetCode 2615: Sum of Distances**.
+     * It’s one of the **most elegant O(n) approaches** and avoids building lists.
+     *
+     * Idea:
+     *
+     * For each value we track:
+     *
+     * * `count` = how many times we've seen it
+     * * `sum` = sum of indices we've seen
+     *
+     * Then compute contributions from:
+     *
+     * 1️⃣ **Left side pass**
+     * 2️⃣ **Right side pass**
+     *
+     * ---
+     *
+     * # 2-Pass Optimal Solution (O(n))
+     *
+     * ---
+     *
+     * # Why This Works
+     *
+     * Distance formula expansion:
+     *
+     * ```
+     * |i - j|
+     * ```
+     *
+     * Split into:
+     *
+     * ```
+     * (i - j) when j < i
+     * (j - i) when j > i
+     * ```
+     *
+     * So we compute:
+     *
+     * ### Left pass
+     *
+     * ```
+     * (i - j1) + (i - j2) + ...
+     * = count * i - sum(indices)
+     * ```
+     *
+     * ### Right pass
+     *
+     * ```
+     * (j1 - i) + (j2 - i) + ...
+     * = sum(indices) - count * i
+     * ```
+     *
+     * Add both → final distance.
+     *
+     * ---
+     *
+     * # Complexity
+     *
+     * | Metric | Value    |
+     * | ------ | -------- |
+     * | Time   | **O(n)** |
+     * | Space  | **O(n)** |
+     *
+     * Works even for worst case:
+     *
+     * ```
+     * [1,1,1,1,1,1,1....] (100k)
+     * ```
+     *
+     * ---
+     *
+     * # Why Interviewers Like This Version
+     *
+     * It avoids:
+     *
+     * * `Map<Integer, List<Integer>>`
+     * * prefix arrays
+     * * extra loops
+     *
+     * Just **two linear scans**.
+     *
+     * ---
+     *
+     * ✅ **Pro tip for interviews**
+     *
+     * Whenever you see:
+     *
+     * ```
+     * sum of |i - j|
+     * ```
+     *
+     * Try rewriting as:
+     *
+     * ```
+     * (i - j)  +  (j - i)
+     * ```
+     *
+     * Then solve with **left pass + right pass**.
+     *
+     *
+     */
+    public long[] distance_0_1(int[] nums) {
+        int n = nums.length;
+        long[] res = new long[n];
+
+        Map<Integer, Long> count = new HashMap<>();
+        Map<Integer, Long> sum = new HashMap<>();
+
+        // PASS 1: left -> right
+        for (int i = 0; i < n; i++) {
+            int val = nums[i];
+
+            long c = count.getOrDefault(val, 0L);
+            long s = sum.getOrDefault(val, 0L);
+
+            res[i] += c * i - s;
+
+            count.put(val, c + 1);
+            sum.put(val, s + i);
+        }
+
+        count.clear();
+        sum.clear();
+
+        // PASS 2: right -> left
+        for (int i = n - 1; i >= 0; i--) {
+            int val = nums[i];
+
+            long c = count.getOrDefault(val, 0L);
+            long s = sum.getOrDefault(val, 0L);
+
+            res[i] += s - c * i;
+
+            count.put(val, c + 1);
+            sum.put(val, s + i);
+        }
+
+        return res;
+    }
+
+
+
+    // V0-1-1
+    // IDEA: PREFIX SUM + `left, right sum` + HASHMAP (gpt)
+    public long[] distance_0_1_1(int[] nums) {
+
+        int n = nums.length;
+        long[] res = new long[n];
+
+        Map<Integer, List<Integer>> map = new HashMap<>();
+
+        for (int i = 0; i < n; i++) {
+            map.computeIfAbsent(nums[i], k -> new ArrayList<>()).add(i);
+        }
+
+        for (List<Integer> list : map.values()) {
+
+            int m = list.size();
+            long[] prefix = new long[m];
+
+            prefix[0] = list.get(0);
+            for (int i = 1; i < m; i++) {
+                prefix[i] = prefix[i - 1] + list.get(i);
+            }
+
+            for (int i = 0; i < m; i++) {
+
+                int idx = list.get(i);
+
+                long left = (long) list.get(i) * i - (i == 0 ? 0 : prefix[i - 1]);
+                long right = (prefix[m - 1] - prefix[i]) - (long) list.get(i) * (m - i - 1);
+
+                res[idx] = left + right;
+            }
+        }
+
+        return res;
+    }
+
+
+
+    // V0-1-2
     // IDEA: PREFIX SUM (gemini)
     /** NOTE !!!  Core idea:
      *
@@ -133,7 +318,7 @@ public class SumOfDistances {
      *
      *
      */
-    public long[] distance_0_1(int[] nums) {
+    public long[] distance_0_1_2(int[] nums) {
         int n = nums.length;
         long[] res = new long[n];
         Map<Integer, List<Integer>> map = new HashMap<>();
@@ -213,44 +398,6 @@ public class SumOfDistances {
     }
 
 
-    // V0-3
-    // IDEA: PREFIX SUM + HASHMAP (gpt)
-    public long[] distance_0_3(int[] nums) {
-
-        int n = nums.length;
-        long[] res = new long[n];
-
-        Map<Integer, List<Integer>> map = new HashMap<>();
-
-        for (int i = 0; i < n; i++) {
-            map.computeIfAbsent(nums[i], k -> new ArrayList<>()).add(i);
-        }
-
-        for (List<Integer> list : map.values()) {
-
-            int m = list.size();
-            long[] prefix = new long[m];
-
-            prefix[0] = list.get(0);
-            for (int i = 1; i < m; i++) {
-                prefix[i] = prefix[i - 1] + list.get(i);
-            }
-
-            for (int i = 0; i < m; i++) {
-
-                int idx = list.get(i);
-
-                long left = (long) list.get(i) * i - (i == 0 ? 0 : prefix[i - 1]);
-                long right = (prefix[m - 1] - prefix[i]) - (long) list.get(i) * (m - i - 1);
-
-                res[idx] = left + right;
-            }
-        }
-
-        return res;
-    }
-
-
     // V1
 
     // V2
@@ -323,6 +470,7 @@ public class SumOfDistances {
         }
         return ans;
     }
+
 
 
     // V5

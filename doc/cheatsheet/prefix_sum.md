@@ -64,6 +64,12 @@
 - **Pattern**: Convert elements to 0/1, then apply prefix sum with conditions
 - **Key Insight**: Transform problem to simpler prefix sum problem
 
+### **Pattern 7: Sum of Distances (Left-Right Split)**
+- **Description**: Calculate sum of absolute differences between indices efficiently
+- **Examples**: LC 2615 - Sum of Distances, LC 2121 - Intervals Between Identical Elements, LC 1685 - Sum of Absolute Differences
+- **Pattern**: Split into left/right parts, use `count * value - sum` formula
+- **Key Insight**: For index `i`, distance = `(i * countLeft - sumLeft) + (sumRight - i * countRight)`
+
 ## 0) Concept
 
 ## Templates & Algorithms
@@ -77,6 +83,7 @@
 | **Modulo Prefix Sum** | Divisibility problems | HashMap with remainders | Subarray sum divisible by k |
 | **Difference Array** | Range updates | Array with start/end markers | Multiple range additions |
 | **2D Prefix Sum** | Rectangle sum queries | 2D matrix | 2D range sum calculations |
+| **Sum of Distances** | Absolute difference sums | HashMap + Prefix Sum | Sum of |i-j| for matching elements |
 
 ### Universal Template
 
@@ -265,22 +272,192 @@ def count_nice_subarrays(nums, k):
     """Count subarrays with exactly k odd numbers"""
     # Transform: odd -> 1, even -> 0
     transformed = [1 if x % 2 == 1 else 0 for x in nums]
-    
+
     # Now it's subarray sum equals k problem
     count = 0
     prefix_sum = 0
     prefix_map = {0: 1}
-    
+
     for val in transformed:
         prefix_sum += val
-        
+
         if prefix_sum - k in prefix_map:
             count += prefix_map[prefix_sum - k]
-        
+
         prefix_map[prefix_sum] = prefix_map.get(prefix_sum, 0) + 1
-    
+
     return count
 ```
+
+### Template 7: Sum of Distances (Left-Right Split)
+
+This pattern efficiently calculates sum of absolute differences `|i - j|` between indices.
+
+#### Core Idea
+For a sorted list of indices `[i0, i1, i2, ..., ik]`, to find sum of distances from `ij` to all others:
+
+```
+Instead of: |ij - i0| + |ij - i1| + ... + |ij - ik|  (O(n) per element)
+
+Split into:
+  - Left part:  (ij - i0) + (ij - i1) + ... = ij * countLeft - sumLeft
+  - Right part: (ij+1 - ij) + (ij+2 - ij) + ... = sumRight - ij * countRight
+
+Total: (ij * countLeft - sumLeft) + (sumRight - ij * countRight)
+```
+
+#### Visual Explanation
+```
+Indices with same value: [2, 5, 8, 12]
+                          ↑  ↑  ↑   ↑
+For index 8 (position 2 in list):
+
+  Left indices: [2, 5]
+    countLeft = 2
+    sumLeft = 2 + 5 = 7
+    distanceLeft = 8 * 2 - 7 = 9  → |8-2| + |8-5| = 6 + 3 = 9 ✓
+
+  Right indices: [12]
+    countRight = 1
+    sumRight = 12
+    distanceRight = 12 - 8 * 1 = 4  → |12-8| = 4 ✓
+
+  Total distance for index 8: 9 + 4 = 13
+```
+
+#### Python Template
+```python
+def sum_of_distances(nums):
+    """
+    LC 2615: Calculate sum of |i - j| for all j where nums[j] == nums[i]
+    Time: O(n), Space: O(n)
+    """
+    from collections import defaultdict
+
+    n = len(nums)
+    result = [0] * n
+
+    # Step 1: Group indices by value
+    index_map = defaultdict(list)
+    for i, num in enumerate(nums):
+        index_map[num].append(i)
+
+    # Step 2: For each group, calculate distances using prefix sum
+    for indices in index_map.values():
+        m = len(indices)
+        if m == 1:
+            continue  # Single element has distance 0
+
+        # Build prefix sum of indices
+        prefix = [0] * m
+        prefix[0] = indices[0]
+        for i in range(1, m):
+            prefix[i] = prefix[i - 1] + indices[i]
+
+        total_sum = prefix[m - 1]
+
+        # Calculate distance for each index in group
+        for i in range(m):
+            idx = indices[i]
+
+            # Left part: idx * countLeft - sumLeft
+            count_left = i
+            sum_left = prefix[i - 1] if i > 0 else 0
+            left_dist = idx * count_left - sum_left
+
+            # Right part: sumRight - idx * countRight
+            count_right = m - i - 1
+            sum_right = total_sum - prefix[i]
+            right_dist = sum_right - idx * count_right
+
+            result[idx] = left_dist + right_dist
+
+    return result
+```
+
+#### Java Template
+```java
+// LC 2615 - Sum of Distances
+public long[] distance(int[] nums) {
+    int n = nums.length;
+    long[] res = new long[n];
+    Map<Integer, List<Integer>> map = new HashMap<>();
+
+    // Step 1: Group indices by value
+    for (int i = 0; i < n; i++) {
+        map.computeIfAbsent(nums[i], k -> new ArrayList<>()).add(i);
+    }
+
+    // Step 2: Calculate distances using prefix sum
+    for (List<Integer> indices : map.values()) {
+        int m = indices.size();
+        if (m == 1) continue;
+
+        // Build prefix sum
+        long[] prefix = new long[m];
+        prefix[0] = indices.get(0);
+        for (int i = 1; i < m; i++) {
+            prefix[i] = prefix[i - 1] + indices.get(i);
+        }
+
+        // Calculate distance for each index
+        for (int i = 0; i < m; i++) {
+            int idx = indices.get(i);
+
+            // Left: idx * countLeft - sumLeft
+            long left = (long) idx * i - (i == 0 ? 0 : prefix[i - 1]);
+
+            // Right: sumRight - idx * countRight
+            long right = (prefix[m - 1] - prefix[i]) - (long) idx * (m - i - 1);
+
+            res[idx] = left + right;
+        }
+    }
+
+    return res;
+}
+```
+
+#### Alternative: Running Sum Approach (No Prefix Array)
+```python
+def sum_of_distances_optimized(nums):
+    """Space-optimized version using running sums"""
+    from collections import defaultdict
+
+    n = len(nums)
+    result = [0] * n
+    index_map = defaultdict(list)
+
+    for i, num in enumerate(nums):
+        index_map[num].append(i)
+
+    for indices in index_map.values():
+        m = len(indices)
+        if m == 1:
+            continue
+
+        # Calculate total sum once
+        total_sum = sum(indices)
+
+        prefix_sum = 0
+        for i, idx in enumerate(indices):
+            # Left: idx * i - prefix_sum
+            # Right: (total_sum - prefix_sum - idx) - idx * (m - i - 1)
+            left_dist = idx * i - prefix_sum
+            right_dist = (total_sum - prefix_sum - idx) - idx * (m - i - 1)
+
+            result[idx] = left_dist + right_dist
+            prefix_sum += idx
+
+    return result
+```
+
+#### Formula Summary
+| Component | Formula | Meaning |
+|-----------|---------|---------|
+| **Left Distance** | `idx * countLeft - sumLeft` | Sum of `(idx - smaller_idx)` |
+| **Right Distance** | `sumRight - idx * countRight` | Sum of `(larger_idx - idx)` |
+| **Total Distance** | `leftDist + rightDist` | Sum of all `\|idx - other_idx\|` |
 
 ## Problems by Pattern
 
@@ -336,6 +513,15 @@ def count_nice_subarrays(nums, k):
 | Flip String to Monotone Increasing | 926 | Transform 0/1 counting | Medium | Template 6 |
 | Max Chunks To Make Sorted | 769 | Sum comparison | Medium | Template 6 |
 | Longest Arithmetic Subsequence | 1027 | Transform differences | Medium | Template 6 |
+
+#### **Pattern 7: Sum of Distances Problems**
+| Problem | LC # | Key Technique | Difficulty | Template |
+|---------|------|---------------|------------|----------|
+| Sum of Distances | 2615 | Group + left-right split | Medium | Template 7 |
+| Intervals Between Identical Elements | 2121 | Same pattern, intervals | Medium | Template 7 |
+| Sum of Absolute Differences in a Sorted Array | 1685 | Sorted array variant | Medium | Template 7 |
+| Sum of Distances in Tree | 834 | Tree version (DFS + reroot) | Hard | Template 7 + DFS |
+| Minimum Total Distance Traveled | 2463 | DP + distance calculation | Hard | Template 7 + DP |
 
 #### **Advanced/Mixed Pattern Problems**
 | Problem | LC # | Key Technique | Difficulty | Template |
@@ -424,6 +610,7 @@ Problem Analysis Flowchart:
 | "range addition", "updates", "intervals" | Template 4 | LC 370, 1094 |
 | "2D", "matrix", "rectangle" | Template 5 | LC 304, 1314 |
 | "odd numbers", "binary", "transform" | Template 6 | LC 1248, 926 |
+| "sum of distances", "absolute differences", "identical elements" | Template 7 | LC 2615, 2121, 1685 |
 
 ### Problem Identification Patterns
 
@@ -456,6 +643,13 @@ Problem Analysis Flowchart:
 - Problem mentions: "count odd/even", "binary conditions", "transform array"
 - First transform array (e.g., odd→1, even→0), then apply prefix sum
 - Reduces to simpler prefix sum problem
+
+#### **Identify Template 7 Usage:**
+- Problem mentions: "sum of distances", "absolute differences", "identical elements"
+- Need to calculate `sum of |i - j|` for elements with same value
+- Key insight: Split into left/right parts, use `count * value - sum` formula
+- HashMap stores: `{value: [list of indices]}`
+- Time complexity reduces from O(n²) to O(n)
 
 ## Legacy Examples
 
@@ -885,6 +1079,110 @@ public int maxSumTwoNoOverlap_1(int[] nums, int firstLen, int secondLen) {
 }
 ```
 
+### 2-9) Sum of Distances (Pattern 7)
+
+```java
+// java
+// LC 2615 - Sum of Distances
+// IDEA: HashMap + Prefix Sum (Left-Right Split)
+/**
+ * Core Formula:
+ *   For index i in a group of identical elements:
+ *   - leftDistance  = i * countLeft - sumLeft
+ *   - rightDistance = sumRight - i * countRight
+ *   - totalDistance = leftDistance + rightDistance
+ *
+ * Why this works:
+ *   |i - j| for all j < i = (i - j1) + (i - j2) + ...
+ *                         = i * count - (j1 + j2 + ...)
+ *                         = i * countLeft - sumLeft
+ */
+public long[] distance(int[] nums) {
+    int n = nums.length;
+    long[] res = new long[n];
+    Map<Integer, List<Integer>> map = new HashMap<>();
+
+    // Step 1: Group indices by value
+    for (int i = 0; i < n; i++) {
+        map.computeIfAbsent(nums[i], k -> new ArrayList<>()).add(i);
+    }
+
+    // Step 2: For each group, calculate distances using prefix sum
+    for (List<Integer> list : map.values()) {
+        int m = list.size();
+        if (m == 1) continue;  // Single element has distance 0
+
+        // Build prefix sum of indices
+        long[] prefix = new long[m];
+        prefix[0] = list.get(0);
+        for (int i = 1; i < m; i++) {
+            prefix[i] = prefix[i - 1] + list.get(i);
+        }
+
+        // Calculate distance for each index in the group
+        for (int i = 0; i < m; i++) {
+            int idx = list.get(i);
+
+            // Left part: idx * countLeft - sumLeft
+            long left = (long) idx * i - (i == 0 ? 0 : prefix[i - 1]);
+
+            // Right part: sumRight - idx * countRight
+            long right = (prefix[m - 1] - prefix[i]) - (long) idx * (m - i - 1);
+
+            res[idx] = left + right;
+        }
+    }
+
+    return res;
+}
+```
+
+```python
+# python
+# LC 2615 - Sum of Distances
+# V0: HashMap + Prefix Sum
+def distance(nums):
+    from collections import defaultdict
+
+    n = len(nums)
+    result = [0] * n
+    index_map = defaultdict(list)
+
+    # Group indices by value
+    for i, num in enumerate(nums):
+        index_map[num].append(i)
+
+    # Calculate distances for each group
+    for indices in index_map.values():
+        m = len(indices)
+        if m == 1:
+            continue
+
+        # Build prefix sum
+        prefix = [0] * m
+        prefix[0] = indices[0]
+        for i in range(1, m):
+            prefix[i] = prefix[i - 1] + indices[i]
+
+        total_sum = prefix[m - 1]
+
+        # Calculate distance using left-right split
+        for i in range(m):
+            idx = indices[i]
+
+            # Left: idx * countLeft - sumLeft
+            sum_left = prefix[i - 1] if i > 0 else 0
+            left_dist = idx * i - sum_left
+
+            # Right: sumRight - idx * countRight
+            sum_right = total_sum - prefix[i]
+            right_dist = sum_right - idx * (m - i - 1)
+
+            result[idx] = left_dist + right_dist
+
+    return result
+```
+
 ## Summary & Quick Reference
 
 ### Complexity Quick Reference
@@ -908,6 +1206,7 @@ public int maxSumTwoNoOverlap_1(int[] nums, int firstLen, int secondLen) {
 | **Template 4** | Range Updates | `diff[start] += val; diff[end+1] -= val` |
 | **Template 5** | 2D Matrix | `prefix[i][j] = val + left + top - topleft` |
 | **Template 6** | Transform Count | `transform array first, then apply prefix sum` |
+| **Template 7** | Sum of Distances | `left = idx * countLeft - sumLeft; right = sumRight - idx * countRight` |
 
 ### Core Mathematical Insights
 
