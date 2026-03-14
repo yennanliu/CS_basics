@@ -4,6 +4,7 @@ package LeetCodeJava.HashTable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -49,6 +50,127 @@ public class SumOfDistances {
 //    public long[] distance(int[] nums) {
 //
 //    }
+
+
+    // V0-1
+    // IDEA: PREFIX SUM (gemini)
+    public long[] distance_0_1(int[] nums) {
+        int n = nums.length;
+        long[] res = new long[n];
+        Map<Integer, List<Integer>> map = new HashMap<>();
+
+        // 1. Group indices by value
+        for (int i = 0; i < n; i++) {
+            map.computeIfAbsent(nums[i], k -> new ArrayList<>()).add(i);
+        }
+
+        // 2. For each unique value, calculate distance sums in O(K)
+        for (List<Integer> indices : map.values()) {
+            int k = indices.size();
+            if (k == 1)
+                continue; // Distance sum for a single element is 0
+
+            // Calculate total sum of indices for the "after" part
+            long totalSum = 0;
+            for (int idx : indices)
+                totalSum += idx;
+
+            long prefixSum = 0;
+            for (int i = 0; i < k; i++) {
+                long currentIdx = indices.get(i);
+
+                // Numbers before currentIdx
+                long leftCount = i;
+                long leftSum = prefixSum;
+
+                // Numbers after currentIdx (including itself)
+                long rightCount = k - i;
+                long rightSum = totalSum - prefixSum;
+
+                // Distance formula:
+                // (CountBefore * val - SumBefore) + (SumAfter - CountAfter * val)
+                res[(int) currentIdx] = (leftCount * currentIdx - leftSum) +
+                        (rightSum - rightCount * currentIdx);
+
+                prefixSum += currentIdx;
+            }
+        }
+
+        return res;
+    }
+
+
+    // V0-2
+    // IDEA: HASHMAP (TLE) (gpt)
+    public long[] distance_0_2(int[] nums) {
+
+        if (nums == null || nums.length == 0) {
+            return new long[0];
+        }
+
+        Map<Integer, List<Integer>> map = new HashMap<>();
+
+        for (int i = 0; i < nums.length; i++) {
+            map.computeIfAbsent(nums[i], k -> new ArrayList<>()).add(i);
+        }
+
+        long[] res = new long[nums.length];
+
+        for (int i = 0; i < nums.length; i++) {
+            res[i] = getDistSum(map.get(nums[i]), i);
+        }
+
+        return res;
+    }
+
+    private long getDistSum(List<Integer> list, int idx) {
+        long res = 0;
+
+        for (int j : list) {
+            res += Math.abs(idx - j);
+        }
+
+        return res;
+    }
+
+
+    // V0-3
+    // IDEA: PREFIX SUM + HASHMAP (gpt)
+    public long[] distance_0_3(int[] nums) {
+
+        int n = nums.length;
+        long[] res = new long[n];
+
+        Map<Integer, List<Integer>> map = new HashMap<>();
+
+        for (int i = 0; i < n; i++) {
+            map.computeIfAbsent(nums[i], k -> new ArrayList<>()).add(i);
+        }
+
+        for (List<Integer> list : map.values()) {
+
+            int m = list.size();
+            long[] prefix = new long[m];
+
+            prefix[0] = list.get(0);
+            for (int i = 1; i < m; i++) {
+                prefix[i] = prefix[i - 1] + list.get(i);
+            }
+
+            for (int i = 0; i < m; i++) {
+
+                int idx = list.get(i);
+
+                long left = (long) list.get(i) * i - (i == 0 ? 0 : prefix[i - 1]);
+                long right = (prefix[m - 1] - prefix[i]) - (long) list.get(i) * (m - i - 1);
+
+                res[idx] = left + right;
+            }
+        }
+
+        return res;
+    }
+
 
     // V1
 
