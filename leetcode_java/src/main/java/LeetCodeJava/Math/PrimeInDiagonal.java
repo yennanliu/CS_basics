@@ -49,6 +49,42 @@ public class PrimeInDiagonal {
 //
 //    }
 
+
+    // V0-1
+    // IDEA: MATH (gemini)
+    public int diagonalPrime_0_1(int[][] nums) {
+        int n = nums.length;
+        int maxPrime = 0;
+
+        for (int i = 0; i < n; i++) {
+            // 1. Primary Diagonal: (i, i)
+            int val1 = nums[i][i];
+            if (val1 > maxPrime && isPrime(val1)) {
+                maxPrime = val1;
+            }
+
+            // 2. Secondary Diagonal: (i, n - 1 - i)
+            int val2 = nums[i][n - 1 - i];
+            if (val2 > maxPrime && isPrime(val2)) {
+                maxPrime = val2;
+            }
+        }
+
+        return maxPrime;
+    }
+
+    private boolean isPrime(int n) {
+        if (n < 2)
+            return false;
+        // Check up to the square root
+        for (int i = 2; i * i <= n; i++) {
+            if (n % i == 0)
+                return false;
+        }
+        return true;
+    }
+
+
     // V1
     // https://leetcode.com/problems/prime-in-diagonal/solutions/3395721/simple-java-solution-by-siddhant_1602-ey8o/
     public int diagonalPrime_1(int[][] nums) {
