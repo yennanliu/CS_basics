@@ -435,6 +435,38 @@ public class MinimizeTheMaximumDifferenceOfPairs {
         return count >= p;
     }
 
+    // V0-3
+    // IDEA: DP (gpt) (OUT OF MEMORY ERROR)
+    public int minimizeMax_0_3(int[] nums, int p) {
+        Arrays.sort(nums);
+
+        int n = nums.length;
+        int[][] dp = new int[n + 1][p + 1];
+
+        for (int i = 0; i <= n; i++)
+            Arrays.fill(dp[i], Integer.MAX_VALUE);
+
+        dp[0][0] = 0;
+        dp[1][0] = 0;
+
+        for (int i = 2; i <= n; i++) {
+            for (int k = 0; k <= p; k++) {
+
+                dp[i][k] = dp[i - 1][k];
+
+                if (k > 0 && dp[i - 2][k - 1] != Integer.MAX_VALUE) {
+                    int diff = nums[i - 1] - nums[i - 2];
+                    dp[i][k] = Math.min(
+                            dp[i][k],
+                            Math.max(dp[i - 2][k - 1], diff));
+                }
+            }
+        }
+
+        return dp[n][p];
+    }
+
+
 
     // V1
     // IDEA: Greedy + Binary Search
