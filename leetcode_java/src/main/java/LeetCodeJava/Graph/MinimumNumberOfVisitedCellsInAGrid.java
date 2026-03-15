@@ -63,7 +63,10 @@ public class MinimumNumberOfVisitedCellsInAGrid {
     // V0-1
     // IDEA: PQ (gemini)
     public int minimumVisitedCells_0_1(int[][] grid) {
-        int m = grid.length, n = grid[0].length;
+
+        // get size of matrix
+        int m = grid.length;
+        int n = grid[0].length;
         int[][] dist = new int[m][n];
         for (int[] row : dist)
             Arrays.fill(row, -1);
@@ -72,15 +75,25 @@ public class MinimumNumberOfVisitedCellsInAGrid {
         PriorityQueue<int[]>[] rowPQs = new PriorityQueue[m];
         PriorityQueue<int[]>[] colPQs = new PriorityQueue[n];
 
-        for (int i = 0; i < m; i++)
+        for (int i = 0; i < m; i++){
+            /** NOTE !!!  rowPQs is a PQ */
             rowPQs[i] = new PriorityQueue<>((a, b) -> a[0] - b[0]);
-        for (int j = 0; j < n; j++)
+        }
+        for (int j = 0; j < n; j++){
+            /** NOTE !!!  rowPQs is a PQ */
             colPQs[j] = new PriorityQueue<>((a, b) -> a[0] - b[0]);
+        }
 
         dist[0][0] = 1;
 
+        /** NOTE !!!
+         *
+         *  we loop every cell in matrix
+         */
         for (int i = 0; i < m; i++) {
             for (int j = 0; j < n; j++) {
+
+                /** NOTE !!! while loop */
                 // 1. Update distance from previous cells in the same ROW
                 while (!rowPQs[i].isEmpty()) {
                     int[] top = rowPQs[i].peek();
@@ -95,6 +108,7 @@ public class MinimumNumberOfVisitedCellsInAGrid {
                     rowPQs[i].poll(); // Cannot reach, useless for future cells in this row
                 }
 
+                /** NOTE !!! while loop */
                 // 2. Update distance from previous cells in the same COLUMN
                 while (!colPQs[j].isEmpty()) {
                     int[] top = colPQs[j].peek();
@@ -109,14 +123,16 @@ public class MinimumNumberOfVisitedCellsInAGrid {
                     colPQs[j].poll(); // Cannot reach, useless for future cells in this column
                 }
 
-                // 3. If current cell is reachable, add it to PQs for future use
+                // 3. If current cell is `reachable`, ADD is to PQ !!! for future use
                 if (dist[i][j] != -1 && grid[i][j] > 0) {
                     rowPQs[i].offer(new int[] { dist[i][j], j });
                     colPQs[j].offer(new int[] { dist[i][j], i });
                 }
             }
+
         }
 
+        /** NOTE !!! what we return as a result */
         return dist[m - 1][n - 1];
     }
 
