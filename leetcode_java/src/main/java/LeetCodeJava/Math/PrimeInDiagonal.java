@@ -167,6 +167,50 @@ public class PrimeInDiagonal {
         return true;
     }
 
+    // V0-2
+    // IDEA: DIAGONAL OP + MATH (fixed by gemini)
+    public int diagonalPrime_0_2(int[][] nums) {
+        int n = nums.length;
+        int res = 0;
+
+        for (int i = 0; i < n; i++) {
+            // Main diagonal: (i, i)
+            int v1 = nums[i][i];
+            // Optimization: Only check isPrime if v1 is actually bigger than current max
+            if (v1 > res && isPrime_0_2(v1)) {
+                res = v1;
+            }
+
+            // Anti-diagonal: (i, n - i - 1)
+            int v2 = nums[i][n - i - 1];
+            if (v2 > res && isPrime_0_2(v2)) {
+                res = v2;
+            }
+        }
+
+        return res;
+    }
+
+    private boolean isPrime_0_2(int x) {
+        if (x <= 1)
+            return false;
+        if (x == 2)
+            return true;
+        if (x % 2 == 0)
+            return false; // Quick skip for evens
+
+        int limit = (int) Math.sqrt(x);
+        // Boundary fix: use <= limit
+        // Efficiency: increment by 2 to only check odd divisors
+        for (int i = 3; i <= limit; i += 2) {
+            if (x % i == 0) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
 
     // V1
     // https://leetcode.com/problems/prime-in-diagonal/solutions/3395721/simple-java-solution-by-siddhant_1602-ey8o/

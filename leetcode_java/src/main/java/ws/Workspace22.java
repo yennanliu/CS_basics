@@ -2059,4 +2059,82 @@ public class Workspace22 {
     }
 
 
+    // LC 2614
+    // 6.59 - 7.09 am
+    /**
+     *  IDEA 1) DIAGONAL OP + MATH (prime num)
+     *
+     * -------
+     *
+     *  ex 1)
+     *
+     *   Input: nums = [[1,2,3],[5,6,7],[9,10,11]]
+     *   Output: 11
+     *
+     *   [
+     *   [1,2,3],
+     *   [5,6,7],
+     *   [9,10,11]
+     *   ]
+     *
+     *
+     *   -> 2nd diagonal
+     *      [3,6,9]
+     *
+     *      [0,2], [1,1], [2,0]
+     *
+     *      y = 0      y =  1      y =2
+     *      x = 3-0-1  x = 3-1-1   x=3-2-1
+     *
+     */
+    // IDEA 1) DIAGONAL OP + MATH (prime num)
+    public int diagonalPrime(int[][] nums) {
+        // edge
+
+        int l = nums.length;
+        int w = nums[0].length;
+
+        int res = -1; // ???
+
+        // prime diagonal (x, y), x==y
+        for(int y = 0; y < l; y++){
+            // ???
+            int val = nums[y][y];
+            if(isPrime(val)){
+                res = Math.max(res, val);
+            }
+        }
+
+        // 2nd diagonal  (x, y), y = l - x - 1 // ???
+        for(int x = 0; x < w; x++){
+            // ???
+            int val = nums[l - x - 1][x];
+            if(isPrime(val)){
+                res = Math.max(res, val);
+            }
+        }
+
+        return res;
+    }
+
+    private boolean isPrime(int x){
+        // edge
+        if(x <= 1){
+            return false;
+        }
+        int val = (int) Math.sqrt(x);
+        // ???
+        // NOTE !!!  <=
+        for(int i = 2; i <= val; i++){
+            if(x % i == 0){
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+
+
+
 }
