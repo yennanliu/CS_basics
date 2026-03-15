@@ -165,6 +165,84 @@ public class MinimumNumberOfVisitedCellsInAGrid {
 
 
     // V0-2
+    // IDEA: DSU (Disjoint Set Union) (gemini)
+    /**  IDEA:
+     *
+     *  To implement a monotonic version of LC 2617,
+     *  we shift away from Priority Queues and use
+     *  Disjoint Set Union (DSU).
+     *
+     */
+    public int minimumVisitedCells_0_2(int[][] grid) {
+        int m = grid.length, n = grid[0].length;
+        if (m == 1 && n == 1)
+            return 1;
+
+        // DSU to keep track of the next unvisited cell in each row and column
+        int[][] nextCol = new int[m][n + 1];
+        int[][] nextRow = new int[n][m + 1];
+        for (int i = 0; i < m; i++)
+            for (int j = 0; j <= n; j++)
+                nextCol[i][j] = j;
+        for (int j = 0; j < n; j++)
+            for (int i = 0; i <= m; i++)
+                nextRow[j][i] = i;
+
+        Queue<int[]> queue = new LinkedList<>();
+        queue.offer(new int[] { 0, 0, 1 }); // {row, col, distance}
+
+        // Mark (0,0) as visited in both row and column DSU
+        nextCol[0][0] = 1;
+        nextRow[0][0] = 1;
+
+        while (!queue.isEmpty()) {
+            int[] curr = queue.poll();
+            int r = curr[0], c = curr[1], d = curr[2];
+            int jump = grid[r][c];
+            if (jump == 0)
+                continue;
+
+            // 1. Check Row: Find unvisited cells in range [c + 1, min(c + jump, n - 1)]
+            int nextC = find(nextCol[r], c + 1);
+            while (nextC <= Math.min(c + jump, n - 1)) {
+                if (r == m - 1 && nextC == n - 1)
+                    return d + 1;
+
+                queue.offer(new int[] { r, nextC, d + 1 });
+                // Link this cell to the one after it so we never visit it again
+                nextCol[r][nextC] = find(nextCol[r], nextC + 1);
+                // Also mark it as visited in the column DSU for that specific column
+                nextRow[nextC][r] = find(nextRow[nextC], r + 1);
+
+                nextC = nextCol[r][nextC];
+            }
+
+            // 2. Check Column: Find unvisited cells in range [r + 1, min(r + jump, m - 1)]
+            int nextR = find(nextRow[c], r + 1);
+            while (nextR <= Math.min(r + jump, m - 1)) {
+                if (nextR == m - 1 && c == n - 1)
+                    return d + 1;
+
+                queue.offer(new int[] { nextR, c, d + 1 });
+                nextRow[c][nextR] = find(nextRow[c], nextR + 1);
+                nextCol[nextR][c] = find(nextCol[nextR], c + 1);
+
+                nextR = nextRow[c][nextR];
+            }
+        }
+
+        return -1;
+    }
+
+    private int find(int[] parent, int i) {
+        if (parent[i] == i)
+            return i;
+        return parent[i] = find(parent, parent[i]); // Path compression
+    }
+
+
+
+    // V0-3
     // IDEA: PQ (gpt)
     /**
      * Time  : O(m*n * log(m*n))
@@ -289,7 +367,7 @@ public class MinimumNumberOfVisitedCellsInAGrid {
      * Both also use **min-heap shortest path on grid states**.
      *
      */
-    public int minimumVisitedCells_0_2(int[][] grid) {
+    public int minimumVisitedCells_0_3(int[][] grid) {
         int m = grid.length, n = grid[0].length;
         int INF = Integer.MAX_VALUE / 2;
 

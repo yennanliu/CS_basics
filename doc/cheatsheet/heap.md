@@ -62,6 +62,13 @@
 - **Examples**: LC 295, 480, 1825 - Find Median, Sliding Median, Finding MK Average
 - **Pattern**: Use two heaps (min + max) to maintain balanced structure
 
+#### **Pattern 7: Grid Shortest Path with Range Jumps**
+- **Description**: Find shortest path in grid where each cell can jump to a range of cells
+- **Examples**: LC 2617 - Minimum Number of Visited Cells in a Grid
+- **Pattern**: DP + Per-row/column PQs with lazy deletion
+- **Key Insight**: Standard BFS is O(N²) per cell; PQ reduces to O(log N) per cell
+- **Similar**: LC 778 (Swim in Rising Water), LC 1631 (Path With Minimum Effort)
+
 ### References
 - [LeetCode Heap Learn Card](https://leetcode.com/explore/learn/card/heap/)
 - [GeeksforGeeks Heap Guide](https://www.geeksforgeeks.org/heap-data-structure/)
@@ -78,6 +85,7 @@
 | **Two Heap System** | Maintain median/balance | O(log N) | Data stream with median |
 | **Heap + HashSet** | Duplicate handling | O(log N) | Need uniqueness constraint |
 | **Frequency Uniqueness** | Make frequencies unique | O(N + K log K) | Ensure all frequencies distinct |
+| **Grid Range Jumps** | Grid shortest path with variable jumps | O(M*N*log(M+N)) | DP + per-row/col PQ + lazy deletion |
 
 ### Universal Heap Template
 ```python
@@ -261,7 +269,133 @@ def solve_with_unique_heap(nums):
     return heap
 ```
 
-#### **6. Frequency Uniqueness Template (Greedy + Heap/HashSet)**
+#### **6. Grid Shortest Path with Range Jumps Template**
+```java
+/**
+ * Template for Grid Shortest Path with Variable Jump Ranges
+ *
+ * Pattern: DP + Per-row/column Priority Queues with Lazy Deletion
+ *
+ * Problem Type: From (0,0), each cell (i,j) can jump to:
+ *   - Right: (i, k) where j < k <= j + grid[i][j]
+ *   - Down:  (k, j) where i < k <= i + grid[i][j]
+ * Find minimum cells to reach (m-1, n-1)
+ *
+ * Key Insight: Standard BFS would be O(N²) per cell; PQ reduces to O(log N)
+ *
+ * Time: O(M*N*log(M+N))
+ * Space: O(M*N)
+ */
+public int gridShortestPathTemplate(int[][] grid) {
+    int m = grid.length, n = grid[0].length;
+    int[][] dist = new int[m][n];
+    for (int[] row : dist) Arrays.fill(row, -1);
+
+    // Create one PQ per row and one PQ per column
+    // Each PQ stores {distance, index} sorted by distance
+    PriorityQueue<int[]>[] rowPQs = new PriorityQueue[m];
+    PriorityQueue<int[]>[] colPQs = new PriorityQueue[n];
+
+    for (int i = 0; i < m; i++)
+        rowPQs[i] = new PriorityQueue<>((a, b) -> a[0] - b[0]);
+    for (int j = 0; j < n; j++)
+        colPQs[j] = new PriorityQueue<>((a, b) -> a[0] - b[0]);
+
+    dist[0][0] = 1;  // Starting cell counts as 1
+
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++) {
+
+            // 1. Check cells from same row that can reach (i,j)
+            while (!rowPQs[i].isEmpty()) {
+                int[] top = rowPQs[i].peek();
+                int prevCol = top[1];
+                // Can previous cell jump far enough to reach column j?
+                if (prevCol + grid[i][prevCol] >= j) {
+                    int d = top[0] + 1;
+                    if (dist[i][j] == -1 || d < dist[i][j])
+                        dist[i][j] = d;
+                    break;  // First valid = best (PQ sorted by distance)
+                }
+                // Lazy deletion: cell can never reach future columns
+                rowPQs[i].poll();
+            }
+
+            // 2. Check cells from same column that can reach (i,j)
+            while (!colPQs[j].isEmpty()) {
+                int[] top = colPQs[j].peek();
+                int prevRow = top[1];
+                if (prevRow + grid[prevRow][j] >= i) {
+                    int d = top[0] + 1;
+                    if (dist[i][j] == -1 || d < dist[i][j])
+                        dist[i][j] = d;
+                    break;
+                }
+                colPQs[j].poll();
+            }
+
+            // 3. Add current cell to PQs for future cells
+            if (dist[i][j] != -1 && grid[i][j] > 0) {
+                rowPQs[i].offer(new int[]{dist[i][j], j});
+                colPQs[j].offer(new int[]{dist[i][j], i});
+            }
+        }
+    }
+
+    return dist[m - 1][n - 1];
+}
+```
+
+```python
+# Python Template: Grid Shortest Path with Range Jumps
+import heapq
+
+def grid_shortest_path(grid):
+    """
+    Pattern: DP + Per-row/column heaps with lazy deletion
+
+    Key insight: Each cell can be processed once per row/column heap,
+    and expired cells are removed lazily when encountered.
+    """
+    m, n = len(grid), len(grid[0])
+    dist = [[-1] * n for _ in range(m)]
+
+    # One min-heap per row and per column
+    # Each heap stores (distance, index)
+    row_pqs = [[] for _ in range(m)]
+    col_pqs = [[] for _ in range(n)]
+
+    dist[0][0] = 1
+
+    for i in range(m):
+        for j in range(n):
+            # Check row heap for cells that can reach (i, j)
+            while row_pqs[i]:
+                d, prev_col = row_pqs[i][0]
+                if prev_col + grid[i][prev_col] >= j:
+                    if dist[i][j] == -1 or d + 1 < dist[i][j]:
+                        dist[i][j] = d + 1
+                    break
+                heapq.heappop(row_pqs[i])  # Lazy deletion
+
+            # Check column heap for cells that can reach (i, j)
+            while col_pqs[j]:
+                d, prev_row = col_pqs[j][0]
+                if prev_row + grid[prev_row][j] >= i:
+                    if dist[i][j] == -1 or d + 1 < dist[i][j]:
+                        dist[i][j] = d + 1
+                    break
+                heapq.heappop(col_pqs[j])
+
+            # Add current cell to heaps if reachable and can jump
+            if dist[i][j] != -1 and grid[i][j] > 0:
+                heapq.heappush(row_pqs[i], (dist[i][j], j))
+                heapq.heappush(col_pqs[j], (dist[i][j], i))
+
+    return dist[m - 1][n - 1]
+```
+
+#### **7. Frequency Uniqueness Template (Greedy + Heap/HashSet)**
 ```python
 def make_frequencies_unique(s):
     """
@@ -1557,6 +1691,158 @@ public int maxPerformance(int n, int[] speed, int[] efficiency, int k) {
  */
 ```
 
+### 2-14) Minimum Number of Visited Cells in a Grid
+
+```java
+// java
+// LC 2617
+// Reference: leetcode_java/src/main/java/LeetCodeJava/Graph/MinimumNumberOfVisitedCellsInAGrid.java
+
+/**
+ * Problem: Find minimum cells to visit from (0,0) to (m-1, n-1)
+ *
+ * Movement Rules:
+ * From cell (i,j) with value grid[i][j], you can move to:
+ *   - Right: (i, k) where j < k <= j + grid[i][j]
+ *   - Down:  (k, j) where i < k <= i + grid[i][j]
+ *
+ * Example 1:
+ * Input: grid = [[3,4,2,1],[4,2,3,1],[2,1,0,0],[2,4,0,0]]
+ * Output: 4
+ *
+ * Example 2:
+ * Input: grid = [[2,1,0],[1,0,0]]
+ * Output: -1 (no valid path exists)
+ *
+ * Constraints:
+ * - 1 <= m, n <= 10^5
+ * - 1 <= m * n <= 10^5
+ * - 0 <= grid[i][j] < m * n
+ */
+
+// APPROACH: DP + Per-Row/Column Priority Queues with Lazy Deletion
+/**
+ * KEY INSIGHTS:
+ *
+ * 1. Why not BFS directly?
+ *    - From each cell, you can potentially jump to O(N) cells
+ *    - Total complexity would be O(N²) which is too slow
+ *
+ * 2. Why Priority Queues?
+ *    - We need to find the minimum distance cell that can reach (i,j)
+ *    - PQ gives us O(log N) access to minimum
+ *
+ * 3. Lazy Deletion Pattern:
+ *    - A cell at (i, prevCol) can reach columns up to prevCol + grid[i][prevCol]
+ *    - If current column j > prevCol + grid[i][prevCol], cell is "expired"
+ *    - Remove expired cells when encountered (lazy deletion)
+ *
+ * 4. Per-Row/Column PQs:
+ *    - rowPQs[i] = all cells in row i that might reach future columns
+ *    - colPQs[j] = all cells in column j that might reach future rows
+ *
+ * Time: O(M*N*log(M+N)) - each cell enters/exits heaps once
+ * Space: O(M*N) - for dist array and heap entries
+ */
+public int minimumVisitedCells(int[][] grid) {
+    int m = grid.length, n = grid[0].length;
+    int[][] dist = new int[m][n];
+    for (int[] row : dist) Arrays.fill(row, -1);
+
+    // One PQ per row, one PQ per column
+    // Each stores {distance, index} sorted by distance (min-heap)
+    PriorityQueue<int[]>[] rowPQs = new PriorityQueue[m];
+    PriorityQueue<int[]>[] colPQs = new PriorityQueue[n];
+
+    for (int i = 0; i < m; i++)
+        rowPQs[i] = new PriorityQueue<>((a, b) -> a[0] - b[0]);
+    for (int j = 0; j < n; j++)
+        colPQs[j] = new PriorityQueue<>((a, b) -> a[0] - b[0]);
+
+    dist[0][0] = 1;  // Starting cell counts as 1 visited
+
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++) {
+
+            // Step 1: Check row PQ - find best cell in same row that can reach j
+            while (!rowPQs[i].isEmpty()) {
+                int[] top = rowPQs[i].peek();
+                int prevCol = top[1];
+
+                // Check if previous cell can jump to current column
+                if (prevCol + grid[i][prevCol] >= j) {
+                    int d = top[0] + 1;
+                    if (dist[i][j] == -1 || d < dist[i][j])
+                        dist[i][j] = d;
+                    break;  // First valid cell has minimum distance (PQ property)
+                }
+                // Lazy deletion: cell can't reach j or any future column
+                rowPQs[i].poll();
+            }
+
+            // Step 2: Check column PQ - find best cell in same column that can reach i
+            while (!colPQs[j].isEmpty()) {
+                int[] top = colPQs[j].peek();
+                int prevRow = top[1];
+
+                if (prevRow + grid[prevRow][j] >= i) {
+                    int d = top[0] + 1;
+                    if (dist[i][j] == -1 || d < dist[i][j])
+                        dist[i][j] = d;
+                    break;
+                }
+                colPQs[j].poll();
+            }
+
+            // Step 3: Add current cell to PQs for future cells to use
+            if (dist[i][j] != -1 && grid[i][j] > 0) {
+                rowPQs[i].offer(new int[]{dist[i][j], j});
+                colPQs[j].offer(new int[]{dist[i][j], i});
+            }
+        }
+    }
+
+    return dist[m - 1][n - 1];
+}
+
+/**
+ * STEP-BY-STEP EXAMPLE:
+ *
+ * Grid = [[3,4,2,1],
+ *         [4,2,3,1],
+ *         [2,1,0,0],
+ *         [2,4,0,0]]
+ *
+ * Process (0,0): dist=1, can reach right to col 3, down to row 3
+ *   - Add to rowPQs[0]: {1, 0}
+ *   - Add to colPQs[0]: {1, 0}
+ *
+ * Process (0,1): Check rowPQs[0], cell (0,0) can reach col 3 >= 1 ✓
+ *   - dist[0][1] = 1 + 1 = 2
+ *
+ * Process (0,2): Check rowPQs[0], cell (0,0) can reach col 3 >= 2 ✓
+ *   - dist[0][2] = 1 + 1 = 2
+ *
+ * ... continue for all cells ...
+ *
+ * Final path: (0,0) → (0,2) → (1,2) → (3,2) or similar
+ * Answer: 4 cells visited
+ *
+ * WHY LAZY DELETION WORKS:
+ *
+ * Consider row i, processing columns left to right (j = 0,1,2,...):
+ * - If cell at (i, prevCol) cannot reach column j
+ * - Then prevCol + grid[i][prevCol] < j
+ * - For any future column j' > j: prevCol + grid[i][prevCol] < j < j'
+ * - So cell can NEVER reach any future column → safe to remove
+ *
+ * RELATED PROBLEMS:
+ * - LC 778: Swim in Rising Water (Dijkstra on grid)
+ * - LC 1631: Path With Minimum Effort (Dijkstra on grid)
+ * - LC 1293: Shortest Path with Obstacles (BFS + state)
+ */
+```
+
 ## Problems by Pattern
 
 ### Pattern-Based Problem Classification
@@ -1628,6 +1914,7 @@ public int maxPerformance(int n, int[] speed, int[] efficiency, int k) {
 | Minimum Cost to Connect Sticks | 1167 | Greedy + min heap | Medium | Universal Heap |
 | Last Stone Weight | 1046 | Max heap simulation | Easy | Universal Heap |
 | Maximum Performance of Team | 1383 | Sort + heap greedy | Hard | Top K Frequency |
+| Minimum Number of Visited Cells | 2617 | DP + per-row/col PQ + lazy deletion | Hard | Grid Range Jumps |
 
 ### Heap + Other Data Structure Combos
 | Problem | LC # | Key Technique | Difficulty | Template |
@@ -1757,6 +2044,7 @@ conditions = [
 | **Two Heap System** | Balanced structure | `small_heap (max) + large_heap (min)` |
 | **Heap + HashSet** | Deduplication | `seen = set(); heappush if not in seen` |
 | **Frequency Uniqueness** | Greedy + heap/hashset | `while freq in used: freq -= 1; deletions += 1` |
+| **Grid Range Jumps** | DP + per-row/col PQ | `while !rowPQs[i].isEmpty() && prevCol + grid[i][prevCol] < j: poll()` |
 
 ### Common Patterns & Tricks
 
