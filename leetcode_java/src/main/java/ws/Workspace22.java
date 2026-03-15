@@ -2008,6 +2008,51 @@ public class Workspace22 {
 
 
     // LC 1314
+    // 12.49 - 59 pm
+    /**
+     *
+     *  -> return a matrix answer
+     *    where each answer[i][j] is the sum
+     *    of all elements mat[r][c]
+     *
+     *      - i - k <= r <= i + k,
+     *      - j - k <= c <= j + k, and
+     *      - (r, c) is a `valid` position
+     *         in the matrix.
+     *
+     *
+     *    - m x n matrix
+     *    - int k
+     *
+     *  ----------------
+     *
+     *   IDEA 1) BRUTE FORCE (matrix op)
+     *
+     *   IDEA 2)
+     *
+     *
+     *  ----------------
+     *
+     *  ex 1)
+     *
+     *  Input: mat = [
+     *    [1,2,3],
+     *    [4,5,6],
+     *    [7,8,9]
+     *    ],
+     *
+     *    k = 1
+     *
+     *
+     *  Output: [
+     *   [12,21,16],
+     *   [27,45,33],
+     *   [24,39,28]
+     *  ]
+     *
+     *
+     *
+     */
     public int[][] matrixBlockSum(int[][] mat, int k) {
 
         return null;
