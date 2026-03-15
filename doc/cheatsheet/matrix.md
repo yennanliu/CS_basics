@@ -56,6 +56,7 @@
 | **Matrix Search** | Find target in sorted matrix | Binary search or elimination | Sorted/partially sorted matrices |
 | **Matrix Modification** | Set zeros, smooth values | Two-pass or auxiliary tracking | Conditional element updates |
 | **Matrix Multiplication** | Dot product operations | Triple nested loops | Mathematical computations |
+| **2D Prefix Sum** | Range sum queries | Build prefix + O(1) query | Block sums, submatrix sums |
 | **Matrix Path DP** | Path counting, min/max path | DP state transitions | Optimization problems on grids |
 
 ### Universal Matrix Template
@@ -292,7 +293,75 @@ def multiply_sparse_matrices(A, B):
     return result
 ```
 
-#### Template 6: Matrix Path DP
+#### Template 6: 2D Prefix Sum (Range Sum Query)
+```python
+def build_prefix_sum_2d(mat):
+    """
+    Build 2D prefix sum matrix for O(1) range sum queries.
+
+    Key Formula:
+    - Build: pref[i+1][j+1] = mat[i][j] + pref[i][j+1] + pref[i+1][j] - pref[i][j]
+    - Query: sum(r1,c1 to r2,c2) = pref[r2+1][c2+1] - pref[r1][c2+1] - pref[r2+1][c1] + pref[r1][c1]
+
+    Time: O(m*n) build, O(1) query
+    Space: O(m*n)
+    """
+    if not mat or not mat[0]:
+        return []
+
+    m, n = len(mat), len(mat[0])
+
+    # Size (m+1) x (n+1) for easier boundary handling (row 0 and col 0 are zeros)
+    pref = [[0] * (n + 1) for _ in range(m + 1)]
+
+    # Build prefix sum
+    for i in range(m):
+        for j in range(n):
+            pref[i + 1][j + 1] = mat[i][j] + pref[i][j + 1] + pref[i + 1][j] - pref[i][j]
+
+    return pref
+
+def range_sum_2d(pref, r1, c1, r2, c2):
+    """
+    Get sum of rectangle from (r1,c1) to (r2,c2) inclusive.
+
+    Visual explanation:
+    ┌───────────────────┐
+    │   A    │    B     │
+    │────────┼──────────│ ← r1
+    │   C    │ TARGET   │
+    │────────┼──────────│ ← r2
+    └───────────────────┘
+              c1       c2
+
+    TARGET = Total - A - C + TopLeft (since TopLeft subtracted twice)
+           = pref[r2+1][c2+1] - pref[r1][c2+1] - pref[r2+1][c1] + pref[r1][c1]
+    """
+    return pref[r2 + 1][c2 + 1] - pref[r1][c2 + 1] - pref[r2 + 1][c1] + pref[r1][c1]
+
+
+def matrix_block_sum(mat, k):
+    """
+    LC 1314: For each cell, return sum of all elements within k distance.
+    """
+    m, n = len(mat), len(mat[0])
+    pref = build_prefix_sum_2d(mat)
+    res = [[0] * n for _ in range(m)]
+
+    for i in range(m):
+        for j in range(n):
+            # Clamp boundaries
+            r1 = max(0, i - k)
+            c1 = max(0, j - k)
+            r2 = min(m - 1, i + k)
+            c2 = min(n - 1, j + k)
+
+            res[i][j] = range_sum_2d(pref, r1, c1, r2, c2)
+
+    return res
+```
+
+#### Template 7: Matrix Path DP
 ```python
 def min_path_sum(grid):
     """
@@ -569,7 +638,7 @@ def is_valid(row, col, rows, cols):
 | Available Captures for Rook | 999 | Traversal | Direction-based movement |
 | Find Winner on a Tic Tac Toe Game | 1275 | Operations | Game state evaluation |
 | Cells with Odd Values in Matrix | 1252 | Modification | Index-based updates |
-| Matrix Block Sum | 1314 | Operations | 2D range sum |
+| Matrix Block Sum | 1314 | **2D Prefix Sum** | Build prefix, O(1) range query |
 | Sum of All Odd Length Subarrays | 1588 | Operations | Subarray contribution |
 
 #### **Medium Problems (Core Skills)**
@@ -777,6 +846,8 @@ def imageSmoother(M):
 | **Matrix Rotation** | O(m*n) | O(1) | Transpose + reverse |
 | **Matrix Multiplication** | O(m*n*p) | O(m*p) | Standard algorithm |
 | **Sparse Multiplication** | O(m*n*k) | O(m*p) | k = average non-zeros per row |
+| **2D Prefix Sum Build** | O(m*n) | O(m*n) | One-time preprocessing |
+| **2D Prefix Sum Query** | O(1) | O(1) | After preprocessing |
 | **DP Path Problems** | O(m*n) | O(m*n) or O(n) | Can optimize space |
 
 ### Template Quick Reference
@@ -789,6 +860,7 @@ def imageSmoother(M):
 | **Search** | Find elements | Binary search or elimination approach |
 | **Modification** | Update elements | Two-pass or auxiliary space techniques |
 | **Multiplication** | Math operations | Triple nested loop with optimizations |
+| **2D Prefix Sum** | Range sum queries | Build (m+1)×(n+1) prefix, query O(1) |
 | **Path DP** | Optimization | DP state transitions between adjacent cells |
 
 ### Common Patterns & Tricks
@@ -1176,3 +1248,89 @@ class Solution:
                 elif copy_board[row][col] == 0 and live_neighbors == 3:
                     board[row][col] = 1
 ```
+
+---
+
+### 2-10) Matrix Block Sum (LC 1314) — Pattern: 2D Prefix Sum
+> Build 2D prefix sum matrix, then query O(1) for each cell's block sum.
+
+```java
+// LC 1314 - Matrix Block Sum
+// V0
+// IDEA: 2D Prefix Sum (Summed-Area Table)
+// Time: O(m*n), Space: O(m*n)
+
+/**
+ * Key Insight:
+ * - Without prefix sum: O(m*n*k²) — for each cell, scan k×k block
+ * - With prefix sum: O(m*n) build + O(1) per query
+ *
+ * Formula:
+ * - Build:  pref[i+1][j+1] = mat[i][j] + pref[i][j+1] + pref[i+1][j] - pref[i][j]
+ * - Query:  sum = pref[r2+1][c2+1] - pref[r1][c2+1] - pref[r2+1][c1] + pref[r1][c1]
+ *
+ * The +1 offset allows pref[0][j] and pref[i][0] to be zero padding,
+ * preventing IndexOutOfBounds when querying edges.
+ */
+public int[][] matrixBlockSum(int[][] mat, int k) {
+    int m = mat.length;
+    int n = mat[0].length;
+
+    // 1. Build 2D prefix sum matrix (size m+1 x n+1)
+    int[][] pref = new int[m + 1][n + 1];
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++) {
+            pref[i + 1][j + 1] = mat[i][j]
+                    + pref[i][j + 1]      // top
+                    + pref[i + 1][j]      // left
+                    - pref[i][j];         // top-left (subtracted twice)
+        }
+    }
+
+    int[][] res = new int[m][n];
+
+    // 2. Calculate sum for each block [i-k, j-k] to [i+k, j+k]
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++) {
+            // Clamp boundaries to valid matrix indices
+            int r1 = Math.max(0, i - k);
+            int c1 = Math.max(0, j - k);
+            int r2 = Math.min(m - 1, i + k);
+            int c2 = Math.min(n - 1, j + k);
+
+            // Query using prefix sum formula (adjust for 1-based pref)
+            res[i][j] = pref[r2 + 1][c2 + 1]
+                    - pref[r1][c2 + 1]    // subtract top region
+                    - pref[r2 + 1][c1]    // subtract left region
+                    + pref[r1][c1];       // add back top-left (double subtracted)
+        }
+    }
+
+    return res;
+}
+```
+
+**Visual Explanation of 2D Prefix Sum Query:**
+```
+For rectangle (r1,c1) to (r2,c2):
+
+     0    c1        c2   n
+   ┌──────┬─────────┬────┐
+ 0 │      │    A    │    │
+   │      │         │    │
+r1 ├──────┼─────────┼────┤
+   │      │         │    │
+   │  C   │ TARGET  │    │
+   │      │         │    │
+r2 ├──────┼─────────┼────┤
+   │      │         │    │
+ m └──────┴─────────┴────┘
+
+TARGET = pref[r2+1][c2+1] - A - C + TopLeft
+       = pref[r2+1][c2+1] - pref[r1][c2+1] - pref[r2+1][c1] + pref[r1][c1]
+```
+
+**Similar Problems:**
+- LC 304: Range Sum Query 2D - Immutable (same 2D prefix sum)
+- LC 308: Range Sum Query 2D - Mutable (needs segment tree / BIT)
+- LC 1292: Maximum Side Length of Square (2D prefix sum + binary search)
