@@ -40,6 +40,78 @@ public class StringWithoutAAAOrBBB {
 //
 //    }
 
+    // V0-1
+    // IDEA: GREEDY (gemini)
+    public String strWithout3a3b_0_1(int a, int b) {
+        StringBuilder res = new StringBuilder();
+        int continueA = 0;
+        int continueB = 0;
+
+        while (a > 0 || b > 0) {
+            // Decision logic: Should we write 'a'?
+            // 1. We MUST write 'a' if we have 2 'b's in a row.
+            // 2. We CAN write 'a' if we have more 'a's than 'b's AND we don't have 2 'a's in a row.
+            boolean writeA = false;
+            if (continueB == 2) {
+                writeA = true;
+            } else if (continueA == 2) {
+                writeA = false;
+            } else {
+                // Greedy: write the one we have more of
+                writeA = a >= b;
+            }
+
+            if (writeA) {
+                res.append("a");
+                a--;
+                continueA++;
+                continueB = 0; // Reset the other counter
+            } else {
+                res.append("b");
+                b--;
+                continueB++;
+                continueA = 0; // Reset the other counter
+            }
+        }
+        return res.toString();
+    }
+
+    // V0-2
+    // IDEA: GREEDY (GPT)
+    public String strWithout3a3b_0_2(int a, int b) {
+        StringBuilder res = new StringBuilder();
+
+        int continueA = 0;
+        int continueB = 0;
+
+        while (a > 0 || b > 0) {
+            if ((a >= b && continueA < 2) || continueB == 2) {
+                res.append("a");
+                a--;
+                continueA++;
+                continueB = 0; // reset B counter
+            } else if ((b > a && continueB < 2) || continueA == 2) {
+                res.append("b");
+                b--;
+                continueB++;
+                continueA = 0; // reset A counter
+            }
+        }
+
+        return res.toString();
+    }
+
+    // Correct multipleStr2 helper (if you really need it)
+    private String multipleStr2(String x, int times) {
+        StringBuilder res = new StringBuilder();
+        for (int i = 0; i < times; i++) {
+            res.append(x);
+        }
+        return res.toString();
+    }
+
+
+
     // V1
     // IDEA: GREEDY
     // https://leetcode.com/problems/string-without-aaa-or-bbb/editorial/
