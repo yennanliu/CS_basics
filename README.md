@@ -1299,6 +1299,7 @@ claude
 948 | [Bag of Tokens](https://leetcode.com/problems/bag-of-tokens/) | [Python](./leetcode_python/Greedy/bag-of-tokens.py)  | _O(nlogn)_ | _O(1)_ | Medium |Two Pointers | AGAIN (not start)
 962 | [Maximum Width Ramp](https://leetcode.com/problems/maximum-width-ramp/) | [Python](./leetcode_python/Greedy/maximum-width-ramp.py)  | _O(n)_ | _O(n)_ | Medium | Descending Stack |  AGAIN (not start)
 978 | [Longest Turbulent Subarray](https://leetcode.com/problems/longest-turbulent-subarray/) | [Java](./leetcode_java/src/main/java/LeetCodeJava/Greedy/LongestTurbulentSubarray.java)  | _O(n)_ | _O(n)_ | Medium |sliding window |  AGAIN (not start)
+984| [String Without AAA or BBB](https://leetcode.com/problems/string-without-aaa-or-bbb) | [Java](./leetcode_java/src/main/java/LeetCodeJava/Greedy/StringWithoutAAAOrBBB.java)  | _O(n)_ | _O(n)_ | Medium | greedy, recursion|  AGAIN (not start)
 1024 | [Video Stitching](https://leetcode.com/problems/video-stitching/) | [Python](./leetcode_python/Greedy/video_stitching.py) | | | Medium | Spotify | AGAIN (not start)
 1102 | [Path With Maximum Minimum Value](https://leetcode.com/problems/path-with-maximum-minimum-value/) | [Python](./leetcode_python/Greedy/path-with-maximum-minimum-value.py) | | | Medium | dfs, dp , greedy, `amazon` | not start
 319 | [Bulb Switcher](https://leetcode.com/problems/bulb-switcher/) | [Python](./leetcode_python/Greedy/bulb-switcher.py) | | | Medium |  | not start
