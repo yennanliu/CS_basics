@@ -722,12 +722,125 @@ class Solution {
 
 ---
 
+#### Example 5: LC 2616 - Minimize the Maximum Difference of Pairs ⭐⭐⭐⭐⭐
+
+**Problem:** Find p pairs of indices such that the maximum difference amongst all pairs is minimized. Each index can only be used once.
+
+**Key Insight:** This is a classic "Minimize the Maximum" problem:
+1. **Sort** the array so closest numbers are adjacent
+2. **Binary search** on the "maximum difference" value
+3. **Greedy check**: Can we find ≥ p pairs where each pair's diff ≤ mid?
+
+**Why Greedy Works (but PQ Doesn't):**
+- After sorting, adjacent pairs give minimum differences
+- Greedy pairing rule: `if (nums[i+1] - nums[i] <= maxDiff) → take pair, skip i+1`
+- This guarantees **maximum number of pairs** for that maxDiff
+- PQ approach fails because it's a **matching optimization problem** where local greedy selection doesn't guarantee optimality
+- Binary search has **monotonic property**: if maxDiff X works, any larger diff also works
+
+```java
+// LC 2616 - Minimize the Maximum Difference of Pairs
+class Solution {
+    /**
+     * time = O(N log N + N log(max-min))
+     * space = O(1)
+     *
+     * Approach:
+     * 1. Sort array → adjacent elements have minimum differences
+     * 2. Binary search on answer space [0, max_diff]
+     * 3. Greedy validation: count pairs with diff <= mid
+     */
+    public int minimizeMax(int[] nums, int p) {
+        if (p == 0) return 0;
+
+        // Step 1: Sort to make closest numbers adjacent
+        Arrays.sort(nums);
+
+        int n = nums.length;
+        // Search space: [0, max_difference]
+        int left = 0;
+        int right = nums[n - 1] - nums[0];
+
+        // Step 2: Binary search on possible "maximum difference"
+        while (left < right) {
+            int mid = left + (right - left) / 2;
+
+            // Step 3: Check if we can form at least p pairs with diff <= mid
+            if (canFormPairs(nums, p, mid)) {
+                right = mid;  // Valid! Try smaller max diff (minimize)
+            } else {
+                left = mid + 1;  // Can't form enough pairs, need larger diff
+            }
+        }
+
+        return left;
+    }
+
+    // Greedy validation: count maximum pairs with diff <= maxDiff
+    private boolean canFormPairs(int[] nums, int p, int maxDiff) {
+        int count = 0;
+
+        for (int i = 0; i < nums.length - 1; i++) {
+            // If adjacent pair fits constraint, take it!
+            if (nums[i + 1] - nums[i] <= maxDiff) {
+                count++;
+                i++;  // CRITICAL: Skip next index (element can only be in one pair)
+            }
+            if (count >= p) return true;  // Early termination
+        }
+
+        return count >= p;
+    }
+}
+```
+
+**Step-by-Step Trace:** `nums = [10,1,2,7,1,3], p = 2`
+
+```
+After sorting: [1, 1, 2, 3, 7, 10]
+Adjacent diffs: [0, 1, 1, 4, 3]
+
+Search space: [0, 9]  (min diff to max diff)
+
+Iteration 1: mid = 4
+  Pairs with diff ≤ 4: (1,1)=0 ✓, skip, (2,3)=1 ✓ → 2 pairs
+  Valid! Try smaller: right = 4
+
+Iteration 2: mid = 2
+  Pairs with diff ≤ 2: (1,1)=0 ✓, skip, (2,3)=1 ✓ → 2 pairs
+  Valid! Try smaller: right = 2
+
+Iteration 3: mid = 1
+  Pairs with diff ≤ 1: (1,1)=0 ✓, skip, (2,3)=1 ✓ → 2 pairs
+  Valid! Try smaller: right = 1
+
+Final: left = 1 (minimum maximum difference)
+```
+
+**Why PQ Approach Fails - Counterexample:**
+
+```
+nums = [1, 3, 4, 6, 7, 20], p = 2
+Sorted diffs: (3,4)=1, (6,7)=1, (1,3)=2, (4,6)=2, (7,20)=13
+
+PQ picks smallest first:
+  1. (3,4)=1 → use 3,4
+  2. (6,7)=1 → use 6,7
+  Result: max = 1 ✓ (happens to be correct here)
+
+But in general, PQ may pick overlapping or suboptimal pairs.
+Binary search guarantees correctness via monotonic property.
+```
+
+---
+
 #### Common Patterns & Tricks
 
-**Pattern 1: Minimize Maximum**
+**Pattern 1: Minimize Maximum** ⭐⭐⭐
 - Goal: Find smallest X where some maximum value ≤ X
 - Update: `if valid: right = mid` (try smaller)
-- Examples: LC 410, 1011, 1482
+- Examples: LC 410, 1011, 1482, **2616**
+- Key: Sort first (if applicable) + greedy validation
 
 **Pattern 2: Maximize Minimum**
 - Goal: Find largest X where some minimum value ≥ X
@@ -822,17 +935,20 @@ return left;  // left == right
 | LC 875 | Medium | Minimize speed | Eating bananas, greedy validation |
 | LC 1011 | Medium | Minimize capacity | Ship packages, similar to LC 410 |
 | LC 1283 | Medium | Minimize divisor | Ceiling division, sum constraint |
-| LC 410 | Hard | Minimize maximum | Split array, subarray sum |
 | LC 1482 | Medium | Minimize days | Make bouquets, range validation |
 | LC 1552 | Medium | Maximize minimum | Magnetic force, aggressive cows |
 | LC 2226 | Medium | Maximize candies | Per-child allocation |
+| **LC 2616** | **Medium** | **Minimize max diff** | **Sort + greedy pairing, skip used** |
+| LC 410 | Hard | Minimize maximum | Split array, subarray sum |
+| LC 2064 | Medium | Minimize max | Distribute products to stores |
 
 **Practice Progression:**
 1. Start with LC 875 (clearest example)
 2. Then LC 1011 (similar to 410 but easier)
 3. Master LC 410 (classic, frequently asked)
-4. Explore LC 1283, 1482 (variations)
-5. Challenge: LC 1552, 2064 (maximize minimum pattern)
+4. Try LC 2616 (minimize max with pairing constraint)
+5. Explore LC 1283, 1482 (variations)
+6. Challenge: LC 1552, 2064 (maximize minimum pattern)
 
 ---
 
@@ -2272,3 +2388,51 @@ public int singleNonDuplicate(int[] nums) {
     return nums[l];
 }
 ```
+
+### 2-13) Minimize the Maximum Difference of Pairs (LC 2616) — Minimize Maximum Pattern
+> Sort array, binary search on max difference, greedy pairing with skip.
+
+```java
+// LC 2616 - Minimize the Maximum Difference of Pairs
+// IDEA: Sort + Binary Search on answer + Greedy pairing
+// time = O(N log N + N log(max-min)), space = O(1)
+
+/**
+ * Key Pattern: "Minimize the Maximum"
+ * 1. Sort array → adjacent elements have minimum differences
+ * 2. Binary search on "maximum difference" answer space
+ * 3. Greedy validation: count pairs with diff <= mid, skip used elements
+ *
+ * Why PQ fails: Matching optimization problem, local greedy ≠ global optimal
+ * Why BS works: Monotonic property - if maxDiff X works, X+1 also works
+ */
+public int minimizeMax(int[] nums, int p) {
+    if (p == 0) return 0;
+
+    Arrays.sort(nums);  // Step 1: Sort
+
+    int left = 0;
+    int right = nums[nums.length - 1] - nums[0];
+
+    while (left < right) {  // Step 2: Binary search
+        int mid = left + (right - left) / 2;
+        if (canFormPairs(nums, p, mid)) {
+            right = mid;      // Valid → try smaller (minimize)
+        } else {
+            left = mid + 1;   // Invalid → need larger diff
+        }
+    }
+    return left;
+}
+
+private boolean canFormPairs(int[] nums, int p, int maxDiff) {
+    int count = 0;
+    for (int i = 0; i < nums.length - 1; i++) {
+        if (nums[i + 1] - nums[i] <= maxDiff) {
+            count++;
+            i++;  // CRITICAL: skip next (each element used once)
+        }
+        if (count >= p) return true;
+    }
+    return count >= p;
+}
