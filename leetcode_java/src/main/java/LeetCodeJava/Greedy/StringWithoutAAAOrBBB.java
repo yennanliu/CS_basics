@@ -1,6 +1,9 @@
 package LeetCodeJava.Greedy;
 
 // https://leetcode.com/problems/string-without-aaa-or-bbb/description/
+
+import java.util.PriorityQueue;
+
 /**
  * 984. String Without AAA or BBB
  * Medium
@@ -110,6 +113,51 @@ public class StringWithoutAAAOrBBB {
         return res.toString();
     }
 
+
+    // V0-3
+    // IDEA: PQ (gemini)
+    public String strWithout3a3b_0_3(int a, int b) {
+        // Max heap: store [char, count], sort by count descending
+        PriorityQueue<int[]> pq = new PriorityQueue<>((x, y) -> y[1] - x[1]);
+
+        if (a > 0)
+            pq.offer(new int[] { 'a', a });
+        if (b > 0)
+            pq.offer(new int[] { 'b', b });
+
+        StringBuilder res = new StringBuilder();
+
+        while (!pq.isEmpty()) {
+            int[] first = pq.poll();
+
+            // Determine how many times to append (max 2)
+            int use = Math.min(2, first[1]);
+            // But if last two chars are same as first[0], only append 1
+            int n = res.length();
+            if (n >= 2 && res.charAt(n - 1) == first[0] && res.charAt(n - 2) == first[0]) {
+                use = 0;
+            }
+
+            if (use == 0) {
+                if (pq.isEmpty())
+                    break; // no other char to use, done
+                int[] second = pq.poll();
+                res.append((char) second[0]);
+                second[1]--;
+                if (second[1] > 0)
+                    pq.offer(second);
+                pq.offer(first); // push first back
+            } else {
+                for (int i = 0; i < use; i++)
+                    res.append((char) first[0]);
+                first[1] -= use;
+                if (first[1] > 0)
+                    pq.offer(first);
+            }
+        }
+
+        return res.toString();
+    }
 
 
     // V1
