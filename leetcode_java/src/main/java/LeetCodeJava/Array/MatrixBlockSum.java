@@ -41,6 +41,119 @@ public class MatrixBlockSum {
 //
 //    }
 
+
+    // V0-1
+    // IDEA:  2D Prefix Sum (gemini)
+    /**
+     *
+     * For **LC 1314 (Matrix Block Sum)**,
+     * the most efficient approach is to
+     * use a **2D Prefix Sum** (also known as a Summed-Area Table).
+     *
+     * Without prefix sums, calculating the sum for every cell would take $O(M \cdot N \cdot K^2)$. With prefix sums, we can calculate each block sum in $O(1)$ time after an $O(M \cdot N)$ preprocessing step.
+     *
+     * ### 🛠️ The 2D Prefix Sum Formula
+     *
+     * For any rectangle defined by $(r1, c1)$ and $(r2, c2)$, the sum is:
+     *
+     *
+     * $$\text{Sum} = P[r2][c2] - P[r1-1][c2] - P[r2][c1-1] + P[r1-1][c1-1]$$
+     *
+     *
+     * *(where $P$ is the prefix sum matrix).*
+     *
+     *
+     * ---
+     *
+     * ### 🔍 Key Implementation Details
+     *
+     * 1. **The `+1` Offset**: We use a `pref` matrix of size `(m+1, n+1)`. This allows `pref[0][j]` and `pref[i][0]` to be zero, acting as a "padding" that prevents `IndexOutOfBounds` exceptions when calculating the top or left edges.
+     * 2. **Clamping**: `Math.max(0, ...)` and `Math.min(m-1, ...)` ensure that even if $K$ is very large, we don't look outside the actual matrix bounds.
+     * 3. **The Subtraction/Addition**: In the formula, we subtract the top and left regions, but that "doubles-subtracts" the top-left corner. We add `pref[r1][c1]` back at the end to correct this.
+     *
+     * ### 📊 Complexity Analysis
+     *
+     * | Metric | Complexity | Explanation |
+     * | --- | --- | --- |
+     * | **Time** | **$O(M \cdot N)$** | One pass to build the prefix sum, one pass to fill the result matrix. |
+     * | **Space** | **$O(M \cdot N)$** | To store the prefix sum matrix. |
+     *
+     *
+     */
+    public int[][] matrixBlockSum_0_1(int[][] mat, int k) {
+        int m = mat.length;
+        int n = mat[0].length;
+
+        // 1. Build the 2D Prefix Sum matrix (size m+1 x n+1 for easier boundary handling)
+        int[][] pref = new int[m + 1][n + 1];
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                pref[i + 1][j + 1] = mat[i][j] + pref[i][j + 1] + pref[i + 1][j] - pref[i][j];
+            }
+        }
+
+        int[][] res = new int[m][n];
+
+        // 2. Calculate sum for each block [i-k, j-k] to [i+k, j+k]
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                // Define boundaries and clamp them to matrix size
+                int r1 = Math.max(0, i - k);
+                int c1 = Math.max(0, j - k);
+                int r2 = Math.min(m - 1, i + k);
+                int c2 = Math.min(n - 1, j + k);
+
+                // Use prefix sum formula (adjusting for 1-based pref matrix)
+                // Area = P[r2+1][c2+1] - P[r1][c2+1] - P[r2+1][c1] + P[r1][c1]
+                res[i][j] = pref[r2 + 1][c2 + 1] - pref[r1][c2 + 1] - pref[r2 + 1][c1] + pref[r1][c1];
+            }
+        }
+
+        return res;
+    }
+
+
+    // V0-2
+    // IDEA: GPT
+    public int[][] matrixBlockSum_0_2(int[][] mat, int k) {
+        int m = mat.length, n = mat[0].length;
+
+        // prefix sum matrix
+        int[][] pre = new int[m + 1][n + 1];
+
+        // build prefix sum
+        for (int i = 1; i <= m; i++) {
+            for (int j = 1; j <= n; j++) {
+                pre[i][j] = mat[i - 1][j - 1]
+                        + pre[i - 1][j]
+                        + pre[i][j - 1]
+                        - pre[i - 1][j - 1];
+            }
+        }
+
+        int[][] res = new int[m][n];
+
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+
+                int r1 = Math.max(0, i - k);
+                int c1 = Math.max(0, j - k);
+                int r2 = Math.min(m - 1, i + k);
+                int c2 = Math.min(n - 1, j + k);
+
+                res[i][j] = pre[r2 + 1][c2 + 1]
+                        - pre[r1][c2 + 1]
+                        - pre[r2 + 1][c1]
+                        + pre[r1][c1];
+            }
+        }
+
+        return res;
+    }
+
+
+
+
     // V1
     // IDEA: DP + PREFIX SUM
     // https://leetcode.com/problems/matrix-block-sum/solutions/838172/java-prefix-sum-by-aksharkashyap-x7sd/
@@ -73,6 +186,7 @@ public class MatrixBlockSum {
         c2++;
         return dp[r2][c2] - dp[r1 - 1][c2] - dp[r2][c1 - 1] + dp[r1 - 1][c1 - 1];
     }
+
 
     // V2
     // https://leetcode.com/problems/matrix-block-sum/solutions/4488101/easy-java-solution-based-on-prefix-sum-b-a1vw/
