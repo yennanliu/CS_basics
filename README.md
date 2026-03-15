@@ -301,7 +301,7 @@ claude
 845 | [Longest Mountain in Array](https://leetcode.com/problems/longest-mountain-in-array/) | [Python](./leetcode_python/Array/longest-mountain-in-array.py) | _O(n)_ | _O(1)_ | Medium |`basic`, `trick`| AGAIN* (not start) 
 849 | [Maximize Distance to Closest Person](https://leetcode.com/problems/maximize-distance-to-closest-person/) | [Python](./leetcode_python/Array/maximize-distance-to-closest-person.py), [Java](./leetcode_java/src/main/java/LeetCodeJava/Array/MaximizeDistanceToClosestPerson.java) | _O(n)_ | _O(1)_ | Medium |`basic`, 2 pointers, LC 855, google| AGAIN********* (2)
 860 | [Lemonade Change](https://leetcode.com/problems/lemonade-change/) | [Python](./leetcode_python/Array/lemonade-change.py) | _O(n)_ | _O(1)_ | Easy |amazon| OK* (2)
-0868 | [Transpose Matrix](https://leetcode.com/problems/transpose-matrix/) | [Python](./leetcode_python/Array/transpose-matrix.py) | _O(r * c)_ | _O(1)_ | Easy |`basic`| OK*
+868 | [Transpose Matrix](https://leetcode.com/problems/transpose-matrix/) | [Python](./leetcode_python/Array/transpose-matrix.py) | _O(r * c)_ | _O(1)_ | Easy |`basic`| OK*
 885 | [Spiral Matrix III](https://leetcode.com/problems/spiral-matrix-iii/) | [Python](./leetcode_python/Array/spiral-matrix-iii.py) | _O(max(m, n)^2)_ | _O(1)_ | Medium  |`basic`| AGAIN* (not start)
 888 | [Fair Candy Swap](https://leetcode.com/problems/fair-candy-swap/) | [Python](./leetcode_python/Array/fair-candy-swap.py) | _O(m + n)_ | _O(m + n)_ | Easy |`basic`, `trick`| OK*
 896 | [Monotonic Array](https://leetcode.com/problems/monotonic-array/) | [Python](./leetcode_python/Array/monotonic-array.py) | _O(n)_ | _O(1)_   | Easy  |`all`,`array` ,`fb`| OK
@@ -336,6 +336,7 @@ claude
 1248 | [Count Number of Nice Subarrays](https://leetcode.com/problems/count-number-of-nice-subarrays/) | [Python](./leetcode_python/Array/count-number-of-nice-subarrays.py) | | | Medium |LC 828, hash map, Prefix sum, dict, windown, good basic, deque, array, `amazon`| AGAIN************** (3) (MUST)
 1275 | [Find Winner on a Tic Tac Toe Game](https://leetcode.com/problems/find-winner-on-a-tic-tac-toe-game/) | [Python](./leetcode_python/Array/find-winner-on-a-tic-tac-toe-game.py) | | | Easy |`amazon`| AGAIN (not start)
 1288 | [Remove Covered Intervals](https://leetcode.com/problems/remove-covered-intervals) | [Java](./leetcode_java/src/main/java/LeetCodeJava/Array/RemoveCoveredIntervals.java) | | | medium |greedy, interval| AGAIN (not start)
+1314 | [Matrix Block Sum](https://leetcode.com/problems/matrix-block-sum) | [Java](./leetcode_java/src/main/java/LeetCodeJava/Array/MatrixBlockSum.java) | | | medium |prefix sum, dp, arrray| AGAIN (not start)
 1431 | [Kids With the Greatest Number of Candies](https://leetcode.com/problems/kids-with-the-greatest-number-of-candies) | [Java](./leetcode_java/src/main/java/LeetCodeJava/Array/KidsWithTheGreatestNumberOfCandies.java) | | | Easy || AGAIN (not start)
 1470 | [Shuffle the Array](https://leetcode.com/problems/shuffle-the-array) | [Java](./leetcode_java/src/main/java/LeetCodeJava/Array/ShuffleTheArray.java)  | | | Easy || AGAIN (not start)
 1564 | [Put Boxes Into the Warehouse I](https://leetcode.com/problems/put-boxes-into-the-warehouse-i/) | [Java](./leetcode_java/src/main/java/LeetCodeJava/Array/PutBoxesIntoTheWarehouseI.java)  | | | Medium |`google`| AGAIN (not start)
