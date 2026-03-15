@@ -75,27 +75,23 @@ public class MinimumNumberOfVisitedCellsInAGrid {
      */
     public int minimumVisitedCells_0_1(int[][] grid) {
 
-        // get size of matrix
-        int m = grid.length;
-        int n = grid[0].length;
-        int[][] dist = new int[m][n];
-        for (int[] row : dist)
-            Arrays.fill(row, -1);
+        int m = grid.length, n = grid[0].length;
+        int[][] dist = new int[m][n]; // Stores the min visited cells to reach (i, j)
+        for (int[] row : dist) Arrays.fill(row, -1); // Initialize with -1 (unreachable)
 
-        // PQs for each row and column to store {distance, index}
+        // We create one Priority Queue for every single row and every single column.
         PriorityQueue<int[]>[] rowPQs = new PriorityQueue[m];
         PriorityQueue<int[]>[] colPQs = new PriorityQueue[n];
 
-        for (int i = 0; i < m; i++){
-            /** NOTE !!!  rowPQs is a PQ */
-            rowPQs[i] = new PriorityQueue<>((a, b) -> a[0] - b[0]);
-        }
-        for (int j = 0; j < n; j++){
-            /** NOTE !!!  rowPQs is a PQ */
-            colPQs[j] = new PriorityQueue<>((a, b) -> a[0] - b[0]);
-        }
+        // Each PQ stores {distance_to_reach_cell, index_of_cell}
+        // They are Min-Heaps based on distance: (a, b) -> a[0] - b[0]
+        /** NOTE !!!  rowPQs is a PQ */
+        for (int i = 0; i < m; i++) rowPQs[i] = new PriorityQueue<>((a, b) -> a[0] - b[0]);
+        /** NOTE !!!  rowPQs is a PQ */
+        for (int j = 0; j < n; j++) colPQs[j] = new PriorityQueue<>((a, b) -> a[0] - b[0]);
 
-        dist[0][0] = 1;
+        dist[0][0] = 1; // Base case: Starting cell counts as 1 visited cell.
+
 
         /** NOTE !!!
          *
@@ -104,47 +100,67 @@ public class MinimumNumberOfVisitedCellsInAGrid {
         for (int i = 0; i < m; i++) {
             for (int j = 0; j < n; j++) {
 
-                /** NOTE !!! while loop */
-                // 1. Update distance from previous cells in the same ROW
+                /** NOTE !!!
+                 *
+                 *  1 . while loop -> Checking the Row
+                 *
+                 */
                 while (!rowPQs[i].isEmpty()) {
-                    int[] top = rowPQs[i].peek();
-                    int prevJ = top[1];
-                    // If the previous cell can reach (i, j)
+                    int[] top = rowPQs[i].peek(); // Get the cell in this row with the smallest distance
+                    int prevJ = top[1];           // The column index of that previous cell
+
+                    // Can the previous cell jump far enough to reach the current column j?
+                    // Formula: previous_column + jump_value >= current_column
                     if (prevJ + grid[i][prevJ] >= j) {
-                        int d = top[0] + 1;
-                        if (dist[i][j] == -1 || d < dist[i][j])
-                            dist[i][j] = d;
-                        break; // PQ is sorted by distance, so we found the best
+                        int d = top[0] + 1; // If yes, current distance = prev_distance + 1
+                        if (dist[i][j] == -1 || d < dist[i][j]) dist[i][j] = d;
+                        break; // Because PQ is sorted by distance, the first match is the best match.
                     }
-                    rowPQs[i].poll(); // Cannot reach, useless for future cells in this row
+                    // If the top cell can't reach 'j', it will NEVER reach any column after 'j' either.
+                    rowPQs[i].poll(); // Remove it to save time in the future.
                 }
 
-                /** NOTE !!! while loop */
-                // 2. Update distance from previous cells in the same COLUMN
+
+                /** NOTE !!!
+                 *
+                 *  2. while loop -> Checking the col
+                 *
+                 */
                 while (!colPQs[j].isEmpty()) {
-                    int[] top = colPQs[j].peek();
-                    int prevI = top[1];
-                    // If the previous cell can reach (i, j)
+                    int[] top = colPQs[j].peek(); // Get the cell in this column with the smallest distance
+                    int prevI = top[1];           // The row index of that previous cell
+
+                    // Can the previous cell jump far enough down to reach the current row i?
+                    // Formula: previous_row + jump_value >= current_row
                     if (prevI + grid[prevI][j] >= i) {
                         int d = top[0] + 1;
-                        if (dist[i][j] == -1 || d < dist[i][j])
-                            dist[i][j] = d;
+                        if (dist[i][j] == -1 || d < dist[i][j]) dist[i][j] = d;
                         break;
                     }
-                    colPQs[j].poll(); // Cannot reach, useless for future cells in this column
+                    // If it can't reach row 'i', it's useless for all rows below 'i'.
+                    colPQs[j].poll();
                 }
 
-                // 3. If current cell is `reachable`, ADD is to PQ !!! for future use
+
+                /**
+                 * 3. Updating the PQs for Future Cells
+                 * Once we have calculated the dist[i][j] for the current cell,
+                 * we need to make it available for future cells to jump from.
+                 *
+                 */
+                // Only add to PQs if the current cell is reachable and has a jump value > 0
                 if (dist[i][j] != -1 && grid[i][j] > 0) {
-                    rowPQs[i].offer(new int[] { dist[i][j], j });
-                    colPQs[j].offer(new int[] { dist[i][j], i });
+                    rowPQs[i].offer(new int[]{dist[i][j], j}); // Add to current row's options
+                    colPQs[j].offer(new int[]{dist[i][j], i}); // Add to current column's options
                 }
+
+
             }
 
         }
 
         /** NOTE !!! what we return as a result */
-        return dist[m - 1][n - 1];
+        return dist[m - 1][n - 1]; // Will be -1 if the bottom-right is never reached.
     }
 
 
