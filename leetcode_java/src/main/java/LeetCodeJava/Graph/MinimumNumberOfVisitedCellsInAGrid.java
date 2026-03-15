@@ -59,6 +59,133 @@ public class MinimumNumberOfVisitedCellsInAGrid {
 //
 //    }
 
+
+    // V0-1
+    // IDEA: PQ (gemini)
+    public int minimumVisitedCells_0_1(int[][] grid) {
+        int m = grid.length, n = grid[0].length;
+        int[][] dist = new int[m][n];
+        for (int[] row : dist)
+            Arrays.fill(row, -1);
+
+        // PQs for each row and column to store {distance, index}
+        PriorityQueue<int[]>[] rowPQs = new PriorityQueue[m];
+        PriorityQueue<int[]>[] colPQs = new PriorityQueue[n];
+
+        for (int i = 0; i < m; i++)
+            rowPQs[i] = new PriorityQueue<>((a, b) -> a[0] - b[0]);
+        for (int j = 0; j < n; j++)
+            colPQs[j] = new PriorityQueue<>((a, b) -> a[0] - b[0]);
+
+        dist[0][0] = 1;
+
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                // 1. Update distance from previous cells in the same ROW
+                while (!rowPQs[i].isEmpty()) {
+                    int[] top = rowPQs[i].peek();
+                    int prevJ = top[1];
+                    // If the previous cell can reach (i, j)
+                    if (prevJ + grid[i][prevJ] >= j) {
+                        int d = top[0] + 1;
+                        if (dist[i][j] == -1 || d < dist[i][j])
+                            dist[i][j] = d;
+                        break; // PQ is sorted by distance, so we found the best
+                    }
+                    rowPQs[i].poll(); // Cannot reach, useless for future cells in this row
+                }
+
+                // 2. Update distance from previous cells in the same COLUMN
+                while (!colPQs[j].isEmpty()) {
+                    int[] top = colPQs[j].peek();
+                    int prevI = top[1];
+                    // If the previous cell can reach (i, j)
+                    if (prevI + grid[prevI][j] >= i) {
+                        int d = top[0] + 1;
+                        if (dist[i][j] == -1 || d < dist[i][j])
+                            dist[i][j] = d;
+                        break;
+                    }
+                    colPQs[j].poll(); // Cannot reach, useless for future cells in this column
+                }
+
+                // 3. If current cell is reachable, add it to PQs for future use
+                if (dist[i][j] != -1 && grid[i][j] > 0) {
+                    rowPQs[i].offer(new int[] { dist[i][j], j });
+                    colPQs[j].offer(new int[] { dist[i][j], i });
+                }
+            }
+        }
+
+        return dist[m - 1][n - 1];
+    }
+
+
+    // V0-2
+    // IDEA: PQ (gpt)
+    public int minimumVisitedCells_0_2(int[][] grid) {
+        int m = grid.length, n = grid[0].length;
+        int INF = Integer.MAX_VALUE / 2;
+
+        int[][] dist = new int[m][n];
+        for (int[] row : dist)
+            Arrays.fill(row, INF);
+
+        PriorityQueue<int[]>[] rowPQ = new PriorityQueue[m];
+        PriorityQueue<int[]>[] colPQ = new PriorityQueue[n];
+
+        for (int i = 0; i < m; i++)
+            rowPQ[i] = new PriorityQueue<>((a, b) -> a[0] - b[0]);
+
+        for (int j = 0; j < n; j++)
+            colPQ[j] = new PriorityQueue<>((a, b) -> a[0] - b[0]);
+
+        dist[0][0] = 1;
+        rowPQ[0].offer(new int[] { 1, 0 });
+        colPQ[0].offer(new int[] { 1, 0 });
+
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+
+                if (i == 0 && j == 0)
+                    continue;
+
+                // check row
+                while (!rowPQ[i].isEmpty()) {
+                    int[] top = rowPQ[i].peek();
+                    int prevCol = top[1];
+                    if (prevCol + grid[i][prevCol] < j)
+                        rowPQ[i].poll();
+                    else {
+                        dist[i][j] = Math.min(dist[i][j], top[0] + 1);
+                        break;
+                    }
+                }
+
+                // check column
+                while (!colPQ[j].isEmpty()) {
+                    int[] top = colPQ[j].peek();
+                    int prevRow = top[1];
+                    if (prevRow + grid[prevRow][j] < i)
+                        colPQ[j].poll();
+                    else {
+                        dist[i][j] = Math.min(dist[i][j], top[0] + 1);
+                        break;
+                    }
+                }
+
+                if (dist[i][j] != INF) {
+                    rowPQ[i].offer(new int[] { dist[i][j], j });
+                    colPQ[j].offer(new int[] { dist[i][j], i });
+                }
+            }
+        }
+
+        return dist[m - 1][n - 1] == INF ? -1 : dist[m - 1][n - 1];
+    }
+
+
+
     // V1
 
     // V2
