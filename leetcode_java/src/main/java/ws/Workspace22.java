@@ -1859,6 +1859,78 @@ public class Workspace22 {
     }
 
 
+    // LC 14
+    // 11.19 - 29 am
+    /**
+     * IDEA 1) trie
+     *
+     * IDEA 2) prefix + string op
+     *
+     *
+     */
+    // IDEA 2) sort ??? + prefix + string op
+    public String longestCommonPrefix(String[] strs) {
+        // edge
+        if (strs == null || strs.length == 0) {
+            return "";
+        }
+        if (strs.length == 1) {
+            return strs[0];
+        }
+
+        //List<String>
+        // sort: len (small -> big) // ???
+        Arrays.sort(strs, new Comparator<String>() {
+            @Override
+            public int compare(String o1, String o2) {
+                int diff = o1.length() - o2.length();
+                return diff;
+            }
+        });
+
+        String res = "";
+        //String prefix = strs[0]; // ??
+        List<String> candidates = new ArrayList<>();
+        StringBuilder prefix = new StringBuilder();
+        for(String x: strs[0].split("")){
+            prefix.append(x);
+            candidates.add(prefix.toString());
+            //prefix.append(x);
+        }
+
+
+        // sort
+        Collections.sort(candidates, new Comparator<String>() {
+            @Override
+            public int compare(String o1, String o2) {
+                int diff = o2.length() - o1.length();
+                return diff;
+            }
+        });
+
+        System.out.println(">>> candidates = " + candidates);
+
+        for(String word: candidates){
+            boolean shouldSkip = false;
+            for(int i = 1; i < strs.length; i++){
+                String cur = strs[i];
+                if(!cur.startsWith(word)){
+                    shouldSkip = true;
+                    break; // ???
+                }
+            }
+            if(!shouldSkip && word.length() > res.length()){
+                res = word;
+            }
+        }
+
+
+        return res;
+    }
+
+
+
+
 
 
 

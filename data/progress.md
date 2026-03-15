@@ -1,6 +1,6 @@
 # Progress
 
-# 2026-03-14
+# 2026-03-15
 
 - weekly video
 - cheatsheet (LC examples)
@@ -14,7 +14,7 @@
 	- matrix.md (OK)
 	- 2_pointers.md (OK)
 	- backtrack.md (OK)
-	- bfs.md (todo)
+	- bfs.md (todo, LC examples)
 - to review
 - needcode `250` - similar LC by AI
     - Arrays & Hashing
@@ -184,7 +184,6 @@
 			- 106
 	- LC 767
 		- gpt
-			- 984
 			- 358
 			- 1647
 			- 2182
