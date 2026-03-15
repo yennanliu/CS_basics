@@ -49,9 +49,12 @@
 - **Pattern**: Track maximum reachable position
 
 ### **Category 6: String Reorganization**
-- **Description**: Rearrange strings with constraints
-- **Examples**: LC 767 (Reorganize String), LC 358 (Rearrange K Distance)
-- **Pattern**: Use heap to select most frequent available
+- **Description**: Rearrange strings/characters with consecutive or distance constraints
+- **Examples**: LC 767 (Reorganize String), LC 984 (No AAA/BBB), LC 358 (K Distance), LC 1405 (Happy String)
+- **Pattern**:
+  - **Heap approach**: Always pick most frequent available character
+  - **Counter tracking**: Track consecutive count, force switch when limit reached
+- **Key Insight**: Greedy works because using the most frequent character first prevents getting stuck later
 
 ## Templates & Algorithms
 
@@ -280,6 +283,7 @@ def fractional_knapsack(items, capacity):
 | Problem | LC # | Key Technique | Difficulty |
 |---------|------|---------------|------------|
 | Reorganize String | 767 | Max heap | Medium |
+| String Without AAA or BBB | 984 | Greedy + counter tracking | Medium |
 | Rearrange K Distance Apart | 358 | Heap + queue | Hard |
 | Task Scheduler | 621 | Frequency | Medium |
 | Longest Happy String | 1405 | Heap greedy | Medium |
@@ -430,6 +434,88 @@ class Solution(object):
                 break
         return ans[1:] if len(ans[1:]) == len(S) else ''
 ```
+
+### 2-6') String Without AAA or BBB
+```java
+// LC 984. String Without AAA or BBB
+// Pattern: String Reorganization with consecutive constraint
+
+/**
+ * IDEA: Greedy with Counter Tracking
+ *
+ * Key Insight:
+ * - Track consecutive count of each character
+ * - MUST switch if consecutive count reaches 2
+ * - Otherwise, greedily pick the character with higher remaining count
+ *
+ * Decision Logic:
+ * 1. If continueB == 2 → MUST write 'a' (avoid "bbb")
+ * 2. If continueA == 2 → MUST write 'b' (avoid "aaa")
+ * 3. Otherwise → write the one with higher remaining count
+ */
+
+// V0: Greedy with consecutive tracking
+public String strWithout3a3b(int a, int b) {
+    StringBuilder res = new StringBuilder();
+    int continueA = 0;
+    int continueB = 0;
+
+    while (a > 0 || b > 0) {
+        boolean writeA = false;
+
+        // Priority 1: Must switch if 2 consecutive
+        if (continueB == 2) {
+            writeA = true;
+        } else if (continueA == 2) {
+            writeA = false;
+        } else {
+            // Priority 2: Greedy - write the one with more remaining
+            writeA = a >= b;
+        }
+
+        if (writeA) {
+            res.append("a");
+            a--;
+            continueA++;
+            continueB = 0; // Reset other counter
+        } else {
+            res.append("b");
+            b--;
+            continueB++;
+            continueA = 0; // Reset other counter
+        }
+    }
+    return res.toString();
+}
+
+// V1: Using last 2 characters check (Editorial)
+public String strWithout3a3b_v1(int A, int B) {
+    StringBuilder ans = new StringBuilder();
+    while (A > 0 || B > 0) {
+        boolean writeA = false;
+        int L = ans.length();
+        // Check last 2 chars
+        if (L >= 2 && ans.charAt(L-1) == ans.charAt(L-2)) {
+            if (ans.charAt(L-1) == 'b') writeA = true;
+        } else {
+            if (A >= B) writeA = true;
+        }
+
+        if (writeA) { A--; ans.append('a'); }
+        else { B--; ans.append('b'); }
+    }
+    return ans.toString();
+}
+
+// V2: PQ approach (similar to Reorganize String)
+// Max heap: always pick char with highest remaining count
+// If blocked by consecutive constraint, pick second highest
+```
+
+**Similar Problems:**
+- LC 767: Reorganize String (no 2 adjacent same)
+- LC 1405: Longest Happy String (max a, b, c with no 3 consecutive)
+- LC 358: Rearrange String K Distance Apart (k distance constraint)
 
 ### 2-7) Task Scheduler
 ```python
