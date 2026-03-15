@@ -1931,11 +1931,80 @@ public class Workspace22 {
 
 
     // LC 984
+    // 12.01 - 11 pm
+    /**
+     *
+     *  -> Given two integers a and b,
+     *  return any string s
+     *    - such that:
+     *
+     *
+     *  --------------
+     *
+     *  IDEA 1) GREEDY
+     *
+     *  IDEA 2) BRUTE FORCE ???
+     *
+     *  IDEA 3) 2 POINTERS ??
+     *
+     *  --------------
+     *
+     */
     public String strWithout3a3b(int a, int b) {
+        // edge
+        if(a < 3 && b < 3){
+            String res = multipleStr2("a", a) + multipleStr2("b", b);
+            System.out.println(">>> res = " + res);
+           return res;
+        }
 
-        return null;
+        int continueA = 0;
+        int continueB = 0;
+
+        String res = "";
+
+        while(a > 0 || b > 0){
+            while(a > 0 && continueA <= 1){
+                // ??
+//                if(continueA <= 1){
+//                    res += "a";
+//                    continueA += 1;
+//                    a -= 1;
+//                }
+                res += "a";
+                continueA += 1;
+                a -= 1;
+                // reset
+                continueB = 0;
+            }
+            // ???
+            while(b > 0 && continueB <= 1) {
+//                if(continueB <= 1){
+//                    res += "b";
+//                    continueB += 1;
+//                    b -= 1;
+//                }
+                res += "b";
+                continueB += 1;
+                b -= 1;
+                // reset
+                continueA = 0;
+            }
+
+        }
+
+        return res;
     }
 
+
+
+    private String multipleStr2(String x, int times){
+        String res = "";
+        for(int i = 0; i < times; i++){
+            res += x;
+        }
+        return res;
+    }
 
 
 
