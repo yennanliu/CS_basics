@@ -62,6 +62,17 @@ public class MinimumNumberOfVisitedCellsInAGrid {
 
     // V0-1
     // IDEA: PQ (gemini)
+    /**
+     *
+     * Time: O(M⋅N⋅log(M+N))
+     *    - Each cell is added to and removed from a
+     *      row and column PQ exactly once.
+     *
+     * Space: O(M⋅N)
+     *   - To store the dist grid and
+     *     the elements within the PQs.
+     *
+     */
     public int minimumVisitedCells_0_1(int[][] grid) {
 
         // get size of matrix
@@ -139,6 +150,129 @@ public class MinimumNumberOfVisitedCellsInAGrid {
 
     // V0-2
     // IDEA: PQ (gpt)
+    /**
+     * Time  : O(m*n * log(m*n))
+     * Space : O(m*n)
+     */
+    /**
+     * For **LC 2617 – Minimum Number of Visited Cells in a Grid**, the standard optimal solution uses **DP + Priority Queues (min-heaps)**.
+     *
+     * Key idea: treat each cell as a **graph node** and compute the **shortest path (minimum visited cells)** from `(0,0)` to `(m-1,n-1)`. From `(i,j)` you can jump **right or down within a range determined by `grid[i][j]`**. ([AlgoMonster][1])
+     *
+     * Because scanning every reachable cell would be too slow, we maintain **heaps per row and per column** to quickly find the best previous reachable cell. ([AlgoMonster][1])
+     *
+     * ---
+     *
+     * # Core Idea
+     *
+     * Define:
+     *
+     * ```
+     * dist[i][j] = minimum cells visited to reach (i,j)
+     * ```
+     *
+     * Initialize:
+     *
+     * ```
+     * dist[0][0] = 1
+     * ```
+     *
+     * Maintain:
+     *
+     * ```
+     * row[i] → minHeap of (dist, column)
+     * col[j] → minHeap of (dist, row)
+     * ```
+     *
+     * While processing `(i,j)`:
+     *
+     * ### 1️⃣ Check reachable cells from the same row
+     *
+     * Remove heap entries that **cannot reach column `j` anymore**.
+     *
+     * ```
+     * while grid[i][prevCol] + prevCol < j
+     * ```
+     *
+     * If the top remains, update:
+     *
+     * ```
+     * dist[i][j] = dist[i][prevCol] + 1
+     * ```
+     *
+     * ---
+     *
+     * ### 2️⃣ Check reachable cells from the same column
+     *
+     * Similarly remove expired entries:
+     *
+     * ```
+     * while grid[prevRow][j] + prevRow < i
+     * ```
+     *
+     * Then update distance.
+     *
+     * ---
+     *
+     * ### 3️⃣ Push `(i,j)` into row and column heaps if reachable.
+     *
+     *
+     * ---
+     *
+     * # Complexity
+     *
+     * ```
+     * Time  : O(m*n * log(m*n))
+     * Space : O(m*n)
+     * ```
+     *
+     * Reason:
+     *
+     * * Each cell enters row/column heaps once.
+     * * Heap operations are `log(n)`.
+     *
+     * ---
+     *
+     * # Intuition (Important)
+     *
+     * The trick is **lazy deletion of expired cells**.
+     *
+     * Example:
+     *
+     * ```
+     * (i, prevCol) can reach up to prevCol + grid[i][prevCol]
+     * ```
+     *
+     * If:
+     *
+     * ```
+     * prevCol + grid[i][prevCol] < j
+     * ```
+     *
+     * then that cell can **never reach future columns**, so we remove it from the heap.
+     *
+     * This keeps heaps small and avoids scanning ranges.
+     *
+     * ---
+     *
+     * ✅ **Interview insight**
+     *
+     * This problem combines:
+     *
+     * ```
+     * Grid shortest path
+     * + DP
+     * + Priority Queue pruning
+     * ```
+     *
+     * Common similar patterns appear in:
+     *
+     * * **LC 778 – Swim in Rising Water**
+     * * **LC 1631 – Path With Minimum Effort**
+     *
+     * Both also use **min-heap shortest path on grid states**.
+     *
+     */
     public int minimumVisitedCells_0_2(int[][] grid) {
         int m = grid.length, n = grid[0].length;
         int INF = Integer.MAX_VALUE / 2;
