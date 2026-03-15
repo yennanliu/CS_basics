@@ -46,6 +46,85 @@ public class MinimizeTheMaximumDifferenceOfPairs {
 //
 //    }
 
+
+    // V0-1
+    // IDEA: Greedy + Binary Search (GEMINI)
+    public int minimizeMax_0_1(int[] nums, int p) {
+        if (p == 0)
+            return 0;
+        Arrays.sort(nums);
+
+        int n = nums.length;
+        // The range of possible answers is [0, max_difference]
+        int low = 0, high = nums[n - 1] - nums[0];
+        int res = high;
+
+        while (low <= high) {
+            int mid = low + (high - low) / 2;
+
+            // If we can find at least p pairs with diff <= mid,
+            // try a smaller max difference.
+            if (canFormPairs(nums, p, mid)) {
+                res = mid;
+                high = mid - 1;
+            } else {
+                low = mid + 1;
+            }
+        }
+        return res;
+    }
+
+    private boolean canFormPairs(int[] nums, int p, int maxDiff) {
+        int count = 0;
+        for (int i = 0; i < nums.length - 1; i++) {
+            // If the current pair fits the constraint, take it!
+            if (nums[i + 1] - nums[i] <= maxDiff) {
+                count++;
+                i++; // Skip the next index because an element can only be in one pair
+            }
+            if (count >= p)
+                return true;
+        }
+        return count >= p;
+    }
+
+
+    // V0-2
+    // IDEA: Greedy + Binary Search (GPT)
+    public int minimizeMax_0_2(int[] nums, int p) {
+
+        Arrays.sort(nums);
+
+        int left = 0;
+        int right = nums[nums.length - 1] - nums[0];
+
+        while (left < right) {
+            int mid = left + (right - left) / 2;
+
+            if (canForm(nums, p, mid)) {
+                right = mid;
+            } else {
+                left = mid + 1;
+            }
+        }
+
+        return left;
+    }
+
+    private boolean canForm(int[] nums, int p, int maxDiff) {
+        int count = 0;
+
+        for (int i = 1; i < nums.length; i++) {
+            if (nums[i] - nums[i - 1] <= maxDiff) {
+                count++;
+                i++; // skip next index (avoid reuse)
+            }
+        }
+
+        return count >= p;
+    }
+
+
     // V1
     // IDEA: Greedy + Binary Search
     // https://leetcode.com/problems/minimize-the-maximum-difference-of-pairs/editorial/
