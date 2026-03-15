@@ -333,18 +333,41 @@ public class MinimizeTheMaximumDifferenceOfPairs {
     // V0-1
     // IDEA: Greedy + Binary Search (GEMINI)
     public int minimizeMax_0_1(int[] nums, int p) {
-        if (p == 0)
+        // edge
+        if (p == 0){
             return 0;
+        }
+
+        /** NOTE !!!
+         *
+         *  we sort array first
+         */
         Arrays.sort(nums);
 
         int n = nums.length;
-        // The range of possible answers is [0, max_difference]
-        int low = 0, high = nums[n - 1] - nums[0];
+        /**  NOTE !!!
+         *
+         * The range of possible answers is [0, max_difference]
+         *
+         */
+        int low = 0;
+        int high = nums[n - 1] - nums[0]; // NOTE !!! this
+
         int res = high;
 
+        /** NOTE !!!
+         *
+         *  binary search ( <= )
+         */
         while (low <= high) {
             int mid = low + (high - low) / 2;
 
+            /** NOTE !!!
+             *
+             *  if can find `least p pairs` with diff <= mid,
+             *
+             *  -> we try a `smaller max diff`
+             */
             // If we can find at least p pairs with diff <= mid,
             // try a smaller max difference.
             if (canFormPairs(nums, p, mid)) {
@@ -363,7 +386,12 @@ public class MinimizeTheMaximumDifferenceOfPairs {
             // If the current pair fits the constraint, take it!
             if (nums[i + 1] - nums[i] <= maxDiff) {
                 count++;
-                i++; // Skip the next index because an element can only be in one pair
+                /** NOTE !!!
+                 *
+                 * `Skip the next index`
+                 *   -> because an element can only be in one pair
+                 */
+                i++;
             }
             if (count >= p)
                 return true;
