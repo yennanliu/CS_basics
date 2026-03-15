@@ -2,8 +2,7 @@ package LeetCodeJava.String;
 
 // https://leetcode.com/problems/longest-common-prefix/description/
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * 14. Longest Common Prefix
@@ -129,6 +128,100 @@ public class LongestCommonPrefix {
         }
 
         return "";
+    }
+
+
+    // V0-0-0-2
+    // IDEA 2) sorting + prefix + string op (fixed by gemini)
+    public String longestCommonPrefix_0_0_0_2(String[] strs) {
+        // edge
+        if (strs == null || strs.length == 0) {
+            return "";
+        }
+        if (strs.length == 1) {
+            return strs[0];
+        }
+
+        //List<String>
+        // sort: len (small -> big) // ???
+        Arrays.sort(strs, new Comparator<String>() {
+            @Override
+            public int compare(String o1, String o2) {
+                int diff = o1.length() - o2.length();
+                return diff;
+            }
+        });
+
+        String res = "";
+        List<String> candidates = new ArrayList<>();
+        StringBuilder prefix = new StringBuilder();
+        for (String x : strs[0].split("")) {
+            /** NOTE !!!
+             *
+             *  we need to add x to prefix first,
+             *  or we will MISS the `last prefix` in `candidates.add` in `last loop`
+             *
+             *  e.g.
+             *
+             *             ```
+             *             prefix.append(x);
+             *             candidates.add(prefix.toString());
+             *             ```
+             *
+             *
+             *          VS
+             *
+             *             ```
+             *             candidates.add(prefix.toString());
+             *             prefix.append(x);
+             *             ```
+             */
+            prefix.append(x);
+            candidates.add(prefix.toString());
+        }
+
+        // sort
+        Collections.sort(candidates, new Comparator<String>() {
+            @Override
+            public int compare(String o1, String o2) {
+                int diff = o2.length() - o1.length();
+                return diff;
+            }
+        });
+
+        //System.out.println(">>> candidates = " + candidates);
+
+        for (String word : candidates) {
+            boolean shouldSkip = false;
+            for (int i = 1; i < strs.length; i++) {
+                String cur = strs[i];
+                if (!cur.startsWith(word)) {
+                    /** NOTE !!!
+                     *
+                     *  we need this `shouldSkip` flag,
+                     *  or we DON'T know whether cur prefix is
+                     *  valid to be considered as result
+                     *  within below logic:
+                     *
+                     *  (since we will visit below logic anyway (even `break`)
+                     *
+                     *   ```
+                     *       if (!shouldSkip && word.length() > res.length()) {
+                     *                 res = word;
+                     *             }
+                     *   ```
+                     *
+                     */
+                    shouldSkip = true;
+                    break; // ???
+                }
+            }
+            if (!shouldSkip && word.length() > res.length()) {
+                res = word;
+            }
+        }
+
+        return res;
     }
 
 
@@ -439,6 +532,7 @@ public class LongestCommonPrefix {
 
 
     // V2
+
 
 
 

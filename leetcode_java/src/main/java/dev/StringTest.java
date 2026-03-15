@@ -19,13 +19,19 @@ public class StringTest {
     //        val = "0" + val;
     //        System.out.println(val); // 0123
 
-    String a = "abcd";
-    String b = "defg";
+//    String a = "abcd";
+//    String b = "defg";
 
     // sort on lexicographical
 
-    System.out.println(a.compareTo(b));
+//    System.out.println(a.compareTo(b));
+
+        String prefix = "flo";
+        String word = "flack";
+        System.out.println(">>> " + word.startsWith(prefix)); // false ???
+
     }
+
 
 
 }
