@@ -39,10 +39,38 @@ import java.util.PriorityQueue;
 public class StringWithoutAAAOrBBB {
 
     // V0
-//    public String strWithout3a3b(int a, int b) {
-//
-//    }
+    // IDEA: GREEDY + FLAG + STRING BUILDER (gemini)
+    public String strWithout3a3b(int a, int b) {
+        StringBuilder sb = new StringBuilder();
 
+        while (a > 0 || b > 0) {
+            boolean writeA = false;
+            int n = sb.length();
+
+            // Rule 1: If we have 'bb' at the end, we MUST write 'a'
+            if (n >= 2 && sb.charAt(n - 1) == 'b' && sb.charAt(n - 2) == 'b') {
+                writeA = true;
+            }
+            // Rule 2: If we have 'aa' at the end, we MUST write 'b' (so writeA = false)
+            else if (n >= 2 && sb.charAt(n - 1) == 'a' && sb.charAt(n - 2) == 'a') {
+                writeA = false;
+            }
+            // Rule 3: Otherwise, just write the one that has more left
+            else {
+                writeA = a >= b;
+            }
+
+            if (writeA) {
+                sb.append('a');
+                a--;
+            } else {
+                sb.append('b');
+                b--;
+            }
+        }
+
+        return sb.toString();
+    }
     // V0-1
     // IDEA: GREEDY (gemini)
     public String strWithout3a3b_0_1(int a, int b) {
