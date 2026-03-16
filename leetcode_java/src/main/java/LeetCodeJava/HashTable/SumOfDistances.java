@@ -52,7 +52,17 @@ public class SumOfDistances {
 //    }
 
     // V0-1
-    // IDEA: 2 pass - 2 HASHMAP + MATH (gpt)
+    // IDEA: LEFT, RIGHT PASS + SUM, CNT HASHMAP (gpt)
+    /**  NOTE !!!
+     *
+     *  - LEFT PASS =  i * cnt - sum(indices)
+     *     - (i - j1) + (i - j2) + ...
+     *
+     *  - RIGHT PASS =  sum(indices) - i * cnt
+     *      - (j1 - i) + (j2 - i) + ...
+     *
+     *
+     */
     /**
      *  IDEA:
      *
@@ -158,13 +168,35 @@ public class SumOfDistances {
      *
      */
     public long[] distance_0_1(int[] nums) {
+
         int n = nums.length;
         long[] res = new long[n];
 
+        /**  NOTE !!!
+         *
+         *  1. we define count, sum hashmap
+         *
+         *  2. use them in left, right pass
+         *
+         *  3. RESET both of them as `1 pass`
+         *
+         */
+        // { val : val_count }
         Map<Integer, Long> count = new HashMap<>();
+
+        // { val : sum_over_idx }
         Map<Integer, Long> sum = new HashMap<>();
 
         // PASS 1: left -> right
+        /**
+         *  NOTE !!!
+         *
+         *  ### Left pass
+         *
+         *    -  (i - j1) + (i - j2) + ...
+         *    - count * i - sum(indices)
+         *
+         */
         for (int i = 0; i < n; i++) {
             int val = nums[i];
 
@@ -181,6 +213,15 @@ public class SumOfDistances {
         sum.clear();
 
         // PASS 2: right -> left
+        /**
+         *  NOTE !!!
+         *
+         *  ### Right pass
+         *
+         *    -  (j1 - i) + (j2 - i) + ...
+         *    -  sum(indices) - count * i
+         *
+         */
         for (int i = n - 1; i >= 0; i--) {
             int val = nums[i];
 
