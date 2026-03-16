@@ -42,49 +42,25 @@ package LeetCodeJava.DynamicProgramming;
  */
 public class RangeSumQueryImmutable {
 
-    // V0
-    // IDEA: PREFIX SUM
-    class NumArray {
+    /**  NOTE !!!
+     *
+     *  1. prefix array size = n + 1
+     *
+     *  2. sum[l,r] = prefix[r+1] - prefix[l]
+     *
+     */
 
-        // attr
-        int[] nums;
+    // V-0
+    // IDEA: PREFIX SUM
+    class NumArray{
         int[] prefix;
-        int n;
 
         public NumArray(int[] nums) {
-            this.nums = nums;
-            this.n = this.nums.length;
-            this.prefix = new int[this.n];
-            // ??
-            int prefixSum = 0;
-            for (int i = 0; i < n; i++) {
-                prefixSum += this.nums[i];
-                this.prefix[i] = prefixSum;
-            }
-        }
-
-        public int sumRange(int left, int right) {
-            if (left > right) {
-                return -1;
-            }
-            if (left == right) {
-                return this.nums[right];
-            }
-            if (left == 0) {
-                return this.prefix[right];
-            }
-
-            return this.prefix[right] - this.prefix[left - 1];
-        }
-    }
-
-    // V-0-0-1
-    // IDEA: PREFIX SUM
-    class NumArray_0_0_1 {
-        int[] prefix;
-
-        public NumArray_0_0_1(int[] nums) {
             int n = nums.length;
+            /** NOTE !!!
+             *
+             *  new int[n + 1];
+             */
             this.prefix = new int[n + 1];
             // init prefix arr
             int cumSum = 0;
@@ -98,6 +74,11 @@ public class RangeSumQueryImmutable {
             if (left > right) {
                 return -1; // ??
             }
+
+            /** NOTE !!!
+             *
+             *  this.prefix[right + 1] - this.prefix[left]; !!!!
+             */
             return this.prefix[right + 1] - this.prefix[left];
         }
 
@@ -238,6 +219,43 @@ public class RangeSumQueryImmutable {
             // The sum of range [left, right] is the sum of first (right + 1) elements
             // minus the sum of the first (left) elements.
             return dp[right + 1] - dp[left];
+        }
+    }
+
+
+    // V0-4
+    // IDEA: PREFIX SUM
+    class NumArray_0_4 {
+
+        // attr
+        int[] nums;
+        int[] prefix;
+        int n;
+
+        public NumArray_0_4(int[] nums) {
+            this.nums = nums;
+            this.n = this.nums.length;
+            this.prefix = new int[this.n];
+            // ??
+            int prefixSum = 0;
+            for (int i = 0; i < n; i++) {
+                prefixSum += this.nums[i];
+                this.prefix[i] = prefixSum;
+            }
+        }
+
+        public int sumRange(int left, int right) {
+            if (left > right) {
+                return -1;
+            }
+            if (left == right) {
+                return this.nums[right];
+            }
+            if (left == 0) {
+                return this.prefix[right];
+            }
+
+            return this.prefix[right] - this.prefix[left - 1];
         }
     }
 
