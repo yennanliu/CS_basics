@@ -56,11 +56,20 @@ public class MinimizeTheMaximumDifferenceOfPairs {
         int n = nums.length;
         // The 'answer' (max difference) must be between 0 and the max spread of the array
         int l = 0;
+        /** NOTE !!!
+         *
+         * // r is the `biggest` diff (spread) of the array
+         */
         int r = nums[n - 1] - nums[0];
 
         int res = r;
 
+        /** NOTE !!!
+         *
+         * binary search
+         */
         while (l <= r) {
+
             int mid = l + (r - l) / 2;
 
             // If we can find at least p pairs with difference <= mid
@@ -75,14 +84,29 @@ public class MinimizeTheMaximumDifferenceOfPairs {
         return res;
     }
 
+
     private boolean canFormPairs_0_0_1(int[] nums, int p, int maxDiff) {
         int count = 0;
+        /** NOTE !!
+         *
+         *  we can loop from `right to left` as well,
+         *  the logic is the same, and the code still works
+         *  (e.g. from nums.len - 1 to 0)
+         */
         for (int i = 0; i < nums.length - 1; i++) {
             // Greedy: If these two can form a pair, take them!
             if (nums[i + 1] - nums[i] <= maxDiff) {
                 count++;
+                /** NOTE !!!
+                 *
+                 * // Skip next element because it's now part of this pair
+                 */
                 i++; // Skip next element because it's now part of this pair
             }
+            /** NOTE !!
+             *
+             *  early quit
+             */
             if (count >= p)
                 return true;
         }
