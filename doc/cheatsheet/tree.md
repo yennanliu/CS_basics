@@ -455,12 +455,35 @@ count >= 2  → already recorded, skip (avoid adding same duplicate multiple tim
 **Delimiter variants (all work, pick one and be consistent):**
 ```java
 // All of these produce unambiguous serializations:
-node.val + "," + left + "," + right   // V0, V1 in FindDuplicateSubtrees.java
-node.val + "$" + left + "$" + right   // V2
-node.val + " "  + left + " "  + right // V3
-node.val + "#"  + left + "#"  + right // V4
+node.val + "," + left + "," + right   // V0, V1 in FindDuplicateSubtrees.java (recommended)
+node.val + "$" + left + "$" + right   // V2 (alternative)
+node.val + " "  + left + " "  + right // V3 (using space)
+node.val + "#"  + left + "#"  + right // V4 (using # as delimiter)
 // Avoid concatenating without delimiter: "112" is ambiguous (1+12 vs 11+2)
 ```
+
+**Key Implementation Note — Count Logic Variants:**
+
+Both of these counting approaches are equivalent and commonly seen:
+
+```java
+// Approach 1: Add when count == 1 (this subtree appeared before)
+int count = pathMap.getOrDefault(key, 0);
+if (count == 1) {
+    result.add(node);  // 2nd occurrence → first duplicate
+}
+pathMap.put(key, count + 1);
+```
+
+```java
+// Approach 2: Add when count == 2 (we just found second occurrence)
+pathMap.put(key, pathMap.getOrDefault(key, 0) + 1);
+if (pathMap.get(key) == 2) {
+    result.add(node);  // Just became a duplicate
+}
+```
+
+**Which to use?** Both are correct. Approach 1 is slightly cleaner (check before update), but Approach 2 is more intuitive (add after incrementing). Choose based on personal preference.
 
 **Interview Trick (from LC 652):**
 > If the problem asks to **identify/compare subtrees by structure**,
@@ -486,6 +509,45 @@ node.val + "#"  + left + "#"  + right // V4
 | 449   | Serialize and Deserialize BST        | Post-order serialization leveraging BST ordering property          | Medium     |
 | 1948  | Delete Duplicate Folders in System   | Trie + post-order subtree hashing — advanced LC 652 variant        | Hard       |
 
+**Implementation Style Variations:**
+
+There are several equivalent ways to structure the solution:
+
+```java
+// Style 1: Instance variables (mutable state in class)
+class Solution {
+    Map<String, Integer> pathMap = new HashMap<>();
+    List<TreeNode> result = new ArrayList<>();
+
+    public List<TreeNode> findDuplicateSubtrees(TreeNode root) {
+        serialize(root);
+        return result;
+    }
+
+    private String serialize(TreeNode node) {
+        // ... implementation ...
+    }
+}
+```
+
+```java
+// Style 2: Local variables + pass through parameters
+public List<TreeNode> findDuplicateSubtrees(TreeNode root) {
+    Map<String, Integer> pathMap = new HashMap<>();
+    List<TreeNode> result = new ArrayList<>();
+    serialize(root, pathMap, result);
+    return result;
+}
+
+private String serialize(TreeNode node, Map<String, Integer> pathMap, List<TreeNode> result) {
+    // ... implementation ...
+}
+```
+
+**Which style?** Style 1 (instance variables) is more common and cleaner for interviews. Style 2 is more functional. Both are equally valid.
+
+---
+
 **Why LC 652 specifically requires post-order:**
 ```
 Goal: build a unique "fingerprint" string for each subtree.
@@ -504,6 +566,13 @@ Post-order (left → right → root):
 
 Rule: if you need the COMPLETE subtree structure in the key, use post-order.
 ```
+
+**Common Pitfalls:**
+- ❌ Forgetting null markers → produces ambiguous strings like "1,2" (is it 1,2 or 12?)
+- ❌ Checking `count == 0` instead of `count == 1` → adds every occurrence instead of just duplicates
+- ❌ Checking `count == 2` and adding in same line → can add the same duplicate multiple times
+- ✅ Always include null markers and delimiters for unambiguous serialization
+- ✅ Add to result **only once** when count transitions from 0→1 or reaches exactly 2
 
 #### Classic LC Problems by Traversal Type
 
