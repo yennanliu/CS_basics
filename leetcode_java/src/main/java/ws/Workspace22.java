@@ -2652,6 +2652,13 @@ public class Workspace22 {
     }
 
 
+    // LC 58
+    public int lengthOfLastWord(String s) {
+
+        return 0;
+    }
+
+
 
 
 }

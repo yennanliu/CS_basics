@@ -26,7 +26,6 @@
 	- LC 14
 	  - gpt
 	  - gemini
-	    - 58
 	- LC 75
 	  - gpt
 	  - gemini
