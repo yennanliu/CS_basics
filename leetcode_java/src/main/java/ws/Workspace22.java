@@ -230,6 +230,18 @@ public class Workspace22 {
      *
      *
      */
+
+    // path:
+    //
+    public int pathSum(TreeNode root, int targetSum) {
+
+        return 0;
+    }
+
+
+
+
+
     int nodeCnt = 0; // ???
     // ????
     Map<Integer, Integer> map = new HashMap<>(); // { prefix_sum : cnt }
@@ -816,7 +828,7 @@ public class Workspace22 {
     // 18.04 - 14 pm
     // IDEA 1) DFS (PRE ORDER traverse) + path sum + hashmap
     Map<Integer, List<List<Integer>>> pathMap3 = new HashMap<>();
-    public List<List<Integer>> pathSum(TreeNode root, int targetSum) {
+    public List<List<Integer>> pathSum_95(TreeNode root, int targetSum) {
         // edge
         if(root == null){
             return new ArrayList<>();
