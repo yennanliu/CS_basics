@@ -14,7 +14,8 @@
 	- matrix.md (OK)
 	- 2_pointers.md (OK)
 	- backtrack.md (OK)
-	- bfs.md (todo, LC examples)
+	- bfs.md (ok)
+	- binary_indexed_tree.md (todo)
 - to review
 - needcode `250` - similar LC by AI
     - Arrays & Hashing

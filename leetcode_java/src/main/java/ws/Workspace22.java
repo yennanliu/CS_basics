@@ -2264,6 +2264,11 @@ public class Workspace22 {
 
 
 
+    // LC 2616
+    public int minimizeMax(int[] nums, int p) {
+
+        return 0;
+    }
 
 
 

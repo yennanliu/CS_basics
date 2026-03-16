@@ -473,7 +473,7 @@ public class SumOfDistances {
 
 
     // V1
-    
+
 
     // V2
 
