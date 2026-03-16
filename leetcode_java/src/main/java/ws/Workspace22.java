@@ -1957,71 +1957,105 @@ public class Workspace22 {
     //    boolean canProceedA, canProceedB
     //    while loop, append str per above flag
     public String strWithout3a3b(int a, int b) {
-        // edge
-        // edge
-        if(a == 0 && b == 0){
-            return "";
-        }
-
         StringBuilder sb = new StringBuilder();
-        // ??
-        boolean canProceedA = true;
-        boolean canProceedB = true;
 
-        while(a > 0 || b > 0){
+        while (a > 0 || b > 0) {
+            boolean writeA = false;
+            int n = sb.length();
 
-            System.out.println(">>> a = " + a
-            + " canProceedA = " + canProceedA
-            + ", b = " + b
-             + " canProceedB = " + canProceedB
-            + " sb = " + sb.toString());
-
-            if(a > 0 && canProceedA){
-                sb.append("a");
-                // ??? reset canProceedB
-               // canProceedB = true;
-                a -= 1;
-                // ???
-                int size = sb.length();
-                if(size >= 2){
-                    // ??? better way ???
-                    String str = sb.toString();
-                    if(str.charAt(str.length() - 1) == 'a' &&
-                            str.charAt(str.length() - 2) == 'a'){
-                        canProceedA = false;
-                        canProceedB = true;
-                    }
-                }else{
-                    canProceedB = false; // ??
-                }
+            // Rule 1: If we have 'bb' at the end, we MUST write 'a'
+            if (n >= 2 && sb.charAt(n - 1) == 'b' && sb.charAt(n - 2) == 'b') {
+                writeA = true;
             }
-
-            if(b > 0 && canProceedB){
-                sb.append("b");
-                // ??? reset canProceedA
-               // canProceedA = true;
-                b -= 1;
-                // ???
-                int size = sb.length();
-                if(size >= 2){
-                    // ??? better way ???
-                    String str = sb.toString();
-                    if(str.charAt(str.length() - 1) == 'b' &&
-                            str.charAt(str.length() - 2) == 'b'){
-                        canProceedB = false;
-                        canProceedA = true;
-                    }
-                }
-                else{
-                    canProceedA = false; // ??
-                }
+            // Rule 2: If we have 'aa' at the end, we MUST write 'b' (so writeA = false)
+            else {
+                writeA = false;
             }
+            // Rule 3: Otherwise, just write the one that has more left
+//            else {
+//                writeA = a >= b;
+//            }
 
+            if (writeA) {
+                sb.append('a');
+                a--;
+            } else {
+                sb.append('b');
+                b--;
+            }
         }
 
         return sb.toString();
     }
 
+
+
+//    public String strWithout3a3b(int a, int b) {
+//        // edge
+//        // edge
+//        if(a == 0 && b == 0){
+//            return "";
+//        }
+//
+//        StringBuilder sb = new StringBuilder();
+//        // ??
+//        boolean canProceedA = true;
+//        boolean canProceedB = true;
+//
+//        while(a > 0 || b > 0){
+//
+//            System.out.println(">>> a = " + a
+//            + " canProceedA = " + canProceedA
+//            + ", b = " + b
+//             + " canProceedB = " + canProceedB
+//            + " sb = " + sb.toString());
+//
+//            if(a > 0 && canProceedA){
+//                sb.append("a");
+//                // ??? reset canProceedB
+//               // canProceedB = true;
+//                a -= 1;
+//                // ???
+//                int size = sb.length();
+//                if(size >= 2){
+//                    // ??? better way ???
+//                    String str = sb.toString();
+//                    if(str.charAt(str.length() - 1) == 'a' &&
+//                            str.charAt(str.length() - 2) == 'a'){
+//                        canProceedA = false;
+//                        canProceedB = true;
+//                    }
+//                }else{
+//                    canProceedB = false; // ??
+//                }
+//            }
+//
+//            if(b > 0 && canProceedB){
+//                sb.append("b");
+//                // ??? reset canProceedA
+//               // canProceedA = true;
+//                b -= 1;
+//                // ???
+//                int size = sb.length();
+//                if(size >= 2){
+//                    // ??? better way ???
+//                    String str = sb.toString();
+//                    if(str.charAt(str.length() - 1) == 'b' &&
+//                            str.charAt(str.length() - 2) == 'b'){
+//                        canProceedB = false;
+//                        canProceedA = true;
+//                    }
+//                }
+//                else{
+//                    canProceedA = false; // ??
+//                }
+//            }
+//
+//        }
+//
+//        return sb.toString();
+//    }
+//
 
 
 
