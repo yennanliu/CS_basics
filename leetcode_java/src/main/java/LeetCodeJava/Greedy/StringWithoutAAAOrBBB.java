@@ -44,10 +44,42 @@ public class StringWithoutAAAOrBBB {
         StringBuilder sb = new StringBuilder();
 
         while (a > 0 || b > 0) {
+
+            /** NOTE !!!
+             *
+             *  ONLY use one flag (writeA)
+             *
+             *  ----
+             *
+             *  NOTE !!!
+             *
+             *   we can still use 2 flags (e.g. writeA, writeB)
+             *   , but it makes logic not clean, and redundant var.
+             *   since in this LC, we can ONLY either write a or b,
+             *   e.g. a parity choice.
+             *
+             *   -> use 2 flags make code error-prone and NOT clean
+             *
+             *   -> so we prefer use one flag for this LC.
+             *
+             *
+             */
             boolean writeA = false;
             int n = sb.length();
 
+            /** NOTE !!!
+             *
+             *   we have 3 cases below:
+             *
+             *    1. write a
+             *    2. write b
+             *    3. write the `more remaining` one
+             */
             // Rule 1: If we have 'bb' at the end, we MUST write 'a'
+            /** NOTE !!!
+             *
+             *  we check whether write a via `b` check
+             */
             if (n >= 2 && sb.charAt(n - 1) == 'b' && sb.charAt(n - 2) == 'b') {
                 writeA = true;
             }
@@ -71,6 +103,8 @@ public class StringWithoutAAAOrBBB {
 
         return sb.toString();
     }
+
+
     // V0-1
     // IDEA: GREEDY (gemini)
     public String strWithout3a3b_0_1(int a, int b) {
@@ -107,9 +141,42 @@ public class StringWithoutAAAOrBBB {
         return res.toString();
     }
 
+
     // V0-2
-    // IDEA: GREEDY (GPT)
+    // IDEA: END WITH
     public String strWithout3a3b_0_2(int a, int b) {
+        StringBuilder sb = new StringBuilder();
+        while (a > 0 || b > 0) {
+            String s = sb.toString();
+            // if we have aa as the last 2 characters, then the next one is b
+            if (s.endsWith("aa")) {
+                sb.append("b");
+                b--;
+            }
+            // if we have bb as the last 2 characters, then the next one is a
+            else if (s.endsWith("bb")) {
+                sb.append("a");
+                a--;
+            }
+            // if a > b, append a
+            else if (a > b) {
+                sb.append("a");
+                a--;
+            }
+            // if b >= a, append b
+            else {
+                sb.append("b");
+                b--;
+            }
+        }
+        return sb.toString();
+    }
+
+
+
+    // V0-3
+    // IDEA: GREEDY (GPT)
+    public String strWithout3a3b_0_3(int a, int b) {
         StringBuilder res = new StringBuilder();
 
         int continueA = 0;
@@ -142,9 +209,9 @@ public class StringWithoutAAAOrBBB {
     }
 
 
-    // V0-3
+    // V0-4
     // IDEA: PQ (gemini)
-    public String strWithout3a3b_0_3(int a, int b) {
+    public String strWithout3a3b_0_4(int a, int b) {
         // Max heap: store [char, count], sort by count descending
         PriorityQueue<int[]> pq = new PriorityQueue<>((x, y) -> y[1] - x[1]);
 
@@ -219,6 +286,7 @@ public class StringWithoutAAAOrBBB {
 
 
     // V2
+    // IDEA: endsWith trick
     // https://leetcode.com/problems/string-without-aaa-or-bbb/solutions/1175800/my-java-solution-with-the-basic-idea-as-b0g35/
     public String strWithout3a3b_2(int a, int b) {
         StringBuilder sb = new StringBuilder();
