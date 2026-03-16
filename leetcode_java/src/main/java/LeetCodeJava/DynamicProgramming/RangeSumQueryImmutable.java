@@ -78,6 +78,33 @@ public class RangeSumQueryImmutable {
         }
     }
 
+    // V-0-0-1
+    // IDEA: PREFIX SUM
+    class NumArray_0_0_1 {
+        int[] prefix;
+
+        public NumArray_0_0_1(int[] nums) {
+            int n = nums.length;
+            this.prefix = new int[n + 1];
+            // init prefix arr
+            int cumSum = 0;
+            for (int i = 0; i < n; i++) {
+                cumSum += nums[i];
+                this.prefix[i + 1] = cumSum;
+            }
+        }
+
+        public int sumRange(int left, int right) {
+            if (left > right) {
+                return -1; // ??
+            }
+            return this.prefix[right + 1] - this.prefix[left];
+        }
+
+    }
+
+
+
     // V0-1
     // IDEA: PREFIX SUM (fixed by gemini)
     class NumArray_0_1 {
@@ -310,6 +337,8 @@ public class RangeSumQueryImmutable {
             return sum[j] - (i == 0 ? 0 : sum[i - 1]);
         }
     }
+
+
 
 
 

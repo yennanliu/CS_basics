@@ -1,6 +1,6 @@
 # Progress
 
-# 2026-03-16
+# 2026-03-17
 
 - weekly video
 - cheatsheet (LC examples)
@@ -168,7 +168,6 @@
 			- 1373
 			- 2246
 		- gemini
-			- 303
 			- 720
 			- 1074
 	- LC 1047 (review)

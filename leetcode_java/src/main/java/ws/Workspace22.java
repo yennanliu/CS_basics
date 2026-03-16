@@ -2581,11 +2581,76 @@ public class Workspace22 {
 
 
 
-
-
 //    private TreeNode dfsNodeHelper(){
 //
 //    }
+
+
+    // LC 303
+    // 7.14 - 24 AM
+    /**
+     *  IDEA 1) PREFIX SUM
+     *
+     *  IDEA 2) DOUBLE LOOP
+     *
+     *
+     *  -------------
+     *
+     *  ex 1)
+     *
+     *  [-2, 0, 3, -5, 2, -1]
+     *
+     *  -> prefix =
+     *    [-2, -2, 1, -4, -2, -3]
+     *
+     *
+     *    -> sum[left, right]
+     *      = prefix[right] - prefix[left - 1] ????
+     *
+     *    sum[0,2] = 1
+     *
+     *    [a0, a1, a2]
+     *
+     *    [a0, a0+a1, a0+a1+a2, a0+a1+a2]
+     *
+     *    ->
+     *
+     *
+     *  ---------
+     *
+     *  - **Core Idea**: `prefixSum[i] = nums[0] + nums[1] + ... + nums[i-1]`
+     * - **Subarray Sum**: `sum(i, j) = prefixSum[j+1] - prefixSum[i]`
+     *
+     *
+     *
+     *
+     *
+     *
+     */
+    //  IDEA 1) PREFIX SUM
+    class NumArray {
+        int[] prefix;
+
+        public NumArray(int[] nums) {
+            int n = nums.length;
+            this.prefix = new int[n+1];
+            // init prefix arr
+            int cumSum = 0;
+            for(int i = 0; i < n; i++){
+                cumSum += nums[i];
+                this.prefix[n+1] = cumSum;
+            }
+        }
+
+        public int sumRange(int left, int right) {
+            if(left > right){
+                return -1; // ??
+            }
+            return this.prefix[right + 1] - this.prefix[left];
+        }
+
+    }
+
 
 
 
