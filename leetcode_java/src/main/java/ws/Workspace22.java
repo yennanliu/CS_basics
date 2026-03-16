@@ -2299,17 +2299,26 @@ public class Workspace22 {
         Arrays.sort(nums);
 
         // binary search ???
-        int l = 0;
-        int r = nums.length - 1; // ???
+//        int l = 0;
+//        int r = nums.length - 1; // ???
 
-        int res = 0; // ????
+        int n = nums.length;
+
+
+        // The 'answer' (max difference) must be between 0 and the max spread of the array
+        int l = 0;
+        int r = nums[n - 1] - nums[0]; // NOTE !!! the `biggest diff`
+
+
+        //int res = 0; // ????
+        int res = r; // ????
 
         while (r >= l){
             // mid is the `boundary` ???
             // could be left or right ???
             // depends on we shrink
             // left or right boundary ????
-            int mid = l + ( r - l) / 2;
+            int mid = l + ( r - l ) / 2;
             if(canFormPairs(nums, p, mid)){
                 // note !!! NOT stop here,
                 // but try to find if there is
@@ -2330,14 +2339,26 @@ public class Workspace22 {
     // could be left or right ???
     // depends on we shrink
     // left or right boundary ????
-    private boolean canFormPairs(int[] nums, int p, int x){
+    private boolean canFormPairs(int[] nums, int p, int maxDiff){
         // ??? edge
 
-        for(int i = 0; i < p; i++){
-
+        int cnt = 0;
+        // greedy
+        for(int i = 0; i < nums.length - 1; i++){
+            if(nums[i+1] - nums[i] <= maxDiff){
+                cnt += 1;
+                i += 1;
+            }
+            // early quit
+            if(cnt >= p){
+                return true;
+            }
         }
+//        for(int i = 0; i < p; i++){
+//
+//        }
 
-        return false;
+        return cnt >= p;
     }
 
 
