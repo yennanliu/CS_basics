@@ -72,6 +72,74 @@
 
 ## 0) Concept
 
+### Why `sum(l, r) = prefix[r+1] - prefix[l]`
+
+<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/prefix_sum_2.png"></p>
+
+```
+Given nums:    [ a,  b,  c,  d,  e ]
+Index:           0   1   2   3   4
+
+Build prefix array (size n+1, prefix[0] = 0):
+
+prefix[0] = 0
+prefix[1] = a
+prefix[2] = a + b
+prefix[3] = a + b + c
+prefix[4] = a + b + c + d
+prefix[5] = a + b + c + d + e
+
+Visual:
+
+prefix:  0 |  a  | a+b | a+b+c | a+b+c+d | a+b+c+d+e |
+index:   0    1      2      3        4          5
+
+To get sum(l=1, r=3) = nums[1] + nums[2] + nums[3] = b + c + d:
+
+prefix[r+1] = prefix[4] = a + b + c + d
+prefix[l]   = prefix[1] = a
+                           ─────────────
+prefix[4] - prefix[1]   =     b + c + d  ✓
+
+Visually (what gets cancelled out):
+
+prefix[4]:  [ a | b | c | d ]
+prefix[1]:  [ a ]
+            ─────────────────
+difference:     [ b | c | d ]   ← this is sum(1, 3)
+```
+
+**Why size `n+1`?** The extra `prefix[0] = 0` handles the edge case when `l = 0`:
+```
+sum(0, 2) = prefix[3] - prefix[0]
+          = (a + b + c) - 0
+          = a + b + c  ✓
+```
+Without it, we'd need special `if (left == 0)` checks (see V0 in LC 303).
+
+### Concrete Example (LC 303)
+
+```
+nums = [-2, 0, 3, -5, 2, -1]
+
+Step 1: Build prefix array
+prefix = [0, -2, -2, 1, -4, -2, -3]
+              ↑    ↑  ↑   ↑   ↑   ↑
+              -2  -2+0 ...        sum of all
+
+Step 2: Query
+sumRange(0, 2) = prefix[3] - prefix[0] = 1 - 0 = 1       ✓  (-2+0+3)
+sumRange(2, 5) = prefix[6] - prefix[2] = -3 - (-2) = -1  ✓  (3-5+2-1)
+sumRange(0, 5) = prefix[6] - prefix[0] = -3 - 0 = -3     ✓  (-2+0+3-5+2-1)
+```
+
+### Two Styles Comparison
+
+| Style | Prefix Size | Build | Query `sum(l, r)` | Edge Case |
+|-------|-------------|-------|--------------------|-----------|
+| **Size `n+1`** (recommended) | `n + 1` | `prefix[i+1] = prefix[i] + nums[i]` | `prefix[r+1] - prefix[l]` | No special case needed |
+| **Size `n`** | `n` | `prefix[i] = prefix[i-1] + nums[i]` | `prefix[r] - (l > 0 ? prefix[l-1] : 0)` | Need `if (l == 0)` check |
+
 ## Templates & Algorithms
 
 ### Template Comparison Table

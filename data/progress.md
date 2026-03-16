@@ -577,7 +577,6 @@
 	- LC 229
 		- gpt
 		- gemini
-			- 1150
 	- LC 41
 		- gpt
 		- gemini
