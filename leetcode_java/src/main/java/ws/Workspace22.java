@@ -2135,6 +2135,138 @@ public class Workspace22 {
     }
 
 
+    // LC 2615
+    // 7.24 - 34 am
+    /**
+     *  ->
+     *  Return the array arr.
+     *
+     *
+     *  -------------------
+     *
+     *
+     *  IDEA 1) PREFIX SUM + 2 HASH MAP ????
+     *
+     *   { val: [idx_1, idx_2, ... ] }
+     *
+     *   given idx_x = idx_2,
+     *   what's the sum of |idx_1 - idx_x| + |idx_3 - idx_x | ... ?
+     *
+     *   -> 2 groups:
+     *     - smaller than idx_x
+     *         ( idx_x - idx_1 ) + (idx_x - idx_0)
+     *
+     *
+     *     - bigger than idx_x
+     *        (idx_3 - idx_x) + (idx_4 - idx_x)
+     *
+     *
+     *     ->  (idx_3 - idx_x) + (idx_4 - idx_x) + ( idx_x - idx_1 ) + (idx_x - idx_0)
+     *
+     *      = (idx_3 + idx_4) - (idx_1 + idx_0 ) + (m - n) * idx_x
+     *             N                 M
+     *
+     *
+     *  IDEA 1) LEFT, RIGHT SUM  (PASS) + 2 HASH MAP ????
+     *
+     *
+     *       *
+     *      * ### Left pass
+     *      *
+     *      * ```
+     *      * (i - j1) + (i - j2) + ...
+     *      * = count * i - sum(indices)
+     *      * ```
+     *      *
+     *      * ### Right pass
+     *      *
+     *      * ```
+     *      * (j1 - i) + (j2 - i) + ...
+     *      * = sum(indices) - count * i
+     *      * ```
+     *      *
+     *      * Add both → final distance.
+     *      *
+     *
+     *
+     *  ->
+     *   map1 :  ( val : index_list )
+     *      { val : [idx_1, idx_2, .... ] }
+     *
+     *
+     *   map2 :  ( val : [left_idx_cnt, right_idx_2] )  // ???
+     *
+     *  -------------------
+     *
+     *
+     */
+    public long[] distance(int[] nums) {
+        // edge
+
+        // ??
+        /**
+         *      *   map1 :  ( val : index_list )
+         *      *      { val : [idx_1, idx_2, .... ] }
+         *      *
+         *      *
+         *      *   map2 :  ( val : [left_idx_cnt, right_idx_2] )  // ???
+         *      *
+         */
+        Map<Integer, List<Integer>> map1 = new HashMap<>();
+        Map<Integer, Integer[]> map2 = new HashMap<>();
+
+
+
+       // NOTE ??????
+        Map<Integer, Long> count = new HashMap<>();
+        Map<Integer, Long> sum = new HashMap<>();
+
+        long[] res = new long[nums.length];
+
+        for(int i = 0; i < nums.length; i++){
+            int val = nums[i];
+            if(!map1.containsKey(val)){
+                map1.put(val, new ArrayList<>());
+            }
+            List<Integer> list = map1.get(val);
+            list.add(i);
+            map1.put(val, list);
+        }
+
+        for(int i = 0; i < nums.length; i++){
+            int val = nums[i];
+
+            List<Integer> list = map1.get(val);
+            int idxInList = list.indexOf(val); // ????
+            int left = idxInList;
+            int right = list.size() - left;
+
+            // ????
+            map2.put(val, new Integer[]{left, right});
+
+            // left pass
+            // = count * i - sum(indices)
+            int leftPass = left * i - val * list.size();
+
+            // right pass
+            // = sum(indices) - count * i
+            int rightPass = val * list.size() - right * i;
+
+
+
+            // sum over above
+            res[i] = leftPass + rightPass;
+        }
+
+
+        return res;
+    }
+
+
+
+
+
+
 
 
 }
