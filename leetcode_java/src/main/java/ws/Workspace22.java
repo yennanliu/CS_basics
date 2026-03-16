@@ -2,6 +2,7 @@ package ws;
 
 import LeetCodeJava.DataStructure.ListNode;
 import LeetCodeJava.DataStructure.TreeNode;
+import com.sun.org.apache.bcel.internal.generic.FADD;
 
 import java.util.*;
 
@@ -1950,7 +1951,85 @@ public class Workspace22 {
      *  --------------
      *
      */
+
+    // 11.06 - 16 am
+    //  IDEA 1) GREEDY
+    //    boolean canProceedA, canProceedB
+    //    while loop, append str per above flag
     public String strWithout3a3b(int a, int b) {
+        // edge
+        // edge
+        if(a == 0 && b == 0){
+            return "";
+        }
+
+        StringBuilder sb = new StringBuilder();
+        // ??
+        boolean canProceedA = true;
+        boolean canProceedB = true;
+
+        while(a > 0 || b > 0){
+
+            System.out.println(">>> a = " + a
+            + " canProceedA = " + canProceedA
+            + ", b = " + b
+             + " canProceedB = " + canProceedB
+            + " sb = " + sb.toString());
+
+            if(a > 0 && canProceedA){
+                sb.append("a");
+                // ??? reset canProceedB
+               // canProceedB = true;
+                a -= 1;
+                // ???
+                int size = sb.length();
+                if(size >= 2){
+                    // ??? better way ???
+                    String str = sb.toString();
+                    if(str.charAt(str.length() - 1) == 'a' &&
+                            str.charAt(str.length() - 2) == 'a'){
+                        canProceedA = false;
+                        canProceedB = true;
+                    }
+                }else{
+                    canProceedB = false; // ??
+                }
+            }
+
+            if(b > 0 && canProceedB){
+                sb.append("b");
+                // ??? reset canProceedA
+               // canProceedA = true;
+                b -= 1;
+                // ???
+                int size = sb.length();
+                if(size >= 2){
+                    // ??? better way ???
+                    String str = sb.toString();
+                    if(str.charAt(str.length() - 1) == 'b' &&
+                            str.charAt(str.length() - 2) == 'b'){
+                        canProceedB = false;
+                        canProceedA = true;
+                    }
+                }
+                else{
+                    canProceedA = false; // ??
+                }
+            }
+
+        }
+
+        return sb.toString();
+    }
+
+
+
+
+
+
+
+
+    public String strWithout3a3b_99(int a, int b) {
         // edge
         if(a < 3 && b < 3){
             String res = multipleStr2("a", a) + multipleStr2("b", b);
