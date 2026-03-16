@@ -66,16 +66,44 @@ public class AddOneRowToTree {
         return root;
     }
 
+    /** NOTE !!!
+     *
+     *  we would need a help func (dfsAddRowHelper)
+     *  for easier tracking cur depth VS targetDepth
+     *
+     */
     private void dfsAddRowHelper(TreeNode node, int val, int curDepth, int targetDepth) {
         if (node == null)
             return;
 
+        /** NOTE !!!
+         *
+         *  1. Depth -> `pre-order traverse ` DFS
+         *
+         *
+         *  2. below structure:
+         *     if(){
+         *
+         *     }else{
+         *
+         *     }
+         *
+         */
         // Logic: If we are at the row right ABOVE the target depth...
         if (curDepth == targetDepth - 1) {
             // 1. Save existing children
             TreeNode oldLeft = node.left;
             TreeNode oldRight = node.right;
 
+            /** NOTE !!!
+             *
+             *   we need to `re-connect` 2 times:
+             *
+             *   1. root to new created node
+             *
+             *   2. new created node to the original sub left, right node
+             *
+             */
             // 2. Insert new nodes
             node.left = new TreeNode(val);
             node.right = new TreeNode(val);
@@ -91,8 +119,43 @@ public class AddOneRowToTree {
     }
 
     // V0-2
-    // IDEA: DFS (gpt)
+    // IDEA: DFS (PRE-ORDER) - without HELP func (gemini)
     public TreeNode addOneRow_0_2(TreeNode root, int val, int depth) {
+        // Case 1: The special case where we replace the root
+        if (depth == 1) {
+            TreeNode newRoot = new TreeNode(val);
+            newRoot.left = root;
+            return newRoot;
+        }
+
+        // Base case for recursion
+        if (root == null)
+            return null;
+
+        // Case 2: We are exactly one level above where the new row should be
+        if (depth == 2) {
+            TreeNode oldLeft = root.left;
+            TreeNode oldRight = root.right;
+
+            root.left = new TreeNode(val);
+            root.right = new TreeNode(val);
+
+            root.left.left = oldLeft;
+            root.right.right = oldRight;
+        }
+        // Case 3: We are still too high up, go deeper and decrement depth
+        else {
+            root.left = addOneRow_0_2(root.left, val, depth - 1);
+            root.right = addOneRow_0_2(root.right, val, depth - 1);
+        }
+
+        return root;
+    }
+
+
+    // V0-5
+    // IDEA: DFS (gpt)
+    public TreeNode addOneRow_0_5(TreeNode root, int val, int depth) {
 
         // special case
         if (depth == 1) {
@@ -191,7 +254,6 @@ public class AddOneRowToTree {
         }
         return root;
     }
-
 
 
 
