@@ -439,9 +439,44 @@ public class SumOfDistances {
     }
 
 
+    // V0-3
+    // IDEA: HASHMAP + BRUTE FORCE (TLE) (GPT)
+    public long[] distance_0_3(int[] nums) {
+
+        Map<Integer, List<Integer>> map1 = new HashMap<>();
+        long[] res = new long[nums.length];
+
+        // build value -> index list
+        for (int i = 0; i < nums.length; i++) {
+            map1.computeIfAbsent(nums[i], k -> new ArrayList<>()).add(i);
+        }
+
+        // compute distances
+        for (int i = 0; i < nums.length; i++) {
+
+            int val = nums[i];
+            List<Integer> list = map1.get(val);
+
+            int idxInList = list.indexOf(i);
+
+            long sum = 0;
+
+            for (int idx : list) {
+                sum += Math.abs(i - idx);
+            }
+
+            res[i] = sum;
+        }
+
+        return res;
+    }
+
+
     // V1
+    
 
     // V2
+
 
     // V3
     // IDEA: HASHMAP
