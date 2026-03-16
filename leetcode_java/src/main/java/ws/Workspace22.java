@@ -2532,6 +2532,60 @@ public class Workspace22 {
 
 
 
+    // LC 623
+    // 18.07 - 33 pm
+    /**
+     *  DFS DEPTH
+     *  -> pre order ?????
+     *
+     *  (root -> left -> right)
+     *
+     */
+    public TreeNode addOneRow(TreeNode root, int val, int depth) {
+        // edge ??
+        if(root == null){
+            return root;
+        }
+
+        // pre-order
+        // ???
+
+        TreeNode _left = null;
+        TreeNode _right = null;
+        if(depth == 0){
+            //root.
+//            TreeNode _left = new TreeNode(val);
+//            TreeNode _right = new TreeNode(val);
+            _left = new TreeNode(val);
+            _right = new TreeNode(val);
+
+            // /?? re-connect
+
+            root.left = _left;
+            root.right = _right;
+
+            _left.left = addOneRow(root.left, val, depth);
+            _right.right = addOneRow(root.right, val, depth);
+        }
+        // ????
+        else{
+            root.left = addOneRow(root.left, val, depth);
+            root.right = addOneRow(root.right, val, depth);
+        }
+
+
+        // ???
+        return root;
+    }
+
+
+
+
+
+
+//    private TreeNode dfsNodeHelper(){
+//
+//    }
 
 
 
