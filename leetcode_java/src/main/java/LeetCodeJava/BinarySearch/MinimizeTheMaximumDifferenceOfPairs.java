@@ -46,6 +46,50 @@ public class MinimizeTheMaximumDifferenceOfPairs {
 //
 //    }
 
+    // V0-0-1
+    // IDEA: BINARY SEARCH + GREEDY (gemini)
+    public int minimizeMax_0_0_1(int[] nums, int p) {
+        if (p == 0)
+            return 0;
+        Arrays.sort(nums);
+
+        int n = nums.length;
+        // The 'answer' (max difference) must be between 0 and the max spread of the array
+        int l = 0;
+        int r = nums[n - 1] - nums[0];
+
+        int res = r;
+
+        while (l <= r) {
+            int mid = l + (r - l) / 2;
+
+            // If we can find at least p pairs with difference <= mid
+            if (canFormPairs_0_0_1(nums, p, mid)) {
+                res = mid; // This might be the answer...
+                r = mid - 1; // ...but let's try to find an even smaller max difference
+            } else {
+                l = mid + 1; // mid is too small, we need to allow a larger difference
+            }
+        }
+
+        return res;
+    }
+
+    private boolean canFormPairs_0_0_1(int[] nums, int p, int maxDiff) {
+        int count = 0;
+        for (int i = 0; i < nums.length - 1; i++) {
+            // Greedy: If these two can form a pair, take them!
+            if (nums[i + 1] - nums[i] <= maxDiff) {
+                count++;
+                i++; // Skip next element because it's now part of this pair
+            }
+            if (count >= p)
+                return true;
+        }
+        return count >= p;
+    }
+
+
 
     /**  NOTE !!!
      *

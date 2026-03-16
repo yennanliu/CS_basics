@@ -2265,10 +2265,82 @@ public class Workspace22 {
 
 
     // LC 2616
+    // 10.16 - 31 am
+    /**
+     *   IDEA 1) BINARY SEARCH ??? + SORTING + GREEDY ????
+     *
+     *
+     *
+     *
+     *   ------------------
+     *
+     *   ex 1)
+     *
+     *   Input: nums = [10,1,2,7,1,3], p = 2
+     *   Output: 1
+     *
+     *   -> sorting:
+     *      [1,1,2,3,7,10]
+     *
+     *      -> binary search find the next bigger val ???
+     *
+     *
+     *
+     *
+     *
+     *   ------------------
+     *
+     *
+     */
     public int minimizeMax(int[] nums, int p) {
+        // edge
 
-        return 0;
+        // sort ??? (small -> big)
+        Arrays.sort(nums);
+
+        // binary search ???
+        int l = 0;
+        int r = nums.length - 1; // ???
+
+        int res = 0; // ????
+
+        while (r >= l){
+            // mid is the `boundary` ???
+            // could be left or right ???
+            // depends on we shrink
+            // left or right boundary ????
+            int mid = l + ( r - l) / 2;
+            if(canFormPairs(nums, p, mid)){
+                // note !!! NOT stop here,
+                // but try to find if there is
+                // a `smaller` solution
+                res = mid; //???
+                r = mid - 1;
+            }else{
+                l = mid + 1;
+            }
+        }
+
+        return res;
     }
+
+
+    // ???
+    // x is the `boundary` ???
+    // could be left or right ???
+    // depends on we shrink
+    // left or right boundary ????
+    private boolean canFormPairs(int[] nums, int p, int x){
+        // ??? edge
+
+        for(int i = 0; i < p; i++){
+
+        }
+
+        return false;
+    }
+
+
 
 
 
