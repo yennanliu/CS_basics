@@ -298,6 +298,49 @@ public class Workspace22 {
      */
 
     // LC 652
+    // 17.31 - 41 pm
+    // IDEA 1) DFS + POST ORDER TRAVERSE ???
+    Map<String, Integer> pathCnt = new HashMap<>();
+    List<TreeNode> res_100 = new ArrayList<>();
+    public List<TreeNode> findDuplicateSubtrees(TreeNode root) {
+        // edge
+
+
+       // List<TreeNode> res = new ArrayList<>();
+        helperDFS(root, "");
+        return res_100;
+    }
+
+    private String helperDFS(TreeNode root, String path){
+        // edge ???
+        if(root == null){
+            return "#"; // ???
+        }
+
+        // post order
+        // left -> right -> root
+
+        String _left = helperDFS(root.left, path);
+        String _right = helperDFS(root.right, path);
+
+        path = root.val + "," + _left + "," + _right;
+
+        // ???
+        if(pathCnt.containsKey(path) && pathCnt.get(path) == 1){
+            res_100.add(root);
+        }
+        // update map
+        pathCnt.put(path, pathCnt.getOrDefault(path, 0) + 1);
+
+        return path;
+    }
+
+
+
+
+
+
+
     // 10.48 - 58 AM
     // POST ORDER ???
     // -> path root.val + "," + _left + "," + _right // ???
@@ -305,7 +348,7 @@ public class Workspace22 {
     // NOTE !!! Map to store: SerializedPath -> Count
     Map<String, Integer> pathCntMap = new HashMap<>();
     List<TreeNode> duplicatedNode = new ArrayList<>();
-    public List<TreeNode> findDuplicateSubtrees(TreeNode root) {
+    public List<TreeNode> findDuplicateSubtrees_95(TreeNode root) {
 //        // edge
 //        if(root == null){
 //            // return null;

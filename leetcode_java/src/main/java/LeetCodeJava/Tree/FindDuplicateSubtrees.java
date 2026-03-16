@@ -60,8 +60,11 @@ public class FindDuplicateSubtrees {
     Map<String, Integer> pathMap_0 = new HashMap<>();
 
     public List<TreeNode> findDuplicateSubtrees(TreeNode root) {
-        if (root == null)
+        if (root == null){
             return res_0;
+        }
+
+        // call help func
         serialize(root);
         return res_0;
     }
@@ -119,6 +122,59 @@ public class FindDuplicateSubtrees {
         pathMap_0.put(currentSubtree, count + 1);
 
         return currentSubtree;
+    }
+
+
+    // V0-0-0-0-1
+    // IDEA: `POST ORDER traverse` DFS
+    Map<String, Integer> pathCnt = new HashMap<>();
+    List<TreeNode> res_100 = new ArrayList<>();
+    public List<TreeNode> findDuplicateSubtrees_0_0_0_0_1(TreeNode root) {
+        // edge
+
+        // List<TreeNode> res = new ArrayList<>();
+        helperDFS(root, "");
+        return res_100;
+    }
+
+    private String helperDFS(TreeNode root, String path) {
+        // edge ???
+        if (root == null) {
+            return "#";
+        }
+
+
+        /** NOTE !!!!
+         *
+         *  post order
+         *
+         *   left -> right -> root
+         *
+         */
+        String _left = helperDFS(root.left, path);
+        String _right = helperDFS(root.right, path);
+
+        path = root.val + "," + _left + "," + _right;
+
+        /** NOTE !!!!
+         *
+         *  add to res if cnt == 1
+         *
+         *  (since we update cnt = 2 soon)
+         *
+         */
+        if (pathCnt.containsKey(path) && pathCnt.get(path) == 1) {
+            res_100.add(root);
+        }
+
+        /** NOTE !!!!
+         *
+         *  update map (cnt)
+         *
+         */
+        pathCnt.put(path, pathCnt.getOrDefault(path, 0) + 1);
+
+        return path;
     }
 
 
