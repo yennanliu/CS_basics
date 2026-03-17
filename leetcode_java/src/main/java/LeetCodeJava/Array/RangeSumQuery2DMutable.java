@@ -94,6 +94,78 @@ public class RangeSumQuery2DMutable {
 
     // V0-2
     // IDEA: BIT (2D BINARY INDEXED TREE) (gemini)
+    /** DEMO:
+     *
+     * To understand why a **2D array** can represent a **Binary Indexed Tree (BIT)**, you have to stop thinking of the array as a "grid" and start thinking of it as a **nested hierarchy of ranges**.
+     *
+     * ### 1. The Core Concept: Nested 1D BITs
+     * In 1D, a BIT is just an array where each index $i$ is responsible for a specific "responsibility zone" based on its power of 2.
+     *
+     * A **2D BIT** is simply an array of 1D BITs, but organized so that the rows themselves are also managed by a BIT.
+     * * **1D BIT:** Manages the sum of a range $[1 \dots x]$.
+     * * **2D BIT:** Manages the sum of a rectangle from $(1, 1)$ to $(x, y)$.
+     *
+     * ### 2. Visualization of "Responsibility"
+     * Each cell `tree[i][j]` does not store `matrix[i][j]`. Instead, it stores the sum of a **sub-rectangle**.
+     *
+     * | Index | Binary | Responsibilty (Range Length) |
+     * | :--- | :--- | :--- |
+     * | **1** | `0001` | Covers **1** row/column |
+     * | **2** | `0010` | Covers **2** rows/columns |
+     * | **4** | `0100` | Covers **4** rows/columns |
+     *
+     * Imagine a $4 \times 4$ BIT. The cell `tree[4][4]` actually stores the sum of the **entire $4 \times 4$ matrix**. The cell `tree[3][3]` stores only the single value at `matrix[2][2]` (using 0-indexed values).
+     *
+     * ### 3. Why a 2D Array Works (The "Tree" in the Grid)
+     * We use a 2D array because the bitwise operation `i & -i` calculates the "parent" or "neighbor" in $O(1)$ time.
+     *
+     * * **Update ($i += i \& -i$):** Moves "up" the tree to update all rectangles that contain the current point.
+     * * **Query ($i -= i \& -i$):** Moves "down" the tree to collect the sums of disjoint rectangles that make up the total area.
+     *
+     * ```text
+     * Row BIT Logic:         Column BIT Logic:
+     * [1] -> covers {1}      [1] -> covers {1}
+     * [2] -> covers {1,2}    [2] -> covers {1,2}
+     * [3] -> covers {3}      [3] -> covers {3}
+     * [4] -> covers {1,2,3,4}[4] -> covers {1,2,3,4}
+     *
+     * When you access tree[4][4], you are accessing:
+     * Row_Range(1-4) x Column_Range(1-4)
+     * ```
+     *
+     * ### 4. Inclusion-Exclusion Principle (The "Query" Math)
+     * Since `query(r, c)` only gives you the sum from the origin $(0,0)$, we use geometry to find any specific region.
+     *
+     * ```text
+     * Total Area: query(row2, col2)
+     *
+     * To get the RED box:
+     * [ Total ] - [ Blue ] - [ Green ] + [ Yellow ]
+     *
+     *    (0,0)__________________
+     *     |          |         |
+     *     |  Yellow  |  Blue   |  (row1-1, col2)
+     *     |__________|_________|
+     *     |          |         |
+     *     |  Green   |   RED   |
+     *     |__________|_________|
+     *           (row2, col1-1)  (row2, col2)
+     * ```
+     *
+     * * **Subtract Blue & Green:** We remove the areas above and to the left of our target.
+     * * **Add Yellow:** Since the yellow area was inside **both** Blue and Green, we subtracted it twice. We must add it back once to balance the equation.
+     *
+     * ---
+     *
+     * ### 💡 Interview Summary for May 15th
+     *
+     * If asked why we use `i & -i`, explain:
+     * > "It isolates the lowest set bit, which mathematically
+     * represents the size of the range that the current index is
+     * responsible for. This allows us to traverse the tree height—which
+     * is $\log N$—rather than the array length."
+     *
+     */
     class NumMatrix_0_2 {
         private int[][] tree; // 2D Binary Indexed Tree
         private int[][] nums; // Original matrix to calculate "delta"
@@ -117,6 +189,7 @@ public class RangeSumQuery2DMutable {
             int delta = val - nums[row][col];
             nums[row][col] = val;
 
+            /** NOTE !!!   Update the BIT  */
             // Update the BIT: O(log M * log N)
             for (int i = row + 1; i <= m; i += i & -i) {
                 for (int j = col + 1; j <= n; j += j & -j) {
@@ -127,6 +200,8 @@ public class RangeSumQuery2DMutable {
 
         private int query(int row, int col) {
             int sum = 0;
+
+            /** NOTE !!!   Query the BIT  */
             // Query the BIT: O(log M * log N)
             for (int i = row + 1; i > 0; i -= i & -i) {
                 for (int j = col + 1; j > 0; j -= j & -j) {
@@ -136,6 +211,21 @@ public class RangeSumQuery2DMutable {
             return sum;
         }
 
+        /**
+         *   Total Area: query(row2, col2)
+         *
+         * To get the RED box:
+         * [ Total ] - [ Blue ] - [ Green ] + [ Yellow ]
+         *
+         *    (0,0)__________________
+         *     |          |         |
+         *     |  Yellow  |  Blue   |  (row1-1, col2)
+         *     |__________|_________|
+         *     |          |         |
+         *     |  Green   |   RED   |
+         *     |__________|_________|
+         *           (row2, col1-1)  (row2, col2)
+         */
         public int sumRegion(int row1, int col1, int row2, int col2) {
             // 2D Inclusion-Exclusion Principle
             return query(row2, col2)
