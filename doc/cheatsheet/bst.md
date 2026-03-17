@@ -1549,26 +1549,152 @@ class Solution(object):
             return root
 ```
 
-### 2-4) Split BST
+### 2-4) Split BST (LC 776) - Recursive Partition Pattern
+
+#### Pattern: Recursive BST Partition
+Split a BST into two valid BSTs based on a target value. This is a **partition** problem, NOT a delete problem — we preserve all nodes but redistribute them into two trees.
+
+#### Theory: Why Split ≠ Delete
+
+| Operation | Goal | Nodes Lost? | Return Value |
+|-----------|------|-------------|--------------|
+| **Delete** (LC 450) | Remove one node, keep one tree | Yes (1 node) | Single `TreeNode` |
+| **Split** (LC 776) | Separate into two trees | No | `TreeNode[2]` array |
+
+#### Core Idea
+
+```
+Return value: TreeNode[2]
+  res[0] → BST with all values ≤ target
+  res[1] → BST with all values > target
+```
+
+**Two cases based on root.val vs target:**
+
+```
+Case 1: root.val <= target
+  → root belongs to LEFT partition (res[0])
+  → But root.right may contain nodes > target
+  → So SPLIT root.right, reconnect the pieces
+
+Case 2: root.val > target
+  → root belongs to RIGHT partition (res[1])
+  → But root.left may contain nodes <= target
+  → So SPLIT root.left, reconnect the pieces
+```
+
+#### Visual Walkthrough
+
+```
+Input:        target = 2
+         4
+        / \
+       2   6
+      / \ / \
+     1  3 5  7
+
+Step 1: root=4, val=4 > target=2 → root goes to RIGHT partition
+        Split root.left (the subtree rooted at 2)
+
+Step 2: root=2, val=2 <= target=2 → root goes to LEFT partition
+        Split root.right (the subtree rooted at 3)
+
+Step 3: root=3, val=3 > target=2 → root goes to RIGHT partition
+        Split root.left (null) → returns [null, null]
+        root.left = null (from split[1])
+        Return [null, 3]
+
+Back to Step 2: split of node 2's right returned [null, 3]
+        node 2's right = split[0] = null  (was 3, now detached)
+        Return [2→(left:1, right:null), 3]
+
+Back to Step 1: split of node 4's left returned [2, 3]
+        node 4's left = split[1] = 3  (reconnect!)
+        Return [2, 4→(left:3, right:6)]
+
+Result:
+  res[0] (≤ 2):     res[1] (> 2):
+       2                  4
+      /                  / \
+     1                  3   6
+                           / \
+                          5   7
+```
+
+#### Key Insight: The Reconnection
+
+```
+When root.val <= target and we split root.right:
+  split[0] = nodes from right subtree that are still <= target
+  split[1] = nodes from right subtree that are > target
+
+  root.right = split[0]   ← keep the small ones attached to root
+  return [root, split[1]] ← root is left partition, split[1] is right partition
+
+When root.val > target and we split root.left:
+  split[0] = nodes from left subtree that are <= target
+  split[1] = nodes from left subtree that are > target
+
+  root.left = split[1]    ← keep the big ones attached to root
+  return [split[0], root] ← split[0] is left partition, root is right partition
+```
+
+#### Python Implementation
 ```python
 # LC 776 Split BST
-# V0
-# IDEA : BST properties (left < root < right) + recursion
 class Solution(object):
     def splitBST(self, root, V):
         if not root:
             return None, None
-        ### NOTE : if root.val <= V
+        # root belongs to LEFT partition
         elif root.val <= V:
             result = self.splitBST(root.right, V)
-            root.right = result[0]
-            return root, result[1]
-        ### NOTE : if root.val > V
+            root.right = result[0]  # keep <= V part
+            return root, result[1]  # [smallTree, bigTree]
+        # root belongs to RIGHT partition
         else:
             result = self.splitBST(root.left, V)
-            root.left = result[1]
-            return result[0], root
+            root.left = result[1]   # keep > V part
+            return result[0], root  # [smallTree, bigTree]
 ```
+
+#### Java Implementation
+```java
+// LC 776 Split BST
+// Time: O(H), Space: O(H) where H = height of BST
+public TreeNode[] splitBST(TreeNode root, int target) {
+    if (root == null) {
+        return new TreeNode[]{null, null};
+    }
+
+    if (root.val <= target) {
+        // root goes to LEFT partition (<=target)
+        TreeNode[] split = splitBST(root.right, target);
+        root.right = split[0];          // reconnect small part
+        return new TreeNode[]{root, split[1]};
+    } else {
+        // root goes to RIGHT partition (>target)
+        TreeNode[] split = splitBST(root.left, target);
+        root.left = split[1];           // reconnect big part
+        return new TreeNode[]{split[0], root};
+    }
+}
+```
+
+#### Similar Problems
+
+| Problem | LC # | Similarity | Key Difference |
+|---------|------|-----------|----------------|
+| **Split BST** | 776 | Core pattern | Partition into 2 trees by value |
+| **Delete Node in BST** | 450 | Both modify BST structure | Delete removes 1 node; split keeps all |
+| **Trim a BST** | 669 | Both remove nodes outside range | Trim discards nodes; split preserves all in 2 trees |
+| **Search in BST** | 700 | Same left/right branching logic | Search returns 1 node; split returns 2 trees |
+| **Insert into BST** | 701 | Same recursive BST traversal | Insert adds; split partitions |
+| **Merge Two BSTs** | - | Inverse operation | Split → 2 trees; Merge → 1 tree |
+
+#### Complexity
+- **Time**: O(H) — only visits nodes along one root-to-leaf path
+- **Space**: O(H) — recursion stack depth = tree height
 
 ### 2-5) Binary Search Tree Iterator
 ```python
