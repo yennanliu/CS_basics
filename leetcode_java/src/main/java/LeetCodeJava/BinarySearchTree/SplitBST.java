@@ -80,14 +80,175 @@ public class SplitBST {
 //    }
 
     // V0-1
-    // IDEA: (gemini)
+    // IDEA: DFS (PRE-ORDER traverse) (gemini)
     // TODO : validate
+    /**  NOTE !!!
+     *
+     *
+     * # 📌 Definition of the return value
+     *
+     * ```java
+     * TreeNode[] res = new TreeNode[2];
+     * ```
+     *
+     * | Index    | Meaning                                        |
+     * | -------- | ---------------------------------------------- |
+     * | `res[0]` | root of BST containing **all values ≤ target** |
+     * | `res[1]` | root of BST containing **all values > target** |
+     *
+     * So conceptually:
+     *
+     * ```java
+     * return [ smallerTree , largerTree ]
+     * ```
+     *
+     * or
+     *
+     * ```java
+     * return [ <= target , > target ]
+     * ```
+     *
+     * ---
+     *
+     * # 🌳 Example
+     *
+     * Original BST
+     *
+     * ```
+     *         4
+     *        / \
+     *       2   6
+     *      / \ / \
+     *     1  3 5  7
+     * ```
+     *
+     * target = `2`
+     *
+     * ---
+     *
+     * ### Result
+     *
+     * Tree 1 (`res[0]`) → **≤ 2**
+     *
+     * ```
+     *     2
+     *    /
+     *   1
+     * ```
+     *
+     * Tree 2 (`res[1]`) → **> 2**
+     *
+     * ```
+     *         4
+     *        / \
+     *       3   6
+     *          / \
+     *         5   7
+     * ```
+     *
+     * So the function returns:
+     *
+     * ```java
+     * TreeNode[] result
+     * result[0] = root of <=2 tree
+     * result[1] = root of >2 tree
+     * ```
+     *
+     * ---
+     *
+     * # 🧠 Why an array?
+     *
+     * Because the recursion **needs to return two trees at the same time**.
+     *
+     * Example recursive call:
+     *
+     * ```java
+     * TreeNode[] res = splitBST(root.right, target);
+     * ```
+     *
+     * Now:
+     *
+     * ```java
+     * res[0] → nodes <= target
+     * res[1] → nodes > target
+     * ```
+     *
+     * Then we reconnect nodes accordingly.
+     *
+     * ---
+     *
+     * # ⚠️ Important clarification
+     *
+     * Your guess:
+     *
+     * ```
+     * split tree < target
+     * split tree >= target
+     * ```
+     *
+     * is **slightly wrong**.
+     *
+     * Correct definition in the problem:
+     *
+     * ```id="oj1lq2"
+     * res[0] = nodes <= target
+     * res[1] = nodes > target
+     * ```
+     *
+     * This ensures **no nodes are lost**.
+     *
+     * ---
+     *
+     * # 🪄 Mental Model (very helpful)
+     *
+     * Think of the return value like:
+     *
+     * ```
+     * return {
+     *    leftPartition,
+     *    rightPartition
+     * }
+     * ```
+     *
+     * or
+     *
+     * ```
+     * [ allowedSide , overflowSide ]
+     * ```
+     *
+     * ---
+     *
+     * ✅ **One-line summary**
+     *
+     * ```
+     * TreeNode[0] → BST with values ≤ target
+     * TreeNode[1] → BST with values > target
+     * ```
+     *
+     */
+    /**  NOTE !!!
+     *
+     *  res definition:
+     *    [ smallerTree , largerTree ]
+     *
+     *     * TreeNode[0] → BST with values ≤ target
+     *     * TreeNode[1] → BST with values > target
+     *
+     */
     public TreeNode[] splitBST_0_1(TreeNode root, int target) {
         // Base case: an empty tree splits into two empty trees
         if (root == null) {
+            /** NOTE !!! the return val */
             return new TreeNode[]{null, null};
         }
 
+        /** NOTE !!!
+         *
+         *   2 cases
+         *
+         *   - root.val <= target
+         *   - root.val > target
+         */
         if (root.val <= target) {
             // Root belongs to the "Small" side.
             // But some of its RIGHT children might still be > target.
@@ -97,6 +258,15 @@ public class SplitBST {
             // The root's new right child is the "Small" part of the split
             root.right = split[0];
 
+            /**  NOTE !!!
+             *
+             *  res definition:
+             *    [ smallerTree , largerTree ]
+             *
+             *     * TreeNode[0] → BST with values ≤ target
+             *     * TreeNode[1] → BST with values > target
+             *
+             */
             // Return [current_root_with_updated_right, the_Big_part_from_the_split]
             return new TreeNode[]{root, split[1]};
 
@@ -109,6 +279,15 @@ public class SplitBST {
             // The root's new left child is the "Big" part of the split
             root.left = split[1];
 
+            /**  NOTE !!!
+             *
+             *  res definition:
+             *    [ smallerTree , largerTree ]
+             *
+             *     * TreeNode[0] → BST with values ≤ target
+             *     * TreeNode[1] → BST with values > target
+             *
+             */
             // Return [the_Small_part_from_the_split, current_root_with_updated_left]
             return new TreeNode[]{split[0], root};
         }
