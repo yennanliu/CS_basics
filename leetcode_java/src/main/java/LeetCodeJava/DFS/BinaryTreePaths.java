@@ -142,6 +142,57 @@ public class BinaryTreePaths {
     }
 
 
+    // V0-3
+    // IDEA: DFS + BACKTRACK (gemini)
+    public List<String> binaryTreePaths_0_3(TreeNode root) {
+        List<String> res = new ArrayList<>();
+        if (root == null)
+            return res;
+
+        StringBuilder sb = new StringBuilder();
+        // Add the first node value
+        sb.append(root.val);
+
+        dfs(root, sb, res);
+        return res;
+    }
+
+    private void dfs(TreeNode node, StringBuilder sb, List<String> res) {
+        // 1. Base Case: If we hit a leaf, add the current string to results
+        if (node.left == null && node.right == null) {
+            res.add(sb.toString());
+            return;
+        }
+
+        // 2. Remember the length before we add children
+        int len = sb.length();
+
+        // 3. Explore Left
+        if (node.left != null) {
+            sb.append("->").append(node.left.val);
+            dfs(node.left, sb, res);
+            /** NOTE !!!
+             *
+             *  need backtrack, since StringBuilder is NOT a primary type.
+             *  it will keep its val (path) to the next recursion run.
+             *
+             *  -> so we need to `undo` its last op.
+             *     e.g. backtrack
+             */
+            // BACKTRACK: Remove the "->val" we just added
+            sb.setLength(len);
+        }
+
+        // 4. Explore Right
+        if (node.right != null) {
+            sb.append("->").append(node.right.val);
+            dfs(node.right, sb, res);
+            // BACKTRACK: Remove the "->val" we just added
+            sb.setLength(len);
+        }
+    }
+
+
     // V0-4
     // IDEA : DFS
     private List<List<Integer>> collected = new ArrayList<>();
