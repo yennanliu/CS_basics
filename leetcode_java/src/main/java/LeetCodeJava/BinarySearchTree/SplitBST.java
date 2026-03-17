@@ -65,8 +65,17 @@ public class SplitBST {
      * }
      */
 
+    /** NOTE !!!
+     *
+     *  this is a `split` BST problem, NOT `delete`,
+     *  (e.g. CAN'T reuse LC 450 Delete Node in a BST  logic)
+     *  so we CAN'T use `delete BST` approach.
+     *
+     *  -> we should implement a `split` logic instead
+     */
+
+
     // V0
-    // TODO : implement
 //    public TreeNode[] splitBST(TreeNode root, int target) {
 //    }
 
@@ -225,6 +234,6 @@ public class SplitBST {
     // https://www.cnblogs.com/grandyang/p/8993143.html
 
 
-    
+
 
 }
