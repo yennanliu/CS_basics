@@ -2653,9 +2653,30 @@ public class Workspace22 {
 
 
     // LC 58
+    // 7.56 - 8.06
+    /**
+     *  IDEA 1) STR OP
+     *
+     */
+    // IDEA 1) STR OP
     public int lengthOfLastWord(String s) {
+        // edge
+        if(s.isEmpty()){
+            return 0;
+        }
 
-        return 0;
+        // remove `extra space` ??
+        //s.strip();
+
+        List<String> list = new ArrayList<>();
+        for(String x: s.split(" ")){
+            if(!x.isEmpty() && x.length() > 0){
+                System.out.println(">>> x = " + x);
+                list.add(x);
+            }
+        }
+
+        return list.get(list.size() - 1).length();
     }
 
 

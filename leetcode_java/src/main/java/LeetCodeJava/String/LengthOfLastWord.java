@@ -1,6 +1,10 @@
 package LeetCodeJava.String;
 
 // https://leetcode.com/problems/length-of-last-word/description/
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 58. Length of Last Word
  * Solved
@@ -42,9 +46,26 @@ package LeetCodeJava.String;
 public class LengthOfLastWord {
 
     // V0
-//    public int lengthOfLastWord(String s) {
-//
-//    }
+    // IDEA: STRING OP
+    public int lengthOfLastWord(String s) {
+        // edge
+        if (s.isEmpty()) {
+            return 0;
+        }
+
+        // remove `extra space` ??
+        //s.strip();
+
+        List<String> list = new ArrayList<>();
+        for (String x : s.split(" ")) {
+            if (!x.isEmpty() && x.length() > 0) {
+                // System.out.println(">>> x = " + x);
+                list.add(x);
+            }
+        }
+
+        return list.get(list.size() - 1).length();
+    }
 
     // V1
     // https://leetcode.com/problems/length-of-last-word/solutions/5774504/video-2-solutions-bonus-by-niits-saqv/
