@@ -222,6 +222,147 @@ class NumArray {
 }
 ```
 
+### 2-7-1) Range Sum Query 2D - Mutable (LC 308) — 2D BIT
+> Extend BIT to 2D: O(log M * log N) per update/query on a matrix.
+
+#### 1D BIT vs 2D BIT
+
+| | 1D BIT (LC 307) | 2D BIT (LC 308) |
+|---|---|---|
+| **Structure** | `int[] bit` of size `n+1` | `int[][] bit` of size `(m+1) x (n+1)` |
+| **Update** | Single loop: `i += i & -i` | Nested loops: row `i += i & -i`, col `j += j & -j` |
+| **Query** | Single loop: `i -= i & -i` | Nested loops: row `i -= i & -i`, col `j -= j & -j` |
+| **Range sum** | `prefix(r+1) - prefix(l)` | 2D inclusion-exclusion (4 terms) |
+| **Time** | O(log N) | O(log M * log N) |
+
+#### Why 2D Inclusion-Exclusion?
+
+```
+To get sum of rectangle (r1,c1) to (r2,c2):
+
+  query(r2, c2)           = entire top-left block
+- query(r1-1, c2)         = remove rows above
+- query(r2, c1-1)         = remove cols to the left
++ query(r1-1, c1-1)       = add back double-subtracted corner
+
+Visual:
+
+  ┌──────────┬──────────┐
+  │  +added  │  -removed│     query(r1-1, c2) removes this top strip
+  │  back    │  (top)   │
+  ├──────────┼──────────┤  r1
+  │  -removed│ ★ TARGET │
+  │  (left)  │  REGION  │
+  └──────────┴──────────┘  r2
+            c1          c2
+
+  sum = query(r2,c2) - query(r1-1,c2) - query(r2,c1-1) + query(r1-1,c1-1)
+```
+
+This is the same inclusion-exclusion as 2D prefix sum (LC 304), but BIT supports **mutable updates**.
+
+#### Java Implementation
+
+```java
+// LC 308 - Range Sum Query 2D - Mutable
+// IDEA: 2D Binary Indexed Tree (Fenwick Tree)
+// time = O(log M * log N) per update/query, space = O(M * N)
+class NumMatrix {
+    private int[][] tree;  // 2D BIT (1-indexed)
+    private int[][] nums;  // original values (for computing delta)
+    private int m, n;
+
+    public NumMatrix(int[][] matrix) {
+        if (matrix.length == 0 || matrix[0].length == 0) return;
+        m = matrix.length;
+        n = matrix[0].length;
+        tree = new int[m + 1][n + 1];
+        nums = new int[m][n];
+        for (int i = 0; i < m; i++)
+            for (int j = 0; j < n; j++)
+                update(i, j, matrix[i][j]);
+    }
+
+    // Point update: set matrix[row][col] = val
+    public void update(int row, int col, int val) {
+        int delta = val - nums[row][col];
+        nums[row][col] = val;
+        // Propagate delta through 2D BIT (nested lowbit traversal)
+        for (int i = row + 1; i <= m; i += i & -i)
+            for (int j = col + 1; j <= n; j += j & -j)
+                tree[i][j] += delta;
+    }
+
+    // Prefix sum query: sum of (0,0) to (row,col)
+    private int query(int row, int col) {
+        int sum = 0;
+        for (int i = row + 1; i > 0; i -= i & -i)
+            for (int j = col + 1; j > 0; j -= j & -j)
+                sum += tree[i][j];
+        return sum;
+    }
+
+    // Range sum: rectangle (row1,col1) to (row2,col2)
+    public int sumRegion(int row1, int col1, int row2, int col2) {
+        // 2D inclusion-exclusion
+        return query(row2, col2)
+             - query(row1 - 1, col2)
+             - query(row2, col1 - 1)
+             + query(row1 - 1, col1 - 1);
+    }
+}
+```
+
+#### Alternative: Row-based 1D BIT (simpler but slower)
+
+```java
+// Each row has its own 1D BIT
+// update = O(log N), sumRegion = O(M * log N)  — slower for large M
+class NumMatrix_RowBIT {
+    private BIT[] trees;
+
+    public NumMatrix_RowBIT(int[][] matrix) {
+        int m = matrix.length, n = matrix[0].length;
+        trees = new BIT[m];
+        for (int i = 0; i < m; i++) {
+            trees[i] = new BIT(n);
+            for (int j = 0; j < n; j++)
+                trees[i].update(j + 1, matrix[i][j]);
+        }
+    }
+
+    public void update(int row, int col, int val) {
+        int prev = trees[row].query(col + 1) - trees[row].query(col);
+        trees[row].update(col + 1, val - prev);
+    }
+
+    public int sumRegion(int row1, int col1, int row2, int col2) {
+        int sum = 0;
+        for (int i = row1; i <= row2; i++)
+            sum += trees[i].query(col2 + 1) - trees[i].query(col1);
+        return sum;
+    }
+}
+```
+
+#### Approach Comparison for LC 308
+
+| Approach | Update | sumRegion | Space | When to Use |
+|----------|--------|-----------|-------|-------------|
+| **Brute force** | O(1) | O(M*N) | O(M*N) | Never (TLE) |
+| **Row-based 1D BIT** | O(log N) | O(M * log N) | O(M*N) | Few rows, many queries |
+| **2D BIT** | O(log M * log N) | O(log M * log N) | O(M*N) | Best balanced performance |
+| **2D Segment Tree** | O(log M * log N) | O(log M * log N) | O(M*N) | When need lazy propagation |
+
+#### Related Problems
+
+| Problem | LC # | Relation to LC 308 |
+|---------|------|--------------------|
+| Range Sum Query - Mutable | 307 | 1D version of same pattern |
+| Range Sum Query 2D - Immutable | 304 | 2D prefix sum (no update) |
+| Count of Smaller Numbers After Self | 315 | BIT with coordinate compression |
+| Count of Range Sum | 327 | BIT/merge sort for range counting |
+
 ### 2-8) Number of Longest Increasing Subsequences (LC 673) — DP
 > Track both length and count at each position; update count when equal-length path found.
 
