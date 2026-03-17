@@ -55,6 +55,96 @@ public class RangeSumQuery2DMutable {
 //    }
 
 
+    // V0-1
+    // IDEA: BRUTE FORCE (TLE) (fixed by gpt)
+    class NumMatrix_0_1 {
+
+        int[][] matrix;
+        int l;
+        int w;
+
+        public NumMatrix_0_1(int[][] matrix) {
+            if (matrix.length == 0 || matrix[0].length == 0) {
+                return;
+            }
+
+            this.matrix = matrix;
+            this.l = matrix.length;
+            this.w = matrix[0].length;
+        }
+
+        public void update(int row, int col, int val) {
+            matrix[row][col] = val;
+        }
+
+        public int sumRegion(int row1, int col1, int row2, int col2) {
+
+            int res = 0;
+
+            for (int y = row1; y <= row2; y++) {
+                for (int x = col1; x <= col2; x++) {
+                    res += matrix[y][x];
+                }
+            }
+
+            return res;
+        }
+    }
+
+
+    // V0-2
+    // IDEA: BIT (2D BINARY INDEXED TREE) (gemini)
+    class NumMatrix_0_2 {
+        private int[][] tree; // 2D Binary Indexed Tree
+        private int[][] nums; // Original matrix to calculate "delta"
+        private int m, n;
+
+        public NumMatrix_0_2(int[][] matrix) {
+            if (matrix.length == 0 || matrix[0].length == 0) return;
+            m = matrix.length;
+            n = matrix[0].length;
+            tree = new int[m + 1][n + 1];
+            nums = new int[m][n];
+
+            for (int i = 0; i < m; i++) {
+                for (int j = 0; j < n; j++) {
+                    update(i, j, matrix[i][j]);
+                }
+            }
+        }
+
+        public void update(int row, int col, int val) {
+            int delta = val - nums[row][col];
+            nums[row][col] = val;
+
+            // Update the BIT: O(log M * log N)
+            for (int i = row + 1; i <= m; i += i & -i) {
+                for (int j = col + 1; j <= n; j += j & -j) {
+                    tree[i][j] += delta;
+                }
+            }
+        }
+
+        private int query(int row, int col) {
+            int sum = 0;
+            // Query the BIT: O(log M * log N)
+            for (int i = row + 1; i > 0; i -= i & -i) {
+                for (int j = col + 1; j > 0; j -= j & -j) {
+                    sum += tree[i][j];
+                }
+            }
+            return sum;
+        }
+
+        public int sumRegion(int row1, int col1, int row2, int col2) {
+            // 2D Inclusion-Exclusion Principle
+            return query(row2, col2)
+                    - query(row1 - 1, col2)
+                    - query(row2, col1 - 1)
+                    + query(row1 - 1, col1 - 1);
+        }
+    }
+
 
     // V1
     // https://leetcode.ca/2016-10-03-308-Range-Sum-Query-2D-Mutable/

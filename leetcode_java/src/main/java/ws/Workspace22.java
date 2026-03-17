@@ -2819,19 +2819,58 @@ public class Workspace22 {
 
 
     // LC 308
-
+    // 10.42 - 52 am
+    /**
+     *
+     *  ---------
+     *
+     *  IDEA 1) BRUTE FORCE (MATRIX OP)
+     *
+     *
+     *  IDEA 2) 2D PREFIX SUM ????
+     *
+     *
+     *  ---------
+     *
+     *
+     */
+    // IDEA 1) BRUTE FORCE (MATRIX OP)
     class NumMatrix {
+
         //private RangeSumQuery2DMutable.BinaryIndexedTree[] trees;
 
+        // attr
+        int[][] matrix;
+        int l;
+        int w;
         public NumMatrix(int[][] matrix) {
+            this.matrix = matrix;
+            this.l = this.matrix.length;
+            this.w = this.matrix[0].length;
         }
 
         public void update(int row, int col, int val) {
+            this.matrix[row][col] = val;
         }
 
         public int sumRegion(int row1, int col1, int row2, int col2) {
-            return 0;
+            // ???
+            int res = 0;
+            // edge
+            if(row1 == row2 && col1 == col2){
+                return this.matrix[row1][col1];
+            }
+
+            for(int y = row1; y < row2; y++){
+                for(int x = col1; x < col2; x++){
+                    res += this.matrix[y][x];
+                }
+            }
+
+            return res;
         }
+
+
     }
 
 
