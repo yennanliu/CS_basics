@@ -61,20 +61,47 @@ public class BinaryTreePaths {
         return res;
     }
 
+    /** NOTE !!!
+     *
+     *  help func return NOTHING
+     */
     private void dfs(TreeNode node, String path, List<String> res) {
+
+        /** NOTE !!!
+         *
+         *  we ONLY add cur path to res
+         *  if it's a `leaf`
+         */
         // 1. Leaf check: If we reach a leaf, save the completed path
         if (node.left == null && node.right == null) {
             res.add(path);
             return;
         }
 
+        /** NOTE !!!
+         *
+         *  we ONLY do dfs call if sub tree is NOT null
+         *   (left tree for example)
+         *
+         *  -> this make us DON'T need to handle edge cases,
+         *     e.g. node.left is null, but we still try to add path to it,
+         *          and validate the res... and so on
+         */
         // 2. Traverse Left: If left exists, append "->val" and go down
         if (node.left != null) {
+            /** NOTE !!!
+             *
+             *  we do `path update` within DFS call
+             */
             dfs(node.left, path + "->" + node.left.val, res);
         }
 
         // 3. Traverse Right: If right exists, append "->val" and go down
         if (node.right != null) {
+            /** NOTE !!!
+             *
+             *  we do `path update` within DFS call
+             */
             dfs(node.right, path + "->" + node.right.val, res);
         }
     }
