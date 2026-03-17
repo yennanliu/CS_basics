@@ -2725,10 +2725,97 @@ public class Workspace22 {
 
 
     // LC 776
+    // 9.34 - 44 am
+    /**
+     *
+     *  IDEA 1)
+     *    DFS  + BST property.
+     *    + `delete node` from BST
+     *
+     *
+     *  BST:  left < root < right
+     *
+     *
+     */
     // TODO : implement
+    TreeNode[] splitBST = new TreeNode[2]; // ????
     public TreeNode[] splitBST(TreeNode root, int target) {
-        return null;
+        // edge
+        if(root == null){
+            return splitBST;
+        }
+
+        // ???
+        TreeNode deletedNode = deleteNodeFromBST(root, target);
+        // ???
+        // help func return the deletedNode
+        // while the original root gets updated as well (target node is removed)
+        splitBST[0] = deletedNode;
+        splitBST[1] = root;
+
+        return splitBST;
     }
+
+
+    // pre - order traverse ??? + DFS
+    private TreeNode deleteNodeFromBST(TreeNode root, int target){
+        // edge ??
+        if(root == null){
+            return root;
+        }
+
+        if(root.val == target){
+            // case 1) both left, right are null
+            if(root.left == null && root.right == null){
+                return null;
+            }
+            // case 2)  left or right is null
+            else if(root.left == null || root.right == null){
+                return root.left != null ? root.left : root.right;
+            }else{
+                // case 3)  BOTH left and right is NOT null
+                // 1. go to right sub tree
+                TreeNode _right = root.right;
+                // 2. get smallest sub left tree
+                TreeNode _left = getSmallestNode(_right);
+                // 3. swap ???
+                root.val = _left.val; // ????
+                // 4. delete ?????
+                TreeNode _res = deleteNodeFromBST(_right, _left.val);
+                // 5. re-connect
+                _right.left = _res; // ???
+            }
+        }else{
+            root.left = deleteNodeFromBST(root.left, target);
+            root.right = deleteNodeFromBST(root.right, target);
+        }
+
+
+        return root;
+    }
+
+
+
+    private TreeNode getSmallestNode(TreeNode root){
+        // ???
+        if(root == null){
+            return root;
+        }
+        while (root.left != null){
+            root = root.left;
+        }
+        return root;
+    }
+
+
+//
+//    private TreeNode bstSpliter(TreeNode root, int target){
+//
+//
+//        return root;
+//    }
+//
+
 
 
 

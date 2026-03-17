@@ -70,6 +70,64 @@ public class SplitBST {
 //    public TreeNode[] splitBST(TreeNode root, int target) {
 //    }
 
+    // V0-1
+    // IDEA: (gemini)
+    // TODO : validate
+    public TreeNode[] splitBST_0_1(TreeNode root, int target) {
+        // Base case: an empty tree splits into two empty trees
+        if (root == null) {
+            return new TreeNode[]{null, null};
+        }
+
+        if (root.val <= target) {
+            // Root belongs to the "Small" side.
+            // But some of its RIGHT children might still be > target.
+            // So we split the right subtree.
+            TreeNode[] split = splitBST_0_1(root.right, target);
+
+            // The root's new right child is the "Small" part of the split
+            root.right = split[0];
+
+            // Return [current_root_with_updated_right, the_Big_part_from_the_split]
+            return new TreeNode[]{root, split[1]};
+
+        } else {
+            // Root belongs to the "Big" side.
+            // But some of its LEFT children might still be <= target.
+            // So we split the left subtree.
+            TreeNode[] split = splitBST_0_1(root.left, target);
+
+            // The root's new left child is the "Big" part of the split
+            root.left = split[1];
+
+            // Return [the_Small_part_from_the_split, current_root_with_updated_left]
+            return new TreeNode[]{split[0], root};
+        }
+    }
+
+
+    // V0-2
+    // IDEA: (GPT)
+    public TreeNode[] splitBST_0_2(TreeNode root, int target) {
+        if (root == null) {
+            return new TreeNode[]{null, null};
+        }
+
+        if (root.val <= target) {
+            TreeNode[] res = splitBST_0_2(root.right, target);
+            root.right = res[0];
+            res[0] = root;
+            return res;
+        } else {
+            TreeNode[] res = splitBST_0_2(root.left, target);
+            root.left = res[1];
+            res[1] = root;
+            return res;
+        }
+    }
+
+
+
     // V1
     // IDEA : DFS
     // https://leetcode.ca/2018-01-14-776-Split-BST/
@@ -162,10 +220,11 @@ public class SplitBST {
         return result;
     }
 
+
     // V3
     // https://www.cnblogs.com/grandyang/p/8993143.html
 
 
-
+    
 
 }
