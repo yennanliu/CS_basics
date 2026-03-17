@@ -60,12 +60,21 @@ jobs:
         const MarkdownIt = require('markdown-it');
         const markdownItAnchor = require('markdown-it-anchor');
 
+        // Custom slug function shared by markdown-it-anchor and TOC generation
+        function slugify(text) {
+          return text.toLowerCase().replace(/<[^>]*>/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+        }
+
         const md = new MarkdownIt({
           html: true,
           linkify: true,
           typographer: true
         }).use(markdownItAnchor, {
-          permalink: true,
+          slugify: slugify,
+          permalink: markdownItAnchor.permalink && markdownItAnchor.permalink.headerLink
+            ? markdownItAnchor.permalink.headerLink({ safariReaderFix: true })
+            : true,
+          // Fallback options for older API (before v9 permalink object)
           permalinkBefore: true,
           permalinkSymbol: '#'
         });
@@ -99,15 +108,16 @@ jobs:
         }
 
         // Function to generate table of contents
+        // Extracts the id already placed on headings by markdown-it-anchor
         function generateTOC(htmlContent) {
-          const headingRegex = /<h([23])[^>]*>(.*?)<\/h\1>/g;
+          const headingRegex = /<h([23])\s[^>]*?id="([^"]*)"[^>]*>(.*?)<\/h\1>/g;
           const headings = [];
           let match;
 
           while ((match = headingRegex.exec(htmlContent)) !== null) {
             const level = match[1];
-            const text = match[2].replace(/<[^>]*>/g, ''); // Remove HTML tags
-            const id = text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+            const id = match[2];  // use the actual id from the rendered heading
+            const text = match[3].replace(/<[^>]*>/g, '').replace(/^[\s#]+/, ''); // Remove HTML tags and leading #/spaces from permalink
             headings.push({ level, text, id });
           }
 
@@ -123,11 +133,11 @@ jobs:
           return toc;
         }
 
-        // Function to add IDs to headings for TOC navigation
-        function addHeadingIds(htmlContent) {
-          return htmlContent.replace(/<h([23])([^>]*)>(.*?)<\/h\1>/g, (match, level, attrs, text) => {
-            const cleanText = text.replace(/<[^>]*>/g, '');
-            const id = cleanText.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+        // Ensure all h2/h3/h4 headings have an id attribute
+        // (markdown-it-anchor handles most, this catches any from raw HTML blocks)
+        function ensureHeadingIds(htmlContent) {
+          return htmlContent.replace(/<h([2-4])(?![^>]*\bid=)([^>]*)>(.*?)<\/h\1>/g, (match, level, attrs, text) => {
+            const id = slugify(text);
             return `<h${level}${attrs} id="${id}">${text}</h${level}>`;
           });
         }
@@ -166,7 +176,7 @@ jobs:
             // Render and process links
             let htmlContent = md.render(rawContent);
             htmlContent = processLinks(htmlContent);
-            htmlContent = addHeadingIds(htmlContent);
+            htmlContent = ensureHeadingIds(htmlContent);
 
             // Generate table of contents
             const toc = generateTOC(htmlContent);
@@ -266,7 +276,7 @@ jobs:
             // Render and process links
             let htmlContent = md.render(rawContent);
             htmlContent = processLinks(htmlContent);
-            htmlContent = addHeadingIds(htmlContent);
+            htmlContent = ensureHeadingIds(htmlContent);
 
             const toc = generateTOC(htmlContent);
 
