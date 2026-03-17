@@ -242,12 +242,335 @@ public class SplitBST {
             return new TreeNode[]{null, null};
         }
 
+        
         /** NOTE !!!
          *
          *   2 cases
          *
          *   - root.val <= target
          *   - root.val > target
+         */
+
+        /**  DEMO (dry run)
+         *
+         * Let’s do a **step-by-step dry run** for LeetCode 776: Split BST.
+         *
+         * Input:
+         *
+         * ```
+         * root = [4,2,6,1,3,5,7]
+         * V = 2
+         * ```
+         *
+         * Tree:
+         *
+         * ```
+         *         4
+         *        / \
+         *       2   6
+         *      / \ / \
+         *     1  3 5  7
+         * ```
+         *
+         * Goal:
+         *
+         * ```
+         * res[0] → nodes ≤ 2
+         * res[1] → nodes > 2
+         * ```
+         *
+         * ---
+         *
+         * # Step 1 — Start at root (4)
+         *
+         * ```
+         * splitBST(4,2)
+         * ```
+         *
+         * Check:
+         *
+         * ```
+         * 4 > 2
+         * ```
+         *
+         * So **4 belongs to the right tree**.
+         *
+         * We must split the **left subtree**.
+         *
+         * ```
+         * res = splitBST(2,2)
+         * ```
+         *
+         * Tree view:
+         *
+         * ```
+         *         4
+         *        /
+         *       2
+         * ```
+         *
+         * ---
+         *
+         * # Step 2 — Node 2
+         *
+         * ```
+         * splitBST(2,2)
+         * ```
+         *
+         * Check:
+         *
+         * ```
+         * 2 ≤ 2
+         * ```
+         *
+         * So **2 belongs to the left tree**.
+         *
+         * Now split the **right subtree of 2**.
+         *
+         * ```
+         * res = splitBST(3,2)
+         * ```
+         *
+         * Tree:
+         *
+         * ```
+         *       2
+         *      / \
+         *     1   3
+         * ```
+         *
+         * ---
+         *
+         * # Step 3 — Node 3
+         *
+         * ```
+         * splitBST(3,2)
+         * ```
+         *
+         * Check:
+         *
+         * ```
+         * 3 > 2
+         * ```
+         *
+         * So **3 belongs to the right tree**.
+         *
+         * Split its **left subtree**.
+         *
+         * ```
+         * res = splitBST(null,2)
+         * ```
+         *
+         * ---
+         *
+         * # Step 4 — Base case
+         *
+         * ```
+         * splitBST(null,2)
+         * ```
+         *
+         * Return:
+         *
+         * ```
+         * [null , null]
+         * ```
+         *
+         * Meaning:
+         *
+         * ```
+         * <=2 : null
+         * >2  : null
+         * ```
+         *
+         * ---
+         *
+         * # Step 5 — Return to node 3
+         *
+         * We had:
+         *
+         * ```
+         * res = [null , null]
+         * ```
+         *
+         * Reconnect:
+         *
+         * ```
+         * root.left = res[1]
+         * ```
+         *
+         * So:
+         *
+         * ```
+         * 3.left = null
+         * ```
+         *
+         * Return:
+         *
+         * ```
+         * [ null , 3 ]
+         * ```
+         *
+         * Meaning:
+         *
+         * ```
+         * <=2 tree : null
+         * >2 tree  : 3
+         * ```
+         *
+         * ---
+         *
+         * # Step 6 — Return to node 2
+         *
+         * We received:
+         *
+         * ```
+         * res = [null , 3]
+         * ```
+         *
+         * Reconnect:
+         *
+         * ```
+         * 2.right = res[0]
+         * ```
+         *
+         * So:
+         *
+         * ```
+         * 2.right = null
+         * ```
+         *
+         * Now:
+         *
+         * ```
+         * <=2 tree root = 2
+         * >2 tree root = 3
+         * ```
+         *
+         * Return:
+         *
+         * ```
+         * [2 , 3]
+         * ```
+         *
+         * Tree states:
+         *
+         * Left tree:
+         *
+         * ```
+         *     2
+         *    /
+         *   1
+         * ```
+         *
+         * Right tree:
+         *
+         * ```
+         * 3
+         * ```
+         *
+         * ---
+         *
+         * # Step 7 — Return to node 4
+         *
+         * We received:
+         *
+         * ```
+         * res = [2 , 3]
+         * ```
+         *
+         * Reconnect:
+         *
+         * ```
+         * 4.left = res[1]
+         * ```
+         *
+         * So:
+         *
+         * ```
+         * 4.left = 3
+         * ```
+         *
+         * Tree becomes:
+         *
+         * ```
+         *         4
+         *        / \
+         *       3   6
+         *          / \
+         *         5   7
+         * ```
+         *
+         * Return:
+         *
+         * ```
+         * [2 , 4]
+         * ```
+         *
+         * ---
+         *
+         * # Final Result
+         *
+         * ### res[0]  (≤2)
+         *
+         * ```
+         *     2
+         *    /
+         *   1
+         * ```
+         *
+         * Level order:
+         *
+         * ```
+         * [2,1]
+         * ```
+         *
+         * ---
+         *
+         * ### res[1]  (>2)
+         *
+         * ```
+         *         4
+         *        / \
+         *       3   6
+         *          / \
+         *         5   7
+         * ```
+         *
+         * Level order:
+         *
+         * ```
+         * [4,3,6,null,null,5,7]
+         * ```
+         *
+         * ---
+         *
+         * # Final Output
+         *
+         * ```
+         * [[2,1],[4,3,6,null,null,5,7]]
+         * ```
+         *
+         * ---
+         *
+         * # Key Insight
+         *
+         * The algorithm **does not rebuild the tree**.
+         *
+         * It only **cuts one edge per recursion**:
+         *
+         * ```
+         * root.right = res[0]
+         * or
+         * root.left  = res[1]
+         * ```
+         *
+         * This is why the complexity is only:
+         *
+         * ```
+         * O(height of BST)
+         * ```
+         *
+         *
          */
         if (root.val <= target) {
             // Root belongs to the "Small" side.
