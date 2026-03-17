@@ -2889,43 +2889,90 @@ public class Workspace22 {
      *    ---------------
      *
      */
-    // IDEA 1) DFS (pre-order)
-    // ???
-    List<String> nodePathList = new ArrayList<>();
-    //Set<String> pathSet = new HashSet<>();
     public List<String> binaryTreePaths(TreeNode root) {
-        // edge
-        if(root == null){
-            return nodePathList;
-        }
-        if(root.left == null && root.right == null){
-            nodePathList.add(String.valueOf(root.val));
-            return nodePathList;
+        List<String> res = new ArrayList<>();
+        if (root == null) {
+            return res;
         }
 
-        nodePathHelper(root, "");
-        return nodePathList;
+        // Start DFS from the root with its value as the initial path
+        dfs(root, String.valueOf(root.val), res);
+        return res;
     }
 
-    private String nodePathHelper(TreeNode root, String path){
+    private void dfs(TreeNode node, String path, List<String> res) {
         // edge
-        if(root == null){
-            return ""; // ???
+        if(node == null){
+            return;
         }
 
-        //path += root.val;
+
         // ???
-        if(!path.isEmpty()){
-            nodePathList.add(path);
+        //path += "->" + String.valueOf(node.val);
+
+        // ??? ONLY add to result if `reach a leave`
+        // e.g. at bottom of tree,
+        // e.g. node.left == null && node.right == null
+        if(node.left == null && node.right == null){
+            res.add(path); // ???
+            return; // NOTE !!!
         }
 
+        // ???
+        if(node.left != null){
+            // ???
+            dfs(node.left, path + "->" + node.left, res);
+        }
+        if(node.right != null){
+            dfs(node.right, path + "->" + node.right, res);
+        }
+//        dfs(node.left, path, res);
+//        dfs(node.right, path, res);
 
-        return root.val +
-                "->" + nodePathHelper(root.left, path) +
-                "->" + nodePathHelper(root.right, path);
 
     }
 
+
+
+
+
+//    // IDEA 1) DFS (pre-order)
+//    // ???
+//    List<String> nodePathList = new ArrayList<>();
+//    //Set<String> pathSet = new HashSet<>();
+//    public List<String> binaryTreePaths(TreeNode root) {
+//        // edge
+//        if(root == null){
+//            return nodePathList;
+//        }
+//        if(root.left == null && root.right == null){
+//            nodePathList.add(String.valueOf(root.val));
+//            return nodePathList;
+//        }
+//
+//        nodePathHelper(root, "");
+//        return nodePathList;
+//    }
+//
+//    private String nodePathHelper(TreeNode root, String path){
+//        // edge
+//        if(root == null){
+//            return ""; // ???
+//        }
+//
+//        //path += root.val;
+//        // ???
+//        if(!path.isEmpty()){
+//            nodePathList.add(path);
+//        }
+//
+//
+//        return root.val +
+//                "->" + nodePathHelper(root.left, path) +
+//                "->" + nodePathHelper(root.right, path);
+//
+//    }
+//
 
 
 
