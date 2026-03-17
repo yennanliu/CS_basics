@@ -289,6 +289,106 @@ void dfs(TreeNode node, int remaining, List<Integer> path, List<List<Integer>> r
 }
 ```
 
+#### Path Update Strategies: Immutable String vs. Mutable List + Backtrack
+
+> Two ways to track path state during DFS. Choosing the right one simplifies code significantly.
+
+**Strategy 1: Immutable String — pass updated path in the DFS call (no backtrack needed)**
+
+The key insight: when you pass `path + "->" + node.val` directly as an argument, each recursive call gets its **own copy** of the string. The parent's `path` is never modified, so **no explicit backtracking is needed**.
+
+```java
+// LC 257 — Binary Tree Paths (String path, no backtrack)
+// Reference: ref_code/interviews-master/leetcode/tree/BinaryTreePaths.java
+public List<String> binaryTreePaths(TreeNode root) {
+    List<String> res = new ArrayList<>();
+    if (root == null) return res;
+    dfs(root, String.valueOf(root.val), res);
+    return res;
+}
+
+private void dfs(TreeNode node, String path, List<String> res) {
+    // 1. Leaf check: path is complete
+    if (node.left == null && node.right == null) {
+        res.add(path);
+        return;
+    }
+
+    // 2. Traverse Left: path update happens INSIDE the DFS call
+    if (node.left != null) {
+        /** NOTE !!!
+         *  We do `path update` within DFS call itself.
+         *  path + "->" + node.left.val creates a NEW string,
+         *  so `path` in the current frame is unchanged — no backtrack needed.
+         */
+        dfs(node.left, path + "->" + node.left.val, res);
+    }
+
+    // 3. Traverse Right: same pattern
+    if (node.right != null) {
+        /** NOTE !!!
+         *  Same idea: path is NOT mutated here.
+         *  Each branch gets its own copy of the string.
+         */
+        dfs(node.right, path + "->" + node.right.val, res);
+    }
+}
+```
+
+**Strategy 2: Mutable List — modify in place, then backtrack**
+
+When using a mutable data structure (e.g., `List<Integer>`), the **same object** is shared across all recursive calls. You **must** undo changes after recursion returns.
+
+```java
+// LC 113 — Path Sum II (List path, explicit backtrack)
+void dfs(TreeNode node, int remaining, List<Integer> path, List<List<Integer>> result) {
+    if (node == null) return;
+
+    path.add(node.val);           // ← mutate shared list
+    remaining -= node.val;
+
+    if (node.left == null && node.right == null && remaining == 0) {
+        result.add(new ArrayList<>(path));  // save a COPY
+    } else {
+        dfs(node.left, remaining, path, result);
+        dfs(node.right, remaining, path, result);
+    }
+
+    path.remove(path.size() - 1); // ← BACKTRACK: undo mutation
+}
+```
+
+**Comparison:**
+
+| Aspect | Immutable String | Mutable List + Backtrack |
+|--------|-----------------|--------------------------|
+| Path update location | Inside DFS call argument | Before DFS call |
+| Backtrack needed? | No (each call gets own copy) | Yes (must undo mutation) |
+| Memory | O(N) new strings per path | O(N) shared, reused list |
+| Best for | String paths (LC 257) | Numeric paths (LC 113, 112) |
+| Bug risk | Low (no shared state) | Medium (forget to backtrack) |
+
+**Rule of thumb:**
+- **Immutable (String, int)** → pass updated value in the call → no backtrack
+- **Mutable (List, StringBuilder)** → modify before call → backtrack after call
+
+```python
+# Python equivalent — immutable string path (LC 257)
+def binaryTreePaths(root):
+    res = []
+    def dfs(node, path):
+        if not node.left and not node.right:
+            res.append(path)
+            return
+        if node.left:
+            dfs(node.left, path + "->" + str(node.left.val))  # new string, no backtrack
+        if node.right:
+            dfs(node.right, path + "->" + str(node.right.val))
+    if root:
+        dfs(root, str(root.val))
+    return res
+```
+
 #### Pre-order DFS + Prefix Sum HashMap Template (Java)
 
 > Used when path can start/end at **any node** (not just root-to-leaf).
