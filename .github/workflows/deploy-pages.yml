@@ -355,6 +355,9 @@ jobs:
           <link rel="preconnect" href="https://fonts.googleapis.com">
           <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
           <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+          <script>document.addEventListener('DOMContentLoaded', function() { hljs.highlightAll(); });</script>
         </head>
         <body>
           <nav class="navbar">
@@ -500,31 +503,32 @@ jobs:
         }
 
         :root {
-          --primary-color: #3b82f6;
-          --secondary-color: #2563eb;
-          --accent-color: #06b6d4;
-          --text-color: #1f2937;
-          --text-light: #6b7280;
+          --primary-color: #111111;
+          --secondary-color: #333333;
+          --accent-color: #555555;
+          --text-color: #1a1a1a;
+          --text-light: #666666;
           --bg-color: #ffffff;
-          --bg-secondary: #f9fafb;
-          --border-color: #e5e7eb;
-          --code-bg: #f3f4f6;
-          --success-color: #10b981;
+          --bg-secondary: #f5f5f5;
+          --border-color: #e0e0e0;
+          --code-bg: #f0f0f0;
+          --link-color: #222222;
         }
 
         body {
           font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
           color: var(--text-color);
           background-color: var(--bg-color);
-          line-height: 1.6;
+          line-height: 1.7;
+          font-size: 16px;
         }
 
         /* Navbar */
         .navbar {
-          background: linear-gradient(135deg, #0f172a 0%, #0369a1 35%, #0ea5e9 65%, #14b8a6 100%);
+          background: linear-gradient(135deg, #000000 0%, #1a1a1a 40%, #333333 70%, #4a4a4a 100%);
           color: white;
           padding: 1rem 0;
-          box-shadow: 0 4px 15px rgba(14, 165, 233, 0.3);
+          box-shadow: 0 2px 10px rgba(0,0,0,0.15);
           position: sticky;
           top: 0;
           z-index: 100;
@@ -555,32 +559,33 @@ jobs:
         }
 
         .nav-links a {
-          color: white;
+          color: #e0e0e0;
           text-decoration: none;
           font-weight: 500;
-          transition: opacity 0.2s;
+          transition: color 0.2s;
           display: flex;
           align-items: center;
           gap: 0.5rem;
         }
 
         .nav-links a:hover {
-          opacity: 0.8;
+          color: #ffffff;
         }
 
         .nav-links a.active {
+          color: #ffffff;
           border-bottom: 2px solid white;
         }
 
         .github-link {
-          background: rgba(255,255,255,0.2);
+          background: rgba(255,255,255,0.15);
           padding: 0.5rem 1rem;
           border-radius: 6px;
         }
 
         /* Container */
         .container {
-          max-width: 1200px;
+          max-width: 960px;
           margin: 0 auto;
           padding: 0 2rem;
         }
@@ -594,22 +599,22 @@ jobs:
         .content {
           background: white;
           padding: 3rem;
-          border-radius: 12px;
-          box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+          border-radius: 8px;
+          box-shadow: 0 1px 3px rgba(0,0,0,0.08);
         }
 
         /* Typography */
         h1 {
-          font-size: 2.5rem;
+          font-size: 2.25rem;
           font-weight: 700;
           margin-bottom: 1.5rem;
           color: var(--text-color);
-          border-bottom: 3px solid var(--primary-color);
+          border-bottom: 2px solid #222;
           padding-bottom: 0.5rem;
         }
 
         h2 {
-          font-size: 2rem;
+          font-size: 1.75rem;
           font-weight: 600;
           margin-top: 2.5rem;
           margin-bottom: 1rem;
@@ -617,7 +622,7 @@ jobs:
         }
 
         h3 {
-          font-size: 1.5rem;
+          font-size: 1.35rem;
           font-weight: 600;
           margin-top: 2rem;
           margin-bottom: 0.75rem;
@@ -625,7 +630,7 @@ jobs:
         }
 
         h4 {
-          font-size: 1.25rem;
+          font-size: 1.15rem;
           font-weight: 600;
           margin-top: 1.5rem;
           margin-bottom: 0.5rem;
@@ -634,42 +639,44 @@ jobs:
         p {
           margin-bottom: 1rem;
           color: var(--text-color);
+          line-height: 1.8;
         }
 
         a {
-          color: var(--primary-color);
-          text-decoration: none;
+          color: var(--link-color);
+          text-decoration: underline;
+          text-decoration-color: #999;
+          text-underline-offset: 2px;
         }
 
         a:hover {
-          text-decoration: underline;
+          text-decoration-color: #000;
         }
 
         /* Code Blocks */
         code {
           background: var(--code-bg);
-          padding: 0.2rem 0.5rem;
-          border-radius: 4px;
+          padding: 0.15rem 0.4rem;
+          border-radius: 3px;
           font-family: 'JetBrains Mono', 'Monaco', 'Menlo', monospace;
-          font-size: 0.9em;
-          color: #e83e8c;
+          font-size: 0.875em;
+          color: #333;
           font-weight: 500;
         }
 
         pre {
-          background: #1e293b;
-          padding: 1.5rem;
-          border-radius: 8px;
+          background: #1e1e1e;
+          padding: 1.25rem;
+          border-radius: 6px;
           overflow-x: auto;
           margin: 1.5rem 0;
-          border-left: 4px solid var(--primary-color);
-          box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+          border: 1px solid #333;
         }
 
         pre code {
           background: none;
           padding: 0;
-          color: #e2e8f0;
+          color: #d4d4d4;
           font-size: 0.875rem;
           font-weight: 400;
           line-height: 1.6;
@@ -677,9 +684,9 @@ jobs:
 
         /* Inline code in headings */
         h1 code, h2 code, h3 code, h4 code {
-          font-size: 0.9em;
+          font-size: 0.85em;
           background: var(--code-bg);
-          color: var(--primary-color);
+          color: #111;
         }
 
         /* Lists */
@@ -688,7 +695,8 @@ jobs:
         }
 
         li {
-          margin-bottom: 0.5rem;
+          margin-bottom: 0.4rem;
+          line-height: 1.7;
         }
 
         /* Badges and Labels */
@@ -702,13 +710,11 @@ jobs:
           width: 100%;
           border-collapse: collapse;
           margin: 1.5rem 0;
-          overflow: hidden;
-          border-radius: 8px;
-          box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+          font-size: 0.95rem;
         }
 
         th, td {
-          padding: 0.75rem;
+          padding: 0.6rem 0.75rem;
           text-align: left;
           border-bottom: 1px solid var(--border-color);
         }
@@ -716,7 +722,7 @@ jobs:
         th {
           background: var(--bg-secondary);
           font-weight: 600;
-          color: var(--primary-color);
+          color: var(--text-color);
         }
 
         tr:hover {
@@ -725,30 +731,29 @@ jobs:
 
         /* Blockquotes */
         blockquote {
-          border-left: 4px solid var(--primary-color);
-          padding-left: 1rem;
+          border-left: 3px solid #999;
+          padding: 0.75rem 1rem 0.75rem 1.5rem;
           margin: 1.5rem 0;
           color: var(--text-light);
           font-style: italic;
           background: var(--bg-secondary);
-          padding: 1rem 1rem 1rem 2rem;
-          border-radius: 0 8px 8px 0;
+          border-radius: 0 4px 4px 0;
         }
 
         /* HR */
         hr {
           border: none;
-          border-top: 2px solid var(--border-color);
+          border-top: 1px solid var(--border-color);
           margin: 2rem 0;
         }
 
         /* Footer */
         footer {
-          background: var(--bg-secondary);
+          background: #111;
           padding: 2rem 0;
           text-align: center;
-          color: var(--text-light);
-          border-top: 1px solid var(--border-color);
+          color: #999;
+          border-top: 1px solid #333;
         }
 
         footer p {
@@ -756,7 +761,7 @@ jobs:
         }
 
         footer a {
-          color: var(--primary-color);
+          color: #ccc;
           margin: 0 0.5rem;
         }
 
@@ -769,7 +774,7 @@ jobs:
         .badge {
           display: inline-block;
           padding: 0.25rem 0.75rem;
-          background: var(--primary-color);
+          background: #333;
           color: white;
           border-radius: 12px;
           font-size: 0.875rem;
@@ -779,7 +784,7 @@ jobs:
 
         /* Special sections */
         .content > p:first-child {
-          font-size: 1.125rem;
+          font-size: 1.1rem;
           color: var(--text-light);
         }
 
@@ -794,7 +799,7 @@ jobs:
           transition: opacity 0.2s;
           margin-left: -1.5rem;
           padding-right: 0.5rem;
-          color: var(--primary-color);
+          color: #999;
         }
 
         h2:hover .header-anchor,
@@ -823,11 +828,11 @@ jobs:
           }
 
           h1 {
-            font-size: 2rem;
+            font-size: 1.75rem;
           }
 
           h2 {
-            font-size: 1.5rem;
+            font-size: 1.4rem;
           }
 
           pre {
@@ -835,7 +840,7 @@ jobs:
           }
 
           table {
-            font-size: 0.875rem;
+            font-size: 0.85rem;
           }
 
           th, td {
@@ -850,7 +855,7 @@ jobs:
 
         /* Selection color */
         ::selection {
-          background: var(--primary-color);
+          background: #333;
           color: white;
         }
 
@@ -858,27 +863,27 @@ jobs:
         .cheatsheet-grid {
           display: grid;
           grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-          gap: 1.5rem;
+          gap: 1.25rem;
           margin: 1.5rem 0 2.5rem 0;
         }
 
         .cheatsheet-card {
           background: var(--bg-secondary);
-          padding: 1.5rem;
-          border-radius: 8px;
-          border: 2px solid var(--border-color);
+          padding: 1.25rem;
+          border-radius: 6px;
+          border: 1px solid var(--border-color);
           transition: all 0.2s ease;
         }
 
         .cheatsheet-card:hover {
-          border-color: var(--primary-color);
-          box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+          border-color: #999;
+          box-shadow: 0 4px 12px rgba(0,0,0,0.08);
           transform: translateY(-2px);
         }
 
         .cheatsheet-card h3 {
           margin: 0 0 0.5rem 0;
-          font-size: 1.25rem;
+          font-size: 1.1rem;
         }
 
         .cheatsheet-card h3 a {
@@ -887,7 +892,8 @@ jobs:
         }
 
         .cheatsheet-card h3 a:hover {
-          color: var(--primary-color);
+          color: #000;
+          text-decoration: underline;
         }
 
         .cheatsheet-card p {
@@ -896,12 +902,13 @@ jobs:
         }
 
         .read-more {
-          color: var(--primary-color);
+          color: var(--text-light);
           font-weight: 500;
+          text-decoration: none;
         }
 
         .intro {
-          font-size: 1.125rem;
+          font-size: 1.1rem;
           color: var(--text-light);
           margin-bottom: 2rem;
         }
@@ -910,56 +917,54 @@ jobs:
         img {
           max-width: 100%;
           height: auto;
-          border-radius: 8px;
+          border-radius: 4px;
           margin: 1rem 0;
-          box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
 
         /* Cheatsheet Page Styling */
         .cheatsheet-header {
           margin-bottom: 2rem;
           padding-bottom: 1rem;
-          border-bottom: 2px solid var(--border-color);
+          border-bottom: 1px solid var(--border-color);
         }
 
         .cheatsheet-header h1 {
           margin-top: 1rem;
           margin-bottom: 0;
-          font-size: 2.25rem;
+          font-size: 2rem;
         }
 
         .back-link {
           display: inline-flex;
           align-items: center;
-          color: var(--primary-color);
+          color: var(--text-light);
           text-decoration: none;
           font-weight: 500;
-          padding: 0.5rem 1rem;
-          border-radius: 6px;
+          padding: 0.4rem 0.75rem;
+          border-radius: 4px;
           background: var(--bg-secondary);
           transition: all 0.2s;
         }
 
         .back-link:hover {
-          background: var(--primary-color);
+          background: #333;
           color: white;
           text-decoration: none;
         }
 
         /* Table of Contents */
         .toc {
-          background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
-          padding: 1.5rem 2rem;
-          border-radius: 8px;
+          background: var(--bg-secondary);
+          padding: 1.25rem 1.5rem;
+          border-radius: 6px;
           margin: 2rem 0;
-          border-left: 4px solid var(--primary-color);
-          box-shadow: 0 2px 8px rgba(59, 130, 246, 0.1);
+          border-left: 3px solid #333;
         }
 
         .toc h2 {
-          margin: 0 0 1rem 0;
-          font-size: 1.25rem;
-          color: var(--primary-color);
+          margin: 0 0 0.75rem 0;
+          font-size: 1.15rem;
+          color: var(--text-color);
           border-top: none;
           padding-top: 0;
         }
@@ -971,15 +976,14 @@ jobs:
         }
 
         .toc ul li {
-          padding: 0.5rem 0;
+          padding: 0.35rem 0;
           margin: 0;
         }
 
         .toc ul li:before {
-          content: "▸";
+          content: "—";
           margin-right: 0.5rem;
-          color: var(--primary-color);
-          font-weight: bold;
+          color: #999;
         }
 
         .toc ul li.toc-sub {
@@ -988,8 +992,8 @@ jobs:
         }
 
         .toc ul li.toc-sub:before {
-          content: "◦";
-          color: var(--secondary-color);
+          content: "·";
+          color: #999;
         }
 
         .toc a {
@@ -999,28 +1003,28 @@ jobs:
         }
 
         .toc a:hover {
-          color: var(--primary-color);
-          text-decoration: none;
+          color: #000;
+          text-decoration: underline;
         }
 
         .cheatsheet-content {
           margin: 2rem 0;
         }
 
-        /* Section backgrounds */
+        /* Section headings - clean text-based style, no background fill */
         .cheatsheet-content > h2 {
           margin-top: 3rem;
-          padding: 1.5rem 1.5rem 1.5rem 2rem;
+          padding: 0 0 0.5rem 0;
           border-top: none;
-          font-size: 1.75rem;
-          color: white;
-          background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-          border-radius: 8px;
-          box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
+          font-size: 1.6rem;
+          color: var(--text-color);
+          background: none;
+          border-radius: 0;
+          box-shadow: none;
+          border-bottom: 2px solid #222;
           position: relative;
-          margin-left: -1rem;
-          margin-right: -1rem;
-          padding-left: 2rem;
+          margin-left: 0;
+          margin-right: 0;
         }
 
         .cheatsheet-content > h2:first-child {
@@ -1028,146 +1032,139 @@ jobs:
         }
 
         .cheatsheet-content h2:before {
-          content: "📚";
-          position: absolute;
-          left: 0.75rem;
-          top: 50%;
-          transform: translateY(-50%);
-          font-size: 1.5rem;
+          content: none;
         }
 
         .cheatsheet-content h3 {
-          color: white;
+          color: var(--text-color);
           margin-top: 2rem;
-          font-size: 1.35rem;
+          font-size: 1.25rem;
           font-weight: 600;
-          padding: 1rem 1.5rem;
-          background: linear-gradient(135deg, var(--accent-color) 0%, #0891b2 100%);
-          border-radius: 6px;
-          box-shadow: 0 2px 6px rgba(6, 182, 212, 0.2);
+          padding: 0 0 0.25rem 0;
+          background: none;
+          border-radius: 0;
+          box-shadow: none;
           border: none;
+          border-bottom: 1px solid #ddd;
         }
 
         .cheatsheet-content h4 {
-          color: var(--secondary-color);
-          font-size: 1.1rem;
+          color: var(--text-color);
+          font-size: 1.05rem;
           font-weight: 600;
           margin-top: 1.5rem;
-          padding: 0.75rem 1rem;
-          background: var(--bg-secondary);
-          border-left: 4px solid var(--accent-color);
-          border-radius: 4px;
+          padding: 0;
+          background: none;
+          border-left: 3px solid #999;
+          padding-left: 0.75rem;
+          border-radius: 0;
         }
 
-        /* Enhanced code blocks */
+        /* Code blocks with syntax highlighting */
         .cheatsheet-content pre {
-          background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-          color: #e2e8f0;
-          padding: 1.5rem;
-          border-radius: 8px;
+          background: #1e1e1e;
+          color: #d4d4d4;
+          padding: 1.25rem;
+          border-radius: 6px;
           overflow-x: auto;
-          border-left: 4px solid #10b981;
-          box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-          margin: 1.5rem 0;
+          border: 1px solid #333;
+          box-shadow: none;
+          margin: 1.25rem 0;
           position: relative;
         }
 
         .cheatsheet-content pre:before {
-          content: "Code";
-          position: absolute;
-          top: 0.5rem;
-          right: 1rem;
-          font-size: 0.75rem;
-          color: #64748b;
-          text-transform: uppercase;
-          letter-spacing: 0.05em;
+          content: none;
         }
 
         .cheatsheet-content pre code {
-          color: #e2e8f0;
-          font-size: 0.9rem;
-          line-height: 1.7;
+          color: #d4d4d4;
+          font-size: 0.875rem;
+          line-height: 1.65;
+          background: transparent;
+          padding: 0;
+          border: none;
         }
 
         .cheatsheet-content code {
-          background: linear-gradient(135deg, #fce7f3 0%, #fbcfe8 100%);
-          color: #e83e8c;
-          padding: 0.25rem 0.6rem;
-          border-radius: 4px;
-          font-size: 0.9em;
+          background: #f0f0f0;
+          color: #333;
+          padding: 0.15rem 0.4rem;
+          border-radius: 3px;
+          font-size: 0.875em;
           font-weight: 500;
-          border: 1px solid #f9a8d4;
+          border: 1px solid #ddd;
         }
 
         .cheatsheet-content pre code {
           background: transparent;
           padding: 0;
           border: none;
+          color: #d4d4d4;
         }
 
-        /* Better list styling */
+        /* Clean list styling */
         .cheatsheet-content ul {
           list-style: none;
           padding-left: 0;
-          background: #f8fafc;
-          padding: 1rem 1.5rem;
-          border-radius: 6px;
-          margin: 1rem 0;
-          border-left: 3px solid var(--primary-color);
+          background: none;
+          padding: 0.25rem 0 0.25rem 1.5rem;
+          border-radius: 0;
+          margin: 0.75rem 0;
+          border-left: 2px solid #ddd;
         }
 
         .cheatsheet-content ul li {
-          padding-left: 1.5rem;
+          padding-left: 1rem;
           position: relative;
-          margin-bottom: 0.75rem;
+          margin-bottom: 0.4rem;
           line-height: 1.7;
         }
 
         .cheatsheet-content ul li:before {
-          content: "▸";
+          content: "•";
           position: absolute;
           left: 0;
-          color: var(--primary-color);
+          color: #666;
           font-weight: bold;
-          font-size: 1.1em;
         }
 
         .cheatsheet-content ul ul {
-          margin-top: 0.5rem;
-          padding: 0.5rem 0 0.5rem 1.5rem;
+          margin-top: 0.25rem;
+          padding: 0.25rem 0 0.25rem 1rem;
           background: transparent;
-          border-left: 2px solid var(--accent-color);
+          border-left: 1px solid #ddd;
         }
 
         .cheatsheet-content ul ul li:before {
-          content: "◦";
-          color: #0891b2;
+          content: "·";
+          color: #999;
         }
 
         .cheatsheet-content ol {
           padding-left: 2rem;
-          background: #fef3c7;
-          padding: 1rem 1.5rem 1rem 3rem;
-          border-radius: 6px;
-          margin: 1rem 0;
-          border-left: 3px solid #f59e0b;
+          background: none;
+          padding: 0.25rem 0 0.25rem 2rem;
+          border-radius: 0;
+          margin: 0.75rem 0;
+          border-left: 2px solid #ddd;
         }
 
         .cheatsheet-content ol li {
-          margin-bottom: 0.75rem;
+          margin-bottom: 0.4rem;
           line-height: 1.7;
         }
 
         .cheatsheet-content ol li::marker {
-          color: #f59e0b;
-          font-weight: bold;
+          color: #666;
+          font-weight: 600;
         }
 
         /* Cheatsheet footer */
         .cheatsheet-footer {
           margin-top: 3rem;
           padding-top: 2rem;
-          border-top: 2px solid var(--border-color);
+          border-top: 1px solid var(--border-color);
           display: flex;
           justify-content: space-between;
           align-items: center;
@@ -1185,51 +1182,39 @@ jobs:
         }
 
         .github-edit:hover {
-          color: var(--primary-color);
+          color: #000;
         }
 
         /* Paragraphs in cheatsheet */
         .cheatsheet-content > p {
-          background: #fefce8;
-          padding: 1rem 1.5rem;
-          border-radius: 6px;
+          background: none;
+          padding: 0;
+          border-radius: 0;
           margin: 1rem 0;
           line-height: 1.8;
-          border-left: 3px solid #eab308;
+          border-left: none;
         }
 
         /* Blockquote in cheatsheets */
         .cheatsheet-content blockquote {
-          background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
-          border-left: 4px solid #10b981;
+          background: var(--bg-secondary);
+          border-left: 3px solid #999;
           color: var(--text-color);
-          font-style: normal;
-          padding: 1.25rem 1.75rem;
-          border-radius: 6px;
-          box-shadow: 0 2px 8px rgba(16, 185, 129, 0.1);
-          margin: 1.5rem 0;
+          font-style: italic;
+          padding: 1rem 1.25rem;
+          border-radius: 0 4px 4px 0;
+          box-shadow: none;
+          margin: 1.25rem 0;
           position: relative;
         }
 
         .cheatsheet-content blockquote:before {
-          content: "💡";
-          position: absolute;
-          top: 1.25rem;
-          left: -0.5rem;
-          font-size: 1.5rem;
-          background: white;
-          border-radius: 50%;
-          width: 2rem;
-          height: 2rem;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+          content: none;
         }
 
         .cheatsheet-content blockquote p {
           margin: 0;
-          padding-left: 1.5rem;
+          padding-left: 0;
         }
 
         .cheatsheet-content blockquote p:first-child {
@@ -1238,35 +1223,44 @@ jobs:
 
         /* Table improvements */
         .cheatsheet-content table {
-          font-size: 0.95rem;
+          font-size: 0.9rem;
           background: white;
           margin: 1.5rem 0;
+          border: 1px solid var(--border-color);
+          border-radius: 0;
+          box-shadow: none;
         }
 
         .cheatsheet-content table thead {
-          background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+          background: #222;
         }
 
         .cheatsheet-content table th {
           color: white;
           font-weight: 600;
-          padding: 1rem 0.75rem;
+          padding: 0.6rem 0.75rem;
         }
 
         .cheatsheet-content table td {
-          padding: 0.875rem 0.75rem;
+          padding: 0.6rem 0.75rem;
         }
 
         .cheatsheet-content table tbody tr:nth-child(even) {
-          background: #f8fafc;
+          background: #fafafa;
         }
 
         .cheatsheet-content table tbody tr:hover {
-          background: #e0f2fe;
+          background: #f0f0f0;
         }
 
         .cheatsheet-content table code {
-          font-size: 0.85rem;
+          font-size: 0.825rem;
+        }
+
+        /* highlight.js overrides for consistent look */
+        .hljs {
+          background: #1e1e1e !important;
+          padding: 0 !important;
         }
 
         @media (max-width: 768px) {
@@ -1282,33 +1276,23 @@ jobs:
 
           .cheatsheet-content pre {
             padding: 1rem;
-            font-size: 0.85rem;
+            font-size: 0.825rem;
           }
 
           .cheatsheet-header h1 {
-            font-size: 1.75rem;
+            font-size: 1.5rem;
           }
 
           .cheatsheet-content > h2 {
-            font-size: 1.5rem;
-            padding: 1rem 1rem 1rem 2.5rem;
-            margin-left: 0;
-            margin-right: 0;
-          }
-
-          .cheatsheet-content h2:before {
-            font-size: 1.2rem;
-            left: 0.5rem;
+            font-size: 1.35rem;
           }
 
           .cheatsheet-content h3 {
-            font-size: 1.2rem;
-            padding: 0.875rem 1rem;
+            font-size: 1.1rem;
           }
 
           .cheatsheet-content h4 {
-            font-size: 1rem;
-            padding: 0.625rem 0.875rem;
+            font-size: 0.95rem;
           }
 
           .toc {
@@ -1316,39 +1300,29 @@ jobs:
           }
 
           .toc h2 {
-            font-size: 1.1rem;
+            font-size: 1.05rem;
           }
 
           .cheatsheet-content > p {
-            padding: 0.875rem 1rem;
             font-size: 0.95rem;
           }
 
           .cheatsheet-content ul,
           .cheatsheet-content ol {
-            padding: 0.875rem 1rem;
             font-size: 0.95rem;
           }
 
           .cheatsheet-content blockquote {
-            padding: 1rem 1.25rem;
-            padding-left: 2rem;
-          }
-
-          .cheatsheet-content blockquote:before {
-            left: -0.75rem;
-            font-size: 1.25rem;
-            width: 1.75rem;
-            height: 1.75rem;
+            padding: 0.75rem 1rem;
           }
 
           .cheatsheet-content table {
-            font-size: 0.85rem;
+            font-size: 0.825rem;
           }
 
           .cheatsheet-content table th,
           .cheatsheet-content table td {
-            padding: 0.625rem 0.5rem;
+            padding: 0.5rem;
           }
         }
         EOFCSS
@@ -1369,7 +1343,7 @@ jobs:
             <h1 style="font-size: 4rem; margin-bottom: 1rem;">404</h1>
             <h2>Page Not Found</h2>
             <p style="margin: 2rem 0;">The page you're looking for doesn't exist.</p>
-            <a href="/" style="display: inline-block; padding: 0.75rem 1.5rem; background: var(--primary-color); color: white; border-radius: 6px; text-decoration: none;">Go Home</a>
+            <a href="/" style="display: inline-block; padding: 0.75rem 1.5rem; background: #222; color: white; border-radius: 6px; text-decoration: none;">Go Home</a>
           </div>
         </body>
         </html>
