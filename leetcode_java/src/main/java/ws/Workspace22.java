@@ -1024,7 +1024,51 @@ public class Workspace22 {
      *
      *  ---------------
      */
+
+
+    // 8.06 - 16 am
+    /**
+     *
+     *  IDEA 1) DFS + MID POINT....
+     */
+    // IDEA 1) DFS + MID POINT....
     public TreeNode sortedArrayToBST(int[] nums) {
+        // edge
+        if(nums == null || nums.length == 0){
+            return null;
+        }
+        if(nums.length == 1){
+            return new TreeNode(nums[0]);
+        }
+
+
+        return buildBST(nums, 0, nums.length - 1);
+    }
+
+    private TreeNode buildBST(int[] nums, int l, int r){
+        // edge
+        if( nums == null || (l > r) ){
+            return null; // ??
+        }
+
+        int mid = l + ( r - l ) / 2;
+        TreeNode root = new TreeNode(nums[mid]); // ???
+
+        // ???
+        root.left = buildBST(nums, l, mid - 1);
+        root.right = buildBST(nums, mid + 1, r);
+
+
+        // ???
+        return root;
+    }
+
+
+
+
+
+
+    public TreeNode sortedArrayToBST_99(int[] nums) {
         // edge
         if(nums == null || nums.length == 0){
             return null;
@@ -2678,6 +2722,14 @@ public class Workspace22 {
 
         return list.get(list.size() - 1).length();
     }
+
+
+    // LC 776
+    // TODO : implement
+    public TreeNode[] splitBST(TreeNode root, int target) {
+        return null;
+    }
+
 
 
 
