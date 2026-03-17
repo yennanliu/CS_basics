@@ -43,6 +43,79 @@ import java.util.List;
 public class BinaryTreePaths {
 
     // V0
+//    public List<String> binaryTreePaths(TreeNode root) {
+//
+//    }
+
+
+    // V0-1
+    // IDEA: DFS (gemini)
+    public List<String> binaryTreePaths_0_1(TreeNode root) {
+        List<String> res = new ArrayList<>();
+        if (root == null) {
+            return res;
+        }
+
+        // Start DFS from the root with its value as the initial path
+        dfs(root, String.valueOf(root.val), res);
+        return res;
+    }
+
+    private void dfs(TreeNode node, String path, List<String> res) {
+        // 1. Leaf check: If we reach a leaf, save the completed path
+        if (node.left == null && node.right == null) {
+            res.add(path);
+            return;
+        }
+
+        // 2. Traverse Left: If left exists, append "->val" and go down
+        if (node.left != null) {
+            dfs(node.left, path + "->" + node.left.val, res);
+        }
+
+        // 3. Traverse Right: If right exists, append "->val" and go down
+        if (node.right != null) {
+            dfs(node.right, path + "->" + node.right.val, res);
+        }
+    }
+
+
+    // V0-2
+    // IDEA: DFS (GPT)
+    List<String> nodePathList = new ArrayList<>();
+
+    public List<String> binaryTreePaths_0_2(TreeNode root) {
+        if (root == null)
+            return nodePathList;
+
+        nodePathHelper(root, "");
+        return nodePathList;
+    }
+
+    private void nodePathHelper(TreeNode root, String path) {
+        if (root == null)
+            return;
+
+        // build path
+        if (path.isEmpty()) {
+            path = String.valueOf(root.val);
+        } else {
+            path = path + "->" + root.val;
+        }
+
+        // if leaf → add to result
+        if (root.left == null && root.right == null) {
+            nodePathList.add(path);
+            return;
+        }
+
+        // recurse
+        nodePathHelper(root.left, path);
+        nodePathHelper(root.right, path);
+    }
+
+
+    // V0-4
     // IDEA : DFS
     private List<List<Integer>> collected = new ArrayList<>();
 
@@ -50,7 +123,7 @@ public class BinaryTreePaths {
      * time = O(N)
      * space = O(H)
      */
-    public List<String> binaryTreePaths(TreeNode root) {
+    public List<String> binaryTreePaths_0_4(TreeNode root) {
 
         if (root == null){
             return new ArrayList<>();
