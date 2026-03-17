@@ -2877,12 +2877,43 @@ public class Workspace22 {
     // LC 257
     // 7.14 - 24 am
     /**
+     *    ->
+     *    return all root-to-leaf paths in any order.
      *
+     *    NOTE: A leaf is a node with no children
+     *
+     *    ---------------
+     *
+     *    IDEA 1) DFS (pre-order) (path LC)
+     *
+     *    ---------------
      *
      */
+    // IDEA 1) DFS (pre-order)
+    // ???
+    List<String> nodePathList = new ArrayList<>();
+    Set<String> pathSet = new HashSet<>();
     public List<String> binaryTreePaths(TreeNode root) {
+        // edge
+        if(root == null){
+            return nodePathList;
+        }
 
-        return null;
+
+        return nodePathList;
+    }
+
+    TreeNode nodePathHelper(TreeNode root, String path){
+        // edge
+        if(root == null){
+            return null; // ???
+        }
+
+        //path += root.val;
+        // ???
+        pathSet.add(path);
+
+        return root;
     }
 
 
