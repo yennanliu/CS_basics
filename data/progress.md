@@ -15,7 +15,8 @@
 	- 2_pointers.md (OK)
 	- backtrack.md (OK)
 	- bfs.md (ok)
-	- binary_indexed_tree.md (todo)
+	- binary_indexed_tree.md (OK)
+	- Bellman-Ford.md (todo, LC Examples)
 - to review
 - needcode `250` - similar LC by AI
     - Arrays & Hashing
@@ -120,7 +121,6 @@
 			- 99
 			- 449
 			- 285
-			- 776
 		- gemini
 			- 1569
 	- LC 337
