@@ -2892,29 +2892,41 @@ public class Workspace22 {
     // IDEA 1) DFS (pre-order)
     // ???
     List<String> nodePathList = new ArrayList<>();
-    Set<String> pathSet = new HashSet<>();
+    //Set<String> pathSet = new HashSet<>();
     public List<String> binaryTreePaths(TreeNode root) {
         // edge
         if(root == null){
             return nodePathList;
         }
+        if(root.left == null && root.right == null){
+            nodePathList.add(String.valueOf(root.val));
+            return nodePathList;
+        }
 
-
+        nodePathHelper(root, "");
         return nodePathList;
     }
 
-    TreeNode nodePathHelper(TreeNode root, String path){
+    private String nodePathHelper(TreeNode root, String path){
         // edge
         if(root == null){
-            return null; // ???
+            return ""; // ???
         }
 
         //path += root.val;
         // ???
-        pathSet.add(path);
+        if(!path.isEmpty()){
+            nodePathList.add(path);
+        }
 
-        return root;
+
+        return root.val +
+                "->" + nodePathHelper(root.left, path) +
+                "->" + nodePathHelper(root.right, path);
+
     }
+
+
 
 
 
