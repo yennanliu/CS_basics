@@ -1,5 +1,6 @@
 package ws;
 
+import LeetCodeJava.Array.RangeSumQuery2DMutable;
 import LeetCodeJava.DataStructure.ListNode;
 import LeetCodeJava.DataStructure.TreeNode;
 //import com.sun.org.apache.bcel.internal.generic.FADD;
@@ -2815,6 +2816,23 @@ public class Workspace22 {
 //        return root;
 //    }
 //
+
+
+    // LC 308
+
+    class NumMatrix {
+        //private RangeSumQuery2DMutable.BinaryIndexedTree[] trees;
+
+        public NumMatrix(int[][] matrix) {
+        }
+
+        public void update(int row, int col, int val) {
+        }
+
+        public int sumRegion(int row1, int col1, int row2, int col2) {
+            return 0;
+        }
+    }
 
 
 
