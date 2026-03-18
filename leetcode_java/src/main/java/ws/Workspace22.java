@@ -3103,6 +3103,87 @@ public class Workspace22 {
 
 
 
+    // LC 872
+    // 9.26 - 36 am
+    /**
+     *
+     * Return true if and only if
+     * the two given trees with head
+     * nodes root1 and root2 are leaf-similar.
+     *
+     *
+     * ------------
+     *
+     *
+     * ------------
+     *
+     *
+     */
+    public boolean leafSimilar(TreeNode root1, TreeNode root2) {
+        // edge
+        if(root1 == null && root2 == null){
+           return true;
+        }
+        if(root1 == null || root2 == null){
+            return false;
+        }
+
+        List<Integer> list1 = new ArrayList<>();
+        List<Integer> list2 = new ArrayList<>();
+
+        getLeafSeq(root1, list1);
+        getLeafSeq(root1, list2);
+
+        // more efficient way ??
+        if(list1.size() != list2.size()){
+            return false;
+        }
+        for(int i = 0; i < list1.size(); i++){
+            if(list1.get(i) != list2.get(i)){
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+
+    // IDEA: top down DFS ??
+    private void getLeafSeq(TreeNode root, List<Integer> list){
+        // edge
+        if(root == null){
+           // return list;
+            return;
+        }
+
+        // ???
+       // list.add(root.val);
+
+        //??? post order ?????
+        // left -> right -> root
+        // so we can make sure the `order` ???
+
+        getLeafSeq(root.left, list);
+        getLeafSeq(root.right, list);
+
+        // ??? check if is leaf
+        if(root.left == null && root.right == null){
+            list.add(root.val);
+        }
+
+
+        // ??? undo (backtrack)
+        //list.remove(list.size() - 1);
+
+
+       // return list;
+    }
+
+
+
+
+
+
 
 
 }
