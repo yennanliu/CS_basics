@@ -127,6 +127,20 @@ public class SumRootToLeafNumbers {
         return res;
     }
 
+    /** NOTE !!!
+     *
+     *  for the 2nd param  (e.g. List<String> cur),
+     *  we can use 1) string or 2) List,
+     *
+     *  -> we PREFER `string` approach for most of the cases
+     *
+     *    -> reason:
+     *        string is the primary type, so NO need to do backtrack (undo)
+     *        ; while List is reference type, we have to do `backtrack` manually
+     *
+     *     (compare V0 and V0-1 for more info)
+     *
+     */
     private void sumHelper(TreeNode root, List<String> cur) {
         if (root == null) {
             return;
