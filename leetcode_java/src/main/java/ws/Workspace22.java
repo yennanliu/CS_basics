@@ -3132,19 +3132,35 @@ public class Workspace22 {
         List<Integer> list2 = new ArrayList<>();
 
         getLeafSeq(root1, list1);
-        getLeafSeq(root1, list2);
+        // NOTE !!!
+        getLeafSeq(root2, list2);
 
         // more efficient way ??
         if(list1.size() != list2.size()){
             return false;
         }
-        for(int i = 0; i < list1.size(); i++){
-            if(list1.get(i) != list2.get(i)){
-                return false;
-            }
-        }
+//        for(int i = 0; i < list1.size(); i++){
+////            if(list1.get(i) != list2.get(i)){
+////                return false;
+////            }
+//            // NOTE !!!
+//            //  == VS equals
+//            /**
+//             *
+//             * Comparison Logic: Using list1.get(i) != list2.get(i)
+//             * can be dangerous in Java if the values are large
+//             * (comparing Integer objects vs primitives).
+//             * It's safer to use .equals() or compare int primitives.
+//             */
+//            if(!list1.get(i).equals(list2.get(i))){
+//                return false;
+//            }
+//        }
+//
+//        return true;
 
-        return true;
+        // The most idiomatic and efficient way to compare two lists in Java
+        return list1.equals(list2);
     }
 
 

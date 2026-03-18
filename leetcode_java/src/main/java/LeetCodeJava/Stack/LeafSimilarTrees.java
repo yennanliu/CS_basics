@@ -77,10 +77,87 @@ public class LeafSimilarTrees {
         getLeafSeq(root1, list1);
         getLeafSeq(root2, list2);
 
+
+        /** NOTE !!!
+         *
+         *  how we compare if 2 list are equals
+         *
+         *  -> via list default comparison method:
+         *    `equals`
+         */
         // The most idiomatic and efficient way to compare two lists in Java
         return list1.equals(list2);
     }
 
+    /**  NOTE !!!
+     *
+     *  1. pre-order, post-order DFS both work for this LC problem.
+     *     but there is a `performance` difference (see below)
+     *
+     *
+     *  -------------
+     *
+     *  This is a great observation.
+     *  In short: **Yes, both work**,
+     *  but they work for slightly different reasons,
+     *  and understanding the nuance will
+     *  make you look very sharp in a senior-level interview.
+     *
+     * ### 🔍 Evaluating Pre-Order vs. Post-Order for Leaf Collection
+     *
+     * #### **1. Pre-Order (Process Node, then Children)**
+     * ```java
+     * if (isLeaf(root)) list.add(root.val);
+     * getLeafSeq(root.left, list);
+     * getLeafSeq(root.right, list);
+     * ```
+     * * **How it works:** You check if the current node is a leaf *before* moving to its children.
+     * * **The Result:** It visits the "Left" leaf of a subtree before the "Right" leaf. This correctly builds the left-to-right sequence.
+     *
+     * #### **2. Post-Order (Process Children, then Node)**
+     * ```java
+     * getLeafSeq(root.left, list);
+     * getLeafSeq(root.right, list);
+     * if (isLeaf(root)) list.add(root.val);
+     * ```
+     * * **How it works:** You explore the entire left subtree, then the entire right subtree, and *only then* check if the current node is a leaf.
+     * * **The Result:** Because a leaf node has no children, `getLeafSeq(null)` returns immediately. The code then hits the `if(isLeaf)` check for that leaf. It **still** visits the "Left" leaf before the "Right" leaf.
+     *
+     * ---
+     *
+     * ### ⚖️ Which is "Better"?
+     *
+     * Your intuition that **Post-Order** feels "more confident" about the sequence is mathematically correct for general tree traversal (like calculating height), but for **Leaf-Similar Trees**, **Pre-Order** is actually the standard choice. Here is why:
+     *
+     * #### **A. The "Early Exit" Optimization**
+     * In **Pre-Order**, if you find a leaf, you can `return` immediately.
+     * ```java
+     * if (root.left == null && root.right == null) {
+     *     list.add(root.val);
+     *     return; // <--- You save two recursive calls to (null, null)
+     * }
+     * ```
+     * In **Post-Order**, you have already made the recursive calls to `left` and `right` (which were both `null`) *before* you even check if the node is a leaf. It’s a minor performance difference, but it shows you are thinking about avoiding unnecessary work.
+     *
+     * #### **B. Logical Correctness**
+     * Both rely on the same invariant: **Left subtrees are always fully explored before Right subtrees.** As long as you maintain that `left` comes before `right` in your code, the leaf sequence will be identical.
+     *
+     * ---
+     *
+     * ### 📊 Summary Table for your Interview
+     *
+     * | Traversal | Valid? | sequence Result | Efficiency |
+     * | :--- | :--- | :--- | :--- |
+     * | **Pre-Order** | **Yes** | Left $\rightarrow$ Right | **Best** (Skips null-child calls) |
+     * | **In-Order** | **Yes** | Left $\rightarrow$ Right | Good |
+     * | **Post-Order** | **Yes** | Left $\rightarrow$ Right | Good |
+     *
+     * ### 💡 The "Senior" Answer for May 15th
+     * If asked why you chose one over the other, you can say:
+     * > "I chose **Pre-Order** traversal because it allows for an immediate return once a leaf is identified, avoiding redundant recursive calls to null children. However, any DFS traversal that visits the left child before the right child will produce the same leaf sequence."
+     *
+     *
+     */
     private void getLeafSeq(TreeNode root, List<Integer> list) {
         if (root == null)
             return;
@@ -257,6 +334,6 @@ public class LeafSimilarTrees {
     }
 
 
-    
+
 
 }
