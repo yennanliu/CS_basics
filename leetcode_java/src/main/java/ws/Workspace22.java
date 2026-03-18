@@ -3209,6 +3209,10 @@ public class Workspace22 {
             return 0;
         }
 
+        pathHelper98(root, "");
+
+        System.out.println(">> pathList99 = " + pathList99);
+
         int res = 0;
         for(String x: pathList99){
             res += Integer.parseInt(x);
@@ -3218,6 +3222,7 @@ public class Workspace22 {
     }
 
     // idea 1) pre-order DFS (path)
+    // top down ???
     private void pathHelper98(TreeNode root, String path){
         // edge
         if(root == null){
@@ -3236,6 +3241,9 @@ public class Workspace22 {
 
         pathHelper98(root.left, path);
         pathHelper98(root.right, path);
+
+        // NO NEED to backtrack (undo)
+        // since string is primary type
     }
 
 
