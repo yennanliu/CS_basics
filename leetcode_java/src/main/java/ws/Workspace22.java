@@ -2975,6 +2975,13 @@ public class Workspace22 {
 //
 
 
+    // LC 1054
+    public int[] rearrangeBarcodes(int[] barcodes) {
+
+        return null;
+    }
+
+
 
 
 
