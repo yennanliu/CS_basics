@@ -355,6 +355,67 @@ When to use which traversal:
    → Use NODE PATH pattern (Subtree serialization with post-order)
 ```
 
+#### Pre-order vs Post-order for Leaf Collection (LC 872)
+
+> Reference: [LeafSimilarTrees.java](https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/Stack/LeafSimilarTrees.java)
+
+When collecting leaf nodes (e.g., LC 872 Leaf-Similar Trees), **any DFS order that visits left before right** produces the same left-to-right leaf sequence. However, there are practical differences:
+
+**Pre-order (recommended for leaf collection):**
+```java
+private void getLeafSeq(TreeNode root, List<Integer> list) {
+    if (root == null) return;
+
+    // Check leaf BEFORE recursing into children
+    if (root.left == null && root.right == null) {
+        list.add(root.val);
+        return;  // ← Early exit: skip 2 unnecessary null-child calls
+    }
+
+    getLeafSeq(root.left, list);
+    getLeafSeq(root.right, list);
+}
+```
+
+**Post-order (also correct, but slightly wasteful):**
+```java
+private void getLeafSeq(TreeNode root, List<Integer> list) {
+    if (root == null) return;
+
+    getLeafSeq(root.left, list);   // ← calls null, returns immediately
+    getLeafSeq(root.right, list);  // ← calls null, returns immediately
+
+    // Check leaf AFTER recursing (children were both null)
+    if (root.left == null && root.right == null) {
+        list.add(root.val);
+    }
+}
+```
+
+**Why both produce the same result:** The leaf sequence depends only on left-before-right visitation order, NOT on when the leaf check happens. Since a leaf has no children, post-order's recursive calls to `null` return immediately before the leaf check — the leaf is still added in the same left-to-right order.
+
+**Why pre-order is preferred:**
+
+| Aspect | Pre-order | Post-order |
+|--------|-----------|------------|
+| Leaf sequence | Left → Right | Left → Right (same) |
+| Early exit at leaf | Yes (`return` after adding) | No (already recursed into null children) |
+| Unnecessary null calls per leaf | 0 | 2 |
+| Best for | Leaf collection, path building | Height, subtree properties |
+
+**Interview answer:**
+> "I chose pre-order because it allows an immediate return once a leaf is identified, avoiding two redundant recursive calls to null children. Any DFS that visits left before right produces the same leaf sequence."
+
+**Related problems where traversal order matters for leaf/path collection:**
+
+| LC # | Problem | Recommended Order | Why |
+|------|---------|-------------------|-----|
+| 872 | Leaf-Similar Trees | Pre-order | Early exit at leaf |
+| 257 | Binary Tree Paths | Pre-order | Build path top-down |
+| 112 | Path Sum | Pre-order | Carry remaining sum down |
+| 104 | Maximum Depth | Post-order | Need children's height first |
+| 110 | Balanced Binary Tree | Post-order | Validate subtree heights |
+
 ### 0-4) Traversal Quick-Reference Table (Interview Cheat Sheet)
 
 > Inspired by LC 113 Path Sum II — key insight: the traversal choice determines the algorithm structure.

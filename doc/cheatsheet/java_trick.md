@@ -1429,7 +1429,105 @@ ans.add(new ArrayList<>(cur));
 //...
 ```
 
-### 1-16) Check if a string is Palindrome
+### 1-16) `equals()` vs `==` — When to Use Which
+
+> **Core Rule**: `==` compares **references** (are they the same object?). `equals()` compares **content** (do they have the same value?).
+
+#### The Rule
+
+```
+==        → compares memory addresses (reference identity)
+equals()  → compares logical content (value equality)
+```
+
+#### Comparing Collections (List, Set, Map)
+
+```java
+// LC 872 — Leaf-Similar Trees
+List<Integer> list1 = new ArrayList<>();
+List<Integer> list2 = new ArrayList<>();
+
+getLeafSeq(root1, list1);
+getLeafSeq(root2, list2);
+
+/** NOTE !!!
+ *
+ *  Use `equals()` to compare two lists by content.
+ *  `==` would check if they are the SAME object (always false here).
+ */
+list1 == list2        // ❌ false — different objects, even if same content
+list1.equals(list2)   // ✅ true  — compares element-by-element
+```
+
+#### Comparing Strings
+
+```java
+String a = new String("hello");
+String b = new String("hello");
+
+a == b          // ❌ false — different objects
+a.equals(b)     // ✅ true  — same content
+
+// BUT: string literals from pool may share reference
+String c = "hello";
+String d = "hello";
+c == d          // ✅ true (same pooled object) — but DON'T rely on this!
+c.equals(d)     // ✅ true — always use this
+```
+
+#### Comparing Wrapper Types (Integer, Long, etc.)
+
+```java
+Integer x = 127;
+Integer y = 127;
+x == y          // ✅ true (cached: -128 to 127)
+
+Integer a = 128;
+Integer b = 128;
+a == b          // ❌ false — outside cache range, different objects!
+a.equals(b)     // ✅ true  — always correct
+
+// SAFE alternative for null-safe comparison
+Objects.equals(a, b)  // ✅ handles null without NPE
+```
+
+#### Comparing Primitives
+
+```java
+int i = 5;
+int j = 5;
+i == j          // ✅ correct — primitives have no .equals()
+                // Primitives are ALWAYS compared by value with ==
+```
+
+#### Summary Table
+
+| Type | Use `==` | Use `equals()` | Pitfall |
+|------|----------|----------------|---------|
+| `int`, `long`, `char`, ... (primitives) | **Yes** | N/A (no method) | None |
+| `String` | **No** | **Yes** | Literals may share ref, but don't rely on it |
+| `Integer`, `Long`, ... (wrappers) | **No** | **Yes** | `==` works for -128..127 only (cache) |
+| `List`, `Set`, `Map` | **No** | **Yes** | `==` checks identity, not content |
+| Custom objects | **No** | **Yes** (if overridden) | Default `equals()` is same as `==` |
+| `null` check | **Yes** (`x == null`) | **No** (NPE!) | Always use `==` for null check |
+
+#### Interview Quick Rule
+
+```
+Q: "Should I use == or equals()?"
+
+→ Is it a primitive (int, long, boolean, char, double)?
+  YES → use ==
+
+→ Is it checking for null?
+  YES → use ==  (x == null)
+
+→ Everything else (String, Integer, List, Object...)?
+  → use equals()
+  → use Objects.equals(a, b) if either could be null
+```
+
+### 1-16-1) Check if a string is Palindrome
 ```java
 // java
 // LC 131
