@@ -47,7 +47,26 @@ public class BinaryTreeCameras {
 
 
     // V0-1
-    // IDEA: BOTTOM UP DFS (fixed by gemini)
+    // IDEA: BOTTOM UP DFS + 3 states (fixed by gemini)
+    /** NOTE !!
+     *
+     *  need to use `node state` idea:
+     *
+     *    0: Node is NOT covered. (It needs its parent to put a camera).
+     *
+     *    1: Node HAS a camera.
+     *
+     *    2: Node is COVERED (but has no camera).
+     *
+     */
+    /**
+     * Metric,Complexity,Explanation
+     *
+     * Time,O(N),Every node is visited once.
+     * Space,O(H),Recursion stack depth (H = height of tree).
+     *
+     *
+     */
     private int cameraCnt = 0;
 
     public int minCameraCover_0_1(TreeNode root) {
@@ -87,6 +106,14 @@ public class BinaryTreeCameras {
 
     // V0-2
     // IDEA: post-order + 3 states + DFS (fixed by gpt)
+    /**
+     *
+     * | State | Meaning     |
+     * | ----- | ----------- |
+     * | 0     | NOT covered |
+     * | 1     | Has camera  |
+     * | 2     | Covered     |
+     */
     int cameraCnt_0_2 = 0;
 
     public int minCameraCover_0_2(TreeNode root) {
@@ -117,6 +144,39 @@ public class BinaryTreeCameras {
         // otherwise, this node is NOT covered
         return 0;
     }
+
+    // V0-3
+    // IDEA: DP (gemini)
+    public int minCameraCover_0_3(TreeNode root) {
+        int[] ans = solve_0_3(root);
+        return Math.min(ans[0], ans[1]);
+    }
+
+    // Returns [Strict, Covered, SubtreeCovered]
+    private int[] solve_0_3(TreeNode node) {
+        if (node == null) {
+            return new int[] { 10000, 0, 0 }; // Use a large number for null "camera" state
+        }
+
+        int[] L = solve_0_3(node.left);
+        int[] R = solve_0_3(node.right);
+
+        // ML = min(L[0], L[1])
+        int mL12 = Math.min(L[0], L[1]);
+        int mR12 = Math.min(R[0], R[1]);
+
+        // State 0: This node has a camera
+        int d0 = 1 + Math.min(L[2], mL12) + Math.min(R[2], mR12);
+
+        // State 1: This node is covered by a child
+        int d1 = Math.min(L[0] + mR12, R[0] + mL12);
+
+        // State 2: Everything below is covered, node is NOT covered
+        int d2 = L[1] + R[1];
+
+        return new int[] { d0, d1, d2 };
+    }
+
 
 
     // V1
