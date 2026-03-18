@@ -118,6 +118,11 @@ public class MaximumDepthOfBinaryTree {
 
         int currDepth = 1 + Math.max(left, right);
 
+        /** NOTE !!
+         *
+         *  update maxDepth_0_0_0_1 as the bigger one from
+         *  (maxDepth_0_0_0_1, currDepth)
+         */
         // update using current node depth (NOT biggerDepth)
         maxDepth_0_0_0_1 = Math.max(maxDepth_0_0_0_1, currDepth);
 
@@ -127,7 +132,7 @@ public class MaximumDepthOfBinaryTree {
 
 
     // V0-0-1
-    // IDEA: DFS
+    // IDEA: DFS (TOP DOWN)
     /**
      * time = O(N)
      * space = O(H)
@@ -146,7 +151,7 @@ public class MaximumDepthOfBinaryTree {
     }
 
     // V0-0-2
-    // IDEA: DFS + global var + helper func (fixed by gpt)
+    // IDEA : DFS (BOTTOM UP) + global var + helper func (fixed by gpt)
     /**
      *  via the `depth` param in helper func,
      *  we can reuse it when get max depth
@@ -432,6 +437,7 @@ public class MaximumDepthOfBinaryTree {
     // https://leetcode.com/problems/maximum-depth-of-binary-tree/editorial/
     // only available in C++ (not in Java, Python)
 
+
     // V3
     // IDEA : Iteration
     // https://leetcode.com/problems/maximum-depth-of-binary-tree/editorial/
@@ -461,5 +467,8 @@ public class MaximumDepthOfBinaryTree {
         }
         return depth;
     }
+
+
+
 
 }
