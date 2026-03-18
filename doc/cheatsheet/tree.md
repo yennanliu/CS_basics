@@ -82,6 +82,159 @@ Trees can be efficiently represented using arrays, especially for complete binar
 
 <img src="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/tree_depth_vs_height.jpeg" width="500">
 
+##### Top-Down vs Bottom-Up DFS — Two Strategies for Tree Problems
+
+> Reference: [MaximumDepthOfBinaryTree.java](https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/Recursion/MaximumDepthOfBinaryTree.java)
+
+**Core Distinction:**
+- **Top-down**: Pass state **down** from parent to children via parameters. The answer accumulates during traversal (pre-order position).
+- **Bottom-up**: Collect results **up** from children to parent via return values. The answer is built after subtrees are solved (post-order position).
+
+```
+Top-Down (Pre-order)                Bottom-Up (Post-order)
+─────────────────────               ──────────────────────
+      1  ← start here                    1  ← combine here
+     / \  pass depth=1                  / \  return heights
+    2   3  depth=2                     2   3  left=1, right=1
+   / \     depth=3                    / \     left=2, right=0
+  4   5  → update global max        4   5  → return max+1
+```
+
+**Pattern 1: Top-Down (pass state down, pre-order)**
+
+The parent passes accumulated state (depth, path, max-so-far) to children. Typically uses a **global variable** or **output parameter** to collect the final answer.
+
+```java
+// LC 104 — Top-Down: pass depth down, update global max
+// 3 variants: (a) void helper + global var, (b) void helper + depth param, (c) return depth param
+
+// Variant A: void helper + global var (simplest top-down)
+int maxDepth = 0;
+
+public int maxDepth_topDown(TreeNode root) {
+    dfs(root, 1);       // start at depth 1
+    return maxDepth;
+}
+
+private void dfs(TreeNode root, int depth) {
+    if (root == null) return;
+
+    // Pre-order position: update answer with current state
+    maxDepth = Math.max(maxDepth, depth);
+
+    // Pass depth+1 DOWN to children
+    dfs(root.left, depth + 1);
+    dfs(root.right, depth + 1);
+}
+```
+
+```java
+// Variant B: return-based top-down (pass depth, return max)
+// No global variable needed
+private int getMaxDepth(TreeNode root, int depth) {
+    if (root == null) {
+        return depth - 1;  // went one level too deep
+    }
+    int leftDepth  = getMaxDepth(root.left, depth + 1);
+    int rightDepth = getMaxDepth(root.right, depth + 1);
+    return Math.max(leftDepth, rightDepth);
+}
+```
+
+**Pattern 2: Bottom-Up (collect results up, post-order)**
+
+Each node asks its children for their results, then combines them. The return value carries the answer upward. **No global variable needed.**
+
+```java
+// LC 104 — Bottom-Up: children return their depth, parent adds 1
+public int maxDepth_bottomUp(TreeNode root) {
+    if (root == null) return 0;
+
+    // Post-order: solve children FIRST
+    int leftDepth  = maxDepth_bottomUp(root.left);
+    int rightDepth = maxDepth_bottomUp(root.right);
+
+    // Combine: take max of children, add 1 for current node
+    return 1 + Math.max(leftDepth, rightDepth);
+}
+```
+
+**Comparison:**
+
+| Aspect | Top-Down | Bottom-Up |
+|--------|----------|-----------|
+| Direction | Root → Leaves (pre-order) | Leaves → Root (post-order) |
+| State passing | Via **parameters** (depth, path, max) | Via **return values** |
+| Global variable | Often needed | Usually not needed |
+| Return type of helper | Often `void` | Returns computed value |
+| Mental model | "What do I know so far?" | "What did my children find?" |
+| Code simplicity | More verbose (extra params) | More concise |
+
+**When to Use Which:**
+
+```
+Use TOP-DOWN when:
+  → You need to pass parent/ancestor info to children
+  → Path tracking: carry path, sum, or max-so-far downward
+  → Early termination: can stop when condition met at a node
+  → Examples: LC 112 (Path Sum), LC 129 (Sum Root to Leaf),
+              LC 1448 (Count Good Nodes), LC 257 (Binary Tree Paths)
+
+Use BOTTOM-UP when:
+  → Answer depends on BOTH children's results
+  → Need to compute subtree properties (height, size, balance)
+  → Validation: check property holds for entire subtree
+  → Examples: LC 104 (Max Depth), LC 110 (Balanced Tree),
+              LC 543 (Diameter), LC 124 (Max Path Sum),
+              LC 236 (LCA), LC 652 (Find Duplicate Subtrees)
+```
+
+**LC Problems by Strategy:**
+
+| LC # | Problem | Top-Down | Bottom-Up | Notes |
+|------|---------|:--------:|:---------:|-------|
+| 104 | Maximum Depth | Yes | Yes | Both work; bottom-up is simpler |
+| 111 | Minimum Depth | Yes | Yes | Bottom-up needs null-child guard |
+| 110 | Balanced Binary Tree | - | Yes | Must check subtree heights first |
+| 112 | Path Sum | Yes | - | Carry remaining sum downward |
+| 113 | Path Sum II | Yes | - | Top-down + backtracking |
+| 124 | Max Path Sum | - | Yes | Combine left+right at each node |
+| 129 | Sum Root to Leaf Numbers | Yes | - | Carry running number downward |
+| 236 | Lowest Common Ancestor | - | Yes | Find targets in subtrees first |
+| 257 | Binary Tree Paths | Yes | - | Carry path string downward |
+| 543 | Diameter of Binary Tree | - | Yes | Track max(left+right) globally |
+| 1448 | Count Good Nodes | Yes | - | Carry max-so-far downward |
+
+**Hybrid Pattern: Bottom-Up + Global Variable**
+
+Some problems use bottom-up return values to compute subtree info, but also maintain a global variable to track a cross-subtree answer (e.g., diameter, max path sum).
+
+```java
+// LC 543 — Diameter: bottom-up height + global max update
+int diameter = 0;
+
+public int diameterOfBinaryTree(TreeNode root) {
+    height(root);
+    return diameter;
+}
+
+private int height(TreeNode root) {
+    if (root == null) return 0;
+
+    int left  = height(root.left);   // bottom-up: get children's height
+    int right = height(root.right);
+
+    // Global update: diameter passes THROUGH this node
+    diameter = Math.max(diameter, left + right);
+
+    // Return value: height of subtree (for parent to use)
+    return 1 + Math.max(left, right);
+}
+```
+
+**Interview Tip:**
+> LC 104 (Max Depth) is the best problem to practice both strategies. Start with bottom-up (3 lines), then rewrite as top-down (global var + void helper). Understanding both unlocks the full tree problem toolkit.
+
 #### **Pattern 4: Tree Construction**
 - **Use Case**: Build trees from traversal arrays
 - **Examples**: LC 105 (Preorder + Inorder), LC 106 (Inorder + Postorder)
