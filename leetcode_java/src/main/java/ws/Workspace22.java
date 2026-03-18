@@ -3306,6 +3306,27 @@ public class Workspace22 {
     }
 
 
+    /**  NOTE !!.
+     *
+     *  state problem
+     *
+     *
+     *
+     * Coverage is not distance-based traversal, it’s:
+     *
+     * A camera covers:
+     *
+     * itself
+     *
+     * parent
+     *
+     * immediate children
+     *
+     * 👉 This is a state problem, not a distance problem.
+     *
+     *
+     *
+     */
     private void colorHelper(TreeNode root, int distFromCamapra){
         // ??? edge
         if(root == null){
