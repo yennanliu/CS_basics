@@ -186,7 +186,8 @@ Use BOTTOM-UP when:
   → Validation: check property holds for entire subtree
   → Examples: LC 104 (Max Depth), LC 110 (Balanced Tree),
               LC 543 (Diameter), LC 124 (Max Path Sum),
-              LC 236 (LCA), LC 652 (Find Duplicate Subtrees)
+              LC 236 (LCA), LC 652 (Find Duplicate Subtrees),
+              LC 968 (Binary Tree Cameras)
 ```
 
 **LC Problems by Strategy:**
@@ -203,6 +204,7 @@ Use BOTTOM-UP when:
 | 236 | Lowest Common Ancestor | - | Yes | Find targets in subtrees first |
 | 257 | Binary Tree Paths | Yes | - | Carry path string downward |
 | 543 | Diameter of Binary Tree | - | Yes | Track max(left+right) globally |
+| 968 | Binary Tree Cameras | - | Yes | Greedy 3-state: 0=uncovered, 1=camera, 2=covered |
 | 1448 | Count Good Nodes | Yes | - | Carry max-so-far downward |
 
 **Hybrid Pattern: Bottom-Up + Global Variable**
@@ -234,6 +236,103 @@ private int height(TreeNode root) {
 
 **Interview Tip:**
 > LC 104 (Max Depth) is the best problem to practice both strategies. Start with bottom-up (3 lines), then rewrite as top-down (global var + void helper). Understanding both unlocks the full tree problem toolkit.
+
+**Bottom-Up Greedy with Multi-State (LC 968 Binary Tree Cameras)**
+
+> Reference: [BinaryTreeCameras.java](https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/BinarySearchTree/BinaryTreeCameras.java)
+
+Some problems require each node to return a **state** (not a numeric value) to its parent, and the parent makes a **greedy decision** based on children's states. This is a distinct bottom-up pattern.
+
+**Core Idea — 3-State Greedy:**
+```
+State 0: NOT covered (needs a camera from parent)
+State 1: HAS a camera (covers parent, self, children)
+State 2: COVERED (by a child's camera, but has no camera itself)
+
+null nodes → return 2 (covered), so leaves are forced to be state 0 (uncovered),
+which forces their parents to place cameras — this is the greedy insight.
+```
+
+**Why bottom-up (post-order)?**
+- Leaves are the most "wasteful" place for cameras (they only cover 1 node upward)
+- By processing leaves first, we force cameras onto their parents (which cover 3 nodes)
+- This greedy strategy from bottom to top minimizes total cameras
+
+```java
+// LC 968 — Binary Tree Cameras: bottom-up greedy with 3 states
+int cameraCnt = 0;
+
+public int minCameraCover(TreeNode root) {
+    // If root itself is uncovered, it needs a camera too
+    if (dfs(root) == 0) {
+        cameraCnt++;
+    }
+    return cameraCnt;
+}
+
+private int dfs(TreeNode node) {
+    // null = covered (so leaves become uncovered → forces parent to place camera)
+    if (node == null) return 2;
+
+    int left = dfs(node.left);    // post-order: solve children first
+    int right = dfs(node.right);
+
+    // Rule 1: Any child uncovered → MUST place camera here
+    if (left == 0 || right == 0) {
+        cameraCnt++;
+        return 1;  // has camera
+    }
+
+    // Rule 2: Any child has camera → this node is covered
+    if (left == 1 || right == 1) {
+        return 2;  // covered
+    }
+
+    // Rule 3: Both children covered (no cameras) → this node is NOT covered
+    // Rely on parent to cover it (greedy: delay camera placement upward)
+    return 0;  // uncovered
+}
+```
+
+**Visual — Why greedy works bottom-up:**
+```
+        1 ← if uncovered, add camera here (special root check)
+       / \
+      2   3 ← children covered (state 2), no camera needed
+     / \
+    4   5 ← camera HERE (state 1), covers parent + children
+   / \
+  6   7 ← uncovered (state 0), forces parent to place camera
+
+Processing order (post-order): 6,7 → 4,5 → 2,3 → 1
+  node 6,7: null children return 2 → both children covered → return 0 (uncovered)
+  node 4: left=0 (uncovered!) → place camera → return 1
+  node 5: similar logic
+  node 2: left=1 (has camera) → return 2 (covered)
+  node 1: depends on children's states
+```
+
+**State transition rules (decision at each node):**
+
+| Left State | Right State | Decision | Return |
+|:----------:|:-----------:|----------|:------:|
+| 0 (uncovered) | any | Place camera | 1 |
+| any | 0 (uncovered) | Place camera | 1 |
+| 1 (camera) | any non-0 | Covered by child | 2 |
+| any non-0 | 1 (camera) | Covered by child | 2 |
+| 2 (covered) | 2 (covered) | Not covered, rely on parent | 0 |
+
+**Key insight — why `null → 2` (covered)?**
+If null returned 0 (uncovered), every leaf would be forced to have a camera — wasteful. By treating null as "covered", leaves become state 0 (uncovered), forcing their **parents** to place cameras, which is strictly better (covers 3 nodes vs 1).
+
+**Similar LC problems using bottom-up greedy with states:**
+
+| LC # | Problem | States | Greedy Insight |
+|------|---------|--------|----------------|
+| 968 | Binary Tree Cameras | 0/1/2 (uncovered/camera/covered) | Delay cameras upward, place at parents of leaves |
+| 337 | House Robber III | rob/skip per node | Max(rob current + skip children, skip current + best of children) |
+| 979 | Distribute Coins in Binary Tree | excess coins per subtree | Each edge transfer = 1 move; count |excess| bottom-up |
+| 1373 | Max Sum BST in Binary Tree | valid/invalid BST + sum | Bottom-up validate BST property + track max sum |
 
 #### **Pattern 4: Tree Construction**
 - **Use Case**: Build trees from traversal arrays
@@ -810,6 +909,7 @@ if (pathMap.get(key) == 2) {
 | Height computation                | `int` (height)     | —                  | Depth, balance, diameter           |
 | Subtree serialization + count     | `String` (serial)  | serialized string  | Duplicate subtrees (LC 652)        |
 | Subtree sum / DP                  | `int` (result)     | —                  | Max path sum, subtree sum (LC 124) |
+| Greedy multi-state                | `int` (state)      | —                  | Cameras, coloring, coverage (LC 968) |
 
 **Similar LC Problems using post-order + subtree serialization:**
 
@@ -911,6 +1011,7 @@ Rule: if you need the COMPLETE subtree structure in the key, use post-order.
 | 572   | Subtree of Another Tree              | Post-order serialization or recursive match                  |
 | 236   | Lowest Common Ancestor               | Post-order, return node when both targets found              |
 | 652   | Find Duplicate Subtrees              | Post-order + serialize subtree → `val,left,right` + HashMap |
+| 968   | Binary Tree Cameras                  | Post-order greedy, 3 states: uncovered/camera/covered        |
 
 **In-order DFS (BST / sorted order)**
 

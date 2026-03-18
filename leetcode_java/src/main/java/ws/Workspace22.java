@@ -3287,6 +3287,10 @@ public class Workspace22 {
      *
      */
     //  IDEA 1) DFS (in order ) ???
+    // NOTE !!!
+    // -> should use POST ORDER
+    // since we are trying to put camara from child ???
+    // This problem depends on children states, so you must process:
     int cameraCnt = 0;
     public int minCameraCover(TreeNode root) {
         // edge
