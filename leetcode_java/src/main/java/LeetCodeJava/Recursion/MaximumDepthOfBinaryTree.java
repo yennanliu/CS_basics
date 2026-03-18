@@ -79,10 +79,17 @@ public class MaximumDepthOfBinaryTree {
          *
          *  -> ONlY need to track/return `depth`, no need to track node itself
          */
-        int leftD = maxDepth(root.left) + 1;
-        int rightD = maxDepth(root.right) + 1;
+//        int leftD = maxDepth(root.left) + 1;
+//        int rightD = maxDepth(root.right) + 1;
+//
+//        return Math.max(leftD, rightD);
 
-        return Math.max(leftD, rightD);
+        // Recursive step: Get the depth of both subtrees
+        int leftDepth = maxDepth(root.left);
+        int rightDepth = maxDepth(root.right);
+
+        // The depth of the current node is 1 + the larger of the two
+        return Math.max(leftDepth, rightDepth) + 1;
     }
 
 
