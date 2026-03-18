@@ -90,8 +90,20 @@ jobs:
             }
           );
 
-          // Ensure all other GitHub links stay as GitHub links (don't transform them)
-          // This includes code files in leetcode_java, leetcode_python, etc.
+          // Convert relative code links (./leetcode_python/..., ./data_structure/..., etc.)
+          // to absolute GitHub URLs so they don't resolve to the deployed site
+          html = html.replace(
+            /href="\.\/([^"]+)"/g,
+            (match, relativePath) => {
+              // Check if it's a cheatsheet .md link that should stay internal
+              if (relativePath.startsWith('doc/cheatsheet/') && relativePath.endsWith('.md')) {
+                const baseName = relativePath.replace('doc/cheatsheet/', '').replace('.md', '');
+                return `href="${baseName}.html"`;
+              }
+              // All other relative paths → GitHub
+              return `href="https://github.com/yennanliu/CS_basics/blob/master/${relativePath}"`;
+            }
+          );
 
           return html;
         }
@@ -357,7 +369,17 @@ jobs:
           <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
           <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
           <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-          <script>document.addEventListener('DOMContentLoaded', function() { hljs.highlightAll(); });</script>
+          <script>document.addEventListener('DOMContentLoaded', function() {
+            hljs.highlightAll();
+            document.querySelectorAll('table').forEach(function(table) {
+              if (!table.parentElement.classList.contains('table-wrap')) {
+                var wrapper = document.createElement('div');
+                wrapper.className = 'table-wrap';
+                table.parentNode.insertBefore(wrapper, table);
+                wrapper.appendChild(table);
+              }
+            });
+          });</script>
         </head>
         <body>
           <nav class="navbar">
@@ -366,6 +388,9 @@ jobs:
                 <span class="nav-icon">💻</span>
                 <span class="nav-title">CS_basics</span>
               </div>
+              <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">
+                <span></span><span></span><span></span>
+              </button>
               <div class="nav-links">
                 <a href="${basePath}index.html" class="${currentPage === 'home' ? 'active' : ''}">Home</a>
                 <a href="${basePath}resources.html" class="${currentPage === 'resources' ? 'active' : ''}">Resources</a>
@@ -502,6 +527,10 @@ jobs:
           box-sizing: border-box;
         }
 
+        html, body {
+          overflow-x: hidden;
+        }
+
         :root {
           --primary-color: #111111;
           --secondary-color: #333333;
@@ -583,6 +612,26 @@ jobs:
           border-radius: 6px;
         }
 
+        /* Hamburger menu button (hidden on desktop) */
+        .nav-toggle {
+          display: none;
+          flex-direction: column;
+          gap: 4px;
+          background: none;
+          border: none;
+          cursor: pointer;
+          padding: 0.5rem;
+        }
+
+        .nav-toggle span {
+          display: block;
+          width: 22px;
+          height: 2px;
+          background: white;
+          border-radius: 1px;
+          transition: transform 0.2s;
+        }
+
         /* Container */
         .container {
           max-width: 960px;
@@ -662,6 +711,7 @@ jobs:
           font-size: 0.875em;
           color: #333;
           font-weight: 500;
+          word-break: break-word;
         }
 
         pre {
@@ -705,12 +755,20 @@ jobs:
           margin: 0.25rem;
         }
 
+        /* Table scroll wrapper for mobile */
+        .table-wrap {
+          overflow-x: auto;
+          -webkit-overflow-scrolling: touch;
+          margin: 1.5rem 0;
+        }
+
         /* Tables */
         table {
           width: 100%;
           border-collapse: collapse;
           margin: 1.5rem 0;
           font-size: 0.95rem;
+          min-width: 500px;
         }
 
         th, td {
@@ -818,9 +876,39 @@ jobs:
             padding: 1.5rem;
           }
 
+          .nav-toggle {
+            display: flex;
+          }
+
           .nav-links {
-            gap: 1rem;
-            font-size: 0.9rem;
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: linear-gradient(180deg, #1a1a1a 0%, #333333 100%);
+            flex-direction: column;
+            padding: 1rem 1.5rem;
+            gap: 0.25rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+          }
+
+          .nav-links.open {
+            display: flex;
+          }
+
+          .nav-links a {
+            padding: 0.6rem 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            font-size: 1rem;
+          }
+
+          .nav-links a:last-child {
+            border-bottom: none;
+          }
+
+          .navbar .container {
+            position: relative;
           }
 
           .github-link span {
@@ -837,6 +925,7 @@ jobs:
 
           pre {
             padding: 1rem;
+            font-size: 0.85rem;
           }
 
           table {
@@ -845,6 +934,57 @@ jobs:
 
           th, td {
             padding: 0.5rem;
+          }
+
+          .hero h1 {
+            font-size: 1.5rem;
+          }
+
+          .hero p {
+            font-size: 1rem;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .container {
+            padding: 0 0.75rem;
+          }
+
+          .content {
+            padding: 1rem;
+          }
+
+          .nav-brand {
+            font-size: 1.2rem;
+          }
+
+          .nav-icon {
+            font-size: 1.5rem;
+          }
+
+          h1 {
+            font-size: 1.4rem;
+          }
+
+          h2 {
+            font-size: 1.2rem;
+          }
+
+          h3 {
+            font-size: 1.05rem;
+          }
+
+          pre {
+            padding: 0.75rem;
+            font-size: 0.8rem;
+          }
+
+          table {
+            font-size: 0.75rem;
+          }
+
+          th, td {
+            padding: 0.35rem;
           }
         }
 
@@ -1277,6 +1417,7 @@ jobs:
           .cheatsheet-content pre {
             padding: 1rem;
             font-size: 0.825rem;
+            overflow-x: auto;
           }
 
           .cheatsheet-header h1 {
@@ -1323,6 +1464,44 @@ jobs:
           .cheatsheet-content table th,
           .cheatsheet-content table td {
             padding: 0.5rem;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .cheatsheet-content pre {
+            padding: 0.75rem;
+            font-size: 0.75rem;
+          }
+
+          .cheatsheet-header h1 {
+            font-size: 1.25rem;
+          }
+
+          .cheatsheet-content > h2 {
+            font-size: 1.15rem;
+          }
+
+          .cheatsheet-content h3 {
+            font-size: 1rem;
+          }
+
+          .cheatsheet-content > p,
+          .cheatsheet-content ul,
+          .cheatsheet-content ol {
+            font-size: 0.85rem;
+          }
+
+          .cheatsheet-content table {
+            font-size: 0.75rem;
+          }
+
+          .cheatsheet-content table th,
+          .cheatsheet-content table td {
+            padding: 0.35rem;
+          }
+
+          .toc {
+            padding: 0.75rem 1rem;
           }
         }
         EOFCSS

@@ -3197,9 +3197,45 @@ public class Workspace22 {
 
 
     // LC 129
+    // 10.58 - 11.08 am
+    /**
+     *
+     *  idea 1) pre-order DFS (path)
+     */
+    List<String> pathList99 = new ArrayList<>();
     public int sumNumbers(TreeNode root) {
+        // edge
+        if(root == null){
+            return 0;
+        }
 
-        return 0;
+        int res = 0;
+        for(String x: pathList99){
+            res += Integer.parseInt(x);
+        }
+
+        return res;
+    }
+
+    // idea 1) pre-order DFS (path)
+    private void pathHelper98(TreeNode root, String path){
+        // edge
+        if(root == null){
+            //return 0;
+            return;
+        }
+
+        // ??
+        path += root.val;
+
+        // ???
+        if(root.left == null && root.right == null){
+            pathList99.add(path);
+            return;
+        }
+
+        pathHelper98(root.left, path);
+        pathHelper98(root.right, path);
     }
 
 
