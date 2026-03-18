@@ -2993,37 +2993,85 @@ public class Workspace22 {
      *
      *
      */
-    //  ??
-    int maxDepth = 0;
+
+    // IDEA 1) DFS + TOP DOWN
+    public int maxDepth_99(TreeNode root) {
+        // edge
+        if(root == null){
+            return 0;
+        }
+
+        int _left = maxDepth_99(root.left);
+        int _right = maxDepth_99(root.right);
+
+        return Math.max(_left, _right) + 1;
+    }
+
+    // IDEA 2) DFS + BOTTOM UP
+    int myMaxDepth = 0;
     public int maxDepth(TreeNode root) {
         // edge
         if(root == null){
             return 0;
         }
 
-        depthHelper(root);
-        return maxDepth;
+        myHelper(root);
+        return myMaxDepth;
     }
 
-    private int depthHelper(TreeNode root){
-        // edge
+    // ???
+    private int myHelper(TreeNode root){
         if(root == null){
             return 0;
         }
 
-        // ???
-        int biggerDepth = Math.max(
-                depthHelper(root.left),
-                depthHelper(root.right));
+        int _left = myHelper(root.left);
+        int _right = myHelper(root.right);
 
         // ???
-        if(root.left == null && root.right == null){
-            maxDepth = Math.max(maxDepth, biggerDepth);
-        }
+        myMaxDepth = Math.max(_left, _right) + 1;
 
-        // ???
-        return 1 + biggerDepth;
+        return Math.max(_left, _right) + 1;
     }
+
+
+
+
+
+
+
+
+    //  ??
+//    int maxDepth = 0;
+//    public int maxDepth(TreeNode root) {
+//        // edge
+//        if(root == null){
+//            return 0;
+//        }
+//
+//        depthHelper(root);
+//        return maxDepth;
+//    }
+//
+//    private int depthHelper(TreeNode root){
+//        // edge
+//        if(root == null){
+//            return 0;
+//        }
+//
+//        // ???
+//        int biggerDepth = Math.max(
+//                depthHelper(root.left),
+//                depthHelper(root.right));
+//
+//        // ???
+//        if(root.left == null && root.right == null){
+//            maxDepth = Math.max(maxDepth, biggerDepth);
+//        }
+//
+//        // ???
+//        return 1 + biggerDepth;
+//    }
 
 
 
