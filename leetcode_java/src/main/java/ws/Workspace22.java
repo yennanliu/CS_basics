@@ -3248,6 +3248,12 @@ public class Workspace22 {
 
 
 
+    // LC 968
+    public int minCameraCover(TreeNode root) {
+
+        return 0;
+    }
+
 
 
 
