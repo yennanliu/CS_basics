@@ -56,9 +56,50 @@ import java.util.List;
 public class SumRootToLeafNumbers {
 
     // V0
-//    public int sumNumbers(TreeNode root) {
-//
-//    }
+    // IDEA: DFS (pre-order traverse) + PATH SUM (fixed by gpt)
+    List<String> pathList99 = new ArrayList<>();
+
+    public int sumNumbers(TreeNode root) {
+        // edge
+        if (root == null) {
+            return 0;
+        }
+
+        pathHelper98(root, "");
+        //System.out.println(">> pathList99 = " + pathList99);
+
+        int res = 0;
+        for (String x : pathList99) {
+            res += Integer.parseInt(x);
+        }
+
+        return res;
+    }
+
+    // idea 1) pre-order DFS (path)
+    // top down ???
+    private void pathHelper98(TreeNode root, String path) {
+        // edge
+        if (root == null) {
+            //return 0;
+            return;
+        }
+
+        // ??
+        path += root.val;
+
+        // ???
+        if (root.left == null && root.right == null) {
+            pathList99.add(path);
+            return;
+        }
+
+        pathHelper98(root.left, path);
+        pathHelper98(root.right, path);
+
+        // NO NEED to backtrack (undo)
+        // since string is primary type
+    }
 
     // V0-1
     // IDEA: DFS (pre-order traverse) + PATH SUM (fixed by gpt)
