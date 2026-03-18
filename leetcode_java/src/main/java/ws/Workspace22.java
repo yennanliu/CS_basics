@@ -2982,6 +2982,76 @@ public class Workspace22 {
     }
 
 
+    // LC 104
+    // 8.08 - 18 am
+    /**
+     * -> Given the root of a binary tree, return its maximum depth.
+     *
+     * ------
+     *
+     *  IDEA : DFS (pre order)
+     *
+     *
+     */
+    //  ??
+    int maxDepth = 0;
+    public int maxDepth(TreeNode root) {
+        // edge
+        if(root == null){
+            return 0;
+        }
+
+        depthHelper(root);
+        return maxDepth;
+    }
+
+    private int depthHelper(TreeNode root){
+        // edge
+        if(root == null){
+            return 0;
+        }
+
+        // ???
+        int biggerDepth = Math.max(
+                depthHelper(root.left),
+                depthHelper(root.right));
+
+        // ???
+        if(root.left == null && root.right == null){
+            maxDepth = Math.max(maxDepth, biggerDepth);
+        }
+
+        // ???
+        return 1 + biggerDepth;
+    }
+
+
+
+
+
+
+
+
+//    int globalMax = 0;
+//    int localMax = 0;
+//    // IDEA : DFS (pre order)
+//    public int maxDepth(TreeNode root) {
+////        if(root == null){
+////            return globalMax = Math;
+////        }
+//
+//        if(root.left == null && root.right == null){
+//            globalMax = Math.max(globalMax, localMax);
+//        }
+//
+//        maxDepth(root.left);
+//        maxDepth(root.right);
+//
+//
+//
+//        return globalMax;
+//    }
+
 
 
 

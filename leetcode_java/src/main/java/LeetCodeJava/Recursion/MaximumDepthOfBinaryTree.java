@@ -53,7 +53,11 @@ public class MaximumDepthOfBinaryTree {
      */
 
     // V0
-    // IDEA : DFS (RECURSIVE)
+    // IDEA : DFS (TOP DOWN) (gemini)
+    /** NOTE !!!
+     *
+     *  below is a `TOP DOWN` DFS
+     */
     /**
      * time = O(N)
      * space = O(H)
@@ -80,6 +84,40 @@ public class MaximumDepthOfBinaryTree {
 
         return Math.max(leftD, rightD);
     }
+
+
+    // V0-0-0-1
+    // IDEA : DFS (BOTTOM UP) (gemini)
+    /** NOTE !!!
+     *
+     *  below is a `BOTTOM UP` DFS
+     */
+    int maxDepth_0_0_0_1 = 0;
+
+    public int maxDepth_0_0_0_1(TreeNode root) {
+        if (root == null)
+            return 0;
+
+        depthHelper_0_0_0_1(root);
+        return maxDepth;
+    }
+
+    private int depthHelper_0_0_0_1(TreeNode root) {
+        if (root == null)
+            return 0;
+
+        int left = depthHelper_0_0_0_1(root.left);
+        int right = depthHelper_0_0_0_1(root.right);
+
+        int currDepth = 1 + Math.max(left, right);
+
+        // update using current node depth (NOT biggerDepth)
+        maxDepth_0_0_0_1 = Math.max(maxDepth_0_0_0_1, currDepth);
+
+        return currDepth;
+    }
+
+
 
     // V0-0-1
     // IDEA: DFS
