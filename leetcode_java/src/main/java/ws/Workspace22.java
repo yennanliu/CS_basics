@@ -3249,9 +3249,86 @@ public class Workspace22 {
 
 
     // LC 968
+    // 11.43 - 53 am
+    /**
+     *   ->
+     *   Return the `minimum` number of cameras
+     *   needed to monitor all nodes of the tree.
+     *
+     *   -> each camera at a node can monitor
+     *     its `parent`,
+     *     `itself`,
+     *     ` immediate children`.
+     *
+     *
+     *  -------------
+     *
+     *   IDEA 1) DFS
+     *
+     *    -> `color` op ???
+     *    ->  `in-order` traverse ???
+     *       - left -> root -> right
+     *       - so root is always in biddle
+     *       -> make sure use min camara ??
+     *       -> and color the parent, child as well within DFS
+     *
+     *
+     *
+     *
+     *   IDEA 2) DP ???
+     *
+     *   IDEA 3) BRUTE FORCE
+     *
+     *
+     *  -------------
+     *
+     *
+     *
+     *
+     */
+    //  IDEA 1) DFS (in order ) ???
+    int cameraCnt = 0;
     public int minCameraCover(TreeNode root) {
+        // edge
+        if(root == null){
+            return 0;
+        }
+        if(root.left == null && root.right == null){
+            return 1;
+        }
 
-        return 0;
+        colorHelper(root, 0);
+        return cameraCnt;
+    }
+
+
+    private void colorHelper(TreeNode root, int distFromCamapra){
+        // ??? edge
+        if(root == null){
+            return;
+        }
+
+        // ?? in-order dfs ??
+        colorHelper(root.left, distFromCamapra + 1);
+
+        // ???
+        if(root.val != -1 && distFromCamapra <= 1){
+            // color it
+            root.val = -1;
+            cameraCnt += 1;
+        }
+
+        colorHelper(root.right, distFromCamapra + 1);
+
+
+//        if(color != 0){
+//            // color
+//            cameraCnt += 1;
+//            color = 1;
+//        }
+
+
+
     }
 
 

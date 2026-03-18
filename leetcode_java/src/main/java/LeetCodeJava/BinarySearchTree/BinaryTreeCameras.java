@@ -45,6 +45,80 @@ public class BinaryTreeCameras {
 //
 //    }
 
+
+    // V0-1
+    // IDEA: BOTTOM UP DFS (fixed by gemini)
+    private int cameraCnt = 0;
+
+    public int minCameraCover_0_1(TreeNode root) {
+        // If the root returns 0, it means the root itself is not covered
+        if (dfs_0_1(root) == 0) {
+            cameraCnt++;
+        }
+        return cameraCnt;
+    }
+
+    private int dfs_0_1(TreeNode node) {
+        // Base case: null nodes are considered "covered" (State 2)
+        // so they don't force a camera on their parents (leaves).
+        if (node == null) {
+            return 2;
+        }
+
+        int left = dfs_0_1(node.left);
+        int right = dfs_0_1(node.right);
+
+        // 1. If any child is NOT covered, this node MUST have a camera.
+        if (left == 0 || right == 0) {
+            cameraCnt++;
+            return 1;
+        }
+
+        // 2. If any child HAS a camera, this node is now COVERED.
+        if (left == 1 || right == 1) {
+            return 2;
+        }
+
+        // 3. Otherwise (children are covered but have no cameras),
+        // this node is NOT covered and relies on its parent.
+        return 0;
+    }
+
+
+    // V0-2
+    // IDEA: post-order + 3 states + DFS (fixed by gpt)
+    int cameraCnt_0_2 = 0;
+
+    public int minCameraCover_0_2(TreeNode root) {
+        if (dfs_0_2(root) == 0) { // root not covered
+            cameraCnt_0_2++;
+        }
+        return cameraCnt_0_2;
+    }
+
+    private int dfs_0_2(TreeNode node) {
+        if (node == null)
+            return 2; // null = covered
+
+        int left = dfs_0_2(node.left);
+        int right = dfs_0_2(node.right);
+
+        // if any child is NOT covered → place camera here
+        if (left == 0 || right == 0) {
+            cameraCnt_0_2++;
+            return 1;
+        }
+
+        // if any child has camera → this node is covered
+        if (left == 1 || right == 1) {
+            return 2;
+        }
+
+        // otherwise, this node is NOT covered
+        return 0;
+    }
+
+
     // V1
     // IDEA: DP
     // https://leetcode.com/problems/binary-tree-cameras/editorial/
