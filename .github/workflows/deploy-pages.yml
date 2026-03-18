@@ -851,19 +851,39 @@ jobs:
           margin-top: 0.5rem;
         }
 
-        /* Anchor links */
-        .header-anchor {
-          opacity: 0;
-          transition: opacity 0.2s;
-          margin-left: -1.5rem;
-          padding-right: 0.5rem;
-          color: #999;
+        /* Heading anchor links - headerLink style wraps entire heading text */
+        h1 > a.header-anchor,
+        h2 > a.header-anchor,
+        h3 > a.header-anchor,
+        h4 > a.header-anchor {
+          color: inherit;
+          opacity: 1;
+          text-decoration: none;
+          margin-left: 0;
+          padding-right: 0;
         }
 
-        h2:hover .header-anchor,
-        h3:hover .header-anchor,
-        h4:hover .header-anchor {
+        h1 > a.header-anchor:hover,
+        h2 > a.header-anchor:hover,
+        h3 > a.header-anchor:hover,
+        h4 > a.header-anchor:hover {
+          text-decoration: underline;
+          text-underline-offset: 4px;
+        }
+
+        /* Cheatsheet heading anchor links */
+        .cheatsheet-content h2 > a.header-anchor,
+        .cheatsheet-content h3 > a.header-anchor,
+        .cheatsheet-content h4 > a.header-anchor {
+          color: inherit;
           opacity: 1;
+          text-decoration: none;
+        }
+
+        .cheatsheet-content h2 > a.header-anchor:hover,
+        .cheatsheet-content h3 > a.header-anchor:hover,
+        .cheatsheet-content h4 > a.header-anchor:hover {
+          text-decoration: underline;
         }
 
         /* Responsive */
