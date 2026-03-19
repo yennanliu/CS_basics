@@ -674,7 +674,60 @@ public class SplitBST {
         }
     }
 
-    // V2
+    // V2-1
+    // IDEA: ITERATIVE
+    // https://youtu.be/Qz_I0CqMy_Q?si=XmxkWyjJzRLa475f
+    public TreeNode[] splitBST_2_1(TreeNode root, int V) {
+        TreeNode pre = new TreeNode(-1), preP = pre;
+        TreeNode succ = new TreeNode(-1), succP = succ;
+        while (root != null) {
+            if (root.val > V) {
+                succP.left = root;
+                succP = succP.left;
+                root = root.left;
+                succP.left = null;
+            } else {
+                preP.right = root;
+                preP = preP.right;
+                root = root.right;
+                preP.right = null;
+            }
+        }
+        return new TreeNode[]{pre.right, succ.left};
+    }
+
+
+    // V2-1
+    // IDEA: RECURSIVE
+    // https://youtu.be/Qz_I0CqMy_Q?si=XmxkWyjJzRLa475f
+    /**
+     * // recursive:
+     * // 假设已處理好
+     * // splitBST root.left - [2], [3]
+     * // splitBST root.right - null, [6]
+     * // 把部分subres安插到root上，返回subres
+     * // T = O(h)
+     * // S = O(n)
+     *
+     */
+    public TreeNode[] splitBST_2_2(TreeNode root, int V) {
+        if (root == null) return new TreeNode[]{null, null};
+        TreeNode[] res;
+        if (root.val <= V) {
+            res = splitBST_2_2(root.right, V);
+            root.right = res[0];
+            res[0] = root;
+        } else {
+            res = splitBST_2_2(root.left, V);
+            root.left = res[1];
+            res[1] = root;
+        }
+        return res;
+    }
+
+    
+
+    // V3
     // IDEA : DFS (gpt)
     // TODO : validate
     /**
@@ -700,7 +753,7 @@ public class SplitBST {
      * time = O(H)
      * space = O(H)
      */
-    public TreeNode[] splitBST_2(TreeNode root, int V) {
+    public TreeNode[] splitBST_3(TreeNode root, int V) {
         // Base case: If the root is null, both subtrees are null
         if (root == null) {
             return new TreeNode[]{null, null};
@@ -712,7 +765,7 @@ public class SplitBST {
         // If the root's value is less than or equal to V
         if (root.val <= V) {
             // Recursively split the right subtree
-            TreeNode[] splitRight = splitBST_2(root.right, V);
+            TreeNode[] splitRight = splitBST_3(root.right, V);
 
             // Root becomes the head of the left subtree
             result[0] = root;
@@ -720,7 +773,7 @@ public class SplitBST {
             result[1] = splitRight[1]; // Right subtree from the split becomes the second result
         } else {
             // If root's value is greater than V, recursively split the left subtree
-            TreeNode[] splitLeft = splitBST_2(root.left, V);
+            TreeNode[] splitLeft = splitBST_3(root.left, V);
 
             // Root becomes the head of the right subtree
             result[1] = root;
@@ -732,7 +785,7 @@ public class SplitBST {
     }
 
 
-    // V3
+    // V4
     // https://www.cnblogs.com/grandyang/p/8993143.html
 
 
