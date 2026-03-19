@@ -45,15 +45,127 @@ import java.util.PriorityQueue;
 public class MinimumNumberOfRefuelingStops {
 
     // V0
-    // TODO : implement
     //    public int minRefuelStops(int target, int startFuel, int[][] stations) {
     //
     //    }
 
 
-    // V0-1
+  // V0-1
+  // IDEA: PQ (GPT)
+  /** CORE IDEA:
+   *
+   *
+   *    ## ✅ Correct Greedy Idea (Key Insight)  !!!!!
+   *
+   *    * Traverse stations in order
+   *    *  Keep a max heap of fuels from stations you've passed
+   *    *  When you **can’t move forward**, refuel using the largest fuel seen so far
+   *
+   *
+   *    
+   *
+   * ---
+   *
+   * Explanation:
+   *
+   *
+   * ## ❌ Problems in Your Code
+   *
+   * ### 1. Wrong PQ ordering
+   *
+   * You sort by **position descending**, but the correct greedy idea is:
+   *
+   * * Among **reachable stations**, pick the one with **max fuel**
+   *
+   * 👉 So PQ should be based on **fuel (max heap)**, not position.
+   *
+   * ---
+   *
+   * ### 2. Incorrect state updates
+   *
+   * ```java
+   * target += next[0];  // ❌ wrong
+   * startFuel = (next[1] + startFuel - next[0]); // ❌ confusing & incorrect
+   * ```
+   *
+   * * `target` should NEVER change
+   * * You don’t simulate position like this problem expects
+   *
+   * ---
+   *
+   * ### 3. Wrong overall idea
+   *
+   * You’re trying to:
+   *
+   * * jump to a "next station"
+   *
+   * But correct approach is:
+   *
+   * > Keep driving forward, and when you run out of fuel,
+   * refuel from the **best past station**
+   *
+   * ---
+   *
+   * ## ✅ Correct Greedy Idea (Key Insight)  !!!!!
+   *
+   * * Traverse stations in order
+   * * Keep a max heap of fuels from stations you've passed
+   * * When you **can’t move forward**, refuel using the largest fuel seen so far
+   *
+   *
+   * ---
+   *
+   * ## 🔥 Why This Works
+   *
+   * * You **delay refueling until necessary**
+   * * Always pick the **largest fuel among reachable stations**
+   * * This is a classic **greedy + max heap** pattern
+   *
+   * ---
+   *
+   * ## 🧠 Intuition Shortcut
+   *
+   * Think of it like:
+   *
+   * > “Drive as far as possible. When stuck, pick the best gas station you've already passed.”
+   *
+   * ---
+   *
+   */
+  public int minRefuelStops_0_1(int target, int startFuel, int[][] stations) {
+
+    // max heap (store fuels)
+    PriorityQueue<Integer> pq = new PriorityQueue<>((a, b) -> b - a);
+
+    int fuel = startFuel;
+    int i = 0;
+    int stops = 0;
+
+    while (fuel < target) {
+
+      // add all reachable stations
+      while (i < stations.length && stations[i][0] <= fuel) {
+        pq.add(stations[i][1]);
+        i++;
+      }
+
+      // no fuel available -> cannot proceed
+      if (pq.isEmpty())
+        return -1;
+
+      // refuel with the largest fuel
+      fuel += pq.poll();
+      stops++;
+    }
+
+    return stops;
+  }
+
+
+
+    // V0-2
     // IDEA: PQ (gemini)
-    public int minRefuelStops_0_1(int target, int startFuel, int[][] stations) {
+    public int minRefuelStops_0_2(int target, int startFuel, int[][] stations) {
         // Max-Heap to store fuel amounts of stations we have passed but haven't used yet
         PriorityQueue<Integer> maxFuelPq = new PriorityQueue<>(Collections.reverseOrder());
 
@@ -77,37 +189,6 @@ public class MinimumNumberOfRefuelingStops {
 
             // 3. Greedy Choice: Refuel from the station with the most fuel that we passed
             currentFuel += maxFuelPq.poll();
-            stops++;
-        }
-
-        return stops;
-    }
-
-    // V0-2
-    // IDEA: PQ (GPT)
-    public int minRefuelStops_0_2(int target, int startFuel, int[][] stations) {
-
-        // max heap (store fuels)
-        PriorityQueue<Integer> pq = new PriorityQueue<>((a, b) -> b - a);
-
-        int fuel = startFuel;
-        int i = 0;
-        int stops = 0;
-
-        while (fuel < target) {
-
-            // add all reachable stations
-            while (i < stations.length && stations[i][0] <= fuel) {
-                pq.add(stations[i][1]);
-                i++;
-            }
-
-            // no fuel available -> cannot proceed
-            if (pq.isEmpty())
-                return -1;
-
-            // refuel with the largest fuel
-            fuel += pq.poll();
             stops++;
         }
 
@@ -176,7 +257,7 @@ public class MinimumNumberOfRefuelingStops {
     }
 
 
-    
+
 
 
 }
