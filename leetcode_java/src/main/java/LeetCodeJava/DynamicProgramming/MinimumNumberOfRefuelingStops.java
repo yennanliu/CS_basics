@@ -62,7 +62,7 @@ public class MinimumNumberOfRefuelingStops {
    *    *  When you **can’t move forward**, refuel using the largest fuel seen so far
    *
    *
-   *    
+   *
    *
    * ---
    *
@@ -134,6 +134,11 @@ public class MinimumNumberOfRefuelingStops {
    */
   public int minRefuelStops_0_1(int target, int startFuel, int[][] stations) {
 
+    /** NOTE !!!
+     *
+     *  PQ ONLY tracks fuel,
+     *  it's a big PQ (big -> small)
+     */
     // max heap (store fuels)
     PriorityQueue<Integer> pq = new PriorityQueue<>((a, b) -> b - a);
 
@@ -141,18 +146,35 @@ public class MinimumNumberOfRefuelingStops {
     int i = 0;
     int stops = 0;
 
+    /** NOTE !!!
+     *
+     *   the while loop is active with below condition:
+     *
+     *     `fuel < target`
+     */
     while (fuel < target) {
 
+      /** NOTE !!!
+       *
+       *  we use below trick to keep adding `validated station`
+       *  to our PQ
+       */
       // add all reachable stations
       while (i < stations.length && stations[i][0] <= fuel) {
         pq.add(stations[i][1]);
         i++;
       }
 
+      // edge case
       // no fuel available -> cannot proceed
       if (pq.isEmpty())
         return -1;
 
+      /** NOTE !!!
+       *
+       *  we refuel with the largest fuel
+       *  and update stop cnt
+       */
       // refuel with the largest fuel
       fuel += pq.poll();
       stops++;
