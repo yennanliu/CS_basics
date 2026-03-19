@@ -60,6 +60,49 @@ public class SumOfDistancesInTree {
 
     // V0-1
     // IDEA: DFS (gemini)
+    /**  NOTE !!
+     *
+     * This is a classic `rerooting DP` template.
+     * Same pattern shows up in many tree problems.
+     *
+     */
+    /**
+     * In **LC 834 (Sum of Distances in Tree)**,
+     * a simple BFS/DFS from every node would take $O(N^2)$,
+     * which will **Time Limit Exceeded (TLE)** for $N = 3 \times 10^4$.
+     *
+     * To solve this in **$O(N)$**,
+     * we use a technique called **Re-rooting DP**. We perform two DFS passes:
+     *
+     *  - 1.  **Post-order (Bottom-Up)**:
+     *           Calculate the subtree size (`count[]`)
+     *           and the sum of distances for
+     *           one fixed root (node 0).
+     *
+     *  - 2.  **Pre-order (Top-Down)**:
+     *          Shift the root from a parent to its
+     *          child using a mathematical relationship
+     *          to update the total distance
+     *          sum for all other nodes.
+     *
+     * ---
+     *
+     * ### 🔍 The Mathematical "Magic"
+     * The core of the $O(N)$ solution is the formula used in `dfs2`. When you move the root from parent **u** to child **v**:
+     * 1.  **v's Subtree**: Every node in `v`'s subtree is now **one step closer** to the root. There are `count[v]` such nodes.
+     * 2.  **The Rest of the Tree**: Every node *not* in `v`'s subtree is now **one step farther** from the root. There are `n - count[v]` such nodes.
+     *
+     * $$ans[v] = ans[u] - count[v] + (n - count[v])$$
+     *
+     * ### 📊 Complexity Analysis
+     *
+     * | Metric | Complexity | Explanation |
+     * | :--- | :--- | :--- |
+     * | **Time** | **$O(N)$** | Two DFS passes. Each node and edge is visited a constant number of times. |
+     * | **Space** | **$O(N)$** | Storing the adjacency list, `ans` array, `count` array, and the recursion stack. |
+     *
+     *
+     */
     int[] ans;
     int[] count;
     List<Set<Integer>> adj;

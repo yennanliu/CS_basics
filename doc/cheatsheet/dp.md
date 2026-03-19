@@ -55,6 +55,16 @@ Step 4. get the result
 - **Pattern**: State at each node depends on children
 - **📚 Implementation**: Tree DP problems use DFS traversal for implementation. See **dfs.md Template 6 (Bottom-up DFS)** for the DFS traversal patterns used in tree DP solutions
 
+**Sub-patterns:**
+1. **Bottom-Up Tree DP** (standard)
+   - Post-order DFS: state at each node computed from children
+   - Examples: LC 337 (House Robber III), LC 968 (Binary Tree Cameras)
+2. **Re-rooting DP** (two-pass DFS)
+   - Compute answer for one root, then shift root to every other node in O(N)
+   - Pass 1 (Post-order): compute subtree sizes and base answer for root 0
+   - Pass 2 (Pre-order): re-root from parent to child using mathematical formula
+   - Examples: LC 834 (Sum of Distances in Tree), LC 2581 (Count Number of Possible Root Nodes)
+
 ### **Category 5: State Machine DP**
 - **Description**: Problems with multiple states and transitions
 - **Examples**: LC 714 (Stock with Fee), LC 309 (Stock with Cooldown), LC 122 (Stock II)
@@ -3850,6 +3860,219 @@ Result: max(dp) = 4
 LIS: [2, 3, 7, 101] or [2, 5, 7, 101] or others
 ```
 
+### 2-5) Sum of Distances in Tree (LC 834) — Re-rooting DP
+
+```java
+// java
+// LC 834
+// Reference: leetcode_java/src/main/java/LeetCodeJava/Tree/SumOfDistancesInTree.java
+
+/**
+ * Problem: Given an undirected tree with n nodes, return an array where
+ * answer[i] = sum of distances between node i and all other nodes.
+ *
+ * Example:
+ * Input: n = 6, edges = [[0,1],[0,2],[2,3],[2,4],[2,5]]
+ * Output: [8,12,6,10,10,10]
+ *
+ * WHY RE-ROOTING DP?
+ *
+ * A naive BFS/DFS from every node → O(N²), TLE for N = 3×10⁴.
+ * Re-rooting DP solves it in O(N) with two DFS passes.
+ *
+ * KEY INSIGHT (Re-rooting Formula):
+ *
+ *   When moving root from node u to its child v:
+ *     - count[v] nodes get 1 unit CLOSER  (they are in v's subtree)
+ *     - (N - count[v]) nodes get 1 unit FARTHER (they are outside v's subtree)
+ *
+ *   Therefore:
+ *     ans[v] = ans[u] - count[v] + (N - count[v])
+ *
+ * ALGORITHM:
+ *
+ *   Pass 1 — Post-order DFS (bottom-up):
+ *     For each node u, compute:
+ *       count[u] = size of u's subtree (including u)
+ *       ans[u]   = sum of distances from u to all nodes in u's subtree
+ *     After this pass, ans[root] is correct (total distance from root to all nodes).
+ *
+ *   Pass 2 — Pre-order DFS (top-down, re-root):
+ *     For each edge u→v, compute ans[v] from ans[u] using the formula above.
+ *     This propagates the correct answer to every node.
+ *
+ * Time:  O(N) — two DFS passes
+ * Space: O(N) — adjacency list + count[] + ans[]
+ */
+
+// V0-1: Re-rooting DP (clean implementation)
+int[] ans;
+int[] count;
+List<Set<Integer>> adj;
+int n;
+
+public int[] sumOfDistancesInTree(int n, int[][] edges) {
+    this.n = n;
+    ans = new int[n];
+    count = new int[n];
+    adj = new ArrayList<>();
+
+    for (int i = 0; i < n; i++)
+        adj.add(new HashSet<>());
+    for (int[] e : edges) {
+        adj.get(e[0]).add(e[1]);
+        adj.get(e[1]).add(e[0]);
+    }
+
+    // Pass 1: Post-order DFS → compute count[] and ans[0]
+    dfs1(0, -1);
+
+    // Pass 2: Pre-order DFS → re-root to compute all ans[i]
+    dfs2(0, -1);
+
+    return ans;
+}
+
+// Post-order: count subtree sizes, accumulate distances for root
+private void dfs1(int u, int parent) {
+    count[u] = 1;
+    for (int v : adj.get(u)) {
+        if (v == parent) continue;
+        dfs1(v, u);
+        count[u] += count[v];
+        // Distance from u to all nodes in v's subtree
+        // = (dist from v to its subtree) + (number of nodes in v's subtree)
+        ans[u] += ans[v] + count[v];
+    }
+}
+
+// Pre-order: shift root from parent u to child v
+private void dfs2(int u, int parent) {
+    for (int v : adj.get(u)) {
+        if (v == parent) continue;
+        // Re-rooting formula:
+        // count[v] nodes get closer, (n - count[v]) nodes get farther
+        ans[v] = ans[u] - count[v] + (n - count[v]);
+        dfs2(v, u);
+    }
+}
+
+/**
+ * STEP-BY-STEP EXAMPLE:
+ *
+ *        0
+ *       / \
+ *      1   2
+ *         /|\
+ *        3  4  5
+ *
+ * n = 6, edges = [[0,1],[0,2],[2,3],[2,4],[2,5]]
+ *
+ * Pass 1 (Post-order, root=0):
+ *   count = [6, 1, 4, 1, 1, 1]
+ *   ans   = [8, 0, 3, 0, 0, 0]   ← only ans[0]=8 is the full answer
+ *
+ *   ans[2] = ans[3]+count[3] + ans[4]+count[4] + ans[5]+count[5]
+ *          = 0+1 + 0+1 + 0+1 = 3
+ *   ans[0] = ans[1]+count[1] + ans[2]+count[2]
+ *          = 0+1 + 3+4 = 8 ✓ (matches expected output)
+ *
+ * Pass 2 (Pre-order, re-root):
+ *   ans[1] = ans[0] - count[1] + (6 - count[1]) = 8 - 1 + 5 = 12 ✓
+ *   ans[2] = ans[0] - count[2] + (6 - count[2]) = 8 - 4 + 2 = 6  ✓
+ *   ans[3] = ans[2] - count[3] + (6 - count[3]) = 6 - 1 + 5 = 10 ✓
+ *   ans[4] = ans[2] - count[4] + (6 - count[4]) = 6 - 1 + 5 = 10 ✓
+ *   ans[5] = ans[2] - count[5] + (6 - count[5]) = 6 - 1 + 5 = 10 ✓
+ *
+ * Final: [8, 12, 6, 10, 10, 10] ✓
+ */
+```
+
+```python
+# python
+# LC 834 Sum of Distances in Tree
+# Re-rooting DP template
+
+# V0
+# IDEA: Re-rooting DP (two-pass DFS)
+class Solution:
+    def sumOfDistancesInTree(self, n, edges):
+        adj = [[] for _ in range(n)]
+        for u, v in edges:
+            adj[u].append(v)
+            adj[v].append(u)
+
+        count = [1] * n  # subtree size
+        ans = [0] * n
+
+        # Pass 1: Post-order DFS (iterative to avoid recursion limit)
+        # Compute count[] and ans[0]
+        order = []
+        visited = [False] * n
+        parent = [-1] * n
+        stack = [0]
+        visited[0] = True
+        while stack:
+            u = stack.pop()
+            order.append(u)
+            for v in adj[u]:
+                if not visited[v]:
+                    visited[v] = True
+                    parent[v] = u
+                    stack.append(v)
+
+        # Process in reverse order (post-order)
+        for u in reversed(order):
+            for v in adj[u]:
+                if v == parent[u]:
+                    continue
+                count[u] += count[v]
+                ans[u] += ans[v] + count[v]
+
+        # Pass 2: Pre-order DFS (re-root)
+        for u in order:
+            for v in adj[u]:
+                if v == parent[u]:
+                    continue
+                ans[v] = ans[u] - count[v] + (n - count[v])
+
+        return ans
+```
+
+#### Re-rooting DP Template (General)
+
+```java
+/**
+ * RE-ROOTING DP TEMPLATE
+ *
+ * Use when: "compute some aggregate for EVERY node as root" on a tree
+ *
+ * Pattern:
+ *   1. Post-order DFS: compute answer for one fixed root (node 0)
+ *   2. Pre-order DFS: re-root from parent → child using a transition formula
+ *
+ * The transition formula depends on the problem:
+ *   LC 834: ans[v] = ans[u] - count[v] + (n - count[v])
+ *   General: ans[child] = f(ans[parent], subtree_info[child], n)
+ *
+ * Time:  O(N)
+ * Space: O(N)
+ *
+ * SIMILAR PROBLEMS:
+ * | Problem                                  | LC #  | Re-rooting Formula / Key Idea                    |
+ * |------------------------------------------|-------|--------------------------------------------------|
+ * | Sum of Distances in Tree                 | 834   | ans[v] = ans[u] - count[v] + (n - count[v])     |
+ * | Count Number of Possible Root Nodes      | 2581  | Track "good" edges, adjust count when re-rooting |
+ * | Minimum Edge Weight Equilibrium Queries   | 2846  | Re-root with edge frequency tracking             |
+ * | Sum of Prefix Scores of Strings (on Trie)| 2416  | Similar two-pass idea on trie structure           |
+ *
+ * WHEN TO SUSPECT RE-ROOTING:
+ * - "For every node, compute ..." on a tree
+ * - Naive per-node DFS/BFS gives O(N²) → need O(N)
+ * - Answer for child can be derived from parent's answer
+ */
+```
+
 ## Decision Framework
 
 ### Pattern Selection Strategy
@@ -4082,8 +4305,11 @@ START: What type of problem are you solving?
 │
 ├─ Working with TREE structures?
 │  │
-│  └─ State at node depends on children → Category 4 (Tree DP)
-│                                          Examples: LC 337, 968, 124
+│  ├─ State at node depends on children → Category 4 (Tree DP)
+│  │                                       Examples: LC 337, 968, 124
+│  │
+│  └─ "For every node, compute ..." → Re-rooting DP (two-pass DFS)
+│                                       Examples: LC 834, 2581
 │
 ├─ Working with STRINGS?
 │  │
@@ -4116,6 +4342,7 @@ START: What type of problem are you solving?
 | **Square/Rectangle** | "maximal square", "largest rectangle" | Grid DP | LC 221, 85 |
 | **Interval Problems** | "burst balloons", "merge stones", "palindrome partition" | Interval DP | LC 312, 1000, 516 |
 | **Tree Problems** | "house robber on tree", "tree cameras" | Tree DP | LC 337, 968 |
+| **Tree Re-rooting** | "for every node compute", "sum of distances" | Re-rooting DP | LC 834, 2581 |
 | **Stock Trading** | "buy and sell stock", "transaction", "cooldown" | State Machine | LC 122, 309, 714 |
 | **Knapsack (0/1)** | "subset sum", "partition", "target sum" | Knapsack DP | LC 416, 494 |
 | **Knapsack (Unbounded)** | "coin change", "unlimited supply" | Knapsack DP | LC 322, 518 |
@@ -4146,6 +4373,7 @@ START: What type of problem are you solving?
 - "binary tree", "tree structure"
 - "each node", "children", "parent"
 - "rob houses on tree", "cameras on tree"
+- "for every node compute", "sum of distances" → Re-rooting DP (LC 834)
 
 **State transition keywords** → Category 5 (State Machine DP)
 - "buy and sell stock"
@@ -4225,7 +4453,7 @@ START: What type of problem are you solving?
 - **Interval DP**: Remember to iterate length from small to large
 - **Knapsack**: 0/1 requires reverse iteration for space optimization
 - **State Machine**: Draw state transition diagram before coding
-- **Tree DP**: Use bottom-up DFS (postorder traversal)
+- **Tree DP**: Use bottom-up DFS (postorder traversal); for "every node as root" problems, use Re-rooting DP (two-pass DFS, LC 834)
 - **State Compression**: Check if n ≤ 20 (2^20 states is feasible)
 - **String DP**: Define dp[i][j] carefully (length vs index)
 
