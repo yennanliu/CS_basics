@@ -1691,7 +1691,156 @@ public int maxPerformance(int n, int[] speed, int[] efficiency, int k) {
  */
 ```
 
-### 2-14) Minimum Number of Visited Cells in a Grid
+### 2-14) Minimum Number of Refueling Stops
+
+```java
+// java
+// LC 871
+// Reference: leetcode_java/src/main/java/LeetCodeJava/DynamicProgramming/MinimumNumberOfRefuelingStops.java
+
+/**
+ * Problem: Find minimum refueling stops to reach target
+ *
+ * A car starts with startFuel and drives toward a target.
+ * Gas stations along the way have [position, fuel].
+ * Return minimum stops to reach target, or -1 if impossible.
+ *
+ * Example:
+ * Input: target = 100, startFuel = 10, stations = [[10,60],[20,30],[30,30],[60,40]]
+ * Output: 2
+ *
+ * Constraints:
+ * - 1 <= target, startFuel <= 10^9
+ * - 0 <= stations.length <= 500
+ */
+
+// APPROACH 1: GREEDY + MAX HEAP
+/**
+ * KEY INSIGHT:
+ *
+ * "Drive as far as possible. When stuck, pick the best gas station you've already passed."
+ *
+ * 1. Traverse stations in order
+ * 2. Keep a MAX HEAP of fuels from stations you've passed
+ * 3. When you CAN'T move forward, refuel using the largest fuel seen so far
+ *
+ * Why this works:
+ * - You DELAY refueling until necessary
+ * - Always pick the LARGEST fuel among reachable stations
+ * - This is a classic greedy + max heap pattern
+ *
+ * Time: O(N log N) - each station enters/exits heap once
+ * Space: O(N) - for the heap
+ */
+public int minRefuelStops_heap(int target, int startFuel, int[][] stations) {
+    // Max heap (store fuels from passed stations)
+    PriorityQueue<Integer> pq = new PriorityQueue<>((a, b) -> b - a);
+
+    int fuel = startFuel;
+    int i = 0;
+    int stops = 0;
+
+    while (fuel < target) {
+        // Add all reachable stations' fuel to heap
+        while (i < stations.length && stations[i][0] <= fuel) {
+            pq.add(stations[i][1]);
+            i++;
+        }
+
+        // No fuel available -> cannot proceed
+        if (pq.isEmpty())
+            return -1;
+
+        // Greedy: refuel with the largest fuel available
+        fuel += pq.poll();
+        stops++;
+    }
+
+    return stops;
+}
+
+// APPROACH 2: GREEDY + MAX HEAP (Iteration style)
+/**
+ * Alternative iteration: loop through stations, refuel when tank < 0
+ *
+ * Time: O(N log N)
+ * Space: O(N)
+ */
+public int minRefuelStops_heap_v2(int target, int tank, int[][] stations) {
+    PriorityQueue<Integer> pq = new PriorityQueue<>(Collections.reverseOrder());
+    int ans = 0, prev = 0;
+
+    for (int[] station : stations) {
+        int location = station[0];
+        int capacity = station[1];
+        tank -= location - prev;
+
+        // Must refuel from past stations when tank < 0
+        while (!pq.isEmpty() && tank < 0) {
+            tank += pq.poll();
+            ans++;
+        }
+
+        if (tank < 0) return -1;
+        pq.offer(capacity);
+        prev = location;
+    }
+
+    // Handle final stretch to target
+    tank -= target - prev;
+    while (!pq.isEmpty() && tank < 0) {
+        tank += pq.poll();
+        ans++;
+    }
+
+    return tank < 0 ? -1 : ans;
+}
+
+// APPROACH 3: DP
+/**
+ * dp[t] = max distance reachable with exactly t refueling stops
+ *
+ * For each station i, update dp[t+1] if dp[t] >= station position
+ *
+ * Time: O(N²)
+ * Space: O(N)
+ */
+public int minRefuelStops_dp(int target, int startFuel, int[][] stations) {
+    int N = stations.length;
+    long[] dp = new long[N + 1];
+    dp[0] = startFuel;
+
+    for (int i = 0; i < N; ++i)
+        for (int t = i; t >= 0; --t)
+            if (dp[t] >= stations[i][0])
+                dp[t + 1] = Math.max(dp[t + 1], dp[t] + (long) stations[i][1]);
+
+    for (int i = 0; i <= N; ++i)
+        if (dp[i] >= target)
+            return i;
+
+    return -1;
+}
+
+/**
+ * WHY GREEDY + MAX HEAP IS OPTIMAL:
+ *
+ * - DP approach is O(N²) which is slower
+ * - Greedy + heap is O(N log N) — each station pushed/popped at most once
+ * - The greedy choice (largest fuel first) is provably optimal:
+ *   choosing any smaller fuel would only require more stops
+ *
+ * COMMON MISTAKE:
+ * - Sorting by position (already sorted in input!)
+ * - Trying to pick the "nearest" station instead of "most fuel"
+ * - Modifying target or confusing position with remaining fuel
+ *
+ * Pattern: Greedy + Max Heap (delayed decision-making)
+ * Similar to: LC 1353 (Max Events), LC 630 (Course Schedule III)
+ */
+```
+
+### 2-15) Minimum Number of Visited Cells in a Grid
 
 ```java
 // java
@@ -1895,6 +2044,7 @@ public int minimumVisitedCells(int[][] grid) {
 | Course Schedule III | 630 | Greedy + max heap | Hard | Universal Heap |
 | Meeting Rooms II | 253 | Min heap by end time | Medium | Universal Heap |
 | Car Pooling | 1094 | Heap by drop-off time | Medium | Universal Heap |
+| Minimum Number of Refueling Stops | 871 | Greedy + max heap | Hard | Universal Heap |
 | Minimum Cost to Hire K Workers | 857 | Heap + greedy | Hard | Top K Frequency |
 
 #### **Pattern 6: Data Stream Problems**
@@ -1914,6 +2064,7 @@ public int minimumVisitedCells(int[][] grid) {
 | Minimum Cost to Connect Sticks | 1167 | Greedy + min heap | Medium | Universal Heap |
 | Last Stone Weight | 1046 | Max heap simulation | Easy | Universal Heap |
 | Maximum Performance of Team | 1383 | Sort + heap greedy | Hard | Top K Frequency |
+| Minimum Number of Refueling Stops | 871 | Greedy + max heap | Hard | Universal Heap |
 | Minimum Number of Visited Cells | 2617 | DP + per-row/col PQ + lazy deletion | Hard | Grid Range Jumps |
 
 ### Heap + Other Data Structure Combos
