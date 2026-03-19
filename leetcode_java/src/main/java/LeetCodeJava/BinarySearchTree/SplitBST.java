@@ -677,6 +677,19 @@ public class SplitBST {
     // V2-1
     // IDEA: ITERATIVE
     // https://youtu.be/Qz_I0CqMy_Q?si=XmxkWyjJzRLa475f
+    /**  IDEA:
+     *
+     *  1. setup 2 dummy nodes
+     *  2. traverse nodes via `4 -> 2 -> 3 `  way
+     *      - root -> left -> right ???
+     *
+     *  3. `cut tree`
+     *     - via remove `root pointer`
+     *
+     *  // T = O(h)
+     *  // S = O(n)
+     *
+     */
     public TreeNode[] splitBST_2_1(TreeNode root, int V) {
         TreeNode pre = new TreeNode(-1), preP = pre;
         TreeNode succ = new TreeNode(-1), succP = succ;
@@ -701,6 +714,8 @@ public class SplitBST {
     // IDEA: RECURSIVE
     // https://youtu.be/Qz_I0CqMy_Q?si=XmxkWyjJzRLa475f
     /**
+     *  IDEA:
+     *
      * // recursive:
      * // 假设已處理好
      * // splitBST root.left - [2], [3]
@@ -725,7 +740,7 @@ public class SplitBST {
         return res;
     }
 
-    
+
 
     // V3
     // IDEA : DFS (gpt)
