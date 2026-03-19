@@ -57,7 +57,123 @@ public class SumOfDistancesInTree {
 //
 //    }
 
+
+    // V0-1
+    // IDEA: DFS (gemini)
+    int[] ans;
+    int[] count;
+    List<Set<Integer>> adj;
+    int n;
+
+    public int[] sumOfDistancesInTree(int n, int[][] edges) {
+        this.n = n;
+        ans = new int[n];
+        count = new int[n];
+        adj = new ArrayList<>();
+
+        for (int i = 0; i < n; i++)
+            adj.add(new HashSet<>());
+        for (int[] e : edges) {
+            adj.get(e[0]).add(e[1]);
+            adj.get(e[1]).add(e[0]);
+        }
+
+        // Pass 1: Post-order DFS to get count and base ans[0]
+        dfs1_0_1(0, -1);
+
+        // Pass 2: Pre-order DFS to re-root and find all ans[i]
+        dfs2_0_1(0, -1);
+
+        return ans;
+    }
+
+    private void dfs1_0_1(int u, int p) {
+        count[u] = 1;
+        for (int v : adj.get(u)) {
+            if (v == p)
+                continue;
+            dfs1_0_1(v, u);
+            count[u] += count[v];
+            // Distance from u to all nodes in v's subtree
+            // is (dist from v to its subtree) + (number of nodes in v's subtree)
+            ans[u] += ans[v] + count[v];
+        }
+    }
+
+    private void dfs2_0_1(int u, int p) {
+        for (int v : adj.get(u)) {
+            if (v == p)
+                continue;
+            // Mathematical Re-rooting Formula:
+            // When moving root from u to v:
+            // - count[v] nodes get 1 unit closer to the new root.
+            // - (n - count[v]) nodes get 1 unit farther away.
+            ans[v] = ans[u] - count[v] + (n - count[v]);
+            dfs2_0_1(v, u);
+        }
+    }
+
+
+
+    // V0-2
+    // IDEA: DFS (GPT)
+//    int[] res;
+//    int[] count;
+//    List<Set<Integer>> graph;
+//    int N;
+//
+//    public int[] sumOfDistancesInTree(int n, int[][] edges) {
+//        N = n;
+//        res = new int[n];
+//        count = new int[n];
+//        graph = new ArrayList<>();
+//
+//        for (int i = 0; i < n; i++) {
+//            graph.add(new HashSet<>());
+//        }
+//
+//        for (int[] e : edges) {
+//            graph.get(e[0]).add(e[1]);
+//            graph.get(e[1]).add(e[0]);
+//        }
+//
+//        dfs1(0, -1); // post-order
+//        dfs2(0, -1); // pre-order (reroot)
+//
+//        return res;
+//    }
+//
+//    // Post-order: compute count[] and res[0]
+//    private void dfs1(int node, int parent) {
+//        count[node] = 1;
+//
+//        for (int nei : graph.get(node)) {
+//            if (nei == parent)
+//                continue;
+//
+//            dfs1(nei, node);
+//            count[node] += count[nei];
+//            res[node] += res[nei] + count[nei];
+//        }
+//    }
+//
+//    // Pre-order: reroot to compute all res[]
+//    private void dfs2(int node, int parent) {
+//        for (int nei : graph.get(node)) {
+//            if (nei == parent)
+//                continue;
+//
+//            // move root from node -> nei
+//            res[nei] = res[node] - count[nei] + (N - count[nei]);
+//
+//            dfs2(nei, node);
+//        }
+//    }
+
+
+
     // V1
+
 
     // V2
     // https://leetcode.com/problems/sum-of-distances-in-tree/solutions/885637/java-solution-code-photo-explaination-by-gygk/
