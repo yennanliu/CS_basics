@@ -50,6 +50,13 @@ public class LongestHappyString {
 
     // V0-0-1
     // IDEA: CUSTOM CLASS + PQ (gpt)
+    /** NOTE !!!
+     *
+     *   ONLY 2 cases below:
+     *
+     *   1. if adding this char causes 3 consecutive
+     *   2. else (can add cur char)
+     */
     /** NOTE !!! we define custom class to trace both val and cnt */
     class ValCnt {
         char val;
@@ -93,7 +100,10 @@ public class LongestHappyString {
                     && sb.charAt(len - 1) == first.val
                     && sb.charAt(len - 2) == first.val) {
 
-                /** NOTE !!! edge case */
+                /** NOTE !!!
+                 *
+                 *  edge case 
+                 */
                 if (pq.isEmpty()){
                     break;
                 }
