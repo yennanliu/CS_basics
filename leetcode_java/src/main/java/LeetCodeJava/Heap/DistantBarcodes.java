@@ -39,6 +39,64 @@ public class DistantBarcodes {
 //
 //    }
 
+    // V0-0-1
+    // IDEA: PQ + CUSTOM CLASS (fixed by gpt)
+    class ValCnt2 {
+        int val;
+        int cnt;
+
+        ValCnt2(int val, int cnt) {
+            this.val = val;
+            this.cnt = cnt;
+        }
+    }
+
+    public int[] rearrangeBarcodes_0_0_1(int[] barcodes) {
+
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int x : barcodes) {
+            map.put(x, map.getOrDefault(x, 0) + 1);
+        }
+
+        PriorityQueue<ValCnt2> pq = new PriorityQueue<>(
+                (a, b) -> b.cnt - a.cnt);
+
+        for (int k : map.keySet()) {
+            pq.add(new ValCnt2(k, map.get(k)));
+        }
+
+        int[] res = new int[barcodes.length];
+        int i = 0;
+
+        while (!pq.isEmpty()) {
+            ValCnt2 first = pq.poll();
+
+            // ✅ compare with previous element
+            if (i > 0 && res[i - 1] == first.val) {
+                ValCnt2 second = pq.poll();
+
+                res[i] = second.val;
+                second.cnt--;
+
+                if (second.cnt > 0)
+                    pq.add(second);
+
+                pq.add(first);
+            } else {
+                res[i] = first.val;
+                first.cnt--;
+
+                if (first.cnt > 0)
+                    pq.add(first);
+            }
+
+            i++;
+        }
+
+        return res;
+    }
+
+
     // V0-1
     // IDEA: PQ, LC 767 (fixed by gpt)
     /**
@@ -180,6 +238,56 @@ public class DistantBarcodes {
         return result;
     }
 
+
+    // V0-3
+    // IDEA: Interleaving (gemini)
+    /**
+     * Since we only care about adjacent elements,
+     * we can fill the even indices (0, 2, 4...)
+     * first with the most frequent element, then fill the rest.
+     * This is faster and doesn't require a Heap.
+     */
+    public int[] rearrangeBarcodes_0_3(int[] barcodes) {
+        int n = barcodes.length;
+        Map<Integer, Integer> map = new HashMap<>();
+        int maxKey = 0, maxCount = 0;
+
+        for (int b : barcodes) {
+            int count = map.getOrDefault(b, 0) + 1;
+            map.put(b, count);
+            if (count > maxCount) {
+                maxCount = count;
+                maxKey = b;
+            }
+        }
+
+        int[] res = new int[n];
+        int idx = 0;
+
+        // 1. Fill the most frequent element first at even positions
+        map.remove(maxKey);
+        while (maxCount-- > 0) {
+            if (idx >= n)
+                idx = 1; // Start filling odd positions if even is full
+            res[idx] = maxKey;
+            idx += 2;
+        }
+
+        // 2. Fill the rest of the elements
+        for (int key : map.keySet()) {
+            int count = map.get(key);
+            while (count-- > 0) {
+                if (idx >= n)
+                    idx = 1; // Switch to odd positions
+                res[idx] = key;
+                idx += 2;
+            }
+        }
+
+        return res;
+    }
+
+
     // V1
     // IDEA: SORT + DOUBLE LOOP
     // https://leetcode.ca/2018-10-19-1054-Distant-Barcodes/
@@ -300,6 +408,7 @@ public class DistantBarcodes {
 
         return res;
     }
+
 
 
 
