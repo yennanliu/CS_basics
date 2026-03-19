@@ -1,6 +1,6 @@
 # Progress
 
-# 2026-03-19
+# 2026-03-20
 
 - weekly video
 - cheatsheet (LC examples)
@@ -190,6 +190,14 @@
 			- 358
 		- gemini
 			- 984
+	- Backtracking (pass)
+	- Tries (pass)
+	- Graphs
+	- LC 463
+		- gpt
+			- 733,200,695,463,1254,1020,130,694,1905,417,827,329,407,
+		- gemini
+			- 892
 
 	- todo (20260308)
 		- 1109,41,849
