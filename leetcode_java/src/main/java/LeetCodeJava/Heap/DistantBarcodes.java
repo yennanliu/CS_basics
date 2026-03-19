@@ -40,7 +40,7 @@ public class DistantBarcodes {
 //    }
 
     // V0-0-1
-    // IDEA: PQ + CUSTOM CLASS (fixed by gpt)
+    // IDEA: PQ + CUSTOM CLASS + LC 1405 (fixed by gpt)
     class ValCnt2 {
         int val;
         int cnt;
@@ -68,9 +68,25 @@ public class DistantBarcodes {
         int[] res = new int[barcodes.length];
         int i = 0;
 
+
+        /**  NOTE !!!
+         *
+         *   ONLY 2 cases
+         *
+         *   case 1. prev element == cur element
+         *   case 2. else
+         */
         while (!pq.isEmpty()) {
             ValCnt2 first = pq.poll();
 
+            /** NOTE !!!
+             *
+             *  ONLY compare with prev element when
+             *   i > 0
+             *
+             *   -> so we DON'T have `out of range` index error
+             */
+            // case 1. prev element == cur element
             // ✅ compare with previous element
             if (i > 0 && res[i - 1] == first.val) {
                 ValCnt2 second = pq.poll();
@@ -82,7 +98,9 @@ public class DistantBarcodes {
                     pq.add(second);
 
                 pq.add(first);
-            } else {
+            }
+            // case 2. else
+            else {
                 res[i] = first.val;
                 first.cnt--;
 
