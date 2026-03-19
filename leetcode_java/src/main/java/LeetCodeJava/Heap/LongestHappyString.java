@@ -102,7 +102,7 @@ public class LongestHappyString {
 
                 /** NOTE !!!
                  *
-                 *  edge case 
+                 *  edge case
                  */
                 if (pq.isEmpty()){
                     break;
