@@ -44,67 +44,139 @@ import java.util.PriorityQueue;
  */
 public class MinimumNumberOfRefuelingStops {
 
-  // V0
-  // TODO : implement
-  //    public int minRefuelStops(int target, int startFuel, int[][] stations) {
-  //
-  //    }
+    // V0
+    // TODO : implement
+    //    public int minRefuelStops(int target, int startFuel, int[][] stations) {
+    //
+    //    }
 
-  // V1
-  // IDEA : DP
-  // https://leetcode.com/problems/minimum-number-of-refueling-stops/editorial/
-  /**
-   * time = O(N)
-   * space = O(N)
-   */
-  public int minRefuelStops_1(int target, int startFuel, int[][] stations) {
-    int N = stations.length;
-    long[] dp = new long[N + 1];
-    dp[0] = startFuel;
-    for (int i = 0; i < N; ++i)
-      for (int t = i; t >= 0; --t)
-        if (dp[t] >= stations[i][0]) dp[t + 1] = Math.max(dp[t + 1], dp[t] + (long) stations[i][1]);
 
-    for (int i = 0; i <= N; ++i) if (dp[i] >= target) return i;
-    return -1;
-  }
+    // V0-1
+    // IDEA: PQ (gemini)
+    public int minRefuelStops_0_1(int target, int startFuel, int[][] stations) {
+        // Max-Heap to store fuel amounts of stations we have passed but haven't used yet
+        PriorityQueue<Integer> maxFuelPq = new PriorityQueue<>(Collections.reverseOrder());
 
-  // V2
-  // IDEA : HEAP
-  // https://leetcode.com/problems/minimum-number-of-refueling-stops/editorial/
-  /**
-   * time = O(N)
-   * space = O(N)
-   */
-  public int minRefuelStops(int target, int tank, int[][] stations) {
-    // pq is a maxheap of gas station capacities
-    PriorityQueue<Integer> pq = new PriorityQueue(Collections.reverseOrder());
-    int ans = 0, prev = 0;
-    for (int[] station : stations) {
-      int location = station[0];
-      int capacity = station[1];
-      tank -= location - prev;
-      while (!pq.isEmpty() && tank < 0) { // must refuel in past
-        tank += pq.poll();
-        ans++;
-      }
+        int currentFuel = startFuel;
+        int stops = 0;
+        int i = 0; // Pointer for the stations array
+        int n = stations.length;
 
-      if (tank < 0) return -1;
-      pq.offer(capacity);
-      prev = location;
+        // Continue as long as we haven't reached the target
+        while (currentFuel < target) {
+            // 1. Add all stations we can reach with our current fuel into the PQ
+            while (i < n && stations[i][0] <= currentFuel) {
+                maxFuelPq.offer(stations[i][1]);
+                i++;
+            }
+
+            // 2. If we can't reach the next station/target and have no fuel to pick up
+            if (maxFuelPq.isEmpty()) {
+                return -1;
+            }
+
+            // 3. Greedy Choice: Refuel from the station with the most fuel that we passed
+            currentFuel += maxFuelPq.poll();
+            stops++;
+        }
+
+        return stops;
     }
 
-    // Repeat body for station = (target, inf)
-    {
-      tank -= target - prev;
-      while (!pq.isEmpty() && tank < 0) {
-        tank += pq.poll();
-        ans++;
-      }
-      if (tank < 0) return -1;
+    // V0-2
+    // IDEA: PQ (GPT)
+    public int minRefuelStops_0_2(int target, int startFuel, int[][] stations) {
+
+        // max heap (store fuels)
+        PriorityQueue<Integer> pq = new PriorityQueue<>((a, b) -> b - a);
+
+        int fuel = startFuel;
+        int i = 0;
+        int stops = 0;
+
+        while (fuel < target) {
+
+            // add all reachable stations
+            while (i < stations.length && stations[i][0] <= fuel) {
+                pq.add(stations[i][1]);
+                i++;
+            }
+
+            // no fuel available -> cannot proceed
+            if (pq.isEmpty())
+                return -1;
+
+            // refuel with the largest fuel
+            fuel += pq.poll();
+            stops++;
+        }
+
+        return stops;
     }
 
-    return ans;
-  }
+
+    // V1
+    // IDEA : DP
+    // https://leetcode.com/problems/minimum-number-of-refueling-stops/editorial/
+
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    public int minRefuelStops_1(int target, int startFuel, int[][] stations) {
+        int N = stations.length;
+        long[] dp = new long[N + 1];
+        dp[0] = startFuel;
+        for (int i = 0; i < N; ++i)
+            for (int t = i; t >= 0; --t)
+                if (dp[t] >= stations[i][0]) dp[t + 1] = Math.max(dp[t + 1], dp[t] + (long) stations[i][1]);
+
+        for (int i = 0; i <= N; ++i) if (dp[i] >= target) return i;
+        return -1;
+    }
+
+
+    // V2
+    // IDEA : HEAP
+    // https://leetcode.com/problems/minimum-number-of-refueling-stops/editorial/
+
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    public int minRefuelStops_2(int target, int tank, int[][] stations) {
+        // pq is a maxheap of gas station capacities
+        PriorityQueue<Integer> pq = new PriorityQueue(Collections.reverseOrder());
+        int ans = 0, prev = 0;
+        for (int[] station : stations) {
+            int location = station[0];
+            int capacity = station[1];
+            tank -= location - prev;
+            while (!pq.isEmpty() && tank < 0) { // must refuel in past
+                tank += pq.poll();
+                ans++;
+            }
+
+            if (tank < 0) return -1;
+            pq.offer(capacity);
+            prev = location;
+        }
+
+        // Repeat body for station = (target, inf)
+        {
+            tank -= target - prev;
+            while (!pq.isEmpty() && tank < 0) {
+                tank += pq.poll();
+                ans++;
+            }
+            if (tank < 0) return -1;
+        }
+
+        return ans;
+    }
+
+
+    
+
 
 }

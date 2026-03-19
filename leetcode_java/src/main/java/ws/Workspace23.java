@@ -178,6 +178,123 @@ public class Workspace23 {
     }
 
 
+    // LC 871
+    // 9.50 - 10 am
+    /**
+     *  -> Return the `minimum` number of
+     *     refueling stops the car must make in order
+     *     to reach its destination.
+     *       - If it cannot reach the destination,
+     *          return -1.
+     *
+     *  - car: start -> dest
+     *  - target miles away (east)
+     *  - car has `startFuel` of gas at beginning
+     *  - use 1 litter of gas / mile
+     *
+     *   - stations[i] = [positioni, fueli]
+     *
+     *     - positioni: positioni  miles east of the start point
+     *     - fueli: has fueli of gas
+     *
+     *   -
+     *
+     *
+     *  ------------------
+     *
+     *   IDEA 1) BRUTE FORCE ???
+     *
+     *   IDEA 2) PQ ???
+     *
+     *     -> big PQ. sort on positioni,
+     *        ONLY add stations when its dist <= cur gas + cur_position
+     *
+     *        ...
+     *
+     *        repeat above till can or can't reach the destination
+     *
+     *  IDEA 3) GREEDY / DP ???
+     *
+     *
+     *
+     *  -----------------
+     *
+     *  ex 3)
+     *   Input: target = 100, startFuel = 10,
+     *   stations = [[10,60],[20,30],[30,30],[60,40]]
+     *   Output: 2
+     *
+     *
+     *   -> PQ =  [ [10,60] ],  p = 0, sf = 10, t = 100,
+     *   -> PQ = [ [20,30],[30,30],[60,40] ]  p = 10, sf = 60, t = 100
+     *   -> PQ =   [ [20,30],[30,30] ], p = 60, sf = 50, t = 100
+     *   ->  p + sf >= 100, so we CAN already reach the dest,
+     *       NO NEED to visit gas station anymore
+     *
+     *
+     *
+     */
+    // IDEA 2) PQ ???
+    public int minRefuelStops(int target, int startFuel, int[][] stations) {
+        // edge
+
+        // PQ: big PQ: [positioni, fueli]
+        // sort on positioni (big -> small)
+        PriorityQueue<Integer[]> pq = new PriorityQueue<>(new Comparator<Integer[]>() {
+            @Override
+            public int compare(Integer[] o1, Integer[] o2) {
+                int diff = o2[0] - o1[0];
+                return diff;
+            }
+        });
+
+        // /??
+        //init
+        for(int[] s: stations){
+            pq.add(new Integer[]{s[0], s[1]});
+        }
+
+        int curPosition = 0;
+        int opCnt = 0;
+
+        //List<Integer[]> backup = new ArrayList<>();
+
+        // ????
+        while (curPosition < target || !pq.isEmpty()){
+
+            // ??? reset backup everytime ???? //?? better way ????
+            List<Integer[]> backup = new ArrayList<>();
+
+            while (!pq.isEmpty() && pq.peek()[0] > curPosition + startFuel){
+                backup.add(pq.poll());
+            }
+
+            // edge ???
+            if(pq.isEmpty() && curPosition < target){
+                return -1;
+            }
+
+            // found the `next` station
+            Integer[] next = pq.poll();
+            target += next[0];
+            startFuel = ( next[1] + startFuel - next[0] );
+            opCnt += 1;
+
+            // add backup back to PQ
+            for(Integer[] x: backup){
+                pq.add(x);
+            }
+        }
+
+
+
+        return opCnt > 0 ? opCnt : -1;
+    }
+
+
+
+
+
 
 
 
