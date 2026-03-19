@@ -3286,13 +3286,112 @@ public class Workspace22 {
      *
      *
      */
+
+    // 15.51 - 16.01 pm
+    /**  IDEA 1) BOTTOM UP DFS + STATUS ????
+     *
+     *
+     *      *    0: Node is NOT covered. (It needs its parent to put a camera).
+     *      *
+     *      *    1: Node HAS a camera.
+     *      *
+     *      *    2: Node is COVERED (but has no camera).
+     *
+     */
+    int myCameraCnt = 0;
+    public int minCameraCover(TreeNode root) {
+        // edge
+
+        // ???
+        //camaraHelper(root);
+        if(camaraHelper(root) == 0){
+            myCameraCnt += 1;
+        }
+
+        return myCameraCnt;
+    }
+
+    // ????
+    /**  IDEA 1) BOTTOM UP DFS + STATUS ????
+     *
+     *
+     *      *    0: Node is NOT covered. (It needs its parent to put a camera).
+     *      *
+     *      *    1: Node HAS a camera.
+     *      *
+     *      *    2: Node is COVERED (but has no camera).
+     *
+     */
+    // ??? why we DON'T need `status` in param ???
+    private int camaraHelper(TreeNode root){
+        // edge
+        if(root == null){
+            return 2; // ???
+        }
+
+        //???? post order
+        int _left = camaraHelper(root.left);
+        int _right = camaraHelper(root.right);
+
+
+        //???
+        // if node's left or right children has camera
+//        if(camaraHelper(root.left) == 1 || camaraHelper(root.right) == 1){
+//            return 2;
+//        }
+        if(_left == 1 || _right == 1){
+            return 2;
+        }
+
+        if(_left == 0 || _right == 0){
+            //return 2;
+            myCameraCnt += 1;
+            return 1;
+        }
+
+//
+//        // put camara at cur node
+//        myCameraCnt += 1;
+//        // ???
+//        //camaraHelper(root)
+
+        return 0;
+    }
+
+
+
+
+
+
+
+//    private int camaraHelper(TreeNode root, int status){
+//        // edge
+//        if(root == null){
+//            return 2; // ???
+//        }
+//        if(status == 2){
+//            return 2;
+//        }
+//        if(status == 0){
+//
+//        }
+//
+//
+//        return status;
+//    }
+
+
+
+
+
+
     //  IDEA 1) DFS (in order ) ???
     // NOTE !!!
     // -> should use POST ORDER
     // since we are trying to put camara from child ???
     // This problem depends on children states, so you must process:
     int cameraCnt = 0;
-    public int minCameraCover(TreeNode root) {
+    public int minCameraCover_99(TreeNode root) {
         // edge
         if(root == null){
             return 0;

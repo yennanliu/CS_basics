@@ -77,6 +77,17 @@ public class BinaryTreeCameras {
         return cameraCnt;
     }
 
+    /** NOTE !!
+     *
+     *  need to use `node state` idea:
+     *
+     *    0: Node is NOT covered. (It needs its parent to put a camera).
+     *
+     *    1: Node HAS a camera.
+     *
+     *    2: Node is COVERED (but has no camera).
+     *
+     */
     private int dfs_0_1(TreeNode node) {
         // Base case: null nodes are considered "covered" (State 2)
         // so they don't force a camera on their parents (leaves).
@@ -88,6 +99,49 @@ public class BinaryTreeCameras {
         int right = dfs_0_1(node.right);
 
         // 1. If any child is NOT covered, this node MUST have a camera.
+        /** NOTE !!!
+         *
+         * Q:  the reason that we're sure to put camera at cur node,
+         * BUT NOT consider it's parent is that:
+         *  ->  we use `post traverse ` (bottom up) approach,
+         *      so we take cur node as pritoriy when placing new camara.
+         *
+         *  -> YES.
+         *
+         * ----
+         *
+         * The reason we put the camera at the **current node**
+         * (the parent of the uncovered child) and **not** wait for the grandparent
+         * is precisely because of the **Post-Order (Bottom-Up)** constraint.
+         *
+         * ### 1. The "Last Chance" Logic
+         * When we are at a node and one of its children returns `0` (Not Covered), this current node is the **absolute last chance** to cover that child.
+         * * The child has no children of its own to help (it's a leaf or its children are already dealt with).
+         * * The only two nodes that can see that child are **the child itself** or **the current node (its parent)**.
+         * * To be greedy, we pick the **parent** because the parent covers more potential ground (it covers the child, itself, and *its* own parent).
+         *
+         * ### 2. Why "Priority" is on the Parent
+         * If we skipped putting a camera at the current node and hoped the **grandparent** would help:
+         * * The grandparent **cannot** see the grandchild.
+         * * A camera only covers a distance of **1**.
+         * * If we don't put a camera at the current node, the child stays `0` (Uncovered) forever.
+         *
+         * ### 3. The Visualization
+         *
+         * Imagine this vertical branch:
+         * ```
+         * [Grandparent]  <-- Can't see Leaf
+         *      |
+         *   [Parent]     <-- BEST place for camera (covers all 3)
+         *      |
+         *    [Leaf]      <-- Returns 0 (Not Covered)
+         * ```
+         *
+         * 1. **Leaf** says: "I have no children, I'm not covered! (Return `0`)"
+         * 2. **Parent** says: "My child is naked! I **must** put a camera on myself to cover him. (Return `1`)"
+         * 3. **Grandparent** says: "My child has a camera, so I am safely covered! (Return `2`)"
+         *
+         */
         if (left == 0 || right == 0) {
             cameraCnt++;
             return 1;
@@ -100,6 +154,11 @@ public class BinaryTreeCameras {
 
         // 3. Otherwise (children are covered but have no cameras),
         // this node is NOT covered and relies on its parent.
+        /** NOTE !!!
+         *
+         *  we return `0` as status
+         *  if reach this point.
+         */
         return 0;
     }
 
