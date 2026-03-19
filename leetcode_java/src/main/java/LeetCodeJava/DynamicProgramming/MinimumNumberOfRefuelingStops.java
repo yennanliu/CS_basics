@@ -132,6 +132,30 @@ public class MinimumNumberOfRefuelingStops {
    * ---
    *
    */
+  /**
+   * Time: O(N log N)
+   * Space: O(N)
+   *
+   * ---
+   *
+   *  ✅ Time Complexity: O(N log N)
+   * Why:
+   *
+   *    Each station is added to the heap once → O(N log N)
+   *
+   *    Each station can be removed (poll) at most once → O(N log N)
+   *
+   *    The outer loop runs at most N times (each refuel uses one station)
+   *
+   *
+   * ->
+   *
+   * The heap operations dominate:
+   *
+   *   offer() → log N
+   *   poll() → log N
+   *
+   */
   public int minRefuelStops_0_1(int target, int startFuel, int[][] stations) {
 
     /** NOTE !!!
@@ -187,6 +211,10 @@ public class MinimumNumberOfRefuelingStops {
 
     // V0-2
     // IDEA: PQ (gemini)
+    /**
+     * Time: O(N log N)
+     * Space: O(N)
+     */
     public int minRefuelStops_0_2(int target, int startFuel, int[][] stations) {
         // Max-Heap to store fuel amounts of stations we have passed but haven't used yet
         PriorityQueue<Integer> maxFuelPq = new PriorityQueue<>(Collections.reverseOrder());
