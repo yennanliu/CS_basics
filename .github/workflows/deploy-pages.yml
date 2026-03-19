@@ -90,6 +90,21 @@ jobs:
             }
           );
 
+          // Convert GitHub blob image URLs to local paths
+          // e.g. https://github.com/yennanliu/CS_basics/blob/master/doc/pic/heap.png → doc/pic/heap.png
+          // Handles both src="..." and src ="..." (with optional space)
+          html = html.replace(
+            /src\s*=\s*"https:\/\/github\.com\/yennanliu\/CS_basics\/blob\/master\/doc\/pic\/([^"]+)"/g,
+            'src="doc/pic/$1"'
+          );
+
+          // Convert relative ../pic/ paths (used by some cheatsheet files) to doc/pic/
+          // e.g. ../pic/binary_search_pattern.png → doc/pic/binary_search_pattern.png
+          html = html.replace(
+            /src\s*=\s*"\.\.\/pic\/([^"]+)"/g,
+            'src="doc/pic/$1"'
+          );
+
           // Convert relative code links (./leetcode_python/..., ./data_structure/..., etc.)
           // to absolute GitHub URLs so they don't resolve to the deployed site
           html = html.replace(
@@ -446,7 +461,8 @@ jobs:
 
           cheatsheets.forEach(sheet => {
             // Fix image paths for sub-pages (doc/pic -> ../doc/pic)
-            const fixedContent = sheet.content.replace(/src="doc\//g, 'src="../doc/');
+            // Handles both src="doc/" and src ="doc/" (with optional space before =)
+            const fixedContent = sheet.content.replace(/src\s*=\s*"doc\//g, 'src="../doc/');
             const cheatsheetHtml = htmlTemplate(sheet.title, fixedContent, 'cheatsheets', '../');
             fs.writeFileSync(`_site/cheatsheets/${sheet.file}.html`, cheatsheetHtml);
           });
@@ -505,7 +521,8 @@ jobs:
 
           faqs.forEach(faq => {
             // Fix image paths for sub-pages (doc/pic -> ../doc/pic)
-            const fixedContent = faq.content.replace(/src="doc\//g, 'src="../doc/');
+            // Handles both src="doc/" and src ="doc/" (with optional space before =)
+            const fixedContent = faq.content.replace(/src\s*=\s*"doc\//g, 'src="../doc/');
             const faqHtml = htmlTemplate(faq.title, fixedContent, 'faqs', '../');
             fs.writeFileSync(`_site/faqs/${faq.file}.html`, faqHtml);
           });

@@ -1,0 +1,549 @@
+name: Validate GitHub Pages
+
+on:
+  push:
+    branches: [ master ]
+    paths:
+      - 'doc/**'
+      - 'README.md'
+      - '.github/workflows/deploy-pages.yml'
+      - '.github/workflows/validate-pages.yml'
+  pull_request:
+    branches: [ master ]
+    paths:
+      - 'doc/**'
+      - 'README.md'
+      - '.github/workflows/deploy-pages.yml'
+      - '.github/workflows/validate-pages.yml'
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+
+    - name: Install build dependencies
+      run: |
+        cat > package.json << 'PKGJSON'
+        {
+          "name": "cs-basics-site",
+          "version": "1.0.0",
+          "dependencies": {
+            "markdown-it": "^14.0.0",
+            "markdown-it-anchor": "^9.0.1"
+          }
+        }
+        PKGJSON
+        npm install
+
+    - name: Build site (reuse deploy-pages build logic)
+      run: |
+        mkdir -p _site/doc
+        cp -r doc/pic _site/doc/pic
+        mkdir -p _site/faqs
+
+        # Extract and run the build script from deploy-pages.yml
+        # We inline the same build-site.js here to keep validation in sync
+        cat > build-site.js << 'BUILDSCRIPT'
+        const fs = require('fs');
+        const path = require('path');
+        const MarkdownIt = require('markdown-it');
+        const markdownItAnchor = require('markdown-it-anchor');
+
+        function slugify(text) {
+          return text.toLowerCase().replace(/<[^>]*>/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+        }
+
+        const md = new MarkdownIt({
+          html: true,
+          linkify: true,
+          typographer: true
+        }).use(markdownItAnchor, {
+          slugify: slugify,
+          permalink: markdownItAnchor.permalink && markdownItAnchor.permalink.headerLink
+            ? markdownItAnchor.permalink.headerLink({ safariReaderFix: true })
+            : true,
+          permalinkBefore: true,
+          permalinkSymbol: '#'
+        });
+
+        function processLinks(html) {
+          html = html.replace(
+            /https:\/\/github\.com\/yennanliu\/CS_basics\/blob\/master\/doc\/cheatsheet\/([^")\s]+\.md)/g,
+            (match, filename) => {
+              const baseName = filename.replace('.md', '');
+              return `${baseName}.html`;
+            }
+          );
+
+          html = html.replace(
+            /src\s*=\s*"https:\/\/github\.com\/yennanliu\/CS_basics\/blob\/master\/doc\/pic\/([^"]+)"/g,
+            'src="doc/pic/$1"'
+          );
+
+          html = html.replace(
+            /src\s*=\s*"\.\.\/pic\/([^"]+)"/g,
+            'src="doc/pic/$1"'
+          );
+
+          html = html.replace(
+            /href="\.\/([^"]+)"/g,
+            (match, relativePath) => {
+              if (relativePath.startsWith('doc/cheatsheet/') && relativePath.endsWith('.md')) {
+                const baseName = relativePath.replace('doc/cheatsheet/', '').replace('.md', '');
+                return `href="${baseName}.html"`;
+              }
+              return `href="https://github.com/yennanliu/CS_basics/blob/master/${relativePath}"`;
+            }
+          );
+
+          return html;
+        }
+
+        function ensureHeadingIds(htmlContent) {
+          return htmlContent.replace(/<h([2-4])(?![^>]*\bid=)([^>]*)>(.*?)<\/h\1>/g, (match, level, attrs, text) => {
+            const id = slugify(text);
+            return `<h${level}${attrs} id="${id}">${text}</h${level}>`;
+          });
+        }
+
+        function generateTOC(htmlContent) {
+          const headingRegex = /<h([23])\s[^>]*?id="([^"]*)"[^>]*>(.*?)<\/h\1>/g;
+          const headings = [];
+          let match;
+          while ((match = headingRegex.exec(htmlContent)) !== null) {
+            const level = match[1];
+            const id = match[2];
+            const text = match[3].replace(/<[^>]*>/g, '').replace(/^[\s#]+/, '');
+            headings.push({ level, text, id });
+          }
+          if (headings.length < 3) return '';
+          let toc = '<div class="toc"><h2>Table of Contents</h2><ul>';
+          headings.forEach(({ level, text, id }) => {
+            const indent = level === '3' ? ' class="toc-sub"' : '';
+            toc += `<li${indent}><a href="#${id}">${text}</a></li>`;
+          });
+          toc += '</ul></div>';
+          return toc;
+        }
+
+        // Build minimal HTML template
+        const htmlTemplate = (title, bodyContent, currentPage = 'home', basePath = '') => `
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>${title} - CS_basics</title>
+          <link rel="stylesheet" href="${basePath}style.css">
+        </head>
+        <body>
+          <nav class="navbar">
+            <div class="container">
+              <div class="nav-brand"><span class="nav-title">CS_basics</span></div>
+              <div class="nav-links">
+                <a href="${basePath}index.html" class="${currentPage === 'home' ? 'active' : ''}">Home</a>
+                <a href="${basePath}resources.html" class="${currentPage === 'resources' ? 'active' : ''}">Resources</a>
+                <a href="${basePath}cheatsheets.html" class="${currentPage === 'cheatsheets' ? 'active' : ''}">Cheat Sheets</a>
+                <a href="${basePath}faqs.html" class="${currentPage === 'faqs' ? 'active' : ''}">FAQs</a>
+              </div>
+            </div>
+          </nav>
+          <main class="container"><div class="content">${bodyContent}</div></main>
+          <footer><div class="container"><p>CS_basics</p></div></footer>
+        </body>
+        </html>
+        `;
+
+        // Process README
+        const readme = fs.readFileSync('README.md', 'utf8');
+        const content = processLinks(md.render(readme));
+        fs.writeFileSync('_site/index.html', htmlTemplate('Home', content, 'home'));
+
+        // Process Resource.md
+        if (fs.existsSync('doc/Resource.md')) {
+          const resource = fs.readFileSync('doc/Resource.md', 'utf8');
+          const resourceContent = processLinks(md.render(resource));
+          fs.writeFileSync('_site/resources.html', htmlTemplate('Resources', resourceContent, 'resources'));
+        }
+
+        // Process cheatsheets
+        const cheatsheetDir = 'doc/cheatsheet';
+        const cheatsheets = [];
+
+        if (fs.existsSync(cheatsheetDir)) {
+          const files = fs.readdirSync(cheatsheetDir)
+            .filter(f => f.endsWith('.md') && f !== 'README.md' && f !== '00_template.md')
+            .sort();
+
+          files.forEach(file => {
+            const filePath = path.join(cheatsheetDir, file);
+            const rawContent = fs.readFileSync(filePath, 'utf8');
+            const baseName = path.basename(file, '.md');
+            const title = baseName.replace(/_/g, ' ').split(' ')
+              .map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+
+            let htmlContent = md.render(rawContent);
+            htmlContent = processLinks(htmlContent);
+            htmlContent = ensureHeadingIds(htmlContent);
+            const toc = generateTOC(htmlContent);
+
+            const wrappedContent = `
+              <div class="cheatsheet-header">
+                <a href="../cheatsheets.html" class="back-link">Back to Cheat Sheets</a>
+                <h1>${title}</h1>
+              </div>
+              ${toc}
+              <div class="cheatsheet-content">${htmlContent}</div>
+            `;
+
+            cheatsheets.push({ file: baseName, title, content: wrappedContent });
+          });
+        }
+
+        // Write cheatsheet pages
+        fs.mkdirSync('_site/cheatsheets', { recursive: true });
+        cheatsheets.forEach(sheet => {
+          const fixedContent = sheet.content.replace(/src\s*=\s*"doc\//g, 'src="../doc/');
+          const html = htmlTemplate(sheet.title, fixedContent, 'cheatsheets', '../');
+          fs.writeFileSync(`_site/cheatsheets/${sheet.file}.html`, html);
+        });
+
+        // Write cheatsheets index
+        let indexContent = '<h1>Cheat Sheets</h1><div class="cheatsheet-grid">';
+        cheatsheets.forEach(sheet => {
+          indexContent += `<div class="cheatsheet-card"><h3><a href="cheatsheets/${sheet.file}.html">${sheet.title}</a></h3></div>`;
+        });
+        indexContent += '</div>';
+        fs.writeFileSync('_site/cheatsheets.html', htmlTemplate('Cheat Sheets', indexContent, 'cheatsheets'));
+
+        // Process FAQs
+        function walkDir(dir) {
+          const entries = fs.readdirSync(dir, { withFileTypes: true });
+          const files = [];
+          for (const entry of entries) {
+            const fullPath = path.join(dir, entry.name);
+            if (entry.isDirectory()) files.push(...walkDir(fullPath));
+            else if (entry.name.endsWith('.md')) files.push(fullPath);
+          }
+          return files;
+        }
+
+        const faqDir = 'doc/faq';
+        const faqs = [];
+        if (fs.existsSync(faqDir)) {
+          const faqFiles = walkDir(faqDir).sort();
+          faqFiles.forEach(filePath => {
+            const rawContent = fs.readFileSync(filePath, 'utf8');
+            const relativePath = path.relative(faqDir, filePath);
+            const baseName = path.basename(filePath, '.md');
+            const subDir = path.dirname(relativePath);
+            const uniqueName = subDir === '.' ? baseName : `${subDir}_${baseName}`.replace(/\//g, '_');
+            const title = baseName.replace(/_/g, ' ').split(' ')
+              .map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+
+            let htmlContent = md.render(rawContent);
+            htmlContent = processLinks(htmlContent);
+            htmlContent = ensureHeadingIds(htmlContent);
+            const toc = generateTOC(htmlContent);
+
+            const wrappedContent = `
+              <div class="cheatsheet-header">
+                <a href="../faqs.html" class="back-link">Back to FAQs</a>
+                <h1>${title}</h1>
+              </div>
+              ${toc}
+              <div class="cheatsheet-content">${htmlContent}</div>
+            `;
+
+            faqs.push({ file: uniqueName, title, content: wrappedContent });
+          });
+        }
+
+        // Write FAQ pages
+        fs.mkdirSync('_site/faqs', { recursive: true });
+        faqs.forEach(faq => {
+          const fixedContent = faq.content.replace(/src\s*=\s*"doc\//g, 'src="../doc/');
+          const html = htmlTemplate(faq.title, fixedContent, 'faqs', '../');
+          fs.writeFileSync(`_site/faqs/${faq.file}.html`, html);
+        });
+
+        // Write FAQs index
+        let faqIndexContent = '<h1>FAQs</h1><div class="cheatsheet-grid">';
+        faqs.forEach(faq => {
+          faqIndexContent += `<div class="cheatsheet-card"><h3><a href="faqs/${faq.file}.html">${faq.title}</a></h3></div>`;
+        });
+        faqIndexContent += '</div>';
+        fs.writeFileSync('_site/faqs.html', htmlTemplate('FAQs', faqIndexContent, 'faqs'));
+
+        // Write minimal CSS
+        fs.writeFileSync('_site/style.css', 'body { font-family: sans-serif; }');
+
+        console.log(`Built: index.html, resources.html, ${cheatsheets.length} cheatsheets, ${faqs.length} FAQs`);
+        BUILDSCRIPT
+
+        node build-site.js
+
+    - name: Validate generated HTML files
+      run: |
+        cat > validate-site.js << 'VALIDATESCRIPT'
+        const fs = require('fs');
+        const path = require('path');
+
+        let errors = 0;
+        let warnings = 0;
+
+        function error(msg) { console.error(`ERROR: ${msg}`); errors++; }
+        function warn(msg) { console.warn(`WARN: ${msg}`); warnings++; }
+        function info(msg) { console.log(`INFO: ${msg}`); }
+
+        // ──────────────────────────────────────────────
+        // 1. Check required files exist
+        // ──────────────────────────────────────────────
+        info('=== Checking required files ===');
+        const requiredFiles = [
+          '_site/index.html',
+          '_site/resources.html',
+          '_site/cheatsheets.html',
+          '_site/faqs.html',
+          '_site/style.css'
+        ];
+
+        for (const file of requiredFiles) {
+          if (!fs.existsSync(file)) {
+            error(`Required file missing: ${file}`);
+          } else {
+            const stat = fs.statSync(file);
+            if (stat.size === 0) {
+              error(`Required file is empty: ${file}`);
+            }
+          }
+        }
+
+        // ──────────────────────────────────────────────
+        // 2. Check cheatsheet HTML files exist
+        // ──────────────────────────────────────────────
+        info('=== Checking cheatsheet pages ===');
+        const cheatsheetDir = '_site/cheatsheets';
+        if (!fs.existsSync(cheatsheetDir)) {
+          error('Cheatsheet directory missing: _site/cheatsheets/');
+        } else {
+          const cheatsheetFiles = fs.readdirSync(cheatsheetDir).filter(f => f.endsWith('.html'));
+          if (cheatsheetFiles.length === 0) {
+            error('No cheatsheet HTML files generated');
+          } else {
+            info(`Found ${cheatsheetFiles.length} cheatsheet pages`);
+          }
+
+          // Spot-check key cheatsheets exist
+          const expectedCheatsheets = ['heap.html', 'array.html', 'dp.html', 'graph.html', 'binary_search.html', 'stack.html'];
+          for (const expected of expectedCheatsheets) {
+            if (!cheatsheetFiles.includes(expected)) {
+              error(`Expected cheatsheet missing: ${expected}`);
+            }
+          }
+        }
+
+        // ──────────────────────────────────────────────
+        // 3. Check FAQ HTML files exist
+        // ──────────────────────────────────────────────
+        info('=== Checking FAQ pages ===');
+        const faqDir = '_site/faqs';
+        if (!fs.existsSync(faqDir)) {
+          error('FAQ directory missing: _site/faqs/');
+        } else {
+          const faqFiles = fs.readdirSync(faqDir).filter(f => f.endsWith('.html'));
+          if (faqFiles.length === 0) {
+            error('No FAQ HTML files generated');
+          } else {
+            info(`Found ${faqFiles.length} FAQ pages`);
+          }
+        }
+
+        // ──────────────────────────────────────────────
+        // 4. Validate HTML structure and content
+        // ──────────────────────────────────────────────
+        info('=== Validating HTML structure ===');
+
+        function validateHtmlFile(filePath) {
+          const html = fs.readFileSync(filePath, 'utf8');
+          const relPath = path.relative('_site', filePath);
+
+          // Check DOCTYPE
+          if (!html.includes('<!DOCTYPE html>')) {
+            error(`${relPath}: Missing <!DOCTYPE html>`);
+          }
+
+          // Check essential meta tags
+          if (!html.includes('<meta charset="UTF-8">')) {
+            error(`${relPath}: Missing charset meta tag`);
+          }
+          if (!html.includes('viewport')) {
+            error(`${relPath}: Missing viewport meta tag`);
+          }
+
+          // Check title
+          if (!html.includes('<title>') || !html.includes('</title>')) {
+            error(`${relPath}: Missing <title> tag`);
+          }
+          if (html.includes('<title> - CS_basics</title>') || html.includes('<title>undefined')) {
+            error(`${relPath}: Empty or undefined title`);
+          }
+
+          // Check navbar
+          if (!html.includes('class="navbar"') && !html.includes("class='navbar'")) {
+            error(`${relPath}: Missing navbar`);
+          }
+          if (!html.includes('nav-links')) {
+            error(`${relPath}: Missing nav-links`);
+          }
+
+          // Check navigation links exist
+          if (!html.includes('index.html')) {
+            warn(`${relPath}: Missing Home link`);
+          }
+          if (!html.includes('cheatsheets.html')) {
+            warn(`${relPath}: Missing Cheat Sheets link`);
+          }
+
+          // Check footer
+          if (!html.includes('<footer>')) {
+            error(`${relPath}: Missing footer`);
+          }
+
+          // Check for broken GitHub blob image URLs (should have been converted)
+          const blobImageMatches = html.match(/src\s*=\s*"https:\/\/github\.com\/[^"]*\/blob\/[^"]*\.(png|jpg|jpeg|gif|svg|webp)"/gi);
+          if (blobImageMatches) {
+            for (const match of blobImageMatches) {
+              error(`${relPath}: Unconverted GitHub blob image URL: ${match}`);
+            }
+          }
+
+          // Check for broken relative image paths (../pic/ should not appear in final HTML)
+          const relativeImageMatches = html.match(/src\s*=\s*"\.\.\/pic\/[^"]*"/gi);
+          if (relativeImageMatches) {
+            for (const match of relativeImageMatches) {
+              error(`${relPath}: Unconverted relative image path: ${match}`);
+            }
+          }
+
+          // Check that all local image references point to existing files
+          const imgSrcRegex = /src\s*=\s*"((?:\.\.\/)?doc\/pic\/[^"]+)"/g;
+          let imgMatch;
+          while ((imgMatch = imgSrcRegex.exec(html)) !== null) {
+            const imgSrc = imgMatch[1];
+            // Resolve path relative to the HTML file's directory
+            const htmlDir = path.dirname(filePath);
+            const imgPath = path.resolve(htmlDir, imgSrc);
+            if (!fs.existsSync(imgPath)) {
+              warn(`${relPath}: Image not found: ${imgSrc} (resolved: ${imgPath})`);
+            }
+          }
+
+          // Check for empty content (page rendered but has no meaningful content)
+          const mainContent = html.match(/<main[^>]*>([\s\S]*?)<\/main>/);
+          if (mainContent) {
+            const stripped = mainContent[1].replace(/<[^>]*>/g, '').trim();
+            if (stripped.length < 10) {
+              warn(`${relPath}: Page has very little content (${stripped.length} chars)`);
+            }
+          }
+
+          return html;
+        }
+
+        // Validate all root-level HTML files
+        for (const file of requiredFiles.filter(f => f.endsWith('.html'))) {
+          if (fs.existsSync(file)) {
+            validateHtmlFile(file);
+          }
+        }
+
+        // Validate cheatsheet HTML files
+        if (fs.existsSync(cheatsheetDir)) {
+          const cheatsheetFiles = fs.readdirSync(cheatsheetDir).filter(f => f.endsWith('.html'));
+          for (const file of cheatsheetFiles) {
+            validateHtmlFile(path.join(cheatsheetDir, file));
+          }
+        }
+
+        // Validate FAQ HTML files
+        if (fs.existsSync(faqDir)) {
+          const faqFiles = fs.readdirSync(faqDir).filter(f => f.endsWith('.html'));
+          for (const file of faqFiles) {
+            validateHtmlFile(path.join(faqDir, file));
+          }
+        }
+
+        // ──────────────────────────────────────────────
+        // 5. Validate internal link consistency
+        // ──────────────────────────────────────────────
+        info('=== Checking internal links ===');
+
+        function checkInternalLinks(filePath) {
+          const html = fs.readFileSync(filePath, 'utf8');
+          const relPath = path.relative('_site', filePath);
+          const htmlDir = path.dirname(filePath);
+
+          // Find all href links that are internal (not http/https/mailto/#)
+          const hrefRegex = /href="([^"#][^"]*\.html(?:#[^"]*)?)"/g;
+          let match;
+          while ((match = hrefRegex.exec(html)) !== null) {
+            const href = match[1].split('#')[0]; // Remove anchor
+            if (href.startsWith('http://') || href.startsWith('https://') || href.startsWith('mailto:')) {
+              continue;
+            }
+            const targetPath = path.resolve(htmlDir, href);
+            if (!fs.existsSync(targetPath)) {
+              warn(`${relPath}: Broken internal link: ${href}`);
+            }
+          }
+        }
+
+        // Check links in index pages
+        for (const file of requiredFiles.filter(f => f.endsWith('.html'))) {
+          if (fs.existsSync(file)) {
+            checkInternalLinks(file);
+          }
+        }
+
+        // ──────────────────────────────────────────────
+        // 6. Validate image directory
+        // ──────────────────────────────────────────────
+        info('=== Checking image assets ===');
+        const imgDir = '_site/doc/pic';
+        if (!fs.existsSync(imgDir)) {
+          error('Image directory missing: _site/doc/pic/');
+        } else {
+          const imgFiles = fs.readdirSync(imgDir, { recursive: true });
+          const imageCount = imgFiles.filter(f =>
+            /\.(png|jpg|jpeg|gif|svg|webp)$/i.test(String(f))
+          ).length;
+          if (imageCount === 0) {
+            error('No image files found in _site/doc/pic/');
+          } else {
+            info(`Found ${imageCount} image files in _site/doc/pic/`);
+          }
+        }
+
+        // ──────────────────────────────────────────────
+        // Summary
+        // ──────────────────────────────────────────────
+        console.log('\n========================================');
+        console.log(`Validation complete: ${errors} errors, ${warnings} warnings`);
+        console.log('========================================');
+
+        if (errors > 0) {
+          process.exit(1);
+        }
+        VALIDATESCRIPT
+
+        node validate-site.js
