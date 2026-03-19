@@ -397,6 +397,11 @@ public class Workspace23 {
 
 
 
+    // LC 892
+    public int surfaceArea(int[][] grid) {
+
+        return 0;
+    }
 
 
 

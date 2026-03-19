@@ -1356,10 +1356,8 @@ claude
 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Status          | Note| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
-892 | [Surface Area of 3D Shapes](https://leetcode.com/problems/surface-area-of-3d-shapes/)  | [C++](./C++/surface-area-of-3d-shapes.cpp) [Python](./Python/surface-area-of-3d-shapes.py) | _O(n^2)_| _O(1)_| Easy  || 
-0587 | [Erect the Fence](https://leetcode.com/problems/erect-the-fence/)  | [Python](./leetcode_python/Geometry/erect-the-fence.py) | _O(nlogn)_| _O(n)_| Hard|| complex, Convex Hull, `Monotone Chain` , `amazon`| not start
-0892 | [Surface Area of 3D Shapes](https://leetcode.com/problems/)||
-
+892 | [Surface Area of 3D Shapes](https://leetcode.com/problems/surface-area-of-3d-shapes/)  | [Java](./leetcode_java/src/main/java/LeetCodeJava/Graph/SurfaceAreaOf3DShapes.java) | _O(n^2)_| _O(1)_| Easy  || 
+587 | [Erect the Fence](https://leetcode.com/problems/erect-the-fence/)  | [Python](./leetcode_python/Geometry/erect-the-fence.py) | _O(nlogn)_| _O(n)_| Hard|| complex, Convex Hull, `Monotone Chain` , `amazon`| not start
 
 ## Design
 
