@@ -1,6 +1,8 @@
 package ws;
 
+import LeetCodeJava.DataStructure.TreeNode;
 import LeetCodeJava.Heap.LongestHappyString;
+import jdk.internal.org.objectweb.asm.tree.IincInsnNode;
 
 import java.util.*;
 
@@ -357,6 +359,42 @@ public class Workspace23 {
 //        int[] rootItem = edges[]
 //    }
 
+
+    // LC 872
+    // 17.28 - 38 pm
+    /**
+     *
+     * IDEA 1) DFS (pre-order ???)
+     *   - pre-order: can quit earlier
+     *
+     */
+    public boolean leafSimilar(TreeNode root1, TreeNode root2) {
+        // edge
+
+        // ??
+        List<Integer> list1 = new ArrayList<>();
+        List<Integer> list2 = new ArrayList<>();
+
+        getNodeSqe(root1, list1);
+        getNodeSqe(root2, list2);
+
+        return list1.equals(list2);
+    }
+
+
+    // ???
+    private void getNodeSqe(TreeNode root, List<Integer> list){
+        // edge
+        if(root == null){
+            return;
+        }
+        if(root.left == null && root.right == null){
+            list.add(root.val);
+            return;
+        }
+        getNodeSqe(root.left, list);
+        getNodeSqe(root.right, list);
+    }
 
 
 
