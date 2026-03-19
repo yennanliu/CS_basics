@@ -295,10 +295,67 @@ public class Workspace23 {
 
 
     // LC 834
-    public int[] sumOfDistancesInTree(int n, int[][] edges) {
+    // 11.13 - 23 am
+    /**
+     * -> Return an array answer of length n
+     *   where answer[i]
+     *    - is the sum of the distances between the ith
+     *       - node in the tree and all other nodes.
+     *
+     *
+     *  - n nodes: 0 -> n-1
+     *
+     *  - n-1 edges
+     *    - edges[i] = [ai, bi]
+     *       -  edge between nodes ai and bi in the tree.
+     *
+     *
+     *
+     *
+     *  -----------------
+     *
+     *   IDEA 1) DFS ?????
+     *
+     *     dist(a,b) =
+     *       if `different` side
+     *        - dist(a, root) + dist(b, root)
+     *       if `same` side
+     *         - dist(a, root) - dist(b, root)
+     *
+     *   IDEA 1) DFS + prefix sum ???
+     *
+     *
+     *
+     *
+     *  -----------------
+     *
+     *
+     */
 
-        return null;
+    public int[] sumOfDistancesInTree(int n, int[][] edges) {
+        // edge
+
+
+        // build tree ?????
+
+        // { parent:
+        Map<Integer, List<Integer>> map = new HashMap<>();
+
+        // ??
+        int[] pathList = new int[edges.length];
+
+        return pathList;
     }
+
+
+    private void distHelper(){
+
+    }
+
+//    private Throwable myBuildTree(int[][] edges, ){
+//        // ???
+//        int[] rootItem = edges[]
+//    }
 
 
 
