@@ -2738,24 +2738,112 @@ public class Workspace22 {
      *
      *
      */
-    // TODO : implement
-    TreeNode[] splitBST = new TreeNode[2]; // ????
+
+    // 16.20 - 30 pm
+    /**
+     *  IDEA 1)
+     *    DFS + SPLITTER HELP FUNC
+     *
+     *     -> [small_node, bigger_node]
+     *
+     */
+    TreeNode[] mySplitRes = new TreeNode[2]; // ???
     public TreeNode[] splitBST(TreeNode root, int target) {
         // edge
-        if(root == null){
-            return splitBST;
+        // Base case: an empty tree splits into two empty trees
+        if (root == null) {
+            /** NOTE !!! the return val */
+            return new TreeNode[]{null, null};
         }
 
-        // ???
-        TreeNode deletedNode = deleteNodeFromBST(root, target);
-        // ???
-        // help func return the deletedNode
-        // while the original root gets updated as well (target node is removed)
-        splitBST[0] = deletedNode;
-        splitBST[1] = root;
-
-        return splitBST;
+        // ??
+        splitterHelper(root, target);
+        return mySplitRes;
     }
+
+
+    // ???
+    //TreeNode[] res = new TreeNode[2]; // ???
+    //  Binary Search Tree (BST)
+    // NOTE: for BST,
+    // left < root < right
+    // pre-order ???
+    // since we know children val by BST property
+    // so `pre-order` can do it in a more efficient way (????
+    // NOTE !!!
+    // output: [small_node, bigger_node]
+    private TreeNode[] splitterHelper(TreeNode root, int target){
+        // edge ???
+        if(root == null){
+            ///  ???
+            //return null;
+            //new TreeNode[2]{null, null};
+           // return new TreeNode[2]; // ???
+            return new TreeNode[]{null, null};
+        }
+
+        // ??
+        //TreeNode[] res = new TreeNode[2]; // ???
+
+        // case 1) root.val > target)
+        if(root.val > target){
+            // proceed to right ???
+           // mySplitRes[1] = splitterHelper(root.right, target)[1];
+
+
+            // split left sub tree instead ?????
+            mySplitRes[0] = splitterHelper(root.left, target)[0];
+        }
+        // case 2) root.val <= target)
+        else{
+            // proceed to left ???
+           // mySplitRes[0] = splitterHelper(root.left, target)[0];
+
+            // split right sub tree instead ?????
+            //mySplitRes[1] = splitterHelper(root.right, target)[1];
+
+            /// ???
+            TreeNode[] res = splitterHelper(root.right, target);
+            // NOTE !!! re-connect
+            root.right = res[0]; // ??? res[1];
+            return new TreeNode[]{root, res[1]};
+        }
+
+
+        return mySplitRes;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//    // TODO : implement
+//    TreeNode[] splitBST = new TreeNode[2]; // ????
+//    public TreeNode[] splitBST(TreeNode root, int target) {
+//        // edge
+//        if(root == null){
+//            return splitBST;
+//        }
+//
+//        // ???
+//        TreeNode deletedNode = deleteNodeFromBST(root, target);
+//        // ???
+//        // help func return the deletedNode
+//        // while the original root gets updated as well (target node is removed)
+//        splitBST[0] = deletedNode;
+//        splitBST[1] = root;
+//
+//        return splitBST;
+//    }
 
 
     // pre - order traverse ??? + DFS
