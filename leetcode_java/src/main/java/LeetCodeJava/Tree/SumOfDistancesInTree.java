@@ -272,15 +272,15 @@ public class SumOfDistancesInTree {
     // IDEA: DFS + HASHMAP
     // https://leetcode.com/problems/sum-of-distances-in-tree/solutions/5082385/faster-lesserdetailed-explainationdfsste-2w17/
     private Map<Integer, List<Integer>> graph;
-    private int[] count;
+    private int[] count_4;
     private int[] res;
 
     private void dfs(int node, int parent) {
         for (int child : graph.get(node)) {
             if (child != parent) {
                 dfs(child, node);
-                count[node] += count[child];
-                res[node] += res[child] + count[child];
+                count_4[node] += count_4[child];
+                res[node] += res[child] + count_4[child];
             }
         }
     }
@@ -288,7 +288,7 @@ public class SumOfDistancesInTree {
     private void dfs2(int node, int parent) {
         for (int child : graph.get(node)) {
             if (child != parent) {
-                res[child] = res[node] - count[child] + (count.length - count[child]);
+                res[child] = res[node] - count_4[child] + (count_4.length - count_4[child]);
                 dfs2(child, node);
             }
         }
@@ -296,9 +296,9 @@ public class SumOfDistancesInTree {
 
     public int[] sumOfDistancesInTree_4(int n, int[][] edges) {
         graph = new HashMap<>();
-        count = new int[n];
+        count_4 = new int[n];
         res = new int[n];
-        Arrays.fill(count, 1);
+        Arrays.fill(count_4, 1);
 
         for (int i = 0; i < n; i++) {
             graph.put(i, new ArrayList<>());
