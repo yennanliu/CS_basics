@@ -160,6 +160,199 @@ public class SumOfDistancesInTree {
 
     // V0-2
     // IDEA: DFS (GPT)
+    /**
+     * Great — let’s walk through a concrete example for
+     * LeetCode 834 Sum of Distances in Tree so the rerooting idea *really clicks*.
+     *
+     * ---
+     *
+     * ## 🌳 Example
+     *
+     * ```
+     * n = 6
+     * edges = [[0,1],[0,2],[2,3],[2,4],[2,5]]
+     * ```
+     *
+     * Tree structure:
+     *
+     * ```
+     *         0
+     *        / \
+     *       1   2
+     *          /|\
+     *         3 4 5
+     * ```
+     *
+     * ---
+     *
+     * # 1️⃣ Post-order DFS (`dfs1`)
+     *
+     * We compute:
+     *
+     * * `count[u]`: subtree size
+     * * `res[u]`: sum of distances to subtree nodes
+     *
+     * ---
+     *
+     * ### Start from leaves
+     *
+     * #### Node 1
+     *
+     * * `count[1] = 1`
+     * * `res[1] = 0`
+     *
+     * #### Node 3, 4, 5
+     *
+     * Same:
+     *
+     * * `count = 1`, `res = 0`
+     *
+     * ---
+     *
+     * ### Node 2
+     *
+     * Children: 3, 4, 5
+     *
+     * ```
+     * count[2] = 1 + 1 + 1 + 1 = 4
+     * res[2] = (res[3]+1) + (res[4]+1) + (res[5]+1)
+     *        = 1 + 1 + 1 = 3
+     * ```
+     *
+     * ---
+     *
+     * ### Node 0
+     *
+     * Children: 1, 2
+     *
+     * ```
+     * count[0] = 1 + count[1] + count[2]
+     *          = 1 + 1 + 4 = 6
+     *
+     * res[0] = (res[1] + count[1]) + (res[2] + count[2])
+     *        = (0+1) + (3+4)
+     *        = 1 + 7 = 8
+     * ```
+     *
+     * ---
+     *
+     * ✅ After `dfs1`:
+     *
+     * | Node | count | res |
+     * | ---- | ----- | --- |
+     * | 0    | 6     | 8   |
+     * | 1    | 1     | 0   |
+     * | 2    | 4     | 3   |
+     * | 3    | 1     | 0   |
+     * | 4    | 1     | 0   |
+     * | 5    | 1     | 0   |
+     *
+     * 👉 `res[0] = 8` means:
+     *
+     * ```
+     * dist(0→1)=1
+     * dist(0→2)=1
+     * dist(0→3)=2
+     * dist(0→4)=2
+     * dist(0→5)=2
+     * TOTAL = 8 ✅
+     * ```
+     *
+     * ---
+     *
+     * # 2️⃣ Pre-order DFS (`dfs2`) — Rerooting
+     *
+     * Now we “move root” and update results.
+     *
+     * ---
+     *
+     * ## 🔁 Move root: 0 → 1
+     *
+     * Formula:
+     *
+     * ```
+     * res[1] = res[0] - count[1] + (N - count[1])
+     *        = 8 - 1 + (6 - 1)
+     *        = 8 - 1 + 5 = 12
+     * ```
+     *
+     * 👉 Check manually:
+     *
+     * ```
+     * dist(1→0)=1
+     * dist(1→2)=2
+     * dist(1→3)=3
+     * dist(1→4)=3
+     * dist(1→5)=3
+     * TOTAL = 12 ✅
+     * ```
+     *
+     * ---
+     *
+     * ## 🔁 Move root: 0 → 2
+     *
+     * ```
+     * res[2] = 8 - 4 + (6 - 4)
+     *        = 8 - 4 + 2 = 6
+     * ```
+     *
+     * ---
+     *
+     * ## 🔁 Move root: 2 → 3
+     *
+     * ```
+     * res[3] = res[2] - count[3] + (N - count[3])
+     *        = 6 - 1 + 5 = 10
+     * ```
+     *
+     * Same for 4, 5:
+     *
+     * ```
+     * res[4] = 10
+     * res[5] = 10
+     * ```
+     *
+     * ---
+     *
+     * # ✅ Final Answer
+     *
+     * ```
+     * [8, 12, 6, 10, 10, 10]
+     * ```
+     *
+     * ---
+     *
+     * # 🧠 The KEY Insight (This is the “aha” moment)
+     *
+     * When moving root from `u → v`:
+     *
+     * ### What changes?
+     *
+     * * Nodes in `v`’s subtree → **1 step closer**
+     *   → subtract `count[v]`
+     *
+     * * All other nodes → **1 step farther**
+     *   → add `(N - count[v])`
+     *
+     * ---
+     *
+     * ### 🔥 Final Formula
+     *
+     * ```
+     * res[v] = res[u] - count[v] + (N - count[v])
+     * ```
+     *
+     * ---
+     *
+     * # 💡 Mental Model
+     *
+     * Think:
+     *
+     * > “When I move root into a subtree,
+     * that subtree gets closer, everything else gets farther.”
+     *
+     * ---
+     */
 //    int[] res;
 //    int[] count;
 //    List<Set<Integer>> graph;
