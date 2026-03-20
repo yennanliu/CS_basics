@@ -53,12 +53,94 @@ import java.util.Queue;
 public class NumberOfClosedIslands {
 
     // V0
-//    public int closedIsland(int[][] grid) {
-//
-//    }
+    // IDEA:  2 PASS DFS
+    /**
+     *
+     * Metric,Complexity,Explanation
+     * Time,O(M⋅N),Each cell is visited at most twice (once in each pass).
+     * Space,O(M⋅N),Worst-case recursion stack depth.
+     *
+     * ----
+     *
+     * Time: O(N * M)
+     *
+     * Space: O(N * M) (DFS recursion)
+     * 
+     */
+    public int closedIsland(int[][] grid) {
+        // edge
+        if (grid == null || grid.length == 0) {
+            return 0;
+        }
+
+        int l = grid.length;
+        int w = grid[0].length;
+
+        int isLand = 0;
+
+        /**
+         *   1) first pass
+         */
+        // visit x = 0 dir
+        for (int x = 0; x < w; x++) {
+            if (grid[0][x] == 0) {
+                updateCell(grid, x, 0, -1);
+            }
+            if (grid[l - 1][x] == 0) {
+                updateCell(grid, x, l - 1, -1);
+            }
+        }
+
+        // visit y = 0 dir
+        for (int y = 0; y < l; y++) {
+            if (grid[y][0] == 0) {
+                updateCell(grid, 0, y, -1);
+            }
+            if (grid[y][w - 1] == 0) {
+                updateCell(grid, w - 1, y, -1);
+            }
+        }
+
+        /**
+         *   1) 2nd pass
+         */
+        for (int y = 0; y < l; y++) {
+            for (int x = 0; x < w; x++) {
+                if (grid[y][x] == 0) {
+                    updateCell(grid, x, y, 100);
+                    isLand += 1;
+                }
+            }
+        }
+
+        return isLand;
+    }
+
+    private void updateCell(int[][] grid, int x, int y, int newColor) {
+
+        int[][] moves = new int[][] { { 0, 1 }, { 0, -1 }, { 1, 0 }, { -1, 0 } };
+
+        int l = grid.length;
+        int w = grid[0].length;
+
+        // mark as `visited`
+        grid[y][x] = newColor; // ??   '#';
+
+        for (int[] m : moves) {
+            int x_ = x + m[0];
+            int y_ = y + m[1];
+            if (x_ >= 0 && x_ < w && y_ >= 0 && y_ < l) {
+                if (grid[y_][x_] == 0 && grid[y_][x_] != newColor) {
+                    //cnt += 1;
+                    updateCell(grid, x_, y_, newColor);
+                }
+            }
+        }
+
+    }
 
     // V0-1
-    // IDEA: DFS (fixed by gemini)
+    // IDEA:  2 PASS DFS (fixed by gemini)
     private int rows;
     private int cols;
     private final int[][] MOVES = new int[][] { { -1, 0 }, { 1, 0 }, { 0, -1 }, { 0, 1 } };
@@ -405,6 +487,8 @@ public class NumberOfClosedIslands {
         }
         return res;
     }
+
+
 
 
 
