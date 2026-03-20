@@ -398,9 +398,66 @@ public class Workspace23 {
 
 
     // LC 892
+    // 7.56 - 8.06 am
+    /**
+     *  -> Return the total surface
+     *  area of the resulting shapes.
+     *
+     *
+     *  - Each value v = grid[i][j]
+     *     - a tower of v cubes placed on top of cell (i, j).
+     *
+     *
+     *  ----------------
+     *
+     *   IDEA 1) BRUTE FORCE ????
+     *
+     *
+     *   ----------------
+     *
+     *
+     */
+    //  IDEA 1) BRUTE FORCE ????
     public int surfaceArea(int[][] grid) {
+        // edge
+        int l = grid.length;
+        int w = grid[0].length;
 
-        return 0;
+        int res = 0;
+
+        int upSurface = 0;
+        int zeroCnt = 0;
+        // ???
+        for(int y = 0; y < l; y++){
+            for(int x = 0; x < w; x++){
+                if(grid[y][x] != 0){
+                    upSurface += 1;
+                }else{
+                    zeroCnt += 1; // ???
+                }
+            }
+        }
+
+        // ???
+        int xSurface = 0;
+        for(int x = 0; x < w; x++){
+            if(grid[0][x] != 0){
+                xSurface += 1;
+            }
+        }
+
+        int ySurface = 0;
+        for(int y = 0; y < l; y++){
+            if(grid[y][0] != 0){
+                ySurface += 1;
+            }
+        }
+
+
+        // 6 faces
+        res = 2 * upSurface + 2 * xSurface + 2 * ySurface + zeroCnt * 4;
+
+        return res;
     }
 
 

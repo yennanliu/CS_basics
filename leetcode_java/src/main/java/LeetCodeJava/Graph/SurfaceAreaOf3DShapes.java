@@ -48,6 +48,72 @@ public class SurfaceAreaOf3DShapes {
 //    public int surfaceArea(int[][] grid) {
 //
 //    }
+    
+
+    // V0-1
+    // IDEA: BRUTE FORCE (fixed by gemini)
+    public int surfaceArea_0_1(int[][] grid) {
+        int n = grid.length;
+        int res = 0;
+
+        for (int r = 0; r < n; r++) {
+            for (int c = 0; c < n; c++) {
+                int val = grid[r][c];
+                if (val > 0) {
+                    // 1. Add total surface area of this tower:
+                    // Top + Bottom (2) and 4 sides (4 * height)
+                    res += (4 * val) + 2;
+
+                    // 2. Subtract hidden internal faces with the Left neighbor
+                    if (r > 0) {
+                        res -= 2 * Math.min(val, grid[r - 1][c]);
+                    }
+
+                    // 3. Subtract hidden internal faces with the Top neighbor
+                    if (c > 0) {
+                        res -= 2 * Math.min(val, grid[r][c - 1]);
+                    }
+                }
+            }
+        }
+
+        return res;
+    }
+
+
+    // V0-2
+    // IDEA: BRUTE FORCE (fixed by GPT)
+    public int surfaceArea_0_2(int[][] grid) {
+        int l = grid.length;
+        int w = grid[0].length;
+
+        int res = 0;
+
+        for (int i = 0; i < l; i++) {
+            for (int j = 0; j < w; j++) {
+                int h = grid[i][j];
+                if (h > 0) {
+                    // top + bottom
+                    res += 2;
+                    // 4 sides
+                    res += 4 * h;
+
+                    // subtract overlap with upper cell
+                    if (i > 0) {
+                        res -= 2 * Math.min(h, grid[i - 1][j]);
+                    }
+
+                    // subtract overlap with left cell
+                    if (j > 0) {
+                        res -= 2 * Math.min(h, grid[i][j - 1]);
+                    }
+                }
+            }
+        }
+
+        return res;
+    }
+
 
     // V1
     // IDEA: SQUARE BY SQUARE
@@ -107,6 +173,7 @@ public class SurfaceAreaOf3DShapes {
 
 
     // V3
+
 
 
 
