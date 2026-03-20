@@ -528,6 +528,67 @@ public class Workspace23 {
     }
 
 
+    // LC 200
+    // 9.35 - 45 am
+    /**
+     *  ->  return the number of `islands`.
+     *
+     *  -----------
+     *
+     *  IDEA 1) DFS
+     *
+     */
+    //  IDEA 1) DFS
+    // time: O(N * M) // ???
+    // space: O(1)
+    public int numIslands(char[][] grid) {
+        // edge
+
+        int l = grid.length;
+        int w = grid[0].length;
+
+        int island = 0;
+        //boolean[][] visited = new boolean[l][w];
+
+        for(int y = 0; y < l; y++){
+            for(int x = 0; x < w; x++){
+                if(grid[y][x] == '1'){
+                    isLandCntHelper(grid, x, y);
+                    island += 1;
+                }
+            }
+        }
+
+
+        return island;
+    }
+
+
+    private void isLandCntHelper(char[][] grid, int x, int y){
+        int[][] moves = new int[][]{ {0,1}, {0,-1}, {1,0}, {-1,0} };
+
+        int l = grid.length;
+        int w = grid[0].length;
+
+
+        // mark as `visited`
+        grid[y][x] = '#';
+
+        for(int[] m: moves){
+            int x_ = x + m[0];
+            int y_ = y + m[1];
+            if(x_ >= 0 && x_ < w && y_ >= 0 && y_ < l){
+                if(grid[y_][x_] == '1' && grid[y_][x_] != '#'){
+                    //cnt += 1;
+                    isLandCntHelper(grid, x_, y_);
+                }
+            }
+        }
+    }
+
+
+
+
 
 
 
