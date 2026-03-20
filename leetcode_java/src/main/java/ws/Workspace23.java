@@ -618,6 +618,9 @@ public class Workspace23 {
     // space: O(N * M)
     public int maxAreaOfIsland(int[][] grid) {
         // edge
+        if (grid == null || grid.length == 0) {
+            return 0;
+        }
 
         int l = grid.length;
         int w = grid[0].length;
@@ -658,6 +661,110 @@ public class Workspace23 {
                 getIslandSize(grid, x, y + 1) +
                 getIslandSize(grid, x, y - 1);
     }
+
+
+    // LC 1254
+    // 10.18 - 28 am
+    /**
+     * -> Return the number of closed islands.
+     *
+     *  NOTE:
+     *    - An island is a maximal 4-directionally
+     *    connected group of 0s and a closed island is an island
+     *    totally (all left, top, right, bottom) surrounded by 1s.
+     *
+     *    -> island now is `0 cells`
+     *
+     *
+     *
+     * --------------
+     *
+     *  IDEA 1) 2 PASS DFS
+     *
+     *   - 1. mark `all at corner 0` as -1,
+     *        so we are NOT visting them in the future
+     *     2. get all `surrounded 0`
+     *     3. dfs visit above and cnt them
+     *
+     *  IDEA 2) OTHER GRAPH ALGO ???
+     *
+     *
+     * --------------
+     *
+     */
+    // IDEA 1) 2 PASS DFS
+    // time: O(N * M)
+    // space:  O(N * M)
+    public int closedIsland(int[][] grid) {
+        // edge
+        if (grid == null || grid.length == 0) {
+            return 0;
+        }
+
+        int l = grid.length;
+        int w = grid[0].length;
+
+        int isLand = 0;
+
+        // 1) first pass
+        // visit x = 0 dir
+        for(int x = 0; x < w; x++){
+            if(grid[0][x] == 0){
+                updateCell(grid, x, 0, -1);
+            }
+            if(grid[l-1][x] == 0){
+                updateCell(grid, x, l-1, -1);
+            }
+        }
+
+        // visit y = 0 dir
+        for(int y = 0; y < l; y++){
+            if(grid[y][0] == 0){
+                updateCell(grid, 0, y, -1);
+            }
+            if(grid[y][w-1] == 0){
+                updateCell(grid, w-1, y, -1);
+            }
+        }
+
+        // 2) 2nd pass
+        for(int y = 0; y < l; y++){
+            for(int x = 0; x < w; x++){
+                if(grid[y][x] == 0){
+                    updateCell(grid, x, y, 100);
+                    isLand += 1;
+                }
+            }
+        }
+
+        return isLand;
+    }
+
+    private void updateCell(int[][] grid, int x, int y, int newColor){
+
+        int[][] moves = new int[][]{ {0,1}, {0,-1}, {1,0}, {-1,0} };
+
+        int l = grid.length;
+        int w = grid[0].length;
+
+        // mark as `visited`
+        grid[y][x] = newColor; // ??   '#';
+
+        for(int[] m: moves){
+            int x_ = x + m[0];
+            int y_ = y + m[1];
+            if(x_ >= 0 && x_ < w && y_ >= 0 && y_ < l){
+                if(grid[y_][x_] == 0 && grid[y_][x_] != newColor){
+                    //cnt += 1;
+                    updateCell(grid, x_, y_, newColor);
+                }
+            }
+        }
+
+    }
+
+
+
 
 
 
