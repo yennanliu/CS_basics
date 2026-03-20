@@ -51,6 +51,14 @@ public class NumberOfIslands {
     /**
      * time = O(M * N)
      * space = O(M * N)
+     *
+     *
+     * -----
+     *
+     * Metric,Complexity,Explanation
+     * Time,O(M⋅N),Each cell is visited `at most once`.
+     * Space,O(M⋅N), `Worst-case` recursion stack depth (if the island is a long snake).
+     *
      */
     public int numIslands(char[][] grid) {
         if (grid == null || grid.length == 0 || grid[0].length == 0) {
@@ -141,6 +149,52 @@ public class NumberOfIslands {
             dfs(grid, newY, newX);
         }
     }
+
+    // V0-0-1
+    // IDEA: DFS
+    public int numIslands_0_0_1(char[][] grid) {
+        // edge
+        if (grid == null || grid.length == 0 || grid[0].length == 0) {
+            return 0;
+        }
+
+        int l = grid.length;
+        int w = grid[0].length;
+
+        int island = 0;
+
+        for (int y = 0; y < l; y++) {
+            for (int x = 0; x < w; x++) {
+                if (grid[y][x] == '1') {
+                    isLandCntHelper(grid, x, y);
+                    island += 1;
+                }
+            }
+        }
+
+        return island;
+    }
+
+    private void isLandCntHelper(char[][] grid, int x, int y) {
+        int[][] moves = new int[][] { { 0, 1 }, { 0, -1 }, { 1, 0 }, { -1, 0 } };
+
+        int l = grid.length;
+        int w = grid[0].length;
+
+        // mark as `visited`
+        grid[y][x] = '#';
+
+        for (int[] m : moves) {
+            int x_ = x + m[0];
+            int y_ = y + m[1];
+            if (x_ >= 0 && x_ < w && y_ >= 0 && y_ < l) {
+                if (grid[y_][x_] == '1' && grid[y_][x_] != '#') {
+                    isLandCntHelper(grid, x_, y_);
+                }
+            }
+        }
+    }
+
 
     // V0-1
     // IDEA : DFS
@@ -584,6 +638,8 @@ public class NumberOfIslands {
         }
         return ans;
     }
+
+
 
 
 
