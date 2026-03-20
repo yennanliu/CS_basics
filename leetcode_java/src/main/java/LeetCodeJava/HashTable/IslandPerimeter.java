@@ -49,12 +49,69 @@ public class IslandPerimeter {
 
     // V0
     // IDEA: BRUTE FORCE
+    /**
+     * Metric,Complexity,Explanation
+     *
+     * Time,O(N⋅M),We visit each cell in the grid exactly once.
+     * Space,O(1),We only use one integer variable to track the perimeter.
+     *
+     */
+    public int islandPerimeter(int[][] grid) {
+        // edge
+
+        int l = grid.length;
+        int w = grid[0].length;
+
+        int res = 0;
+        // ???
+        for (int y = 0; y < l; y++) {
+            for (int x = 0; x < w; x++) {
+
+                // check how many surrounded island
+                // V1
+                //                int surroundedCnt = getSurroundedIsland(grid, x, y);
+                //                res += (4 - surroundedCnt);
+
+                // V2
+                if (grid[y][x] == 1) {
+                    res += (4 - getSurroundedIsland(grid, x, y));
+                }
+            }
+        }
+
+        return res;
+    }
+
+    private int getSurroundedIsland(int[][] grid, int x, int y) {
+        int l = grid.length;
+        int w = grid[0].length;
+
+        int cnt = 0;
+        int[][] moves = new int[][] { { 0, 1 }, { 0, -1 }, { 1, 0 }, { -1, 0 } };
+        // ???
+        for (int[] m : moves) {
+            int x_ = x + m[0];
+            int y_ = y + m[1];
+            if (x_ >= 0 && x_ < w && y_ >= 0 && y_ < l) {
+                if (grid[y_][x_] == 1) {
+                    cnt += 1;
+                }
+            }
+        }
+
+        return cnt;
+    }
+
+
+
+    // V0-0-1
+    // IDEA: BRUTE FORCE
     int islandPerimeterVal = 0; // ??
     /**
      * time = O(N)
      * space = O(N)
      */
-    public int islandPerimeter(int[][] grid) {
+    public int islandPerimeter_0_0_1(int[][] grid) {
 
         // edge
         if (grid == null || grid.length == 0) {
@@ -234,6 +291,28 @@ public class IslandPerimeter {
     }
 
 
+    // V0-3
+    // IDEA: BRUTE FORCE (gpt)
+    public int islandPerimeter_0_3(int[][] grid) {
+        int l = grid.length, w = grid[0].length;
+        int res = 0;
+
+        for (int y = 0; y < l; y++) {
+            for (int x = 0; x < w; x++) {
+                if (grid[y][x] == 1) {
+                    res += 4;
+
+                    if (y > 0 && grid[y - 1][x] == 1)
+                        res -= 2;
+                    if (x > 0 && grid[y][x - 1] == 1)
+                        res -= 2;
+                }
+            }
+        }
+        return res;
+    }
+
+
 
     // V1
     // https://github.com/neetcode-gh/leetcode/blob/main/java%2F0463-island-perimeter.java
@@ -395,6 +474,7 @@ public class IslandPerimeter {
 
         return perimeter;
     }
+
 
 
 

@@ -461,5 +461,74 @@ public class Workspace23 {
     }
 
 
+    // LC 463
+    // 8.26 - 36 am
+    /**
+     *
+     * -> Determine the `perimeter`
+     *    of the island.
+     *
+     *   grid[i][j] = 1 -> island
+     *   grid[i][j] = 0 -> water
+     *
+     *  ----------
+     *
+     *   IDEA 1) BRUTE FORCE
+     *
+     *   IDEA 2) DFS ???
+     *
+     */
+    // IDEA 1) BRUTE FORCE
+    // time:  O(N * M)
+    // space: O(N * M)
+    public int islandPerimeter(int[][] grid) {
+        // edge
+
+        int l = grid.length;
+        int w = grid[0].length;
+
+        int res = 0;
+        // ???
+        for(int y = 0; y < l; y++){
+            for(int x = 0; x < w; x++){
+
+                // check how many surrounded island
+//                int surroundedCnt = getSurroundedIsland(grid, x, y);
+//                res += (4 - surroundedCnt);
+
+                if(grid[y][x] == 1){
+                    res += (4 - getSurroundedIsland(grid, x, y));
+                }
+            }
+        }
+
+
+        return res;
+    }
+
+
+    private int getSurroundedIsland(int[][] grid, int x, int y){
+        int l = grid.length;
+        int w = grid[0].length;
+
+        int cnt = 0;
+        int[][] moves = new int[][]{ {0,1}, {0,-1}, {1,0}, {-1,0} };
+        // ???
+        for(int[] m: moves){
+            int x_ = x + m[0];
+            int y_ = y + m[1];
+            if(x_ >= 0 && x_ < w && y_ >= 0 && y_ < l){
+                if(grid[y_][x_] == 1){
+                    cnt += 1;
+                }
+            }
+        }
+
+        return cnt;
+    }
+
+
+
+
 
 }
