@@ -16,7 +16,9 @@
 	- backtrack.md (OK)
 	- bfs.md (ok)
 	- binary_indexed_tree.md (OK)
-	- Bellman-Ford.md (todo, LC Examples)
+	- Bellman-Ford.md (OK)
+	- binary_search.md (todo, LC Examples)
+
 - to review
 - needcode `250` - similar LC by AI
     - Arrays & Hashing
