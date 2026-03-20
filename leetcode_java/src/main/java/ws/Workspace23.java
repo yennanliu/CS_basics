@@ -543,6 +543,9 @@ public class Workspace23 {
     // space: O(1)
     public int numIslands(char[][] grid) {
         // edge
+        if (grid == null || grid.length == 0 || grid[0].length == 0) {
+            return 0;
+        }
 
         int l = grid.length;
         int w = grid[0].length;
@@ -588,6 +591,73 @@ public class Workspace23 {
 
 
 
+    // LC 695
+    // 9.52 - 10.02 am
+    /**
+     *  -> Return the maximum area of an island in grid.
+     *      If there is NO island, return 0.
+     *
+     *  - grid: m x n
+     *  - island: 1 cells
+     *
+     *
+     *  -------------
+     *
+     *  IDEA 1) DFS
+     *   -> find all island size
+     *   -> get max
+     *
+     *  IDEA 2) BFS
+     *
+     *
+     *  -------------
+     *
+     */
+    // IDEA 1) DFS
+    // time:  O(N * M)
+    // space: O(N * M)
+    public int maxAreaOfIsland(int[][] grid) {
+        // edge
+
+        int l = grid.length;
+        int w = grid[0].length;
+
+        int maxSize = 0;
+
+        for(int y = 0; y < l; y++){
+            for(int x = 0; x < w; x++){
+                if(grid[y][x] == 1){
+//                    getIslandSize(grid, x, y);
+//                    island += 1;
+                    maxSize = Math.max(maxSize,
+                            getIslandSize(grid, x, y));
+                }
+            }
+        }
+
+        return maxSize;
+    }
+
+    private int getIslandSize(int[][] grid, int x, int y){
+        //int[][] moves = new int[][]{ {0,1}, {0,-1}, {1,0}, {-1,0} };
+
+        int l = grid.length;
+        int w = grid[0].length;
+
+        // NOTE !!! we validate cell first (in this version of dfs)
+        if(x < 0 || x >= w || y < 0 || y >= l || grid[y][x] != 1){
+            return 0;
+        }
+
+        // mark as `visited`
+        grid[y][x] = -1;
+
+        // ???
+        return 1 + getIslandSize(grid, x + 1, y) +
+                getIslandSize(grid, x - 1, y) +
+                getIslandSize(grid, x, y + 1) +
+                getIslandSize(grid, x, y - 1);
+    }
 
 
 

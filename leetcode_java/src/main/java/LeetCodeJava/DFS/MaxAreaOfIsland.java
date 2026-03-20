@@ -86,7 +86,24 @@ public class MaxAreaOfIsland {
         int l = grid.length;
         int w = grid[0].length;
 
-        // NOTE !!! validate ????
+        // NOTE !!! validate, yes, we VALIDATE HERE first,
+        //          so our logic is more clean, and this structure works for
+        /**
+         *
+         * we VALIDATE (x,y) first
+         *
+         * ->
+         *   1. our logic is more clean
+         *   2. and this structure works for below recursive style:
+         *
+         *        ```
+         *                return 1 + areaHelper(x + 1, y, grid) +
+         *                 areaHelper(x - 1, y, grid) +
+         *                 areaHelper(x, y + 1, grid) +
+         *                 areaHelper(x, y - 1, grid);
+         *        ```
+         *
+         */
         if (x < 0 || x >= w || y < 0 || y >= l || grid[y][x] != 1) {
             return 0;
         }
@@ -643,6 +660,8 @@ public class MaxAreaOfIsland {
         }
         return ans;
     }
+
+
 
 
 
