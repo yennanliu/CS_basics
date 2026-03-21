@@ -863,10 +863,85 @@ public class Workspace23 {
 
 
     // LC 669
+    // 10.46 - 56 am
+    /**
+     *
+     *  -> Return the root of the trimmed binary search tree.
+     *  Note that the root may change
+     *  depending on the given bounds.
+     *
+     *  trim the tree so that all its
+     *  elements lies in `[low, high].`
+     *
+     *  should not change the relative structure
+     *
+     *
+     *  ------------
+     *
+     *   IDEA 1) DFS + PREORDER ??? + LC 776 ????
+     *
+     *  ------------
+     *
+     */
+    // IDEA 1) DFS + PRE- ORDER ??? + LC 776 ????
+    // root -> left -> right ???
+    // NOTE !!!
+    // BST: binary search tree ( left <= root <= right )
+    // time:   O(log N) // ?? BST ???
+    // space:  O(N) (worst case ???)
     public TreeNode trimBST(TreeNode root, int low, int high) {
+        // edge
+        if(root == null){
+            return null;
+        }
+        if(root.left == null && root.right == null){
+            if(root.val <= high && root.val >= low){
+                return null;
+            }
+            return root;
+        }
 
-        return null;
+
+        return trimHelper(root, null, low, high);
     }
+
+
+    // ??? param are correct ???
+    private TreeNode trimHelper(TreeNode root, TreeNode parent, int low, int high){
+        // edge
+        if(root == null){
+            return null;
+        }
+
+
+        // case 1) root is in [low, high]
+        if(root.val <= high && root.val >= low){
+            //return null; // ???
+            // ???
+            TreeNode _left = trimHelper(root.left, root, low, high);
+            TreeNode _right = trimHelper(root.right, root, low, high);
+
+            // NOTE !!! re-connect ???
+            parent.left = _left;
+            parent.right = _right;
+        }
+        // case 2) root is NOT in [low, high]
+        else{
+            TreeNode _left = trimHelper(root.left, root, low, high);
+            TreeNode _right = trimHelper(root.right, root, low, high);
+            root.left = _left;
+            root.right = _right;
+        }
+
+        return root;
+    }
+
+
+
+
+//    private TreeNode[] splitHelper3(TreeNode root, int low, int high){
+//
+//    }
 
 
 
