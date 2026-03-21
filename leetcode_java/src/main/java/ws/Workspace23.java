@@ -764,6 +764,12 @@ public class Workspace23 {
     }
 
 
+    // LC 988
+    public String smallestFromLeaf(TreeNode root) {
+
+        return null;
+    }
+
 
 
 
