@@ -47,6 +47,60 @@ public class TrimABinarySearchTree {
 //
 //    }
 
+    // V0-1
+    // IDEA: PRE-ORDER DFS + BST property (fixed by gemini)
+    public TreeNode trimBST_0_1(TreeNode root, int low, int high) {
+        if (root == null) {
+            return null;
+        }
+
+        // Case 1: Root is too SMALL.
+        // The entire left subtree is also too small.
+        // We discard root and left, and return whatever remains of the RIGHT subtree.
+        if (root.val < low) {
+            return trimBST_0_1(root.right, low, high);
+        }
+
+        // Case 2: Root is too BIG.
+        // The entire right subtree is also too big.
+        // We discard root and right, and return whatever remains of the LEFT subtree.
+        if (root.val > high) {
+            return trimBST_0_1(root.left, low, high);
+        }
+
+        // Case 3: Root is in range.
+        // We keep the root and recursively trim its children.
+        root.left = trimBST_0_1(root.left, low, high);
+        root.right = trimBST_0_1(root.right, low, high);
+
+        return root;
+    }
+
+
+    // V0-2
+    // IDEA: PRE-ORDER DFS + BST property (fixed by GPT)
+    public TreeNode trimBST_0_2(TreeNode root, int low, int high) {
+        if (root == null)
+            return null;
+
+        // case 1: root too small → discard left subtree
+        if (root.val < low) {
+            return trimBST_0_2(root.right, low, high);
+        }
+
+        // case 2: root too large → discard right subtree
+        if (root.val > high) {
+            return trimBST_0_2(root.left, low, high);
+        }
+
+        // case 3: root is valid → trim children
+        root.left = trimBST_0_2(root.left, low, high);
+        root.right = trimBST_0_2(root.right, low, high);
+
+        return root;
+    }
+
+
     // V1
     // https://leetcode.com/problems/trim-a-binary-search-tree/solutions/1947897/easy-to-understand-with-explanation-0ms-eb6wl/
     public TreeNode trimBST_1(TreeNode root, int L, int R) {
