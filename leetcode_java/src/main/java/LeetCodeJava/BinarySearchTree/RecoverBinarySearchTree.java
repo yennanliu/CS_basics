@@ -50,6 +50,7 @@ public class RecoverBinarySearchTree {
 //
 //    }
 
+
     // V0-1
     // IDEA: BST + find node and swap to fix (fixed by gpt)
     /**
@@ -130,6 +131,50 @@ public class RecoverBinarySearchTree {
         inorder_0_1(root.right);
     }
 
+    // V0-2
+    // IDEA: IN-ORDER DFS (fixed by gemini)
+    private TreeNode first_0_2 = null;
+    private TreeNode second_0_2 = null;
+    private TreeNode prev_0_2 = new TreeNode(Integer.MIN_VALUE);
+
+    public void recoverTree_0_2(TreeNode root) {
+        // 1. Traverse and find the two swapped nodes
+        inorder(root);
+
+        // 2. Swap the values (not the nodes themselves)
+        if (first_0_2 != null && second_0_2 != null) {
+            int temp = first_0_2.val;
+            first_0_2.val = second_0_2.val;
+            second_0_2.val = temp;
+        }
+    }
+
+    private void inorder_0_2(TreeNode root) {
+        if (root == null)
+            return;
+
+        inorder_0_2(root.left);
+
+        // --- Logic Start ---
+        // Check if the sequence is increasing
+        if (prev_0_2.val > root.val) {
+            // If this is the first time we find a drop, 'first' is the 'prev' node
+            if (first_0_2 == null) {
+                first_0_2 = prev_0_2;
+            }
+            // 'second' is always the current node in a drop
+            // (handles both adjacent and distant swaps)
+            second_0_2 = root;
+        }
+        prev_0_2 = root;
+        // --- Logic End ---
+
+        inorder_0_2(root.right);
+    }
+
+
+
+
     // V1
     // https://leetcode.com/problems/recover-binary-search-tree/solutions/7021623/beats-100-beginner-friendly-explanation-gjz5a/
     TreeNode first_1;
@@ -200,6 +245,8 @@ public class RecoverBinarySearchTree {
         first_2.val = second_2.val;
         second_2.val = temp;
     }
+
+
 
 
 }
