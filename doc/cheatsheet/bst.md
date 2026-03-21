@@ -1098,9 +1098,250 @@ mid = left + (right - left) // 2
 - LC 437: Path Sum III - Any path with target sum (prefix sum)
 
 #### Hard Problems (Advanced)
-- LC 99: Recover Binary Search Tree - Fix swapped nodes
+- LC 99: Recover Binary Search Tree - Fix swapped nodes (see Pattern 8 below)
 - LC 1373: Maximum Sum BST in Binary Tree - Complex validation
 - LC 124: Binary Tree Maximum Path Sum - Node-to-node max path
+
+### Template 8: Recover/Fix BST Problems
+
+#### **Pattern Overview**
+- **Description**: Detect and fix violations in BST by leveraging in-order traversal property
+- **Recognition**: "Recover", "fix", "swapped nodes", "invalid BST"
+- **Key Insight**: **In-order traversal of valid BST = strictly increasing sequence**
+- **Time Complexity**: O(n)
+- **Space Complexity**: O(h) for recursion, O(1) with Morris traversal
+
+#### **Why In-Order Traversal? ⭐**
+
+```
+Core Insight:
+  Valid BST in-order traversal → strictly INCREASING sequence
+
+  Example valid BST:        In-order: [1, 2, 3, 4, 5, 6, 7]
+         4                            ↑  ↑  ↑  ↑  ↑  ↑  ↑
+        / \                          strictly increasing ✓
+       2   6
+      / \ / \
+     1  3 5  7
+
+  If two nodes SWAPPED:     In-order: [1, 6, 3, 4, 5, 2, 7]
+         4                                 ↓        ↓
+        / \                            DROP here  DROP here
+       6   2    (swapped!)                 ↓        ↓
+      / \ / \                         first=6   second=2
+     1  3 5  7
+
+Finding "drops" in sequence = finding swapped nodes!
+```
+
+#### **Two Cases of Swapped Nodes**
+
+```
+Case 1: ADJACENT nodes swapped (1 drop)
+  Valid:   [1, 2, 3, 4, 5]
+  Swapped: [1, 3, 2, 4, 5]  ← swap 2 and 3
+                ↓
+           one drop: 3 > 2
+           first = 3 (prev at drop)
+           second = 2 (current at drop)
+
+Case 2: DISTANT nodes swapped (2 drops)
+  Valid:   [1, 2, 3, 4, 5, 6, 7]
+  Swapped: [1, 6, 3, 4, 5, 2, 7]  ← swap 2 and 6
+                ↓           ↓
+           drop 1: 6 > 3    drop 2: 5 > 2
+           first = 6        second = 2 (update!)
+
+Key: first is set at FIRST drop, second is ALWAYS updated at each drop
+```
+
+#### **Java Implementation**
+```java
+// LC 99 Recover Binary Search Tree
+// Time: O(N), Space: O(H)
+
+/**
+ * Key variables:
+ * - first:  The first node where order is violated (the larger one in first drop)
+ * - second: The second node where order is violated (the smaller one in last drop)
+ * - prev:   The previously visited node in in-order traversal
+ */
+private TreeNode first = null;
+private TreeNode second = null;
+private TreeNode prev = new TreeNode(Integer.MIN_VALUE);
+
+public void recoverTree(TreeNode root) {
+    if (root == null) return;
+
+    // Step 1: In-order traversal to find the two swapped nodes
+    inorder(root);
+
+    // Step 2: Swap the values (not the nodes themselves!)
+    if (first != null && second != null) {
+        int temp = first.val;
+        first.val = second.val;
+        second.val = temp;
+    }
+}
+
+private void inorder(TreeNode root) {
+    if (root == null) return;
+
+    // 1. Go Left
+    inorder(root.left);
+
+    // 2. Process current node - detect violation
+    if (prev != null && root.val < prev.val) {
+        // Found a DROP in the sequence!
+        if (first == null) {
+            first = prev;    // First drop: prev is the "too large" node
+        }
+        second = root;       // Always update: current is the "too small" node
+    }
+
+    // Update prev for next comparison
+    prev = root;
+
+    // 3. Go Right
+    inorder(root.right);
+}
+```
+
+#### **Python Implementation**
+```python
+# LC 99 Recover Binary Search Tree
+class Solution:
+    def recoverTree(self, root: TreeNode) -> None:
+        self.first = None
+        self.second = None
+        self.prev = TreeNode(float('-inf'))
+
+        def inorder(node):
+            if not node:
+                return
+
+            # Go left
+            inorder(node.left)
+
+            # Detect violation (drop in sequence)
+            if self.prev and node.val < self.prev.val:
+                if self.first is None:
+                    self.first = self.prev  # First drop
+                self.second = node           # Always update
+
+            self.prev = node
+
+            # Go right
+            inorder(node.right)
+
+        inorder(root)
+
+        # Swap values
+        if self.first and self.second:
+            self.first.val, self.second.val = self.second.val, self.first.val
+```
+
+#### **Why This Pattern Works**
+
+```
+The algorithm handles BOTH cases with ONE logic:
+
+1. "first" is set only ONCE at the first drop
+   → This captures the "too large" node that was swapped
+
+2. "second" is ALWAYS updated at every drop
+   → For adjacent swap: only 1 drop, second = the "too small" node ✓
+   → For distant swap: 2 drops, second gets overwritten to correct node ✓
+
+Example (distant swap: 2 and 6):
+  Sequence: [1, 6, 3, 4, 5, 2, 7]
+
+  At index 2 (val=3): prev=6, curr=3, 6 > 3 → DROP!
+    first = 6 (set once)
+    second = 3
+
+  At index 5 (val=2): prev=5, curr=2, 5 > 2 → DROP!
+    first = 6 (unchanged)
+    second = 2 (updated!) ← This is the correct second node
+
+  Swap 6 and 2 → BST recovered ✓
+```
+
+#### **Similar Problems Using In-Order Property**
+
+| Problem | LC # | Difficulty | Key Technique | Why In-Order? |
+|---------|------|------------|---------------|---------------|
+| **Recover BST** | 99 | Medium | Detect 2 drops | Find swapped nodes in sorted sequence |
+| **Validate BST** | 98 | Medium | Check increasing | Verify strictly increasing sequence |
+| **Kth Smallest** | 230 | Medium | Count in-order | In-order gives sorted order |
+| **BST Iterator** | 173 | Medium | Stack-based | Simulate in-order traversal |
+| **Two Sum IV** | 653 | Easy | Two pointers | In-order gives sorted array |
+| **Find Mode** | 501 | Easy | Track frequency | Process sorted sequence |
+| **Min Diff in BST** | 530/783 | Easy | Track prev diff | Adjacent elements in sorted order |
+| **Convert to Greater Tree** | 538/1038 | Medium | Reverse in-order | Process in descending order |
+
+#### **Common Mistakes**
+
+**🚫 Mistake 1: Trying to swap nodes instead of values**
+```java
+// BAD: Complex and changes tree structure
+TreeNode temp = first;
+first = second;
+second = temp;
+
+// GOOD: Just swap values, structure unchanged
+int temp = first.val;
+first.val = second.val;
+second.val = temp;
+```
+
+**🚫 Mistake 2: Only handling adjacent swaps**
+```java
+// BAD: Stops after first drop
+if (prev.val > root.val) {
+    first = prev;
+    second = root;
+    return;  // Wrong! Miss the second drop for distant swaps
+}
+
+// GOOD: Always update second, handles both cases
+if (prev.val > root.val) {
+    if (first == null) first = prev;
+    second = root;  // Always update!
+}
+```
+
+**🚫 Mistake 3: Not initializing prev correctly**
+```java
+// BAD: prev starts as null, first comparison fails
+TreeNode prev = null;
+
+// GOOD: prev starts with MIN_VALUE for safe comparison
+TreeNode prev = new TreeNode(Integer.MIN_VALUE);
+// Or check: if (prev != null && root.val < prev.val)
+```
+
+#### **Complexity Analysis**
+- **Time**: O(N) — visit each node exactly once
+- **Space**: O(H) — recursion stack (H = tree height)
+- **Follow-up O(1) Space**: Use Morris Traversal (modifies tree temporarily)
+
+#### **Key Takeaways**
+
+```
+1. In-order traversal of valid BST = STRICTLY INCREASING sequence
+   → This is the MOST IMPORTANT property for BST problems
+
+2. Detecting violations = finding "drops" in the sequence
+   → prev.val > curr.val means we found a violation
+
+3. Two-drop pattern handles both adjacent and distant swaps
+   → first: set at FIRST drop (the larger misplaced node)
+   → second: ALWAYS update (the smaller misplaced node)
+
+4. Swap VALUES, not nodes
+   → Much simpler, preserves tree structure
+```
 
 ## 1) General form
 
