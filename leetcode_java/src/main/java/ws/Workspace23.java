@@ -946,4 +946,86 @@ public class Workspace23 {
 
 
 
+    // LC 99
+    // 11. 33 - 43 am
+    /**
+     *
+     *  -> Recover the tree without
+     *  changing its structure.
+     *
+     *   NOTE:
+     *      -  values of exactly` two` nodes of
+     *      the tree were `swapped by mistake.`
+     *
+     *      -  root of a binary search tree (BST)
+     *
+     *
+     *   ------------
+     *
+     *   IDEA 1) DFS ???
+     *
+     *    ->
+     *      1. find the first `wrong` node
+     *      2. swap with `minimum` node ??
+     *         -> right
+     *         -> left
+     *         ...
+     *
+     *      -> keep tracking min, max in recursion 9???
+     *
+     *
+     *
+     *  binary search tree (BST),
+     *
+     *
+     */
+    // ???
+    TreeNode node1;
+    TreeNode node2;
+    public void recoverTree(TreeNode root) {
+        // edge ??
+        if(root == null){
+            return;
+        }
+
+        // get node1, node2 ??
+        // so we can swap
+        recoveryHelper(root, -1 * Integer.MAX_VALUE, Integer.MAX_VALUE);
+
+        // ??? if NOTHING to swap
+        if(node1 == null && node2 == null){
+            return;
+        }
+
+        TreeNode cache = node1; //??
+        // swap ??
+        node1.val = node2.val;
+        node2.val = cache.val;
+    }
+
+    private void recoveryHelper(TreeNode root, int min, int max){
+        // ???
+        if(root == null){
+            return;
+        }
+        // ???
+        if(root.val >= max || root.val <= min){
+            if(node1 != null){
+                node1 = root;
+            }else{
+                node2 = root;
+            }
+        }
+
+        recoveryHelper(root.left, min, root.val);
+        recoveryHelper(root.right, root.val, max);
+    }
+
+
+
+
+
+
+
+
 }
