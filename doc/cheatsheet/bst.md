@@ -1931,7 +1931,165 @@ class Solution(object):
 ```
 
 
-### 2-10)
+### 2-10) Trim a Binary Search Tree (LC 669) - Recursive Pruning Pattern
+
+#### Pattern: Recursive BST Pruning
+Trim a BST so all node values lie within `[L, R]`. This leverages BST property to prune entire subtrees efficiently.
+
+#### Core Idea
+
+```
+Three cases based on root.val vs [L, R] range:
+
+Case 1: root.val < L
+  → root and entire LEFT subtree are too small (all < L)
+  → DISCARD root and left subtree, return trimmed RIGHT subtree
+
+Case 2: root.val > R
+  → root and entire RIGHT subtree are too large (all > R)
+  → DISCARD root and right subtree, return trimmed LEFT subtree
+
+Case 3: L <= root.val <= R
+  → root is in range, KEEP it
+  → Recursively trim both subtrees
+```
+
+#### Visual Walkthrough
+
+```
+Input:        L=1, R=3
+         3
+        / \
+       0   4
+        \
+         2
+        /
+       1
+
+Step 1: root=3, val=3 in [1,3] → KEEP, trim both subtrees
+
+Step 2: root=0, val=0 < L=1 → DISCARD 0, return trimBST(right=2)
+
+Step 3: root=2, val=2 in [1,3] → KEEP, trim both subtrees
+
+Step 4: root=1, val=1 in [1,3] → KEEP (leaf)
+
+Step 5: root=4, val=4 > R=3 → DISCARD 4, return trimBST(left=null) = null
+
+Result:
+     3
+    /
+   2
+  /
+ 1
+```
+
+#### Key Insight: BST Property Enables O(n) Pruning
+
+```
+When root.val < L:
+  → By BST property: ALL nodes in left subtree < root.val < L
+  → So entire left subtree is out of range
+  → We can skip it entirely and only process right subtree
+
+When root.val > R:
+  → By BST property: ALL nodes in right subtree > root.val > R
+  → So entire right subtree is out of range
+  → We can skip it entirely and only process left subtree
+```
+
+#### Java Implementation
+```java
+// LC 669 Trim a Binary Search Tree
+// Time: O(n), Space: O(h) where h = height
+public TreeNode trimBST(TreeNode root, int L, int R) {
+    if (root == null) {
+        return root;
+    }
+
+    // Case 1: root too small, discard root + left subtree
+    if (root.val < L) {
+        return trimBST(root.right, L, R);
+    }
+
+    // Case 2: root too large, discard root + right subtree
+    if (root.val > R) {
+        return trimBST(root.left, L, R);
+    }
+
+    // Case 3: root in range, keep it and trim both subtrees
+    root.left = trimBST(root.left, L, R);
+    root.right = trimBST(root.right, L, R);
+
+    return root;
+}
+```
+
+#### Python Implementation
+```python
+# LC 669 Trim a Binary Search Tree
+class Solution:
+    def trimBST(self, root: TreeNode, low: int, high: int) -> TreeNode:
+        if not root:
+            return None
+
+        # root too small → discard root + left subtree
+        if root.val < low:
+            return self.trimBST(root.right, low, high)
+
+        # root too large → discard root + right subtree
+        if root.val > high:
+            return self.trimBST(root.left, low, high)
+
+        # root in range → keep it, trim both subtrees
+        root.left = self.trimBST(root.left, low, high)
+        root.right = self.trimBST(root.right, low, high)
+
+        return root
+```
+
+#### Comparison: Trim vs Split vs Delete
+
+| Operation | LC # | Nodes Removed? | Return Value | Key Difference |
+|-----------|------|----------------|--------------|----------------|
+| **Trim** | 669 | Yes (out of range) | Single `TreeNode` | Keeps nodes in [L,R], discards rest |
+| **Split** | 776 | No | `TreeNode[2]` | Partitions into 2 trees, keeps ALL nodes |
+| **Delete** | 450 | Yes (1 node) | Single `TreeNode` | Removes exactly 1 specific node |
+
+#### Complexity
+- **Time**: O(n) — visit each node at most once
+- **Space**: O(h) — recursion stack depth = tree height
+
+#### Common Mistakes
+
+**🚫 Mistake 1: Forgetting to reconnect trimmed subtrees**
+```java
+// BAD: Trims but doesn't reconnect
+if (root.val < L) {
+    trimBST(root.right, L, R);  // Missing return!
+}
+
+// GOOD: Return the trimmed subtree
+if (root.val < L) {
+    return trimBST(root.right, L, R);
+}
+```
+
+**🚫 Mistake 2: Not recursing on both subtrees when root is in range**
+```java
+// BAD: Only trims one side
+if (root.val >= L && root.val <= R) {
+    root.left = trimBST(root.left, L, R);
+    return root;  // Forgot to trim right!
+}
+
+// GOOD: Trim both sides
+root.left = trimBST(root.left, L, R);
+root.right = trimBST(root.right, L, R);
+return root;
+```
+
+### 2-10-1) Convert BST to Greater Tree
 ```python
 # LC 538
 ```
