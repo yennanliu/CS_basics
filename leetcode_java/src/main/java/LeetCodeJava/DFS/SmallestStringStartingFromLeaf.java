@@ -58,6 +58,74 @@ public class SmallestStringStartingFromLeaf {
 //
 //    }
 
+    // V0-1
+    // IDEA: DFS + BACKTRACK (gemini)
+    private String smallest = "";
+
+    public String smallestFromLeaf_0_1(TreeNode root) {
+        dfs(root, new StringBuilder());
+        return smallest;
+    }
+
+    private void dfs(TreeNode node, StringBuilder sb) {
+        if (node == null)
+            return;
+
+        // 1. Add current character (0 -> 'a', 1 -> 'b', etc.)
+        sb.append((char) ('a' + node.val));
+
+        // 2. Leaf check: If we reach a leaf, we have a candidate path
+        if (node.left == null && node.right == null) {
+            // Reverse to get string from leaf to root
+            String currentStr = new StringBuilder(sb).reverse().toString();
+
+            // Update global smallest if it's empty or lexicographically smaller
+            if (smallest.equals("") || currentStr.compareTo(smallest) < 0) {
+                smallest = currentStr;
+            }
+        }
+
+        // 3. Standard DFS
+        dfs(node.left, sb);
+        dfs(node.right, sb);
+
+        // 4. BACKTRACK: Remove the last character before returning to parent
+        sb.deleteCharAt(sb.length() - 1);
+    }
+
+    // V0-2
+    // IDEA: DFS + BACKTRACK (GPT)
+    String result = null;
+
+    public String smallestFromLeaf_0_2(TreeNode root) {
+        dfs_0_2(root, new StringBuilder());
+        return result;
+    }
+
+    private void dfs_0_2(TreeNode node, StringBuilder sb) {
+        if (node == null)
+            return;
+
+        // prepend current char (leaf → root direction)
+        sb.insert(0, (char) ('a' + node.val));
+
+        // if leaf
+        if (node.left == null && node.right == null) {
+            String path = sb.toString();
+            if (result == null || path.compareTo(result) < 0) {
+                result = path;
+            }
+        }
+
+        dfs_0_2(node.left, sb);
+        dfs_0_2(node.right, sb);
+
+        // backtrack
+        sb.deleteCharAt(0);
+    }
+
+
+
     // V1-1
     // IDEA: DFS
     // https://leetcode.com/problems/smallest-string-starting-from-leaf/editorial/

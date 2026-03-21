@@ -765,9 +765,98 @@ public class Workspace23 {
 
 
     // LC 988
+    // 9.49 am  - 59 am
+    /**
+     * -> Return the `lexicographically smallest `
+     *    string that` starts at a leaf` of this tree
+     *    and ends at the root.
+     *
+     *    - root (binary tree)
+     *      - node val in [0,25]
+     *      - 'a' -> 'z'
+     *      - 0 -> 25
+     *
+     *    - NOTE:
+     *      -  any `shorter` prefix of
+     *         a string is lexicographically `smaller`.
+     *
+     *          - 'ab' < 'aba'
+     *
+     *      - leaf: NO children
+     *
+     *
+     *
+     *
+     *  -------------
+     *
+     *   IDEA 1) DFS
+     *
+     *    -> path,  pre order ???
+     *       reverse
+     *
+     *   IDEA 2) BFS
+     *
+     *
+     *  -------------
+     *
+     *
+     */
+    // IDEA 1) DFS - pre order ???
+    // ???
+    // time: O(N)
+    // space: O(N)
+    Map<String, Integer> pathMap2 = new HashMap<>();
     public String smallestFromLeaf(TreeNode root) {
+        // edge
 
-        return null;
+        // build path
+        buildPath(root, "");
+
+        // get path list
+        Set<String> pathSet = pathMap2.keySet();
+        List<String> paths = new ArrayList<>(); // ??
+        for(String p: pathSet){
+            paths.add(p);
+        }
+
+        // reverse
+        paths.sort(new Comparator<String>() {
+            @Override
+            public int compare(String o1, String o2) {
+                // ?? the right way to do lexicographically sort ??
+                // small -> big ??
+                int diff = o1.compareTo(o2); /// ????
+                return diff;
+            }
+        });
+
+        // get smallest
+        return !paths.isEmpty() ? paths.get(0) : "";
+    }
+
+    private void buildPath(TreeNode root, String path){
+        // edge
+        if(root == null){
+            return;
+        }
+        // ???
+        //sb.append(root.val);
+        //String path = sb.toString();
+        path += root.val;
+
+        // ?? ONLY add to hashmap when reach `leave`
+        if(root.left ==null && root.right == null){
+            pathMap2.put(path, pathMap2.getOrDefault(path, 0) + 1);
+            // early quit
+            return;
+        }
+
+        buildPath(root.left, path);
+        buildPath(root.left, path);
+
+        // for `StringBuilder`,
+        // do we need to do `backtrack` ??? (undo) ???
+        //sb.delete(sb.length() - 2, sb.length() - 1); //??
     }
 
 
