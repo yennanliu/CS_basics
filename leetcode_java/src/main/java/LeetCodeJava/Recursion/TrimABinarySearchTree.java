@@ -100,6 +100,51 @@ public class TrimABinarySearchTree {
         return root;
     }
 
+    // V0-3
+    // IDEA: DFS + `parent` + BST (gemini) (NOT recommended)
+    // NOTE !!! this version of code is NOT a ideal one,
+    //          added here just for learning purpose.
+    public TreeNode trimBST_0_3(TreeNode root, int low, int high) {
+        TreeNode dummy = new TreeNode(0);
+        dummy.left = root;
+
+        trimHelper(root, dummy, true, low, high);
+
+        return dummy.left;
+    }
+
+    private void trimHelper(TreeNode node, TreeNode parent, boolean isLeft, int low, int high) {
+        if (node == null)
+            return;
+
+        // Case 1: node is too small → replace with right subtree
+        if (node.val < low) {
+            if (isLeft)
+                parent.left = node.right;
+            else
+                parent.right = node.right;
+
+            trimHelper(node.right, parent, isLeft, low, high);
+            return;
+        }
+
+        // Case 2: node is too large → replace with left subtree
+        if (node.val > high) {
+            if (isLeft)
+                parent.left = node.left;
+            else
+                parent.right = node.left;
+
+            trimHelper(node.left, parent, isLeft, low, high);
+            return;
+        }
+
+        // Case 3: node is valid → recurse normally
+        trimHelper(node.left, node, true, low, high);
+        trimHelper(node.right, node, false, low, high);
+    }
+
+
 
     // V1
     // https://leetcode.com/problems/trim-a-binary-search-tree/solutions/1947897/easy-to-understand-with-explanation-0ms-eb6wl/
@@ -136,6 +181,7 @@ public class TrimABinarySearchTree {
         ;
         return root;
     }
+
 
 
 
