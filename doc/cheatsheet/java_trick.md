@@ -2279,6 +2279,86 @@ private void dfs(TreeNode node, int remain, List<Integer> path, List<List<Intege
 }
 ```
 
+#### Case 4: StringBuilder — Backtracking IS Needed (LC 988 Smallest String Starting From Leaf)
+
+```java
+// LC 988 - Smallest String Starting From Leaf
+// StringBuilder is a reference type → shared object → MUST backtrack
+
+private String smallest = "";
+
+public String smallestFromLeaf(TreeNode root) {
+    dfs(root, new StringBuilder());
+    return smallest;
+}
+
+private void dfs(TreeNode node, StringBuilder sb) {
+    if (node == null)
+        return;
+
+    /** NOTE !!!
+     *
+     *  PRE-ORDER DFS: process current node first
+     */
+    // 1. Add current character (0 -> 'a', 1 -> 'b', etc.)
+    sb.append((char) ('a' + node.val));
+
+    /** NOTE !!!
+     *
+     *  ONLY treat as result when reach `leaf`
+     */
+    // 2. Leaf check: If we reach a leaf, we have a candidate path
+    if (node.left == null && node.right == null) {
+
+        /** NOTE !!!
+         *
+         *  We reverse current StringBuilder to fit the requirement
+         *  (string from leaf to root)
+         */
+        String currentStr = new StringBuilder(sb).reverse().toString();
+
+        /** NOTE !!!
+         *
+         *  How we get the `lexicographically smaller` one:
+         *  currentStr.compareTo(smallest) < 0
+         */
+        if (smallest.equals("") || currentStr.compareTo(smallest) < 0) {
+            smallest = currentStr;
+        }
+    }
+
+    // 3. Standard DFS
+    dfs(node.left, sb);
+    dfs(node.right, sb);
+
+    /** NOTE !!!
+     *
+     *  For StringBuilder (NOT a primitive type),
+     *  we MUST do BACKTRACK (undo)
+     *
+     *  Reason:
+     *   - StringBuilder is a reference type (object)
+     *   - All recursive calls share the SAME StringBuilder instance
+     *   - After exploring subtrees, we must remove the current char
+     *     to restore sb to its state before this call
+     *   - Without this, the path would keep growing incorrectly
+     *
+     *  Memory model:
+     *
+     *    dfs(node=5, sb="e")
+     *      ├── sb.append('a') → sb="ea"
+     *      ├── dfs(left, sb="ea")
+     *      │     └── sb.append('b') → sb="eab"
+     *      │     └── sb.deleteCharAt() → sb="ea"  ← backtrack!
+     *      ├── dfs(right, sb="ea")  ← sb is correctly "ea", not "eab"
+     *      │     └── ...
+     *      └── sb.deleteCharAt() → sb="e"  ← backtrack to parent state
+     */
+    // 4. BACKTRACK: Remove the last character before returning to parent
+    sb.deleteCharAt(sb.length() - 1);
+}
+```
+
 #### Summary Table
 
 | State Type | Example | Backtrack? | Reason |
@@ -2289,6 +2369,7 @@ private void dfs(TreeNode node, int remain, List<Integer> path, List<List<Intege
 | Instance/global variable | `this.curSum` | **Yes** | Shared across all calls |
 | Collection param | `List<Integer> path` | **Yes** | Reference, mutated in-place |
 | Array param | `int[] path` | **Yes** | Reference, mutated in-place |
+| StringBuilder param | `StringBuilder sb` | **Yes** | Reference, mutated in-place via `append()`/`deleteCharAt()` |
 
 #### Interview Tips
 
