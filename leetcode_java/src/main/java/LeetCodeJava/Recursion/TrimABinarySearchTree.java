@@ -48,7 +48,149 @@ public class TrimABinarySearchTree {
 //    }
 
     // V0-1
-    // IDEA: PRE-ORDER DFS + BST property (fixed by gemini)
+    // IDEA: `PRE-ORDER` DFS + BST property (fixed by gemini)
+    /**  NOTE !!!
+     *
+     *  1. this is a `pre-order` DFS
+     *
+     *  2. time = O(N)  -> need to visit all nodes
+     *     space = O(H)
+     *
+     *
+     *   --------------
+     *
+     *   Good questions—this is exactly the kind of nuance interviewers care about for **LeetCode 669 Trim a Binary Search Tree**.
+     *
+     * ---
+     *
+     * # 1️⃣ Is this post-order DFS?
+     *
+     * 👉 **No — it’s *not* post-order. It’s closer to *pre-order*.**
+     *
+     * ### Why?
+     *
+     * Look at the structure:
+     *
+     * ```java
+     * if (root.val < low) {
+     *     return trimBST(root.right, low, high);
+     * }
+     *
+     * if (root.val > high) {
+     *     return trimBST(root.left, low, high);
+     * }
+     * ```
+     *
+     * You are:
+     *
+     * * **processing the current node FIRST**
+     * * deciding what to do **before visiting children**
+     *
+     * That’s the definition of **pre-order behavior**.
+     *
+     * ---
+     *
+     * ### But there’s a twist 👇
+     *
+     * In the “valid node” case:
+     *
+     * ```java
+     * root.left = trimBST(root.left, low, high);
+     * root.right = trimBST(root.right, low, high);
+     * ```
+     *
+     * This part *looks like* post-order (children first, then use results).
+     *
+     * ---
+     *
+     * ### ✅ Final classification
+     *
+     * 👉 This is best described as:
+     *
+     * > **Pre-order DFS with pruning + recursive reconstruction**
+     *
+     * * Pre-order → because decisions happen at the root first
+     * * Not pure post-order → because you sometimes **skip entire subtrees early**
+     *
+     * ---
+     *
+     * # 2️⃣ Time & Space Complexity
+     *
+     * ### ❌ Your guess:
+     *
+     * > time = O(log N), space = O(N)
+     *
+     * 👉 Not correct in general.
+     *
+     * ---
+     *
+     * ## ✅ Time Complexity
+     *
+     * ### Worst case:
+     *
+     * > **O(N)**
+     *
+     * Why?
+     *
+     * * You may visit every node once
+     * * Example: all nodes are within `[low, high]`
+     *
+     * ---
+     *
+     * ### Best case (pruning helps):
+     *
+     * > **O(H)** (height of tree)
+     *
+     * * If you keep skipping one side (like a linked list)
+     * * For balanced BST: **O(log N)**
+     *
+     * ---
+     *
+     * ## ✅ Space Complexity
+     *
+     * This is about **recursion stack**:
+     *
+     * ### Worst case:
+     *
+     * > **O(N)**
+     * > (skewed tree)
+     *
+     * ### Best / average (balanced tree):
+     *
+     * > **O(log N)**
+     *
+     * ---
+     *
+     * ## 📊 Final Answer Summary
+     *
+     * | Metric | Complexity                           |
+     * | ------ | ------------------------------------ |
+     * | Time   | **O(N)** worst, **O(log N)** best    |
+     * | Space  | **O(N)** worst, **O(log N)** average |
+     *
+     * ---
+     *
+     * ## 🧠 Key insight (important for interviews)
+     *
+     * This problem is fast not because of DFS order, but because of:
+     *
+     * > **BST property allows pruning entire subtrees**
+     *
+     * That’s the real optimization—not the traversal type.
+     *
+     * ---
+     *
+     * ## 🏁 One-liner takeaway
+     *
+     * * Traversal: **Pre-order style pruning**
+     * * Time: **O(N)** worst
+     * * Space: **O(H)** (height of tree)
+     *
+     */
+    /**
+     *  time = O(N)
+     *  space = O(H)
+     */
     public TreeNode trimBST_0_1(TreeNode root, int low, int high) {
         if (root == null) {
             return null;
@@ -76,26 +218,49 @@ public class TrimABinarySearchTree {
         return root;
     }
 
-
     // V0-2
-    // IDEA: PRE-ORDER DFS + BST property (fixed by GPT)
+    // IDEA: POST ORDER DFS (gpt)
     public TreeNode trimBST_0_2(TreeNode root, int low, int high) {
+        if (root == null)
+            return null;
+
+        // process children first
+        root.left = trimBST_0_2(root.left, low, high);
+        root.right = trimBST_0_2(root.right, low, high);
+
+        // then decide current node
+        if (root.val < low) {
+            return root.right;
+        }
+
+        if (root.val > high) {
+            return root.left;
+        }
+
+        return root;
+    }
+
+
+
+    // V0-x
+    // IDEA: PRE-ORDER DFS + BST property (fixed by GPT)
+    public TreeNode trimBST_0_x(TreeNode root, int low, int high) {
         if (root == null)
             return null;
 
         // case 1: root too small → discard left subtree
         if (root.val < low) {
-            return trimBST_0_2(root.right, low, high);
+            return trimBST_0_x(root.right, low, high);
         }
 
         // case 2: root too large → discard right subtree
         if (root.val > high) {
-            return trimBST_0_2(root.left, low, high);
+            return trimBST_0_x(root.left, low, high);
         }
 
         // case 3: root is valid → trim children
-        root.left = trimBST_0_2(root.left, low, high);
-        root.right = trimBST_0_2(root.right, low, high);
+        root.left = trimBST_0_x(root.left, low, high);
+        root.right = trimBST_0_x(root.right, low, high);
 
         return root;
     }
