@@ -41,6 +41,16 @@ import LeetCodeJava.DataStructure.TreeNode;
  */
 public class RecoverBinarySearchTree {
 
+    /**
+     *
+     *  NOTE !!!
+     *
+     *   we can't use logic like split, check if BST is valid BST
+     *   -> logic is complex, struggling in handle cases,
+     *      error-prone...
+     *
+     */
+
     // V0
 //    /**
 //     * time = O(N)
@@ -52,7 +62,15 @@ public class RecoverBinarySearchTree {
 
 
     // V0-1
-    // IDEA: BST + find node and swap to fix (fixed by gpt)
+    // IDEA: IN-ORDER DFS + BST (fixed by gpt)
+    /**  NOTE !!! why in-order ??
+     *
+     *  -> An In-order traversal of a valid BST must be a
+     *     strictly increasing sequence.
+     *     If two nodes are swapped, you will see "drops" in that sequence.
+     *
+
+     */
     /**
      *  Steps:
      *

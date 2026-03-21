@@ -977,6 +977,20 @@ public class Workspace23 {
      *
      *  binary search tree (BST),
      *
+     *  --------------
+     *
+     *
+     *   IDEA 1) IN-ORDER ???
+     *    left -> root -> right ??
+     *
+     *    -> reason:
+     *
+     *     An In-order traversal of a valid BST must be a strictly increasing sequence.
+     *     If two nodes are swapped, you will see "drops" in that sequence.
+     *    ---
+     *
+     *
+     *
      *
      */
     // ???
