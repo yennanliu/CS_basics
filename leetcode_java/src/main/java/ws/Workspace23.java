@@ -842,6 +842,8 @@ public class Workspace23 {
         // ???
         //sb.append(root.val);
         //String path = sb.toString();
+        //path += root.val;
+        //path.
         path += root.val;
 
         // ?? ONLY add to hashmap when reach `leave`
@@ -852,7 +854,7 @@ public class Workspace23 {
         }
 
         buildPath(root.left, path);
-        buildPath(root.left, path);
+        buildPath(root.right, path);
 
         // for `StringBuilder`,
         // do we need to do `backtrack` ??? (undo) ???

@@ -71,14 +71,37 @@ public class SmallestStringStartingFromLeaf {
         if (node == null)
             return;
 
+
+        /** NOTE !!!
+         *
+         *  PRE-ORDER DFS
+         */
+
         // 1. Add current character (0 -> 'a', 1 -> 'b', etc.)
         sb.append((char) ('a' + node.val));
 
+        /** NOTE !!!
+         *
+         *  ONLY treat as result when reach `leaf`
+         */
         // 2. Leaf check: If we reach a leaf, we have a candidate path
         if (node.left == null && node.right == null) {
+
+            /** NOTE !!!
+             *
+             *  we reverse cur StringBuilder, to fit the requirement
+             */
             // Reverse to get string from leaf to root
             String currentStr = new StringBuilder(sb).reverse().toString();
 
+            /** NOTE !!!
+             *
+             *  how we get the `lexicographically smaller` one
+             *
+             *  e.g.
+             *
+             *  currentStr.compareTo(smallest) < 0
+             */
             // Update global smallest if it's empty or lexicographically smaller
             if (smallest.equals("") || currentStr.compareTo(smallest) < 0) {
                 smallest = currentStr;
@@ -89,6 +112,11 @@ public class SmallestStringStartingFromLeaf {
         dfs(node.left, sb);
         dfs(node.right, sb);
 
+        /** NOTE !!!
+         *
+         *  for StringBuilder (NOT a primitive type),
+         *  we have to do BACKTRACK (undo)
+         */
         // 4. BACKTRACK: Remove the last character before returning to parent
         sb.deleteCharAt(sb.length() - 1);
     }
