@@ -1037,6 +1037,75 @@ public class Workspace23 {
 
 
 
+    // LC 1482
+    // 12.30 - 1.30 pm
+    /**
+     *
+     *
+     *
+     */
+    public int minDays(int[] bloomDay, int m, int k) {
+
+        return 0;
+    }
+
+
+    // LC 776
+    // 12.38 - 48 am
+    /**
+     *
+     *  Binary Search Tree (BST)
+     *
+     *
+     *  -----------
+     *
+     *  DFS
+     *   [smaller node, bigger node] // ???
+     *
+     *   ->  pre-order DFS ????
+     *
+     */
+    TreeNode[] splitNodes = new TreeNode[2]; // ???
+    public TreeNode[] splitBST(TreeNode root, int target) {
+        // edge
+
+
+        return splitNodes;
+    }
+
+    private TreeNode[] splitHelper(TreeNode root, int target){
+        // edge
+        if(root == null){
+            return new TreeNode[2]; // ????
+        }
+
+        // case 1) root.val > target
+        // -> move `left`
+        // but maybe `there are still some nodes > target` in left sub tree
+        if(root.val > target){
+            TreeNode[] res1 = splitHelper(root.left, target);
+            // ??? re-connect the bigger one ???
+            root.right = res1[1];
+            // ???
+            //return
+        }
+        // ???
+        // case 2) root.val <= target
+        // -> move `right`
+        else{
+            TreeNode[] res2 = splitHelper(root.right, target);
+            root.right = res2[1];
+            // ?????
+            return new TreeNode[]{res2[0], root};
+        }
+
+
+
+        //return splitNodes;
+        return null;
+    }
+
+
 
 
 
