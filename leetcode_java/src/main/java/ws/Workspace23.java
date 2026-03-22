@@ -1215,6 +1215,43 @@ public class Workspace23 {
 
 
     // LC 1231
+    // 19.43 - 53 pm
+    /**
+     *
+     *  -> Find the `maximum` total sweetness
+     *  of the piece you can get by
+     *  `cutting` the chocolate bar optimally.
+     *
+     *  want to share with `K` friends,
+     *  -> cut in `k+1` pieces
+     *  -> (with k cuts)
+     *
+     *  - each piece consists of
+     *    some `consecutive` chunks.
+     *
+     *
+     *
+     *  NOTE
+     *
+     *   - have `one chocolate bar that`
+     *     consists of some chunks
+     *
+     *   - each chunk has
+     *      its own `sweetness` given by the `array` sweetness.
+     *
+     *   -  you will eat the piece with the `minimum`
+     *      total sweetness and give the
+     *      other pieces to your friends.
+     *
+     *
+     *  -----------------
+     *
+     *   IDEA 1) SORT + ??
+     *
+     *
+     *  -----------------
+     *
+     */
     public int maximizeSweetness(int[] sweetness, int k) {
 
         return 0;
