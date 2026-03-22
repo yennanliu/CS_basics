@@ -1359,6 +1359,96 @@ public class Workspace23 {
     }
 
 
+    // LC 410
+    // 20.44 - 54 pm
+    /**
+     *  -> Return the minimized
+     *  largest sum of the split.
+     *
+     *   nums: int arr
+     *   int: k
+     *
+     *   -> split nums into
+     *      `k` non-empty sub-arrays
+     *      s.t.
+     *        `largest` sum of any subarray is `minimized.`
+     *
+     *
+     *
+     *  ---------
+     *
+     *   IDEA 1) GREEDY + BINARY SEARCH ???
+     *    -> use `mid` as `max diff` ?????
+     *
+     *
+     *  ---------
+     *
+     *
+     *
+     *
+     */
+    public int splitArray(int[] nums, int k) {
+
+        /** NOTE !!! we sort arr first,
+         *
+         *  -> so neighbors are with `the closest values`
+         */
+        //Arrays.sort(nums);
+
+        int n = nums.length;
+        // The range for Binary Search is the possible DIFFERENCE values
+        int left = 0;
+        /** NOTE !!!
+         *
+         *  -> right is `max diff`
+         */
+        int right = nums[n - 1] - nums[0];
+        int ans = right;
+
+        /** NOTE !!!
+         *
+         *  -> the thing (mid) we are finding is:
+         *
+         *    ` max diff`
+         */
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+
+            if (canSplit(nums, k, mid)) {
+                ans = mid; // 'mid' is a valid maximum difference
+                right = mid - 1; // Try to find a smaller maximum difference
+            } else {
+                left = mid + 1; // Need a larger difference to form enough pairs
+            }
+        }
+        return ans;
+    }
+
+
+    // /?? minCumSum: track min sum of [i, j] sub array
+    private boolean canSplit(int[] nums, int k, int minCumSum){
+        // edge
+
+        //??
+        int groupCnt = 0;
+        int l = 0; //???
+        int r = 0;
+        int cumSum = 0;
+        while(r < nums.length){
+            // ???
+            if(minCumSum + nums[r] >= minCumSum){
+                cumSum = nums[r];
+                l = r;
+                r += 1;
+                groupCnt += 1;
+            }else{
+                cumSum += nums[r];
+            }
+        }
+
+        return groupCnt >= k;
+    }
+
 
 
 
