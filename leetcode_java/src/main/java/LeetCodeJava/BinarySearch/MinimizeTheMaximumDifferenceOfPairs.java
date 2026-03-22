@@ -42,9 +42,74 @@ import java.util.Arrays;
 public class MinimizeTheMaximumDifferenceOfPairs {
 
     // V0
-//    public int minimizeMax(int[] nums, int p) {
-//
-//    }
+    // IDEA: SORT + BINARY SEARCH (`Minimize the Maximum`) (fixed by gemini)
+    // LC 1231, LC 2616
+    public int minimizeMax(int[] nums, int p) {
+        if (p == 0){
+            return 0;
+        }
+
+        /** NOTE !!! we sort arr first,
+         *
+         *  -> so neighbors are with `the closest values`
+         */
+        Arrays.sort(nums);
+
+        int n = nums.length;
+        // The range for Binary Search is the possible DIFFERENCE values
+        int left = 0;
+        /** NOTE !!!
+         *
+         *  -> right is `max diff`
+         */
+        int right = nums[n - 1] - nums[0];
+        int ans = right;
+
+        /** NOTE !!!
+         *
+         *  -> the thing (mid) we are finding is:
+         *
+         *    ` max diff`
+         */
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+
+            if (canFormPairs_0(nums, p, mid)) {
+                ans = mid; // 'mid' is a valid maximum difference
+                right = mid - 1; // Try to find a smaller maximum difference
+            } else {
+                left = mid + 1; // Need a larger difference to form enough pairs
+            }
+        }
+        return ans;
+    }
+
+
+    /** NOTE !!!
+     *
+     *  3rd param (maxDiff) is the key of this help func
+     */
+    private boolean canFormPairs_0(int[] nums, int p, int maxDiff) {
+        int count = 0;
+        for (int i = 0; i < nums.length - 1;) {
+            // If the current adjacent pair is within maxDiff, take it
+            if (nums[i + 1] - nums[i] <= maxDiff) {
+                count++;
+                /** NOTE !!!
+                 *
+                 *  // Move past both elements in the pair
+                 */
+                i += 2;
+            } else {
+                i++; // Move to the next possible starting element
+            }
+
+            if (count >= p)
+                return true;
+        }
+        return count >= p;
+    }
+
 
     // V0-0-1
     // IDEA: BINARY SEARCH + GREEDY (gemini)
@@ -577,6 +642,8 @@ public class MinimizeTheMaximumDifferenceOfPairs {
 
 
     // V3
+
+
 
 
 }

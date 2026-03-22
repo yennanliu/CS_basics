@@ -1259,4 +1259,107 @@ public class Workspace23 {
 
 
 
+    // LC 2616
+    // 20.16 - 26 pm
+    /**
+     *  -> Return the minimum maximum
+     *  difference among all p pairs.
+     *  We define the maximum of an
+     *  empty set to be zero.
+     *
+     *
+     *   - nums ( 0 based )
+     *   - int: p
+     *   - pair : i, j
+     *     -> dist = |nums[i] - nums[j]|
+     *
+     *
+     *  ----------
+     *
+     *   IDEA 1)  BINARY SEARCH  + pair_check ??
+     *
+     *
+     *  ----------
+     *
+     */
+    /**  NOTE !!!
+     *
+     * This is a classic "Minimize the Maximum" problem.
+     *
+     *  Steps:
+     *
+     *  1. Sort the array so that the closest numbers are adjacent.
+     *
+     *  2. Binary Search for the "Maximum Difference" (let's call it mid).
+     *
+     *  3. Greedy Check: Can we find at least p pairs
+     *     where each pair's difference is <= mid ?
+     *
+     */
+    // IDEA 1)  BINARY SEARCH  + pair_check ??
+    public int minimizeMax(int[] nums, int p) {
+        // edge
+        if (p == 0)
+            return 0;
+        //Arrays.sort(nums);
+
+        // sort ????
+        Arrays.sort(nums);
+
+        // ???
+        int l = 0;
+        //int r = nums.length -1; // ???
+        int r = nums[nums.length - 1] - nums[0]; // ??? max diff
+        //int minDiff = 0; // /??
+        int minDiff = r; // ????
+
+        //Map<Integer, List<Integer>> map = new HashMap<>();
+
+        while (r >= l){
+            int mid = l + ( r - l ) / 2;
+            // ????
+            if(canFormPair1(nums, p, mid)){
+                minDiff = Math.min(minDiff, mid);
+                // ??
+                r = mid - 1;
+            }else{
+                l = mid + 1;
+            }
+        }
+
+
+        return minDiff;
+    }
+
+    // ??? maxDiff
+    private boolean canFormPair1(int[] nums, int p, int maxDiff){
+        // edge
+        if(nums.length == 0){
+            return p == 0; // ??
+        }
+
+        int pair = 0;
+        // ???
+        int l = 0;
+        while (l < nums.length){
+            // NOTE !!!
+            // early quit
+            if(pair >= p){
+                return true;
+            }
+            // ?? find a pair
+            if(nums[l+1] - nums[l] <= maxDiff){
+                l += 2; // ??? jump to next next idx
+                pair += 1;
+            }
+            l += 1;
+        }
+
+        return pair >= p;
+    }
+
+
+
+
+
 }
