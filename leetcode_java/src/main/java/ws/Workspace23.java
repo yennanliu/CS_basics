@@ -1180,8 +1180,11 @@ public class Workspace23 {
 
 
 
+    // LC 948
+    public int bagOfTokensScore(int[] tokens, int power) {
 
-
+        return 0;
+    }
 
 
 
