@@ -1107,6 +1107,81 @@ public class Workspace23 {
 
 
 
+    // LC 1109
+    // 18.47 - 57 pm
+    /**
+     *
+     *  -> Return an array answer of length n,
+     *  where answer[i] is the total number
+     *  of seats reserved for flight i.
+     *
+     *
+     *   - n flights: 1 -> n
+     *   - bookings[i] = [firsti, lasti, seatsi]
+     *
+     *
+     *  ---------------
+     *
+     *   IDEA 1) PREFIX SUM ??
+     *
+     *   IDEA 2) `SCANNING LINE` ???
+     *
+     *
+     *  ---------------
+     *
+     */
+    // IDEA 1) PREFIX SUM ??
+    public int[] corpFlightBookings(int[][] bookings, int n) {
+        // edge
+
+        // get max `dest`
+        int dest = 0;
+        for(int[] b: bookings){
+            dest = Math.max(dest, b[1]);
+        }
+
+        // ???
+        //int[] prefixList = new int[dest + 1]; // ???
+        // over `flight id` ???
+        int[] prefixList = new int[n]; // ???
+        /**
+         *  sum(i, j) = prefix(j+1) - prefix(i)
+         *
+         */
+        // ???
+        //int prefix = 0; // /????
+        for(int i = 0; i < bookings.length; i++){
+            int[] b = bookings[i];
+            // /??
+            int start = b[0];
+            int end = b[1];
+            int seat = b[2];
+            //dest = Math.max(dest, b[1]);
+            //prefix += b[2];
+
+            prefixList[start] +=  seat;
+            // ???
+            if(end < n){
+                prefixList[end] -= seat;
+            }
+        }
+
+        // ??
+        // /??
+        int prefix = 0;
+        int[] res = new int[n];
+        for(int i = 0; i < prefixList.length; i++){
+            prefix += prefixList[i]; // ??
+            res[i] = prefix;
+        }
+
+        return res;
+    }
+
+
+
+
+
 
 
 

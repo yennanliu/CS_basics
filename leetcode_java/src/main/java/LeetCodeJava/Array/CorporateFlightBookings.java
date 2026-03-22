@@ -135,6 +135,68 @@ public class CorporateFlightBookings {
       return preSum;
   }
 
+  // V0-1
+  // IDEA: PREFIX SUM (fixed by gemini)
+  public int[] corpFlightBookings_0_1(int[][] bookings, int n) {
+      // 1. Create a difference array of size n + 1 to handle the 'end + 1' boundary
+      int[] diff = new int[n + 1];
+
+      // 2. Process each booking in O(1) time
+      for (int[] b : bookings) {
+          int first = b[0]; // 1-based
+          int last = b[1]; // 1-based
+          int seats = b[2];
+
+          // Add seats at the start of the range (convert to 0-based)
+          diff[first - 1] += seats;
+
+          // Subtract seats AFTER the end of the range
+          if (last < n) {
+              diff[last] -= seats;
+          }
+      }
+
+      // 3. Convert the difference array into the final prefix sum array
+      int[] res = new int[n];
+      int currentSum = 0;
+      for (int i = 0; i < n; i++) {
+          currentSum += diff[i];
+          res[i] = currentSum;
+      }
+
+      return res;
+  }
+
+
+  // V0-2
+  // IDEA: PREFIX SUM (gpt)
+  public int[] corpFlightBookings_0_2(int[][] bookings, int n) {
+      int[] diff = new int[n];
+
+      for (int[] b : bookings) {
+          int start = b[0] - 1; // convert to 0-based
+          int end = b[1]; // keep as is for diff logic
+          int seats = b[2];
+
+          diff[start] += seats;
+
+          if (end < n) {
+              diff[end] -= seats;
+          }
+      }
+
+      // build prefix sum
+      int[] res = new int[n];
+      int prefix = 0;
+      for (int i = 0; i < n; i++) {
+          prefix += diff[i];
+          res[i] = prefix;
+      }
+
+      return res;
+  }
+
+
   // V1
   // IDEA : DIFFERENCE ARRAY (gpt)
   // https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/difference_array.md
@@ -278,6 +340,9 @@ public class CorporateFlightBookings {
       }
       return res;
   }
+
+
+
 
 
 

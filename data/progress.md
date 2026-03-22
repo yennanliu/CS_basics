@@ -1,6 +1,6 @@
 # Progress
 
-# 2026-03-21
+# 2026-03-22
 
 - weekly video
 - cheatsheet (LC examples)
@@ -61,7 +61,6 @@
 			- 80
 	- LC 881
 		- gpt
-			- 1109
 		- gemini
 			- 948
 			- 11
