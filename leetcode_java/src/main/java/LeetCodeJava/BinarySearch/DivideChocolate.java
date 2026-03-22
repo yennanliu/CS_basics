@@ -50,6 +50,99 @@ public class DivideChocolate {
 //
 //    }
 
+
+    // V0-1
+    // IDEA: Binary Search + Greedy (gemini)
+    // TODO: validate
+    public int maximizeSweetness_0_1(int[] sweetness, int k) {
+        // You are sharing with K friends, so there are K + 1 total pieces.
+        int totalPeople = k + 1;
+
+        // Lower bound: The smallest possible sweetness piece (at least 1)
+        int left = 1;
+        // Upper bound: Total sweetness divided by number of people
+        int right = 0;
+        for (int s : sweetness) right += s;
+        right /= totalPeople;
+
+        int ans = 0;
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+
+            // If we can cut the chocolate into at least totalPeople pieces,
+            // where each piece has at least 'mid' sweetness:
+            if (canSplit(sweetness, totalPeople, mid)) {
+                ans = mid;    // 'mid' is a possible answer
+                left = mid + 1; // Try for a larger minimum sweetness
+            } else {
+                right = mid - 1; // 'mid' is too large, reduce the target
+            }
+        }
+
+        return ans;
+    }
+
+    private boolean canSplit(int[] sweetness, int totalPeople, int minTarget) {
+        int currentSweetness = 0;
+        int pieces = 0;
+
+        for (int s : sweetness) {
+            currentSweetness += s;
+            // If the current piece reaches the target, we cut it.
+            if (currentSweetness >= minTarget) {
+                pieces++;
+                currentSweetness = 0;
+            }
+        }
+
+        // Check if we managed to create enough pieces for everyone.
+        return pieces >= totalPeople;
+    }
+
+
+    // V0-2
+    // IDEA: Binary Search + Greedy (GPT)
+    // TODO: validate
+    public int maximizeSweetness_0_2(int[] sweetness, int k) {
+        int left = 1;  // minimum possible sweetness
+        int right = 0; // maximum possible sweetness (sum)
+
+        for (int s : sweetness) {
+            right += s;
+        }
+
+        // binary search on answer
+        while (left < right) {
+            int mid = left + (right - left + 1) / 2;
+
+            if (canSplit_0_2(sweetness, mid, k)) {
+                left = mid;       // try larger minimum
+            } else {
+                right = mid - 1;  // reduce target
+            }
+        }
+
+        return left;
+    }
+
+    // check if we can make >= k+1 pieces with each >= target
+    private boolean canSplit_0_2(int[] sweetness, int target, int k) {
+        int sum = 0;
+        int count = 0;
+
+        for (int s : sweetness) {
+            sum += s;
+            if (sum >= target) {
+                count++;
+                sum = 0;
+            }
+        }
+
+        return count >= k + 1;
+    }
+
+
+
     // V1
     // IDEA: BINARY SEARCH + GREEDY
     // https://leetcode.ca/2019-04-14-1231-Divide-Chocolate/
@@ -84,7 +177,9 @@ public class DivideChocolate {
 
     // V2
 
+
     // V3
 
+    
 
 }
