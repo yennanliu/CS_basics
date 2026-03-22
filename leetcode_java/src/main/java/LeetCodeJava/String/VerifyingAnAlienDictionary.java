@@ -46,12 +46,53 @@ import java.util.Map;
 public class VerifyingAnAlienDictionary {
 
     // V0
-    // IDEA:  HASHMAP + string op (fixed by gpt)
+    // IDEA: ARRAY (val - idx) + linear pass (string op) (fixed by gemini)
+    public boolean isAlienSorted(String[] words, String order) {
+        // 1. Map each character to its alien rank for O(1) lookup
+        int[] alienOrder = new int[26];
+        for (int i = 0; i < order.length(); i++) {
+            alienOrder[order.charAt(i) - 'a'] = i;
+        }
+
+        // 2. Compare adjacent words
+        for (int i = 0; i < words.length - 1; i++) {
+            if (!isSorted(words[i], words[i + 1], alienOrder)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private boolean isSorted(String w1, String w2, int[] alienOrder) {
+        int len1 = w1.length();
+        int len2 = w2.length();
+        int minLen = Math.min(len1, len2);
+
+        for (int i = 0; i < minLen; i++) {
+            char c1 = w1.charAt(i);
+            char c2 = w2.charAt(i);
+
+            if (c1 != c2) {
+                // If characters differ, the first one must have a smaller rank
+                return alienOrder[c1 - 'a'] < alienOrder[c2 - 'a'];
+            }
+        }
+
+        // If we reach here, one word is a prefix of the other.
+        // "apple" is NOT allowed to come before "app".
+        // The shorter word must come first.
+        return len1 <= len2;
+    }
+
+
+    // V0-0-1
+    // IDEA:  HASHMAP + string op (linear pass) (fixed by gpt)
     /**
      * time = O(N)
      * space = O(N)
      */
-    public boolean isAlienSorted(String[] words, String order) {
+    public boolean isAlienSorted_0_0_1(String[] words, String order) {
         if (words == null || words.length <= 1)
             return true;
         if (order == null || order.isEmpty())
@@ -234,6 +275,8 @@ public class VerifyingAnAlienDictionary {
 
         return true;
     }
+
+
 
 
 }
