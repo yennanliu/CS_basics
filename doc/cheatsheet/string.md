@@ -2303,3 +2303,104 @@ Final: "Qedo1ct-eeLg=ntse-T!"
 - LC 344 Reverse String (full reversal)
 - LC 541 Reverse String II (selective ranges)
 - LC 151 Reverse Words in a String (word-level reversal)
+
+### 2-15) Verifying an Alien Dictionary
+
+**Pattern: Custom Lexicographic Order Comparison**
+- Map each character to its rank in the alien order
+- Compare adjacent words character by character
+- Handle prefix case: shorter word must come first
+
+#### Approach: Array Mapping + Adjacent Word Comparison
+```java
+// java
+// LC 953. Verifying an Alien Dictionary
+/**
+ * Pattern: Custom order mapping + pairwise comparison
+ *
+ * Key Technique:
+ *   - Use int[26] array to map each character to its alien rank (O(1) lookup)
+ *   - Compare adjacent word pairs only (if each pair is sorted, whole list is sorted)
+ *   - On first differing character, compare their ranks to determine order
+ *   - If one word is a prefix of the other, shorter word must come first
+ *
+ * Example:
+ *   words = ["hello","leetcode"], order = "hlabcdefgijkmnopqrstuvwxyz"
+ *
+ *   Alien rank mapping:
+ *     h->0, l->1, a->2, b->3, c->4, ...
+ *
+ *   Compare "hello" vs "leetcode":
+ *     h(rank=0) vs l(rank=1) -> 0 < 1 -> sorted!
+ *
+ * Example 2:
+ *   words = ["apple","app"], order = "abcdefghijklmnopqrstuvwxyz"
+ *
+ *   Compare "apple" vs "app":
+ *     a==a, p==p, p==p -> all equal up to minLen
+ *     len("apple")=5 > len("app")=3 -> NOT sorted!
+ *     (longer word cannot come before its prefix)
+ *
+ * Time: O(M) where M = total characters across all words
+ * Space: O(1) - fixed size array of 26
+ */
+public boolean isAlienSorted(String[] words, String order) {
+    // 1. Map each character to its alien rank for O(1) lookup
+    int[] alienOrder = new int[26];
+    for (int i = 0; i < order.length(); i++) {
+        alienOrder[order.charAt(i) - 'a'] = i;
+    }
+
+    // 2. Compare adjacent words
+    for (int i = 0; i < words.length - 1; i++) {
+        if (!isSorted(words[i], words[i + 1], alienOrder)) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+private boolean isSorted(String w1, String w2, int[] alienOrder) {
+    int len1 = w1.length();
+    int len2 = w2.length();
+    int minLen = Math.min(len1, len2);
+
+    for (int i = 0; i < minLen; i++) {
+        char c1 = w1.charAt(i);
+        char c2 = w2.charAt(i);
+
+        if (c1 != c2) {
+            // If characters differ, the first one must have a smaller rank
+            return alienOrder[c1 - 'a'] < alienOrder[c2 - 'a'];
+        }
+    }
+
+    // If we reach here, one word is a prefix of the other.
+    // "apple" is NOT allowed to come before "app".
+    // The shorter word must come first.
+    return len1 <= len2;
+}
+```
+
+**Key Insights:**
+```
+Why int[26] array instead of HashMap?
+  - Characters are lowercase English letters only (a-z)
+  - alienOrder[ch - 'a'] = rank  ->  O(1) lookup, no boxing overhead
+  - Classic trick: char - 'a' maps 'a'->0, 'b'->1, ..., 'z'->25
+
+Why compare only adjacent pairs?
+  - If words[0] <= words[1] and words[1] <= words[2], then words[0] <= words[2]
+  - Transitivity means we only need N-1 comparisons
+
+Why return len1 <= len2 at the end?
+  - If all characters match up to minLen, the shorter word must come first
+  - "app" < "apple" in any lexicographic order
+  - "apple" before "app" is INVALID (Example 3 in problem)
+```
+
+**Similar Problems:**
+- LC 953 Verifying an Alien Dictionary (this pattern)
+- LC 269 Alien Dictionary (topological sort, harder)
+- LC 242 Valid Anagram (character frequency mapping)
