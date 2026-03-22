@@ -56,6 +56,99 @@ public class SplitArrayLargestSum {
 //
 //    }
 
+    // V0-1
+    // IDEA: Binary Search (gemini)
+    public int splitArray_0_1(int[] nums, int k) {
+        int maxVal = 0;
+        int sum = 0;
+        for (int num : nums) {
+            maxVal = Math.max(maxVal, num);
+            sum += num;
+        }
+
+        // Lower bound: max element (a subarray must contain at least this)
+        // Upper bound: total sum (all elements in one subarray)
+        int left = maxVal;
+        int right = sum;
+        int ans = sum;
+
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+
+            // Can we split the array into K or fewer subarrays
+            // such that no subarray sum exceeds 'mid'?
+            if (canSplit(nums, k, mid)) {
+                ans = mid; // 'mid' is a valid maximum sum
+                right = mid - 1; // Try to find a smaller maximum sum
+            } else {
+                left = mid + 1; // 'mid' is too small to fit into K subarrays
+            }
+        }
+        return ans;
+    }
+
+    private boolean canSplit(int[] nums, int k, int maxSumCap) {
+        int currentSubarraySum = 0;
+        int subarraysCount = 1; // Start with the first subarray
+
+        for (int num : nums) {
+            if (currentSubarraySum + num <= maxSumCap) {
+                currentSubarraySum += num;
+            } else {
+                // Start a new subarray
+                subarraysCount++;
+                currentSubarraySum = num;
+            }
+        }
+
+        // If we need fewer than or exactly K subarrays, it's a valid split
+        return subarraysCount <= k;
+    }
+
+    // V0-2
+    // IDEA: Binary Search (GPT)
+    public int splitArray_0_2(int[] nums, int k) {
+        int left = 0;
+        int right = 0;
+
+        // define search range
+        for (int num : nums) {
+            left = Math.max(left, num); // at least the largest element
+            right += num; // total sum
+        }
+
+        // binary search on answer
+        while (left < right) {
+            int mid = left + (right - left) / 2;
+
+            if (canSplit_0_2(nums, k, mid)) {
+                right = mid; // try smaller max sum
+            } else {
+                left = mid + 1; // need larger max sum
+            }
+        }
+
+        return left;
+    }
+
+    private boolean canSplit_0_2(int[] nums, int k, int maxSum) {
+        int count = 1; // at least one subarray
+        int currSum = 0;
+
+        for (int num : nums) {
+            if (currSum + num > maxSum) {
+                count++; // start new subarray
+                currSum = num;
+            } else {
+                currSum += num;
+            }
+        }
+
+        return count <= k;
+    }
+
+
+
     // V1-1
     // https://www.youtube.com/watch?v=YUF3_eBdzsk
     // https://github.com/neetcode-gh/leetcode/blob/main/java%2F0410-split-array-largest-sum.java
@@ -251,6 +344,10 @@ public class SplitArrayLargestSum {
 
         return false;
     }
+
+
+
+
 
 
 }
