@@ -1181,11 +1181,44 @@ public class Workspace23 {
 
 
     // LC 948
+    // 19.18 - 28 pm
+    /**
+     *  ->
+     *  Return the maximum possible score
+     *  you can achieve after playing
+     *  any number of tokens.
+     *
+     *  - Face-up:
+     *       If your current power is at least tokens[i],
+     *       you may play tokeni, losing tokens[i]
+     *       power and gaining 1 score.
+     *
+     *  - Face-down:
+     *      If your current score is at least 1,
+     *      you may play tokeni, gaining tokens[i]
+     *      power and losing 1 score.
+     *
+     *  -----------
+     *
+     *   IDEA 1) BRUTE FORCE ??
+     *
+     *   IDES 2) DEQUEUE ?????
+     *
+     *  -----------
+     *
+     */
+    // IDES 2) DEQUEUE ?????
     public int bagOfTokensScore(int[] tokens, int power) {
 
         return 0;
     }
 
+
+    // LC 1231
+    public int maximizeSweetness(int[] sweetness, int k) {
+
+        return 0;
+    }
 
 
 
