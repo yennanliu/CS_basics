@@ -439,16 +439,36 @@ private boolean isValid(int[] arr, int value, int target) {
 
 ---
 
-#### Decision Matrix: Minimize vs Maximize
+#### Decision Matrix: Minimize vs Maximize ⭐⭐⭐⭐⭐
 
-| Goal | Valid Condition | Update Rule | Final Answer |
-|------|----------------|-------------|--------------|
-| **Minimize maximum** | If mid works | `right = mid` (try smaller) | `left` (smallest valid) |
-| **Maximize minimum** | If mid works | `left = mid + 1` (try larger) | `left - 1` or `right` |
+| Goal | Example Problems | Valid Condition | Update Rule | Final Answer |
+|------|------------------|----------------|-------------|--------------|
+| **Minimize maximum** | LC 410, 1011, 2616 | If mid works | `right = mid` (try smaller) | `left` (smallest valid) |
+| **Maximize minimum** | LC 1231, 1552, 2226 | If mid works | `left = mid + 1` (try larger) | `left - 1` or `ans` variable |
 
 **Mnemonic:**
-- **Minimize**: When valid, go **left** (smaller values)
-- **Maximize**: When valid, go **right** (larger values)
+- **Minimize**: When valid, go **left** (smaller values) → Find smallest working value
+- **Maximize**: When valid, go **right** (larger values) → Find largest working value
+
+**Critical Template Difference:**
+
+```java
+// MINIMIZE pattern (LC 410, 1011)
+while (left < right) {
+    int mid = left + (right - left) / 2;  // Standard mid
+    if (isValid(mid)) right = mid;        // Try smaller
+    else left = mid + 1;
+}
+return left;
+
+// MAXIMIZE pattern (LC 1231, 1552)
+while (left < right) {
+    int mid = left + (right - left + 1) / 2;  // CRITICAL: +1 to avoid infinite loop!
+    if (isValid(mid)) left = mid;             // Try larger
+    else right = mid - 1;
+}
+return left;
+```
 
 ---
 
@@ -722,7 +742,142 @@ class Solution {
 
 ---
 
-#### Example 5: LC 2616 - Minimize the Maximum Difference of Pairs ⭐⭐⭐⭐⭐
+#### Example 5: LC 1231 - Divide Chocolate (Maximize Minimum) ⭐⭐⭐⭐⭐
+
+**Problem:** Divide chocolate bar into K+1 pieces (sharing with K friends). You eat the piece with minimum sweetness. Maximize that minimum sweetness.
+
+**Key Insight:** This is a **"Maximize Minimum"** problem - the counterpart to "Minimize Maximum":
+1. **Binary search** on the "minimum sweetness" you can get
+2. **Greedy validation**: Can we cut into ≥ K+1 pieces where each piece has sweetness ≥ mid?
+3. If valid → try larger minimum (go right)
+4. If invalid → need smaller target (go left)
+
+**Why Greedy Works:**
+- Greedily accumulate sweetness until reaching target, then cut
+- This maximizes the number of valid pieces for a given target
+- Monotonic property: if minSweetness X works, X-1 also works (easier to split)
+
+```java
+// LC 1231 - Divide Chocolate
+class Solution {
+    /**
+     * time = O(N × log(sum))
+     * space = O(1)
+     *
+     * Approach: Binary search on answer space [1, sum/totalPeople]
+     * Pattern: MAXIMIZE MINIMUM
+     */
+    public int maximizeSweetness(int[] sweetness, int k) {
+        int totalPeople = k + 1;  // K friends + yourself
+
+        // Step 1: Define search space
+        int left = 1;  // Minimum possible sweetness
+        int right = 0;
+        for (int s : sweetness) right += s;
+        right /= totalPeople;  // Upper bound: average sweetness
+
+        int ans = 0;
+
+        // Step 2: Binary search on "minimum sweetness you can get"
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+
+            // Step 3: Check if we can make at least totalPeople pieces
+            // where each piece has at least 'mid' sweetness
+            if (canSplit(sweetness, totalPeople, mid)) {
+                ans = mid;        // Valid! This could be our answer
+                left = mid + 1;   // Try larger minimum (MAXIMIZE)
+            } else {
+                right = mid - 1;  // Can't split, need smaller target
+            }
+        }
+
+        return ans;
+    }
+
+    // Validation: Can we make at least 'totalPeople' pieces with each >= minTarget?
+    private boolean canSplit(int[] sweetness, int totalPeople, int minTarget) {
+        int currentSweetness = 0;
+        int pieces = 0;
+
+        for (int s : sweetness) {
+            currentSweetness += s;
+            // When current piece reaches target, cut it
+            if (currentSweetness >= minTarget) {
+                pieces++;
+                currentSweetness = 0;
+            }
+        }
+
+        return pieces >= totalPeople;  // Can we make enough pieces?
+    }
+}
+```
+
+**Alternative Template (while l < r):**
+
+```java
+public int maximizeSweetness(int[] sweetness, int k) {
+    int left = 1;
+    int right = 0;
+    for (int s : sweetness) right += s;
+
+    // Binary search with half-open interval
+    while (left < right) {
+        // CRITICAL: Use (l + r + 1) / 2 for maximize problems to avoid infinite loop
+        int mid = left + (right - left + 1) / 2;
+
+        if (canSplit(sweetness, k + 1, mid)) {
+            left = mid;       // Valid → try larger (maximize)
+        } else {
+            right = mid - 1;  // Invalid → reduce target
+        }
+    }
+
+    return left;
+}
+```
+
+**Step-by-Step Trace:** `sweetness = [1,2,3,4,5,6,7,8,9], k = 5`
+
+```
+Total people = 6, Sum = 45
+Search space: [1, 7]  (1 to 45/6)
+
+Iteration 1: mid = 4
+  Pieces with sweetness >= 4:
+  [1,2,3]=6 ✓, [4]=4 ✓, [5]=5 ✓, [6]=6 ✓, [7]=7 ✓, [8]=8 ✓, [9]=9 ✓
+  Actually: [1,2,3]=6, [4,5]=9... need to re-trace
+
+  Greedy: 1+2+3=6≥4 ✓, 4≥4 ✓, 5≥4 ✓, 6≥4 ✓, 7≥4 ✓, 8≥4 ✓
+  Pieces = 6 ≥ 6 ✓
+  Valid! Try larger: left = 5
+
+Iteration 2: mid = 6
+  Greedy: 1+2+3=6≥6 ✓, 4+5=9≥6 ✓, 6≥6 ✓, 7≥6 ✓, 8≥6 ✓, 9≥6 ✓
+  Pieces = 6 ≥ 6 ✓
+  Valid! Try larger: left = 7
+
+Iteration 3: mid = 7
+  Greedy: 1+2+3+4=10≥7 ✓, 5+6=11≥7 ✓, 7≥7 ✓, 8≥7 ✓, 9≥7 ✓
+  Pieces = 5 < 6 ✗
+  Invalid! Reduce: right = 6
+
+Final: left = 7 > right = 6, return ans = 6
+```
+
+**Similar Problems (Maximize Minimum Pattern):**
+
+| Problem | Description | Validation Logic |
+|---------|-------------|------------------|
+| **LC 1231** | Divide Chocolate | Can split into K+1 pieces with each ≥ target |
+| LC 1552 | Magnetic Force | Can place m balls with min distance ≥ target |
+| LC 2226 | Maximum Candies | Can give k children candies with each ≥ target |
+| LC 2064 | Minimized Maximum Products | Distribute products to stores |
+
+---
+
+#### Example 6: LC 2616 - Minimize the Maximum Difference of Pairs ⭐⭐⭐⭐⭐
 
 **Problem:** Find p pairs of indices such that the maximum difference amongst all pairs is minimized. Each index can only be used once.
 
@@ -976,11 +1131,13 @@ private boolean isValid(int[] arr, int constraint, int maxAllowed) {
 - Key: Sort first (if applicable) + greedy validation
 - **Why BS works**: Monotonic property — larger X is always easier to satisfy
 
-**Pattern 2: Maximize Minimum**
+**Pattern 2: Maximize Minimum** ⭐⭐⭐
 - Goal: Find largest X where some minimum value ≥ X
-- Update: `if valid: left = mid + 1` (try larger)
-- Examples: LC 1552, 2064
+- Update: `if valid: left = mid + 1` (try larger), use `mid = (l + r + 1) / 2`
+- Examples: **LC 1231** (Divide Chocolate), LC 1552, LC 2064, LC 2226
+- Key: Greedy validation — can we make enough pieces/groups with each ≥ target?
 - **Why BS works**: Monotonic property — smaller X is always easier to satisfy
+- **Counterpart to LC 410**: LC 1231 is "maximize min sweetness" vs LC 410 "minimize max sum"
 
 **Pattern 3: Count-Based Validation**
 - Check: "Can we do it in at most K groups/days/operations?"
@@ -1069,6 +1226,7 @@ return left;  // left == right
 | LC 69 | Easy | Integer square root | Search on [0, x] |
 | LC 875 | Medium | Minimize speed | Eating bananas, greedy validation |
 | LC 1011 | Medium | Minimize capacity | Ship packages, similar to LC 410 |
+| **LC 1231** | **Hard** | **Maximize minimum** | **Divide chocolate, greedy cut when sum ≥ target** |
 | LC 1283 | Medium | Minimize divisor | Ceiling division, sum constraint |
 | LC 1482 | Medium | Minimize days | Make bouquets, range validation |
 | LC 1552 | Medium | Maximize minimum | Magnetic force, aggressive cows |
@@ -1078,12 +1236,13 @@ return left;  // left == right
 | LC 2064 | Medium | Minimize max | Distribute products to stores |
 
 **Practice Progression:**
-1. Start with LC 875 (clearest example)
+1. Start with LC 875 (clearest example of minimize pattern)
 2. Then LC 1011 (similar to 410 but easier)
-3. Master LC 410 (classic, frequently asked)
-4. Try LC 2616 (minimize max with pairing constraint)
-5. Explore LC 1283, 1482 (variations)
-6. Challenge: LC 1552, 2064 (maximize minimum pattern)
+3. Master LC 410 (classic minimize maximum, frequently asked)
+4. Try LC 1231 (maximize minimum - counterpart to LC 410)
+5. Try LC 2616 (minimize max with pairing constraint)
+6. Explore LC 1283, 1482 (variations)
+7. Challenge: LC 1552, 2064, 2226 (maximize minimum pattern)
 
 ---
 
@@ -2570,4 +2729,55 @@ private boolean canFormPairs(int[] nums, int p, int maxDiff) {
         if (count >= p) return true;
     }
     return count >= p;
+}
+```
+
+### 2-14) Divide Chocolate (LC 1231) — Maximize Minimum Pattern
+> Binary search on minimum sweetness; check if we can cut into K+1 pieces where each piece has sweetness ≥ target.
+
+```java
+// LC 1231 - Divide Chocolate
+// IDEA: Binary Search on answer space [1, sum/people]; MAXIMIZE MINIMUM pattern
+// time = O(N × log(sum)), space = O(1)
+
+/**
+ * Key Pattern: "Maximize Minimum" (counterpart to LC 410)
+ * 1. Binary search on "minimum sweetness you can get"
+ * 2. Greedy validation: count pieces with sweetness >= target
+ * 3. If valid → try larger minimum (left = mid + 1)
+ *
+ * Why BS works: Monotonic property - if minSweetness X works, X-1 also works
+ */
+public int maximizeSweetness(int[] sweetness, int k) {
+    int totalPeople = k + 1;
+
+    int left = 1;
+    int right = 0;
+    for (int s : sweetness) right += s;
+    right /= totalPeople;
+
+    int ans = 0;
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+        if (canSplit(sweetness, totalPeople, mid)) {
+            ans = mid;        // Valid! Store answer
+            left = mid + 1;   // Try larger (MAXIMIZE)
+        } else {
+            right = mid - 1;  // Invalid → reduce target
+        }
+    }
+    return ans;
+}
+
+private boolean canSplit(int[] sweetness, int people, int minTarget) {
+    int currentSum = 0;
+    int pieces = 0;
+    for (int s : sweetness) {
+        currentSum += s;
+        if (currentSum >= minTarget) {
+            pieces++;
+            currentSum = 0;
+        }
+    }
+    return pieces >= people;
 }
