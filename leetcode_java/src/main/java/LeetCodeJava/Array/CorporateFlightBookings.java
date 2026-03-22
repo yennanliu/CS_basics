@@ -81,6 +81,48 @@ import java.util.Arrays;
 public class CorporateFlightBookings {
 
   // V0
+  // IDEA: PREFIX SUM (fixed by gemini)
+  public int[] corpFlightBookings(int[][] bookings, int n) {
+      // 1. Create a difference array of size n + 1 to handle the 'end + 1' boundary
+      int[] diff = new int[n + 1];
+
+      // 2. Process each booking in O(1) time
+      for (int[] b : bookings) {
+          int first = b[0]; // 1-based
+          int last = b[1]; // 1-based
+          int seats = b[2];
+
+          /** NOTE !!!
+           *
+           *
+           * `first - 1`: convert to 0-bases
+           */
+          // Add seats at the start of the range (convert to 0-based)
+          diff[first - 1] += seats;
+
+          /** NOTE !!!
+           *
+           *
+           * `last < n`:  make sure idx still in boundary
+           */
+          // Subtract seats AFTER the end of the range
+          if (last < n) {
+              diff[last] -= seats;
+          }
+      }
+
+      // 3. Convert the difference array into the final prefix sum array
+      int[] res = new int[n];
+      int currentSum = 0;
+      for (int i = 0; i < n; i++) {
+          currentSum += diff[i];
+          res[i] = currentSum;
+      }
+
+      return res;
+  }
+
+  // V0-1
   // IDEA: PREFIX SUM
   // https://labuladong.online/algo/data-structure/diff-array/#%E7%AE%97%E6%B3%95%E5%AE%9E%E8%B7%B5
     /**
@@ -112,7 +154,7 @@ public class CorporateFlightBookings {
      *        [ 10, 25 ]
      *
      */
-  public int[] corpFlightBookings(int[][] bookings, int n) {
+  public int[] corpFlightBookings_0_1(int[][] bookings, int n) {
       // edge
       if(bookings == null || bookings.length == 0){
           return null;
@@ -133,38 +175,6 @@ public class CorporateFlightBookings {
       }
 
       return preSum;
-  }
-
-  // V0-1
-  // IDEA: PREFIX SUM (fixed by gemini)
-  public int[] corpFlightBookings_0_1(int[][] bookings, int n) {
-      // 1. Create a difference array of size n + 1 to handle the 'end + 1' boundary
-      int[] diff = new int[n + 1];
-
-      // 2. Process each booking in O(1) time
-      for (int[] b : bookings) {
-          int first = b[0]; // 1-based
-          int last = b[1]; // 1-based
-          int seats = b[2];
-
-          // Add seats at the start of the range (convert to 0-based)
-          diff[first - 1] += seats;
-
-          // Subtract seats AFTER the end of the range
-          if (last < n) {
-              diff[last] -= seats;
-          }
-      }
-
-      // 3. Convert the difference array into the final prefix sum array
-      int[] res = new int[n];
-      int currentSum = 0;
-      for (int i = 0; i < n; i++) {
-          currentSum += diff[i];
-          res[i] = currentSum;
-      }
-
-      return res;
   }
 
 

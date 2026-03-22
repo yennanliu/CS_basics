@@ -1133,17 +1133,17 @@ public class Workspace23 {
     // IDEA 1) PREFIX SUM ??
     public int[] corpFlightBookings(int[][] bookings, int n) {
         // edge
-
-        // get max `dest`
-        int dest = 0;
-        for(int[] b: bookings){
-            dest = Math.max(dest, b[1]);
-        }
+//
+//        // get max `dest`
+//        int dest = 0;
+//        for(int[] b: bookings){
+//            dest = Math.max(dest, b[1]);
+//        }
 
         // ???
         //int[] prefixList = new int[dest + 1]; // ???
         // over `flight id` ???
-        int[] prefixList = new int[n]; // ???
+        int[] prefixList = new int[n + 1]; // ???
         /**
          *  sum(i, j) = prefix(j+1) - prefix(i)
          *
@@ -1153,7 +1153,7 @@ public class Workspace23 {
         for(int i = 0; i < bookings.length; i++){
             int[] b = bookings[i];
             // /??
-            int start = b[0];
+            int start = b[0]; // 1 based
             int end = b[1];
             int seat = b[2];
             //dest = Math.max(dest, b[1]);
@@ -1169,7 +1169,7 @@ public class Workspace23 {
         // ??
         // /??
         int prefix = 0;
-        int[] res = new int[n];
+        int[] res = new int[n + 1];
         for(int i = 0; i < prefixList.length; i++){
             prefix += prefixList[i]; // ??
             res[i] = prefix;
