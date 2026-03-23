@@ -78,6 +78,89 @@ public class Workspace24 {
     }
 
 
+    // LC 165
+    // 8.11 - 21 am
+    /**
+     * ->
+     *  Return the following:
+     *
+     * If version1 < version2, return -1.
+     * If version1 > version2, return 1.
+     * Otherwise, return 0.
+     *
+     * -------------
+     *
+     *  IDEA 1) string op (split) + compare
+     *
+     *
+     * -------------
+     *
+     *
+     *
+     */
+    // IDEA 1) string op (split) + compare
+    // time: O(N)  // ????
+    // space: O(N)
+    public int compareVersion(String version1, String version2) {
+        // edge
+        if (version1.equals(version2)) {
+            return 0;
+        }
+
+        List<Integer> l1 = new ArrayList<>();
+        List<Integer> l2 = new ArrayList<>();
+
+        for(String x: version1.split("\\.")){
+            System.out.println(" x = " + x);
+            if(!x.equals("0")){
+                if(x.startsWith("0")){
+                    l1.add(Integer.parseInt(removeZeroPrefix(x)));
+                }
+               // l1.add(Integer.parseInt(removeZeroPrefix(x)));
+            }
+        }
+
+        for(String x: version2.split("\\.")){
+            if(!x.equals("0")){
+                if(x.startsWith("0")){
+                    l2.add(Integer.parseInt(removeZeroPrefix(x)));
+                }
+            }
+        }
+
+        System.out.println(">>> l1 = " + l1 +
+        ", l2 = " + l2);
+
+        int size = Math.min(l1.size(), l2.size());
+        for(int j = 0; j < size; j++){
+            if(l1.get(j) > l2.get(j)){
+                return 1;
+            }else{
+                return -1;
+            }
+        }
+
+
+        return 0;
+    }
+
+    private String removeZeroPrefix(String x){
+        // ???
+//        String[] arr = x.split("0");
+//        int idx = arr[0].length();
+        int idx = 0;
+        for(String str: x.split("")){
+            if(!str.equals("0")){
+                return x.substring(idx);
+            }
+            idx += 1;
+        }
+      // return x.substring(idx + 1); //???
+        return x;
+    }
+
+
+
 
 
 
