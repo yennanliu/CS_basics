@@ -4,6 +4,9 @@ package LeetCodeJava.BinarySearchTree;
 
 import LeetCodeJava.DataStructure.TreeNode;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 99. Recover Binary Search Tree
  * Medium
@@ -52,13 +55,60 @@ public class RecoverBinarySearchTree {
      */
 
     // V0
-//    /**
-//     * time = O(N)
-//     * space = O(H)
-//     */
-//    public void recoverTree(TreeNode root) {
-//
-//    }
+    // IDEA: IN-ORDER DFS + BST property + `node val` swap (fixed by gemini)
+    List<TreeNode> inOrderNodes = new ArrayList<>();
+
+    public void recoverTree(TreeNode root) {
+        if (root == null)
+            return;
+
+        // 1. Get the list of nodes in In-order
+        getInorder(root);
+
+        // 2. Identify the two swapped nodes
+        TreeNode first = null;
+        TreeNode second = null;
+
+        for (int i = 0; i < inOrderNodes.size() - 1; i++) {
+            // Check for a "drop" in the sorted sequence
+            if (inOrderNodes.get(i).val > inOrderNodes.get(i + 1).val) {
+                // If it's the first drop, 'first' is the larger node (i)
+                if (first == null) {
+                    first = inOrderNodes.get(i);
+                }
+                // 'second' is always the smaller node (i + 1)
+                // If there's a second drop later, this will overwrite 'second' correctly
+                second = inOrderNodes.get(i + 1);
+            }
+        }
+
+
+        /** NOTE !!
+         *
+         *   since we already the `first` and `second` node.
+         *   in order to `swap` them, all we need to do is:
+         *   -> swap their `value`.
+         *
+         *   that's it. the swap is not really `swap all node object`
+         *   , just change values
+         */
+        // 3. Swap the values of the two identified nodes
+        if (first != null && second != null) {
+            int temp = first.val;
+            first.val = second.val;
+            second.val = temp;
+        }
+    }
+
+    // get in-order list,
+    // for BST, it's a increasing list
+    private void getInorder(TreeNode root) {
+        if (root == null)
+            return;
+        getInorder(root.left);
+        inOrderNodes.add(root); // Store the node, not just the value!
+        getInorder(root.right);
+    }
 
 
     // V0-1
