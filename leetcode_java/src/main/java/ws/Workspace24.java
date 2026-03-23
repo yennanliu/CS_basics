@@ -422,6 +422,82 @@ public class Workspace24 {
 
 
 
+    // LC 669
+    // 1.31 - 41 pm
+    /**
+     *
+     * -> Return the root of the trimmed binary search tree.
+     * Note that the root may change depending
+     * on the given bounds.
+     *
+     *  -  trim the tree so that all its
+     *  elements lies in [low, high].
+     *
+     *
+     *  BST: binary search tree
+     *  [low, high]
+     *
+     *
+     *  ---------------
+     *
+     *   IDEA 1) DFS + BST property ???
+     *
+     *    - BST property: left < root < right
+     *
+     *    -> pre-order ??????
+     *
+     *
+     *  ---------------
+     *
+     */
+    // IDEA 1) DFS + BST property ???
+    // post order ???
+    public TreeNode trimBST(TreeNode root, int low, int high) {
+        // edge
+        if(root == null){
+            return null;
+        }
+
+        if(root.val < low || root.val > high){
+            return null;
+        }
+
+
+        TreeNode _left = trimBST(root.left, low, high);
+        TreeNode _right = trimBST(root.right, low, high);
+
+        root.left = _left;
+        root.right = _right;
+
+        return root;
+    }
+
+
+
+
+
+    // IDEA 1) DFS + BST property ???
+    // pre-order ???
+    // TODO: validate below ??
+    public TreeNode trimBST_99(TreeNode root, int low, int high) {
+        // edge
+        if(root == null){
+            return null;
+        }
+        if(root.val < low || root.val > high){
+            return null;
+        }
+
+        TreeNode _left = trimBST_99(root.left, low, high);
+        TreeNode _right = trimBST_99(root.right, low, high);
+
+        root.left = _left;
+        root.right = _right;
+
+        return root;
+    }
+
+
 
 
 

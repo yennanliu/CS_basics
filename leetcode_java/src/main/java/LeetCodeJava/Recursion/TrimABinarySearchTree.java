@@ -43,9 +43,80 @@ import LeetCodeJava.DataStructure.TreeNode;
 public class TrimABinarySearchTree {
 
     // V0
+    // IDEA: `PRE-ORDER` DFS + root.val < low, > high handling (gemini)
+    public TreeNode trimBST(TreeNode root, int low, int high) {
+        // 1. Base case
+        if (root == null) {
+            return null;
+        }
+
+        // 2. If root is too SMALL, discard root and left,
+        // but try to return the trimmed RIGHT subtree.
+        if (root.val < low) {
+            /** NOTE !!!
+             *
+             *   instead of return null directly,
+             *   or anything else,
+             *   we `move right` so can continuously
+             *   deal with `bigger` sub tree.
+             *
+             *   since for BST, left < root < right.
+             *   so if `root.val < low`,
+             *   all of its sub left < low
+             *   and some right node could > low
+             */
+            return trimBST(root.right, low, high);
+        }
+
+        // 3. If root is too BIG, discard root and right,
+        // but try to return the trimmed LEFT subtree.
+        if (root.val > high) {
+            return trimBST(root.left, low, high);
+        }
+
+        // 4. Root is IN RANGE.
+        // Recursively trim both children and re-attach them.
+        root.left = trimBST(root.left, low, high);
+        root.right = trimBST(root.right, low, high);
+
+        return root;
+    }
+
+    /** NOTE !!!
+     *
+     *
+     *  below is WRONG !!!
+     *
+     *  -> we can just use below handling
+     *
+     *  ```
+     *
+     *    if(root.val < low || root.val > high){
+     *    return null;
+     *   }
+     *  ```
+     */
+    // (WRONG)
 //    public TreeNode trimBST(TreeNode root, int low, int high) {
+//        // edge
+//        if(root == null){
+//            return null;
+//        }
 //
+//        if(root.val < low || root.val > high){
+//            return null;
+//        }
+//
+//        TreeNode _left = trimBST(root.left, low, high);
+//        TreeNode _right = trimBST(root.right, low, high);
+//
+//        root.left = _left;
+//        root.right = _right;
+//
+//        return root;
 //    }
+
+
 
     // V0-1
     // IDEA: `PRE-ORDER` DFS + BST property (fixed by gemini)
@@ -59,7 +130,9 @@ public class TrimABinarySearchTree {
      *
      *   --------------
      *
-     *   Good questions—this is exactly the kind of nuance interviewers care about for **LeetCode 669 Trim a Binary Search Tree**.
+     *   Good questions—this is exactly
+     *   the kind of nuance interviewers care about for
+     *   **LeetCode 669 Trim a Binary Search Tree**.
      *
      * ---
      *

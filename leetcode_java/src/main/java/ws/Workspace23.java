@@ -1395,6 +1395,25 @@ public class Workspace23 {
          */
         //Arrays.sort(nums);
 
+
+        int maxVal = 0;
+        int sum = 0;
+        for (int num : nums) {
+            maxVal = Math.max(maxVal, num);
+            sum += num;
+        }
+
+        // Lower bound: max element (a subarray must contain at least this)
+        // Upper bound: total sum (all elements in one subarray)
+
+
+        // NOTE !!!
+//        int left = maxVal;
+//        int right = sum;
+//        int ans = sum;
+
+
+
         int n = nums.length;
         // The range for Binary Search is the possible DIFFERENCE values
         int left = 0;
