@@ -291,6 +291,32 @@ public class TrimABinarySearchTree {
         return root;
     }
 
+    // V0-1-1
+    // IDEA: pure DFS (not relying on BST property)
+    public TreeNode trimBST_0_1_1(TreeNode root, int low, int high) {
+
+        if (root == null)
+            return null;
+
+        TreeNode left = trimBST_0_1_1(root.left, low, high);
+        TreeNode right = trimBST_0_1_1(root.right, low, high);
+
+        // if current node is valid → keep it
+        if (root.val >= low && root.val <= high) {
+            root.left = left;
+            root.right = right;
+            return root;
+        }
+
+        // node is invalid → we cannot keep it
+        // return one valid subtree if exists
+        if (left != null)
+            return left;
+
+        return right;
+    }
+
+
     // V0-2
     // IDEA: POST ORDER DFS (gpt)
     public TreeNode trimBST_0_2(TreeNode root, int low, int high) {
