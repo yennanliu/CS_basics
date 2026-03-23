@@ -32,16 +32,20 @@ public class StringTest {
 
         String version1 = "1.2.3.5.00";
 
-        for (String x : version1.split("\\.")) {
-            System.out.println(" x = " + x);
-//            if (!x.equals("0")) {
-//                //                if(x.startsWith("0")){
-//                //                    l1.add(Integer.parseInt(removeZeroPrefix(x)));
-//                //                }
-//                l1.add(Integer.parseInt(removeZeroPrefix(x)));
-//            }
-        }
+//        for (String x : version1.split("\\.")) {
+//            System.out.println(" x = " + x);
+////            if (!x.equals("0")) {
+////                //                if(x.startsWith("0")){
+////                //                    l1.add(Integer.parseInt(removeZeroPrefix(x)));
+////                //                }
+////                l1.add(Integer.parseInt(removeZeroPrefix(x)));
+////            }
+//        }
 
+
+        String version2 = "00001";
+        int v2 = Integer.parseInt(version2);
+        System.out.println(v2);
 
 
     }
