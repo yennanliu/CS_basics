@@ -2,7 +2,7 @@ package LeetCodeJava.Graph;
 
 // https://leetcode.com/problems/find-the-town-judge/description/
 
-import java.util.Arrays;
+import java.util.*;
 
 /**
  * 997. Find the Town Judge
@@ -88,6 +88,33 @@ public class FindTheTownJudge {
 
         return -1;
     }
+
+    // V0-0-0-0-1
+    // IDEA: HASHMAP + ARRAY OP (gpt)
+    public int findJudge_0_0_0_0_1(int n, int[][] trust) {
+
+        Map<Integer, List<Integer>> map = new HashMap<>();
+        int[] in = new int[n + 1];
+
+        for (int[] t : trust) {
+            int a = t[0];
+            int b = t[1];
+
+            map.computeIfAbsent(a, k -> new ArrayList<>()).add(b);
+            in[b]++;
+        }
+
+        for (int i = 1; i <= n; i++) {
+            int out = map.getOrDefault(i, new ArrayList<>()).size();
+
+            if (out == 0 && in[i] == n - 1) {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
 
     // V0-0-0-1
     // IDEA: TRUST, TRUSTED ARRAY
@@ -373,6 +400,7 @@ public class FindTheTownJudge {
         }
         return -1;
     }
+
 
 
 
