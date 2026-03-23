@@ -193,6 +193,85 @@ public class Workspace24 {
      *  -----------
      */
     public String findLongestWord(String s, List<String> dictionary) {
+//        if (dictionary.size() == 0 && s != null){
+//            return "";
+//        }
+        // edge
+        if (s == null || dictionary == null || dictionary.isEmpty()) {
+            return "";
+        }
+
+        List<String> list = new ArrayList<>();
+
+        for(String d: dictionary){
+            if(canForm(d, s)){
+                list.add(d);
+            }
+        }
+
+        // sort ???
+        Collections.sort(list, new Comparator<String>() {
+            @Override
+            public int compare(String o1, String o2) {
+//                int diff = o1.compareTo(o2); // ???
+//                if(diff == 0){
+//                  //  return o1.length() - o2.length();
+//                    return o2.length() - o1.length();
+//                }
+//                return diff;
+                if (o1.length() != o2.length()) {
+                    return o2.length() - o1.length(); // Longest first
+                }
+                return o1.compareTo(o2); // Alphabetical tie-breaker
+            }
+        });
+
+
+
+        return list.isEmpty() ? "" : list.get(0);
+    }
+
+    private boolean canForm(String x, String s){
+        // edge
+        if(x.isEmpty()){
+            return false;
+        }
+        if(x.equals(s)){
+            return true;
+        }
+        // ???
+        // 2 pointers ???
+        int i = 0;
+        int j = 0;
+        while (i < s.length()){
+            if(x.charAt(i) == s.charAt(j)){
+                // early quit
+                if(j == s.length() - 1){
+                    return true;
+                }
+                // move s's pointer
+               // i += 1;
+                j += 1;
+            }
+
+            // move x's pointer anyway
+            i += 1;
+
+        }
+
+        return j == s.length() - 1;
+    }
+
+
+
+
+
+
+
+
+
+
+    public String findLongestWord_99(String s, List<String> dictionary) {
         // edge
 
         // { val : [idx_1, idx_2, ..] }
