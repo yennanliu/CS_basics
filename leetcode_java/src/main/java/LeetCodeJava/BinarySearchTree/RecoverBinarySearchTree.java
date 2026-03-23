@@ -54,11 +54,291 @@ public class RecoverBinarySearchTree {
      *
      */
 
+
     // V0
+    // IDEA: IN-ORDER DFS + BST property + `node val` swap (fixed by GPT)
+    /**
+     *  NOTE !!! core idea of get `first`, `second` node
+     *
+     *  Great question—this loop is the
+     *  **core insight** of LC 99. Let’s break it down clearly.
+     *
+     * ---
+     *
+     * # 🧠 Key Idea: Inorder of a BST
+     *
+     * A valid BST inorder traversal should be:
+     *
+     * ```text
+     * sorted in increasing order
+     * ```
+     *
+     * Example:
+     *
+     * ```text
+     * 1, 2, 3, 4, 5
+     * ```
+     *
+     * ---
+     *
+     * # ❌ What happens when two nodes are swapped?
+     *
+     * You’ll see **“inversions”**:
+     *
+     * ```java
+     * list.get(i).val < list.get(i - 1).val
+     * ```
+     *
+     * This means:
+     *
+     * > ❗ A smaller number appears after a bigger one → violation
+     *
+     * ---
+     *
+     * # 🔍 Why this exact logic?
+     *
+     * ```java
+     * for (int i = 1; i < list.size(); i++) {
+     *     if (list.get(i).val < list.get(i - 1).val) {
+     *
+     *         if (first == null) {
+     *             first = list.get(i - 1); // bigger one
+     *         }
+     *
+     *         second = list.get(i); // smaller one
+     *     }
+     * }
+     * ```
+     *
+     * ---
+     *
+     * ## ✅ Step-by-step reasoning
+     *
+     * ### 1. Detect violation
+     *
+     * ```java
+     * list[i] < list[i-1]
+     * ```
+     *
+     * This gives you a **bad pair**:
+     *
+     * ```text
+     * prev (too big), curr (too small)
+     * ```
+     *
+     * ---
+     *
+     * ## 2. Why `first = list[i-1]`?
+     *
+     * Because:
+     *
+     * ```text
+     * list[i-1] > list[i]
+     * ```
+     *
+     * 👉 The **larger value is misplaced earlier**
+     *
+     * So:
+     *
+     * ```java
+     * first = list.get(i - 1);
+     * ```
+     *
+     * ---
+     *
+     * ## 3. Why `second = list[i]`?
+     *
+     * Because:
+     *
+     * ```text
+     * list[i] < list[i-1]
+     * ```
+     *
+     * 👉 The **smaller value is misplaced later**
+     *
+     * So:
+     *
+     * ```java
+     * second = list.get(i);
+     * ```
+     *
+     * ---
+     *
+     * # 🔥 Why assign `second` every time?
+     *
+     * Because there are **two cases**:
+     *
+     * ---
+     *
+     * ## ✅ Case 1: Adjacent swap
+     *
+     * ```text
+     * 1, 3, 2, 4
+     *      ↑ ↑
+     * ```
+     *
+     * Only one violation:
+     *
+     * ```text
+     * 3 > 2
+     * ```
+     *
+     * Loop sees:
+     *
+     * ```java
+     * first = 3
+     * second = 2
+     * ```
+     *
+     * ---
+     *
+     * ## ✅ Case 2: Non-adjacent swap
+     *
+     * ```text
+     * 1, 5, 3, 4, 2, 6
+     *      ↑        ↑
+     * ```
+     *
+     * Violations:
+     *
+     * ```text
+     * 5 > 3
+     * 4 > 2
+     * ```
+     *
+     * ### First violation:
+     *
+     * ```java
+     * first = 5
+     * second = 3
+     * ```
+     *
+     * ### Second violation:
+     *
+     * ```java
+     * second = 2   // overwrite!
+     * ```
+     *
+     * 👉 Final:
+     *
+     * ```text
+     * first = 5
+     * second = 2
+     * ```
+     *
+     * ✔️ Correct nodes to swap
+     *
+     * ---
+     *
+     * # 🎯 Why this works
+     *
+     * | Variable | Meaning                     |
+     * | -------- | --------------------------- |
+     * | `first`  | first wrong (too big) node  |
+     * | `second` | last wrong (too small) node |
+     *
+     * ---
+     *
+     * # 💡 Intuition
+     *
+     * Think:
+     *
+     * > The first time order breaks → mark the **big mistake**
+     * > The last time order breaks → mark the **small mistake**
+     *
+     * ---
+     *
+     * # 🚀 Visual Summary
+     *
+     * ```text
+     * Correct:     1 2 3 4 5 6
+     * Swapped:     1 5 3 4 2 6
+     *                  ↑     ↑
+     *                first  second
+     * ```
+     *
+     * ---
+     *
+     * # 🧠 One-liner takeaway
+     *
+     * > 👉 Find all “descending pairs” →
+     * > first = first pair’s left
+     * > second = last pair’s right
+     *
+     */
+    List<TreeNode> list = new ArrayList<>();
+
+    public void recoverTree(TreeNode root) {
+
+        if (root == null)
+            return;
+
+        inorder_0(root);
+
+        TreeNode first = null;
+        TreeNode second = null;
+
+        for (int i = 1; i < list.size(); i++) {
+            /** NOTE !!
+             *
+             *  we compare i and i-1
+             *
+             *  2 cases
+             *
+             *   Case 1: Adjacent swap
+             *    ```
+             *    1, 3, 2, 4
+             *    ```
+             *
+             *  Case 2: Non-adjacent swap
+             *
+             *   ```
+             *   1, 5, 3, 4, 2, 6
+             *   ```
+             *
+             *
+             */
+            if (list.get(i).val < list.get(i - 1).val) {
+
+                if (first == null) {
+                    first = list.get(i - 1); // bigger one
+                }
+
+                second = list.get(i); // smaller one
+            }
+        }
+
+        /** NOTE !!
+         *
+         *   since we already the `first` and `second` node.
+         *   in order to `swap` them, all we need to do is:
+         *   -> swap their `value`.
+         *
+         *   that's it. the swap is not really `swap all node object`
+         *   , just change values
+         */
+        // 3. Swap the values of the two identified nodes
+        // swap values
+        int temp = first.val;
+        first.val = second.val;
+        second.val = temp;
+    }
+
+    private void inorder_0(TreeNode root) {
+        if (root == null)
+            return;
+
+        inorder_0(root.left);
+        list.add(root);
+        inorder_0(root.right);
+    }
+
+
+    // V0-0-1
     // IDEA: IN-ORDER DFS + BST property + `node val` swap (fixed by gemini)
     List<TreeNode> inOrderNodes = new ArrayList<>();
 
-    public void recoverTree(TreeNode root) {
+    public void recoverTree_0_0_1(TreeNode root) {
         if (root == null)
             return;
 
@@ -238,6 +518,38 @@ public class RecoverBinarySearchTree {
         // --- Logic End ---
 
         inorder_0_2(root.right);
+    }
+
+
+
+    // V0-3
+    // IDEA: IN-ORDER + BST + no extra space usage (gpt)
+    TreeNode first_0_3 = null, second_0_3 = null, prev_0_3 = null;
+
+    public void recoverTree_0_3(TreeNode root) {
+        inorder_0_3(root);
+
+        int temp = first_0_3.val;
+        first_0_3.val = second_0_3.val;
+        second_0_3.val = temp;
+    }
+
+    private void inorder_0_3(TreeNode root) {
+        if (root == null)
+            return;
+
+        inorder_0_3(root.left);
+
+        if (prev_0_3 != null && prev_0_3.val > root.val) {
+            if (first_0_3 == null) {
+                first_0_3 = prev_0_3;
+            }
+            second_0_3 = prev_0_3;
+        }
+
+        prev_0_3 = root;
+
+        inorder_0_3(root.right);
     }
 
 
