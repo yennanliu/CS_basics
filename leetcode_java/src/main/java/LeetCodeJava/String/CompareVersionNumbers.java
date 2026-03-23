@@ -72,13 +72,38 @@ public class CompareVersionNumbers {
     // IDE: SPLIT + STRING OP (fixed by gpt)
     public int compareVersion(String version1, String version2) {
 
+        /** NOTE !!!
+         *
+         *  how we handle `characters split`
+         */
         String[] v1 = version1.split("\\.");
         String[] v2 = version2.split("\\.");
 
+        /** NOTE !!!
+         *
+         *   n is the longer len
+         */
         int n = Math.max(v1.length, v2.length);
 
         for (int i = 0; i < n; i++) {
 
+            /**
+             *
+             * Java already handles leading zeros:
+             *
+             *   -> Integer.parseInt("001") == 1
+             *
+             *  ----
+             *
+             *  Example:
+             *
+             *  ```
+             *         String version2 = "00001";
+             *         int v2 = Integer.parseInt(version2);
+             *         System.out.println(v2);   // 1
+             * ```
+             *
+             */
             int num1 = (i < v1.length) ? Integer.parseInt(v1[i]) : 0;
             int num2 = (i < v2.length) ? Integer.parseInt(v2[i]) : 0;
 
@@ -90,6 +115,7 @@ public class CompareVersionNumbers {
 
         return 0;
     }
+    
 
     // V0-1
     // IDEA: STR OP (fixed by gemini)
