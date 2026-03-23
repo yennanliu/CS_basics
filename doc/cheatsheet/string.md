@@ -2404,3 +2404,140 @@ Why return len1 <= len2 at the end?
 - LC 953 Verifying an Alien Dictionary (this pattern)
 - LC 269 Alien Dictionary (topological sort, harder)
 - LC 242 Valid Anagram (character frequency mapping)
+
+### 2-16) Longest Word in Dictionary through Deleting
+
+**Pattern: Subsequence Check + Best Candidate Tracking**
+- Check if a dictionary word can be formed by deleting characters from `s` (i.e., is a subsequence of `s`)
+- Track the best result: longest length wins, ties broken by lexicographic order
+- Two-pointer subsequence check is the core technique
+
+#### Approach 1: Iterate + Subsequence Check + In-place Best Tracking (Optimal)
+```java
+// java
+// LC 524. Longest Word in Dictionary through Deleting
+/**
+ * Pattern: Two-pointer subsequence check + greedy best tracking
+ *
+ * Core Idea:
+ *   - For each word in dictionary, check if it's a subsequence of s
+ *   - Subsequence check: two pointers, one on s and one on word
+ *     - If chars match, advance both pointers
+ *     - If not, only advance s pointer (skip/delete char from s)
+ *     - Word is subsequence if its pointer reaches the end
+ *   - Track best candidate: longer length wins, same length -> smaller lexicographic order
+ *
+ * Example:
+ *   s = "abpcplea", dictionary = ["ale","apple","monkey","plea"]
+ *
+ *   Check "ale":    a-b-p-c-p-l-e-a
+ *                   ^         ^ ^       -> match a,l,e -> subsequence ✅ (len=3)
+ *   Check "apple":  a-b-p-c-p-l-e-a
+ *                   ^ ^ ^   ^ ^         -> match a,p,p,l,e -> subsequence ✅ (len=5)
+ *   Check "monkey": no 'm' early enough -> ❌
+ *   Check "plea":   a-b-p-c-p-l-e-a
+ *                       ^     ^ ^ ^     -> match p,l,e,a -> subsequence ✅ (len=4)
+ *
+ *   Best: "apple" (longest at len=5)
+ *
+ * Time: O(N * M) where N = dictionary size, M = length of s
+ * Space: O(1) extra (just pointers and result string)
+ */
+public String findLongestWord(String s, List<String> dictionary) {
+    String res = "";
+
+    for (String word : dictionary) {
+        // 1. Check if word is a subsequence of s
+        if (isSubsequence(s, word)) {
+            // 2. Update best: longer wins, ties broken by lexicographic order
+            /**
+             * NOTE !!!
+             *
+             *  word.compareTo(res) < 0 means word is lexicographically SMALLER
+             *  We want the smallest lexicographic order among same-length candidates
+             */
+            if (word.length() > res.length() ||
+                    (word.length() == res.length() && word.compareTo(res) < 0)) {
+                res = word;
+            }
+        }
+    }
+    return res;
+}
+
+/**
+ * Two-pointer subsequence check
+ *
+ *  s = source string (we "delete" chars from this)
+ *  target = dictionary word (check if this is a subsequence of s)
+ *
+ *  i moves through s (always advances)
+ *  j moves through target (advances only on match)
+ */
+private boolean isSubsequence(String s, String target) {
+    int i = 0, j = 0;
+    while (i < s.length() && j < target.length()) {
+        if (s.charAt(i) == target.charAt(j)) {
+            j++; // Match found, advance target pointer
+        }
+        i++; // Always advance source pointer
+    }
+    // If j reached end, all chars of target were found in order
+    return j == target.length();
+}
+```
+
+#### Approach 2: Sort First + Return First Match
+```java
+// java
+// LC 524. Longest Word in Dictionary through Deleting
+/**
+ * Pattern: Pre-sort dictionary by (length DESC, lexicographic ASC),
+ *          then return the first subsequence match
+ *
+ * Key Trick:
+ *   - Sort so that longest words come first
+ *   - Among same-length words, lexicographically smaller comes first
+ *   - First valid subsequence match IS the answer (no need to track best)
+ *
+ * Time: O(N log N * K + N * M)  where K = avg word length (for sort comparisons)
+ * Space: O(log N) for sorting
+ */
+public String findLongestWord_sort(String s, List<String> d) {
+    // Sort: longer first, then lexicographic order for ties
+    Collections.sort(d, (s1, s2) ->
+        s2.length() != s1.length() ? s2.length() - s1.length() : s1.compareTo(s2)
+    );
+
+    for (String str : d) {
+        if (isSubsequence(s, str))
+            return str;  // First match is guaranteed to be the best
+    }
+    return "";
+}
+```
+
+**Key Insights:**
+```
+Two-pointer subsequence check:
+  - i (source pointer) ALWAYS advances
+  - j (target pointer) advances ONLY on character match
+  - If j == target.length() at the end, target is a subsequence
+  - This is the same pattern as LC 392 (Is Subsequence)
+
+Best candidate selection (without sorting):
+  - word.length() > res.length()  ->  longer is always better
+  - word.compareTo(res) < 0       ->  lexicographically smaller wins ties
+  - Combined: no need to sort the dictionary at all
+
+Sorting approach trade-off:
+  - Pro: simpler logic (return first match)
+  - Con: O(N log N) sorting overhead
+  - Approach 1 (no sort) is generally preferred
+```
+
+**Similar Problems:**
+- LC 524 Longest Word in Dictionary through Deleting (this pattern)
+- LC 392 Is Subsequence (core two-pointer subsequence check)
+- LC 720 Longest Word in Dictionary (prefix-based, different pattern)
+- LC 1055 Shortest Way to Form String (subsequence with multiple passes)
