@@ -498,6 +498,68 @@ public class Workspace24 {
     }
 
 
+    // LC 99
+    // 2. 06 - 16 pm
+    /**
+     *
+     *  ------------
+     *
+     *   IDEA 1) bst property + dfs??? + in-order ??
+     *    bst: left < root < right
+     *
+     *  -------------
+     *
+     *
+     */
+    List<Integer> inOrderList = new ArrayList<>();
+    public void recoverTree(TreeNode root) {
+        // edge
+        if(root == null){
+            return;
+        }
+
+        getInorder(root);
+        // ???
+        // loop over `in-order` list
+        // so if node arranged correctly,
+        // should be in `increasing` order
+        int first = -1; // ???
+        int second = -1;
+
+        // ????
+        boolean firstFound = false;
+        boolean secondFound = false;
+
+        for(int i = 1; i < inOrderList.size(); i++){
+            if(inOrderList.get(i) < inOrderList.get(i-1)){
+                if(!firstFound){
+                    first = inOrderList.get(i); //???
+                    firstFound = true;
+                }else{
+                    second = inOrderList.get(i); //???
+                    secondFound = true;
+                }
+            }
+
+        }
+
+        // swap ???
+
+        // build tree ???
+
+    }
+
+    private void getInorder(TreeNode root){
+        // edge
+        if(root == null){
+            return;
+        }
+        getInorder(root.left);
+        inOrderList.add(root.val);
+        getInorder(root.right);
+    }
+
+
 
 
 
