@@ -1283,13 +1283,37 @@ Example (distant swap: 2 and 6):
 #### **Common Mistakes**
 
 **🚫 Mistake 1: Trying to swap nodes instead of values**
-```java
-// BAD: Complex and changes tree structure
-TreeNode temp = first;
-first = second;
-second = temp;
 
-// GOOD: Just swap values, structure unchanged
+```
+Why swap VALUES, not NODE OBJECTS?
+
+  Swapping node objects means rewiring parent/child pointers for BOTH nodes,
+  plus handling edge cases (root, adjacent nodes, left/right children).
+  This is extremely complex and error-prone.
+
+  Swapping values is O(1) and preserves the tree structure:
+  - All parent→child links stay the same
+  - All left/right subtree relationships stay the same
+  - Only the .val fields change — the BST property is restored
+
+  Example:
+       4                    4
+      / \    swap vals      / \
+     6   2   of 6 & 2 →   2   6    ← valid BST!
+    / \ / \               / \ / \
+   1  3 5  7             1  3 5  7
+
+  The nodes stay in the SAME positions. Only their values change.
+  Tree structure (edges) is completely untouched.
+```
+
+```java
+// BAD: Swapping node references does NOTHING to the tree
+TreeNode temp = first;
+first = second;       // Only swaps local variable pointers!
+second = temp;        // The actual tree is unchanged.
+
+// GOOD: Swap the values stored inside the nodes
 int temp = first.val;
 first.val = second.val;
 second.val = temp;

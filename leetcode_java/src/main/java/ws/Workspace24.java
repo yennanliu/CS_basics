@@ -511,54 +511,108 @@ public class Workspace24 {
      *
      *
      */
-    List<Integer> inOrderList = new ArrayList<>();
+    List<TreeNode> inOrderNodes = new ArrayList<>();
+
     public void recoverTree(TreeNode root) {
-        // edge
-        if(root == null){
+        if (root == null)
             return;
-        }
 
+        // 1. Get the list of nodes in In-order
         getInorder(root);
-        // ???
-        // loop over `in-order` list
-        // so if node arranged correctly,
-        // should be in `increasing` order
-        int first = -1; // ???
-        int second = -1;
 
-        // ????
-        boolean firstFound = false;
-        boolean secondFound = false;
+        // 2. Identify the two swapped nodes
+        TreeNode first = null;
+        TreeNode second = null;
 
-        for(int i = 1; i < inOrderList.size(); i++){
-            if(inOrderList.get(i) < inOrderList.get(i-1)){
-                if(!firstFound){
-                    first = inOrderList.get(i); //???
-                    firstFound = true;
-                }else{
-                    second = inOrderList.get(i); //???
-                    secondFound = true;
+        for (int i = 1; i < inOrderNodes.size(); i++) {
+            // Check for a "drop" in the sorted sequence
+            if (inOrderNodes.get(i - 1).val > inOrderNodes.get(i).val) {
+                // If it's the first drop, 'first' is the larger node (i)
+                if (first == null) {
+                    first = inOrderNodes.get(i);
                 }
+                // 'second' is always the smaller node (i + 1)
+                // If there's a second drop later, this will overwrite 'second' correctly
+                second = inOrderNodes.get(i + 1);
             }
-
         }
 
-        // swap ???
 
-        // build tree ???
-
+        /** NOTE !!
+         *
+         *   since we already the `first` and `second` node.
+         *   in order to `swap` them, all we need to do is:
+         *   -> swap their `value`.
+         *
+         *   that's it. the swap is not really `swap all node object`
+         *   , just change values
+         */
+        // 3. Swap the values of the two identified nodes
+        if (first != null && second != null) {
+            int temp = first.val;
+            first.val = second.val;
+            second.val = temp;
+        }
     }
 
-    private void getInorder(TreeNode root){
-        // edge
-        if(root == null){
+    // get in-order list,
+    // for BST, it's a increasing list
+    private void getInorder(TreeNode root) {
+        if (root == null)
             return;
-        }
         getInorder(root.left);
-        inOrderList.add(root.val);
+        inOrderNodes.add(root); // Store the node, not just the value!
         getInorder(root.right);
     }
 
+//    List<Integer> inOrderList = new ArrayList<>();
+//    public void recoverTree(TreeNode root) {
+//        // edge
+//        if(root == null){
+//            return;
+//        }
+//
+//        getInorder(root);
+//        // ???
+//        // loop over `in-order` list
+//        // so if node arranged correctly,
+//        // should be in `increasing` order
+//        int first = -1; // ???
+//        int second = -1;
+//
+//        // ????
+//        boolean firstFound = false;
+//        boolean secondFound = false;
+//
+//        for(int i = 1; i < inOrderList.size(); i++){
+//            if(inOrderList.get(i) < inOrderList.get(i-1)){
+//                if(!firstFound){
+//                    first = inOrderList.get(i); //???
+//                    firstFound = true;
+//                }else{
+//                    second = inOrderList.get(i); //???
+//                    secondFound = true;
+//                }
+//            }
+//
+//        }
+//
+//        // swap ???
+//
+//        // build tree ???
+//
+//    }
+//
+//    private void getInorder(TreeNode root){
+//        // edge
+//        if(root == null){
+//            return;
+//        }
+//        getInorder(root.left);
+//        inOrderList.add(root.val);
+//        getInorder(root.right);
+//    }
+//
 
 
 
