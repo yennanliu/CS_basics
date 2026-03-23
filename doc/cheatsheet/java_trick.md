@@ -534,6 +534,57 @@ String result = new String(chars);  // "apXle"
 ```
 
 
+### 3.4) String to Integer Parsing (`Integer.parseInt`)
+
+**Key Behavior**: `Integer.parseInt()` automatically strips leading zeros.
+
+```java
+// Integer.parseInt handles leading zeros automatically
+Integer.parseInt("001");    // 1
+Integer.parseInt("00001");  // 1
+Integer.parseInt("0100");   // 100
+Integer.parseInt("0");      // 0
+Integer.parseInt("42");     // 42
+```
+
+**Common Pattern: Version Number Comparison (LC 165)**
+```java
+// java
+// LC 165. Compare Version Numbers
+// Split version strings and compare revision by revision
+// Integer.parseInt handles leading zeros so "1.01" == "1.001"
+
+String[] v1 = version1.split("\\.");  // NOTE: "." is regex special char, must escape
+String[] v2 = version2.split("\\.");
+
+int n = Math.max(v1.length, v2.length);
+
+for (int i = 0; i < n; i++) {
+    // If index out of bounds, treat missing revision as 0
+    int num1 = (i < v1.length) ? Integer.parseInt(v1[i]) : 0;
+    int num2 = (i < v2.length) ? Integer.parseInt(v2[i]) : 0;
+
+    if (num1 > num2) return 1;
+    if (num1 < num2) return -1;
+}
+
+return 0;  // All revisions equal
+```
+
+**Key Tricks:**
+```
+1. Leading zeros handled automatically:
+   Integer.parseInt("001") == 1  ✅  (no manual stripping needed)
+
+2. Split on "." requires regex escaping:
+   str.split("\\.")   ✅
+   str.split(".")     ❌  ("." in regex means "any character")
+
+3. Handle unequal lengths with ternary + default 0:
+   int num = (i < arr.length) ? Integer.parseInt(arr[i]) : 0;
+   This treats "1.0" and "1.0.0.0" as equal
+```
+
 ### 1-0-4-2) Sort String
 
 ```java
