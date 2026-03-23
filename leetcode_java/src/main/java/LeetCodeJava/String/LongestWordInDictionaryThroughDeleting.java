@@ -47,7 +47,7 @@ public class LongestWordInDictionaryThroughDeleting {
      * | --------------- | -------------------- | ----- |
      * | Sorting version | O(k·n + k log k · m) | O(k)  |
      * | Optimal version | O(k·n)               | O(1)  |
-     * 
+     *
      *
      */
     public String findLongestWord(String s, List<String> dictionary) {
@@ -229,6 +229,63 @@ public class LongestWordInDictionaryThroughDeleting {
 
         return j == target.length();
     }
+
+
+    // V0-3
+    // IDEA: full optimized solution (index map + binary search) (GPT)
+    public String findLongestWord_0_3(String s, List<String> dictionary) {
+
+        // Step 1: Build index map for s
+        Map<Character, List<Integer>> map = new HashMap<>();
+
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            map.computeIfAbsent(c, k -> new ArrayList<>()).add(i);
+        }
+
+        String res = "";
+
+        // Step 2: Check each word
+        for (String d : dictionary) {
+
+            if (isSubsequence(d, map)) {
+                if (d.length() > res.length() ||
+                        (d.length() == res.length() && d.compareTo(res) < 0)) {
+                    res = d;
+                }
+            }
+        }
+
+        return res;
+    }
+
+    // Step 3: Binary search subsequence check
+    private boolean isSubsequence(String word, Map<Character, List<Integer>> map) {
+
+        int prev = -1;
+
+        for (char c : word.toCharArray()) {
+
+            if (!map.containsKey(c))
+                return false;
+
+            List<Integer> list = map.get(c);
+
+            int idx = Collections.binarySearch(list, prev + 1);
+
+            if (idx < 0) {
+                idx = -idx - 1; // insertion point
+            }
+
+            if (idx == list.size())
+                return false;
+
+            prev = list.get(idx);
+        }
+
+        return true;
+    }
+
 
 
     // V1_1
