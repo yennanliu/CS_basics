@@ -160,6 +160,17 @@ public class Workspace24 {
     }
 
 
+    // LC 524
+    // 8.51 - 9.01 am
+    /**
+     *
+     *
+     */
+    public String findLongestWord(String s, List<String> dictionary) {
+
+        return null;
+    }
+
 
 
 
