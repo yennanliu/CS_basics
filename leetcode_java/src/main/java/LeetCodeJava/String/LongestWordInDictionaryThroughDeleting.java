@@ -36,8 +36,19 @@ public class LongestWordInDictionaryThroughDeleting {
 
     // V0
     /**
-     * time = O(N)
-     * space = O(N)
+     *
+     *  Metric,Complexity,Explanation
+     * Time,O(N⋅L⋅logN+N⋅S),"N is dictionary size, L is max word length, S is length of string s. Sorting + one pass."
+     * Space,O(logN),Sorting overhead (or O(L) if you consider string comparisons).
+     *
+     *
+     * -------
+     * | Approach        | Time Complexity      | Space |
+     * | --------------- | -------------------- | ----- |
+     * | Sorting version | O(k·n + k log k · m) | O(k)  |
+     * | Optimal version | O(k·n)               | O(1)  |
+     * 
+     *
      */
     public String findLongestWord(String s, List<String> dictionary) {
         if (dictionary.size() == 0 && s != null){
