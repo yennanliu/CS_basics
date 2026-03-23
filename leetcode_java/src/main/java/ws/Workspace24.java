@@ -314,6 +314,116 @@ public class Workspace24 {
 
 
 
+    // LC 997
+    // 11.08 - 18 am
+    /**
+     *  -> Return the label of the town judge
+     *  if the town judge exists and can
+     *  be identified, or return -1 otherwise.
+     *
+     *    - n people: 1 to n
+     *    - if a person is a judge
+     *      - the judge trusts NOBODY
+     *      - every body (except judge) trusts the judge
+     *      - there is EXACTLY one judge
+     *
+     *      trust[i] = [ai, bi]:
+     *           - ai trusts bi
+     *
+     *
+     *  -----------------
+     *
+     *   IDEA 1) GRAPH + DFS
+     *
+     *
+     *  -----------------
+     *
+     *
+     */
+    // IDEA 1) GRAPH + DFS
+    public int findJudge(int n, int[][] trust) {
+        // edge
+        if(trust == null || trust.length == 0){
+            return -1;
+        }
+
+        // person - the people he trusts
+        // map: { person, [trust_1, trust_2, ...] }  ( --> )
+        Map<Integer, List<Integer>> map = new HashMap<>();
+
+        // person - the people who trust person  ( <-- )
+        // map2: { person, [trust_1, trust_2, ...] }
+        Map<Integer, List<Integer>> map2 = new HashMap<>();
+
+        for (int[] x : trust) {
+            /**
+             *      *      trust[i] = [ai, bi]:
+             *      *           - ai trusts bi
+             *      *
+             */
+            int ai = x[0];
+            int bi = x[1];
+
+            if (!map.containsKey(ai)) {
+                map.put(ai, new ArrayList<>());
+            }
+            List<Integer> list = map.get(ai);
+            list.add(bi);
+            map.put(ai, list);
+
+            // -----------
+
+            if (!map2.containsKey(bi)) {
+                map2.put(bi, new ArrayList<>());
+            }
+            List<Integer> list2 = map2.get(bi);
+            list2.add(ai);
+            map2.put(bi, list2);
+        }
+
+        Set<Integer> set = new HashSet<>();
+
+        System.out.println(">>> map2 = " + map2);
+
+        for (Integer k : map.keySet()) {
+            getNotJudgeList(map, set, k);
+        }
+
+        if (n - set.size() > 1) {
+            return -1;
+        }
+        // ??
+        for (int i = 1; i < n + 1; i++) {
+            if (!set.contains(i) &&  map2.containsKey(i) && map2.get(i).size() == n - 1) {
+                return i;
+            }
+        }
+
+        return -1; // ???
+    }
+
+    private void getNotJudgeList(Map<Integer, List<Integer>> map, Set<Integer> set, Integer x) {
+        // edge
+        if (map.isEmpty()) {
+            return;
+        }
+
+        // add as `visited`
+        set.add(x);
+
+        // visit `next`
+        for (Integer next : map.get(x)) {
+            if (!set.contains(x)) {
+                getNotJudgeList(map, set, next);
+            }
+        }
+
+    }
+
+
+
+
+
 
 
 
