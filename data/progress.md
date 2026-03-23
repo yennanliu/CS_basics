@@ -17,7 +17,8 @@
 	- bfs.md (ok)
 	- binary_indexed_tree.md (OK)
 	- Bellman-Ford.md (OK)
-	- binary_search.md (todo, LC Examples)
+	- binary_search.md (OK)
+	- binary_tree.md (todo, LC Examples)
 
 - to review
 - needcode `250` - similar LC by AI
@@ -225,6 +226,8 @@
 	- todo (20260321)
 		- 99,700,530,501,285,173,426
 		- 410,981,1482
+	- todo (20260322)
+		- 540,981,34,74
 
  	==================================
 

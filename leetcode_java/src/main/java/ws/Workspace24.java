@@ -163,8 +163,27 @@ public class Workspace24 {
     // LC 524
     // 8.51 - 9.01 am
     /**
+     *  -> return the longest string in the
+     *  dictionary that can be formed
+     *  by deleting some of the
+     *  given string characters.
      *
      *
+     *
+     *   string s
+     *   arr[] dictionary
+     *
+     *  NOTE:
+     *      - If there is more than one possible result,
+     *        return the longest word with the
+     *        smallest lexicographical order.
+     *
+     *      - if no result, return ""
+     *
+     *  -----------
+     *
+     *
+     *  -----------
      */
     public String findLongestWord(String s, List<String> dictionary) {
 
