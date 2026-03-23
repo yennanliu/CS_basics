@@ -2225,18 +2225,32 @@ Result:
  1
 ```
 
-#### Key Insight: BST Property Enables O(n) Pruning
+#### Key Insight: Why `return trimBST(root.right, L, R)` instead of `return null`?
 
 ```
 When root.val < L:
-  → By BST property: ALL nodes in left subtree < root.val < L
-  → So entire left subtree is out of range
-  → We can skip it entirely and only process right subtree
 
-When root.val > R:
-  → By BST property: ALL nodes in right subtree > root.val > R
-  → So entire right subtree is out of range
-  → We can skip it entirely and only process left subtree
+  ❌ WRONG: return null
+     → This would throw away the ENTIRE subtree, but some right descendants
+        could still be in range [L, R]!
+
+  ✅ RIGHT: return trimBST(root.right, L, R)
+     → BST property guarantees: left subtree < root.val < right subtree
+     → Since root.val < L, ALL left children < root.val < L → all too small
+     → But right children > root.val, so SOME may be >= L (in range!)
+     → We discard root + left subtree, but continue searching right subtree
+
+  Example:  L=3, R=5
+         2          root=2 < L=3, discard 2 and left(1)
+        / \         but right subtree has 4 which is in [3,5]!
+       1   4        → return trimBST(4, 3, 5) → returns 4 ✅
+          / \
+         3   5
+
+Same logic (mirrored) for root.val > R:
+  → Discard root + right subtree (all too large)
+  → But left children may still be <= R (in range!)
+  → return trimBST(root.left, L, R)
 ```
 
 #### Java Implementation
@@ -2329,6 +2343,13 @@ root.left = trimBST(root.left, L, R);
 root.right = trimBST(root.right, L, R);
 return root;
 ```
+
+**Similar Problems:**
+- LC 669 Trim a Binary Search Tree (this pattern)
+- LC 450 Delete Node in a BST (remove single node, more complex restructuring)
+- LC 776 Split BST (partition into two trees, keeps all nodes)
+- LC 98 Validate Binary Search Tree (same BST property reasoning)
+- LC 938 Range Sum of BST (same "skip subtree" optimization using BST property)
 
 ### 2-10-1) Convert BST to Greater Tree
 ```python
