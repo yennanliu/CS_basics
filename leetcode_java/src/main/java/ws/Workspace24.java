@@ -161,7 +161,7 @@ public class Workspace24 {
 
 
     // LC 524
-    // 8.51 - 9.01 am
+    // 8.51 - 10.02 am
     /**
      *  -> return the longest string in the
      *  dictionary that can be formed
@@ -182,12 +182,53 @@ public class Workspace24 {
      *
      *  -----------
      *
+     *   IDEA 1) BRUTE FORCE 2 POINTERS ??
+     *    -> collect candidates
+     *    -> if a tie,
+     *        return longest word with the
+     *        smallest lexicographical order
+     *
+     *   IDEA 2) HASHMAP + 1 PASS ???
      *
      *  -----------
      */
     public String findLongestWord(String s, List<String> dictionary) {
+        // edge
 
-        return null;
+        // { val : [idx_1, idx_2, ..] }
+        Map<String, List<Integer>> map = new HashMap<>();
+        int i = 0;
+        for(String x: s.split("")){
+            if(!map.containsKey(x)){
+                map.put(x, new ArrayList<>());
+            }
+            List<Integer> list = map.get(x);
+            list.add(i);
+            map.put(x, list);
+            //map.put(x, map.getOrDefault(x, 0) + 1);
+            i += 1;
+        }
+
+        String res = "";
+
+        // ???
+        for(String d: dictionary){
+            // ???
+            if(map.containsKey(d)){
+                if(d.length() > res.length()){
+                    res = d;
+                }
+            }
+
+            // ???
+        }
+
+
+
+
+
+
+        return res;
     }
 
 

@@ -151,6 +151,75 @@ public class LongestWordInDictionaryThroughDeleting {
     }
 
 
+    // V0-1
+    // IDEA: STRING OP + Subsequence (gemini)
+    public String findLongestWord_0_1(String s, List<String> dictionary) {
+        String res = "";
+
+        for (String word : dictionary) {
+            // 1. Check if 'word' is a subsequence of 's'
+            if (isSubsequence(s, word)) {
+                // 2. Apply comparison rules:
+                // - Longer word wins
+                // - If lengths are equal, lexicographically smaller word wins
+                if (word.length() > res.length() ||
+                        (word.length() == res.length() && word.compareTo(res) < 0)) {
+                    res = word;
+                }
+            }
+        }
+        return res;
+    }
+
+    private boolean isSubsequence(String s, String target) {
+        int i = 0, j = 0;
+        // Use two pointers to see if we can find all chars of 'target' in 's'
+        while (i < s.length() && j < target.length()) {
+            if (s.charAt(i) == target.charAt(j)) {
+                j++; // Match found in target, move target pointer
+            }
+            i++; // Always move s pointer
+        }
+        // If j reached the end, target is a subsequence
+        return j == target.length();
+    }
+
+
+    // V0-2
+    // IDEA: STRING OP + Subsequence (GPT)
+    public String findLongestWord_0_2(String s, List<String> dictionary) {
+
+        String res = "";
+
+        for (String d : dictionary) {
+
+            if (isSubsequence_0_2(s, d)) {
+
+                if (d.length() > res.length() ||
+                        (d.length() == res.length() && d.compareTo(res) < 0)) {
+                    res = d;
+                }
+            }
+        }
+
+        return res;
+    }
+
+    private boolean isSubsequence_0_2(String s, String target) {
+
+        int i = 0, j = 0;
+
+        while (i < s.length() && j < target.length()) {
+            if (s.charAt(i) == target.charAt(j)) {
+                j++;
+            }
+            i++;
+        }
+
+        return j == target.length();
+    }
+
+
     // V1_1
     // IDEA : Brute Force
     // https://leetcode.com/problems/longest-word-in-dictionary-through-deleting/editorial/
@@ -279,5 +348,7 @@ public class LongestWordInDictionaryThroughDeleting {
     // V2
 
 
+
+    
 
 }
