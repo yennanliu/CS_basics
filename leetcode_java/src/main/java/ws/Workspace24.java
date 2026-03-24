@@ -724,6 +724,91 @@ public class Workspace24 {
     }
 
 
+    // LC 1791
+    // 8.14 - 24 am
+    /**
+     *
+     *  -> Return the center of the
+     *     given star graph.
+     *
+     *
+     *  n nodes: 1 -> n
+     *
+     *  - A star graph:
+     *      a graph where there is one center node and
+     *      exactly n - 1 edges that connect the center
+     *      node with every other node.
+     *
+     *  - edges[i] = [ui, vi]
+     *      - edge between ui and vi
+     *
+     *  ---------------
+     *
+     *   IDEA 1)  DFS + GRAPH
+     *    DFS
+     *    0. build graph
+     *    1. get nodes had `n-1` direct conn
+     *    2. validate above
+     *
+     *
+     *
+     * ---------------
+     *
+     */
+    // IDEA 1)  DFS + GRAPH
+    public int findCenter(int[][] edges) {
+        // edge
+
+        // build graph
+        // map: { node : [neighbor_1, neighbor_2, ..] }
+        Map<Integer, List<Integer>> map = new HashMap<>();
+
+        Set<Integer> set = new HashSet<>();
+        for(int[] e: edges){
+            // ???
+            int ui = e[0];
+            int vi = e[1];
+
+
+            set.add(ui);
+            set.add(vi);
+
+            if(!map.containsKey(ui)){
+                map.put(ui, new ArrayList<>());
+            }
+
+            if(!map.containsKey(vi)){
+                map.put(vi, new ArrayList<>());
+            }
+
+            List<Integer> l1 = map.get(ui);
+            List<Integer> l2 = map.get(vi);
+
+            l1.add(vi);
+            l2.add(ui);
+
+            map.put(ui, l1);
+            map.put(vi, l2);
+        }
+
+
+
+        // check ???
+        // 1. get nodes had `n-1` direct conn
+        int n = set.size();
+
+        for(int k: map.keySet()){
+            if(map.get(k).size() == n - 1){
+                return k;
+            }
+        }
+
+
+        return -1; // ??? should NOT visit here
+    }
+
+
+
 
 
 
