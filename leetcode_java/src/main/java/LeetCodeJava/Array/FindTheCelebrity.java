@@ -59,6 +59,64 @@ public class FindTheCelebrity {
 //
 //    }
 
+    // V0-1
+    // IDEA (gemini)
+    // TODO: validate
+    public int findCelebrity_0_1(int n) {
+        // 1. Find a candidate
+        int candidate = 0;
+        for (int i = 1; i < n; i++) {
+            // If the current candidate knows i, the candidate cannot be a celebrity.
+            // i becomes the new potential candidate.
+            if (knows(candidate, i)) {
+                candidate = i;
+            }
+        }
+
+        // 2. Verify the candidate
+        for (int i = 0; i < n; i++) {
+            if (i == candidate) continue;
+
+            // Check two conditions:
+            // - Does the candidate know i? (If yes, not a celebrity)
+            // - Does i know the candidate? (If no, not a celebrity)
+            if (knows(candidate, i) || !knows(i, candidate)) {
+                return -1;
+            }
+        }
+
+        return candidate;
+    }
+
+    // V0-2
+    // IDEA (GPT)
+    // TODO: validate
+    public int findCelebrity(int n) {
+        // Step 1: find candidate
+        int candidate = 0;
+
+        for (int i = 1; i < n; i++) {
+            if (knows(candidate, i)) {
+                candidate = i;
+            }
+        }
+
+        // Step 2: verify candidate
+        for (int i = 0; i < n; i++) {
+            if (i == candidate) continue;
+
+            // candidate should NOT know anyone
+            // everyone should know candidate
+            if (knows(candidate, i) || !knows(i, candidate)) {
+                return -1;
+            }
+        }
+
+        return candidate;
+    }
+
+
+
     // V1
     // https://leetcode.ca/2016-09-02-277-Find-the-Celebrity/
     public int findCelebrity_1(int n) {

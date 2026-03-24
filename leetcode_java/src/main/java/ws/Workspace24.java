@@ -810,6 +810,44 @@ public class Workspace24 {
 
 
     // LC 277
+    // 8.49 - 59 am
+    /**
+     *
+     *  -> implement a function int findCelebrity(n).
+     *  There will be exactly one celebrity
+     *  if he/she is in the party.
+     *
+     *
+     *   -  there may exist one celebrity.
+     *      The definition of a celebrity is that all the other
+     *      n - 1 people know him/her but he/she
+     *      does not know any of them.
+     *
+     *   -  n people: 0 - n-1
+     *
+     *   NOTE:
+     *
+     *    1. The directed graph
+     *       is represented as an adjacency matrix,
+     *       which is an n x n matrix where a[i][j] = 1
+     *       means person i knows person j
+     *       while a[i][j] = 0 means the contrary.
+     *
+     *
+     *    2. Remember that you won't have direct
+     *       access to the adjacency matrix.
+     *
+     *
+     *
+     *
+     *   --------
+     *
+     *    IDEA 1) DFS + GRAPH
+     *
+     *
+     *
+     *
+     */
     // dummy API for passing java syntax check
     // offered by LC platform when submission
     private boolean knows(int a, int b){
@@ -817,10 +855,64 @@ public class Workspace24 {
     }
 
     // V0
+    // IDEA 1) DFS + GRAPH
     public int findCelebrity(int n) {
+        // edge
 
-        return 0;
+        /**
+         *
+         *
+         *      *    1. The directed graph
+         *      *       is represented as an adjacency matrix,
+         *      *       which is an n x n matrix where a[i][j] = 1
+         *      *       means person i knows person j
+         *      *       while a[i][j] = 0 means the contrary.
+         *      *
+         *
+         *
+         *  ----
+         *
+         *  The only thing you are allowed to do is to ask question
+         *  s like: "Hi, A. Do you know B?"
+         *  to get information of whether A knows B.
+         *  You need to find out the celebrity (or verify
+         *  there is not one) by asking as few questions as possible
+         *  (in the asymptotic sense).
+         *
+         *  ----
+         *        private boolean knows(int a, int b){
+         *         return true;
+         *     }
+         *
+         *
+         */
+
+        // ???
+        // Set<Integer> notCele = new HashSet<>();
+        // ???
+        int ans = 0;
+        // ??
+        for(int i = 0; i < n; i++){
+            // ???
+            if(knows(ans, i)){
+                ans = i;
+            }
+        }
+
+        for(int i = 0; i < n; i++){
+            // ???
+            if(!knows(i, ans)){
+                return -1;
+            }
+        }
+
+
+        // ???
+        return ans;
     }
+
+
+
 
 
 
