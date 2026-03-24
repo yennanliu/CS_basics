@@ -2,10 +2,7 @@ package LeetCodeJava.Greedy;
 
 // https://leetcode.com/problems/find-center-of-star-graph/description/
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * 1791. Find Center of Star Graph
@@ -88,6 +85,84 @@ public class FindCenterOfStarGraph {
         return -1;
     }
 
+
+    // V0-1
+    // IDEA 1)  DFS + GRAPH
+    public int findCenter_0_1(int[][] edges) {
+        // edge
+
+        // build graph
+        // map: { node : [neighbor_1, neighbor_2, ..] }
+        Map<Integer, List<Integer>> map = new HashMap<>();
+
+        Set<Integer> set = new HashSet<>();
+        for (int[] e : edges) {
+            // ???
+            int ui = e[0];
+            int vi = e[1];
+
+            set.add(ui);
+            set.add(vi);
+
+            if (!map.containsKey(ui)) {
+                map.put(ui, new ArrayList<>());
+            }
+
+            if (!map.containsKey(vi)) {
+                map.put(vi, new ArrayList<>());
+            }
+
+            List<Integer> l1 = map.get(ui);
+            List<Integer> l2 = map.get(vi);
+
+            l1.add(vi);
+            l2.add(ui);
+
+            map.put(ui, l1);
+            map.put(vi, l2);
+        }
+
+        // check ???
+        // 1. get nodes had `n-1` direct conn
+        int n = set.size();
+
+        for (int k : map.keySet()) {
+            if (map.get(k).size() == n - 1) {
+                return k;
+            }
+        }
+
+        return -1; // ??? should NOT visit here
+    }
+
+
+    // V0-2
+    // IDEA: START NODES (gemini)
+    /**  IDEA:
+     *
+     * n a star graph, the "center" node must appear in every single edge.
+     * Therefore, you only need to look at the first two edges.
+     * The node that appears in both of them is your center.
+     */
+    public int findCenter_0_2(int[][] edges) {
+        // 1. Get the nodes of the first edge
+        int u1 = edges[0][0];
+        int v1 = edges[0][1];
+
+        // 2. Get the nodes of the second edge
+        int u2 = edges[1][0];
+        int v2 = edges[1][1];
+
+        // 3. The center is the node that is present in both edges
+        if (u1 == u2 || u1 == v2) {
+            return u1;
+        } else {
+            return v1;
+        }
+    }
+
+
+
     // V1-1
     // https://leetcode.com/problems/find-center-of-star-graph/editorial/
     // IDEA: DEGREE COUNT
@@ -125,9 +200,15 @@ public class FindCenterOfStarGraph {
     // V2
     // https://leetcode.com/problems/find-center-of-star-graph/solutions/1108319/o1-1-liner-by-votrubac-4ekx/
     public int findCenter_2(int[][] e) {
+
         return e[0][0] == e[1][0] || e[0][0] == e[1][1] ? e[0][0] : e[0][1];
     }
 
+
+
     // V3
+
+
+
 
 }
