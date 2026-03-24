@@ -809,6 +809,22 @@ public class Workspace24 {
 
 
 
+    // LC 277
+    // dummy API for passing java syntax check
+    // offered by LC platform when submission
+    private boolean knows(int a, int b){
+        return true;
+    }
+
+    // V0
+    public int findCelebrity(int n) {
+
+        return 0;
+    }
+
+
+
+
 
 
 
