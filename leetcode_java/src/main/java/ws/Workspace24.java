@@ -615,6 +615,114 @@ public class Workspace24 {
 //
 
 
+    // LC 1971
+    // 7.34 - 44 pm
+    /**
+     *  -> Given edges and the integers n, source, and destination,
+     *  return
+     *   - true
+     *     - if there is a valid
+     *       path from source to destination
+     *   - false
+     *      - otherwise.
+     *
+     *
+     *    vertex: 0 -> n-1
+     *
+     *    edges[i] = [ui, vi]
+     *       - bi-directional edge between vertex ui, vi
+     *
+     *    - Every vertex pair is connected by at most one edge,
+     *
+     *    - no vertex has an edge to itself.
+     *
+     *
+     *
+     *  -------------
+     *
+     *   IDEA 1) DFS + GRAPH
+     *
+     *   IDEA 2) FIND PARENT NODE + ROUTE COMPRESSION ???
+     *
+     *
+     *  -------------
+     *
+     *
+     */
+    // IDEA 1) DFS + GRAPH
+    public boolean validPath(int n, int[][] edges, int source, int destination) {
+        // edge
+        // check if n == edges.size() - 1????
+
+        // build graph
+        // map: { node : [neighbor_1, neighbor_2, ..] }
+        Map<Integer, List<Integer>> map = new HashMap<>();
+
+        for(int[] e: edges){
+            // ???
+            int ui = e[0];
+            int vi = e[1];
+
+            if(!map.containsKey(ui)){
+                map.put(ui, new ArrayList<>());
+            }
+
+            if(!map.containsKey(vi)){
+                map.put(vi, new ArrayList<>());
+            }
+
+            List<Integer> l1 = map.get(ui);
+            List<Integer> l2 = map.get(vi);
+
+            l1.add(vi);
+            l2.add(ui);
+
+            map.put(ui, l1);
+            map.put(vi, l2);
+        }
+
+        System.out.println(">>> map = " + map);
+
+
+        // ???
+        return canVisit(map, source, destination, source, new HashSet<>());
+       //return false;
+    }
+
+
+    private boolean canVisit(Map<Integer, List<Integer>> map, int src, int dest, int node, Set<Integer> visited){
+        System.out.println(">>> node = " + node
+        + ", visited = " + visited);
+
+        // edge
+        // ??
+        //if(node == null)
+        if(dest == src){
+            return true;
+        }
+        if(node == dest){
+            return true;
+        }
+
+        // mark as visited
+        visited.add(node);
+
+        // visit next
+        // ???
+        if (map.containsKey(node)) {
+            for(int next: map.get(node)){
+                if(!visited.contains(next)){
+                    if(canVisit(map, src, dest, next, visited)){
+                        return true;
+                    }
+                }
+            }
+        }
+
+        // ???
+        return false;
+    }
+
 
 
 

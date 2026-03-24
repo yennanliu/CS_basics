@@ -53,7 +53,6 @@ public class FindIfPathExistsInGraph {
      * time = O(V + E)
      * space = O(V)
      */
-
     public boolean validPath(int n, int[][] edges, int source, int destination) {
         // 1. Quick check: If source is destination, a path exists.
         if (source == destination)
@@ -65,6 +64,10 @@ public class FindIfPathExistsInGraph {
             map.put(i, new ArrayList<>());
         }
         for (int[] e : edges) {
+            /** NOTE !!!
+             *
+             *  we need to build map on both directions (e.g. ui, vi)
+             */
             map.get(e[0]).add(e[1]);
             map.get(e[1]).add(e[0]);
         }
@@ -121,13 +124,178 @@ public class FindIfPathExistsInGraph {
         return false;
     }
 
+    // V0-0-1
+    // IDEA: GRAPH + DFS (gemini)
+    public boolean validPath_0_0_1(int n, int[][] edges, int source, int destination) {
+        // 1. Edge case: source is the destination
+        if (source == destination)
+            return true;
+
+        // 2. Build adjacency list using an array of lists (faster than HashMap)
+        List<Integer>[] graph = new ArrayList[n];
+        for (int i = 0; i < n; i++) {
+            graph[i] = new ArrayList<>();
+        }
+
+        for (int[] edge : edges) {
+            int u = edge[0];
+            int v = edge[1]; // Corrected: was e[0] in your code
+            graph[u].add(v);
+            graph[v].add(u);
+        }
+
+        // 3. DFS with a visited set (or boolean array for speed)
+        return dfs(graph, source, destination, new boolean[n]);
+    }
+
+    private boolean dfs(List<Integer>[] graph, int curr, int dest, boolean[] visited) {
+        // Found the destination!
+        if (curr == dest)
+            return true;
+
+        // Mark current as visited
+        visited[curr] = true;
+
+        // Visit neighbors
+        for (int neighbor : graph[curr]) {
+            // ONLY visit if we haven't seen this neighbor before
+            if (!visited[neighbor]) {
+                if (dfs(graph, neighbor, dest, visited)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+
+    // V0-0-2
+    // IDEA: GRAPH + DFS (GPT)
+    public boolean validPath_0_0_2(int n, int[][] edges, int source, int destination) {
+
+        // build graph
+        Map<Integer, List<Integer>> map = new HashMap<>();
+
+        for (int[] e : edges) {
+            int ui = e[0];
+            int vi = e[1]; // ✅ FIX
+
+            map.putIfAbsent(ui, new ArrayList<>());
+            map.putIfAbsent(vi, new ArrayList<>());
+
+            /** NOTE !!!
+             *
+             *  we need to build map on both directions (e.g. ui, vi)
+             */
+            map.get(ui).add(vi);
+            map.get(vi).add(ui);
+        }
+
+        return canVisit(map, destination, source, new HashSet<>());
+    }
+
+    private boolean canVisit(Map<Integer, List<Integer>> map,
+                             int dest,
+                             int node,
+                             Set<Integer> visited) {
+
+        // ✅ base case
+        if (node == dest)
+            return true;
+
+        // ✅ avoid cycles
+        if (visited.contains(node))
+            return false;
+
+        visited.add(node);
+
+        // ✅ safe traversal
+        if (!map.containsKey(node))
+            return false;
+
+        for (int next : map.get(node)) {
+            if (canVisit(map, dest, next, visited)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+
+
+    // V0-1
+    // IDEA: DFS + GRAPH
+    public boolean validPath_0_1(int n, int[][] edges, int source, int destination) {
+        // edge
+
+        // build graph
+        // map: { node : [neighbor_1, neighbor_2, ..] }
+        Map<Integer, List<Integer>> map = new HashMap<>();
+
+        for (int[] e : edges) {
+            // ???
+            int ui = e[0];
+            int vi = e[1];
+
+            if (!map.containsKey(ui)) {
+                map.put(ui, new ArrayList<>());
+            }
+
+            if (!map.containsKey(vi)) {
+                map.put(vi, new ArrayList<>());
+            }
+
+            List<Integer> l1 = map.get(ui);
+            List<Integer> l2 = map.get(vi);
+
+            l1.add(vi);
+            l2.add(ui);
+
+            map.put(ui, l1);
+            map.put(vi, l2);
+        }
+
+        //System.out.println(">>> map = " + map);
+        return canVisit(map, source, destination, source, new HashSet<>());
+    }
+
+    private boolean canVisit(Map<Integer, List<Integer>> map, int src, int dest, int node, Set<Integer> visited) {
+        // System.out.println(">>> node = " + node
+        //         + ", visited = " + visited);
+
+        if (dest == src) {
+            return true;
+        }
+        if (node == dest) {
+            return true;
+        }
+
+        // mark as visited
+        visited.add(node);
+
+        // visit next
+        if (map.containsKey(node)) {
+            for (int next : map.get(node)) {
+                if (!visited.contains(next)) {
+                    if (canVisit(map, src, dest, next, visited)) {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
+
     // V0-2
     // IDEA: DFS
     /**
      * time = O(V + E)
      * space = O(V)
      */
-
     public boolean validPath_0_2(int n, int[][] edges, int source, int destination) {
         if (source == destination) {
             return true;
@@ -429,6 +597,7 @@ public class FindIfPathExistsInGraph {
 
 
     // V3
+
 
 
 
