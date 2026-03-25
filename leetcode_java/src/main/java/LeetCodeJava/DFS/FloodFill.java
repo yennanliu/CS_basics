@@ -1,6 +1,10 @@
 package LeetCodeJava.DFS;
 
 // https://leetcode.com/problems/flood-fill/description/
+
+import java.util.LinkedList;
+import java.util.Queue;
+
 /**
  *  733. Flood Fill
  * Solved
@@ -77,6 +81,7 @@ public class FloodFill {
         return image;
     }
 
+    // NOTE!! we track original color
     private void dfsHelper(int x, int y, int[][] image, int originalColor, int color) {
 
         // all possible moves
@@ -148,6 +153,88 @@ public class FloodFill {
         dfsHelper_0_1(x, y + 1, image, originalColor, color);
         dfsHelper_0_1(x, y - 1, image, originalColor, color);
     }
+
+
+    // V0-2
+    // IDEA: BFS (gemini)
+    public int[][] floodFill_0_2(int[][] image, int sr, int sc, int color) {
+        int startColor = image[sr][sc];
+
+        // If the starting pixel is already the target color, no work to do.
+        // This also prevents infinite loops if you don't use a 'visited' array.
+        if (startColor == color)
+            return image;
+
+        int rows = image.length;
+        int cols = image[0].length;
+        int[][] directions = { { 0, 1 }, { 0, -1 }, { 1, 0 }, { -1, 0 } };
+
+        Queue<int[]> queue = new LinkedList<>();
+        queue.offer(new int[] { sr, sc });
+        image[sr][sc] = color; // Change color immediately when adding to queue
+
+        while (!queue.isEmpty()) {
+            int[] curr = queue.poll();
+            int r = curr[0];
+            int c = curr[1];
+
+            for (int[] d : directions) {
+                int nr = r + d[0];
+                int nc = c + d[1];
+
+                // 1. Check bounds
+                // 2. Check if the neighbor has the original color
+                if (nr >= 0 && nr < rows && nc >= 0 && nc < cols && image[nr][nc] == startColor) {
+                    image[nr][nc] = color; // Mark as "visited" by changing its color
+                    queue.offer(new int[] { nr, nc });
+                }
+            }
+        }
+
+        return image;
+    }
+
+    // V0-3
+    // IDEA: BFS (GPT)
+    public int[][] floodFill_0_3(int[][] image, int sr, int sc, int color) {
+
+        int m = image.length;
+        int n = image[0].length;
+
+        int original = image[sr][sc];
+
+        // edge case: no change needed
+        if (original == color)
+            return image;
+
+        int[][] dirs = { { 0, 1 }, { 0, -1 }, { 1, 0 }, { -1, 0 } };
+
+        Queue<int[]> q = new LinkedList<>();
+        q.offer(new int[] { sr, sc });
+
+        image[sr][sc] = color; // mark visited by coloring
+
+        while (!q.isEmpty()) {
+            int[] cur = q.poll();
+            int r = cur[0];
+            int c = cur[1];
+
+            for (int[] d : dirs) {
+                int nr = r + d[0];
+                int nc = c + d[1];
+
+                if (nr >= 0 && nr < m && nc >= 0 && nc < n
+                        && image[nr][nc] == original) {
+
+                    image[nr][nc] = color; // mark visited
+                    q.offer(new int[] { nr, nc });
+                }
+            }
+        }
+
+        return image;
+    }
+
 
 
     // V1

@@ -1030,15 +1030,71 @@ public class Workspace24 {
 
 
     // LC 733
-    // 8.32 - 42 am
+    // 8.32 - 9.00 am
     /**
+     *  -> Return the modified image
+     *  after performing the flood fill.
+     *
+     *  ------------
+     *
+     *   IDEA 1) BFS ???
      *
      *
+     *  ------------
      *
      */
     public int[][] floodFill(int[][] image, int sr, int sc, int color) {
+        // edge
 
-        return null;
+        int[][] moves = new int[][]{ {0,1}, {0,-1}, {1,0}, {-1,0} };
+        int l = image.length;
+        int w = image[0].length;
+
+        boolean[][] visited = new boolean[l][w];
+
+        // bfs
+        Queue<Integer[]> q = new LinkedList<>();
+//        q.add(new Integer[]{0,0});
+//        visited[0][0] = true;
+        q.add(new Integer[]{sr,sc});
+        visited[sr][sc] = true;
+
+        int initColor = image[sr][sc];
+
+        image[sr][sc] = color;
+
+
+
+
+        while (!q.isEmpty()){
+            // /?
+            int size = q.size();
+            Integer[] cur = q.poll();
+            int x = cur[0];
+            int y = cur[1];
+
+            // modify the color
+            image[y][x] = color;
+
+            for(int i = 0; i < size; i++){
+                for(int[] m: moves){
+//                    int x_ = x + m[1];
+//                    int y_ = y + m[0];
+                    int x_ = x + m[0];
+                    int y_ = y + m[1];
+
+                    if(x_ >= 0 && x_ < w && y_ >= 0 && y_ < l){
+                        if(!visited[y_][x_] && image[y_][x_] == initColor){
+                            q.add(new Integer[]{y_, x_});
+                            visited[y_][x_] = true;
+                        }
+                    }
+                }
+            }
+        }
+
+        return image;
+
     }
 
 
