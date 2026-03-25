@@ -913,6 +913,122 @@ public class Workspace24 {
 
 
 
+    // LC 752
+    // 7.51 - 8.01 am
+    /**
+     *  -> Given a `target`  representing the value of the wheels
+     *  that will unlock the lock, return the
+     *  `minimum total number`
+     *  of turns required to open the lock,
+     *  or -1 if it is impossible.
+     *
+     *  initially starts at '0000'
+     *
+     *
+     *   ---------------
+     *
+     *   IDEA 1) BFS
+     *
+     *   ---------------
+     *
+     */
+    // time: O(9 ^ N)
+    // space: O(N)
+    public int openLock(String[] deadends, String target) {
+
+//        Set<String> dead = new HashSet<>(Arrays.asList(deadends));
+//        Set<String> visited = new HashSet<>();
+//        Queue<String> queue = new LinkedList<>();
+
+
+        // edge
+        if(target.equals("0000")){
+            return 0;
+        }
+
+
+        List<String> deadLocks = new ArrayList<>();
+        //deadLocks.addAll(List.of(deadends));
+        deadLocks.addAll(Arrays.asList(deadends));
+        // ???
+        if(deadLocks.contains(target)){
+            return -1;
+        }
+
+        Set<String> visited = new HashSet<>();
+
+        // ??
+        Queue<String> q = new LinkedList<>();
+        q.add("0000");
+        visited.add("0000");
+
+        int opCnt = 0;
+
+        // ???
+        while (!q.isEmpty()){
+
+            int size = q.size();
+            //opCnt += 1;
+
+            for(int i = 0; i < size; i++){
+
+               // opCnt += 1;
+                String cur = q.poll();
+                //visited.add(cur);
+
+                // ??
+                if(cur == null){
+                    continue;
+                }
+
+                if(cur.equals(target)){
+                    return opCnt;
+                }
+                // ???
+                // loop over 4 indices in lock
+                for(int j = 0; j < 4; j++){
+                    // loop digits ???
+                    // ???
+                    int val = cur.charAt(j); // ??
+                    int val1 = val + 1 > 9 ? 0 : val + 1;
+                    int val2 = val - 1 < 0 ? 9: val - 1;
+
+                    String newVal1 = cur.substring(0, j) + val1 + cur.substring(j+1);
+                    String newVal2 = cur.substring(0, j) + val2 + cur.substring(j+1);
+
+                    // ??
+                    if(!visited.contains(newVal1) && !deadLocks.contains(newVal1)){
+                            q.add(newVal1);
+                            visited.add(newVal1);
+                        }
+
+                    if(!visited.contains(newVal2) && !deadLocks.contains(newVal2)){
+                        q.add(newVal2);
+                        visited.add(newVal2);
+                    }
+
+
+//                    for(int k = 0; k < 10; k++){
+//                        // ???
+//                        String newVal = cur.substring(0, j) + k + cur.substring(j+1);
+//                        if(!visited.contains(newVal) && !deadLocks.contains(newVal)){
+//                            q.add(newVal);
+//                        }
+//                    }
+                }
+            }
+
+            opCnt += 1;
+
+        }
+
+
+
+        return -1;
+    }
+
+
+
 
 
 
