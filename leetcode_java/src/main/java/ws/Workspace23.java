@@ -1469,6 +1469,90 @@ public class Workspace23 {
     }
 
 
+    // LC 127
+    // 13.03 - 13.13 pm
+    /**
+     *
+     *  -> return the number of words in the `shortest` transformation
+     *  sequence from `beginWord to endWord,`
+     *
+     *    - 0 if not possible
+     *
+     *  ----------------
+     *
+     *   IDEA 1) BFS
+     *
+     *
+     *  ----------------
+     *
+     */
+    // IDEA 1) BFS
+    public int ladderLength(String beginWord, String endWord, List<String> wordList) {
+        // edge
+        if(beginWord.equals(endWord)){
+            return 0;
+        }
+
+        // 1. Convert list to Set for O(1) lookups (Crucial for performance)
+        Set<String> dict = new HashSet<>(wordList);
+        if (!dict.contains(endWord)) return 0;
+
+
+        Set<String> visited = new HashSet<>();
+
+        int opCnt = 0;
+        Queue<String> q = new LinkedList<>();
+        q.add(beginWord);
+        visited.add(beginWord);
+
+        String alpha = "abcdefghijklmnopqrstuvwxyz"; // ???
+
+        while (!q.isEmpty()){
+            int size = q.size();
+            for(int i = 0; i < size; i++){
+                String cur = q.poll();
+                if(cur != null && cur.equals(endWord)){
+                    return opCnt;
+                }
+                // loop over every digit (idx)
+                // ???
+                char[] chars = cur.toCharArray();
+
+                for(int j = 0; j < chars.length; j++){
+                    // ??
+                    char old = chars[j];
+                    for(char x: alpha.toCharArray() ){
+                        //String newStr = chars[]
+                        // ??
+                        // NOTE !!! neglect below case
+                        if(x == old){
+                            continue;
+                        }
+
+                        chars[j] = x;
+                        String newStr = new String(chars); //chars.toString(); // ???
+                        if(wordList.contains(newStr) && !visited.contains(newStr)){
+                            q.add(newStr);
+                            visited.add(newStr);
+                        }
+
+                        // NOTE !!! Undo
+                        chars[j] = old;
+                    }
+                }
+
+            }
+
+            opCnt += 1;
+        }
+
+
+        return opCnt;
+    }
+
+
+
+
 
 
 }
