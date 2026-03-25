@@ -1188,6 +1188,12 @@ public class Workspace24 {
 
 
 
+    // LC 1436
+    public String destCity(List<List<String>> paths) {
+
+        return null;
+    }
+
 
 
 
