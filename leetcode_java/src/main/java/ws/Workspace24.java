@@ -1237,6 +1237,21 @@ public class Workspace24 {
     }
 
 
+    // LC 542, 1765
+    // 7.32 - 42 am
+    /**
+     *
+     *
+     *
+     */
+    public int[][] updateMatrix(int[][] mat) {
+
+        return null;
+    }
+
+
+
+
 
 
 
