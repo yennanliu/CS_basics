@@ -1183,13 +1183,55 @@ public class Workspace24 {
         }
 
 
+
         return minutes;
     }
 
 
 
     // LC 1436
+    // 7.21 - 31 am
+    /**
+     *  -> Return the destination city,
+     *  that is, the city `without `
+     *  any path outgoing to another city.
+     *
+     *
+     *  - paths[i] = [cityAi, cityBi]
+     *  means there exists a `direct path` going
+     *  from cityAi to cityBi
+     *
+     *  --------------------
+     *
+     *   IDEA 1) HASH SET
+     *
+     *
+     *  --------------------
+     *
+     */
+    // IDEA 1) HASH SET
     public String destCity(List<List<String>> paths) {
+        // edge
+
+        Set<String> all = new HashSet<>();
+        Set<String> outgoing = new HashSet<>();
+
+        for(List<String> p: paths){
+            outgoing.add(p.get(0));
+
+            // ??
+            for(String x: p){
+                all.add(x);
+            }
+        }
+
+        // get res
+        for(String y: all){
+            if(!outgoing.contains(y)){
+                return y;
+            }
+        }
+
 
         return null;
     }

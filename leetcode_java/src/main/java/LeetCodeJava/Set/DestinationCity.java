@@ -53,9 +53,54 @@ import java.util.Set;
 public class DestinationCity {
 
     // V0
-//    public String destCity(List<List<String>> paths) {
-//
-//    }
+    // IDEA: HASH SET
+    public String destCity(List<List<String>> paths) {
+        // edge
+
+        Set<String> all = new HashSet<>();
+        Set<String> outgoing = new HashSet<>();
+
+        for (List<String> p : paths) {
+            outgoing.add(p.get(0));
+
+            // ??
+            for (String x : p) {
+                all.add(x);
+            }
+        }
+
+        // get res
+        for (String y : all) {
+            if (!outgoing.contains(y)) {
+                return y;
+            }
+        }
+
+        return null;
+    }
+
+
+    // V0-1
+    // IDEA: HASHSET (gemini)
+    public String destCity_0_1(List<List<String>> paths) {
+        // 1. Store all cities that have an OUTGOING path
+        Set<String> outgoingCities = new HashSet<>();
+        for (List<String> path : paths) {
+            outgoingCities.add(path.get(0));
+        }
+
+        // 2. Check each DESTINATION city
+        // If a destination city is NOT in the outgoing set, it is the final city.
+        for (List<String> path : paths) {
+            String candidate = path.get(1);
+            if (!outgoingCities.contains(candidate)) {
+                return candidate;
+            }
+        }
+
+        return "";
+    }
+
 
     // V1-1
     // IDEA: BRUTE FORCE
