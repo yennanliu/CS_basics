@@ -59,6 +59,253 @@ public class WordLadder2 {
      * time = O(N * M * 26)
      * space = O(N * M)
      */
+    /**  NOTE !!! core idea
+     *
+     *  why BFS, then DFS ?
+     *
+     *  ->
+     *
+     *  ✅ BFS builds a DAG (graph) of all shortest paths simultaneously
+     *  ✅ DFS then enumerates all combinations inside that DAG
+     *
+     *
+     *  ----
+     *
+     *  Yes — your intuition is **basically correct**, but let’s refine it so you fully understand *why this works* and *what exactly is happening under the hood*.
+     *
+     * ---
+     *
+     * # 🧠 High-level idea
+     *
+     * This code does **NOT**:
+     *
+     * > “find one shortest path, then try to find others”
+     *
+     * Instead, it does this:
+     *
+     * > ✅ **BFS builds a DAG (graph) of *all shortest paths simultaneously***
+     * > ✅ **DFS then enumerates all combinations inside that DAG**
+     *
+     * ---
+     *
+     * # 🔥 Key Insight (Very Important)
+     *
+     * 👉 BFS is not finding *one path*
+     * 👉 It is building a **structure that contains ALL shortest paths**
+     *
+     * That structure is:
+     *
+     * ```java
+     * Map<String, List<String>> parents;
+     * ```
+     *
+     * Think of it as a **reverse graph**:
+     *
+     * ```
+     * child → [all possible parents that reach it in shortest path]
+     * ```
+     *
+     * ---
+     *
+     * # 🚶 Step-by-step explanation
+     *
+     * ## 1️⃣ BFS phase — build shortest-path graph
+     *
+     * ### What BFS guarantees
+     *
+     * Because BFS is **level-order traversal**:
+     *
+     * * First time you reach a word → shortest distance
+     * * All nodes in same level = same distance
+     *
+     * ---
+     *
+     * ## 2️⃣ Why `levelVisited` exists
+     *
+     * ```java
+     * Set<String> levelVisited = new HashSet<>();
+     * ```
+     *
+     * This is 🔥 **critical**
+     *
+     * ### Without it:
+     *
+     * You would lose valid shortest paths
+     *
+     * ### With it:
+     *
+     * You allow:
+     *
+     * ```
+     * same level → same word → multiple parents
+     * ```
+     *
+     * ---
+     *
+     * ## 3️⃣ This line is the KEY
+     *
+     * ```java
+     * parents.get(next).add(word);
+     * ```
+     *
+     * 👉 You're recording:
+     *
+     * > "I can reach `next` from `word`"
+     *
+     * But NOT just one — **ALL possible parents**
+     *
+     * ---
+     *
+     * ### Example
+     *
+     * ```
+     * hit → hot → dot → dog → cog
+     *            ↘ lot → log ↗
+     * ```
+     *
+     * Your `parents` map becomes:
+     *
+     * ```
+     * cog → [dog, log]
+     * dog → [dot]
+     * log → [lot]
+     * dot → [hot]
+     * lot → [hot]
+     * hot → [hit]
+     * ```
+     *
+     * 👉 This already contains **ALL shortest paths**
+     *
+     * ---
+     *
+     * ## 4️⃣ Why we stop BFS early
+     *
+     * ```java
+     * while (!q.isEmpty() && !found)
+     * ```
+     *
+     * Once `endWord` is found:
+     *
+     * * We **finish the current level**
+     * * Then STOP
+     *
+     * 👉 This ensures:
+     *
+     * * Only shortest paths are recorded
+     * * Longer paths are ignored
+     *
+     * ---
+     *
+     * ## 5️⃣ Why `visited` is updated AFTER level
+     *
+     * ```java
+     * visited.addAll(levelVisited);
+     * ```
+     *
+     * This allows:
+     *
+     * * Multiple parents in same level
+     * * Prevents cutting off valid paths
+     *
+     * ---
+     *
+     * # 🌳 DFS phase — generate all paths
+     *
+     * ```java
+     * dfs(endWord, beginWord, parents, path, res);
+     * ```
+     *
+     * Now we:
+     * 👉 Walk **backwards** using `parents`
+     *
+     * ---
+     *
+     * ## 🔁 What DFS does
+     *
+     * Starting from `endWord`:
+     *
+     * ```
+     * cog
+     *  ↑
+     * dog, log
+     *  ↑     ↑
+     * dot    lot
+     *  ↑      ↑
+     *    hot
+     *     ↑
+     *    hit
+     * ```
+     *
+     * DFS explores all combinations:
+     *
+     * ### Path 1:
+     *
+     * ```
+     * hit → hot → dot → dog → cog
+     * ```
+     *
+     * ### Path 2:
+     *
+     * ```
+     * hit → hot → lot → log → cog
+     * ```
+     *
+     * ---
+     *
+     * ## 🔥 Important detail
+     *
+     * ```java
+     * path.addFirst(word);
+     * ```
+     *
+     * Because we go **backwards**, we build the path from front
+     *
+     * ---
+     *
+     * # 🎯 Answer to your question
+     *
+     * > "we find a shortest path via BFS, then get more paths?"
+     *
+     * ❌ Not exactly
+     *
+     * ### ✅ Correct understanding:
+     *
+     * * BFS builds a **graph of all shortest paths at once**
+     * * DFS extracts **all combinations from that graph**
+     *
+     * ---
+     *
+     * # 🧠 Mental Model
+     *
+     * Think of it like:
+     *
+     * ### BFS:
+     *
+     * 👉 "Build all possible shortest roads"
+     *
+     * ### DFS:
+     *
+     * 👉 "List all routes using those roads"
+     *
+     * ---
+     *
+     * # ⚡ Why this avoids TLE
+     *
+     * * No redundant paths explored
+     * * No longer paths considered
+     * * Graph is minimal (shortest-path-only DAG)
+     *
+     * ---
+     *
+     * # 🔚 One-line summary
+     *
+     * 👉 **BFS finds ALL shortest-path connections**
+     * 👉 **DFS enumerates ALL valid sequences from those connections**
+     *
+     * ---
+     *
+     *
+     */
     public List<List<String>> findLadders_0_1(String beginWord, String endWord, List<String> wordList) {
         List<List<String>> res = new ArrayList<>();
         Set<String> wordSet = new HashSet<>(wordList);
