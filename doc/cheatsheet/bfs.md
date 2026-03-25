@@ -988,6 +988,126 @@ def bfs_analysis(graph, start):
 4. Consider multi-source BFS for optimization
 5. Track level/distance when needed for shortest path
 
+### When to Update Grid Status & Count (Mark Before vs After Enqueue)
+
+A critical BFS implementation detail: **always mark a cell as visited (update grid status and counters) BEFORE adding it to the queue**, not when you dequeue it.
+
+#### The Rule
+
+```
+Mark visited + update count → THEN add to queue
+```
+
+```java
+// CORRECT: Mark BEFORE enqueue
+if (grid[nr][nc] == 1) {
+    grid[nr][nc] = 2;       // mark immediately
+    freshOrange--;           // update count immediately
+    q.add(new int[]{nr, nc});
+}
+
+// WRONG: Mark AFTER dequeue
+int[] cur = q.poll();
+grid[cur[0]][cur[1]] = 2;   // too late! duplicates already in queue
+```
+
+#### Why This Matters
+
+If you defer marking until dequeue, **multiple neighbors can enqueue the same cell** before any of them processes it:
+
+```
+BFS Layer 1: Cells A and B are both neighbors of cell X (fresh orange)
+
+Thread of execution:
+  1. Process A → sees X is fresh → enqueues X
+  2. Process B → sees X is STILL fresh (not marked yet!) → enqueues X AGAIN
+  3. Dequeue X → mark as rotten, freshOrange--
+  4. Dequeue X again → already rotten, but freshOrange-- happens again! (WRONG)
+```
+
+**Result**: Double-counting, incorrect answers, or wasted processing.
+
+#### Mark-Before-Enqueue guarantees:
+
+| Guarantee | Explanation |
+|-----------|-------------|
+| **No duplicates in queue** | Cell is marked visited before any other neighbor can see it |
+| **Correct counting** | Each cell counted exactly once |
+| **O(m x n) time** | Each cell enqueued at most once |
+| **Correct BFS layers** | Layer boundaries remain accurate for timing/distance |
+
+#### Concrete Example: LC 994 - Rotting Oranges
+
+```java
+// From RottingOranges.java - V0 solution
+while (!q.isEmpty() && freshOrange > 0) {
+    int size = q.size();
+    time++;
+
+    for (int i = 0; i < size; i++) {
+        int[] cur = q.poll();
+        int r = cur[0], c = cur[1];
+
+        for (int[] m : moves) {
+            int nr = r + m[0];
+            int nc = c + m[1];
+
+            if (nr >= 0 && nr < rows && nc >= 0 && nc < cols && grid[nr][nc] == 1) {
+                // CRITICAL: Mark rotten and decrement count BEFORE enqueue
+                grid[nr][nc] = 2;
+                freshOrange--;
+                q.add(new int[] { nr, nc });
+            }
+        }
+    }
+}
+```
+
+If we deferred `grid[nr][nc] = 2` until dequeue, two rotten neighbors processing in the same layer could both enqueue the same fresh orange, leading to `freshOrange` going negative and returning a wrong answer.
+
+#### Cases Where This Applies
+
+| Scenario | Why mark-before-enqueue matters |
+|----------|-------------------------------|
+| **Counting** (fresh oranges, infections) | Prevents double-decrement of counters |
+| **Timing / distance** (minutes elapsed) | Ensures cell is assigned to correct BFS layer |
+| **Grid mutation** (spreading rot, flood fill) | Prevents same cell being processed multiple times |
+| **Visited tracking via grid values** | Grid itself serves as visited set; must mark before enqueue |
+
+#### When Using a Separate `visited` Set
+
+The same principle applies — add to `visited` **when enqueuing**, not when dequeuing:
+
+```java
+// CORRECT
+if (!visited[nr][nc]) {
+    visited[nr][nc] = true;          // mark BEFORE enqueue
+    queue.offer(new int[]{nr, nc});
+}
+
+// WRONG
+int[] cur = queue.poll();
+visited[cur[0]][cur[1]] = true;      // too late
+```
+
+#### Related LeetCode Problems
+
+| Problem | Why mark-before-enqueue is critical |
+|---------|-------------------------------------|
+| **LC 994** - Rotting Oranges | Counter `freshOrange--` must happen exactly once per cell |
+| **LC 542** - 01 Matrix | Distance assignment must happen on first (shortest) visit |
+| **LC 286** - Walls and Gates | Room distance must not be overwritten by longer path |
+| **LC 1162** - As Far from Land as Possible | Same multi-source BFS, distance must be set on first reach |
+| **LC 200** - Number of Islands | Marking on enqueue prevents re-visiting same land cell |
+| **LC 934** - Shortest Bridge | Expanding island boundary must not double-count water cells |
+| **LC 127** - Word Ladder | Words must be marked visited on enqueue to avoid duplicate paths |
+
+#### Summary
+
+> In BFS, **the moment you decide a neighbor should enter the queue is the moment you commit** — mark it visited, update your counters, mutate the grid. Never defer state changes to dequeue time. This is not an optimization; it is a **correctness requirement**.
+
+---
+
 ## Advanced Techniques
 
 ### Bidirectional BFS
