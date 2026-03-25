@@ -46,7 +46,7 @@ import java.util.*;
 public class WordLadder {
 
     // V0
-    // IDEA: BFS (gpt)
+    // IDEA: BFS + BACKTRACK (gpt)
     /**
      * time = O(N * M * 26)
      * space = O(N * M)
@@ -98,17 +98,28 @@ public class WordLadder {
                  *  So that's why for every idx, we need to loop
                  *  over 26 alphabet for covering all possible cases.
                  */
-                // try all 26 letters on all positions
+                // loop 1) try all index in arr
                 for (int j = 0; j < arr.length; j++) {
 
                     char old = arr[j];
 
+
+                    // loop 2) try all 26 letters on all positions
                     for (char c : alpha.toCharArray()) {
                         if (c == old)
                             continue;
 
-                        /** NOTE !!!
+                        /** NOTE !!!  the trick we update string per idx
                          *
+                         * ->
+                         *   ```
+                         *    String s = "xxx;
+                         *    char[] chars = s.toCharArray();
+                         *    chars[1] = "y";
+                         *    String newStr = new String(chars)
+                         *   ```
+                         *
+                         *  =------------------
                          *
                          *  we can replace idx element in char array
                          *  by arr[i] = new_val
@@ -130,6 +141,12 @@ public class WordLadder {
                         }
                     }
 
+                    /** NOTE !!!
+                     *
+                     *  we have to `UNDO` arr[j] value
+                     *  after `index looping` (e.g. for (int j = 0; j < arr.length; j++) ...)
+                     *
+                     */
                     arr[j] = old; // restore
                 }
             }
@@ -820,6 +837,8 @@ public class WordLadder {
     }
 
     // V3
+
+
 
 
 }
