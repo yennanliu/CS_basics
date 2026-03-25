@@ -858,6 +858,231 @@ Key insight: Must cut in sorted order, BFS finds shortest path between each pair
 - LC 1091: Shortest Path in Binary Matrix (basic BFS shortest path)
 - LC 317: Shortest Distance from All Buildings (multi-source BFS)
 
+### Pattern 7: BFS + Backtracking (State Space Exploration)
+```java
+/**
+ * Pattern: BFS + Backtracking for exploring transformations
+ * Use case: Word transformations, state space exploration where each state can transform to multiple neighbors
+ * Key insight: Modify state in-place, explore all neighbors, restore state before moving to next position
+ *
+ * Time: Depends on state space (e.g., O(N * M * 26) for word ladder where N=words, M=length)
+ * Space: O(N) for visited set, O(M) for char array
+ */
+public int bfsWithBacktracking(String beginWord, String endWord, List<String> wordList) {
+    Set<String> dict = new HashSet<>(wordList);
+    Set<String> visited = new HashSet<>();
+    Queue<String> q = new LinkedList<>();
+
+    q.add(beginWord);
+    visited.add(beginWord);
+
+    int steps = 1;  // beginWord counts as step 1
+    String alpha = "abcdefghijklmnopqrstuvwxyz";
+
+    while (!q.isEmpty()) {
+        int size = q.size();
+
+        for (int i = 0; i < size; i++) {
+            String cur = q.poll();
+
+            // Early exit when target found
+            if (cur.equals(endWord))
+                return steps;
+
+            // Convert to char array for efficient modification
+            char[] arr = cur.toCharArray();
+
+            /**
+             * Key Insight: Backtracking allows exploring ALL transformations
+             *
+             * For each position, we try ALL 26 letters:
+             * - Position 0: try a-z → explore all words with same letters at positions 1,2,...
+             * - Position 1: try a-z → explore all words with same letters at positions 0,2,...
+             * - Position 2: try a-z → explore all words with same letters at positions 0,1,...
+             *
+             * This ensures no valid neighbor is missed.
+             */
+            // Loop 1: Try all positions in the word
+            for (int j = 0; j < arr.length; j++) {
+                char original = arr[j];
+
+                // Loop 2: Try all 26 letters at this position
+                for (char c : alpha.toCharArray()) {
+                    if (c == original)
+                        continue;
+
+                    /**
+                     * TRICK: Modify char array in-place to create new word
+                     *
+                     * This is more efficient than string concatenation:
+                     * ✅ String s = beginWord.substring(0,j) + c + beginWord.substring(j+1)
+                     *                    ← Creates new String each time (slow)
+                     *
+                     * ✅ char[] arr = word.toCharArray();
+                     *    arr[j] = c;
+                     *    String newStr = new String(arr);  ← Reuse array (fast)
+                     */
+                    arr[j] = c;
+                    String newStr = new String(arr);
+
+                    if (dict.contains(newStr) && !visited.contains(newStr)) {
+                        /**
+                         * CRITICAL: Mark as visited BEFORE adding to queue
+                         *
+                         * This prevents duplicate enqueuing:
+                         * - If we defer marking until dequeue, multiple neighbors
+                         *   could see the same unvisited word and enqueue it multiple times
+                         * - Marking before enqueue ensures each word processed exactly once
+                         */
+                        visited.add(newStr);
+                        q.add(newStr);
+                    }
+                }
+
+                /**
+                 * CRITICAL: Restore original character AFTER exploring all 26 letters at this position
+                 *
+                 * This is the "backtracking" step:
+                 * - We modified arr[j] to try all 26 letters
+                 * - Before moving to arr[j+1], we must restore arr[j]
+                 * - Otherwise, arr[j+1] modification would operate on wrong base state
+                 *
+                 * Example:
+                 * Position 0: Try 'a','b','c',... → restore to 'h'
+                 * Position 1: Try 'a','b','c',... → restore to 'i'  ← must have 'h' at position 0!
+                 * Position 2: Try 'a','b','c',... → restore to 't'  ← must have 'h','i' at positions 0,1!
+                 */
+                arr[j] = original;  // Restore before next iteration
+            }
+        }
+
+        steps++;
+    }
+
+    return 0;  // No path found
+}
+```
+
+**Concrete Example: LC 127 - Word Ladder**
+
+```
+Problem: Transform "hit" → "cog" using dictionary ["hot","dot","dog","lot","log","cog"]
+Expected: 5 (hit → hot → dot → dog → cog)
+
+BFS + Backtracking Execution:
+
+Layer 0: Queue = [hit], steps = 1
+  Process "hit":
+    Position 0: h→a,b,c,...,z  (none in dict)
+    Position 1: i→a,b,c,...,o,... → "hot" ✓ add to queue
+    Position 2: t→a,b,c,...,g,... (none in dict besides "hit" itself)
+  After Layer 0: Queue = [hot]
+
+Layer 1: Queue = [hot], steps = 2
+  Process "hot":
+    Position 0: h→a,b,c,...,d → "dot" ✓, "lot" ✓
+    Position 1: o→... (backtrack, restore 'o')
+    Position 2: t→... (none found)
+  After Layer 1: Queue = [dot, lot]
+
+Layer 2: Queue = [dot, lot], steps = 3
+  Process "dot":
+    Position 0: d→... (none found)
+    Position 1: o→... (none found)
+    Position 2: t→g → "dog" ✓
+  Process "lot":
+    Position 0: l→... (none found)
+    Position 1: o→... (none found)
+    Position 2: t→g → "log" ✓
+  After Layer 2: Queue = [dog, log]
+
+Layer 3: Queue = [dog, log], steps = 4
+  Process "dog":
+    Position 0: d→... (none found)
+    Position 1: o→... (none found)
+    Position 2: g→... (none found)
+  Process "log":
+    Position 0: l→... (none found)
+    Position 1: o→... (none found)
+    Position 2: g→c → "cog" ✓
+  After Layer 3: Queue = [cog]
+
+Layer 4: Queue = [cog], steps = 5
+  Process "cog":
+    cur.equals(endWord) == true
+  RETURN steps = 5 ✓
+```
+
+**Why Backtracking is Essential Here:**
+
+```
+❌ Naive Approach (without backtracking):
+   For each position, generate ONE new word per letter
+   Problem: Must process all positions with CORRECT base state
+
+✅ Backtracking Approach:
+   1. Modify position 0 → try all 26 letters
+   2. Restore position 0 to original
+   3. Modify position 1 → try all 26 letters (with position 0 restored!)
+   4. Restore position 1 to original
+   5. Continue to position 2, etc.
+
+   Result: Each position explored independently with correct base state
+```
+
+**Pattern Characteristics:**
+
+- **State Modification**: In-place modification of mutable state (char array)
+- **Exploration**: Try all possibilities at each "decision point" (position)
+- **Restoration**: Undo changes before moving to next decision point
+- **BFS Integration**: Process states level-by-level to find shortest path
+- **Visited Tracking**: Prevent re-exploring same state (before enqueue)
+
+**When to Use This Pattern:**
+
+- ✅ Word transformation problems (Word Ladder, Word Ladder II)
+- ✅ State space exploration where state can be modified in-place
+- ✅ Need to try ALL neighbors systematically
+- ✅ Neighbors differ by exactly ONE element (one char, one digit, one bit, etc.)
+- ✅ Want to find shortest path through state space
+
+**Key Implementation Details:**
+
+1. **Mark Before Enqueue**: Add to visited set BEFORE adding to queue
+   - Prevents duplicate processing
+   - Ensures O(state_space) time complexity
+
+2. **Restore After Inner Loop**: Restore state after trying all variations at one position
+   - Ensures correct base state for next position
+   - This is the "backtracking" aspect
+
+3. **Efficient State Creation**: Use char array modification instead of string concatenation
+   - Reuse same array object
+   - Only recreate string when needed
+   - Much faster than substring operations
+
+4. **Early Exit**: Check for target when dequeuing (not after modification)
+   - Allows immediate return when target found
+   - Saves unnecessary exploration
+
+**Comparison with Other Patterns:**
+
+| Pattern | State Modification | Restoration | Use Case |
+|---------|-------------------|-------------|----------|
+| **BFS + Backtracking** | ✓ In-place | ✓ Required | Word transformations, state exploration |
+| **BFS + Queue Pairs** | ✗ Create new | N/A | Simple shortest path without transformation |
+| **DFS + Backtracking** | ✓ In-place | ✓ Required | All paths, permutations, combinations |
+| **Standard BFS** | ✗ Create new | N/A | Graph traversal with pre-built adjacency |
+
+**Similar Problems:**
+
+- LC 127: Word Ladder (find shortest transformation sequence)
+- LC 126: Word Ladder II (find ALL shortest transformation sequences - use DFS + backtracking instead)
+- LC 752: Open the Lock (similar BFS pattern on digit combinations)
+- LC 1008: Construct Binary Search Tree from Preorder Traversal (different pattern)
+
+---
+
 ## Problem Categories
 
 ### 1. Tree Traversal Problems
@@ -1251,7 +1476,7 @@ Calculate shortest distance from each cell to ANY source cell in a grid.
 | Difficulty | Problem | Key Concept | Core Pattern |
 |------------|---------|-------------|--------------|
 | Easy | LC 102 | Level-order traversal | Pattern 2 (Level-by-Level) |
-| Medium | LC 127 | Shortest path transformation | Pattern 3 (Graph BFS) |
+| **Medium** | **LC 127** | **Shortest path transformation - Word Ladder** | **Pattern 7 (BFS + Backtracking)** |
 | Medium | LC 200 | Connected components | Pattern 3 (Graph BFS) |
 | **Medium** | **LC 542** | **Simultaneous multi-source - 01 Matrix** | **Pattern 4 (Simultaneous Multi-Source)** |
 | Medium | LC 934 | DFS + Multi-source BFS (island expansion) | Pattern 4.5 (DFS + Multi-Source) |
@@ -1259,6 +1484,7 @@ Calculate shortest distance from each cell to ANY source cell in a grid.
 | Hard | LC 286 | Walls and Gates | Pattern 4 (Simultaneous Multi-Source) |
 | **Hard** | **LC 317** | **Independent BFS runs (sum of distances)** | **Pattern 4.6 (Independent BFS Runs)** |
 | Hard | LC 675 | Sort + Repeated BFS (sequential targets) | Pattern 6 (Sort + Repeated BFS) |
+| **Hard** | **LC 752** | **BFS + Backtracking on state space - Open the Lock** | **Pattern 7 (BFS + Backtracking)** |
 | Hard | LC 864 | BFS with state (key collection) | Pattern 3 + State |
 | Hard | LC 1293 | BFS with state (obstacle elimination) | Pattern 3 + State |
 
