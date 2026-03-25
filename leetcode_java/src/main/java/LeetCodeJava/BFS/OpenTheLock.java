@@ -50,6 +50,110 @@ import java.util.*;
  */
 public class OpenTheLock {
 
+    // V0
+    // IDEA: BFS + String replace (fixed by gpt)
+    /**
+     * time = O(N * M * 26)
+     * space = O(N * M)
+     *
+     *
+     * ----------
+     *
+     * Metric,Complexity,Explanation
+     * Time,O( (10 ^ 4) ×4×2),"There are 10,000 possible combinations. For each, we check 8 neighbors."
+     * Space,O(10 ^ 4),"In the worst case, we store all possible combinations in the visited set."
+     *
+     * ---------
+     *
+     * | Aspect                 | Value       | Explanation                                   |
+     * | ---------------------- | ----------- | --------------------------------------------- |
+     * | **State Space (V)**    | 10⁴         | 4 wheels × 10 digits each → 10 × 10 × 10 × 10 |
+     * | **Edges per State**    | 8           | Each wheel can move +1 or -1 → 4 × 2          |
+     * | **Total Edges (E)**    | ~8 × 10⁴    | Each state generates up to 8 neighbors        |
+     * | **Time Complexity**    | **O(10⁴)**  | BFS visits each state at most once            |
+     * | **Space Complexity**   | **O(10⁴)**  | Queue + visited set                           |
+     * | **Deadends Impact**    | ≤ 10⁴       | Just reduces reachable states                 |
+     * | **Worst Case Runtime** | Constant    | Bounded state space                           |
+     * | **Optimized (Bi-BFS)** | ~O(10⁴ / 2) | Search from both ends                         |
+     */
+    public int openLock(String[] deadends, String target) {
+        // Edge: starting point is the target
+        if (target.equals("0000")) {
+            return 0;
+        }
+
+        // Deadends set
+        Set<String> dead = new HashSet<>();
+        for (String x : deadends) {
+            dead.add(x);
+            if (x.equals("0000")) { // can't start
+                return -1;
+            }
+        }
+
+        // BFS
+        Queue<String> q = new LinkedList<>();
+        q.add("0000");
+        Set<String> visited = new HashSet<>();
+        visited.add("0000");
+        int layer = 0;
+
+        while (!q.isEmpty()) {
+            int size = q.size();
+            // process all nodes in current layer
+            for (int k = 0; k < size; k++) {
+                String cur = q.poll();
+
+                // Found target
+                if (cur.equals(target)) {
+                    return layer;
+                }
+
+                // Move 4 directions (wheel rotations)
+                for (int i = 0; i < 4; i++) {
+                    int val = cur.charAt(i) - '0';
+
+                    /**  NOTE !!!
+                     *
+                     *  we deal with "0" -> "9", "9" -> "0" case
+                     *  via below elegant way
+                     */
+                    int valMinus = (val == 0) ? 9 : val - 1;
+                    int valPlus = (val == 9) ? 0 : val + 1;
+
+                    /**  NOTE !!!  Instead of using stringBuilder,
+                     *  we use `substring` for update string per given idx
+                     */
+                    String str1 = cur.substring(0, i) + valMinus + cur.substring(i + 1);
+                    String str2 = cur.substring(0, i) + valPlus + cur.substring(i + 1);
+
+                    if (!dead.contains(str1) && !visited.contains(str1)) {
+                        q.add(str1);
+                        visited.add(str1);
+                    }
+                    if (!dead.contains(str2) && !visited.contains(str2)) {
+                        q.add(str2);
+                        visited.add(str2);
+                    }
+                }
+            }
+            /**  NOTE !!
+             *
+             *   we update `cnt` (layer) after finishing the BFS per cycle
+             *   e.g. when below completed
+             *
+             *     int q_size = q.size();
+             *     for (int i = 0; i <  q_size; i++){
+             *         //
+             *     }
+             */
+            layer += 1;
+        }
+
+        return -1; // not found
+    }
+
+
     // V0-1
     // IDEA: BFS + String replace (fixed by gpt)
     /**
@@ -127,11 +231,13 @@ public class OpenTheLock {
              *         //
              *     }
              */
-            layer++;
+            layer += 1;
         }
 
         return -1; // not found
     }
+
+
 
     // V0-2
     // IDEA: BFS + custom class (fixed by gpt)
@@ -212,6 +318,54 @@ public class OpenTheLock {
         }
         return new String(chars);
     }
+
+
+    // V0-3
+    // IDEA: BFS (fixed by gemini)
+    public int openLock_0_3(String[] deadends, String target) {
+        Set<String> dead = new HashSet<>(Arrays.asList(deadends));
+        Set<String> visited = new HashSet<>();
+        Queue<String> queue = new LinkedList<>();
+
+        // Edge case: Starting point is a deadend
+        if (dead.contains("0000"))
+            return -1;
+
+        queue.offer("0000");
+        visited.add("0000");
+        int steps = 0;
+
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+
+            // Process all combinations at the current "step" level
+            for (int i = 0; i < size; i++) {
+                String curr = queue.poll();
+                if (curr.equals(target))
+                    return steps;
+
+                // Generate all 8 possible next moves (4 positions * 2 directions)
+                for (int j = 0; j < 4; j++) {
+                    for (int delta : new int[] { -1, 1 }) {
+                        char[] chars = curr.toCharArray();
+                        // Modular arithmetic for 0-9 wrapping
+                        int digit = (chars[j] - '0' + delta + 10) % 10;
+                        chars[j] = (char) (digit + '0');
+                        String next = new String(chars);
+
+                        if (!visited.contains(next) && !dead.contains(next)) {
+                            visited.add(next);
+                            queue.offer(next);
+                        }
+                    }
+                }
+            }
+            steps++; // Move to the next level of turns
+        }
+
+        return -1;
+    }
+
 
     // V1
     // https://github.com/neetcode-gh/leetcode/blob/main/java%2F0752-open-the-lock.java
@@ -477,6 +631,8 @@ public class OpenTheLock {
 //
 //        return -1; // Target is not reachable
 //    }
+
+
 
 
 
