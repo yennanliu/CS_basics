@@ -1551,6 +1551,45 @@ public class Workspace23 {
     }
 
 
+    // LC 126
+    // 13.29 - 39 pm
+    /**
+     *  -> return `all the shortest` transformation sequences from
+     *    beginWord to endWord,
+     *
+     *     - or an empty list if no such sequence exists.
+     *
+     *
+     *  ---------------
+     *
+     *
+     *   IDEA 1) BFS + BRUTE FORCE ???
+     *      -> may TLE
+     *
+     *   IDEA 2)  2D DP ???
+     *    -> so we can `reuse` processed state,
+     *      and save more steps, memory ....
+     *
+     *      - DP def:
+     *           dp[idx][op_cnt] ??
+     *
+     *           -> so assume till idx, the [0, idx] part already in list,
+     *              all we need to do is: proceed the [idx+1, word.len-1] part
+     *
+     *      - DP eq:
+     *
+     *
+     *
+     *  ---------------
+     *
+     *
+     */
+    // IDEA 2)  DP ???
+    public List<List<String>> findLadders(String beginWord, String endWord, List<String> wordList) {
+
+        return null;
+    }
+
 
 
 
