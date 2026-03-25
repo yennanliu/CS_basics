@@ -18,7 +18,8 @@
 	- binary_indexed_tree.md (OK)
 	- Bellman-Ford.md (OK)
 	- binary_search.md (OK)
-	- binary_tree.md (todo, LC Examples)
+	- binary_tree.md (OK)
+	- bst.md (todo, LC Examples)
 
 - to review
 - needcode `250` - similar LC by AI
@@ -241,6 +242,7 @@
 	- todo (20260325)
 		- (review)
 			Max Area of Island, Clone Graph, Walls And Gates, Pacific Atlantic Water Flow, Surrounded Regions
+		- 298
 
  	==================================
 
