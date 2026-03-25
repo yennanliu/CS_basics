@@ -1098,6 +1098,96 @@ public class Workspace24 {
     }
 
 
+    // LC 994
+    // 10.45 - 55 am
+    // IDEA 1) BFS
+    public int orangesRotting(int[][] grid) {
+        // edge
+
+        int[][] moves = new int[][]{ {0,1}, {0,-1}, {1,0}, {-1,0} };
+        int l = grid.length;
+        int w = grid[0].length;
+
+        boolean[][] visited = new boolean[l][w];
+
+        //List<Integer[]> rotttenList = new ArrayList<>();
+
+        int freshCnt = 0;
+
+        // bfs
+        Queue<Integer[]> q = new LinkedList<>();
+        // get `rotten` orange
+        for(int y = 0; y < l; y++){
+            for(int x = 0; x < w; x++){
+                if(grid[y][x] == 2){
+                    //rotttenList.add(new Integer[]{x, y});
+                    q.add(new Integer[]{x, y});
+                    visited[y][x] = true;
+                }
+                else if(grid[y][x] == 1){
+                    freshCnt += 1;
+                }
+            }
+        }
+
+        // early quit
+        if(q.isEmpty() && freshCnt > 0){
+            return -1;
+        }
+        if(freshCnt == 0){
+            return 0;
+        }
+
+
+
+        int minutes = 0;
+
+        while (!q.isEmpty()){
+
+            int size = q.size();
+            for(int i = 0; i < size; i++){
+                // early quit
+                if(freshCnt == 0){
+                    return minutes;
+                }
+                Integer[] cur = q.poll();
+                int x = cur[0];
+                int y = cur[1];
+
+                // mark as `rotten`
+//                if(grid[y][x] == 1){
+//                    grid[y][x] = 2;
+//                    freshCnt -= 1;
+//                }
+
+                for(int[] m: moves){
+                    int x_ = x + m[0];
+                    int y_ = y + m[1];
+
+                    if(x_ >= 0 && x_ < w && y_ >= 0 && y_ < l){
+                        if(grid[y_][x_] == 1 && !visited[y_][x_]){
+                            q.add(new Integer[]{y_, x_});
+                            visited[y_][x_] = true;
+
+                            grid[y][x] = 2;
+                            freshCnt -= 1;
+
+
+                            //visited[y_][x_] = true;
+                        }
+                    }
+                }
+            }
+
+            minutes += 1;
+        }
+
+
+        return minutes;
+    }
+
+
+
 
 
 

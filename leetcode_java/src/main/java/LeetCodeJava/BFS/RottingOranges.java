@@ -61,6 +61,12 @@ public class RottingOranges {
         // 1. Initial scan: Find all rotten oranges and count fresh ones
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < cols; c++) {
+                /**  NOTE !!
+                 *
+                 *  we get both
+                 *   1. `rotten` oranges
+                 *   2. fresh orange count
+                 */
                 if (grid[r][c] == 2) {
                     q.add(new int[] { r, c });
                 } else if (grid[r][c] == 1) {
@@ -92,6 +98,12 @@ public class RottingOranges {
 
                     // Check bounds and if it is a fresh orange
                     if (nr >= 0 && nr < rows && nc >= 0 && nc < cols && grid[nr][nc] == 1) {
+                        /**  NOTE !!
+                         *
+                         *  we Mark the neighbor as rotten immediately
+                         *  (e.g. mark `rotten` and update fresh cnt
+                         *  RIGHT before adding to queue)
+                         */
                         // CRITICAL FIX: Mark the neighbor as rotten immediately
                         grid[nr][nc] = 2;
                         freshOrange--;
@@ -326,6 +338,75 @@ public class RottingOranges {
         return freshCnt == 0 ? time : -1; // If fresh oranges remain, return -1
     }
 
+
+    // V0-4
+    // IDEA: MULTI SOURCE BFS (fixed by gemini)
+    public int orangesRotting_0_4(int[][] grid) {
+        if (grid == null)
+            return 0;
+
+        int rows = grid.length;
+        int cols = grid[0].length;
+        int[][] moves = { { 0, 1 }, { 0, -1 }, { 1, 0 }, { -1, 0 } };
+
+        Queue<int[]> q = new LinkedList<>();
+        int freshCnt = 0;
+
+        // 1. Initial Scan
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < cols; c++) {
+                if (grid[r][c] == 2) {
+                    q.add(new int[] { r, c });
+                } else if (grid[r][c] == 1) {
+                    freshCnt++;
+                }
+            }
+        }
+
+        // Edge Cases: No fresh oranges to rot
+        if (freshCnt == 0)
+            return 0;
+        // No rotten oranges but fresh ones exist
+        if (q.isEmpty())
+            return -1;
+
+        int minutes = 0;
+
+        // 2. Multi-source BFS
+        while (!q.isEmpty()) {
+            int size = q.size();
+            boolean infectedInThisRound = false;
+
+            for (int i = 0; i < size; i++) {
+                int[] cur = q.poll();
+                int r = cur[0];
+                int c = cur[1];
+
+                for (int[] m : moves) {
+                    int nr = r + m[0];
+                    int nc = c + m[1];
+
+                    // Check bounds and if it's a fresh orange
+                    if (nr >= 0 && nr < rows && nc >= 0 && nc < cols && grid[nr][nc] == 1) {
+                        grid[nr][nc] = 2; // Mark as rotten immediately
+                        freshCnt--;
+                        q.add(new int[] { nr, nc });
+                        infectedInThisRound = true;
+                    }
+                }
+            }
+
+            // Only increment time if we actually spread the rot to a new orange
+            if (infectedInThisRound) {
+                minutes++;
+            }
+        }
+
+        // 3. Final verification
+        return freshCnt == 0 ? minutes : -1;
+    }
+
+
     // V1-1
     // https://neetcode.io/problems/rotting-fruit
     // IDEA: BFS
@@ -537,6 +618,8 @@ public class RottingOranges {
         // return elapsed minutes if no fresh orange left
         return timestamp - 2;
     }
+
+
 
 
 
