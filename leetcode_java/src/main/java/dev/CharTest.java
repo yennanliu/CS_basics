@@ -12,21 +12,28 @@ public class CharTest {
 //      /** a b c d e f g h i j k l m n o p q r s t u v w x y z */
 //    }
 
-    String x = "abcxyz";
-    for ( Character c: x.toCharArray()){
-      /**
-       *  c = a, a - ? = 0
-       *  c = b, a - ? = -1
-       *  c = c, a - ? = -2
-       *  c = x, a - ? = -23
-       *  c = y, a - ? = -24
-       *  c = z, a - ? = -25
-       */
-      System.out.println(" c = " + c +
-              ", a - ? = " + ('a' - c)
-      );
-    }
+//    String x = "abcxyz";
+//    for ( Character c: x.toCharArray()){
+//      /**
+//       *  c = a, a - ? = 0
+//       *  c = b, a - ? = -1
+//       *  c = c, a - ? = -2
+//       *  c = x, a - ? = -23
+//       *  c = y, a - ? = -24
+//       *  c = z, a - ? = -25
+//       */
+//      System.out.println(" c = " + c +
+//              ", a - ? = " + ('a' - c)
+//      );
+//    }
 
+    char x = '1';
+    int x_val = x - '0';
+    System.out.println(x);
+    //System.out.println(Integer.ma - 1); // ???
+    //System.out.println(x  - '0'); // 1
+    System.out.println(x_val);
+    System.out.println(x_val + 1); // 2
 
   }
 }

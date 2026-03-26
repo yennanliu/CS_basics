@@ -111,12 +111,18 @@ public class OpenTheLock {
 
                 // Move 4 directions (wheel rotations)
                 for (int i = 0; i < 4; i++) {
+
+                    /** NOTE !!!
+                     *
+                     * NOTE !!! below trick
+                     */
                     int val = cur.charAt(i) - '0';
 
                     /**  NOTE !!!
                      *
                      *  we deal with "0" -> "9", "9" -> "0" case
                      *  via below elegant way
+                     *
                      */
                     int valMinus = (val == 0) ? 9 : val - 1;
                     int valPlus = (val == 9) ? 0 : val + 1;

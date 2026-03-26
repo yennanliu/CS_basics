@@ -2,7 +2,6 @@ package ws;
 
 import LeetCodeJava.DataStructure.ListNode;
 import LeetCodeJava.DataStructure.TreeNode;
-import com.sun.org.apache.bcel.internal.generic.IMPDEP1;
 
 import java.util.*;
 
@@ -933,9 +932,87 @@ public class Workspace24 {
      *   ---------------
      *
      */
+    //  IDEA 1) BFS
+    public int openLock(String[] deadends, String target) {
+        // edge
+        if(target.equals("0000")){
+            return 0;
+        }
+
+        HashSet<String> deadSet = new HashSet<>();
+        for(String s: deadends){
+            deadSet.add(s);
+        }
+
+        // ??
+        HashSet<String> visited = new HashSet<>();
+
+        Queue<String> q = new LinkedList<>();
+        String initStatus = "0000";
+        q.add(initStatus);
+        visited.add(initStatus);
+
+        int op = 0;
+
+        while (!q.isEmpty()){
+            int size = q.size();
+            for(int i = 0; i < size; i++){
+                String cur = q.poll();
+                // early quit
+                if(cur != null && cur.equals(target)){
+                    return op;
+                }
+                // note !!! we use `char array`
+                // handle string update val by digit
+
+                // NOTE !!! loop over idx
+                for(int j = 0; j < cur.length(); j++){
+
+                    // NOTE !!! below
+                    int val = cur.toCharArray()[j] - '0'; // ????
+
+                    char[] chars1 = cur.toCharArray();
+                    char[] chars2 = cur.toCharArray();
+
+                    // note !!! 2 directions
+                    int val1 = (val + 1) > 9 ? 0: val + 1;
+                    int val2 = (val - 1) < 0 ? 9: val - 1;
+
+                    chars1[j] = (char) val1;
+                    chars2[j] = (char) val2;
+
+                    String next1 = String.valueOf(chars1);
+
+                    chars2[j] -= 1;
+                    String next2 = String.valueOf(chars2);
+
+                    if(!deadSet.contains(next1) && !visited.contains(next1)){
+                        q.add(next1);
+                        visited.add(next1);
+                    }
+
+                    if(!deadSet.contains(next2) && !visited.contains(next2)){
+                        q.add(next2);
+                        visited.add(next2);
+                    }
+
+
+                }
+            }
+            op += 1; // ???
+        }
+
+        return op;
+    }
+
+
+
+
+
+
     // time: O(9 ^ N)
     // space: O(N)
-    public int openLock(String[] deadends, String target) {
+    public int openLock_99(String[] deadends, String target) {
 
 //        Set<String> dead = new HashSet<>(Arrays.asList(deadends));
 //        Set<String> visited = new HashSet<>();
