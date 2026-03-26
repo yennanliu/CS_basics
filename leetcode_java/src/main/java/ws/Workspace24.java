@@ -1238,16 +1238,126 @@ public class Workspace24 {
 
 
     // LC 542, 1765
-    // 7.32 - 42 am
+    // 7.32 - 52 am
     /**
+     *  ->  return the distance of
+     *  the `nearest` 0 for each cell.
      *
+     *
+     *  NOTE:
+     *   - The distance between two cells
+     *     sharing a common edge is 1.
+     *
+     *
+     *  ------------------
+     *
+     *   IDEA 1) multi-source BFS ???? and maintain the
+     *   `nearest` dist ????
+     *
+     *    -> loop over `0`, and update its dist
+     *      to `1` when new_dist < old_dist
+     *
+     *
+     *  ------------------
      *
      *
      */
+    // IDEA 1) multi-source BFS
     public int[][] updateMatrix(int[][] mat) {
+        // edge
 
-        return null;
+        int l = mat.length;
+        int w = mat[0].length;
+
+        int[][] moves = new int[][]{ {0,1}, {0,-1}, {1,0}, {-1,0} };
+
+        // get 0 cells
+//        List<Integer[]> zeroList = new ArrayList<>();
+//        for(int y = 0; y < l; y++){
+//            for(int x = 0; x < w; x++){
+//                if(mat[y][x] == 0){
+//                    zeroList.add(new Integer[]{x, y});
+//                }
+//            }
+//        }
+
+        // bfs and maintain `min` dist
+        // q: { [x, y, dist], ..... }
+        //q: { [x, y], ..... }
+        Queue<Integer[]> q = new LinkedList<>();
+
+        for (int r = 0; r < l; r++) {
+            for (int c = 0; c < w; c++) {
+                if (mat[r][c] == 0) {
+                    q.offer(new Integer[]{r, c});
+                } else {
+                    // Use -1 to represent "not yet visited/calculated"
+                    mat[r][c] = -1;
+                }
+            }
+        }
+
+
+        // can we `revisit` ???
+        boolean[][] updated = new boolean[l][w];
+
+        // bfs and maintain `min` dist
+        // q: { [x, y, dist], ..... }
+        //Queue<Integer[]> q = new LinkedList<>();
+        // add all `0` cells to queue
+//        for(Integer[] z: zeroList){
+//            int x = z[0];
+//            int y = z[1];
+//            q.add(new Integer[]{x, y, 0}); // init `dist` as 0 ??????
+//
+//            // add to visited ??
+//            //visited[y][x] = true;
+//        }
+
+
+        // run BFS
+        while (!q.isEmpty()){
+            int size = q.size();
+            for(int i = 0; i < size; i++){
+
+                Integer[] cur = q.poll();
+                // check dist
+                int x = cur[0];
+                int y = cur[1];
+                int dist = cur[2];
+
+                //  ??? only check if need to update
+                // dist when meet `1` cell
+                if(mat[y][x] == 1){
+                   // ????
+                   if(!updated[y][x]){
+                       mat[y][x] = dist;
+                       updated[y][x] = true; // ????
+                   }else{
+                       mat[y][x] = Math.min(dist, mat[y][x]);
+                   }
+                }
+
+                // move 4 dirs
+                for(int[] m: moves){
+                    int x_ = x + m[0];
+                    int y_ = y + m[1];
+                    if(x_ >= 0 && x_ < w && y_ >= 0 && y_ < l){
+                        // ?? above validation is enough ??
+                        q.add(new Integer[]{x_, y_, dist + 1});
+                    }
+                }
+            }
+        }
+
+
+
+        return mat;
     }
+
+
+
+
 
 
 
