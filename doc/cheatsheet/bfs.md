@@ -1214,6 +1214,333 @@ Without visitedStops: Every stop would re-check all its routes
 
 ---
 
+### Pattern 8: BFS + DFS (Find All Shortest Paths - DAG Enumeration)
+```java
+/**
+ * Pattern: BFS to build shortest-path DAG, then DFS to enumerate all paths
+ * Use case: Find ALL shortest transformation sequences (not just one)
+ * Key insight: BFS builds a reverse graph of predecessors, DFS reconstructs all valid paths
+ *
+ * Time: O(N * M * 26 + paths) where N=words, M=length, paths=output size
+ * Space: O(N * M) for graph + O(M) for DFS recursion stack
+ */
+public List<List<String>> findAllShortestPaths(String beginWord, String endWord, List<String> wordList) {
+    List<List<String>> result = new ArrayList<>();
+    Set<String> wordSet = new HashSet<>(wordList);
+
+    if (!wordSet.contains(endWord))
+        return result;
+
+    // Map to store: word → list of predecessors (parents) at shortest distance
+    Map<String, List<String>> parents = new HashMap<>();
+
+    // Map to store: word → shortest distance from beginWord
+    Map<String, Integer> distances = new HashMap<>();
+
+    // ========== PHASE 1: BFS to build shortest-path DAG ==========
+    Queue<String> queue = new LinkedList<>();
+    queue.add(beginWord);
+    distances.put(beginWord, 0);
+
+    boolean found = false;
+    String alpha = "abcdefghijklmnopqrstuvwxyz";
+
+    while (!queue.isEmpty() && !found) {
+        int size = queue.size();
+
+        /**
+         * CRITICAL: Use levelVisited to allow multiple parents at same distance
+         *
+         * Why separate from main visited set?
+         * - Allows a word to be reached from multiple neighbors in same level
+         * - We record ALL parents that reach it in shortest distance
+         * - Main visited updated AFTER processing entire level
+         *
+         * Without this, we'd lose valid shortest paths!
+         */
+        Set<String> levelVisited = new HashSet<>();
+
+        for (int i = 0; i < size; i++) {
+            String word = queue.poll();
+            char[] chars = word.toCharArray();
+
+            for (int j = 0; j < chars.length; j++) {
+                char original = chars[j];
+
+                for (char c : alpha.toCharArray()) {
+                    if (c == original)
+                        continue;
+
+                    chars[j] = c;
+                    String nextWord = new String(chars);
+
+                    // Skip words not in dictionary
+                    if (!wordSet.contains(nextWord))
+                        continue;
+
+                    int newDistance = distances.get(word) + 1;
+
+                    /**
+                     * KEY LOGIC: Record ALL predecessors at shortest distance
+                     *
+                     * Case 1: First time reaching nextWord
+                     * - Set distance
+                     * - Add current word as first predecessor
+                     * - Enqueue for next level
+                     *
+                     * Case 2: Reaching nextWord again at SAME distance (same level)
+                     * - Add current word as ANOTHER predecessor
+                     * - Don't enqueue again (already enqueued in this level)
+                     *
+                     * Case 3: Reaching nextWord at LONGER distance
+                     * - Ignore (we only want shortest paths)
+                     */
+                    if (!distances.containsKey(nextWord)) {
+                        // Case 1: First time reaching this word
+                        distances.put(nextWord, newDistance);
+                        parents.computeIfAbsent(nextWord, k -> new ArrayList<>()).add(word);
+
+                        if (!levelVisited.contains(nextWord)) {
+                            levelVisited.add(nextWord);
+                            queue.add(nextWord);
+                        }
+
+                        if (nextWord.equals(endWord)) {
+                            found = true;
+                        }
+                    } else if (distances.get(nextWord) == newDistance) {
+                        // Case 2: Same distance from another parent
+                        parents.computeIfAbsent(nextWord, k -> new ArrayList<>()).add(word);
+                    }
+                    // Case 3: Longer distance - ignore
+                }
+
+                chars[j] = original;  // Restore after exploring all letters
+            }
+        }
+    }
+
+    // ========== PHASE 2: DFS to enumerate all paths ==========
+    if (distances.containsKey(endWord)) {
+        List<String> path = new LinkedList<>();
+        dfsEnumeratePaths(endWord, beginWord, parents, path, result);
+    }
+
+    return result;
+}
+
+/**
+ * DFS backtracking to reconstruct all paths from endWord to beginWord
+ *
+ * Why backward (from endWord to beginWord)?
+ * - parents map stores: word → predecessors
+ * - Easier to traverse backward from target to source
+ * - Build path in reverse, then it's already correct order when we reach beginWord
+ */
+private void dfsEnumeratePaths(String current, String beginWord,
+                               Map<String, List<String>> parents,
+                               List<String> path, List<List<String>> result) {
+    // Add current word to path (building backward)
+    path.add(0, current);
+
+    // Base case: reached the beginning
+    if (current.equals(beginWord)) {
+        result.add(new ArrayList<>(path));
+    } else {
+        // Recursive case: explore all predecessors
+        List<String> predecessors = parents.get(current);
+        if (predecessors != null) {
+            for (String prev : predecessors) {
+                dfsEnumeratePaths(prev, beginWord, parents, path, result);
+            }
+        }
+    }
+
+    // Backtrack: remove current word before returning
+    path.remove(0);
+}
+```
+
+**Concrete Example: LC 126 - Word Ladder II**
+
+```
+Problem: Find ALL shortest paths from "hit" to "cog"
+Dictionary: ["hot","dot","dog","lot","log","cog"]
+Expected: [["hit","hot","dot","dog","cog"], ["hit","hot","lot","log","cog"]]
+
+========== BFS PHASE ==========
+
+Level 0: Queue = [hit], distances = {hit:0}
+  Process "hit":
+    Neighbors: "hot" (only one in dict differing by 1 letter)
+    distances[hot] = 1, parents[hot] = [hit]
+    levelVisited = {hot}
+  After level: visited = {hit, hot}
+
+Level 1: Queue = [hot], distances = {hit:0, hot:1}
+  Process "hot":
+    Neighbors: "dot", "lot", "hit" (hit already visited at distance 0, skip)
+    distances[dot] = 2, parents[dot] = [hot]
+    distances[lot] = 2, parents[lot] = [hot]
+    levelVisited = {dot, lot}
+  After level: visited = {hit, hot, dot, lot}
+
+Level 2: Queue = [dot, lot], distances = {hit:0, hot:1, dot:2, lot:2}
+  Process "dot":
+    Neighbors: "dog", "hot" (hot at distance 1, skip)
+    distances[dog] = 3, parents[dog] = [dot]
+  Process "lot":
+    Neighbors: "log", "hot" (hot at distance 1, skip)
+    distances[log] = 3, parents[log] = [lot]
+    levelVisited = {dog, log}
+  After level: visited = {hit, hot, dot, lot, dog, log}
+
+Level 3: Queue = [dog, log], distances = {hit:0, hot:1, dot:2, lot:2, dog:3, log:3}
+  Process "dog":
+    Neighbors: "cog", "dot" (dot at distance 2, skip)
+    distances[cog] = 4, parents[cog] = [dog]
+    found = true
+  Process "log":
+    Neighbors: "cog", "lot" (lot at distance 2, skip)
+    cog already has distance 4, same as current+1!
+    parents[cog] = [dog, log]  ← KEY: multiple parents!
+  After level: visited = {hit, hot, dot, lot, dog, log, cog}
+
+STOP BFS (found = true after finishing level)
+
+Final parents map:
+  cog → [dog, log]
+  dog → [dot]
+  log → [lot]
+  dot → [hot]
+  lot → [hot]
+  hot → [hit]
+
+========== DFS PHASE ==========
+
+DFS from "cog" to "hit":
+
+dfs(cog):
+  path = [cog]
+  predecessors = [dog, log]
+
+  dfs(dog):
+    path = [dog, cog]
+    predecessors = [dot]
+
+    dfs(dot):
+      path = [dot, dog, cog]
+      predecessors = [hot]
+
+      dfs(hot):
+        path = [hot, dot, dog, cog]
+        predecessors = [hit]
+
+        dfs(hit):
+          path = [hit, hot, dot, dog, cog]
+          hit == beginWord → FOUND PATH!
+          result = [[hit, hot, dot, dog, cog]]
+
+  dfs(log):
+    path = [log, cog]
+    predecessors = [lot]
+
+    dfs(lot):
+      path = [lot, log, cog]
+      predecessors = [hot]
+
+      dfs(hot):
+        path = [hot, lot, log, cog]
+        predecessors = [hit]
+
+        dfs(hit):
+          path = [hit, hot, lot, log, cog]
+          hit == beginWord → FOUND PATH!
+          result = [[hit, hot, dot, dog, cog], [hit, hot, lot, log, cog]]
+
+Final result: 2 paths found ✓
+```
+
+**Why This Pattern Works:**
+
+1. **BFS Phase - Build the Graph**:
+   - Level-order traversal ensures first reach = shortest distance
+   - `Map<String, List<String>> parents` records ALL predecessors at shortest distance
+   - `Set<String> levelVisited` allows multiple parents from same level
+   - Stop after finding endWord (ensures only shortest paths in graph)
+
+2. **DFS Phase - Enumerate Paths**:
+   - Walk backward from endWord to beginWord
+   - At each node, recursively explore all predecessors
+   - This generates ALL valid combinations of shortest paths
+   - Backtrack to explore alternative paths
+
+3. **Avoiding Duplicates & TLE**:
+   - BFS only records shortest distances
+   - DFS only traverses the shortest-path DAG
+   - No redundant paths or longer paths explored
+   - Graph structure is minimal
+
+**Critical Implementation Details:**
+
+| Detail | Why Important | What Happens Without |
+|--------|---|---|
+| **`levelVisited` separate from `visited`** | Allows multiple parents in same level | Lose valid shortest paths |
+| **Update `visited` after level** | Records all same-level predecessors | Incorrectly skip valid parents |
+| **Stop BFS after finding endWord** | Prevents longer paths from being recorded | Include suboptimal paths |
+| **Use Map for predecessors** | Records all predecessors (not just one) | Find only some paths, not all |
+| **DFS backward traversal** | Can follow multiple predecessor chains | Can't enumerate all combinations |
+
+**Pattern Characteristics:**
+
+- **Two-Phase Algorithm**: BFS phase, then DFS phase (sequential, not simultaneous)
+- **Graph Construction**: Build a reverse DAG of predecessors during BFS
+- **Path Enumeration**: Use DFS with backtracking to traverse all paths in the DAG
+- **Distance Tracking**: Essential for determining shortest distance and stopping BFS
+- **Multiple Parents**: A node can have multiple predecessors at the same distance
+
+**When to Use This Pattern:**
+
+- ✅ Find ALL shortest paths (not just one)
+- ✅ Multiple valid paths of same minimum length exist
+- ✅ Need to enumerate all combinations
+- ✅ Must avoid exploring longer paths (TLE prevention)
+- ✅ Word transformation, graph traversal problems
+
+**When NOT to Use:**
+
+- ❌ Only need one shortest path (use Pattern 7 or simpler BFS)
+- ❌ Unique shortest path guaranteed (unnecessary complexity)
+- ❌ Need to find longest paths or all paths (use DFS alone)
+
+**Key Variations:**
+
+1. **Distance Map Variant**: Store distances explicitly (see V0-3 in code)
+2. **Early Termination**: Stop BFS immediately upon reaching endWord (current approach)
+3. **Bidirectional BFS**: Expand from both ends to reduce search space
+4. **Neighbor Precomputation**: Pre-compute all valid neighbors to avoid regenerating (optimization)
+
+**Similar Problems:**
+
+- **LC 126: Word Ladder II** (find all shortest word transformation sequences)
+- **LC 913: Cat and Mouse** (find all game strategies in shortest time)
+- **LC 1585: Check If String Is Transformable With Substring Sort Operations** (enumerate transformations)
+- **LC 1948: Delete the Middle Node of a Linked List** (not similar, but similar pattern in graph problems)
+- **LC 2115: Find All Recipes from Given Supplies** (topological sort variant, similar enumeration pattern)
+
+**Comparison with Pattern 7 (BFS + Backtracking):**
+
+| Aspect | Pattern 7 (BFS + Backtracking) | Pattern 8 (BFS + DFS) |
+|--------|---|---|
+| **Goal** | Find ONE shortest path | Find ALL shortest paths |
+| **Graph Building** | On-the-fly neighbor generation | Explicit parent map construction |
+| **Visited Tracking** | Standard visited set | levelVisited + visited (2-tier) |
+| **Enumeration** | Early exit on found | DFS backtracks through all paths |
+| **Memory** | O(M) for char array | O(N*M) for full parent graph |
+| **Example** | LC 127 | LC 126 |
+
+---
+
 ## Problem Categories
 
 ### 1. Tree Traversal Problems
@@ -1613,6 +1940,7 @@ Calculate shortest distance from each cell to ANY source cell in a grid.
 | **Medium** | **LC 542** | **Simultaneous multi-source - 01 Matrix** | **Pattern 4 (Simultaneous Multi-Source)** |
 | Medium | LC 934 | DFS + Multi-source BFS (island expansion) | Pattern 4.5 (DFS + Multi-Source) |
 | Medium | LC 1162 | As Far from Land as Possible | Pattern 4 (Simultaneous Multi-Source) |
+| **Hard** | **LC 126** | **Find ALL shortest paths - Word Ladder II** | **Pattern 8 (BFS + DFS DAG Enumeration)** |
 | Hard | LC 286 | Walls and Gates | Pattern 4 (Simultaneous Multi-Source) |
 | **Hard** | **LC 317** | **Independent BFS runs (sum of distances)** | **Pattern 4.6 (Independent BFS Runs)** |
 | Hard | LC 675 | Sort + Repeated BFS (sequential targets) | Pattern 6 (Sort + Repeated BFS) |
@@ -1696,7 +2024,92 @@ public int ladderLength(String beginWord, String endWord, List<String> wordList)
 }
 ```
 
-### 2-3) Shortest Path in Binary Matrix (LC 1091) — BFS Shortest Path
+### 2-3) Word Ladder II (LC 126) — BFS + DFS All Shortest Paths
+> BFS builds a DAG of shortest-path predecessors; DFS enumerates all valid paths.
+
+```java
+// LC 126 - Word Ladder II
+// IDEA: BFS to build predecessors map, then DFS to reconstruct all shortest paths
+// time = O(N * M * 26 + output), space = O(N * M)
+public List<List<String>> findLadders(String beginWord, String endWord, List<String> wordList) {
+    List<List<String>> result = new ArrayList<>();
+    Set<String> wordSet = new HashSet<>(wordList);
+    if (!wordSet.contains(endWord)) return result;
+
+    // Map: word → list of predecessors (parents) at shortest distance
+    Map<String, List<String>> parents = new HashMap<>();
+    // BFS to build the parent graph
+    Queue<String> queue = new LinkedList<>();
+    Set<String> visited = new HashSet<>();
+    queue.offer(beginWord);
+    visited.add(beginWord);
+
+    boolean found = false;
+    while (!queue.isEmpty() && !found) {
+        int size = queue.size();
+        Set<String> levelVisited = new HashSet<>();  // Critical: track nodes at this level
+
+        for (int i = 0; i < size; i++) {
+            String word = queue.poll();
+            char[] chars = word.toCharArray();
+
+            for (int j = 0; j < chars.length; j++) {
+                char orig = chars[j];
+                for (char c = 'a'; c <= 'z'; c++) {
+                    if (c == orig) continue;
+                    chars[j] = c;
+                    String next = new String(chars);
+
+                    if (!wordSet.contains(next)) continue;
+
+                    if (!visited.contains(next)) {
+                        parents.computeIfAbsent(next, k -> new ArrayList<>()).add(word);
+                        levelVisited.add(next);
+                        if (next.equals(endWord)) found = true;
+                    }
+                }
+                chars[j] = orig;
+            }
+        }
+
+        // Update visited after entire level (allows multiple parents from same level)
+        visited.addAll(levelVisited);
+        for (String node : levelVisited) {
+            queue.offer(node);
+        }
+    }
+
+    // DFS to enumerate all paths
+    if (found) {
+        List<String> path = new LinkedList<>();
+        dfsEnumerate(endWord, beginWord, parents, path, result);
+    }
+
+    return result;
+}
+
+private void dfsEnumerate(String word, String beginWord, Map<String, List<String>> parents,
+                          List<String> path, List<List<String>> result) {
+    path.add(0, word);
+    if (word.equals(beginWord)) {
+        result.add(new ArrayList<>(path));
+    } else if (parents.containsKey(word)) {
+        for (String prev : parents.get(word)) {
+            dfsEnumerate(prev, beginWord, parents, path, result);
+        }
+    }
+    path.remove(0);
+}
+```
+
+**Key Differences from LC 127:**
+- **LC 127 (Pattern 7)**: BFS + Backtracking → Find ONE shortest path, early exit
+- **LC 126 (Pattern 8)**: BFS + DFS → Find ALL shortest paths, use parent map, DFS enumeration
+- **Critical Detail**: `levelVisited` allows multiple parents from same BFS level (essential for finding all paths)
+
+---
+
+### 2-4) Shortest Path in Binary Matrix (LC 1091) — BFS Shortest Path
 > BFS from top-left to bottom-right through 0-cells (8-directional).
 
 ```java
