@@ -93,7 +93,79 @@ for ( Character c: x.toCharArray()){
 **Performance Note**: `charAt(i)` is O(1) for strings, making it efficient for character-by-character processing.
 
 
-### 1.3) Replace chat as idx in String
+### 1.3) Char Digit to Integer Value (`char - '0'`)
+
+**Key Concept**: Convert a character digit ('0'-'9') to its integer value using ASCII subtraction.
+
+```java
+// Basic conversion: char digit → int value
+char c = '3';
+int value = c - '0';  // value = 3
+
+// Why it works:
+// '0' = 48 (ASCII)
+// '1' = 49
+// '2' = 50
+// '3' = 51  →  '3' - '0' = 51 - 48 = 3
+// ...
+// '9' = 57  →  '9' - '0' = 57 - 48 = 9
+```
+
+**Common Pattern: Increment/Decrement Digit Characters (LC 752 - Open the Lock)**
+
+```java
+// LC 752 - Open the Lock
+// Rotate lock wheel: '0' → '1' → '2' ... '9' → '0' (wrap around)
+
+String cur = "0000";
+
+for (int i = 0; i < 4; i++) {
+    char c = cur.charAt(i);
+
+    // Get integer value from char
+    int digit = c - '0';  // e.g., '3' → 3
+
+    // Calculate rotations with wrap-around
+    int valPlus = (digit + 1) % 10;   // 9 → 0 (wrap)
+    int valMinus = (digit - 1 + 10) % 10;  // 0 → 9 (wrap)
+
+    // Convert back to char for new string
+    char charPlus = (char) ('0' + valPlus);   // 4 → '4'
+    char charMinus = (char) ('0' + valMinus); // 2 → '2'
+
+    // Build new lock combinations
+    String str1 = cur.substring(0, i) + charPlus + cur.substring(i + 1);
+    String str2 = cur.substring(0, i) + charMinus + cur.substring(i + 1);
+}
+```
+
+**Quick Reference Table:**
+
+| Operation | Code | Example |
+|-----------|------|---------|
+| Char → Int | `c - '0'` | `'7' - '0'` → `7` |
+| Int → Char | `(char)('0' + n)` | `(char)('0' + 7)` → `'7'` |
+| Increment (wrap) | `(digit + 1) % 10` | `9 + 1` → `0` |
+| Decrement (wrap) | `(digit - 1 + 10) % 10` | `0 - 1` → `9` |
+
+**Why `+ 10` in decrement?**
+```java
+// Without +10: (0 - 1) % 10 = -1  ❌ (negative!)
+// With +10:    (0 - 1 + 10) % 10 = 9  ✅
+
+// The +10 ensures the value is always positive before modulo
+int valMinus = (digit - 1 + 10) % 10;
+```
+
+**Comparison: Letter vs Digit Mapping**
+
+| Type | Char → Index | Index → Char | Range |
+|------|--------------|--------------|-------|
+| **Letters** | `c - 'a'` | `(char)('a' + i)` | 'a'-'z' → 0-25 |
+| **Digits** | `c - '0'` | `(char)('0' + i)` | '0'-'9' → 0-9 |
+
+
+### 1.4) Replace char at idx in String
 
 ```java
 // LC 127

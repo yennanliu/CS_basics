@@ -1678,6 +1678,17 @@ public class Workspace24 {
 
 
 
+    // LC 126
+    // 17.53 - 16.03 pm
+    /**
+     *
+     *
+     *
+     */
+    public List<List<String>> findLadders(String beginWord, String endWord, List<String> wordList) {
+
+        return null;
+    }
 
 
 
