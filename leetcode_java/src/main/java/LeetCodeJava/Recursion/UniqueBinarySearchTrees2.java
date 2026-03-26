@@ -81,6 +81,25 @@ public class UniqueBinarySearchTrees2 {
         }
 
         // Iterate through each number i as the root
+        /**  CORE idea:
+         *
+         *  “For the current root i,
+         *  combine every possible left subtree
+         *  with every possible right subtree.”
+         *
+         *
+         *  -> The number of BSTs = combinations of left × right
+         */
+        /**  Why double loop ?
+         *
+         * Because:
+         *
+         * Each left subtree is independent of each right subtree
+         *
+         * So we must try `all combinations` (Cartesian product)
+         *
+         *
+         */
         for (int i = start; i <= end; i++) {
 
             // 1. Generate all possible left subtrees
@@ -103,7 +122,7 @@ public class UniqueBinarySearchTrees2 {
              *
              *  below double loop is STILL in
              *  ` for (int i = start; i <= end; i++)` loop
-             *  
+             *
              */
             // 3. `Connect` each left and right subtree to the `root` i
             /** NOTE !!
@@ -112,6 +131,8 @@ public class UniqueBinarySearchTrees2 {
              */
             for (TreeNode left : leftSubtrees) {
                 for (TreeNode right : rightSubtrees) {
+                    // NOTE !!! root is the `i` node
+                    // (but NOT left, or right node)
                     TreeNode root = new TreeNode(i);
                     root.left = left;
                     root.right = right;
