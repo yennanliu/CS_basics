@@ -1690,6 +1690,77 @@ public class Workspace24 {
         return null;
     }
 
+    // LC 126
+    // 18.04 - 14 pm
+    /**
+     *
+     *  IDEA 1) BST + DFS
+     *
+     *   [smaller_tree, bigger_tree]
+     *
+     *
+     */
+    //TreeNode[] splitNodes = new TreeNode[2]; // ????
+    public TreeNode[] splitBST(TreeNode root, int target) {
+        // edge
+        if(root.val == target){
+            return new TreeNode[]{}; // ???
+        }
+
+        if (root == null) {
+            return new TreeNode[]{null, null};
+        }
+
+        TreeNode[] splitNodes = new TreeNode[2]; // ????
+
+        return splitNodes;
+    }
+
+    // ????
+    private TreeNode[] splitHelper(TreeNode root, int target, TreeNode[] splitNodes){
+        // edge
+        // ???
+        if(root == null || root.val == target){
+            //return new TreeNode[]{}; // ???
+            return new TreeNode[]{null, null};
+        }
+
+        // ???
+        /**  case 1)
+         *
+         *   if `root.val <= target`
+         *   -> move right
+         *   -> but there may still in right sub tree < target ???
+         *   -> need to split them and re-connect
+         */
+        if(root.val <= target){
+            TreeNode[] res1 =  splitHelper(root.right, target, splitNodes);
+            // ???
+            //root.left = res1[0];
+            root.right = res1[0];
+
+            // /??
+            return new TreeNode[]{root, res1[1]};
+        }
+        /**  case 2)
+         *
+         *   if `root.val > target`
+         *   -> move left
+         *   -> but there may still in left sub tree > target ???
+         *   -> need to split them and re-connect
+         */
+        else{
+            TreeNode[] res2 =  splitHelper(root.left, target, splitNodes);
+            root.left = res2[1]; // ???
+            // ???
+            return new TreeNode[]{res2[0], root};
+        }
+
+     //   return splitNodes;
+    }
+
+
+
 
 
 
