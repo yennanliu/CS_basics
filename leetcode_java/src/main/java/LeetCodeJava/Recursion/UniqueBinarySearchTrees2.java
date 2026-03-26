@@ -42,17 +42,39 @@ public class UniqueBinarySearchTrees2 {
 
 
     // V0-1
-    // IDEA (gemini)
+    // IDEA: DFS + BST (gemini)
+    // NOTE !!! this is a `Recursive Backtracking` LC
+    /**  Core logic:
+     *
+     *    A BST with nodes $1$ to $n$ can be defined by its root. If you pick a number $i$ as the root:
+     *
+     *    1. All numbers from $[start, i-1]$ must go into the left subtree
+     *
+     *    2. All numbers from $[i+1, end]$ must go into the right subtree.
+     *
+     *    3. The total combinations for root $i$ is the
+     *       Cartesian product of all possible left subtrees
+     *       and all possible right subtrees.
+     *
+     *
+     */
     public List<TreeNode> generateTrees_0_1(int n) {
         if (n == 0)
             return new ArrayList<>();
         return buildTrees(1, n);
     }
 
+    /** NOTE !!
+     *
+     *  param of helper func:
+     *
+     *   (start, end)
+     */
     private List<TreeNode> buildTrees(int start, int end) {
         List<TreeNode> allTrees = new ArrayList<>();
 
-        // Base case: if start > end, there is no node, so we return a list containing null.
+        // Base case: if start > end, there is no node,
+        // so we return a list containing null.
         if (start > end) {
             allTrees.add(null);
             return allTrees;
@@ -60,13 +82,28 @@ public class UniqueBinarySearchTrees2 {
 
         // Iterate through each number i as the root
         for (int i = start; i <= end; i++) {
+
             // 1. Generate all possible left subtrees
+            /** NOTE !!
+             *
+             *   the boundary for `left` child is:
+             *      (start, i - 1)
+             */
             List<TreeNode> leftSubtrees = buildTrees(start, i - 1);
 
             // 2. Generate all possible right subtrees
+            /** NOTE !!
+             *
+             *   the boundary for `right` child is:
+             *      (i + 1, right)
+             */
             List<TreeNode> rightSubtrees = buildTrees(i + 1, end);
 
-            // 3. Connect each left and right subtree to the root i
+            // 3. `Connect` each left and right subtree to the `root` i
+            /** NOTE !!
+             *
+             *   how we connect left, right child to root
+             */
             for (TreeNode left : leftSubtrees) {
                 for (TreeNode right : rightSubtrees) {
                     TreeNode root = new TreeNode(i);
@@ -83,7 +120,7 @@ public class UniqueBinarySearchTrees2 {
 
 
     // V0-2
-    // IDEA: (gpt)
+    // IDEA: DFS + BST (gpt)
     public List<TreeNode> generateTrees_0_2(int n) {
         if (n == 0)
             return new ArrayList<>();
