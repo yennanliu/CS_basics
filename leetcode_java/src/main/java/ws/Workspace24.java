@@ -2,6 +2,7 @@ package ws;
 
 import LeetCodeJava.DataStructure.ListNode;
 import LeetCodeJava.DataStructure.TreeNode;
+import com.sun.org.apache.bcel.internal.generic.IMPDEP1;
 
 import java.util.*;
 
@@ -1043,7 +1044,83 @@ public class Workspace24 {
      *  ------------
      *
      */
+    // 17.00 - 10 pm
     public int[][] floodFill(int[][] image, int sr, int sc, int color) {
+        // edge
+        int initColor = image[sr][sc];
+        if (initColor == color) return image;
+
+
+        int[][] moves = new int[][]{ {0,1}, {0,-1}, {1,0}, {-1,0} };
+        int l = image.length;
+        int w = image[0].length;
+
+        //boolean[][] visited = new boolean[l][w];
+
+        Queue<Integer[]> q = new LinkedList<>();
+
+       // int initColor = image[sr][sc];
+
+        // add (sr, sc) to Q
+        q.add(new Integer[]{sr,sc});
+        //visited[sr][sc] = true;
+        image[sr][sc] = color; // ???
+
+
+       // int initColor = image[sr][sc];
+
+        while (!q.isEmpty()){
+            // /?
+            //int size = q.size();
+            Integer[] cur = q.poll();
+            int x = cur[0];
+            int y = cur[1];
+
+
+            for(int[] m: moves){
+                int x_ = x + m[0];
+                int y_ = y + m[1];
+
+                if(x_ >= 0 && x_ < w && y_ >= 0 && y_ < l){
+                    if(image[y_][x_] != initColor && image[y_][x_] == initColor){
+                        // modfify color
+                        image[y_][x_] = color;
+                        q.add(new Integer[]{y_, x_});
+                        //visited[y_][x_] = true;
+                    }
+                }
+            }
+
+            // modify the color
+            //image[y][x] = color;
+//
+//            for(int i = 0; i < size; i++){
+//                for(int[] m: moves){
+//                    int x_ = x + m[0];
+//                    int y_ = y + m[1];
+//
+//                    if(x_ >= 0 && x_ < w && y_ >= 0 && y_ < l){
+//                        if(!visited[y_][x_] && image[y_][x_] == initColor){
+//                            // modfify color
+//                            image[y_][x_] = color;
+//                            q.add(new Integer[]{y_, x_});
+//                            visited[y_][x_] = true;
+//                        }
+//                    }
+//                }
+//            }
+        }
+
+
+
+        return image; // ??
+    }
+
+
+
+
+
+    public int[][] floodFill_99(int[][] image, int sr, int sc, int color) {
         // edge
 
         int[][] moves = new int[][]{ {0,1}, {0,-1}, {1,0}, {-1,0} };

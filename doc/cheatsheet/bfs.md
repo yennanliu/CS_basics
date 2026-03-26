@@ -1790,6 +1790,193 @@ visited[cur[0]][cur[1]] = true;      // too late
 
 > In BFS, **the moment you decide a neighbor should enter the queue is the moment you commit** — mark it visited, update your counters, mutate the grid. Never defer state changes to dequeue time. This is not an optimization; it is a **correctness requirement**.
 
+### When to Increment Time/Distance: Beginning vs End of BFS Level
+
+A common source of bugs in level-by-level BFS is **where to place the time/distance increment**. There are two valid approaches, each with different trade-offs.
+
+#### The Two Approaches
+
+**Approach A: Increment at BEGINNING of level (before processing)**
+```java
+// From LC 994 - RottingOranges.java V0
+while (!queue.isEmpty() && freshOrange > 0) {  // NOTE: extra condition!
+    int size = queue.size();
+    time++;  // Increment FIRST - we're about to process a "minute" level
+
+    for (int i = 0; i < size; i++) {
+        int[] cur = queue.poll();
+        // process neighbors, infect fresh oranges...
+    }
+}
+return freshOrange == 0 ? time : -1;
+```
+
+**Approach B: Increment at END of level (only if work was done)**
+```java
+// From LC 994 - RottingOranges.java V0-0-2, V0-1, V0-4
+while (!queue.isEmpty()) {
+    int size = queue.size();
+    boolean rottedThisMinute = false;
+
+    for (int i = 0; i < size; i++) {
+        int[] cur = queue.poll();
+        // process neighbors...
+        if (/* infected a fresh neighbor */) {
+            rottedThisMinute = true;
+        }
+    }
+
+    if (rottedThisMinute) time++;  // Only count if actual infection happened
+}
+return freshOrange == 0 ? time : -1;
+```
+
+#### Detailed Comparison
+
+| Aspect | Approach A (Beginning) | Approach B (End with Flag) |
+|--------|------------------------|---------------------------|
+| **When to increment** | Before processing level | After processing, only if work done |
+| **Extra while condition?** | Yes: `freshOrange > 0` | No, flag handles edge cases |
+| **Risk** | Over-counting if condition missing | None if flag used correctly |
+| **Code complexity** | Simpler loop body | Requires tracking boolean flag |
+| **When returns 0?** | Natural if no fresh oranges | Natural: no work = no increment |
+
+#### Why Approach A Needs `freshOrange > 0` in While Condition
+
+**The Problem:** If we only check `!queue.isEmpty()`, we'll increment time for processing already-rotten cells that have nothing left to infect.
+
+```
+Scenario: After all oranges are infected
+
+Layer N: Queue = [(2,1)], freshOrange = 1
+  - time++ → time = 4
+  - Process (2,1): infect (2,2)
+  - freshOrange = 0, Queue = [(2,2)]
+
+Layer N+1: Queue = [(2,2)], freshOrange = 0
+  - WITHOUT `freshOrange > 0`: time++ → time = 5 (WRONG! over-count)
+  - WITH `freshOrange > 0`: Exit loop, return time = 4 (CORRECT!)
+```
+
+**The Key Insight:** When `freshOrange == 0`, all oranges are ALREADY infected (marked as 2). The queue may still contain rotten cells, but they have no fresh neighbors to infect. Processing them would waste time and over-count.
+
+```java
+// CORRECT: Exit early when nothing left to infect
+while (!queue.isEmpty() && freshOrange > 0) {
+    time++;
+    // ...
+}
+```
+
+#### Why Approach B Naturally Handles Edge Cases
+
+```java
+while (!queue.isEmpty()) {
+    int size = queue.size();
+    boolean rottedThisMinute = false;
+
+    for (int i = 0; i < size; i++) {
+        // process...
+        if (/* infected a neighbor */) {
+            rottedThisMinute = true;
+        }
+    }
+
+    if (rottedThisMinute) time++;  // Only count if actual infection happened
+}
+```
+
+**Why it works:**
+- Even if queue has items (previously infected cells)
+- If they don't infect any NEW cells → `rottedThisMinute = false`
+- No increment → no over-counting
+
+#### Concrete Example: LC 994 - Rotting Oranges
+
+```
+Grid: [[2,1,1],    Initial: 6 fresh oranges, 1 rotten at (0,0)
+       [1,1,0],
+       [0,1,1]]    Expected answer: 4 minutes
+```
+
+**Approach A Trace (time++ at beginning with `freshOrange > 0`):**
+
+```
+Initial: Queue=[(0,0)], fresh=6, time=0
+
+Check: queue not empty && fresh>0 → TRUE
+  time++ → time=1
+  Process (0,0): infect (0,1), (1,0)
+  fresh=4, Queue=[(0,1),(1,0)]
+
+Check: queue not empty && fresh>0 → TRUE
+  time++ → time=2
+  Process (0,1): infect (0,2), (1,1)
+  Process (1,0): nothing new
+  fresh=2, Queue=[(0,2),(1,1)]
+
+Check: queue not empty && fresh>0 → TRUE
+  time++ → time=3
+  Process (0,2): nothing (neighbor (1,2)=0)
+  Process (1,1): infect (2,1)
+  fresh=1, Queue=[(2,1)]
+
+Check: queue not empty && fresh>0 → TRUE
+  time++ → time=4
+  Process (2,1): infect (2,2)
+  fresh=0, Queue=[(2,2)]
+
+Check: queue not empty && fresh>0 → FALSE (fresh=0)
+  EXIT LOOP
+  Return fresh==0 ? time : -1 → time=4 ✓ CORRECT!
+```
+
+**What if we removed `freshOrange > 0` from while condition?**
+
+```
+...continuing from above...
+
+Check: queue not empty → TRUE (Queue=[(2,2)])
+  time++ → time=5  ← WRONG! Over-counting
+  Process (2,2): no fresh neighbors
+  Queue=[]
+
+Return time=5 ✗ WRONG!
+```
+
+#### Decision Guide: Which Approach to Use?
+
+**Use Approach A (time++ at beginning) when:**
+- ✅ You have a clear "completion" condition (e.g., `freshOrange == 0`)
+- ✅ You want simpler loop body without tracking flags
+- ✅ Problem semantics: "time passes, THEN infection spreads"
+- ⚠️ MUST add completion condition to while loop!
+
+**Use Approach B (time++ at end with flag) when:**
+- ✅ No clear completion condition available
+- ✅ Want to be safe from over-counting
+- ✅ Problem semantics: "infection spreads, THEN time passes"
+- ✅ Multiple different "work" types need tracking
+
+#### Common Patterns in LC 994 Solutions
+
+| Version | Strategy | Key Code |
+|---------|----------|----------|
+| V0, V0-0-1 | time++ at beginning | `while (!q.isEmpty() && freshOrange > 0) { time++; ... }` |
+| V0-0-2, V0-1, V0-4 | time++ at end with flag | `if (rottedThisMinute) time++;` |
+| V1-1 | time++ at end (no flag) | `while (fresh > 0 && !q.isEmpty()) { ... } time++;` |
+
+#### Summary
+
+| Scenario | Recommended Approach |
+|----------|---------------------|
+| Have completion counter (fresh oranges, keys collected) | Approach A with counter in while condition |
+| No completion counter | Approach B with boolean flag |
+| Want simplest correct code | Approach B (harder to get wrong) |
+| Want most efficient code | Approach A (no flag overhead) |
+
+> **Rule of Thumb:** If you use `time++` at the BEGINNING, you MUST have an early-exit condition in the while loop. Otherwise, use `time++` at the END with a flag.
+
 ---
 
 ## Advanced Techniques
