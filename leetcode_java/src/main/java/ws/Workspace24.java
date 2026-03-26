@@ -1099,9 +1099,83 @@ public class Workspace24 {
 
 
     // LC 994
-    // 10.45 - 55 am
-    // IDEA 1) BFS
+    // 16.35 - 45 pm
     public int orangesRotting(int[][] grid) {
+        // edge
+
+        int[][] moves = new int[][]{ {0,1}, {0,-1}, {1,0}, {-1,0} };
+        int l = grid.length;
+        int w = grid[0].length;
+
+        boolean[][] visited = new boolean[l][w];
+
+        int freshCnt = 0;
+
+        // bfs
+        Queue<Integer[]> q = new LinkedList<>();
+        // get `rotten` orange
+        for(int y = 0; y < l; y++){
+            for(int x = 0; x < w; x++){
+                // rotten
+                if(grid[y][x] == 2){
+                    //rotttenList.add(new Integer[]{x, y});
+                    q.add(new Integer[]{x, y});
+                    visited[y][x] = true;
+                }
+                // fresh
+                else if(grid[y][x] == 1){
+                    freshCnt += 1;
+                }
+            }
+        }
+
+        int days = 0;
+
+        // edge
+        if(freshCnt == 0){
+            return 0;
+        }
+
+        while (!q.isEmpty()){
+            int size = q.size();
+            for(int i = 0; i < size; i++){
+                // early quit
+                // ??
+                if(freshCnt == 0){
+                    return days;
+                }
+                Integer[] cur = q.poll();
+                int x = cur[0];
+                int y = cur[1];
+                for(int[] m: moves){
+                    int x_ =  x + m[0];
+                    int y_ = y + m[1];
+                    if(x_ >= 0 && x_ < w && y_ >= 0 && y_ < l){
+                        if(grid[y_][x_] == 1 && !visited[y_][x_]){
+                            q.add(new Integer[]{x_, y_});
+                            visited[y_][x_] = true;
+                            freshCnt -= 1;
+                        }
+                    }
+                }
+
+            }
+
+            days += 1;
+
+        }
+
+
+        return freshCnt == 0 ? days : -1;
+    }
+
+
+
+
+
+
+    // IDEA 1) BFS
+    public int orangesRotting_99(int[][] grid) {
         // edge
 
         int[][] moves = new int[][]{ {0,1}, {0,-1}, {1,0}, {-1,0} };

@@ -85,6 +85,11 @@ public class RottingOranges {
         // 2. BFS: Spread the rot level by level
         while (!q.isEmpty() && freshOrange > 0) {
             int size = q.size();
+
+            /** NOTE !!!
+             *
+             *  we update `time` at beginning of BFS
+             */
             time++; // Increment time as we are about to process a "minute" level
 
             for (int i = 0; i < size; i++) {
