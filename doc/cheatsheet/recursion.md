@@ -448,6 +448,96 @@ private int processSubtree_2(TreeNode subtree, boolean isLeft) {
     }
 ```
 
+### 1-6) Recursive Construction via Cartesian Product
+
+**Definition**: Recursively generate all possible structures by dividing a range, building all sub-results for each partition, and combining them via Cartesian product. This is a form of **Divide & Conquer** where the "combine" step enumerates all left × right combinations.
+
+**Time Complexity**: O(4^n / n^(3/2)) — Catalan number growth
+
+**Space Complexity**: O(4^n / n^(3/2)) — storing all generated structures
+
+**Use Cases**:
+- Generate all structurally unique trees (BST, full binary trees)
+- Enumerate all ways to parenthesize/split an expression
+- Any problem where you partition a range and combine all sub-results
+
+**Pattern**:
+```
+1. Pick each element i in [start, end] as the "root" / split point
+2. Recursively build all left results from [start, i-1]
+3. Recursively build all right results from [i+1, end]
+4. Cartesian product: for each left × right, construct and collect result
+5. Base case: empty range → return [null/None] (one empty result, NOT empty list)
+```
+
+```java
+// Template: Recursive Construction via Cartesian Product
+private List<TreeNode> build(int start, int end) {
+    List<TreeNode> res = new ArrayList<>();
+    if (start > end) {
+        res.add(null);  // important: null = valid empty subtree
+        return res;
+    }
+    for (int i = start; i <= end; i++) {
+        List<TreeNode> lefts = build(start, i - 1);
+        List<TreeNode> rights = build(i + 1, end);
+        for (TreeNode l : lefts)
+            for (TreeNode r : rights)
+                res.add(new TreeNode(i, l, r));
+    }
+    return res;
+}
+```
+
+**Key Insight**: The base case must return a list containing `null` (not an empty list), because the Cartesian product with an empty list produces nothing — you'd lose all valid trees that have an empty left or right subtree.
+
+**Optimization**: Add memoization with `Map<Pair<Integer,Integer>, List<TreeNode>>` to avoid recomputing overlapping subproblems.
+
+**Related LeetCode Problems**:
+- LC 95: Unique Binary Search Trees II (generate all unique BSTs)
+- LC 96: Unique Binary Search Trees (count only — Catalan number DP)
+- LC 241: Different Ways to Add Parentheses (split expression at each operator)
+- LC 894: All Possible Full Binary Trees
+- LC 1382: Balance a Binary Search Tree
+
+**Example — LC 95: Unique Binary Search Trees II**:
+```python
+def generateTrees(n):
+    if n == 0: return []
+    def generate(start, end):
+        if start > end:
+            return [None]
+        all_trees = []
+        for i in range(start, end + 1):
+            for left in generate(start, i - 1):
+                for right in generate(i + 1, end):
+                    root = TreeNode(i)
+                    root.left = left
+                    root.right = right
+                    all_trees.append(root)
+        return all_trees
+    return generate(1, n)
+```
+
+**Example — LC 241: Different Ways to Add Parentheses**:
+```python
+def diffWaysToCompute(expression):
+    # Base case: pure number
+    if expression.isdigit():
+        return [int(expression)]
+    results = []
+    for i, ch in enumerate(expression):
+        if ch in '+-*':
+            lefts = diffWaysToCompute(expression[:i])
+            rights = diffWaysToCompute(expression[i+1:])
+            for l in lefts:
+                for r in rights:
+                    if ch == '+': results.append(l + r)
+                    elif ch == '-': results.append(l - r)
+                    else: results.append(l * r)
+    return results
+```
+
 ## 2) LC Example
 
 ### 2-1) Symmetric Tree

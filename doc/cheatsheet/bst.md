@@ -404,7 +404,22 @@ private TreeNode buildBalancedBST(List<TreeNode> nodes, int left, int right) {
 }
 ```
 
-##### **Pattern 6.5: Generate All Unique BSTs** (LC 95)
+##### **Pattern 6.5: Generate All Unique BSTs (Recursive Construction via Cartesian Product)** (LC 95)
+
+**Core Idea**:
+- Pick each number `i` in `[start, end]` as the root
+- All numbers `[start, i-1]` must form the **left** subtree (BST property)
+- All numbers `[i+1, end]` must form the **right** subtree (BST property)
+- The total unique trees for root `i` = **Cartesian product** of all left subtrees × all right subtrees
+- Base case: when `start > end`, return `[null]` (empty subtree, NOT empty list)
+- Total count follows **Catalan number**: C(n) = (2n)! / ((n+1)! × n!)
+
+**Approaches**:
+1. **Plain Recursion** — enumerate all combinations directly (overlapping subproblems)
+2. **Memoized Recursion** — cache `(start, end) → List<TreeNode>` to avoid recomputation
+3. **Iterative DP** — bottom-up table `dp[start][end]` filled by increasing window size
+4. **Space-Optimized DP** — `dp[numberOfNodes]` with clone + offset for right subtrees
+
 ```python
 def generate_trees(n):
     """
@@ -435,6 +450,70 @@ def generate_trees(n):
 
     return generate(1, n)
 ```
+
+```java
+// Java — Plain Recursion (LC 95)
+public List<TreeNode> generateTrees(int n) {
+    if (n == 0) return new ArrayList<>();
+    return buildTrees(1, n);
+}
+
+private List<TreeNode> buildTrees(int start, int end) {
+    List<TreeNode> allTrees = new ArrayList<>();
+    if (start > end) {
+        allTrees.add(null);  // important: null represents empty subtree
+        return allTrees;
+    }
+    for (int i = start; i <= end; i++) {
+        // left subtree candidates: [start, i-1]
+        List<TreeNode> leftSubtrees = buildTrees(start, i - 1);
+        // right subtree candidates: [i+1, end]
+        List<TreeNode> rightSubtrees = buildTrees(i + 1, end);
+        // Cartesian product: connect each left × right to root i
+        for (TreeNode left : leftSubtrees) {
+            for (TreeNode right : rightSubtrees) {
+                TreeNode root = new TreeNode(i);
+                root.left = left;
+                root.right = right;
+                allTrees.add(root);
+            }
+        }
+    }
+    return allTrees;
+}
+```
+
+```java
+// Java — Memoized Recursion (LC 95)
+public List<TreeNode> generateTrees_memo(int n) {
+    Map<Pair<Integer, Integer>, List<TreeNode>> memo = new HashMap<>();
+    return allPossibleBST(1, n, memo);
+}
+
+private List<TreeNode> allPossibleBST(int start, int end,
+        Map<Pair<Integer, Integer>, List<TreeNode>> memo) {
+    List<TreeNode> res = new ArrayList<>();
+    if (start > end) { res.add(null); return res; }
+    if (memo.containsKey(new Pair<>(start, end)))
+        return memo.get(new Pair<>(start, end));
+    for (int i = start; i <= end; ++i) {
+        List<TreeNode> leftSubs = allPossibleBST(start, i - 1, memo);
+        List<TreeNode> rightSubs = allPossibleBST(i + 1, end, memo);
+        for (TreeNode left : leftSubs)
+            for (TreeNode right : rightSubs)
+                res.add(new TreeNode(i, left, right));
+    }
+    memo.put(new Pair<>(start, end), res);
+    return res;
+}
+```
+
+**Similar LeetCode Problems**:
+- LC 95: Unique Binary Search Trees II (generate all)
+- LC 96: Unique Binary Search Trees (count only — Catalan number DP)
+- LC 241: Different Ways to Add Parentheses (same Cartesian product pattern)
+- LC 894: All Possible Full Binary Trees
+- LC 1382: Balance a Binary Search Tree
 
 ##### **Pattern 6.6: Count Unique BSTs** (LC 96)
 ```python
@@ -2087,11 +2166,18 @@ class Solution:
 ```
 
 ### 2-7) Unique Binary Search Trees II
+> See also: **Pattern 6.5** above for core idea, multiple approaches, and similar problems.
+
 ```python
 # LC 95 Unique Binary Search Trees II
 # V1
-# IDEA : RECURSION
+# IDEA : RECURSION (Cartesian product of left/right subtrees)
 # https://leetcode.com/problems/unique-binary-search-trees-ii/solution/
+#
+# Core idea:
+#   1. Pick i as root → left subtree from [start, i-1], right from [i+1, end]
+#   2. Cartesian product of all left × right subtrees
+#   3. Base case: start > end → return [None] (empty subtree)
 class Solution:
     def generateTrees(self, n):
         """
@@ -2101,15 +2187,15 @@ class Solution:
         def generate_trees(start, end):
             if start > end:
                 return [None,]
-            
+
             all_trees = []
             for i in range(start, end + 1):  # pick up a root
                 # all possible left subtrees if i is choosen to be a root
                 left_trees = generate_trees(start, i - 1)
-                
+
                 # all possible right subtrees if i is choosen to be a root
                 right_trees = generate_trees(i + 1, end)
-                
+
                 # connect left and right subtrees to the root i
                 for l in left_trees:
                     for r in right_trees:
@@ -2117,10 +2203,38 @@ class Solution:
                         current_tree.left = l
                         current_tree.right = r
                         all_trees.append(current_tree)
-            
+
             return all_trees
-        
+
         return generate_trees(1, n) if n else []
+```
+
+```java
+// LC 95 — Java plain recursion
+// See UniqueBinarySearchTrees2.java for memoized, iterative DP,
+// and space-optimized DP approaches
+public List<TreeNode> generateTrees(int n) {
+    if (n == 0) return new ArrayList<>();
+    return buildTrees(1, n);
+}
+
+private List<TreeNode> buildTrees(int start, int end) {
+    List<TreeNode> allTrees = new ArrayList<>();
+    if (start > end) { allTrees.add(null); return allTrees; }
+    for (int i = start; i <= end; i++) {
+        List<TreeNode> leftSubtrees = buildTrees(start, i - 1);
+        List<TreeNode> rightSubtrees = buildTrees(i + 1, end);
+        for (TreeNode left : leftSubtrees) {
+            for (TreeNode right : rightSubtrees) {
+                TreeNode root = new TreeNode(i);
+                root.left = left;
+                root.right = right;
+                allTrees.add(root);
+            }
+        }
+    }
+    return allTrees;
+}
 ```
 
 ### 2-8) Insert into a Binary Search Tree
