@@ -45,50 +45,134 @@ public class BusRoutes {
 
     // V0
     // TODO : fix below
-    // IDEA : BFS
 //    public int numBusesToDestination(int[][] routes, int source, int target) {
 //
-//        // edge case
-//        if (routes.length == 1) {
-//            if (source == target) {
-//                return 0;
-//            }
-//            return 1;
-//        }
-//        // build graph
-//        Map<Integer, List<Integer>> graph = new HashMap<>();
-//        for (int[] x : routes) {
-//            int start = x[0];
-//            int end = x[1];
-//            List<Integer> cur = graph.getOrDefault(start, new ArrayList<>());
-//            cur.add(end);
-//            graph.put(start, cur); // double check ???
-//        }
-//        // bfs
-//        int cnt = 0;
-//        Queue<Integer> queue = new LinkedList<>();
-//        queue.add(source);
-//        Set<Integer> visited = new HashSet<>();
-//        while (!queue.isEmpty()) {
-//            Integer curr = queue.poll();
-//            // visit "neighbor"
-//            if (!graph.keySet().isEmpty()) {
-//                for (Integer x : graph.get(curr)) {
-//                    if (!visited.contains(x)) {
-//                        if (target == x) {
-//                            return cnt;
-//                        }
-//                        cnt += 1;
-//                        queue.add(x);
-//                        visited.add(x);
-//                    }
-//                }
-//            }
-//        }
-//
-//        //return cnt > 0 ? cnt : -1;
-//        return -1;
 //    }
+
+    // V0-1
+    // IDEA: BFS (fixed by gemini)
+    public int numBusesToDestination_0_1(int[][] routes, int source, int target) {
+        if (source == target)
+            return 0;
+
+        int n = routes.length;
+        // 1. Map: Stop -> List of Bus Routes that pass through it
+        Map<Integer, List<Integer>> stopToBuses = new HashMap<>();
+        for (int busId = 0; busId < n; busId++) {
+            for (int stop : routes[busId]) {
+                stopToBuses.computeIfAbsent(stop, k -> new ArrayList<>()).add(busId);
+            }
+        }
+
+        // 2. BFS Setup
+        Queue<Integer> queue = new LinkedList<>();
+        Set<Integer> visitedBuses = new HashSet<>();
+        Set<Integer> visitedStops = new HashSet<>();
+
+        // Start BFS with all buses that pass through the source stop
+        if (!stopToBuses.containsKey(source))
+            return -1;
+        for (int busId : stopToBuses.get(source)) {
+            queue.offer(busId);
+            visitedBuses.add(busId);
+        }
+
+        int busCount = 1;
+
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
+                int currBusId = queue.poll();
+
+                // Check all stops this bus visits
+                for (int stop : routes[currBusId]) {
+                    if (stop == target)
+                        return busCount;
+
+                    // If we haven't processed this stop's other buses yet
+                    if (!visitedStops.contains(stop)) {
+                        visitedStops.add(stop);
+
+                        // Add all "transfer" buses at this stop
+                        for (int nextBusId : stopToBuses.getOrDefault(stop, new ArrayList<>())) {
+                            if (!visitedBuses.contains(nextBusId)) {
+                                visitedBuses.add(nextBusId);
+                                queue.offer(nextBusId);
+                            }
+                        }
+                    }
+                }
+            }
+            busCount++;
+        }
+
+        return -1;
+    }
+
+
+    // V0-2
+    // IDEA: BFS (gpt)
+    public int numBusesToDestination_0_2(int[][] routes, int source, int target) {
+        if (source == target)
+            return 0;
+
+        // stop -> list of routes
+        Map<Integer, List<Integer>> stopToRoutes = new HashMap<>();
+
+        for (int i = 0; i < routes.length; i++) {
+            for (int stop : routes[i]) {
+                stopToRoutes
+                        .computeIfAbsent(stop, k -> new ArrayList<>())
+                        .add(i);
+            }
+        }
+
+        Queue<Integer> q = new LinkedList<>();
+        boolean[] visitedRoutes = new boolean[routes.length];
+        Set<Integer> visitedStops = new HashSet<>();
+
+        // init: all routes from source
+        for (int route : stopToRoutes.getOrDefault(source, new ArrayList<>())) {
+            q.offer(route);
+            visitedRoutes[route] = true;
+        }
+
+        int buses = 1;
+
+        // BFS
+        while (!q.isEmpty()) {
+            int size = q.size();
+
+            for (int i = 0; i < size; i++) {
+                int route = q.poll();
+
+                // check all stops in this route
+                for (int stop : routes[route]) {
+                    if (stop == target)
+                        return buses;
+
+                    if (visitedStops.contains(stop))
+                        continue;
+                    visitedStops.add(stop);
+
+                    // explore neighbor routes via this stop
+                    for (int nextRoute : stopToRoutes.get(stop)) {
+                        if (!visitedRoutes[nextRoute]) {
+                            visitedRoutes[nextRoute] = true;
+                            q.offer(nextRoute);
+                        }
+                    }
+                }
+            }
+
+            buses++;
+        }
+
+        return -1;
+    }
+
+
+
 
     // V1
     // IDEA : Breadth-First Search (BFS) with Bus Stops as Nodes
@@ -271,5 +355,10 @@ public class BusRoutes {
 
         return -1;
     }
+
+
+
+
+
 
 }

@@ -1318,6 +1318,7 @@ public class Workspace24 {
         // run BFS
         while (!q.isEmpty()){
             int size = q.size();
+
             for(int i = 0; i < size; i++){
 
                 Integer[] cur = q.poll();
@@ -1353,6 +1354,63 @@ public class Workspace24 {
 
 
         return mat;
+    }
+
+
+
+    // LC 815
+    // 8.27 - 37 am
+    /**
+     *  -> Return the `least number` of `buses`
+     *  must take to travel from `source to target. `
+     *  Return -1 if it is not possible.
+     *
+     *   - routes[i] is a bus route that the ith bus repeats forever.
+     *   - e.g.:
+     *     - routes[0] = [1, 5, 7]
+     *       ->   1 -> 5 -> 7 -> 1 -> 5 -> 7 -> ....
+     *
+     *   - can ONLY travel via bus
+     *   - is NOT in any bus initially
+     *
+     *
+     *
+     *  -----------------
+     *
+     *   IDEA 1) BFS
+     *
+     *   IDEA 2) OTHER GRAPH ALGO ???
+     *
+     *   IDEA 3) UNION FIND ???
+     *
+     *  IDEA 4) DFS + BFS
+     *
+     *-----------------
+     *
+     */
+    //  IDEA 1) BFS
+    public int numBusesToDestination(int[][] routes, int source, int target) {
+        // edge
+        if(source == target){
+            return 0;
+        }
+
+        // build graph
+        // map { node: [next_1, next_2, ...] }
+        Map<Integer, List<Integer>> map = new HashMap<>();
+        for(int[] s: routes){
+            // ??? remove the `non valid` bus
+            if(s.length > 1){
+                // ???
+                for(int x: s){
+                    // ??
+                    //if()
+                }
+            }
+        }
+
+
+        return -1;
     }
 
 
