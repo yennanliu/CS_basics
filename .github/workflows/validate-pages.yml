@@ -55,8 +55,17 @@ jobs:
         cat > build-site.js << 'BUILDSCRIPT'
         const fs = require('fs');
         const path = require('path');
+        const { execSync } = require('child_process');
         const MarkdownIt = require('markdown-it');
         const markdownItAnchor = require('markdown-it-anchor');
+
+        function getLastModified(filePath) {
+          try {
+            const date = execSync(`git log -1 --format="%ai" -- "${filePath}"`, { encoding: 'utf8' }).trim();
+            if (!date) return null;
+            return new Date(date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+          } catch (e) { return null; }
+        }
 
         function slugify(text) {
           return text.toLowerCase().replace(/<[^>]*>/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
@@ -143,6 +152,7 @@ jobs:
           <meta charset="UTF-8">
           <meta name="viewport" content="width=device-width, initial-scale=1.0">
           <title>${title} - CS_basics</title>
+          <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
           <link rel="stylesheet" href="${basePath}style.css">
           <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
           <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
@@ -181,9 +191,18 @@ jobs:
               wrapper.appendChild(header);
               wrapper.appendChild(pre);
             });
+            var progressBar = document.getElementById('reading-progress');
+            if (progressBar) {
+              window.addEventListener('scroll', function() {
+                var winScroll = document.documentElement.scrollTop;
+                var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+              });
+            }
           });</script>
         </head>
         <body>
+          <div class="progress-container"><div class="progress-bar" id="reading-progress"></div></div>
           <nav class="navbar">
             <div class="container">
               <div class="nav-brand"><span class="nav-title">CS_basics</span></div>
@@ -234,10 +253,12 @@ jobs:
             htmlContent = ensureHeadingIds(htmlContent);
             const toc = generateTOC(htmlContent);
 
+            const lastMod = getLastModified(filePath);
             const wrappedContent = `
+              <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">${title}</span></nav>
               <div class="cheatsheet-header">
-                <a href="../cheatsheets.html" class="back-link">Back to Cheat Sheets</a>
                 <h1>${title}</h1>
+                ${lastMod ? `<span class="last-updated">Last updated: ${lastMod}</span>` : ''}
               </div>
               ${toc}
               <div class="cheatsheet-content">${htmlContent}</div>
@@ -249,8 +270,15 @@ jobs:
 
         // Write cheatsheet pages
         fs.mkdirSync('_site/cheatsheets', { recursive: true });
-        cheatsheets.forEach(sheet => {
-          const fixedContent = sheet.content.replace(/src\s*=\s*"doc\//g, 'src="../doc/');
+        cheatsheets.forEach((sheet, idx) => {
+          let fixedContent = sheet.content.replace(/src\s*=\s*"doc\//g, 'src="../doc/');
+          const prev = idx > 0 ? cheatsheets[idx - 1] : null;
+          const next = idx < cheatsheets.length - 1 ? cheatsheets[idx + 1] : null;
+          let prevNext = '<nav class="prev-next">';
+          prevNext += prev ? `<a href="${prev.file}.html" class="prev-link">← ${prev.title}</a>` : '<span></span>';
+          prevNext += next ? `<a href="${next.file}.html" class="next-link">${next.title} →</a>` : '<span></span>';
+          prevNext += '</nav>';
+          fixedContent += prevNext;
           const html = htmlTemplate(sheet.title, fixedContent, 'cheatsheets', '../');
           fs.writeFileSync(`_site/cheatsheets/${sheet.file}.html`, html);
         });
@@ -293,10 +321,12 @@ jobs:
             htmlContent = ensureHeadingIds(htmlContent);
             const toc = generateTOC(htmlContent);
 
+            const lastMod = getLastModified(filePath);
             const wrappedContent = `
+              <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../faqs.html">FAQs</a> <span class="sep">›</span> <span class="current">${title}</span></nav>
               <div class="cheatsheet-header">
-                <a href="../faqs.html" class="back-link">Back to FAQs</a>
                 <h1>${title}</h1>
+                ${lastMod ? `<span class="last-updated">Last updated: ${lastMod}</span>` : ''}
               </div>
               ${toc}
               <div class="cheatsheet-content">${htmlContent}</div>
@@ -308,8 +338,15 @@ jobs:
 
         // Write FAQ pages
         fs.mkdirSync('_site/faqs', { recursive: true });
-        faqs.forEach(faq => {
-          const fixedContent = faq.content.replace(/src\s*=\s*"doc\//g, 'src="../doc/');
+        faqs.forEach((faq, idx) => {
+          let fixedContent = faq.content.replace(/src\s*=\s*"doc\//g, 'src="../doc/');
+          const prev = idx > 0 ? faqs[idx - 1] : null;
+          const next = idx < faqs.length - 1 ? faqs[idx + 1] : null;
+          let prevNext = '<nav class="prev-next">';
+          prevNext += prev ? `<a href="${prev.file}.html" class="prev-link">← ${prev.title}</a>` : '<span></span>';
+          prevNext += next ? `<a href="${next.file}.html" class="next-link">${next.title} →</a>` : '<span></span>';
+          prevNext += '</nav>';
+          fixedContent += prevNext;
           const html = htmlTemplate(faq.title, fixedContent, 'faqs', '../');
           fs.writeFileSync(`_site/faqs/${faq.file}.html`, html);
         });
