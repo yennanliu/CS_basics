@@ -41,6 +41,87 @@ public class UniqueBinarySearchTrees2 {
 //    }
 
 
+    // V0-1
+    // IDEA (gemini)
+    public List<TreeNode> generateTrees_0_1(int n) {
+        if (n == 0)
+            return new ArrayList<>();
+        return buildTrees(1, n);
+    }
+
+    private List<TreeNode> buildTrees(int start, int end) {
+        List<TreeNode> allTrees = new ArrayList<>();
+
+        // Base case: if start > end, there is no node, so we return a list containing null.
+        if (start > end) {
+            allTrees.add(null);
+            return allTrees;
+        }
+
+        // Iterate through each number i as the root
+        for (int i = start; i <= end; i++) {
+            // 1. Generate all possible left subtrees
+            List<TreeNode> leftSubtrees = buildTrees(start, i - 1);
+
+            // 2. Generate all possible right subtrees
+            List<TreeNode> rightSubtrees = buildTrees(i + 1, end);
+
+            // 3. Connect each left and right subtree to the root i
+            for (TreeNode left : leftSubtrees) {
+                for (TreeNode right : rightSubtrees) {
+                    TreeNode root = new TreeNode(i);
+                    root.left = left;
+                    root.right = right;
+                    allTrees.add(root);
+                }
+            }
+        }
+
+        return allTrees;
+    }
+
+
+
+    // V0-2
+    // IDEA: (gpt)
+    public List<TreeNode> generateTrees_0_2(int n) {
+        if (n == 0)
+            return new ArrayList<>();
+        return build(1, n);
+    }
+
+    private List<TreeNode> build(int start, int end) {
+        List<TreeNode> res = new ArrayList<>();
+
+        // base case
+        if (start > end) {
+            res.add(null); // important!
+            return res;
+        }
+
+        // try each number as root
+        for (int i = start; i <= end; i++) {
+
+            // generate all left/right subtrees
+            List<TreeNode> leftTrees = build(start, i - 1);
+            List<TreeNode> rightTrees = build(i + 1, end);
+
+            // combine
+            for (TreeNode left : leftTrees) {
+                for (TreeNode right : rightTrees) {
+                    TreeNode root = new TreeNode(i);
+                    root.left = left;
+                    root.right = right;
+                    res.add(root);
+                }
+            }
+        }
+
+        return res;
+    }
+
+
+
     // V1-1
     // IDEA: Recursive Dynamic Programming
     // https://leetcode.com/problems/unique-binary-search-trees-ii/editorial/
