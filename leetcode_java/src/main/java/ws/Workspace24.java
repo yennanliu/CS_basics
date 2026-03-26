@@ -649,8 +649,61 @@ public class Workspace24 {
      *
      *
      */
-    // IDEA 1) DFS + GRAPH
+    // 7.22 - 32 am
+    // IDEA HASH SET ???
     public boolean validPath(int n, int[][] edges, int source, int destination) {
+        // edge
+        if(source == destination){
+            return true; // ???
+        }
+        if(edges == null){
+            return false;
+        }
+
+        // build graph
+        // map: { node : [neighbor_1, neighbor_2, ..] }
+        Map<Integer, List<Integer>> map = new HashMap<>();
+
+        for(int[] e: edges){
+            // ???
+            int ui = e[0];
+            int vi = e[1];
+
+            if(!map.containsKey(ui)){
+                map.put(ui, new ArrayList<>());
+            }
+
+            if(!map.containsKey(vi)){
+                map.put(vi, new ArrayList<>());
+            }
+
+            List<Integer> l1 = map.get(ui);
+            List<Integer> l2 = map.get(vi);
+
+            l1.add(vi);
+            l2.add(ui);
+
+            map.put(ui, l1);
+            map.put(vi, l2);
+        }
+
+        System.out.println(">>> map = " + map);
+
+        // edge
+        if(map.isEmpty() || !map.containsKey(source)){
+            return false;
+        }
+
+        return map.get(source).contains(destination);
+    }
+
+
+
+
+
+
+    // IDEA 1) DFS + GRAPH
+    public boolean validPath_99(int n, int[][] edges, int source, int destination) {
         // edge
         // check if n == edges.size() - 1????
 
@@ -1757,6 +1810,128 @@ public class Workspace24 {
         }
 
      //   return splitNodes;
+    }
+
+
+    // LC 207
+    // 7.32 - 42 am
+    /**
+     *  -> Return true if you can finish all courses.
+     *  Otherwise, return false.
+     *
+     *  course:  [0, n-1]
+     *
+     *  prerequisites[i] = [ai, bi]
+     *     -> MUST take bi first, then can take ai
+     *
+     *
+     *
+     *
+     *
+     *  --------------
+     *
+     *   IDEA 1) DFS + GRAPH + state ????
+     *
+     *
+     *  --------------
+     *
+     */
+    public boolean canFinish(int numCourses, int[][] prerequisites) {
+        // edge
+
+        // map: { course: [ pre_1, pre_2, ... ] } // ???
+
+        /** NOTE !!!
+         *
+         *  // map: { pre_course : [next_course_1, next_course_2, ...] }
+         */
+
+
+        Map<Integer, List<Integer>> map = new HashMap<>();
+        for(int[] p: prerequisites){
+            int ai = p[0];
+            int bi = p[1];
+
+            /**
+             *     *  prerequisites[i] = [ai, bi]
+             *      *     -> MUST take bi first, then can take ai
+             */
+
+//            if(!map.containsKey(ai)){
+//                map.put(ai, new ArrayList<>());
+//            }
+//
+//            List<Integer> list = map.get(ai);
+//            list.add(bi);
+//            map.put(ai, list);
+
+            if(!map.containsKey(bi)){
+                map.put(bi, new ArrayList<>());
+            }
+
+            List<Integer> list = map.get(bi);
+            list.add(ai);
+            map.put(bi, list);
+        }
+
+        System.out.println(">>> map = " + map);
+
+        // NOTE !!!
+        // we use `int array` to define node state
+        int[] states = new int[numCourses];
+
+        //Set<Integer> visited = new HashSet<>();
+
+        // ??
+        for(int i = 0; i < numCourses; i++){
+            if(!courseHelper(map, i, states)){
+                return false;
+            }
+        }
+
+
+        return true;
+    }
+
+    // state:
+    // 0: not visited
+    // 1: visiting
+    // 2: visited
+    private boolean courseHelper(Map<Integer, List<Integer>> map, int course, int[] states){
+        // edge
+        // ??
+        if(map.isEmpty()){
+            return true; // ???
+        }
+        if(states[course] == 2){
+            return true; // ???
+        }
+        if(states[course]  == 1){
+            return false; // ???
+        }
+
+
+        // mark as `visiting` ???
+        states[course] = 1;
+
+
+        // visit next
+        for(int next: map.get(course)){
+            // mark as `visiting` ???
+           // states[next] = 1;
+            if(!courseHelper(map, next, states)){
+                return false; // ???
+            }
+        }
+
+        // need backtrack ???
+        // but `state` is primary type ???
+
+        // mark as visited
+        states[course] = 2;
+
+
+        return true;
     }
 
 
