@@ -1416,6 +1416,28 @@ public class Workspace24 {
 
 
     // LC 95
+    // 10.36 - 46 am
+    /**
+     *  -> return all the structurally
+     *  unique BST's (binary search trees),
+     *
+     *  ans could be in ANY order
+     *
+     *
+     *  int n
+     *  node has val in [1, n]
+     *
+     *  -----------------
+     *
+     *  IDEA 1) BST + DFS + BRUTE FORCE ??
+     *
+     *  IDEA 2) DP ?????
+     *
+     *
+     *  -----------------
+     *
+     *
+     */
     public List<TreeNode> generateTrees(int n) {
 
         return null;

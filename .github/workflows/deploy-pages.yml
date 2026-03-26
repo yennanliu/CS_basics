@@ -398,6 +398,15 @@ jobs:
           <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
           <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
           <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+          <script>
+          // Apply theme before render to prevent flash
+          (function() {
+            var saved = localStorage.getItem('theme');
+            if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+              document.documentElement.setAttribute('data-theme', 'dark');
+            }
+          })();
+          </script>
           <script>document.addEventListener('DOMContentLoaded', function() {
             hljs.highlightAll();
             document.querySelectorAll('pre code').forEach(function(codeEl) {
@@ -450,6 +459,24 @@ jobs:
                 progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
               });
             }
+            // Dark mode toggle
+            var toggle = document.getElementById('theme-toggle');
+            if (toggle) {
+              var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+              toggle.textContent = isDark ? '☀️' : '🌙';
+              toggle.addEventListener('click', function() {
+                var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+                if (dark) {
+                  document.documentElement.removeAttribute('data-theme');
+                  localStorage.setItem('theme', 'light');
+                  toggle.textContent = '🌙';
+                } else {
+                  document.documentElement.setAttribute('data-theme', 'dark');
+                  localStorage.setItem('theme', 'dark');
+                  toggle.textContent = '☀️';
+                }
+              });
+            }
           });</script>
         </head>
         <body>
@@ -468,6 +495,7 @@ jobs:
                 <a href="${basePath}resources.html" class="${currentPage === 'resources' ? 'active' : ''}">Resources</a>
                 <a href="${basePath}cheatsheets.html" class="${currentPage === 'cheatsheets' ? 'active' : ''}">Cheat Sheets</a>
                 <a href="${basePath}faqs.html" class="${currentPage === 'faqs' ? 'active' : ''}">FAQs</a>
+                <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">🌙</button>
                 <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link">
                   <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
                     <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
@@ -635,21 +663,72 @@ jobs:
         .progress-bar {
           height: 100%;
           width: 0%;
-          background: linear-gradient(90deg, #333 0%, #666 100%);
+          background: linear-gradient(90deg, #333 0%, #888 100%);
           transition: width 0.1s ease-out;
         }
 
+        /* ── Light theme (default) ── */
         :root {
           --primary-color: #111111;
           --secondary-color: #333333;
           --accent-color: #555555;
           --text-color: #1a1a1a;
           --text-light: #666666;
-          --bg-color: #ffffff;
-          --bg-secondary: #f5f5f5;
+          --bg-color: #fafafa;
+          --bg-secondary: #f0f0f0;
+          --bg-card: #ffffff;
           --border-color: #e0e0e0;
           --code-bg: #f0f0f0;
+          --code-inline-border: #ddd;
           --link-color: #222222;
+          --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+          --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
+          --shadow-lg: 0 8px 30px rgba(0,0,0,0.1);
+          --navbar-bg: linear-gradient(135deg, #000000 0%, #1a1a1a 40%, #333333 70%, #4a4a4a 100%);
+          --code-block-bg: #1e1e1e;
+          --code-block-border: #333;
+          --code-header-bg: #2d2d2d;
+          --code-header-border: #404040;
+          --table-header-bg: #222;
+          --table-header-color: #fff;
+          --table-even-bg: #fafafa;
+          --table-hover-bg: #f0f0f0;
+          --blockquote-border: #999;
+          --selection-bg: #333;
+          --selection-color: #fff;
+          --heading-border: #222;
+        }
+
+        /* ── Dark theme ── */
+        [data-theme="dark"] {
+          --primary-color: #e0e0e0;
+          --secondary-color: #cccccc;
+          --accent-color: #aaaaaa;
+          --text-color: #e0e0e0;
+          --text-light: #999999;
+          --bg-color: #141414;
+          --bg-secondary: #1e1e1e;
+          --bg-card: #1c1c1c;
+          --border-color: #333333;
+          --code-bg: #2a2a2a;
+          --code-inline-border: #444;
+          --link-color: #cccccc;
+          --shadow-sm: 0 1px 3px rgba(0,0,0,0.3);
+          --shadow-md: 0 4px 16px rgba(0,0,0,0.4);
+          --shadow-lg: 0 8px 30px rgba(0,0,0,0.5);
+          --navbar-bg: linear-gradient(135deg, #0a0a0a 0%, #111111 40%, #1a1a1a 70%, #222222 100%);
+          --code-block-bg: #0d0d0d;
+          --code-block-border: #2a2a2a;
+          --code-header-bg: #1a1a1a;
+          --code-header-border: #333;
+          --table-header-bg: #1a1a1a;
+          --table-header-color: #ccc;
+          --table-even-bg: #1a1a1a;
+          --table-hover-bg: #252525;
+          --blockquote-border: #555;
+          --selection-bg: #555;
+          --selection-color: #fff;
+          --heading-border: #444;
         }
 
         body {
@@ -658,17 +737,19 @@ jobs:
           background-color: var(--bg-color);
           line-height: 1.7;
           font-size: 16px;
+          transition: background-color 0.3s ease, color 0.3s ease;
         }
 
         /* Navbar */
         .navbar {
-          background: linear-gradient(135deg, #000000 0%, #1a1a1a 40%, #333333 70%, #4a4a4a 100%);
+          background: var(--navbar-bg);
           color: white;
           padding: 1rem 0;
-          box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+          box-shadow: 0 2px 12px rgba(0,0,0,0.2);
           position: sticky;
           top: 0;
           z-index: 100;
+          backdrop-filter: blur(10px);
         }
 
         .navbar .container {
@@ -715,9 +796,34 @@ jobs:
         }
 
         .github-link {
-          background: rgba(255,255,255,0.15);
+          background: rgba(255,255,255,0.1);
           padding: 0.5rem 1rem;
           border-radius: 6px;
+          border: 1px solid rgba(255,255,255,0.15);
+          transition: all 0.2s;
+        }
+
+        .github-link:hover {
+          background: rgba(255,255,255,0.2);
+          border-color: rgba(255,255,255,0.3);
+        }
+
+        /* Dark mode toggle */
+        .theme-toggle {
+          background: rgba(255,255,255,0.1);
+          border: 1px solid rgba(255,255,255,0.15);
+          border-radius: 6px;
+          padding: 0.4rem 0.6rem;
+          font-size: 1.1rem;
+          cursor: pointer;
+          transition: all 0.2s;
+          line-height: 1;
+        }
+
+        .theme-toggle:hover {
+          background: rgba(255,255,255,0.2);
+          border-color: rgba(255,255,255,0.3);
+          transform: scale(1.1);
         }
 
         /* Hamburger menu button (hidden on desktop) */
@@ -754,10 +860,12 @@ jobs:
         }
 
         .content {
-          background: white;
+          background: var(--bg-card);
           padding: 3rem;
-          border-radius: 8px;
-          box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+          border-radius: 12px;
+          box-shadow: var(--shadow-md);
+          border: 1px solid var(--border-color);
+          transition: background-color 0.3s ease, box-shadow 0.3s ease;
         }
 
         /* Typography */
@@ -766,8 +874,9 @@ jobs:
           font-weight: 700;
           margin-bottom: 1.5rem;
           color: var(--text-color);
-          border-bottom: 2px solid #222;
+          border-bottom: 2px solid var(--heading-border);
           padding-bottom: 0.5rem;
+          letter-spacing: -0.02em;
         }
 
         h2 {
@@ -802,33 +911,35 @@ jobs:
         a {
           color: var(--link-color);
           text-decoration: underline;
-          text-decoration-color: #999;
-          text-underline-offset: 2px;
+          text-decoration-color: var(--border-color);
+          text-underline-offset: 3px;
+          transition: text-decoration-color 0.2s;
         }
 
         a:hover {
-          text-decoration-color: #000;
+          text-decoration-color: var(--text-color);
         }
 
         /* Code Blocks */
         code {
           background: var(--code-bg);
           padding: 0.15rem 0.4rem;
-          border-radius: 3px;
+          border-radius: 4px;
           font-family: 'JetBrains Mono', 'Monaco', 'Menlo', monospace;
           font-size: 0.875em;
-          color: #333;
+          color: var(--text-color);
           font-weight: 500;
           word-break: break-word;
+          border: 1px solid var(--code-inline-border);
         }
 
         pre {
-          background: #1e1e1e;
+          background: var(--code-block-bg);
           padding: 1.25rem;
-          border-radius: 6px;
+          border-radius: 8px;
           overflow-x: auto;
           margin: 1.5rem 0;
-          border: 1px solid #333;
+          border: 1px solid var(--code-block-border);
         }
 
         pre code {
@@ -838,13 +949,14 @@ jobs:
           font-size: 0.875rem;
           font-weight: 400;
           line-height: 1.6;
+          border: none;
         }
 
         /* Inline code in headings */
         h1 code, h2 code, h3 code, h4 code {
           font-size: 0.85em;
           background: var(--code-bg);
-          color: #111;
+          color: var(--text-color);
         }
 
         /* Lists */
@@ -897,13 +1009,13 @@ jobs:
 
         /* Blockquotes */
         blockquote {
-          border-left: 3px solid #999;
+          border-left: 3px solid var(--blockquote-border);
           padding: 0.75rem 1rem 0.75rem 1.5rem;
           margin: 1.5rem 0;
           color: var(--text-light);
           font-style: italic;
           background: var(--bg-secondary);
-          border-radius: 0 4px 4px 0;
+          border-radius: 0 6px 6px 0;
         }
 
         /* HR */
@@ -915,20 +1027,26 @@ jobs:
 
         /* Footer */
         footer {
-          background: #111;
-          padding: 2rem 0;
+          background: #0a0a0a;
+          padding: 2.5rem 0;
           text-align: center;
-          color: #999;
-          border-top: 1px solid #333;
+          color: #888;
+          border-top: 1px solid #222;
         }
 
         footer p {
           margin: 0.5rem 0;
+          font-size: 0.9rem;
         }
 
         footer a {
-          color: #ccc;
+          color: #aaa;
           margin: 0 0.5rem;
+          transition: color 0.2s;
+        }
+
+        footer a:hover {
+          color: #fff;
         }
 
         /* Checkboxes */
@@ -1014,11 +1132,15 @@ jobs:
             top: 100%;
             left: 0;
             right: 0;
-            background: linear-gradient(180deg, #1a1a1a 0%, #333333 100%);
+            background: linear-gradient(180deg, #111 0%, #222 100%);
             flex-direction: column;
             padding: 1rem 1.5rem;
             gap: 0.25rem;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+          }
+
+          .theme-toggle {
+            align-self: flex-start;
           }
 
           .nav-links.open {
@@ -1123,8 +1245,8 @@ jobs:
 
         /* Selection color */
         ::selection {
-          background: #333;
-          color: white;
+          background: var(--selection-bg);
+          color: var(--selection-color);
         }
 
         /* Cheatsheet Grid */
@@ -1136,17 +1258,36 @@ jobs:
         }
 
         .cheatsheet-card {
-          background: var(--bg-secondary);
-          padding: 1.25rem;
-          border-radius: 6px;
+          background: var(--bg-card);
+          padding: 1.5rem;
+          border-radius: 10px;
           border: 1px solid var(--border-color);
-          transition: all 0.2s ease;
+          transition: all 0.25s ease;
+          box-shadow: var(--shadow-sm);
+          position: relative;
+          overflow: hidden;
+        }
+
+        .cheatsheet-card::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          height: 3px;
+          background: linear-gradient(90deg, #333 0%, #666 50%, #999 100%);
+          opacity: 0;
+          transition: opacity 0.25s ease;
         }
 
         .cheatsheet-card:hover {
-          border-color: #999;
-          box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-          transform: translateY(-2px);
+          border-color: var(--accent-color);
+          box-shadow: var(--shadow-md);
+          transform: translateY(-3px);
+        }
+
+        .cheatsheet-card:hover::before {
+          opacity: 1;
         }
 
         .cheatsheet-card h3 {
@@ -1208,25 +1349,29 @@ jobs:
           color: var(--text-light);
           text-decoration: none;
           font-weight: 500;
-          padding: 0.4rem 0.75rem;
-          border-radius: 4px;
+          padding: 0.4rem 0.85rem;
+          border-radius: 6px;
           background: var(--bg-secondary);
+          border: 1px solid var(--border-color);
           transition: all 0.2s;
         }
 
         .back-link:hover {
-          background: #333;
+          background: var(--secondary-color);
           color: white;
           text-decoration: none;
+          border-color: var(--secondary-color);
         }
 
         /* Table of Contents */
         .toc {
           background: var(--bg-secondary);
           padding: 1.25rem 1.5rem;
-          border-radius: 6px;
+          border-radius: 10px;
           margin: 2rem 0;
-          border-left: 3px solid #333;
+          border-left: 3px solid var(--accent-color);
+          border: 1px solid var(--border-color);
+          border-left: 3px solid var(--accent-color);
         }
 
         .toc h2 {
@@ -1289,10 +1434,11 @@ jobs:
           background: none;
           border-radius: 0;
           box-shadow: none;
-          border-bottom: 2px solid #222;
+          border-bottom: 2px solid var(--heading-border);
           position: relative;
           margin-left: 0;
           margin-right: 0;
+          letter-spacing: -0.01em;
         }
 
         .cheatsheet-content > h2:first-child {
@@ -1313,7 +1459,7 @@ jobs:
           border-radius: 0;
           box-shadow: none;
           border: none;
-          border-bottom: 1px solid #ddd;
+          border-bottom: 1px solid var(--border-color);
         }
 
         .cheatsheet-content h4 {
@@ -1323,19 +1469,19 @@ jobs:
           margin-top: 1.5rem;
           padding: 0;
           background: none;
-          border-left: 3px solid #999;
+          border-left: 3px solid var(--accent-color);
           padding-left: 0.75rem;
           border-radius: 0;
         }
 
         /* Code blocks with syntax highlighting */
         .cheatsheet-content pre {
-          background: #1e1e1e;
+          background: var(--code-block-bg);
           color: #d4d4d4;
           padding: 1.25rem;
-          border-radius: 6px;
+          border-radius: 8px;
           overflow-x: auto;
-          border: 1px solid #333;
+          border: 1px solid var(--code-block-border);
           box-shadow: none;
           margin: 1.25rem 0;
           position: relative;
@@ -1355,13 +1501,13 @@ jobs:
         }
 
         .cheatsheet-content code {
-          background: #f0f0f0;
-          color: #333;
+          background: var(--code-bg);
+          color: var(--text-color);
           padding: 0.15rem 0.4rem;
-          border-radius: 3px;
+          border-radius: 4px;
           font-size: 0.875em;
           font-weight: 500;
-          border: 1px solid #ddd;
+          border: 1px solid var(--code-inline-border);
         }
 
         .cheatsheet-content pre code {
@@ -1379,7 +1525,7 @@ jobs:
           padding: 0.25rem 0 0.25rem 1.5rem;
           border-radius: 0;
           margin: 0.75rem 0;
-          border-left: 2px solid #ddd;
+          border-left: 2px solid var(--border-color);
         }
 
         .cheatsheet-content ul li {
@@ -1401,12 +1547,12 @@ jobs:
           margin-top: 0.25rem;
           padding: 0.25rem 0 0.25rem 1rem;
           background: transparent;
-          border-left: 1px solid #ddd;
+          border-left: 1px solid var(--border-color);
         }
 
         .cheatsheet-content ul ul li:before {
           content: "·";
-          color: #999;
+          color: var(--text-light);
         }
 
         .cheatsheet-content ol {
@@ -1415,7 +1561,7 @@ jobs:
           padding: 0.25rem 0 0.25rem 2rem;
           border-radius: 0;
           margin: 0.75rem 0;
-          border-left: 2px solid #ddd;
+          border-left: 2px solid var(--border-color);
         }
 
         .cheatsheet-content ol li {
@@ -1466,11 +1612,11 @@ jobs:
         /* Blockquote in cheatsheets */
         .cheatsheet-content blockquote {
           background: var(--bg-secondary);
-          border-left: 3px solid #999;
+          border-left: 3px solid var(--blockquote-border);
           color: var(--text-color);
           font-style: italic;
           padding: 1rem 1.25rem;
-          border-radius: 0 4px 4px 0;
+          border-radius: 0 6px 6px 0;
           box-shadow: none;
           margin: 1.25rem 0;
           position: relative;
@@ -1492,33 +1638,37 @@ jobs:
         /* Table improvements */
         .cheatsheet-content table {
           font-size: 0.9rem;
-          background: white;
+          background: var(--bg-card);
           margin: 1.5rem 0;
           border: 1px solid var(--border-color);
-          border-radius: 0;
+          border-radius: 8px;
           box-shadow: none;
+          overflow: hidden;
         }
 
         .cheatsheet-content table thead {
-          background: #222;
+          background: var(--table-header-bg);
         }
 
         .cheatsheet-content table th {
-          color: white;
+          color: var(--table-header-color);
           font-weight: 600;
-          padding: 0.6rem 0.75rem;
+          padding: 0.7rem 0.85rem;
+          font-size: 0.825rem;
+          text-transform: uppercase;
+          letter-spacing: 0.03em;
         }
 
         .cheatsheet-content table td {
-          padding: 0.6rem 0.75rem;
+          padding: 0.65rem 0.85rem;
         }
 
         .cheatsheet-content table tbody tr:nth-child(even) {
-          background: #fafafa;
+          background: var(--table-even-bg);
         }
 
         .cheatsheet-content table tbody tr:hover {
-          background: #f0f0f0;
+          background: var(--table-hover-bg);
         }
 
         .cheatsheet-content table code {
@@ -1528,9 +1678,10 @@ jobs:
         /* Code block wrapper with header (language label + copy button) */
         .code-block-wrapper {
           margin: 1.5rem 0;
-          border-radius: 6px;
+          border-radius: 10px;
           overflow: hidden;
-          border: 1px solid #333;
+          border: 1px solid var(--code-block-border);
+          box-shadow: var(--shadow-sm);
         }
 
         .code-block-wrapper pre {
@@ -1543,9 +1694,9 @@ jobs:
           display: flex;
           justify-content: space-between;
           align-items: center;
-          background: #2d2d2d;
-          padding: 0.35rem 0.75rem;
-          border-bottom: 1px solid #404040;
+          background: var(--code-header-bg);
+          padding: 0.4rem 0.85rem;
+          border-bottom: 1px solid var(--code-header-border);
         }
 
         .code-lang-label {
@@ -1582,7 +1733,7 @@ jobs:
 
         /* highlight.js overrides for consistent look */
         .hljs {
-          background: #1e1e1e !important;
+          background: var(--code-block-bg) !important;
           padding: 0 !important;
         }
 
