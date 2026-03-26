@@ -386,6 +386,39 @@ jobs:
           <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
           <script>document.addEventListener('DOMContentLoaded', function() {
             hljs.highlightAll();
+            document.querySelectorAll('pre code').forEach(function(codeEl) {
+              var pre = codeEl.parentElement;
+              var lang = '';
+              var cls = codeEl.className || '';
+              var m = cls.match(/language-(\S+)/) || cls.match(/hljs\s+(\S+)/);
+              if (m) lang = m[1];
+              var wrapper = document.createElement('div');
+              wrapper.className = 'code-block-wrapper';
+              pre.parentNode.insertBefore(wrapper, pre);
+              var header = document.createElement('div');
+              header.className = 'code-block-header';
+              if (lang) {
+                var label = document.createElement('span');
+                label.className = 'code-lang-label';
+                label.textContent = lang;
+                header.appendChild(label);
+              } else {
+                header.appendChild(document.createElement('span'));
+              }
+              var btn = document.createElement('button');
+              btn.className = 'copy-btn';
+              btn.textContent = 'Copy';
+              btn.addEventListener('click', function() {
+                navigator.clipboard.writeText(codeEl.textContent).then(function() {
+                  btn.textContent = 'Copied!';
+                  btn.classList.add('copied');
+                  setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+                });
+              });
+              header.appendChild(btn);
+              wrapper.appendChild(header);
+              wrapper.appendChild(pre);
+            });
             document.querySelectorAll('table').forEach(function(table) {
               if (!table.parentElement.classList.contains('table-wrap')) {
                 var wrapper = document.createElement('div');
@@ -1432,6 +1465,61 @@ jobs:
 
         .cheatsheet-content table code {
           font-size: 0.825rem;
+        }
+
+        /* Code block wrapper with header (language label + copy button) */
+        .code-block-wrapper {
+          margin: 1.5rem 0;
+          border-radius: 6px;
+          overflow: hidden;
+          border: 1px solid #333;
+        }
+
+        .code-block-wrapper pre {
+          margin: 0;
+          border: none;
+          border-radius: 0;
+        }
+
+        .code-block-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          background: #2d2d2d;
+          padding: 0.35rem 0.75rem;
+          border-bottom: 1px solid #404040;
+        }
+
+        .code-lang-label {
+          font-family: 'JetBrains Mono', 'Monaco', 'Menlo', monospace;
+          font-size: 0.75rem;
+          color: #999;
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+          font-weight: 500;
+        }
+
+        .copy-btn {
+          background: transparent;
+          color: #999;
+          border: 1px solid #555;
+          border-radius: 4px;
+          padding: 0.2rem 0.6rem;
+          font-size: 0.75rem;
+          font-family: 'Inter', sans-serif;
+          cursor: pointer;
+          transition: all 0.2s;
+        }
+
+        .copy-btn:hover {
+          color: #fff;
+          border-color: #888;
+          background: rgba(255,255,255,0.1);
+        }
+
+        .copy-btn.copied {
+          color: #4caf50;
+          border-color: #4caf50;
         }
 
         /* highlight.js overrides for consistent look */
