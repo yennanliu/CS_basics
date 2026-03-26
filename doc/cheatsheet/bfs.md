@@ -1081,6 +1081,137 @@ Layer 4: Queue = [cog], steps = 5
 - LC 752: Open the Lock (similar BFS pattern on digit combinations)
 - LC 1008: Construct Binary Search Tree from Preorder Traversal (different pattern)
 
+### Pattern 8: BFS on Abstract Graph (Route-Level BFS)
+```java
+/**
+ * Pattern: BFS where nodes are ROUTES (buses/lines), not physical locations
+ * Use case: Find minimum number of transfers/buses to reach a destination
+ * Key insight: Build stop→routes mapping, BFS on routes with two visited sets (buses + stops)
+ *
+ * Time: O(N * M) where N = number of routes, M = avg stops per route
+ * Space: O(N * M) for the stop-to-routes map and visited sets
+ */
+public int routeLevelBFS(int[][] routes, int source, int target) {
+    if (source == target) return 0;
+
+    // Step 1: Build mapping from stop → list of route IDs
+    Map<Integer, List<Integer>> stopToRoutes = new HashMap<>();
+    for (int i = 0; i < routes.length; i++) {
+        for (int stop : routes[i]) {
+            stopToRoutes.computeIfAbsent(stop, k -> new ArrayList<>()).add(i);
+        }
+    }
+
+    // Step 2: BFS on route IDs (not stops!)
+    Queue<Integer> queue = new LinkedList<>();
+    Set<Integer> visitedRoutes = new HashSet<>();
+    Set<Integer> visitedStops = new HashSet<>();
+
+    // Seed: all routes that pass through the source stop
+    for (int routeId : stopToRoutes.getOrDefault(source, new ArrayList<>())) {
+        queue.offer(routeId);
+        visitedRoutes.add(routeId);
+    }
+
+    int busCount = 1; // Already on the first bus
+
+    while (!queue.isEmpty()) {
+        int size = queue.size();
+        for (int i = 0; i < size; i++) {
+            int currRoute = queue.poll();
+
+            // Check all stops on this route
+            for (int stop : routes[currRoute]) {
+                if (stop == target) return busCount;
+
+                if (visitedStops.contains(stop)) continue;
+                visitedStops.add(stop);
+
+                // Transfer: enqueue all OTHER routes at this stop
+                for (int nextRoute : stopToRoutes.getOrDefault(stop, new ArrayList<>())) {
+                    if (!visitedRoutes.contains(nextRoute)) {
+                        visitedRoutes.add(nextRoute);
+                        queue.offer(nextRoute);
+                    }
+                }
+            }
+        }
+        busCount++;
+    }
+
+    return -1;
+}
+```
+
+**Concrete Example: LC 815 - Bus Routes**
+```
+Problem: Find minimum buses to travel from source=1 to target=6
+Routes: [[1,2,7], [3,6,7]]
+  Route 0: stops 1→2→7→1→...
+  Route 1: stops 3→6→7→3→...
+
+Step 1 - Build stop→routes map:
+  1 → [Route 0]
+  2 → [Route 0]
+  7 → [Route 0, Route 1]   ← transfer point!
+  3 → [Route 1]
+  6 → [Route 1]
+
+Step 2 - BFS:
+  Source stop = 1 → seed Route 0 into queue
+  Queue: [Route 0], busCount = 1
+
+  Layer 1 (busCount = 1):
+    Process Route 0 → check stops [1, 2, 7]:
+      Stop 1: not target. Routes at stop 1 = [Route 0] (already visited)
+      Stop 2: not target. Routes at stop 2 = [Route 0] (already visited)
+      Stop 7: not target. Routes at stop 7 = [Route 0, Route 1]
+        → Route 1 not visited → enqueue Route 1
+    Queue: [Route 1]
+
+  busCount++ → busCount = 2
+
+  Layer 2 (busCount = 2):
+    Process Route 1 → check stops [3, 6, 7]:
+      Stop 3: not target
+      Stop 6: == target! → return busCount = 2 ✓
+```
+
+**Why Two Visited Sets?**
+```
+visitedRoutes: Prevents boarding the same bus twice (infinite loop)
+visitedStops:  Prevents re-processing transfer points
+               (stop 7 connects Routes 0 and 1, but once explored, no need to revisit)
+
+Without visitedStops: Every stop would re-check all its routes
+  → Redundant work, potentially O(N²*M) instead of O(N*M)
+```
+
+**Why BFS on Routes, Not Stops?**
+```
+❌ BFS on stops: Queue = [stop1, stop2, ...]
+   Problem: How do you define "neighbors" of a stop?
+   All other stops on the SAME route → huge adjacency list
+   Loses the concept of "how many buses taken"
+
+✅ BFS on routes: Queue = [route0, route1, ...]
+   Each BFS layer = one bus ride
+   Transfer = finding a new route at a shared stop
+   busCount directly maps to BFS depth
+```
+
+**When to Use This Pattern:**
+- Minimum number of transfers/vehicles/connections
+- Nodes in BFS are abstract entities (routes, lines, groups), not physical locations
+- Problem involves shared stops/stations between routes
+- Need to count transitions between groups, not individual steps
+
+**Similar Problems:**
+- LC 815: Bus Routes (minimum buses to reach target)
+- LC 127: Word Ladder (can be seen as BFS on word groups — Pattern 7 is more natural)
+- LC 841: Keys and Rooms (BFS/DFS on rooms accessed via keys)
+- LC 1197: Minimum Knight Moves (BFS on chess positions)
+
 ---
 
 ## Problem Categories
@@ -1103,6 +1234,7 @@ Layer 4: Queue = [cog], steps = 5
   - **LC 317 (Shortest Distance from All Buildings)** - Sum of distances to all buildings (use fresh visited for each)
 - **DFS + Multi-source BFS (Pattern 4.5)**: LC 934 (Shortest Bridge - mark one component, expand to find other)
 - **Sequential Targets (Pattern 6)**: LC 675 (Cut Off Trees for Golf Event - Sort + Repeated BFS)
+- **Route-Level BFS (Pattern 8)**: LC 815 (Bus Routes - minimum buses/transfers to reach target)
 - **State-Based BFS**: LC 864 (Shortest Path to Get All Keys), LC 1293 (Shortest Path with Obstacles Elimination)
 
 ### 3. Graph Structure Problems
@@ -1485,6 +1617,7 @@ Calculate shortest distance from each cell to ANY source cell in a grid.
 | **Hard** | **LC 317** | **Independent BFS runs (sum of distances)** | **Pattern 4.6 (Independent BFS Runs)** |
 | Hard | LC 675 | Sort + Repeated BFS (sequential targets) | Pattern 6 (Sort + Repeated BFS) |
 | **Hard** | **LC 752** | **BFS + Backtracking on state space - Open the Lock** | **Pattern 7 (BFS + Backtracking)** |
+| **Hard** | **LC 815** | **Route-level BFS (minimum buses)** | **Pattern 8 (Route-Level BFS)** |
 | Hard | LC 864 | BFS with state (key collection) | Pattern 3 + State |
 | Hard | LC 1293 | BFS with state (obstacle elimination) | Pattern 3 + State |
 
@@ -1813,7 +1946,54 @@ public int snakesAndLadders(int[][] board) {
 }
 ```
 
-### 2-11) Pacific Atlantic Water Flow (LC 417) — BFS from Both Oceans
+### 2-11) Bus Routes (LC 815) — Route-Level BFS
+> Map stops to routes; BFS on route IDs counts minimum buses to reach target.
+
+```java
+// LC 815 - Bus Routes
+// IDEA: BFS on bus route IDs — each layer = one bus ride
+// time = O(N*M), space = O(N*M)  N=routes, M=avg stops per route
+public int numBusesToDestination(int[][] routes, int source, int target) {
+    if (source == target) return 0;
+    // stop -> list of route IDs
+    Map<Integer, List<Integer>> stopToRoutes = new HashMap<>();
+    for (int i = 0; i < routes.length; i++)
+        for (int stop : routes[i])
+            stopToRoutes.computeIfAbsent(stop, k -> new ArrayList<>()).add(i);
+
+    Queue<Integer> queue = new LinkedList<>();
+    Set<Integer> visitedRoutes = new HashSet<>();
+    Set<Integer> visitedStops = new HashSet<>();
+
+    // seed all routes passing through source
+    for (int r : stopToRoutes.getOrDefault(source, new ArrayList<>())) {
+        queue.offer(r);
+        visitedRoutes.add(r);
+    }
+    int buses = 1;
+    while (!queue.isEmpty()) {
+        int size = queue.size();
+        for (int i = 0; i < size; i++) {
+            int route = queue.poll();
+            for (int stop : routes[route]) {
+                if (stop == target) return buses;
+                if (visitedStops.contains(stop)) continue;
+                visitedStops.add(stop);
+                for (int nextRoute : stopToRoutes.getOrDefault(stop, new ArrayList<>())) {
+                    if (!visitedRoutes.contains(nextRoute)) {
+                        visitedRoutes.add(nextRoute);
+                        queue.offer(nextRoute);
+                    }
+                }
+            }
+        }
+        buses++;
+    }
+    return -1;
+}
+```
+
+### 2-12) Pacific Atlantic Water Flow (LC 417) — BFS from Both Oceans
 > BFS backward from Pacific and Atlantic borders; cells in both sets can flow to both.
 
 ```java
