@@ -19,7 +19,7 @@
 	- Bellman-Ford.md (OK)
 	- binary_search.md (OK)
 	- binary_tree.md (OK)
-	- bst.md (todo, LC Examples)
+	- bst.md (todo, LC Examples - 2-10) Trim a Binary Search Tree (LC 669) )
 
 - to review
 - needcode `250` - similar LC by AI
