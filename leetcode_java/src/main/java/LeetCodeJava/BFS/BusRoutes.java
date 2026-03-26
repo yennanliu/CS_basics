@@ -51,12 +51,25 @@ public class BusRoutes {
 
     // V0-1
     // IDEA: BFS (fixed by gemini)
+    /**
+     * Metric,Complexity,Explanation
+     * Time,O(N⋅M),"N is number of buses, M is avg stops. We visit each stop and each bus at most once."
+     * Space,O(N⋅M),For the stopToBuses map and the visited sets.
+     *
+     */
     public int numBusesToDestination_0_1(int[][] routes, int source, int target) {
         if (source == target)
             return 0;
 
         int n = routes.length;
         // 1. Map: Stop -> List of Bus Routes that pass through it
+        /**  NOTE !!!
+         *
+         *  map: { stop : [bus_1, bus_2, .... ] }
+         *
+         *  -> it's a  `map -> stop_list` relation
+         *
+         */
         Map<Integer, List<Integer>> stopToBuses = new HashMap<>();
         for (int busId = 0; busId < n; busId++) {
             for (int stop : routes[busId]) {
@@ -65,8 +78,13 @@ public class BusRoutes {
         }
 
         // 2. BFS Setup
+
+        // queue: Stores the `Bus IDs` we are currently riding or about to ride.
         Queue<Integer> queue = new LinkedList<>();
+
+        // visitedBuses: Crucial. We never want to board the same bus twice (it would lead to an infinite loop).
         Set<Integer> visitedBuses = new HashSet<>();
+
         Set<Integer> visitedStops = new HashSet<>();
 
         // Start BFS with all buses that pass through the source stop
@@ -77,6 +95,7 @@ public class BusRoutes {
             visitedBuses.add(busId);
         }
 
+        // busCount: Tracks the number of buses taken.
         int busCount = 1;
 
         while (!queue.isEmpty()) {
