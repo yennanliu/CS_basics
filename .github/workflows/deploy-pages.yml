@@ -989,22 +989,32 @@ jobs:
           margin: 1.5rem 0;
           font-size: 0.95rem;
           min-width: 500px;
+          border: 1px solid var(--border-color);
+          border-radius: 8px;
+          overflow: hidden;
         }
 
         th, td {
-          padding: 0.6rem 0.75rem;
+          padding: 0.65rem 0.85rem;
           text-align: left;
           border-bottom: 1px solid var(--border-color);
         }
 
         th {
-          background: var(--bg-secondary);
+          background: var(--table-header-bg);
           font-weight: 600;
-          color: var(--text-color);
+          color: var(--table-header-color);
+          font-size: 0.85rem;
+          text-transform: uppercase;
+          letter-spacing: 0.03em;
         }
 
         tr:hover {
-          background: var(--bg-secondary);
+          background: var(--table-hover-bg);
+        }
+
+        tbody tr:nth-child(even) {
+          background: var(--table-even-bg);
         }
 
         /* Blockquotes */
