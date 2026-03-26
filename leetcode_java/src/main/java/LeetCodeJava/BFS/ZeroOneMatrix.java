@@ -50,6 +50,16 @@ public class ZeroOneMatrix {
      * 1. Treat all 0s as sources of a BFS and add them to the queue.
      * 2. Initialize all 1s to -1 (meaning "not yet reached").
      * 3. Expand outwards. The first time we reach a -1, we know it's the shortest path.
+     *
+     */
+    /**  Core !!!
+     *
+     *  why `BFS first visited` works for `minimum` dist calculation ?
+     *    -> so we ONLY need to update dist once (when 1st bst visit)
+     *
+     *  -> see below explanation
+     *
+     *
      */
     public int[][] updateMatrix(int[][] mat) {
         int rows = mat.length;
@@ -67,6 +77,16 @@ public class ZeroOneMatrix {
                      *
                      *  we init non-zero val (dist in this problem) as -1
                      *  (could be MAX_VALUE as well, see V-0-0-1)
+                     *
+                     *
+                     *  ----
+                     *
+                     *  So we DON'T need `visited matrix` setup for this LC,
+                     *
+                     *  -> we use ` mat[r][c] = -1;` instead.
+                     *
+                     *  -> so if mat[r][c] == -1
+                     *      -> NOT visited yet
                      */
                     // Mark 1s as -1 to indicate they haven't been visited
                     mat[r][c] = -1;
@@ -102,6 +122,11 @@ public class ZeroOneMatrix {
                  *      THE SMALLEST dist (see V0-0-1)
                  */
                 // Check boundaries and if the cell is unvisited (-1)
+                /**  NOTE !!!
+                 *
+                 *   if `mat[nr][nc] == -1`
+                 *    -> NOT visited yet
+                 */
                 if (nr >= 0 && nr < rows && nc >= 0 && nc < cols && mat[nr][nc] == -1) {
                     // The distance to neighbor is current distance + 1
                     mat[nr][nc] = mat[r][c] + 1;
@@ -287,6 +312,50 @@ public class ZeroOneMatrix {
 
         return mat;
     }
+
+    // V0-0-2
+    // IDEA: MULTI SOURCE BFS (fixed by gemini)
+    public int[][] updateMatrix_0_0_2(int[][] mat) {
+        int rows = mat.length;
+        int cols = mat[0].length;
+        Queue<int[]> q = new LinkedList<>();
+
+        // 1. Initialize: Mark '1's as unvisited and '0's as starting points
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < cols; c++) {
+                if (mat[r][c] == 0) {
+                    q.offer(new int[] { r, c });
+                } else {
+                    // Use -1 to represent "not yet visited/calculated"
+                    mat[r][c] = -1;
+                }
+            }
+        }
+
+        int[][] directions = { { 0, 1 }, { 0, -1 }, { 1, 0 }, { -1, 0 } };
+
+        // 2. BFS: "Ripple out" from all zeros simultaneously
+        while (!q.isEmpty()) {
+            int[] curr = q.poll();
+            int r = curr[0];
+            int c = curr[1];
+
+            for (int[] d : directions) {
+                int nr = r + d[0];
+                int nc = c + d[1];
+
+                // If within bounds AND the cell hasn't been processed (-1)
+                if (nr >= 0 && nr < rows && nc >= 0 && nc < cols && mat[nr][nc] == -1) {
+                    // The distance to this neighbor is current cell's distance + 1
+                    mat[nr][nc] = mat[r][c] + 1;
+                    q.offer(new int[] { nr, nc });
+                }
+            }
+        }
+
+        return mat;
+    }
+
 
     // V0-1
     // IDEA:  multi-source BFS (fixed by gpt)
