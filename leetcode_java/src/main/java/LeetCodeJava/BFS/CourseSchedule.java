@@ -46,14 +46,14 @@ public class CourseSchedule {
      *
      * we ONLY have below 3 main approaches, DON'T mix them up
      *
-          1. DFS + 3-state coloring (cycle detection)
+     *    1. DFS + 3-state coloring (cycle detection)
      *    2. BFS (Kahn’s algorithm with indegrees)
      *    3. TOPOLOGICAL SORT
      *
      */
 
     // V0
-    // IDEA: DFS + 3-state coloring (cycle detection) (gpt)
+    // IDEA: DFS + `3-state` coloring (cycle detection) (gpt)
     /**
      * time = O(V + E)
      * space = O(V + E)
@@ -87,6 +87,10 @@ public class CourseSchedule {
          *     0 = unvisited
          *     1 = visiting
          *     2 = visited
+         *
+         *  ---------------------
+         *
+         *  we use `array` to define `state`
          */
         // 0 = unvisited, 1 = visiting, 2 = visited
         int[] state = new int[numCourses];
@@ -106,11 +110,21 @@ public class CourseSchedule {
     private boolean dfs(int cur, Map<Integer, List<Integer>> graph, int[] state) {
 
         // cycle detected
+        /** NOTE !!!
+         *
+         *   if `state[cur] == 1`
+         *    -> a cycle, return false directly
+         */
         if (state[cur] == 1) return false;
 
         // already processed
         if (state[cur] == 2) return true;
 
+
+        /** NOTE !!!
+         *
+         *  mark as `visiting` here
+         */
         state[cur] = 1; // mark as visiting
 
         for (int next : graph.get(cur)) {
@@ -119,9 +133,14 @@ public class CourseSchedule {
             }
         }
 
+        /** NOTE !!!
+         *
+         *  mark as `visited` here
+         */
         state[cur] = 2; // mark as visited
         return true;
     }
+
 
 
     // V0-0-0-1
@@ -1178,6 +1197,8 @@ public class CourseSchedule {
         visited[cur] = Status.VISITED;
         return false;
     }
+
+
 
 
 
