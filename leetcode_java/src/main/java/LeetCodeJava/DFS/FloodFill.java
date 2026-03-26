@@ -63,12 +63,59 @@ import java.util.Queue;
 public class FloodFill {
 
     // V0
+    // IDEA: BFS (fixed by gemini)
+    public int[][] floodFill(int[][] image, int sr, int sc, int color) {
+        // NOTE !! we track initColor
+        int initColor = image[sr][sc];
+
+        // 1. Edge Case: If the starting pixel is already the target color, do nothing.
+        if (initColor == color) return image;
+
+        int rows = image.length;
+        int cols = image[0].length;
+        int[][] moves = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+
+        Queue<int[]> q = new LinkedList<>();
+        q.add(new int[]{sr, sc});
+
+        // 2. Change the starting pixel's color immediately
+        image[sr][sc] = color;
+
+        while (!q.isEmpty()) {
+            int[] cur = q.poll();
+            int r = cur[0];
+            int c = cur[1];
+
+            for (int[] m : moves) {
+                int nr = r + m[0];
+                int nc = c + m[1];
+
+                /**  NOTE !!!
+                 *
+                 *  1. `visited` is NO needed for this LC,
+                 *      via check if  `cur color == initColor`,
+                 *      we can know if the cell is visited already
+                 *
+                 */
+                // 3. Bound check and color check
+                if (nr >= 0 && nr < rows && nc >= 0 && nc < cols && image[nr][nc] == initColor) {
+                    image[nr][nc] = color; // Change color before adding to queue
+                    q.add(new int[]{nr, nc});
+                }
+            }
+        }
+
+        return image;
+    }
+
+
+    // V0-0-0-1
     // IDEA: DFS
     /**
      * time = O(M * N)
      * space = O(M * N)
      */
-    public int[][] floodFill(int[][] image, int sr, int sc, int color) {
+    public int[][] floodFill_0_0_0_1(int[][] image, int sr, int sc, int color) {
         // edge
         if (image == null || image.length == 0 || image[0].length == 0) {
             return image;
