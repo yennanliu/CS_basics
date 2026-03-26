@@ -1415,6 +1415,11 @@ public class Workspace24 {
 
 
 
+    // LC 95
+    public List<TreeNode> generateTrees(int n) {
+
+        return null;
+    }
 
 
 
