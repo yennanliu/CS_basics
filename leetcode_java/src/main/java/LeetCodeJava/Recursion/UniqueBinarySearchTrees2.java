@@ -99,6 +99,12 @@ public class UniqueBinarySearchTrees2 {
              */
             List<TreeNode> rightSubtrees = buildTrees(i + 1, end);
 
+            /** NOTE !!!
+             *
+             *  below double loop is STILL in
+             *  ` for (int i = start; i <= end; i++)` loop
+             *  
+             */
             // 3. `Connect` each left and right subtree to the `root` i
             /** NOTE !!
              *
