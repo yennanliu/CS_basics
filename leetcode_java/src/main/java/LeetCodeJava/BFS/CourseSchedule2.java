@@ -55,7 +55,7 @@ import java.util.*;
 public class CourseSchedule2 {
 
     // V0
-    // IDEA : TOPOLOGICAL SORT (cur - pre map) (fixed by gpt)
+    // IDEA : TOPOLOGICAL SORT (pre -> next map) (fixed by gpt)
     /** NOTE !!! we CAN'T use `quick union` for this problem */
     /**
      * time = O(V + E)
@@ -83,40 +83,56 @@ public class CourseSchedule2 {
          *
          * NOTE !!!
          *
-         *  we define preMap as below:
+         * we define followingMap as below:
          *
-         *  map : {course_1 : [pre_course_1, pre_course_2, ...] }
+         * map : {pre_course : [next_course_1, next_course_2, ...] }
          *
-         *  so,
-         *    - key is cur_course, and
-         *    - value is the list of `pre-course`,
-         *      which need to completed BEFORE taking cur course
+         * so,
+         * - key is pre_course, and
+         * - value is the list of `next-course`,
+         * which can be taken AFTER completing pre_course
          *
          */
-        Map<Integer, List<Integer>> preMap = new HashMap<>();
+        Map<Integer, List<Integer>> followingMap = new HashMap<>();
         int[] degrees = new int[numCourses]; // init val as 0 ???
 
         for (int[] p : prerequisites) {
             int cur = p[0];
             int prev = p[1];
 
-            // update preMap
-            List<Integer> preList = preMap.getOrDefault(cur, new ArrayList<>());
-            preList.add(prev);
-            preMap.put(cur, preList);
+
+            // build map
+            /**  NOTE !!!!
+             *
+             *  map : { pre : [next_1, next_2, next_3, ... ] }
+             *
+             *
+             *  e.g.
+             *
+             *   // graph: pre -> list of next courses
+             *
+             *
+             */
+            /**
+             * * prerequisites[i] = [ai, bi]
+             * * -> MUST take bi first, then can take ai
+             */
+            if (!followingMap.containsKey(prev)) {
+                followingMap.put(prev, new ArrayList<>());
+            }
+
+            List<Integer> list = followingMap.get(prev);
+            list.add(cur);
+            followingMap.put(prev, list);
 
             // update orders
             /**
-             *  NOTE !!!
+             * NOTE !!!
              *
-             *   if use `preMap`, we need to update `PREV` 's degree !!!!!
-             *
-             *
-             *   (if use `followingMap), we update cur's degree instead, (check below other approaches)
+             * if use `followingMap`, we update cur's degree (in-degree) !!!!!
              *
              */
-            //orders[cur] += 1; // this one is WRONG !!!! (for `preMap`)
-            degrees[prev] += 1; // NOTE !!!! this
+            degrees[cur] += 1; // NOTE !!!! this
         }
 
         Queue<Integer> q = new LinkedList<>();
@@ -137,21 +153,21 @@ public class CourseSchedule2 {
              */
             collected.add(cur);
 
-            if (preMap.containsKey(cur)) {
+            if (followingMap.containsKey(cur)) {
                 /**
-                 * NOTE !!! we loop over `prev` courses
+                 * NOTE !!! we loop over `next` courses
                  */
-                for (int prev : preMap.get(cur)) {
+                for (int next : followingMap.get(cur)) {
                     /**
-                     * NOTE !!! we update `prev` order by `-= 1`
+                     * NOTE !!! we update `next` order by `-= 1`
                      */
-                    degrees[prev] -= 1;
+                    degrees[next] -= 1;
                     /**
-                     * NOTE !!! if `prev` course ordering == 0,
-                     *          we add it to queue
+                     * NOTE !!! if `next` course ordering == 0,
+                     * we add it to queue
                      */
-                    if (degrees[prev] == 0) {
-                        q.add(prev);
+                    if (degrees[next] == 0) {
+                        q.add(next);
                     }
                 }
             }
@@ -164,10 +180,10 @@ public class CourseSchedule2 {
 
         // reverse
         /**
-         * NOTE !!!  we `reverse` collected, so the order is correct
-         *           for our final result
+         * NOTE !!! With `followingMap` (Kahn's), we DO NOT need to reverse.
+         * The order is already correct (starts with 0-dependency courses).
          */
-        Collections.reverse(collected);
+        // Collections.reverse(collected); // REMOVED REVERSE
 
         int[] res = new int[collected.size()];
         for (int i = 0; i < collected.size(); i++) {
@@ -176,6 +192,7 @@ public class CourseSchedule2 {
 
         return res;
     }
+
 
 
     // V0-0-0-1
