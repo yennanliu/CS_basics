@@ -2066,6 +2066,17 @@ public class Workspace24 {
     }
 
 
+    // LC 547
+    // 8.46 - 56 am
+    /**
+     *
+     *
+     *
+     */
+    public int findCircleNum(int[][] isConnected) {
+
+        return 0;
+    }
 
 
 
