@@ -46,9 +46,103 @@ import java.util.*;
 public class NumberOfProvinces {
 
     // V0
-//    public int findCircleNum(int[][] isConnected) {
-//
-//    }
+    // IDEA: UNION FIND (fixed by gpt)
+    public int findCircleNum(int[][] isConnected) {
+        // edge
+
+        int n = isConnected.length;
+
+        MyUF myUF = new MyUF(n);
+
+        // ???
+        for (int y = 0; y < n; y++) {
+            // ??
+            for (int x = y + 1; x < n; x++) { // OPTIMIZED
+                int state = isConnected[y][x];
+                // ???
+                if (state == 1) {
+                    myUF.union(y, x);
+                }
+            }
+        }
+
+        return myUF.cluster;
+    }
+
+    class MyUF {
+
+        // ???
+        int n;
+        int[] parents;
+        int cluster = 0;
+
+        MyUF(int n) {
+            this.n = n;
+            this.parents = new int[this.n];
+            /** NOTE !!! */
+            this.cluster = n; // FIXED !!!
+
+            // ???
+            for (int i = 0; i < this.parents.length; i++) {
+                this.parents[i] = i; // ?? init node's parent as itself
+            }
+        }
+
+        public void union(int x, int y) {
+            int parentX = this.getParent(x);
+            int parentY = this.getParent(y);
+
+            /** NOTE !!!
+             *
+             *  only union if different roots
+             */
+            // ??? only union if different roots
+            if (parentX != parentY) {
+                /** NOTE !!!
+                 *
+                 *  union on each `root`
+                 */
+                this.parents[parentX] = parentY; // FIXED !!!
+                this.cluster -= 1;
+            }
+        }
+
+        public int getParent(int x) {
+            // ???
+            int parent = this.parents[x];
+            /** NOTE !!!
+             *
+             *  if `parent != x`, do recursion call
+             */
+            if (parent != x) {
+                /** NOTE !!!
+                 *
+                 *  find `parent` 's  parent
+                 */
+                parent = this.getParent(parent); // FIXED !!!
+            }
+
+            /** NOTE !!!
+             *
+             *  re-assign x 's parent with `new parent`
+             */
+            this.parents[x] = parent;
+
+            return parent;
+        }
+
+        public boolean isConnected(int x, int y) {
+            // /??
+            if (x == y) {
+                return true;
+            }
+
+            int parentX = this.getParent(x);
+            int parentY = this.getParent(y);
+
+            return parentX == parentY; // ???
+        }
+    }
 
     // V0-1
     // IDEA: DFS + HASHMAP
@@ -405,6 +499,7 @@ public class NumberOfProvinces {
     // V3
 
 
+    
 
 
 }

@@ -2067,16 +2067,119 @@ public class Workspace24 {
 
 
     // LC 547
-    // 8.46 - 56 am
+    // 8.46 - 10.15 am
     /**
+     *  Return the total number of provinces.
      *
+     *
+     *  -----------
+     *
+     *  IDEA 1) UNION FIND ??
+     *
+     *  IDEA 2) DFS ???
+     *
+     *  -----------
      *
      *
      */
+    //  IDEA 1) UNION FIND ??
     public int findCircleNum(int[][] isConnected) {
+        // edge
 
-        return 0;
+        int n = isConnected.length; // ???
+
+        MyUF myUF = new MyUF(n);
+
+        // ???
+        for(int y = 0; y < n; y++){
+            // ??
+            for(int x = 0; x < n; x++){
+                int state = isConnected[y][x];
+                // ???
+                if(state == 1){
+                    myUF.union(y, x);
+                }
+            }
+        }
+
+        return myUF.cluster; // ???
     }
+
+    class MyUF{
+        // ???
+        int n;
+        int[] parents;
+        int cluster;
+
+        MyUF(int n){
+            this.n = n;
+            this.parents = new int[this.n];
+            // ???
+//            for(int i = 0; i < this.parents.length; i++){
+//                this.parents[i] = i; // ?? init node's parent as itself
+//            }
+
+            // NOTE !!! NO need to check all matrix,
+            // just `half` matrix
+            for(int i = 0; i < this.parents.length; i++){
+                this.parents[i] = i; // ?? init node's parent as itself
+            }
+
+            //this.cluster = 0;
+            this.cluster = n; // NOTE !!!
+        }
+
+        public void union(int x, int y){
+            if(x == y){
+                return;
+            }
+
+            int parentX = this.getParent(x);
+            int parentY = this.getParent(y);
+
+            // ???
+            //this.parents[x] = parentY;
+            // NOTE !!!
+            // NOTE !!! ONLY `union` if different node
+            if(parentX != parentY){
+                this.parents[parentX] = parentY;
+                this.cluster -= 1;
+            }
+        }
+
+        public int getParent(int x){
+            // ???
+            int parent = this.parents[x];
+            if(parent != x){
+                //  parent = this.getParent(x);
+               // return this.getParent(x);
+                parent = this.getParent(parent);
+            }
+            // ???
+            // NOTE !!! should use `parent`
+            // or will cause `infinite` loop
+
+            //parent = this.getParent(x);
+            //parent = this.getParent(parent);
+            this.parents[x] = parent; // ?????
+
+            return parent;
+        }
+
+        public boolean isConnected(int x, int y){
+            // /??
+            if(x == y){
+                return true;
+            }
+            int parentX = this.getParent(x);
+            int parentY = this.getParent(y);
+
+            return parentX == parentY; // ???
+        }
+
+    }
+
+
 
 
 
