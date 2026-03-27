@@ -19,7 +19,9 @@
 	- Bellman-Ford.md (OK)
 	- binary_search.md (OK)
 	- binary_tree.md (OK)
-	- bst.md (todo, LC Examples - 2-10) Trim a Binary Search Tree (LC 669) )
+	- bst.md (OK)
+	- complexity_cheatsheet.md (todo)
+	- design.md (LC examples)
 
 - to review
 - needcode `250` - similar LC by AI
@@ -213,7 +215,7 @@
 			- 2493
 	- LC 721
 		- gpt
-			- 547,323,684,1202,839,990,1319,305,1584,1192
+			- 323,684,1202,839,990,1319,305,1584,1192
 		- gemini
 			- 737,765,803
 
