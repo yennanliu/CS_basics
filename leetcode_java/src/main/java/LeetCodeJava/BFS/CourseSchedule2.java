@@ -177,7 +177,88 @@ public class CourseSchedule2 {
         return res;
     }
 
-    // V0-1
+
+    // V0-0-0-1
+    // IDEA : TOPOLOGICAL SORT (no helper func) (fixed by gpt)
+    public int[] findOrder_0_0_0_1(int numCourses, int[][] prerequisites) {
+
+        // indegree array
+        int[] indegree = new int[numCourses];
+
+        /** NOTE !!!
+         *
+         *  graph: pre -> list of next courses
+         */
+        // graph: pre -> list of next courses
+        Map<Integer, List<Integer>> map = new HashMap<>();
+
+        for (int[] p : prerequisites) {
+            int ai = p[0];
+            int bi = p[1];
+
+            map.computeIfAbsent(bi, k -> new ArrayList<>()).add(ai);
+
+            indegree[ai]++; // count prerequisites
+        }
+
+        // queue for courses with no prerequisites
+        Queue<Integer> q = new LinkedList<>();
+        for (int i = 0; i < numCourses; i++) {
+            /** NOTE !!!
+             *
+             *  add all `degree==0` to queue
+             */
+            if (indegree[i] == 0) {
+                q.offer(i);
+            }
+        }
+
+        List<Integer> collected = new ArrayList<>();
+
+        while (!q.isEmpty()) {
+            int cur = q.poll();
+            collected.add(cur);
+
+            if (map.containsKey(cur)) {
+                for (int next : map.get(cur)) {
+                    /** NOTE !!!
+                     *
+                     *  update degree
+                     */
+                    indegree[next]--;
+
+
+                    /** NOTE !!!
+                     *
+                     *  if degree==0, add to queue
+                     */
+                    if (indegree[next] == 0) {
+                        q.offer(next);
+                    }
+                }
+            }
+        }
+
+        // 🔥 cycle check
+        if (collected.size() != numCourses) {
+            return new int[0];
+        }
+
+        /** NOTE !!!
+         *
+         *  NO need to reverse
+         */
+        // build result
+        int[] res = new int[numCourses];
+        for (int i = 0; i < numCourses; i++) {
+            res[i] = collected.get(i);
+        }
+
+        return res;
+    }
+
+
+    // V0-1-1
     // IDEA : TOPOLOGICAL SORT (fixed by gpt)
     /** NOTE !!! we CAN'T use `quick union` for this problem */
     /**

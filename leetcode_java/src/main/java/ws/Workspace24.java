@@ -1935,6 +1935,139 @@ public class Workspace24 {
     }
 
 
+    // LC 210
+    // 7.56 - 8.06 am
+    /**
+     *
+     *  -> Return the ordering of courses you should take
+     *  to finish all courses.
+     *  If there are many valid answers, return any of them.
+     *  If it is impossible to finish all courses,
+     *  return an empty array.
+     *
+     *  -----------------
+     *
+     *   IDEA 1) TOPO SORT ??
+     *     -> order arr
+     *     -> add all `order=0` node to queue
+     *     -> BFS
+     *     -> update order, and iterate to next nodes
+     *     -> return final orders
+     *
+     *
+     *   IDEA 2) DFS ??? -> possible ???
+     *
+     *
+     *  -----------------
+     *
+     */
+    // IDEA 1) TOPO SORT ??
+    /**
+     *      *   IDEA 1) TOPO SORT ??
+     *      *     -> order arr
+     *      *     -> add all `order=0` node to queue
+     *      *     -> BFS
+     *      *     -> update order, and iterate to next nodes
+     *      *     -> return final orders
+     */
+    public int[] findOrder(int numCourses, int[][] prerequisites) {
+        // edge
+
+
+        // indegree array
+        int[] indegree = new int[numCourses];
+
+
+        // init `order array`
+        int[] orders = new int[numCourses];
+        Arrays.fill(orders, 0); // init val as 0 ???
+
+
+
+        // graph: pre -> list of next courses
+
+
+        // build map
+        /** NOTE !!!
+         *
+         *  // map: { pre_course : [next_course_1, next_course_2, ...] }
+         */
+        Map<Integer, List<Integer>> map = new HashMap<>();
+        for(int[] p: prerequisites){
+            int ai = p[0];
+            int bi = p[1];
+
+            // ???
+            // build map
+            /**
+             *     *  prerequisites[i] = [ai, bi]
+             *      *     -> MUST take bi first, then can take ai
+             */
+            if(!map.containsKey(bi)){
+                map.put(bi, new ArrayList<>());
+            }
+
+            List<Integer> list = map.get(bi);
+            list.add(ai);
+            map.put(bi, list);
+
+            // update `order` arr
+            orders[ai] += 1; // ????
+        }
+
+        // visited ??? needed???
+        boolean[] visited = new boolean[numCourses];
+
+
+        // ??? collected order of course
+        List<Integer> collected = new ArrayList<>();
+
+        // add all `order=0` to queue
+        Queue<Integer> q = new LinkedList<>();
+        // ??
+        for(int i = 0; i < orders.length; i++){
+            if(orders[i] == 0){
+                q.add(i);
+                visited[i] = true; // ???
+            }
+        }
+
+        while (!q.isEmpty()){
+            // ??? visit by layer is needed ??
+            //int size = q.size();
+            Integer cur = q.poll();
+            // add to list
+            collected.add(cur);
+            // visit next ???
+            if(map.containsKey(cur)){
+                for(int next: map.get(cur)){
+                    // update order ???
+                    orders[next] -= 1;
+                    // ???
+                    if(orders[next] == 0 && !visited[next]){
+                        q.add(next);
+                        visited[next] = true;
+                    }
+                }
+            }
+        }
+
+
+        // ??? reverse
+        //Collections.reverse(collected);
+
+        int[] res = new int[collected.size()];
+        for(int i = 0; i < collected.size(); i++){
+            res[i] = collected.get(i);
+        }
+
+
+        return res; // ???
+    }
+
+
+
+
 
 
 
