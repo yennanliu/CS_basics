@@ -23,6 +23,7 @@ Topological sorting is a linear ordering of vertices in a Directed Acyclic Graph
 - [DFS-based topological sort](https://alrightchiu.github.io/SecondRound/graph-li-yong-dfsxun-zhao-dagde-topological-sorttuo-pu-pai-xu.html)
 - [topological_sort.py](https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/topological_sort.py)
 - [TopologicalSort.java](https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/AlgorithmJava/TopologicalSort.java)
+- [NumberOfProvinces.java](https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/DFS/NumberOfProvinces.java) (Connected Components / Union Find)
 - [MinimumHeightTrees.java](https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/BFS/MinimumHeightTrees.java) (Tree Centroid Finding)
 
 ## Problem Categories
@@ -57,7 +58,12 @@ Problems focused on detecting cycles and finding safe nodes.
 - **Pattern**: Three-color DFS, safe states identification
 - **Key Problems**: LC 802, 207, 1059
 
-### 7. Tree Centroid Finding
+### 7. Connected Components (Union Find / DFS)
+Problems involving finding connected components in undirected graphs.
+- **Pattern**: Union Find with path compression, DFS/BFS traversal to count components
+- **Key Problems**: LC 547, 200, 323, 684
+
+### 8. Tree Centroid Finding
 Problems involving finding the center/centroid of undirected trees.
 - **Pattern**: Leaf trimming layer by layer, similar to topological sort for undirected trees
 - **Key Problems**: LC 310, Tree diameter, Tree center
@@ -585,6 +591,98 @@ public List<Integer> findMinHeightTrees(int n, int[][] edges) {
 }
 ```
 
+### Template 8: Union Find (Connected Components)
+```python
+class UnionFind:
+    """
+    Union Find with path compression and union by rank.
+    Time: O(α(N)) per operation (nearly O(1)), Space: O(N)
+    """
+    def __init__(self, n):
+        self.parent = list(range(n))
+        self.rank = [0] * n
+        self.count = n  # number of connected components
+
+    def find(self, x):
+        if self.parent[x] != x:
+            self.parent[x] = self.find(self.parent[x])  # path compression
+        return self.parent[x]
+
+    def union(self, x, y):
+        px, py = self.find(x), self.find(y)
+        if px == py:
+            return
+        # union by rank
+        if self.rank[px] < self.rank[py]:
+            px, py = py, px
+        self.parent[py] = px
+        if self.rank[px] == self.rank[py]:
+            self.rank[px] += 1
+        self.count -= 1
+
+# Usage: LC 547 Number of Provinces
+def findCircleNum(isConnected):
+    n = len(isConnected)
+    uf = UnionFind(n)
+    for i in range(n):
+        for j in range(i + 1, n):
+            if isConnected[i][j] == 1:
+                uf.union(i, j)
+    return uf.count
+
+# Java version
+class UnionFind {
+    int[] parent;
+    int[] rank;
+    int count;
+
+    UnionFind(int n) {
+        parent = new int[n];
+        rank = new int[n];
+        count = n;
+        for (int i = 0; i < n; i++) {
+            parent[i] = i;
+        }
+    }
+
+    int find(int x) {
+        if (parent[x] != x) {
+            parent[x] = find(parent[x]); // path compression
+        }
+        return parent[x];
+    }
+
+    void union(int x, int y) {
+        int px = find(x), py = find(y);
+        if (px == py) return;
+        // union by rank
+        if (rank[px] < rank[py]) {
+            parent[px] = py;
+        } else if (rank[px] > rank[py]) {
+            parent[py] = px;
+        } else {
+            parent[py] = px;
+            rank[px]++;
+        }
+        count--;
+    }
+}
+
+// Usage: LC 547 Number of Provinces
+public int findCircleNum(int[][] isConnected) {
+    int n = isConnected.length;
+    UnionFind uf = new UnionFind(n);
+    for (int i = 0; i < n; i++) {
+        for (int j = i + 1; j < n; j++) {
+            if (isConnected[i][j] == 1) {
+                uf.union(i, j);
+            }
+        }
+    }
+    return uf.count;
+}
+```
+
 ## Problem Classification
 
 | Problem | Difficulty | Category | Key Technique |
@@ -605,6 +703,7 @@ public List<Integer> findMinHeightTrees(int n, int[][] edges) {
 | [1857. Largest Color Value in a Directed Graph](https://leetcode.com/problems/largest-color-value-in-a-directed-graph/) | Hard | Graph Layering | DP on DAG |
 | [2050. Parallel Courses III](https://leetcode.com/problems/parallel-courses-iii/) | Hard | Task Scheduling | Time Calculation |
 | [2115. Find All Possible Recipes from Given Supplies](https://leetcode.com/problems/find-all-possible-recipes-from-given-supplies/) | Medium | Build Order | Modified BFS |
+| [547. Number of Provinces](https://leetcode.com/problems/number-of-provinces/) | Medium | Connected Components | Union Find / DFS |
 | [2192. All Ancestors of a Node in a Directed Acyclic Graph](https://leetcode.com/problems/all-ancestors-of-a-node-in-a-directed-acyclic-graph/) | Medium | Graph Layering | DFS/BFS |
 
 ### Problem Patterns by Category
@@ -652,6 +751,13 @@ public List<Integer> findMinHeightTrees(int n, int[][] edges) {
 | All Paths Safe | 1059 | DFS with path tracking |
 | Detect Any Cycle | 207 | Three-color DFS |
 
+#### Connected Components (Union Find / DFS)
+| Pattern | Problems | Key Insight |
+|---------|----------|-------------|
+| Count Components | 547, 323 | Union Find or DFS traversal |
+| Detect Redundant Edge | 684 | Union Find cycle detection |
+| Number of Islands | 200 | DFS/BFS on grid |
+
 #### Tree Centroid Finding
 | Pattern | Problems | Key Insight |
 |---------|----------|-------------|
@@ -689,6 +795,12 @@ START: Topological Sort Problem
 ├── Need parallel execution time?
 │   │
 │   ├── YES → Use Template 6 (Level BFS)
+│   │
+│   └── NO → Continue
+│
+├── Need to count connected components?
+│   │
+│   ├── YES → Use Template 8 (Union Find)
 │   │
 │   └── NO → Continue
 │
@@ -1190,7 +1302,181 @@ class Solution:
         return len(stack) == numCourses
 ```
 
-### 2-3) Alien Dictionary
+### 2-3) Number of Provinces (LC 547)
+
+```java
+// java
+// LC 547
+// ref: leetcode_java/src/main/java/LeetCodeJava/DFS/NumberOfProvinces.java
+
+public class NumberOfProvinces {
+
+    // V0
+    // IDEA: UNION FIND
+    /**
+     * time = O(N^2 * α(N))
+     * space = O(N)
+     */
+    public int findCircleNum(int[][] isConnected) {
+        int n = isConnected.length;
+        UnionFind uf = new UnionFind(n);
+
+        for (int y = 0; y < n; y++) {
+            for (int x = y + 1; x < n; x++) {
+                if (isConnected[y][x] == 1) {
+                    uf.union(y, x);
+                }
+            }
+        }
+
+        return uf.cluster;
+    }
+
+    class UnionFind {
+        int[] parents;
+        int cluster;
+
+        UnionFind(int n) {
+            this.parents = new int[n];
+            this.cluster = n;
+            for (int i = 0; i < n; i++) {
+                this.parents[i] = i;
+            }
+        }
+
+        public void union(int x, int y) {
+            int parentX = find(x);
+            int parentY = find(y);
+            if (parentX != parentY) {
+                this.parents[parentX] = parentY;
+                this.cluster -= 1;
+            }
+        }
+
+        public int find(int x) {
+            if (this.parents[x] != x) {
+                this.parents[x] = find(this.parents[x]); // path compression
+            }
+            return this.parents[x];
+        }
+    }
+
+    // V1
+    // IDEA: DFS directly on adjacency matrix
+    /**
+     * time = O(N^2)
+     * space = O(N)
+     */
+    public int findCircleNum_dfs(int[][] isConnected) {
+        int n = isConnected.length;
+        boolean[] visited = new boolean[n];
+        int provinces = 0;
+
+        for (int i = 0; i < n; i++) {
+            if (!visited[i]) {
+                dfs(isConnected, visited, i, n);
+                provinces++;
+            }
+        }
+
+        return provinces;
+    }
+
+    private void dfs(int[][] isConnected, boolean[] visited, int city, int n) {
+        visited[city] = true;
+        for (int j = 0; j < n; j++) {
+            if (isConnected[city][j] == 1 && !visited[j]) {
+                dfs(isConnected, visited, j, n);
+            }
+        }
+    }
+
+    // V2
+    // IDEA: BFS
+    /**
+     * time = O(N^2)
+     * space = O(N)
+     */
+    public int findCircleNum_bfs(int[][] isConnected) {
+        int n = isConnected.length;
+        boolean[] visited = new boolean[n];
+        int provinces = 0;
+
+        for (int i = 0; i < n; i++) {
+            if (!visited[i]) {
+                provinces++;
+                Queue<Integer> q = new LinkedList<>();
+                q.offer(i);
+                visited[i] = true;
+
+                while (!q.isEmpty()) {
+                    int node = q.poll();
+                    for (int j = 0; j < n; j++) {
+                        if (isConnected[node][j] == 1 && !visited[j]) {
+                            q.offer(j);
+                            visited[j] = true;
+                        }
+                    }
+                }
+            }
+        }
+
+        return provinces;
+    }
+}
+```
+
+```python
+# python
+# LC 547 Number of Provinces
+# V0 - Union Find
+class UnionFind:
+    def __init__(self, n):
+        self.parent = list(range(n))
+        self.count = n
+
+    def find(self, x):
+        if self.parent[x] != x:
+            self.parent[x] = self.find(self.parent[x])
+        return self.parent[x]
+
+    def union(self, x, y):
+        px, py = self.find(x), self.find(y)
+        if px != py:
+            self.parent[px] = py
+            self.count -= 1
+
+class Solution:
+    def findCircleNum(self, isConnected):
+        n = len(isConnected)
+        uf = UnionFind(n)
+        for i in range(n):
+            for j in range(i + 1, n):
+                if isConnected[i][j] == 1:
+                    uf.union(i, j)
+        return uf.count
+
+# V1 - DFS
+class Solution:
+    def findCircleNum(self, isConnected):
+        n = len(isConnected)
+        visited = [False] * n
+        provinces = 0
+
+        def dfs(city):
+            visited[city] = True
+            for j in range(n):
+                if isConnected[city][j] == 1 and not visited[j]:
+                    dfs(j)
+
+        for i in range(n):
+            if not visited[i]:
+                dfs(i)
+                provinces += 1
+        return provinces
+```
+
+### 2-5) Alien Dictionary
 
 ```java
 // java
@@ -1399,7 +1685,7 @@ class Solution(object):
                 break　　
 ```
 
-### 2-4) Sequence Reconstruction
+### 2-6) Sequence Reconstruction
 
 ```java
 // java
@@ -1468,7 +1754,7 @@ class Solution(object):
     }
 ```
 
-### 2-6) Parallel Courses
+### 2-7) Parallel Courses
 ```python
 # LC 1136
 def minimumSemesters(n, relations):
@@ -1508,7 +1794,7 @@ def minimumSemesters(n, relations):
     return semesters if studied == n else -1
 ```
 
-### 2-5) Find Eventual Safe States
+### 2-8) Find Eventual Safe States
 ```python
 # LC 802
 def eventualSafeNodes(graph):
@@ -1543,7 +1829,7 @@ def eventualSafeNodes(graph):
     return sorted(safe)
 ```
 
-### 2-7) Minimum Height Trees (LC 310)
+### 2-9) Minimum Height Trees (LC 310)
 
 ```java
 // java

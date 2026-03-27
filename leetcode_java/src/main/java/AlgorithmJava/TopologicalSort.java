@@ -170,6 +170,70 @@ public class TopologicalSort {
         return topoOrder;
     }
 
+    // V2
+    // Union Find (for connected components, e.g. LC 547 Number of Provinces)
+    /**
+     *  Union Find STEP
+     *
+     *   Step 1) Initialize: each node is its own parent, cluster count = n
+     *   Step 2) For each edge (connection), union the two nodes
+     *   Step 3) Union: find roots of both nodes via path compression,
+     *           if different roots, merge and decrement cluster count
+     *   Step 4) Result: cluster count = number of connected components
+     *
+     *  Difference from Topological Sort:
+     *   - Works on UNDIRECTED graphs (not DAGs)
+     *   - Finds connected components (not linear ordering)
+     *   - Uses parent array + path compression (not in-degree + queue)
+     */
+    /**
+     * time = O(N^2 * α(N)) where α is inverse Ackermann function (nearly O(1))
+     * space = O(N)
+     */
+    public int findConnectedComponents(int[][] isConnected) {
+        int n = isConnected.length;
+        int[] parent = new int[n];
+        int[] rank = new int[n];
+        int count = n;
+
+        // Step 1: Initialize - each node is its own parent
+        for (int i = 0; i < n; i++) {
+            parent[i] = i;
+        }
+
+        // Step 2: Union connected nodes
+        for (int i = 0; i < n; i++) {
+            for (int j = i + 1; j < n; j++) {
+                if (isConnected[i][j] == 1) {
+                    int rootI = find(parent, i);
+                    int rootJ = find(parent, j);
+                    if (rootI != rootJ) {
+                        // Union by rank
+                        if (rank[rootI] < rank[rootJ]) {
+                            parent[rootI] = rootJ;
+                        } else if (rank[rootI] > rank[rootJ]) {
+                            parent[rootJ] = rootI;
+                        } else {
+                            parent[rootJ] = rootI;
+                            rank[rootI]++;
+                        }
+                        count--;
+                    }
+                }
+            }
+        }
+
+        return count;
+    }
+
+    /** Find with path compression */
+    private int find(int[] parent, int x) {
+        if (parent[x] != x) {
+            parent[x] = find(parent, parent[x]);
+        }
+        return parent[x];
+    }
+
     // test
     public static void main(String[] args) {
 
@@ -181,6 +245,13 @@ public class TopologicalSort {
 
         int[] result = topoSort.topologicalSort(numCourses, prerequisites);
         System.out.println("Topological Order: " + Arrays.toString(result));
+
+        // Test Union Find (LC 547 Number of Provinces)
+        int[][] isConnected1 = {{1,1,0},{1,1,0},{0,0,1}};
+        System.out.println("Provinces (expect 2): " + topoSort.findConnectedComponents(isConnected1));
+
+        int[][] isConnected2 = {{1,0,0},{0,1,0},{0,0,1}};
+        System.out.println("Provinces (expect 3): " + topoSort.findConnectedComponents(isConnected2));
     }
 
 }
