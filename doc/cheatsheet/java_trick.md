@@ -1828,24 +1828,243 @@ map.getOrDefault(key,0)
 
 # 2) Other tricks
 
-### 2-1) Init var, modify it in another method, and use it
+### 2-1) Init var, modify it in another method, and use it — Pass-by-Reference Pattern ⭐
+
+> **Core Concept**: Reference types (StringBuilder, List, int[], Map, etc.) are passed by **reference**, not by value. Changes made inside a function persist after the function returns.
+
+#### Pattern 1: StringBuilder for Path/String Building (LC 694)
+
 ```java
-// java
-// LC 131
-// ...
-public List<List<String>> partition_1(String s) {
-    /** NOTE : 
-     * 
-     *  we can init result, pass it to method, modify it, and return as ans 
-     */
-    List<List<String>> result = new ArrayList<List<String>>();
-    dfs_1(0, result, new ArrayList<String>(), s);
+// LC 694 - Number of Distinct Islands
+// Pattern: Create placeholder → Pass to DFS → Use modified result
+
+Set<String> uniqueIslands = new HashSet<>();
+
+for (int r = 0; r < rows; r++) {
+    for (int c = 0; c < cols; c++) {
+        if (grid[r][c] == 1) {
+            // Step 1: Create empty StringBuilder
+            StringBuilder pathSignature = new StringBuilder();
+
+            // Step 2: Pass to DFS — it will modify pathSignature in place
+            /** NOTE !!!
+             *  We pass `pathSignature` as a reference.
+             *  DFS will call pathSignature.append(...)
+             *  These changes PERSIST after DFS returns
+             */
+            dfs(grid, r, c, pathSignature, 'S');
+
+            // Step 3: After DFS returns, pathSignature is populated
+            if (pathSignature.length() > 0) {
+                uniqueIslands.add(pathSignature.toString());
+            }
+        }
+    }
+}
+
+private void dfs(int[][] grid, int r, int c, StringBuilder path, char direction) {
+    // Base case
+    if (r < 0 || r >= rows || c < 0 || c >= cols || grid[r][c] == 0) {
+        return;
+    }
+
+    grid[r][c] = 0;
+
+    // ✅ MODIFY the passed reference
+    // This directly modifies the caller's StringBuilder object
+    path.append(direction);
+
+    // Explore neighbors
+    dfs(grid, r + 1, c, path, 'D');
+    dfs(grid, r - 1, c, path, 'U');
+    dfs(grid, r, c + 1, path, 'R');
+    dfs(grid, r, c - 1, path, 'L');
+
+    // Backtrack: undo the append
+    path.append('O');
+}
+```
+
+**Memory Model:**
+```
+Main thread:
+pathSignature = StringBuilder{} at memory address 0x1000
+
+    Call dfs(..., pathSignature, 'S')
+    ├── path parameter = reference to 0x1000
+    ├── path.append('S')  → modifies object at 0x1000 → "S"
+    │
+    ├── Call dfs(..., path, 'D')
+    │   ├── path parameter = reference to 0x1000 (SAME object!)
+    │   ├── path.append('D')  → modifies object at 0x1000 → "SD"
+    │   ├── path.append('O')  → modifies object at 0x1000 → "SDO"
+    │   └── return
+    │
+    ├── path.append('O')  → modifies object at 0x1000 → "SDOO"
+    └── return
+
+Back in main:
+pathSignature = StringBuilder{"SDOO"}  ✅ (MODIFIED!)
+```
+
+#### Pattern 2: List for Collecting Results (LC 113 Path Sum II)
+
+```java
+// LC 113 - Path Sum II
+// Similar pattern but with List<Integer> for path collection
+
+public List<List<Integer>> pathSum(TreeNode root, int targetSum) {
+    List<List<Integer>> result = new ArrayList<>();
+    List<Integer> path = new ArrayList<>();
+    dfs(root, targetSum, path, result);
     return result;
 }
-// ...
-void dfs_1(int start, List<List<String>> result, List<String> currentList, String s) {
-// ..
+
+private void dfs(TreeNode node, int remain, List<Integer> path, List<List<Integer>> result) {
+    if (node == null) return;
+
+    // Modify the passed List
+    path.add(node.val);
+
+    if (node.left == null && node.right == null && remain == node.val) {
+        // Snapshot the path before backtracking
+        result.add(new ArrayList<>(path));
+    } else {
+        dfs(node.left, remain - node.val, path, result);
+        dfs(node.right, remain - node.val, path, result);
+    }
+
+    // Backtrack: undo the add
+    path.remove(path.size() - 1);
 }
+```
+
+**Key Difference from Primitives:**
+```java
+// ❌ PRIMITIVE: Changes don't persist
+private void addToSum(int currentSum) {
+    currentSum += 5;  // Only affects local copy
+}
+int mySum = 10;
+addToSum(mySum);
+System.out.println(mySum);  // Still 10, NOT 15!
+
+// ✅ REFERENCE: Changes persist
+private void addToList(List<Integer> list) {
+    list.add(5);  // Affects the original list object
+}
+List<Integer> myList = new ArrayList<>();
+addToList(myList);
+System.out.println(myList);  // [5] ✅ MODIFIED!
+```
+
+#### Pattern 3: General Pattern — Create, Pass, Modify, Use
+
+```java
+// Generic template for this pattern:
+
+public Type method() {
+    // 1. Create placeholder (reference type)
+    SomeRefType placeholder = new SomeRefType();
+
+    // 2. Pass to helper function
+    helperFunction(placeholder, otherParams);
+
+    // 3. Use modified result
+    return placeholder;  // or use directly
+}
+
+private void helperFunction(SomeRefType data, OtherParams...) {
+    // Modify the reference — changes persist in caller
+    data.modify(...);
+
+    // Recurse if needed
+    helperFunction(data, newParams);
+
+    // Undo if backtracking required
+    data.undo(...);
+}
+```
+
+#### Common Reference Types for This Pattern
+
+| Type | Modification Methods | Backtrack Required? | Use Case |
+|------|----------------------|-------------------|----------|
+| `StringBuilder` | `append(x)`, `setCharAt(i, c)`, `deleteCharAt(i)` | ✅ Yes | String building with backtracking |
+| `List<T>` | `add(x)`, `remove(i)`, `set(i, x)` | ✅ Yes | Path/result collection |
+| `int[]` / `char[]` | `arr[i] = value` | ✅ Yes | Array modification |
+| `Map<K,V>` | `put(k, v)`, `remove(k)` | ✅ Yes | Frequency tracking |
+| `Queue<T>` | `add(x)`, `poll()`, `offer(x)` | ✅ Maybe | BFS level-by-level |
+| `Set<T>` | `add(x)`, `remove(x)` | ✅ Yes | Visited tracking |
+| Primitive `int`, `long` | N/A (pass-by-value) | ❌ No | Only for return or instance vars |
+| `String` | N/A (immutable) | ❌ No | Use StringBuilder instead |
+
+**When to Backtrack:**
+```
+Rule: If the parameter is a reference type that gets MODIFIED, you must UNDO the modification.
+
+Path/List building:  path.add(val) → must do path.remove(...)
+StringBuilder:       sb.append(...) → must do sb.deleteCharAt(...)
+Array modification:  arr[i] = val   → must do arr[i] = oldVal
+Map/Set:             data.add(x)    → must do data.remove(x)
+
+Primitives:          No backtrack needed (they're copied)
+```
+
+#### Pattern 4: List Collection (LC 131 Palindrome Partitioning)
+
+```java
+// LC 131
+public List<List<String>> partition(String s) {
+    /**
+     * NOTE: we can init result, pass it to method,
+     * modify it, and return as ans
+     */
+    List<List<String>> result = new ArrayList<>();
+    dfs(0, result, new ArrayList<String>(), s);
+    return result;
+}
+
+private void dfs(int start, List<List<String>> result, List<String> currentList, String s) {
+    // Base case: reached end of string
+    if (start == s.length()) {
+        // Snapshot: add a copy of currentList (don't add reference)
+        result.add(new ArrayList<>(currentList));
+        return;
+    }
+
+    // Try all palindromes starting from 'start'
+    for (int end = start; end < s.length(); end++) {
+        if (isPalindrome(s, start, end)) {
+            // Add to current partition
+            currentList.add(s.substring(start, end + 1));
+
+            // Recurse
+            dfs(end + 1, result, currentList, s);
+
+            // Backtrack: remove what we added
+            currentList.remove(currentList.size() - 1);
+        }
+    }
+}
+
+private boolean isPalindrome(String s, int l, int r) {
+    while (l < r) {
+        if (s.charAt(l) != s.charAt(r)) return false;
+        l++;
+        r--;
+    }
+    return true;
+}
+```
+
+**Critical Distinction:**
+```java
+// ❌ WRONG: Adds reference to currentList (not a snapshot)
+result.add(currentList);  // All entries point to same list!
+
+// ✅ CORRECT: Add a copy
+result.add(new ArrayList<>(currentList));  // Each entry is independent
 ```
 
 ### 2-2) Get max, min from 3 numbers

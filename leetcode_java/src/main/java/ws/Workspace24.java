@@ -2353,6 +2353,16 @@ public class Workspace24 {
     }
 
 
+    // LC 130
+    // 15.49 - 59 pm
+    /**
+     *
+     *
+     *
+     */
+    public void solve(char[][] board) {
+
+    }
 
 
 

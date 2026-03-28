@@ -636,6 +636,114 @@ private void dfs(int[][] grid, boolean[][] seen, int r0, int c0, int r, int c, S
    - Translation invariant (position doesn't matter)
    - Rotation/reflection sensitive (as required)
 
+5. **Pass-by-Reference Pattern: Using StringBuilder for Path Recording** ⭐
+
+   **Key Insight**: StringBuilder is a **reference type** (not a primitive). When passed to a function, changes made inside persist after the function returns.
+
+   ```java
+   // Pattern: Create placeholder → Pass to DFS → Use modified result
+
+   Set<String> uniqueIslands = new HashSet<>();
+
+   for (int r = 0; r < rows; r++) {
+       for (int c = 0; c < cols; c++) {
+           if (grid[r][c] == 1) {
+               // 1. Create empty StringBuilder placeholder
+               StringBuilder pathSignature = new StringBuilder();
+
+               // 2. Pass to DFS — DFS will modify it in place
+               dfs(grid, r, c, pathSignature, 'S');
+
+               // 3. After DFS returns, pathSignature is populated
+               //    Add the modified result to set
+               if (pathSignature.length() > 0) {
+                   uniqueIslands.add(pathSignature.toString());
+               }
+           }
+       }
+   }
+
+   private void dfs(int[][] grid, int r, int c, StringBuilder path, char direction) {
+       // Base case
+       if (r < 0 || r >= rows || c < 0 || c >= cols || grid[r][c] == 0) {
+           return;
+       }
+
+       // Mark as visited
+       grid[r][c] = 0;
+
+       // ✅ MODIFY the reference: append to StringBuilder
+       //    This change persists in the caller's pathSignature object
+       path.append(direction);
+
+       // Explore neighbors in fixed order
+       dfs(grid, r + 1, c, path, 'D');  // Down
+       dfs(grid, r - 1, c, path, 'U');  // Up
+       dfs(grid, r, c + 1, path, 'R');  // Right
+       dfs(grid, r, c - 1, path, 'L');  // Left
+
+       // Backtrack: remove the character added in this call
+       path.append('O');  // Backtrack marker
+   }
+   ```
+
+   **Why This Works:**
+   ```
+   Memory Model:
+
+   Main stack frame:
+   ├── pathSignature = StringBuilder{} (heap object at address 0x1000)
+   └── call dfs(..., pathSignature, 'S')
+
+       DFS stack frame 1:
+       ├── path = reference to 0x1000 (SAME object!)
+       ├── path.append('S')  → 0x1000 now contains "S"
+       └── call dfs(..., path, 'D')
+
+           DFS stack frame 2:
+           ├── path = reference to 0x1000 (still SAME object!)
+           ├── path.append('D')  → 0x1000 now contains "SD"
+           └── return
+
+       Back in frame 1:
+       ├── path.append('O')  → 0x1000 now contains "SDO"
+       └── return
+
+   Back in main:
+   └── pathSignature = StringBuilder{"SDO"}  ✅ (modified!)
+   ```
+
+   **Contrast with Primitives:**
+   ```java
+   // ❌ WRONG: Primitive won't persist changes
+   private void dfs(int curSum) {
+       curSum++;  // Only affects local copy
+   }
+
+   int mySum = 5;
+   dfs(mySum);
+   System.out.println(mySum);  // Still 5, NOT 6!
+
+   // ✅ CORRECT: Use reference type or return value
+   private void dfs(StringBuilder path) {
+       path.append('D');  // Affects original StringBuilder
+   }
+
+   StringBuilder myPath = new StringBuilder();
+   dfs(myPath);
+   System.out.println(myPath);  // Modified! ✅
+   ```
+
+   **Common Reference Types for This Pattern:**
+   | Type | Modifiable? | Use Case |
+   |------|-----------|----------|
+   | `StringBuilder` | ✅ Yes (`append`, `setCharAt`, `deleteCharAt`) | Build strings incrementally |
+   | `List<T>` | ✅ Yes (`add`, `remove`, `set`) | Collect results or paths |
+   | `int[]` / `char[]` | ✅ Yes (`arr[i] = value`) | Modify array elements |
+   | `Map<K, V>` | ✅ Yes (`put`, `remove`) | Track frequency/state |
+   | `int` / `long` (primitives) | ❌ No | Only pass-by-value |
+   | `String` | ❌ No (immutable) | Use StringBuilder instead |
+
 ### Template 9: DFS with Validation (Sub-Component Detection)
 ```java
 /**
