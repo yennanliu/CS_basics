@@ -139,6 +139,41 @@ public class IsSubsequence {
         return true;
     }
 
+    // V0-2
+    // IDEA: 2 POINTERS (gemini)
+    public boolean isSubsequence_0_2(String s, String t) {
+        // 1. Basic Edge Cases
+        if (s == null || t == null)
+            return false;
+        if (s.length() == 0)
+            return true; // Empty string is always a subsequence
+        if (s.length() > t.length())
+            return false;
+
+        int i = 0; // Pointer for s
+        int j = 0; // Pointer for t
+
+        int l1 = s.length();
+        int l2 = t.length();
+
+        // 2. Iterate through t (the longer string)
+        while (j < l2) {
+            // If characters match, move the pointer in s
+            if (s.charAt(i) == t.charAt(j)) {
+                i++;
+
+                // 3. Early Exit: If we've matched all characters in s, we're done
+                if (i == l1)
+                    return true;
+            }
+            // Always move the pointer in t
+            j++;
+        }
+
+        // 4. Final check: did we reach the end of s?
+        return i == l1;
+    }
+
 
 
     // V1-1
@@ -313,6 +348,7 @@ public class IsSubsequence {
 //            return -1;
 //        }
 //    }
+
 
 
 

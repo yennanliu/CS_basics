@@ -2354,8 +2354,20 @@ public class Workspace24 {
 
 
     // LC 130
-    // 15.49 - 59 pm
+    // 15.49 - 16.09 pm
     /**
+     *  -> capture regions that are surrounded
+     *
+     *  -----------
+     *
+     *   IDEA 1) 2 PASS DFS
+     *
+     *    -> step 1) collect all `boundary` O, make it as '#'
+     *       step 2) loop over remaining `O`, make it as 'X'
+     *       step 3) loop overr `#`, make it as 'O`
+     *
+     *
+     *   -----------
      *
      *
      *
@@ -2363,6 +2375,57 @@ public class Workspace24 {
     public void solve(char[][] board) {
 
     }
+
+    // LC 392
+    // 16.14 - 24 pm
+    /**
+     *  ->
+     *  return true if `s` is a
+     *  subsequence of `t`, or false otherwise.
+     *
+     *
+     *  ---------------
+     *   IDEA 1) 2 POINTERS ???
+     *
+     *  ---------------
+     *
+     */
+    // IDEA 1) 2 POINTERS ???
+    public boolean isSubsequence(String s, String t) {
+        // edge
+        if(s == null && t == null){
+            return true;
+        }
+        if(s.equals(t)){
+            return true;
+        }
+        if(t == null && s != null){
+            return false;
+        }
+
+        int l1 = s.length();
+        int l2 = t.length();
+
+        int i = 0;
+        int j = 0;
+
+        // ???
+        while (j < l2){
+            // case 1) equals
+            if(s.charAt(i) == t.charAt(j)){
+                // early quit ??
+                if(i == l1 - 1){
+                    return true;
+                }
+                i += 1;
+            }
+            // NOTE !!! need to move j anyway ??
+            j += 1;
+        }
+
+        return false; // ???
+    }
+
 
 
 
