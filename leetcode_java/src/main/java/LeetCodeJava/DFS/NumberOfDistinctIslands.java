@@ -4,7 +4,9 @@ package LeetCodeJava.DFS;
 // https://leetcode.ca/all/694.html
 // https://leetcode.ca/2017-10-24-694-Number-of-Distinct-Islands/
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -51,9 +53,142 @@ import java.util.Set;
 public class NumberOfDistinctIslands {
 
     // V0
+    // IDEA: DFS + `path serialization` (fixed by gemini)
+    public int numDistinctIslands(int[][] grid) {
+        if (grid == null || grid.length == 0) return 0;
+
+        int rows = grid.length;
+        int cols = grid[0].length;
+        Set<String> uniqueIslands = new HashSet<>();
+
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < cols; c++) {
+                if (grid[r][c] == 1) {
+                    StringBuilder path = new StringBuilder();
+                    // Start DFS and record moves relative to the start
+                    // 'S' stands for Start
+                    /** NOTE !!! we pas `s` as start path */
+                    dfs(grid, r, c, path, "S");
+                    uniqueIslands.add(path.toString());
+                }
+            }
+        }
+
+        return uniqueIslands.size();
+    }
+
+    /** NOTE !!!
+     *
+     *  1. the return type is `void` for DFS help func
+     *
+     *  2. we use `StringBuilder` and append val to it within DFS,
+     *     and return as output.
+     *
+     */
+    private void dfs(int[][] grid, int r, int c, StringBuilder path, String direction) {
+        int rows = grid.length;
+        int cols = grid[0].length;
+
+        // 1. Boundary and Base Case
+        if (r < 0 || r >= rows || c < 0 || c >= cols || grid[r][c] != 1) {
+            return;
+        }
+
+        // 2. Mark as visited
+        grid[r][c] = 0;
+        path.append(direction);
+
+        // 3. Explore 4 directions with specific markers
+        dfs(grid, r + 1, c, path, "D"); // Down
+        dfs(grid, r - 1, c, path, "U"); // Up
+        dfs(grid, r, c + 1, path, "R"); // Right
+        dfs(grid, r, c - 1, path, "L"); // Left
+
+        // 4. Record backtracking!
+        // This is crucial to distinguish between different shapes with same path.
+        path.append("B");
+    }
+
+
+
+    /** NOTE !!!
+     *
+     *   below code is WRONG !!!
+     *
+     *   --------------
+     *
+     *   Reason:
+     *
+     *   1. Serialization of Shape:
+     *       Simply summing up values or using <1nullnull...>
+     *       doesn't uniquely define a shape. For example,
+     *       an island that goes Right then Down might produce
+     *       the same string as Down then Right if you don't
+     *       track the directions taken.
+     *
+     *   2. Relative Pathing:
+     *      You must record the move (e.g., U for up, D for down, R for right, L for left)
+     *      and a "backtrack" marker (e.g., B). Without the backtrack marker,
+     *      different shapes could result in the same string.
+     *
+     *   3. Set vs. Map:
+     *      Since you only need the count of unique shapes,
+     *      a Set<String> is more efficient than a Map.
+     *
+     *
+     */
+//    Map<String, Integer> islandMap = new HashMap();
 //    public int numDistinctIslands(int[][] grid) {
+//        // edge
+//
+//        int l = grid.length;
+//        int w = grid[0].length;
+//
+//        for(int y = 0; y < l; y++){
+//            for(int x = 0; x < w; x++){
+//                // /?
+//                if(grid[y][x] == 1){
+//                    //color(grid, x, y, -1);
+//                    //cnt += color(grid, x, y, -1);
+//                    String island = distinctIsland(grid, x, y);
+//                    // ????
+//                    islandMap.put(island, islandMap.getOrDefault(island, 0) + 1);
+//                }
+//            }
+//        }
+//
+//
+//        System.out.println(">>> islandMap = " + islandMap);
+//
+//        return islandMap.size(); // ????
+//    }
+//
+//    // ??? serialization + path collection ???
+//    private String distinctIsland(int[][] grid, int x, int y){
+//        // ??
+//
+//        int l = grid.length;
+//        int w = grid[0].length;
+//
+//        // ????
+//        if(x < 0 || x >= w || y < 0 || y >= l || grid[y][x] != 1){
+//            return null; // ???
+//        }
+//
+//        // ??? mark as `visited
+//        grid[y][x] = -1;
+//
+//        // ???
+//        //path += grid[y][x];
+//
+//        return "<" +  1 + distinctIsland(grid, x + 1, y)
+//                + distinctIsland(grid, x - 1, y) +
+//                distinctIsland(grid, x, y + 1) +
+//                distinctIsland(grid, x, y - 1) + ">";
 //
 //    }
+
+
 
     // V0-1
     // IDEA: DFS + PATH SIGNATURE (fixed by gemini)
@@ -698,6 +833,8 @@ public class NumberOfDistinctIslands {
         dfs(grid, seen, r0, c0, r, c + 1, sb);
         dfs(grid, seen, r0, c0, r, c - 1, sb);
     }
+
+
 
 
 

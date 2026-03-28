@@ -2290,6 +2290,67 @@ public class Workspace24 {
 
 
 
+    // LC 694
+    // 15.21 - 31 pm
+    /**
+     *  IDEA 1) DFS + `path record`
+     *
+     *
+     */
+    //  IDEA 1) DFS + `path record`
+    // ??
+    // NOTE !! better to use set
+    Map<String, Integer> islandMap = new HashMap();
+    public int numDistinctIslands(int[][] grid) {
+        // edge
+        if (grid == null || grid.length == 0) return 0;
+
+        int l = grid.length;
+        int w = grid[0].length;
+
+        for(int y = 0; y < l; y++){
+            for(int x = 0; x < w; x++){
+                // /?
+                if(grid[y][x] == 1){
+                    //color(grid, x, y, -1);
+                    //cnt += color(grid, x, y, -1);
+                    String island = distinctIsland(grid, x, y);
+                    // ????
+                    islandMap.put(island, islandMap.getOrDefault(island, 0) + 1);
+                }
+            }
+        }
+
+
+        System.out.println(">>> islandMap = " + islandMap);
+
+        return islandMap.size(); // ????
+    }
+
+    // ??? serialization + path collection ???
+    private String distinctIsland(int[][] grid, int x, int y){
+        // ??
+
+        int l = grid.length;
+        int w = grid[0].length;
+
+        // ????
+        if(x < 0 || x >= w || y < 0 || y >= l || grid[y][x] != 1){
+            return null; // ???
+        }
+
+        // ??? mark as `visited
+        grid[y][x] = -1;
+
+        // ???
+        //path += grid[y][x];
+
+        return "<" +  1 + distinctIsland(grid, x + 1, y)
+                + distinctIsland(grid, x - 1, y) +
+                distinctIsland(grid, x, y + 1) +
+                distinctIsland(grid, x, y - 1) + ">";
+
+    }
 
 
 
