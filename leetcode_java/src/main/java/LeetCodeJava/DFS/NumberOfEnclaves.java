@@ -45,9 +45,68 @@ import java.util.Arrays;
 public class NumberOfEnclaves {
 
     // V0
-//    public int numEnclaves(int[][] grid) {
-//
-//    }
+    // IDEA: 2 PASS DFS + `COLOR`  (gemini)
+    /**
+     *  time: O (N ** 2)
+     *  space:  O (N ** 2)
+     *
+     *  ----
+     *
+     *  Metric,Complexity,Explanation
+     * Time,O(L×W),Each cell is visited at most twice.
+     * Space,O(L×W),"Stack depth in the worst case (e.g., a ""snake"" shaped island)."
+     *
+     */
+    public int numEnclaves(int[][] grid) {
+        if (grid == null || grid.length == 0)
+            return 0;
+
+        int l = grid.length; // Rows
+        int w = grid[0].length; // Cols
+
+        // 1st pass: 從四個邊界開始，把所有連通到邊界的 1 全部標記為 3
+        for (int y = 0; y < l; y++) {
+            color(grid, 0, y, 3);
+            color(grid, w - 1, y, 3);
+        }
+        for (int x = 0; x < w; x++) {
+            color(grid, x, 0, 3);
+            color(grid, x, l - 1, 3);
+        }
+
+        int cnt = 0;
+        // 2nd pass: 遍歷整個地圖，計算剩下的 1 (飛地)
+        for (int y = 0; y < l; y++) {
+            for (int x = 0; x < w; x++) {
+                if (grid[y][x] == 1) {
+                    // 這裡其實可以直接 count++，或者用你的 color 遞迴計數
+                    cnt += color(grid, x, y, -1);
+                }
+            }
+        }
+
+        return cnt;
+    }
+
+    private int color(int[][] grid, int x, int y, int targetColor) {
+        int l = grid.length;
+        int w = grid[0].length;
+
+        // 修正後的邊界檢查 (注意是 >=)
+        if (x < 0 || x >= w || y < 0 || y >= l || grid[y][x] != 1) {
+            return 0;
+        }
+
+        // 先標記為已訪問，防止重複計數或無限遞迴
+        grid[y][x] = targetColor;
+
+        // 遞迴計算上下左右
+        return 1 + color(grid, x + 1, y, targetColor)
+                + color(grid, x - 1, y, targetColor)
+                + color(grid, x, y + 1, targetColor)
+                + color(grid, x, y - 1, targetColor);
+    }
+
 
     // V0-1
     // IDEA: LC 130, DFS (fixed by gpt)
@@ -445,6 +504,9 @@ public class NumberOfEnclaves {
             }
         }
     }
+
+
+
 
 
 

@@ -2190,6 +2190,106 @@ public class Workspace24 {
     }
 
 
+    // LC 1020
+    // 14.55 - 15.05 pm
+    /**
+     *  -> Return the `number` of land cells in grid
+     *  for which we `cannot` walk off
+     *  the boundary of the grid
+     *  in any number of moves.
+     *
+     *   - m x n matrix
+     *   -  0: sea
+     *   -  1: land
+     *
+     *   can move 4 dirs
+     *
+     *
+     *
+     *
+     *  ---------------
+     *
+     *   IDEA 1) 2 PASS DFS
+     *
+     *
+     *
+     *  ---------------
+     *
+     */
+    // IDEA 1) 2 PASS DFS
+    public int numEnclaves(int[][] grid) {
+        // edge
+        if(grid == null || grid.length == 0 || grid[0].length == 0){
+            return 0;
+        }
+
+        int l = grid.length;
+        int w = grid[0].length;
+
+        // 1st pass: color from `boundary`
+        for(int y = 0; y < l; y++){
+            color(grid, 0, y, 3);
+            color(grid, w-1, y, 3);
+        }
+
+        for(int x = 0; x < w; x++){
+            color(grid, x, 0, 3);
+            color(grid, x, l-1, 3);
+        }
+
+
+        int cnt = 0;
+
+        // 2nd pass: color from `remaining 1`
+        for(int y = 0; y < l; y++){
+            for(int x = 0; x < w; x++){
+                // /?
+                if(grid[y][x] == 1){
+                    //color(grid, x, y, -1);
+                    cnt += color(grid, x, y, -1);
+                }
+            }
+        }
+
+        return cnt;
+    }
+
+
+    // ??? DFS
+    private int color(int[][] grid, int x, int y, int color){
+        // edge
+
+        int l = grid.length;
+        int w = grid[0].length;
+
+        // ????
+        if(x < 0 || x >= w || y < 0 || y >= l || grid[y][x] != 1){
+            return 0;
+        }
+
+        //int[][] moves = new int[][] { {0,1}, {0,-1}, {1,0}, {-1,0} };
+        // mark as visited
+        grid[y][x] = color;
+
+//        for(int[] m: moves){
+//            int x_ = x + m[0];
+//            int y_ = y + m[1];
+//            if(x_ >= 0 && x_ < w && y_ >= 0 && y_ < l){
+//                if(grid[y_][x_] == 1){
+//                   return 1 + color(grid, x_, y_, color);
+//                }
+//            }
+//        }
+
+        return 1 + color(grid, x + 1, y, color)
+                + color(grid, x - 1, y, color) +
+                color(grid, x, y + 1, color) +
+                color(grid, x, y - 1, color);
+
+    }
+
+
+
 
 
 
