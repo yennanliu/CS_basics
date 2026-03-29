@@ -1836,7 +1836,113 @@ public class Workspace24 {
      *  --------------
      *
      */
+    // 16.29 - 39 pm
+    // IDEA 1) DFS + GRAPH + 3 state !!
+    /**
+     *  0: NOT visited
+     *  1: visiting
+     *  2: visited
+     *
+     */
     public boolean canFinish(int numCourses, int[][] prerequisites) {
+        // edge
+
+        // map: { course : [pre_1, pre_2, ... ] }
+        Map<Integer, List<Integer>> map = new HashMap<>();
+        for(int[] p: prerequisites){
+            int ai = p[0];
+            int bi = p[1];
+
+            /**
+             * prerequisites[i] = [ai, bi] indicates that you
+             * must take course bi first if you want to take course ai.
+             *
+             *  e.g.:  bi -> ai
+             *
+             */
+
+            // NOTE !!!
+            // { pre: [next_1, next_2, ...] }
+            // ??
+//            if(!map.containsKey(ai)){
+//                map.put(ai, new ArrayList<>());
+//            }
+//            List<Integer> list = map.get(ai);
+//            list.add(bi);
+//            map.put(ai, list);
+
+            if(!map.containsKey(bi)){
+                map.put(bi, new ArrayList<>());
+            }
+            List<Integer> list = map.get(bi);
+            list.add(ai);
+            map.put(bi, list);
+        }
+
+        int[] status = new int[numCourses];
+
+        for(int i = 0; i < numCourses; i++){
+            // NOTE !!!
+            if(status[i] == 0){
+                if(!courseHelper2(map, i, status)){
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     *  0: NOT visited
+     *  1: visiting
+     *  2: visited
+     *
+     */
+    private boolean courseHelper2(Map<Integer, List<Integer>> map, int course, int[] status){
+        // edge
+
+        if(status[course] == 2){
+            return true;
+        }
+        // ???
+        if(status[course] == 1){
+            return false;
+        }
+
+        // mark as `visiting`
+        status[course] = 1;
+
+        // visit next
+        if(map.containsKey(course)){
+            for(int next: map.get(course)){
+                if(!courseHelper2(map, next, status)){
+                    return false;
+                }
+            }
+        }
+
+        // mark as `visited` ???
+        status[course] = 2;
+
+
+        // ???
+        return true;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public boolean canFinish_99(int numCourses, int[][] prerequisites) {
         // edge
 
         // map: { course: [ pre_1, pre_2, ... ] } // ???
@@ -1970,7 +2076,107 @@ public class Workspace24 {
      *      *     -> update order, and iterate to next nodes
      *      *     -> return final orders
      */
+    //  IDEA 1) TOPO SORT ??
+    // 16.51 - 17.01 pm
     public int[] findOrder(int numCourses, int[][] prerequisites) {
+        // edge
+        // edge
+        if (numCourses == 0) {
+            return null;
+        }
+        if (numCourses == 1) {
+            return new int[] { 0 };
+        }
+        
+
+        int[] degree = new int[numCourses]; // /??
+        Arrays.fill(degree, 0); // ???
+
+        // build map
+        // { pre: [next_1, next_2, ...] }
+        Map<Integer, List<Integer>> map = new HashMap<>();
+        for(int[] p: prerequisites){
+            /**
+             * prerequisites[i] = [ai, bi] indicates
+             * that you must take course bi first if you want to take course ai.
+             *
+             */
+            int prev = p[1];
+            int cur = p[0];
+
+            // { pre: [next_1, next_2, ...] }
+            if(!map.containsKey(prev)){
+                map.put(prev, new ArrayList<>());
+            }
+
+            List<Integer> list = map.get(prev);
+            list.add(cur);
+            map.put(prev, list);
+
+            // update degree ???
+            degree[cur] += 1; // ????
+        }
+
+        // Topo sort ??
+        Queue<Integer> q = new LinkedList<>();
+        Set<Integer> visited = new HashSet<>(); // ???
+
+        // add `degree=0` to q
+        for(int i = 0; i < degree.length; i++){
+            if(degree[i] == 0){
+                q.add(i); // /??
+                visited.add(i);
+            }
+        }
+
+       // int[] res = new int[numCourses]; // ???
+        List<Integer> collected = new ArrayList<>(); // ???
+
+        while (!q.isEmpty()){
+            int cur = q.poll();
+            collected.add(cur); // ???
+            // ??
+            if(map.containsKey(cur)){
+                for(int next: map.get(cur)){
+                    if(!visited.contains(next)){
+                        degree[next] -= 1; // ??
+                        if(degree[next] == 0){
+                            q.add(next);
+                            visited.add(next); // ???
+                        }
+                    }
+                }
+            }
+        }
+
+        // edge
+        if(collected.size() != numCourses){
+            return null;
+        }
+
+        int[] res = new int[collected.size()];
+        int j = 0;
+        for(int x: collected){
+           res[j] = x;
+           j += 1;
+        }
+
+
+        return res;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+    public int[] findOrder_99(int numCourses, int[][] prerequisites) {
         // edge
 
 
@@ -2298,10 +2504,74 @@ public class Workspace24 {
      *
      */
     //  IDEA 1) DFS + `path record`
+    // 16.17 - 27 pm
+    public int numDistinctIslands(int[][] grid) {
+        // edge
+        if (grid == null || grid.length == 0) return 0;
+
+
+        HashSet<String> set = new HashSet<>();
+
+        int l = grid.length;
+        int w = grid[0].length;
+
+        // ???
+        for(int y = 0; y < l; y++){
+            for(int x = 0; x < w; x++){
+                if(grid[y][x] == 1){
+                    // ???
+                    String path = "";
+                    String tmpIsland = getIslandNode(grid, x, y, path,"S");
+                    set.add(tmpIsland);
+                }
+            }
+        }
+
+        // /??
+        return set.size();
+    }
+
+    private String getIslandNode(int[][] grid, int x, int y, String path, String direction){
+        // edge
+
+        int l = grid.length;
+        int w = grid[0].length;
+
+        // validate
+        // 1. Boundary and Base Case
+        if (x < 0 || x >= w || y < 0 || y >= l || grid[y][x] != 1) {
+            return ""; // ???
+        }
+
+        // NOTE !!!
+        // mark as visited
+        grid[y][x] = 0;
+        // NOTE !!!
+        path += direction; // ????
+
+        // ???
+        //path += grid
+        getIslandNode(grid, x-1, y, path, "L");
+        getIslandNode(grid, x+1, y, path, "R");
+        getIslandNode(grid, x, y-1, path, "D");
+        getIslandNode(grid, x, y+1, path, "U");
+
+        // ???
+        return path + "E"; // ????
+    }
+
+
+
+
+
+
+
+
+    //  IDEA 1) DFS + `path record`
     // ??
     // NOTE !! better to use set
     Map<String, Integer> islandMap = new HashMap();
-    public int numDistinctIslands(int[][] grid) {
+    public int numDistinctIslands_99(int[][] grid) {
         // edge
         if (grid == null || grid.length == 0) return 0;
 
