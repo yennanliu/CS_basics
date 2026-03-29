@@ -100,12 +100,21 @@ public class VerifyingAnAlienDictionary {
 
         // Build order map: character -> rank
         int[] orderMap = new int[26];
+        /** NOTE !!!
+         *
+         *  how we build the `new alphabet order`
+         */
         for (int i = 0; i < order.length(); i++) {
             orderMap[order.charAt(i) - 'a'] = i;
         }
 
         // Compare each pair of words
         for (int i = 1; i < words.length; i++) {
+            /** NOTE !!!
+             *
+             *  we compare cur and prev word,
+             *  -> compare `pair` at once
+             */
             if (!isInOrder(words[i - 1], words[i], orderMap)) {
                 return false;
             }
@@ -117,16 +126,35 @@ public class VerifyingAnAlienDictionary {
     private boolean isInOrder(String word1, String word2, int[] orderMap) {
         int len1 = word1.length();
         int len2 = word2.length();
+        /** NOTE !!!
+         *
+         *  we use the smaller len as our loop len
+         */
         int minLen = Math.min(len1, len2);
 
         for (int i = 0; i < minLen; i++) {
             char c1 = word1.charAt(i);
             char c2 = word2.charAt(i);
+            /** NOTE !!!
+             *
+             *  1. we ONLY do the comparison when c1 != c2
+             */
             if (c1 != c2) {
                 return orderMap[c1 - 'a'] < orderMap[c2 - 'a'];
             }
         }
 
+        /** NOTE !!!
+         *
+         *  we to check if `cur` len >= `prev` len
+         *
+         *  example:
+         *
+         *
+         *  Input: words = ["apple","app"], order = "abcdefghijklmnopqrstuvwxyz"
+         *  Output: false
+         *
+         */
         // If all chars are equal up to min length, shorter word should come first
         // NOTE !!! below condition
         return len1 <= len2;
