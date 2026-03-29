@@ -2,7 +2,8 @@
 
 # 2026-03-29
 
-- weekly video
+- LC weeekly 103
+	- lc_weekly_gemini.md
 - cheatsheet (LC examples)
 	- hashmap.md (OK)
 	- set.md (OK)

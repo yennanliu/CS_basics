@@ -2087,7 +2087,7 @@ public class Workspace24 {
         if (numCourses == 1) {
             return new int[] { 0 };
         }
-        
+
 
         int[] degree = new int[numCourses]; // /??
         Arrays.fill(degree, 0); // ???
@@ -2698,6 +2698,24 @@ public class Workspace24 {
 
 
 
+    // LC 865
+    // 17.19 - 29 pm
+    /**
+     *  -> Return the smallest subtree
+     *  such that it contains all the
+     *  deepest nodes in the original tree.
+     *
+     *
+     *  -----------------
+     *
+     *
+     *  -----------------
+     *
+     */
+    public TreeNode subtreeWithAllDeepest(TreeNode root) {
+
+        return null;
+    }
 
 
 
