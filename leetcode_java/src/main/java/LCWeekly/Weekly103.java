@@ -184,6 +184,93 @@ public class Weekly103 {
 
     // LC 2658
     // https://leetcode.com/problems/maximum-number-of-fish-in-a-grid/description/
+    /**
+     *  -> Return the `maximum` number of `fish` the fisher can
+     *   catch
+     *    - if he chooses his starting cell optimally,
+     *       - or 0 if no water cell exists.
+     *
+     *
+     *   - 2D matrix, m x n
+     *   - (r,c)
+     *      - land: grid[r][c] = 0
+     *      - water: grid[r][c] > 0
+     *           - fish cnt: grid[r][c]
+     *
+     *   - fisher can start from ANY `water cell`
+     *   - can do below op
+     *      - catch all fish at cell (r,c)
+     *      or
+     *      - move to any adjacent water cell.
+     *
+     *  ----------------
+     *
+     *   IDEA 1) DFS
+     *
+     *   IDEA 2) BFS
+     *      - get `island` size, and maintain the max one
+     *
+     *
+     *  ----------------
+     *
+     */
+    //IDEA 1) DFS ???
+    public int findMaxFish(int[][] grid) {
+        // edge
+        if(grid == null || grid.length == 0 || grid[0].length == 0){
+            return 0;
+        }
+
+        int l = grid.length;
+        int w = grid[0].length;
+
+        int maxFish = 0;
+
+        for(int y = 0; y < l; y++){
+            for(int x = 0; x < w; x++){
+                // if `water`
+               // int tmpCnt = 0;
+                if(grid[y][x] > 0){
+                    maxFish = Math.max(
+                            maxFish,
+                            getFishCnt(grid, x, y)
+                    );
+                }
+            }
+        }
+
+        return maxFish;
+    }
+
+    private int getFishCnt(int[][] grid, int x, int y){
+        // edge
+
+        int l = grid.length;
+        int w = grid[0].length;
+
+        // NOTE !!! validate here
+        if(x < 0 || x >= w || y < 0 || y >= l){
+            if(grid[y][x] == 0){
+                return 0; // ???
+            }
+        }
+
+        // NOTE !!!
+        // mark as visited
+        int val = grid[y][x];
+        grid[y][x] = 0;
+
+
+        //tmpCnt += grid[y][x]; // ???
+       // getFishCnt(grid, x-1, 0, tmpCnt);
+        // ???
+        return val +
+                getFishCnt(grid, x-1, y) +
+                getFishCnt(grid, x+1, y) +
+                getFishCnt(grid, x, y + 1) +
+                getFishCnt(grid, x, y - 1);
+    }
+
 
 
     // LC 2659
