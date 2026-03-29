@@ -32,7 +32,104 @@ public class Workspace24 {
      *  ---------------
      *
      */
+
+    // LC 953
+    // 7.24 - 34 am
+    /**
+     *  ->
+     *  return `true` if and only if the given words are sorted
+     *  lexicographically in this alien language.
+     *
+     *  ---------------------
+     *
+     *   IDEA 1) char op + looping ??
+     *
+     *
+     *  ---------------------
+     *
+     *
+     *
+     */
+    // IDEA 1) char op + looping ?? ???
     public boolean isAlienSorted(String[] words, String order) {
+        // edge
+
+        int[] orderArr = new int[26]; // ??
+        for(int i = 0; i < order.length(); i++){
+            // ???
+            char val = order.toCharArray()[i];
+            orderArr[val - 'a'] = i; // ????
+        }
+
+        System.out.println(">>> orderArr = " + Arrays.toString(orderArr));
+
+        // 2. Compare adjacent words
+        for (int i = 1; i < words.length; i++) {
+            if (!isSorted(words[i - 1], words[i], orderArr)) {
+                return false;
+            }
+        }
+
+
+        for(int i = 1; i < words.length; i++){
+
+            String cur = words[i];
+            String prev = words[i-1];
+
+            // ???
+            //int size = Math.max(cur.length(), prev.length());
+            int size = Math.max(cur.length(), prev.length());
+
+
+            for(int j = 0; j < size; j++){
+
+                // prev should < cur
+                int curOrder = orderArr[cur.charAt(j) - 'a'];
+                int preOrder = orderArr[prev.charAt(j) - 'a'];
+                System.out.println(">> curOrder = " + curOrder +
+                ", preOrder = " + preOrder);
+
+                if(curOrder >= preOrder){
+                    return true;
+                }else{
+                    return false;
+                }
+                // ???
+                /**
+                 * case:
+                 *
+                 * Input: words = ["apple","app"],
+                 * order = "abcdefghijklmnopqrstuvwxyz"
+                 *
+                 */
+//                if(cur.length() < prev.length()){
+//                    return false;
+//                }
+            }
+
+
+        }
+
+
+        return true;
+    }
+
+
+
+    private boolean isSorted(String prev, String curr, int[] orderArr) {
+        return  false;
+    }
+
+
+
+
+
+
+
+
+
+
+    public boolean isAlienSorted_99(String[] words, String order) {
         // edge
 
         // V2
