@@ -275,6 +275,72 @@ public class Weekly103 {
 
     // LC 2659
     // https://leetcode.com/problems/make-array-empty/
+    /**
+     *
+     *  -> Return an integer denoting
+     *  the number of operations
+     *  it takes to make nums empty.
+     *
+     *   can do below op till the nums is EMPTY,
+     *   and return the `op  cnt`
+     *
+     *   OP:
+     *      - If the `firs`t` element has the `smallest` value, remove it
+     *       - Otherwise, put the first element at the end of the array.
+     *
+     *
+     *  -----------------
+     *
+     *   IDEA 1) PQ + LIST OP ????
+     *
+     *
+     *   -----------------
+     *
+     *
+     */
+    public long countOperationsToEmptyArray(int[] nums) {
+        // edge
+        if(nums == null || nums.length == 0){
+            return 0L; // ??
+        }
+
+        List<Integer> list = new ArrayList<>();
+        for(int x: nums){
+            list.add(x);
+        }
+
+        // small PQ: (small -> big)
+        PriorityQueue<Integer> pq = new PriorityQueue<>(new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                int diff = o1 - o2;
+                return diff;
+            }
+        });
+
+        long opCnt = 0L;
+
+        // /??
+        while (!pq.isEmpty()){
+
+            int smallest = pq.peek();
+            opCnt += 1; // /??
+
+            if(smallest == list.get(0)){
+                list.remove(0); // ??
+                pq.poll();
+            }else{
+                int val = list.get(0);
+                list.remove(0); // ??
+                list.add(val); // ???
+            }
+        }
+
+        return opCnt;
+    }
+
+
+
 
 
 
