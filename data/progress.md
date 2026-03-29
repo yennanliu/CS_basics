@@ -1,6 +1,6 @@
 # Progress
 
-# 2026-03-28
+# 2026-03-29
 
 - weekly video
 - cheatsheet (LC examples)
@@ -21,7 +21,7 @@
 	- binary_tree.md (OK)
 	- bst.md (OK)
 	- complexity_cheatsheet.md (todo)
-	- design.md (LC examples)
+	- design.md (LC examples) - `2-9) Design Hit Counter`
 
 - to review
 - needcode `250` - similar LC by AI
