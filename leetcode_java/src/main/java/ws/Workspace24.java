@@ -2812,12 +2812,82 @@ public class Workspace24 {
     // 10.30 - 40 am
     /**
      *
+     *  -> Return the `smallest` subtree such that it
+     *     contains `all the deepest nodes`
+     *     in the `original tree.`
+     *
+     *   - the `depth` of each node
+     *        is the `shortest distance` to the `root.`
+     *
+     *
+     *   - A node is called the `deepest`
+     *     if it has the `largest` depth
+     *     possible among any node in
+     *     the entire tree.
+     *
+     *
+     *  ----------------
+     *
+     *
+     *   IDEA 1) DFS ??
+     *     - post order  ????
+     *     (left -> right -> root)
+     *
+     *     -> find `deepest` node
+     *     -> find the `smallest` parent node ???
+     *
+     *  IDEA 1) DFS + path collection ???
+     *
+     *  ----------------
      *
      */
+    // map { node: path }
+    //Map<TreeNode, String> nodePath = new HashMap<>();
+    int deepest = 0;
+    TreeNode resNode = null;
     public TreeNode subtreeWithAllDeepest(TreeNode root) {
+        // edge
+        if(root == null){
+            return null;
+        }
+        // ???
+        if(root.left == null && root.right == null){
+            // ???
+            return root;
+        }
 
-        return null;
+
+       // int deepest = 0;
+        getPath(root, null, 0);
+
+        return resNode; // ???
     }
+
+
+    // ??? pre-order DFS ????
+    private void getPath(TreeNode root, TreeNode parent, int depth){
+        // edge
+        if(root == null){
+            return;
+        }
+        // ???
+        if(root.left == null && root.right == null){
+            // ???
+            if(depth > deepest){
+                resNode = parent;
+                deepest = depth;
+            }
+        }
+
+        getPath(root.left, root, depth + 1);
+        getPath(root.right, root, depth + 1);
+    }
+
+
+
+
+
+
 
 
     // LC 399
