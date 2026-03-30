@@ -324,6 +324,12 @@ public class SmallestSubtreeWithAllTheDeepestNodes {
     // IDEA: LCA + BFS (GPT)
     public TreeNode subtreeWithAllDeepest_0_4(TreeNode root) {
 
+        /** NOTE !!!
+         *
+         *  we define `parent` hashmap:
+         *
+         *   { node : parent }
+         */
         Map<TreeNode, TreeNode> parent = new HashMap<>();
         Queue<TreeNode> q = new LinkedList<>();
 
@@ -333,6 +339,15 @@ public class SmallestSubtreeWithAllTheDeepestNodes {
         List<TreeNode> level = new ArrayList<>();
 
         // BFS
+        /** NOTE !!!
+         *
+         *  we build
+         *
+         *   1. `parent` map
+         *   2.  level
+         *
+         *   via BFS
+         */
         while (!q.isEmpty()) {
             int size = q.size();
             level = new ArrayList<>();
@@ -342,6 +357,12 @@ public class SmallestSubtreeWithAllTheDeepestNodes {
                 level.add(cur);
 
                 if (cur.left != null) {
+                    /** NOTE !!!
+                     *
+                     *  we update `parent` hashmap:
+                     *
+                     *   { node : parent }
+                     */
                     parent.put(cur.left, cur);
                     q.offer(cur.left);
                 }
