@@ -62,6 +62,85 @@ public class SmallestSubtreeWithAllTheDeepestNodes {
 //    }
 
 
+    /** NOTE !!!
+     *
+     *   below code is WRONG !!!
+     *
+     *   ------------
+     *
+     *   Reason (gemini):
+     *
+     *   In LC 865 (Smallest Subtree with all the Deepest Nodes),
+     *   your current DFS approach has a logic gap:
+     *
+     *   it only tracks a single "parent" of a deep node.
+     *
+     *   If there are `multiple` nodes at the maximum depth
+     *   (one on the far left, one on the far right),
+     *   ->  the answer must be their Lowest Common Ancestor (LCA).
+     *
+     *
+     *   ------------
+     *
+     *   The Logic Fixes
+     *
+     *   1. Multiple Deepest Nodes:
+     *       If two nodes are at the same maximum depth,
+     *       their parent isn't necessarily the answer—the ancestor
+     *       that bridges both branches is.
+     *
+     *   2. Post-order (Bottom-Up) is Better:
+     *       Instead of passing depth down, have each node return
+     *       two pieces of information: its max depth and the
+     *       result node for its subtree.
+     *
+     *   3. Global vs. Local:
+     *      Using a helper object (or a pair) allows you to compare
+     *      left and right branches at every node.
+     *
+     */
+//    int deepest = 0;
+//    TreeNode resNode = null;
+//    public TreeNode subtreeWithAllDeepest(TreeNode root) {
+//        // edge
+//        if(root == null){
+//            return null;
+//        }
+//        // ???
+//        if(root.left == null && root.right == null){
+//            // ???
+//            return root;
+//        }
+//
+//
+//        // int deepest = 0;
+//        getPath(root, null, 0);
+//
+//        return resNode; // ???
+//    }
+//
+//
+//    // ??? pre-order DFS ????
+//    private void getPath(TreeNode root, TreeNode parent, int depth){
+//        // edge
+//        if(root == null){
+//            return;
+//        }
+//        // ???
+//        if(root.left == null && root.right == null){
+//            // ???
+//            if(depth > deepest){
+//                resNode = parent;
+//                deepest = depth;
+//            }
+//        }
+//
+//        getPath(root.left, root, depth + 1);
+//        getPath(root.right, root, depth + 1);
+//    }
+
+
+
     // V0-1
     // IDEA: LCA + DFS (GEMINI)
     // We create a simple helper class to return both the Node and its max Depth
