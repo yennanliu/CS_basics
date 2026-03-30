@@ -61,7 +61,7 @@ public class MinimumHeightTrees {
      *
      *
      * 1. Think of a tree like an onion.
-     *    The MHT roots are the nodes in the innermost layer.
+     *    The MHT roots are the nodes in the `innermost` layer.
      *
      * 2. Identify Leaves: Nodes with only 1
      *    neighbor are "leaves."
@@ -94,6 +94,8 @@ public class MinimumHeightTrees {
         List<Set<Integer>> adj = new ArrayList<>();
         for (int i = 0; i < n; i++)
             adj.add(new HashSet<>());
+
+        /** NOTE !!! we define `degree` for topological sort */
         int[] degree = new int[n];
 
         for (int[] e : edges) {
@@ -144,8 +146,52 @@ public class MinimumHeightTrees {
      * Find all leaf nodes (degree = 1)
      * Iteratively remove leaves
      * The remaining 1–2 nodes are the answer (centroids)
+     *
+     * ----------
+     *
+     * # 🎯 Intuition (VERY IMPORTANT)
+     *
+     * You're doing:
+     *
+     * ```
+     * Layer 1: remove outer leaves
+     * Layer 2: remove new leaves
+     * Layer 3: ...
+     * ```
+     *
+     * Like peeling an onion:
+     *
+     * ```
+     * [0,1,2,3,4]
+     *
+     * → remove 0,4
+     * → remove 1,3
+     * → left with [2] ✅
+     * ```
+     *
+     * ---
+     *
+     * # ⏱ Complexity
+     *
+     * | Operation     | Cost     |
+     * | ------------- | -------- |
+     * | Build graph   | O(n)     |
+     * | Process nodes | O(n)     |
+     * | Total         | **O(n)** |
+     *
+     * ---
+     *
+     * # 🔥 Key Takeaways
+     *
+     * * This is NOT BFS from root
+     * * This is **multi-source BFS from leaves inward**
+     * * The last remaining nodes = **centers**
+     *
+     *
      */
     public List<Integer> findMinHeightTrees_0_0_2(int n, int[][] edges) {
+
+        // This will store the final answer (centroids of the tree)
         List<Integer> res = new ArrayList<>();
 
         if (n == 1) {
@@ -154,12 +200,24 @@ public class MinimumHeightTrees {
         }
 
         // Build graph
+        /**
+         * We use a list of sets:
+         *   - graph.get(i) = neighbors of node i
+         *
+         * Set is used because:
+         *   - Easy removal (O(1))
+         *   - Avoid duplicate edges
+         *
+         */
         List<Set<Integer>> graph = new ArrayList<>();
+
         for (int i = 0; i < n; i++) {
             graph.add(new HashSet<>());
         }
 
         for (int[] e : edges) {
+            // Since it's an undirected tree, add both directions:
+            // u <---> v
             graph.get(e[0]).add(e[1]);
             graph.get(e[1]).add(e[0]);
         }
@@ -167,29 +225,63 @@ public class MinimumHeightTrees {
         // Initialize leaves
         List<Integer> leaves = new ArrayList<>();
         for (int i = 0; i < n; i++) {
+            /**
+             *
+             *   // A leaf node = degree 1 (only one connection)
+             *   // These are the outermost nodes
+             *
+             *
+             * Example:
+             *
+             * 0 - 1 - 2 - 3 - 4
+             * ↑               ↑
+             * leaf          leaf
+             */
             if (graph.get(i).size() == 1) {
                 leaves.add(i);
             }
         }
 
         // Trim leaves layer by layer
+        /**
+         * We will remove nodes layer by layer
+         * This tracks how many are left
+         */
         int remainingNodes = n;
 
+        /**  NOTE !!! core logic:
+         *
+         * Stop when ≤ 2 nodes remain
+         * Why?
+         *   - Tree center is always 1 or 2 nodes
+         *
+         */
         while (remainingNodes > 2) {
+            // We remove all current leaves at once
             remainingNodes -= leaves.size();
             List<Integer> newLeaves = new ArrayList<>();
 
             for (int leaf : leaves) {
+                // Get its only neighbor
+                // Since it's a leaf → only 1 neighbor
+                // iterator().next() gets that neighbor
                 int neighbor = graph.get(leaf).iterator().next();
+                // Remove the leaf
                 graph.get(neighbor).remove(leaf);
 
+                // Check if neighbor becomes a leaf
+                // After removal:
+                // If neighbor now has only 1 edge → it's a new leaf
                 if (graph.get(neighbor).size() == 1) {
                     newLeaves.add(neighbor);
                 }
             }
 
+            // Move to next layer
+            // Continue peeling inward
             leaves = newLeaves;
         }
+
 
         return leaves;
     }
