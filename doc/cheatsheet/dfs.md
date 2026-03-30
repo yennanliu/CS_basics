@@ -112,6 +112,30 @@
   - **Component Discovery**: Use DFS or Union-Find to identify all components
   - **Cumulative Tracking**: Keep running sum of processed nodes to calculate pairs efficiently
 
+### **Pattern 12: Weighted Graph DFS (Division/Ratio Queries)**
+- **Description**: Build a weighted directed graph where edge weights represent ratios/division results, then DFS to compute transitive ratios between any two connected nodes
+- **Recognition**: "Evaluate division", "exchange rates", "currency conversion", "ratio queries", "transitive relationships with weights"
+- **Key Technique**: Model equations as a bidirectional weighted graph (`Map<String, Map<String, Double>>`), DFS with accumulated product along the path
+- **Examples**: LC 399 (Evaluate Division), LC 1101 (The Earliest Moment When Everyone Become Friends - variant), LC 721 (Accounts Merge - graph grouping variant)
+- **Template**: Use Weighted Graph DFS Template
+- **Core Algorithm Idea**:
+  1. **Graph Construction**: For each equation `a / b = val`, add edge `a → b` with weight `val` and edge `b → a` with weight `1/val`
+  2. **Query Processing**: For query `c / d`, DFS from `c` to `d`, multiplying edge weights along the path
+  3. **Product Accumulation**: Pass a running product through DFS; when target is reached, the product is the answer
+  4. **Alternative**: Union-Find with ratio tracking (store `node → root` ratio for O(α(n)) queries)
+- **Important Notes**:
+  - **Bidirectional Edges**: Always store both `a→b` and `b→a` with reciprocal weights
+  - **Visited Set**: Reset per query to allow independent path exploration
+  - **Early Termination**: If either node not in graph, return -1.0 immediately
+  - **Self-Division**: If `start == end` and node exists in graph, return 1.0
+  - **Product vs Additive**: Unlike shortest-path problems, this uses multiplicative accumulation
+- **Similar Classic LC Problems**:
+  - LC 399 - Evaluate Division (canonical weighted graph DFS)
+  - LC 1976 - Number of Ways to Arrive at Destination (weighted graph traversal)
+  - LC 787 - Cheapest Flights Within K Stops (weighted graph with constraints)
+  - LC 743 - Network Delay Time (weighted graph exploration)
+  - LC 1334 - Find the City With the Smallest Number of Neighbors at a Threshold Distance
+
 ## Templates & Algorithms
 
 ### Template Comparison Table
@@ -128,6 +152,7 @@
 | **DFS Validation** | Component validation | Boolean flag propagation | O(m×n) | O(m×n) | Sub-component detection |
 | **Bidirectional Direction** | Track edge direction | Bidirectional + flags | O(V+E) | O(V+E) | Edge reorientation/reversal |
 | **Component Pair Counting** | Count unreachable pairs | Cumulative multiplication | O(V+E) | O(V) | Disconnected component pairs |
+| **Weighted Graph DFS** | Ratio/division queries | Product accumulation | O(Q*(V+E)) | O(V+E) | Transitive ratio computation |
 
 ### Universal DFS Template
 ```python
