@@ -2977,6 +2977,56 @@ public class Workspace24 {
     }
 
 
+    // LC 700
+    // 6.53 - 7.03 am
+    /**
+     *  ->
+     *  Find the node in the BST that the node's value equal
+     *  s val and return the subtree rooted with that node.
+     *  If such a node does not exist, return null.
+     *
+     *
+     *  -------------
+     *
+     *  IDEA 1) BST + DFS
+     *
+     *
+     */
+    // IDEA 1) BST + DFS
+    TreeNode res;
+    public TreeNode searchBST(TreeNode root, int val) {
+        // edge
+        if(root == null){
+            return null;
+        }
+
+        findNodeHelper(root, val);
+
+        return res;
+    }
+
+    private void findNodeHelper(TreeNode root, int val){
+        if(root == null){
+            return; // null;
+        }
+        if(root.val == val){
+            //return root;
+            res = root;
+        }
+        if(root.val < val){
+           // return searchBST(root.left, val);
+            searchBST(root.right, val);
+        }else{
+            //return searchBST(root.right, val);
+            searchBST(root.left, val);
+        }
+
+    }
+
+
+
+
+
 
 
 

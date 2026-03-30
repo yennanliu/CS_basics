@@ -59,7 +59,11 @@ public class SearchInABinarySearchTree {
         }
 
         if (root.val < val) {
-            /** NOTE !!! below */
+            /** NOTE !!! below
+             *
+             *   we move `right` if root.val < val
+             *
+             */
             return searchBST(root.right, val);
         }
 
