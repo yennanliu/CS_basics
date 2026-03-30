@@ -45,10 +45,155 @@ import java.util.*;
  */
 public class MinimumHeightTrees {
 
+    /** NOTE !!! we CAN'T use `union find` for this LC */
+
     // V0
 //    public List<Integer> findMinHeightTrees(int n, int[][] edges) {
 //
 //    }
+
+
+    // V0-0-1
+    // IDEA: (BFS / Layer Trimming) (GEMINI)
+    /**
+     *
+     * The Correct Strategy: "Topological Leaf Removal"
+     *
+     *
+     * 1. Think of a tree like an onion.
+     *    The MHT roots are the nodes in the innermost layer.
+     *
+     * 2. Identify Leaves: Nodes with only 1
+     *    neighbor are "leaves."
+     *
+     * 3. Trim Layers: Remove all leaves simultaneously.
+     *    Their neighbors might now become leaves.
+     *
+     * Repeat: Keep trimming until only 1 or 2 nodes remain.
+     * These are your centroids (MHT roots).
+     *
+     *
+     */
+    /**
+     *
+     * Metric,Complexity,Explanation
+     * Time,O(N),We process each node and edge once during the layer trimming.
+     * Space,O(N),To store the adjacency list and the degree array.
+     *
+     */
+    public List<Integer> findMinHeightTrees_0_0_1(int n, int[][] edges) {
+        // 1. Edge Cases
+        if (n <= 2) {
+            List<Integer> res = new ArrayList<>();
+            for (int i = 0; i < n; i++)
+                res.add(i);
+            return res;
+        }
+
+        // 2. Build Adjacency List and Degree Array
+        List<Set<Integer>> adj = new ArrayList<>();
+        for (int i = 0; i < n; i++)
+            adj.add(new HashSet<>());
+        int[] degree = new int[n];
+
+        for (int[] e : edges) {
+            adj.get(e[0]).add(e[1]);
+            adj.get(e[1]).add(e[0]);
+            degree[e[0]]++;
+            degree[e[1]]++;
+        }
+
+        // 3. Initialize first layer of leaves
+        Queue<Integer> leaves = new LinkedList<>();
+        for (int i = 0; i < n; i++) {
+            if (degree[i] == 1)
+                leaves.offer(i);
+        }
+
+        // 4. Trim leaves layer by layer
+        int remainingNodes = n;
+        while (remainingNodes > 2) {
+            int leafSize = leaves.size();
+            remainingNodes -= leafSize;
+
+            for (int i = 0; i < leafSize; i++) {
+                int leaf = leaves.poll();
+                // Find the neighbor of this leaf
+                for (int neighbor : adj.get(leaf)) {
+                    adj.get(neighbor).remove(leaf); // Remove edge
+                    degree[neighbor]--;
+                    if (degree[neighbor] == 1) {
+                        leaves.offer(neighbor);
+                    }
+                }
+            }
+        }
+
+        // The remaining nodes in the queue are the centroids
+        return new ArrayList<>(leaves);
+    }
+
+
+    // V0-0-2
+    // IDEA: topological trimming (BFS / leaf removal)  (GPT)
+    /**
+     * Correct Idea (O(n))
+     *
+     *
+     * Build graph (adjacency list)
+     * Find all leaf nodes (degree = 1)
+     * Iteratively remove leaves
+     * The remaining 1–2 nodes are the answer (centroids)
+     */
+    public List<Integer> findMinHeightTrees_0_0_2(int n, int[][] edges) {
+        List<Integer> res = new ArrayList<>();
+
+        if (n == 1) {
+            res.add(0);
+            return res;
+        }
+
+        // Build graph
+        List<Set<Integer>> graph = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            graph.add(new HashSet<>());
+        }
+
+        for (int[] e : edges) {
+            graph.get(e[0]).add(e[1]);
+            graph.get(e[1]).add(e[0]);
+        }
+
+        // Initialize leaves
+        List<Integer> leaves = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            if (graph.get(i).size() == 1) {
+                leaves.add(i);
+            }
+        }
+
+        // Trim leaves layer by layer
+        int remainingNodes = n;
+
+        while (remainingNodes > 2) {
+            remainingNodes -= leaves.size();
+            List<Integer> newLeaves = new ArrayList<>();
+
+            for (int leaf : leaves) {
+                int neighbor = graph.get(leaf).iterator().next();
+                graph.get(neighbor).remove(leaf);
+
+                if (graph.get(neighbor).size() == 1) {
+                    newLeaves.add(neighbor);
+                }
+            }
+
+            leaves = newLeaves;
+        }
+
+        return leaves;
+    }
+
 
     // V0-1
     // IDEA: BRUTE FORCE (loop over nodes, then get dist via dfs/bfs) (GPT) (TLE)
@@ -598,6 +743,9 @@ public class MinimumHeightTrees {
 
         return new ArrayList<>(queue);
     }
+
+
+
 
 
 
