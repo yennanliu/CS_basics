@@ -2815,5 +2815,96 @@ public class Workspace24 {
     }
 
 
+    // LC 399
+    // 7.55 - 8.12 am
+    /**
+     *
+     *  -> Return the answers to all queries.
+     *  If a single answer cannot be determined, return -1.0.
+     *
+     *
+     *  -------------
+     *
+     *   IDEA 1) DFS
+     *
+     *
+     *
+     *  -------------
+     *
+     *
+     *
+     */
+    //  IDEA 1) DFS
+    public double[] calcEquation(List<List<String>> equations, double[] values, List<List<String>> queries) {
+        // edge
+
+        // map
+        // { string : val }
+        // e.g. {a/b : 1.5, b/c: 2.5,. ... }
+
+        Map<String, Double> map = new HashMap<>();
+        for(int i = 0; i < equations.size(); i++){
+            List<String> e =  equations.get(i);
+            String a = e.get(0);
+            String b = e.get(1);
+
+            double val = values[i];
+
+            // ??
+            map.put(a + b, val);
+            map.put(b + a,  1 / val);
+        }
+
+        System.out.println(">>> map = " + map);
+
+        // ???
+        double[] res = new double[queries.size()];
+        // List<List<String>> queries
+        for(int i = 0; i < equations.size(); i++){
+            List<String> e =  equations.get(i);
+            String a = e.get(0);
+            String b = e.get(1);
+
+            // ??
+            res[i] = dfsDivision(map, a, b, 1.0);
+        }
+
+
+        return res;
+    }
+
+
+    private double dfsDivision(Map<String, Double> map, String x, String y, double result){
+        // edge
+        if(!map.containsKey(x) || !map.containsKey(y)){
+            return -1.0;
+        }
+
+        if(map.containsKey(x+y)){
+            return map.get(x+y);
+        }
+
+        if(map.containsKey(y+x)){
+            return map.get(y+x);
+        }
+
+        // ???
+       //double result = map.
+
+        return -1.0;
+    }
+
+
+
+    // ???
+    private String multiply(String s1, String s2){
+        return null;
+    }
+
+
+
+
+
+
 
 }

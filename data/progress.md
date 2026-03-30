@@ -22,7 +22,8 @@
 	- binary_tree.md (OK)
 	- bst.md (OK)
 	- complexity_cheatsheet.md (todo)
-	- design.md (LC examples) - `2-9) Design Hit Counter`
+	- design.md (OK)
+	- dfs.md (LC examples)
 
 - to review
 - needcode `250` - similar LC by AI
