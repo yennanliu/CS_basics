@@ -48,11 +48,36 @@
 - **Examples**: LC 450, LC 701, LC 669, LC 538
 - **Template**: Use Modification Template
 
-### **Pattern 6: Subtree Problems**
-- **Description**: Process subtrees and aggregate results
-- **Recognition**: "Subtree sum", "duplicate subtrees", "LCA"
-- **Examples**: LC 508, LC 652, LC 236, LC 663
+### **Pattern 6: Subtree Problems & LCA (Lowest Common Ancestor)**
+- **Description**: Process subtrees and aggregate results bottom-up; find the lowest common ancestor of target nodes
+- **Recognition**: "Subtree sum", "duplicate subtrees", "LCA", "smallest subtree containing", "lowest common ancestor", "deepest leaves"
+- **Examples**: LC 508, LC 652, LC 236, LC 663, LC 865, LC 1123
 - **Template**: Use Bottom-up Template
+- **When to Use LCA Approach**:
+  - Two (or more) target nodes exist in different subtrees and you need the first node that "sees" both sides
+  - "Smallest subtree that contains [condition X]" — this is LCA in disguise
+  - Targets may be **given** (LC 236: find LCA of p, q) or **implicit** (LC 865/1123: all nodes at max depth)
+- **Core Idea (Post-Order / Bottom-Up)**:
+  1. Recurse left and right subtrees first (post-order)
+  2. Each subtree returns a `(node, depth/info)` pair upward
+  3. At each node, compare left vs right results:
+     - **Left deeper** → answer is in the left subtree, propagate left result up
+     - **Right deeper** → answer is in the right subtree, propagate right result up
+     - **Equal depth** → current node is the LCA (deepest paths meet here), return current node
+  4. The root of the recursion holds the final answer
+- **Key Variants**:
+  - **Standard LCA (LC 236)**: Targets p, q are given; return first node that sees both in different subtrees
+  - **Depth-Based LCA (LC 865/1123)**: Targets are discovered (deepest nodes); use depth comparison to find where deepest paths converge
+  - **Paint + Answer (LC 865 Editorial V1)**: Two-pass — first DFS computes all depths, second DFS finds the subtree containing all max-depth nodes
+  - **BFS + Parent Map (LC 865 V0-4)**: BFS to find deepest level, then walk parents upward until all converge to one node
+- **Similar Classic LC Problems**:
+  - LC 236 - Lowest Common Ancestor of a Binary Tree (standard LCA)
+  - LC 235 - Lowest Common Ancestor of a Binary Search Tree (BST property optimization)
+  - LC 865 - Smallest Subtree with all the Deepest Nodes (depth-based LCA)
+  - LC 1123 - Lowest Common Ancestor of Deepest Leaves (same as LC 865)
+  - LC 1644 - Lowest Common Ancestor of a Binary Tree II (nodes may not exist)
+  - LC 1650 - Lowest Common Ancestor of a Binary Tree III (with parent pointers)
+  - LC 1676 - Lowest Common Ancestor of a Binary Tree IV (multiple target nodes)
 
 ### **Pattern 7: Boundary Elimination (2-Pass DFS)**
 - **Description**: Eliminate boundary-connected cells first, then process interior
