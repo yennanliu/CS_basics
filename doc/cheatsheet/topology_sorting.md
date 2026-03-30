@@ -761,9 +761,11 @@ public int findCircleNum(int[][] isConnected) {
 #### Tree Centroid Finding
 | Pattern | Problems | Key Insight |
 |---------|----------|-------------|
-| Find Tree Centers | 310 | Leaf trimming layer by layer |
+| Find Tree Centers | 310 | Leaf trimming layer by layer (multi-source BFS inward) |
 | Minimum Height Trees | 310 | BFS from leaves, stop at 1-2 nodes |
-| Tree Diameter Related | 310 | Centroid is at diameter midpoint |
+| Tree Diameter Related | 310, 1245 | Centroid is at diameter midpoint |
+| Leaf Pruning / Coin Collection | 2603 | Trim leaves to remove unnecessary nodes |
+| Sum of Distances in Tree | 834 | Rerooting DP, related to centroid concept |
 
 ## Decision Framework
 
@@ -2035,12 +2037,49 @@ class Solution:
    - If tree diameter is odd → 1 center node
    - These nodes minimize the maximum distance to any leaf
 
-**Similar LC Problems:**
-- LC 310: Minimum Height Trees (this problem)
-- Tree diameter problems
-- Finding tree radius
-- Graph center finding
-- Balanced tree problems
+**Core Idea — BFS / Layer Trimming (Onion Peeling):**
+- Think of the tree as an onion. The MHT roots are in the **innermost layer**
+- Start from the outermost leaves (degree = 1), peel them off layer by layer
+- Each layer removal reveals new leaves (neighbors whose degree drops to 1)
+- Stop when ≤ 2 nodes remain — these are the **centroids**
+- This is **multi-source BFS from leaves inward**, NOT BFS from a single root
+
+```
+[0,1,2,3,4]  (linear tree: 0-1-2-3-4)
+
+→ remove 0,4       (outer leaves)
+→ remove 1,3       (new leaves after trimming)
+→ left with [2] ✅  (centroid)
+```
+
+**Pattern Recognition — When to Use Leaf Trimming:**
+
+| Signal | Example |
+|--------|---------|
+| Find center/centroid of a tree | LC 310 |
+| Minimize max distance from root to any leaf | LC 310 |
+| Undirected tree + "optimal root" | LC 310, tree radius |
+| Peel layers from outside inward | LC 310, onion structure |
+| NOT a DAG, NOT directed edges | Use this instead of standard topo sort |
+
+**Key Observations:**
+- A tree has at most **2 centroids**: diameter even → 2 centers, diameter odd → 1 center
+- Brute force (BFS from every node) is O(N²) — TLE for large inputs
+- Leaf trimming achieves O(N) by processing each node and edge exactly once
+- Can use `Set<Integer>` adjacency for O(1) removal, or `int[] degree` array (simpler, preferred)
+
+**Classic Similar LCs:**
+
+| LC # | Problem | Connection |
+|------|---------|------------|
+| 310 | Minimum Height Trees | Core leaf trimming problem |
+| 207 | Course Schedule | Kahn's algo — same BFS + degree pattern on DAG |
+| 210 | Course Schedule II | Kahn's algo — produces ordering |
+| 834 | Sum of Distances in Tree | Tree centroid / rerooting DP |
+| 1245 | Tree Diameter | Find diameter → centroid is at midpoint |
+| 2603 | Collect Coins in a Tree | Leaf trimming to remove unnecessary nodes |
+| 1377 | Frog Position After T Seconds | BFS on tree from root |
+| 863 | All Nodes Distance K in Binary Tree | BFS from a node in tree |
 
 ## Summary & Interview Tips
 

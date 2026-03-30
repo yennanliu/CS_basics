@@ -2486,11 +2486,80 @@ public void wallsAndGates(int[][] rooms) {
 ### 2-9) Minimum Height Trees (LC 310) — BFS Leaf Trimming
 > Repeatedly remove leaf nodes; the remaining 1-2 nodes are the roots of MHTs.
 
+**Core Idea — BFS / Layer Trimming (Onion Peeling):**
+- Think of the tree like an **onion**. The MHT roots are in the innermost layer
+- This is **multi-source BFS from leaves inward** — NOT BFS from a single root
+- Leaves = nodes with degree 1. Remove all leaves simultaneously → their neighbors may become new leaves
+- Repeat until ≤ 2 nodes remain. These are the **centroids** (MHT roots)
+- Why ≤ 2? A tree has at most 2 centroids (diameter even → 2, diameter odd → 1)
+
+```
+Example: 0 - 1 - 2 - 3 - 4
+
+Layer 1: remove 0, 4  (leaves)
+Layer 2: remove 1, 3  (new leaves)
+Result:  [2] ✅        (centroid)
+```
+
+**Why NOT brute force?**
+- BFS from every node to compute height → O(N²) → TLE
+- Leaf trimming → O(N) — each node and edge processed once
+
+**Pattern — When to Recognize This:**
+
+| Signal | Meaning |
+|--------|---------|
+| Undirected tree + find optimal root | Leaf trimming |
+| Minimize max distance to any leaf | Find centroid |
+| "Peel layers from outside inward" | Multi-source BFS |
+| Degree-based processing on tree | Similar to Kahn's on DAG |
+
+**Two Implementation Styles:**
+
+Style 1 — `int[] degree` array (simpler, preferred):
 ```java
 // LC 310 - Minimum Height Trees
-// IDEA: BFS — trim leaves layer by layer until 1 or 2 nodes remain
+// IDEA: BFS leaf trimming with degree array
 // time = O(N), space = O(N)
 public List<Integer> findMinHeightTrees(int n, int[][] edges) {
+    if (n == 1) return Collections.singletonList(0);
+
+    List<List<Integer>> graph = new ArrayList<>();
+    for (int i = 0; i < n; i++) graph.add(new ArrayList<>());
+    int[] degree = new int[n];
+
+    for (int[] e : edges) {
+        graph.get(e[0]).add(e[1]);
+        graph.get(e[1]).add(e[0]);
+        degree[e[0]]++;
+        degree[e[1]]++;
+    }
+
+    Queue<Integer> leaves = new LinkedList<>();
+    for (int i = 0; i < n; i++)
+        if (degree[i] == 1) leaves.offer(i);
+
+    int remaining = n;
+    while (remaining > 2) {
+        int size = leaves.size();
+        remaining -= size;
+        for (int i = 0; i < size; i++) {
+            int leaf = leaves.poll();
+            for (int nei : graph.get(leaf)) {
+                degree[nei]--;
+                if (degree[nei] == 1) leaves.offer(nei);
+            }
+        }
+    }
+    return new ArrayList<>(leaves);
+}
+```
+
+Style 2 — `Set<Integer>` adjacency (O(1) removal, tracks actual edges):
+```java
+// LC 310 - Using Set for adjacency
+// time = O(N), space = O(N)
+public List<Integer> findMinHeightTrees_set(int n, int[][] edges) {
     if (n == 1) return Collections.singletonList(0);
     List<Set<Integer>> adj = new ArrayList<>();
     for (int i = 0; i < n; i++) adj.add(new HashSet<>());
@@ -2511,6 +2580,20 @@ public List<Integer> findMinHeightTrees(int n, int[][] edges) {
     return new ArrayList<>(leaves);
 }
 ```
+
+**Classic Similar LCs:**
+
+| LC # | Problem | Connection |
+|------|---------|------------|
+| 310 | Minimum Height Trees | Core leaf trimming problem |
+| 207 | Course Schedule | Kahn's algo — same BFS + degree pattern on DAG |
+| 210 | Course Schedule II | Kahn's with ordering output |
+| 834 | Sum of Distances in Tree | Tree centroid / rerooting DP |
+| 1245 | Tree Diameter | Diameter → centroid is at midpoint |
+| 2603 | Collect Coins in a Tree | Leaf trimming to prune unnecessary nodes |
+| 863 | All Nodes Distance K in Binary Tree | BFS on tree structure |
+| 994 | Rotting Oranges | Multi-source BFS (same layer-by-layer pattern) |
+| 542 | 01 Matrix | Multi-source BFS from all zeros |
 
 ### 2-10) Snakes and Ladders (LC 909) — BFS on Board
 > Model board as graph; BFS finds minimum dice rolls to reach final square.
