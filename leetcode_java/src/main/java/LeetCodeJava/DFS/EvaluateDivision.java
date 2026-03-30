@@ -61,6 +61,17 @@ public class EvaluateDivision {
     // IDEA: DFS (fixed by gpt)
     public double[] calcEquation(List<List<String>> equations, double[] values, List<List<String>> queries) {
 
+        /** NOTE !!!
+         *
+         *  the graph structure
+         *
+         *  Map<String, Map<String, Double>>
+         *
+         *  so
+         *     string1 = a
+         *     string2 = b
+         *     Double = a / b
+         */
         // build graph
         Map<String, Map<String, Double>> graph = new HashMap<>();
 
@@ -82,11 +93,23 @@ public class EvaluateDivision {
             String start = queries.get(i).get(0);
             String end = queries.get(i).get(1);
 
+            /** NOTE !!!
+             *
+             *   we can `pre-calculate` per below cases
+             *
+             *    1. map NOT contains key (!graph.containsKey(start) || !graph.containsKey(end))
+             *    2. start == end
+             */
             if (!graph.containsKey(start) || !graph.containsKey(end)) {
                 res[i] = -1.0;
             } else if (start.equals(end)) {
                 res[i] = 1.0;
             } else {
+                /** NOTE !!!
+                 *
+                 *   1. we init `visited` before every DFS call
+                 *   2. dfs res as res[i] val
+                 */
                 Set<String> visited = new HashSet<>();
                 res[i] = dfs_0(graph, start, end, 1.0, visited);
             }
@@ -95,14 +118,27 @@ public class EvaluateDivision {
         return res;
     }
 
+    /** NOTE !!!
+     *
+     *  we pass `product` as DFS param
+     */
     private double dfs_0(Map<String, Map<String, Double>> graph,
                        String cur,
                        String target,
                        double product,
                        Set<String> visited) {
 
+        /** NOTE !!!
+         *
+         *  update visited first
+         */
         visited.add(cur);
 
+
+        /** NOTE !!!
+         *
+         *  get next nodes (neighbors)
+         */
         Map<String, Double> neighbors = graph.get(cur);
 
         if (neighbors.containsKey(target)) {
@@ -110,7 +146,18 @@ public class EvaluateDivision {
         }
 
         for (String next : neighbors.keySet()) {
+            /** NOTE !!!
+             *
+             *  ONLY call DFS (recursion)
+             *  if the node is NOT visited yet
+             */
             if (!visited.contains(next)) {
+                /** NOTE !!!
+                 *
+                 *  how we update `product`
+                 *
+                 *   -> product * neighbors.get(next)
+                 */
                 double res = dfs_0(graph, next, target,
                         product * neighbors.get(next),
                         visited);
@@ -122,6 +169,7 @@ public class EvaluateDivision {
 
         return -1.0;
     }
+
 
 
 
