@@ -3024,6 +3024,107 @@ public class Workspace24 {
     }
 
 
+    // LC 310
+    // 7.08 - 18 am
+    /**
+     *
+     *  -> Return a list of all ` MHTs'` root labels.
+     *  You can return the answer in any order.
+     *
+     *
+     *   -  Among all possible rooted trees, those with
+     *      minimum height (i.e. min(h))
+     *      are called minimum height trees (MHTs).
+     *
+     *
+     *  --------------
+     *
+     *   IDEA 1) DFS ???
+     *
+     *   IDEA 2) UNION FIND ????
+     *
+     *     -> loop over nodes, make every node as root,
+     *        and re-connect / `re-root` with the new root ????
+     *
+     *
+     *  --------------
+     *
+     */
+    //  IDEA 2) UNION FIND ????
+    public List<Integer> findMinHeightTrees(int n, int[][] edges) {
+        // edge
+
+        // get nodes
+
+        // ????
+        int minDepth = Integer.MAX_VALUE;
+
+        // tmp: { [node, depth] }
+        List<Integer[]> tmp = new ArrayList<>();
+
+        // res: { [node] }
+        List<Integer> res = new ArrayList<>();
+
+        for(int i = 0; i < n; i++){
+            // ???
+            MyUF2 uf2 = new MyUF2(n, edges);
+            uf2.setRoot(i);
+
+            int depth = uf2.getMinDepth();
+            minDepth = Math.min(minDepth, depth);
+            tmp.add(new Integer[]{i, depth});
+        }
+
+        for(Integer[] x: tmp){
+            if(x[1] == minDepth){
+                res.add(x[0]);
+            }
+        }
+
+        return res;
+    }
+
+
+    class MyUF2{
+        // ??
+        int n;
+        int[] parents;
+        int[][] edges; // ???
+
+
+        MyUF2(int n, int[][] edges){
+            this.n = n;
+            this.parents = new int[n];
+            // ?? init itself as parent at first stage
+            // ...
+
+            this.edges = edges;
+        }
+
+        public void union(int x, int y){
+
+        }
+
+        public int getParent(int x){
+            return 0;
+        }
+
+        public boolean isSameParent(int x, int y){
+            return false;
+        }
+
+        // ???
+        public int getMinDepth(){
+            return 0; // ???
+        }
+
+        // ???
+        private void setRoot(int x){
+
+        }
+
+
+    }
 
 
 
