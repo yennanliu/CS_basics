@@ -253,6 +253,149 @@ public class SmallestSubtreeWithAllTheDeepestNodes {
         return new Result_0_1(node, left.dist + 1);
     }
 
+    // V0-0-1
+    // IDEA: UNION FIND (fixed by GPT)
+    public TreeNode subtreeWithAllDeepest_0_0_1(TreeNode root) {
+
+        // Step 1: BFS to build parent map + find deepest level
+        Map<TreeNode, TreeNode> parent = new HashMap<>();
+        Queue<TreeNode> q = new LinkedList<>();
+
+        q.offer(root);
+        parent.put(root, null);
+
+        List<TreeNode> level = new ArrayList<>();
+
+        while (!q.isEmpty()) {
+            int size = q.size();
+            level = new ArrayList<>();
+
+            for (int i = 0; i < size; i++) {
+                TreeNode cur = q.poll();
+                level.add(cur);
+
+                if (cur.left != null) {
+                    parent.put(cur.left, cur);
+                    q.offer(cur.left);
+                }
+                if (cur.right != null) {
+                    parent.put(cur.right, cur);
+                    q.offer(cur.right);
+                }
+            }
+        }
+
+        // Step 2: Union-Find setup
+        Map<TreeNode, TreeNode> ufParent = new HashMap<>();
+
+        for (TreeNode node : parent.keySet()) {
+            ufParent.put(node, node); // init
+        }
+
+        // Step 3: start from deepest nodes
+        Set<TreeNode> set = new HashSet<>(level);
+
+        while (true) {
+
+            // check if all nodes have same root
+            TreeNode rootRep = find(set.iterator().next(), ufParent);
+            boolean allSame = true;
+
+            for (TreeNode node : set) {
+                if (find(node, ufParent) != rootRep) {
+                    allSame = false;
+                    break;
+                }
+            }
+
+            if (allSame)
+                return rootRep;
+
+            // union each node with its parent
+            Set<TreeNode> next = new HashSet<>();
+
+            for (TreeNode node : set) {
+                TreeNode p = parent.get(node);
+                if (p != null) {
+                    union(node, p, ufParent);
+                    next.add(p);
+                }
+            }
+
+            set = next;
+        }
+    }
+
+    private TreeNode find(TreeNode x, Map<TreeNode, TreeNode> ufParent) {
+        if (ufParent.get(x) != x) {
+            ufParent.put(x, find(ufParent.get(x), ufParent));
+        }
+        return ufParent.get(x);
+    }
+
+    private void union(TreeNode a, TreeNode b, Map<TreeNode, TreeNode> ufParent) {
+        TreeNode pa = find(a, ufParent);
+        TreeNode pb = find(b, ufParent);
+        if (pa != pb) {
+            ufParent.put(pa, pb);
+        }
+    }
+
+
+
+
+    // V0-0-2
+    // IDEA: UNION FIND (fixed by gemini)
+    public TreeNode subtreeWithAllDeepest_0_0_2(TreeNode root) {
+        if (root == null)
+            return null;
+
+        Map<TreeNode, TreeNode> parentMap = new HashMap<>();
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+        parentMap.put(root, null);
+
+        List<TreeNode> deepestNodes = new ArrayList<>();
+
+        // 1. BFS to find all nodes at the deepest level
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            deepestNodes = new ArrayList<>();
+            for (int i = 0; i < size; i++) {
+                TreeNode curr = queue.poll();
+                deepestNodes.add(curr);
+                if (curr.left != null) {
+                    parentMap.put(curr.left, curr);
+                    queue.offer(curr.left);
+                }
+                if (curr.right != null) {
+                    parentMap.put(curr.right, curr);
+                    queue.offer(curr.right);
+                }
+            }
+        }
+
+        // 2. If only one deepest node, it is the result
+        if (deepestNodes.size() == 1)
+            return deepestNodes.get(0);
+
+        // 3. Union-Find "Climb": Merge all deepest nodes into their parents
+        // We use a Set to track the current "heads" of our deepest components
+        Set<TreeNode> currentHeads = new HashSet<>(deepestNodes);
+
+        while (currentHeads.size() > 1) {
+            Set<TreeNode> nextHeads = new HashSet<>();
+            for (TreeNode node : currentHeads) {
+                // Move each node one level up
+                nextHeads.add(parentMap.get(node));
+            }
+            currentHeads = nextHeads;
+        }
+
+        // The last remaining node in the set is the LCA of all deepest nodes
+        return currentHeads.iterator().next();
+    }
+
 
     // V0-2
     // IDEA: LCA + DFS (GPT)
@@ -321,7 +464,17 @@ public class SmallestSubtreeWithAllTheDeepestNodes {
 //    }
 
     // V0-4
-    // IDEA: LCA + BFS (GPT)
+    // IDEA: BFS (level order) + LCA via parent pointers. (GPT)
+    /**  Core idea:
+     *
+     * You want:
+     *
+     *  `the smallest subtree containing all deepest nodes`
+     *
+     * -> This is equivalent to:
+     *
+     *     (Lowest Common Ancestor) of all deepest nodes
+     */
     public TreeNode subtreeWithAllDeepest_0_4(TreeNode root) {
 
         /** NOTE !!!
@@ -341,12 +494,18 @@ public class SmallestSubtreeWithAllTheDeepestNodes {
         // BFS
         /** NOTE !!!
          *
-         *  we build
+         * 1.
+         *  we `Build parent map + find deepest level (BFS)`
          *
          *   1. `parent` map
          *   2.  level
          *
-         *   via BFS
+         *
+         * 2.
+         *
+         *    level keeps nodes at current depth
+         *    After loop ends → level = deepest nodes
+         *
          */
         while (!q.isEmpty()) {
             int size = q.size();
@@ -354,6 +513,10 @@ public class SmallestSubtreeWithAllTheDeepestNodes {
 
             for (int i = 0; i < size; i++) {
                 TreeNode cur = q.poll();
+                /** NOTE !!!
+                 *
+                 * After loop ends → level = deepest nodes
+                 */
                 level.add(cur);
 
                 if (cur.left != null) {
@@ -375,11 +538,33 @@ public class SmallestSubtreeWithAllTheDeepestNodes {
         }
 
         // move upward until all nodes equal
+        /** NOTE !!
+         *
+         *  set = all deepest nodes
+         */
         Set<TreeNode> set = new HashSet<>(level);
 
+        // As long as we have multiple nodes, we:
+        //move all of them one step up
         while (set.size() > 1) {
             Set<TreeNode> next = new HashSet<>();
 
+            // Replace all nodes with their parents
+            /**  Demo:
+             *
+             * Deepest nodes:
+             *     A   B   C
+             *
+             * Step 1:
+             *     parent(A), parent(B), parent(C)
+             *
+             * Step 2:
+             *     move up again...
+             *
+             * Eventually:
+             *     all converge to SAME node = LCA
+             *
+             */
             for (TreeNode node : set) {
                 next.add(parent.get(node));
             }
@@ -387,6 +572,7 @@ public class SmallestSubtreeWithAllTheDeepestNodes {
             set = next;
         }
 
+        // When only 1 node remains → that’s the answer.
         return set.iterator().next();
     }
 

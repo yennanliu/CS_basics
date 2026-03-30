@@ -377,6 +377,52 @@ public double[] calcEquation(List<List<String>> equations,
 }
 ```
 
+#### Pattern 6: BFS + Union-Find Climb (Tree LCA)
+**Problem: LC 865 - Smallest Subtree with all the Deepest Nodes**
+- **Core Idea**: Use BFS to find all deepest-level nodes and build a parent map, then repeatedly union each node with its parent and move upward until all converge to a single root — that root is the LCA
+- **When to Use**: Finding LCA of multiple target nodes in a tree when you prefer iterative bottom-up convergence over recursive post-order
+- **Steps**:
+  1. BFS to build `parent` map and identify `deepestNodes` (last level in BFS)
+  2. Put all deepest nodes in a `Set`
+  3. While set size > 1: replace each node with its parent (they converge upward)
+  4. The single remaining node is the LCA
+- **Key Insight**: This is essentially "climb from leaves to root" — all deepest nodes walk upward in lockstep until they meet at one ancestor
+- **Trade-off vs DFS**: More intuitive for iterative thinkers; DFS post-order approach (return `(node, depth)` pair) is more concise and commonly used
+- **Similar Problems**: LC 236 (LCA), LC 1123 (same as 865), LC 1644, LC 1650
+
+```java
+// LC 865 - BFS + Parent-Climb approach (simplified Union-Find concept)
+// time = O(N), space = O(N)
+public TreeNode subtreeWithAllDeepest(TreeNode root) {
+    Map<TreeNode, TreeNode> parent = new HashMap<>();
+    Queue<TreeNode> q = new LinkedList<>();
+    q.offer(root);
+    parent.put(root, null);
+    List<TreeNode> level = new ArrayList<>();
+
+    // Step 1: BFS to find deepest level + build parent map
+    while (!q.isEmpty()) {
+        int size = q.size();
+        level = new ArrayList<>();
+        for (int i = 0; i < size; i++) {
+            TreeNode cur = q.poll();
+            level.add(cur);
+            if (cur.left != null) { parent.put(cur.left, cur); q.offer(cur.left); }
+            if (cur.right != null) { parent.put(cur.right, cur); q.offer(cur.right); }
+        }
+    }
+
+    // Step 2: Climb upward until all deepest nodes converge
+    Set<TreeNode> set = new HashSet<>(level);
+    while (set.size() > 1) {
+        Set<TreeNode> next = new HashSet<>();
+        for (TreeNode node : set) next.add(parent.get(node));
+        set = next;
+    }
+    return set.iterator().next();
+}
+```
+
 ## 1) Example Problems with Code References
 
 #### Basic Connectivity & Component Counting
@@ -406,6 +452,7 @@ public double[] calcEquation(List<List<String>> equations,
 - **LC 130** – Surrounded Regions: Use dummy node for boundary connected regions
 - **LC 547** – Friend Circles: Find groups in friendship matrix
 - **LC 721** – Accounts Merge: Group accounts by shared emails
+- **LC 865** – Smallest Subtree with all Deepest Nodes: BFS + parent-climb to find LCA of deepest nodes
 - **LC 886** – Possible Bipartition: Detect bipartite graph conflicts
 - **LC 1135** – Connecting Cities: MST with Kruskal's algorithm
 - **LC 1319** – Network Connections: Minimum operations to connect all nodes
@@ -846,5 +893,42 @@ public int longestConsecutive(int[] nums) {
         }
     }
     return longest;
+}
+```
+
+### 2-12) Smallest Subtree with all the Deepest Nodes (LC 865) — BFS + Union-Find Climb
+> BFS finds deepest nodes and parent map; then all deepest nodes "climb" upward via parents until they converge to the LCA. This is the same as LC 1123.
+
+```java
+// LC 865 - Smallest Subtree with all the Deepest Nodes
+// IDEA: BFS to find deepest level + build parent map, then climb upward until convergence
+// time = O(N), space = O(N)
+public TreeNode subtreeWithAllDeepest(TreeNode root) {
+    Map<TreeNode, TreeNode> parent = new HashMap<>();
+    Queue<TreeNode> q = new LinkedList<>();
+    q.offer(root);
+    parent.put(root, null);
+    List<TreeNode> level = new ArrayList<>();
+
+    // BFS: build parent map, track each level (last level = deepest)
+    while (!q.isEmpty()) {
+        int size = q.size();
+        level = new ArrayList<>();
+        for (int i = 0; i < size; i++) {
+            TreeNode cur = q.poll();
+            level.add(cur);
+            if (cur.left != null) { parent.put(cur.left, cur); q.offer(cur.left); }
+            if (cur.right != null) { parent.put(cur.right, cur); q.offer(cur.right); }
+        }
+    }
+
+    // Climb: replace each node with its parent until all converge
+    Set<TreeNode> set = new HashSet<>(level);
+    while (set.size() > 1) {
+        Set<TreeNode> next = new HashSet<>();
+        for (TreeNode node : set) next.add(parent.get(node));
+        set = next;
+    }
+    return set.iterator().next();
 }
 ```
