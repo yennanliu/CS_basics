@@ -3,6 +3,7 @@ package LeetCodeJava.Greedy;
 // https://leetcode.com/problems/maximum-sum-with-exactly-k-elements/description/
 
 import java.util.Arrays;
+import java.util.PriorityQueue;
 
 /**
  *
@@ -59,6 +60,52 @@ public class MaximumSumWithExactlyKElements {
 //    public int maximizeSum(int[] nums, int k) {
 //
 //    }
+
+
+    // V0-1
+    // IDEA: PQ (fixed by gpt)
+    public int maximizeSum_0_1(int[] nums, int k) {
+        if (k == 0 || nums.length == 0) {
+            return 0;
+        }
+
+        PriorityQueue<Integer> pq = new PriorityQueue<>(
+                (a, b) -> b - a);
+
+        for (int x : nums) {
+            pq.add(x);
+        }
+
+        int score = 0;
+
+        for (int i = 0; i < k; i++) {
+            int val = pq.poll();
+            score += val; // ✅ fix here
+            pq.add(val + 1);
+        }
+
+        return score;
+    }
+
+
+    // V0-2
+    // IDEA: greedy (fixed by gemini)
+    public int maximizeSum_0_2(int[] nums, int k) {
+        // 1. Find the maximum element in the initial array
+        int max = 0;
+        for (int num : nums) {
+            if (num > max) {
+                max = num;
+            }
+        }
+
+        // 2. The sum will be: max + (max + 1) + (max + 2) + ... + (max + k - 1)
+        // This is an arithmetic progression:
+        // Total = k * max + (0 + 1 + 2 + ... + k-1)
+        // Sum of 0 to k-1 = (k-1) * k / 2
+        return k * max + (k * (k - 1) / 2);
+    }
+
 
     // V1
     // https://leetcode.com/problems/maximum-sum-with-exactly-k-elements/solutions/7673449/maximum-sum-with-exactly-k-elements-java-gjue/
