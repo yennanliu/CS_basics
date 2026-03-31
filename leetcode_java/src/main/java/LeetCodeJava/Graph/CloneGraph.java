@@ -114,7 +114,10 @@ public class CloneGraph {
         /**
          *  NOTE !!!
          *
-         *   we ONLY share `_visited` (hashMap) globally,
+         *   1.  need to set up a `visited` map, to AVOID INFINITE looping.
+         *
+         *
+         *   2. we ONLY share `_visited` (hashMap) globally,
          *   (but NOT `copiedNode`, reason is explained below)
          */
         HashMap<Integer, Node> _visited = new HashMap<>();
@@ -186,6 +189,11 @@ public class CloneGraph {
         int cur_val = node.val;
 
         //  case 1) already visited, then return hashmap 's value (Node type) directly
+        /**
+         *  NOTE !!!
+         *
+         *  if already visited, just return the `visited` node
+         */
         if (visited.containsKey(cur_val)){
             return visited.get(cur_val);
         }

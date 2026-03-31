@@ -3163,6 +3163,8 @@ public class Workspace24 {
 
     // main func
     // IDEA 1) DFS ?? RECURSION
+    private Map<Node, Node> visited = new HashMap<>();
+
     public Node cloneGraph(Node node) {
         // edge
         if(node == null){
@@ -3171,6 +3173,13 @@ public class Workspace24 {
         if(node.neighbors == null){
             return node;
         }
+
+        // NOTE !!!
+        // 2. If we have already cloned this node, return the clone
+        if (visited.containsKey(node)) {
+            return visited.get(node);
+        }
+
 
         // ???
         //Node copiedNode = new Node(node.val);
