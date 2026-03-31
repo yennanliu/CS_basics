@@ -3127,6 +3127,60 @@ public class Workspace24 {
     }
 
 
+    // LC 133
+    // 8.22 - 32 am
+    /**
+     *
+     *   -> Return a deep copy (clone) of the graph.
+     *
+     *
+     *   ------------------
+     *
+     *
+     *    IDEA 1) DFS ?? RECURSION
+     *
+     *
+     *   ------------------
+     *
+     */
+    class Node {
+        public int val;
+        public List<Node> neighbors;
+        public Node() {
+            val = 0;
+            neighbors = new ArrayList<Node>();
+        }
+        public Node(int _val) {
+            val = _val;
+            neighbors = new ArrayList<Node>();
+        }
+        public Node(int _val, ArrayList<Node> _neighbors) {
+            val = _val;
+            neighbors = _neighbors;
+        }
+    }
+
+    // IDEA 1) DFS ?? RECURSION
+    public Node cloneGraph(Node node) {
+        // edge
+        if(node == null){
+            return null;
+        }
+        if(node.neighbors == null){
+            return node;
+        }
+
+        // ???
+        Node copiedNode = new Node(node.val);
+
+        return copiedNode;
+    }
+
+
+    // ???
+    private Node copyHelper(){
+        return null;
+    }
 
 
 
