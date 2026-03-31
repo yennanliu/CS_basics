@@ -72,9 +72,11 @@ public class Weekly103 {
             if(!pq.isEmpty()){
                 //int m = list.get(list.size() - 1);
                 int val = pq.poll();
-                int tmp = val + 1;
-                score += tmp;
-                pq.add(tmp);
+                //int tmp = val + 1;
+                //score += tmp;
+                score += val; // ???
+                //pq.add(tmp);
+                pq.add(val + 1);
             }
         }
 
