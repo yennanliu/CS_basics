@@ -54,7 +54,7 @@ public class FindThePrefixCommonArrayOfTwoArrays {
 //    }
 
     // V0-1
-    // IDEA: GREEDY (?) (gemini)
+    // IDEA: frequency array + running count  (gemini)
     public int[] findThePrefixCommonArray_0_1(int[] A, int[] B) {
         int n = A.length;
         int[] res = new int[n];
@@ -85,7 +85,25 @@ public class FindThePrefixCommonArrayOfTwoArrays {
 
 
     // V0-2
-    // IDEA: GREEDY (?) (GPT)
+    // IDEA: frequency array + running count (GPT)
+    /**  Core idea:
+     *
+     * Use a frequency array + running count:
+     *
+     *  - Track whether a number has appeared in A and/or B
+     *  - When a number appears in both → increase count
+     *
+     *
+     * --------------
+     *
+     * ⚡ Why This Works ?
+     *
+     *
+     *  - Each number appears at most twice total (once in A, once in B)
+     *  - When count[x] == 2, it means:
+     *     → seen in both arrays → it's a common element
+     *
+     */
     public int[] findThePrefixCommonArray_0_2(int[] A, int[] B) {
         int n = A.length;
         int[] res = new int[n];
