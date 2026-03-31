@@ -53,6 +53,67 @@ public class FindThePrefixCommonArrayOfTwoArrays {
 //
 //    }
 
+    // V0-1
+    // IDEA: GREEDY (?) (gemini)
+    public int[] findThePrefixCommonArray_0_1(int[] A, int[] B) {
+        int n = A.length;
+        int[] res = new int[n];
+
+        // Since values are 1 to n, we track how many times each number appears
+        int[] frequency = new int[n + 1];
+        int commonCount = 0;
+
+        for (int i = 0; i < n; i++) {
+            // Process element from A
+            frequency[A[i]]++;
+            if (frequency[A[i]] == 2) {
+                commonCount++;
+            }
+
+            // Process element from B
+            frequency[B[i]]++;
+            if (frequency[B[i]] == 2) {
+                commonCount++;
+            }
+
+            // The current prefix common count
+            res[i] = commonCount;
+        }
+
+        return res;
+    }
+
+
+    // V0-2
+    // IDEA: GREEDY (?) (GPT)
+    public int[] findThePrefixCommonArray_0_2(int[] A, int[] B) {
+        int n = A.length;
+        int[] res = new int[n];
+
+        int[] count = new int[n + 1]; // since values are 1..n
+        int common = 0;
+
+        for (int i = 0; i < n; i++) {
+            // process A[i]
+            count[A[i]]++;
+            if (count[A[i]] == 2) {
+                common++;
+            }
+
+            // process B[i]
+            count[B[i]]++;
+            if (count[B[i]] == 2) {
+                common++;
+            }
+
+            res[i] = common;
+        }
+
+        return res;
+    }
+
+
+
     // V1-1
     // IDEA: BRUTE FORCE
     // https://leetcode.com/problems/find-the-prefix-common-array-of-two-arrays/editorial/
