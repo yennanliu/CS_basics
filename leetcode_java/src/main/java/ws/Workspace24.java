@@ -3220,9 +3220,87 @@ public class Workspace24 {
 
 
     // LC 508
+    // 10.50 - 11.00 am
+    /**
+     *  -> Given the root of a binary tree,
+     *  return the most frequent subtree sum.
+     *  If there is a tie, return all the values
+     *  with the highest frequency in any order
+     *
+     *
+     *  The subtree sum of a node is defined as the sum of
+     *  all the node values formed by the subtree rooted
+     *  at that node (including the node itself).
+     *
+     *
+     *  --------------------
+     *
+     *  IDEA 1) DFS + PREFIX SUM ???
+     *
+     */
+    // IDEA 1) pre-order DFS + PREFIX SUM ???
+    // map: { sum : [node_1, node_2, ...] }
+    // ????
+    Map<Integer, List<Integer>> nodeSumMap = new HashMap<>();
     public int[] findFrequentTreeSum(TreeNode root) {
+        // edge
+        if(root == null){
+            return new int[]{}; // ???
+        }
 
-        return null;
+        nodeSumHelper(root,  0);
+
+        //int maxCnt = 0; // ?
+        List<Integer> tmp = new ArrayList<>();
+        for(List<Integer> list : nodeSumMap.values()){
+            if(list.size() > tmp.size()){
+                tmp = list;
+            }
+        }
+
+        if(tmp.isEmpty()){
+            return null;
+        }
+
+        int[] res = new int[tmp.size()];
+        // ??
+        for(int i = 0; i < tmp.size(); i++){
+            res[i] = tmp.get(i);
+        }
+
+
+        return res;
+    }
+
+    // post-order DFS  ???
+    private void nodeSumHelper(TreeNode root, int curSum){
+        if(root == null){
+            return;
+        }
+
+        // ??
+        nodeSumHelper(root.left, curSum);
+        nodeSumHelper(root.right, curSum);
+
+
+        // ???
+        updateMap(nodeSumMap, root.val);
+        curSum += root.val;
+        updateMap(nodeSumMap, curSum);
+    }
+
+
+    private Map<Integer, List<Integer>> updateMap(Map<Integer, List<Integer>> nodeSumMap, int val){
+
+        if(!nodeSumMap.containsKey(val)){
+            nodeSumMap.put(val, new ArrayList<>());
+        }
+        List<Integer> list = nodeSumMap.get(val);
+        list.add(val);
+        nodeSumMap.put(val, list);
+
+        return nodeSumMap;
+
     }
 
 
