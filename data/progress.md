@@ -23,7 +23,7 @@
 	- bst.md (OK)
 	- complexity_cheatsheet.md (todo)
 	- design.md (OK)
-	- dfs.md (LC examples)
+	- dfs.md (LC examples - `2-11) Serialize and Deserialize Binary Tree`)
 
 - to review
 - needcode `250` - similar LC by AI
@@ -266,7 +266,7 @@
 		- 449,95,669,96
 		- 450,776(split VS delete BST)
 	- todo (20260331)
-		- 701,508,538,737,472
+		- 701,508,538,737,472,1339
 
  	==================================
 
