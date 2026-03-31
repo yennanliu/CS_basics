@@ -3317,6 +3317,58 @@ public class Workspace24 {
     }
 
 
+    // LC 1137
+    // 7.43 - 53 am
+    /**
+     *  -> Given n, return the value of Tn.
+     *
+     *  - Tribonacci sequence Tn
+     *    is defined as follows:
+     *
+     *     T0 = 0, T1 = 1, T2 = 1,
+     *     Tn+3 = Tn + Tn+1 + Tn+2 for n >= 0.
+     *
+     *
+     *  -----------------
+     *
+     *   IDEA 1) 1D DP
+     *      - dp def:
+     *
+     *          dp[i]: Tn with idx = i
+     *
+     *      - dp eq:
+     *         dp[Tn+3] = dp[Tn] + dp[Tn+1] + dp[Tn+2] for n >= 0.
+     *
+     *   IDEA 2) BRUTE FORCE
+     *
+     *
+     *  -----------------
+     *
+     *
+     */
+    public int tribonacci(int n) {
+        // edge
+        if(n <= 0){
+            return 0;
+        }
+
+        int[] dp = new int[n+1]; // ??
+        dp[0] = 0;
+        dp[1] = 1;
+        dp[2] = 1;
+
+        // ???
+        for(int i = 3; i <= n; i++){
+            dp[i] = dp[n-3] + dp[n-2] + dp[n-1];
+            System.out.println(">>> i = " + i + ", " +
+                    " dp = " + dp[n-3] + dp[n-2] + dp[n-1]);
+        }
+
+        return dp[n]; // ???
+    }
+
+
+
 
 
 
