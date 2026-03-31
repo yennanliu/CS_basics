@@ -86,6 +86,7 @@ public class Weekly103 {
 
 
     // LC 2657
+    // OK
     // https://leetcode.com/problems/find-the-prefix-common-array-of-two-arrays/
     /**
      *
