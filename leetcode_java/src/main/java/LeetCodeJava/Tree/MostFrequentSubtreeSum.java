@@ -46,6 +46,106 @@ public class MostFrequentSubtreeSum {
 //
 //    }
 
+
+    // V0-1
+    // IDEA: DFS + POST ORDER + Hashmap (GEMINI)
+    // Map to store [Subtree Sum -> Frequency Count]
+    private Map<Integer, Integer> sumCounts = new HashMap<>();
+    private int maxCount = 0;
+
+    public int[] findFrequentTreeSum_0_1(TreeNode root) {
+        if (root == null)
+            return new int[0];
+
+        // 1. Traverse and fill the frequency map
+        calculateSubtreeSum(root);
+
+        // 2. Collect all sums that appeared 'maxCount' times
+        List<Integer> resultList = new ArrayList<>();
+        for (Map.Entry<Integer, Integer> entry : sumCounts.entrySet()) {
+            if (entry.getValue() == maxCount) {
+                resultList.add(entry.getKey());
+            }
+        }
+
+        // 3. Convert List to int[]
+        int[] res = new int[resultList.size()];
+        for (int i = 0; i < resultList.size(); i++) {
+            res[i] = resultList.get(i);
+        }
+        return res;
+    }
+
+    private int calculateSubtreeSum(TreeNode node) {
+        if (node == null)
+            return 0;
+
+        // Post-order: children first, then self
+        int leftSum = calculateSubtreeSum(node.left);
+        int rightSum = calculateSubtreeSum(node.right);
+
+        int totalSum = node.val + leftSum + rightSum;
+
+        // Update the global frequency map
+        int count = sumCounts.getOrDefault(totalSum, 0) + 1;
+        sumCounts.put(totalSum, count);
+
+        // Update the global max frequency tracker
+        maxCount = Math.max(maxCount, count);
+
+        // Return the sum to the parent node
+        return totalSum;
+    }
+
+
+    // V0-2
+    // IDEA: Post-order DFS + HASHMAP (gpt)
+    Map<Integer, Integer> freqMap = new HashMap<>();
+    int maxFreq_0_2 = 0;
+
+    public int[] findFrequentTreeSum_0_2(TreeNode root) {
+        if (root == null) {
+            return new int[] {};
+        }
+
+        dfs(root);
+
+        List<Integer> resList = new ArrayList<>();
+
+        for (int sum : freqMap.keySet()) {
+            if (freqMap.get(sum) == maxFreq_0_2) {
+                resList.add(sum);
+            }
+        }
+
+        int[] res = new int[resList.size()];
+        for (int i = 0; i < resList.size(); i++) {
+            res[i] = resList.get(i);
+        }
+
+        return res;
+    }
+
+    private int dfs(TreeNode node) {
+        if (node == null) {
+            return 0;
+        }
+
+        int left = dfs(node.left);
+        int right = dfs(node.right);
+
+        int sum = left + right + node.val;
+
+        // update frequency
+        int count = freqMap.getOrDefault(sum, 0) + 1;
+        freqMap.put(sum, count);
+
+        maxFreq_0_2 = Math.max(maxFreq_0_2, count);
+
+        return sum;
+    }
+
+
     // V1-1
     // IDEA: Pre-Order Traversal
     // https://leetcode.com/problems/most-frequent-subtree-sum/editorial/
@@ -149,6 +249,7 @@ public class MostFrequentSubtreeSum {
 
 
     // V3
+
 
 
 
