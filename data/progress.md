@@ -1,6 +1,6 @@
 # Progress
 
-# 2026-03-31
+# 2026-04-01
 
 - LC weeekly 103
 	- lc_weekly_gemini.md
@@ -230,6 +230,13 @@
 			- 323,802,1245,543,834
 		- gemini
 			- 2192
+	- Advanced Graphs (pass)
+	- 1-D Dynamic Programming
+	- LC 1137
+		- gpt
+			- 509,746,213,91,322,518,139,552,1220
+		- gemini
+			- 70,1025,740,935
 
 	- todo (20260308)
 		- 1109,41,849
