@@ -50,6 +50,12 @@ public class MostFrequentSubtreeSum {
     // V0-1
     // IDEA: DFS + POST ORDER + Hashmap (GEMINI)
     // Map to store [Subtree Sum -> Frequency Count]
+    /**
+     *
+     * Metric,Complexity,Explanation
+     * Time,O(N),We visit every node once to calculate the sum and once more to iterate over the map keys.
+     * Space,O(N),To store the frequency map and the recursion stack.
+     */
     private Map<Integer, Integer> sumCounts = new HashMap<>();
     private int maxCount = 0;
 
@@ -100,6 +106,12 @@ public class MostFrequentSubtreeSum {
 
     // V0-2
     // IDEA: Post-order DFS + HASHMAP (gpt)
+    /**
+     * | Complexity | Value    |
+     * | ---------- | -------- |
+     * | **Time**   | **O(n)** |
+     * | **Space**  | **O(n)** |
+     */
     Map<Integer, Integer> freqMap = new HashMap<>();
     int maxFreq_0_2 = 0;
 

@@ -3248,6 +3248,7 @@ public class Workspace24 {
             return new int[]{}; // ???
         }
 
+
         nodeSumHelper(root,  0);
 
         //int maxCnt = 0; // ?
@@ -3277,6 +3278,18 @@ public class Workspace24 {
         if(root == null){
             return;
         }
+
+        /**  NOTE !!! sub tree sum should be as below:
+         *
+         * // Post-order: children first, then self
+         *         int leftSum = calculateSubtreeSum(node.left);
+         *         int rightSum = calculateSubtreeSum(node.right);
+         *
+         *         int totalSum = node.val + leftSum + rightSum;
+         *
+         *
+         *
+         */
 
         // ??
         nodeSumHelper(root.left, curSum);
