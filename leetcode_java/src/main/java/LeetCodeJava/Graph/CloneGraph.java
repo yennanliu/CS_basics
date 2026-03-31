@@ -218,6 +218,36 @@ public class CloneGraph {
         return copiedNode;
     }
 
+
+    // V0-0-1
+    // IDEA: DFS + HASHMAP (fixed by gemini)
+    // 1. Use a Map to track [Original Node -> Cloned Node]
+    private Map<Node, Node> visited_0_0_1 = new HashMap<>();
+
+    public Node cloneGraph_0_0_1(Node node) {
+        if (node == null)
+            return null;
+
+        // 2. If we have already cloned this node, return the clone
+        if (visited_0_0_1.containsKey(node)) {
+            return visited_0_0_1.get(node);
+        }
+
+        // 3. Create a new node with the value of the original node
+        Node clone = new Node(node.val);
+
+        // 4. Store it in our map BEFORE visiting neighbors to handle cycles
+        visited_0_0_1.put(node, clone);
+
+        // 5. Recursively clone all neighbors
+        for (Node neighbor : node.neighbors) {
+            clone.neighbors.add(cloneGraph(neighbor));
+        }
+
+        return clone;
+    }
+
+
     // V0-1
     // IDEA: DFS (fixed by gpt)
     Map<Node, Node> visited_0_1 = new HashMap<>();

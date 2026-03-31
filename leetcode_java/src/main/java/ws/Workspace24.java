@@ -3143,6 +3143,7 @@ public class Workspace24 {
      *   ------------------
      *
      */
+    // helper class
     class Node {
         public int val;
         public List<Node> neighbors;
@@ -3160,6 +3161,7 @@ public class Workspace24 {
         }
     }
 
+    // main func
     // IDEA 1) DFS ?? RECURSION
     public Node cloneGraph(Node node) {
         // edge
@@ -3171,16 +3173,45 @@ public class Workspace24 {
         }
 
         // ???
+        //Node copiedNode = new Node(node.val);
+       //Node copiedNode = new Node();
+//       Node copiedNode = copyHelper(node);
+//       return copiedNode;
+
+       return copyHelper(node);
+    }
+
+
+    // ???
+    private Node copyHelper(Node node){
+        // edge ???
+        if(node == null){
+            return null;
+        }
+
+        // ????
         Node copiedNode = new Node(node.val);
+
+
+        // visit children
+        // ??
+        if(node.neighbors != null){
+            copiedNode.neighbors = new ArrayList<>(); // ????
+            for(Node next: node.neighbors){
+                // ???
+                //copyHelper(next, copiedNode); // ???
+                copiedNode.neighbors.add(copyHelper(next));
+            }
+        }
+
 
         return copiedNode;
     }
 
 
-    // ???
-    private Node copyHelper(){
-        return null;
-    }
+
+
+
 
 
 
