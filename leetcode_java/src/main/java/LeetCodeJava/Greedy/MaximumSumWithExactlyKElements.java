@@ -79,6 +79,9 @@ public class MaximumSumWithExactlyKElements {
         int score = 0;
 
         for (int i = 0; i < k; i++) {
+            /**
+             *  NOTE this below.
+             */
             int val = pq.poll();
             score += val; // ✅ fix here
             pq.add(val + 1);
