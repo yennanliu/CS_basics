@@ -783,6 +783,238 @@ class BoyerMooreGeneralized {
 
 ---
 
+#### 1-2-2) Frequency Array + Running Count
+
+**Concept:**
+- Track element occurrences using a frequency array (when values are bounded, e.g., 1 to n)
+- Use array index as hash key for O(1) lookups
+- Maintain a running count that updates as conditions are met
+- **Key Insight**: When frequency reaches a threshold, trigger an action
+
+**When to Use:**
+- Values are bounded/constrained (e.g., permutations with values 1 to n)
+- Need to track "seen in both" or "appeared k times" conditions
+- Prefix-based counting problems
+- Real-time/streaming count updates
+
+**Related:** Useful for permutation problems, prefix arrays, and intersection counting.
+
+---
+
+##### **Pattern: Prefix Common Array (LC 2657)**
+
+**Problem:** Given two permutations A and B of length n, find C where C[i] = count of numbers present at or before index i in both A and B.
+
+**Algorithm:**
+- Use frequency array of size n+1 (since values are 1 to n)
+- For each index, process A[i] and B[i]
+- When any element's frequency reaches 2, it's common (seen in both arrays)
+- Increment running count and store in result
+
+```python
+# Python - LC 2657
+def findThePrefixCommonArray(A, B):
+    """
+    Find prefix common array using frequency counting.
+
+    Key Insight:
+    - Each number appears at most twice total (once in A, once in B)
+    - When count[x] == 2, x has been seen in both arrays → common element
+
+    Time: O(n)
+    Space: O(n)
+    """
+    n = len(A)
+    res = [0] * n
+    count = [0] * (n + 1)  # values are 1..n
+    common = 0
+
+    for i in range(n):
+        # Process element from A
+        count[A[i]] += 1
+        if count[A[i]] == 2:
+            common += 1
+
+        # Process element from B
+        count[B[i]] += 1
+        if count[B[i]] == 2:
+            common += 1
+
+        res[i] = common
+
+    return res
+```
+
+```java
+// Java - LC 2657
+// V0
+// IDEA: Frequency Array + Running Count
+/**
+ * Core Insight:
+ * - Each number appears at most twice total (once in A, once in B)
+ * - When frequency[x] == 2, x is present in both arrays → common element
+ * - Running count tracks cumulative common elements
+ *
+ * Why This Works:
+ * - Permutation guarantee: each value 1..n appears exactly once in each array
+ * - Processing both arrays simultaneously at each index
+ * - frequency[x] can only be 0, 1, or 2
+ * - frequency[x] == 2 means: seen once in A AND once in B
+ *
+ * Time: O(n) - single pass through both arrays
+ * Space: O(n) - frequency array of size n+1
+ */
+public int[] findThePrefixCommonArray(int[] A, int[] B) {
+    int n = A.length;
+    int[] res = new int[n];
+
+    // Since values are 1 to n, use array as hash map
+    int[] frequency = new int[n + 1];
+    int commonCount = 0;
+
+    for (int i = 0; i < n; i++) {
+        // Process element from A
+        frequency[A[i]]++;
+        if (frequency[A[i]] == 2) {
+            commonCount++;  // Now seen in both arrays
+        }
+
+        // Process element from B
+        frequency[B[i]]++;
+        if (frequency[B[i]] == 2) {
+            commonCount++;  // Now seen in both arrays
+        }
+
+        // Store current prefix common count
+        res[i] = commonCount;
+    }
+
+    return res;
+}
+```
+
+**Example Trace:** `A = [1,3,2,4], B = [3,1,2,4]`
+
+```
+Index | A[i] | B[i] | frequency (after)     | commonCount | Action
+----------------------------------------------------------------------
+  0   |  1   |  3   | [0,1,0,1,0]           |     0       | freq[1]=1, freq[3]=1
+  1   |  3   |  1   | [0,2,0,2,0]           |     2       | freq[3]=2 ✓, freq[1]=2 ✓
+  2   |  2   |  2   | [0,2,2,2,0]           |     3       | freq[2]=1, then freq[2]=2 ✓
+  3   |  4   |  4   | [0,2,2,2,2]           |     4       | freq[4]=1, then freq[4]=2 ✓
+
+Result: [0, 2, 3, 4]
+```
+
+---
+
+##### **Generalized Pattern: Frequency Threshold Detection**
+
+Use this pattern when you need to detect when elements reach a specific count threshold:
+
+```java
+// Generalized frequency threshold pattern
+/**
+ * Detect when elements reach threshold k
+ * Useful for: intersection counting, duplicate detection, k-frequency problems
+ */
+public void frequencyThresholdPattern(int[] arr1, int[] arr2, int maxVal, int threshold) {
+    int[] frequency = new int[maxVal + 1];
+    int count = 0;
+
+    for (int i = 0; i < arr1.length; i++) {
+        // Process from first source
+        frequency[arr1[i]]++;
+        if (frequency[arr1[i]] == threshold) {
+            count++;  // Element reached threshold
+        }
+
+        // Process from second source (if applicable)
+        frequency[arr2[i]]++;
+        if (frequency[arr2[i]] == threshold) {
+            count++;
+        }
+
+        // Use count as needed...
+    }
+}
+```
+
+---
+
+#### **Frequency Array + Running Count: Common Mistakes & Tips**
+
+**🚫 Common Mistakes:**
+
+1. **Wrong Array Size**
+   ```java
+   // ❌ WRONG: Off-by-one for 1-indexed values
+   int[] frequency = new int[n];  // Can't access frequency[n]
+
+   // ✅ CORRECT: Size n+1 for values 1..n
+   int[] frequency = new int[n + 1];
+   ```
+
+2. **Checking Threshold Before Increment**
+   ```java
+   // ❌ WRONG: Check before increment misses the transition
+   if (frequency[x] == 2) count++;
+   frequency[x]++;
+
+   // ✅ CORRECT: Increment first, then check
+   frequency[x]++;
+   if (frequency[x] == 2) count++;
+   ```
+
+3. **Not Handling Same Element in Both Arrays at Same Index**
+   ```java
+   // For A[i] == B[i] case, frequency goes 0→1→2 in same iteration
+   // This is handled correctly by processing A[i] then B[i] separately
+   ```
+
+**💡 Interview Tips:**
+
+1. **When to Use:**
+   - "Permutation" or "values 1 to n" keywords
+   - "Prefix" or "running" count requirements
+   - "Common elements" or "intersection" problems
+   - Need O(1) lookup with bounded values
+
+2. **Talking Points:**
+   - "Array index as hash key gives O(1) lookup"
+   - "Frequency threshold detection for condition triggers"
+   - "Running count avoids recomputation"
+
+3. **Complexity:**
+   - Time: O(n) single pass
+   - Space: O(n) or O(max_value) for frequency array
+
+---
+
+#### **Related LeetCode Problems:**
+
+| Problem | Difficulty | Pattern Variant |
+|---------|------------|-----------------|
+| LC 2657 | Medium | Prefix common array (frequency == 2) |
+| LC 349 | Easy | Intersection of two arrays (frequency >= 1 in both) |
+| LC 350 | Easy | Intersection with duplicates |
+| LC 442 | Medium | Find duplicates (frequency == 2, in-place) |
+| LC 448 | Easy | Find missing numbers (frequency == 0) |
+| LC 645 | Easy | Set mismatch (frequency == 2 and == 0) |
+| LC 1 | Easy | Two Sum (complement frequency check) |
+| LC 217 | Easy | Contains duplicate (frequency >= 2) |
+
+---
+
+**Summary:**
+- ✅ Frequency Array: Use array index as hash for bounded values (O(1) lookup)
+- ✅ Running Count: Maintain cumulative count, update on threshold
+- ✅ Key Insight: frequency[x] == k means x appeared k times across sources
+- ✅ Best for: Permutations, prefix problems, intersection counting
+- ✅ Alternative: HashMap for unbounded/sparse values
+
+---
+
 ## 2) LC Example
 
 ### 2-1) Queue Reconstruction by Height
