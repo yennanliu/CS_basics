@@ -3219,6 +3219,12 @@ public class Workspace24 {
 
 
 
+    // LC 508
+    public int[] findFrequentTreeSum(TreeNode root) {
+
+        return null;
+    }
+
 
 
 
