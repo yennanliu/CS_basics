@@ -47,16 +47,51 @@ import java.util.Queue;
  * 1 <= m, n <= 10
  * 0 <= grid[i][j] <= 10
  *
- *
- *
- *
  */
 public class MaximumNumberOfFishInAGrid {
 
     // V0
-//    public int findMaxFish(int[][] grid) {
-//
-//    }
+    // IDEA: DFS (fixed by gpt)
+    public int findMaxFish(int[][] grid) {
+        if (grid == null || grid.length == 0 || grid[0].length == 0) {
+            return 0;
+        }
+
+        int l = grid.length;
+        int w = grid[0].length;
+        int maxFish = 0;
+
+        for (int y = 0; y < l; y++) {
+            for (int x = 0; x < w; x++) {
+                if (grid[y][x] > 0) {
+                    maxFish = Math.max(maxFish, getFishCnt(grid, x, y));
+                }
+            }
+        }
+
+        return maxFish;
+    }
+
+    private int getFishCnt(int[][] grid, int x, int y) {
+        int l = grid.length;
+        int w = grid[0].length;
+
+        // ✅ Correct base case
+        if (x < 0 || x >= w || y < 0 || y >= l || grid[y][x] == 0) {
+            return 0;
+        }
+
+        int val = grid[y][x];
+
+        // mark visited
+        grid[y][x] = 0;
+
+        return val
+                + getFishCnt(grid, x - 1, y)
+                + getFishCnt(grid, x + 1, y)
+                + getFishCnt(grid, x, y - 1)
+                + getFishCnt(grid, x, y + 1);
+    }
 
     // V1-1
     // IDEA: DFS
