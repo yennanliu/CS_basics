@@ -63,6 +63,70 @@ public class DecodeWays2 {
 //
 //    }
 
+
+    // V0-1
+    // IDEA: DP (gemini)
+    public int numDecodings_0_1(String s) {
+        long MOD = 1000000007;
+        int n = s.length();
+        long[] dp = new long[n + 1];
+
+        dp[0] = 1; // Base case: empty string
+
+        // Initialize dp[1]
+        if (s.charAt(0) == '*')
+            dp[1] = 9;
+        else if (s.charAt(0) == '0')
+            return 0;
+        else
+            dp[1] = 1;
+
+        for (int i = 2; i <= n; i++) {
+            char curr = s.charAt(i - 1);
+            char prev = s.charAt(i - 2);
+
+            // --- 1. Single Digit Check (i-1) ---
+            if (curr == '*') {
+                dp[i] = (9 * dp[i - 1]) % MOD;
+            } else if (curr != '0') {
+                dp[i] = dp[i - 1];
+            }
+
+            // --- 2. Two Digit Check (i-2, i-1) ---
+            if (prev == '*') {
+                if (curr == '*') {
+                    // Case "**": 11-19 (9 ways) + 21-26 (6 ways) = 15
+                    dp[i] = (dp[i] + 15 * dp[i - 2]) % MOD;
+                } else if (curr <= '6') {
+                    // Case "*[0-6]": 1x and 2x are both valid (2 ways)
+                    dp[i] = (dp[i] + 2 * dp[i - 2]) % MOD;
+                } else {
+                    // Case "*[7-9]": Only 1x is valid (1 way)
+                    dp[i] = (dp[i] + dp[i - 2]) % MOD;
+                }
+            } else if (prev == '1') {
+                if (curr == '*') {
+                    // Case "1*": 11-19 (9 ways)
+                    dp[i] = (dp[i] + 9 * dp[i - 2]) % MOD;
+                } else {
+                    // Case "1[0-9]": 1 way
+                    dp[i] = (dp[i] + dp[i - 2]) % MOD;
+                }
+            } else if (prev == '2') {
+                if (curr == '*') {
+                    // Case "2*": 21-26 (6 ways)
+                    dp[i] = (dp[i] + 6 * dp[i - 2]) % MOD;
+                } else if (curr <= '6') {
+                    // Case "2[0-6]": 1 way
+                    dp[i] = (dp[i] + dp[i - 2]) % MOD;
+                }
+            }
+        }
+
+        return (int) dp[n];
+    }
+
+
     // V1-1
     // IDEA: Recursion with Memoization
     // https://leetcode.com/problems/decode-ways-ii/editorial/
@@ -180,7 +244,9 @@ public class DecodeWays2 {
 
     // V2
 
+
     // V3
+
 
 
 
