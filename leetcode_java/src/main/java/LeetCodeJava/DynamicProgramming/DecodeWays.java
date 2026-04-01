@@ -87,7 +87,23 @@ public class DecodeWays {
 //    }
 
     // V0-0-1 (same as V0-6)
-    // IDEA: DP (fixed by gemini)
+    // IDEA: 1D DP (fixed by gemini)
+    /**
+     *   The Strategy: Dynamic Programming
+     *
+     *   This is a variation of the `Climbing Stairs` problem,
+     *   but with specific "validity" constraints:
+     *
+     *    1. Single Digit:
+     *        A single digit $s[i]$ can
+     *        be decoded if it is not '0'.
+     *
+     *    2. Double Digits:
+     *        Two digits $s[i-1..i]$ can be decoded if
+     *        they form a number between 10 and 26.
+     *
+     *
+     */
     /**  Core idea:
      *
      *  The core idea is that at any position i in the string,
@@ -304,7 +320,9 @@ public class DecodeWays {
         int n = s.length();
         /**  NOTE !!!
          *
-         *   dp[i]: `number of ways` to `decode` the `first i characters`
+         *   dp[i]:
+         *     `number of ways` to `decode`
+         *      the `first i characters`
          *
          */
         // dp[i] stores the number of ways to decode the first i characters
@@ -315,19 +333,32 @@ public class DecodeWays {
         dp[1] = 1; // We already checked s.charAt(0) != '0'
 
         for (int i = 2; i <= n; i++) {
+
+            /**  NOTE !!!
+             *
+             *  Check `one-digit` decoding
+             *
+             */
             // Check one-digit decoding
             int oneDigit = Integer.parseInt(s.substring(i - 1, i));
             if (oneDigit >= 1 && oneDigit <= 9) {
                 dp[i] += dp[i - 1];
             }
 
+            /**  NOTE !!!
+             *
+             *  Check `two-digit` decoding
+             *
+             */
             // Check two-digit decoding
             int twoDigits = Integer.parseInt(s.substring(i - 2, i));
             if (twoDigits >= 10 && twoDigits <= 26) {
                 dp[i] += dp[i - 2];
             }
+
         }
 
+        
         return dp[n];
     }
 
@@ -848,6 +879,7 @@ public class DecodeWays {
 
         return dp[0];
     }
+
 
 
 

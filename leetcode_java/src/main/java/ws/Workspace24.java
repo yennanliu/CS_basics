@@ -3495,6 +3495,63 @@ public class Workspace24 {
         return maxVal;
     }
 
+    // LC 91
+    // 10.38 - 54 am
+    /**
+     *  -> Given a string s containing only digits,
+     *     return the number of ways to decode it.
+     *     If the entire string cannot be decoded
+     *     in any valid way, return 0.
+     *
+     *  ----------------
+     *
+     *   IDEA 1) 2D dp ???
+     *
+     *     - DP def:
+     *         dp[i, j] = # of `valid` decoded way
+     *                    in idx = [i,j]
+     *
+     *     - DP eq:
+     *          // ???
+     *          dp[i,j] = dp[i-1, j] + dp[i,j]
+     *
+     *
+     *
+     *      NOTE:  mapping relation !!
+     *         "1" -> "A"
+     *         ...
+     *         "26" -> "Z"
+     *
+     *         so ONLY 1 -> 26 range
+     *         so 1 - 2 digits range
+     *
+     *
+     *  ----------------
+     *
+     *   ex 1)
+     *    "11"
+     *
+     *     ->  1,1
+     *         11
+     *
+     *   "110"
+     *
+     *     -> 1,10
+     *
+     *
+     *   "1110"
+     *
+     *    ->  1,1,10
+     *        11,10
+     *
+     *
+     *
+     */
+    public int numDecodings(String s) {
+
+        return 0;
+    }
+
 
 
 
