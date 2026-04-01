@@ -80,11 +80,83 @@ import java.util.Map;
 public class DecodeWays {
 
     // V0
-    // IDEA : DP
-    // TODO : implement
-//    public int numDecodings(String encodedString) {
-//
-//    }
+    // IDEA : 1D DP (BOTTOM UP)
+    /**
+     * Q:
+     *
+     *   1. can we split below to a 2 single loop ?
+     *
+     *   2. can we do `one, two digit` update desperately  ?
+     *      don't they affect each other ?
+     *
+     *  -------------------
+     *
+     * Answer:
+     *
+     *    RE 1: Short answer:
+     *       No (not correctly).
+     *       You must process both 1-digit and 2-digit cases at the same index i.
+     *
+     *       -> These dependencies must be combined at the same
+     *          time to compute the correct dp[i].
+     *
+     *
+     *    RE 2:
+     *     Yes—but only within the same iteration (i)
+     *
+     */
+    public int numDecodings(String s) {
+        if (s == null || s.length() == 0 || s.charAt(0) == '0') {
+            return 0;
+        }
+
+        int n = s.length();
+        /**  NOTE !!!
+         *
+         *   dp[i]:
+         *     `number of ways` to `decode`
+         *      the `first i characters`
+         *
+         */
+        // dp[i] stores the number of ways to decode the first i characters
+        int[] dp = new int[n + 1];
+
+        // Base cases
+        dp[0] = 1;
+        dp[1] = 1; // We already checked s.charAt(0) != '0'
+
+        for (int i = 2; i <= n; i++) {
+
+            /**  NOTE !!!
+             *
+             *  Check `one-digit` decoding
+             *
+             */
+            // Check one-digit decoding
+            int oneDigit = Integer.parseInt(s.substring(i - 1, i));
+            if (oneDigit >= 1 && oneDigit <= 9) {
+                dp[i] += dp[i - 1];
+            }
+
+            /**  NOTE !!!
+             *
+             *  Check `two-digit` decoding
+             *
+             */
+            // Check two-digit decoding
+            int twoDigits = Integer.parseInt(s.substring(i - 2, i));
+            if (twoDigits >= 10 && twoDigits <= 26) {
+                dp[i] += dp[i - 2];
+            }
+
+        }
+
+
+        return dp[n];
+    }
+
+
+
 
     // V0-0-1 (same as V0-6)
     // IDEA: 1D DP (fixed by gemini)
@@ -358,9 +430,49 @@ public class DecodeWays {
 
         }
 
-        
+
         return dp[n];
     }
+
+
+    // V0-0-0-1
+    // IDEA: 1D DP + BOTTOM UP + SUB STRING (gemini)
+    public int numDecodings_0_0_0_1(String s) {
+        int n = s.length();
+        if (n == 0 || s.charAt(0) == '0')
+            return 0;
+
+        int prev2 = 1; // dp[i-2]
+        int prev1 = 1; // dp[i-1]
+
+        for (int i = 1; i < n; i++) {
+            int cur = 0;
+
+            char c = s.charAt(i);
+            char p = s.charAt(i - 1);
+
+            // ✅ one digit check (1–9)
+            if (c != '0') {
+                cur += prev1;
+            }
+
+            // ✅ two digit check (10–26)
+            int two = (p - '0') * 10 + (c - '0');
+            if (two >= 10 && two <= 26) {
+                cur += prev2;
+            }
+
+            // ⚠️ early stop (invalid like "30", "00")
+            if (cur == 0)
+                return 0;
+
+            prev2 = prev1;
+            prev1 = cur;
+        }
+
+        return prev1;
+    }
+
 
 
     // V0-1
@@ -613,6 +725,35 @@ public class DecodeWays {
         }
 
         return prev1;
+    }
+
+    // V0-8
+    // IDEA: 1D DP (gpt)
+    public int numDecodings_0_8(String s) {
+        int n = s.length();
+        if (n == 0 || s.charAt(0) == '0')
+            return 0;
+
+        int[] dp = new int[n + 1];
+        dp[0] = 1; // empty string
+        dp[1] = 1; // first char already checked
+
+        for (int i = 2; i <= n; i++) {
+            int oneDigit = s.charAt(i - 1) - '0';
+            int twoDigits = Integer.parseInt(s.substring(i - 2, i));
+
+            // check single digit
+            if (oneDigit >= 1) {
+                dp[i] += dp[i - 1];
+            }
+
+            // check two digits
+            if (twoDigits >= 10 && twoDigits <= 26) {
+                dp[i] += dp[i - 2];
+            }
+        }
+
+        return dp[n];
     }
 
 
