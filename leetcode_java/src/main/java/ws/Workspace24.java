@@ -3643,6 +3643,49 @@ public class Workspace24 {
 
 
 
+    // LC 70
+    // 7.14 -24 am
+    /**
+     *    -> how many distinct ways can you climb to the top?
+     *
+     *    - n steps
+     *    - can climb 1 or 2 steps
+     *
+     *    ----------------
+     *
+     *    IDEA 1) 1D DP
+     *       - DP def
+     *          - dp[i]: counts to reach idx = i ???
+     *
+     *       - DP eq
+     *          - dp[i] = max( dp[i-2], dp[i-1] )
+     *
+     *
+     *    ----------------
+     *
+     *
+     *
+     */
+    public int climbStairs(int n) {
+        // edge
+        if(n == 1){
+            return 1; // ??
+        }
+
+        int[] dp = new int[n + 1]; // ????
+        dp[0] = 1;
+        dp[1] = 1; // ??
+        dp[2] = 2; // ??
+
+        for(int i = 2; i < n + 1; i++){
+            //dp[i] = Math.max( dp[i-2], dp[i-1] );
+            dp[i] = dp[i-2] + dp[i-1];
+        }
+
+
+        return dp[n];
+    }
+
 
 
 
