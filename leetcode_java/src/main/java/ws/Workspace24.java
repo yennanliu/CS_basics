@@ -3547,10 +3547,101 @@ public class Workspace24 {
      *
      *
      */
-    public int numDecodings(String s) {
+    public int numDecodings_88(String s) {
 
         return 0;
     }
+
+
+    // LC 639
+    // 11.40 - 50 AM
+    /**
+     *
+     * Given a string s consisting of digits
+     *  and '*' characters,
+     *
+     * -> return the number of ways to decode it.
+     *
+     * Since the answer may be very large,
+     * return it modulo 109 + 7.
+     *
+     *
+     * --------------
+     *
+     *  IDEA 1) 1D DP
+     *
+     *    ->
+     *      1 digit
+     *
+     *      2 digit
+     *
+     *
+     * --------------
+     *
+     *
+     */
+    //  IDEA 1) 1D DP
+    public int numDecodings(String s) {
+        // edge ??
+
+        int len = s.length();
+        //int[] dp = new int[len - 1]; // ???
+        int[] dp = new int[len + 1]; // ???
+
+        // init dp ??
+        dp[0] = 1;
+        dp[1] = 1;
+        // ???
+//        if(Integer.parseInt(s) <= 26){
+//            dp[2] = 2;
+//        }else{
+//            dp[2] = 1;
+//        }
+
+        for(int i = 2; i < s.length(); i++){
+
+            char val = s.charAt(i);
+
+
+            // case 1) != '*'
+            if (val != '*'){
+
+                // ??? for `*`:
+                // loop over 1 - 9 ????
+                // Check one-digit decoding
+                int oneDigit = Integer.parseInt(s.substring(i - 1, i));
+                if (oneDigit >= 1 && oneDigit <= 9) {
+                    dp[i] += dp[i - 1];
+                }
+
+                /**  NOTE !!!
+                 *
+                 *  Check `two-digit` decoding
+                 *
+                 */
+                // Check two-digit decoding
+                int twoDigits = Integer.parseInt(s.substring(i - 2, i));
+                if (twoDigits >= 10 && twoDigits <= 26) {
+                    dp[i] += dp[i - 2];
+                }
+            }
+
+            // case 2) == '*'
+            else{
+
+
+            }
+
+
+        }
+
+
+
+
+         return dp[len]; // ????
+    }
+
+
 
 
 
