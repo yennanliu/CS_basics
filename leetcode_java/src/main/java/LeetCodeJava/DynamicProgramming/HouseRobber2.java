@@ -51,6 +51,14 @@ public class HouseRobber2 {
         if (n == 2)
             return Math.max(nums[0], nums[1]);
 
+        /** NOTE !!!
+         *
+         *  2 cases:
+         *
+         *  1.  Rob houses 0 to n-2
+         *  2.  Rob houses 1 to n-1
+         *
+         */
         // Case 1: Rob houses 0 to n-2
         int max1 = linearRob(nums, 0, n - 2);
         // Case 2: Rob houses 1 to n-1
@@ -66,27 +74,48 @@ public class HouseRobber2 {
      *  and have clean logic
      */
     private int linearRob(int[] nums, int start, int end) {
+        /** NOTE !!!
+         *
+         *  we get `array` len first
+         */
         int length = end - start + 1;
         if (length == 0)
             return 0;
         if (length == 1)
             return nums[start];
 
+        /** NOTE !!!
+         *
+         *  DP array size = len !!!
+         */
         // 1. Initialize DP array
         // dp[i] stores the max loot considering up to the i-th house in the range
         int[] dp = new int[length];
 
         // 2. Base Cases
+        /** NOTE !!!
+         *
+         *  how we set up dp[0], dp[1]
+         */
         dp[0] = nums[start];
         dp[1] = Math.max(nums[start], nums[start + 1]);
 
         // 3. DP Transition
+        /** NOTE !!!
+         *
+         *   idx in [2, len]
+         */
         for (int i = 2; i < length; i++) {
             // Choice: Rob current house (dp[i-2] + nums[curr])
             // OR Skip current house (dp[i-1])
             dp[i] = Math.max(dp[i - 1], dp[i - 2] + nums[start + i]);
         }
 
+
+        /** NOTE !!!
+         *
+         *   return `dp[length - 1]` as res
+         */
         return dp[length - 1];
     }
 
