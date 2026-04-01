@@ -3348,9 +3348,9 @@ public class Workspace24 {
      */
     public int tribonacci(int n) {
         // edge
-        if(n <= 0){
-            return 0;
-        }
+        if (n == 0) return 0;
+        if (n == 1 || n == 2) return 1;
+
 
         int[] dp = new int[n+1]; // ??
         dp[0] = 0;
@@ -3359,13 +3359,68 @@ public class Workspace24 {
 
         // ???
         for(int i = 3; i <= n; i++){
-            dp[i] = dp[n-3] + dp[n-2] + dp[n-1];
+            dp[i] = dp[i-3] + dp[i-2] + dp[i-1];
             System.out.println(">>> i = " + i + ", " +
-                    " dp = " + dp[n-3] + dp[n-2] + dp[n-1]);
+                    " dp = " + dp[i-3] + dp[i-2] + dp[i-1]);
         }
 
         return dp[n]; // ???
     }
+
+
+
+    // LC 509
+    // 8.00 - 10 am
+    /**
+     *  1D DP
+     *
+     *
+     */
+    public int fib(int n) {
+        // edge
+        if(n <= 1){
+            return n;
+        }
+
+        //Map<Integer, Integer> map = new HashMap<>();
+
+        int[] dp = new int[ + 1]; // ???
+        dp[0] = 0;
+        dp[1] = 1;
+        dp[2] = 1;
+//
+//        map.put(0,0);
+//        map.put(1,1);
+//        map.put(2,1);
+
+
+        for(int i = 2; i <= n; i++){
+            dp[i] = dp[i-2] + dp[i-1];
+        }
+
+        return dp[n];
+    }
+
+
+
+    public int fib_99(int n) {
+        // edge
+        if(n <= 1){
+            return n;
+        }
+        int[] dp = new int[ + 1]; // ???
+        dp[0] = 0;
+        dp[1] = 1;
+        dp[2] = 1;
+
+
+        for(int i = 2; i <= n; i++){
+            dp[i] = dp[i-2] + dp[i-1];
+        }
+
+        return dp[n];
+    }
+
 
 
 
