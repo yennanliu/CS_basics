@@ -43,8 +43,59 @@ import java.util.Arrays;
 public class HouseRobber2 {
 
     // V0
-    // IDEA: 1D DP + 2 cases (rob idx=0 or rob idx=nums.len-1)
+    // IDEA: DP + 2 CASES + HELP FUNC (fixed by gemini)
     public int rob(int[] nums) {
+        int n = nums.length;
+        if (n == 1)
+            return nums[0];
+        if (n == 2)
+            return Math.max(nums[0], nums[1]);
+
+        // Case 1: Rob houses 0 to n-2
+        int max1 = linearRob(nums, 0, n - 2);
+        // Case 2: Rob houses 1 to n-1
+        int max2 = linearRob(nums, 1, n - 1);
+
+        return Math.max(max1, max2);
+    }
+
+
+    /** NOTE !!!
+     *
+     *  we prefer this help func, so can avoid weird index handling
+     *  and have clean logic
+     */
+    private int linearRob(int[] nums, int start, int end) {
+        int length = end - start + 1;
+        if (length == 0)
+            return 0;
+        if (length == 1)
+            return nums[start];
+
+        // 1. Initialize DP array
+        // dp[i] stores the max loot considering up to the i-th house in the range
+        int[] dp = new int[length];
+
+        // 2. Base Cases
+        dp[0] = nums[start];
+        dp[1] = Math.max(nums[start], nums[start + 1]);
+
+        // 3. DP Transition
+        for (int i = 2; i < length; i++) {
+            // Choice: Rob current house (dp[i-2] + nums[curr])
+            // OR Skip current house (dp[i-1])
+            dp[i] = Math.max(dp[i - 1], dp[i - 2] + nums[start + i]);
+        }
+
+        return dp[length - 1];
+    }
+
+
+
+
+    // V0-0-0-0-1
+    // IDEA: 1D DP + 2 cases (rob idx=0 or rob idx=nums.len-1)
+    public int rob_0_0_0_0_1(int[] nums) {
         // edge
         if (nums == null || nums.length == 0) {
             return 0;
