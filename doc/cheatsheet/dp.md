@@ -3759,6 +3759,78 @@ public int tribonacci(int n) {
 }
 ```
 
+### 2-3-4) Decode Ways (LC 91)
+
+```java
+// java
+// LC 91. Decode Ways
+
+/**
+ *  Core idea:
+ *
+ *  - Variation of Climbing Stairs with validity constraints
+ *  - At each position i, we try to decode in 2 ways:
+ *    1) Single digit (1-9): dp[i] += dp[i-1]
+ *    2) Two digits (10-26): dp[i] += dp[i-2]
+ *  - '0' cannot be decoded alone — it must pair with '1' or '2'
+ *
+ *  dp[i] = number of ways to decode the first i characters
+ *
+ *  Base cases:
+ *    dp[0] = 1 (empty string = 1 way)
+ *    dp[1] = 1 (if first char != '0')
+ */
+
+// Pattern:
+public int numDecodings(String s) {
+    if (s == null || s.length() == 0 || s.charAt(0) == '0') {
+        return 0;
+    }
+
+    int n = s.length();
+    int[] dp = new int[n + 1];
+
+    // Base cases
+    dp[0] = 1;
+    dp[1] = 1;
+
+    for (int i = 2; i <= n; i++) {
+
+        /**  NOTE !!!
+         *
+         *  Check `one-digit` decoding
+         *
+         */
+        // Check one-digit decoding
+        int oneDigit = Integer.parseInt(s.substring(i - 1, i));
+        if (oneDigit >= 1 && oneDigit <= 9) {
+            dp[i] += dp[i - 1];
+        }
+
+        /**  NOTE !!!
+         *
+         *  Check `two-digit` decoding
+         *
+         */
+        // Check two-digit decoding
+        int twoDigits = Integer.parseInt(s.substring(i - 2, i));
+        if (twoDigits >= 10 && twoDigits <= 26) {
+            dp[i] += dp[i - 2];
+        }
+
+    }
+
+    return dp[n];
+}
+```
+
+**Similar LCs:**
+- LC 91 Decode Ways
+- LC 639 Decode Ways II (with `*` wildcard)
+- LC 70 Climbing Stairs (same Fibonacci-like structure)
+- LC 509 Fibonacci Number
+- LC 1137 N-th Tribonacci Number
+
 ### 2-4) Longest Increasing Subsequence (LIS)
 
 ```java
