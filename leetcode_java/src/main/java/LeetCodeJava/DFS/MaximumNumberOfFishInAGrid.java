@@ -76,6 +76,25 @@ public class MaximumNumberOfFishInAGrid {
         int l = grid.length;
         int w = grid[0].length;
 
+        /** NOTE !!
+         *
+         *  the `correct` edge case
+         *
+         *    (either any case happened, we should return 0 directly)
+         *    (NOT proceed to DFS at current thread)
+         *
+         *  -------------
+         *
+         *  below is WRONG !!!
+         *
+         *   ```
+         *           if(x < 0 || x >= w || y < 0 || y >= l){
+         *             if(grid[y][x] == 0){
+         *                 return 0; // ???
+         *             }
+         *         }
+         *  ```
+         */
         // ✅ Correct base case
         if (x < 0 || x >= w || y < 0 || y >= l || grid[y][x] == 0) {
             return 0;
@@ -92,6 +111,67 @@ public class MaximumNumberOfFishInAGrid {
                 + getFishCnt(grid, x, y - 1)
                 + getFishCnt(grid, x, y + 1);
     }
+
+
+    // V0-1
+    // IDEA: BFS (gpt)
+    public int findMaxFish_0_1(int[][] grid) {
+        int m = grid.length;
+        int n = grid[0].length;
+        int maxFish = 0;
+
+        for (int y = 0; y < m; y++) {
+            for (int x = 0; x < n; x++) {
+                if (grid[y][x] > 0) {
+                    /** NOTE !!! below */
+                    maxFish = Math.max(maxFish, bfs(grid, x, y));
+                }
+            }
+        }
+
+        return maxFish;
+    }
+
+    private int bfs(int[][] grid, int startX, int startY) {
+        int m = grid.length;
+        int n = grid[0].length;
+
+        Queue<int[]> queue = new LinkedList<>();
+        queue.offer(new int[] { startX, startY });
+
+        int fishSum = 0;
+
+        // mark visited
+        fishSum += grid[startY][startX];
+        grid[startY][startX] = 0;
+
+        int[][] dirs = {
+                { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 }
+        };
+
+        while (!queue.isEmpty()) {
+            int[] cur = queue.poll();
+            int x = cur[0];
+            int y = cur[1];
+
+            for (int[] d : dirs) {
+                int nx = x + d[0];
+                int ny = y + d[1];
+
+                if (nx >= 0 && nx < n && ny >= 0 && ny < m && grid[ny][nx] > 0) {
+                    /** NOTE !!! below */
+                    fishSum += grid[ny][nx];
+                    queue.offer(new int[] { nx, ny });
+                    grid[ny][nx] = 0; // mark visited
+                }
+            }
+        }
+
+        /** NOTE !!! below */
+        return fishSum;
+    }
+
+
 
     // V1-1
     // IDEA: DFS
