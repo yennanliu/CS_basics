@@ -3376,30 +3376,30 @@ public class Workspace24 {
      *
      *
      */
-    public int fib(int n) {
-        // edge
-        if(n <= 1){
-            return n;
-        }
-
-        //Map<Integer, Integer> map = new HashMap<>();
-
-        int[] dp = new int[ + 1]; // ???
-        dp[0] = 0;
-        dp[1] = 1;
-        dp[2] = 1;
+//    public int fib(int n) {
+//        // edge
+//        if(n <= 1){
+//            return n;
+//        }
 //
-//        map.put(0,0);
-//        map.put(1,1);
-//        map.put(2,1);
-
-
-        for(int i = 2; i <= n; i++){
-            dp[i] = dp[i-2] + dp[i-1];
-        }
-
-        return dp[n];
-    }
+//        //Map<Integer, Integer> map = new HashMap<>();
+//
+//        int[] dp = new int[ + 1]; // ???
+//        dp[0] = 0;
+//        dp[1] = 1;
+//        dp[2] = 1;
+////
+////        map.put(0,0);
+////        map.put(1,1);
+////        map.put(2,1);
+//
+//
+//        for(int i = 2; i <= n; i++){
+//            dp[i] = dp[i-2] + dp[i-1];
+//        }
+//
+//        return dp[n];
+//    }
 
 
 
@@ -3420,6 +3420,83 @@ public class Workspace24 {
 
         return dp[n];
     }
+
+
+
+
+    // LC 213
+    // 8.12 -22 AM
+    /**
+     *
+     *   ->  return the maximum amount of money you
+     *   can rob tonight without alerting the police.
+     *
+     *
+     *   -  All houses at this place are arranged in a circle
+     *
+     *
+     *  --------------
+     *
+     *  IDEA 1) 1D DP + 2 CASES
+     *
+     *   - case 1) rob 0 idx
+     *   - case 2) rob last (n-1) idx
+     *
+     *
+     *  --------------
+     *
+     *
+     *
+     */
+    // IDEA 1) 1D DP + 2 CASES
+    public int rob(int[] nums) {
+        // edge
+        int n = nums.length;
+        if(n == 1){
+            return nums[0];
+        }
+
+        // ??
+        int maxVal = 0;
+        /**
+         *      *  IDEA 1) 1D DP + 2 CASES
+         *      *
+         *      *   - case 1) rob 0 idx
+         *      *   - case 2) rob last (n-1) idx
+         *      *
+         */
+       // int[] dp1 = new int[n + 1]; // ???
+        int[] dp1 = new int[n]; // ???
+
+        dp1[0] = nums[0];
+        dp1[1] = nums[0]; // CAN'T rob idx = 1
+        dp1[2] = Math.max(dp1[0] + nums[2], dp1[1]); // ???
+
+        // ??? i < n, since we CAN'T run n-1 idx anyway ????
+        for(int i = 2; i < n; i++){
+            dp1[i] = Math.max(dp1[i-2] + nums[i], dp1[i-1]);
+            maxVal = Math.max(dp1[i], maxVal);
+        }
+
+
+        //int[] dp2 = new int[n + 1]; // ???
+        int[] dp2 = new int[n]; // ???
+
+        dp2[0] = 0;
+        dp2[1] = Math.max(dp2[0], nums[1]);  // ????
+        dp2[2] = Math.max(dp2[0] + nums[2], dp2[1]);  // ????
+
+        for(int i = 2; i <= n; i++){
+            dp2[i] = Math.max(dp2[i-2] + nums[i], dp2[i-1]);
+            maxVal = Math.max(dp2[i], maxVal);
+        }
+
+
+        return maxVal;
+    }
+
+
+
 
 
 
