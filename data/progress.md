@@ -25,7 +25,7 @@
 	- design.md (OK)
 	- dfs.md (OK)
 	- difference_array.md (OK)
-	- Dijkstra.md  (TODO: LC examples)
+	- Dijkstra.md  (TODO: LC examples) - `2-6) Swim in Rising Water`
 
 - to review
 - needcode `250` - similar LC by AI

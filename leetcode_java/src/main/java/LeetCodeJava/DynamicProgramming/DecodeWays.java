@@ -156,6 +156,73 @@ public class DecodeWays {
     }
 
 
+    // V0-0-0-0-1
+    // IDEA: 1D DP + 1-digit, 2-digit cases + substring (GPT)
+    public int numDecodings_0_0_0_0_1(String s) {
+
+        // Edge case: empty string or starts with '0' → invalid
+        if (s == null || s.length() == 0 || s.charAt(0) == '0') {
+            return 0;
+        }
+
+        int len = s.length();
+
+        /** NOTE !!
+         *
+         *   1. dp[i] = number of ways to decode substring of `length i`
+         *   2. we use `len + 1` size
+         */
+        // dp[i] = number of ways to decode substring of length i
+        // NOTE: size is len + 1 (important for easier indexing)
+        int[] dp = new int[len + 1];
+
+        /** NOTE !!
+         *
+         *   dp[0] = 1; // empty string has 1 way
+         */
+        // Base cases
+        dp[0] = 1; // empty string has 1 way
+        dp[1] = 1; // already checked s[0] != '0'
+
+        // Build DP
+        for (int i = 2; i <= len; i++) {
+
+            // Take 1 digit (current char)
+            int val1 = s.charAt(i - 1) - '0';
+
+            /** NOTE !!
+             *
+             *   2 digits: s.substring(i - 2, i)
+             *
+             *    `i-2`
+             */
+            // Take 2 digits (previous + current)
+            int val2 = Integer.parseInt(s.substring(i - 2, i));
+
+            // Case 1: valid single digit (1–
+            /** NOTE !!
+             *
+             *   for 1-digit,  1 <= val <= 9
+             */
+            if (val1 >= 1 && val1 <= 9) {
+                dp[i] += dp[i - 1];
+            }
+
+            /** NOTE !!
+             *
+             *   for 2-digit,  10 <= val <= 26
+             */
+            // Case 2: valid two digits (10–26)
+            if (val2 >= 10 && val2 <= 26) {
+                dp[i] += dp[i - 2];
+            }
+        }
+
+
+        return dp[len];
+    }
+
+
 
 
     // V0-0-1 (same as V0-6)
