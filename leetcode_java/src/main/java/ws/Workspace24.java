@@ -3687,6 +3687,182 @@ public class Workspace24 {
     }
 
 
+    // LC 322
+    // 7.27 - 37 am
+    /**
+     *   -> Return the `fewest` number of coins that you
+     *   need to `make up that amount.`
+     *
+     *   - coins: arr with different types of coin
+     *
+     *   If that amount of money cannot be made
+     *   up by any combination of the coins,
+     *      -> return -1.
+     *
+     *
+     *   NOTE:
+     *      - You may assume that you have an
+     *        infinite number of each kind of coin.
+     *
+     *  --------------
+     *
+     *  IDEA 1) BRUTE FORCE
+     *
+     *  IDEA 2) 1D DP ????
+     *     - sort
+     *     - 2 loops ???
+     *     - AVOID `duplicated combination`
+     *     coin_loop
+     *      total_amt_loop ????
+     *
+     *
+     *     - DP def:
+     *        dp[i]  = ``fewest` number of coins`
+     *                  make up val = i ???
+     *
+     *     - DP eq:
+     *          if cur + coin <= amount:
+     *             // ???
+     *             dp[i] = max( dp[i - coin] + 1,  dp[i] )
+     *          else:
+     *             ????
+     *
+     *
+     *   --------------
+     *
+     */
+
+    public int coinChange(int[] coins, int amount) {
+        // 1. Base case
+        if (amount == 0)
+            return 0;
+
+        // 2. Initialize DP with a value larger than any possible answer
+        // amount + 1 is a safe "Infinity" because the max coins
+        // needed is 'amount' (all 1-cent coins).
+        int max = amount + 1;
+        int[] dp = new int[amount + 1];
+        Arrays.fill(dp, max);
+
+        // Base case: 0 coins needed to make amount 0
+        dp[0] = 0;
+
+        // 3. Loop through every amount from 1 to target
+//        for (int i = 1; i <= amount; i++) {
+//            // Try every coin for the current amount i
+//            for (int coin : coins) {
+//                if (i >= coin) {
+//                    // The current amount i can be reached by
+//                    // taking (i - coin) and adding 1 coin.
+//                    dp[i] = Math.min(dp[i], dp[i - coin] + 1);
+//                }
+//            }
+//        }
+        for (int coin : coins) {
+            for (int i = 1; i <= amount; i++) {
+                // Try every coin for the current amount i
+                if (i >= coin) {
+                    // The current amount i can be reached by
+                    // taking (i - coin) and adding 1 coin.
+                    dp[i] = Math.min(dp[i], dp[i - coin] + 1);
+                }
+            }
+        }
+
+
+        // 4. If dp[amount] is still 'max', it means the amount is unreachable
+        return dp[amount] > amount ? -1 : dp[amount];
+    }
+
+
+
+
+//    public int coinChange(int[] coins, int amount) {
+//        // edge
+//        if(coins.length == 1){
+//            if(amount % coins[0] != 0){
+//                return -1;
+//            }
+//            return amount / coins[0]; // ??
+//        }
+//
+//        if(amount == 0){
+//            return 0;
+//        }
+//
+//        // sort ??? (big -> small)
+//        //Arrays.sort(coins,); -> how to do reverse sort in Arrays.sort ???
+//        //int maxVal = 0;
+//        List<Integer> coinList = new ArrayList<>();
+//        for(int c: coins){
+//            coinList.add(c);
+//           // maxVal = Math.max(c, maxVal);
+//        }
+//
+//
+//        // sort is NOT NEEDED ????
+////        Collections.sort(coinList, new Comparator<Integer>() {
+////            @Override
+////            public int compare(Integer o1, Integer o2) {
+////                int diff = o2 - o1;
+////                return diff;
+////            }
+////        });
+//
+//
+//        // ??
+//        int[] dp = new int[amount + 1]; // ??
+//        // NOTE !!!
+//        // we pre-fill dp array with `max` val
+//        // max val = `amount + 1`
+//        //Arrays.fill(dp, -1); // ???
+//        Arrays.fill(dp, amount + 1); // ???
+//
+//        dp[0] = 0;
+//
+//        //dp[1] =
+//
+//        /**
+//         *      *     - DP def:
+//         *      *        dp[i]  = ``fewest` number of coins`
+//         *      *                  make up val = i ???
+//         *      *
+//         *      *     - DP eq:
+//         *      *          if cur + coin <= amount:
+//         *      *             // ???
+//         *      *             dp[i] = max( dp[i - coin] + 1,  dp[i] )
+//         *      *          else:
+//         *      *             ????
+//         *
+//         */
+//
+//        // ??? looping ordering ???
+//        for(int coin: coinList){
+//            // ???
+//            for(int i = 1; i < amount + 1; i++){
+//                // ???
+//                if(coin + i <= amount){
+//                    // ?? ???
+//                    if(i - coin >= 0){
+//                        // if still init val ??
+//                        if(dp[i] == -1){
+//                            dp[i] =  dp[i - coin] + 1;
+//                        }else{
+//                            dp[i] = Math.min( dp[i - coin] + 1,  dp[i] );
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//
+//
+//        // ???
+//        return dp[amount];
+//    }
+//
+
+
+
 
 
 
