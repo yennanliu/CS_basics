@@ -3547,7 +3547,81 @@ public class Workspace24 {
      *
      *
      */
-    public int numDecodings_88(String s) {
+    // 10.21 - 10.31 am
+    /**
+     *   IDEA 1) 1D DP
+     *      - 1 digit
+     *      - 2 digit
+     *
+     *      - DP def
+     *         - dp[i]: num of decode way for s[0, i]
+     *                  (sub string from 0 to i)
+     *
+     *      - DP eq
+     *          if 1 digit:
+     *
+     *             if( 1 <= val <= 26):
+     *                dp[i] = dp[i-1]
+     *
+     *          if 2 digit:
+     *             if( 1 <= val <= 26):
+     *
+     *               dp[i] = dp[i-2]
+     *
+     *
+     */
+    // IDEA 1) 1D DP
+    public int numDecodings(String s) {
+        // edge ???
+        // Edge case: empty string or starts with '0' → invalid
+        if (s == null || s.length() == 0 || s.charAt(0) == '0') {
+            return 0;
+        }
+
+        int len = s.length();
+
+        // Because dp[i] represents first i characters, not index i.
+        //int[] dp = new int[len]; // ???
+        int[] dp = new int[len + 1]; // ???
+
+        //dp[0] = 0;
+        dp[0] = 1;
+        dp[1] = 1;
+        // ??? dp[2] ?
+
+        for(int i = 2; i < len + 1; i++){
+            // get val
+            int val1 = new Integer(s.charAt(i));
+
+            // ???
+            //int val2 = new Integer(s.substring(i-1, i));
+            int val2 = new Integer(s.substring(i-2, i));
+
+            // case 1) 1 digit
+            // ???
+            if(val1 > 0 && val1 <= 9){
+               // dp[i] = dp[i-1]; // ???
+                dp[i] += dp[i-1];
+            }
+
+            // case 2) 2 digit
+            if(val2 >= 10 && val2 <= 26 && !s.substring(i-1, i).startsWith("0")){
+                //dp[i] = dp[i-2]; // ???
+                dp[i] += dp[i-2]; // ???
+            }
+        }
+
+        return dp[len - 1];  // ???
+    }
+
+
+
+
+
+
+
+
+    public int numDecodings_99(String s) {
 
         return 0;
     }
@@ -3581,7 +3655,7 @@ public class Workspace24 {
      *
      */
     //  IDEA 1) 1D DP
-    public int numDecodings(String s) {
+    public int numDecodings_98(String s) {
         // edge ??
 
         int len = s.length();
