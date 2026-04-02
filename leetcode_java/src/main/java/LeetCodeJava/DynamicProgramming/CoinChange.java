@@ -116,6 +116,84 @@ public class CoinChange {
     }
 
 
+    // V0-0-1
+    // IDEA: 1D DP (fixed by gemini)
+    public int coinChange_0_0_1(int[] coins, int amount) {
+        // 1. Base case
+        if (amount == 0)
+            return 0;
+
+        // 2. Initialize DP with a value larger than any possible answer
+        // amount + 1 is a safe "Infinity" because the max coins
+        // needed is 'amount' (all 1-cent coins).
+        int max = amount + 1;
+        int[] dp = new int[amount + 1];
+        Arrays.fill(dp, max);
+
+        // Base case: 0 coins needed to make amount 0
+        dp[0] = 0;
+
+        /** NOTE !!!
+         *
+         *   we can use BOTH below 2 loop ordering, (V1, V2)
+         *   since our goal is finding the `global min coin usage`
+         *   (NOT the unique coin combination, e.g. Coin Change 2 LC)
+         *
+         *    e.g.
+         *
+         *     loop_amount:
+         *       loop_coin:
+         *
+         *     VS
+         *
+         *     loop_coin:
+         *       loop_amount:
+         *
+         *  ------------
+         *
+         *  (gemini explanation)
+         *
+         *  Because your goal is to find the global minimum count of coins
+         *  (an optimization problem) rather than counting the number of ways
+         *  (a counting problem), the order of processing does not change the final result.
+         *  Both versions will correctly find the fewest coins needed to reach amount.
+         *
+         *
+         *
+         */
+        
+        /** V1 */
+        // 3. Loop through every amount from 1 to target
+        for (int i = 1; i <= amount; i++) {
+            // Try every coin for the current amount i
+            for (int coin : coins) {
+                if (i >= coin) {
+                    // The current amount i can be reached by
+                    // taking (i - coin) and adding 1 coin.
+                    dp[i] = Math.min(dp[i], dp[i - coin] + 1);
+                }
+            }
+        }
+
+        /** V2 */
+//        for (int coin : coins) {
+//            for (int i = 1; i <= amount; i++) {
+//                // Try every coin for the current amount i
+//                if (i >= coin) {
+//                    // The current amount i can be reached by
+//                    // taking (i - coin) and adding 1 coin.
+//                    dp[i] = Math.min(dp[i], dp[i - coin] + 1);
+//                }
+//            }
+//        }
+
+
+        // 4. If dp[amount] is still 'max', it means the amount is unreachable
+        return dp[amount] > amount ? -1 : dp[amount];
+    }
+
+
+
     // V0-1
     // IDEA : BFS (modified by GPT)
     /**
@@ -1035,6 +1113,7 @@ public class CoinChange {
 
         return t[n][amount] == Integer.MAX_VALUE - 1 ? -1 : t[n][amount];
     }
+
 
 
 
