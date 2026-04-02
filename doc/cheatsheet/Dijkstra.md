@@ -475,7 +475,276 @@ public int minimumEffortPath_0_1(int[][] heights) {
 }
 ```
 
-### 2-4) Minimum Obstacle Removal to Reach Corner
+### 2-4) Path with Maximum Probability
+
+```java
+// java
+// LC 1514
+// IDEA: Modified Dijkstra (max-heap, multiply probabilities instead of adding distances)
+// NOTE: Use MAX heap since we want maximum probability
+// NOTE: Initialize probabilities to -1 (unreachable), source to 1
+class Solution {
+    public double maxProbability(int n, int[][] edges, double[] succProb, int start, int end) {
+        List<double[]>[] graph = new LinkedList[n];
+        for (int i = 0; i < n; i++) {
+            graph[i] = new LinkedList<>();
+        }
+        for (int i = 0; i < edges.length; i++) {
+            graph[edges[i][0]].add(new double[]{edges[i][1], succProb[i]});
+            graph[edges[i][1]].add(new double[]{edges[i][0], succProb[i]});
+        }
+
+        double[] proTo = new double[n];
+        Arrays.fill(proTo, -1);
+        proTo[start] = 1;
+
+        // NOTE: MAX heap (compare b vs a)
+        PriorityQueue<double[]> pq = new PriorityQueue<>((a, b) -> Double.compare(b[1], a[1]));
+        pq.offer(new double[]{start, 1});
+
+        while (!pq.isEmpty()) {
+            double[] cur = pq.poll();
+            int curId = (int) cur[0];
+            double curProb = cur[1];
+
+            if (curId == end) return curProb;
+            if (proTo[curId] > curProb) continue;
+
+            for (double[] next : graph[curId]) {
+                int nextId = (int) next[0];
+                double newProb = proTo[curId] * next[1];
+                if (newProb > proTo[nextId]) {
+                    proTo[nextId] = newProb;
+                    pq.offer(new double[]{nextId, newProb});
+                }
+            }
+        }
+        return 0;
+    }
+}
+```
+
+```python
+# python
+# LC 1514
+# IDEA: Modified Dijkstra with max-heap (negate probability for max behavior)
+import heapq
+import collections
+
+class Solution:
+    def maxProbability(self, n, edges, succProb, start_node, end_node):
+        graph = collections.defaultdict(list)
+        for i, (u, v) in enumerate(edges):
+            graph[u].append((v, succProb[i]))
+            graph[v].append((u, succProb[i]))
+
+        # Max-heap: negate probability since heapq is min-heap
+        pq = [(-1.0, start_node)]
+        dist = [0.0] * n
+        dist[start_node] = 1.0
+
+        while pq:
+            neg_prob, u = heapq.heappop(pq)
+            prob = -neg_prob
+
+            if u == end_node:
+                return prob
+            if prob < dist[u]:
+                continue
+
+            for v, w in graph[u]:
+                new_prob = prob * w
+                if new_prob > dist[v]:
+                    dist[v] = new_prob
+                    heapq.heappush(pq, (-new_prob, v))
+
+        return 0.0
+```
+
+### 2-5) Number of Ways to Arrive at Destination
+
+```java
+// java
+// LC 1976
+// IDEA: Dijkstra + count paths
+// NOTE: Track both shortest distance AND number of ways to reach each node
+class Solution {
+    public int countPaths(int n, int[][] roads) {
+        int MOD = 1_000_000_007;
+        List<long[]>[] graph = new ArrayList[n];
+        for (int i = 0; i < n; i++) graph[i] = new ArrayList<>();
+
+        for (int[] r : roads) {
+            graph[r[0]].add(new long[]{r[1], r[2]});
+            graph[r[1]].add(new long[]{r[0], r[2]});
+        }
+
+        long[] dist = new long[n];
+        long[] ways = new long[n];
+        Arrays.fill(dist, Long.MAX_VALUE);
+        dist[0] = 0;
+        ways[0] = 1;
+
+        // (distance, node)
+        PriorityQueue<long[]> pq = new PriorityQueue<>(Comparator.comparingLong(a -> a[0]));
+        pq.offer(new long[]{0, 0});
+
+        while (!pq.isEmpty()) {
+            long[] cur = pq.poll();
+            long d = cur[0];
+            int u = (int) cur[1];
+
+            if (d > dist[u]) continue;
+
+            for (long[] next : graph[u]) {
+                int v = (int) next[0];
+                long w = next[1];
+
+                if (dist[u] + w < dist[v]) {
+                    dist[v] = dist[u] + w;
+                    ways[v] = ways[u];
+                    pq.offer(new long[]{dist[v], v});
+                } else if (dist[u] + w == dist[v]) {
+                    ways[v] = (ways[v] + ways[u]) % MOD;
+                }
+            }
+        }
+
+        return (int) (ways[n - 1] % MOD);
+    }
+}
+```
+
+```python
+# python
+# LC 1976
+# IDEA: Dijkstra + count shortest paths
+import heapq
+import collections
+
+class Solution:
+    def countPaths(self, n, roads):
+        MOD = 10**9 + 7
+        graph = collections.defaultdict(list)
+        for u, v, w in roads:
+            graph[u].append((v, w))
+            graph[v].append((u, w))
+
+        dist = [float('inf')] * n
+        ways = [0] * n
+        dist[0] = 0
+        ways[0] = 1
+        pq = [(0, 0)]  # (distance, node)
+
+        while pq:
+            d, u = heapq.heappop(pq)
+            if d > dist[u]:
+                continue
+            for v, w in graph[u]:
+                if dist[u] + w < dist[v]:
+                    dist[v] = dist[u] + w
+                    ways[v] = ways[u]
+                    heapq.heappush(pq, (dist[v], v))
+                elif dist[u] + w == dist[v]:
+                    ways[v] = (ways[v] + ways[u]) % MOD
+
+        return ways[n - 1] % MOD
+```
+
+### 2-6) Swim in Rising Water
+
+```java
+// java
+// LC 778
+// IDEA: Dijkstra (min PQ + BFS on grid)
+// NOTE: Track max elevation along path (not sum of weights)
+public int swimInWater(int[][] grid) {
+    int n = grid.length;
+    PriorityQueue<int[]> minHeap = new PriorityQueue<>(Comparator.comparingInt(a -> a[0]));
+    boolean[][] visited = new boolean[n][n];
+
+    minHeap.offer(new int[]{grid[0][0], 0, 0});
+    visited[0][0] = true;
+
+    int[][] directions = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+    int res = 0;
+
+    while (!minHeap.isEmpty()) {
+        int[] cur = minHeap.poll();
+        int elevation = cur[0], x = cur[1], y = cur[2];
+
+        // NOTE: track MAX elevation along path
+        res = Math.max(res, elevation);
+
+        if (x == n - 1 && y == n - 1) return res;
+
+        for (int[] d : directions) {
+            int nx = x + d[0], ny = y + d[1];
+            if (nx >= 0 && ny >= 0 && nx < n && ny < n && !visited[ny][nx]) {
+                visited[ny][nx] = true;
+                minHeap.offer(new int[]{grid[ny][nx], nx, ny});
+            }
+        }
+    }
+    return -1;
+}
+```
+
+### 2-7) Trapping Rain Water II
+
+```java
+// java
+// LC 407
+// IDEA: Multi-source Dijkstra (PQ from boundary inward)
+// NOTE: Start from all boundary cells, expand inward with min-heap
+// NOTE: Water trapped at a cell = max(0, boundary_height - cell_height)
+public int trapRainWater(int[][] heightMap) {
+    if (heightMap == null || heightMap.length < 3 || heightMap[0].length < 3)
+        return 0;
+
+    int rows = heightMap.length, cols = heightMap[0].length;
+    boolean[][] visited = new boolean[rows][cols];
+    // PQ: [height, row, col]
+    PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(a -> a[0]));
+
+    // Push all border cells
+    for (int c = 0; c < cols; c++) {
+        pq.offer(new int[]{heightMap[0][c], 0, c});
+        pq.offer(new int[]{heightMap[rows - 1][c], rows - 1, c});
+        visited[0][c] = true;
+        visited[rows - 1][c] = true;
+    }
+    for (int r = 1; r < rows - 1; r++) {
+        pq.offer(new int[]{heightMap[r][0], r, 0});
+        pq.offer(new int[]{heightMap[r][cols - 1], r, cols - 1});
+        visited[r][0] = true;
+        visited[r][cols - 1] = true;
+    }
+
+    int totalWater = 0;
+    int[][] dirs = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+
+    while (!pq.isEmpty()) {
+        int[] cell = pq.poll();
+        for (int[] d : dirs) {
+            int nr = cell[1] + d[0], nc = cell[2] + d[1];
+            if (nr < 0 || nr >= rows || nc < 0 || nc >= cols || visited[nr][nc])
+                continue;
+            visited[nr][nc] = true;
+            int h = heightMap[nr][nc];
+            if (h < cell[0]) {
+                totalWater += cell[0] - h;
+                pq.offer(new int[]{cell[0], nr, nc}); // raise to boundary level
+            } else {
+                pq.offer(new int[]{h, nr, nc});
+            }
+        }
+    }
+    return totalWater;
+}
+```
+
+### 2-8) Minimum Obstacle Removal to Reach Corner
 
 ```java
 // java
