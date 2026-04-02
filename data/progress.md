@@ -24,7 +24,8 @@
 	- complexity_cheatsheet.md (todo)
 	- design.md (OK)
 	- dfs.md (OK)
-	- difference_array.md (TODO: LC examples)
+	- difference_array.md (OK)
+	- Dijkstra.md  (TODO: LC examples)
 
 - to review
 - needcode `250` - similar LC by AI
