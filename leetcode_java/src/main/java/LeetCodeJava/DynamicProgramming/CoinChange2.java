@@ -101,7 +101,9 @@ public class CoinChange2 {
          *
          *   Base case: There is exactly 1 way to make 0 amount (empty set)
          *
-         *  -> need to set dp[0] = 1, instead of 0
+         *  -> need to set `dp[0] = 1`,
+         *
+         *    (instead of 0)
          */
         // 2. Base case: There is exactly 1 way to make 0 amount (empty set)
         dp[0] = 1;
@@ -213,7 +215,7 @@ public class CoinChange2 {
          */
         // 3. OUTER LOOP: Iterate through each coin
         // This ensures we process all uses of one coin before moving to the next,
-        // which prevents duplicate combinations like [1,2] and [2,1].
+        // which prevents `duplicate` combinations like [1,2] and [2,1].
         for (int coin : coins) {
             // 4. INNER LOOP: Update dp table for all amounts reachable by this coin
             for (int i = coin; i <= amount; i++) {
@@ -225,6 +227,72 @@ public class CoinChange2 {
 
         return dp[amount];
     }
+
+
+    // V0-0-0-1
+    // IDEA: 1D DP + ref LC 322 (GPT)
+    public int change_0_0_0_1(int amount, int[] coins) {
+
+        // If target amount is 0,
+        // there is exactly 1 way: choose nothing
+        if (amount == 0) {
+            return 1;
+        }
+
+        // Optimization: only one coin type
+        if (coins.length == 1) {
+
+            // If amount cannot be formed by this coin
+            if (amount % coins[0] != 0) {
+                return 0; // no valid combination
+            }
+
+            // Otherwise, exactly 1 way (use this coin repeatedly)
+            return 1;
+        }
+
+        // DP array:
+        // dp[i] = number of ways to make amount i
+        int[] dp = new int[amount + 1];
+
+        // Initialize all to 0:
+        // means initially we assume there are 0 ways to form any amount
+        Arrays.fill(dp, 0);
+
+        // Base case:
+        // There is exactly 1 way to make amount 0 (choose nothing)
+        dp[0] = 1;
+
+        // Outer loop: iterate over each coin
+        // This ensures we count combinations (not permutations)
+        for (int coin : coins) {
+
+            // Inner loop: try to build all amounts from 1 → amount
+            for (int i = 1; i <= amount; i++) {
+
+                // If current amount i can include this coin
+                if (i >= coin) {
+
+                    // Key transition:
+                    // Ways to make i =
+                    //   existing ways (dp[i])
+                    // + ways to make (i - coin), then add this coin
+                    //
+                    // dp[i - coin]: ways to form the remaining amount
+                    // adding current coin extends those ways
+                    dp[i] = dp[i] + dp[i - coin];
+
+                    // Equivalent cleaner form:
+                    // dp[i] += dp[i - coin];
+                }
+            }
+        }
+
+        // Final answer:
+        // number of combinations to form 'amount'
+        return dp[amount];
+    }
+
 
     // V0-0-1
     // IDEA: 1D DP (gemini)
@@ -652,6 +720,8 @@ public class CoinChange2 {
                 dp[a] = dp[a] + (coins[i] <= a ? dp[a - coins[i]] : 0);
         return dp[amount];
     }
+
+
 
     // V2
 
