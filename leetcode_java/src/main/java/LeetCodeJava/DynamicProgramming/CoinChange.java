@@ -123,6 +123,14 @@ public class CoinChange {
         if (amount == 0)
             return 0;
 
+        /** NOTE !!!
+         *
+         *  we DON'T need to `sort` coins array,
+         *  (for finding min coin usage),
+         *  since our DP algo can handle that
+         */
+
+
         // 2. Initialize DP with a value larger than any possible answer
         // amount + 1 is a safe "Infinity" because the max coins
         // needed is 'amount' (all 1-cent coins).
@@ -161,7 +169,7 @@ public class CoinChange {
          *
          *
          */
-        
+
         /** V1 */
         // 3. Loop through every amount from 1 to target
         for (int i = 1; i <= amount; i++) {
