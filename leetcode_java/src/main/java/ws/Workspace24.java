@@ -3866,6 +3866,48 @@ public class Workspace24 {
 
 
 
+     // LC 518
+    // 8.27 - 37 am
+    public int change(int amount, int[] coins) {
+        // 1. Base case
+        if (amount == 0){
+            return 1;
+        }
+
+        if (coins.length == 1) {
+            if (amount % coins[0] != 0) {
+                return 0;
+            }
+            return 1; //?
+        }
+
+        // 2. Initialize DP with a value larger than any possible answer
+        // amount + 1 is a safe "Infinity" because the max coins
+        // needed is 'amount' (all 1-cent coins).
+        // max = amount + 1;
+        int[] dp = new int[amount + 1];
+        Arrays.fill(dp, 0); // ???
+
+        // Base case: 0 coins needed to make amount 0
+        dp[0] = 1;
+
+        // 3. Loop through every amount from 1 to target
+        for (int coin : coins) {
+            for (int i = 1; i <= amount; i++) {
+                // Try every coin for the current amount i
+                if (i >= coin) {
+                    // The current amount i can be reached by
+                    // taking (i - coin) and adding 1 coin.
+                    //dp[i] = Math.min(dp[i], dp[i - coin] + 1);
+                    dp[i] = dp[i - coin] + dp[i]; // ????
+                }
+            }
+        }
+
+
+        // 4. If dp[amount] is still 'max', it means the amount is unreachable
+        return dp[amount] == 0 ? -1 : dp[amount];
+    }
 
 
 
