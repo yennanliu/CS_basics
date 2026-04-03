@@ -4241,6 +4241,77 @@ public class Workspace24 {
     }
 
 
+    // LC 582
+    // 10.54 - 11.04
+    // IDEA 1) DFS
+    public List<Integer> killProcess(List<Integer> pid, List<Integer> ppid, int kill) {
+        // edge
+
+        // // 1. Build the Adjacency List: Parent -> List of Children
+        // { node: [sub_node_1, sub_node_2, ..] }
+        Map<Integer, List<Integer>> map = new HashMap<>();
+
+        // build graph
+        for(int i = 0; i < ppid.size(); i++){
+            // ???
+            int p = ppid.get(i);
+
+            if(!map.containsKey(p)){
+                map.put(p, new ArrayList<>());
+            }
+            List<Integer> list = map.get(p);
+            list.add(pid.get(i));
+            map.put(p, list);
+
+
+            // ???
+            int p2 = pid.get(i);
+            if(!map.containsKey(p2)){
+                map.put(p2, new ArrayList<>());
+            }
+
+//            int parent = ppid.get(i);
+//            int child = pid.get(i);
+//            map.putIfAbsent(parent, new ArrayList<>());
+//            map.get(parent).add(child);
+        }
+
+        System.out.println(">>> map = " + map);
+
+        List<Integer> res = new ArrayList<>();
+        HashSet<Integer> set = new HashSet<>();
+
+        res.add(kill);
+
+        // dfs call
+        dfsKill(map, set, kill);
+
+        for(int x: set){
+            res.add(x);
+        }
+
+        return res;
+    }
+
+    private void dfsKill(Map<Integer, List<Integer>> map,  HashSet<Integer> set, int kill){
+        // edge
+        if(!map.containsKey(kill)){
+            return;
+        }
+
+        set.add(kill);
+
+        // next
+        for(int next: map.get(kill)){
+            dfsKill(map, set, next);
+        }
+
+    }
+
+
+
+
+
 
 
 

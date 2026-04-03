@@ -51,51 +51,59 @@ import java.util.*;
 public class KillProcess {
 
     // V0
-//    public List<Integer> killProcess(List<Integer> pid, List<Integer> ppid, int kill) {
-//    }
+    // IDEA: DFS (fixed by gemini)
+    public List<Integer> killProcess(List<Integer> pid, List<Integer> ppid, int kill) {
 
 
-    // V0-0-1
-    // IDEA: DFS
-    // TODO: fix below
-//    List<Integer> res = New ArrayList();
-//    public List<Integer> killProcess(List<Integer> pid, List<Integer> ppid, int kill) {
-//        // edge
-//// NOT in both pid and ppid
-//        if(! pid.contains(kill)  &&  ! ppid.contains(kill) ){
-//            return;
-//        }
-//// only  in pid
-//        if(! ppid.contains(kill)){
-//            res.add(kill);
-//        }
-//
-//        // get all kill node idx
-//        for(int i = 0; i < ppid.len(); i++){
-//
-//            if(ppid.get(i) == kill){
-//                dfsHelper(pid, ppid, kill, i, true);
-//            }
-//        }
-//        return res;
-//    }
-//
-//    private void dfsHelper(List<Integer> pid, List<Integer> ppid, int kill, int idx, boolean isFound){
-//        // edge
-//        if(! pid.contains(kill)  &&  ! ppid.contains(kill) ){
-//            return;
-//        }
-//
-//        int x = ppid.get(i);
-//        if (x == kill || isFound){
-//            if(!res.contains(k){
-//                res.add(k);
-//            }
-//            // recursion
-//            dfsHelper(pid, ppid, pid.get(x), idx, true);
-//        }
-//
-//    }
+        // 1. Build the Adjacency List: Parent -> List of Children
+        /** NOTE !!!
+         *
+         *  // { node: [sub_node_1, sub_node_2, ..] }
+         *
+         *
+         *   -> Build the Adjacency List: Parent -> List of Children
+         *
+         */
+        Map<Integer, List<Integer>> map = new HashMap<>();
+        for (int i = 0; i < ppid.size(); i++) {
+            int parent = ppid.get(i);
+            int child = pid.get(i);
+            map.putIfAbsent(parent, new ArrayList<>());
+            map.get(parent).add(child);
+
+            /** NOTE !!!
+             *
+             *   NO need to add `pid` as key to map
+             *
+             */
+        }
+
+        List<Integer> res = new ArrayList<>();
+
+        // 2. Start DFS from the 'kill' node
+        dfsKill(map, res, kill);
+
+        return res;
+    }
+
+    private void dfsKill(Map<Integer, List<Integer>> map, List<Integer> res, int kill) {
+
+        // Add current process to result
+        /** NOTE !!!
+         *
+         *  Add current process to result
+         *  (so can still handle `kill is ONLY existed in pid case`)
+         *
+         */
+        res.add(kill);
+
+        // If this process has children, visit them
+        if (map.containsKey(kill)) {
+            for (int child : map.get(kill)) {
+                dfsKill(map, res, child);
+            }
+        }
+    }
 
 
 
@@ -162,6 +170,37 @@ public class KillProcess {
 
         return res;
     }
+
+
+    // V0-3
+    // IDEA: BFS (gpt)
+    public List<Integer> killProcess_0_3(List<Integer> pid, List<Integer> ppid, int kill) {
+
+        Map<Integer, List<Integer>> map = new HashMap<>();
+
+        for (int i = 0; i < pid.size(); i++) {
+            map.computeIfAbsent(ppid.get(i), k -> new ArrayList<>()).add(pid.get(i));
+        }
+
+        List<Integer> res = new ArrayList<>();
+        Queue<Integer> queue = new LinkedList<>();
+
+        queue.offer(kill);
+
+        while (!queue.isEmpty()) {
+            int curr = queue.poll();
+            res.add(curr);
+
+            if (map.containsKey(curr)) {
+                for (int child : map.get(curr)) {
+                    queue.offer(child);
+                }
+            }
+        }
+
+        return res;
+    }
+
 
 
     // V1
