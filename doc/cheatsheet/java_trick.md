@@ -2974,3 +2974,52 @@ for (int square : squares) {
 }
 ```
 
+### 9.4) `charAt()` Returns ASCII, NOT the Digit Value
+
+> **Pitfall**: `new Integer(s.charAt(i))` gives the ASCII code (e.g. 51), not the digit (e.g. 3).
+
+#### Wrong
+
+```java
+int val1 = new Integer(s.charAt(i));
+// s.charAt(i) = '3' → '3' is char → ASCII 51
+// val1 = 51 ❌
+```
+
+#### Correct
+
+```java
+int val1 = s.charAt(i) - '0';
+// '3' - '0' = 51 - 48 = 3 ✅
+```
+
+#### Why: `char` is stored as ASCII/Unicode value
+
+| Expression    | Result       |
+|---------------|--------------|
+| `'3'`         | 51 (ASCII)   |
+| `'0'`         | 48           |
+| `'3' - '0'`  | 3            |
+
+#### `new Integer(...)` is also deprecated
+
+```java
+new Integer(...)          // ❌ Deprecated, unnecessary object creation, slower
+Integer.valueOf(...)      // ✅ If you need an Integer object
+int x = ...;             // ✅ Prefer primitives
+```
+
+#### For multi-digit substrings, `parseInt` is correct
+
+```java
+int val2 = Integer.parseInt(s.substring(i - 2, i));
+// ✅ Correct — parsing a String, not a char
+```
+
+#### TL;DR
+
+```java
+new Integer(s.charAt(i))  // ❌ gives ASCII (e.g. 51)
+s.charAt(i) - '0'         // ✅ gives actual digit (e.g. 3)
+```
+
