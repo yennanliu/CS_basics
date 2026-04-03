@@ -75,6 +75,61 @@ public class PerfectSquares {
         return -1; // Should never reach here
     }
 
+    // V0-0-1
+    // IDEA: BFS (fixed by gemini)
+    /** NOTE !!!
+     *
+     *  we DON'T need PQ for this LC problem.
+     */
+    public int numSquares_0_0_1(int n) {
+
+        /** NOTE !!!
+         *
+         *  we `Pre-calculate perfect squares` by n
+         *  via below logic
+         */
+        // 1. Pre-calculate perfect squares up to n
+        List<Integer> squares = new ArrayList<>();
+        for (int i = 1; i * i <= n; i++) {
+            squares.add(i * i);
+        }
+
+        // 2. BFS Setup
+        Queue<Integer> queue = new LinkedList<>();
+        Set<Integer> visited = new HashSet<>();
+
+        queue.offer(n);
+        visited.add(n);
+
+        int level = 0;
+
+        while (!queue.isEmpty()) {
+            level++;
+            int size = queue.size();
+
+            // Process current level
+            for (int i = 0; i < size; i++) {
+                int remaining = queue.poll();
+
+                for (int square : squares) {
+                    int nextVal = remaining - square;
+
+                    if (nextVal == 0)
+                        return level; // Found shortest path
+                    if (nextVal < 0)
+                        break; // Squares are sorted, so we can stop
+
+                    if (!visited.contains(nextVal)) {
+                        visited.add(nextVal);
+                        queue.offer(nextVal);
+                    }
+                }
+            }
+        }
+        return level;
+    }
+
+
     // V0-1
     // IDEA: BRUTE FORCE (gpt) (TLE)
     /**
@@ -297,5 +352,9 @@ public class PerfectSquares {
 
         return dp[n];
     }
+
+
+
+
 
 }

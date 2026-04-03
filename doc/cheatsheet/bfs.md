@@ -2715,3 +2715,51 @@ private void bfs(int[][] h, Queue<int[]> q, boolean[][] visited, int m, int n) {
     }
 }
 ```
+
+### 2-13) Perfect Squares (LC 279) — BFS on Abstract Graph (Number Decomposition)
+> BFS from `n` toward `0`; each level subtracts a perfect square. First time we reach 0 = minimum count.
+
+```java
+// LC 279 - Perfect Squares
+// IDEA: BFS — treat each number as a node, edges = subtracting a perfect square
+// time = O(N * sqrt(N)), space = O(N)
+public int numSquares(int n) {
+    // Pre-calculate perfect squares up to n
+    List<Integer> squares = new ArrayList<>();
+    for (int i = 1; i * i <= n; i++) {
+        squares.add(i * i);
+    }
+
+    Queue<Integer> queue = new LinkedList<>();
+    Set<Integer> visited = new HashSet<>();
+
+    queue.offer(n);
+    visited.add(n);
+
+    int level = 0;
+
+    while (!queue.isEmpty()) {
+        level++;
+        int size = queue.size();
+
+        for (int i = 0; i < size; i++) {
+            int remaining = queue.poll();
+
+            for (int square : squares) {
+                int nextVal = remaining - square;
+
+                if (nextVal == 0)
+                    return level; // Found shortest path
+                if (nextVal < 0)
+                    break; // Squares are sorted, so we can stop
+
+                if (!visited.contains(nextVal)) {
+                    visited.add(nextVal);
+                    queue.offer(nextVal);
+                }
+            }
+        }
+    }
+    return -1;
+}
+```

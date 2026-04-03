@@ -4053,7 +4053,92 @@ public class Workspace24 {
 
 
 
+    // LC 279
+    // 8.24 - 34 am
+    /**
+     *   -> Given an integer n,
+     *   return the  ` least number `of `perfect square numbers`
+     *   that sum to n.
+     *
+     * -----------------
+     *
+     *  IDEA 1) 1D DP
+     *
+     *  IDEA 2) BFS ???
+     *
+     *
+     * -----------------
+     *
+     */
+    // IDEA 2) BFS ???
+    public int numSquares(int n) {
+        // edge
 
+        int minCnt = n; // ???
+        // PQ: big PQ ???
+        // { [ val, remaining_val ] }
+        PriorityQueue<Integer[]> pq = new PriorityQueue<>(new Comparator<Integer[]>() {
+            @Override
+            public int compare(Integer[] o1, Integer[] o2) {
+                int diff = o2[0] - o1[0];
+                return diff;
+            }
+        });
+
+        // insert to PQ
+        List<Integer> list = getSqureList(n); /// ???
+        System.out.println(">>> list = " + list);
+        for(Integer x: list){
+            if(x <= n){
+                pq.add(new Integer[]{x, n});
+            }
+        }
+
+        // ??? PQ
+        int layer = 0;
+        while (!pq.isEmpty()){
+            int size = pq.size();
+            layer += 1; // ???
+
+
+            for(int i = 0; i < size; i++){
+                Integer[] x = pq.poll();
+                int val = x[0];
+                int remaining = x[1];
+                if(remaining == 0){
+                    return layer;
+                }
+
+                // ???
+                //if(val <)
+
+            }
+        }
+
+
+        return minCnt;
+    }
+
+
+
+    private List<Integer> getSqureList(int val){
+        List<Integer> res = new ArrayList<>();
+        // ???
+        for(int i = 1; i < val + 1; i++){
+            res.add(i * i); // ???
+        }
+
+
+        return res;
+    }
+
+
+
+
+
+    private boolean isSquare(){
+        return false;
+    }
 
 
 

@@ -2955,3 +2955,22 @@ public Node connect_0_1(Node root) {
 }
 ```
 
+### 9.3) Pre-calculate Perfect Squares up to N
+
+> **Trick**: Pre-compute all perfect squares ≤ N into a list, then iterate over the list instead of recalculating `i * i` each time. Useful in BFS/DP problems like LC 279 (Perfect Squares).
+
+```java
+// Pre-calculate perfect squares up to n
+List<Integer> squares = new ArrayList<>();
+for (int i = 1; i * i <= n; i++) {
+    squares.add(i * i);
+}
+
+// Usage: iterate over pre-computed squares
+for (int square : squares) {
+    int nextVal = remaining - square;
+    if (nextVal < 0) break; // squares are sorted, early termination
+    // ...
+}
+```
+
