@@ -50,6 +50,21 @@ public class MinCostClimbingStairs {
 
     // V0
     // IDEA: 1D DP (fixed by gemini)
+    /**
+     *  Metric,Complexity,Explanation
+     * Time,O(N),We iterate through the cost array exactly once.
+     * Space,O(N),We use a DP array of size N+1.
+     *
+     */
+    /** NOTE !!!
+     *
+     *  The "Top" Definition:
+     *
+     *  The `top` of the stairs is actually `index n `
+     *  (one step past the last element of the cost array).
+     *
+     *   -> To reach step i, you must have come from either i-1 or i-2.
+     */
     public int minCostClimbingStairs(int[] cost) {
         int n = cost.length;
 
@@ -57,9 +72,14 @@ public class MinCostClimbingStairs {
         // The array size is n + 1 because the "top" is one step past the last house
         int[] dp = new int[n + 1];
 
+        /** NOTE !!!
+         *
+         * Base Cases: Since you can start at step 0 or step 1,
+         * the cost to reach them is ` 0.`
+         */
         // Base cases: You can start at index 0 or index 1 for free
-        dp[0] = 0;
-        dp[1] = 0;
+        dp[0] = 0; // start before step 0
+        dp[1] = 0; // or start before step 1
 
         for (int i = 2; i <= n; i++) {
             // To reach step i, you could:
@@ -71,6 +91,29 @@ public class MinCostClimbingStairs {
 
         return dp[n];
     }
+
+    // V0-0-1
+    // IDEA: 1D DP + O(1) space complexity (fixed by gpt)
+    /**
+     * Metric,Complexity,Explanation
+     * Time,O(N),A single pass through the cost array.
+     * Space,O(1),Only two integers are used regardless of the input size.
+     */
+    public int minCostClimbingStairs_0_0_1(int[] cost) {
+        int prev2 = 0; // dp[i-2]
+        int prev1 = 0; // dp[i-1]
+
+        for (int i = 2; i <= cost.length; i++) {
+            int curr = Math.min(
+                    prev1 + cost[i - 1],
+                    prev2 + cost[i - 2]);
+            prev2 = prev1;
+            prev1 = curr;
+        }
+
+        return prev1;
+    }
+
 
 
     // V0-1
