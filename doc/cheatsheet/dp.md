@@ -3234,6 +3234,7 @@ def count_range_optimized(L, R):
 | Target Sum | 494 | Sum to target | Medium |
 | Last Stone Weight II | 1049 | Min difference | Medium |
 | Ones and Zeroes | 474 | 2D Knapsack | Medium |
+| **Perfect Squares** | **279** | **Unbounded (squares as coins, min count)** | **Medium** |
 | **Coin Change 2** | **518** | **Unbounded (Coin→Amount = Combinations)** | **Medium** |
 | **Combination Sum IV** | **377** | **Unbounded (Amount→Coin = Permutations)** | **Medium** |
 
@@ -4144,6 +4145,51 @@ class Solution:
  * - Answer for child can be derived from parent's answer
  */
 ```
+
+### 2-6) Perfect Squares (LC 279) — Unbounded Knapsack (Min Count)
+
+> **Core Idea**: Treat each perfect square (1, 4, 9, 16, ...) as a "coin denomination." Find the minimum number of coins to make amount `n`. This is exactly the **Coin Change** pattern (LC 322).
+
+**Pattern**: Unbounded Knapsack — each square can be used unlimited times, minimize count.
+
+```java
+// LC 279 - Perfect Squares (DP approach)
+// IDEA: same as Coin Change — squares are coins, n is the target amount
+// time = O(N * sqrt(N)), space = O(N)
+public int numSquares(int n) {
+    int[] dp = new int[n + 1];
+    Arrays.fill(dp, n + 1); // max possible is n (all 1s)
+    dp[0] = 0;
+
+    for (int i = 1; i <= n; i++) {
+        for (int j = 1; j * j <= i; j++) {
+            int square = j * j;
+            dp[i] = Math.min(dp[i], dp[i - square] + 1);
+        }
+    }
+
+    return dp[n];
+}
+```
+
+**Why this works like Coin Change**:
+| | Coin Change (LC 322) | Perfect Squares (LC 279) |
+|---|---|---|
+| **"Coins"** | Given coin denominations | Perfect squares: 1, 4, 9, 16, ... |
+| **"Amount"** | Target amount | Target `n` |
+| **Goal** | Min coins to reach amount | Min squares to sum to `n` |
+| **Recurrence** | `dp[i] = min(dp[i], dp[i - coin] + 1)` | `dp[i] = min(dp[i], dp[i - j*j] + 1)` |
+| **Reuse allowed?** | Yes (unbounded) | Yes (unbounded) |
+
+**Note**: No need to sort the squares — loop order doesn't matter for min-count DP (sorting helps greedy/backtracking, not here).
+
+**Similar LeetCode Problems**:
+| Problem | LC # | Similarity |
+|---------|------|-----------|
+| Coin Change | 322 | Identical pattern — min coins for amount |
+| Coin Change 2 | 518 | Same coins idea but counting combinations |
+| Combination Sum IV | 377 | Same coins idea but counting permutations |
+| Climbing Stairs | 70 | Simpler version — steps of 1 or 2 |
 
 ## Decision Framework
 
