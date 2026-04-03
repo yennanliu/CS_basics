@@ -3448,8 +3448,65 @@ public class Workspace24 {
      *
      *
      */
-    // IDEA 1) 1D DP + 2 CASES
+    // 10.45 - 55 pm
+    /**
+     *      *  IDEA 1) 1D DP + 2 CASES + helper func
+     *      *
+     *      *   - case 1) rob 0 idx
+     *      *   - case 2) rob last (n-1) idx
+     *
+     */
     public int rob(int[] nums) {
+        // edge
+        int n = nums.length;
+        if(n == 1){
+            return nums[0];
+        }
+
+        //int n = nums.length;
+        int v1 = robHelper(nums, 0, n-2);
+        int v2 = robHelper(nums, 1, n-1);
+
+        return Math.max(v1, v2);
+    }
+
+    private int robHelper(int[] nums, int start, int end){
+        // ??
+
+        // NOTE !!!
+        int len = end - start + 1;
+        int n = nums.length;
+        //int[] dp = new int[n + 1];
+        int[] dp = new int[len];
+
+        // edge
+        if(start == len){
+            return nums[start];
+        }
+
+        // ??
+        dp[start] = nums[start]; // ???
+        //dp[start + 1] = nums[start]; // ???
+        // NOTE !!!
+        dp[start + 1] = Math.max(nums[start], nums[start + 1]); // ???
+
+
+
+        for(int i = start + 1; i < end; i++){
+            // ???
+            dp[i] = Math.max(dp[i-2] + nums[i], dp[i-1]);
+        }
+
+
+        return dp[end]; // ????
+    }
+
+
+
+
+
+    // IDEA 1) 1D DP + 2 CASES
+    public int rob_07(int[] nums) {
         // edge
         int n = nums.length;
         if(n == 1){

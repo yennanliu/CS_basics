@@ -96,6 +96,67 @@ public class HouseRobber2 {
         /** NOTE !!!
          *
          *  how we set up dp[0], dp[1]
+         *
+         *
+         *  -------------
+         *
+         *
+         *  This is a great point about **mapping logic**. The reason we use `dp[0]` even if `start > 0` is to simplify the **relative indexing** of our sub-problem.
+         *
+         * Think of it like a **window** sliding over the original array. Inside that window, we want to solve a "Standard House Robber" problem starting from the "first" house in that specific window.
+         *
+         * ---
+         *
+         * ### 1. Relative vs. Absolute Indexing
+         *
+         * If we used **Absolute Indexing** (keeping the `dp` array the same size as `nums` and starting at `dp[start]`), our loop would look like this:
+         *
+         * ```java
+         * // If start = 5
+         * dp[5] = nums[5];
+         * dp[6] = Math.max(nums[5], nums[6]);
+         *
+         * for (int i = 7; i <= end; i++) {
+         *     dp[i] = Math.max(dp[i-2] + nums[i], dp[i-1]);
+         * }
+         * ```
+         *
+         * **The Problem with Absolute Indexing:**
+         * * It's harder to manage. You have to keep track of `start` and `start + 1` everywhere.
+         * * It wastes memory. If `start = 100` and `end = 105`, you'd still need a `dp` array of size 106 even though you only use 6 slots.
+         *
+         * ---
+         *
+         * ### 2. Why `dp[0]` is safer (Relative Indexing)
+         *
+         * By using **Relative Indexing**, we treat the "start" of our current range as the "0-th" element of our **work area**.
+         *
+         * * **`dp[0]`** always means "The first house I am allowed to rob in this specific sub-problem."
+         * * **`dp[1]`** always means "The maximum of the first two houses I am allowed to rob."
+         *
+         * This makes the code **reusable**. Whether you are robbing `0 to n-2` or `1 to n-1`, the logic inside the `robHelper` remains identical:
+         *
+         * | Sub-problem | `dp[0]` maps to | `dp[1]` maps to |
+         * | :--- | :--- | :--- |
+         * | **Case 1 (0 to n-2)** | `nums[0]` | `max(nums[0], nums[1])` |
+         * | **Case 2 (1 to n-1)** | `nums[1]` | `max(nums[1], nums[2])` |
+         *
+         * ---
+         *
+         * ### 🔍 Senior Engineering Review: "Translation Layer"
+         * In system design (like the work you've done with **API Gateway** or **SaaS multi-tenancy**), this is a common pattern. You translate a **Global ID** (the index in `nums`) into a **Local Context** (the index in `dp`).
+         *
+         * By using `dp[0]`, you decouple the **Range Logic** from the **DP Recurrence Logic**.
+         *
+         * ### 📊 Index Mapping Visualization
+         * If `start = 1` and `nums = [10, 20, 30, 40]`:
+         *
+         * | Local `dp` index | Formula | Resulting `nums` index |
+         * | :--- | :--- | :--- |
+         * | `dp[0]` | `nums[start + 0]` | `nums[1]` |
+         * | `dp[1]` | `nums[start + 1]` | `nums[2]` |
+         * | `dp[i]` | `nums[start + i]` | `nums[start + i]` |
+         *
          */
         dp[0] = nums[start];
         dp[1] = Math.max(nums[start], nums[start + 1]);
