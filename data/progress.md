@@ -25,7 +25,9 @@
 	- design.md (OK)
 	- dfs.md (OK)
 	- difference_array.md (OK)
-	- Dijkstra.md  (TODO: LC examples) - `2-6) Swim in Rising Water`
+	- Dijkstra.md  (OK)
+	- dp_pattern.md  (TODO: LC examples)
+	- dp.md  (TODO: LC examples)
 
 - to review
 - needcode `250` - similar LC by AI
@@ -241,12 +243,12 @@
 			- 1025,740,935
 	- LC 377
 		- gpt
-			- 494,279,10,115
+			- 10,115
 		- gemini
 			- 1449,1434
 	- LC 279
 		- gpt
-			- 416,494,1049,552,10,115
+			- 416,1049,552,10,115
 		- gemini
 			- 343,956
 

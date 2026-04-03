@@ -4219,6 +4219,27 @@ public class Workspace24 {
     }
 
 
+    // LC 494
+    // 9.45 - 55 am
+    /**
+     *
+     *
+     *   -> Return the number of different expressions
+     *   that you can build,
+     *   which evaluates to target.
+     *
+     *
+     *   -------------
+     *
+     *
+     *    -------------
+     *
+     */
+    public int findTargetSumWays(int[] nums, int target) {
+
+        return 0;
+    }
+
 
 
 
