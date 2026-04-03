@@ -4070,6 +4070,25 @@ public class Workspace24 {
      * -----------------
      *
      */
+    // DP
+    // 9.07 - 17 am
+    /**
+     *   IDEA 1) 1D DP
+     *
+     *    - DP def
+     *
+     *    - DP eq
+     *
+     */
+    public int numSquares(int n) {
+        // edge
+
+        return 0;
+    }
+
+
+
+
     // IDEA 2) BFS ???
     public int numSquares_99(int n) {
         // edge

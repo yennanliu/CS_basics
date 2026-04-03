@@ -897,6 +897,25 @@ Dijkstra Algorithm Selection Flowchart:
    └── NO → Use selected template from above
 ```
 
+### When to Use Dijkstra vs BFS
+
+| Criteria | Dijkstra | BFS |
+|----------|----------|-----|
+| **Edge weights** | Non-negative, varying | All equal (unweighted) or 0/1 |
+| **Data structure** | Priority Queue (min-heap) | Queue (`LinkedList`) |
+| **Time complexity** | O((V + E) log V) | O(V + E) |
+| **First visit = shortest?** | ❌ No (must relax via PQ) | ✅ Yes (level = distance) |
+| **"Minimum cost/weight"** | ✅ Use Dijkstra | ❌ Wrong answer |
+| **"Minimum steps/moves"** | ❌ Overkill | ✅ Use BFS |
+| **Grid with varying costs** | ✅ Dijkstra on implicit graph | ❌ |
+| **Grid with uniform cost** | ❌ Unnecessary overhead | ✅ BFS |
+
+**Decision rule**: If every edge has the same cost (or cost is 1), use BFS — it's simpler and O(V+E). The moment edges have different non-negative weights, use Dijkstra.
+
+**Common trap**: Using Dijkstra (PQ) for problems like LC 279 Perfect Squares or LC 752 Open the Lock where all edges cost 1 — plain BFS is sufficient and faster.
+
+**0-1 BFS special case**: If edges are weighted 0 or 1 only, use a **deque** — push weight-0 edges to front, weight-1 edges to back. O(V+E) like BFS, handles two weights correctly. Example: LC 2290 Minimum Obstacle Removal.
+
 ### When to Use Dijkstra vs Other Algorithms
 
 | Scenario | Use Dijkstra | Use Alternative | Alternative Algorithm |

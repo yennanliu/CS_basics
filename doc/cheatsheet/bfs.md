@@ -2112,10 +2112,29 @@ Calculate shortest distance from each cell to ANY source cell in a grid.
 - **Simultaneous multi-source distance calculations** (Pattern 4) - distance to nearest source
 - **Independent BFS runs from multiple sources** (Pattern 4.6) - sum of distances to all sources
 
+### BFS vs Dijkstra — When to Use Which
+
+| Criteria | BFS | Dijkstra |
+|----------|-----|----------|
+| **Edge weights** | All equal (unweighted) or 0/1 | Non-negative, varying weights |
+| **Data structure** | Queue (`LinkedList`) | Priority Queue (min-heap) |
+| **Time complexity** | O(V + E) | O((V + E) log V) |
+| **First visit = shortest?** | ✅ Yes (level = distance) | ❌ No (must relax via PQ) |
+| **"Minimum steps/moves"** | ✅ Use BFS | ❌ Overkill |
+| **"Minimum cost/weight"** | ❌ Wrong answer | ✅ Use Dijkstra |
+| **Grid with uniform cost** | ✅ BFS | ❌ Unnecessary overhead |
+| **Grid with varying costs** | ❌ | ✅ Dijkstra on implicit graph |
+
+**Decision rule**: If every edge has the same cost (or cost is 1), use BFS. The moment edges have different weights, switch to Dijkstra.
+
+**Common trap**: Using Dijkstra (PQ) for problems like LC 279 Perfect Squares or LC 752 Open the Lock where all edges cost 1 — plain BFS is simpler and faster.
+
+**0-1 BFS special case**: If edges are weighted 0 or 1 only, use a **deque** — push weight-0 edges to front, weight-1 edges to back. O(V+E) like BFS, handles two weights correctly.
+
 ### When NOT to Use BFS
 - Deep trees/graphs with limited memory
 - Only need to find ANY path (not shortest)
-- Weighted graphs (use Dijkstra instead)
+- Weighted graphs with varying costs (use Dijkstra instead)
 - Need to explore all paths (use DFS)
 
 ### Key LeetCode Problems
