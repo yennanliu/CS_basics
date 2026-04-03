@@ -3570,8 +3570,74 @@ public class Workspace24 {
      *
      *
      */
-    // IDEA 1) 1D DP
+    // 11.17 - 27 am
+    /**
+     *
+     *   1D DP
+     *
+     *    - 1-digit
+     *    - 2-digit
+     *
+     *    - DP def
+     *
+     *       - dp[i] = decode way for substring of s: [0, i]
+     *
+     *    - DP eq
+     *
+     *       - dp[i] =
+     *
+     *         - 1-digit
+     *
+     *         - 2-digit
+     *
+     */
     public int numDecodings(String s) {
+        // edge
+        if (s == null || s.length() == 0 || s.charAt(0) == '0') {
+            return 0;
+        }
+
+        int n = s.length();
+
+        // - dp[i] = `total decode way` for substring of s: [0, i]
+        int[] dp = new int[n];
+
+//        dp[0] = 1; // 1 - 9
+//        dp[1] = 17;  // 11 -> 26 ???
+
+        dp[0] = 1; // empty string
+        dp[1] = 1; // first char already checked != '0'
+
+        // ???
+        for(int i = 2; i < n; i++){
+
+            int val1 = new Integer(s.charAt(i));
+            int val2 = new Integer(s.substring(i-2, i)); /// ????
+
+            // 1-digit ???
+            if(val1 >= 1 && val1 <= 9){
+                // ????
+                dp[i] += dp[i-1];
+            }
+
+            // 2-digit
+            if(val2 >= 10 && val2 <= 26){
+                // ????
+                dp[i] += dp[i-2];
+            }
+        }
+
+
+        return dp[n-1]; // ???
+    }
+
+
+
+
+
+
+    // IDEA 1) 1D DP
+    public int numDecodings_90(String s) {
         // edge ???
         // Edge case: empty string or starts with '0' → invalid
         if (s == null || s.length() == 0 || s.charAt(0) == '0') {

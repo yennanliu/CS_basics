@@ -114,14 +114,25 @@ public class DecodeWays {
         /**  NOTE !!!
          *
          *   dp[i]:
-         *     `number of ways` to `decode`
+         *
+         *     - V1: ways to decode a string of `length i.`
+         *
+         *
+         *    - V2:
+         *      `number of ways` to `decode`
          *      the `first i characters`
          *
          */
-        // dp[i] stores the number of ways to decode the first i characters
+        // dp[i]: ways to decode a string of `length i.`
+        // NOTE !!! we use `len` but NOT `idx` to have cleaner logic
+        //          when handle 1-digit, 2-digit cases
         int[] dp = new int[n + 1];
 
         // Base cases
+        /**  NOTE !!!
+         *
+         *  how we init dp with `len = 0, and len = 1`
+         */
         dp[0] = 1;
         dp[1] = 1; // We already checked s.charAt(0) != '0'
 
@@ -131,9 +142,16 @@ public class DecodeWays {
              *
              *  Check `one-digit` decoding
              *
+             *
+             *  ------------
+             *
+             *  NOTE !!!  below is WRONG
+             *
+             *  int oneDigit = Integer.parseInt(s.chartAt(i)));
              */
             // Check one-digit decoding
             int oneDigit = Integer.parseInt(s.substring(i - 1, i));
+
             if (oneDigit >= 1 && oneDigit <= 9) {
                 dp[i] += dp[i - 1];
             }
@@ -145,6 +163,7 @@ public class DecodeWays {
              */
             // Check two-digit decoding
             int twoDigits = Integer.parseInt(s.substring(i - 2, i));
+
             if (twoDigits >= 10 && twoDigits <= 26) {
                 dp[i] += dp[i - 2];
             }
