@@ -182,6 +182,47 @@ public class PerfectSquares {
     }
 
 
+    // V0-0-2
+    // IDEA: 1D DP (fixed by gemini)
+    /**
+     *
+     * -> In LC 279 (Perfect Squares), the DP approach is very similar to
+     *    the `Coin Change` problem.
+     *    Each perfect square is essentially
+     *    a "coin denomination (面值),"
+     *    and you want to find the minimum number
+     *    of "coins" to reach the amount n.
+     */
+    public int numSquares_0_0_2(int n) {
+        // 1. Initialize DP array
+        // dp[i] will store the least number of perfect square numbers that sum to i
+        int[] dp = new int[n + 1];
+
+        // Fill with a value larger than any possible answer (n is the max possible)
+        Arrays.fill(dp, n + 1);
+
+        // 2. Base Case: 0 takes 0 squares
+        dp[0] = 0;
+
+        /** NOTE !!
+         *
+         *  no need to sort, NOT affect DP algo;
+         *  (it helps in greedy/backtracking, but not here).
+         */
+
+        // 3. Fill the DP table
+        for (int i = 1; i <= n; i++) {
+            // For each i, try all squares j*j <= i
+            for (int j = 1; j * j <= i; j++) {
+                int square = j * j;
+                dp[i] = Math.min(dp[i], dp[i - square] + 1);
+            }
+        }
+
+        return dp[n];
+    }
+
+
     // V0-1
     // IDEA: BRUTE FORCE (gpt) (TLE)
     /**

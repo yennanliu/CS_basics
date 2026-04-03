@@ -4076,15 +4076,74 @@ public class Workspace24 {
      *   IDEA 1) 1D DP
      *
      *    - DP def
+     *       - dp[i]: min number of perfect int sum up == i
      *
      *    - DP eq
+     *       if (val == perfect int)
+     *         dp[i] = dp[i-val] + 1 // ????
      *
      */
     public int numSquares(int n) {
         // edge
 
-        return 0;
+        // get `perfect vals`
+        List<Integer> list = new ArrayList<>();
+        // ???
+        for(int i = 1; i * i <= n; i++){
+            list.add(i * i); // ??
+        }
+        // sort (big -> small)
+        /** NOTE !!
+         *
+         *  no need to sort, NOT affect DP algo;
+         *  (it helps in greedy/backtracking, but not here).
+         */
+        Collections.sort(list, new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                int diff = o2 - o1;
+                return diff;
+            }
+        });
+
+
+        int[] dp = new int[n + 1]; // ???
+        // Initial Fill: Initializing with n is okay,
+        // but n + 1 or Integer.MAX_VALUE is safer to represent "infinity."
+        //Arrays.fill(dp, n);  // ???
+        Arrays.fill(dp, n + 1);  // ???
+
+        // Base Case: The value of dp[0] should be 0,
+        // not 1. It takes zero squares to sum up to zero.
+        dp[0] = 0; // 1; // ??
+
+        dp[1] = n;
+
+        /**
+         *      *    - DP eq
+         *      *       if (val == perfect int)
+         *      *         dp[i] = dp[i-val] + 1 // ????
+         *      *
+         *
+         */
+        for(int i = 2; i < n + 1; i++){
+            // ???
+            for(int val: list){
+                if(val <= i){
+                    dp[i] = Math.min(dp[i - val] + 1, dp[i]);
+                }
+            }
+
+        }
+
+
+
+        return dp[n];  //???
     }
+
+
+
+
 
 
 
