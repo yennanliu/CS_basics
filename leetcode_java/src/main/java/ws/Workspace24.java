@@ -3984,6 +3984,76 @@ public class Workspace24 {
     }
 
 
+    // LC 746
+    // 7.44 - 57 am
+    /**
+     *  -> Return the `minimum` cost
+     *  to reach the `top of the floor.`
+     *
+     *   NOTE:
+     *      can start from idx = 0 or idx = 1
+     *
+     *
+     *  ---------------
+     *
+     *   IDEA 1) 1D DP
+     *      - DP def
+     *          dp[i] = min cost to reach idx = i
+     *
+     *      - DP eq
+     *         dp[i] = min( dp[i-2] + cost[i-2], dp[i-1] + cost[i-1] )   // ???
+     *
+     *       2 cases
+     *           - idx = 0 or 1
+     *
+     *
+     *  ---------------
+     *
+     *
+     */
+    public int minCostClimbingStairs(int[] cost) {
+        // edge
+
+        int n = cost.length;
+        int minCost = 1000 * n; // ???
+
+//        int[] dp = new int[n + 1]; // ??
+//        dp[0] = cost[0];
+//        // ???
+//        dp[1] = Math.min(dp[0], cost[1]);
+
+
+        minCost = Math.min( Math.min(
+                dpHelper(cost, 0),
+                dpHelper(cost, 1)),
+                minCost
+        );
+
+
+        return minCost;
+    }
+
+
+    private int dpHelper(int[] cost, int startIdx){
+        // /??
+        int n = cost.length;
+        //int minCost = 1000 * n;
+
+        int[] dp = new int[n + 1]; // ??
+        dp[0] = cost[0];
+        dp[1] = Math.min(dp[0], cost[1]);
+
+        for(int i = startIdx; i < n + 1; i++){
+            dp[i] = Math.min( dp[i-2] + cost[i-2], dp[i-1] + cost[i-1] );   // ???
+        }
+
+
+        return dp[n];
+    }
+
+
+
+
 
 
 

@@ -49,9 +49,29 @@ import java.util.Arrays;
 public class MinCostClimbingStairs {
 
     // V0
-//    public int minCostClimbingStairs(int[] cost) {
-//
-//    }
+    // IDEA: 1D DP (fixed by gemini)
+    public int minCostClimbingStairs(int[] cost) {
+        int n = cost.length;
+
+        // dp[i] is the minimum cost to reach step i
+        // The array size is n + 1 because the "top" is one step past the last house
+        int[] dp = new int[n + 1];
+
+        // Base cases: You can start at index 0 or index 1 for free
+        dp[0] = 0;
+        dp[1] = 0;
+
+        for (int i = 2; i <= n; i++) {
+            // To reach step i, you could:
+            // 1. Come from i-1 (pay cost[i-1])
+            // 2. Come from i-2 (pay cost[i-2])
+            dp[i] = Math.min(dp[i - 1] + cost[i - 1],
+                    dp[i - 2] + cost[i - 2]);
+        }
+
+        return dp[n];
+    }
+
 
     // V0-1
     // IDEA: DP (fixed by gemini)
@@ -224,6 +244,8 @@ public class MinCostClimbingStairs {
         }
         return g;
     }
+
+
 
 
 
