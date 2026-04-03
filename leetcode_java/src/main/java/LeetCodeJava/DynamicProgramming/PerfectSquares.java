@@ -35,6 +35,44 @@ import java.util.*;
  */
 public class PerfectSquares {
 
+    /**  NOTE !!!
+     *
+     *  we SHOULD use BFS, but NOT PQ (Dijkstra) for this LC.
+     *
+     *  ----------------------
+     *
+     * ## 🚫 Why PQ is unnecessary here
+     *
+     * In LeetCode 279 Perfect Squares:
+     *
+     * * Every move (subtract a square) has **equal cost = 1**
+     * * You're minimizing the **number of steps**, not weighted cost
+     *
+     * 👉 That means this is an **unweighted shortest path problem**
+     *
+     * ➡️ And the correct tool is:
+     *
+     * * **BFS**, not Dijkstra (PQ)
+     *
+     * ---
+     *
+     * ## 🧠 Key insight
+     *
+     * | Approach      | When to use                               |
+     * | ------------- | ----------------------------------------- |
+     * | BFS           | All edges have same cost (this problem ✅) |
+     * | PQ (Dijkstra) | Edges have different weights ❌            |
+     * ---
+     *
+     * ## 🧾 Final takeaway
+     *
+     * * ✅ BFS = optimal + simplest
+     * * ⚠️ PQ = works but overkill
+     * * ❌ Your original PQ design = incorrect state + no transitions
+     *
+     */
+
+
     // V0
     // IDEA: BFS (gpt)
     /**
@@ -95,9 +133,21 @@ public class PerfectSquares {
         }
 
         // 2. BFS Setup
+        /** NOTE !!!
+         *
+         *  Queue: { remaining_val }
+         */
         Queue<Integer> queue = new LinkedList<>();
+        /** NOTE !!!
+         *
+         *  we use `visited` to avoid duplicated visiting
+         */
         Set<Integer> visited = new HashSet<>();
 
+        /** NOTE !!!
+         *
+         *  we add n to queue
+         */
         queue.offer(n);
         visited.add(n);
 
@@ -126,6 +176,8 @@ public class PerfectSquares {
                 }
             }
         }
+
+
         return level;
     }
 
@@ -251,6 +303,66 @@ public class PerfectSquares {
 
         return -1; // Should never reach here
     }
+
+    // V0-5
+    // IDEA: PQ Dijkstra + BFS (gpt)
+    /** Below is just for a reference, we SHOULD use BFS or DP for this LC */
+    /** NOTE !!!
+     *
+     *  `PQ` is NOT a good strategy for this LC.
+     *  since the cost are always = 1, we should NOT use PQ,
+     *  as an overhead approach.
+     *
+     *
+     *  the same cost + minimum count -> is the perfect pattern for BFS problem.
+     *
+     */
+    public int numSquares_0_5(int n) {
+        List<Integer> squares = getSquareList(n);
+
+        PriorityQueue<int[]> pq = new PriorityQueue<>(
+                (a, b) -> a[1] - b[1] // min steps
+        );
+
+        boolean[] visited = new boolean[n + 1];
+
+        pq.offer(new int[] { n, 0 }); // {remaining, steps}
+
+        while (!pq.isEmpty()) {
+            int[] curr = pq.poll();
+            int remain = curr[0];
+            int steps = curr[1];
+
+            if (remain == 0)
+                return steps;
+
+            if (visited[remain])
+                continue;
+            visited[remain] = true;
+
+            for (int sq : squares) {
+                int next = remain - sq;
+                if (next >= 0) {
+                    pq.offer(new int[] { next, steps + 1 });
+                } else {
+                    break;
+                }
+            }
+        }
+
+        return -1;
+    }
+
+    private List<Integer> getSquareList(int n) {
+        List<Integer> res = new ArrayList<>();
+
+        for (int i = 1; i * i <= n; i++) {
+            res.add(i * i);
+        }
+
+        return res;
+    }
+
 
     // V1
     // IDEA: DP

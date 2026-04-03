@@ -4071,7 +4071,7 @@ public class Workspace24 {
      *
      */
     // IDEA 2) BFS ???
-    public int numSquares(int n) {
+    public int numSquares_99(int n) {
         // edge
 
         int minCnt = n; // ???
