@@ -117,7 +117,7 @@ public class SmallestSubtreeWithAllTheDeepestNodes {
     }
 
 
-    
+
 
     /** NOTE !!!
      *
@@ -678,11 +678,11 @@ public class SmallestSubtreeWithAllTheDeepestNodes {
     // V1-2
     // IDEA: RECURSION
     // https://leetcode.com/problems/smallest-subtree-with-all-the-deepest-nodes/editorial/
-    class Result {
+    class Result_1_2 {
         TreeNode node;
         int dist;
 
-        Result(TreeNode n, int d) {
+        Result_1_2(TreeNode n, int d) {
             node = n;
             dist = d;
         }
@@ -693,16 +693,16 @@ public class SmallestSubtreeWithAllTheDeepestNodes {
     }
 
     // Return the result of the subtree at this node.
-    public Result dfs(TreeNode node) {
+    public Result_1_2 dfs(TreeNode node) {
         if (node == null)
-            return new Result(null, 0);
-        Result L = dfs(node.left),
+            return new Result_1_2(null, 0);
+        Result_1_2 L = dfs(node.left),
                 R = dfs(node.right);
         if (L.dist > R.dist)
-            return new Result(L.node, L.dist + 1);
+            return new Result_1_2(L.node, L.dist + 1);
         if (L.dist < R.dist)
-            return new Result(R.node, R.dist + 1);
-        return new Result(node, L.dist + 1);
+            return new Result_1_2(R.node, R.dist + 1);
+        return new Result_1_2(node, L.dist + 1);
     }
 
 
