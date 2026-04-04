@@ -141,6 +141,13 @@ public class EvaluateDivision {
          */
         Map<String, Double> neighbors = graph.get(cur);
 
+
+        /** NOTE !!!  early exit
+         *
+         *  -> if already visited `target`,
+         *     means ALL op are DONE,
+         *     we should return cur res as an answer directly.
+         */
         if (neighbors.containsKey(target)) {
             return product * neighbors.get(target);
         }
@@ -161,6 +168,11 @@ public class EvaluateDivision {
                 double res = dfs_0(graph, next, target,
                         product * neighbors.get(next),
                         visited);
+
+                /** NOTE !!!
+                 *
+                 *   early return and exit !!!
+                 */
                 if (res != -1.0) {
                     return res;
                 }
@@ -322,6 +334,13 @@ public class EvaluateDivision {
 
     public double[] calcEquation_0_2(List<List<String>> equations, double[] values, List<List<String>> queries) {
         // 1. Build the Graph: Map<Source, List<DestinationNode>>
+
+        /**  NOTE !!!
+         *
+         *  the map (graph) structure:
+         *
+         *   -> Map< source_op, List<Node>>  // `Node` definition as above
+         */
         Map<String, List<Node>> graph = new HashMap<>();
         for (int i = 0; i < equations.size(); i++) {
             String u = equations.get(i).get(0);

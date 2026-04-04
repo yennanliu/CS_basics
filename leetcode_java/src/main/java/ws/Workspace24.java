@@ -3018,58 +3018,203 @@ public class Workspace24 {
         }
     }
 
+
+    class Node2 {
+        String name;
+        double val;
+
+        Node2(String name, double val) {
+            this.name = name;
+            this.val = val;
+        }
+    }
+
+    // DFS
     public double[] calcEquation(List<List<String>> equations, double[] values, List<List<String>> queries) {
-        // edge
 
-        // build map
-        /**
-         *  *  IDEA 1) DFS + HASHMAP
+        /** NOTE !!!
          *
-         *   if ai / bi = val
+         *  the graph structure
          *
-         *  ->  hashmap: {  ai : [ bi, val], ..... }
+         *  Map<String, Map<String, Double>>
          *
+         *  so
+         *     string1 = a
+         *     string2 = b
+         *     Double = a / b
          */
-        Map<String, List<MyInfo>> map = new HashMap<>();
-        for(int i = 0; i < equations.size(); i++){
-            List<String> list = equations.get(i);
-            String ai = list.get(0);
-            String bi = list.get(1);
-            double val = values[i]; // ??
+        // build graph
+        Map<String, Map<String, Double>> graph = new HashMap<>();
 
-            // ??
-            if(!map.containsKey(ai)){
-                //map.put(ai, new MyInfo()); // ???
-                map.put(ai, new ArrayList<>()); // ???
-            }
-            List<MyInfo> tmpList = map.get(ai);
-            tmpList.add(new MyInfo(ai, bi, val));
-            map.put(ai, tmpList);
+        for (int i = 0; i < equations.size(); i++) {
+            String a = equations.get(i).get(0);
+            String b = equations.get(i).get(1);
+            double val = values[i];
 
-            // NOTE !!!
-            //  Your map must store both directions. If $a/b = 2.0$, then $b/a = 0.5$
+            graph.putIfAbsent(a, new HashMap<>());
+            graph.putIfAbsent(b, new HashMap<>());
 
+            graph.get(a).put(b, val);
+            graph.get(b).put(a, 1.0 / val);
         }
 
-        //List<Double> collected = new ArrayList<>();
         double[] res = new double[queries.size()];
-        // ??? fill with -1.0
-        Arrays.fill(res, -1.0);
 
-        for(int i = 0; i < queries.size(); i++){
-            String ai = queries.get(i).get(0);
-            String bi = queries.get(i).get(1);
-            // ???
-            if(!map.containsKey(ai) || !map.containsKey(bi)){
-                continue;
+        for (int i = 0; i < queries.size(); i++) {
+            String start = queries.get(i).get(0);
+            String end = queries.get(i).get(1);
+
+            /** NOTE !!!
+             *
+             *   we can `pre-calculate` per below cases
+             *
+             *    1. map NOT contains key (!graph.containsKey(start) || !graph.containsKey(end))
+             *    2. start == end
+             */
+            if (!graph.containsKey(start) || !graph.containsKey(end)) {
+                res[i] = -1.0;
+            } else if (start.equals(end)) {
+                res[i] = 1.0;
+            } else {
+                /** NOTE !!!
+                 *
+                 *   1. we init `visited` before every DFS call
+                 *   2. dfs res as res[i] val
+                 */
+                Set<String> visited = new HashSet<>();
+                res[i] = dfs_0(graph, start, end, 1.0, visited);
             }
-            // ????
-            res[i] = bfsCal(ai, bi, map, 1.0);
         }
-
 
         return res;
     }
+
+    /** NOTE !!!
+     *
+     *  we pass `product` as DFS param
+     */
+    private double dfs_0(Map<String, Map<String, Double>> graph,
+                         String cur,
+                         String target,
+                         double product,
+                         Set<String> visited) {
+
+        // edge
+//        if(visited.contains(cur)){
+//            return 1.0; // ???
+//        }
+
+
+
+        visited.add(cur);
+
+        Map<String, Double> neighbors = graph.get(cur);
+
+        if (neighbors.containsKey(target)) {
+            return product * neighbors.get(target);
+        }
+
+        for(String next: neighbors.keySet()){
+            // ???
+            if(!visited.contains(next)){
+                double res = dfs_0(graph,
+                        next,
+                        target,
+                        //product * graph.get(neighbors),
+                        product * neighbors.get(next),
+                        visited);
+
+                if(res != -1.0){
+                    return res;
+                }
+            }
+
+
+
+            return -1.0;
+        }
+
+
+
+
+
+
+//        if(target.equals(cur)){
+//            return product; // ???
+//        }
+//
+//        // ???
+//        Map<String, Double> values = graph.get(cur);
+//       // product = product * values.values()[0]; // ???
+//
+//
+
+        return 0.0;
+    }
+
+
+
+
+
+    // BFS
+//    public double[] calcEquation(List<List<String>> equations, double[] values, List<List<String>> queries) {
+//        // edge
+//
+//        // build map
+//        /**
+//         *  *  IDEA 1) DFS + HASHMAP
+//         *
+//         *   if ai / bi = val
+//         *
+//         *  ->  hashmap: {  ai : [ bi, val], ..... }
+//         *
+//         */
+//        Map<String, List<MyInfo>> map = new HashMap<>();
+//        for(int i = 0; i < equations.size(); i++){
+//            List<String> list = equations.get(i);
+//            String ai = list.get(0);
+//            String bi = list.get(1);
+//            double val = values[i]; // ??
+//
+//            // ??
+//            if(!map.containsKey(ai)){
+//                //map.put(ai, new MyInfo()); // ???
+//                map.put(ai, new ArrayList<>()); // ???
+//            }
+//            List<MyInfo> tmpList = map.get(ai);
+//            tmpList.add(new MyInfo(ai, bi, val));
+//            map.put(ai, tmpList);
+//
+//            // NOTE !!!
+//            //  Your map must store both directions. If $a/b = 2.0$, then $b/a = 0.5$
+//
+//        }
+//
+//        //List<Double> collected = new ArrayList<>();
+//        double[] res = new double[queries.size()];
+//        // ??? fill with -1.0
+//        Arrays.fill(res, -1.0);
+//
+//        for(int i = 0; i < queries.size(); i++){
+//            String ai = queries.get(i).get(0);
+//            String bi = queries.get(i).get(1);
+//            // ???
+//            if(!map.containsKey(ai) || !map.containsKey(bi)){
+//                continue;
+//            }
+//            // ????
+//            res[i] = bfsCal(ai, bi, map, 1.0);
+//        }
+//
+//
+//        return res;
+//    }
+//
+//    private double dfsCal(String ai, String bi){
+//
+//
+//        return 0.0;
+//    }
 
 
     // BFS State:
