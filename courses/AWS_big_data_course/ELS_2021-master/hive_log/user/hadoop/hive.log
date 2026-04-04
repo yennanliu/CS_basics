@@ -1,0 +1,335 @@
+2021-05-04T06:13:39,941 INFO  [main([])]: conf.HiveConf (HiveConf.java:findConfigFile(181)) - Found configuration file file:/etc/hive/conf.dist/hive-site.xml
+2021-05-04T06:13:41,082 INFO  [main([])]: SessionState (SessionState.java:printInfo(1115)) - 
+Logging initialized using configuration in file:/etc/hive/conf.dist/hive-log4j2.properties Async: false
+2021-05-04T06:13:41,827 INFO  [main([])]: session.SessionState (SessionState.java:createPath(753)) - Created HDFS directory: /tmp/hive/hadoop
+2021-05-04T06:13:41,830 INFO  [main([])]: session.SessionState (SessionState.java:createPath(753)) - Created HDFS directory: /tmp/hive/hadoop/0063d895-feb1-4813-a487-7ffa26bc4a12
+2021-05-04T06:13:41,887 INFO  [main([])]: session.SessionState (SessionState.java:createPath(753)) - Created local directory: /mnt/tmp/hadoop/0063d895-feb1-4813-a487-7ffa26bc4a12
+2021-05-04T06:13:41,891 INFO  [main([])]: session.SessionState (SessionState.java:createPath(753)) - Created HDFS directory: /tmp/hive/hadoop/0063d895-feb1-4813-a487-7ffa26bc4a12/_tmp_space.db
+2021-05-04T06:13:41,915 INFO  [main([])]: tez.TezSessionState (TezSessionState.java:openInternal(237)) - User of session id 0063d895-feb1-4813-a487-7ffa26bc4a12 is hadoop
+2021-05-04T06:13:41,967 INFO  [main([])]: tez.DagUtils (DagUtils.java:localizeResource(996)) - Localizing resource because it does not exist: file:/usr/lib/hive-hcatalog/share/hcatalog/hive-hcatalog-core-2.3.6-amzn-2.jar to dest: hdfs://ip-172-31-14-208.ec2.internal:8020/tmp/hive/hadoop/_tez_session_dir/0063d895-feb1-4813-a487-7ffa26bc4a12/hive-hcatalog-core-2.3.6-amzn-2.jar
+2021-05-04T06:13:42,203 INFO  [main([])]: tez.DagUtils (DagUtils.java:createLocalResource(760)) - Resource modification time: 1620108822151 for hdfs://ip-172-31-14-208.ec2.internal:8020/tmp/hive/hadoop/_tez_session_dir/0063d895-feb1-4813-a487-7ffa26bc4a12/hive-hcatalog-core-2.3.6-amzn-2.jar
+2021-05-04T06:13:42,224 INFO  [main([])]: tez.DagUtils (DagUtils.java:localizeResource(996)) - Localizing resource because it does not exist: file:/usr/lib/hive-hcatalog/share/hcatalog/hive-hcatalog-pig-adapter-2.3.6-amzn-2.jar to dest: hdfs://ip-172-31-14-208.ec2.internal:8020/tmp/hive/hadoop/_tez_session_dir/0063d895-feb1-4813-a487-7ffa26bc4a12/hive-hcatalog-pig-adapter-2.3.6-amzn-2.jar
+2021-05-04T06:13:42,236 INFO  [main([])]: tez.DagUtils (DagUtils.java:createLocalResource(760)) - Resource modification time: 1620108822235 for hdfs://ip-172-31-14-208.ec2.internal:8020/tmp/hive/hadoop/_tez_session_dir/0063d895-feb1-4813-a487-7ffa26bc4a12/hive-hcatalog-pig-adapter-2.3.6-amzn-2.jar
+2021-05-04T06:13:42,239 INFO  [main([])]: tez.DagUtils (DagUtils.java:localizeResource(996)) - Localizing resource because it does not exist: file:/usr/lib/hive-hcatalog/share/hcatalog/hive-hcatalog-server-extensions-2.3.6-amzn-2.jar to dest: hdfs://ip-172-31-14-208.ec2.internal:8020/tmp/hive/hadoop/_tez_session_dir/0063d895-feb1-4813-a487-7ffa26bc4a12/hive-hcatalog-server-extensions-2.3.6-amzn-2.jar
+2021-05-04T06:13:42,254 INFO  [main([])]: tez.DagUtils (DagUtils.java:createLocalResource(760)) - Resource modification time: 1620108822252 for hdfs://ip-172-31-14-208.ec2.internal:8020/tmp/hive/hadoop/_tez_session_dir/0063d895-feb1-4813-a487-7ffa26bc4a12/hive-hcatalog-server-extensions-2.3.6-amzn-2.jar
+2021-05-04T06:13:42,255 INFO  [main([])]: tez.DagUtils (DagUtils.java:localizeResource(996)) - Localizing resource because it does not exist: file:/usr/lib/hive-hcatalog/share/hcatalog/hive-hcatalog-streaming-2.3.6-amzn-2.jar to dest: hdfs://ip-172-31-14-208.ec2.internal:8020/tmp/hive/hadoop/_tez_session_dir/0063d895-feb1-4813-a487-7ffa26bc4a12/hive-hcatalog-streaming-2.3.6-amzn-2.jar
+2021-05-04T06:13:42,265 INFO  [main([])]: tez.DagUtils (DagUtils.java:createLocalResource(760)) - Resource modification time: 1620108822263 for hdfs://ip-172-31-14-208.ec2.internal:8020/tmp/hive/hadoop/_tez_session_dir/0063d895-feb1-4813-a487-7ffa26bc4a12/hive-hcatalog-streaming-2.3.6-amzn-2.jar
+2021-05-04T06:13:42,267 INFO  [main([])]: tez.DagUtils (DagUtils.java:localizeResource(996)) - Localizing resource because it does not exist: file:/usr/lib/hive/auxlib/aws-glue-datacatalog-hive2-client.jar to dest: hdfs://ip-172-31-14-208.ec2.internal:8020/tmp/hive/hadoop/_tez_session_dir/0063d895-feb1-4813-a487-7ffa26bc4a12/aws-glue-datacatalog-hive2-client.jar
+2021-05-04T06:13:42,277 INFO  [main([])]: tez.DagUtils (DagUtils.java:createLocalResource(760)) - Resource modification time: 1620108822276 for hdfs://ip-172-31-14-208.ec2.internal:8020/tmp/hive/hadoop/_tez_session_dir/0063d895-feb1-4813-a487-7ffa26bc4a12/aws-glue-datacatalog-hive2-client.jar
+2021-05-04T06:13:42,278 INFO  [main([])]: tez.DagUtils (DagUtils.java:localizeResource(996)) - Localizing resource because it does not exist: file:/usr/lib/hive/auxlib/emr-ddb-hive.jar to dest: hdfs://ip-172-31-14-208.ec2.internal:8020/tmp/hive/hadoop/_tez_session_dir/0063d895-feb1-4813-a487-7ffa26bc4a12/emr-ddb-hive.jar
+2021-05-04T06:13:42,289 INFO  [main([])]: tez.DagUtils (DagUtils.java:createLocalResource(760)) - Resource modification time: 1620108822287 for hdfs://ip-172-31-14-208.ec2.internal:8020/tmp/hive/hadoop/_tez_session_dir/0063d895-feb1-4813-a487-7ffa26bc4a12/emr-ddb-hive.jar
+2021-05-04T06:13:42,291 INFO  [main([])]: tez.DagUtils (DagUtils.java:localizeResource(996)) - Localizing resource because it does not exist: file:/usr/lib/hive/auxlib/emr-hive-goodies.jar to dest: hdfs://ip-172-31-14-208.ec2.internal:8020/tmp/hive/hadoop/_tez_session_dir/0063d895-feb1-4813-a487-7ffa26bc4a12/emr-hive-goodies.jar
+2021-05-04T06:13:42,304 INFO  [main([])]: tez.DagUtils (DagUtils.java:createLocalResource(760)) - Resource modification time: 1620108822302 for hdfs://ip-172-31-14-208.ec2.internal:8020/tmp/hive/hadoop/_tez_session_dir/0063d895-feb1-4813-a487-7ffa26bc4a12/emr-hive-goodies.jar
+2021-05-04T06:13:42,306 INFO  [main([])]: tez.DagUtils (DagUtils.java:localizeResource(996)) - Localizing resource because it does not exist: file:/usr/lib/hive/auxlib/emr-kinesis-hive.jar to dest: hdfs://ip-172-31-14-208.ec2.internal:8020/tmp/hive/hadoop/_tez_session_dir/0063d895-feb1-4813-a487-7ffa26bc4a12/emr-kinesis-hive.jar
+2021-05-04T06:13:42,316 INFO  [main([])]: tez.DagUtils (DagUtils.java:createLocalResource(760)) - Resource modification time: 1620108822314 for hdfs://ip-172-31-14-208.ec2.internal:8020/tmp/hive/hadoop/_tez_session_dir/0063d895-feb1-4813-a487-7ffa26bc4a12/emr-kinesis-hive.jar
+2021-05-04T06:13:42,317 INFO  [main([])]: tez.DagUtils (DagUtils.java:localizeResource(996)) - Localizing resource because it does not exist: file:/usr/lib/hive/auxlib/emr-s3-select-hive-connector.jar to dest: hdfs://ip-172-31-14-208.ec2.internal:8020/tmp/hive/hadoop/_tez_session_dir/0063d895-feb1-4813-a487-7ffa26bc4a12/emr-s3-select-hive-connector.jar
+2021-05-04T06:13:42,338 INFO  [main([])]: tez.DagUtils (DagUtils.java:createLocalResource(760)) - Resource modification time: 1620108822336 for hdfs://ip-172-31-14-208.ec2.internal:8020/tmp/hive/hadoop/_tez_session_dir/0063d895-feb1-4813-a487-7ffa26bc4a12/emr-s3-select-hive-connector.jar
+2021-05-04T06:13:42,340 INFO  [main([])]: tez.DagUtils (DagUtils.java:localizeResource(996)) - Localizing resource because it does not exist: file:/usr/lib/hive/auxlib/hive-openx-serde.jar to dest: hdfs://ip-172-31-14-208.ec2.internal:8020/tmp/hive/hadoop/_tez_session_dir/0063d895-feb1-4813-a487-7ffa26bc4a12/hive-openx-serde.jar
+2021-05-04T06:13:42,360 INFO  [main([])]: tez.DagUtils (DagUtils.java:createLocalResource(760)) - Resource modification time: 1620108822356 for hdfs://ip-172-31-14-208.ec2.internal:8020/tmp/hive/hadoop/_tez_session_dir/0063d895-feb1-4813-a487-7ffa26bc4a12/hive-openx-serde.jar
+2021-05-04T06:13:42,361 INFO  [main([])]: tez.DagUtils (DagUtils.java:localizeResource(996)) - Localizing resource because it does not exist: file:/usr/lib/hive/auxlib/hudi-hadoop-mr-bundle.jar to dest: hdfs://ip-172-31-14-208.ec2.internal:8020/tmp/hive/hadoop/_tez_session_dir/0063d895-feb1-4813-a487-7ffa26bc4a12/hudi-hadoop-mr-bundle.jar
+2021-05-04T06:13:42,405 INFO  [main([])]: tez.DagUtils (DagUtils.java:createLocalResource(760)) - Resource modification time: 1620108822403 for hdfs://ip-172-31-14-208.ec2.internal:8020/tmp/hive/hadoop/_tez_session_dir/0063d895-feb1-4813-a487-7ffa26bc4a12/hudi-hadoop-mr-bundle.jar
+2021-05-04T06:13:42,470 INFO  [main([])]: tez.DagUtils (DagUtils.java:getHiveJarDirectory(918)) - Jar dir is null / directory doesn't exist. Choosing HIVE_INSTALL_DIR - /user/hadoop/.hiveJars
+2021-05-04T06:13:42,812 INFO  [main([])]: tez.DagUtils (DagUtils.java:localizeResource(996)) - Localizing resource because it does not exist: file:/usr/lib/hive/lib/hive-exec-2.3.6-amzn-2.jar to dest: hdfs://ip-172-31-14-208.ec2.internal:8020/user/hadoop/.hiveJars/hive-exec-2.3.6-amzn-2-45426a82852a34909761c8b3ca7d795895375eb3c5ec43a069c17de14a54f981.jar
+2021-05-04T06:13:42,891 INFO  [main([])]: tez.DagUtils (DagUtils.java:createLocalResource(760)) - Resource modification time: 1620108822885 for hdfs://ip-172-31-14-208.ec2.internal:8020/user/hadoop/.hiveJars/hive-exec-2.3.6-amzn-2-45426a82852a34909761c8b3ca7d795895375eb3c5ec43a069c17de14a54f981.jar
+2021-05-04T06:13:42,970 INFO  [main([])]: sqlstd.SQLStdHiveAccessController (SQLStdHiveAccessController.java:<init>(95)) - Created SQLStdHiveAccessController for session context : HiveAuthzSessionContext [sessionString=0063d895-feb1-4813-a487-7ffa26bc4a12, clientType=HIVECLI]
+2021-05-04T06:13:42,973 WARN  [main([])]: session.SessionState (SessionState.java:setAuthorizerV2Config(907)) - METASTORE_FILTER_HOOK will be ignored, since hive.security.authorization.manager is set to instance of HiveAuthorizerFactory.
+2021-05-04T06:13:43,251 INFO  [main([])]: hive.metastore (HiveMetaStoreClient.java:open(407)) - Trying to connect to metastore with URI thrift://ip-172-31-14-208.ec2.internal:9083
+2021-05-04T06:13:43,269 INFO  [main([])]: hive.metastore (HiveMetaStoreClient.java:open(481)) - Opened a connection to metastore, current connections: 1
+2021-05-04T06:13:43,274 INFO  [main([])]: hive.metastore (HiveMetaStoreClient.java:open(534)) - Connected to metastore.
+2021-05-04T06:13:43,561 INFO  [main([])]: client.TezClient (TezClient.java:<init>(209)) - Tez Client Version: [ component=tez-api, version=0.9.2, revision=f473ee8336d640640582287162ace6dd1c0848e8, SCM-URL=scm:git:https://gitbox.apache.org/repos/asf/tez.git, buildTime=2020-04-17T15:24:18Z ]
+2021-05-04T06:13:43,562 INFO  [main([])]: tez.TezSessionState (TezSessionState.java:openInternal(318)) - Opening new Tez Session (id: 0063d895-feb1-4813-a487-7ffa26bc4a12, scratch dir: hdfs://ip-172-31-14-208.ec2.internal:8020/tmp/hive/hadoop/_tez_session_dir/0063d895-feb1-4813-a487-7ffa26bc4a12)
+2021-05-04T06:13:43,564 INFO  [main([])]: conf.HiveConf (HiveConf.java:getLogIdVar(3968)) - Using the default value passed in for log id: 0063d895-feb1-4813-a487-7ffa26bc4a12
+2021-05-04T06:13:43,567 INFO  [main([])]: session.SessionState (SessionState.java:updateThreadName(425)) - Updating thread name to 0063d895-feb1-4813-a487-7ffa26bc4a12 main
+2021-05-04T06:13:43,709 INFO  [Tez session start thread([])]: client.RMProxy (RMProxy.java:createRMProxy(123)) - Connecting to ResourceManager at ip-172-31-14-208.ec2.internal/172.31.14.208:8032
+2021-05-04T06:13:43,932 INFO  [Tez session start thread([])]: client.TezClient (TezClient.java:start(388)) - Session mode. Starting session.
+2021-05-04T06:13:43,966 INFO  [Tez session start thread([])]: client.TezClientUtils (TezClientUtils.java:setupTezJarsLocalResources(180)) - Using tez.lib.uris value from configuration: hdfs:///apps/tez/tez.tar.gz
+2021-05-04T06:13:43,966 INFO  [Tez session start thread([])]: client.TezClientUtils (TezClientUtils.java:setupTezJarsLocalResources(182)) - Using tez.lib.uris.classpath value from configuration: null
+2021-05-04T06:13:43,988 INFO  [Tez session start thread([])]: client.TezClient (TezCommonUtils.java:createTezSystemStagingPath(123)) - Tez system stage directory hdfs://ip-172-31-14-208.ec2.internal:8020/tmp/hive/hadoop/_tez_session_dir/0063d895-feb1-4813-a487-7ffa26bc4a12/.tez/application_1620108515464_0001 doesn't exist and is created
+2021-05-04T06:13:44,291 INFO  [Tez session start thread([])]: impl.YarnClientImpl (YarnClientImpl.java:submitApplication(278)) - Submitted application application_1620108515464_0001
+2021-05-04T06:13:44,299 INFO  [Tez session start thread([])]: client.TezClient (TezClient.java:start(404)) - The url to track the Tez Session: http://ip-172-31-14-208.ec2.internal:20888/proxy/application_1620108515464_0001/
+2021-05-04T06:13:49,414 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: conf.HiveConf (HiveConf.java:getLogIdVar(3968)) - Using the default value passed in for log id: 0063d895-feb1-4813-a487-7ffa26bc4a12
+2021-05-04T06:13:49,453 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: ql.Driver (Driver.java:compile(429)) - Compiling command(queryId=hadoop_20210504061349_bbc8cd4d-6fb8-4dc8-9e82-f50ce89687ea): create database elsbigdata
+2021-05-04T06:13:49,794 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: ql.Driver (Driver.java:compile(518)) - Semantic Analysis Completed
+2021-05-04T06:13:49,796 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: ql.Driver (Driver.java:getSchema(290)) - Returning Hive schema: Schema(fieldSchemas:null, properties:null)
+2021-05-04T06:13:49,801 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: ql.Driver (Driver.java:compile(642)) - Completed compiling command(queryId=hadoop_20210504061349_bbc8cd4d-6fb8-4dc8-9e82-f50ce89687ea); Time taken: 0.369 seconds
+2021-05-04T06:13:49,801 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: ql.Driver (Driver.java:checkConcurrency(210)) - Concurrency mode is disabled, not creating a lock manager
+2021-05-04T06:13:49,801 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: ql.Driver (Driver.java:execute(1735)) - Executing command(queryId=hadoop_20210504061349_bbc8cd4d-6fb8-4dc8-9e82-f50ce89687ea): create database elsbigdata
+2021-05-04T06:13:49,812 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: ql.Driver (Driver.java:launchTask(2181)) - Starting task [Stage-0:DDL] in serial mode
+2021-05-04T06:13:50,011 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: ql.Driver (Driver.java:execute(2050)) - Completed executing command(queryId=hadoop_20210504061349_bbc8cd4d-6fb8-4dc8-9e82-f50ce89687ea); Time taken: 0.209 seconds
+2021-05-04T06:13:50,011 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: ql.Driver (SessionState.java:printInfo(1115)) - OK
+2021-05-04T06:13:50,013 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: CliDriver (SessionState.java:printInfo(1115)) - Time taken: 0.583 seconds
+2021-05-04T06:13:50,013 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: conf.HiveConf (HiveConf.java:getLogIdVar(3968)) - Using the default value passed in for log id: 0063d895-feb1-4813-a487-7ffa26bc4a12
+2021-05-04T06:13:50,013 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: session.SessionState (SessionState.java:resetThreadName(436)) - Resetting thread name to  main
+2021-05-04T06:13:57,340 INFO  [main([])]: conf.HiveConf (HiveConf.java:getLogIdVar(3968)) - Using the default value passed in for log id: 0063d895-feb1-4813-a487-7ffa26bc4a12
+2021-05-04T06:13:57,340 INFO  [main([])]: session.SessionState (SessionState.java:updateThreadName(425)) - Updating thread name to 0063d895-feb1-4813-a487-7ffa26bc4a12 main
+2021-05-04T06:13:57,340 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: ql.Driver (Driver.java:compile(429)) - Compiling command(queryId=hadoop_20210504061357_e43f8f52-f252-4f8a-b430-49680bae3361): use elsbigdata
+2021-05-04T06:13:57,364 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: ql.Driver (Driver.java:compile(518)) - Semantic Analysis Completed
+2021-05-04T06:13:57,364 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: ql.Driver (Driver.java:getSchema(290)) - Returning Hive schema: Schema(fieldSchemas:null, properties:null)
+2021-05-04T06:13:57,364 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: ql.Driver (Driver.java:compile(642)) - Completed compiling command(queryId=hadoop_20210504061357_e43f8f52-f252-4f8a-b430-49680bae3361); Time taken: 0.024 seconds
+2021-05-04T06:13:57,364 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: ql.Driver (Driver.java:checkConcurrency(210)) - Concurrency mode is disabled, not creating a lock manager
+2021-05-04T06:13:57,364 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: ql.Driver (Driver.java:execute(1735)) - Executing command(queryId=hadoop_20210504061357_e43f8f52-f252-4f8a-b430-49680bae3361): use elsbigdata
+2021-05-04T06:13:57,365 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: ql.Driver (Driver.java:launchTask(2181)) - Starting task [Stage-0:DDL] in serial mode
+2021-05-04T06:13:57,370 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: ql.Driver (Driver.java:execute(2050)) - Completed executing command(queryId=hadoop_20210504061357_e43f8f52-f252-4f8a-b430-49680bae3361); Time taken: 0.006 seconds
+2021-05-04T06:13:57,370 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: ql.Driver (SessionState.java:printInfo(1115)) - OK
+2021-05-04T06:13:57,371 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: CliDriver (SessionState.java:printInfo(1115)) - Time taken: 0.03 seconds
+2021-05-04T06:13:57,371 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: conf.HiveConf (HiveConf.java:getLogIdVar(3968)) - Using the default value passed in for log id: 0063d895-feb1-4813-a487-7ffa26bc4a12
+2021-05-04T06:13:57,371 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: session.SessionState (SessionState.java:resetThreadName(436)) - Resetting thread name to  main
+2021-05-04T06:14:03,651 INFO  [main([])]: conf.HiveConf (HiveConf.java:getLogIdVar(3968)) - Using the default value passed in for log id: 0063d895-feb1-4813-a487-7ffa26bc4a12
+2021-05-04T06:14:03,652 INFO  [main([])]: session.SessionState (SessionState.java:updateThreadName(425)) - Updating thread name to 0063d895-feb1-4813-a487-7ffa26bc4a12 main
+2021-05-04T06:14:03,652 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: ql.Driver (Driver.java:compile(429)) - Compiling command(queryId=hadoop_20210504061403_a097d9ac-0870-4751-bdb7-6c50221c85a9): CREATE EXTERNAL TABLE `hive_test`(
+  `vendorid` bigint, 
+  `lpep_pickup_datetime` string, 
+  `lpep_dropoff_datetime` string, 
+  `store_and_fwd_flag` string, 
+  `ratecodeid` bigint, 
+  `pulocationid` bigint, 
+  `dolocationid` bigint, 
+  `passenger_count` bigint, 
+  `trip_distance` double, 
+  `fare_amount` double, 
+  `extra` double, 
+  `mta_tax` double, 
+  `tip_amount` double, 
+  `tolls_amount` double, 
+  `ehail_fee` string, 
+  `improvement_surcharge` double, 
+  `total_amount` double, 
+  `payment_type` bigint, 
+  `trip_type` bigint)
+ROW FORMAT DELIMITED 
+  FIELDS TERMINATED BY ',' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.mapred.TextInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
+LOCATION
+  's3://els-bigdata-2021/hive_test/'
+
+2021-05-04T06:14:03,690 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: parse.CalcitePlanner (SemanticAnalyzer.java:analyzeInternal(11150)) - Starting Semantic Analysis
+2021-05-04T06:14:03,696 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: parse.CalcitePlanner (SemanticAnalyzer.java:analyzeCreateTable(11896)) - Creating table elsbigdata.hive_test position=22
+2021-05-04T06:14:06,266 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: ql.Driver (Driver.java:compile(518)) - Semantic Analysis Completed
+2021-05-04T06:14:06,273 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: ql.Driver (Driver.java:getSchema(290)) - Returning Hive schema: Schema(fieldSchemas:null, properties:null)
+2021-05-04T06:14:06,274 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: ql.Driver (Driver.java:compile(642)) - Completed compiling command(queryId=hadoop_20210504061403_a097d9ac-0870-4751-bdb7-6c50221c85a9); Time taken: 2.622 seconds
+2021-05-04T06:14:06,275 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: ql.Driver (Driver.java:checkConcurrency(210)) - Concurrency mode is disabled, not creating a lock manager
+2021-05-04T06:14:06,275 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: ql.Driver (Driver.java:execute(1735)) - Executing command(queryId=hadoop_20210504061403_a097d9ac-0870-4751-bdb7-6c50221c85a9): CREATE EXTERNAL TABLE `hive_test`(
+  `vendorid` bigint, 
+  `lpep_pickup_datetime` string, 
+  `lpep_dropoff_datetime` string, 
+  `store_and_fwd_flag` string, 
+  `ratecodeid` bigint, 
+  `pulocationid` bigint, 
+  `dolocationid` bigint, 
+  `passenger_count` bigint, 
+  `trip_distance` double, 
+  `fare_amount` double, 
+  `extra` double, 
+  `mta_tax` double, 
+  `tip_amount` double, 
+  `tolls_amount` double, 
+  `ehail_fee` string, 
+  `improvement_surcharge` double, 
+  `total_amount` double, 
+  `payment_type` bigint, 
+  `trip_type` bigint)
+ROW FORMAT DELIMITED 
+  FIELDS TERMINATED BY ',' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.mapred.TextInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
+LOCATION
+  's3://els-bigdata-2021/hive_test/'
+
+2021-05-04T06:14:06,280 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: ql.Driver (Driver.java:launchTask(2181)) - Starting task [Stage-0:DDL] in serial mode
+2021-05-04T06:14:06,280 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: plan.CreateTableDesc (CreateTableDesc.java:toTable(713)) - Default to LazySimpleSerDe for table hive_test
+2021-05-04T06:14:06,297 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: exec.DDLTask (DDLTask.java:createTable(4324)) - creating table elsbigdata.hive_test on s3://els-bigdata-2021/hive_test
+2021-05-04T06:14:09,540 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: metadata.Hive (Hive.java:logDumpPhase(3942)) - Dumping metastore api call timing information for : execution phase
+2021-05-04T06:14:09,540 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: metadata.Hive (Hive.java:dumpAndClearMetaCallTiming(3930)) - Total time spent in this metastore function was greater than 1000ms : createTable_(Table, )=3153
+2021-05-04T06:14:09,540 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: ql.Driver (Driver.java:execute(2050)) - Completed executing command(queryId=hadoop_20210504061403_a097d9ac-0870-4751-bdb7-6c50221c85a9); Time taken: 3.264 seconds
+2021-05-04T06:14:09,540 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: ql.Driver (SessionState.java:printInfo(1115)) - OK
+2021-05-04T06:14:09,541 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: CliDriver (SessionState.java:printInfo(1115)) - Time taken: 5.888 seconds
+2021-05-04T06:14:09,541 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: conf.HiveConf (HiveConf.java:getLogIdVar(3968)) - Using the default value passed in for log id: 0063d895-feb1-4813-a487-7ffa26bc4a12
+2021-05-04T06:14:09,541 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: session.SessionState (SessionState.java:resetThreadName(436)) - Resetting thread name to  main
+2021-05-04T06:15:04,686 INFO  [main([])]: conf.HiveConf (HiveConf.java:getLogIdVar(3968)) - Using the default value passed in for log id: 0063d895-feb1-4813-a487-7ffa26bc4a12
+2021-05-04T06:15:04,686 INFO  [main([])]: session.SessionState (SessionState.java:updateThreadName(425)) - Updating thread name to 0063d895-feb1-4813-a487-7ffa26bc4a12 main
+2021-05-04T06:15:04,687 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: ql.Driver (Driver.java:compile(429)) - Compiling command(queryId=hadoop_20210504061504_748e5ce8-fc56-4539-871f-049e11ff3293): select count(*) from hive_test
+2021-05-04T06:15:04,691 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: parse.CalcitePlanner (SemanticAnalyzer.java:analyzeInternal(11150)) - Starting Semantic Analysis
+2021-05-04T06:15:04,698 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: parse.CalcitePlanner (SemanticAnalyzer.java:genResolvedParseTree(11096)) - Completed phase 1 of Semantic Analysis
+2021-05-04T06:15:04,698 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: parse.CalcitePlanner (SemanticAnalyzer.java:getMetaData(1965)) - Get metadata for source tables
+2021-05-04T06:15:04,800 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: parse.CalcitePlanner (SemanticAnalyzer.java:getMetaData(2101)) - Get metadata for subqueries
+2021-05-04T06:15:04,800 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: parse.CalcitePlanner (SemanticAnalyzer.java:getMetaData(2125)) - Get metadata for destination tables
+2021-05-04T06:15:04,806 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: ql.Context (Context.java:getMRScratchDir(475)) - New scratch dir is hdfs://ip-172-31-14-208.ec2.internal:8020/tmp/hive/hadoop/0063d895-feb1-4813-a487-7ffa26bc4a12/hive_2021-05-04_06-15-04_687_5431184248906968385-1
+2021-05-04T06:15:04,806 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: parse.CalcitePlanner (SemanticAnalyzer.java:genResolvedParseTree(11101)) - Completed getting MetaData in Semantic Analysis
+2021-05-04T06:15:05,890 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: parse.CalcitePlanner (SemanticAnalyzer.java:getMetaData(1965)) - Get metadata for source tables
+2021-05-04T06:15:05,903 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: parse.CalcitePlanner (SemanticAnalyzer.java:getMetaData(2101)) - Get metadata for subqueries
+2021-05-04T06:15:05,903 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: parse.CalcitePlanner (SemanticAnalyzer.java:getMetaData(2125)) - Get metadata for destination tables
+2021-05-04T06:15:05,903 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: ql.Context (Context.java:getMRScratchDir(475)) - New scratch dir is hdfs://ip-172-31-14-208.ec2.internal:8020/tmp/hive/hadoop/0063d895-feb1-4813-a487-7ffa26bc4a12/hive_2021-05-04_06-15-04_687_5431184248906968385-1
+2021-05-04T06:15:05,949 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: common.FileUtils (FileUtils.java:mkdir(520)) - Creating directory if it doesn't exist: hdfs://ip-172-31-14-208.ec2.internal:8020/tmp/hive/hadoop/0063d895-feb1-4813-a487-7ffa26bc4a12/hive_2021-05-04_06-15-04_687_5431184248906968385-1/-mr-10001/.hive-staging_hive_2021-05-04_06-15-04_687_5431184248906968385-1
+2021-05-04T06:15:06,042 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: parse.CalcitePlanner (CalcitePlanner.java:genOPTree(409)) - CBO Succeeded; optimized logical plan.
+2021-05-04T06:15:06,089 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: ppd.OpProcFactory (OpProcFactory.java:process(734)) - Processing for FS(6)
+2021-05-04T06:15:06,089 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: ppd.OpProcFactory (OpProcFactory.java:process(734)) - Processing for SEL(5)
+2021-05-04T06:15:06,089 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: ppd.OpProcFactory (OpProcFactory.java:process(734)) - Processing for GBY(4)
+2021-05-04T06:15:06,090 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: ppd.OpProcFactory (OpProcFactory.java:process(734)) - Processing for RS(3)
+2021-05-04T06:15:06,090 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: ppd.OpProcFactory (OpProcFactory.java:process(734)) - Processing for GBY(2)
+2021-05-04T06:15:06,090 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: ppd.OpProcFactory (OpProcFactory.java:process(734)) - Processing for SEL(1)
+2021-05-04T06:15:06,090 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: ppd.OpProcFactory (OpProcFactory.java:process(408)) - Processing for TS(0)
+2021-05-04T06:15:06,110 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: optimizer.ColumnPrunerProcFactory (ColumnPrunerProcFactory.java:pruneReduceSinkOperator(888)) - RS 3 oldColExprMap: {VALUE._col0=Column[_col0]}
+2021-05-04T06:15:06,110 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: optimizer.ColumnPrunerProcFactory (ColumnPrunerProcFactory.java:pruneReduceSinkOperator(937)) - RS 3 newColExprMap: {VALUE._col0=Column[_col0]}
+2021-05-04T06:15:06,296 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: Configuration.deprecation (Configuration.java:logDeprecation(1285)) - mapred.input.dir.recursive is deprecated. Instead, use mapreduce.input.fileinputformat.input.dir.recursive
+2021-05-04T06:15:06,364 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: optimizer.SetReducerParallelism (SetReducerParallelism.java:process(108)) - Number of reducers determined to be: 1
+2021-05-04T06:15:06,365 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: parse.TezCompiler (TezCompiler.java:runCycleAnalysisForPartitionPruning(171)) - Cycle free: true
+2021-05-04T06:15:06,383 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: Configuration.deprecation (Configuration.java:logDeprecation(1285)) - mapred.job.name is deprecated. Instead, use mapreduce.job.name
+2021-05-04T06:15:06,415 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: parse.CalcitePlanner (SemanticAnalyzer.java:analyzeInternal(11296)) - Completed plan generation
+2021-05-04T06:15:06,415 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: ql.Driver (Driver.java:compile(518)) - Semantic Analysis Completed
+2021-05-04T06:15:06,415 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: ql.Driver (Driver.java:getSchema(290)) - Returning Hive schema: Schema(fieldSchemas:[FieldSchema(name:_c0, type:bigint, comment:null)], properties:null)
+2021-05-04T06:15:06,426 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: exec.ListSinkOperator (Operator.java:initialize(334)) - Initializing operator LIST_SINK[7]
+2021-05-04T06:15:06,433 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: ql.Driver (Driver.java:compile(642)) - Completed compiling command(queryId=hadoop_20210504061504_748e5ce8-fc56-4539-871f-049e11ff3293); Time taken: 1.745 seconds
+2021-05-04T06:15:06,433 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: ql.Driver (Driver.java:checkConcurrency(210)) - Concurrency mode is disabled, not creating a lock manager
+2021-05-04T06:15:06,433 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: ql.Driver (Driver.java:execute(1735)) - Executing command(queryId=hadoop_20210504061504_748e5ce8-fc56-4539-871f-049e11ff3293): select count(*) from hive_test
+2021-05-04T06:15:06,434 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: ql.Driver (SessionState.java:printInfo(1115)) - Query ID = hadoop_20210504061504_748e5ce8-fc56-4539-871f-049e11ff3293
+2021-05-04T06:15:06,434 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: ql.Driver (SessionState.java:printInfo(1115)) - Total jobs = 1
+2021-05-04T06:15:06,441 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: ql.Driver (SessionState.java:printInfo(1115)) - Launching Job 1 out of 1
+2021-05-04T06:15:06,441 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: ql.Driver (Driver.java:launchTask(2181)) - Starting task [Stage-1:MAPRED] in serial mode
+2021-05-04T06:15:06,445 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: tez.TezSessionPoolManager (TezSessionPoolManager.java:canWorkWithSameSession(495)) - The current user: hadoop, session user: hadoop
+2021-05-04T06:15:06,445 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: tez.TezSessionPoolManager (TezSessionPoolManager.java:canWorkWithSameSession(513)) - Current queue name is null incoming queue name is null
+2021-05-04T06:15:06,492 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: Configuration.deprecation (Configuration.java:logDeprecation(1285)) - mapred.committer.job.setup.cleanup.needed is deprecated. Instead, use mapreduce.job.committer.setup.cleanup.needed
+2021-05-04T06:15:06,494 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: ql.Context (Context.java:getMRScratchDir(475)) - New scratch dir is hdfs://ip-172-31-14-208.ec2.internal:8020/tmp/hive/hadoop/0063d895-feb1-4813-a487-7ffa26bc4a12/hive_2021-05-04_06-15-04_687_5431184248906968385-1
+2021-05-04T06:15:06,497 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: exec.Task (TezTask.java:updateSession(305)) - Session is already open
+2021-05-04T06:15:06,579 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: tez.DagUtils (DagUtils.java:createLocalResource(760)) - Resource modification time: 1620108822151 for hdfs://ip-172-31-14-208.ec2.internal:8020/tmp/hive/hadoop/_tez_session_dir/0063d895-feb1-4813-a487-7ffa26bc4a12/hive-hcatalog-core-2.3.6-amzn-2.jar
+2021-05-04T06:15:06,581 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: tez.DagUtils (DagUtils.java:createLocalResource(760)) - Resource modification time: 1620108822235 for hdfs://ip-172-31-14-208.ec2.internal:8020/tmp/hive/hadoop/_tez_session_dir/0063d895-feb1-4813-a487-7ffa26bc4a12/hive-hcatalog-pig-adapter-2.3.6-amzn-2.jar
+2021-05-04T06:15:06,583 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: tez.DagUtils (DagUtils.java:createLocalResource(760)) - Resource modification time: 1620108822252 for hdfs://ip-172-31-14-208.ec2.internal:8020/tmp/hive/hadoop/_tez_session_dir/0063d895-feb1-4813-a487-7ffa26bc4a12/hive-hcatalog-server-extensions-2.3.6-amzn-2.jar
+2021-05-04T06:15:06,584 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: tez.DagUtils (DagUtils.java:createLocalResource(760)) - Resource modification time: 1620108822263 for hdfs://ip-172-31-14-208.ec2.internal:8020/tmp/hive/hadoop/_tez_session_dir/0063d895-feb1-4813-a487-7ffa26bc4a12/hive-hcatalog-streaming-2.3.6-amzn-2.jar
+2021-05-04T06:15:06,585 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: tez.DagUtils (DagUtils.java:createLocalResource(760)) - Resource modification time: 1620108822276 for hdfs://ip-172-31-14-208.ec2.internal:8020/tmp/hive/hadoop/_tez_session_dir/0063d895-feb1-4813-a487-7ffa26bc4a12/aws-glue-datacatalog-hive2-client.jar
+2021-05-04T06:15:06,587 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: tez.DagUtils (DagUtils.java:createLocalResource(760)) - Resource modification time: 1620108822287 for hdfs://ip-172-31-14-208.ec2.internal:8020/tmp/hive/hadoop/_tez_session_dir/0063d895-feb1-4813-a487-7ffa26bc4a12/emr-ddb-hive.jar
+2021-05-04T06:15:06,588 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: tez.DagUtils (DagUtils.java:createLocalResource(760)) - Resource modification time: 1620108822302 for hdfs://ip-172-31-14-208.ec2.internal:8020/tmp/hive/hadoop/_tez_session_dir/0063d895-feb1-4813-a487-7ffa26bc4a12/emr-hive-goodies.jar
+2021-05-04T06:15:06,590 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: tez.DagUtils (DagUtils.java:createLocalResource(760)) - Resource modification time: 1620108822314 for hdfs://ip-172-31-14-208.ec2.internal:8020/tmp/hive/hadoop/_tez_session_dir/0063d895-feb1-4813-a487-7ffa26bc4a12/emr-kinesis-hive.jar
+2021-05-04T06:15:06,591 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: tez.DagUtils (DagUtils.java:createLocalResource(760)) - Resource modification time: 1620108822336 for hdfs://ip-172-31-14-208.ec2.internal:8020/tmp/hive/hadoop/_tez_session_dir/0063d895-feb1-4813-a487-7ffa26bc4a12/emr-s3-select-hive-connector.jar
+2021-05-04T06:15:06,592 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: tez.DagUtils (DagUtils.java:createLocalResource(760)) - Resource modification time: 1620108822356 for hdfs://ip-172-31-14-208.ec2.internal:8020/tmp/hive/hadoop/_tez_session_dir/0063d895-feb1-4813-a487-7ffa26bc4a12/hive-openx-serde.jar
+2021-05-04T06:15:06,594 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: tez.DagUtils (DagUtils.java:createLocalResource(760)) - Resource modification time: 1620108822403 for hdfs://ip-172-31-14-208.ec2.internal:8020/tmp/hive/hadoop/_tez_session_dir/0063d895-feb1-4813-a487-7ffa26bc4a12/hudi-hadoop-mr-bundle.jar
+2021-05-04T06:15:06,594 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: exec.Task (TezTask.java:build(355)) - Dag name: select count(*) from hive_test(Stage-1)
+2021-05-04T06:15:06,666 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: exec.SerializationUtilities (SerializationUtilities.java:serializePlan(450)) - Serializing ReduceWork using kryo
+2021-05-04T06:15:06,678 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: exec.Utilities (Utilities.java:setBaseWork(618)) - Serialized plan (via RPC) - name: Reducer 2 size: 1.35KB
+2021-05-04T06:15:06,707 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: ql.Context (Context.java:getMRScratchDir(475)) - New scratch dir is hdfs://ip-172-31-14-208.ec2.internal:8020/tmp/hive/hadoop/0063d895-feb1-4813-a487-7ffa26bc4a12/hive_2021-05-04_06-15-04_687_5431184248906968385-1
+2021-05-04T06:15:06,712 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: tez.DagUtils (DagUtils.java:createVertex(562)) - Vertex has custom input? false
+2021-05-04T06:15:06,713 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: exec.SerializationUtilities (SerializationUtilities.java:serializePlan(450)) - Serializing MapWork using kryo
+2021-05-04T06:15:06,722 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: exec.Utilities (Utilities.java:setBaseWork(618)) - Serialized plan (via RPC) - name: Map 1 size: 3.10KB
+2021-05-04T06:15:06,812 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: client.TezClient (TezClient.java:submitDAGSession(636)) - Submitting dag to TezSession, sessionName=HIVE-0063d895-feb1-4813-a487-7ffa26bc4a12, applicationId=application_1620108515464_0001, dagName=select count(*) from hive_test(Stage-1), callerContext={ context=HIVE, callerType=HIVE_QUERY_ID, callerId=hadoop_20210504061504_748e5ce8-fc56-4539-871f-049e11ff3293 }
+2021-05-04T06:15:07,066 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: client.TezClient (TezClient.java:submitDAGSession(708)) - Submitted dag to TezSession, sessionName=HIVE-0063d895-feb1-4813-a487-7ffa26bc4a12, applicationId=application_1620108515464_0001, dagId=dag_1620108515464_0001_1, dagName=select count(*) from hive_test(Stage-1)
+2021-05-04T06:15:07,683 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: SessionState (SessionState.java:printInfo(1115)) - Status: Running (Executing on YARN cluster with App id application_1620108515464_0001)
+
+2021-05-04T06:15:07,703 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: SessionState (SessionState.java:logInfo(1096)) - Map 1: -/-	Reducer 2: 0/1	
+2021-05-04T06:15:09,415 ERROR [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: SessionState (SessionState.java:printError(1130)) - Status: Failed
+2021-05-04T06:15:09,415 ERROR [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: SessionState (SessionState.java:printError(1130)) - Vertex failed, vertexName=Map 1, vertexId=vertex_1620108515464_0001_1_00, diagnostics=[Vertex vertex_1620108515464_0001_1_00 [Map 1] killed/failed due to:ROOT_INPUT_INIT_FAILURE, Vertex Input: hive_test initializer failed, vertex=vertex_1620108515464_0001_1_00 [Map 1], java.io.IOException: com.amazon.ws.emr.hadoop.fs.shaded.com.amazonaws.services.s3.model.AmazonS3Exception: Access Denied (Service: Amazon S3; Status Code: 403; Error Code: AccessDenied; Request ID: QASDYA5GDKR4HG26; S3 Extended Request ID: l+VCC4UduNhAymZ4g4Nor3EwK/a7mimma+NqYoLAgUBolRyFnXTl8AkpobwhZdccB6sndN5a56g=), S3 Extended Request ID: l+VCC4UduNhAymZ4g4Nor3EwK/a7mimma+NqYoLAgUBolRyFnXTl8AkpobwhZdccB6sndN5a56g=
+	at com.amazon.ws.emr.hadoop.fs.s3n.Jets3tNativeFileSystemStore.list(Jets3tNativeFileSystemStore.java:329)
+	at com.amazon.ws.emr.hadoop.fs.s3n.S3NativeFileSystem.getFileStatus(S3NativeFileSystem.java:613)
+	at org.apache.hadoop.fs.Globber.getFileStatus(Globber.java:64)
+	at org.apache.hadoop.fs.Globber.doGlob(Globber.java:269)
+	at org.apache.hadoop.fs.Globber.glob(Globber.java:148)
+	at org.apache.hadoop.fs.FileSystem.globStatus(FileSystem.java:1760)
+	at com.amazon.ws.emr.hadoop.fs.EmrFileSystem.globStatus(EmrFileSystem.java:413)
+	at org.apache.hadoop.mapred.FileInputFormat.singleThreadedListStatus(FileInputFormat.java:238)
+	at org.apache.hadoop.mapred.FileInputFormat.listStatus(FileInputFormat.java:208)
+	at org.apache.hadoop.mapred.FileInputFormat.getSplits(FileInputFormat.java:288)
+	at org.apache.hadoop.hive.ql.io.HiveInputFormat.addSplitsForGroup(HiveInputFormat.java:442)
+	at org.apache.hadoop.hive.ql.io.HiveInputFormat.getSplits(HiveInputFormat.java:561)
+	at org.apache.hadoop.hive.ql.exec.tez.HiveSplitGenerator.initialize(HiveSplitGenerator.java:196)
+	at org.apache.tez.dag.app.dag.RootInputInitializerManager$InputInitializerCallable$1.run(RootInputInitializerManager.java:278)
+	at org.apache.tez.dag.app.dag.RootInputInitializerManager$InputInitializerCallable$1.run(RootInputInitializerManager.java:269)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at javax.security.auth.Subject.doAs(Subject.java:422)
+	at org.apache.hadoop.security.UserGroupInformation.doAs(UserGroupInformation.java:1844)
+	at org.apache.tez.dag.app.dag.RootInputInitializerManager$InputInitializerCallable.call(RootInputInitializerManager.java:269)
+	at org.apache.tez.dag.app.dag.RootInputInitializerManager$InputInitializerCallable.call(RootInputInitializerManager.java:253)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: com.amazon.ws.emr.hadoop.fs.shaded.com.amazonaws.services.s3.model.AmazonS3Exception: Access Denied (Service: Amazon S3; Status Code: 403; Error Code: AccessDenied; Request ID: QASDYA5GDKR4HG26; S3 Extended Request ID: l+VCC4UduNhAymZ4g4Nor3EwK/a7mimma+NqYoLAgUBolRyFnXTl8AkpobwhZdccB6sndN5a56g=), S3 Extended Request ID: l+VCC4UduNhAymZ4g4Nor3EwK/a7mimma+NqYoLAgUBolRyFnXTl8AkpobwhZdccB6sndN5a56g=
+	at com.amazon.ws.emr.hadoop.fs.shaded.com.amazonaws.http.AmazonHttpClient$RequestExecutor.handleErrorResponse(AmazonHttpClient.java:1742)
+	at com.amazon.ws.emr.hadoop.fs.shaded.com.amazonaws.http.AmazonHttpClient$RequestExecutor.handleServiceErrorResponse(AmazonHttpClient.java:1371)
+	at com.amazon.ws.emr.hadoop.fs.shaded.com.amazonaws.http.AmazonHttpClient$RequestExecutor.executeOneRequest(AmazonHttpClient.java:1347)
+	at com.amazon.ws.emr.hadoop.fs.shaded.com.amazonaws.http.AmazonHttpClient$RequestExecutor.executeHelper(AmazonHttpClient.java:1127)
+	at com.amazon.ws.emr.hadoop.fs.shaded.com.amazonaws.http.AmazonHttpClient$RequestExecutor.doExecute(AmazonHttpClient.java:784)
+	at com.amazon.ws.emr.hadoop.fs.shaded.com.amazonaws.http.AmazonHttpClient$RequestExecutor.executeWithTimer(AmazonHttpClient.java:752)
+	at com.amazon.ws.emr.hadoop.fs.shaded.com.amazonaws.http.AmazonHttpClient$RequestExecutor.execute(AmazonHttpClient.java:726)
+	at com.amazon.ws.emr.hadoop.fs.shaded.com.amazonaws.http.AmazonHttpClient$RequestExecutor.access$500(AmazonHttpClient.java:686)
+	at com.amazon.ws.emr.hadoop.fs.shaded.com.amazonaws.http.AmazonHttpClient$RequestExecutionBuilderImpl.execute(AmazonHttpClient.java:668)
+	at com.amazon.ws.emr.hadoop.fs.shaded.com.amazonaws.http.AmazonHttpClient.execute(AmazonHttpClient.java:532)
+	at com.amazon.ws.emr.hadoop.fs.shaded.com.amazonaws.http.AmazonHttpClient.execute(AmazonHttpClient.java:512)
+	at com.amazon.ws.emr.hadoop.fs.shaded.com.amazonaws.services.s3.AmazonS3Client.invoke(AmazonS3Client.java:5052)
+	at com.amazon.ws.emr.hadoop.fs.shaded.com.amazonaws.services.s3.AmazonS3Client.invoke(AmazonS3Client.java:4998)
+	at com.amazon.ws.emr.hadoop.fs.shaded.com.amazonaws.services.s3.AmazonS3Client.invoke(AmazonS3Client.java:4992)
+	at com.amazon.ws.emr.hadoop.fs.shaded.com.amazonaws.services.s3.AmazonS3Client.listObjectsV2(AmazonS3Client.java:938)
+	at com.amazon.ws.emr.hadoop.fs.s3.lite.call.ListObjectsV2Call.perform(ListObjectsV2Call.java:22)
+	at com.amazon.ws.emr.hadoop.fs.s3.lite.call.ListObjectsV2Call.perform(ListObjectsV2Call.java:8)
+	at com.amazon.ws.emr.hadoop.fs.s3.lite.executor.GlobalS3Executor.execute(GlobalS3Executor.java:114)
+	at com.amazon.ws.emr.hadoop.fs.s3.lite.AmazonS3LiteClient.invoke(AmazonS3LiteClient.java:189)
+	at com.amazon.ws.emr.hadoop.fs.s3.lite.AmazonS3LiteClient.invoke(AmazonS3LiteClient.java:184)
+	at com.amazon.ws.emr.hadoop.fs.s3.lite.AmazonS3LiteClient.listObjectsV2(AmazonS3LiteClient.java:75)
+	at com.amazon.ws.emr.hadoop.fs.s3n.Jets3tNativeFileSystemStore.list(Jets3tNativeFileSystemStore.java:320)
+	... 23 more
+]
+2021-05-04T06:15:09,416 ERROR [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: SessionState (SessionState.java:printError(1130)) - Vertex killed, vertexName=Reducer 2, vertexId=vertex_1620108515464_0001_1_01, diagnostics=[Vertex received Kill in INITED state., Vertex vertex_1620108515464_0001_1_01 [Reducer 2] killed/failed due to:OTHER_VERTEX_FAILURE]
+2021-05-04T06:15:09,416 ERROR [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: SessionState (SessionState.java:printError(1130)) - DAG did not succeed due to VERTEX_FAILURE. failedVertices:1 killedVertices:1
+2021-05-04T06:15:09,448 ERROR [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: ql.Driver (SessionState.java:printError(1130)) - FAILED: Execution Error, return code 2 from org.apache.hadoop.hive.ql.exec.tez.TezTask. Vertex failed, vertexName=Map 1, vertexId=vertex_1620108515464_0001_1_00, diagnostics=[Vertex vertex_1620108515464_0001_1_00 [Map 1] killed/failed due to:ROOT_INPUT_INIT_FAILURE, Vertex Input: hive_test initializer failed, vertex=vertex_1620108515464_0001_1_00 [Map 1], java.io.IOException: com.amazon.ws.emr.hadoop.fs.shaded.com.amazonaws.services.s3.model.AmazonS3Exception: Access Denied (Service: Amazon S3; Status Code: 403; Error Code: AccessDenied; Request ID: QASDYA5GDKR4HG26; S3 Extended Request ID: l+VCC4UduNhAymZ4g4Nor3EwK/a7mimma+NqYoLAgUBolRyFnXTl8AkpobwhZdccB6sndN5a56g=), S3 Extended Request ID: l+VCC4UduNhAymZ4g4Nor3EwK/a7mimma+NqYoLAgUBolRyFnXTl8AkpobwhZdccB6sndN5a56g=
+	at com.amazon.ws.emr.hadoop.fs.s3n.Jets3tNativeFileSystemStore.list(Jets3tNativeFileSystemStore.java:329)
+	at com.amazon.ws.emr.hadoop.fs.s3n.S3NativeFileSystem.getFileStatus(S3NativeFileSystem.java:613)
+	at org.apache.hadoop.fs.Globber.getFileStatus(Globber.java:64)
+	at org.apache.hadoop.fs.Globber.doGlob(Globber.java:269)
+	at org.apache.hadoop.fs.Globber.glob(Globber.java:148)
+	at org.apache.hadoop.fs.FileSystem.globStatus(FileSystem.java:1760)
+	at com.amazon.ws.emr.hadoop.fs.EmrFileSystem.globStatus(EmrFileSystem.java:413)
+	at org.apache.hadoop.mapred.FileInputFormat.singleThreadedListStatus(FileInputFormat.java:238)
+	at org.apache.hadoop.mapred.FileInputFormat.listStatus(FileInputFormat.java:208)
+	at org.apache.hadoop.mapred.FileInputFormat.getSplits(FileInputFormat.java:288)
+	at org.apache.hadoop.hive.ql.io.HiveInputFormat.addSplitsForGroup(HiveInputFormat.java:442)
+	at org.apache.hadoop.hive.ql.io.HiveInputFormat.getSplits(HiveInputFormat.java:561)
+	at org.apache.hadoop.hive.ql.exec.tez.HiveSplitGenerator.initialize(HiveSplitGenerator.java:196)
+	at org.apache.tez.dag.app.dag.RootInputInitializerManager$InputInitializerCallable$1.run(RootInputInitializerManager.java:278)
+	at org.apache.tez.dag.app.dag.RootInputInitializerManager$InputInitializerCallable$1.run(RootInputInitializerManager.java:269)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at javax.security.auth.Subject.doAs(Subject.java:422)
+	at org.apache.hadoop.security.UserGroupInformation.doAs(UserGroupInformation.java:1844)
+	at org.apache.tez.dag.app.dag.RootInputInitializerManager$InputInitializerCallable.call(RootInputInitializerManager.java:269)
+	at org.apache.tez.dag.app.dag.RootInputInitializerManager$InputInitializerCallable.call(RootInputInitializerManager.java:253)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: com.amazon.ws.emr.hadoop.fs.shaded.com.amazonaws.services.s3.model.AmazonS3Exception: Access Denied (Service: Amazon S3; Status Code: 403; Error Code: AccessDenied; Request ID: QASDYA5GDKR4HG26; S3 Extended Request ID: l+VCC4UduNhAymZ4g4Nor3EwK/a7mimma+NqYoLAgUBolRyFnXTl8AkpobwhZdccB6sndN5a56g=), S3 Extended Request ID: l+VCC4UduNhAymZ4g4Nor3EwK/a7mimma+NqYoLAgUBolRyFnXTl8AkpobwhZdccB6sndN5a56g=
+	at com.amazon.ws.emr.hadoop.fs.shaded.com.amazonaws.http.AmazonHttpClient$RequestExecutor.handleErrorResponse(AmazonHttpClient.java:1742)
+	at com.amazon.ws.emr.hadoop.fs.shaded.com.amazonaws.http.AmazonHttpClient$RequestExecutor.handleServiceErrorResponse(AmazonHttpClient.java:1371)
+	at com.amazon.ws.emr.hadoop.fs.shaded.com.amazonaws.http.AmazonHttpClient$RequestExecutor.executeOneRequest(AmazonHttpClient.java:1347)
+	at com.amazon.ws.emr.hadoop.fs.shaded.com.amazonaws.http.AmazonHttpClient$RequestExecutor.executeHelper(AmazonHttpClient.java:1127)
+	at com.amazon.ws.emr.hadoop.fs.shaded.com.amazonaws.http.AmazonHttpClient$RequestExecutor.doExecute(AmazonHttpClient.java:784)
+	at com.amazon.ws.emr.hadoop.fs.shaded.com.amazonaws.http.AmazonHttpClient$RequestExecutor.executeWithTimer(AmazonHttpClient.java:752)
+	at com.amazon.ws.emr.hadoop.fs.shaded.com.amazonaws.http.AmazonHttpClient$RequestExecutor.execute(AmazonHttpClient.java:726)
+	at com.amazon.ws.emr.hadoop.fs.shaded.com.amazonaws.http.AmazonHttpClient$RequestExecutor.access$500(AmazonHttpClient.java:686)
+	at com.amazon.ws.emr.hadoop.fs.shaded.com.amazonaws.http.AmazonHttpClient$RequestExecutionBuilderImpl.execute(AmazonHttpClient.java:668)
+	at com.amazon.ws.emr.hadoop.fs.shaded.com.amazonaws.http.AmazonHttpClient.execute(AmazonHttpClient.java:532)
+	at com.amazon.ws.emr.hadoop.fs.shaded.com.amazonaws.http.AmazonHttpClient.execute(AmazonHttpClient.java:512)
+	at com.amazon.ws.emr.hadoop.fs.shaded.com.amazonaws.services.s3.AmazonS3Client.invoke(AmazonS3Client.java:5052)
+	at com.amazon.ws.emr.hadoop.fs.shaded.com.amazonaws.services.s3.AmazonS3Client.invoke(AmazonS3Client.java:4998)
+	at com.amazon.ws.emr.hadoop.fs.shaded.com.amazonaws.services.s3.AmazonS3Client.invoke(AmazonS3Client.java:4992)
+	at com.amazon.ws.emr.hadoop.fs.shaded.com.amazonaws.services.s3.AmazonS3Client.listObjectsV2(AmazonS3Client.java:938)
+	at com.amazon.ws.emr.hadoop.fs.s3.lite.call.ListObjectsV2Call.perform(ListObjectsV2Call.java:22)
+	at com.amazon.ws.emr.hadoop.fs.s3.lite.call.ListObjectsV2Call.perform(ListObjectsV2Call.java:8)
+	at com.amazon.ws.emr.hadoop.fs.s3.lite.executor.GlobalS3Executor.execute(GlobalS3Executor.java:114)
+	at com.amazon.ws.emr.hadoop.fs.s3.lite.AmazonS3LiteClient.invoke(AmazonS3LiteClient.java:189)
+	at com.amazon.ws.emr.hadoop.fs.s3.lite.AmazonS3LiteClient.invoke(AmazonS3LiteClient.java:184)
+	at com.amazon.ws.emr.hadoop.fs.s3.lite.AmazonS3LiteClient.listObjectsV2(AmazonS3LiteClient.java:75)
+	at com.amazon.ws.emr.hadoop.fs.s3n.Jets3tNativeFileSystemStore.list(Jets3tNativeFileSystemStore.java:320)
+	... 23 more
+]Vertex killed, vertexName=Reducer 2, vertexId=vertex_1620108515464_0001_1_01, diagnostics=[Vertex received Kill in INITED state., Vertex vertex_1620108515464_0001_1_01 [Reducer 2] killed/failed due to:OTHER_VERTEX_FAILURE]DAG did not succeed due to VERTEX_FAILURE. failedVertices:1 killedVertices:1
+2021-05-04T06:15:09,448 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: ql.Driver (Driver.java:execute(2050)) - Completed executing command(queryId=hadoop_20210504061504_748e5ce8-fc56-4539-871f-049e11ff3293); Time taken: 3.015 seconds
+2021-05-04T06:15:09,449 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: exec.ListSinkOperator (Operator.java:close(690)) - Closing operator LIST_SINK[7]
+2021-05-04T06:15:09,452 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: conf.HiveConf (HiveConf.java:getLogIdVar(3968)) - Using the default value passed in for log id: 0063d895-feb1-4813-a487-7ffa26bc4a12
+2021-05-04T06:15:09,452 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: session.SessionState (SessionState.java:resetThreadName(436)) - Resetting thread name to  main
+2021-05-04T06:16:44,818 INFO  [main([])]: conf.HiveConf (HiveConf.java:getLogIdVar(3968)) - Using the default value passed in for log id: 0063d895-feb1-4813-a487-7ffa26bc4a12
+2021-05-04T06:16:44,819 INFO  [main([])]: session.SessionState (SessionState.java:updateThreadName(425)) - Updating thread name to 0063d895-feb1-4813-a487-7ffa26bc4a12 main
+2021-05-04T06:16:44,823 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: tez.TezSessionPoolManager (TezSessionPoolManager.java:closeIfNotDefault(427)) - Closing tez session if not default: sessionId=0063d895-feb1-4813-a487-7ffa26bc4a12, queueName=null, user=hadoop, doAs=true, isOpen=true, isDefault=false
+2021-05-04T06:16:44,823 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: tez.TezSessionState (TezSessionState.java:close(504)) - Closing Tez Session
+2021-05-04T06:16:44,823 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: client.TezClient (TezClient.java:stop(737)) - Shutting down Tez Session, sessionName=HIVE-0063d895-feb1-4813-a487-7ffa26bc4a12, applicationId=application_1620108515464_0001
+2021-05-04T06:16:44,839 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: session.SessionState (SessionState.java:dropPathAndUnregisterDeleteOnExit(842)) - Deleted directory: /tmp/hive/hadoop/0063d895-feb1-4813-a487-7ffa26bc4a12 on fs with scheme hdfs
+2021-05-04T06:16:44,839 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: session.SessionState (SessionState.java:dropPathAndUnregisterDeleteOnExit(842)) - Deleted directory: /mnt/tmp/hadoop/0063d895-feb1-4813-a487-7ffa26bc4a12 on fs with scheme file
+2021-05-04T06:16:44,844 INFO  [0063d895-feb1-4813-a487-7ffa26bc4a12 main([])]: hive.metastore (HiveMetaStoreClient.java:close(564)) - Closed a connection to metastore, current connections: 0

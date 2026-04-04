@@ -1,0 +1,39 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: A starter AWS Lambda function.
+Resources:
+  Table:
+    Properties:
+      PrimaryKey:
+        Name: greeting
+        Type: String
+      ProvisionedThroughput:
+        ReadCapacityUnits: 2
+        WriteCapacityUnits: 2
+    Type: AWS::Serverless::SimpleTable
+  helloworldpython3:
+    Properties:
+      CodeUri: s3://stephane-code-sam/ea2521cec3989f886f87639ff492c07e
+      Description: A starter AWS Lambda function.
+      Environment:
+        Variables:
+          REGION_NAME:
+            Ref: AWS::Region
+          TABLE_NAME:
+            Ref: Table
+      Events:
+        HelloWorldSAMAPI:
+          Properties:
+            Method: GET
+            Path: /hello
+          Type: Api
+      Handler: app.lambda_handler
+      MemorySize: 128
+      Policies:
+      - DynamoDBCrudPolicy:
+          TableName:
+            Ref: Table
+      Runtime: python3.6
+      Timeout: 3
+      Tracing: Active
+    Type: AWS::Serverless::Function
+Transform: AWS::Serverless-2016-10-31
