@@ -3207,6 +3207,7 @@ def count_range_optimized(L, R):
 | Decode Ways | 91 | String DP | Medium |
 | Word Break | 139 | Dictionary DP | Medium |
 | Coin Change | 322 | Min coins | Medium |
+| Integer Break | 343 | Max product, break vs no-break | Medium |
 
 ### **2D Grid Problems**
 | Problem | LC # | Key Technique | Difficulty |
@@ -4190,6 +4191,54 @@ public int numSquares(int n) {
 | Coin Change 2 | 518 | Same coins idea but counting combinations |
 | Combination Sum IV | 377 | Same coins idea but counting permutations |
 | Climbing Stairs | 70 | Simpler version — steps of 1 or 2 |
+
+### 2-7) Integer Break (LC 343) — Linear DP (Break vs No-Break)
+
+**Pattern**: Linear DP — for each integer `i`, try all split points `j` and decide whether to break `(i-j)` further or not.
+
+**Core DP Idea**:
+```
+dp[i] = max product by breaking integer i into at least 2 positive integers
+
+Transition:
+  dp[i] = max over all j in [1, i-1] of:
+    max(j * (i - j),      // don't break (i-j) further
+        j * dp[i - j])    // break (i-j) further using its best product
+```
+
+The key insight is the **break vs no-break choice**: when splitting `i` into `j + (i-j)`, the remainder `(i-j)` can either be kept as-is or broken further (using `dp[i-j]`). We must consider both because `dp[i-j]` assumes at least 2 parts, but sometimes using `(i-j)` directly is better (e.g., `dp[2]=1` but the value `2` itself is larger).
+
+**Greedy shortcut**: Break into as many 3s as possible. If remainder is 1, replace `3+1` with `2+2` (since `2×2 > 3×1`).
+
+```java
+// DP approach
+public int integerBreak(int n) {
+    int[] dp = new int[n + 1];
+    dp[1] = 1;
+    for (int i = 2; i <= n; i++) {
+        for (int j = 1; j < i; j++) {
+            dp[i] = Math.max(dp[i],
+                    Math.max(j * (i - j), j * dp[i - j]));
+        }
+    }
+    return dp[n];
+}
+```
+
+**DP Table for n=10**:
+```
+i:      1  2  3  4  5  6  7  8  9  10
+dp[i]:  1  1  2  4  6  9 12 18 27 36
+```
+
+**Similar LeetCode Problems**:
+| Problem | LC # | Similarity |
+|---------|------|-----------|
+| Perfect Squares | 279 | Min count to sum to n (unbounded knapsack variant) |
+| Coin Change | 322 | Optimize over all ways to decompose n |
+| Unique Binary Search Trees | 96 | Try all split points, combine subproblem results |
+| Maximum Product Subarray | 152 | Maximize product with DP |
+| Partition to K Equal Sum Subsets | 698 | Partition integer into parts with constraint |
 
 ## Decision Framework
 

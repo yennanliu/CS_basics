@@ -43,6 +43,16 @@ public class IntegerBreak {
 
   // V0
   // IDEA: 1D DP (fixed by gemini)
+  /**  NOTE !!!
+   *
+   *  1. dp[i] =
+   *        represents the maximum product you can get by breaking
+   *        the integer i into at least two positive integers.
+   *
+   *  2. dp[i] = max( j * (i - j),  j * dp[i - j] )
+   *
+   *
+   */
   /**  CORE IDEA:
    *
    * ---
