@@ -300,6 +300,30 @@ map.merge(key, 1, Integer::sum);              // Increment counter atomically
 map.compute(key, (k, v) -> v == null ? 1 : v + 1); // Custom computation
 ```
 
+#### Elegant Map Value Update with `putIfAbsent`
+```java
+// Elegant: use putIfAbsent + get (e.g. LC 399 - graph with adjacency list)
+Map<String, List<Node>> graph = new HashMap<>();
+for (int i = 0; i < equations.size(); i++) {
+    String u = equations.get(i).get(0);
+    String v = equations.get(i).get(1);
+    double val = values[i];
+
+    graph.putIfAbsent(u, new ArrayList<>());
+    graph.putIfAbsent(v, new ArrayList<>());
+    graph.get(u).add(new Node(v, val));
+    graph.get(v).add(new Node(u, 1.0 / val));
+}
+
+// Verbose (avoid): manual containsKey check + put back
+if (!map.containsKey(ai)) {
+    map.put(ai, new ArrayList<>());
+}
+List<MyInfo> tmpList = map.get(ai);
+tmpList.add(new MyInfo(ai, bi, val));
+map.put(ai, tmpList); // unnecessary - list is already in the map
+```
+
 ## 3) String Operations
 
 ### 3.1) String to Character Array

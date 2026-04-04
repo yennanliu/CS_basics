@@ -328,6 +328,17 @@ public class EvaluateDivision {
             String v = equations.get(i).get(1);
             double val = values[i];
 
+            /** NOTE !!!
+             *
+             *   we prefer to use below trick handle `map val` update.
+             *
+             *   e.g.
+             *
+             *   ```
+             *   graph.putIfAbsent(...)
+             *   graph.get(u).add(...)
+             *   ```
+             */
             graph.putIfAbsent(u, new ArrayList<>());
             graph.putIfAbsent(v, new ArrayList<>());
             graph.get(u).add(new Node(v, val));
@@ -357,12 +368,48 @@ public class EvaluateDivision {
         while (!queue.isEmpty()) {
             Node curr = queue.poll();
 
+            /**  NOTE !!!
+             *
+             *  when can visit `end`,
+             *  means that we already completed
+             *  ALL `division op`,
+             *
+             *  should we should return the state (val) directly !!!
+             *
+             */
             if (curr.name.equals(end))
                 return curr.val;
 
             for (Node neighbor : graph.get(curr.name)) {
+                /** NOTE !!!
+                 *
+                 *   we need `visited` to avoid
+                 *   duplicated visiting
+                 */
                 if (!visited.contains(neighbor.name)) {
                     visited.add(neighbor.name);
+                    /** NOTE !!!
+                     *
+                     *  queue: [ op_name, cur_res ]
+                     *
+                     *  (we need to save above info in queue)
+                     *
+                     *
+                     *  -----------------
+                     *
+                     *
+                     *
+                     *      class Node {
+                     *         String name;
+                     *         double val;
+                     *
+                     *         Node(String name, double val) {
+                     *             this.name = name;
+                     *             this.val = val;
+                     *         }
+                     *     }
+                     *
+                     */
                     // Cumulative product: current_total * edge_weight
                     queue.offer(new Node(neighbor.name, curr.val * neighbor.val));
                 }

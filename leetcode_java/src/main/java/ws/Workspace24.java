@@ -3045,6 +3045,10 @@ public class Workspace24 {
             List<MyInfo> tmpList = map.get(ai);
             tmpList.add(new MyInfo(ai, bi, val));
             map.put(ai, tmpList);
+
+            // NOTE !!!
+            //  Your map must store both directions. If $a/b = 2.0$, then $b/a = 0.5$
+
         }
 
         //List<Double> collected = new ArrayList<>();
@@ -3068,6 +3072,14 @@ public class Workspace24 {
     }
 
 
+    // BFS State:
+    // The Queue should store the "current node" and the "product so far."
+
+    // Visited Set: BFS (and DFS) in a graph must use a
+    // visited set to avoid infinite loops (cycles like $a \to b \to a$).
+
+    // Edge Case: If the start or end variable in a query
+    // has never been seen in the equations, the answer is immediately -1.0.
 
     // /??
     private double bfsCal(String ai, String bi, Map<String, List<MyInfo>> map, double cur){
