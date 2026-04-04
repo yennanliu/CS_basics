@@ -27,7 +27,7 @@
 	- difference_array.md (OK)
 	- Dijkstra.md  (OK)
 	- dp_pattern.md  (TODO: LC examples)
-	- dp.md  (TODO: LC examples)
+	- dp.md  (TODO: LC examples) - `2-5) Sum of Distances in Tree (LC 834) — Re-rooting DP`
 
 - to review
 - needcode `250` - similar LC by AI
@@ -296,6 +296,8 @@
 	- todo (20260401)
 		- 297,449
 		- 3319
+	- todo (20260404)
+		- 300
 
  	==================================
 
