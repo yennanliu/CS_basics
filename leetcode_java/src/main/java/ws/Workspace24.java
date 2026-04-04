@@ -50,8 +50,85 @@ public class Workspace24 {
      *
      *
      */
+    // 11.05 - 15 am
+    // IDEA 1)  LOOP + char op ???
+//    public boolean isAlienSorted(String[] words, String order) {
+//        // edge
+//        if(words == null || words.length == 0){
+//            return true;
+//        }
+//        if(order == null){
+//            return true; // ??
+//        }
+//
+//        // build up `ordering` array
+//        // ???
+//        //int n = order.length();
+//        // [adjusted_order_1, adjusted_order_2, ... ]
+//        //     idx: `mapping to original alphabet system`
+//        // use 26 instead of n, more explicit
+//
+//
+//        int[] orderArr = new int[26]; // idx: the alphabet, val: the `actual` ordering
+//        for(int i = 0; i < 26; i++){
+//            int idx = order.charAt(i) - 'a'; // /??
+//            orderArr[idx] = i;
+//        }
+//
+//        System.out.println(">>> orderArr = " + Arrays.toString(orderArr));
+//
+//        // ???
+//        for(int i = 1; i < words.length; i++){
+//            String cur = words[i];
+//            String prev = words[i-1];
+//
+//            // ???
+//            if(!isCorrectOrder(cur, prev, orderArr)){
+//                return false;
+//            }
+//
+//        }
+//
+//        return true;
+//    }
+//
+//    private boolean isCorrectOrder(String cur, String prev, int[] orderArr){
+//        // ??
+//        int size = Math.min(cur.length(), prev.length());
+//
+//        for(int i = 0; i < size; i++){
+//
+//            int prevIdx = prev.charAt(i) - 'a'; // get idx, so we can use `orderArr` mapping
+//            int curIdx = cur.charAt(i) - 'a';
+//
+//            // ??? NOTE !!!
+//            // if idx are different,
+//            // MUST compare and make `decision` right away
+//            if(prevIdx != curIdx){
+////                if( orderArr[prevIdx] > orderArr[curIdx] ){
+////                    return false;
+////                }
+////                return true;
+//                return orderArr[prevIdx] < orderArr[curIdx];
+//            }
+//        }
+//
+//        // and check the `remaining` alphabet
+//        // NOTE `<=`
+//        return prev.length() <= cur.length();
+//    }
+//
+
+
+
+
+
+
+
+
+
     // IDEA 1) char op + looping ?? ???
-    public boolean isAlienSorted(String[] words, String order) {
+    public boolean isAlienSorted_97(String[] words, String order) {
         // edge
 
         int[] orderArr = new int[26]; // ??

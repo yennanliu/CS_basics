@@ -86,6 +86,89 @@ public class VerifyingAnAlienDictionary {
     }
 
 
+    // V0-0-0-1
+    // IDEA  LOOP + char op (fixed by gemini)
+    public boolean isAlienSorted_0_0_0_1(String[] words, String order) {
+        // edge
+        if (words == null || words.length == 0) {
+            return true;
+        }
+        if (order == null) {
+            return true;
+        }
+
+        /**  NOTE !!!
+         *
+         *  build up `ordering` array
+         *
+         *
+         *  // [adjusted_order_1, adjusted_order_2, ... ]
+         *  //     idx: `mapping to original alphabet system`
+         *  // use 26 instead of n, more explicit
+         */
+        int[] orderArr = new int[26]; // idx: the alphabet, val: the `actual` ordering
+        for (int i = 0; i < 26; i++) {
+            int idx = order.charAt(i) - 'a'; // /??
+            orderArr[idx] = i;
+        }
+
+       // System.out.println(">>> orderArr = " + Arrays.toString(orderArr));
+
+        // NOTE !!! we start from idx=1, and compare with cur and prev
+        for (int i = 1; i < words.length; i++) {
+            String cur = words[i];
+            String prev = words[i - 1];
+
+            if (!isCorrectOrder(cur, prev, orderArr)) {
+                return false;
+            }
+
+        }
+
+        return true;
+    }
+
+    private boolean isCorrectOrder(String cur, String prev, int[] orderArr) {
+        /**  NOTE !!!
+         *
+         *  we loop over the `min` len from cur, prev
+         */
+        int size = Math.min(cur.length(), prev.length());
+
+        for (int i = 0; i < size; i++) {
+
+            /**  NOTE !!!
+             *
+             *  we get `idx` via `val - 'a'`
+             */
+            int prevIdx = prev.charAt(i) - 'a'; // get idx, so we can use `orderArr` mapping
+            int curIdx = cur.charAt(i) - 'a';
+
+            /**  NOTE !!!
+             *
+             *
+             *  when prev, cur alphabet are DIFFERENT,
+             *  (e.g. prevIdx != curIdx)
+             *  we need to compare their order !!!
+             *  and make `decision` RIGHT AWAY
+             */
+            if (prevIdx != curIdx) {
+                // V1
+                //                if( orderArr[prevIdx] > orderArr[curIdx] ){
+                //                    return false;
+                //                }
+                //                return true;
+                // V2
+                return orderArr[prevIdx] < orderArr[curIdx];
+            }
+        }
+
+        // and check the `remaining` alphabet
+        // NOTE `<=`
+        return prev.length() <= cur.length();
+    }
+
+
     // V0-0-1
     // IDEA:  HASHMAP + string op (linear pass) (fixed by gpt)
     /**
