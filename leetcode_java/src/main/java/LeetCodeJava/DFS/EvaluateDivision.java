@@ -308,6 +308,71 @@ public class EvaluateDivision {
         return -1.0;
     }
 
+    // V0-2
+    // IDEA: BFS (fixed by gemini)
+    class Node {
+        String name;
+        double val;
+
+        Node(String name, double val) {
+            this.name = name;
+            this.val = val;
+        }
+    }
+
+    public double[] calcEquation_0_2(List<List<String>> equations, double[] values, List<List<String>> queries) {
+        // 1. Build the Graph: Map<Source, List<DestinationNode>>
+        Map<String, List<Node>> graph = new HashMap<>();
+        for (int i = 0; i < equations.size(); i++) {
+            String u = equations.get(i).get(0);
+            String v = equations.get(i).get(1);
+            double val = values[i];
+
+            graph.putIfAbsent(u, new ArrayList<>());
+            graph.putIfAbsent(v, new ArrayList<>());
+            graph.get(u).add(new Node(v, val));
+            graph.get(v).add(new Node(u, 1.0 / val));
+        }
+
+        double[] res = new double[queries.size()];
+        for (int i = 0; i < queries.size(); i++) {
+            res[i] = bfs(queries.get(i).get(0), queries.get(i).get(1), graph);
+        }
+        return res;
+    }
+
+    private double bfs(String start, String end, Map<String, List<Node>> graph) {
+        if (!graph.containsKey(start) || !graph.containsKey(end))
+            return -1.0;
+        if (start.equals(end))
+            return 1.0;
+
+        Queue<Node> queue = new LinkedList<>();
+        Set<String> visited = new HashSet<>();
+
+        // Start BFS with product 1.0
+        queue.offer(new Node(start, 1.0));
+        visited.add(start);
+
+        while (!queue.isEmpty()) {
+            Node curr = queue.poll();
+
+            if (curr.name.equals(end))
+                return curr.val;
+
+            for (Node neighbor : graph.get(curr.name)) {
+                if (!visited.contains(neighbor.name)) {
+                    visited.add(neighbor.name);
+                    // Cumulative product: current_total * edge_weight
+                    queue.offer(new Node(neighbor.name, curr.val * neighbor.val));
+                }
+            }
+        }
+        return -1.0;
+    }
+
+
+
     // V2
     // IDEA: DFS
     // https://leetcode.com/problems/evaluate-division/solutions/3543256/image-explanation-easiest-concise-comple-okpu/

@@ -2986,8 +2986,125 @@ public class Workspace24 {
      *
      *
      */
-    //  IDEA 1) DFS
+    // 11.35 - 45 AM
+    /**
+     *
+     *  -> Return the answers to all queries.
+     *  If a single answer cannot be determined, return -1.0.
+     *
+     *
+     *  -----------
+     *
+     *  IDEA 1) DFS + HASHMAP
+     *
+     *   if ai / bi = val
+     *
+     *  ->  hashmap: {  ai : [ bi, val], ..... }
+     *
+     */
+    // ???
+    class MyInfo{
+        String ai;
+        String bi;
+        double val;
+
+        MyInfo(){
+        }
+
+        MyInfo(String ai, String bi, double val){
+            this.ai = ai;
+            this.bi = bi;
+            this.val = val;
+        }
+    }
+
     public double[] calcEquation(List<List<String>> equations, double[] values, List<List<String>> queries) {
+        // edge
+
+        // build map
+        /**
+         *  *  IDEA 1) DFS + HASHMAP
+         *
+         *   if ai / bi = val
+         *
+         *  ->  hashmap: {  ai : [ bi, val], ..... }
+         *
+         */
+        Map<String, List<MyInfo>> map = new HashMap<>();
+        for(int i = 0; i < equations.size(); i++){
+            List<String> list = equations.get(i);
+            String ai = list.get(0);
+            String bi = list.get(1);
+            double val = values[i]; // ??
+
+            // ??
+            if(!map.containsKey(ai)){
+                //map.put(ai, new MyInfo()); // ???
+                map.put(ai, new ArrayList<>()); // ???
+            }
+            List<MyInfo> tmpList = map.get(ai);
+            tmpList.add(new MyInfo(ai, bi, val));
+            map.put(ai, tmpList);
+        }
+
+        //List<Double> collected = new ArrayList<>();
+        double[] res = new double[queries.size()];
+        // ??? fill with -1.0
+        Arrays.fill(res, -1.0);
+
+        for(int i = 0; i < queries.size(); i++){
+            String ai = queries.get(i).get(0);
+            String bi = queries.get(i).get(1);
+            // ???
+            if(!map.containsKey(ai) || !map.containsKey(bi)){
+                continue;
+            }
+            // ????
+            res[i] = bfsCal(ai, bi, map, 1.0);
+        }
+
+
+        return res;
+    }
+
+
+
+    // /??
+    private double bfsCal(String ai, String bi, Map<String, List<MyInfo>> map, double cur){
+        // edge
+        if(ai == bi){
+            return 1.0;
+        }
+
+       Queue<MyInfo> q = new LinkedList<>();
+       if(map.containsKey(ai)){
+            for(MyInfo info: map.get(ai)){
+                q.add(info); // /??
+            }
+        }
+
+
+        while (!q.isEmpty()){
+
+        }
+
+
+        return 0.0;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+    //  IDEA 1) DFS
+    public double[] calcEquation_98(List<List<String>> equations, double[] values, List<List<String>> queries) {
         // edge
 
         // map
