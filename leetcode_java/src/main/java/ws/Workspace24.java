@@ -4475,13 +4475,28 @@ public class Workspace24 {
     public int integerBreak(int n) {
         // edge
 
+        // 1. Base cases for small n (must break into at least 2 numbers)
+        if (n == 2) return 1; // 1*1
+        if (n == 3) return 2; // 2*1
+
+
+
         int maxProduct = 1;
 
         // /?
-        int[] dp = new int[n];
+        // NOTE !!! size = n + 1
+       // int[] dp = new int[n];
+        int[] dp = new int[n + 1];
+
+
+//        dp[1] = 1;
+//        // ???
+//        dp[2] = Math.max(dp[1], dp[2]);
+
+        // NOTE !!!
+        // 2. Initialize DP
         dp[1] = 1;
-        // ???
-        dp[2] = Math.max(dp[1], dp[2]);
+        dp[2] = 1;
 
 
 

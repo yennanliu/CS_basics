@@ -43,6 +43,42 @@ public class IntegerBreak {
 
   // V0
   // IDEA: 1D DP (fixed by gemini)
+  /**  CORE IDEA:
+   *
+   * ---
+   *
+   * ### ⚙️ How the Logic Works (The "Break" vs. "No Break" Choice)
+   *
+   * The most important part of this definition is understanding
+   * why we use `Math.max(j * (i - j), j * dp[i - j])`.
+   *
+   * When we split the number $i$ at a point $j$,
+   * we are left with two parts: **$j$** and **$(i - j)$**.
+   * We then have to decide what to do with the second part $(i - j)$:
+   *
+   * 1.  **Option A: `j * (i - j)` (No further break)**
+   *     * We simply multiply $j$ by the remainder $(i - j)$.
+   *     * *Example*: If $i=4$ and $j=2$, we do $2 \times 2 = 4$.
+   * 2.  **Option B: `j * dp[i - j]` (Break further)**
+   *     * We multiply $j$ by the **best possible break** of the remainder, which we already calculated and stored in `dp[i - j]`.
+   *     * *Example*: If $i=5$ and $j=2$, we do $2 \times dp[3]$. Since $dp[3] = 2$ (from $1 \times 2$), this gives us $2 \times 2 = 4$.
+   *
+   * ---
+   *
+   * ### 📊 DP State Table for $n = 6$
+   * Let's trace the definition to see how the array fills up:
+   *
+   * | $i$ | `dp[i]` Calculation | Final `dp[i]` | Explanation |
+   * | :--- | :--- | :--- | :--- |
+   * | **1** | — | **0** | (Can't break 1 into two positive integers) |
+   * | **2** | $1 \times 1$ | **1** | Only one way: $1+1$ |
+   * | **3** | $\max(1 \times 2, 1 \times dp[2])$ | **2** | $1+2$ is better than $1+1+1$ |
+   * | **4** | $\max(2 \times 2, 2 \times dp[2])$ | **4** | $2+2$ is optimal |
+   * | **5** | $\max(2 \times 3, 2 \times dp[3])$ | **6** | $2+3$ is optimal |
+   * | **6** | $\max(3 \times 3, 3 \times dp[3])$ | **9** | $3+3$ is optimal |
+   *
+   *
+   */
   public int integerBreak(int n) {
       // 1. Base cases for small n (must break into at least 2 numbers)
       if (n == 2)
@@ -50,6 +86,24 @@ public class IntegerBreak {
       if (n == 3)
           return 2; // 2*1
 
+      /** NOTE !!!
+       *
+       *  V1
+       *
+       *
+       * dp[i] =
+       *    the maximum product we can get by breaking
+       *    integer i into at least two positive integers
+       *
+       *  -----------
+       *
+       *  V2
+       *
+       *  dp[i] =
+       *     represents the maximum product you can get by breaking
+       *     the integer i into at least two positive integers.
+       *
+       */
       int[] dp = new int[n + 1];
 
       // 2. Initialize DP
@@ -58,11 +112,22 @@ public class IntegerBreak {
 
       // 3. Fill the DP table
       for (int i = 3; i <= n; i++) {
+
+          /** NOTE !!!   Try splitting i into j and (i-j)
+           *
+           *  e.g.
+           *     i -> (j) + (i - j)
+           *
+           */
           // Try splitting i into j and (i-j)
           for (int j = 1; j < i; j++) {
-              // For the part (i-j), we can either:
-              // a) Not break it further: j * (i - j)
-              // b) Use its already calculated max break: j * dp[i - j]
+              /** NOTE !!!   For the part (i-j), we can either:
+               *
+               * // a) `Not` break it further: j * (i - j)
+               *
+               * // b) Use its already calculated max break: j * dp[i - j]
+               *
+               */
               int currentOption = Math.max(j * (i - j), j * dp[i - j]);
               dp[i] = Math.max(dp[i], currentOption);
           }
@@ -74,7 +139,180 @@ public class IntegerBreak {
 
   // V0-0-1
   // IDEA: 1D DP (fixed by GPT)
+  /** Example dry run:
+   *
+   * Nice — let’s build the **DP table step by step for
+   * `n = 10`**. This is where it really clicks.
+   *
+   * ---
+   *
+   * ## 🧠 Reminder
+   *
+   * ```
+   * dp[i] = max product by breaking i into ≥ 2 numbers
+   * ```
+   *
+   * Transition:
+   *
+   * ```
+   * dp[i] = max( j * (i - j),  j * dp[i - j] )
+   * ```
+   *
+   * ---
+   *
+   * ## 🧩 Start
+   *
+   * ```
+   * dp[1] = 1
+   * ```
+   *
+   * ---
+   *
+   * ## 🔢 Build Table
+   *
+   * ### i = 2
+   *
+   * * j = 1 → max(1×1, 1×dp[1]=1) = 1
+   *   ✅ dp[2] = 1
+   *
+   * ---
+   *
+   * ### i = 3
+   *
+   * * j = 1 → max(1×2, 1×dp[2]=1) = 2
+   * * j = 2 → max(2×1, 2×dp[1]=2) = 2
+   *   ✅ dp[3] = 2
+   *
+   * ---
+   *
+   * ### i = 4
+   *
+   * * j = 1 → max(1×3, 1×2) = 3
+   * * j = 2 → max(2×2, 2×1) = 4 ✅
+   * * j = 3 → max(3×1, 3×1) = 3
+   *
+   * 👉 **dp[4] = 4**
+   *
+   * ---
+   *
+   * ### i = 5
+   *
+   * * j = 1 → 4
+   * * j = 2 → 6 ✅
+   * * j = 3 → 6
+   * * j = 4 → 4
+   *
+   * 👉 **dp[5] = 6**
+   *
+   * ---
+   *
+   * ### i = 6
+   *
+   * * j = 1 → 6
+   * * j = 2 → 8
+   * * j = 3 → 9 ✅
+   * * j = 4 → 8
+   * * j = 5 → 6
+   *
+   * 👉 **dp[6] = 9**
+   *
+   * ---
+   *
+   * ### i = 7
+   *
+   * * j = 1 → 9
+   * * j = 2 → 12 ✅
+   * * j = 3 → 12
+   * * j = 4 → 12
+   * * j = 5 → 10
+   * * j = 6 → 9
+   *
+   * 👉 **dp[7] = 12**
+   *
+   * ---
+   *
+   * ### i = 8
+   *
+   * * j = 1 → 12
+   * * j = 2 → 18 ✅
+   * * j = 3 → 18
+   * * j = 4 → 16
+   * * j = 5 → 15
+   * * j = 6 → 12
+   * * j = 7 → 7
+   *
+   * 👉 **dp[8] = 18**
+   *
+   * ---
+   *
+   * ### i = 9
+   *
+   * * j = 1 → 18
+   * * j = 2 → 24
+   * * j = 3 → 27 ✅
+   * * j = 4 → 24
+   * * j = 5 → 30 ❗ wait → check carefully
+   *
+   *   * 5×dp[4] = 5×4 = 20 (not 30)
+   * * j = 6 → 18
+   * * j = 7 → 14
+   * * j = 8 → 8
+   *
+   * 👉 **dp[9] = 27**
+   *
+   * ---
+   *
+   * ### i = 10
+   *
+   * * j = 1 → 27
+   * * j = 2 → 36 ✅
+   * * j = 3 → 36
+   * * j = 4 → 32
+   * * j = 5 → 30
+   * * j = 6 → 27
+   * * j = 7 → 21
+   * * j = 8 → 16
+   * * j = 9 → 9
+   *
+   * 👉 **dp[10] = 36**
+   *
+   * ---
+   *
+   * ## 📊 Final DP Table
+   *
+   * ```
+   * i:      1  2  3  4  5  6  7  8  9  10
+   * dp[i]:  1  1  2  4  6  9 12 18 27 36
+   * ```
+   *
+   * ---
+   *
+   * ## 🔥 Pattern You Should Notice
+   *
+   * * Starts forming powers of **3**
+   * * Optimal splits:
+   *
+   *   * 10 → 3 + 3 + 4 → 3×3×4 = 36
+   *   * 9 → 3 + 3 + 3 → 27
+   *
+   * ---
+   *
+   * ## 🧠 Mental Shortcut
+   *
+   * DP is doing this:
+   *
+   * > “Try all splits” → eventually discovers
+   * > **breaking into 3s is best**
+   *
+   */
   public int integerBreak_0_0_1(int n) {
+
+      /** NOTE !!!
+       *
+       * dp[i] =
+       *    the maximum product we can get by breaking
+       *    integer i into at least two positive integers
+       */
       // dp[i] = max product for integer i
       int[] dp = new int[n + 1];
 
