@@ -57,10 +57,67 @@ public class SmallestSubtreeWithAllTheDeepestNodes {
 
     /** NOTE !!! this is a LCA (Lowest Common Ancestor) problem */
     // V0
-//    public TreeNode subtreeWithAllDeepest(TreeNode root) {
-//
-//    }
+    // IDEA: LCA (POST order) + custom class (fixed by gemini)
+    class Result {
+        TreeNode node;
+        int dist;
 
+        Result(TreeNode node, int dist) {
+            this.node = node;
+            this.dist = dist;
+        }
+    }
+
+    public TreeNode subtreeWithAllDeepest(TreeNode root) {
+        return dfs(root).node;
+    }
+
+    /** NOTE !!!
+     *
+     *  dfs func return type is `Result` (custom class)
+     */
+    private Result dfs_0(TreeNode node) {
+        // Base case: null nodes have depth 0
+        if (node == null)
+            return new Result(null, 0);
+
+        /** NOTE !!!
+         *
+         *  we get left, right result first (POST order)
+         */
+        Result left = dfs_0(node.left);
+        Result right = dfs_0(node.right);
+
+        // Case 1: Left is deeper -> The answer must be in the left subtree
+        /** NOTE !!!
+         *
+         *   if left is `deeper` -> search left
+         */
+        if (left.dist > right.dist) {
+            return new Result(left.node, left.dist + 1);
+        }
+
+        // Case 2: Right is deeper -> The answer must be in the right subtree
+        /** NOTE !!!
+         *
+         *   if right is `deeper` -> search right
+         */
+        if (right.dist > left.dist) {
+            return new Result(right.node, right.dist + 1);
+        }
+
+        // Case 3: Both sides have the same max depth
+        // -> This current node is the LCA for all deepest nodes in its subtree
+        /** NOTE !!!
+         *
+         *   if left == right
+         *   -> cur node is the LCA (answer)
+         */
+        return new Result(node, left.dist + 1);
+    }
+
+
+    
 
     /** NOTE !!!
      *
@@ -180,7 +237,7 @@ public class SmallestSubtreeWithAllTheDeepestNodes {
         }
     }
 
-    public TreeNode subtreeWithAllDeepest(TreeNode root) {
+    public TreeNode subtreeWithAllDeepest_0_1(TreeNode root) {
         return dfs_0_1(root).node;
     }
 

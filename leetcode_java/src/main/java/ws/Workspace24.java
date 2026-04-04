@@ -2918,11 +2918,112 @@ public class Workspace24 {
      *  ----------------
      *
      */
+    // 12. 41 - 12.56 pm
+    /**
+     * -> Return the `smallest` subtree such
+     * that it contains all the deepest nodes in the original tree.
+     *
+     *  ------------
+     *
+     *   IDEA 1) LCA ???
+     *    -> the lowest common ancestor ??
+     *
+     *
+     *   NOTE !!! CAN'T just use regular dfs ...
+     *
+     *
+     *  ------------
+     *
+     */
+    // IDEA 1) LCA ??? Lowest Common Ancestor (LCA
+    TreeNode deepestNode = null; // /??
+    int maxDepth = 0; // /??
+    public TreeNode subtreeWithAllDeepest(TreeNode root) {
+        // edge
+        if(root == null){
+            return null;
+        }
+        if(root.left == null && root.right == null){
+            return root;
+        }
+
+
+        LCAHelper(root, 0);
+
+        return deepestNode;
+    }
+
+    private int LCAHelper2(TreeNode root, int depth){
+        // edge
+        if(root == null){
+            return 0; // ????
+        }
+
+        int _left = LCAHelper2(root.left, depth + 1);
+        int _right = LCAHelper2(root.right, depth + 1);
+
+        // ???
+        if(_left == _right){
+            // ???
+            deepestNode = root;
+            return depth; // ????
+        }
+
+        // ???
+        if(_left > _right){
+            // search on left
+        }else{
+            // search on right
+        }
+
+        // ??? do we `really use` the return val ???
+        //return root;
+
+
+        return depth;
+    }
+
+
+
+
+
+
+    // ???
+    // POST order DFS ???? (left -> right -> root )
+    private TreeNode LCAHelper(TreeNode root, int depth){
+        // edge
+        if(root == null){
+            return null; // ????
+        }
+
+        TreeNode _left = LCAHelper(root.left, depth + 1);
+        TreeNode _right = LCAHelper(root.right, depth + 1);
+
+        // ???
+        if(_left == null && _right == null){
+            if(depth > maxDepth){
+                maxDepth = depth;
+                deepestNode = root; // ????
+            }
+        }
+
+        // ??? do we `really use` the return val ???
+        return root;
+    }
+
+
+
+
+
+
+
+
+
     // map { node: path }
     //Map<TreeNode, String> nodePath = new HashMap<>();
     int deepest = 0;
     TreeNode resNode = null;
-    public TreeNode subtreeWithAllDeepest(TreeNode root) {
+    public TreeNode subtreeWithAllDeepest_99(TreeNode root) {
         // edge
         if(root == null){
             return null;
