@@ -42,9 +42,55 @@ package LeetCodeJava.DynamicProgramming;
 public class IntegerBreak {
 
   // V0
-  //    public int integerBreak(int n) {
-  //
-  //    }
+  // IDEA: 1D DP (fixed by gemini)
+  public int integerBreak(int n) {
+      // 1. Base cases for small n (must break into at least 2 numbers)
+      if (n == 2)
+          return 1; // 1*1
+      if (n == 3)
+          return 2; // 2*1
+
+      int[] dp = new int[n + 1];
+
+      // 2. Initialize DP
+      dp[1] = 1;
+      dp[2] = 1;
+
+      // 3. Fill the DP table
+      for (int i = 3; i <= n; i++) {
+          // Try splitting i into j and (i-j)
+          for (int j = 1; j < i; j++) {
+              // For the part (i-j), we can either:
+              // a) Not break it further: j * (i - j)
+              // b) Use its already calculated max break: j * dp[i - j]
+              int currentOption = Math.max(j * (i - j), j * dp[i - j]);
+              dp[i] = Math.max(dp[i], currentOption);
+          }
+      }
+
+      return dp[n];
+  }
+
+
+  // V0-0-1
+  // IDEA: 1D DP (fixed by GPT)
+  public int integerBreak_0_0_1(int n) {
+      // dp[i] = max product for integer i
+      int[] dp = new int[n + 1];
+
+      dp[1] = 1;
+
+      for (int i = 2; i <= n; i++) {
+          for (int j = 1; j < i; j++) {
+              dp[i] = Math.max(
+                      dp[i],
+                      Math.max(j * (i - j), j * dp[i - j]));
+          }
+      }
+
+      return dp[n];
+  }
+
 
   // V0-1
   // IDEA: GREEDY (fixed by gpt)
@@ -252,6 +298,8 @@ public class IntegerBreak {
 
         return (int) (Math.pow(3, threes) * remainder);
     }
+
+
 
 
 }

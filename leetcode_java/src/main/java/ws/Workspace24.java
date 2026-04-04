@@ -4431,6 +4431,80 @@ public class Workspace24 {
 
     }
 
+    // LC 343
+    // 8.27 - 37 am
+    /**
+     *  -> Return the `maximum product`  you can get.
+     *
+     *
+     *   Given an integer n, break it into the sum of k positive integers,
+     *   where k >= 2, and maximize the product of those integers.
+     *
+     *   - int n,
+     *   - break into the sum of k int
+     *   - k >= 2
+     *
+     *  ----------------------
+     *
+     *  IDEA 1) 1-D DP
+     *      - DP def
+     *         - dp[i]: `max product` when `init split` with i
+     *
+     *      - DP eq
+     *         - if can split:
+     *            - dp[i] = max( dp[ i / val ] * val, dp[i] )  // ?????
+     *
+     *
+     *  IDEA 2) BRUTE FORCE / GREEDY
+     *
+     *  IDEA 3) MATH ????
+     *
+     *
+     *  ----------------------
+     *
+     *  Input: n = 10
+     *  Output: 36
+     *
+     *  dp[1] = 1
+     *  dp[2] = 2 ^ 5 = 32
+     *  dp[3] = 36 ???
+     *  dp[4] = 32 ??
+     *  ....
+     *
+     */
+    public int integerBreak(int n) {
+        // edge
+
+        int maxProduct = 1;
+
+        // /?
+        int[] dp = new int[n];
+        dp[1] = 1;
+        // ???
+        dp[2] = Math.max(dp[1], dp[2]);
+
+
+
+
+        return maxProduct;
+    }
+
+
+    // ???
+    private int splitAndProduct(int n, int initVal){
+        int res = 1;
+        // ???
+        while (n > initVal){
+            n = (n / initVal);
+            // ???
+            res *= initVal;
+        }
+
+
+
+        return res;
+    }
+
 
 
 
