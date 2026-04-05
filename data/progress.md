@@ -1,6 +1,6 @@
 # Progress
 
-# 2026-04-05
+# 2026-04-06
 
 - LC weeekly 103
 	- lc_weekly_gemini.md
@@ -262,6 +262,10 @@
 			- 877,1140,1690,375,1510,312,546
 		- gemini
 			- 464
+	- 2-D Dynamic Programming
+		- all LC in netcode_250 match netcode_150, so just review done LCs
+	- Greedy
+
 
 	- todo (20260308)
 		- 1109,41,849
