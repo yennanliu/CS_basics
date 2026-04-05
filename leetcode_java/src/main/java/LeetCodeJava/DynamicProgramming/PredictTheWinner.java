@@ -40,13 +40,108 @@ package LeetCodeJava.DynamicProgramming;
 public class PredictTheWinner {
 
     // V0
-//    public boolean predictTheWinner(int[] nums) {
-//
-//    }
+    // IDEA: 2D DP (fixed by gemini)
+    /**
+     *  NOTE !!!
+     *
+     *   1. dp[i][j] =
+     *
+     *      maximum score difference (current player − opponent)
+     *      when playing optimally on subarray nums[i..j]
+     *      -> So it’s a relative score, not an absolute score.
+     *
+     *   2.
+     *
+     *    dp[i][j] = max(
+     *     nums[i] - dp[i+1][j],
+     *     nums[j] - dp[i][j-1]
+     *   )
+     *
+     */
+    public boolean predictTheWinner(int[] nums) {
+        int n = nums.length;
+        if (n <= 1)
+            return true;
+
+        // dp[i][j] is the max relative score a player can get from nums[i...j]
+        int[][] dp = new int[n][n];
+
+        // Base case: only one number left, the player takes it
+        for (int i = 0; i < n; i++) {
+            dp[i][i] = nums[i];
+        }
+
+        // Fill the table for lengths 2 up to n
+        for (int len = 2; len <= n; len++) {
+            for (int i = 0; i <= n - len; i++) {
+                int j = i + len - 1;
+
+                // Option 1: Take nums[i], then the other player gets dp[i+1][j]
+                // Option 2: Take nums[j], then the other player gets dp[i][j-1]
+                // We subtract the other player's max relative score from our pick
+                dp[i][j] = Math.max(nums[i] - dp[i + 1][j],
+                        nums[j] - dp[i][j - 1]);
+            }
+        }
+
+        return dp[0][n - 1] >= 0;
+    }
+
+
+    // V0-1
+    // IDEA: Explicit score track + 2D DP + custom class (fixed by gpt)
+    class Pair {
+        int first; // current player's score
+        int second; // opponent's score
+
+        Pair(int f, int s) {
+            first = f;
+            second = s;
+        }
+    }
+
+
+    public boolean predictTheWinner_0_1(int[] nums) {
+        int n = nums.length;
+        Pair[][] dp = new Pair[n][n];
+
+        // base case
+        for (int i = 0; i < n; i++) {
+            dp[i][i] = new Pair(nums[i], 0);
+        }
+
+        // fill DP
+        for (int len = 2; len <= n; len++) {
+            for (int i = 0; i <= n - len; i++) {
+                int j = i + len - 1;
+
+                // pick left
+                int leftFirst = nums[i] + dp[i + 1][j].second;
+                int leftSecond = dp[i + 1][j].first;
+
+                // pick right
+                int rightFirst = nums[j] + dp[i][j - 1].second;
+                int rightSecond = dp[i][j - 1].first;
+
+                if (leftFirst > rightFirst) {
+                    dp[i][j] = new Pair(leftFirst, leftSecond);
+                } else {
+                    dp[i][j] = new Pair(rightFirst, rightSecond);
+                }
+            }
+        }
+
+        Pair res = dp[0][n - 1];
+        return res.first >= res.second;
+    }
 
 
     // V1-1
     // IDEA: 1D DP (fixed by GPT)
+    /** NOTE !!!
+     *
+     * -  dp[i][j] = max score difference for nums[i..j]
+     */
     public boolean predictTheWinner_1_1(int[] nums) {
         int n = nums.length;
         int[] dp = new int[n];
@@ -57,6 +152,14 @@ public class PredictTheWinner {
         }
 
         // fill from bottom up
+        /** NOTE !!!
+         *
+         * iterate i backward, j forward
+         *
+         *  e.g.:
+         *    i: small -> big
+         *    j: big -> small
+         */
         for (int i = n - 2; i >= 0; i--) {
             for (int j = i + 1; j < n; j++) {
                 dp[j] = Math.max(
@@ -68,6 +171,7 @@ public class PredictTheWinner {
 
         return dp[n - 1] >= 0;
     }
+
 
     // V1-2
     // IDEA: 1D DP (fixed by gemini)
@@ -104,6 +208,19 @@ public class PredictTheWinner {
 
     // V2
     // IDEA: 2D DP (fixed by gemini)
+    /**
+     *  NOTE !!!
+     *
+     *   1. dp[i][j] = max score difference from nums[i..j]
+     *
+     *   2.
+     *
+     *    dp[i][j] = max(
+     *     nums[i] - dp[i+1][j],
+     *     nums[j] - dp[i][j-1]
+     *   )
+     *
+     */
     public boolean predictTheWinner_2(int[] nums) {
         int n = nums.length;
         if (n <= 1)
