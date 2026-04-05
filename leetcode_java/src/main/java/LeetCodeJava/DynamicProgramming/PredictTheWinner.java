@@ -44,9 +44,67 @@ public class PredictTheWinner {
 //
 //    }
 
-    // V0-1
+
+    // V1-1
+    // IDEA: 1D DP (fixed by GPT)
+    public boolean predictTheWinner_1_1(int[] nums) {
+        int n = nums.length;
+        int[] dp = new int[n];
+
+        // base case: dp[i][i] = nums[i]
+        for (int i = 0; i < n; i++) {
+            dp[i] = nums[i];
+        }
+
+        // fill from bottom up
+        for (int i = n - 2; i >= 0; i--) {
+            for (int j = i + 1; j < n; j++) {
+                dp[j] = Math.max(
+                        nums[i] - dp[j], // dp[i+1][j]
+                        nums[j] - dp[j - 1] // dp[i][j-1]
+                );
+            }
+        }
+
+        return dp[n - 1] >= 0;
+    }
+
+    // V1-2
+    // IDEA: 1D DP (fixed by gemini)
+    public boolean predictTheWinner_1_2(int[] nums) {
+        int n = nums.length;
+        if (n <= 1)
+            return true;
+
+        // dp[j] will eventually store the max relative score for nums[i...j]
+        int[] dp = new int[n];
+
+        // Base case: For a subarray of length 1 (where i == j),
+        // the max score is just the number itself.
+        for (int i = 0; i < n; i++) {
+            dp[i] = nums[i];
+        }
+
+        // Fill the array from bottom to top (i decreases)
+        // and from left to right (j increases)
+        for (int i = n - 2; i >= 0; i--) {
+            for (int j = i + 1; j < n; j++) {
+                // Here, dp[j] (on the right side) is the value from the
+                // previous i-iteration (representing dp[i+1][j]).
+                // dp[j-1] is the value we just updated in this i-iteration
+                // (representing dp[i][j-1]).
+                dp[j] = Math.max(nums[i] - dp[j],
+                        nums[j] - dp[j - 1]);
+            }
+        }
+
+        return dp[n - 1] >= 0;
+    }
+
+
+    // V2
     // IDEA: 2D DP (fixed by gemini)
-    public boolean predictTheWinner_0_1(int[] nums) {
+    public boolean predictTheWinner_2(int[] nums) {
         int n = nums.length;
         if (n <= 1)
             return true;
@@ -76,9 +134,9 @@ public class PredictTheWinner {
     }
 
 
-    // V0-2
+    // V3
     // IDEA: 2D DP (fixed by GPT)
-    public boolean predictTheWinner_0_2(int[] nums) {
+    public boolean predictTheWinner_3(int[] nums) {
         int n = nums.length;
         int[][] dp = new int[n][n];
 
@@ -101,13 +159,7 @@ public class PredictTheWinner {
     }
 
 
-    // V1
-
-    // V2
-
     // V3
-
-
 
 
 }
