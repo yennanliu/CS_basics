@@ -4201,7 +4201,63 @@ public class Workspace24 {
      *         - 2-digit
      *
      */
+    // 13.06 - 16 pm
+    //  1D DP
+    // 1-digit, 2-digit
     public int numDecodings(String s) {
+        // edge
+        if (s == null || s.length() == 0 || s.charAt(0) == '0') {
+            return 0;
+        }
+
+        // ?
+        int n = s.length();
+        // dp def: decode way of string with len = i  ???
+        int[] dp = new int[n + 1]; // ???
+
+        dp[0] = 1; // ??
+        dp[1] = 1;
+        // ??
+        //dp[2] = 1; // ???
+
+        // ??
+        for(int i = 2; i < n + 1; i++){
+
+            // ???
+            // int oneDigit = Integer.parseInt(s.substring(i - 1, i));
+            //int val1 = s.charAt(i) - 'a';
+
+            // V1
+            //int val1 = s.charAt(i) - '0';
+            // V2
+            int val1 = Integer.parseInt(s.substring(i-1, i));
+
+
+            int val2 = Integer.parseInt(s.substring(i-2, i));
+
+            // 1-digit
+            if(val1 >= 1 && val1 <= 9){
+                dp[i] += dp[i-1];
+            }
+
+            // 2-digit
+            if(val2 >= 10 && val2 <= 26){
+                dp[i] += dp[i-2];
+            }
+        }
+
+        return dp[n];
+    }
+
+
+
+
+
+
+
+
+
+    public int numDecodings_96(String s) {
         // edge
         if (s == null || s.length() == 0 || s.charAt(0) == '0') {
             return 0;
@@ -5025,7 +5081,29 @@ public class Workspace24 {
      *  ....
      *
      */
-    public int integerBreak(int n) {
+    // 12.59 - 1.09 pm
+    /**
+     *
+     *  IDEA 1) 1D DP
+     *    1-digit
+     *    2-digit
+     *
+     */
+//    public int integerBreak(int n) {
+//        // edge
+//
+//        // ??
+//        //int[] dp = new int[]
+//
+//
+//        return 0;
+//    }
+
+
+
+
+
+    public int integerBreak_99(int n) {
         // edge
 
         // 1. Base cases for small n (must break into at least 2 numbers)
