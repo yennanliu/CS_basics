@@ -55,6 +55,66 @@ public class StoneGame3 {
 //
 //    }
 
+    // V0-1
+    // IDEA: 1D DP (gemini)
+    public String stoneGameIII_0_1(int[] stoneValue) {
+        int n = stoneValue.length;
+        // dp[i] = max relative score the player starting at index i can get
+        // We use n + 1 to handle the boundary case for the last few stones
+        int[] dp = new int[n + 1];
+
+        // Base case: no stones left, score is 0
+        dp[n] = 0;
+
+        // Fill the DP table backwards
+        for (int i = n - 1; i >= 0; i--) {
+            // Initialize with a very small number
+            int take = 0;
+            dp[i] = Integer.MIN_VALUE;
+
+            // Try picking 1, 2, or 3 stones
+            for (int k = 0; k < 3 && i + k < n; k++) {
+                take += stoneValue[i + k];
+                // Relative score = (current sum) - (max relative score of opponent)
+                dp[i] = Math.max(dp[i], take - dp[i + k + 1]);
+            }
+        }
+
+        // Alice starts at index 0. Check her relative score against Bob's (0)
+        if (dp[0] > 0)
+            return "Alice";
+        if (dp[0] < 0)
+            return "Bob";
+        return "Tie";
+    }
+
+
+    // V0-2
+    // IDEA: 1D DP (GPT)
+    public String stoneGameIII_0_2(int[] stoneValue) {
+        int n = stoneValue.length;
+        int[] dp = new int[n + 1]; // dp[i] = max diff starting at i
+
+        // dp[n] = 0 (no stones left)
+
+        for (int i = n - 1; i >= 0; i--) {
+            int sum = 0;
+            dp[i] = Integer.MIN_VALUE;
+
+            for (int k = 0; k < 3 && i + k < n; k++) {
+                sum += stoneValue[i + k];
+                dp[i] = Math.max(dp[i], sum - dp[i + k + 1]);
+            }
+        }
+
+        if (dp[0] > 0)
+            return "Alice";
+        if (dp[0] < 0)
+            return "Bob";
+        return "Tie";
+    }
+
+
     // V1
     // https://www.youtube.com/watch?v=HsLG5QW9CFQ
     // https://github.com/neetcode-gh/leetcode/blob/main/kotlin%2F1406-stone-game-iii.kt
@@ -148,6 +208,9 @@ public class StoneGame3 {
             return "Tie";
         }
     }
+
+
+
 
 
 }

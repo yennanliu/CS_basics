@@ -5078,7 +5078,20 @@ public class Workspace24 {
     // 11.50 - 12 pm
     /**
      *
+     *  -> Return "Alice" if Alice will win,
+     *  "Bob" if Bob will win, or "Tie"
+     *  if they will end the game with the same score.
      *
+     *
+     *  --------------
+     *
+     *  IDEA 1) 2D DP, LC 486
+     *
+     *   - dp def:
+     *
+     *     - dp[i][j] = `relative` score within
+     *
+     *   - dp eq:
      *
      */
     public String stoneGameIII(int[] stoneValue) {
