@@ -77,7 +77,7 @@ public class SmallestSubtreeWithAllTheDeepestNodes {
      *  1. dfs func return type is `Result` (custom class)
      *
      *  2. `TreeNode node` is the `ONLY 1 param` for DFS func
-     *  
+     *
      */
     private Result dfs_0(TreeNode node) {
         // Base case: null nodes have depth 0

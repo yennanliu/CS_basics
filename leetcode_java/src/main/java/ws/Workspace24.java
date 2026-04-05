@@ -2958,11 +2958,40 @@ public class Workspace24 {
         }
 
         // ???
-        MyRes res = dfsHelper3(root);
-
+        //MyRes res = dfsHelper3(root);
         // ?????
-        return res.node;
+        //return res.node;
+        return dfsHelper3(root).node;
     }
+
+
+    private MyRes dfsHelper4(TreeNode root){
+        // edge ???
+        if(root == null){
+            // ????
+            //  return myRes; // ??? //new MyRes(root, 0); // ???
+            return new MyRes(root, 0); // ????
+        }
+
+        MyRes _left = dfsHelper4(root.left);
+        MyRes _right = dfsHelper4(root.right);
+
+        // ???
+        int maxDepth = Math.max(_left.depth, _right.depth);
+
+        if(_left.depth > _right.depth){
+            return new MyRes(root.left, maxDepth + 1);
+        }else{
+            if(_left.depth < _right.depth){
+                return new MyRes(root.right, maxDepth + 1);
+            }
+        }
+
+        return new MyRes(root, maxDepth + 1);
+    }
+
+
+
 
     // ????
     private MyRes dfsHelper3(TreeNode root){
