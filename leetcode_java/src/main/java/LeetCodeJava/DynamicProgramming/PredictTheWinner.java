@@ -44,30 +44,69 @@ public class PredictTheWinner {
 //
 //    }
 
-    // V1
-    // IDEA: DP
-    // https://leetcode.com/problems/predict-the-winner/solutions/6907920/video-dynamic-programming-by-niits-drk8/
-    // TODO: verify
-    public boolean PredictTheWinner_1(int[] nums) {
+    // V0-1
+    // IDEA: 2D DP (fixed by gemini)
+    public boolean predictTheWinner_0_1(int[] nums) {
         int n = nums.length;
-        int[] max_diff = new int[n];
+        if (n <= 1)
+            return true;
 
-        for (int i = n - 1; i >= 0; i--) {
-            max_diff[i] = nums[i];
-            for (int j = i + 1; j < n; j++) {
-                max_diff[j] = Math.max(nums[i] - max_diff[j], nums[j] - max_diff[j - 1]);
+        // dp[i][j] is the max relative score a player can get from nums[i...j]
+        int[][] dp = new int[n][n];
+
+        // Base case: only one number left, the player takes it
+        for (int i = 0; i < n; i++) {
+            dp[i][i] = nums[i];
+        }
+
+        // Fill the table for lengths 2 up to n
+        for (int len = 2; len <= n; len++) {
+            for (int i = 0; i <= n - len; i++) {
+                int j = i + len - 1;
+
+                // Option 1: Take nums[i], then the other player gets dp[i+1][j]
+                // Option 2: Take nums[j], then the other player gets dp[i][j-1]
+                // We subtract the other player's max relative score from our pick
+                dp[i][j] = Math.max(nums[i] - dp[i + 1][j],
+                        nums[j] - dp[i][j - 1]);
             }
         }
 
-        return max_diff[n - 1] >= 0;
+        return dp[0][n - 1] >= 0;
     }
 
 
-    // V2
-    // https://leetcode.com/problems/predict-the-winner/solutions/3826301/dpmemoization-min-max-easy-cjava-solutio-j2bw/
+    // V0-2
+    // IDEA: 2D DP (fixed by GPT)
+    public boolean predictTheWinner_0_2(int[] nums) {
+        int n = nums.length;
+        int[][] dp = new int[n][n];
 
+        // base case
+        for (int i = 0; i < n; i++) {
+            dp[i][i] = nums[i];
+        }
+
+        // fill dp
+        for (int len = 2; len <= n; len++) {
+            for (int i = 0; i <= n - len; i++) {
+                int j = i + len - 1;
+                dp[i][j] = Math.max(
+                        nums[i] - dp[i + 1][j],
+                        nums[j] - dp[i][j - 1]);
+            }
+        }
+
+        return dp[0][n - 1] >= 0;
+    }
+
+
+    // V1
+
+    // V2
 
     // V3
+
 
 
 

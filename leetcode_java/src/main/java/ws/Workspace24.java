@@ -4975,10 +4975,102 @@ public class Workspace24 {
 
 
     // LC 486
+    // 11.14 - 24 am
+    /**
+     *  -> Return `true`
+     *      if `Player 1` can win the game.
+     *      If the scores of both players are `equal,`
+     *      then player 1 is still the winner,
+     *      -> and you should also return `true.`
+     *
+     *
+     *   - int array: nums
+     *   - 2 players: p1, p2
+     *   - p1 -> p2
+     *   - init score = 0
+     *
+     *   - game op:
+     *       - At each turn, the player takes `one of the numbers` from
+     *         EITHER END of the array
+     *           (i.e., nums[0] or nums[nums.length - 1]) !!!!
+     *
+     *
+     *         which `reduces the size of the array by 1. `
+     *          -> The player adds the chosen number to their score.
+     *          ->  The game ends when there are NO more elements in the array.
+     *
+     *  --------------------
+     *
+     *   IDEA 1) GREEDY
+     *
+     *
+     *   IDEA 2) DP ????
+     *
+     *
+     *  --------------------
+     *
+     *   ex 1)
+     *
+     *    Input: nums = [1,5,2]
+     *    Output: false
+     *
+     *    [1,5,2]
+     *     1
+     *
+     *     or
+     *
+     *     [1,5,2]
+     *          1
+     *
+     *
+     */
+    // greedy ????
     public boolean predictTheWinner(int[] nums) {
+        // edge
+        if(nums == null || nums.length == 0){
+            return true;
+        }
+        if(nums.length == 1){
+            return true; // ???
+        }
 
-        return false;
+        // ??
+        Deque<Integer> dq = new LinkedList<>();
+        for(int x: nums){
+            dq.add(x);
+        }
+
+        int score1 = 0;
+        int score2 = 0;
+
+        // player1: 1,3,5,...
+        // player2: 2,4,6...
+        int i = 1;
+
+
+        // ????
+        while (!dq.isEmpty()){
+            if(i % 2 == 1){
+                if(dq.peekFirst() > dq.peekLast()){
+                    score1 += dq.pollFirst();
+                }else{
+                    score1 += dq.pollLast();
+                }
+            }else{
+                if(dq.peekFirst() > dq.peekLast()){
+                    score2 += dq.pollFirst();
+                }else{
+                    score2 += dq.pollLast();
+                }
+            }
+
+            i += 1;
+        }
+
+
+        return score1 >= score2;
     }
+
 
 
 
