@@ -1,6 +1,6 @@
 # Progress
 
-# 2026-04-04
+# 2026-04-05
 
 - LC weeekly 103
 	- lc_weekly_gemini.md
@@ -27,7 +27,8 @@
 	- difference_array.md (OK)
 	- Dijkstra.md  (OK)
 	- dp_pattern.md  (TODO: LC examples)
-	- dp.md  (TODO: LC examples) - `2-5) Sum of Distances in Tree (LC 834) — Re-rooting DP`
+	- dp.md (OK)
+	- graph.md (TODO: LC examples)
 
 - to review
 - needcode `250` - similar LC by AI
@@ -298,6 +299,8 @@
 		- 3319
 	- todo (20260404)
 		- 300
+	- todo (20260405)
+		- 343
 
  	==================================
 
