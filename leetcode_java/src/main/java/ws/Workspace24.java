@@ -5081,23 +5081,74 @@ public class Workspace24 {
      *  ....
      *
      */
-    // 12.59 - 1.09 pm
+    // 12.59 - 1.43 pm
     /**
      *
-     *  IDEA 1) 1D DP
-     *    1-digit
-     *    2-digit
+     *
+     *  -> Return the maximum product you can get.
+     *
+     *  ---------
+     *
+     *
+     *
+     *  IDEA 1) 1D DP + double loop !!
+     *
+     *   -> split i to ` j + (i - j )` ????
+     *
+     *    - DP def:
+     *       - dp[i] = max product of int = n; // ???
+     *
+     *    - DP eq:
+     *
+     *       - // /??
+     *       - dp[i] = max( dp[i-j] * (j) , dp[i] ) // ???
+     *
+     *
+     *  ---------
+     *
+     *
      *
      */
-//    public int integerBreak(int n) {
-//        // edge
-//
-//        // ??
-//        //int[] dp = new int[]
-//
-//
-//        return 0;
-//    }
+    public int integerBreak(int n) {
+        // edge
+
+        // ??
+        // with `n+1` size dp,
+        // so we can update dp till `idx = n` ?????
+        int[] dp = new int[n + 1]; // ???
+
+        // ???
+        dp[0] = 0;
+        dp[1] = 1; // ???
+        dp[2] = 1;
+
+        /**
+         *
+         *    ->
+         *
+         *     i = 3, j = 2
+         *     dp[3] = max ( dp[1] * 2, dp[2] )
+         *
+         *     i = 3, j = 1
+         *     dp[3] = max ( dp[2] * 1, dp[1] )
+         */
+
+        for(int i = 3; i < n; i++){
+            // ???
+            for(int j = i-1; j < i; j++){
+                // - dp[i] = max( dp[i-j] * (j) , dp[i] ) // ???
+                dp[i] = Math.max(dp[i-j] * j, dp[i]);
+            }
+        }
+
+
+        return dp[n];
+    }
+
+
+
+
+
 
 
 
