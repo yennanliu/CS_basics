@@ -4974,6 +4974,14 @@ public class Workspace24 {
 
 
 
+    // LC 486
+    public boolean predictTheWinner(int[] nums) {
+
+        return false;
+    }
+
+
+
 
 
 
