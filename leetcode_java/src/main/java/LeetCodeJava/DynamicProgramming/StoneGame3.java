@@ -57,6 +57,53 @@ public class StoneGame3 {
 
     // V0-1
     // IDEA: 1D DP (gemini)
+    /** NOTE !!!
+     *
+     *   1. DP def:
+     *
+     *     dp[i] =
+     *        the maximum relative score
+     *        the current player can get
+     *        `starting from index i to the end`
+     *        of the array.
+     *
+     */
+    /**
+     * In **LC 1406 (Stone Game III)**,
+     * the game becomes more complex because a
+     * player can pick **1, 2, or 3** stones at a time.
+     * This is a "take-away" game where we want to
+     * find the   `maximum relative score ($Alice - Bob$).`
+     *
+     * ### 💡 The Strategy: Bottom-Up DP
+     * We'll define **
+     *
+     *  `dp[i]`** as the maximum relative score the
+     *  current player can get starting from index
+     *  `i` to the end of the array.
+     *
+     * * At index `i`, the player has 3 choices:
+     *     1.  Take `stoneValue[i]`, then the other player gets `dp[i+1]`.
+     *     2.  Take `stoneValue[i] + stoneValue[i+1]`, then the other player gets `dp[i+2]`.
+     *     3.  Take `stoneValue[i] + stoneValue[i+1] + stoneValue[i+2]`, then the other player gets `dp[i+3]`.
+     * * The goal is to **maximize** $( \text{current\_pick} - \text{opponent's\_relative\_score} )$.
+     *
+     * ---
+     *
+     * ### 🔍 Senior Engineering Review
+     * * **Space Optimization**: Since `dp[i]` only depends on `dp[i+1]`, `dp[i+2]`, and `dp[i+3]`, you could reduce the space from **$O(N)$** to **$O(1)$** by using 4 variables. However, in an interview, the $O(N)$ array is often preferred for clarity unless space is explicitly constrained.
+     * * **The "Subtraction" Insight**: In minimax games, subtracting the opponent's score is a powerful pattern. It avoids having to track `alice_score` and `bob_score` separately, which simplifies the transition from 3 choices to just one `Math.max()` call.
+     * * **Integer.MIN_VALUE**: Because stone values can be negative (e.g., $[-1, -2, -3]$), you must initialize `dp[i]` to `Integer.MIN_VALUE` rather than `0` to ensure you don't pick a "default" zero incorrectly.
+     *
+     * ### 📊 Complexity Analysis
+     *
+     * | Metric | Complexity | Explanation |
+     * | :--- | :--- | :--- |
+     * | **Time** | **$O(N)$** | We make one pass through the stones. The inner loop runs at most 3 times ($O(1)$). |
+     * | **Space** | **$O(N)$** | An array of size $N+1$ (can be $O(1)$ with variables). |
+     *
+     *
+     */
     public String stoneGameIII_0_1(int[] stoneValue) {
         int n = stoneValue.length;
         // dp[i] = max relative score the player starting at index i can get
