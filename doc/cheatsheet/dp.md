@@ -49,6 +49,15 @@ Step 4. get the result
 - **Examples**: LC 312 (Burst Balloons), LC 1000 (Minimum Cost to Merge Stones)
 - **Pattern**: dp[i][j] for interval [i, j]
 
+### **Category 3-2: Game Theory / Minimax DP**
+- **Description**: Two-player optimal play on arrays; each player picks from either end
+- **Examples**: LC 486 (Predict the Winner), LC 877 (Stone Game), LC 1140 (Stone Game II)
+- **Pattern**: dp[i][j] = max relative score difference (current player minus opponent) on subarray nums[i..j]
+- **Core idea**: When the current player picks, the opponent then plays optimally on the remaining subarray. Subtracting `dp[sub]` flips perspective — the opponent's best becomes your loss.
+- **Recurrence**: `dp[i][j] = max(nums[i] - dp[i+1][j], nums[j] - dp[i][j-1])`
+- **Base case**: `dp[i][i] = nums[i]` (only one element left, take it)
+- **Answer**: `dp[0][n-1] >= 0` means the first player wins or ties
+
 ### **Category 4: Tree DP**
 - **Description**: DP on tree structures
 - **Examples**: LC 337 (House Robber III), LC 968 (Binary Tree Cameras)
@@ -2626,6 +2635,52 @@ def interval_dp(arr):
 
 ---
 
+### Template 12-0: Game Theory / Minimax DP (LC 486 Predict the Winner Style)
+
+**Pattern**: Two players take turns picking from either end of an array, both play optimally. Determine if player 1 can win.
+
+**Core Idea**: Define `dp[i][j]` as the **max score difference** (current player − opponent) on subarray `nums[i..j]`. When you pick `nums[i]`, the opponent then faces `dp[i+1][j]` — which is *their* best relative score. Subtracting it gives your net advantage.
+
+**Why subtract?** After you pick, it's the opponent's turn. `dp[i+1][j]` is the opponent's max advantage on the remaining subarray. From your perspective, that advantage works against you, so you subtract it.
+
+```java
+// LC 486. Predict the Winner — 2D DP
+public boolean predictTheWinner(int[] nums) {
+    int n = nums.length;
+    int[][] dp = new int[n][n];
+
+    // Base case: single element → take it
+    for (int i = 0; i < n; i++) {
+        dp[i][i] = nums[i];
+    }
+
+    // Fill by increasing subarray length
+    for (int len = 2; len <= n; len++) {
+        for (int i = 0; i <= n - len; i++) {
+            int j = i + len - 1;
+            dp[i][j] = Math.max(
+                nums[i] - dp[i + 1][j],   // pick left
+                nums[j] - dp[i][j - 1]    // pick right
+            );
+        }
+    }
+
+    return dp[0][n - 1] >= 0;  // player 1 wins or ties
+}
+```
+
+**Similar LeetCode Problems:**
+| LC # | Problem | Notes |
+|------|---------|-------|
+| 486 | Predict the Winner | Core minimax interval DP |
+| 877 | Stone Game | Same structure; always true for even-length (math proof) |
+| 1140 | Stone Game II | Minimax + variable take count (suffix sum optimization) |
+| 1406 | Stone Game III | 1D suffix minimax, pick 1-3 stones |
+| 464 | Can I Win | Bitmask + minimax (state compression variant) |
+| 294 | Flip Game II | Minimax with memoization |
+
+---
+
 ### Template 12: Digit DP (Counting Numbers with Constraints)
 
 **Core Concept:**
@@ -3227,6 +3282,15 @@ def count_range_optimized(L, R):
 | Burst Balloons | 312 | Interval multiplication | Hard |
 | Minimum Cost to Merge Stones | 1000 | K-way merge | Hard |
 | Strange Printer | 664 | Interval printing | Hard |
+
+### **Game Theory / Minimax DP Problems**
+| Problem | LC # | Key Technique | Difficulty |
+|---------|------|---------------|------------|
+| Predict the Winner | 486 | Relative score diff dp[i][j] | Medium |
+| Stone Game | 877 | Same as 486 (always true for even length) | Medium |
+| Stone Game II | 1140 | Minimax with variable take count | Medium |
+| Stone Game III | 1406 | Suffix minimax DP | Hard |
+| Optimal Division | 553 | Greedy insight from game theory | Medium |
 
 ### **Knapsack Problems**
 | Problem | LC # | Key Technique | Difficulty |
