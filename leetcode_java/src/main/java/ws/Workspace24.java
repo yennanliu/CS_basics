@@ -2935,10 +2935,82 @@ public class Workspace24 {
      *  ------------
      *
      */
+    // 12.26 - 36 pm
+    // IDEA: LCA + CUSTOM CLASS
+    class MyRes{
+        TreeNode node;
+        int depth; // /???
+
+        MyRes(TreeNode node, int depth){
+            this.node = node;
+            this.depth = depth;
+        }
+    }
+
+
+    public TreeNode subtreeWithAllDeepest(TreeNode root) {
+        // edge
+        if(root == null){
+            return null;
+        }
+        if(root.left == null && root.right == null){
+            return root;
+        }
+
+        // ???
+        MyRes res = dfsHelper3(root);
+
+        // ?????
+        return res.node;
+    }
+
+    // ????
+    private MyRes dfsHelper3(TreeNode root){
+        // edge ???
+        if(root == null){
+            // ????
+          //  return myRes; // ??? //new MyRes(root, 0); // ???
+            return new MyRes(root, 0); // ????
+        }
+
+        // ??
+        MyRes _left = dfsHelper3(root.left);
+        MyRes _right = dfsHelper3(root.right);
+
+        // ???
+        int currentMaxDepth = Math.max(_left.depth, _right.depth);
+
+        // ???
+        //int depth = myRes.depth;
+
+        // ???
+        if(_left.depth > _right.depth){
+            return dfsHelper3(root.left);
+        }else if(_left.depth < _right.depth){
+            return dfsHelper3(root.right);
+        }
+
+        // if left, right sub tree have same depth,
+        // cur node is LCA
+        //return myRes;
+
+        return new MyRes(root, currentMaxDepth); // /??
+    }
+
+
+
+
+
+
+
+
+
+
+
     // IDEA 1) LCA ??? Lowest Common Ancestor (LCA
     TreeNode deepestNode = null; // /??
     int maxDepth = 0; // /??
-    public TreeNode subtreeWithAllDeepest(TreeNode root) {
+    public TreeNode subtreeWithAllDeepest_95(TreeNode root) {
         // edge
         if(root == null){
             return null;

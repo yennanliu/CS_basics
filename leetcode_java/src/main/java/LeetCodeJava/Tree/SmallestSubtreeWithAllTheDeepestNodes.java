@@ -74,7 +74,10 @@ public class SmallestSubtreeWithAllTheDeepestNodes {
 
     /** NOTE !!!
      *
-     *  dfs func return type is `Result` (custom class)
+     *  1. dfs func return type is `Result` (custom class)
+     *
+     *  2. `TreeNode node` is the `ONLY 1 param` for DFS func
+     *  
      */
     private Result dfs_0(TreeNode node) {
         // Base case: null nodes have depth 0
@@ -84,21 +87,38 @@ public class SmallestSubtreeWithAllTheDeepestNodes {
         /** NOTE !!!
          *
          *  we get left, right result first (POST order)
+         *
+         *  -------
+         *
+         *  NOTE !!!
+         *
+         *   we ONLY call DFS here, get the left, right result,
+         *   then simply return result per below 3 cases:
+         *
+         *    1. if _left.depth > _right.depth:
+         *       ->  return `left` result
+         *
+         *    2. if _left.depth < _right.depth:
+         *       ->  return `right` result
+         *
+         *   3. if _left.depth == _right.depth:
+         *       -> return `cur` root as result
          */
         Result left = dfs_0(node.left);
         Result right = dfs_0(node.right);
 
         // Case 1: Left is deeper -> The answer must be in the left subtree
-        /** NOTE !!!
+        /** NOTE !!! we are NOT calling DFS again !!!
          *
-         *   if left is `deeper` -> search left
+         *   if left is `deeper` -> return left
+         *
          */
         if (left.dist > right.dist) {
             return new Result(left.node, left.dist + 1);
         }
 
         // Case 2: Right is deeper -> The answer must be in the right subtree
-        /** NOTE !!!
+        /** NOTE !!!  we are NOT calling DFS again !!!
          *
          *   if right is `deeper` -> search right
          */
