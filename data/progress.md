@@ -28,7 +28,8 @@
 	- Dijkstra.md  (OK)
 	- dp_pattern.md  (TODO: LC examples)
 	- dp.md (OK)
-	- graph.md (TODO: LC examples)
+	- graph.md (OK)
+	- greedy.md (TODO: LC examples)
 
 - to review
 - needcode `250` - similar LC by AI
@@ -310,6 +311,9 @@
 		- 300
 	- todo (20260405)
 		- 343
+	- todo (20260406)
+		- 742,323
+		- 802
 
  	==================================
 
