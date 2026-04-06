@@ -5405,6 +5405,108 @@ public class Workspace24 {
     }
 
 
+    // LC 63
+    // 8.11 - 21 am
+    /**
+     *  -> Return the number of
+     *  possible unique paths that the robot
+     *  can take to reach the bottom-right corner.
+     *
+     *
+     *   - robot init at grid[0][0]
+     *   - destination is grid[m-1][n-1]
+     *
+     *    NOTE:
+     *     - The robot can only move
+     *       either down or right at any point in time.
+     *
+     *
+     *       An obstacle and space are marked as 1 or 0 respectively in grid.
+     *       A path that the robot takes `cannot` include any square that is an `obstacle.`
+     *
+     *
+     *
+     *
+     *  -----------
+     *   IDEA 1) 2D DP
+     *
+     *    - DP def
+     *        - dp[i][j] = # of unique path can move
+     *                     from (0,0) to (i,j)
+     *
+     *    - DP eq
+     *
+     *       - dp[i][j] =
+     *             if not obstacle
+     *               dp[i-1][j] + dp[i][j-1]
+     *             else:
+     *               0
+     *
+     *
+     *
+     *  -----------
+     *
+     *
+     */
+    public int uniquePathsWithObstacles(int[][] obstacleGrid) {
+        int m = obstacleGrid.length;
+        int n = obstacleGrid[0].length;
+
+        // edge
+        if(m == 0 || n == 0){
+            return 0;
+        }
+        if(m == 1 || n == 1){
+            return 1;
+        }
+
+        // 1. Edge Case: If the start or end is blocked, no paths exist
+        if (obstacleGrid[0][0] == 1 || obstacleGrid[m - 1][n - 1] == 1) {
+            return 0;
+        }
+
+        // ???
+        int[][] dp = new int[m][n];
+
+        // init ???
+        for(int x = 0; x < n; x++){
+            // ???
+            if(obstacleGrid[0][x] == 1){
+                break;
+            }
+            dp[0][x] = 1;
+        }
+        for(int y = 0; y < m; y++){
+            // ???
+            if(obstacleGrid[y][0] == 1){
+                break;
+            }
+            dp[y][0] = 1;
+        }
+
+        // ???
+        /**
+         *      *       - dp[i][j] =
+         *      *            dp[i-1][j] + dp[i][j-1]
+         *      *
+         *
+         */
+        for(int y = 1; y < m; y++){
+            for(int x = 1; x < n; x++){
+                // ???
+                if(obstacleGrid[y][x] == 1){
+                    dp[y][x] = 0;
+                }else{
+                    dp[y][x] = dp[y-1][x] + dp[y][x-1];
+                }
+            }
+        }
+
+
+        return dp[m-1][n-1];
+    }
+
+
 
 
 

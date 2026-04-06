@@ -100,6 +100,64 @@ public class UniquePaths2 {
         return dp[m - 1][n - 1];
     }
 
+    // V0-0-x
+    public int uniquePathsWithObstacles_0_0_x(int[][] obstacleGrid) {
+        int m = obstacleGrid.length;
+        int n = obstacleGrid[0].length;
+
+        // edge
+        // NOTE: 1. Edge Case: If the start or end is blocked, no paths exist
+        if (obstacleGrid[0][0] == 1 || obstacleGrid[m - 1][n - 1] == 1) {
+            return 0;
+        }
+
+        int[][] dp = new int[m][n];
+
+        // init
+        for (int x = 0; x < n; x++) {
+            /** NOTE !!!
+             *
+             *  if face an `obstacle` in x-axis direction loop,
+             *  we quit such the process immediately.
+             */
+            if (obstacleGrid[0][x] == 1) {
+                break;
+            }
+            dp[0][x] = 1;
+        }
+        for (int y = 0; y < m; y++) {
+            /** NOTE !!!
+             *
+             *  if face an `obstacle` in y-axis direction loop,
+             *  we quit such the process immediately.
+             */
+            if (obstacleGrid[y][0] == 1) {
+                break;
+            }
+            dp[y][0] = 1;
+        }
+
+        for (int y = 1; y < m; y++) {
+            for (int x = 1; x < n; x++) {
+                /** NOTE !!!
+                 *
+                 *  if face an `obstacle` in (x,y) directions loop,
+                 *  we mark cur dp as `0` (e.g. dp[y][x] = 0),
+                 *
+                 *  -> so the following dp / process can refer / use it.
+                 */
+                if (obstacleGrid[y][x] == 1) {
+                    dp[y][x] = 0;
+                } else {
+                    dp[y][x] = dp[y - 1][x] + dp[y][x - 1];
+                }
+            }
+        }
+
+        return dp[m - 1][n - 1];
+    }
+
+
 
     // V0-0-1
     // IDEA: DP, LC 62 (gpt)
