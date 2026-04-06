@@ -3696,6 +3696,17 @@ public class Workspace24 {
      *   ------------------
      *
      */
+    // 15.12 - 22 pm
+    /**
+     *   Return a deep copy (clone) of the graph.
+     *
+     *   ------
+     *
+     *   IDEA 1) DFS
+     *
+     *
+     *
+     */
     // helper class
     class Node {
         public int val;
@@ -3714,11 +3725,64 @@ public class Workspace24 {
         }
     }
 
+
+    // ???
+    private Map<Node, Node> visited3 = new HashMap<>();
+
+    public Node cloneGraph(Node node) {
+        // /???
+        if(node == null){
+            return null;
+        }
+
+       // cloneHelper3(node);
+        // ????
+        return cloneHelper3(node);
+    }
+
+    private Node cloneHelper3(Node node){
+        // /???
+        if(node == null){
+            return null;
+        }
+        // ???
+        if(visited3.containsKey(node)){
+            return visited3.get(node); // ???
+        }
+
+        // ???
+        Node clonedNode = new Node(node.val);
+
+
+        // NOTE !!
+        // // 2. Store the mapping BEFORE recursing into neighbors
+        // update visited
+        visited3.put(node, clonedNode); // ???
+
+        if(node.neighbors != null){
+            for(Node next: node.neighbors){
+                clonedNode.neighbors.add(cloneHelper3(next));
+            }
+        }
+
+
+        return clonedNode;
+    }
+
+
+
+
+
+
+
+
+
+
     // main func
     // IDEA 1) DFS ?? RECURSION
     private Map<Node, Node> visited = new HashMap<>();
 
-    public Node cloneGraph(Node node) {
+    public Node cloneGraph_96(Node node) {
         // edge
         if(node == null){
             return null;

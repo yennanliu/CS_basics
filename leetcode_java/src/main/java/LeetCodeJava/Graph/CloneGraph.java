@@ -200,6 +200,14 @@ public class CloneGraph {
 
         // NOTE !!! we init copied node as below
         Node copiedNode = new Node(node.val, new ArrayList());
+
+        /** NOTE !!!
+         *
+         *  is the `visited` hashmap,
+         *  we need to use `copiedNode` as val,
+         *  -> so we can reuse such val if visit same node again.
+         *
+         */
         visited.put(cur_val, copiedNode);
 
         // case 2) node is NOT visited yet, we go through all its neighbors,
@@ -226,6 +234,47 @@ public class CloneGraph {
         return copiedNode;
     }
 
+
+    // V0-0-x
+    // IDEA: DFS + HASHMAP (fixed by gemini)
+    private Map<Node, Node> visited3 = new HashMap<>();
+
+    public Node cloneGraph_0_0_x(Node node) {
+        // /???
+        if (node == null) {
+            return null;
+        }
+
+        return cloneHelper3(node);
+    }
+
+    private Node cloneHelper3(Node node) {
+        // /???
+        if (node == null) {
+            return null;
+        }
+        // ???
+        if (visited3.containsKey(node)) {
+            return visited3.get(node);
+        }
+
+        Node clonedNode = new Node(node.val);
+
+        // NOTE !!
+        // // 2. Store the mapping BEFORE recursing into neighbors
+        // update visited
+        visited3.put(node, clonedNode);
+
+        if (node.neighbors != null) {
+            for (Node next : node.neighbors) {
+                clonedNode.neighbors.add(cloneHelper3(next));
+            }
+        }
+
+        return clonedNode;
+    }
+
+    
 
     // V0-0-1
     // IDEA: DFS + HASHMAP (fixed by gemini)
