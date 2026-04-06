@@ -44,10 +44,188 @@ import java.util.*;
 public class BusRoutes {
 
     // V0
-    // TODO : fix below
+    // IDEA: HASHMAP + BFS (fixed by gemini)
+    public int numBusesToDestination(int[][] routes, int source, int target) {
+        // 1. Edge Case: Already at the destination
+        if (source == target)
+            return 0;
+
+        /**  NOTE !!! CORE
+         *
+         *  map: { stop : [bus_1, bus_2, .... ] }
+         *
+         *
+         *  -> it's a  `map -> stop_list` relation
+         *
+         *  ----
+         *
+         *  ex 1)
+         *
+         *    routes = [[1,2,7],[3,6,7]]
+         *      idx =     0       1
+         *
+         *   -> the map (stopToBuses) is like below:
+         *
+         *   {
+         *      1: [0],
+         *      2: [0],
+         *      7: [0, 1],
+         *      3: [1],
+         *      6: [1]
+         *   }
+         *
+         *
+         */
+        // 2. Build Mapping: Stop -> List of Route Indices it belongs to
+        Map<Integer, List<Integer>> stopToRoutes = new HashMap<>();
+        for (int i = 0; i < routes.length; i++) {
+            for (int stop : routes[i]) {
+                stopToRoutes.computeIfAbsent(stop, k -> new ArrayList<>()).add(i);
+            }
+        }
+
+        // If source or target stops don't exist in any route
+        if (!stopToRoutes.containsKey(source) || !stopToRoutes.containsKey(target)) {
+            return -1;
+        }
+
+        Queue<Integer> queue = new LinkedList<>();
+        Set<Integer> visitedStops = new HashSet<>();
+        boolean[] visitedRoutes = new boolean[routes.length];
+
+        queue.offer(source);
+        visitedStops.add(source);
+        int busesTaken = 0;
+
+        // 3. BFS
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            busesTaken++;
+
+            for (int i = 0; i < size; i++) {
+                int currStop = queue.poll();
+
+                // For the current stop, check all bus routes passing through it
+                for (int routeIdx : stopToRoutes.get(currStop)) {
+                    if (visitedRoutes[routeIdx])
+                        continue;
+                    visitedRoutes[routeIdx] = true;
+
+                    // Check every stop on this route
+                    for (int nextStop : routes[routeIdx]) {
+                        if (nextStop == target)
+                            return busesTaken;
+
+                        if (!visitedStops.contains(nextStop)) {
+                            visitedStops.add(nextStop);
+                            queue.offer(nextStop);
+                        }
+                    }
+                }
+            }
+        }
+
+        return -1;
+    }
+
+
+    /** NOTE !!! below is WRONG !!!!
+     *
+     *  -----
+     *
+     *   Problem:
+     *
+     *   ❌ Your version (incorrect idea)
+     *
+     * You wrote:
+     *
+     * {
+     *  1: [1,2,7],
+     *  2: [1,2,7],
+     *  7: [1,2,7],
+     *  3: [3,6,7],
+     *  6: [3,6,7],
+     *  7: [3,6,7]
+     * }
+     *
+     * Problems:
+     *
+     * Values should be route indices, not stops
+     * Key 7 appears twice (map keys must be unique)
+     * You're storing the whole route instead of which routes contain the stop
+     *
+     *
+     */
+    // IDEA 1) BFS
+    // V-0-0-1
 //    public int numBusesToDestination(int[][] routes, int source, int target) {
+//        // edge
+//        if(source == target){
+//            //return 1;
+//            return 0;
+//        }
 //
+//        // 1. build graph
+//        // map: { node: [next_1, next_2, ...] }
+//        // better way to below ?????
+//        Map<Integer, List<Integer>> map = new HashMap<>();
+//        for(int[] r: routes){
+//            // ???
+//            int start = -1;
+//            List<Integer> list = null;
+//
+//            for(int i = 0; i < r.length; i++){
+//                start = r[i];
+//                if(!map.containsKey(start)){
+//                    map.put(start, new ArrayList<>());
+//                }
+//                list = map.get(start);
+//                if(i != start){
+//                    list.add(i);
+//                }
+//
+//            }
+//            map.put(start, list);
+//        }
+//
+//        // edge: if source or target NOT in map
+//        if(!map.containsKey(source) || !map.containsKey(target)){
+//            return -1;
+//        }
+//
+//        HashSet<Integer> visited = new HashSet<>();
+//
+//
+//
+//        //Queue
+//        Queue<Integer> q = new LinkedList<>();
+//        q.add(source);
+//
+//        int layer = 0;
+//
+//        // 2. BFS
+//        // ???
+//        while (!q.isEmpty()){
+//            // ???
+//            layer += 1;
+//            int size = q.size();
+//            for(int j = 0; j < size; j++){
+//                int cur = q.poll();
+//                if(cur == target){
+//                    return layer;
+//                }
+//                for(int next: map.get(cur)){
+//                    if(!visited.contains(next)){
+//                        visited.add(next);
+//                        q.add(next);
+//                    }
+//                }
+//            }
+//        }
+//
+//        return -1;
 //    }
+
 
     // V0-1
     // IDEA: BFS (fixed by gemini)
@@ -67,7 +245,26 @@ public class BusRoutes {
          *
          *  map: { stop : [bus_1, bus_2, .... ] }
          *
+         *
          *  -> it's a  `map -> stop_list` relation
+         *
+         *  ----
+         *
+         *  ex 1)
+         *
+         *    routes = [[1,2,7],[3,6,7]]
+         *      idx =     0       1
+         *
+         *   -> the map (stopToBuses) is like below:
+         *
+         *   {
+         *      1: [0],
+         *      2: [0],
+         *      7: [0, 1],
+         *      3: [1],
+         *      6: [1]
+         *   }
+         *
          *
          */
         Map<Integer, List<Integer>> stopToBuses = new HashMap<>();
@@ -376,8 +573,6 @@ public class BusRoutes {
     }
 
 
-
-
-
+    
 
 }

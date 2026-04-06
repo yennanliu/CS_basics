@@ -1843,8 +1843,131 @@ public class Workspace24 {
      *-----------------
      *
      */
-    //  IDEA 1) BFS
+    // 15.43 - 53 pm
+    /**
+     *
+     *   // // IDEA 1) BFS ???
+     *
+     *   --------
+     *
+     *   ex 1)
+     *
+     *   Input: routes = [[1,2,7],[3,6,7]], source = 1, target = 6
+     *   Output: 2
+     *
+     *
+     *   -> graph =  { 1: [2,7], 2: [1,7],
+     *                 3: [6,7], 6:[3,7], 7: [3,6, 1,2]  }
+     *
+     *
+     *   ex 2)
+     *
+     *    Input: routes = [[7,12],[4,5,15],[6],[15,19],[9,12,13]],
+     *    source = 15, target = 12
+     *
+     *    -> graph = {
+     *         7: [12], 12: [7], ....
+     *    }
+     *
+     *
+     */
+    // IDEA 1) BFS
     public int numBusesToDestination(int[][] routes, int source, int target) {
+        // edge
+        if(source == target){
+            //return 1;
+            return 0;
+        }
+
+        // NOTE !!!
+        // // 2. Build Mapping: Stop -> List of Route Indices it belongs to
+        // { stop -> [ route_1, route_2, ... ] }
+
+        // 1. build graph
+        // map: { node: [next_1, next_2, ...] }
+        // better way to below ?????
+        Map<Integer, List<Integer>> map = new HashMap<>();
+
+
+        for(int[] r: routes){
+            // ???
+            int start = -1;
+            List<Integer> list = null;
+
+            for(int i = 0; i < r.length; i++){
+                start = r[i];
+                if(!map.containsKey(start)){
+                    map.put(start, new ArrayList<>());
+                }
+                list = map.get(start);
+                if(i != start){
+                    list.add(i);
+                }
+
+            }
+            map.put(start, list);
+        }
+
+        // edge: if source or target NOT in map
+        if(!map.containsKey(source) || !map.containsKey(target)){
+            return -1;
+        }
+
+        Set<Integer> visited = new HashSet<>();
+
+        // NOTE !!!
+        boolean[] visitedRoutes = new boolean[routes.length];
+
+
+
+
+        //Queue
+        Queue<Integer> q = new LinkedList<>();
+        q.add(source);
+        visited.add(source);
+        //visitedStops.add(source);
+
+       // visitedRoutes.
+
+        int layer = 0;
+
+        // 2. BFS
+        // ???
+        while (!q.isEmpty()){
+            // ???
+            layer += 1;
+            int size = q.size();
+            for(int j = 0; j < size; j++){
+                // ???
+                if(visited.contains(j)){
+                    continue;
+                }
+
+                int cur = q.poll();
+                if(cur == target){
+                    return layer;
+                }
+                for(int next: map.get(cur)){
+                    if(!visited.contains(next)){
+                        visited.add(next);
+                        q.add(next);
+                    }
+                }
+            }
+        }
+
+        return -1;
+    }
+
+
+
+
+
+
+
+
+    //  IDEA 1) BFS
+    public int numBusesToDestination_99(int[][] routes, int source, int target) {
         // edge
         if(source == target){
             return 0;
