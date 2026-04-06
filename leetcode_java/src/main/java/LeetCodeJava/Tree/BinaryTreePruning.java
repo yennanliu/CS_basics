@@ -53,6 +53,11 @@ public class BinaryTreePruning {
         }
 
         // 1. Recurse down to the children first (Post-order)
+        /** NOTE !!!
+         *
+         *  we need to `re-connect` root and its children,
+         *  or the answer is WRONG
+         */
         root.left = pruneTree(root.left);
         root.right = pruneTree(root.right);
 
@@ -91,6 +96,34 @@ public class BinaryTreePruning {
 
         return root;
     }
+
+    // V0-0-2
+    // IDEA: POST ORDER DFS
+    public TreeNode pruneTree_0_0_2(TreeNode root) {
+        // edge
+        if (root == null) {
+            return root;
+        }
+
+        TreeNode _left = pruneTree_0_0_2(root.left);
+        TreeNode _right = pruneTree_0_0_2(root.right);
+
+        // ???
+        if (root.val == 0 && _left == null && _right == null) {
+            return null;
+        }
+
+        /** NOTE !!!
+         *
+         *  we need to `re-connect` root and its children,
+         *  or the answer is WRONG
+         */
+        root.left = _left;
+        root.right = _right;
+
+        return root;
+    }
+
 
 
     // V0-1
@@ -212,7 +245,7 @@ public class BinaryTreePruning {
 
 
     // V3
-    
+
 
 
 

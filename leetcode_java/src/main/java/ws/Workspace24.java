@@ -5820,10 +5820,37 @@ public class Workspace24 {
      *   ---------------
      *
      */
+    public TreeNode pruneTree(TreeNode root) {
+        // edge
+        if(root == null){
+            return root;
+        }
+
+        TreeNode _left = pruneTree(root.left);
+        TreeNode _right = pruneTree(root.right);
+
+//        if(_left == null && _right != null){
+//            return root; // ???
+//        }
+
+        // ???
+        if(root.val == 0 && _left == null && _right == null){
+            return null;
+        }
+
+        root.left = _left;
+        root.right = _right;
+
+        return root;
+    }
+
+
+
+
     // ???
     // 1. check if `should delete` via DFS
     // 2. update node via BFS ????
-    public TreeNode pruneTree(TreeNode root) {
+    public TreeNode pruneTree_98(TreeNode root) {
         // edge
         if(root == null){
             return root;
