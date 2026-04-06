@@ -5254,8 +5254,116 @@ public class Workspace24 {
      *
      *
      */
-    // greedy ????
+    // 8.44 - 54 am
+    /**
+     *  IDEA 1) 2D DP
+     *
+     *   - DP def
+     *      - dp[i][j]: `relative score` (player 1 VS player 2)
+     *                   at idx = i ?????
+     *
+     *   - DP eq
+     *
+     *       dp[i][j] =
+     *          ???
+     *            max ( nums[i] + dp[i-1][j],  nums[j] + dp[i][j-1] )
+     *
+     *
+     *
+     *  IDEA 2) 1D DP
+     *
+     *
+     *
+     */
+    // IDEA 1) 2D DP
     public boolean predictTheWinner(int[] nums) {
+        // edge
+        int n = nums.length;
+        // 1. Edge case: If there's only one number, P1 takes it and wins.
+        if (n <= 1) return true;
+
+
+
+
+        // ???
+        //int n = nums.length;
+        // NOTE !!!
+        // DP Definition: dp[i][j] should be
+        // the maximum relative score a player
+        // can get from the subarray nums[i...j].
+
+        // Minimax Transition: The formula is dp[i][j] =
+        // Math.max(nums[i] - dp[i+1][j], nums[j] - dp[i][j-1]).
+        //
+        //Why minus? Because dp[i+1][j] is the best
+        // the next player can do. You take your pick
+        // and subtract their best possible outcome.
+        int[][] dp = new int[n][n];
+
+        // ??? init
+        dp[0][0] = 0; // ??
+        dp[0][1] = nums[0];
+        dp[1][0] = nums[0];
+
+        ///  /??
+        /**
+         *      *       dp[i][j] =
+         *      *          ???
+         *      *            max ( nums[i] + dp[i-1][j],  nums[j] + dp[i][j-1] )
+         *      *
+         *
+         */
+
+        // NOTE !!!
+        // DP Definition: dp[i][j] should be
+        // the maximum relative score a player
+        // can get from the subarray nums[i...j].
+
+        // Minimax Transition: The formula is dp[i][j] =
+        // Math.max(nums[i] - dp[i+1][j], nums[j] - dp[i][j-1]).
+        //
+        //Why minus? Because dp[i+1][j] is the best
+        // the next player can do. You take your pick
+        // and subtract their best possible outcome.
+
+        for(int i = 1; i < n; i++){
+            // ???
+            for(int j = 1; j < n; j++){
+                // ???
+                // case 1)
+                if(i == j){
+                    dp[i][j] = i;
+                }
+                // case 2)
+                else{
+                    dp[i][j] = Math.max (
+                            nums[i] - dp[i + 1][j],
+                            nums[j] - dp[i][j + 1]
+                    );
+                }
+
+            }
+        }
+
+
+        // ???
+        return dp[n][n] >= 0;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // greedy ????
+    public boolean predictTheWinner_99(int[] nums) {
         // edge
         if(nums == null || nums.length == 0){
             return true;

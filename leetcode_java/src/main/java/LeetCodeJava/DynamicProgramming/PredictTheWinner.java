@@ -41,6 +41,45 @@ public class PredictTheWinner {
 
     // V0
     // IDEA: 2D DP (fixed by gemini)
+    public boolean predictTheWinner(int[] nums) {
+        int n = nums.length;
+        // 1. Edge case: If there's only one number, P1 takes it and wins.
+        if (n <= 1)
+            return true;
+
+        // 2. dp[i][j] = max relative score from subarray nums[i...j]
+        int[][] dp = new int[n][n];
+
+        // 3. Base Case: Subarrays of length 1
+        for (int i = 0; i < n; i++) {
+            dp[i][i] = nums[i];
+        }
+
+        // 4. Fill the table for lengths 2 up to n
+        // We move i from bottom up to ensure dp[i+1] is always ready
+        for (int i = n - 2; i >= 0; i--) {
+            for (int j = i + 1; j < n; j++) {
+
+                // Choice A: Take nums[i],
+                // subtract the opponent's best relative score from the rest
+                int pickLeft = nums[i] - dp[i + 1][j];
+
+                // Choice B: Take nums[j],
+                // subtract the opponent's best relative score from the rest
+                int pickRight = nums[j] - dp[i][j - 1];
+
+                
+                dp[i][j] = Math.max(pickLeft, pickRight);
+            }
+        }
+
+        // 5. If the relative score for the full array is >= 0, P1 wins or ties
+        return dp[0][n - 1] >= 0;
+    }
+
+
+    // V0-0-1
+    // IDEA: 2D DP (fixed by gemini)
     /**
      *  NOTE !!!
      *
@@ -58,7 +97,7 @@ public class PredictTheWinner {
      *   )
      *
      */
-    public boolean predictTheWinner(int[] nums) {
+    public boolean predictTheWinner_0_0_1(int[] nums) {
         int n = nums.length;
         if (n <= 1)
             return true;
@@ -277,6 +316,8 @@ public class PredictTheWinner {
 
 
     // V3
+
+
 
 
 }
