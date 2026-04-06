@@ -5802,6 +5802,81 @@ public class Workspace24 {
     }
 
 
+    // LC 814
+    // 16.31 - 41 pm
+    /**
+     *  -> return the same tree where every
+     *    subtree (of the given tree)
+     *    not containing a 1 has been removed.
+     *
+     *
+     *  ---------------
+     *
+     *   IDEA 1) POST ORDER DFS ???
+     *
+     *    -> left -> right -> root
+     *
+     *
+     *   ---------------
+     *
+     */
+    // ???
+    // 1. check if `should delete` via DFS
+    // 2. update node via BFS ????
+    public TreeNode pruneTree(TreeNode root) {
+        // edge
+        if(root == null){
+            return root;
+        }
+
+        // ??? bfs
+        Queue<TreeNode> q = new LinkedList<>();
+        q.add(root);
+        // ??
+        while (!q.isEmpty()){
+            TreeNode cur = q.poll();
+            // ????
+            if(deleteHelper(cur)){
+                continue;
+            }
+            // ???
+            if(cur.left != null){
+                q.add(cur.left);
+            }
+            if(cur.right != null){
+                q.add(cur.right);
+            }
+        }
+
+
+        return root;
+    }
+
+
+    // ???
+    // if has NO `1` node in child nodes -> return true
+    // otherwise, return false
+    private boolean deleteHelper(TreeNode root){
+        if(root == null){
+            return false;
+        }
+
+        boolean _left = deleteHelper(root.left);
+        boolean _right = deleteHelper(root.right);
+
+        if(_left && _right){
+            return true;
+        }
+
+        // ???
+        if(root.val != 1){
+            return true;
+        }
+
+
+        return false;
+    }
+
 
 
 

@@ -46,9 +46,52 @@ import LeetCodeJava.DataStructure.TreeNode;
 public class BinaryTreePruning {
 
     // V0
-//    public TreeNode pruneTree(TreeNode root) {
-//
-//    }
+    // IDEA: POST ORDER DFS (fixed by gemini)
+    public TreeNode pruneTree(TreeNode root) {
+        if (root == null) {
+            return null;
+        }
+
+        // 1. Recurse down to the children first (Post-order)
+        root.left = pruneTree(root.left);
+        root.right = pruneTree(root.right);
+
+        // 2. After children are processed, check if this node should be pruned
+        // If left is null, right is null, and current value is 0 -> prune this node
+        if (root.left == null && root.right == null && root.val == 0) {
+            return null; // Returning null "prunes" this node from its parent
+        }
+
+        // 3. Otherwise, keep this node
+        return root;
+    }
+
+    // V0-0-1
+    // IDEA: POST ORDER DFS (fixed by GPT)
+    public TreeNode pruneTree_0_0_1(TreeNode root) {
+
+        return deleteHelper(root);
+    }
+
+    // return pruned subtree
+    private TreeNode deleteHelper(TreeNode root) {
+
+        if (root == null) {
+            return null;
+        }
+
+        // prune left & right first (post-order)
+        root.left = deleteHelper(root.left);
+        root.right = deleteHelper(root.right);
+
+        // if current node should be deleted
+        if (root.val == 0 && root.left == null && root.right == null) {
+            return null;
+        }
+
+        return root;
+    }
+
 
     // V0-1
     // IDEA: DFS (gemini)
@@ -169,9 +212,7 @@ public class BinaryTreePruning {
 
 
     // V3
-
-
-
+    
 
 
 
