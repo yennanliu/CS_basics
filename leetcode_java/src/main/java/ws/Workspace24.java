@@ -6059,6 +6059,85 @@ public class Workspace24 {
 
 
 
+    // LC 1631
+    // 10.11 -21 am
+    /**
+     *  -> Return the `minimum` effort required to
+     *  travel from the `top-left cell to the bottom-right cell.`
+     *
+     *  - You can move up, down, left, or right,
+     *  and you wish to find a route that requires
+     *  the `minimum` effort.
+     *
+     *  -------------
+     *
+     *   IDEA 1) 2D DP
+     *
+     *   IDEA 2) Dijkstra ALGO
+     *
+     *  -------------
+     *
+     */
+    // IDEA 1) 2D DP
+    public int minimumEffortPath(int[][] heights) {
+
+        int m = heights.length;
+        int n = heights[0].length;
+
+        // 1. Initialize DP table (or use grid in-place to save space)
+        int[][] dp = new int[m][n];
+
+        // 2. Base Case: Starting point
+        dp[0][0] = heights[0][0];
+
+//        // 3. Initialize First Column (only one way: from above)
+//        for (int i = 1; i < m; i++) {
+//            dp[i][0] = dp[i - 1][0] + heights[i][0];
+//        }
+//
+//        // 4. Initialize First Row (only one way: from left)
+//        for (int j = 1; j < n; j++) {
+//            dp[0][j] = dp[0][j - 1] + heights[0][j];
+//        }
+
+        // 5. Fill the rest of the table
+        for (int i = 1; i < m; i++) {
+            for (int j = 1; j < n; j++) {
+                // Min cost to reach (i, j) = grid[i][j] + min(above, left)
+                // ???
+                int y_ = i + 1;
+                int x_ = j + 1;
+                // ???
+                int val1 = -1;
+                int val2 = -1;
+                if(y_ < m){
+                    val1 = heights[y_][j];
+                }
+                if(x_ < n){
+                    val2 = heights[i][x_];
+                }
+
+                // ???
+                int tmp = Math.min(
+                        dp[i - 1][j], dp[i][j - 1]);
+
+                if(val1 > 0){
+                    tmp = Math.min(tmp, val1);
+                }
+                if(val2 > 0){
+                    tmp = Math.min(tmp, val2);
+                }
+
+
+                dp[i][j] = heights[i][j] + tmp;
+            }
+        }
+
+        return dp[m - 1][n - 1];
+    }
+
+
+
 
 
 

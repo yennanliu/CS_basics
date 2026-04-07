@@ -52,6 +52,33 @@ import java.util.*;
  */
 public class PathWithMinimumEffort {
 
+    /** NOTE !!!
+     *
+     *   we CAN'T use DP for LC 1631
+     *
+     *   (No, standard DP (Top-Down or Bottom-Up) does not work for LC 1631 (Path With Minimum Effort).)
+     *
+     *   ------
+     *
+     *
+     *   1. Why DP fails for LC 1631
+     *
+     *   In LC 64 (Minimum Path Sum), you can only move Right or Down. This creates a "Directed Acyclic Graph" (DAG), which is the requirement for DP.
+     *
+     *   -> In LC 1631, you can move in four directions
+     *    (Up, Down, Left, Right).
+     *    Because you can move `"backwards"` to find a path w
+     *    ith a smaller maximum difference,
+     *    a simple DP table CAN NOT capture the dependencies—you'd
+     *    end up with `circular` dependencies.
+     *
+     *   
+     *   -> For this problem, the "Gold Standard" is
+     *   Dijkstra's Algorithm or Binary Search + DFS/BFS.
+     *
+     *
+     */
+
     /**  NOTE !!!  LC 64 VS LC 1631
      *
      *
@@ -571,5 +598,8 @@ public class PathWithMinimumEffort {
         }
         return l;
     }
+
+
+
 
 }
