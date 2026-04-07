@@ -5905,6 +5905,108 @@ public class Workspace24 {
     }
 
 
+    // LC 64
+    // 7.48 - 8.03 am
+    /**
+     *   -> , find a `path` from
+     *   `top left to bottom right`, which `minimizes`
+     *   the sum of all numbers along its path.
+     *
+     *    - m x n grid
+     *    - Note: can only move
+     *      either `down or right` at any point in time.
+     *
+     *   -----------------
+     *
+     *    IDEA 1) BFSD / DFS + BRUTE FORCE ????
+     *
+     *    IDEA 2) DP ???
+     *
+     *    IDEA 3) dijkstra algo ????
+     *
+     *    -----------------
+     *
+     *
+     */
+    // IDEA 3) dijkstra algo ????
+    public int minPathSum(int[][] grid) {
+        // edge
+
+        int l = grid.length;
+        int w = grid[0].length;
+
+        if(l == 0 || w == 0){
+            return 0;
+        }
+        if(l == 1 || w == 1){
+            int res = 0;
+            if(l == 1){
+                for(int x = 0; x < w; x++){
+                    res += grid[0][x];
+                }
+                return res;
+            }else{
+                for(int y = 0; y < l; y++){
+                    res += grid[y][0];
+                }
+                return res;
+            }
+        }
+
+
+
+        int minCost = 200 * l * w; // ???
+
+        // pq: { [x, y, cost], .... }
+        PriorityQueue<Integer[]> pq = new PriorityQueue<>();
+        boolean[][] visited = new boolean[l][w]; // ???
+
+        pq.add(new Integer[]{0, 0, grid[0][0]}); // ??
+        visited[0][0] = true;
+
+
+        // ??? either `down or right`
+        // (x,y)
+        int[][] moves = new int[][] { {1,0}, {0,1} };
+
+        while (!pq.isEmpty()){
+            // ???
+            int size = pq.size();
+            for(int i = 0; i < size; i++){
+                Integer[] cur = pq.poll();
+                int x = cur[0];
+                int y = cur[1];
+                int cost = cur[2];
+                // ??? check if arrived ???
+                if(x == w - 1 && y == l - 1){
+                    minCost = Math.min(minCost, cost);
+                    // ??? undo `visited` for final destination ???
+                    // so other `BFS process` can visit as well ??
+                    visited[l-1][w-1] = false; // ?????
+                }
+                // ?? move
+                for(int[] m: moves){
+                    int x_ = x + m[0];
+                    int y_ = y + m[1];
+                    // ??
+                    if(x_ >= 0 && x_ < w && y_ >= 0 && y_ < l){
+                        if(!visited[y_][x_] && grid[y_][x_] < cost){
+                            visited[y_][x_] = true;
+                            pq.add(new Integer[]{x_, y_, grid[y_][x_]});
+                        }
+                    }
+                }
+            }
+        }
+
+
+        return minCost;
+    }
+
+
+
+
+
 
 
 
