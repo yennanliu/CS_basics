@@ -37,8 +37,9 @@
 
 ### **Category 3: Grid-based Shortest Path**
 - **Description**: Finding optimal paths in 2D grids
-- **Examples**: LC 1631 (Path Min Effort), LC 778 (Swim in Rising Water)
+- **Examples**: LC 64 (Minimum Path Sum), LC 1631 (Path Min Effort), LC 778 (Swim in Rising Water)
 - **Pattern**: Dijkstra on implicit graph (grid cells as nodes)
+- **⚠️ Special Note**: LC 64 can use pure DP instead of Dijkstra (see below)
 
 ### **Category 4: Multi-Source Shortest Path**
 - **Description**: Multiple starting points to find shortest paths
@@ -50,6 +51,116 @@
 - **Examples**: LC 2045 (Second Minimum Time), LC 882 (Reachable Nodes)
 - **Pattern**: Track time/state in priority queue
 
+
+## ⚠️ Critical Decision: When to Use Dijkstra vs DP
+
+### LC 64 vs LC 1631: The dist[][] Question
+
+**Question**: Do we really need `dist[r][c]` (tracking minimum cost to reach each cell) for Dijkstra? Or is pure DP enough?
+
+**Answer**: It depends on **movement directions**:
+
+#### **LC 64: Minimum Path Sum** ✅ Pure DP is Sufficient
+```
+Movement: RIGHT only ↓ or DOWN only →
+```
+- **Why DP works**: You can only reach cell `(i,j)` from `(i-1,j)` or `(i,j-1)`
+- **No need for dist[][]**: Each cell is computed exactly once in topological order
+- **No revisits**: You can never find a "better path" after already computing a cell
+- **Solution**: Simple 2D DP or O(min(m,n)) space 1D DP
+
+```java
+// Pure DP - NO dist[][] needed
+public int minPathSum(int[][] grid) {
+    int m = grid.length, n = grid[0].length;
+    int[][] dp = new int[m][n];
+    dp[0][0] = grid[0][0];
+    
+    // First column: only from above
+    for (int i = 1; i < m; i++)
+        dp[i][0] = dp[i-1][0] + grid[i][0];
+    
+    // First row: only from left
+    for (int j = 1; j < n; j++)
+        dp[0][j] = dp[0][j-1] + grid[0][j];
+    
+    // Fill rest
+    for (int i = 1; i < m; i++)
+        for (int j = 1; j < n; j++)
+            dp[i][j] = grid[i][j] + Math.min(dp[i-1][j], dp[i][j-1]);
+    
+    return dp[m-1][n-1];
+}
+// Time: O(m*n), Space: O(min(m,n))
+```
+
+#### **LC 1631: Path With Minimum Effort** ⚠️ Dijkstra + dist[][] Needed
+```
+Movement: UP, DOWN, LEFT, RIGHT (all 4 directions)
+```
+- **Why Dijkstra needed**: You might reach a cell from multiple paths, and later find a better path
+- **dist[][] is essential**: Tracks "best cost found so far" for each cell
+- **Revisits possible**: When moving in all 4 directions, you can revisit cells with better costs
+- **Solution**: Dijkstra with dist[][] + PriorityQueue
+
+```java
+// Dijkstra + dist[][] - NECESSARY for 4-directional movement
+public int minimumEffortPath(int[][] heights) {
+    int m = heights.length, n = heights[0].length;
+    
+    // dist[r][c] = minimum effort found so far to reach (r,c)
+    int[][] dist = new int[m][n];
+    for (int[] row : dist)
+        Arrays.fill(row, Integer.MAX_VALUE);
+    
+    PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[2] - b[2]);
+    pq.offer(new int[]{0, 0, 0});
+    dist[0][0] = 0;
+    
+    int[][] dirs = {{0,1}, {0,-1}, {1,0}, {-1,0}};
+    
+    while (!pq.isEmpty()) {
+        int[] cur = pq.poll();
+        int r = cur[0], c = cur[1], cost = cur[2];
+        
+        // Already processed with better cost
+        if (cost > dist[r][c]) continue;
+        
+        if (r == m-1 && c == n-1) return cost;
+        
+        for (int[] d : dirs) {
+            int nr = r + d[0], nc = c + d[1];
+            if (nr >= 0 && nr < m && nc >= 0 && nc < n) {
+                int newCost = Math.max(cost, Math.abs(heights[nr][nc] - heights[r][c]));
+                if (newCost < dist[nr][nc]) {
+                    dist[nr][nc] = newCost;
+                    pq.offer(new int[]{nr, nc, newCost});
+                }
+            }
+        }
+    }
+    return -1;
+}
+// Time: O(m*n*log(m*n)), Space: O(m*n)
+```
+
+### Summary Table
+
+| Problem | Movement | Cost Model | Best Approach | Need dist[][]? | Need visited? |
+|---------|----------|-----------|----------------|--------|---------|
+| **LC 64** | Right + Down | Additive sum | **2D DP** | ❌ No | ❌ No |
+| **LC 1631** | 4-directions | Max of diffs | **Dijkstra** | ✅ Yes | ✅ Yes (via dist check) |
+| **LC 1263** | 4-directions | Additive cost | **Dijkstra** | ✅ Yes | ✅ Yes (via dist check) |
+
+### The dist[][] Purpose
+```
+dist[r][c] = "What's the MINIMUM cost I've found SO FAR to reach (r,c)?"
+```
+- **Initialize**: `dist[r][c] = Integer.MAX_VALUE` (unknown)
+- **Update**: When PQ pops a cell with cost C, check `if (C > dist[r][c]) continue;`
+  - If true, we already found a better path → skip processing
+  - This **automatically prevents reprocessing** without explicit visited array
+- **Essential when**: Multiple paths can reach the same cell → Dijkstra refinement needed
 
 
 ## Templates & Algorithms
@@ -1091,6 +1202,41 @@ path.reverse()
 4. **Define state**: What needs tracking in priority queue?
 5. **Implement relaxation**: How to update distances?
 6. **Handle termination**: When to stop? Return what value?
+
+---
+
+## Similar LeetCode Problems Reference
+
+### Grid-Based Problems
+| LC # | Title | Movement | Key Feature | Approach | dist[][] Needed? |
+|------|-------|----------|-------------|----------|---------|
+| **64** | Minimum Path Sum | ↓→ only | Additive cost | **Pure DP** | ❌ No |
+| **1631** | Path With Minimum Effort | 4-dir | Max step diff | **Dijkstra** | ✅ Yes |
+| **778** | Swim in Rising Water | 4-dir | Max grid value | **Dijkstra** | ✅ Yes |
+| **1263** | Minimum Moves to Move Box | 4-dir | Push box mechanics | **Dijkstra** + state | ✅ Yes |
+| **882** | Reachable Nodes In Subdivided Graph | Graph | Node subdivision | **Dijkstra** | ✅ Yes |
+
+### Classic Shortest Path Problems
+| LC # | Title | Type | Key Feature |
+|------|-------|------|-------------|
+| **743** | Network Delay Time | Graph | Broadcast delays |
+| **787** | Cheapest Flights K Stops | Graph | K-stop constraint |
+| **1514** | Path with Maximum Probability | Graph | Maximize probability |
+| **1928** | Minimum Cost to Reach Destination | Weighted Graph | K waypoints |
+
+### Multi-Source Shortest Path
+| LC # | Title | Key Feature |
+|------|-------|-------------|
+| **1162** | As Far from Land as Possible | Multi-source BFS-Dijkstra |
+| **2812** | Find the Safest Path | Grid-based multi-source |
+| **2290** | Minimum Obstacle Removal | 0-1 BFS variant |
+
+### Key Implementation Files
+- **Java Reference**: `leetcode_java/src/main/java/LeetCodeJava/DynamicProgramming/MinimumPathSum.java`
+  - V0: Dijkstra with dist[][] (works but overkill)
+  - V0-0-1, V1, V2: Pure DP approaches (optimal for LC 64)
+  
+---
 
 ### Common Mistakes & Tips
 
