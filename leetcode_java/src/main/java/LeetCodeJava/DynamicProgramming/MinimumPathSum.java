@@ -3,6 +3,7 @@ package LeetCodeJava.DynamicProgramming;
 // https://leetcode.com/problems/minimum-path-sum/description/
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.PriorityQueue;
 
 /**
@@ -80,13 +81,158 @@ public class MinimumPathSum {
      */
 
     // V0
-    //    public int minPathSum(int[][] grid) {
-    //
-    //    }
+    // IDEA: Dijkstra algo (fixed by gemini)
+    public int minPathSum(int[][] grid) {
+        if (grid == null || grid.length == 0 || grid[0].length == 0)
+            return 0;
+
+        int rows = grid.length;
+        int cols = grid[0].length;
+
+        // pq: {row, col, cumulative_cost}
+        PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[2] - b[2]);
+
+        /** NOTE !!!
+         *
+         *  `dist[r][c]`
+         *
+         *    -> stores the `minimum` cost found `so far` to reach `(r, c)`
+         */
+        // dist[r][c] stores the minimum cost found so far to reach (r, c)
+        int[][] dist = new int[rows][cols];
+        for (int[] row : dist)
+            Arrays.fill(row, Integer.MAX_VALUE);
+
+        pq.offer(new int[] { 0, 0, grid[0][0] });
+        dist[0][0] = grid[0][0];
+
+        // Moves: {row_delta, col_delta} -> Down and Right
+        int[][] moves = { { 1, 0 }, { 0, 1 } };
+
+        while (!pq.isEmpty()) {
+            int[] cur = pq.poll();
+            int r = cur[0];
+            int c = cur[1];
+            int currentCost = cur[2];
+
+            // If we found a path to the target, it's guaranteed to be the minimum because of PQ
+            if (r == rows - 1 && c == cols - 1)
+                return currentCost;
+
+            /** NOTE !!!
+             *
+             *  Dijkstra
+             *
+             *    -> if already have a `better way` to visit (r,c) skip `cur process`.
+             */
+            // Standard Dijkstra: if we found a better way to this node already, skip it
+            if (currentCost > dist[r][c])
+                continue;
+
+            for (int[] m : moves) {
+                int nr = r + m[0];
+                int nc = c + m[1];
+
+                if (nr >= 0 && nr < rows && nc >= 0 && nc < cols) {
+                    /** NOTE !!!
+                     *
+                     *  Dijkstra
+                     *
+                     *    -> how we update new cost.
+                     */
+                    int nextCost = currentCost + grid[nr][nc];
+                    if (nextCost < dist[nr][nc]) {
+                        dist[nr][nc] = nextCost;
+                        pq.offer(new int[] { nr, nc, nextCost });
+                    }
+                }
+            }
+        }
+        return -1;
+    }
+
+
+    // V0-0-X
+    // IDEA: Dijkstra algo
+//    public int minPathSum(int[][] grid) {
+//        // edge
+//        if (grid == null || grid.length == 0 || grid[0].length == 0) {
+//            return 0;
+//        }
+//
+//        int l = grid.length;
+//        int w = grid[0].length;
+//
+//        /** NOTE !!!
+//         *
+//         *   min PQ (sorted on cost)
+//         */
+//        // pq: { [x, y, cost], .... }
+//        PriorityQueue<Integer[]> pq = new PriorityQueue<>(new Comparator<Integer[]>() {
+//            @Override
+//            public int compare(Integer[] o1, Integer[] o2) {
+//                int diff = o1[2] - o2[2];
+//                return diff;
+//            }
+//        });
+//
+//        boolean[][] visited = new boolean[l][w]; // ???
+//
+//        pq.add(new Integer[] { 0, 0, grid[0][0] }); // ??
+//        visited[0][0] = true;
+//
+//        // ??? either `down or right`
+//        // (x,y)
+//        int[][] moves = new int[][] { { 1, 0 }, { 0, 1 } };
+//
+//        while (!pq.isEmpty()) {
+//            // ???
+//            Integer[] cur = pq.poll();
+//
+//            int x = cur[0];
+//            int y = cur[1];
+//            int cost = cur[2];
+//
+//            if(visited[y][x]){
+//                continue;
+//            }
+//
+//            visited[y][x] = true;
+//
+//            /** NOTE !!!
+//             *
+//             *   if already arrived, return cost directly
+//             */
+//            if (x == w - 1 && y == l - 1) {
+//                return cost;
+//            }
+//
+//            // ?? move
+//            for (int[] m : moves) {
+//                int x_ = x + m[0];
+//                int y_ = y + m[1];
+//                // ??
+//                if (x_ >= 0 && x_ < w && y_ >= 0 && y_ < l) {
+//                    if (!visited[y_][x_]) {
+//                        // NOTE !!! below
+//                        /** NOTE !!!
+//                         *
+//                         *   we need to update `cost` (cost + grid[y_][x_]),
+//                         *   and add new path to PQ
+//                         */
+//                        pq.add(new Integer[] { x_, y_, cost + grid[y_][x_] });
+//                    }
+//                }
+//            }
+//        }
+//
+//        return -1; // shouldn't reach here if input is valid
+//    }
+
 
     // V0-0-1
     // 2D DP (fixed by gemini)
-    public int minPathSum(int[][] grid) {
+    public int minPathSum_0_0_1(int[][] grid) {
         int m = grid.length;
         int n = grid[0].length;
 
