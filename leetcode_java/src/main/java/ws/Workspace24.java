@@ -5954,18 +5954,31 @@ public class Workspace24 {
          *
          */
 
-        // init ???
-        for(int x = 0; x < w; x++){
-            dp[0][x] = grid[0][x];
+        // init start
+        dp[0][0] = grid[0][0];
+
+//        // init ???
+//        for(int x = 0; x < w; x++){
+//            dp[0][x] = grid[0][x];
+//        }
+//        for(int y = 0; y < l; y++){
+//            dp[y][0] = grid[y][0];
+//        }
+        // first row (prefix sum)
+        for (int x = 1; x < w; x++) {
+            dp[0][x] = dp[0][x - 1] + grid[0][x];
         }
-        for(int y = 0; y < l; y++){
-            dp[y][0] = grid[y][0];
+
+        // first column (prefix sum)
+        for (int y = 1; y < l; y++) {
+            dp[y][0] = dp[y - 1][0] + grid[y][0];
         }
+
 
         // ???
         for(int y = 1; y < l; y++){
             for(int x = 1; x < w; x++){
-                dp[y][x] = Math.min(
+                dp[y][x] += Math.min(
                         dp[y-1][x],
                         dp[y][x-1]
                 );

@@ -263,6 +263,57 @@ public class MinimumPathSum {
         return dp[m - 1][n - 1];
     }
 
+    // V0-0-2
+    // IDEA: 2D DP (fixed by GPT)
+    public int minPathSum_0_2(int[][] grid) {
+
+        if (grid == null || grid.length == 0 || grid[0].length == 0) {
+            return 0;
+        }
+
+        int l = grid.length;
+        int w = grid[0].length;
+
+        int[][] dp = new int[l][w];
+
+        // init start
+        dp[0][0] = grid[0][0];
+
+        // first row (prefix sum)
+        for (int x = 1; x < w; x++) {
+            /** NOTE !!!
+             *
+             *  need to accumulate the path sum.
+             */
+            dp[0][x] = dp[0][x - 1] + grid[0][x];
+        }
+
+        // first column (prefix sum)
+        for (int y = 1; y < l; y++) {
+            /** NOTE !!!
+             *
+             *  need to accumulate the path sum.
+             */
+            dp[y][0] = dp[y - 1][0] + grid[y][0];
+        }
+
+        // fill dp
+        for (int y = 1; y < l; y++) {
+            for (int x = 1; x < w; x++) {
+                /** NOTE !!!
+                 *
+                 *  need to accumulate the path sum.
+                 */
+                dp[y][x] = Math.min(
+                        dp[y - 1][x],
+                        dp[y][x - 1]) + grid[y][x]; // ✅ key fix
+            }
+        }
+
+        return dp[l - 1][w - 1];
+    }
+
+
     // V0-1
     // IDEA: MIN PQ + BFS (fixed by gpt)
 
