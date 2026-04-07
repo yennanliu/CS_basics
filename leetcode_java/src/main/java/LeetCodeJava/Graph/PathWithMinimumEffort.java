@@ -72,7 +72,7 @@ public class PathWithMinimumEffort {
      *    a simple DP table CAN NOT capture the dependencies—you'd
      *    end up with `circular` dependencies.
      *
-     *   
+     *
      *   -> For this problem, the "Gold Standard" is
      *   Dijkstra's Algorithm or Binary Search + DFS/BFS.
      *
@@ -121,9 +121,89 @@ public class PathWithMinimumEffort {
      */
 
     // V0
-//    public int minimumEffortPath(int[][] heights) {
-//
-//    }
+    // IDEA: Dijkstra (fixed by gemini)
+    public int minimumEffortPath(int[][] heights) {
+        int l = heights.length; // rows (y)
+        int w = heights[0].length; // cols (x)
+
+        /** NOTE !!!
+         *
+         *    we need `effortArr` to track
+         *    `processed` path (effort),
+         *    so it can be used as Dijkstra logic
+         *
+         *    -> (e.g. ONLY process if new path cost < prev path cost)
+         */
+        // 1. Initialize 2D cost array with MAX_VALUE
+        int[][] effortArr = new int[l][w];
+        for (int[] row : effortArr) {
+            Arrays.fill(row, Integer.MAX_VALUE);
+        }
+
+        // 2. PriorityQueue: {x, y, effort} sorted by effort
+        PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[2] - b[2]);
+
+        // Starting point: 0 effort to start at (0,0)
+        effortArr[0][0] = 0;
+        pq.add(new int[] { 0, 0, 0 });
+
+        int[][] moves = { { -1, 0 }, { 1, 0 }, { 0, -1 }, { 0, 1 } };
+
+        while (!pq.isEmpty()) {
+            int[] cur = pq.poll();
+            int x = cur[0];
+            int y = cur[1];
+            int currentEffort = cur[2];
+
+            // 3. Arrived at Destination
+            if (x == w - 1 && y == l - 1) {
+                return currentEffort;
+            }
+
+            /** NOTE !!!
+             *
+             *  skip if `last` effort < `cur` effort.
+             *
+             *  (e.g. if last process has less effort)
+             */
+            // 4. Optimization: Skip if we found a better way already
+            if (currentEffort > effortArr[y][x]) {
+                continue;
+            }
+
+            for (int[] m : moves) {
+                int nx = x + m[1]; // x corresponds to col (moves[1])
+                int ny = y + m[0]; // y corresponds to row (moves[0])
+
+                if (nx >= 0 && nx < w && ny >= 0 && ny < l) {
+
+
+                    /** NOTE !!!
+                     *
+                     *  how we get
+                     *    1. step effort
+                     *    2. next effort
+                     */
+                    // NEW EFFORT = MAX(previous effort, current step's diff)
+                    int stepDiff = Math.abs(heights[ny][nx] - heights[y][x]);
+                    int nextEffort = Math.max(currentEffort, stepDiff);
+
+                    /** NOTE !!!
+                     *
+                     *  ONLY process if `new effort < cur effort`
+                     *
+                     */
+                    if (nextEffort < effortArr[ny][nx]) {
+                        effortArr[ny][nx] = nextEffort;
+                        pq.add(new int[] { nx, ny, nextEffort });
+                    }
+                }
+            }
+        }
+
+        return 0;
+    }
+
 
     // V0-1
     // IDEA: Dijkstra's ALGO ( fixed by gpt) : min PQ + BFS
@@ -131,7 +211,6 @@ public class PathWithMinimumEffort {
      * time = O((V + E) log V)
      * space = O(V)
      */
-
     public int minimumEffortPath_0_1(int[][] heights) {
         if (heights == null || heights.length == 0)
             return 0;
@@ -449,8 +528,6 @@ public class PathWithMinimumEffort {
 
 
      */
-
-
     public int minimumEffortPath_4_1(int[][] heights) {
         int m = heights.length, n = heights[0].length;
         int[][] dist = new int[m][n];

@@ -6078,8 +6078,86 @@ public class Workspace24 {
      *  -------------
      *
      */
-    // IDEA 1) 2D DP
+    // IDEA 2) Dijkstra ALGO
     public int minimumEffortPath(int[][] heights) {
+        // edge
+
+        int l = heights.length;
+        int w = heights[0].length;
+
+        int[][] costArr = new int[l][w];
+        // ????
+        Arrays.fill(costArr, Integer.MAX_VALUE); // /???
+
+        // PQ: { [x, y, cost] }
+        PriorityQueue<Integer[]> pq = new PriorityQueue<>(new Comparator<Integer[]>() {
+            @Override
+            public int compare(Integer[] o1, Integer[] o2) {
+                int diff = o1[2] - o2[2];
+                return diff;
+            }
+        });
+
+        pq.add(new Integer[]{0, 0, heights[0][0]});
+
+        int[][] moves = { { -1, 0 }, { 1, 0 }, { 0, -1 }, { 0, 1 } };
+
+        // /??
+        while (!pq.isEmpty()){
+            // ???
+            Integer[] cur = pq.poll();
+            int x = cur[0];
+            int y = cur[1];
+            int cost = cur[2];
+            // ???
+            if(x == w - 1 && y == l - 1){
+                return cost;
+            }
+
+            // ???
+//            if(costArr[y][x] < cost){
+//                continue;
+//            }
+            if(costArr[y][x] > heights[y][x]){
+                continue;
+            }
+
+            // ??? update costArr with `cur` cost ???
+            costArr[y][x] = cost;
+
+            // ???
+            for(int[] m: moves){
+                int x_ = x + m[0];
+                int y_ = y + m[1];
+                // ???
+                if(x_ >= 0 && x_ < w && y_ >= 0 && y_ < l){
+                    // ????????
+                    int newCost = cost + heights[y_][y_];
+                    if(newCost < heights[y_][x_]){
+                       // ????
+
+                       pq.add(new Integer[]{x_, x_, newCost});
+                    }
+                }
+            }
+
+        }
+
+
+
+        return -1; // ??? should not visit here ???
+    }
+
+
+
+
+
+
+
+
+
+    // IDEA 1) 2D DP
+    public int minimumEffortPath_99(int[][] heights) {
 
         int m = heights.length;
         int n = heights[0].length;
