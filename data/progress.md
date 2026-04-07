@@ -29,7 +29,8 @@
 	- dp_pattern.md  (TODO: LC examples)
 	- dp.md (OK)
 	- graph.md (OK)
-	- greedy.md (TODO: LC examples)
+	- greedy.md  (OK)
+	- heap.md  (TODO: LC examples)
 
 - to review
 - needcode `250` - similar LC by AI
@@ -314,6 +315,8 @@
 	- todo (20260406)
 		- 742,323
 		- 802
+	- todo (20260407)
+		- 767,984,1405,358
 
  	==================================
 

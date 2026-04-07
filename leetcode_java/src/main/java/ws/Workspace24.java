@@ -5920,7 +5920,14 @@ public class Workspace24 {
      *
      *    IDEA 1) BFSD / DFS + BRUTE FORCE ????
      *
-     *    IDEA 2) DP ???
+     *    IDEA 2) 2d DP ???
+     *
+     *       - DP def:
+     *           dp[i][j]: min cost visit (i,j)
+     *
+     *       - DP eq:
+     *
+     *
      *
      *    IDEA 3) dijkstra algo ????
      *
@@ -5928,8 +5935,57 @@ public class Workspace24 {
      *
      *
      */
-    // IDEA 3) dijkstra algo ????
+    // IDEA: 2D DP
     public int minPathSum(int[][] grid) {
+        // edge
+        if (grid == null || grid.length == 0 || grid[0].length == 0) {
+            return 0;
+        }
+        int l = grid.length;
+        int w = grid[0].length;
+
+        // ??
+        int[][] dp = new int[l][w];
+
+        /**
+         * Note: You can only move either
+         * `down or right`
+         * at any point in time.
+         *
+         */
+
+        // init ???
+        for(int x = 0; x < w; x++){
+            dp[0][x] = grid[0][x];
+        }
+        for(int y = 0; y < l; y++){
+            dp[y][0] = grid[y][0];
+        }
+
+        // ???
+        for(int y = 1; y < l; y++){
+            for(int x = 1; x < w; x++){
+                dp[y][x] = Math.min(
+                        dp[y-1][x],
+                        dp[y][x-1]
+                );
+            }
+        }
+
+
+
+        return dp[l - 1][w - 1];
+    }
+
+
+
+
+
+
+
+
+    // IDEA 3) dijkstra algo ????
+    public int minPathSum_99(int[][] grid) {
         // edge
         if (grid == null || grid.length == 0 || grid[0].length == 0) {
             return 0;
