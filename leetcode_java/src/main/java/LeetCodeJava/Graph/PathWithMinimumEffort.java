@@ -136,6 +136,7 @@ public class PathWithMinimumEffort {
          */
         // 1. Initialize 2D cost array with MAX_VALUE
         int[][] effortArr = new int[l][w];
+        // NOTE !!! below
         for (int[] row : effortArr) {
             Arrays.fill(row, Integer.MAX_VALUE);
         }
@@ -194,6 +195,11 @@ public class PathWithMinimumEffort {
                      *
                      */
                     if (nextEffort < effortArr[ny][nx]) {
+                        /** NOTE !!!
+                         *
+                         *
+                         *  we only update `effortArr` at this point
+                         */
                         effortArr[ny][nx] = nextEffort;
                         pq.add(new int[] { nx, ny, nextEffort });
                     }

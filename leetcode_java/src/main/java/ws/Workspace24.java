@@ -6241,8 +6241,104 @@ public class Workspace24 {
      *  -------------
      *
      */
+    // 14.12 - 22 pm
     // IDEA 2) Dijkstra ALGO
+    // BFS + PQ + `cost array`
     public int minimumEffortPath(int[][] heights) {
+        // edge
+
+        int l = heights.length;
+        int w = heights[0].length;
+
+        // ??? `cost array`
+        int[][] costArr = new int[l][w];
+        // ????
+
+        // NOTE !!!!
+        //Arrays.fill(costArr, 1000000 + 1); // /???
+        for (int i = 0; i < l; i++) {
+            Arrays.fill(costArr[i], Integer.MAX_VALUE);
+        }
+
+        // PQ: { [x, y, cost] }
+        // min PQ: cost
+        PriorityQueue<Integer[]> pq = new PriorityQueue<>(new Comparator<Integer[]>() {
+            @Override
+            public int compare(Integer[] o1, Integer[] o2) {
+                int diff = o1[2] - o2[2];
+                return diff;
+            }
+        });
+
+        pq.add(new Integer[]{0, 0, 0}); // ???
+        costArr[0][0] = 0; // ???
+
+        int[][] moves = { { -1, 0 }, { 1, 0 }, { 0, -1 }, { 0, 1 } };
+
+        // ??
+        while (!pq.isEmpty()){
+
+            Integer[] cur = pq.poll();
+            int x = cur[0];
+            int y = cur[1];
+            int cost = cur[2];
+
+            // ???
+            if(x == w - 1 && y == l - 1){
+                return cost;
+            }
+
+            // check `effort`
+       /*     if(heights[y][x] >= costArr[y][x]){
+                continue;
+            }*/
+
+            // !!! NOTE !!!!
+            if(cost >= costArr[y][x]){
+                continue;
+            }
+
+
+
+            // ?? update effort
+            costArr[y][x] = heights[y][x]; // ????
+
+            // move
+            // ???
+            for(int[] m: moves){
+                int x_ = x + m[0];
+                int y_ = y + m[1];
+                // ???
+                if(x_ >= 0 && x_ < w && y_ >= 0 && y_ < l){
+                    // ????????
+                    //int newCost = cost + heights[y_][y_];
+
+                    int diff = Math.abs(heights[y][x] - heights[y_][x_]);
+                    int newCost = Math.max(cost, diff);
+
+
+                    // ????
+                    if(newCost < costArr[y_][x_]){
+                        // ????
+                        pq.add(new Integer[]{x_, x_, newCost});
+                    }
+                }
+            }
+
+
+        }
+
+
+        return -1; // ??? shpuld not visit here
+    }
+
+
+
+
+
+
+    // IDEA 2) Dijkstra ALGO
+    public int minimumEffortPath_94(int[][] heights) {
         // edge
 
         int l = heights.length;
