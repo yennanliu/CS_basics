@@ -6216,9 +6216,68 @@ public class Workspace24 {
 
 
     // LC 877
+    // 8.27 - 37 am
+    /**
+     *  -> Assuming Alice and Bob play optimally,
+     *  return true if Alice wins the game,
+     *  or false if Bob wins.
+     *
+     *   - The objective of the game is to
+     *   end with `the most` stones.
+     *
+     *   - The total number of stones across
+     *      all the piles is `odd`,
+     *
+     *
+     *  -  even number of piles
+     *  -   positive integer number of stones piles[i].
+     *
+     *
+     *
+     *  --------------------
+     *
+     *
+     *  --------------------
+     *
+     */
     public boolean stoneGame(int[] piles) {
 
-        return false;
+        // /??
+        int[] nums = piles;
+
+        int n = nums.length;
+        // 1. Edge case: If there's only one number, P1 takes it and wins.
+        if (n <= 1)
+            return true;
+
+        // 2. dp[i][j] = max relative score from subarray nums[i...j]
+        int[][] dp = new int[n][n];
+
+        // 3. Base Case: Subarrays of length 1
+        for (int i = 0; i < n; i++) {
+            dp[i][i] = nums[i];
+        }
+
+        // 4. Fill the table for lengths 2 up to n
+        // We move i from bottom up to ensure dp[i+1] is always ready
+        for (int i = n - 2; i >= 0; i--) {
+            for (int j = i + 1; j < n; j++) {
+
+                // Choice A: Take nums[i],
+                // subtract the opponent's best relative score from the rest
+                int pickLeft = nums[i] - dp[i + 1][j];
+
+                // Choice B: Take nums[j],
+                // subtract the opponent's best relative score from the rest
+                int pickRight = nums[j] - dp[i][j - 1];
+
+
+                dp[i][j] = Math.max(pickLeft, pickRight);
+            }
+        }
+
+        // 5. If the relative score for the full array is >= 0, P1 wins or ties
+        return dp[0][n - 1] >= 0;
     }
 
 
