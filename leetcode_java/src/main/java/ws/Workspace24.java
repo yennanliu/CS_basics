@@ -6598,6 +6598,58 @@ public class Workspace24 {
     }
 
 
+    // LC 1325
+    // 14.34 - 44 pm
+    /**
+     *
+     *
+     */
+    public TreeNode removeLeafNodes(TreeNode root, int target) {
+        // ?? edge
+        if(root == null){
+            return null;
+        }
+//        if(root.val == target){
+//            if(root.left == null && root.right == null){
+//                return null;
+//            }
+//            // ???
+//            if(root.left == null || root.right == null){
+//                if(root.left == null){
+//                    return root.right;
+//                }
+//                if(root.right == null){
+//                    return root.left;
+//                }
+//            }
+//        }
+
+        TreeNode res = deleteNodeHelper2(root, target);
+        return res;
+    }
+
+    // POST ORDER + DFS ??
+    private TreeNode deleteNodeHelper2(TreeNode root, int target){
+        // ?? edge
+        if(root == null){
+            return null;
+        }
+
+        // ???
+        TreeNode _left = deleteNodeHelper2(root.left, target);
+        TreeNode _right = deleteNodeHelper2(root.right, target);
+
+        // ???
+        if(_left == null && _right == null && root.val == target){
+            return null;
+        }
+
+        root.left = _left;
+        root.right = _right;
+
+        return root;
+    }
+
 
 
 

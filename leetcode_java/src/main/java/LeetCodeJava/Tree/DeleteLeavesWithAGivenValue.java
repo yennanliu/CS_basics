@@ -337,6 +337,42 @@ public class DeleteLeavesWithAGivenValue {
         return root;
     }
 
+
+    // V0-3
+    // IDEA: POST ORDER DFS
+    public TreeNode removeLeafNodes_0_3(TreeNode root, int target) {
+        // ?? edge
+        if (root == null) {
+            return null;
+        }
+
+        TreeNode res = deleteNodeHelper2(root, target);
+        return res;
+    }
+
+    // POST ORDER + DFS ??
+    private TreeNode deleteNodeHelper2(TreeNode root, int target) {
+        // ?? edge
+        if (root == null) {
+            return null;
+        }
+
+        // ???
+        TreeNode _left = deleteNodeHelper2(root.left, target);
+        TreeNode _right = deleteNodeHelper2(root.right, target);
+
+        // ???
+        if (_left == null && _right == null && root.val == target) {
+            return null;
+        }
+
+        root.left = _left;
+        root.right = _right;
+
+        return root;
+    }
+
+
     // V1
     // https://youtu.be/FqAoYAwbwV8?si=mOdW8Wgj3TJ4AyRL
 
