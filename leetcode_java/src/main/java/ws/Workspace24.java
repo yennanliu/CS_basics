@@ -6215,6 +6215,13 @@ public class Workspace24 {
     }
 
 
+    // LC 877
+    public boolean stoneGame(int[] piles) {
+
+        return false;
+    }
+
+
 
 
 

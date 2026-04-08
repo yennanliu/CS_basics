@@ -162,6 +162,244 @@ dist[r][c] = "What's the MINIMUM cost I've found SO FAR to reach (r,c)?"
   - This **automatically prevents reprocessing** without explicit visited array
 - **Essential when**: Multiple paths can reach the same cell → Dijkstra refinement needed
 
+### Dijkstra Implementation Variants for LC 1631
+
+#### **Variant 1: Using dist[][] Array (Recommended)**
+```java
+// dist[r][c] stores minimum cost found so far to reach (r,c)
+public int minimumEffortPath(int[][] heights) {
+    int m = heights.length, n = heights[0].length;
+    int[][] dist = new int[m][n];
+    for (int[] row : dist) Arrays.fill(row, Integer.MAX_VALUE);
+    
+    PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[2] - b[2]);
+    pq.offer(new int[]{0, 0, 0}); // {row, col, effort}
+    dist[0][0] = 0;
+    
+    int[][] dirs = {{0,1}, {0,-1}, {1,0}, {-1,0}};
+    
+    while (!pq.isEmpty()) {
+        int[] cur = pq.poll();
+        int r = cur[0], c = cur[1], effort = cur[2];
+        
+        // Destination check
+        if (r == m-1 && c == n-1) return effort;
+        
+        // Skip if already found better path
+        if (effort > dist[r][c]) continue;
+        
+        // Explore neighbors
+        for (int[] d : dirs) {
+            int nr = r + d[0], nc = c + d[1];
+            if (nr >= 0 && nr < m && nc >= 0 && nc < n) {
+                int nextEffort = Math.max(effort, Math.abs(heights[nr][nc] - heights[r][c]));
+                if (nextEffort < dist[nr][nc]) {
+                    dist[nr][nc] = nextEffort;
+                    pq.offer(new int[]{nr, nc, nextEffort});
+                }
+            }
+        }
+    }
+    return -1;
+}
+```
+**Why it works**: The `dist[][]` check `if (effort > dist[r][c]) continue;` automatically skips any path that's worse than the best we've found.
+
+#### **Variant 2: Using visited[] Array**
+```java
+// visited[] marks cells whose minimum effort is finalized
+public int minimumEffortPath_visited(int[][] heights) {
+    int m = heights.length, n = heights[0].length;
+    boolean[][] visited = new boolean[m][n];
+    
+    PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[0] - b[0]);
+    pq.offer(new int[]{0, 0, 0}); // {effort, row, col}
+    
+    int[][] dirs = {{0,1}, {0,-1}, {1,0}, {-1,0}};
+    
+    while (!pq.isEmpty()) {
+        int[] cur = pq.poll();
+        int effort = cur[0], r = cur[1], c = cur[2];
+        
+        if (r == m-1 && c == n-1) return effort;
+        
+        // Once visited, we have minimum effort (thanks to min-heap)
+        if (visited[r][c]) continue;
+        visited[r][c] = true;
+        
+        for (int[] d : dirs) {
+            int nr = r + d[0], nc = c + d[1];
+            if (nr >= 0 && nr < m && nc >= 0 && nc < n && !visited[nr][nc]) {
+                int nextEffort = Math.max(effort, Math.abs(heights[nr][nc] - heights[r][c]));
+                pq.offer(new int[]{nextEffort, nr, nc});
+            }
+        }
+    }
+    return -1;
+}
+```
+**Why visited works**: The min-heap guarantees that the first time we pop a cell is with optimal effort, so marking it visited prevents reprocessing.
+
+#### **Variant Comparison**
+| Approach | Space | Logic | Best For |
+|----------|-------|-------|----------|
+| **dist[][]** | Extra O(m×n) | Compare against best known | When updating multiple times |
+| **visited[]** | Extra O(m×n) | Mark as finalized | Simpler logic, faster exit |
+
+### Alternative Approaches for LC 1631
+
+#### **Approach 3: Binary Search + DFS**
+```java
+// Binary search on effort + DFS to check if reachable
+public int minimumEffortPath_binarySearch(int[][] heights) {
+    int lo = 0, hi = 1_000_000;
+    
+    while (lo < hi) {
+        int mid = (lo + hi) / 2;
+        if (canReach(heights, mid)) {
+            hi = mid;
+        } else {
+            lo = mid + 1;
+        }
+    }
+    return lo;
+}
+
+private boolean canReach(int[][] h, int limit) {
+    int m = h.length, n = h[0].length;
+    boolean[][] visited = new boolean[m][n];
+    return dfs(h, 0, 0, limit, visited);
+}
+
+private boolean dfs(int[][] h, int r, int c, int limit, boolean[][] visited) {
+    if (r < 0 || r >= h.length || c < 0 || c >= h[0].length || visited[r][c])
+        return false;
+    
+    visited[r][c] = true;
+    if (r == h.length-1 && c == h[0].length-1) return true;
+    
+    int[][] dirs = {{0,1}, {0,-1}, {1,0}, {-1,0}};
+    for (int[] d : dirs) {
+        int nr = r + d[0], nc = c + d[1];
+        if (nr >= 0 && nr < h.length && nc >= 0 && nc < h[0].length) {
+            if (Math.abs(h[nr][nc] - h[r][c]) <= limit && dfs(h, nr, nc, limit, visited)) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+```
+**Time**: O((V+E) × log(maxH)) | **Space**: O(V)
+
+#### **Approach 4: Union Find (Kruskal's Algorithm)**
+```java
+// Build graph as edges, sort by weight, union until src-dest connected
+public int minimumEffortPath_unionFind(int[][] heights) {
+    int m = heights.length, n = heights[0].length;
+    List<int[]> edges = new ArrayList<>();
+    
+    // Build all edges
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++) {
+            if (i > 0) // edge down
+                edges.add(new int[]{i*n+j, (i-1)*n+j, Math.abs(heights[i][j]-heights[i-1][j])});
+            if (j > 0) // edge right
+                edges.add(new int[]{i*n+j, i*n+j-1, Math.abs(heights[i][j]-heights[i][j-1])});
+        }
+    }
+    
+    // Sort edges by effort (Kruskal's principle)
+    edges.sort((a, b) -> a[2] - b[2]);
+    
+    UnionFind uf = new UnionFind(m * n);
+    int src = 0, dst = m*n - 1;
+    
+    for (int[] edge : edges) {
+        uf.union(edge[0], edge[1]);
+        if (uf.find(src) == uf.find(dst)) {
+            return edge[2]; // Return effort when src-dst first connected
+        }
+    }
+    return 0;
+}
+
+class UnionFind {
+    int[] parent, rank;
+    UnionFind(int n) {
+        parent = new int[n];
+        rank = new int[n];
+        for (int i = 0; i < n; i++) parent[i] = i;
+    }
+    
+    int find(int x) {
+        if (parent[x] != x) parent[x] = find(parent[x]);
+        return parent[x];
+    }
+    
+    void union(int x, int y) {
+        int px = find(x), py = find(y);
+        if (px == py) return;
+        if (rank[px] < rank[py]) { int t = px; px = py; py = t; }
+        parent[py] = px;
+        if (rank[px] == rank[py]) rank[px]++;
+    }
+}
+```
+**Time**: O((V+E) log(V+E)) = O(m×n × log(m×n)) | **Space**: O(m×n)
+
+### Approach Selection for LC 1631
+| Approach | Pros | Cons | Best When |
+|----------|------|------|-----------|
+| **Dijkstra + dist[][]** | Most intuitive, standard | Extra space | Want classic Dijkstra pattern |
+| **Dijkstra + visited[]** | Simpler early termination | Less flexible | Just need minimum effort |
+| **Binary Search + DFS** | Uses less memory in some cases | Slower (repeated DFS) | Memory is critical |
+| **Union Find** | Elegant graph perspective | Complex to implement | Learning Union Find |
+
+
+## ⚠️ Frequently Asked Questions
+
+### Q1: Do I need BOTH dist[] AND visited[]?
+**A**: No, you use ONE or the OTHER:
+- **Option A: dist[][]** → Check `if (newCost < dist[r][c])` before processing
+- **Option B: visited[]** → Mark as visited after first pop from PQ
+
+Both prevent reprocessing the same cell. Pick whichever feels clearer.
+
+### Q2: Why can't I use DP for LC 1631 like I do for LC 64?
+**A**: Because of **movement direction**:
+- **LC 64**: Only move RIGHT/DOWN → Topological order exists → DP works ✅
+- **LC 1631**: Can move UP/DOWN/LEFT/RIGHT → Cycles exist → DP fails ❌
+
+With 4-directional movement, you can have circular dependencies:
+```
+(1,1) → (1,2) → (2,2) → (2,1) → (1,1)
+```
+DP requires dependencies to form a DAG (no cycles), so **Dijkstra or Binary Search required**.
+
+### Q3: What's the difference between "cost" and "effort" in LC 1631?
+**A**: They measure different things in different problems:
+- **Cost (LC 64, 1263)**: Sum of all values along path = `cost += value`
+- **Effort (LC 1631)**: Max difference between consecutive cells = `effort = max(effort, |diff|)`
+
+Cost is additive; effort is not. This non-additivity is why DP fails.
+
+### Q4: When should I use Union Find instead of Dijkstra?
+**A**: Use Union Find when:
+- You're comfortable building explicit edge list
+- You want to see the problem as a graph connectivity problem
+- You're practicing Kruskal's algorithm
+
+Both have same time complexity O(m×n×log(m×n)), but Dijkstra is usually more intuitive for grid problems.
+
+### Q5: Does dist[r][c] check work without explicit visited[]?
+**A**: Yes! The check `if (cost > dist[r][c]) continue;` **IS** your visited mechanism:
+- First time we pop (r,c): `cost == dist[r][c]` → process
+- Later pops to (r,c): `cost > dist[r][c]` → skip (it's like "already visited")
+
+So you get the benefit of visited[] semantics without an extra array.
+
+---
 
 ## Templates & Algorithms
 
@@ -1208,13 +1446,19 @@ path.reverse()
 ## Similar LeetCode Problems Reference
 
 ### Grid-Based Problems
-| LC # | Title | Movement | Key Feature | Approach | dist[][] Needed? |
-|------|-------|----------|-------------|----------|---------|
-| **64** | Minimum Path Sum | ↓→ only | Additive cost | **Pure DP** | ❌ No |
-| **1631** | Path With Minimum Effort | 4-dir | Max step diff | **Dijkstra** | ✅ Yes |
-| **778** | Swim in Rising Water | 4-dir | Max grid value | **Dijkstra** | ✅ Yes |
-| **1263** | Minimum Moves to Move Box | 4-dir | Push box mechanics | **Dijkstra** + state | ✅ Yes |
-| **882** | Reachable Nodes In Subdivided Graph | Graph | Node subdivision | **Dijkstra** | ✅ Yes |
+| LC # | Title | Movement | Key Feature | Primary Approach | Alt Approaches | dist[][] Needed? |
+|------|-------|----------|-------------|----------|---------|---------|
+| **64** | Minimum Path Sum | ↓→ only | Additive cost | **2D DP** | 1D DP | ❌ No |
+| **1631** | Path With Minimum Effort | 4-dir | Max step diff (non-additive) | **Dijkstra** | Binary Search, Union Find | ✅ Yes |
+| **778** | Swim in Rising Water | 4-dir | Max grid value | **Dijkstra** | Union Find | ✅ Yes |
+| **1263** | Minimum Moves to Move Box | 4-dir | Push box mechanics | **Dijkstra + state** | - | ✅ Yes |
+| **882** | Reachable Nodes In Subdivided Graph | Graph | Node subdivision | **Dijkstra** | - | ✅ Yes |
+
+**LC 1631 Deep Dive:**
+- **Solutions Available**: 4 major approaches (Dijkstra dist[], Dijkstra visited, Binary Search, Union Find)
+- **Most Common**: Dijkstra with `dist[][]` array or `visited[]` array
+- **Key Insight**: The cost model is `Math.max(effort, step_diff)`, not additive—this makes DP impossible
+- **Reference**: `leetcode_java/src/main/java/LeetCodeJava/Graph/PathWithMinimumEffort.java` (V0-V4.3)
 
 ### Classic Shortest Path Problems
 | LC # | Title | Type | Key Feature |
