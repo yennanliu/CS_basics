@@ -6241,6 +6241,56 @@ public class Workspace24 {
      *
      */
     public boolean stoneGame(int[] piles) {
+        // edge
+
+        int[] nums = piles;
+        int n = nums.length;
+        if (n <= 1){
+            return true;
+        }
+
+
+        // ???
+        // DP def:
+        //   dp[i][j] =    `relative` score at sub arr [i.j]
+        int[][] dp = new int[n][n];
+        // ??
+        dp[0][0] = piles[0]; // ???
+
+
+        // 3. Base Case: Subarrays of length 1
+        for (int i = 0; i < n; i++) {
+            dp[i][i] = nums[i];
+        }
+
+
+
+        // ???
+        for(int i = 1; i < n; i++){
+            for(int j = 1; j < n; j++){
+
+                dp[i][j] = Math.max(
+                        dp[i-1][j] - piles[i],
+                        dp[i][j-1] - piles[j]
+                );
+
+            }
+        }
+
+        //return dp[n][n] >= 0; // ????
+        return dp[0][n - 1] >= 0; // ????
+    }
+
+
+
+
+
+
+
+
+
+
+    public boolean stoneGame_99(int[] piles) {
 
         // /??
         int[] nums = piles;

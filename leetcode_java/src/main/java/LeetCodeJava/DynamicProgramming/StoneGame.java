@@ -45,9 +45,53 @@ package LeetCodeJava.DynamicProgramming;
 public class StoneGame {
 
     // V0
+    // IDEA: 2D DP (fixed by gpt)
+    public boolean stoneGame(int[] piles) {
+        int n = piles.length;
+        int[][] dp = new int[n][n];
+
+        /** NOTE !!!
+         *
+         *  below
+         */
+        // base case: single pile
+        for (int i = 0; i < n; i++) {
+            dp[i][i] = piles[i];
+        }
+
+        /** NOTE !!!
+         *
+         *   1. double loop
+         *   2.
+         *     - len: 2 -> n
+         *     - i: i -> n
+         *
+         */
+        // fill DP table (length from 2 → n)
+        for (int len = 2; len <= n; len++) {
+            for (int i = 0; i <= n - len; i++) {
+
+                int j = i + len - 1;
+
+                dp[i][j] = Math.max(
+                        piles[i] - dp[i + 1][j],
+                        piles[j] - dp[i][j - 1]);
+            }
+        }
+
+        /** NOTE !!!
+         *
+         *   check if `dp[0][n - 1]` > 0
+         *   e.g. the `relative score` of original input array (piles)
+         */
+        return dp[0][n - 1] > 0;
+    }
+
+
+    // V0-1
     // IDEA: 2D DP + LC 486
     // https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/DynamicProgramming/PredictTheWinner.java
-    public boolean stoneGame(int[] piles) {
+    public boolean stoneGame_0_1(int[] piles) {
 
         // /??
         int[] nums = piles;
@@ -124,5 +168,5 @@ public class StoneGame {
     // V3
 
 
-    
+
 }
