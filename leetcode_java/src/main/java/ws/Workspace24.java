@@ -3044,7 +3044,8 @@ public class Workspace24 {
     // 12. 41 - 12.56 pm
     /**
      * -> Return the `smallest` subtree such
-     * that it contains all the deepest nodes in the original tree.
+     *    that it contains all the deepest
+     *    nodes in the original tree.
      *
      *  ------------
      *
@@ -3058,6 +3059,75 @@ public class Workspace24 {
      *  ------------
      *
      */
+    // IDEA 1) CUSTOM CLASS + LCA + DFS ???
+    // 13.43 - 53 am
+    class MyNode5{
+        TreeNode node;
+        int depth; // ???
+
+        MyNode5(){
+        }
+
+        MyNode5(TreeNode node, int depth){
+            this.node = node;
+            this.depth = depth;
+        }
+
+    }
+
+
+    public TreeNode subtreeWithAllDeepest(TreeNode root) {
+        // edge
+        if(root == null){
+            return null;
+        }
+        if(root.left == null && root.right == null){
+            return root;
+        }
+
+        // ??
+
+
+        // ???
+        MyNode5 res = DepthHelper(root);
+        // /???
+        return res.node;
+    }
+
+    private MyNode5 DepthHelper(TreeNode root){
+        // edge
+        // base: return depth = 0 for null
+        if (root == null) {
+            return new MyNode5(null, 0);
+        }
+
+//        // ??
+//        MyNode5 _left = DepthHelper(root.left, depth + 1);
+//        MyNode5 _right = DepthHelper(root.right, depth + 1);
+        // ??
+        MyNode5 _left = DepthHelper(root.left);
+        MyNode5 _right = DepthHelper(root.right);
+
+        // ??
+        if(_left.depth > _right.depth){
+            //return DepthHelper()
+            //return _left; ///???
+            return new MyNode5(_left.node, _left.depth + 1);
+        }else if(_left.depth < _right.depth){
+           // return _right;
+            return new MyNode5(_right.node, _right.depth + 1);
+        }
+
+        // ???
+        return new MyNode5(root, _left.depth +1);
+    }
+
+
+
+
+
+
+
     // 12.26 - 36 pm
     // IDEA: LCA + CUSTOM CLASS
     class MyRes{
@@ -3071,7 +3141,7 @@ public class Workspace24 {
     }
 
 
-    public TreeNode subtreeWithAllDeepest(TreeNode root) {
+    public TreeNode subtreeWithAllDeepest_97(TreeNode root) {
         // edge
         if(root == null){
             return null;
