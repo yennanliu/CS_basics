@@ -5820,6 +5820,9 @@ public class Workspace24 {
      *   ---------------
      *
      */
+
+    // 11.27 - 37 am
+    // IDEA: LCA + POST ORDER DFS
     public TreeNode pruneTree(TreeNode root) {
         // edge
         if(root == null){
@@ -5828,6 +5831,47 @@ public class Workspace24 {
 
         TreeNode _left = pruneTree(root.left);
         TreeNode _right = pruneTree(root.right);
+
+        // ???
+        if(root.val == 0 && _left == null && _right == null){
+            return null;
+        }
+
+//        if(_left == null){
+//            return _right;
+//        }else if(_right == null){
+//            return _left;
+//        }
+
+        // ??? still need to `re-connect` ????
+        root.left = _left;
+        root.right = _right;
+
+
+        return root;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public TreeNode pruneTree_99(TreeNode root) {
+        // edge
+        if(root == null){
+            return root;
+        }
+
+        TreeNode _left = pruneTree_99(root.left);
+        TreeNode _right = pruneTree_99(root.right);
 
 //        if(_left == null && _right != null){
 //            return root; // ???

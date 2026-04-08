@@ -124,6 +124,34 @@ public class BinaryTreePruning {
         return root;
     }
 
+    // V0-0-3
+    // IDEA: POST order DFS
+    public TreeNode pruneTree_0_0_3(TreeNode root) {
+        // edge
+        if (root == null) {
+            return root;
+        }
+
+        TreeNode _left = pruneTree_0_0_3(root.left);
+        TreeNode _right = pruneTree_0_0_3(root.right);
+
+        // 2. After children are processed, check if this node should be pruned
+        // If left is null, right is null, and current value is 0 -> prune this node
+        if (root.val == 0 && _left == null && _right == null) {
+            return null;
+        }
+
+
+        /** NOTE !!!
+         *
+         *  -> still need to `re-connect` sub nodes
+         */
+        root.left = _left;
+        root.right = _right;
+
+        return root;
+    }
+
 
 
     // V0-1
