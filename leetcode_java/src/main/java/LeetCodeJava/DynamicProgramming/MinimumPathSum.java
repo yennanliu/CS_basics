@@ -239,11 +239,19 @@ public class MinimumPathSum {
         // 1. Initialize DP table (or use grid in-place to save space)
         int[][] dp = new int[m][n];
 
+        /** NOTE !!!
+         *
+         *  need to start dp[0][0] with `grid[0][0]` val
+         */
         // 2. Base Case: Starting point
         dp[0][0] = grid[0][0];
 
         // 3. Initialize First Column (only one way: from above)
         for (int i = 1; i < m; i++) {
+            /** NOTE !!!
+             *
+             *  dp[i][0] =  `dp[i - 1][0] + grid[i][0]`
+             */
             dp[i][0] = dp[i - 1][0] + grid[i][0];
         }
 
@@ -253,6 +261,10 @@ public class MinimumPathSum {
         }
 
         // 5. Fill the rest of the table
+        /** NOTE !!!
+         *
+         *  i, j start from 1
+         */
         for (int i = 1; i < m; i++) {
             for (int j = 1; j < n; j++) {
                 // Min cost to reach (i, j) = grid[i][j] + min(above, left)

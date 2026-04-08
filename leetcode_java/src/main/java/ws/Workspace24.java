@@ -5935,8 +5935,57 @@ public class Workspace24 {
      *
      *
      */
-    // IDEA: 2D DP
+    // 11.11 - 21 am
+    // 2D dp
     public int minPathSum(int[][] grid) {
+        // edge
+        if (grid == null || grid.length == 0 || grid[0].length == 0) {
+            return 0;
+        }
+        int l = grid.length;
+        int w = grid[0].length;
+
+        // ??
+        int[][] dp = new int[l][w];
+
+        // init start
+        dp[0][0] = grid[0][0];
+
+        // init ??
+        for(int x = 1; x < w; x++){
+            // ????
+            //dp[0][x] += grid[0][x];
+            dp[0][x] =  dp[0][x - 1] + grid[0][x];
+        }
+
+        for(int y = 1; y < l; y++){
+            // ????
+            //dp[y][0] += grid[y][0];
+            dp[y][0] = dp[y - 1][0] +  grid[y][0];
+        }
+
+
+
+        for(int y = 1; y < l; y++){
+            for(int x = 1; x < w; x++){
+                int minVal = Math.min(dp[y-1][x], dp[y][x - 1]);
+                dp[y][x] = minVal + grid[y][x];
+            }
+        }
+
+
+        return dp[l-1][w-1]; // /??
+    }
+
+
+
+
+
+
+
+
+    // IDEA: 2D DP
+    public int minPathSum_94(int[][] grid) {
         // edge
         if (grid == null || grid.length == 0 || grid[0].length == 0) {
             return 0;
