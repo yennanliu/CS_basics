@@ -261,9 +261,8 @@
 			- 152
 	- LC 1406
 		- gpt
-			- 877,1140,1690,375,1510,312,546
+			- 1140,1690,375,1510,312,546
 		- gemini
-			- 464
 	- 2-D Dynamic Programming
 		- all LC in netcode_250 match netcode_150, so just review done LCs
 	- Greedy

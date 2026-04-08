@@ -6332,6 +6332,12 @@ public class Workspace24 {
 
 
 
+    // LC 464
+    public boolean canIWin(int maxChoosableInteger, int desiredTotal) {
+
+        return false;
+    }
+
 
 
 
