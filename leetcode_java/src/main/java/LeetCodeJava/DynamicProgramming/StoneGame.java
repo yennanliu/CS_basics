@@ -52,7 +52,78 @@ public class StoneGame {
 
         /** NOTE !!!
          *
-         *  below
+         *  single pile (base case)
+         *
+         *  ------
+         *
+         *  Good question—this line is actually the **foundation** of the whole DP.
+         *
+         * ### What `dp[i][i]` means
+         *
+         * Recall the definition:
+         *
+         * > `dp[i][j] = max score difference (current player − opponent)` for subarray `[i, j]`
+         *
+         * ---
+         *
+         * ### When `i == j` (only one pile)
+         *
+         * There is only **one move possible**:
+         *
+         * * The current player takes `piles[i]`
+         * * The opponent gets **nothing**
+         *
+         * So the score difference is:
+         *
+         * ```
+         * current player − opponent = piles[i] − 0 = piles[i]
+         * ```
+         *
+         * ---
+         *
+         * ### That’s why:
+         *
+         * ```java
+         * dp[i][i] = piles[i];
+         * ```
+         *
+         * ---
+         *
+         * ### Concrete example
+         *
+         * ```
+         * piles = [5, 3, 4]
+         *
+         * dp[0][0] = 5   // only pile 5 → take it
+         * dp[1][1] = 3   // only pile 3 → take it
+         * dp[2][2] = 4   // only pile 4 → take it
+         * ```
+         *
+         * These values are then used to build larger intervals like:
+         *
+         * ```
+         * dp[0][1], dp[1][2], dp[0][2]
+         * ```
+         *
+         * ---
+         *
+         * ### Why it’s necessary
+         *
+         * Without this base case:
+         *
+         * * `dp[i+1][j]` or `dp[i][j-1]` would be undefined
+         * * Your recurrence would break
+         *
+         * It’s the **smallest subproblem** that everything builds on.
+         *
+         * ---
+         *
+         * ### Intuition shortcut
+         *
+         * Think of it like:
+         *
+         * > “If there’s only one pile, I take it, so I win by that amount.”
+         *
          */
         // base case: single pile
         for (int i = 0; i < n; i++) {
