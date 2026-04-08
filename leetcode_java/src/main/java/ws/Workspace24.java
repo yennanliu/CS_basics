@@ -6651,6 +6651,84 @@ public class Workspace24 {
     }
 
 
+    // LC 1110
+    // 14.56 - 15.06
+    /**
+     *
+     *  -> Return the roots of the trees in the
+     *  remaining forest. You may return the result in any order.
+     *
+     *
+     *   NOTE:
+     *     - After deleting all nodes with a value in to_delete,
+     *     we are left with a  `forest (a disjoint union of trees).`
+     *
+     *  -------------
+     *
+     *   IDEA 1) POST ORDER DFS ?????
+     *
+     *
+     *  -------------
+     */
+    // IDEA 1) POST ORDER DFS ?????
+     ///  ???
+    List<TreeNode> res99 = new ArrayList<>();
+    public List<TreeNode> delNodes(TreeNode root, int[] to_delete) {
+        // edge
+
+
+        Set<Integer> set = new HashSet<>();
+        for(int x: to_delete){
+            set.add(x);
+        }
+
+        deleteHelper5(root, set, false);
+        return res99;
+    }
+
+    // PRE order DFS ??
+    private TreeNode deleteHelper5(TreeNode root, Set<Integer> set, boolean isParentDeleted){
+        // ???
+        if(root == null){
+            return null; // ????
+        }
+
+        // ???
+        if(set.contains(root.val)){
+            isParentDeleted = true;
+            //return null; // ???
+        }
+
+        // ???
+        if(isParentDeleted){
+            // ??
+            if(root.left != null){
+                res99.add(root.left);
+            }
+            if(root.right != null){
+                res99.add(root.right);
+            }
+        }else{
+            TreeNode _left = deleteHelper5(root.left, set, isParentDeleted);
+            TreeNode _right = deleteHelper5(root.right, set, isParentDeleted);
+
+            // ???
+            root.left = _left;
+            root.right = _right;
+        }
+
+////        TreeNode _left = deleteHelper5(root.left, set, isParentDeleted);
+////        TreeNode _right = deleteHelper5(root.right, set, isParentDeleted);
+//
+//        root.left = _left;
+//        root.right = _right;
+
+        return root; // ???
+    }
+
+
+
+
 
 
 

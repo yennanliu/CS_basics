@@ -49,7 +49,7 @@ public class DeleteNodesAndReturnForest {
 
 
     // V0-0-1
-    // IDEA: DFS (gpt)
+    // IDEA: POST order DFS (gpt)
     /** NOTE !!! compare V0-0-1 and V0-0-2 */
     List<TreeNode> res = new ArrayList<>();
 
@@ -70,6 +70,7 @@ public class DeleteNodesAndReturnForest {
         return res;
     }
 
+    // NOTE !!!  `TreeNode` is the return type of help func
     private TreeNode dfsDel(TreeNode root, Set<Integer> set) {
 
         if (root == null) {
@@ -97,7 +98,7 @@ public class DeleteNodesAndReturnForest {
 
 
     // V0-0-2
-    // IDEA: DFS (gemini)
+    // IDEA: Post order DFS (gemini)
     List<TreeNode> res_0_0_2 = new ArrayList<>();
     Set<Integer> deleteSet = new HashSet<>();
 
