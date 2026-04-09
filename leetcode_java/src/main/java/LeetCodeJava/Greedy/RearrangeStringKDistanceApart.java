@@ -226,7 +226,7 @@ public class RearrangeStringKDistanceApart {
 
         /** NOTE !!!
          *
-         *  define `Cooldown queue`
+         *   `Cooldown queue`
          *
          *  [ [char_1, releaseTime_1], [char_2, releaseTime_2], ....]
          *
@@ -259,6 +259,12 @@ public class RearrangeStringKDistanceApart {
             freq.put(cur, freq.get(cur) - 1);
 
             // put into cooldown for k steps
+            /** NOTE !!!
+             *
+             *   1. add to `Cooldown queue`
+             *
+             *   2. the `release time` is `time + k`
+             */
             cooldown.offer(new int[]{cur, time + k});
 
             time++;
@@ -511,7 +517,10 @@ public class RearrangeStringKDistanceApart {
 
     // V2
 
+
+
     // V3
 
+    
 
 }

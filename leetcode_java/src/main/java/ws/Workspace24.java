@@ -7088,9 +7088,92 @@ public class Workspace24 {
     }
 
 
+    // LC 358
+    // 14.51 - 15.00 pm
+    /**
+     *
+     *  -> Given a string s and an integer k, `rearrange` s
+     *    such that the `same characters` are `at least distance k` from each other.
+     *    If it is not possible to rearrange the string,
+     *    return an empty string "".
+     *
+     *
+     *  ---------------
+     *
+     *   IDEA 1) STACK + HASHMAP ????
+     *
+     *   map_1: {val: cnt}
+     *
+     *   map_2: {val: last_exited_idx }
+     *
+     *
+     *  ---------------
+     *
+     */
+    public String rearrangeString(String s, int k) {
+        // edge
+        if (k <= 1) return s;        // no distance constraint
+        if (s == null || s.length() == 0) return "";
+        if (s.length() == 1) return k == 0 ? s : "";
+
+
+        // frequency map
+        Map<String, Integer> map1 = new HashMap<>();
+
+        Map<String, Integer> map2 = new HashMap<>();
+
+        // NOTE !!!
+
+        // Max heap by remaining count
+        PriorityQueue<Character> pq =
+                new PriorityQueue<>((a, b) -> map1.get(b) - map1.get(a));
+
+
+       // pq.addAll(map1.keySet());
 
 
 
-    
+        // ??
+        //int idx = 0;
+        for(char ch: s.toCharArray()){
+            String str = String.valueOf(ch);
+            // update map1
+            map1.put(str, map1.getOrDefault(str, 0) + 1);
+
+            // update map2 ???
+            map2.put(str, -1); // ???
+
+            //idx += 1;
+        }
+
+        // ??
+        Stack<String> st = new Stack<>();
+        StringBuilder sb = new StringBuilder();
+
+        // ??
+        int idx = 0;
+        while (!map1.isEmpty()){
+            // ???
+            // case 1) st is empty or `last alpha is `k idx far away from` cur string
+            if(st.isEmpty() ||
+                    st.peek() != String.valueOf(sb.charAt(sb.length()-1)) ||
+                    map2.get(st.peek()) - idx > k){
+             //   sb.append(map)
+            }
+
+            idx +=1;
+        }
+
+
+
+        return sb.toString();
+    }
+
+
+
+
+
+
+
 
 }
