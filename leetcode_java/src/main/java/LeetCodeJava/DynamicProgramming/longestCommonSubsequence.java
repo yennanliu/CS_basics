@@ -55,7 +55,7 @@ public class longestCommonSubsequence {
     // -> so, CAN'T use `2 POINTERS (SLIDE WINDOW)` for this LC problem
 
     // V0
-    // IDEA: BOTTOM UP 2D DP (GEMINI)
+    // IDEA: BOTTOM UP 2D DP + LCS (GEMINI)
     /**  CORE IDEA:
      *
      *  - if two characters match,
@@ -72,26 +72,93 @@ public class longestCommonSubsequence {
         int n = text2.length();
 
         // dp[i][j] stores the LCS of text1[0...i-1] and text2[0...j-1]
+        /**
+         *
+         * 1. Create a DP table.
+         *
+         * dp[i][j] = LCS length of:
+         *    first i characters of text1
+         *    first j characters of text2
+         *
+         *
+         * 2.  Why +1?
+         *
+         * To include the case
+         * where one string is `empty` (i=0 or j=0)
+         *
+         *
+         */
         int[][] dp = new int[m + 1][n + 1];
 
+        // Loop over text1 from length 1 → n1
+        //i means: we are considering the first i characters
         for (int i = 1; i <= m; i++) {
+            // Loop over text2 from length 1 → n2
             for (int j = 1; j <= n; j++) {
                 /** NOTE !!!
                  *
-                 *  we check if `PREV character` (i,j) are equal (within text1, text2)
-                 *  when at idx=i, inx=j
+                 *  ->
+                 *   so if (text1.charAt(i - 1) == text2.charAt(j - 1)) is comparing val
+                 *   when len = i for text1, len = j for text2 ?
                  *
-                 *  e.g. check `text1.charAt(i - 1) == text2.charAt(j - 1))`
+                 *
+                 * -> YES.
+                 *
+                 *  More precisely:
+                 *
+                 * i = we are considering prefix of length i in text1
+                 * j = we are considering prefix of length j in text2
+                 *
+                 * So:
+                 *
+                 *    text1.substring(0, i)
+                 *    text2.substring(0, j)
+                 *
+                 * And the comparison:
+                 *
+                 *    text1.charAt(i - 1)
+                 *    text2.charAt(j - 1)
+                 *
                  *  
+                 */
+                /**
+                 * Compare the last character of the current prefixes:
+                 *
+                 * text1.charAt(i - 1) → the i-th character
+                 * text2.charAt(j - 1) → the j-th character
+                 *
+                 * (we subtract 1 because strings are 0-indexed)
+                 *
                  */
                 // Case 1: Characters match
                 if (text1.charAt(i - 1) == text2.charAt(j - 1)) {
                     // Diagonal move: 1 + result from both strings being 1 char shorter
+                    /**
+                     * If the characters match:
+                     *
+                     * We extend the previous LCS (without these characters)
+                     *
+                     * So:
+                     *
+                     * LCS(i, j) = LCS(i-1, j-1) + 1
+                     *
+                     */
                     dp[i][j] = 1 + dp[i - 1][j - 1];
                 }
                 // Case 2: Characters don't match
                 else {
                     // Take the maximum of skipping a char from text1 OR text2
+                    /**
+                     * If they don’t match:
+                     *
+                     * We try:
+                     *
+                     * Skip char from text1 → dp[i-1][j]
+                     * Skip char from text2 → dp[i][j-1]
+                     *
+                     * Take the best.
+                     *
+                     */
                     dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
                 }
             }
@@ -100,6 +167,35 @@ public class longestCommonSubsequence {
         // The final answer is the LCS of both full strings
         return dp[m][n];
     }
+
+    // V0-0-X
+    // IDEA: BOTTOM UP 2D DP (fixed by gpt)
+    public int longestCommonSubsequence_0_0_x(String text1, String text2) {
+        // edge
+
+        int n1 = text1.length();
+        int n2 = text2.length();
+
+        // ??
+        int[][] dp = new int[n1 + 1][n2 + 1];
+
+        // init ??
+        dp[0][0] = 0;
+        for (int i = 1; i < n1 + 1; i++) {
+            for (int j = 1; j < n2 + 1; j++) {
+                // ??
+                if (text1.charAt(i - 1) == text2.charAt(j - 1)) {
+                    // dp[i][j] = Math.max( dp[i-1][j], dp[i][j-1] ) + 1;
+                    dp[i][j] = dp[i - 1][j - 1] + 1;
+                } else {
+                    dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]); // ????
+                }
+            }
+        }
+
+        return dp[n1][n2];
+    }
+
 
     // V0-0-1
     // IDEA: BOTTOM UP 2D DP (gemini)
