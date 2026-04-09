@@ -53,7 +53,7 @@ import java.util.Stack;
 public class RemoveAllAdjacentDuplicatesInString2 {
 
     // V0
-    // IDEA: STACK + CUSTOM CLASS (gemini)
+    // IDEA: STACK OF PAIR + CUSTOM CLASS (gemini)
     class ValCnt3 {
         char ch;
         int cnt;
@@ -114,6 +114,67 @@ public class RemoveAllAdjacentDuplicatesInString2 {
 
         return sb.toString();
     }
+    
+    // V0-0-1
+    // IDEA: CUSTOM CLASS + STACK OF PAIR
+    class AlphabetCnt {
+        String alpha;
+        int cnt;
+
+        AlphabetCnt(String alpha, int cnt) {
+            this.alpha = alpha;
+            this.cnt = cnt;
+        }
+    }
+
+    public String removeDuplicates_0_0_1(String s, int k) {
+        // edge
+
+        Stack<AlphabetCnt> st = new Stack<>();
+        // ??
+        for (char ch : s.toCharArray()) {
+            // case 1) st != empty && prev == cur and >= k
+            String str = String.valueOf(ch);
+            if (!st.isEmpty()
+                    && st.peek().alpha.equals(str) &&
+                    st.peek().cnt + 1 >= k) {
+                st.pop(); // ???
+            }
+            // case 2) st == empty or prev != cur or < k
+            else {
+                if (st.isEmpty()) {
+                    st.add(new AlphabetCnt(str, 1));
+                } else {
+                    if (st.peek().alpha.equals(str)) {
+                        AlphabetCnt alphabetCnt = st.pop();
+                        alphabetCnt.cnt += 1;
+                        st.add(alphabetCnt);
+                    } else {
+                        st.add(new AlphabetCnt(str, 1));
+                    }
+                }
+            }
+        }
+
+        // ???
+        StringBuilder sb = new StringBuilder();
+        for (AlphabetCnt y : st) {
+            //sb.append(y);
+            sb.append(mutiply97(y.alpha, y.cnt));
+        }
+
+        return sb.toString();
+    }
+
+    private String mutiply97(String s, int times) {
+        String res = "";
+        for (int i = 0; i < times; i++) {
+            res += s;
+        }
+        return res;
+    }
+
+    
 
 
 

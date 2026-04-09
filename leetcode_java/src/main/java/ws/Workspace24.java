@@ -6973,7 +6973,7 @@ public class Workspace24 {
      *   IDEA 1) STACK
      *
      */
-    public String removeDuplicates(String s) {
+    public String removeDuplicates_888(String s) {
         // edge
 
         Stack<String> st = new Stack<>();
@@ -7001,9 +7001,96 @@ public class Workspace24 {
     }
 
 
+    // LC 1209
+    // 14.32 - 42 pm
+    /**
+     *
+     *  -> Return the final string after all such
+     *  duplicate removals have been made.
+     *  It is guaranteed that the answer is unique.
+     *
+     *   - String s
+     *   - int k
+     *      - k adjacent and equal
+     *        letters from s and removing them
+     *
+     *   - We repeatedly make k duplicate
+     *      removals on s until we no longer can.
+     *
+     *
+     *  -----------
+     *
+     *   IDEA 1) STACK -> special structure
+     *       - [ [alphabet, counts] ]
+     *
+     *
+     *  -----------
+     *
+     */
+    class AlphabetCnt{
+        String alpha;
+        int cnt;
+
+        AlphabetCnt(String alpha, int cnt){
+            this.alpha = alpha;
+            this.cnt = cnt;
+        }
+    }
+
+    public String removeDuplicates(String s, int k) {
+        // edge
+
+        Stack<AlphabetCnt> st = new Stack<>();
+        // ??
+        for(char ch: s.toCharArray()){
+            // case 1) st != empty && prev == cur and >= k
+            String str = String.valueOf(ch);
+            if(!st.isEmpty()
+                    && st.peek().alpha.equals(str) &&
+                    st.peek().cnt + 1 >= k){
+                st.pop(); // ???
+            }
+            // case 2) st == empty or prev != cur or < k
+            else{
+                if(st.isEmpty()){
+                    st.add(new AlphabetCnt(str, 1));
+                }else{
+                    if(st.peek().alpha.equals(str)){
+                        AlphabetCnt alphabetCnt = st.pop();
+                        alphabetCnt.cnt += 1;
+                        st.add(alphabetCnt);
+                    }else{
+                        st.add(new AlphabetCnt(str, 1));
+                    }
+                }
+            }
+        }
+
+        // ???
+        StringBuilder sb = new StringBuilder();
+        for(AlphabetCnt y: st){
+            //sb.append(y);
+            sb.append(mutiply97(y.alpha, y.cnt));
+        }
+
+
+        return sb.toString();
+    }
+
+
+
+    private String mutiply97(String s, int times){
+        String res = "";
+        for(int i = 0; i < times; i++){
+            res += s;
+        }
+        return res;
+    }
 
 
 
 
+
+    
 
 }
