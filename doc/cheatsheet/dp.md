@@ -1342,6 +1342,235 @@ Question: What does the problem ask for?
 
 ---
 
+### **Deep Dive: 0/1 Knapsack & Subset Sum Pattern** 🎒
+
+This pattern is fundamental and appears in many disguised forms. Last Stone Weight II is a great example of recognizing when a problem is secretly a subset sum problem.
+
+#### **When to Use This Pattern**
+
+Use **0/1 Knapsack / Subset Sum** when you see:
+
+| Indicator | What It Means | Example |
+|-----------|--------------|---------|
+| "Partition" or "split into two groups" | Divide items into subsets | LC 1049 (Last Stone Weight II) |
+| "Maximize/minimize the difference" | Find optimal partition | LC 1049, 494 |
+| "Can you achieve sum X?" | Check if specific sum possible | LC 416 (Equal Subset Partition) |
+| "Each item used at most once" | 0/1 constraint (not unlimited) | All of above |
+| "Minimize difference between groups" | Partition into balanced groups | LC 1049 |
+
+**Key Recognition**: If you see "partition" or "divide into two groups" → think **0/1 Knapsack**.
+
+#### **Core Idea: The Mathematical Transformation** 🧮
+
+**Problem**: Partition array into two groups and minimize difference.
+
+```
+Given: stones = [2, 7, 4, 1, 8, 1]
+Total sum = 23
+
+Goal: Split into two groups with min |sum1 - sum2|
+
+Mathematical insight:
+  Let sum1 = S (sum of group 1)
+  Then sum2 = total - S (sum of group 2)
+  
+  Difference = |sum1 - sum2| = |S - (total - S)| = |2S - total|
+  
+  To minimize this: Maximize S such that S ≤ total/2
+  
+  Result = total - 2*S (where S is the largest achievable sum ≤ total/2)
+```
+
+**Why This Works**:
+- Find the largest subset sum that doesn't exceed `total / 2`
+- This gives the most balanced partition possible
+- The remaining group has sum = `total - S`
+- Their difference = `(total - S) - S = total - 2*S`
+
+#### **Pattern: Two Variants**
+
+**Variant 1: Boolean DP (Can we achieve this sum?)**
+
+```java
+public int lastStoneWeightII(int[] stones) {
+    int total = 0;
+    for (int stone : stones) {
+        total += stone;
+    }
+
+    int target = total / 2;
+    
+    // dp[j] = can we achieve sum j?
+    boolean[] dp = new boolean[target + 1];
+    dp[0] = true;  // Base: always can make sum 0 (choose nothing)
+
+    // For each stone
+    for (int stone : stones) {
+        // Iterate BACKWARDS to prevent using same stone twice
+        for (int j = target; j >= stone; j--) {
+            dp[j] = dp[j] || dp[j - stone];  // Can achieve j if:
+                                              // (already could) OR (could make j-stone and add this stone)
+        }
+    }
+
+    // Find largest achievable sum ≤ target
+    for (int j = target; j >= 0; j--) {
+        if (dp[j]) {
+            return total - 2 * j;
+        }
+    }
+
+    return 0;
+}
+```
+
+**Variant 2: Integer DP (Maximum value achievable)**
+
+```java
+public int lastStoneWeightII(int[] stones) {
+    int total = 0;
+    for (int stone : stones) {
+        total += stone;
+    }
+
+    int target = total / 2;
+    
+    // dp[j] = maximum sum we can achieve ≤ j
+    int[] dp = new int[target + 1];
+    dp[0] = 0;  // Base: can make sum 0
+
+    // For each stone
+    for (int stone : stones) {
+        // Iterate BACKWARDS to prevent reuse
+        for (int j = target; j >= stone; j--) {
+            // Either skip this stone (dp[j])
+            // Or include it and add to best we could do with j-stone (dp[j-stone] + stone)
+            dp[j] = Math.max(dp[j], dp[j - stone] + stone);
+        }
+    }
+
+    return total - 2 * dp[target];
+}
+```
+
+#### **Why Iterate BACKWARDS? (The Critical Detail)**
+
+```
+❌ WRONG: Forward iteration (causes reuse)
+for (int j = stone; j <= target; j++) {
+    dp[j] = dp[j] || dp[j - stone];
+}
+Problem: When we update dp[j], we're using the NEW value of dp[j-stone]
+         which might have already been updated by the same stone in this iteration.
+         This allows using the same stone multiple times!
+
+Example with stone=3, target=9:
+  j=3: dp[3] = dp[0] = true ✓
+  j=6: dp[6] = dp[3] = true ✓ BUT dp[3] was just updated by the same stone!
+  j=9: dp[9] = dp[6] = true ✓ Again, using same stone multiple times!
+
+✅ CORRECT: Backward iteration (prevents reuse)
+for (int j = target; j >= stone; j--) {
+    dp[j] = dp[j] || dp[j - stone];
+}
+Reason: We process from right to left, so dp[j-stone] is always from the PREVIOUS iteration
+        (before this stone was considered). So we use each stone only once.
+
+Example with stone=3, target=9:
+  j=9: dp[9] = dp[6] (old value from previous stone) ✓
+  j=6: dp[6] = dp[3] (old value from previous stone) ✓
+  j=3: dp[3] = dp[0] (old value from previous stone) ✓
+```
+
+#### **Complete Example: Last Stone Weight II**
+
+```
+stones = [2, 7, 4, 1, 8, 1]
+total = 23
+target = 23 / 2 = 11
+
+Initial: dp = [T, F, F, F, F, F, F, F, F, F, F, F]
+
+After stone 2:
+  dp[2] = T (can make sum 2)
+  dp = [T, F, T, F, F, F, F, F, F, F, F, F]
+
+After stone 7:
+  dp[9] = T (can make 2+7)
+  dp[7] = T
+  dp[2] = T (unchanged)
+  dp = [T, F, T, F, F, F, F, T, F, T, F, F]
+
+After stone 4:
+  dp[11] = T (can make 7+4)
+  dp[9] = T (unchanged)
+  dp[6] = T (can make 2+4)
+  dp[4] = T
+  dp = [T, F, T, F, T, F, T, T, F, T, F, T]
+
+... continue for remaining stones ...
+
+Final: Find largest j ≤ 11 where dp[j] = T
+       Result = 23 - 2 * j
+```
+
+#### **Similar LeetCode Problems** 📚
+
+| Problem | Goal | Transformation | Complexity |
+|---------|------|-----------------|-----------|
+| **LC 1049: Last Stone II** | Min weight of last stone | Partition into two groups, minimize difference | O(n × sum/2) |
+| **LC 416: Partition Equal Subset** | Can partition into equal sums? | Can achieve sum = total/2? | O(n × sum/2) |
+| **LC 494: Target Sum** | Count ways to reach target | Treat as: group(+) sum1, group(-) sum2; solve sum1 - sum2 = target | O(n × sum) |
+| **LC 879: Profitable Schemes** | Count valid profit schemes | DP on (company count, profit) | O(n × k × p) |
+
+**Transformation Examples**:
+
+**LC 416 (Partition Equal Subset)**:
+```
+Question: Can we partition into two equal subsets?
+Answer: Can we achieve sum = total/2?
+DP: boolean[] dp where dp[j] = can we make sum j?
+Return: dp[total/2]
+```
+
+**LC 494 (Target Sum)**:
+```
+Question: Assign +/- to reach target T
+Transformation: Let sum1 = sum of items with +
+                Let sum2 = sum of items with -
+                sum1 - sum2 = T
+                sum1 + sum2 = total (all items)
+                
+                Solving: sum1 = (total + T) / 2
+                
+So: This is 0/1 knapsack! Find count of subsets with sum = (total + T) / 2
+DP: int[] dp where dp[j] = count of ways to make sum j
+Return: dp[(total + T) / 2]
+```
+
+#### **Common Pitfalls** ⚠️
+
+1. **Iterating forwards instead of backwards**
+   - Will allow reusing same item multiple times
+   - Use backwards iteration for 0/1 knapsack
+
+2. **Wrong DP transition**
+   - For boolean: `dp[j] = dp[j] || dp[j - weight]`
+   - For integer sum: `dp[j] = Math.max(dp[j], dp[j - weight] + weight)`
+   - For counting ways: `dp[j] += dp[j - weight]`
+   - Don't mix these up!
+
+3. **Not recognizing the "partition" pattern**
+   - "Difference between groups" → Think partition
+   - "Split into two teams" → Think partition
+   - "Divide array" → Think partition
+
+4. **Integer overflow with sum**
+   - When total sum is large, watch for overflow
+   - Consider using long if needed
+
+---
+
 #### **⚡ Quick Reference: Loop Order → Problem Type**
 
 | Outer Loop | Inner Loop | Pattern Name | Use When | Problems |
