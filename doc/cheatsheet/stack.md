@@ -43,6 +43,13 @@
 - Build queue via stack
      - LC 232 (use `2 stack`)
 - Build stack via queue
+- **Stack with Pair (char, count)**
+     - Store `[element, count]` pairs instead of raw elements
+     - LC 1047 (k=2 special case, simple pop)
+     - LC 1209 (k consecutive duplicates removal)
+     - LC 1544 (Make The String Great)
+     - LC 394 (Decode String, stack with count for repetition)
+     - LC 726 (Number of Atoms)
 
 ### 0-2) Pattern
 
@@ -110,6 +117,65 @@ for (int i = 0; i < n; i++) {
 // ...
 ```
 
+- **Stack with Pair `[element, count]`** (adjacent duplicate removal with k)
+
+```
+Core Idea:
+  - Instead of pushing raw elements, push [element, count] pairs
+  - When current element == stack top element: increment count
+  - When count reaches k: pop (remove k consecutive duplicates)
+  - Handles partial sequences naturally (e.g., "aa" waiting for 3rd 'a')
+
+When to Use:
+  - Remove k consecutive/adjacent equal elements (k >= 2)
+  - Track both identity AND frequency of consecutive runs
+  - Need compressed representation of the string/array
+  - LC 1047 is k=2 special case (simple pop, no count needed)
+
+Similar LC:
+  - LC 1047  Remove All Adjacent Duplicates in String (k=2)
+  - LC 1209  Remove All Adjacent Duplicates in String II (general k)
+  - LC 1544  Make The String Great (adjacent opposite-case removal)
+  - LC 394   Decode String (stack with count for repetition)
+  - LC 726   Number of Atoms (nested count tracking)
+```
+
+```python
+# python - Stack Pair pattern
+# LC 1209
+stack = [['#', 0]]  # sentinel to avoid empty-check
+for c in s:
+    if stack[-1][0] == c:
+        stack[-1][1] += 1
+        if stack[-1][1] == k:
+            stack.pop()
+    else:
+        stack.append([c, 1])
+return ''.join(c * cnt for c, cnt in stack)
+```
+
+```java
+// java - Stack Pair pattern
+// LC 1209
+Stack<int[]> stack = new Stack<>(); // {char_as_int, count}
+for (char c : s.toCharArray()) {
+    if (!stack.isEmpty() && stack.peek()[0] == c) {
+        stack.peek()[1]++;
+        if (stack.peek()[1] == k) {
+            stack.pop();
+        }
+    } else {
+        stack.push(new int[]{c, 1});
+    }
+}
+StringBuilder sb = new StringBuilder();
+for (int[] pair : stack) {
+    for (int i = 0; i < pair[1]; i++) {
+        sb.append((char) pair[0]);
+    }
+}
+return sb.toString();
+```
 
 - monotonic stack (`decreasing`)
 
