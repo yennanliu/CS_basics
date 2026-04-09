@@ -188,7 +188,11 @@ public class DecodeString {
              *             5. add res back to stack
              */
             else {
-                // pop until "["
+
+                /** ------------------------------------ */
+                /** Step 1) pop until "[" */
+                /** ------------------------------------ */
+
                 /**
                  *  NOTE !!!
                  *
@@ -214,7 +218,10 @@ public class DecodeString {
                 }
                 stack.pop(); // remove "["
 
-                // now get the number (could be multi-digit, but we’ll read digits one by one)
+                /** ------------------------------------ */
+                /** Step 2) get the `number` (repeat) */
+                /** ------------------------------------ */
+                //         (could be multi-digit, but we’ll read digits one by one)
                 StringBuilder numSb = new StringBuilder();
                 String nums = "0123456789";
 
@@ -238,7 +245,9 @@ public class DecodeString {
                 }
                 int repeat = Integer.parseInt(numSb.toString());
 
-                // build repeated substring
+                /** ------------------------------------ */
+                /** Step 3) build repeated substring */
+                /** ------------------------------------ */
                 String repeated = getMultiplyStr(segment.toString(), repeat);
                 stack.push(repeated);
             }

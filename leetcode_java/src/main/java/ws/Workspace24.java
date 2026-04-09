@@ -1,6 +1,5 @@
 package ws;
 
-import LeetCodeJava.DataStructure.ListNode;
 import LeetCodeJava.DataStructure.TreeNode;
 
 import java.util.*;
@@ -6856,6 +6855,107 @@ public class Workspace24 {
 
         return dp[n][n];
     }
+
+
+    // LC 394
+    // 13.16 - 26 pm
+    /**
+     *   IDEA 1) STACK ?? (FILO)
+     *
+     *    -> 3 cases
+     *
+     *     - `[`
+     *       - keep adding to stack
+     *     - digit  or alpha
+     *        - keep adding to stack,
+     *        - but if `digit`, need to trigger `multiply` op
+     *     - `]`
+     *        - pop all cur elements from tmp stack
+     *
+     */
+    //  IDEA 1) STACK ?? (FILO)
+    public String decodeString(String s) {
+        // edge
+        if (s == null || s.isEmpty()) {
+            return "";
+        }
+
+        // ???
+        Stack<String> st = new Stack<>();
+        StringBuilder sb = new StringBuilder();
+
+        String digit = "0123456789";
+
+        // ???
+        for(char ch: s.toCharArray()){
+            // case 1)  != `]`
+            // // Case 1: normal char
+            if(ch != ']'){
+                st.push(String.valueOf(ch));
+            }
+            // case 2)  `]`
+            // Case 2: closing bracket
+            else{
+                // ??
+                //Stack<String> tmpSt = new Stack<>();
+                StringBuilder sb1 = new StringBuilder();
+                int val1 = 0;
+
+                while (!st.isEmpty() && !Objects.equals(st.peek(), "[")){
+//                    String val = st.pop(); // ??
+//                    if(digit.contains(val)){
+//                        // ???
+//                        val1  = val1 * 10 + Integer.valueOf(val);
+//                    }else{
+//                        sb1.append(val);
+//                    }
+
+                    sb1.insert(0, st.pop());
+                }
+
+                // pop the `last [ from st`
+                st.pop();
+
+
+                // NOTE !!! below
+                StringBuilder numSb = new StringBuilder();
+                String nums = "0123456789";
+
+//
+//                // multiply ??
+//                String tmp2 =  multiply(sb1.toString(), val1);
+//                st.add(tmp2);
+
+                while (!st.isEmpty() && nums.contains(st.peek())){
+                    numSb.insert(0, st.pop());
+                }
+
+                int repeat = Integer.parseInt(numSb.toString());
+                String updatedStr = multiply(sb1.toString(), repeat);
+                st.push(updatedStr);
+            }
+
+        }
+
+        //StringBuilder sb = new StringBuilder();
+        // ???
+        for(String x: st){
+            sb.append(x);
+        }
+
+        return sb.toString();
+    }
+
+
+
+    private String multiply(String s, int times){
+        String res = "";
+        for(int i = 0; i < times; i++){
+            res += s;
+        }
+        return res;
+    }
+
 
 
 
