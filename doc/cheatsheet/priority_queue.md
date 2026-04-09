@@ -64,6 +64,17 @@
   1. **Case 1 — constraint violated**: poll `second`, append it, decrement, re-add if > 0; then re-add `first` (it was NOT consumed)
   2. **Case 2 — safe**: append `first`, decrement, re-add if > 0
 
+### **Pattern 8: PQ + Cooldown Queue (k-Distance Scheduling)**
+- **Description**: Greedily pick the most frequent element from a max-heap, then lock it in a cooldown queue for k steps before it can be reused. This is the canonical pattern for "same element must be at least k distance apart" problems.
+- **Examples**: LC 358 (Rearrange String k Distance Apart), LC 621 (Task Scheduler), LC 767 (Reorganize String — k=2 special case)
+- **Pattern**: Max-heap picks next element; after use, element enters a cooldown queue with `releaseTime = time + k`; when `time == releaseTime`, element is moved back to the heap
+- **Key Insight**: PQ alone cannot track "last used position" — the cooldown queue acts as a k-slot delay line that automatically re-enables elements after k steps
+- **When to Use**:
+  1. Problem says "same element at least k apart" or "cooldown of k"
+  2. Need to greedily pick most frequent available element
+  3. Elements cycle through available → used → cooling → available
+- **Difference from Pattern 7**: Pattern 7 checks a look-back window and swaps elements; Pattern 8 uses an explicit cooldown queue to enforce the distance, which is cleaner for variable k
+
 ## Templates & Algorithms
 
 ### Template Comparison Table
@@ -76,6 +87,7 @@
 | **Graph Shortest Path** | Dijkstra's | Min heap | O(E log V) | Weighted graphs |
 | **Custom Priority** | Complex ordering | Custom comparator | O(log n) | Multi-criteria sorting |
 | **Greedy + Constraint** | Build string avoiding consecutive repeats | Max heap | O(n log k) | Reorganize/happy string |
+| **PQ + Cooldown Queue** | k-distance apart scheduling | Max heap + Queue | O(n log k) | Rearrange k-dist, task scheduler |
 
 ### Template 1: Top K Elements Pattern
 ```python
@@ -529,6 +541,71 @@ public String longestDiverseString(int a, int b, int c) {
 // Only Case 1 check changes: len >= 1 && sb.charAt(len-1) == first.val
 // Everything else is identical to the template above.
 ```
+
+### Template 8: PQ + Cooldown Queue (k-Distance Scheduling)
+```java
+// Java - Rearrange String k Distance Apart (LC 358)
+// IDEA: Max-heap picks most frequent available char;
+//       cooldown queue locks used chars for k steps.
+//
+// Flow: PQ → poll → append → cooldown.offer([char, releaseTime])
+//       when time == releaseTime → move back to PQ
+//
+// time = O(n log 26) = O(n), space = O(26) = O(1)
+
+public String rearrangeString(String s, int k) {
+    if (k <= 1) return s;
+
+    int[] freq = new int[26];
+    for (char c : s.toCharArray()) {
+        freq[c - 'a']++;
+    }
+
+    // Max-heap ordered by remaining frequency
+    PriorityQueue<Integer> pq = new PriorityQueue<>((a, b) -> freq[b] - freq[a]);
+    for (int i = 0; i < 26; i++) {
+        if (freq[i] > 0) pq.offer(i);
+    }
+
+    // Cooldown queue: [charIndex, remainingCount]
+    // Size reaches k → front element has cooled for k steps → re-enable
+    Queue<int[]> cooldown = new LinkedList<>();
+    StringBuilder res = new StringBuilder();
+
+    while (!pq.isEmpty()) {
+        int idx = pq.poll();
+        res.append((char) ('a' + idx));
+        freq[idx]--;
+
+        // Enter cooldown with current remaining count
+        cooldown.offer(new int[]{idx, freq[idx]});
+
+        // Release from cooldown after k steps
+        if (cooldown.size() == k) {
+            int[] ready = cooldown.poll();
+            if (ready[1] > 0) {
+                pq.offer(ready[0]);  // re-add to heap
+            }
+        }
+    }
+
+    return res.length() == s.length() ? res.toString() : "";
+}
+```
+
+**Key Observations:**
+- The cooldown queue acts as a **fixed-size delay line of length k**. When its size reaches k, the oldest entry has waited exactly k steps and is ready.
+- If `pq` is empty but `cooldown` still has entries → impossible to place anything → return `""`.
+- **Alternative cooldown approach**: store `[char, releaseTime]` and check `cooldown.peek()[1] == time` instead of checking queue size. Both are equivalent.
+- This pattern generalizes: LC 621 (Task Scheduler) uses the same idea but counts idle slots; LC 767 is k=2 special case.
+
+**Comparison: Cooldown Queue vs Skip-and-Swap (Template 7)**
+| Aspect | Cooldown Queue (Template 8) | Skip-and-Swap (Template 7) |
+|--------|----------------------------|---------------------------|
+| Best for | Variable k, large k | Small k (k=2 or k=3) |
+| Mechanism | Explicit queue delays re-entry | Look-back window + swap |
+| Impossible detection | `pq.isEmpty()` while cooldown non-empty | N/A (stops when no option) |
+| Cleaner for | LC 358, LC 621 | LC 1405, LC 767 |
 
 ## Basic Operations
 
@@ -1514,6 +1591,68 @@ public String reorganizeString(String s) {
 
     return sb.toString();
 }
+```
+
+### 2-10-1) Rearrange String k Distance Apart (LC 358) — PQ + Cooldown Queue
+```java
+// Java
+// LC 358 - Rearrange string so same chars are at least k distance apart
+// IDEA: Max-heap + cooldown queue (k-slot delay line)
+// Time: O(N log 26) = O(N), Space: O(26) = O(1)
+
+public String rearrangeString(String s, int k) {
+    if (k <= 1) return s;
+
+    int[] counts = new int[26];
+    for (char c : s.toCharArray()) {
+        counts[c - 'a']++;
+    }
+
+    // Max-heap: store char indices, ordered by remaining count
+    PriorityQueue<Integer> maxHeap = new PriorityQueue<>((a, b) -> counts[b] - counts[a]);
+    for (int i = 0; i < 26; i++) {
+        if (counts[i] > 0) maxHeap.add(i);
+    }
+
+    // Cooldown queue: [charIndex, remainingCount]
+    // When queue size reaches k, front element is ready to re-enter heap
+    Queue<int[]> cooldown = new LinkedList<>();
+    StringBuilder result = new StringBuilder();
+
+    while (!maxHeap.isEmpty()) {
+        int charIdx = maxHeap.poll();
+        result.append((char) ('a' + charIdx));
+        counts[charIdx]--;
+
+        // Lock this char for k steps
+        cooldown.offer(new int[]{charIdx, counts[charIdx]});
+
+        // Release oldest char after k steps
+        if (cooldown.size() == k) {
+            int[] ready = cooldown.poll();
+            if (ready[1] > 0) {
+                maxHeap.add(ready[0]);
+            }
+        }
+    }
+
+    // If we couldn't place all chars, return ""
+    return result.length() == s.length() ? result.toString() : "";
+}
+```
+
+**Walkthrough** — `s = "aabbcc", k = 3`:
+```
+t=0: pick 'a'(2), cooldown=[(a,1)]          → "a"
+t=1: pick 'b'(2), cooldown=[(a,1),(b,1)]    → "ab"
+t=2: pick 'c'(2), cooldown size=3=k → release 'a'(1) back to PQ
+     cooldown=[(b,1),(c,1)]                  → "abc"
+t=3: pick 'a'(1), cooldown size=3=k → release 'b'(1) back to PQ
+     cooldown=[(c,1),(a,0)]                  → "abca"
+t=4: pick 'b'(1), cooldown size=3=k → release 'c'(1) back to PQ
+     cooldown=[(a,0),(b,0)]                  → "abcab"
+t=5: pick 'c'(1), cooldown size=3=k → release 'a'(0) → don't re-add
+                                             → "abcabc" ✓
 ```
 
 ### 2-11) Sliding Window Median (LC 480)
