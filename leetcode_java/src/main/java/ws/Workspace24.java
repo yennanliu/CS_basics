@@ -6795,6 +6795,71 @@ public class Workspace24 {
     }
 
 
+    // LC 1049
+    // 8.07 - 26 am
+    /**
+     *  -> Return the smallest possible weight of the left stone.
+     *  If there are no stones left, return 0.
+     *
+     *   - stones where stones[i] is the weight of the ith stone.
+     *
+     *
+     *  ----------------
+     *
+     *   IDEA 1) GREEDY / BRUTE FORCE
+     *
+     *   IDEA 2) 2D DP ???
+     *
+     *      - DP def:
+     *         dp[i,j] = smallest weight result of arr [i, j] // ???
+     *
+     *
+     *      - DP eq:
+     *
+     *
+     *  ----------------
+     *
+     *   ex 1)
+     *   stones = [2,7]
+     *
+     *    7 - 2 = ans
+     *
+     *  ex 2)
+     *  stones = [2,7, 4, 1]
+     *
+     *   ->
+     *
+     *
+     */
+    // IDEA 2) 2D DP ???
+    public int lastStoneWeightII(int[] stones) {
+        // ?? edge
+
+        int n = stones.length;
+        // ??
+        int[][] dp = new int[n+1][n+1];
+        // ???
+        dp[0][0] = 0;
+
+        // ???
+        for(int i = 1; i < n + 1; i++){
+            for(int j = 1; j < n + 1; j++){
+                // ???? if len is even
+                if(j - i + 1 > 0 && (j - i + 1) % 2 == 0){
+                    // ???
+                    int curVal = Math.abs(stones[j-1] - stones[j-1]);
+                    dp[i][j] = Math.min(dp[i][j], dp[i-2][j-2] + curVal);
+                }
+            }
+        }
+
+
+        return dp[n][n];
+    }
+
+
+
+
 
 
 }

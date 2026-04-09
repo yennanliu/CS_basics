@@ -47,6 +47,77 @@ public class LastStoneWeight2 {
 //
 //    }
 
+    // V0-1
+    // IDEA: 2D DP (gpt)
+    public int lastStoneWeightII_0_1(int[] stones) {
+
+        int n = stones.length;
+
+        int sum = 0;
+        for (int s : stones)
+            sum += s;
+
+        int target = sum / 2;
+
+        boolean[][] dp = new boolean[n + 1][target + 1];
+
+        // base case
+        dp[0][0] = true;
+
+        for (int i = 1; i <= n; i++) {
+            int weight = stones[i - 1];
+
+            for (int j = 0; j <= target; j++) {
+
+                // not take
+                dp[i][j] = dp[i - 1][j];
+
+                // take
+                if (j >= weight) {
+                    dp[i][j] = dp[i][j] || dp[i - 1][j - weight];
+                }
+            }
+        }
+
+        // find best possible sum closest to target
+        for (int j = target; j >= 0; j--) {
+            if (dp[n][j]) {
+                return sum - 2 * j;
+            }
+        }
+
+        return 0;
+    }
+
+    // V0-2
+    // IDEA: 1D DP (gemini)
+    public int lastStoneWeightII_0_2(int[] stones) {
+        int totalSum = 0;
+        for (int stone : stones)
+            totalSum += stone;
+
+        // We want to find a subset sum as close to target as possible
+        int target = totalSum / 2;
+
+        // dp[j] will store the maximum sum <= j that we can achieve
+        int[] dp = new int[target + 1];
+
+        for (int stone : stones) {
+            // Iterate backwards to ensure each stone is used only once
+            for (int j = target; j >= stone; j--) {
+                dp[j] = Math.max(dp[j], dp[j - stone] + stone);
+            }
+        }
+
+        // The two groups are:
+        // Group 1 sum: dp[target]
+        // Group 2 sum: totalSum - dp[target]
+        // Result: (totalSum - dp[target]) - dp[target]
+        return totalSum - 2 * dp[target];
+    }
+
+
+
     // V1
     // https://www.youtube.com/watch?v=gdXkkmzvR3c
     // https://github.com/neetcode-gh/leetcode/blob/main/python%2F1049-last-stone-weight-ii.py
@@ -234,5 +305,8 @@ public class LastStoneWeight2 {
 
         return 0; // fallback
     }
+
+
+
 
 }
