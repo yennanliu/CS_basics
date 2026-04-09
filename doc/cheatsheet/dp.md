@@ -1891,6 +1891,162 @@ public int longestCommonSubsequence(String s1, String s2) {
 }
 ```
 
+---
+
+### **Deep Dive: The Prefix-Based Indexing Pattern (LCS & Variants)** 🔍
+
+This subsection focuses on understanding the **1-indexed DP table** concept that's critical for getting string DP right.
+
+#### **Why 1-Indexed DP Table?**
+
+When building a 2D DP table for string problems, we use `dp[m+1][n+1]` instead of `dp[m][n]`. This might seem like off-by-one overhead, but it's actually elegant:
+
+**The Key Insight**: `dp[i][j]` represents the **answer for a prefix of length i from string1 and prefix of length j from string2**.
+
+```
+✅ CORRECT: 1-indexed approach
+   dp[i][j] = answer for string1.substring(0, i) and string2.substring(0, j)
+   - Row index i ∈ [0, m] where m = string1.length()
+   - Col index j ∈ [0, n] where n = string2.length()
+   - Character comparison: string1.charAt(i-1) vs string2.charAt(j-1)
+
+❌ WRONG: 0-indexed approach (will cause boundary issues)
+   - No room for "empty string" base case
+   - First iteration accesses negative indices
+```
+
+#### **The Prefix Concept: Why dp[i-1] and dp[j-1] for Characters**
+
+```
+Example: string1 = "abcde", string2 = "ace"
+
+When i=3, j=2 (processing prefixes "abc" and "ac"):
+  - DP state represents: LCS("abc", "ac")
+  - We compare: string1.charAt(3-1) = 'c' with string2.charAt(2-1) = 'c'
+  - The characters at POSITION (i-1) and (j-1) are what define the LAST character of each prefix
+
+Index Mapping:
+  i=0: prefix length 0 (empty string)
+  i=1: prefix length 1 (first 1 char) → access string1[0]
+  i=2: prefix length 2 (first 2 chars) → access string1[1]
+  i=3: prefix length 3 (first 3 chars) → access string1[2]
+  ...
+  Therefore: when at dp[i][j], compare string1[i-1] with string2[j-1]
+```
+
+#### **The Three-Way Transition Logic (Using LCS as Example)**
+
+```java
+// Pattern: Two cases only
+if (string1.charAt(i - 1) == string2.charAt(j - 1)) {
+    // CASE 1: Characters match → extend previous best result
+    // The matching characters contribute +1 to the LCS length
+    dp[i][j] = 1 + dp[i - 1][j - 1];  // Diagonal: both strings move forward
+} else {
+    // CASE 2: Characters don't match → take best of skipping either string
+    // We have two choices:
+    //   Option A: Skip current char from string1 → dp[i-1][j]
+    //   Option B: Skip current char from string2 → dp[i][j-1]
+    // Take whichever gives the better result
+    dp[i][j] = Math.max(dp[i - 1][j],    // Skip from string1
+                       dp[i][j - 1]);    // Skip from string2
+}
+```
+
+**Why This Works:**
+- **Diagonal (dp[i-1][j-1])**: When characters match, we're "using" both characters to build our answer. We take the best result from the shorter prefixes and add 1.
+- **Vertical (dp[i-1][j])**: When characters don't match, we skip the current character from string1 and see if we can still find a good LCS with string2.
+- **Horizontal (dp[i][j-1])**: Alternatively, skip from string2 and see if we can find a good LCS with string1.
+
+#### **Complete LCS Example with Grid**
+
+```
+string1 = "abcde"
+string2 = "ace"
+
+DP Grid (showing values):
+        ""  a   c   e
+    ""  0   0   0   0
+    a   0   1   1   1
+    b   0   1   1   1
+    c   0   1   2   2
+    d   0   1   2   2
+    e   0   1   2   3
+
+How to read:
+  dp[4][2] = 2 means LCS("abcd", "ac") has length 2
+  dp[5][3] = 3 means LCS("abcde", "ace") has length 3 ✓
+
+Key moments:
+  - dp[1][1]: Compare 'a' with 'a' → match! → dp[0][0] + 1 = 1
+  - dp[2][1]: Compare 'b' with 'a' → no match → max(dp[1][1], dp[2][0]) = 1
+  - dp[3][2]: Compare 'c' with 'c' → match! → dp[2][1] + 1 = 2
+  - dp[5][3]: Compare 'e' with 'e' → match! → dp[4][2] + 1 = 3
+```
+
+#### **Java Implementation Pattern**
+
+```java
+public int longestCommonSubsequence(String text1, String text2) {
+    int m = text1.length();
+    int n = text2.length();
+
+    // Create (m+1) × (n+1) table to handle "empty string" base case
+    int[][] dp = new int[m + 1][n + 1];
+    // dp[0][j] and dp[i][0] are already 0 (empty string has LCS of 0)
+
+    // Loop uses 1-based indices to represent prefix lengths
+    for (int i = 1; i <= m; i++) {
+        for (int j = 1; j <= n; j++) {
+            // i represents prefix length in text1
+            // j represents prefix length in text2
+            // Compare character at position i-1 and j-1 (0-indexed)
+            if (text1.charAt(i - 1) == text2.charAt(j - 1)) {
+                // Characters match: extend the best previous result
+                dp[i][j] = 1 + dp[i - 1][j - 1];
+            } else {
+                // Characters don't match: choose best by skipping either string
+                dp[i][j] = Math.max(dp[i - 1][j],    // Skip from text1
+                                   dp[i][j - 1]);    // Skip from text2
+            }
+        }
+    }
+
+    return dp[m][n];  // Answer for full strings
+}
+```
+
+#### **When to Use This Pattern** 📋
+
+Use the **1-indexed prefix-based 2D DP** when:
+
+| Condition | Example Problems |
+|-----------|------------------|
+| Two strings/sequences as input | LC 1143 (LCS), LC 72 (Edit Distance) |
+| Answer depends on comparing prefixes character-by-character | LC 583 (Delete Ops), LC 712 (Min ASCII Delete) |
+| Three-way transitions (match/skip1/skip2) or two-way transitions | LC 1143, 97, 115 |
+| Need to handle "empty string" as base case | All Two-String DP problems |
+
+#### **Similar LeetCode Problems Using This Pattern**
+
+| Problem | Goal | Match Case | Mismatch Case | Complexity |
+|---------|------|-----------|----------------|-----------|
+| **LC 1143: LCS** | Length of longest common subsequence | `1 + dp[i-1][j-1]` | `max(dp[i-1][j], dp[i][j-1])` | O(m×n) |
+| **LC 72: Edit Distance** | Min operations to transform | `dp[i-1][j-1]` (no cost) | `1 + min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1])` | O(m×n) |
+| **LC 583: Delete Operation** | Min deletions to make equal | `dp[i-1][j-1]` | `1 + min(dp[i-1][j], dp[i][j-1])` | O(m×n) |
+| **LC 97: Interleaving String** | Can s3 be interleaved from s1+s2? | `dp[i-1][j] \|\| dp[i][j-1]` | `false` | O(m×n) |
+| **LC 115: Distinct Subsequences** | Count subsequences of s1 in s2 | `dp[i-1][j-1] + dp[i-1][j]` | `dp[i-1][j]` | O(m×n) |
+| **LC 712: Min ASCII Delete Sum** | Min cost to make strings equal | `dp[i-1][j-1]` | `min(dp[i-1][j] + cost1, dp[i][j-1] + cost2)` | O(m×n) |
+
+#### **Common Pitfalls** ⚠️
+
+1. **Using 0-indexed DP directly** → Causes negative index access, no room for empty string
+2. **Comparing `string[i]` instead of `string[i-1]`** → Off-by-one error in character comparison
+3. **Forgetting to initialize first row/column** → Some problems need special initialization
+4. **Wrong transition for mismatch case** → Must match your specific problem's logic
+
+---
+
 **Quick Recognition Checklist** ✅
 
 Use "Two-String Grid" pattern when you see:
