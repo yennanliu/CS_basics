@@ -40,8 +40,37 @@ import java.util.Stack;
 public class RemoveAllAdjacentDuplicatesInString {
 
     // V0
-    // IDEA: STACK + isAdjDup flag (gemini)
+    // IDEA: STACK + toCharArray + string builder (gemini)
     public String removeDuplicates(String s) {
+        // edge
+        Stack<String> st = new Stack<>();
+
+
+        for (char ch : s.toCharArray()) {
+            String x = String.valueOf(ch);
+            // case 1) st is NOT empty and top stack element == cur str
+            if (!st.isEmpty() && st.peek().equals(x)) {
+                st.pop();
+                // continue;
+            }
+            // case 2) st is empty or top stack element != cur str
+            else {
+                st.add(x);
+            }
+        }
+
+        StringBuilder sb = new StringBuilder();
+        for (String y : st) {
+            sb.append(y);
+        }
+
+        return sb.toString();
+    }
+
+
+    // V0-0-x
+    // IDEA: STACK + isAdjDup flag (gemini)
+    public String removeDuplicates_0_0_x(String s) {
         // edge
         Stack<String> st = new Stack<>();
         for (String x : s.split("")) {

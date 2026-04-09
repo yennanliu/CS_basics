@@ -6958,6 +6958,50 @@ public class Workspace24 {
 
 
 
+    // LC 1047
+    // 13.58 - 14.08 pm
+    /**
+     *  -> Return the `final string` after all such `duplicate removals`
+     *     have been made.
+     *     It can be proven that the answer is unique.
+     *
+     *   - A duplicate removal consists of choosing
+     *     two adjacent and equal letters and removing them.
+     *
+     *  -------------------
+     *
+     *   IDEA 1) STACK
+     *
+     */
+    public String removeDuplicates(String s) {
+        // edge
+
+        Stack<String> st = new Stack<>();
+        // ??
+        String prev = null; // ???
+        for(char ch: s.toCharArray()){
+            String x = String.valueOf(ch);
+            if(!st.isEmpty() && st.peek().equals(x)){
+                st.pop(); // /??
+               // continue;
+            }else{
+                st.add(x);
+            }
+        }
+
+
+        // ???
+        StringBuilder sb = new StringBuilder();
+        for(String y: st){
+            sb.append(y);
+        }
+
+
+        return sb.toString();
+    }
+
+
+
 
 
 
