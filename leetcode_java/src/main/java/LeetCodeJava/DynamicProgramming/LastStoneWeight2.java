@@ -49,6 +49,28 @@ public class LastStoneWeight2 {
 
     // V0-1
     // IDEA: 2D DP (gpt)
+    /**  NOTE !!!
+     *
+     *  This problem is not `interval DP—it’s`
+     *  -> actually a `0/1 knapsack / subset sum`  problem.
+     *
+     */
+    /**  CORE IDEA:
+     *
+     * Let:
+     *   sum = total weight of all stones
+     *
+     * We want:
+     *
+     *   -> min |group1 - group2|
+     *
+     * Equivalent to:
+     *
+     *   -> Find subset with sum `as close as possible` to `sum / 2`
+     *
+     *
+     *
+     */
     public int lastStoneWeightII_0_1(int[] stones) {
 
         int n = stones.length;
@@ -57,8 +79,17 @@ public class LastStoneWeight2 {
         for (int s : stones)
             sum += s;
 
+        /** NOTE !!
+         *
+         *  we get target as `sum / 2`
+         */
         int target = sum / 2;
 
+        /** NOTE !!
+         *
+         * dp[i][j] = `whether` we can pick from` first i stones`
+         *             to get sum `j`
+         */
         boolean[][] dp = new boolean[n + 1][target + 1];
 
         // base case
@@ -114,6 +145,35 @@ public class LastStoneWeight2 {
         // Group 2 sum: totalSum - dp[target]
         // Result: (totalSum - dp[target]) - dp[target]
         return totalSum - 2 * dp[target];
+    }
+
+
+    // V0-3
+    // IDEA: 1D DP (GPT)
+    public int lastStoneWeightII_0_3(int[] stones) {
+
+        int sum = 0;
+        for (int s : stones)
+            sum += s;
+
+        int target = sum / 2;
+
+        boolean[] dp = new boolean[target + 1];
+        dp[0] = true;
+
+        for (int s : stones) {
+            for (int j = target; j >= s; j--) {
+                dp[j] = dp[j] || dp[j - s];
+            }
+        }
+
+        for (int j = target; j >= 0; j--) {
+            if (dp[j]) {
+                return sum - 2 * j;
+            }
+        }
+
+        return 0;
     }
 
 
