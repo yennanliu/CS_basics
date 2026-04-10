@@ -7170,6 +7170,97 @@ public class Workspace24 {
     }
 
 
+    // LC 309
+    // 8.22 - 32 am
+    /**
+     *  -> Find the maximum profit you can achieve.
+     *
+     *   - prices[i] is the price of a given stock on the ith day.
+     *
+     *
+     *   NOTE:
+     *
+     *    - After you sell your stock,
+     *      you cannot buy stock on the next day
+     *      (i.e., cooldown `one` day).
+     *
+     *  --------------
+     *
+     *
+     *   IDEA 1) BRUTE FORCE
+     *
+     *   IDEA 2) 2D DP ????
+     *
+     *     - DP def:
+     *
+     *         - dp[i][j]:
+     *            - max profit can get at `i th` day
+     *            - j: op types:
+     *               - 0: cool down
+     *               - 1: buy
+     *               - -1: sell
+     *
+     *     - DP eq:
+     *        // ???
+     *        dp[i][j] =
+     *           max (
+     *
+     *
+     *  --------------
+     *
+     *
+     */
+    // IDEA 2) 2D DP ????
+    public int maxProfit(int[] prices) {
+        // edge
+        if (prices == null || prices.length <= 1)
+            return 0;
+
+
+
+        int n = prices.length;
+        // ??
+        //int[][] dp = new int[n + 1][3];
+        int[][] dp = new int[n][3];
+
+
+        int maxProfit = 0; // ???
+
+        // Base Case: Day 0
+        /**  NOTE: the `day 0` base case
+         *
+         *  -> we init day 0 per each case
+         *   - 0: `bought` OP
+         *   - 1: `sold` op
+         *   - 2: `do nothing` op
+         */
+        // init ???
+        dp[0][0] = -1 * prices[0];
+        dp[0][1] = 0;
+        dp[0][2] = 0; // /??
+
+        for(int i = 1; i < n + 1; i++){
+            // 1) if hold
+            dp[i][2] = Math.max(dp[i-1][1] + prices[i-1], dp[i-1][2]);
+
+            // ????
+            dp[i][0] = dp[i-1][2] + prices[i-1]; // Math.max(dp[i-1][2] + prices[i-1], dp[i-1][2]);
+
+            // 2) if sell ???
+            dp[i][1] = Math.max(dp[i-1][0] - prices[i-1], dp[i-1][2]);
+
+            maxProfit = Math.max(
+                    maxProfit,
+                    Math.max(
+                            Math.max(dp[i][2], dp[i][1]
+                            ),
+                            dp[i][0]
+                    )
+            );
+        }
+
+        return maxProfit;
+    }
 
 
 

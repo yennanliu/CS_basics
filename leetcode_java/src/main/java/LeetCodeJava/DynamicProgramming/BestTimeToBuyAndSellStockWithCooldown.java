@@ -39,9 +39,35 @@ import java.util.Map;
 public class BestTimeToBuyAndSellStockWithCooldown {
 
     // V0
-//    public int maxProfit(int[] prices) {
-//
-//    }
+    // IDEA: 2D (n x 3 array) DP + state machine (gemini)
+    public int maxProfit(int[] prices) {
+        if (prices == null || prices.length <= 1)
+            return 0;
+
+        int n = prices.length;
+        // dp[i][0]: Hold, dp[i][1]: Sold, dp[i][2]: Rest
+        int[][] dp = new int[n][3];
+
+        // Base Case: Day 0
+        dp[0][0] = -prices[0]; // Hold: bought stock
+        dp[0][1] = 0; // Sold: impossible, but profit is 0
+        dp[0][2] = 0; // Rest: doing nothing
+
+        for (int i = 1; i < n; i++) {
+            // 1. Hold: Stay holding OR buy today (must have been resting)
+            dp[i][0] = Math.max(dp[i - 1][0], dp[i - 1][2] - prices[i]);
+
+            // 2. Sold: Must have held stock yesterday and sold today
+            dp[i][1] = dp[i - 1][0] + prices[i];
+
+            // 3. Rest: Stay resting OR just finished cooldown (was 'Sold' yesterday)
+            dp[i][2] = Math.max(dp[i - 1][2], dp[i - 1][1]);
+        }
+
+        // Final profit is the max of having sold or resting on the last day
+        return Math.max(dp[n - 1][1], dp[n - 1][2]);
+    }
+
 
     // V0-0-1
     // IDEA: 2D (n x 3 array) DP (gemini)
@@ -402,6 +428,35 @@ public class BestTimeToBuyAndSellStockWithCooldown {
 
         return Math.max(doNothing, doSomething);
     }
+
+    // V0-3
+    // IDEA: 2D DP (gpt)
+    public int maxProfit_0_3(int[] prices) {
+        if (prices == null || prices.length <= 1)
+            return 0;
+
+        int n = prices.length;
+        int[][] dp = new int[n][3];
+
+        // base case
+        dp[0][0] = -prices[0]; // buy
+        dp[0][1] = 0; // cannot sell
+        dp[0][2] = 0; // rest
+
+        for (int i = 1; i < n; i++) {
+            // hold or buy
+            dp[i][0] = Math.max(dp[i - 1][0], dp[i - 1][2] - prices[i]);
+
+            // sell
+            dp[i][1] = dp[i - 1][0] + prices[i];
+
+            // cooldown or rest
+            dp[i][2] = Math.max(dp[i - 1][1], dp[i - 1][2]);
+        }
+
+        return Math.max(dp[n - 1][1], dp[n - 1][2]);
+    }
+
 
     // V1-1
     // https://neetcode.io/problems/buy-and-sell-crypto-with-cooldown
