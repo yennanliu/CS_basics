@@ -5298,15 +5298,65 @@ public class Workspace24 {
      *    -------------
      *
      */
-    // 10.19 - 29 am
+    // 10.19 - 36 am
     /**
+     *  -> Return the `number` of `different
+     *  expressions` that you can build,
+     *  which evaluates to target.
      *
+     *
+     *  --------
+     *
+     *  // int[] dp = new int[subsetTarget + 1]` is a **1D array**.
+     *
+     *
+     *   IDEA 1) 1D DP ?
+     *
+     *      - DP def:
+     *         - dp[i][j]:
+     *            # of expressions at target = i
+     *            j: op type ???
+     *
+     *      - DP eq:
+     *
+     *
+     *   IDEA 2) BRUTE FORCE ???
+     *
+     *  --------
      *
      *
      */
+    // IDEA 1) 1D DP + total_sum / 2 ??
     public int findTargetSumWays(int[] nums, int target) {
+        int totalSum = 0;
+        for (int n : nums)
+            totalSum += n;
 
-        return 0;
+        // Edge cases:
+        // 1. target is too large to reach
+        // 2. target + totalSum must be even (from the formula above)
+        if (Math.abs(target) > totalSum || (target + totalSum) % 2 != 0) {
+            return 0;
+        }
+
+        int subsetTarget = (target + totalSum) / 2;
+
+        // ????
+        int[] dp = new int[subsetTarget + 1];
+
+        dp[0] = 1; // Base case: 1 way to make sum 0 (empty subset)
+
+        // /??
+        for(int x: nums){
+            // ???
+            for(int i = subsetTarget; i >= x; i--){
+                dp[i] += dp[subsetTarget - x];
+            }
+        }
+
+
+        // ???
+        return dp[subsetTarget];
     }
 
 
@@ -5315,7 +5365,7 @@ public class Workspace24 {
 
 
 
-    
+
     // LC 582
     // 10.54 - 11.04
     // IDEA 1) DFS

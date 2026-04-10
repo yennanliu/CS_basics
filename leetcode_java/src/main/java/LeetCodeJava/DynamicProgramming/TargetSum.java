@@ -48,13 +48,85 @@ import java.util.Map;
 public class TargetSum {
 
     // V0
-//    public int findTargetSumWays(int[] nums, int target) {
-//
-//    }
+    // IDEA: 1D DP + `0/1 knapsack counting` (gpt)
+    /** NOTE !!!
+     *
+     *  this is a `(0/1 knapsack counting)` problem
+     *
+     *  -> Count number of subsets with sum = P
+     *
+     *
+     *  ----
+     *
+     *  dp[i] = number of ways to reach sum i
+     */
+    public int findTargetSumWays(int[] nums, int target) {
+        int totalSum = 0;
+        for (int num : nums) {
+            totalSum += num;
+        }
 
+        // invalid cases
+        if ((target + totalSum) % 2 != 0 || Math.abs(target) > totalSum) {
+            return 0;
+        }
+
+        /** NOTE !!!
+         *
+         *  (target + totalSum) / 2;
+         *
+         *  -----
+         *
+         *  Explanation:
+         *
+         *  P = sum of numbers with +
+         *  N = sum of numbers with -
+         *
+         *  ->
+         *
+         *  P - N = target
+         *  P + N = totalSum
+         *
+         *
+         *  ->
+         *
+         *  2P = target + totalSum
+         *    → P = (target + totalSum) / 2
+         *
+         *
+         */
+        int P = (target + totalSum) / 2;
+
+        // dp[i] = number of ways to get sum i
+        /** NOTE !!!
+         *
+         * dp[i] = number of ways to reach sum i
+         */
+        int[] dp = new int[P + 1];
+        dp[0] = 1;
+
+        for (int num : nums) {
+            /** NOTE !!!
+             *
+             *  loop `backwards`
+             */
+            // iterate backwards (0/1 knapsack)
+            for (int i = P; i >= num; i--) {
+                dp[i] += dp[i - num];
+            }
+        }
+
+        return dp[P];
+    }
+
+    
 
     // V0-1
     // IDEA: DP (GEMINI)
+    /** NOTE !!!
+     *
+     *  this is a `(0/1 knapsack counting)` problem
+     */
     /**
      *
      * For **LeetCode 494 (Target Sum)**, the goal is to find the number of ways to assign `+` or `-` signs to each number in an array so they sum up to a `target`.
