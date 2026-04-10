@@ -1,6 +1,7 @@
 package ws;
 
 import LeetCodeJava.DataStructure.TreeNode;
+import jdk.internal.org.objectweb.asm.tree.IincInsnNode;
 
 import java.util.*;
 
@@ -7518,6 +7519,147 @@ public class Workspace24 {
         }
 
         return l; // ????
+    }
+
+
+    // LC 336
+    // 16.06 - 16 pm
+    /**
+     * -> Return an array of all the palindrome pairs of words.
+     *
+     *  - 0 idx arr
+     *
+     *  - palindrome pair:
+     *
+     *    - 0 <= i, j < words.length,
+     *    - i != j, and
+     *    - words[i] + words[j]
+     *      (the concatenation of the two strings)
+     *       is a palindrome.
+     *
+     *
+     * ------------
+     *
+     *  IDEA 1) ?? BRUTE FORCE + `palindrome` check ???
+     *
+     *  IDEA 1) hashmap + `palindrome check`
+     *
+     *
+     * ------------
+     *
+     *  ex 1)
+     *
+     *  sssll ->  ll sssll
+     *
+     *
+     */
+    public List<List<Integer>> palindromePairs(String[] words) {
+        // edge
+
+        // ???
+        List<List<Integer>> res = new ArrayList<>();
+        Map<String, Integer> map = new HashMap<>();
+        for (int i = 0; i < words.length; i++)
+            map.put(words[i], i);
+
+
+        //List<List<Integer>> res = new ArrayList<>();
+
+        for (int i = 0; i < words.length; i++) {
+
+            // ???
+            String word = words[i];
+            // ?? loop over word idx ??
+
+            for(int j = 0; j < word.length(); j++){
+
+                // ????
+                String str1 = word.substring(0, j);
+                String str2 = word.substring(j);
+
+
+                // Case 1: If str1 is a palindrome, find the reverse of str2
+                if(isPalindrome(str1)){
+                    String reverse2 = new StringBuilder(str2).reverse().toString();
+                    if(map.containsKey(reverse2) && map.get(reverse2) != i){
+                       // res.add(Arrays.asList())
+                        res.add(Arrays.asList(i, map.get(reverse2)));
+                    }
+                }
+
+                // Case 2: If str2 is a palindrome, find the reverse of str1
+                // ???
+                // NOTE !!!!
+                if(isPalindrome(str2) && j < word.length() ){
+                    String reverse1 = new StringBuilder(str1).reverse().toString();
+                    if(map.containsKey(reverse1) && map.get(reverse1) != i){
+                        // res.add(Arrays.asList())
+                        res.add(Arrays.asList(i, map.get(reverse1)));
+                    }
+                }
+
+            }
+
+
+        }
+
+
+
+        return res;
+    }
+
+
+
+
+    // time: O(N ^ 2)
+    // space: O(N)
+    public List<List<Integer>> palindromePairs_99(String[] words) {
+        // edge
+
+        List<List<Integer>> res = new ArrayList<>();
+        // /??
+        HashSet<String> visited = new HashSet<>();
+        // ??
+        for(int i = 0; i < words.length; i++){
+            // ???
+            for(int j = i + 1; j < words.length; j++){
+                // ???
+                String str1 = words[i] + words[j];
+                String str2 = words[j] + words[i];
+
+                // ???
+                if(isPalindrome(str1) && !visited.contains(str1)){
+                    List<Integer> list = new ArrayList<>();
+                    list.add(i);
+                    list.add(j);
+                    res.add(list);
+
+                    visited.add(str1);
+                }
+
+                if(isPalindrome(str2) && !visited.contains(str2)){
+                    List<Integer> list = new ArrayList<>();
+                    list.add(j);
+                    list.add(i);
+                    res.add(list);
+
+                    visited.add(str2);
+                }
+
+            }
+        }
+
+        return res;
+    }
+
+
+    private boolean isPalindrome(String str){
+        if(str == null || str.isEmpty() || str.length() <= 1){
+            return true;
+        }
+        // ??
+        StringBuilder sb = new StringBuilder(str);
+        return sb.reverse().toString().equals(str);
     }
 
 

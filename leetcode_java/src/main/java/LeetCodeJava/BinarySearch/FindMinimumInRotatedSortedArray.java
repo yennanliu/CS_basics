@@ -56,7 +56,7 @@ public class FindMinimumInRotatedSortedArray {
         int ans = nums[0]; // track minimum
 
         while (l <= r) {
-            
+
             // if current range is already sorted
             if (nums[l] <= nums[r]) {
                 ans = Math.min(ans, nums[l]);

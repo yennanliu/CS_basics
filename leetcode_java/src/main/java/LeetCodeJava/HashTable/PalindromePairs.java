@@ -51,20 +51,41 @@ import java.util.*;
 public class PalindromePairs {
 
     // V0
-    // IDEA: HASHMAP + SUB STRING + Palindrome CHECK  (gemini)
+    // IDEA: HASHMAP + SUB STRING OP + Palindrome CHECK  (gemini)
     public List<List<Integer>> palindromePairs_0(String[] words) {
         List<List<Integer>> res = new ArrayList<>();
+        /** NOTE !!!
+         *
+         *
+         *  we have hashmap track:
+         *
+         *   { val : idx }
+         */
         Map<String, Integer> map = new HashMap<>();
+
         for (int i = 0; i < words.length; i++)
             map.put(words[i], i);
 
+        /** NOTE !!!
+         *
+         *   1st loop: loop over words
+         *   2nd loop: loop over idx in word
+         */
         for (int i = 0; i < words.length; i++) {
             String word = words[i];
             for (int j = 0; j <= word.length(); j++) {
+
+                /** NOTE !!!
+                 *
+                 *  we split word at idx j
+                 *    - str1: [0,j]
+                 *    - str2  [j,..]
+                 */
                 String str1 = word.substring(0, j);
                 String str2 = word.substring(j);
 
-                // Case 1: If str1 is a palindrome, find the reverse of str2
+                /** NOTE !!! case 1) if `str1` is a palindrome */
+                // Case 1: If `str1` is a palindrome, find the reverse of str2
                 if (isPalindrome_0(str1)) {
                     String reversedStr2 = new StringBuilder(str2).reverse().toString();
                     if (map.containsKey(reversedStr2) && map.get(reversedStr2) != i) {
@@ -72,6 +93,15 @@ public class PalindromePairs {
                     }
                 }
 
+                /** NOTE !!! case 2) if `str2` is a palindrome
+                 *
+                 *  -----
+                 *
+                 *  NOTE:
+                 *
+                 *   `j < word.length()`
+                 *     - prevents duplicate results when str1 is the whole word
+                 */
                 // Case 2: If str2 is a palindrome, find the reverse of str1
                 // (j < word.length() prevents duplicate results when str1 is the whole word)
                 if (isPalindrome_0(str2) && j < word.length()) {
