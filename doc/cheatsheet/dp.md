@@ -268,6 +268,123 @@ def coinChange(coins, amount):
 | **Final Answer** | `dp[n - 1]` | `dp[n]` |
 | **Use Case** | Direct element mapping | Count/quantity problems, "goal" beyond array |
 
+---
+
+#### **Deep Dive: Coin Change Problems (LC 322 vs LC 518) - DP Array Sizing**
+
+**Key Insight**: For problems involving a **target value** (amount, sum, etc.), the DP array size must be `target + 1` to accommodate all values from `0` to `target` inclusive.
+
+##### **Why `dp[amount + 1]`?**
+
+- `dp[i]` represents the result for **amount `i`**
+- To track all amounts from `0` to `amount`, we need indices `0, 1, 2, ..., amount`
+- That's `amount + 1` total positions
+
+##### **Concrete Example: `amount = 5`**
+
+```
+We need to represent amounts: 0, 1, 2, 3, 4, 5
+                         ↓    ↓   ↓   ↓   ↓   ↓
+Array indices needed:    [0]  [1] [2] [3] [4] [5]
+
+Therefore: dp array size = 6 = amount + 1
+```
+
+Java Code:
+```java
+int amount = 5;
+int[] dp = new int[amount + 1];  // size = 6, indices 0-5
+
+// Now we can store results for each amount:
+dp[0] = ...  // result for amount 0
+dp[1] = ...  // result for amount 1
+dp[2] = ...  // result for amount 2
+dp[3] = ...  // result for amount 3
+dp[4] = ...  // result for amount 4
+dp[5] = ...  // result for amount 5
+```
+
+##### **LC 322 vs LC 518 Comparison**
+
+| Aspect | LC 322: Coin Change | LC 518: Coin Change II |
+|--------|---------------------|----------------------|
+| **Goal** | Find **minimum coins** needed | Find **number of combinations** |
+| **Return Type** | `int` (coin count or -1) | `int` (combination count) |
+| **DP Definition** | `dp[i]` = min coins to make amount `i` | `dp[i]` = total combinations to make amount `i` |
+| **DP Array Size** | `amount + 1` | `amount + 1` |
+| **Base Case** | `dp[0] = 0` (0 coins for 0 amount) | `dp[0] = 1` (1 way: empty set) |
+| **Loop Order** | `coin` → `amount` (both directions) | `coin` → `amount` (forward only) |
+| **Transition** | `dp[i] = min(dp[i], dp[i - coin] + 1)` | `dp[i] += dp[i - coin]` |
+| **Example** | `coins=[1,2,5], amount=5` → `2` (one 5) | `coins=[1,2,5], amount=5` → `4` (four ways) |
+
+##### **Detailed Code Example: LC 518 (Coin Change II)**
+
+```java
+public int change(int amount, int[] coins) {
+    // dp[i] = total number of COMBINATIONS that make up amount i
+    // Index corresponds to the amount value
+    
+    // Example: if amount = 5
+    // We need: dp[0], dp[1], dp[2], dp[3], dp[4], dp[5]
+    // Therefore: dp array size = 5 + 1 = 6
+    
+    int[] dp = new int[amount + 1];  // Size = amount + 1
+    
+    // Base case: There is exactly 1 way to make amount 0 (empty set)
+    dp[0] = 1;
+    
+    // OUTER LOOP: Iterate through each coin
+    // This ensures combinations (not permutations)
+    for (int coin : coins) {
+        // INNER LOOP: Update dp for all reachable amounts
+        for (int i = coin; i <= amount; i++) {
+            // Accumulate combinations:
+            // Ways to make i = current ways + ways to make (i - coin)
+            dp[i] += dp[i - coin];
+        }
+    }
+    
+    return dp[amount];  // Answer is at index = amount
+}
+```
+
+**Trace Example**: `amount = 5, coins = [1, 2, 5]`
+```
+Initial:        dp = [1, 0, 0, 0, 0, 0]
+After coin 1:   dp = [1, 1, 1, 1, 1, 1]  (all amounts reachable with 1s)
+After coin 2:   dp = [1, 1, 2, 2, 3, 3]  (add combinations with 2s)
+After coin 5:   dp = [1, 1, 2, 2, 3, 4]  (add combination with 5)
+
+Result: dp[5] = 4 combinations: {5}, {2+2+1}, {2+1+1+1}, {1+1+1+1+1}
+```
+
+##### **LC 322 Code Example (for comparison)**
+
+```java
+public int coinChange(int[] coins, int amount) {
+    // dp[i] = minimum coins needed to make amount i
+    // Same sizing: dp array size = amount + 1
+    
+    int[] dp = new int[amount + 1];
+    
+    // Initialize all to "infinity" except dp[0]
+    Arrays.fill(dp, amount + 1);  // Use amount+1 as infinity
+    dp[0] = 0;  // Base case: 0 coins needed for amount 0
+    
+    // OUTER LOOP: For each amount (can be any order)
+    for (int i = 1; i <= amount; i++) {
+        // INNER LOOP: Try each coin
+        for (int coin : coins) {
+            if (i >= coin) {
+                dp[i] = Math.min(dp[i], dp[i - coin] + 1);
+            }
+        }
+    }
+    
+    return dp[amount] == amount + 1 ? -1 : dp[amount];
+}
+```
+
 #### **💡 Pro Tips**
 
 1. **Struggling with off-by-one errors?** Try the `n+1` approach
