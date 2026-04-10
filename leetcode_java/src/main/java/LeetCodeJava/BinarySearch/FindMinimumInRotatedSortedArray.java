@@ -50,6 +50,62 @@ package LeetCodeJava.BinarySearch;
 public class FindMinimumInRotatedSortedArray {
 
     // V0
+    // IDEA : BINARY SEARCH (CLOSED BOUNDARY) (fixed by gpt)
+    public int findMin(int[] nums) {
+        int l = 0, r = nums.length - 1;
+        int ans = nums[0]; // track minimum
+
+        while (l <= r) {
+            
+            // if current range is already sorted
+            if (nums[l] <= nums[r]) {
+                ans = Math.min(ans, nums[l]);
+                break;
+            }
+
+            int mid = l + (r - l) / 2;
+            ans = Math.min(ans, nums[mid]);
+
+            /** NOTE !!!
+             *
+             *  ONLY 2 cases:
+             *
+             *   1. nums[mid] >= nums[l]
+             *   2. nums[mid] < nums[r]
+             *
+             *
+             *  ---------------
+             *
+             *   DON'T just memorize, get understand via below practical example:
+             *
+             *             // [1,2,3,4,5]     // already in acending order
+             *             // [5,1,2,3,4]     // mid < r, right part is sorted
+             *             // [4,5,1,2,3]     // mid < r, right part is sorted
+             *             // [3,4,5,1,2]     // mid >= l, left part is sorted
+             *             // [2,3,4,5,1]     / mid >= l, left part is sorted
+             *
+             *             // cycle
+             *             // [1,2,3,4,5]
+             *
+             *
+             *
+             *     -> so via above, we are VERY CLEAR on
+             *        why we need to check `nums[mid] >= nums[l]` and else
+             */
+            if (nums[mid] >= nums[l]) {
+                // left part is sorted → go right
+                l = mid + 1;
+            } else {
+                // right part is sorted → go left
+                r = mid - 1;
+            }
+        }
+
+        return ans;
+    }
+
+
+    // V0-0-0-1
     // IDEA : BINARY SEARCH (CLOSED BOUNDARY)
     // https://youtu.be/nIVW4P8b1VA?si=AMhTJOUhDziBz-CV
     /**
@@ -67,8 +123,7 @@ public class FindMinimumInRotatedSortedArray {
      * time = O(log N)
      * space = O(1)
      */
-
-    public int findMin(int[] nums) {
+    public int findMin_0_0_0_1(int[] nums) {
         int l = 0;
         int r = nums.length - 1;
         int res = nums[0];
@@ -143,7 +198,7 @@ public class FindMinimumInRotatedSortedArray {
             int m = l + (r - l) / 2;
             res = Math.min(res, nums[m]);
 
-            // case 1) mid point is at `LEFT part`
+            // case 1) mid point is at `LEFT part` (left part is in `ascending order)
             /** NOTE !!!
              *
              *  example: [3,4,5,1,2]
@@ -182,7 +237,7 @@ public class FindMinimumInRotatedSortedArray {
             if (nums[m] >= nums[l]) {
                 l = m + 1;
             }
-            // case 2) mid point is at `RIGHT part`
+            // case 2) mid point is at `RIGHT part` (right part is in `ascending order)
             /** NOTE !!!
              *
              *  example: [5,1,2,3,4]

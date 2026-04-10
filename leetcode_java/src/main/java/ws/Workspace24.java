@@ -7407,6 +7407,118 @@ public class Workspace24 {
 //    }
 
 
+    // LC 153
+    // 15.26 - 36 pm
+    /**
+     *
+     *  -> Given the sorted rotated array nums of
+     *  unique elements, return the minimum element of this array.
+     *
+     *
+     *  --------------
+     *
+     *   IDEA 1) BRUTE FORCE
+     *
+     *   IDEA 2) BINARY SEARCH
+     *
+     *  --------------
+     *
+     *
+     *   ex 1)
+     *
+     *   [11,13,15,17]
+     *
+     *   [17,11,13,15]
+     *
+     *   [15,17,11,13]
+     *
+     *   [13, 15,17,11]
+     */
+    // IDEA 2) BINARY SEARCH
+    public int findMin(int[] nums) {
+        // edge
+
+        int len = nums.length;
+        // already sorted (small -> big)
+        if(nums[len - 1] > nums[0]){
+            return nums[0];
+        }
+
+        // ??
+        int l = 0;
+        int r = len - 1;
+        // ???
+
+        while (r >= l){
+
+            int mid = l + (r - l) / 2;
+
+            // [1,2,3,4,5]     // already in acending order
+            // [5,1,2,3,4]     // mid < r, right part is sorted
+            // [4,5,1,2,3]     // mid < r, right part is sorted
+            // [3,4,5,1,2]     // mid >= l, left part is sorted
+            // [2,3,4,5,1]     / mid >= l, left part is sorted
+            // cycle
+            // [1,2,3,4,5]
+
+            // KEY !!!
+            //
+        }
+
+
+        return -1;
+    }
+
+
+    public int findMin_99(int[] nums) {
+        // edge
+
+        int len = nums.length;
+        // already sorted (small -> big)
+        if(nums[len - 1] > nums[0]){
+            return nums[0];
+        }
+
+        // ??
+        int l = 0;
+        int r = len - 1;
+        // ???
+        while (r >= l){
+            int mid = l + (r - l) / 2;
+
+            // ??? if already sorted ??
+            if(nums[mid] >= nums[0]){
+                return nums[0];
+            }
+
+            // [3,4,5,1,2]
+            // case 1) mid belongs `left`
+            // ???
+            if(nums[mid] >= nums[l]){
+                // /?
+                if(nums[l] < nums[mid + 1]){
+                    r = mid - 1;
+                }else{
+                    l = mid + 1;
+                }
+            }
+            // [5,1,2,3,4]
+            // case 2) mid belongs `right` ???
+            else{
+                if(nums[mid] <= nums[r]){
+                    // ??
+                    if(nums[mid] < nums[l]){
+                        r = mid - 1;
+                    }else{
+                        l = mid + 1;
+                    }
+                }
+            }
+
+        }
+
+        return l; // ????
+    }
 
 
 
