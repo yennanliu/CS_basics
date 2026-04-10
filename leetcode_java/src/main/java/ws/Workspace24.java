@@ -4929,8 +4929,83 @@ public class Workspace24 {
 
 
      // LC 518
-    // 8.27 - 37 am
+     //  9. 45 - 55 am
+    /**
+     *  ->
+     *   Return the `number of combinations`
+     *   that make up that `amount.`
+     *
+     *   If that amount
+     *   of money cannot be made up
+     *   by any combination of the coins, return 0.
+     *
+     *   coins: coin array
+     *   amount: total amt of money
+     *
+     *
+     *  -------------
+     *
+     *   IDEA 1) 1D DP ???
+     *
+     *      - DP def:
+     *
+     *          - dp[i] = max combination count of num = i
+     *
+     *      - DP eq:
+     *
+     *         - if (i + coin <= amount):
+     *             dp[i] = max( dp[i - coin], dp[i] ) // ???
+     *
+     *       NOTE !!!
+     *        need to loop coin, then amount
+     *        -> to make sure we DON'T have `duplicated` combinations
+     *
+     *
+     *  -------------
+     *
+     *
+     */
+    //  IDEA 1) 2D DP ???
     public int change(int amount, int[] coins) {
+        // edge
+
+        int n = amount; // ???
+        // - dp[i] = max combination count of num = i
+        int[] dp = new int[n + 1]; // ???
+        // ???
+        Arrays.fill(dp, 0);
+
+        // init ??
+        dp[0] = 1;
+
+
+        for(int c: coins){
+            for(int i = 1; i < n + 1; i++){
+                // ??
+                if(i + c <= amount){
+                    //dp[i] = Math.max( dp[i - c], dp[i] ); // ???
+                    dp[i] += dp[i - c]; //Math.max( dp[i - c], dp[i] ); // ???
+                }
+            }
+        }
+
+        return dp[n];  //???
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // 8.27 - 37 am
+    public int change_99(int amount, int[] coins) {
         // 1. Base case
         if (amount == 0){
             return 1;
@@ -7239,7 +7314,7 @@ public class Workspace24 {
         dp[0][1] = 0;
         dp[0][2] = 0; // /??
 
-        for(int i = 1; i < n + 1; i++){
+        for(int i = 1; i < n; i++){
             // 1) if hold
             dp[i][2] = Math.max(dp[i-1][1] + prices[i-1], dp[i-1][2]);
 
@@ -7261,6 +7336,13 @@ public class Workspace24 {
 
         return maxProfit;
     }
+
+
+    // LC 518
+//    public int change(int amount, int[] coins) {
+//
+//        return 0;
+//    }
 
 
 

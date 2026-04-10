@@ -91,8 +91,19 @@ public class CoinChange2 {
          *
          *   dp[i] = total number of `combinations` that make up amount i
          *
+         *   -> `index = amount`
+         *
          *
          *   compare with LC 322
+         */
+        /**  Example:
+         *
+         *   if amount = 5
+         *
+         *   -> we need:
+         *     - dp[0], dp[1], dp[2], dp[3], dp[4], dp[5]
+         *
+         *   -> so dp needs to be size = 5 + 1 (n+1)
          */
         // 1. dp[i] = total number of combinations that make up amount i
         int[] dp = new int[amount + 1];
@@ -217,14 +228,33 @@ public class CoinChange2 {
         // This ensures we process all uses of one coin before moving to the next,
         // which prevents `duplicate` combinations like [1,2] and [2,1].
         for (int coin : coins) {
+
+            /** NOTE !!!
+             *
+             *   2nd loop:
+             *
+             *     - start:   i = coin
+             *     - end: i <= amount
+             */
             // 4. INNER LOOP: Update dp table for all amounts reachable by this coin
             for (int i = coin; i <= amount; i++) {
+                /** NOTE !!!
+                 *
+                 *  `accumulation`, NOT get max.
+                 *
+                 *    -> e.g. dp[i] += dp[i - coin];
+                 */
                 // Number of ways to make amount 'i' is:
                 // (Current ways) + (Ways to make 'i - coin')
                 dp[i] += dp[i - coin];
             }
         }
 
+        /** NOTE !!!
+         *
+         *
+         *  return `idx = amount` from dp array
+         */
         return dp[amount];
     }
 
@@ -587,6 +617,30 @@ public class CoinChange2 {
 
         // Skip to next coin
         backtrack(amount, coins, idx + 1, currentSum);
+    }
+
+
+    // V0-5
+    // IDEA: 1D DP (gpt)
+    public int change_0_5(int amount, int[] coins) {
+
+        /** NOTE !!
+         *
+         * dp[i] = number of ways to make amount i
+         */
+        // dp[i] = number of combinations to make amount i
+        int[] dp = new int[amount + 1];
+
+        // base case
+        dp[0] = 1;
+
+        for (int coin : coins) {
+            for (int i = coin; i <= amount; i++) {
+                dp[i] += dp[i - coin];
+            }
+        }
+
+        return dp[amount];
     }
 
     // V1-1
