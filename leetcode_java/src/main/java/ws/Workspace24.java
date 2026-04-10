@@ -7662,6 +7662,71 @@ public class Workspace24 {
     }
 
 
+    // LC 1032
+    // 17.32 - 42 pm
+    /**
+     *  -> checks if a suffix of these characters is
+     *  a string of a given array of strings words.
+     *
+     *
+     *  ----------------
+     *
+     *   IDEA 1) TRIE -> REVERSE -> CHECK ???
+     *
+     *   IDEA 2) prefix  ???
+     *
+     *   IDEA 3) reverse + startWith ???
+     *
+     *  ----------------
+     *
+     */
+    class StreamChecker {
+        // attr
+        Map<String, Integer> map;
+        List<String> list;
+
+        public StreamChecker(String[] words) {
+            this.map = new HashMap<>();
+            this.list = new ArrayList<>(); // ???
+            for(String w: words){
+                StringBuilder sb = new StringBuilder(w);
+                String str = sb.reverse().toString();
+
+                map.put(str, 1); // ???
+
+                this.list.add(str);
+            }
+
+            System.out.println(">>> this.map = " + this.map);
+
+        }
+
+        public boolean query(char letter) {
+            // edge
+            // ???
+            if(String.valueOf(letter).isEmpty()){
+                return true; // ???
+            }
+
+            //StringBuilder sb = new StringBuilder();
+            // ??
+            String str = String.valueOf(letter);
+            // ??
+            for(String k: this.map.keySet()){
+                // ??
+                if(k.equals(str) || k.startsWith(str)){
+                    return true;
+                }
+            }
+
+            // ???
+            return false;
+        }
+    }
+
+
+
+
 
 
 }

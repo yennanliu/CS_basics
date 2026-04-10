@@ -14,23 +14,23 @@ import java.util.Map;
  * Companies
  * Hint
  * Design an algorithm that accepts a stream of characters and checks if a suffix of these characters is a string of a given array of strings words.
- *
+ * <p>
  * For example, if words = ["abc", "xyz"] and the stream added the four characters (one by one) 'a', 'x', 'y', and 'z', your algorithm should detect that the suffix "xyz" of the characters "axyz" matches "xyz" from words.
- *
+ * <p>
  * Implement the StreamChecker class:
- *
+ * <p>
  * StreamChecker(String[] words) Initializes the object with the strings array words.
  * boolean query(char letter) Accepts a new character from the stream and returns true if any non-empty suffix from the stream forms a word that is in words.
- *
- *
+ * <p>
+ * <p>
  * Example 1:
- *
+ * <p>
  * Input
  * ["StreamChecker", "query", "query", "query", "query", "query", "query", "query", "query", "query", "query", "query", "query"]
  * [[["cd", "f", "kl"]], ["a"], ["b"], ["c"], ["d"], ["e"], ["f"], ["g"], ["h"], ["i"], ["j"], ["k"], ["l"]]
  * Output
  * [null, false, false, false, true, false, true, false, false, false, false, false, true]
- *
+ * <p>
  * Explanation
  * StreamChecker streamChecker = new StreamChecker(["cd", "f", "kl"]);
  * streamChecker.query("a"); // return False
@@ -45,20 +45,20 @@ import java.util.Map;
  * streamChecker.query("j"); // return False
  * streamChecker.query("k"); // return False
  * streamChecker.query("l"); // return True, because 'kl' is in the wordlist
- *
- *
+ * <p>
+ * <p>
  * Constraints:
- *
+ * <p>
  * 1 <= words.length <= 2000
  * 1 <= words[i].length <= 200
  * words[i] consists of lowercase English letters.
  * letter is a lowercase English letter.
  * At most 4 * 104 calls will be made to query.
- *
  */
 public class StreamOfCharacters {
 
     // V0
+
     /**
      * Your StreamChecker object will be instantiated and called as such:
      * StreamChecker obj = new StreamChecker(words);
@@ -78,7 +78,7 @@ public class StreamOfCharacters {
 
 
     // V0-1
-    // IDEA: node + trie (GEMINI)
+    // IDEA: node + trie (reverse order) (GEMINI)
     class StreamChecker_0_1 {
         class MyNode {
             MyNode[] children = new MyNode[26];
@@ -189,6 +189,60 @@ public class StreamOfCharacters {
         }
     }
 
+    // V0-3
+    // IDEA: TRIE (reverse order) (gpt)
+    class StreamChecker_0_3 {
+
+        class TrieNode {
+            TrieNode[] children = new TrieNode[26];
+            boolean isWord = false;
+        }
+
+        TrieNode root;
+        StringBuilder stream;
+
+        public StreamChecker_0_3(String[] words) {
+            root = new TrieNode();
+            stream = new StringBuilder();
+
+            // build trie with reversed words
+            for (String w : words) {
+                TrieNode node = root;
+                for (int i = w.length() - 1; i >= 0; i--) {
+                    int idx = w.charAt(i) - 'a';
+                    if (node.children[idx] == null) {
+                        node.children[idx] = new TrieNode();
+                    }
+                    node = node.children[idx];
+                }
+                node.isWord = true;
+            }
+        }
+
+        public boolean query(char letter) {
+            stream.append(letter);
+
+            TrieNode node = root;
+
+            // check from latest char backward
+            for (int i = stream.length() - 1; i >= 0; i--) {
+                int idx = stream.charAt(i) - 'a';
+
+                if (node.children[idx] == null) {
+                    return false;
+                }
+
+                node = node.children[idx];
+
+                if (node.isWord) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+    }
+
 
     // V1
 
@@ -196,7 +250,7 @@ public class StreamOfCharacters {
     // https://leetcode.com/problems/stream-of-characters/solutions/1610403/java-simple-solution-trie-detailed-explanation-using-image/
     class StreamChecker_2 {
 
-        class TrieNode{
+        class TrieNode {
             boolean isWord;
             TrieNode children[] = new TrieNode[26];
         }
@@ -218,18 +272,18 @@ public class StreamOfCharacters {
          * space = O(H)
          */
         public boolean query(char letter) {
-            if(sb.length()>=maxSize){
+            if (sb.length() >= maxSize) {
                 sb.deleteCharAt(0);
             }
             sb.append(letter);
             TrieNode curr = root;
 
-            for(int i=sb.length()-1;i>=0;i--){
+            for (int i = sb.length() - 1; i >= 0; i--) {
                 char ch = sb.charAt(i);
 
-                if(curr!=null) curr = curr.children[ch-'a'];
+                if (curr != null) curr = curr.children[ch - 'a'];
 
-                if(curr!=null && curr.isWord) return true;
+                if (curr != null && curr.isWord) return true;
             }
             return false;
         }
@@ -238,17 +292,17 @@ public class StreamOfCharacters {
          * time = O(N)
          * space = O(H)
          */
-        public void insert(String[] words){
+        public void insert(String[] words) {
 
-            for(String s : words){
-                maxSize = Math.max(maxSize,s.length());
+            for (String s : words) {
+                maxSize = Math.max(maxSize, s.length());
                 TrieNode curr = root;
-                for(int i = s.length()-1;i>=0;i--){
+                for (int i = s.length() - 1; i >= 0; i--) {
                     char ch = s.charAt(i);
-                    if(curr.children[ch-'a']==null){
-                        curr.children[ch-'a'] = new TrieNode();
+                    if (curr.children[ch - 'a'] == null) {
+                        curr.children[ch - 'a'] = new TrieNode();
                     }
-                    curr = curr.children[ch-'a'];
+                    curr = curr.children[ch - 'a'];
                 }
                 curr.isWord = true;
             }
@@ -284,7 +338,7 @@ public class StreamOfCharacters {
         }
 
         void buildTrie(String[] words) {
-            for (String s: words) {
+            for (String s : words) {
                 insert(s);
             }
         }
@@ -292,12 +346,12 @@ public class StreamOfCharacters {
         void insert(String s) {
             TrieNode p = root;
             //build trie but in reversed order for each word
-            for (int i=s.length()-1; i>=0; i--) {
+            for (int i = s.length() - 1; i >= 0; i--) {
                 char c = s.charAt(i);
-                if (p.next[c-'a'] == null) {
-                    p.next[c-'a'] = new TrieNode();
+                if (p.next[c - 'a'] == null) {
+                    p.next[c - 'a'] = new TrieNode();
                 }
-                p = p.next[c-'a'];
+                p = p.next[c - 'a'];
             }
             p.isWord = true;
         }
@@ -309,13 +363,13 @@ public class StreamOfCharacters {
         public boolean query(char letter) {
             history.add(letter);
             TrieNode p = root;
-            for (int i = history.size()-1; i >=0; i--) {
+            for (int i = history.size() - 1; i >= 0; i--) {
                 char c = history.get(i);
                 //return false immediately when we can't find c in Trie
-                if (p.next[c-'a'] == null) return false;
+                if (p.next[c - 'a'] == null) return false;
                 //find a word
-                if (p.next[c-'a'].isWord) return true;
-                p = p.next[c-'a'];
+                if (p.next[c - 'a'].isWord) return true;
+                p = p.next[c - 'a'];
             }
             return false;
         }
@@ -349,7 +403,7 @@ public class StreamOfCharacters {
          */
         public void insert(String word) {
             Trie curr = root;
-            for (int i = word.length() - 1; i >=0; i--) {
+            for (int i = word.length() - 1; i >= 0; i--) {
                 if (curr.next[word.charAt(i) - 'a'] == null) {
                     curr.next[word.charAt(i) - 'a'] = new Trie();
                 }
@@ -399,8 +453,6 @@ public class StreamOfCharacters {
             return match;
         }
     }
-
-
 
 
 }
