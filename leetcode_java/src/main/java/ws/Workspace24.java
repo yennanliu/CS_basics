@@ -7963,13 +7963,29 @@ public class Workspace24 {
             }
         });
 
-        int res = 0;
+       // int res = 0;
 
         // ??
-       // for(int k: map.)
+       for(Integer key: map.keySet()){
+           pq.add(key);
+       }
+
+       // ??
+        while (!pq.isEmpty() && k > 0){
+            k -= 1; // ???
+            Integer cur = pq.poll();
+            if(map.get(cur) - 1 == 0){
+                map.remove(cur);
+            }else{
+                map.put(cur, map.get(cur) - 1);
+                // put back to PQ
+                pq.add(cur);
+            }
+        }
 
 
-        return res;
+        // /??
+        return map.keySet().size();
     }
 
 

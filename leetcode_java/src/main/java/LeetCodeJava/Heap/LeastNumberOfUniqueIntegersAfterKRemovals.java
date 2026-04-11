@@ -41,9 +41,99 @@ public class LeastNumberOfUniqueIntegersAfterKRemovals {
 //     * time = O(N log N)
 //     * space = O(N)
 //     */
-//    public int findLeastNumOfUniqueInts(int[] arr, int k) {
-//
-//    }
+    //  IDEA 1) PQ + hashmap
+    // TODO: validate if below os correct !!!
+    // (can pass LC test cases, but AI mentioned it has bugs)
+    public int findLeastNumOfUniqueInts(int[] arr, int k) {
+        // edge
+        if (arr == null || arr.length == 0) {
+            return 0;
+        }
+
+        // // Count frequencies
+        // map: { val : cnt}
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int x : arr) {
+            map.put(x, map.getOrDefault(x, 0) + 1);
+        }
+
+        // Min-heap by frequency
+        /** NOTE !!!
+         *
+         *  PQ sort on map val (small -> bit)
+         */
+        PriorityQueue<Integer> pq = new PriorityQueue<>(new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                // sort on map val  -> yes.
+                int diff = map.get(o1) - map.get(o2);
+                return diff;
+            }
+        });
+
+        // V1
+        // pq.addAll(freq.keySet());
+        // V2
+        for (Integer key : map.keySet()) {
+            pq.add(key);
+        }
+
+
+        // Consume removals
+        /** NOTE !!!
+         *
+         *  use `!pq.isEmpty()` as while loop active condition as well
+         */
+        while (!pq.isEmpty() && k > 0) {
+            k -= 1; // ???
+            Integer cur = pq.poll();
+            if (map.get(cur) - 1 == 0) {
+                map.remove(cur);
+            } else {
+                map.put(cur, map.get(cur) - 1);
+                // put back to PQ
+                pq.add(cur);
+            }
+        }
+
+        // /??
+        return map.size();
+    }
+
+    // V0-0-1
+    // IDEA: PQ + hashmap (gpt)
+    public int findLeastNumOfUniqueInts_0_0_1(int[] arr, int k) {
+
+        // frequency map
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int x : arr) {
+            map.put(x, map.getOrDefault(x, 0) + 1);
+        }
+
+        // min heap of frequencies
+        PriorityQueue<Integer> pq = new PriorityQueue<>();
+        for (int freq : map.values()) {
+            pq.offer(freq);
+        }
+
+        int remaining = map.size();
+
+        // remove smallest freq first
+        while (!pq.isEmpty() && k > 0) {
+            int freq = pq.poll();
+
+            /** NOTE !!!! below */
+            if (k >= freq) {
+                k -= freq;
+                remaining--; // removed one unique number completely
+            } else {
+                break;
+            }
+        }
+
+        return remaining;
+    }
+
 
     // V0-1
     // IDEA: HASHMAP + PQ (fixed by gpt)
