@@ -53,7 +53,23 @@ package LeetCodeJava.DynamicProgramming;
 public class InterleavingString {
 
     // V0
-    // IDEA: 2D DP (gpt)
+    // IDEA: 2D DP + STATE MACHINE (gpt)
+    /** NOTE !!!
+     *
+     * dp[i][j] =
+     *
+     *  `whether` the first i chars of s1 and first j chars of s2
+     *  can form the first i + j chars of s3.
+     *
+     *   -> e.g.
+     *     can s1[0..i] + s2[0..j] form s3[0... i+j-1] ?
+     *
+     */
+    /**
+     * Metric,Complexity,Explanation
+     * Time,O(N⋅M),"N,M are lengths of s1,s2. We fill each cell once."
+     * Space,O(N⋅M),2D boolean array (can be O(M)).
+     */
     public boolean isInterleave(String s1, String s2, String s3) {
 
         int size1 = s1.length();
@@ -64,10 +80,32 @@ public class InterleavingString {
         if (size1 + size2 != size3)
             return false;
 
+        /** NOTE !!!
+         *
+         *  dp size as `size + 1`,  so better to handle base cases
+         */
+        /** NOTE !!!
+         *
+         * dp[i][j] =
+         *
+         *  `whether` the first i chars of s1 and first j chars of s2
+         *  can form the first i + j chars of s3.
+         *
+         *   -> e.g.
+         *     can s1[0..i] + s2[0..j] form s3[0... i+j-1] ?
+         *
+         */
         boolean[][] dp = new boolean[size1 + 1][size2 + 1];
 
         dp[0][0] = true;
 
+        /** NOTE !!!
+         *
+         *  init on below 2 cases
+         *
+         *   1. ONLY  s1 contributes
+         *   2. ONLY s2 contributes
+         */
         // Initialize first column (only s1 contributes)
         for (int i = 1; i <= size1; i++) {
             dp[i][0] = dp[i - 1][0] && s1.charAt(i - 1) == s3.charAt(i - 1);
@@ -78,6 +116,13 @@ public class InterleavingString {
             dp[0][j] = dp[0][j - 1] && s2.charAt(j - 1) == s3.charAt(j - 1);
         }
 
+        /** NOTE !!!
+         *
+         *     1. loop from i=1, j = 1
+         *     2. 2 cases
+         *       - Case 1: take from s1
+         *       - Case 2: take from s2
+         */
         // Fill DP table
         for (int i = 1; i <= size1; i++) {
             for (int j = 1; j <= size2; j++) {
@@ -267,6 +312,50 @@ public class InterleavingString {
 
         return dp[n1][n2];
     }
+
+    // V0-3
+    // IDEA: 1D DP (gpt)
+    public boolean isInterleave_0_3(String s1, String s2, String s3) {
+        int m = s1.length();
+        int n = s2.length();
+
+        // Edge case: length must match
+        if (m + n != s3.length())
+            return false;
+
+        // dp[j] = whether s1[0..i-1] and s2[0..j-1] form s3[0..i+j-1]
+        boolean[] dp = new boolean[n + 1];
+
+        // Base case
+        dp[0] = true;
+
+        // Initialize first row (i = 0)
+        for (int j = 1; j <= n; j++) {
+            dp[j] = dp[j - 1] && s2.charAt(j - 1) == s3.charAt(j - 1);
+        }
+
+        // Fill DP
+        for (int i = 1; i <= m; i++) {
+
+            // First column (j = 0)
+            dp[0] = dp[0] && s1.charAt(i - 1) == s3.charAt(i - 1);
+
+            for (int j = 1; j <= n; j++) {
+                char c = s3.charAt(i + j - 1);
+
+                // Option 1: take from s1
+                boolean fromS1 = dp[j] && s1.charAt(i - 1) == c;
+
+                // Option 2: take from s2
+                boolean fromS2 = dp[j - 1] && s2.charAt(j - 1) == c;
+
+                dp[j] = fromS1 || fromS2;
+            }
+        }
+
+        return dp[n];
+    }
+
 
 
     // V1-1

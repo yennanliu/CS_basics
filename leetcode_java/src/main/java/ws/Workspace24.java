@@ -7764,18 +7764,47 @@ public class Workspace24 {
         int size2 = s2.length();
         int size3 = s3.length();
 
+        // Edge case: total length must match
+        if (size1 + size2 != size3) return false;
+
         // ??? ??? size or size + 1
         boolean[][] dp = new boolean[size1 + 1][size2 + 1]; // ????
 
         dp[0][0] = true; // ???
 
-        for(int i = 1; i < size1; i++){
-            for(int j = 1; j < size2; j++){
+        // NOTE !!! below init (ONLY s1 or ONLY s2)
+        // Initialize first column (only s1 contributes)
+        for (int i = 1; i <= size1; i++) {
+            dp[i][0] = dp[i - 1][0] && s1.charAt(i - 1) == s3.charAt(i - 1);
+        }
+
+        // Initialize first row (only s2 contributes)
+        for (int j = 1; j <= size2; j++) {
+            dp[0][j] = dp[0][j - 1] && s2.charAt(j - 1) == s3.charAt(j - 1);
+        }
+
+
+        for(int i = 1; i < size1 + 1; i++){
+            for(int j = 1; j < size2 + 1; j++){
                 // ???
                 // case 1) s1 char.at == s3 && s2 char.at != s3
                 // case 2) s1 char.at != s3 && s2 char.at == s3
                 // case 3) s1 char.at == s3 && s2 char.at == s3
                 // case 4) s1 char.at != s3 && s2 char.at != s3
+
+
+                // NOTE !!!
+                char c = s3.charAt(i + j - 1); // ???
+
+                // Case 1: take from s1
+                if(s1.charAt(i - 1) == c){
+                    dp[i][j] = dp[i-1][j] || dp[i][j]; // ????
+                }
+
+                // Case 2: take from s2
+                if(s2.charAt(j - 1) == c){
+                    dp[i][j] = dp[i][j-1] || dp[i][j]; // ????
+                }
             }
         }
 
