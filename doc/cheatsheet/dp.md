@@ -2413,6 +2413,52 @@ Use "Two-String Grid" pattern when you see:
 
 ---
 
+### **Interleaving String Pattern (LC 97)** 🧩
+
+**Pattern**: Two-String Grid DP (Boolean)
+
+**Core Idea**: Given three strings `s1`, `s2`, `s3`, determine if `s3` is formed by interleaving `s1` and `s2` while preserving relative order. Think of it as finding a path from `(0,0)` to `(m,n)` in a 2D grid where moving **down** takes a char from `s1` and moving **right** takes a char from `s2`.
+
+**DP Definition**:
+- `dp[i][j]` = can `s1[0..i-1]` and `s2[0..j-1]` form `s3[0..i+j-1]`?
+
+**Key Formula**:
+```
+dp[i][j] = (dp[i-1][j] && s1[i-1] == s3[i+j-1])   // take from s1
+         || (dp[i][j-1] && s2[j-1] == s3[i+j-1])   // take from s2
+```
+
+**Base Cases**:
+- `dp[0][0] = true` (empty + empty = empty)
+- First column: `dp[i][0] = dp[i-1][0] && s1[i-1] == s3[i-1]` (only s1 contributes)
+- First row: `dp[0][j] = dp[0][j-1] && s2[j-1] == s3[j-1]` (only s2 contributes)
+
+**Early Exit**: If `len(s1) + len(s2) != len(s3)`, return `false`.
+
+**Space Optimization**: Can reduce to 1D `dp[n+1]` array since each row only depends on current and previous row.
+
+| Approach | Time | Space |
+|----------|------|-------|
+| 2D DP | O(m×n) | O(m×n) |
+| 1D DP (space optimized) | O(m×n) | O(min(m,n)) |
+| Top-down memoization | O(m×n) | O(m×n) |
+| Brute force recursion | O(2^(m+n)) | O(m+n) |
+
+**Similar LeetCode Problems**:
+
+| Problem | Similarity | Key Difference |
+|---------|-----------|----------------|
+| LC 1143 (LCS) | Two-string grid, prefix comparison | Maximizes length instead of boolean check |
+| LC 72 (Edit Distance) | Two-string grid, 3 transitions | Minimizes cost instead of boolean feasibility |
+| LC 115 (Distinct Subsequences) | Two-string grid, counting paths | Counts number of ways instead of yes/no |
+| LC 583 (Delete Operation for Two Strings) | Two-string grid | Minimizes deletions |
+| LC 44 (Wildcard Matching) | Two-string boolean DP grid | Pattern matching with `*` and `?` |
+| LC 10 (Regular Expression Matching) | Two-string boolean DP grid | Pattern matching with `*` and `.` |
+
+**Reference**: See `leetcode_java/src/main/java/LeetCodeJava/DynamicProgramming/InterleavingString.java` for 2D DP, 1D DP, top-down, and bottom-up implementations.
+
+---
+
 ### **Classic String DP Patterns (Detailed)**
 
 | Problem Type | Pattern | Complexity | Notes |

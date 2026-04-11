@@ -7816,6 +7816,112 @@ public class Workspace24 {
     }
 
 
+    // LC 1353
+    // 11.51 - 12.01 pm
+    /**
+     *  -> Return the maximum number of events you can attend.
+     *
+     *   - You can only attend one event at any time d.
+     *
+     *  -------------
+     *
+     *   IDEA 1) SCANNING LINE ??
+     *
+     *   IDEA 2) PQ ???
+     *
+     *   IDEA 3) BRUTE FORCE
+     *
+     *   IDEA 4) INTERVAL OP
+     *
+     *
+     *  -------------
+     *
+     *
+     *
+     */
+    // IDEA 4) INTERVAL OP
+    public int maxEvents(int[][] events) {
+        // edge
+        if(events == null){
+            return 0;
+        }
+        if(events.length == 1){
+            return 1;
+        }
+
+        List<Integer[]> list = new ArrayList<>();
+        for(int[] e: events){
+//            list.add(new Integer[]{e[0], 1});
+//            list.add(new Integer[]{e[1], -1});
+            list.add(new Integer[]{e[0], e[1]});
+        }
+
+        // ???
+        Collections.sort(list, new Comparator<Integer[]>() {
+            @Override
+            public int compare(Integer[] o1, Integer[] o2) {
+                int diff = o1[0] - o2[0];
+                if(diff != 0){
+                    return o1[1] - o2[1];
+                }
+                return diff;
+            }
+        });
+
+        // ??? sort on
+        // 1) open (small -> big) // ???
+        // 2) close (small -> big) // ???
+        System.out.println(">>> list = " + list);
+
+
+
+        int maxAttend = 0;
+        int prevStart = -1;
+        int prevEnd = -1;
+
+        // ??
+        for(Integer[] x: list){
+            int start = x[0];
+            int end = x[1];
+            // case 1) prev == -1 or `NOT overlap`
+            /**  NOTE !!
+             *
+             *  since we already sorted on 1) start 2) end (small -> big),
+             *
+             *
+             *  - the OVERLAP case are as below:
+             *
+             *   |-----|       prev
+             *     |-------|   cur
+             *
+             *
+             *  |------|
+             *    |--|
+             *
+             *  |------ |
+             *  |----|
+             *
+             *
+             *  -------
+             *
+             *   the NON OVERLAP case as below:
+             *
+             *   |-----|
+             *            |-----|
+             *
+             *
+             */
+            if( (prevStart == -1 && prevEnd == -1) || (start > prevEnd)  ){
+                prevStart = Math.min(start, prevStart);
+                prevEnd = Math.min(end, prevEnd);
+                maxAttend += 1;
+            }
+        }
+
+
+
+        return maxAttend;
+    }
 
 
 
