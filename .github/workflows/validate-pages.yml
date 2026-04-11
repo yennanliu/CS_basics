@@ -392,6 +392,21 @@ jobs:
         // Write minimal CSS
         fs.writeFileSync('_site/style.css', 'body { font-family: sans-serif; }');
 
+        // Build Pattern Recognition page
+        if (fs.existsSync('doc/pattern_recognition.md')) {
+          const patternRaw = fs.readFileSync('doc/pattern_recognition.md', 'utf8');
+          let patternHtml = md.render(patternRaw);
+          patternHtml = processLinks(patternHtml);
+          patternHtml = ensureHeadingIds(patternHtml);
+          const patternToc = generateTOC(patternHtml);
+          const patternContent = `
+            <div class="cheatsheet-header"><h1>Pattern Recognition Guide</h1></div>
+            ${patternToc}
+            <div class="cheatsheet-content">${patternHtml}</div>
+          `;
+          fs.writeFileSync('_site/patterns.html', htmlTemplate('Pattern Recognition', patternContent, 'patterns'));
+        }
+
         console.log(`Built: index.html, resources.html, ${cheatsheets.length} cheatsheets, ${faqs.length} FAQs`);
         BUILDSCRIPT
 
@@ -419,6 +434,7 @@ jobs:
           '_site/resources.html',
           '_site/cheatsheets.html',
           '_site/faqs.html',
+          '_site/patterns.html',
           '_site/style.css'
         ];
 

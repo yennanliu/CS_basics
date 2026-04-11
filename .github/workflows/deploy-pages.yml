@@ -633,6 +633,29 @@ jobs:
           console.log(`✓ Created ${faqs.length} individual FAQ pages`);
         }
 
+        // Build Pattern Recognition page
+        if (fs.existsSync('doc/pattern_recognition.md')) {
+          const patternRaw = fs.readFileSync('doc/pattern_recognition.md', 'utf8');
+          let patternHtml = md.render(patternRaw);
+          patternHtml = processLinks(patternHtml);
+          patternHtml = ensureHeadingIds(patternHtml);
+          const patternToc = generateTOC(patternHtml);
+
+          // Fix cheatsheet links to be relative to root
+          patternHtml = patternHtml.replace(/href="cheatsheets\//g, 'href="cheatsheets/');
+
+          const patternContent = `
+            <div class="cheatsheet-header">
+              <h1>Pattern Recognition Guide</h1>
+              <p>Map problem keywords to algorithm patterns — the fastest way to crack coding interviews.</p>
+            </div>
+            ${patternToc}
+            <div class="cheatsheet-content">${patternHtml}</div>
+          `;
+          fs.writeFileSync('_site/patterns.html', htmlTemplate('Pattern Recognition', patternContent, 'patterns'));
+          console.log('✓ Created patterns.html');
+        }
+
         console.log('✓ Website built successfully!');
         BUILDSCRIPT
 
