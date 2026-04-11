@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LRU Cache - Algorithm Visualizer</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="common.js"></script>
+</head>
+<body>
+  <nav class="topbar">
+    <a href="../index.html" class="home-link">&larr; CS_basics</a>
+    <a href="index.html">Visualizer</a> <span class="sep">/</span>
+    <span class="title">LRU Cache</span>
+    <button id="theme-toggle">&#127769;</button>
+  </nav>
+  <div class="container">
+    <h1>LRU Cache</h1>
+    <p>Least Recently Used cache with O(1) get/put. LC 146.</p>
+    <div class="viz-wrapper">
+      <div>
+        <div class="viz-canvas-area"><canvas id="canvas"></canvas></div>
+        <div class="legend">
+          <div class="legend-item"><div class="legend-dot" style="background:#4361ee"></div> Cache entry</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#2ecc71"></div> Hit (accessed)</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#f39c12"></div> New insert</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#e74c3c"></div> Evicted</div>
+        </div>
+      </div>
+      <div class="viz-controls">
+        <h3>Controls</h3>
+        <label>Capacity: <span id="cap-val">4</span></label>
+        <input type="range" id="capacity" min="2" max="8" value="4">
+        <label>Speed</label>
+        <input type="range" id="speed" min="1" max="10" value="5">
+        <div class="btn-row">
+          <button class="btn btn-primary" id="run-btn">Run Demo</button>
+          <button class="btn btn-secondary" id="reset-btn">Reset</button>
+        </div>
+        <label style="margin-top:.5rem">Manual: put(key,val)</label>
+        <div class="btn-row">
+          <input type="number" id="put-key" placeholder="key" style="width:60px">
+          <input type="number" id="put-val" placeholder="val" style="width:60px">
+          <button class="btn btn-primary" id="put-btn">Put</button>
+        </div>
+        <label>Manual: get(key)</label>
+        <div class="btn-row">
+          <input type="number" id="get-key" placeholder="key" style="width:60px">
+          <button class="btn btn-primary" id="get-btn">Get</button>
+        </div>
+        <div class="complexity">get: O(1) | put: O(1)</div>
+        <h3>Operations</h3>
+        <div class="viz-log" id="log"></div>
+      </div>
+    </div>
+  </div>
+<script>
+(function() {
+  var canvas=document.getElementById('canvas'),ctx=canvas.getContext('2d');
+  var logger=createLogger('log'),running=false,stopped=false;
+  var cache=[],map={},capacity=4,highlight={};
+
+  function resize(){var r=canvas.parentElement.getBoundingClientRect();canvas.width=r.width-32;canvas.height=Math.max(r.height-32,300);}
+
+  function draw(){
+    resize();var w=canvas.width,h=canvas.height;ctx.clearRect(0,0,w,h);
+    var isDark=document.documentElement.getAttribute('data-theme')==='dark';
+    var boxW=Math.min(90,(w-40)/(capacity+1)),boxH=60,gap=12;
+    var totalW=cache.length*(boxW+gap)-gap;
+    var startX=(w-totalW)/2,y=h/2-boxH/2;
+
+    // Title
+    ctx.fillStyle=isDark?'#aaa':'#666';ctx.font='12px sans-serif';ctx.textAlign='center';
+    ctx.fillText('Most Recent',w/2,y-40);
+    if(cache.length>1){
+      ctx.fillText('\u2190 MRU',startX+boxW/2,y-20);
+      ctx.fillText('LRU \u2192',startX+totalW-boxW/2,y-20);
+    }
+
+    // Draw linked list nodes
+    for(var i=0;i<cache.length;i++){
+      var x=startX+i*(boxW+gap);
+      var color=highlight[cache[i].key]||'#4361ee';
+      ctx.fillStyle=color;
+      ctx.beginPath();ctx.roundRect(x,y,boxW,boxH,8);ctx.fill();
+      ctx.fillStyle='#fff';ctx.font='bold 14px sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
+      ctx.fillText('K:'+cache[i].key,x+boxW/2,y+boxH/2-10);
+      ctx.font='12px sans-serif';
+      ctx.fillText('V:'+cache[i].val,x+boxW/2,y+boxH/2+10);
+      // Arrow
+      if(i<cache.length-1){
+        ctx.fillStyle=isDark?'#666':'#bbb';ctx.font='18px sans-serif';
+        ctx.fillText('\u2194',x+boxW+gap/2,y+boxH/2);
+      }
+    }
+    // Capacity indicator
+    ctx.fillStyle=isDark?'#aaa':'#666';ctx.font='12px sans-serif';ctx.textAlign='center';
+    ctx.fillText('Capacity: '+cache.length+'/'+capacity,w/2,y+boxH+30);
+  }
+
+  function lruGet(key){
+    if(map[key]===undefined) return -1;
+    // Move to front
+    var idx=cache.findIndex(function(e){return e.key===key;});
+    var entry=cache.splice(idx,1)[0];
+    cache.unshift(entry);
+    return entry.val;
+  }
+
+  function lruPut(key,val){
+    var evicted=null;
+    if(map[key]!==undefined){
+      var idx=cache.findIndex(function(e){return e.key===key;});
+      cache.splice(idx,1);
+    } else if(cache.length>=capacity){
+      var old=cache.pop();
+      delete map[old.key];
+      evicted=old.key;
+    }
+    cache.unshift({key:key,val:val});
+    map[key]=val;
+    return evicted;
+  }
+
+  function init(){
+    capacity=+document.getElementById('capacity').value;
+    cache=[];map={};highlight={};
+  }
+
+  async function runDemo(){
+    if(running)return;running=true;stopped=false;logger.clear();init();
+    var delay=(11-document.getElementById('speed').value)*200;
+    var ops=[
+      ['put',1,10],['put',2,20],['put',3,30],['put',4,40],
+      ['get',2],['put',5,50],['get',1],['put',6,60],['get',3],['get',4]
+    ];
+    // Adjust ops for capacity
+    for(var i=0;i<ops.length&&!stopped;i++){
+      highlight={};
+      var op=ops[i];
+      if(op[0]==='put'){
+        var evicted=lruPut(op[1],op[2]);
+        highlight[op[1]]='#f39c12';
+        if(evicted!==null) logger.log('put('+op[1]+','+op[2]+') &mdash; evicted key <span class="highlight">'+evicted+'</span>');
+        else logger.log('put('+op[1]+','+op[2]+')');
+      } else {
+        var val=lruGet(op[1]);
+        if(val===-1){highlight[op[1]]='#e74c3c';logger.log('get('+op[1]+') &mdash; <span class="highlight">MISS</span>');}
+        else{highlight[op[1]]='#2ecc71';logger.log('get('+op[1]+') = '+val+' &mdash; HIT');}
+      }
+      draw();await sleep(delay);
+    }
+    highlight={};draw();
+    if(!stopped) logger.log('<span class="highlight">Demo complete!</span>');
+    running=false;
+  }
+
+  document.getElementById('run-btn').addEventListener('click',runDemo);
+  document.getElementById('reset-btn').addEventListener('click',function(){stopped=true;running=false;init();logger.clear();draw();});
+  document.getElementById('capacity').addEventListener('input',function(){document.getElementById('cap-val').textContent=this.value;init();logger.clear();draw();});
+
+  document.getElementById('put-btn').addEventListener('click',function(){
+    var k=+document.getElementById('put-key').value,v=+document.getElementById('put-val').value;
+    if(isNaN(k))return;highlight={};
+    var evicted=lruPut(k,v);highlight[k]='#f39c12';
+    if(evicted!==null) logger.log('put('+k+','+v+') evicted key '+evicted);
+    else logger.log('put('+k+','+v+')');
+    draw();
+  });
+  document.getElementById('get-btn').addEventListener('click',function(){
+    var k=+document.getElementById('get-key').value;if(isNaN(k))return;highlight={};
+    var val=lruGet(k);
+    if(val===-1){logger.log('get('+k+') MISS');}
+    else{highlight[k]='#2ecc71';logger.log('get('+k+') = '+val);}
+    draw();
+  });
+
+  init();draw();window.addEventListener('resize',draw);
+})();
+</script>
+</body>
+</html>

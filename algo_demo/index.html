@@ -17,12 +17,22 @@
     <h1>Algorithm Visualizations</h1>
     <p>Interactive visualizations of common algorithms used in LeetCode problems.</p>
 
-    <h3 style="margin-top:2rem; color:var(--text-secondary); font-size:.85rem; text-transform:uppercase; letter-spacing:.05em;">Sorting</h3>
+    <h3 class="section-label">Sorting</h3>
     <div class="algo-grid">
       <a class="algo-card" href="bubble-sort.html">
         <h3>Bubble Sort</h3>
         <p>Repeatedly swap adjacent out-of-order elements.</p>
         <span class="tag">O(n&sup2;)</span><span class="tag">Stable</span>
+      </a>
+      <a class="algo-card" href="insertion-sort.html">
+        <h3>Insertion Sort</h3>
+        <p>Insert each element into its correct position. Fast for nearly sorted.</p>
+        <span class="tag">O(n&sup2;)</span><span class="tag">Stable</span>
+      </a>
+      <a class="algo-card" href="selection-sort.html">
+        <h3>Selection Sort</h3>
+        <p>Find minimum, swap to front each pass.</p>
+        <span class="tag">O(n&sup2;)</span>
       </a>
       <a class="algo-card" href="merge-sort.html">
         <h3>Merge Sort</h3>
@@ -32,35 +42,93 @@
       <a class="algo-card" href="quick-sort.html">
         <h3>Quick Sort</h3>
         <p>Partition around pivot, recurse on halves.</p>
+        <span class="tag">O(n log n) avg</span><span class="tag">In-place</span>
+      </a>
+      <a class="algo-card" href="heap-sort.html">
+        <h3>Heap Sort</h3>
+        <p>Build max-heap, extract max repeatedly. LC 215, 347.</p>
         <span class="tag">O(n log n)</span><span class="tag">In-place</span>
+      </a>
+      <a class="algo-card" href="bucket-sort.html">
+        <h3>Bucket Sort</h3>
+        <p>Distribute into buckets, sort each, concatenate. LC 347, 451.</p>
+        <span class="tag">O(n+k) avg</span>
       </a>
     </div>
 
-    <h3 style="margin-top:2rem; color:var(--text-secondary); font-size:.85rem; text-transform:uppercase; letter-spacing:.05em;">Searching</h3>
+    <h3 class="section-label">Searching</h3>
     <div class="algo-grid">
+      <a class="algo-card" href="linear-search.html">
+        <h3>Linear Search</h3>
+        <p>Scan every element one by one.</p>
+        <span class="tag">O(n)</span>
+      </a>
       <a class="algo-card" href="binary-search.html">
         <h3>Binary Search</h3>
-        <p>Halve the search space each step on sorted data.</p>
+        <p>Halve the search space each step on sorted data. LC 704, 33, 153.</p>
         <span class="tag">O(log n)</span>
       </a>
     </div>
 
-    <h3 style="margin-top:2rem; color:var(--text-secondary); font-size:.85rem; text-transform:uppercase; letter-spacing:.05em;">Graph</h3>
+    <h3 class="section-label">Graph</h3>
     <div class="algo-grid">
       <a class="algo-card" href="bfs.html">
         <h3>BFS</h3>
-        <p>Level-by-level exploration using a queue.</p>
+        <p>Level-by-level exploration using a queue. LC 102, 200, 994.</p>
         <span class="tag">O(V+E)</span><span class="tag">Shortest Path</span>
       </a>
       <a class="algo-card" href="dfs.html">
         <h3>DFS</h3>
-        <p>Explore as deep as possible, then backtrack.</p>
-        <span class="tag">O(V+E)</span><span class="tag">Stack/Recursion</span>
+        <p>Explore as deep as possible, then backtrack. LC 200, 695, 79.</p>
+        <span class="tag">O(V+E)</span><span class="tag">Stack</span>
       </a>
       <a class="algo-card" href="dijkstra.html">
-        <h3>Dijkstra's Algorithm</h3>
-        <p>Find shortest paths from a source in weighted graphs.</p>
+        <h3>Dijkstra</h3>
+        <p>Shortest paths in weighted graphs (non-negative). LC 743, 1631.</p>
         <span class="tag">O((V+E) log V)</span><span class="tag">Min-Heap</span>
+      </a>
+      <a class="algo-card" href="bellman-ford.html">
+        <h3>Bellman-Ford</h3>
+        <p>Shortest paths with negative weights. Detects negative cycles. LC 787.</p>
+        <span class="tag">O(V&middot;E)</span>
+      </a>
+      <a class="algo-card" href="floyd-warshall.html">
+        <h3>Floyd-Warshall</h3>
+        <p>All-pairs shortest paths via intermediate vertices. LC 2642.</p>
+        <span class="tag">O(V&sup3;)</span>
+      </a>
+      <a class="algo-card" href="topological-sort.html">
+        <h3>Topological Sort</h3>
+        <p>Find ordering in a DAG (Kahn's BFS). LC 207, 210, 269.</p>
+        <span class="tag">O(V+E)</span>
+      </a>
+      <a class="algo-card" href="union-find.html">
+        <h3>Union-Find</h3>
+        <p>Track connected components with path compression. LC 200, 547, 684.</p>
+        <span class="tag">O(&alpha;(n))</span>
+      </a>
+    </div>
+
+    <h3 class="section-label">Dynamic Programming / Array</h3>
+    <div class="algo-grid">
+      <a class="algo-card" href="kadane.html">
+        <h3>Kadane's Algorithm</h3>
+        <p>Maximum subarray sum in one pass. LC 53, 152, 918.</p>
+        <span class="tag">O(n)</span>
+      </a>
+      <a class="algo-card" href="difference-array.html">
+        <h3>Difference Array</h3>
+        <p>O(1) range updates, prefix-sum to build result. LC 370, 1109.</p>
+        <span class="tag">O(n)</span>
+      </a>
+    </div>
+
+    <h3 class="section-label">Data Structures</h3>
+    <div class="algo-grid">
+      <a class="algo-card" href="lru-cache.html">
+        <h3>LRU Cache</h3>
+        <p>Least Recently Used cache with O(1) get/put. LC 146.</p>
+        <span class="tag">O(1)</span><span class="tag">HashMap + DLL</span>
       </a>
     </div>
   </div>

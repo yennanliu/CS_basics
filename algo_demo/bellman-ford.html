@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bellman-Ford - Algorithm Visualizer</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="common.js"></script>
+</head>
+<body>
+  <nav class="topbar">
+    <a href="../index.html" class="home-link">&larr; CS_basics</a>
+    <a href="index.html">Visualizer</a> <span class="sep">/</span>
+    <span class="title">Bellman-Ford</span>
+    <button id="theme-toggle">&#127769;</button>
+  </nav>
+  <div class="container">
+    <h1>Bellman-Ford Algorithm</h1>
+    <p>Shortest paths with negative weights. Detects negative cycles. LC 787.</p>
+    <div class="viz-wrapper">
+      <div>
+        <div class="viz-canvas-area"><canvas id="canvas"></canvas></div>
+        <div class="legend">
+          <div class="legend-item"><div class="legend-dot" style="background:#bbb"></div> Unvisited</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#f39c12"></div> Relaxing edge</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#2ecc71"></div> Updated</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#4361ee"></div> Shortest path</div>
+        </div>
+      </div>
+      <div class="viz-controls">
+        <h3>Controls</h3>
+        <label>Nodes: <span id="nodes-val">6</span></label>
+        <input type="range" id="nodes" min="4" max="10" value="6">
+        <label>Speed</label>
+        <input type="range" id="speed" min="1" max="10" value="4">
+        <div class="btn-row">
+          <button class="btn btn-primary" id="run-btn">Run</button>
+          <button class="btn btn-secondary" id="reset-btn">New Graph</button>
+        </div>
+        <div class="complexity">Time: O(V&middot;E) | Space: O(V)</div>
+        <h3>Steps</h3>
+        <div class="viz-log" id="log"></div>
+      </div>
+    </div>
+  </div>
+<script>
+(function() {
+  var canvas=document.getElementById('canvas'),ctx=canvas.getContext('2d');
+  var V=6,nodes=[],edges=[],dist=[],state=[],parent=[],edgeHL=-1;
+  var running=false,stopped=false,logger=createLogger('log');
+
+  function resize(){var r=canvas.parentElement.getBoundingClientRect();canvas.width=r.width-32;canvas.height=Math.max(r.height-32,350);}
+
+  function genGraph(){
+    V=+document.getElementById('nodes').value;
+    nodes=[];edges=[];dist=[];state=[];parent=[];edgeHL=-1;
+    for(var i=0;i<V;i++){
+      var angle=2*Math.PI*i/V-Math.PI/2;
+      nodes.push({x:250+170*Math.cos(angle),y:190+150*Math.sin(angle)});
+      dist.push(Infinity);state.push(0);parent.push(-1);
+    }
+    // Create edges (some negative)
+    for(var i=0;i<V-1;i++){
+      var w=Math.floor(Math.random()*12)-2;
+      edges.push([i,i+1,w]);
+    }
+    for(var k=0;k<V;k++){
+      var a=Math.floor(Math.random()*V),b=Math.floor(Math.random()*V);
+      if(a!==b){var w=Math.floor(Math.random()*15)-3;edges.push([a,b,w]);}
+    }
+  }
+
+  function draw(){
+    resize();var cw=canvas.width,ch=canvas.height;ctx.clearRect(0,0,cw,ch);
+    var sx=cw/500,sy=ch/380;
+    var stateColors=['#bbb','#2ecc71','#4361ee'];
+    edges.forEach(function(e,idx){
+      var a=nodes[e[0]],b=nodes[e[1]];
+      var isPath=state[e[0]]===2&&state[e[1]]===2&&(parent[e[1]]===e[0]);
+      ctx.strokeStyle=idx===edgeHL?'#f39c12':isPath?'#4361ee':'#999';
+      ctx.lineWidth=idx===edgeHL?3:isPath?2.5:1.5;
+      ctx.beginPath();ctx.moveTo(a.x*sx,a.y*sy);ctx.lineTo(b.x*sx,b.y*sy);ctx.stroke();
+      // Arrow
+      var angle=Math.atan2((b.y-a.y)*sy,(b.x-a.x)*sx);
+      var ax=b.x*sx-22*Math.cos(angle),ay=b.y*sy-22*Math.sin(angle);
+      ctx.beginPath();ctx.moveTo(ax,ay);ctx.lineTo(ax-8*Math.cos(angle-0.4),ay-8*Math.sin(angle-0.4));ctx.lineTo(ax-8*Math.cos(angle+0.4),ay-8*Math.sin(angle+0.4));ctx.closePath();ctx.fillStyle=ctx.strokeStyle;ctx.fill();
+      // Weight
+      var mx=(a.x+b.x)/2*sx,my=(a.y+b.y)/2*sy;
+      ctx.fillStyle=e[2]<0?'#e74c3c':'#666';ctx.font='bold 11px sans-serif';ctx.textAlign='center';ctx.fillText(e[2],mx+10,my-6);
+    });
+    nodes.forEach(function(n,i){
+      ctx.beginPath();ctx.arc(n.x*sx,n.y*sy,18,0,Math.PI*2);
+      ctx.fillStyle=stateColors[state[i]];ctx.fill();ctx.strokeStyle='#333';ctx.lineWidth=1.5;ctx.stroke();
+      ctx.fillStyle='#fff';ctx.font='bold 12px sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(i,n.x*sx,n.y*sy);
+      var d=dist[i]===Infinity?'\u221E':dist[i];
+      ctx.fillStyle=document.documentElement.getAttribute('data-theme')==='dark'?'#ccc':'#333';ctx.font='10px sans-serif';ctx.fillText('d='+d,n.x*sx,n.y*sy+28);
+    });
+  }
+
+  async function run(){
+    if(running)return;running=true;stopped=false;logger.clear();
+    for(var i=0;i<V;i++){dist[i]=Infinity;state[i]=0;parent[i]=-1;}
+    dist[0]=0;state[0]=1;
+    var delay=(11-document.getElementById('speed').value)*80;
+    draw();await sleep(delay);
+
+    for(var iter=0;iter<V-1&&!stopped;iter++){
+      logger.log('--- Iteration '+(iter+1)+' ---');
+      var updated=false;
+      for(var e=0;e<edges.length&&!stopped;e++){
+        var u=edges[e][0],v=edges[e][1],w=edges[e][2];
+        if(dist[u]===Infinity)continue;
+        edgeHL=e;draw();await sleep(delay);
+        if(dist[u]+w<dist[v]){
+          dist[v]=dist[u]+w;parent[v]=u;state[v]=1;updated=true;
+          logger.log('Relax '+u+'&rarr;'+v+' d='+dist[v]);
+        }
+        edgeHL=-1;draw();
+      }
+      if(!updated){logger.log('No updates, early exit');break;}
+    }
+
+    // Trace path to last node
+    if(!stopped){
+      var t=V-1,p=t;
+      while(p!==-1){state[p]=2;p=parent[p];}
+      draw();
+      logger.log('<span class="highlight">Shortest to node '+(V-1)+': '+(dist[V-1]===Infinity?'unreachable':dist[V-1])+'</span>');
+    }
+    running=false;
+  }
+
+  document.getElementById('run-btn').addEventListener('click',run);
+  document.getElementById('reset-btn').addEventListener('click',function(){stopped=true;running=false;genGraph();logger.clear();draw();});
+  document.getElementById('nodes').addEventListener('input',function(){document.getElementById('nodes-val').textContent=this.value;genGraph();logger.clear();draw();});
+  genGraph();draw();window.addEventListener('resize',draw);
+})();
+</script>
+</body>
+</html>

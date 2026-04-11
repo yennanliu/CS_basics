@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Difference Array - Algorithm Visualizer</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="common.js"></script>
+</head>
+<body>
+  <nav class="topbar">
+    <a href="../index.html" class="home-link">&larr; CS_basics</a>
+    <a href="index.html">Visualizer</a> <span class="sep">/</span>
+    <span class="title">Difference Array</span>
+    <button id="theme-toggle">&#127769;</button>
+  </nav>
+  <div class="container">
+    <h1>Difference Array</h1>
+    <p>Apply range updates in O(1), then prefix-sum to get result. LC 370, 1109, 1094.</p>
+    <div class="viz-wrapper">
+      <div>
+        <div class="viz-canvas-area"><canvas id="canvas"></canvas></div>
+        <div class="legend">
+          <div class="legend-item"><div class="legend-dot" style="background:#4361ee"></div> Original</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#f39c12"></div> Diff array</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#2ecc71"></div> Result</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#e74c3c"></div> Updated range</div>
+        </div>
+      </div>
+      <div class="viz-controls">
+        <h3>Controls</h3>
+        <label>Array size: <span id="size-val">10</span></label>
+        <input type="range" id="size" min="5" max="20" value="10">
+        <label>Speed</label>
+        <input type="range" id="speed" min="1" max="10" value="5">
+        <div class="btn-row">
+          <button class="btn btn-primary" id="run-btn">Run Demo</button>
+          <button class="btn btn-secondary" id="reset-btn">Reset</button>
+        </div>
+        <div class="complexity">Range update: O(1) | Build result: O(n)</div>
+        <h3>Operations</h3>
+        <div class="viz-log" id="log"></div>
+      </div>
+    </div>
+  </div>
+<script>
+(function() {
+  var canvas=document.getElementById('canvas'),ctx=canvas.getContext('2d');
+  var arr=[],diff=[],result=[],running=false,stopped=false,logger=createLogger('log');
+  var rangeHL=[];
+
+  function resize(){var r=canvas.parentElement.getBoundingClientRect();canvas.width=r.width-32;canvas.height=Math.max(r.height-32,350);}
+  function init(){
+    var n=+document.getElementById('size').value;
+    arr=[];diff=[];result=[];rangeHL=[];
+    for(var i=0;i<n;i++){arr.push(0);diff.push(0);result.push(0);}
+  }
+
+  function draw(phase){
+    resize();var w=canvas.width,h=canvas.height,n=arr.length;ctx.clearRect(0,0,w,h);
+    var isDark=document.documentElement.getAttribute('data-theme')==='dark';
+    var barW=Math.min(40,(w-40)/n-4),gap=4,totalW=n*(barW+gap)-gap,startX=(w-totalW)/2;
+    var sectionH=(h-80)/3;
+    var maxV=1;
+    [arr,diff,result].forEach(function(a){a.forEach(function(v){maxV=Math.max(maxV,Math.abs(v));});});
+
+    function drawRow(data,yBase,label,color,hlArr){
+      ctx.fillStyle=isDark?'#aaa':'#666';ctx.font='bold 11px sans-serif';ctx.textAlign='left';
+      ctx.fillText(label,5,yBase-5);
+      var midY=yBase+sectionH/2;
+      ctx.strokeStyle='#ddd';ctx.lineWidth=0.5;ctx.beginPath();ctx.moveTo(startX,midY);ctx.lineTo(startX+totalW,midY);ctx.stroke();
+      for(var i=0;i<data.length;i++){
+        var x=startX+i*(barW+gap);
+        var barH=Math.abs(data[i]/maxV)*(sectionH/2-10);
+        var y=data[i]>=0?midY-barH:midY;
+        var c=color;
+        if(hlArr&&hlArr.indexOf(i)>=0) c='#e74c3c';
+        ctx.fillStyle=c;ctx.fillRect(x,y,barW,barH||1);
+        ctx.fillStyle=isDark?'#ccc':'#333';ctx.font='10px sans-serif';ctx.textAlign='center';
+        ctx.fillText(data[i],x+barW/2,data[i]>=0?y-4:y+barH+10);
+        ctx.fillStyle='#999';ctx.font='9px sans-serif';
+        ctx.fillText(i,x+barW/2,yBase+sectionH+8);
+      }
+    }
+    drawRow(arr,15,'Original Array','#4361ee');
+    drawRow(diff,15+sectionH+10,'Diff Array','#f39c12',rangeHL);
+    drawRow(result,15+2*(sectionH+10),'Result (prefix sum)',phase==='done'?'#2ecc71':'#bbb');
+  }
+
+  async function run(){
+    if(running)return;running=true;stopped=false;logger.clear();init();
+    var delay=(11-document.getElementById('speed').value)*200;
+    var n=arr.length;
+    var updates=[[1,4,3],[2,6,-1],[0,3,2],[5,n-1,4]];
+    draw();await sleep(delay);
+
+    for(var u=0;u<updates.length&&!stopped;u++){
+      var l=updates[u][0],r=Math.min(updates[u][1],n-1),val=updates[u][2];
+      logger.log('update ['+l+'..'+r+'] += '+val);
+      rangeHL=[];for(var i=l;i<=r;i++)rangeHL.push(i);
+      diff[l]+=val;
+      if(r+1<n) diff[r+1]-=val;
+      logger.log('&nbsp;&nbsp;diff['+l+'] += '+val+(r+1<n?', diff['+(r+1)+'] -= '+val:''));
+      draw();await sleep(delay);
+      rangeHL=[];draw();await sleep(delay/2);
+    }
+
+    // Build result via prefix sum
+    logger.log('Building result via prefix sum...');
+    var sum=0;
+    for(var i=0;i<n&&!stopped;i++){
+      sum+=diff[i];result[i]=sum;
+      draw();await sleep(delay/2);
+    }
+    draw('done');
+    if(!stopped) logger.log('<span class="highlight">Result: ['+result.join(', ')+']</span>');
+    running=false;
+  }
+
+  document.getElementById('run-btn').addEventListener('click',run);
+  document.getElementById('reset-btn').addEventListener('click',function(){stopped=true;running=false;init();logger.clear();draw();});
+  document.getElementById('size').addEventListener('input',function(){document.getElementById('size-val').textContent=this.value;init();logger.clear();draw();});
+  init();draw();window.addEventListener('resize',draw);
+})();
+</script>
+</body>
+</html>

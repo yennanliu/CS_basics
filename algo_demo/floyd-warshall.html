@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Floyd-Warshall - Algorithm Visualizer</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="common.js"></script>
+</head>
+<body>
+  <nav class="topbar">
+    <a href="../index.html" class="home-link">&larr; CS_basics</a>
+    <a href="index.html">Visualizer</a> <span class="sep">/</span>
+    <span class="title">Floyd-Warshall</span>
+    <button id="theme-toggle">&#127769;</button>
+  </nav>
+  <div class="container">
+    <h1>Floyd-Warshall Algorithm</h1>
+    <p>All-pairs shortest paths via intermediate vertices. LC 2642, 1334.</p>
+    <div class="viz-wrapper">
+      <div>
+        <div class="viz-canvas-area"><canvas id="canvas"></canvas></div>
+        <div class="legend">
+          <div class="legend-item"><div class="legend-dot" style="background:#9b59b6"></div> Intermediate k</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#e74c3c"></div> Pair (i,j)</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#2ecc71"></div> Updated</div>
+        </div>
+      </div>
+      <div class="viz-controls">
+        <h3>Controls</h3>
+        <label>Nodes: <span id="nodes-val">5</span></label>
+        <input type="range" id="nodes" min="3" max="7" value="5">
+        <label>Speed</label>
+        <input type="range" id="speed" min="1" max="10" value="5">
+        <div class="btn-row">
+          <button class="btn btn-primary" id="run-btn">Run</button>
+          <button class="btn btn-secondary" id="reset-btn">New Graph</button>
+        </div>
+        <div class="complexity">Time: O(V&sup3;) | Space: O(V&sup2;)</div>
+        <h3>Steps</h3>
+        <div class="viz-log" id="log"></div>
+      </div>
+    </div>
+  </div>
+<script>
+(function() {
+  var canvas=document.getElementById('canvas'),ctx=canvas.getContext('2d');
+  var V=5,dist=[],edges=[],nodes=[],running=false,stopped=false;
+  var logger=createLogger('log'),hlK=-1,hlI=-1,hlJ=-1,hlCells=[];
+
+  function resize(){var r=canvas.parentElement.getBoundingClientRect();canvas.width=r.width-32;canvas.height=Math.max(r.height-32,380);}
+
+  function genGraph(){
+    V=+document.getElementById('nodes').value;
+    dist=[];edges=[];nodes=[];hlK=-1;hlI=-1;hlJ=-1;hlCells=[];
+    for(var i=0;i<V;i++){dist.push([]);for(var j=0;j<V;j++) dist[i].push(i===j?0:Infinity);}
+    for(var i=0;i<V;i++){
+      var angle=2*Math.PI*i/V-Math.PI/2;
+      nodes.push({x:120+80*Math.cos(angle),y:100+80*Math.sin(angle)});
+    }
+    // Random edges
+    for(var i=0;i<V;i++) for(var j=0;j<V;j++){
+      if(i!==j&&Math.random()<0.4){var w=Math.floor(Math.random()*10)+1;dist[i][j]=w;edges.push([i,j,w]);}
+    }
+  }
+
+  function draw(){
+    resize();var w=canvas.width,h=canvas.height;ctx.clearRect(0,0,w,h);
+    var isDark=document.documentElement.getAttribute('data-theme')==='dark';
+    // Draw distance matrix
+    var cellSize=Math.min(40,(w-240)/(V+1));
+    var matX=220,matY=20;
+
+    ctx.fillStyle=isDark?'#aaa':'#666';ctx.font='bold 11px sans-serif';ctx.textAlign='center';
+    ctx.fillText('Distance Matrix',matX+V*cellSize/2,matY-5);
+    // Header
+    for(var j=0;j<V;j++){ctx.fillStyle=j===hlJ?'#e74c3c':j===hlK?'#9b59b6':isDark?'#aaa':'#666';ctx.fillText(j,matX+(j+0.5)*cellSize,matY+12);}
+    for(var i=0;i<V;i++){
+      ctx.fillStyle=i===hlI?'#e74c3c':i===hlK?'#9b59b6':isDark?'#aaa':'#666';ctx.textAlign='right';
+      ctx.fillText(i,matX-6,matY+20+(i+0.5)*cellSize+4);ctx.textAlign='center';
+      for(var j=0;j<V;j++){
+        var x=matX+j*cellSize,y=matY+20+i*cellSize;
+        var isHL=hlCells.some(function(c){return c[0]===i&&c[1]===j;});
+        ctx.fillStyle=isHL?'rgba(46,204,113,0.3)':(i===hlI&&j===hlJ)?'rgba(231,76,60,0.2)':
+          (i===hlK||j===hlK)?'rgba(155,89,182,0.1)':'transparent';
+        ctx.fillRect(x,y,cellSize,cellSize);
+        ctx.strokeStyle=isDark?'#444':'#ddd';ctx.strokeRect(x,y,cellSize,cellSize);
+        var val=dist[i][j]===Infinity?'\u221E':dist[i][j];
+        ctx.fillStyle=isHL?'#2ecc71':isDark?'#ccc':'#333';ctx.font='11px sans-serif';
+        ctx.fillText(val,x+cellSize/2,y+cellSize/2+4);
+      }
+    }
+    // Mini graph
+    var sx=1,sy=1;
+    edges.forEach(function(e){
+      var a=nodes[e[0]],b=nodes[e[1]];ctx.strokeStyle='#999';ctx.lineWidth=1;
+      ctx.beginPath();ctx.moveTo(a.x*sx,a.y*sy);ctx.lineTo(b.x*sx,b.y*sy);ctx.stroke();
+      var mx=(a.x+b.x)/2*sx,my=(a.y+b.y)/2*sy;
+      ctx.fillStyle='#999';ctx.font='9px sans-serif';ctx.fillText(e[2],mx+5,my-3);
+    });
+    nodes.forEach(function(n,i){
+      ctx.beginPath();ctx.arc(n.x*sx,n.y*sy,14,0,Math.PI*2);
+      ctx.fillStyle=i===hlK?'#9b59b6':i===hlI||i===hlJ?'#e74c3c':'#4361ee';
+      ctx.fill();ctx.fillStyle='#fff';ctx.font='bold 10px sans-serif';ctx.fillText(i,n.x*sx,n.y*sy+3);
+    });
+  }
+
+  async function run(){
+    if(running)return;running=true;stopped=false;logger.clear();
+    var delay=(11-document.getElementById('speed').value)*60;
+    draw();await sleep(delay);
+
+    for(var k=0;k<V&&!stopped;k++){
+      hlK=k;logger.log('--- k='+k+' (intermediate) ---');
+      for(var i=0;i<V&&!stopped;i++){
+        for(var j=0;j<V&&!stopped;j++){
+          if(i===k||j===k||i===j)continue;
+          if(dist[i][k]===Infinity||dist[k][j]===Infinity)continue;
+          hlI=i;hlJ=j;hlCells=[];draw();await sleep(delay/2);
+          var nd=dist[i][k]+dist[k][j];
+          if(nd<dist[i][j]){
+            dist[i][j]=nd;hlCells=[[i,j]];
+            logger.log('d['+i+']['+j+'] = d['+i+']['+k+']+d['+k+']['+j+'] = '+nd);
+            draw();await sleep(delay);
+          }
+        }
+      }
+    }
+    hlK=-1;hlI=-1;hlJ=-1;hlCells=[];draw();
+    if(!stopped) logger.log('<span class="highlight">All-pairs shortest paths computed!</span>');
+    running=false;
+  }
+
+  document.getElementById('run-btn').addEventListener('click',run);
+  document.getElementById('reset-btn').addEventListener('click',function(){stopped=true;running=false;genGraph();logger.clear();draw();});
+  document.getElementById('nodes').addEventListener('input',function(){document.getElementById('nodes-val').textContent=this.value;genGraph();logger.clear();draw();});
+  genGraph();draw();window.addEventListener('resize',draw);
+})();
+</script>
+</body>
+</html>
