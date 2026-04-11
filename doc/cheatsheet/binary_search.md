@@ -2125,24 +2125,29 @@ public boolean searchMatrix_2(int[][] matrix, int target) {
 
 ### 4.15) Find Minimum in Rotated Sorted Array (LC 153)
 **Approach**: Compare mid with boundaries to find rotation point
+
+**Pattern**: Rotated Sorted Array — Binary Search on Sorted Half
+
+**Core Idea**: In a rotated sorted array, exactly one half (left or right of mid) is always sorted. Determine which half mid falls in, then search the unsorted half where the minimum must be.
+
+**Key Insight — Rotation Cycle** (don't memorize, understand via examples):
+```
+// All rotations of [1,2,3,4,5]:
+// [1,2,3,4,5]     // already ascending → nums[l] <= nums[r], return nums[l]
+// [5,1,2,3,4]     // mid=2 < r=4, right part is sorted → search left
+// [4,5,1,2,3]     // mid=1 < r=3, right part is sorted → search left
+// [3,4,5,1,2]     // mid=5 >= l=3, left part is sorted → search right
+// [2,3,4,5,1]     // mid=4 >= l=2, left part is sorted → search right
+// cycle back to [1,2,3,4,5]
+```
+
+**Only 2 cases** (after the early-exit sorted check):
+1. `nums[mid] >= nums[l]` → left part is sorted → min is in right half → `l = mid + 1`
+2. `nums[mid] < nums[l]` → right part is sorted → min is in left half → `r = mid - 1`
+
 ```java
 // java
 // LC 153
-
-    // V0
-    // IDEA : BINARY SEARCH (CLOSED BOUNDARY)
-    // https://youtu.be/nIVW4P8b1VA?si=AMhTJOUhDziBz-CV
-    /**
-     *  NOTE !!!
-     *
-     *  key : check current `mid point` is at  `left part` or `right part`
-     *  if `at left part`
-     *   -> nums[l] ~ nums[mid] is in INCREASING order
-     *   -> need to search `RIGHT part`, since right part is ALWAYS SMALLER then left part
-     *
-     *  else, `at right part`
-     *   -> need to search `LEFT part`
-     */
     public int findMin(int[] nums) {
         int l = 0;
         int r = nums.length - 1;
@@ -2151,8 +2156,8 @@ public boolean searchMatrix_2(int[][] matrix, int target) {
         /** NOTE !!! closed boundary */
         while (l <= r) {
 
-            // edge case : is array already in increasing order (e.g. [1,2,3,4,5])
-            if (nums[l] < nums[r]) {
+            // Early exit: if current range is already sorted, min is nums[l]
+            if (nums[l] <= nums[r]) {
                 res = Math.min(res, nums[l]);
                 break;
             }
@@ -2160,13 +2165,11 @@ public boolean searchMatrix_2(int[][] matrix, int target) {
             int m = l + (r - l) / 2;
             res = Math.min(res, nums[m]);
 
-            // case 1) mid point is at `LEFT part`
-            // e.g. [3,4,5,1,2]
+            // case 1) mid is in LEFT (bigger) part → search right
             if (nums[m] >= nums[l]) {
                 l = m + 1;
             }
-            // case 2) mid point is at `RIGHT part`
-            // e.g. [5,1,2,3,4]
+            // case 2) mid is in RIGHT (smaller) part → search left
             else {
                 r = m - 1;
             }
@@ -2174,6 +2177,16 @@ public boolean searchMatrix_2(int[][] matrix, int target) {
         return res;
     }
 ```
+
+**Similar Problems**:
+
+| Problem | Key Difference |
+|---------|---------------|
+| LC 154 (Find Min II) | Handles duplicates: when `nums[mid] == nums[r]`, shrink `r--` |
+| LC 33 (Search in Rotated Array) | Find target instead of min; must also check target location within sorted half |
+| LC 81 (Search in Rotated Array II) | Find target with duplicates |
+
+**Reference**: See `leetcode_java/src/main/java/LeetCodeJava/BinarySearch/FindMinimumInRotatedSortedArray.java` for multiple approaches.
 
 ### 4.16) Find First and Last Position - Alternative Implementation
 **Approach**: Separate functions for finding first and last occurrences
