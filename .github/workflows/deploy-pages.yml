@@ -2014,6 +2014,13 @@ jobs:
         </html>
         EOF404
 
+    - name: Copy algo_demo visualizations
+      run: |
+        if [ -d "algo_demo" ]; then
+          cp -r algo_demo _site/algo_demo
+          echo "Copied algo_demo to _site/algo_demo"
+        fi
+
     - name: Upload artifact
       uses: actions/upload-pages-artifact@v3
 

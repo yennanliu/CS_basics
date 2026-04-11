@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DFS - Algorithm Visualizer</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="common.js"></script>
+</head>
+<body>
+  <nav class="topbar">
+    <a href="index.html">Visualizer</a> <span class="sep">/</span>
+    <span class="title">DFS</span>
+    <button id="theme-toggle">&#127769;</button>
+  </nav>
+  <div class="container">
+    <h1>Depth-First Search</h1>
+    <p>Explore as deep as possible, then backtrack. LC 200, 695, 79, 130.</p>
+    <div class="viz-wrapper">
+      <div>
+        <div class="viz-canvas-area"><canvas id="canvas"></canvas></div>
+        <div class="legend">
+          <div class="legend-item"><div class="legend-dot" style="background:#ddd"></div> Unvisited</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#e74c3c"></div> Current</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#9b59b6"></div> Backtracking</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#2ecc71"></div> Visited</div>
+        </div>
+      </div>
+      <div class="viz-controls">
+        <h3>Controls</h3>
+        <label>Grid size</label>
+        <select id="grid-size">
+          <option value="6">6 x 6</option>
+          <option value="8" selected>8 x 8</option>
+          <option value="10">10 x 10</option>
+        </select>
+        <label>Speed</label>
+        <input type="range" id="speed" min="1" max="10" value="6">
+        <div class="btn-row">
+          <button class="btn btn-primary" id="run-btn">Run DFS</button>
+          <button class="btn btn-secondary" id="reset-btn">Reset</button>
+        </div>
+        <p style="font-size:.75rem;color:var(--text-secondary)">Click cells to toggle walls.</p>
+        <div class="complexity">Time: O(V+E) | Space: O(V)</div>
+        <h3>Stack</h3>
+        <div class="viz-log" id="log"></div>
+      </div>
+    </div>
+  </div>
+<script>
+(function() {
+  var canvas = document.getElementById('canvas');
+  var ctx = canvas.getContext('2d');
+  var N = 8, grid, start, end, running = false, stopped = false;
+  var logger = createLogger('log');
+  var EMPTY = 0, WALL = 1, VISITED = 2, CURRENT = 3, BACKTRACK = 4, PATH = 5;
+
+  function init() {
+    N = +document.getElementById('grid-size').value;
+    grid = [];
+    for (var i = 0; i < N; i++) { grid[i] = []; for (var j = 0; j < N; j++) grid[i][j] = EMPTY; }
+    start = [0, 0]; end = [N-1, N-1];
+    for (var k = 0; k < Math.floor(N*N*0.2); k++) {
+      var r = Math.floor(Math.random()*N), c = Math.floor(Math.random()*N);
+      if ((r!==0||c!==0) && (r!==N-1||c!==N-1)) grid[r][c] = WALL;
+    }
+  }
+
+  function resize() {
+    var rect = canvas.parentElement.getBoundingClientRect();
+    canvas.width = rect.width - 32; canvas.height = Math.max(rect.height - 32, 300);
+  }
+
+  function draw() {
+    resize();
+    var w = canvas.width, h = canvas.height;
+    ctx.clearRect(0, 0, w, h);
+    var cellSize = Math.min((w - 20) / N, (h - 20) / N);
+    var ox = (w - cellSize * N) / 2, oy = (h - cellSize * N) / 2;
+    var colors = {};
+    colors[EMPTY] = document.documentElement.getAttribute('data-theme') === 'dark' ? '#2a2a3e' : '#eee';
+    colors[WALL] = '#555'; colors[VISITED] = '#2ecc71';
+    colors[CURRENT] = '#e74c3c'; colors[BACKTRACK] = '#9b59b6'; colors[PATH] = '#4361ee';
+
+    for (var i = 0; i < N; i++) for (var j = 0; j < N; j++) {
+      var x = ox + j * cellSize, y = oy + i * cellSize;
+      ctx.fillStyle = colors[grid[i][j]] || colors[EMPTY];
+      ctx.fillRect(x + 1, y + 1, cellSize - 2, cellSize - 2);
+    }
+    var fs = Math.min(14, cellSize * 0.4);
+    ctx.font = 'bold ' + fs + 'px sans-serif';
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillStyle = '#fff';
+    ctx.fillText('S', ox + start[1]*cellSize + cellSize/2, oy + start[0]*cellSize + cellSize/2);
+    ctx.fillText('E', ox + end[1]*cellSize + cellSize/2, oy + end[0]*cellSize + cellSize/2);
+  }
+
+  canvas.addEventListener('click', function(e) {
+    if (running) return;
+    resize();
+    var rect = canvas.getBoundingClientRect();
+    var w = canvas.width, h = canvas.height;
+    var cellSize = Math.min((w - 20) / N, (h - 20) / N);
+    var ox = (w - cellSize * N) / 2, oy = (h - cellSize * N) / 2;
+    var col = Math.floor((e.clientX - rect.left - ox) / cellSize);
+    var row = Math.floor((e.clientY - rect.top - oy) / cellSize);
+    if (row < 0 || row >= N || col < 0 || col >= N) return;
+    if (row === start[0] && col === start[1]) return;
+    if (row === end[0] && col === end[1]) return;
+    grid[row][col] = grid[row][col] === WALL ? EMPTY : WALL;
+    draw();
+  });
+
+  async function runDFS() {
+    if (running) return;
+    running = true; stopped = false;
+    logger.clear();
+    for (var i = 0; i < N; i++) for (var j = 0; j < N; j++) if (grid[i][j] !== WALL) grid[i][j] = EMPTY;
+
+    var delay = (11 - document.getElementById('speed').value) * 40;
+    var dirs = [[0,1],[1,0],[0,-1],[-1,0]];
+    var found = false;
+    var parent = {};
+
+    async function dfs(r, c) {
+      if (stopped || found) return;
+      if (r < 0 || r >= N || c < 0 || c >= N) return;
+      if (grid[r][c] === WALL || grid[r][c] === VISITED || grid[r][c] === CURRENT) return;
+
+      grid[r][c] = CURRENT;
+      draw();
+      logger.log('Visit (' + r + ',' + c + ')');
+      await sleep(delay);
+
+      if (r === end[0] && c === end[1]) {
+        found = true;
+        var key = r+','+c;
+        while (parent[key]) { var p = parent[key]; grid[p[0]][p[1]] = PATH; key = p[0]+','+p[1]; }
+        grid[start[0]][start[1]] = PATH; grid[end[0]][end[1]] = PATH;
+        draw();
+        logger.log('<span class="highlight">Path found!</span>');
+        return;
+      }
+
+      for (var d = 0; d < 4 && !found && !stopped; d++) {
+        var nr = r + dirs[d][0], nc = c + dirs[d][1];
+        if (nr >= 0 && nr < N && nc >= 0 && nc < N && grid[nr][nc] === EMPTY) {
+          parent[nr+','+nc] = [r, c];
+          await dfs(nr, nc);
+        }
+      }
+
+      if (!found && !stopped) {
+        grid[r][c] = BACKTRACK;
+        draw();
+        await sleep(delay / 2);
+        grid[r][c] = VISITED;
+      }
+    }
+
+    await dfs(start[0], start[1]);
+    if (!found && !stopped) logger.log('<span class="highlight">No path found!</span>');
+    running = false;
+  }
+
+  document.getElementById('run-btn').addEventListener('click', runDFS);
+  document.getElementById('reset-btn').addEventListener('click', function() {
+    stopped = true; running = false; init(); logger.clear(); draw();
+  });
+  document.getElementById('grid-size').addEventListener('change', function() { init(); logger.clear(); draw(); });
+
+  init(); draw();
+  window.addEventListener('resize', draw);
+})();
+</script>
+</body>
+</html>

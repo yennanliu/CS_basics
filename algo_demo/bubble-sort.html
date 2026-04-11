@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bubble Sort - Algorithm Visualizer</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="common.js"></script>
+</head>
+<body>
+  <nav class="topbar">
+    <a href="index.html">Visualizer</a> <span class="sep">/</span>
+    <span class="title">Bubble Sort</span>
+    <button id="theme-toggle">&#127769;</button>
+  </nav>
+  <div class="container">
+    <h1>Bubble Sort</h1>
+    <p>Repeatedly swap adjacent elements if out of order. Simple but O(n&sup2;).</p>
+    <div class="viz-wrapper">
+      <div>
+        <div class="viz-canvas-area"><canvas id="canvas"></canvas></div>
+        <div class="legend">
+          <div class="legend-item"><div class="legend-dot" style="background:#4361ee"></div> Unsorted</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#e74c3c"></div> Comparing</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#f39c12"></div> Swapping</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#2ecc71"></div> Sorted</div>
+        </div>
+      </div>
+      <div class="viz-controls">
+        <h3>Controls</h3>
+        <label>Array size: <span id="size-val">20</span></label>
+        <input type="range" id="size" min="5" max="50" value="20">
+        <label>Speed</label>
+        <input type="range" id="speed" min="1" max="10" value="7">
+        <div class="btn-row">
+          <button class="btn btn-primary" id="run-btn">Run</button>
+          <button class="btn btn-secondary" id="reset-btn">Reset</button>
+        </div>
+        <div class="complexity">Time: O(n&sup2;) | Space: O(1)</div>
+        <h3>Stats</h3>
+        <div class="viz-log" id="log"></div>
+      </div>
+    </div>
+  </div>
+<script>
+(function() {
+  var canvas = document.getElementById('canvas');
+  var ctx = canvas.getContext('2d');
+  var arr = [], running = false, stopped = false;
+  var logger = createLogger('log');
+  var comparisons = 0, swaps = 0;
+
+  function resize() {
+    var rect = canvas.parentElement.getBoundingClientRect();
+    canvas.width = rect.width - 32; canvas.height = Math.max(rect.height - 32, 300);
+  }
+
+  function genArray() {
+    var n = +document.getElementById('size').value;
+    arr = randomArray(n, 100);
+  }
+
+  function draw(hi1, hi2, sorted, swapping) {
+    resize();
+    var w = canvas.width, h = canvas.height, n = arr.length;
+    ctx.clearRect(0, 0, w, h);
+    var barW = Math.max(2, (w - 20) / n - 1);
+    var gap = 1;
+    var totalW = n * (barW + gap) - gap;
+    var startX = (w - totalW) / 2;
+    var maxVal = Math.max.apply(null, arr);
+    sorted = sorted || [];
+
+    for (var i = 0; i < n; i++) {
+      var x = startX + i * (barW + gap);
+      var barH = (arr[i] / maxVal) * (h - 40);
+      var color;
+      if (sorted.indexOf(i) >= 0) color = '#2ecc71';
+      else if (swapping && (i === hi1 || i === hi2)) color = '#f39c12';
+      else if (i === hi1 || i === hi2) color = '#e74c3c';
+      else color = '#4361ee';
+      ctx.fillStyle = color;
+      ctx.fillRect(x, h - 20 - barH, barW, barH);
+    }
+  }
+
+  async function run() {
+    if (running) return;
+    running = true; stopped = false;
+    comparisons = 0; swaps = 0;
+    logger.clear();
+    var delay = (11 - document.getElementById('speed').value) * 15;
+    var n = arr.length;
+    var sorted = [];
+
+    for (var i = 0; i < n - 1 && !stopped; i++) {
+      var swapped = false;
+      for (var j = 0; j < n - 1 - i && !stopped; j++) {
+        comparisons++;
+        draw(j, j + 1, sorted);
+        await sleep(delay);
+        if (arr[j] > arr[j + 1]) {
+          var tmp = arr[j]; arr[j] = arr[j + 1]; arr[j + 1] = tmp;
+          swaps++;
+          swapped = true;
+          draw(j, j + 1, sorted, true);
+          await sleep(delay);
+        }
+      }
+      sorted.push(n - 1 - i);
+      if (!swapped) { for (var k = 0; k < n; k++) sorted.push(k); break; }
+      logger.log('Pass ' + (i+1) + ': ' + comparisons + ' comparisons, ' + swaps + ' swaps');
+    }
+    sorted = []; for (var k = 0; k < n; k++) sorted.push(k);
+    draw(-1, -1, sorted);
+    logger.log('<span class="highlight">Done! ' + comparisons + ' comparisons, ' + swaps + ' swaps</span>');
+    running = false;
+  }
+
+  document.getElementById('run-btn').addEventListener('click', run);
+  document.getElementById('reset-btn').addEventListener('click', function() {
+    stopped = true; running = false; genArray(); logger.clear(); draw();
+  });
+  document.getElementById('size').addEventListener('input', function() {
+    document.getElementById('size-val').textContent = this.value;
+    genArray(); logger.clear(); draw();
+  });
+
+  genArray(); draw();
+  window.addEventListener('resize', function(){ draw(); });
+})();
+</script>
+</body>
+</html>

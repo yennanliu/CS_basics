@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Algorithm Visualizer - CS_basics</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="common.js"></script>
+</head>
+<body>
+  <nav class="topbar">
+    <span class="title">Algorithm Visualizer</span>
+    <button id="theme-toggle">&#127769;</button>
+  </nav>
+  <div class="container">
+    <h1>Algorithm Visualizations</h1>
+    <p>Interactive visualizations of common algorithms used in LeetCode problems.</p>
+
+    <h3 style="margin-top:2rem; color:var(--text-secondary); font-size:.85rem; text-transform:uppercase; letter-spacing:.05em;">Sorting</h3>
+    <div class="algo-grid">
+      <a class="algo-card" href="bubble-sort.html">
+        <h3>Bubble Sort</h3>
+        <p>Repeatedly swap adjacent out-of-order elements.</p>
+        <span class="tag">O(n&sup2;)</span><span class="tag">Stable</span>
+      </a>
+      <a class="algo-card" href="merge-sort.html">
+        <h3>Merge Sort</h3>
+        <p>Divide-and-conquer: split, sort, merge.</p>
+        <span class="tag">O(n log n)</span><span class="tag">Stable</span>
+      </a>
+      <a class="algo-card" href="quick-sort.html">
+        <h3>Quick Sort</h3>
+        <p>Partition around pivot, recurse on halves.</p>
+        <span class="tag">O(n log n)</span><span class="tag">In-place</span>
+      </a>
+    </div>
+
+    <h3 style="margin-top:2rem; color:var(--text-secondary); font-size:.85rem; text-transform:uppercase; letter-spacing:.05em;">Searching</h3>
+    <div class="algo-grid">
+      <a class="algo-card" href="binary-search.html">
+        <h3>Binary Search</h3>
+        <p>Halve the search space each step on sorted data.</p>
+        <span class="tag">O(log n)</span>
+      </a>
+    </div>
+
+    <h3 style="margin-top:2rem; color:var(--text-secondary); font-size:.85rem; text-transform:uppercase; letter-spacing:.05em;">Graph</h3>
+    <div class="algo-grid">
+      <a class="algo-card" href="bfs.html">
+        <h3>BFS</h3>
+        <p>Level-by-level exploration using a queue.</p>
+        <span class="tag">O(V+E)</span><span class="tag">Shortest Path</span>
+      </a>
+      <a class="algo-card" href="dfs.html">
+        <h3>DFS</h3>
+        <p>Explore as deep as possible, then backtrack.</p>
+        <span class="tag">O(V+E)</span><span class="tag">Stack/Recursion</span>
+      </a>
+      <a class="algo-card" href="dijkstra.html">
+        <h3>Dijkstra's Algorithm</h3>
+        <p>Find shortest paths from a source in weighted graphs.</p>
+        <span class="tag">O((V+E) log V)</span><span class="tag">Min-Heap</span>
+      </a>
+    </div>
+  </div>
+</body>
+</html>

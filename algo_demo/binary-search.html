@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Binary Search - Algorithm Visualizer</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="common.js"></script>
+</head>
+<body>
+  <nav class="topbar">
+    <a href="index.html">Visualizer</a> <span class="sep">/</span>
+    <span class="title">Binary Search</span>
+    <button id="theme-toggle">&#127769;</button>
+  </nav>
+  <div class="container">
+    <h1>Binary Search</h1>
+    <p>Find target in sorted array by halving the search space. LC 704, 35, 153, 33.</p>
+    <div class="viz-wrapper">
+      <div>
+        <div class="viz-canvas-area">
+          <canvas id="canvas"></canvas>
+        </div>
+        <div class="legend">
+          <div class="legend-item"><div class="legend-dot" style="background:#4361ee"></div> Search space</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#e74c3c"></div> Mid pointer</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#2ecc71"></div> Found</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#bbb"></div> Eliminated</div>
+        </div>
+      </div>
+      <div class="viz-controls">
+        <h3>Controls</h3>
+        <label>Array size: <span id="size-val">15</span></label>
+        <input type="range" id="size" min="8" max="30" value="15">
+        <label>Target</label>
+        <input type="number" id="target" value="42">
+        <label>Speed</label>
+        <input type="range" id="speed" min="1" max="10" value="5">
+        <div class="btn-row">
+          <button class="btn btn-primary" id="run-btn">Run</button>
+          <button class="btn btn-secondary" id="reset-btn">Reset</button>
+        </div>
+        <div class="complexity">Time: O(log n) | Space: O(1)</div>
+        <h3>Steps</h3>
+        <div class="viz-log" id="log"></div>
+      </div>
+    </div>
+  </div>
+<script>
+(function() {
+  var canvas = document.getElementById('canvas');
+  var ctx = canvas.getContext('2d');
+  var arr = [], running = false, stopped = false;
+  var logger = createLogger('log');
+
+  function resize() {
+    var rect = canvas.parentElement.getBoundingClientRect();
+    canvas.width = rect.width - 32;
+    canvas.height = Math.max(rect.height - 32, 300);
+  }
+
+  function genArray() {
+    var n = +document.getElementById('size').value;
+    var set = new Set();
+    while (set.size < n) set.add(Math.floor(Math.random() * 99) + 1);
+    arr = Array.from(set).sort(function(a,b){ return a-b; });
+    document.getElementById('target').value = arr[Math.floor(Math.random() * n)];
+  }
+
+  function draw(l, r, mid, found) {
+    resize();
+    var w = canvas.width, h = canvas.height;
+    ctx.clearRect(0, 0, w, h);
+    var n = arr.length;
+    var barW = Math.min(50, (w - 20) / n - 4);
+    var gap = 4;
+    var totalW = n * (barW + gap) - gap;
+    var startX = (w - totalW) / 2;
+    var maxVal = Math.max.apply(null, arr);
+
+    for (var i = 0; i < n; i++) {
+      var x = startX + i * (barW + gap);
+      var barH = (arr[i] / maxVal) * (h - 80);
+      var y = h - 40 - barH;
+      var color;
+      if (found === i) color = '#2ecc71';
+      else if (i === mid) color = '#e74c3c';
+      else if (i >= l && i <= r) color = '#4361ee';
+      else color = '#ccc';
+      ctx.fillStyle = color;
+      ctx.beginPath();
+      ctx.roundRect(x, y, barW, barH, 3);
+      ctx.fill();
+
+      ctx.fillStyle = document.documentElement.getAttribute('data-theme') === 'dark' ? '#ccc' : '#333';
+      ctx.font = Math.min(12, barW - 2) + 'px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(arr[i], x + barW/2, y - 6);
+      ctx.fillStyle = '#999';
+      ctx.font = '10px sans-serif';
+      ctx.fillText(i, x + barW/2, h - 28);
+    }
+
+    // Pointers
+    var ptrs = [];
+    if (l !== undefined && l <= r) ptrs.push({i: l, label: 'L', color: '#4361ee'});
+    if (r !== undefined && l <= r) ptrs.push({i: r, label: 'R', color: '#4361ee'});
+    if (mid !== undefined) ptrs.push({i: mid, label: 'M', color: '#e74c3c'});
+    ptrs.forEach(function(p) {
+      var px = startX + p.i * (barW + gap) + barW / 2;
+      ctx.fillStyle = p.color;
+      ctx.font = 'bold 12px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(p.label, px, h - 10);
+    });
+  }
+
+  async function run() {
+    if (running) return;
+    running = true; stopped = false;
+    logger.clear();
+    var target = +document.getElementById('target').value;
+    var delay = (11 - document.getElementById('speed').value) * 100;
+    var l = 0, r = arr.length - 1;
+
+    logger.log('Target: <span class="highlight">' + target + '</span>');
+    draw(l, r);
+    await sleep(delay);
+
+    while (l <= r && !stopped) {
+      var mid = l + Math.floor((r - l) / 2);
+      logger.log('l=' + l + ' r=' + r + ' mid=' + mid + ' arr[mid]=' + arr[mid]);
+      draw(l, r, mid);
+      await sleep(delay);
+
+      if (arr[mid] === target) {
+        logger.log('<span class="highlight">Found at index ' + mid + '!</span>');
+        draw(l, r, mid, mid);
+        running = false;
+        return;
+      } else if (arr[mid] < target) {
+        logger.log(arr[mid] + ' < ' + target + ' &rarr; search right');
+        l = mid + 1;
+      } else {
+        logger.log(arr[mid] + ' > ' + target + ' &rarr; search left');
+        r = mid - 1;
+      }
+      draw(l, r);
+      await sleep(delay);
+    }
+    if (!stopped) logger.log('<span class="highlight">Not found. Insert position: ' + l + '</span>');
+    draw(l, r);
+    running = false;
+  }
+
+  document.getElementById('run-btn').addEventListener('click', run);
+  document.getElementById('reset-btn').addEventListener('click', function() {
+    stopped = true; running = false; genArray(); logger.clear(); draw(0, arr.length - 1);
+  });
+  document.getElementById('size').addEventListener('input', function() {
+    document.getElementById('size-val').textContent = this.value;
+    genArray(); logger.clear(); draw(0, arr.length - 1);
+  });
+
+  genArray(); draw(0, arr.length - 1);
+  window.addEventListener('resize', function(){ draw(0, arr.length-1); });
+})();
+</script>
+</body>
+</html>

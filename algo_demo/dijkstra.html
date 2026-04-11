@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dijkstra - Algorithm Visualizer</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="common.js"></script>
+</head>
+<body>
+  <nav class="topbar">
+    <a href="index.html">Visualizer</a> <span class="sep">/</span>
+    <span class="title">Dijkstra's Algorithm</span>
+    <button id="theme-toggle">&#127769;</button>
+  </nav>
+  <div class="container">
+    <h1>Dijkstra's Algorithm</h1>
+    <p>Shortest path in weighted graph using a min-heap. LC 743, 787, 1631.</p>
+    <div class="viz-wrapper">
+      <div>
+        <div class="viz-canvas-area"><canvas id="canvas"></canvas></div>
+        <div class="legend">
+          <div class="legend-item"><div class="legend-dot" style="background:#ddd"></div> Unvisited</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#f39c12"></div> In heap</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#e74c3c"></div> Processing</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#2ecc71"></div> Finalized</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#4361ee"></div> Shortest path</div>
+        </div>
+      </div>
+      <div class="viz-controls">
+        <h3>Controls</h3>
+        <label>Nodes</label>
+        <input type="range" id="nodes" min="6" max="15" value="8">
+        <span id="nodes-val">8</span>
+        <label>Speed</label>
+        <input type="range" id="speed" min="1" max="10" value="5">
+        <div class="btn-row">
+          <button class="btn btn-primary" id="run-btn">Run</button>
+          <button class="btn btn-secondary" id="reset-btn">Reset</button>
+        </div>
+        <div class="complexity">Time: O((V+E) log V) | Space: O(V)</div>
+        <h3>Steps</h3>
+        <div class="viz-log" id="log"></div>
+      </div>
+    </div>
+  </div>
+<script>
+(function() {
+  var canvas = document.getElementById('canvas');
+  var ctx = canvas.getContext('2d');
+  var nodes = [], edges = [], adj = [], dist = [], state = [], parent = [];
+  var running = false, stopped = false, V = 8;
+  var logger = createLogger('log');
+
+  function resize() {
+    var rect = canvas.parentElement.getBoundingClientRect();
+    canvas.width = rect.width - 32; canvas.height = Math.max(rect.height - 32, 350);
+  }
+
+  function genGraph() {
+    V = +document.getElementById('nodes').value;
+    nodes = []; edges = []; adj = [];
+    dist = []; state = []; parent = [];
+    var w = 500, h = 350;
+    // Place nodes in a circle
+    for (var i = 0; i < V; i++) {
+      var angle = (2 * Math.PI * i / V) - Math.PI / 2;
+      nodes.push({ x: w/2 + (w/2 - 50) * Math.cos(angle), y: h/2 + (h/2 - 50) * Math.sin(angle) });
+      adj.push([]);
+      dist.push(Infinity);
+      state.push(0); // 0=unvisited, 1=in heap, 2=processing, 3=finalized, 4=path
+      parent.push(-1);
+    }
+    // Create edges (ensure connected)
+    for (var i = 0; i < V - 1; i++) {
+      var wt = Math.floor(Math.random() * 9) + 1;
+      edges.push([i, i+1, wt]);
+      adj[i].push([i+1, wt]);
+      adj[i+1].push([i, wt]);
+    }
+    // Add some random extra edges
+    for (var k = 0; k < V; k++) {
+      var a = Math.floor(Math.random() * V), b = Math.floor(Math.random() * V);
+      if (a !== b && Math.abs(a-b) > 1) {
+        var wt = Math.floor(Math.random() * 15) + 1;
+        var exists = false;
+        for (var e = 0; e < edges.length; e++) {
+          if ((edges[e][0]===a && edges[e][1]===b) || (edges[e][0]===b && edges[e][1]===a)) { exists = true; break; }
+        }
+        if (!exists) {
+          edges.push([a, b, wt]);
+          adj[a].push([b, wt]);
+          adj[b].push([a, wt]);
+        }
+      }
+    }
+  }
+
+  function draw() {
+    resize();
+    var cw = canvas.width, ch = canvas.height;
+    ctx.clearRect(0, 0, cw, ch);
+    var sx = cw / 500, sy = ch / 350;
+
+    var stateColors = ['#bbb', '#f39c12', '#e74c3c', '#2ecc71', '#4361ee'];
+
+    // Draw edges
+    edges.forEach(function(e) {
+      var a = nodes[e[0]], b = nodes[e[1]];
+      var isPath = (state[e[0]] === 4 && state[e[1]] === 4 && (parent[e[0]] === e[1] || parent[e[1]] === e[0]));
+      ctx.strokeStyle = isPath ? '#4361ee' : (document.documentElement.getAttribute('data-theme') === 'dark' ? '#444' : '#ccc');
+      ctx.lineWidth = isPath ? 3 : 1.5;
+      ctx.beginPath();
+      ctx.moveTo(a.x * sx, a.y * sy);
+      ctx.lineTo(b.x * sx, b.y * sy);
+      ctx.stroke();
+      // Weight label
+      var mx = (a.x + b.x) / 2 * sx, my = (a.y + b.y) / 2 * sy;
+      ctx.fillStyle = document.documentElement.getAttribute('data-theme') === 'dark' ? '#aaa' : '#666';
+      ctx.font = '11px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(e[2], mx, my - 4);
+    });
+
+    // Draw nodes
+    nodes.forEach(function(n, i) {
+      ctx.beginPath();
+      ctx.arc(n.x * sx, n.y * sy, 18, 0, Math.PI * 2);
+      ctx.fillStyle = stateColors[state[i]];
+      ctx.fill();
+      ctx.strokeStyle = '#333';
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+      ctx.fillStyle = '#fff';
+      ctx.font = 'bold 12px sans-serif';
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.fillText(i, n.x * sx, n.y * sy);
+      // Distance label
+      var d = dist[i] === Infinity ? '\u221E' : dist[i];
+      ctx.fillStyle = document.documentElement.getAttribute('data-theme') === 'dark' ? '#ccc' : '#333';
+      ctx.font = '10px sans-serif';
+      ctx.fillText('d=' + d, n.x * sx, n.y * sy + 28);
+    });
+  }
+
+  async function run() {
+    if (running) return;
+    running = true; stopped = false;
+    logger.clear();
+    for (var i = 0; i < V; i++) { dist[i] = Infinity; state[i] = 0; parent[i] = -1; }
+    dist[0] = 0; state[0] = 1;
+    var delay = (11 - document.getElementById('speed').value) * 120;
+
+    // Simple min-heap simulation with array
+    var heap = [[0, 0]]; // [dist, node]
+    logger.log('Start from node <span class="highlight">0</span>');
+    draw(); await sleep(delay);
+
+    while (heap.length > 0 && !stopped) {
+      // Extract min
+      heap.sort(function(a,b){ return a[0]-b[0]; });
+      var cur = heap.shift();
+      var u = cur[1], d = cur[0];
+      if (d > dist[u]) continue;
+      state[u] = 2;
+      logger.log('Process node <span class="highlight">' + u + '</span> dist=' + d);
+      draw(); await sleep(delay);
+      state[u] = 3;
+
+      for (var i = 0; i < adj[u].length; i++) {
+        var v = adj[u][i][0], w = adj[u][i][1];
+        if (state[v] === 3) continue;
+        var nd = dist[u] + w;
+        if (nd < dist[v]) {
+          dist[v] = nd;
+          parent[v] = u;
+          state[v] = 1;
+          heap.push([nd, v]);
+          logger.log('&nbsp;&nbsp;Relax ' + u + '&rarr;' + v + ' new dist=' + nd);
+        }
+      }
+      draw(); await sleep(delay);
+    }
+
+    // Highlight shortest path to last node
+    if (!stopped) {
+      var target = V - 1;
+      var p = target;
+      while (p !== -1) { state[p] = 4; p = parent[p]; }
+      draw();
+      logger.log('<span class="highlight">Shortest to node ' + target + ': ' + (dist[target] === Infinity ? 'unreachable' : dist[target]) + '</span>');
+    }
+    running = false;
+  }
+
+  document.getElementById('run-btn').addEventListener('click', run);
+  document.getElementById('reset-btn').addEventListener('click', function() {
+    stopped = true; running = false; genGraph(); logger.clear(); draw();
+  });
+  document.getElementById('nodes').addEventListener('input', function() {
+    document.getElementById('nodes-val').textContent = this.value;
+    genGraph(); logger.clear(); draw();
+  });
+
+  genGraph(); draw();
+  window.addEventListener('resize', draw);
+})();
+</script>
+</body>
+</html>

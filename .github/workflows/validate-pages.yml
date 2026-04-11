@@ -8,6 +8,7 @@ on:
       - 'README.md'
       - '.github/workflows/deploy-pages.yml'
       - '.github/workflows/validate-pages.yml'
+      - 'algo_demo/**'
   pull_request:
     branches: [ master ]
     paths:
@@ -15,6 +16,7 @@ on:
       - 'README.md'
       - '.github/workflows/deploy-pages.yml'
       - '.github/workflows/validate-pages.yml'
+      - 'algo_demo/**'
   workflow_dispatch:
 
 jobs:
