@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Topological Sort - Algorithm Visualizer</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="common.js"></script>
+</head>
+<body>
+  <nav class="topbar">
+    <a href="../index.html" class="home-link">&larr; CS_basics</a>
+    <a href="index.html">Visualizer</a> <span class="sep">/</span>
+    <span class="title">Topological Sort</span>
+    <button id="theme-toggle">&#127769;</button>
+  </nav>
+  <div class="container">
+    <h1>Topological Sort (Kahn's BFS)</h1>
+    <p>Find ordering in a DAG using in-degree + queue. LC 207, 210, 269.</p>
+    <div class="viz-wrapper">
+      <div>
+        <div class="viz-canvas-area"><canvas id="canvas"></canvas></div>
+        <div class="legend">
+          <div class="legend-item"><div class="legend-dot" style="background:#ddd"></div> Waiting</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#f39c12"></div> In queue (in-degree 0)</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#e74c3c"></div> Processing</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#2ecc71"></div> Ordered</div>
+        </div>
+      </div>
+      <div class="viz-controls">
+        <h3>Controls</h3>
+        <label>Nodes: <span id="nodes-val">7</span></label>
+        <input type="range" id="nodes" min="4" max="12" value="7">
+        <label>Speed</label>
+        <input type="range" id="speed" min="1" max="10" value="5">
+        <div class="btn-row">
+          <button class="btn btn-primary" id="run-btn">Run</button>
+          <button class="btn btn-secondary" id="reset-btn">New Graph</button>
+        </div>
+        <div class="complexity">Time: O(V+E) | Space: O(V+E)</div>
+        <h3>Order</h3>
+        <div class="viz-log" id="log"></div>
+      </div>
+    </div>
+  </div>
+<script>
+(function() {
+  var canvas=document.getElementById('canvas'),ctx=canvas.getContext('2d');
+  var V=7,nodes=[],edges=[],adj=[],inDeg=[],state=[],running=false,stopped=false;
+  var logger=createLogger('log');
+
+  function resize(){var r=canvas.parentElement.getBoundingClientRect();canvas.width=r.width-32;canvas.height=Math.max(r.height-32,350);}
+
+  function genGraph(){
+    V=+document.getElementById('nodes').value;
+    nodes=[];edges=[];adj=[];inDeg=[];state=[];
+    // Place nodes in layers (left to right for DAG feel)
+    var layers=3,perLayer=Math.ceil(V/layers);
+    for(var i=0;i<V;i++){
+      var layer=Math.floor(i/perLayer);
+      var posInLayer=i%perLayer;
+      var totalInThisLayer=Math.min(perLayer,V-layer*perLayer);
+      nodes.push({x:80+layer*180,y:60+posInLayer*(280/Math.max(totalInThisLayer-1,1))});
+      adj.push([]); inDeg.push(0); state.push(0);
+    }
+    // Create forward edges (ensure DAG: only i->j where i<j)
+    for(var i=0;i<V;i++){
+      for(var j=i+1;j<V;j++){
+        if(Math.random()<0.3){edges.push([i,j]);adj[i].push(j);inDeg[j]++;}
+      }
+    }
+    // Ensure at least some edges
+    if(edges.length<V-1){for(var i=0;i<V-1;i++){if(adj[i].indexOf(i+1)===-1){edges.push([i,i+1]);adj[i].push(i+1);inDeg[i+1]++;}}}
+  }
+
+  function draw(){
+    resize();var cw=canvas.width,ch=canvas.height;ctx.clearRect(0,0,cw,ch);
+    var sx=cw/550,sy=ch/350;
+    var stateColors=['#bbb','#f39c12','#e74c3c','#2ecc71'];
+    // Edges
+    edges.forEach(function(e){
+      var a=nodes[e[0]],b=nodes[e[1]];
+      ctx.strokeStyle=state[e[0]]===3&&state[e[1]]===3?'#2ecc71':'#999';
+      ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(a.x*sx,a.y*sy);ctx.lineTo(b.x*sx,b.y*sy);ctx.stroke();
+      // Arrow
+      var angle=Math.atan2((b.y-a.y)*sy,(b.x-a.x)*sx);
+      var ax=b.x*sx-22*Math.cos(angle),ay=b.y*sy-22*Math.sin(angle);
+      ctx.beginPath();ctx.moveTo(ax,ay);
+      ctx.lineTo(ax-8*Math.cos(angle-0.4),ay-8*Math.sin(angle-0.4));
+      ctx.lineTo(ax-8*Math.cos(angle+0.4),ay-8*Math.sin(angle+0.4));
+      ctx.closePath();ctx.fillStyle=ctx.strokeStyle;ctx.fill();
+    });
+    // Nodes
+    nodes.forEach(function(n,i){
+      ctx.beginPath();ctx.arc(n.x*sx,n.y*sy,18,0,Math.PI*2);
+      ctx.fillStyle=stateColors[state[i]];ctx.fill();ctx.strokeStyle='#333';ctx.lineWidth=1.5;ctx.stroke();
+      ctx.fillStyle='#fff';ctx.font='bold 12px sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
+      ctx.fillText(i,n.x*sx,n.y*sy);
+      // In-degree label
+      ctx.fillStyle=document.documentElement.getAttribute('data-theme')==='dark'?'#aaa':'#666';
+      ctx.font='10px sans-serif';ctx.fillText('in:'+inDeg[i],n.x*sx,n.y*sy+28);
+    });
+  }
+
+  async function run(){
+    if(running)return;running=true;stopped=false;logger.clear();
+    var delay=(11-document.getElementById('speed').value)*150;
+    var deg=inDeg.slice();var queue=[];var order=[];
+    for(var i=0;i<V;i++){state[i]=0;if(deg[i]===0){queue.push(i);state[i]=1;}}
+    draw();await sleep(delay);
+
+    while(queue.length>0&&!stopped){
+      var u=queue.shift();state[u]=2;draw();
+      logger.log('Process node <span class="highlight">'+u+'</span>');await sleep(delay);
+      state[u]=3;order.push(u);
+      for(var i=0;i<adj[u].length;i++){
+        var v=adj[u][i];deg[v]--;inDeg[v]=deg[v];
+        if(deg[v]===0){queue.push(v);state[v]=1;}
+      }
+      draw();await sleep(delay);
+    }
+    if(!stopped){
+      if(order.length===V) logger.log('<span class="highlight">Order: '+order.join(' &rarr; ')+'</span>');
+      else logger.log('<span class="highlight">Cycle detected! Only ordered '+order.length+'/'+V+'</span>');
+    }
+    running=false;
+  }
+
+  document.getElementById('run-btn').addEventListener('click',run);
+  document.getElementById('reset-btn').addEventListener('click',function(){stopped=true;running=false;genGraph();logger.clear();draw();});
+  document.getElementById('nodes').addEventListener('input',function(){document.getElementById('nodes-val').textContent=this.value;genGraph();logger.clear();draw();});
+  genGraph();draw();window.addEventListener('resize',draw);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Linear Search - Algorithm Visualizer</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="common.js"></script>
+</head>
+<body>
+  <nav class="topbar">
+    <a href="../index.html" class="home-link">&larr; CS_basics</a>
+    <a href="index.html">Visualizer</a> <span class="sep">/</span>
+    <span class="title">Linear Search</span>
+    <button id="theme-toggle">&#127769;</button>
+  </nav>
+  <div class="container">
+    <h1>Linear Search</h1>
+    <p>Scan every element one by one. Simple but O(n).</p>
+    <div class="viz-wrapper">
+      <div>
+        <div class="viz-canvas-area"><canvas id="canvas"></canvas></div>
+        <div class="legend">
+          <div class="legend-item"><div class="legend-dot" style="background:#4361ee"></div> Unchecked</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#e74c3c"></div> Checking</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#bbb"></div> Not match</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#2ecc71"></div> Found</div>
+        </div>
+      </div>
+      <div class="viz-controls">
+        <h3>Controls</h3>
+        <label>Array size: <span id="size-val">15</span></label>
+        <input type="range" id="size" min="5" max="30" value="15">
+        <label>Target</label>
+        <input type="number" id="target" value="42">
+        <label>Speed</label>
+        <input type="range" id="speed" min="1" max="10" value="6">
+        <div class="btn-row">
+          <button class="btn btn-primary" id="run-btn">Run</button>
+          <button class="btn btn-secondary" id="reset-btn">Reset</button>
+        </div>
+        <div class="complexity">Best: O(1) | Avg: O(n) | Worst: O(n)</div>
+        <h3>Steps</h3>
+        <div class="viz-log" id="log"></div>
+      </div>
+    </div>
+  </div>
+<script>
+(function() {
+  var canvas = document.getElementById('canvas'), ctx = canvas.getContext('2d');
+  var arr = [], running = false, stopped = false;
+  var logger = createLogger('log');
+  var states = []; // 0=unchecked, 1=checking, 2=not match, 3=found
+
+  function resize() { var r = canvas.parentElement.getBoundingClientRect(); canvas.width = r.width-32; canvas.height = Math.max(r.height-32,300); }
+  function genArray() { arr = randomArray(+document.getElementById('size').value, 99); states = arr.map(function(){return 0;}); document.getElementById('target').value = arr[Math.floor(Math.random()*arr.length)]; }
+
+  function draw() {
+    resize(); var w=canvas.width,h=canvas.height,n=arr.length; ctx.clearRect(0,0,w,h);
+    var barW=Math.min(50,(w-20)/n-4),gap=4,totalW=n*(barW+gap)-gap,startX=(w-totalW)/2,maxV=Math.max.apply(null,arr);
+    var colors=['#4361ee','#e74c3c','#bbb','#2ecc71'];
+    for(var i=0;i<n;i++){var x=startX+i*(barW+gap),barH=(arr[i]/maxV)*(h-80),y=h-40-barH;
+      ctx.fillStyle=colors[states[i]]; ctx.beginPath(); ctx.roundRect(x,y,barW,barH,3); ctx.fill();
+      ctx.fillStyle=document.documentElement.getAttribute('data-theme')==='dark'?'#ccc':'#333'; ctx.font=Math.min(12,barW-2)+'px sans-serif'; ctx.textAlign='center'; ctx.fillText(arr[i],x+barW/2,y-6);
+    }
+  }
+
+  async function run() {
+    if(running)return; running=true; stopped=false; logger.clear(); states=arr.map(function(){return 0;});
+    var target=+document.getElementById('target').value, delay=(11-document.getElementById('speed').value)*80;
+    logger.log('Target: <span class="highlight">'+target+'</span>');
+    for(var i=0;i<arr.length&&!stopped;i++){
+      states[i]=1; draw(); logger.log('Check index '+i+': arr['+i+']='+arr[i]); await sleep(delay);
+      if(arr[i]===target){ states[i]=3; draw(); logger.log('<span class="highlight">Found at index '+i+'!</span>'); running=false; return; }
+      states[i]=2; draw(); await sleep(delay/2);
+    }
+    if(!stopped) logger.log('<span class="highlight">Not found after '+arr.length+' checks</span>');
+    running=false;
+  }
+
+  document.getElementById('run-btn').addEventListener('click',run);
+  document.getElementById('reset-btn').addEventListener('click',function(){stopped=true;running=false;genArray();logger.clear();draw();});
+  document.getElementById('size').addEventListener('input',function(){document.getElementById('size-val').textContent=this.value;genArray();logger.clear();draw();});
+  genArray(); draw(); window.addEventListener('resize',draw);
+})();
+</script>
+</body>
+</html>

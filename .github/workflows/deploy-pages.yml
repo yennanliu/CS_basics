@@ -492,17 +492,21 @@ jobs:
               </button>
               <div class="nav-links">
                 <a href="${basePath}index.html" class="${currentPage === 'home' ? 'active' : ''}">Home</a>
-                <a href="${basePath}resources.html" class="${currentPage === 'resources' ? 'active' : ''}">Resources</a>
-                <a href="${basePath}cheatsheets.html" class="${currentPage === 'cheatsheets' ? 'active' : ''}">Cheat Sheets</a>
-                <a href="${basePath}faqs.html" class="${currentPage === 'faqs' ? 'active' : ''}">FAQs</a>
-                <a href="${basePath}patterns.html" class="${currentPage === 'patterns' ? 'active' : ''}">Patterns</a>
+                <div class="nav-dropdown">
+                  <button class="nav-dropdown-btn ${['cheatsheets','patterns','faqs','resources'].includes(currentPage) ? 'active' : ''}">Study <span class="caret">&#9662;</span></button>
+                  <div class="nav-dropdown-content">
+                    <a href="${basePath}cheatsheets.html" class="${currentPage === 'cheatsheets' ? 'active' : ''}">Cheat Sheets</a>
+                    <a href="${basePath}patterns.html" class="${currentPage === 'patterns' ? 'active' : ''}">Pattern Recognition</a>
+                    <a href="${basePath}faqs.html" class="${currentPage === 'faqs' ? 'active' : ''}">FAQs</a>
+                    <a href="${basePath}resources.html" class="${currentPage === 'resources' ? 'active' : ''}">Resources</a>
+                  </div>
+                </div>
                 <a href="${basePath}algo_demo/index.html" class="${currentPage === 'visualizer' ? 'active' : ''}">Visualizer</a>
-                <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">🌙</button>
-                <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link">
+                <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">&#127769;</button>
+                <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">
                   <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
                     <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
                   </svg>
-                  GitHub
                 </a>
               </div>
             </div>
@@ -822,15 +826,93 @@ jobs:
 
         .github-link {
           background: rgba(255,255,255,0.1);
-          padding: 0.5rem 1rem;
+          padding: 0.5rem;
           border-radius: 6px;
           border: 1px solid rgba(255,255,255,0.15);
           transition: all 0.2s;
+          line-height: 0;
         }
 
         .github-link:hover {
           background: rgba(255,255,255,0.2);
           border-color: rgba(255,255,255,0.3);
+        }
+
+        /* Dropdown nav */
+        .nav-dropdown {
+          position: relative;
+        }
+
+        .nav-dropdown-btn {
+          background: none;
+          border: none;
+          color: #e0e0e0;
+          font-weight: 500;
+          font-size: inherit;
+          font-family: inherit;
+          cursor: pointer;
+          padding: 0.25rem 0;
+          display: flex;
+          align-items: center;
+          gap: 0.3rem;
+          transition: color 0.2s;
+        }
+
+        .nav-dropdown-btn:hover,
+        .nav-dropdown-btn.active {
+          color: #ffffff;
+        }
+
+        .nav-dropdown-btn.active {
+          border-bottom: 2px solid white;
+        }
+
+        .caret {
+          font-size: 0.65em;
+          transition: transform 0.2s;
+        }
+
+        .nav-dropdown-content {
+          display: none;
+          position: absolute;
+          top: calc(100% + 0.75rem);
+          left: 50%;
+          transform: translateX(-50%);
+          background: #1a1a2e;
+          border: 1px solid rgba(255,255,255,0.12);
+          border-radius: 8px;
+          padding: 0.5rem 0;
+          min-width: 180px;
+          box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+          z-index: 200;
+        }
+
+        .nav-dropdown:hover .nav-dropdown-content {
+          display: block;
+        }
+
+        .nav-dropdown:hover .caret {
+          transform: rotate(180deg);
+        }
+
+        .nav-dropdown-content a {
+          display: block !important;
+          padding: 0.5rem 1.25rem !important;
+          color: #ccc !important;
+          font-size: 0.9rem;
+          white-space: nowrap;
+          border-bottom: none !important;
+        }
+
+        .nav-dropdown-content a:hover {
+          background: rgba(255,255,255,0.08);
+          color: #fff !important;
+        }
+
+        .nav-dropdown-content a.active {
+          color: #fff !important;
+          background: rgba(255,255,255,0.05);
+          border-bottom: none !important;
         }
 
         /* Dark mode toggle */
@@ -1191,6 +1273,24 @@ jobs:
           .nav-links a:last-child {
             border-bottom: none;
           }
+
+          .nav-dropdown-content {
+            position: static;
+            transform: none;
+            background: transparent;
+            border: none;
+            box-shadow: none;
+            display: block;
+            padding: 0;
+            min-width: auto;
+          }
+
+          .nav-dropdown-content a {
+            padding-left: 1.5rem !important;
+            font-size: 0.9rem !important;
+          }
+
+          .caret { display: none; }
 
           .navbar .container {
             position: relative;

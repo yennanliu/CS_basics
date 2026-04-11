@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Heap Sort - Algorithm Visualizer</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="common.js"></script>
+</head>
+<body>
+  <nav class="topbar">
+    <a href="../index.html" class="home-link">&larr; CS_basics</a>
+    <a href="index.html">Visualizer</a> <span class="sep">/</span>
+    <span class="title">Heap Sort</span>
+    <button id="theme-toggle">&#127769;</button>
+  </nav>
+  <div class="container">
+    <h1>Heap Sort</h1>
+    <p>Build a max-heap, then extract max repeatedly. LC 215, 347, 973.</p>
+    <div class="viz-wrapper">
+      <div>
+        <div class="viz-canvas-area"><canvas id="canvas"></canvas></div>
+        <div class="legend">
+          <div class="legend-item"><div class="legend-dot" style="background:#4361ee"></div> Heap</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#e74c3c"></div> Sifting</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#f39c12"></div> Swapping</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#2ecc71"></div> Sorted</div>
+        </div>
+      </div>
+      <div class="viz-controls">
+        <h3>Controls</h3>
+        <label>Array size: <span id="size-val">20</span></label>
+        <input type="range" id="size" min="5" max="50" value="20">
+        <label>Speed</label>
+        <input type="range" id="speed" min="1" max="10" value="7">
+        <div class="btn-row">
+          <button class="btn btn-primary" id="run-btn">Run</button>
+          <button class="btn btn-secondary" id="reset-btn">Reset</button>
+        </div>
+        <div class="complexity">Time: O(n log n) always | Space: O(1) | Not stable</div>
+        <h3>Steps</h3>
+        <div class="viz-log" id="log"></div>
+      </div>
+    </div>
+  </div>
+<script>
+(function() {
+  var canvas=document.getElementById('canvas'),ctx=canvas.getContext('2d');
+  var arr=[],running=false,stopped=false,logger=createLogger('log'),highlights={};
+  function resize(){var r=canvas.parentElement.getBoundingClientRect();canvas.width=r.width-32;canvas.height=Math.max(r.height-32,300);}
+  function genArray(){arr=randomArray(+document.getElementById('size').value,100);highlights={};}
+  function draw(){resize();var w=canvas.width,h=canvas.height,n=arr.length;ctx.clearRect(0,0,w,h);var barW=Math.max(2,(w-20)/n-1),gap=1,totalW=n*(barW+gap)-gap,startX=(w-totalW)/2,mx=Math.max.apply(null,arr);for(var i=0;i<n;i++){var x=startX+i*(barW+gap),bH=(arr[i]/mx)*(h-40);ctx.fillStyle=highlights[i]||'#4361ee';ctx.fillRect(x,h-20-bH,barW,bH);}}
+
+  async function heapify(n,i,delay){
+    if(stopped)return;
+    var largest=i,l=2*i+1,r=2*i+2;
+    if(l<n&&arr[l]>arr[largest])largest=l;
+    if(r<n&&arr[r]>arr[largest])largest=r;
+    if(largest!==i){
+      highlights[i]='#e74c3c';highlights[largest]='#f39c12';draw();await sleep(delay);
+      var tmp=arr[i];arr[i]=arr[largest];arr[largest]=tmp;
+      delete highlights[i];delete highlights[largest];draw();await sleep(delay);
+      await heapify(n,largest,delay);
+    }
+  }
+
+  async function run(){
+    if(running)return;running=true;stopped=false;logger.clear();highlights={};
+    var delay=(11-document.getElementById('speed').value)*20,n=arr.length;
+    logger.log('Building max-heap...');
+    for(var i=Math.floor(n/2)-1;i>=0&&!stopped;i--) await heapify(n,i,delay);
+    logger.log('Max-heap built. Extracting...');
+    for(var i=n-1;i>0&&!stopped;i--){
+      highlights[0]='#f39c12';highlights[i]='#f39c12';draw();await sleep(delay);
+      var tmp=arr[0];arr[0]=arr[i];arr[i]=tmp;
+      highlights[i]='#2ecc71';delete highlights[0];draw();await sleep(delay);
+      logger.log('Extract max='+arr[i]+' to position '+i);
+      await heapify(i,0,delay);
+    }
+    if(!stopped){for(var i=0;i<arr.length;i++)highlights[i]='#2ecc71';draw();logger.log('<span class="highlight">Sorted!</span>');}
+    running=false;
+  }
+  document.getElementById('run-btn').addEventListener('click',run);
+  document.getElementById('reset-btn').addEventListener('click',function(){stopped=true;running=false;genArray();logger.clear();draw();});
+  document.getElementById('size').addEventListener('input',function(){document.getElementById('size-val').textContent=this.value;genArray();logger.clear();draw();});
+  genArray();draw();window.addEventListener('resize',draw);
+})();
+</script>
+</body>
+</html>

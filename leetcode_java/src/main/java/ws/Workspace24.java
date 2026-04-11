@@ -7936,10 +7936,35 @@ public class Workspace24 {
      *
      *  IDEA 1) PQ + hashmap ????
      *
+     *   -> min PQ sort on freq
+     *   -> pop till meet req
+     *
+     *
      *
      */
     //  IDEA 1) PQ + hashmap ????
     public int findLeastNumOfUniqueInts(int[] arr, int k) {
+        // edge
+
+        // map: { val : cnt}
+        Map<Integer, Integer> map = new HashMap<>();
+        for(int x: arr){
+            map.put(x, map.getOrDefault(x, 0) + 1);
+        }
+
+        // ??
+        PriorityQueue<Integer> pq = new PriorityQueue<>(new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                // ??? ??
+                // sort on map val ????
+                int diff = map.get(o1) - map.get(o2);
+                return diff;
+            }
+        });
+
+        
+
 
         return 0;
     }

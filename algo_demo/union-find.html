@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Union-Find - Algorithm Visualizer</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="common.js"></script>
+</head>
+<body>
+  <nav class="topbar">
+    <a href="../index.html" class="home-link">&larr; CS_basics</a>
+    <a href="index.html">Visualizer</a> <span class="sep">/</span>
+    <span class="title">Union-Find</span>
+    <button id="theme-toggle">&#127769;</button>
+  </nav>
+  <div class="container">
+    <h1>Union-Find (Disjoint Set)</h1>
+    <p>Track connected components with union by rank + path compression. LC 200, 547, 684, 721.</p>
+    <div class="viz-wrapper">
+      <div>
+        <div class="viz-canvas-area"><canvas id="canvas"></canvas></div>
+        <div class="legend">
+          <div class="legend-item"><div class="legend-dot" style="background:#e74c3c"></div> Unioning</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#f39c12"></div> Finding root</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#2ecc71"></div> Same component</div>
+        </div>
+      </div>
+      <div class="viz-controls">
+        <h3>Controls</h3>
+        <label>Nodes: <span id="nodes-val">10</span></label>
+        <input type="range" id="nodes" min="5" max="16" value="10">
+        <label>Speed</label>
+        <input type="range" id="speed" min="1" max="10" value="5">
+        <div class="btn-row">
+          <button class="btn btn-primary" id="run-btn">Run Random Unions</button>
+          <button class="btn btn-secondary" id="reset-btn">Reset</button>
+        </div>
+        <div class="complexity">Find: O(&alpha;(n)) &asymp; O(1) | Union: O(&alpha;(n)) &asymp; O(1)</div>
+        <h3>Operations</h3>
+        <div class="viz-log" id="log"></div>
+      </div>
+    </div>
+  </div>
+<script>
+(function() {
+  var canvas=document.getElementById('canvas'),ctx=canvas.getContext('2d');
+  var V=10,parent=[],rank=[],positions=[],running=false,stopped=false;
+  var logger=createLogger('log'),highlights={};
+  var groupColors=['#4361ee','#2ecc71','#e74c3c','#f39c12','#9b59b6','#1abc9c','#e67e22','#3498db','#e91e63','#00bcd4','#8bc34a','#ff5722','#607d8b','#795548','#cddc39','#009688'];
+
+  function resize(){var r=canvas.parentElement.getBoundingClientRect();canvas.width=r.width-32;canvas.height=Math.max(r.height-32,350);}
+
+  function init(){
+    V=+document.getElementById('nodes').value;
+    parent=[];rank=[];positions=[];highlights={};
+    for(var i=0;i<V;i++){parent.push(i);rank.push(0);}
+    // Circle layout
+    for(var i=0;i<V;i++){
+      var angle=2*Math.PI*i/V-Math.PI/2;
+      positions.push({x:250+170*Math.cos(angle),y:190+150*Math.sin(angle)});
+    }
+  }
+
+  function find(x){
+    if(parent[x]!==x) parent[x]=find(parent[x]); // path compression
+    return parent[x];
+  }
+
+  function union(a,b){
+    var ra=find(a),rb=find(b);
+    if(ra===rb) return false;
+    if(rank[ra]<rank[rb]){parent[ra]=rb;}
+    else if(rank[ra]>rank[rb]){parent[rb]=ra;}
+    else{parent[rb]=ra;rank[ra]++;}
+    return true;
+  }
+
+  function draw(){
+    resize();var cw=canvas.width,ch=canvas.height;ctx.clearRect(0,0,cw,ch);
+    var sx=cw/500,sy=ch/380;
+    // Draw edges (parent links)
+    for(var i=0;i<V;i++){
+      if(parent[i]!==i){
+        var a=positions[i],b=positions[parent[i]];
+        var rootColor=groupColors[find(i)%groupColors.length];
+        ctx.strokeStyle=rootColor;ctx.lineWidth=2;ctx.globalAlpha=0.4;
+        ctx.beginPath();ctx.moveTo(a.x*sx,a.y*sy);ctx.lineTo(b.x*sx,b.y*sy);ctx.stroke();
+        ctx.globalAlpha=1;
+      }
+    }
+    // Draw nodes
+    for(var i=0;i<V;i++){
+      var p=positions[i];
+      var root=find(i);
+      ctx.beginPath();ctx.arc(p.x*sx,p.y*sy,20,0,Math.PI*2);
+      ctx.fillStyle=highlights[i]||groupColors[root%groupColors.length];
+      ctx.fill();
+      if(parent[i]===i){ctx.lineWidth=3;ctx.strokeStyle='#fff';ctx.stroke();}
+      else{ctx.lineWidth=1.5;ctx.strokeStyle='#333';ctx.stroke();}
+      ctx.fillStyle='#fff';ctx.font='bold 13px sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
+      ctx.fillText(i,p.x*sx,p.y*sy);
+    }
+    // Component count
+    var roots=new Set();for(var i=0;i<V;i++)roots.add(find(i));
+    ctx.fillStyle=document.documentElement.getAttribute('data-theme')==='dark'?'#aaa':'#555';
+    ctx.font='13px sans-serif';ctx.textAlign='left';
+    ctx.fillText('Components: '+roots.size,10,ch-10);
+  }
+
+  async function run(){
+    if(running)return;running=true;stopped=false;logger.clear();
+    var delay=(11-document.getElementById('speed').value)*200;
+    var ops=Math.floor(V*1.2);
+    for(var k=0;k<ops&&!stopped;k++){
+      var a=Math.floor(Math.random()*V),b=Math.floor(Math.random()*V);
+      if(a===b)continue;
+      highlights[a]='#e74c3c';highlights[b]='#e74c3c';draw();await sleep(delay);
+      if(find(a)===find(b)){
+        logger.log('union('+a+','+b+') &mdash; already connected');
+        highlights[a]='#2ecc71';highlights[b]='#2ecc71';draw();await sleep(delay/2);
+      } else {
+        union(a,b);
+        logger.log('union('+a+','+b+') &mdash; <span class="highlight">merged!</span>');
+        draw();await sleep(delay);
+      }
+      delete highlights[a];delete highlights[b];draw();
+    }
+    var roots=new Set();for(var i=0;i<V;i++)roots.add(find(i));
+    if(!stopped) logger.log('<span class="highlight">Done! '+roots.size+' component(s)</span>');
+    running=false;
+  }
+
+  document.getElementById('run-btn').addEventListener('click',run);
+  document.getElementById('reset-btn').addEventListener('click',function(){stopped=true;running=false;init();logger.clear();draw();});
+  document.getElementById('nodes').addEventListener('input',function(){document.getElementById('nodes-val').textContent=this.value;init();logger.clear();draw();});
+  init();draw();window.addEventListener('resize',draw);
+})();
+</script>
+</body>
+</html>

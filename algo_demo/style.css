@@ -25,6 +25,12 @@ nav.topbar {
   position: sticky; top: 0; z-index: 100; box-shadow: var(--shadow);
 }
 nav.topbar a { color: var(--accent); text-decoration: none; font-weight: 500; }
+nav.topbar .home-link {
+  color: var(--text-secondary); font-size: .8rem; padding: .25rem .6rem;
+  border: 1px solid var(--border); border-radius: var(--radius);
+  transition: all .15s;
+}
+nav.topbar .home-link:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
 nav.topbar .title { font-size: 1.1rem; font-weight: 700; color: var(--text); }
 nav.topbar .sep { color: var(--text-secondary); }
 #theme-toggle {

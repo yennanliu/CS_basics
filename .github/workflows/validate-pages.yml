@@ -235,12 +235,17 @@ jobs:
               <div class="nav-brand"><span class="nav-title">CS_basics</span></div>
               <div class="nav-links">
                 <a href="${basePath}index.html" class="${currentPage === 'home' ? 'active' : ''}">Home</a>
-                <a href="${basePath}resources.html" class="${currentPage === 'resources' ? 'active' : ''}">Resources</a>
-                <a href="${basePath}cheatsheets.html" class="${currentPage === 'cheatsheets' ? 'active' : ''}">Cheat Sheets</a>
-                <a href="${basePath}faqs.html" class="${currentPage === 'faqs' ? 'active' : ''}">FAQs</a>
-                <a href="${basePath}patterns.html" class="${currentPage === 'patterns' ? 'active' : ''}">Patterns</a>
-                <a href="${basePath}algo_demo/index.html" class="${currentPage === 'visualizer' ? 'active' : ''}">Visualizer</a>
-                <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">🌙</button>
+                <div class="nav-dropdown">
+                  <button class="nav-dropdown-btn">Study &#9662;</button>
+                  <div class="nav-dropdown-content">
+                    <a href="${basePath}cheatsheets.html">Cheat Sheets</a>
+                    <a href="${basePath}patterns.html">Pattern Recognition</a>
+                    <a href="${basePath}faqs.html">FAQs</a>
+                    <a href="${basePath}resources.html">Resources</a>
+                  </div>
+                </div>
+                <a href="${basePath}algo_demo/index.html">Visualizer</a>
+                <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">&#127769;</button>
               </div>
             </div>
           </nav>
