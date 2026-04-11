@@ -873,7 +873,6 @@ jobs:
         }
 
         .nav-dropdown-content {
-          display: none;
           position: absolute;
           top: calc(100% + 0.75rem);
           left: 50%;
@@ -885,10 +884,17 @@ jobs:
           min-width: 180px;
           box-shadow: 0 8px 24px rgba(0,0,0,0.35);
           z-index: 200;
+          visibility: hidden;
+          opacity: 0;
+          transition: visibility 0.3s, opacity 0.3s ease;
+          pointer-events: none;
         }
 
         .nav-dropdown:hover .nav-dropdown-content {
-          display: block;
+          visibility: visible;
+          opacity: 1;
+          pointer-events: auto;
+          transition: visibility 0.1s, opacity 0.2s ease;
         }
 
         .nav-dropdown:hover .caret {
@@ -1041,12 +1047,12 @@ jobs:
         }
 
         pre {
-          background: var(--code-block-bg);
+          background: #1e1e1e;
           padding: 1.25rem;
           border-radius: 8px;
           overflow-x: auto;
           margin: 1.5rem 0;
-          border: 1px solid var(--code-block-border);
+          border: 1px solid #333;
         }
 
         pre code {
@@ -1611,13 +1617,13 @@ jobs:
 
         /* Code blocks with syntax highlighting */
         .cheatsheet-content pre {
-          background: var(--code-block-bg);
+          background: #1e1e1e;
           color: #d4d4d4;
           padding: 1.25rem;
           border-radius: 8px;
           overflow-x: auto;
-          border: 1px solid var(--code-block-border);
-          box-shadow: none;
+          border: 1px solid #333;
+          box-shadow: 0 4px 12px rgba(0,0,0,0.3);
           margin: 1.25rem 0;
           position: relative;
         }
@@ -1815,23 +1821,24 @@ jobs:
           margin: 1.5rem 0;
           border-radius: 10px;
           overflow: hidden;
-          border: 1px solid var(--code-block-border);
-          box-shadow: var(--shadow-sm);
+          border: 1px solid #333;
+          box-shadow: 0 4px 12px rgba(0,0,0,0.3);
         }
 
         .code-block-wrapper pre {
           margin: 0;
           border: none;
           border-radius: 0;
+          background: #1e1e1e;
         }
 
         .code-block-header {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          background: var(--code-header-bg);
+          background: #2d2d2d;
           padding: 0.4rem 0.85rem;
-          border-bottom: 1px solid var(--code-header-border);
+          border-bottom: 1px solid #404040;
         }
 
         .code-lang-label {
@@ -1868,7 +1875,8 @@ jobs:
 
         /* highlight.js overrides for consistent look */
         .hljs {
-          background: var(--code-block-bg) !important;
+          background: #1e1e1e !important;
+          color: #d4d4d4 !important;
           padding: 0 !important;
         }
 
