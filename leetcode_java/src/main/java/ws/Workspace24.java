@@ -7925,6 +7925,20 @@ public class Workspace24 {
 
 
     // LC 1481
+    // 12.32 - 42 pm
+    /**
+     *
+     *  ->  Find the `least number` of unique integers
+     *  after `removing ``exactly k` elements.
+     *
+     *
+     *  --------------
+     *
+     *  IDEA 1) PQ + hashmap ????
+     *
+     *
+     */
+    //  IDEA 1) PQ + hashmap ????
     public int findLeastNumOfUniqueInts(int[] arr, int k) {
 
         return 0;

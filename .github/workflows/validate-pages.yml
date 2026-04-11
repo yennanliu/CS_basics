@@ -238,6 +238,8 @@ jobs:
                 <a href="${basePath}resources.html" class="${currentPage === 'resources' ? 'active' : ''}">Resources</a>
                 <a href="${basePath}cheatsheets.html" class="${currentPage === 'cheatsheets' ? 'active' : ''}">Cheat Sheets</a>
                 <a href="${basePath}faqs.html" class="${currentPage === 'faqs' ? 'active' : ''}">FAQs</a>
+                <a href="${basePath}patterns.html" class="${currentPage === 'patterns' ? 'active' : ''}">Patterns</a>
+                <a href="${basePath}algo_demo/index.html" class="${currentPage === 'visualizer' ? 'active' : ''}">Visualizer</a>
                 <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">🌙</button>
               </div>
             </div>

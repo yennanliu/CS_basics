@@ -495,6 +495,8 @@ jobs:
                 <a href="${basePath}resources.html" class="${currentPage === 'resources' ? 'active' : ''}">Resources</a>
                 <a href="${basePath}cheatsheets.html" class="${currentPage === 'cheatsheets' ? 'active' : ''}">Cheat Sheets</a>
                 <a href="${basePath}faqs.html" class="${currentPage === 'faqs' ? 'active' : ''}">FAQs</a>
+                <a href="${basePath}patterns.html" class="${currentPage === 'patterns' ? 'active' : ''}">Patterns</a>
+                <a href="${basePath}algo_demo/index.html" class="${currentPage === 'visualizer' ? 'active' : ''}">Visualizer</a>
                 <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">🌙</button>
                 <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link">
                   <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
