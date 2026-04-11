@@ -874,7 +874,7 @@ jobs:
 
         .nav-dropdown-content {
           position: absolute;
-          top: calc(100% + 0.75rem);
+          top: 100%;
           left: 50%;
           transform: translateX(-50%);
           background: #1a1a2e;
@@ -886,15 +886,26 @@ jobs:
           z-index: 200;
           visibility: hidden;
           opacity: 0;
-          transition: visibility 0.3s, opacity 0.3s ease;
+          transition: visibility 0.4s, opacity 0.4s ease;
           pointer-events: none;
+          margin-top: 0.5rem;
+        }
+
+        /* Invisible hover zone to prevent gap from breaking hover */
+        .nav-dropdown::after {
+          content: '';
+          position: absolute;
+          top: 100%;
+          left: 0;
+          right: 0;
+          height: 0.75rem;
+          z-index: 199;
         }
 
         .nav-dropdown:hover .nav-dropdown-content {
           visibility: visible;
           opacity: 1;
           pointer-events: auto;
-          transition: visibility 0.1s, opacity 0.2s ease;
         }
 
         .nav-dropdown:hover .caret {
