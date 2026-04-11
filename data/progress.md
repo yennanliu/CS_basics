@@ -30,7 +30,7 @@
 	- dp.md (OK)
 	- graph.md (OK)
 	- greedy.md  (OK)
-	- heap.md  (TODO: LC examples)
+	- heap.md  (TODO: LC examples) - `2-10) Find K Pairs with Smallest Sums`
 
 - to review
 - needcode `250` - similar LC by AI
@@ -319,7 +319,7 @@
 	- todo (20260409)
 		- 27
 	- todo (20260411)
-		- 264
+		- 264,295,1167,1492,895
 
  	==================================
 
