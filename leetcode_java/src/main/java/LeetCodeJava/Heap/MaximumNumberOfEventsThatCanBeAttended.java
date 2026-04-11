@@ -1,22 +1,99 @@
 package LeetCodeJava.Heap;
 
+// https://leetcode.com/problems/maximum-number-of-events-that-can-be-attended/description/
+/**
+ * 1353. Maximum Number of Events That Can Be Attended
+ * Solved
+ * Medium
+ * Topics
+ * premium lock icon
+ * Companies
+ * Hint
+ * You are given an array of events where events[i] = [startDayi, endDayi]. Every event i starts at startDayi and ends at endDayi.
+ *
+ * You can attend an event i at any day d where startDayi <= d <= endDayi. You can only attend one event at any time d.
+ *
+ * Return the maximum number of events you can attend.
+ *
+ *
+ *
+ * Example 1:
+ *
+ *
+ * Input: events = [[1,2],[2,3],[3,4]]
+ * Output: 3
+ * Explanation: You can attend all the three events.
+ * One way to attend them all is as shown.
+ * Attend the first event on day 1.
+ * Attend the second event on day 2.
+ * Attend the third event on day 3.
+ * Example 2:
+ *
+ * Input: events= [[1,2],[2,3],[3,4],[1,2]]
+ * Output: 4
+ *
+ *
+ * Constraints:
+ *
+ * 1 <= events.length <= 105
+ * events[i].length == 2
+ * 1 <= startDayi <= endDayi <= 105
+ *
+ * Seen this question in a real interview before?
+ * 1/5
+ * Yes
+ * No
+ *
+ *
+ */
+
 import java.util.Arrays;
 import java.util.PriorityQueue;
 
 public class MaximumNumberOfEventsThatCanBeAttended {
 
-    // https://leetcode.com/problems/maximum-number-of-events-that-can-be-attended/
-
     // V0
 
     // V1
+    // IDEA: GREEDY
+    // https://leetcode.com/problems/maximum-number-of-events-that-can-be-attended/editorial/
+
+    public int maxEvents_1(int[][] events) {
+        int n = events.length;
+        int maxDay = 0;
+        for (int[] event : events) {
+            maxDay = Math.max(maxDay, event[1]);
+        }
+
+        PriorityQueue<Integer> pq = new PriorityQueue<>();
+        Arrays.sort(events, (a, b) -> a[0] - b[0]);
+        int ans = 0;
+        for (int i = 1, j = 0; i <= maxDay; i++) {
+            while (j < n && events[j][0] <= i) {
+                pq.offer(events[j][1]);
+                j++;
+            }
+            while (!pq.isEmpty() && pq.peek() < i) {
+                pq.poll();
+            }
+            if (!pq.isEmpty()) {
+                pq.poll();
+                ans++;
+            }
+        }
+
+        return ans;
+    }
+
+
+    // V4
     // IDEA : PRIORITY QUEUE (HEAP)
     // https://leetcode.com/problems/maximum-number-of-events-that-can-be-attended/solutions/2272460/explanation-of-code-java/
     /**
      * time = O(N log N)
      * space = O(N)
      */
-    public int maxEvents(int[][] A) {
+    public int maxEvents_4(int[][] A) {
 
         PriorityQueue<Integer> pq = new PriorityQueue<Integer>();
 
@@ -66,7 +143,7 @@ public class MaximumNumberOfEventsThatCanBeAttended {
         return res;
     }
 
-    // V2
+    // V5
     // https://leetcode.com/problems/maximum-number-of-events-that-can-be-attended/solutions/1419827/java-sort-priorityqueue-solution/
     // IDEA :
     // Sort + PriorityQueue Solution
@@ -84,7 +161,7 @@ public class MaximumNumberOfEventsThatCanBeAttended {
      * time = O(N log N)
      * space = O(N)
      */
-    public int maxEvents_2(int[][] events) {
+    public int maxEvents_5(int[][] events) {
         if (events == null || events.length == 0) return 0;
         final int N = events.length;
         // Sort events by start day.
@@ -114,5 +191,10 @@ public class MaximumNumberOfEventsThatCanBeAttended {
         }
         return res;
     }
+
+
+    // V6
+
+
 
 }
