@@ -7725,6 +7725,70 @@ public class Workspace24 {
     }
 
 
+    // LC 97
+    // 11.08 - 18 am
+    /**
+     *  ->  find whether
+     *      `s3` is formed by an
+     *        interleaving of  `s1 and s2.`
+     *
+     *   given str: s1, s2, s3
+     *
+     *
+     *
+     *
+     *  ---------------
+     *
+     *   IDEA 1) BRUTE FORCE ???
+     *
+     *   IDEA 2) DP ???? + SUB STRING OP ????
+     *
+     *    - DP def:
+     *
+     *      - boolean dp[i][j]:
+     *             - can s1[..i], s2[..j] form s3[.. i+j]  ???
+     *
+     *    - DP eq:
+     *
+     *
+     *  ---------------
+     *
+     *
+     *
+     */
+    public boolean isInterleave(String s1, String s2, String s3) {
+        // edge
+
+        // ???
+        int size1 = s1.length();
+        int size2 = s2.length();
+        int size3 = s3.length();
+
+        // ??? ??? size or size + 1
+        boolean[][] dp = new boolean[size1 + 1][size2 + 1]; // ????
+
+        dp[0][0] = true; // ???
+
+        for(int i = 1; i < size1; i++){
+            for(int j = 1; j < size2; j++){
+                // ???
+                // case 1) s1 char.at == s3 && s2 char.at != s3
+                // case 2) s1 char.at != s3 && s2 char.at == s3
+                // case 3) s1 char.at == s3 && s2 char.at == s3
+                // case 4) s1 char.at != s3 && s2 char.at != s3
+            }
+        }
+
+
+
+
+        // ??
+        return dp[size1][size2];
+    }
+
+
+
+
 
 
 

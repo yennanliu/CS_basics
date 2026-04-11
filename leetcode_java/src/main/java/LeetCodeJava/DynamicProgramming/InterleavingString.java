@@ -53,9 +53,52 @@ package LeetCodeJava.DynamicProgramming;
 public class InterleavingString {
 
     // V0
-//    public boolean isInterleave(String s1, String s2, String s3) {
-//
-//    }
+    // IDEA: 2D DP (gpt)
+    public boolean isInterleave(String s1, String s2, String s3) {
+
+        int size1 = s1.length();
+        int size2 = s2.length();
+        int size3 = s3.length();
+
+        // Edge case: total length must match
+        if (size1 + size2 != size3)
+            return false;
+
+        boolean[][] dp = new boolean[size1 + 1][size2 + 1];
+
+        dp[0][0] = true;
+
+        // Initialize first column (only s1 contributes)
+        for (int i = 1; i <= size1; i++) {
+            dp[i][0] = dp[i - 1][0] && s1.charAt(i - 1) == s3.charAt(i - 1);
+        }
+
+        // Initialize first row (only s2 contributes)
+        for (int j = 1; j <= size2; j++) {
+            dp[0][j] = dp[0][j - 1] && s2.charAt(j - 1) == s3.charAt(j - 1);
+        }
+
+        // Fill DP table
+        for (int i = 1; i <= size1; i++) {
+            for (int j = 1; j <= size2; j++) {
+
+                char c = s3.charAt(i + j - 1);
+
+                // Case 1: take from s1
+                if (s1.charAt(i - 1) == c) {
+                    dp[i][j] = dp[i][j] || dp[i - 1][j];
+                }
+
+                // Case 2: take from s2
+                if (s2.charAt(j - 1) == c) {
+                    dp[i][j] = dp[i][j] || dp[i][j - 1];
+                }
+            }
+        }
+
+        return dp[size1][size2];
+    }
+
 
     // V0-1
     // IDEA: 2D DP (gemini)
@@ -404,6 +447,8 @@ public class InterleavingString {
 
 
     // V2
+
+
 
 
 }
