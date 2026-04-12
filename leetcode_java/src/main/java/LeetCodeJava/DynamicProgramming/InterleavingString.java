@@ -54,6 +54,57 @@ public class InterleavingString {
 
     // V0
     // IDEA: 2D DP + STATE MACHINE (gpt)
+    public boolean isInterleave(String s1, String s2, String s3) {
+
+        int size1 = s1.length();
+        int size2 = s2.length();
+        int size3 = s3.length();
+
+        if (size1 + size2 != size3) {
+            return false;
+        }
+
+        boolean[][] dp = new boolean[size1 + 1][size2 + 1];
+
+        dp[0][0] = true;
+
+        // only s1
+        for (int i = 1; i <= size1; i++) {
+            dp[i][0] = dp[i - 1][0] &&
+                    s1.charAt(i - 1) == s3.charAt(i - 1);
+        }
+
+        // only s2
+        for (int j = 1; j <= size2; j++) {
+            dp[0][j] = dp[0][j - 1] &&
+                    s2.charAt(j - 1) == s3.charAt(j - 1);
+        }
+
+        // fill dp
+        for (int i = 1; i <= size1; i++) {
+            for (int j = 1; j <= size2; j++) {
+
+                /** NOTE !!
+                 *
+                 *  prefer below code structure,
+                 *  more clean and simple.
+                 */
+
+                char c3 = s3.charAt(i + j - 1);
+
+                boolean fromS1 = s1.charAt(i - 1) == c3 && dp[i - 1][j];
+                boolean fromS2 = s2.charAt(j - 1) == c3 && dp[i][j - 1];
+
+                dp[i][j] = fromS1 || fromS2;
+            }
+        }
+
+        return dp[size1][size2];
+    }
+
+
+    // V0-0-1
+    // IDEA: 2D DP + STATE MACHINE (gpt)
     /** NOTE !!!
      *
      * dp[i][j] =
@@ -70,7 +121,7 @@ public class InterleavingString {
      * Time,O(N⋅M),"N,M are lengths of s1,s2. We fill each cell once."
      * Space,O(N⋅M),2D boolean array (can be O(M)).
      */
-    public boolean isInterleave(String s1, String s2, String s3) {
+    public boolean isInterleave_0_0_1(String s1, String s2, String s3) {
 
         int size1 = s1.length();
         int size2 = s2.length();
@@ -104,15 +155,25 @@ public class InterleavingString {
          *  init on below 2 cases
          *
          *   1. ONLY  s1 contributes
-         *   2. ONLY s2 contributes
+         *   2. ONLY  s2 contributes
          */
         // Initialize first column (only s1 contributes)
         for (int i = 1; i <= size1; i++) {
+            /** NOTE !!!
+             *
+             *  still need to consider `prev state
+             *   - dp[i - 1][0]
+             */
             dp[i][0] = dp[i - 1][0] && s1.charAt(i - 1) == s3.charAt(i - 1);
         }
 
         // Initialize first row (only s2 contributes)
         for (int j = 1; j <= size2; j++) {
+            /** NOTE !!!
+             *
+             *  still need to consider `prev state
+             *   - dp[0][j - 1]
+             */
             dp[0][j] = dp[0][j - 1] && s2.charAt(j - 1) == s3.charAt(j - 1);
         }
 
@@ -127,15 +188,33 @@ public class InterleavingString {
         for (int i = 1; i <= size1; i++) {
             for (int j = 1; j <= size2; j++) {
 
+                /** NOTE !!!
+                 *
+                 *   we get cur s3 char via below
+                 */
                 char c = s3.charAt(i + j - 1);
 
+                /** NOTE !!!
+                 *
+                 *  2 cases
+                 */
                 // Case 1: take from s1
                 if (s1.charAt(i - 1) == c) {
+                    /** NOTE !!!
+                     *
+                     *  still need to consider `prev state
+                     *   -  dp[i - 1][j]
+                     */
                     dp[i][j] = dp[i][j] || dp[i - 1][j];
                 }
 
                 // Case 2: take from s2
                 if (s2.charAt(j - 1) == c) {
+                    /** NOTE !!!
+                     *
+                     *  still need to consider `prev state
+                     *   - dp[i][j - 1]
+                     */
                     dp[i][j] = dp[i][j] || dp[i][j - 1];
                 }
             }

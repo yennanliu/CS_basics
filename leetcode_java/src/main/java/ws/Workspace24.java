@@ -1,6 +1,7 @@
 package ws;
 
 import LeetCodeJava.DataStructure.TreeNode;
+import com.sun.org.apache.bcel.internal.generic.SIPUSH;
 
 import java.util.*;
 
@@ -7756,7 +7757,83 @@ public class Workspace24 {
      *
      *
      */
+    // 16.12 - 22 pm
+    // IDEA 1) 2D DP
     public boolean isInterleave(String s1, String s2, String s3) {
+        // edge
+
+        int size1 = s1.length();
+        int size2 = s2.length();
+        int size3 = s3.length();
+
+        if(size1 + size2 != size3){
+            return false;
+        }
+
+        // ??
+        boolean[][] dp = new boolean[size1 + 1][size2 + 1];
+
+        // init ??
+        dp[0][0] = true;  //???
+
+
+        // if only s1
+        // end idx = ????
+        for(int i = 1; i < size1 + 1; i++){
+           // dp[i][0] = s1.charAt(i - 1) == s3.charAt(i - 1); // ???
+            dp[i][0] = ( s1.charAt(i - 1) == s3.charAt(i - 1) )
+                    &&  dp[i - 1][0]; // ???
+        }
+
+        // if only s2
+        for(int i = 1; i < size2 + 1; i++){
+            //dp[0][i] = s2.charAt(i - 1) == s3.charAt(i - 1); // ???
+            dp[0][i] = (s2.charAt(i - 1) == s3.charAt(i - 1))
+                    && dp[0][i- 1]; // ???
+        }
+
+        // ????
+        // fill DB table
+        for(int i = 1; i < size1 + 1; i++){
+            for(int j = 1; j < size2 + 1; j++){
+
+                // NOTE !!!
+                char c3 = s3.charAt(i + j - 1);
+
+//                // ????
+//                if(s1.charAt(i-1) != s3.charAt(i + j - 1) && s2.charAt(j - 1) != s3.charAt(i + j - 1)){
+//                    dp[i][j] = false;
+//                }
+//                // ???
+//                dp[i][j] = dp[i- 1][j] || dp[i][j - 1];
+
+                boolean formS1 = s1.charAt(i-1) == c3 && dp[i - 1][j];
+                boolean formS2 = s2.charAt(j-1) == c3 && dp[i][j - 1];
+
+                // ???
+                dp[i][j] = formS1 || formS2;
+            }
+        }
+
+
+        // ???
+        //return dp[size1 + 1][size2 + 1];
+        return dp[size1][size2];
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public boolean isInterleave_99(String s1, String s2, String s3) {
         // edge
 
         // ???
