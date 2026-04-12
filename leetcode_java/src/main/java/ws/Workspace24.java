@@ -7435,8 +7435,94 @@ public class Workspace24 {
      *
      *   [13, 15,17,11]
      */
-    // IDEA 2) BINARY SEARCH
+    // 17.24 - 45 pm
     public int findMin(int[] nums) {
+        // edge
+
+        //int len = nums.length;
+        int l = 0;
+        int r = nums.length - 1;
+
+        // already sorted (small -> big)
+        if(nums[r] >= nums[l]){
+            return nums[l];
+        }
+
+
+        /** NOTE !!!
+         *
+         *  ONLY 2 cases:
+         *
+         *   1. nums[mid] >= nums[l]
+         *   2. nums[mid] < nums[r]
+         *
+         *
+         *  ---------------
+         *
+         *   DON'T just memorize, get understand via below practical example:
+         *
+         *             // [1,2,3,4,5]     // already in acending order
+         *             // [5,1,2,3,4]     // mid < r, right part is sorted
+         *             // [4,5,1,2,3]     // mid < r, right part is sorted
+         *             // [3,4,5,1,2]     // mid >= l, left part is sorted
+         *             // [2,3,4,5,1]     / mid >= l, left part is sorted
+         *
+         *             // cycle
+         *             // [1,2,3,4,5]
+         *
+         *
+         *
+         *     -> so via above, we are VERY CLEAR on
+         *        why we need to check `nums[mid] >= nums[l]` and else
+         */
+
+        int res = 5000 + 1; // ???
+        while (r >= l){
+            /**  Using `practical example`
+             *
+             *  [0,1,2,4,5,6,7]   already in ascending order
+             *  [7,0,1,2,4,5,6]   mid belong to right
+             *  [6,7,0,1,2,4,5]   mid belong to right
+             *  [5,6,7,0,1,2,4]   mid belong to right
+             *  [4,5,6,7,0,1,2]   mid belong to left
+             *  [2,4,5,6,7,0,1]   mid belong to left
+             *  [1,2,4,5,6,7,0]   mid belong to left
+             *
+             *  ---- cycle -------
+             *  [0,1,2,4,5,6,7]
+             *
+             */
+
+            int mid = l + (r - l) / 2;
+            res = Math.min(res, nums[mid]);
+            // if already sorted (ascending)
+            if(nums[l] <= nums[r]){
+                res = Math.min(res, nums[l]);
+                //return nums[l]; /// ????
+                return res;
+            }
+            // ???
+            if(nums[mid] <= nums[r]){
+                //l = mid + 1;
+                r = mid - 1;
+            }else{
+               // r = mid - 1;
+                l = mid + 1;
+            }
+
+        }
+
+        return res; // should NOT visit here ???
+    }
+
+
+
+
+
+
+
+    // IDEA 2) BINARY SEARCH
+    public int findMin_96(int[] nums) {
         // edge
 
         int len = nums.length;
