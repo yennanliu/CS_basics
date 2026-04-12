@@ -7989,6 +7989,12 @@ public class Workspace24 {
     }
 
 
+    // LC 1140
+    public int stoneGameII(int[] piles) {
+
+        return 0;
+    }
+
 
 
 
