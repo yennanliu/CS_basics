@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Two Pointers - Algorithm Visualizer</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="common.js"></script>
+</head>
+<body>
+  <nav class="topbar">
+    <a href="../index.html" class="home-link">&larr; CS_basics</a>
+    <a href="index.html">Visualizer</a> <span class="sep">/</span>
+    <span class="title">Two Pointers</span>
+    <button id="theme-toggle">&#127769;</button>
+  </nav>
+  <div class="container">
+    <h1>Two Pointers</h1>
+    <p>Converge left &amp; right pointers on sorted array to find target sum. LC 167, 15, 11.</p>
+    <div class="viz-wrapper">
+      <div>
+        <div class="viz-canvas-area"><canvas id="canvas"></canvas></div>
+        <div class="legend">
+          <div class="legend-item"><div class="legend-dot" style="background:#4361ee"></div> Array element</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#e74c3c"></div> Left pointer</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#f39c12"></div> Right pointer</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#2ecc71"></div> Found pair</div>
+        </div>
+      </div>
+      <div class="viz-controls">
+        <h3>Controls</h3>
+        <label>Array size: <span id="size-val">12</span></label>
+        <input type="range" id="size" min="6" max="20" value="12">
+        <label>Target: <span id="target-val">?</span></label>
+        <label>Speed</label>
+        <input type="range" id="speed" min="1" max="10" value="5">
+        <div class="btn-row">
+          <button class="btn btn-primary" id="run-btn">Run</button>
+          <button class="btn btn-secondary" id="reset-btn">Reset</button>
+        </div>
+        <div class="complexity">Time: O(n) | Space: O(1)</div>
+        <h3>Steps</h3>
+        <div class="viz-log" id="log"></div>
+      </div>
+    </div>
+  </div>
+<script>
+(function() {
+  var canvas=document.getElementById('canvas'),ctx=canvas.getContext('2d');
+  var arr=[],target=0,running=false,stopped=false,logger=createLogger('log');
+  var state={lo:-1,hi:-1,found:-1,foundHi:-1};
+
+  function genArray(){
+    var n=+document.getElementById('size').value;
+    var set=new Set();
+    while(set.size<n) set.add(Math.floor(Math.random()*40)+1);
+    arr=Array.from(set).sort(function(a,b){return a-b;});
+    // pick a target that is achievable
+    var a=Math.floor(Math.random()*n),b;
+    do { b=Math.floor(Math.random()*n); } while(b===a);
+    target=arr[a]+arr[b];
+    document.getElementById('target-val').textContent=target;
+    state={lo:-1,hi:-1,found:-1,foundHi:-1};
+  }
+
+  function draw(){
+    var r=canvas.parentElement.getBoundingClientRect();
+    canvas.width=r.width-32; canvas.height=Math.max(r.height-32,260);
+    var w=canvas.width,h=canvas.height,n=arr.length;
+    ctx.clearRect(0,0,w,h);
+    var barW=Math.min(50,(w-40)/n-4),gap=4,totalW=n*(barW+gap)-gap,startX=(w-totalW)/2;
+    var max=Math.max.apply(null,arr);
+    var barAreaH=h-100;
+
+    for(var i=0;i<n;i++){
+      var x=startX+i*(barW+gap);
+      var bh=(arr[i]/max)*barAreaH*0.7;
+      var y=h-60-bh;
+      var color='#4361ee';
+      if(state.found>=0&&(i===state.found||i===state.foundHi)) color='#2ecc71';
+      else if(i===state.lo) color='#e74c3c';
+      else if(i===state.hi) color='#f39c12';
+      ctx.fillStyle=color;
+      ctx.beginPath();ctx.roundRect(x,y,barW,bh||2,3);ctx.fill();
+      // value
+      var dark=document.documentElement.getAttribute('data-theme')==='dark';
+      ctx.fillStyle=dark?'#ccc':'#333';
+      ctx.font='11px sans-serif';ctx.textAlign='center';
+      ctx.fillText(arr[i],x+barW/2,y-5);
+      // pointer labels
+      if(i===state.lo&&state.found<0){
+        ctx.fillStyle='#e74c3c';ctx.font='bold 11px sans-serif';
+        ctx.fillText('L',x+barW/2,h-42);
+      }
+      if(i===state.hi&&state.found<0){
+        ctx.fillStyle='#f39c12';ctx.font='bold 11px sans-serif';
+        ctx.fillText('R',x+barW/2,h-42);
+      }
+    }
+    // target info
+    var dark=document.documentElement.getAttribute('data-theme')==='dark';
+    ctx.fillStyle=dark?'#ccc':'#333';
+    ctx.font='13px sans-serif';ctx.textAlign='left';
+    ctx.fillText('Target: '+target,10,25);
+    if(state.lo>=0&&state.found<0)
+      ctx.fillText('sum: '+(arr[state.lo]||0)+' + '+(arr[state.hi]||0)+' = '+(arr[state.lo]+arr[state.hi]),10,45);
+  }
+
+  async function run(){
+    if(running)return;running=true;stopped=false;logger.clear();
+    var delay=(11-document.getElementById('speed').value)*120;
+    var lo=0,hi=arr.length-1;
+    while(lo<hi&&!stopped){
+      state={lo:lo,hi:hi,found:-1,foundHi:-1};
+      draw();await sleep(delay);
+      var s=arr[lo]+arr[hi];
+      logger.log('L='+arr[lo]+' R='+arr[hi]+' sum='+s);
+      if(s===target){
+        state={lo:lo,hi:hi,found:lo,foundHi:hi};
+        draw();
+        logger.log('<span class="highlight">Found! '+arr[lo]+' + '+arr[hi]+' = '+target+'</span>');
+        running=false;return;
+      } else if(s<target){
+        logger.log('&nbsp;&nbsp;sum < target → move L right');lo++;
+      } else {
+        logger.log('&nbsp;&nbsp;sum > target → move R left');hi--;
+      }
+    }
+    if(!stopped){
+      logger.log('No pair found.');draw();
+    }
+    running=false;
+  }
+
+  document.getElementById('run-btn').addEventListener('click',run);
+  document.getElementById('reset-btn').addEventListener('click',function(){stopped=true;running=false;genArray();logger.clear();draw();});
+  document.getElementById('size').addEventListener('input',function(){document.getElementById('size-val').textContent=this.value;genArray();logger.clear();draw();});
+  genArray();draw();window.addEventListener('resize',draw);
+})();
+</script>
+</body>
+</html>

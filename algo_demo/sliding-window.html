@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sliding Window - Algorithm Visualizer</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="common.js"></script>
+</head>
+<body>
+  <nav class="topbar">
+    <a href="../index.html" class="home-link">&larr; CS_basics</a>
+    <a href="index.html">Visualizer</a> <span class="sep">/</span>
+    <span class="title">Sliding Window</span>
+    <button id="theme-toggle">&#127769;</button>
+  </nav>
+  <div class="container">
+    <h1>Sliding Window</h1>
+    <p>Find max sum subarray of size k. LC 643, 209, 3, 76.</p>
+    <div class="viz-wrapper">
+      <div>
+        <div class="viz-canvas-area"><canvas id="canvas"></canvas></div>
+        <div class="legend">
+          <div class="legend-item"><div class="legend-dot" style="background:#4361ee"></div> Array element</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#f39c12"></div> Current window</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#2ecc71"></div> Best window</div>
+        </div>
+      </div>
+      <div class="viz-controls">
+        <h3>Controls</h3>
+        <label>Array size: <span id="size-val">14</span></label>
+        <input type="range" id="size" min="6" max="22" value="14">
+        <label>Window k: <span id="k-val">4</span></label>
+        <input type="range" id="k-slider" min="2" max="8" value="4">
+        <label>Speed</label>
+        <input type="range" id="speed" min="1" max="10" value="5">
+        <div class="btn-row">
+          <button class="btn btn-primary" id="run-btn">Run</button>
+          <button class="btn btn-secondary" id="reset-btn">Reset</button>
+        </div>
+        <div class="complexity">Time: O(n) | Space: O(1)</div>
+        <h3>Steps</h3>
+        <div class="viz-log" id="log"></div>
+      </div>
+    </div>
+  </div>
+<script>
+(function() {
+  var canvas=document.getElementById('canvas'),ctx=canvas.getContext('2d');
+  var arr=[],running=false,stopped=false,logger=createLogger('log');
+  var state={wStart:-1,wEnd:-1,bestStart:-1,bestEnd:-1,curSum:undefined,maxSum:undefined};
+
+  function genArray(){
+    var n=+document.getElementById('size').value;
+    arr=randomArray(n,30);
+    state={wStart:-1,wEnd:-1,bestStart:-1,bestEnd:-1};
+  }
+
+  function draw(){
+    var r=canvas.parentElement.getBoundingClientRect();
+    canvas.width=r.width-32; canvas.height=Math.max(r.height-32,260);
+    var w=canvas.width,h=canvas.height,n=arr.length;
+    ctx.clearRect(0,0,w,h);
+    var barW=Math.min(44,(w-40)/n-4),gap=4,totalW=n*(barW+gap)-gap,startX=(w-totalW)/2;
+    var max=Math.max.apply(null,arr)||1;
+    var barAreaH=h-100;
+    var dark=document.documentElement.getAttribute('data-theme')==='dark';
+
+    for(var i=0;i<n;i++){
+      var x=startX+i*(barW+gap);
+      var bh=(arr[i]/max)*barAreaH*0.72;
+      var y=h-60-bh;
+      var color='#4361ee';
+      if(state.bestStart>=0&&i>=state.bestStart&&i<=state.bestEnd) color='#2ecc71';
+      if(state.wStart>=0&&i>=state.wStart&&i<=state.wEnd) color='#f39c12';
+      ctx.fillStyle=color;
+      ctx.beginPath();ctx.roundRect(x,y,barW,bh||2,3);ctx.fill();
+      ctx.fillStyle=dark?'#ccc':'#333';
+      ctx.font='11px sans-serif';ctx.textAlign='center';
+      ctx.fillText(arr[i],x+barW/2,y-5);
+    }
+    // draw window bracket
+    if(state.wStart>=0){
+      var wx=startX+state.wStart*(barW+gap)-2;
+      var wx2=startX+state.wEnd*(barW+gap)+barW+2;
+      ctx.strokeStyle='#f39c12';ctx.lineWidth=2;ctx.setLineDash([]);
+      ctx.strokeRect(wx,20,wx2-wx,h-80);
+    }
+    ctx.fillStyle=dark?'#ccc':'#333';
+    ctx.font='13px sans-serif';ctx.textAlign='left';
+    if(state.curSum!==undefined) ctx.fillText('curSum: '+state.curSum+'  maxSum: '+state.maxSum,10,18);
+  }
+
+  async function run(){
+    if(running)return;running=true;stopped=false;logger.clear();
+    var delay=(11-document.getElementById('speed').value)*130;
+    var k=+document.getElementById('k-slider').value;
+    var n=arr.length;
+    if(k>n){logger.log('k > array size');running=false;return;}
+    // build first window
+    var curSum=0;
+    for(var i=0;i<k;i++) curSum+=arr[i];
+    var maxSum=curSum,bestStart=0,bestEnd=k-1;
+    state={wStart:0,wEnd:k-1,bestStart:0,bestEnd:k-1,curSum:curSum,maxSum:maxSum};
+    draw();logger.log('Initial window [0..'+(k-1)+'] sum='+curSum);
+    await sleep(delay);
+
+    for(var i=k;i<n&&!stopped;i++){
+      curSum+=arr[i]-arr[i-k];
+      state={wStart:i-k+1,wEnd:i,bestStart:bestStart,bestEnd:bestEnd,curSum:curSum,maxSum:maxSum};
+      logger.log('slide → ['+(i-k+1)+'..'+i+'] sum='+curSum);
+      if(curSum>maxSum){maxSum=curSum;bestStart=i-k+1;bestEnd=i;
+        state.maxSum=maxSum;state.bestStart=bestStart;state.bestEnd=bestEnd;
+        logger.log('&nbsp;&nbsp;<span class="highlight">New max='+maxSum+'</span>');
+      }
+      draw();await sleep(delay);
+    }
+    if(!stopped){
+      logger.log('<span class="highlight">Max sum='+maxSum+' window ['+bestStart+'..'+bestEnd+']</span>');
+    }
+    running=false;
+  }
+
+  document.getElementById('run-btn').addEventListener('click',run);
+  document.getElementById('reset-btn').addEventListener('click',function(){stopped=true;running=false;genArray();logger.clear();draw();});
+  document.getElementById('size').addEventListener('input',function(){document.getElementById('size-val').textContent=this.value;genArray();logger.clear();draw();});
+  document.getElementById('k-slider').addEventListener('input',function(){document.getElementById('k-val').textContent=this.value;logger.clear();draw();});
+  genArray();draw();window.addEventListener('resize',draw);
+})();
+</script>
+</body>
+</html>

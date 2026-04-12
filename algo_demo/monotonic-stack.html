@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Monotonic Stack - Algorithm Visualizer</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="common.js"></script>
+</head>
+<body>
+  <nav class="topbar">
+    <a href="../index.html" class="home-link">&larr; CS_basics</a>
+    <a href="index.html">Visualizer</a> <span class="sep">/</span>
+    <span class="title">Monotonic Stack</span>
+    <button id="theme-toggle">&#127769;</button>
+  </nav>
+  <div class="container">
+    <h1>Monotonic Stack</h1>
+    <p>Next Greater Element: maintain decreasing stack, pop when greater found. LC 496, 739, 84, 85.</p>
+    <div class="viz-wrapper">
+      <div>
+        <div class="viz-canvas-area"><canvas id="canvas"></canvas></div>
+        <div class="legend">
+          <div class="legend-item"><div class="legend-dot" style="background:#4361ee"></div> Unvisited</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#e74c3c"></div> Current element</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#f39c12"></div> In stack</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#2ecc71"></div> NGE found</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#9b59b6"></div> No NGE (-1)</div>
+        </div>
+      </div>
+      <div class="viz-controls">
+        <h3>Controls</h3>
+        <label>Array size: <span id="size-val">10</span></label>
+        <input type="range" id="size" min="5" max="16" value="10">
+        <label>Speed</label>
+        <input type="range" id="speed" min="1" max="10" value="5">
+        <div class="btn-row">
+          <button class="btn btn-primary" id="run-btn">Run</button>
+          <button class="btn btn-secondary" id="reset-btn">Reset</button>
+        </div>
+        <div class="complexity">Time: O(n) | Space: O(n)</div>
+        <h3>Steps</h3>
+        <div class="viz-log" id="log"></div>
+      </div>
+    </div>
+  </div>
+<script>
+(function() {
+  var canvas=document.getElementById('canvas'),ctx=canvas.getContext('2d');
+  var arr=[],running=false,stopped=false,logger=createLogger('log');
+  var state={cur:-1,stack:[],nge:null};
+
+  function genArray(){
+    var n=+document.getElementById('size').value;
+    arr=randomArray(n,30);
+    state={cur:-1,stack:[],nge:null};
+  }
+
+  function draw(){
+    var r=canvas.parentElement.getBoundingClientRect();
+    canvas.width=r.width-32;canvas.height=Math.max(r.height-32,300);
+    var w=canvas.width,h=canvas.height,n=arr.length;
+    ctx.clearRect(0,0,w,h);
+    var dark=document.documentElement.getAttribute('data-theme')==='dark';
+    var barW=Math.min(44,(w-80)/n-4),gap=4,totalW=n*(barW+gap)-gap,startX=(w-totalW)/2;
+    var max=Math.max.apply(null,arr)||1;
+    var barAreaH=h-140;
+
+    var stackSet=new Set(state.stack);
+    var nge=state.nge||{};
+
+    for(var i=0;i<n;i++){
+      var x=startX+i*(barW+gap);
+      var bh=(arr[i]/max)*barAreaH*0.75;
+      var y=h-100-bh;
+      var color='#4361ee';
+      if(nge[i]!==undefined&&nge[i]===-1) color='#9b59b6';
+      else if(nge[i]!==undefined&&nge[i]>=0) color='#2ecc71';
+      else if(stackSet.has(i)) color='#f39c12';
+      if(i===state.cur) color='#e74c3c';
+      ctx.fillStyle=color;
+      ctx.beginPath();ctx.roundRect(x,y,barW,bh||2,3);ctx.fill();
+      ctx.fillStyle=dark?'#ccc':'#333';
+      ctx.font='11px sans-serif';ctx.textAlign='center';
+      ctx.fillText(arr[i],x+barW/2,y-5);
+      // nge result below bar
+      if(nge[i]!==undefined){
+        ctx.fillStyle=nge[i]===-1?'#9b59b6':'#2ecc71';
+        ctx.font='10px sans-serif';
+        ctx.fillText(nge[i]===-1?'-1':nge[i],x+barW/2,h-82);
+      }
+    }
+    // stack display
+    ctx.fillStyle=dark?'#aaa':'#555';ctx.font='12px sans-serif';ctx.textAlign='left';
+    ctx.fillText('Stack (indices): ['+state.stack.join(', ')+']',10,h-55);
+    ctx.fillText('Stack (values):  ['+state.stack.map(function(i){return arr[i];}).join(', ')+']',10,h-35);
+    // "NGE result" label
+    ctx.fillStyle=dark?'#888':'#888';ctx.font='10px sans-serif';ctx.textAlign='center';
+    ctx.fillText('NGE',startX-20,h-78);
+  }
+
+  async function run(){
+    if(running)return;running=true;stopped=false;logger.clear();
+    var delay=(11-document.getElementById('speed').value)*120;
+    var n=arr.length;
+    var stack=[],nge={};
+    state={cur:-1,stack:[],nge:nge};
+
+    for(var i=0;i<n&&!stopped;i++){
+      state.cur=i;
+      logger.log('i='+i+' val='+arr[i]);
+      draw();await sleep(delay);
+
+      while(stack.length&&arr[stack[stack.length-1]]<arr[i]){
+        var top=stack.pop();
+        nge[top]=arr[i];
+        state.stack=[].concat(stack);
+        logger.log('&nbsp;&nbsp;pop idx='+top+' ('+arr[top]+') → NGE='+arr[i]);
+        draw();await sleep(delay/2);
+      }
+      stack.push(i);
+      state.stack=[].concat(stack);
+      logger.log('&nbsp;&nbsp;push idx='+i);
+      draw();await sleep(delay/2);
+    }
+    // remaining in stack have no NGE
+    while(stack.length&&!stopped){
+      var top=stack.pop();
+      nge[top]=-1;
+      state.stack=[].concat(stack);
+      state.cur=-1;
+      draw();await sleep(delay/2);
+    }
+    if(!stopped){
+      state.cur=-1;draw();
+      logger.log('');
+      logger.log('<span class="highlight">NGE: ['+arr.map(function(_,i){return nge[i];}).join(', ')+']</span>');
+    }
+    running=false;
+  }
+
+  document.getElementById('run-btn').addEventListener('click',run);
+  document.getElementById('reset-btn').addEventListener('click',function(){stopped=true;running=false;genArray();logger.clear();draw();});
+  document.getElementById('size').addEventListener('input',function(){document.getElementById('size-val').textContent=this.value;genArray();logger.clear();draw();});
+  genArray();draw();window.addEventListener('resize',draw);
+})();
+</script>
+</body>
+</html>

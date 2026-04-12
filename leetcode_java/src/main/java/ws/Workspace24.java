@@ -5327,8 +5327,25 @@ public class Workspace24 {
      *
      *
      */
-    // IDEA 1) 1D DP + total_sum / 2 ??
+    // 18.04 - 14 pm
+    // IDEA: 2D DP
+    /**
+     *  IDEA 1) 0/1 knapsack counting
+     *
+     *   -> get `half`
+     *   -> 
+     *
+     */
     public int findTargetSumWays(int[] nums, int target) {
+
+        return 0;
+    }
+
+
+
+
+    // IDEA 1) 1D DP + total_sum / 2 ??
+    public int findTargetSumWays_99(int[] nums, int target) {
         int totalSum = 0;
         for (int n : nums)
             totalSum += n;

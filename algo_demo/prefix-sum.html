@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prefix Sum - Algorithm Visualizer</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="common.js"></script>
+</head>
+<body>
+  <nav class="topbar">
+    <a href="../index.html" class="home-link">&larr; CS_basics</a>
+    <a href="index.html">Visualizer</a> <span class="sep">/</span>
+    <span class="title">Prefix Sum</span>
+    <button id="theme-toggle">&#127769;</button>
+  </nav>
+  <div class="container">
+    <h1>Prefix Sum</h1>
+    <p>O(1) range-sum queries after O(n) build. LC 303, 304, 560, 523.</p>
+    <div class="viz-wrapper">
+      <div>
+        <div class="viz-canvas-area"><canvas id="canvas"></canvas></div>
+        <div class="legend">
+          <div class="legend-item"><div class="legend-dot" style="background:#4361ee"></div> Array</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#9b59b6"></div> Prefix sum</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#f39c12"></div> Query range</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#2ecc71"></div> Result</div>
+        </div>
+      </div>
+      <div class="viz-controls">
+        <h3>Controls</h3>
+        <label>Array size: <span id="size-val">10</span></label>
+        <input type="range" id="size" min="5" max="16" value="10">
+        <label>Query L: <span id="ql-val">2</span></label>
+        <input type="range" id="ql" min="0" max="9" value="2">
+        <label>Query R: <span id="qr-val">6</span></label>
+        <input type="range" id="qr" min="0" max="9" value="6">
+        <div class="btn-row">
+          <button class="btn btn-primary" id="run-btn">Build &amp; Query</button>
+          <button class="btn btn-secondary" id="reset-btn">Reset</button>
+        </div>
+        <div class="complexity">Build: O(n) | Query: O(1)</div>
+        <h3>Steps</h3>
+        <div class="viz-log" id="log"></div>
+      </div>
+    </div>
+  </div>
+<script>
+(function() {
+  var canvas=document.getElementById('canvas'),ctx=canvas.getContext('2d');
+  var arr=[],prefix=[],running=false,stopped=false,logger=createLogger('log');
+  var phase='none'; // 'build' | 'query'
+  var buildIdx=-1,ql=-1,qr=-1;
+
+  function clampQuery(){
+    var n=arr.length;
+    var L=Math.min(+document.getElementById('ql').value,n-1);
+    var R=Math.min(+document.getElementById('qr').value,n-1);
+    if(L>R){ var t=L;L=R;R=t; }
+    ql=L;qr=R;
+  }
+
+  function genArray(){
+    var n=+document.getElementById('size').value;
+    arr=randomArray(n,20);
+    prefix=[];phase='none';buildIdx=-1;ql=-1;qr=-1;
+    // clamp sliders
+    document.getElementById('ql').max=n-1;
+    document.getElementById('qr').max=n-1;
+    document.getElementById('ql').value=Math.min(+document.getElementById('ql').value,n-1);
+    document.getElementById('qr').value=Math.min(+document.getElementById('qr').value,n-1);
+    document.getElementById('ql-val').textContent=document.getElementById('ql').value;
+    document.getElementById('qr-val').textContent=document.getElementById('qr').value;
+  }
+
+  function drawRow(yTop,data,colors,label){
+    var w=canvas.width,n=data.length;
+    var barW=Math.min(48,(w-120)/n-4),gap=4,totalW=n*(barW+gap)-gap,startX=(w-totalW)/2;
+    var dark=document.documentElement.getAttribute('data-theme')==='dark';
+    ctx.fillStyle=dark?'#aaa':'#666';ctx.font='12px sans-serif';ctx.textAlign='right';
+    ctx.fillText(label,startX-8,yTop+20);
+    for(var i=0;i<n;i++){
+      var x=startX+i*(barW+gap);
+      ctx.fillStyle=colors[i]||'#4361ee';
+      ctx.beginPath();ctx.roundRect(x,yTop,barW,34,4);ctx.fill();
+      ctx.fillStyle='#fff';ctx.font='bold 12px sans-serif';ctx.textAlign='center';
+      ctx.fillText(data[i],x+barW/2,yTop+22);
+    }
+  }
+
+  function draw(){
+    var r=canvas.parentElement.getBoundingClientRect();
+    canvas.width=r.width-32;canvas.height=Math.max(r.height-32,240);
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    if(!arr.length)return;
+    var n=arr.length;
+    clampQuery();
+
+    // Row 1: original array
+    var arrColors=arr.map(function(_,i){
+      if(phase==='query'&&i>=ql&&i<=qr) return '#f39c12';
+      return '#4361ee';
+    });
+    drawRow(40,arr,arrColors,'nums[]');
+
+    // Row 2: prefix array (show as built so far)
+    if(prefix.length>0){
+      var pColors=prefix.map(function(_,i){
+        if(i===buildIdx&&phase==='build') return '#e74c3c';
+        if(phase==='query'&&(i===ql||i===qr+1)) return '#2ecc71';
+        return '#9b59b6';
+      });
+      // show n+1 prefix values (prefix[0]=0 sentinel)
+      drawRow(110,prefix,pColors,'prefix[]');
+    }
+
+    // index labels
+    var dark=document.documentElement.getAttribute('data-theme')==='dark';
+    var barW=Math.min(48,(canvas.width-120)/n-4),gap=4,totalW=n*(barW+gap)-gap,startX=(canvas.width-totalW)/2;
+    ctx.fillStyle=dark?'#888':'#888';ctx.font='10px sans-serif';ctx.textAlign='center';
+    for(var i=0;i<n;i++){
+      ctx.fillText(i,startX+i*(barW+gap)+barW/2,30);
+    }
+    // prefix index labels (0..n)
+    if(prefix.length>0){
+      var pBarW=Math.min(48,(canvas.width-120)/prefix.length-4);
+      var pTotalW=prefix.length*(pBarW+gap)-gap,pStartX=(canvas.width-pTotalW)/2;
+      for(var i=0;i<prefix.length;i++){
+        ctx.fillText(i,pStartX+i*(pBarW+gap)+pBarW/2,100);
+      }
+    }
+  }
+
+  async function run(){
+    if(running)return;running=true;stopped=false;logger.clear();
+    var delay=(11-document.getElementById('speed')?120:120);
+    clampQuery();
+    var n=arr.length;
+
+    // Build phase
+    phase='build';
+    prefix=new Array(n+1).fill(0);
+    logger.log('Building prefix sums (prefix[0]=0)...');
+    draw();await sleep(300);
+    for(var i=0;i<n&&!stopped;i++){
+      prefix[i+1]=prefix[i]+arr[i];
+      buildIdx=i+1;
+      logger.log('prefix['+(i+1)+']=prefix['+i+']+arr['+i+']='+prefix[i]+'+'+arr[i]+'='+prefix[i+1]);
+      draw();await sleep(280);
+    }
+    buildIdx=-1;
+
+    // Query phase
+    if(!stopped){
+      phase='query';
+      draw();await sleep(200);
+      var result=prefix[qr+1]-prefix[ql];
+      logger.log('');
+      logger.log('Query range ['+ql+'..'+qr+']');
+      logger.log('= prefix['+(qr+1)+'] - prefix['+ql+']');
+      logger.log('= '+prefix[qr+1]+' - '+prefix[ql]);
+      logger.log('<span class="highlight">= '+result+'</span>');
+    }
+    running=false;
+  }
+
+  document.getElementById('run-btn').addEventListener('click',run);
+  document.getElementById('reset-btn').addEventListener('click',function(){stopped=true;running=false;genArray();logger.clear();draw();});
+  document.getElementById('size').addEventListener('input',function(){document.getElementById('size-val').textContent=this.value;genArray();logger.clear();draw();});
+  document.getElementById('ql').addEventListener('input',function(){document.getElementById('ql-val').textContent=this.value;draw();});
+  document.getElementById('qr').addEventListener('input',function(){document.getElementById('qr-val').textContent=this.value;draw();});
+  genArray();draw();window.addEventListener('resize',draw);
+})();
+</script>
+</body>
+</html>
