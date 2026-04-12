@@ -55,11 +55,99 @@ public class StoneGame2 {
 //    }
 
     // V1
+    // IDEA: DP + DFS ?? (gpt)
+    public int stoneGameII_1(int[] piles) {
+        int n = piles.length;
+
+        // suffix sum: total[i] = sum from i to end
+        int[] total = new int[n];
+        total[n - 1] = piles[n - 1];
+        for (int i = n - 2; i >= 0; i--) {
+            total[i] = total[i + 1] + piles[i];
+        }
+
+        int[][] memo = new int[n][n + 1];
+
+        return dfs(0, 1, piles, total, memo);
+    }
+
+    private int dfs(int i, int M, int[] piles, int[] total, int[][] memo) {
+        int n = piles.length;
+
+        if (i >= n)
+            return 0;
+
+        if (memo[i][M] != 0)
+            return memo[i][M];
+
+        int max = 0;
+
+        // try all X
+        for (int X = 1; X <= 2 * M && i + X <= n; X++) {
+            max = Math.max(
+                    max,
+                    total[i] - dfs(i + X, Math.max(M, X), piles, total, memo));
+        }
+
+        memo[i][M] = max;
+        return max;
+    }
 
     // V2
+    // IDEA: TOP DOWN DP (gemini)
+    private int[][] memo;
+    private int[] suffixSum;
+    private int n;
+
+    public int stoneGameII_2(int[] piles) {
+        this.n = piles.length;
+        // memo[i][m] stores max stones starting from index i with parameter m
+        // Max possible M is n, so we use n + 1
+        this.memo = new int[n][n + 1];
+        this.suffixSum = new int[n];
+
+        // 1. Precompute suffix sums for O(1) stone calculation
+        suffixSum[n - 1] = piles[n - 1];
+        for (int i = n - 2; i >= 0; i--) {
+            suffixSum[i] = suffixSum[i + 1] + piles[i];
+        }
+
+        return dfs(0, 1);
+    }
+
+    private int dfs(int i, int m) {
+        // Base case: no more piles
+        if (i >= n)
+            return 0;
+
+        // If we can take all remaining piles, do it
+        if (i + 2 * m >= n)
+            return suffixSum[i];
+
+        // Check memo
+        if (memo[i][m] != 0)
+            return memo[i][m];
+
+        int maxStones = 0;
+        // Try taking X piles where 1 <= X <= 2M
+        for (int x = 1; x <= 2 * m; x++) {
+            // New M is max(old M, X)
+            int nextM = Math.max(m, x);
+
+            // Current player's stones = (Total remaining) - (What the other player gets)
+            int currentTake = suffixSum[i] - dfs(i + x, nextM);
+            maxStones = Math.max(maxStones, currentTake);
+        }
+
+        return memo[i][m] = maxStones;
+    }
+
+    
+
+    // V3
     // IDEA: 2D DP
     // https://leetcode.com/problems/stone-game-ii/solutions/5662713/9855easy-solutionwith-explanation-by-mra-dtbz/
-    public int stoneGameII_2(int[] piles) {
+    public int stoneGameII_3(int[] piles) {
         int n = piles.length;
 
         int[][] dp = new int[n][n + 1];
@@ -86,10 +174,10 @@ public class StoneGame2 {
     }
 
 
-    // V3
+    // V4
     // IDEA: 2D DP
     // https://leetcode.com/problems/stone-game-ii/solutions/5662924/dynamic-programming-with-on3-tc-multiple-ip1p/
-    public int stoneGameII_3(int[] piles) {
+    public int stoneGameII_4(int[] piles) {
         int totalPiles = piles.length;
         int[] suffixSums = new int[totalPiles + 1];
         for (int i = totalPiles - 1; i >= 0; i--) {

@@ -7990,6 +7990,48 @@ public class Workspace24 {
 
 
     // LC 1140
+    // 15.46 - 56 pm
+    /**
+     * ->
+     * Assuming Alice and Bob play optimally,
+     * return the `maximum` number of stones `Alice` can get.
+     *
+     *  - piles: # of stone at idx = i
+     *
+     *  - game op:
+     *      - On each player's turn, that player
+     *        can take all the stones in the first X remaining piles,
+     *        where 1 <= X <= 2M. Then,
+     *        we set M = max(M, X). Initially, M = 1.
+     *
+     *
+     *    - The game continues until all the stones have been taken.
+     *
+     *
+     * -----------
+     *
+     *   IDEA 1) BRUTE FORCE ??
+     *
+     *   IDEA 2) 2D DP ??
+     *
+     *    - DP def:
+     *        dp[i][j]: max # of stone one can get between piles[j] ????
+     *                  with first i piles ???
+     *
+     *    - DP eq:
+     *       dp[i][j] =
+     *            dp[i][j] =  dp[i][j] +
+     *
+     *
+     *
+     *   IDEA 3) 1D DP ??
+     *
+     *
+     * -----------
+     *
+     *
+     */
+    // IDEA 2) 2D DP ??
     public int stoneGameII(int[] piles) {
 
         return 0;
