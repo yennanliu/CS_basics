@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LCA - Algorithm Visualizer</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="common.js"></script>
+</head>
+<body>
+  <nav class="topbar">
+    <a href="../index.html" class="home-link">&larr; CS_basics</a>
+    <a href="index.html">Visualizer</a> <span class="sep">/</span>
+    <span class="title">Lowest Common Ancestor</span>
+    <button id="theme-toggle">&#127769;</button>
+  </nav>
+  <div class="container">
+    <h1>Lowest Common Ancestor (LCA)</h1>
+    <p>Post-order DFS: bubble up p/q; first node holding both is LCA. LC 236, 235, 1123, 1676.</p>
+    <div class="viz-wrapper">
+      <div>
+        <div class="viz-canvas-area"><canvas id="canvas"></canvas></div>
+        <div class="legend">
+          <div class="legend-item"><div class="legend-dot" style="background:#4361ee"></div> Unvisited</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#e74c3c"></div> Current DFS</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#f39c12"></div> Target node (p or q)</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#9b59b6"></div> Carries result up</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#2ecc71"></div> LCA found</div>
+        </div>
+      </div>
+      <div class="viz-controls">
+        <h3>Controls</h3>
+        <label>Target p: <span id="p-val">3</span></label>
+        <input type="range" id="p-slider" min="1" max="15" value="3">
+        <label>Target q: <span id="q-val">5</span></label>
+        <input type="range" id="q-slider" min="1" max="15" value="5">
+        <label>Speed</label>
+        <input type="range" id="speed" min="1" max="10" value="5">
+        <div class="btn-row">
+          <button class="btn btn-primary" id="run-btn">Find LCA</button>
+          <button class="btn btn-secondary" id="reset-btn">Reset</button>
+        </div>
+        <div class="complexity">Time: O(n) | Post-order DFS</div>
+        <h3>Steps</h3>
+        <div class="viz-log" id="log"></div>
+      </div>
+    </div>
+  </div>
+<script>
+(function(){
+  var canvas=document.getElementById('canvas'),ctx=canvas.getContext('2d');
+  var logger=createLogger('log'),running=false,stopped=false;
+  // Fixed binary tree: 15 nodes, 1-indexed, complete binary tree layout
+  // Nodes 1..15; left child=2i, right child=2i+1, parent=floor(i/2)
+  var NODES=15;
+  var nodeState={}; // id -> 'default'|'current'|'target'|'carry'|'lca'
+  var p=3,q=5,lcaResult=-1;
+
+  function initState(){
+    nodeState={};lcaResult=-1;
+    for(var i=1;i<=NODES;i++)nodeState[i]='default';
+  }
+
+  function nodePos(id,w,h){
+    var depth=Math.floor(Math.log2(id)); // 0-indexed depth
+    var posInLevel=id-Math.pow(2,depth);
+    var levelCount=Math.pow(2,depth);
+    var maxDepth=Math.floor(Math.log2(NODES));
+    var xGap=w/(levelCount+1);
+    var yGap=(h-40)/(maxDepth+1);
+    return {x:(posInLevel+1)*xGap, y:40+depth*yGap};
+  }
+
+  function draw(){
+    var r=canvas.parentElement.getBoundingClientRect();
+    canvas.width=r.width-32;canvas.height=Math.max(r.height-32,320);
+    var w=canvas.width,h=canvas.height;ctx.clearRect(0,0,w,h);
+    var dark=document.documentElement.getAttribute('data-theme')==='dark';
+    var R=Math.min(20,(w/16));
+
+    // edges first
+    for(var id=1;id<=NODES;id++){
+      var l=id*2,ri2=id*2+1;
+      if(l<=NODES){
+        var pp=nodePos(id,w,h),cp=nodePos(l,w,h);
+        ctx.strokeStyle=dark?'#444':'#ccc';ctx.lineWidth=1.5;
+        ctx.beginPath();ctx.moveTo(pp.x,pp.y);ctx.lineTo(cp.x,cp.y);ctx.stroke();
+      }
+      if(ri2<=NODES){
+        var pp2=nodePos(id,w,h),cp2=nodePos(ri2,w,h);
+        ctx.strokeStyle=dark?'#444':'#ccc';ctx.lineWidth=1.5;
+        ctx.beginPath();ctx.moveTo(pp2.x,pp2.y);ctx.lineTo(cp2.x,cp2.y);ctx.stroke();
+      }
+    }
+    // nodes
+    var colorMap={
+      'default':'#4361ee','current':'#e74c3c','target':'#f39c12',
+      'carry':'#9b59b6','lca':'#2ecc71','visited':dark?'#3a3a5e':'#c8d0f0'
+    };
+    for(var id=1;id<=NODES;id++){
+      var pos=nodePos(id,w,h);
+      var s=nodeState[id]||'default';
+      ctx.fillStyle=colorMap[s]||colorMap['default'];
+      ctx.beginPath();ctx.arc(pos.x,pos.y,R,0,Math.PI*2);ctx.fill();
+      if(s==='lca'){ctx.strokeStyle='#f39c12';ctx.lineWidth=3;ctx.stroke();}
+      ctx.fillStyle='#fff';ctx.font='bold '+Math.min(12,R*.8)+'px sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
+      ctx.fillText(id,pos.x,pos.y);
+    }
+    // labels for p and q
+    ctx.font='11px sans-serif';ctx.fillStyle=dark?'#aaa':'#555';ctx.textAlign='center';ctx.textBaseline='top';
+    if(p>=1&&p<=NODES){var pp3=nodePos(p,w,h);ctx.fillStyle='#f39c12';ctx.fillText('p',pp3.x,pp3.y+R+2);}
+    if(q>=1&&q<=NODES){var qp=nodePos(q,w,h);ctx.fillStyle='#f39c12';ctx.fillText('q',qp.x,qp.y+R+2);}
+    if(lcaResult>0){var lp=nodePos(lcaResult,w,h);ctx.fillStyle='#2ecc71';ctx.font='bold 11px sans-serif';ctx.fillText('LCA',lp.x,lp.y+R+2);}
+  }
+
+  var delay;
+  async function dfs(id){
+    if(stopped||id>NODES||id<1)return null;
+    nodeState[id]='current';draw();await sleep(delay);
+
+    var left=await dfs(id*2);
+    if(stopped)return null;
+    var right=await dfs(id*2+1);
+    if(stopped)return null;
+
+    var isTarget=(id===p||id===q);
+    var result=null;
+    if(isTarget){nodeState[id]='target';result=id;}
+    if(left&&right){nodeState[id]='lca';lcaResult=id;result=id;logger.log('<span class="highlight">LCA = node '+id+'</span>');}
+    else if(left||right){
+      if(!isTarget)nodeState[id]='carry';
+      result=left||right;
+    }
+    if(!isTarget&&!left&&!right)nodeState[id]='visited';
+    draw();await sleep(delay/2);
+    return result;
+  }
+
+  async function runLCA(){
+    if(running)return;running=true;stopped=false;logger.clear();
+    p=+document.getElementById('p-slider').value;
+    q=+document.getElementById('q-slider').value;
+    if(p===q){logger.log('p and q must be different');running=false;return;}
+    delay=(11-document.getElementById('speed').value)*120;
+    initState();draw();
+    logger.log('Finding LCA of node '+p+' and node '+q);
+    await dfs(1);
+    if(!stopped&&lcaResult<0)logger.log('One or both nodes not in tree.');
+    running=false;
+  }
+
+  document.getElementById('run-btn').addEventListener('click',runLCA);
+  document.getElementById('reset-btn').addEventListener('click',function(){stopped=true;running=false;initState();logger.clear();draw();});
+  document.getElementById('p-slider').addEventListener('input',function(){document.getElementById('p-val').textContent=this.value;initState();draw();});
+  document.getElementById('q-slider').addEventListener('input',function(){document.getElementById('q-val').textContent=this.value;initState();draw();});
+  initState();draw();window.addEventListener('resize',draw);
+})();
+</script>
+</body>
+</html>

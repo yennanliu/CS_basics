@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Binary Tree Traversal - Algorithm Visualizer</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="common.js"></script>
+</head>
+<body>
+  <nav class="topbar">
+    <a href="../index.html" class="home-link">&larr; CS_basics</a>
+    <a href="index.html">Visualizer</a> <span class="sep">/</span>
+    <span class="title">Binary Tree Traversal</span>
+    <button id="theme-toggle">&#127769;</button>
+  </nav>
+  <div class="container">
+    <h1>Binary Tree Traversal</h1>
+    <p>Inorder / Preorder / Postorder / Level-order (BFS). LC 94, 144, 145, 102.</p>
+    <div class="viz-wrapper">
+      <div>
+        <div class="viz-canvas-area"><canvas id="canvas"></canvas></div>
+        <div class="legend">
+          <div class="legend-item"><div class="legend-dot" style="background:#4361ee"></div> Unvisited</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#e74c3c"></div> Current</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#2ecc71"></div> Visited (order)</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#f39c12"></div> In queue (BFS)</div>
+        </div>
+      </div>
+      <div class="viz-controls">
+        <h3>Controls</h3>
+        <label>Traversal</label>
+        <select id="mode">
+          <option value="inorder">Inorder (L→Root→R)</option>
+          <option value="preorder">Preorder (Root→L→R)</option>
+          <option value="postorder">Postorder (L→R→Root)</option>
+          <option value="levelorder">Level-order (BFS)</option>
+        </select>
+        <label>Speed</label>
+        <input type="range" id="speed" min="1" max="10" value="6">
+        <div class="btn-row">
+          <button class="btn btn-primary" id="run-btn">Run</button>
+          <button class="btn btn-secondary" id="reset-btn">Reset</button>
+        </div>
+        <div class="complexity">Time: O(n) | Space: O(h) DFS / O(n) BFS</div>
+        <h3>Visit order</h3>
+        <div class="viz-log" id="log"></div>
+      </div>
+    </div>
+  </div>
+<script>
+(function(){
+  var canvas=document.getElementById('canvas'),ctx=canvas.getContext('2d');
+  var logger=createLogger('log'),running=false,stopped=false;
+  var NODES=15;
+  var nodeState={},visitOrder=[];
+
+  function initState(){nodeState={};visitOrder=[];for(var i=1;i<=NODES;i++)nodeState[i]='default';}
+
+  function nodePos(id,w,h){
+    var depth=Math.floor(Math.log2(id));
+    var posInLevel=id-Math.pow(2,depth);
+    var levelCount=Math.pow(2,depth);
+    var maxDepth=3;
+    var xGap=w/(levelCount+1);
+    var yGap=(h-40)/(maxDepth+1);
+    return {x:(posInLevel+1)*xGap,y:40+depth*yGap};
+  }
+
+  function draw(){
+    var r=canvas.parentElement.getBoundingClientRect();
+    canvas.width=r.width-32;canvas.height=Math.max(r.height-32,320);
+    var w=canvas.width,h=canvas.height;ctx.clearRect(0,0,w,h);
+    var dark=document.documentElement.getAttribute('data-theme')==='dark';
+    var R=Math.min(20,w/18);
+    var colorMap={
+      'default':'#4361ee','current':'#e74c3c','visited':'#2ecc71',
+      'queued':'#f39c12'
+    };
+    // edges
+    for(var id=1;id<=NODES;id++){
+      [id*2,id*2+1].forEach(function(child){
+        if(child>NODES)return;
+        var pp=nodePos(id,w,h),cp=nodePos(child,w,h);
+        ctx.strokeStyle=dark?'#444':'#ccc';ctx.lineWidth=1.5;
+        ctx.beginPath();ctx.moveTo(pp.x,pp.y);ctx.lineTo(cp.x,cp.y);ctx.stroke();
+      });
+    }
+    // nodes
+    for(var id=1;id<=NODES;id++){
+      var pos=nodePos(id,w,h);
+      var s=nodeState[id]||'default';
+      ctx.fillStyle=colorMap[s]||colorMap['default'];
+      ctx.beginPath();ctx.arc(pos.x,pos.y,R,0,Math.PI*2);ctx.fill();
+      // visit order badge
+      var ord=visitOrder.indexOf(id);
+      if(ord>=0){
+        ctx.strokeStyle='rgba(255,255,255,.4)';ctx.lineWidth=2;ctx.stroke();
+        ctx.fillStyle='#fff';ctx.font='bold '+Math.min(11,R*.75)+'px sans-serif';
+        ctx.textAlign='center';ctx.textBaseline='middle';
+        ctx.fillText(ord+1,pos.x,pos.y);
+      } else {
+        ctx.fillStyle='#fff';ctx.font='bold '+Math.min(12,R*.8)+'px sans-serif';
+        ctx.textAlign='center';ctx.textBaseline='middle';
+        ctx.fillText(id,pos.x,pos.y);
+      }
+    }
+  }
+
+  var delay;
+  async function inorder(id){
+    if(stopped||!id||id>NODES)return;
+    nodeState[id]='current';draw();await sleep(delay);
+    await inorder(id*2);
+    if(stopped)return;
+    visitOrder.push(id);nodeState[id]='visited';
+    logger.log('visit node '+id);
+    draw();await sleep(delay/2);
+    await inorder(id*2+1);
+  }
+  async function preorder(id){
+    if(stopped||!id||id>NODES)return;
+    nodeState[id]='current';draw();await sleep(delay);
+    visitOrder.push(id);nodeState[id]='visited';
+    logger.log('visit node '+id);
+    draw();await sleep(delay/2);
+    await preorder(id*2);
+    if(stopped)return;
+    await preorder(id*2+1);
+  }
+  async function postorder(id){
+    if(stopped||!id||id>NODES)return;
+    nodeState[id]='current';draw();await sleep(delay);
+    await postorder(id*2);
+    if(stopped)return;
+    await postorder(id*2+1);
+    if(stopped)return;
+    visitOrder.push(id);nodeState[id]='visited';
+    logger.log('visit node '+id);
+    draw();await sleep(delay/2);
+  }
+  async function levelorder(){
+    var queue=[1];
+    while(queue.length&&!stopped){
+      var id=queue.shift();
+      if(!id||id>NODES)continue;
+      nodeState[id]='current';draw();await sleep(delay);
+      visitOrder.push(id);nodeState[id]='visited';
+      logger.log('visit node '+id);
+      draw();await sleep(delay/2);
+      if(id*2<=NODES){nodeState[id*2]='queued';queue.push(id*2);}
+      if(id*2+1<=NODES){nodeState[id*2+1]='queued';queue.push(id*2+1);}
+      draw();await sleep(delay/3);
+    }
+  }
+
+  async function runTraversal(){
+    if(running)return;running=true;stopped=false;logger.clear();initState();draw();
+    delay=(11-document.getElementById('speed').value)*100;
+    var mode=document.getElementById('mode').value;
+    logger.log(mode+' traversal:');
+    if(mode==='inorder')await inorder(1);
+    else if(mode==='preorder')await preorder(1);
+    else if(mode==='postorder')await postorder(1);
+    else await levelorder();
+    if(!stopped){
+      draw();
+      logger.log('<span class="highlight">Order: ['+visitOrder.join(', ')+']</span>');
+    }
+    running=false;
+  }
+
+  document.getElementById('run-btn').addEventListener('click',runTraversal);
+  document.getElementById('reset-btn').addEventListener('click',function(){stopped=true;running=false;initState();logger.clear();draw();});
+  document.getElementById('mode').addEventListener('change',function(){initState();logger.clear();draw();});
+  initState();draw();window.addEventListener('resize',draw);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Graph + Backtracking - Algorithm Visualizer</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="common.js"></script>
+</head>
+<body>
+  <nav class="topbar">
+    <a href="../index.html" class="home-link">&larr; CS_basics</a>
+    <a href="index.html">Visualizer</a> <span class="sep">/</span>
+    <span class="title">Graph + Backtracking</span>
+    <button id="theme-toggle">&#127769;</button>
+  </nav>
+  <div class="container">
+    <h1>Graph + Backtracking</h1>
+    <p>Find all paths S→E via DFS; backtrack when stuck. LC 79 (Word Search), 980, 1219.</p>
+    <div class="viz-wrapper">
+      <div>
+        <div class="viz-canvas-area"><canvas id="canvas"></canvas></div>
+        <div class="legend">
+          <div class="legend-item"><div class="legend-dot" style="background:#4361ee"></div> Current path</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#e74c3c"></div> Current cell</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#f39c12"></div> Backtracking</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#2ecc71"></div> Found path</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#555"></div> Wall</div>
+        </div>
+      </div>
+      <div class="viz-controls">
+        <h3>Controls</h3>
+        <label>Grid size</label>
+        <select id="grid-size">
+          <option value="4">4 × 4</option>
+          <option value="5" selected>5 × 5</option>
+          <option value="6">6 × 6</option>
+        </select>
+        <label>Speed</label>
+        <input type="range" id="speed" min="1" max="10" value="6">
+        <div class="btn-row">
+          <button class="btn btn-primary" id="run-btn">Find Paths</button>
+          <button class="btn btn-secondary" id="reset-btn">Reset</button>
+        </div>
+        <p style="font-size:.75rem;color:var(--text-secondary)">Click cells to toggle walls.</p>
+        <div class="complexity">Time: O(4^(V)) worst | Prune with visited set</div>
+        <h3>Steps</h3>
+        <div class="viz-log" id="log"></div>
+      </div>
+    </div>
+  </div>
+<script>
+(function(){
+  var canvas=document.getElementById('canvas'),ctx=canvas.getContext('2d');
+  var N=5,grid,running=false,stopped=false,logger=createLogger('log');
+  var start,end,pathCount=0;
+  var EMPTY=0,WALL=1;
+  // draw state
+  var curPath=[],backtracking=false,foundCells={};
+
+  function init(){
+    N=+document.getElementById('grid-size').value;
+    grid=[];curPath=[];foundCells={};pathCount=0;
+    for(var i=0;i<N;i++){grid[i]=[];for(var j=0;j<N;j++)grid[i][j]=EMPTY;}
+    start=[0,0];end=[N-1,N-1];
+    // sparse walls
+    for(var k=0;k<Math.floor(N*N*0.15);k++){
+      var r=Math.floor(Math.random()*N),c=Math.floor(Math.random()*N);
+      if((r!==0||c!==0)&&(r!==N-1||c!==N-1))grid[r][c]=WALL;
+    }
+  }
+
+  function draw(){
+    var rect=canvas.parentElement.getBoundingClientRect();
+    canvas.width=rect.width-32;canvas.height=Math.max(rect.height-32,300);
+    var w=canvas.width,h=canvas.height;ctx.clearRect(0,0,w,h);
+    var cs=Math.min((w-20)/N,(h-20)/N),ox=(w-cs*N)/2,oy=(h-cs*N)/2;
+    var dark=document.documentElement.getAttribute('data-theme')==='dark';
+    var pathSet=new Set(curPath.map(function(p){return p[0]+','+p[1];}));
+    var cur=curPath.length?curPath[curPath.length-1]:null;
+
+    for(var i=0;i<N;i++)for(var j=0;j<N;j++){
+      var key=i+','+j;
+      var color=dark?'#2a2a3e':'#eee';
+      if(grid[i][j]===WALL)color='#555';
+      else if(foundCells[key])color='#2ecc71';
+      else if(cur&&cur[0]===i&&cur[1]===j)color=backtracking?'#f39c12':'#e74c3c';
+      else if(pathSet.has(key))color='#4361ee';
+      ctx.fillStyle=color;
+      ctx.fillRect(ox+j*cs+1,oy+i*cs+1,cs-2,cs-2);
+      ctx.strokeStyle='rgba(0,0,0,.08)';ctx.strokeRect(ox+j*cs+1,oy+i*cs+1,cs-2,cs-2);
+    }
+    var fs=Math.min(14,cs*.4);ctx.font='bold '+fs+'px sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillStyle='#fff';
+    ctx.fillText('S',ox+start[1]*cs+cs/2,oy+start[0]*cs+cs/2);
+    ctx.fillText('E',ox+end[1]*cs+cs/2,oy+end[0]*cs+cs/2);
+    // path count
+    ctx.fillStyle=dark?'#aaa':'#555';ctx.font='12px sans-serif';ctx.textAlign='left';ctx.textBaseline='top';
+    ctx.fillText('Paths found: '+pathCount,8,8);
+  }
+
+  canvas.addEventListener('click',function(e){
+    if(running)return;
+    var rect2=canvas.getBoundingClientRect();
+    var rr=canvas.parentElement.getBoundingClientRect();
+    canvas.width=rr.width-32;canvas.height=Math.max(rr.height-32,300);
+    var w=canvas.width,h=canvas.height;
+    var cs=Math.min((w-20)/N,(h-20)/N),ox=(w-cs*N)/2,oy=(h-cs*N)/2;
+    var col=Math.floor((e.clientX-rect2.left-ox)/cs),row=Math.floor((e.clientY-rect2.top-oy)/cs);
+    if(row<0||row>=N||col<0||col>=N)return;
+    if((row===start[0]&&col===start[1])||(row===end[0]&&col===end[1]))return;
+    grid[row][col]=grid[row][col]===WALL?EMPTY:WALL;draw();
+  });
+
+  var delay;
+  async function dfs(r,c,visited){
+    if(stopped)return;
+    curPath.push([r,c]);backtracking=false;
+    draw();await sleep(delay);
+
+    if(r===end[0]&&c===end[1]){
+      pathCount++;
+      logger.log('<span class="highlight">Path #'+pathCount+' found! len='+curPath.length+'</span>');
+      for(var pi=0;pi<curPath.length;pi++)foundCells[curPath[pi][0]+','+curPath[pi][1]]=true;
+      draw();await sleep(delay*2);
+      curPath.pop();return;
+    }
+
+    var dirs=[[0,1],[1,0],[0,-1],[-1,0]];
+    for(var d=0;d<4;d++){
+      if(stopped)break;
+      var nr=r+dirs[d][0],nc=c+dirs[d][1];
+      if(nr<0||nr>=N||nc<0||nc>=N)continue;
+      if(grid[nr][nc]===WALL)continue;
+      var key=nr+','+nc;
+      if(visited[key])continue;
+      visited[key]=true;
+      await dfs(nr,nc,visited);
+      visited[key]=false;
+    }
+    // backtrack
+    backtracking=true;draw();await sleep(delay/2);
+    curPath.pop();backtracking=false;
+  }
+
+  async function runBacktrack(){
+    if(running)return;running=true;stopped=false;logger.clear();
+    curPath=[];foundCells={};pathCount=0;
+    delay=(11-document.getElementById('speed').value)*60;
+    var visited={};visited[start[0]+','+start[1]]=true;
+    logger.log('DFS from S=(0,0) to E=('+end+')');
+    await dfs(start[0],start[1],visited);
+    if(!stopped){
+      draw();
+      logger.log(pathCount?'<span class="highlight">Total paths: '+pathCount+'</span>':'<span class="highlight">No path found.</span>');
+    }
+    running=false;
+  }
+
+  document.getElementById('run-btn').addEventListener('click',runBacktrack);
+  document.getElementById('reset-btn').addEventListener('click',function(){stopped=true;running=false;init();logger.clear();draw();});
+  document.getElementById('grid-size').addEventListener('change',function(){init();logger.clear();draw();});
+  init();draw();window.addEventListener('resize',draw);
+})();
+</script>
+</body>
+</html>

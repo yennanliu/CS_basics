@@ -82,6 +82,21 @@
         <p>Explore as deep as possible, then backtrack. LC 200, 695, 79.</p>
         <span class="tag">O(V+E)</span><span class="tag">Stack</span>
       </a>
+      <a class="algo-card" href="bidirectional-bfs.html">
+        <h3>Bidirectional BFS</h3>
+        <p>Expand from S and E simultaneously; meet in the middle. LC 127, 433, 752.</p>
+        <span class="tag">O(b^(d/2))</span><span class="tag">Faster</span>
+      </a>
+      <a class="algo-card" href="multi-source-bfs.html">
+        <h3>Multi-Source BFS</h3>
+        <p>Enqueue all sources at t=0; spread like ripples. LC 994, 542, 1162.</p>
+        <span class="tag">O(V+E)</span><span class="tag">Multi-start</span>
+      </a>
+      <a class="algo-card" href="graph-backtracking.html">
+        <h3>Graph + Backtracking</h3>
+        <p>DFS all paths S→E; undo visited on backtrack. LC 79, 980, 1219.</p>
+        <span class="tag">O(4^V)</span><span class="tag">All paths</span>
+      </a>
       <a class="algo-card" href="dijkstra.html">
         <h3>Dijkstra</h3>
         <p>Shortest paths in weighted graphs (non-negative). LC 743, 1631.</p>
@@ -147,12 +162,31 @@
       </a>
     </div>
 
+    <h3 class="section-label">Tree</h3>
+    <div class="algo-grid">
+      <a class="algo-card" href="binary-tree-traversal.html">
+        <h3>Binary Tree Traversal</h3>
+        <p>Inorder / Preorder / Postorder / Level-order with visit numbering. LC 94, 144, 145, 102.</p>
+        <span class="tag">O(n)</span><span class="tag">DFS / BFS</span>
+      </a>
+      <a class="algo-card" href="lca.html">
+        <h3>Lowest Common Ancestor</h3>
+        <p>Post-order DFS: bubble p/q up; first node holding both is LCA. LC 236, 235, 1123.</p>
+        <span class="tag">O(n)</span><span class="tag">Post-order</span>
+      </a>
+    </div>
+
     <h3 class="section-label">Data Structures</h3>
     <div class="algo-grid">
       <a class="algo-card" href="lru-cache.html">
         <h3>LRU Cache</h3>
         <p>Least Recently Used cache with O(1) get/put. LC 146.</p>
         <span class="tag">O(1)</span><span class="tag">HashMap + DLL</span>
+      </a>
+      <a class="algo-card" href="lfu-cache.html">
+        <h3>LFU Cache</h3>
+        <p>Least Frequently Used: evict min-freq key (LRU tiebreak). LC 460.</p>
+        <span class="tag">O(1)</span><span class="tag">Freq buckets</span>
       </a>
     </div>
   </div>

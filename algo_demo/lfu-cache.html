@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LFU Cache - Algorithm Visualizer</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="common.js"></script>
+</head>
+<body>
+  <nav class="topbar">
+    <a href="../index.html" class="home-link">&larr; CS_basics</a>
+    <a href="index.html">Visualizer</a> <span class="sep">/</span>
+    <span class="title">LFU Cache</span>
+    <button id="theme-toggle">&#127769;</button>
+  </nav>
+  <div class="container">
+    <h1>LFU Cache</h1>
+    <p>Least Frequently Used: evict lowest-frequency key (ties → LRU). LC 460.</p>
+    <div class="viz-wrapper">
+      <div>
+        <div class="viz-canvas-area"><canvas id="canvas"></canvas></div>
+        <div class="legend">
+          <div class="legend-item"><div class="legend-dot" style="background:#4361ee"></div> Cache entry</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#2ecc71"></div> Hit</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#f39c12"></div> New insert</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#e74c3c"></div> Evicted (min freq)</div>
+        </div>
+      </div>
+      <div class="viz-controls">
+        <h3>Controls</h3>
+        <label>Capacity: <span id="cap-val">4</span></label>
+        <input type="range" id="capacity" min="2" max="8" value="4">
+        <label>Speed</label>
+        <input type="range" id="speed" min="1" max="10" value="5">
+        <div class="btn-row">
+          <button class="btn btn-primary" id="run-btn">Run Demo</button>
+          <button class="btn btn-secondary" id="reset-btn">Reset</button>
+        </div>
+        <label style="margin-top:.5rem">Manual: put(key,val)</label>
+        <div class="btn-row">
+          <input type="number" id="put-key" placeholder="key" style="width:60px">
+          <input type="number" id="put-val" placeholder="val" style="width:60px">
+          <button class="btn btn-primary" id="put-btn">Put</button>
+        </div>
+        <label>Manual: get(key)</label>
+        <div class="btn-row">
+          <input type="number" id="get-key" placeholder="key" style="width:60px">
+          <button class="btn btn-primary" id="get-btn">Get</button>
+        </div>
+        <div class="complexity">get: O(1) | put: O(1) | HashMap + freq buckets</div>
+        <h3>Operations</h3>
+        <div class="viz-log" id="log"></div>
+      </div>
+    </div>
+  </div>
+<script>
+(function(){
+  var canvas=document.getElementById('canvas'),ctx=canvas.getContext('2d');
+  var logger=createLogger('log'),running=false,stopped=false;
+  var capacity=4,keyMap={},freqMap={},minFreq=0,highlight={};
+  // keyMap: key -> {val, freq}
+  // freqMap: freq -> [keys in insertion order]
+
+  function init(){
+    capacity=+document.getElementById('capacity').value;
+    keyMap={};freqMap={};minFreq=0;highlight={};
+  }
+
+  function lfuGet(key){
+    if(!keyMap[key])return -1;
+    var entry=keyMap[key];
+    // bump freq
+    var f=entry.freq;
+    freqMap[f]=freqMap[f].filter(function(k){return k!==key;});
+    if(freqMap[f].length===0){delete freqMap[f];if(minFreq===f)minFreq=f+1;}
+    entry.freq=f+1;
+    if(!freqMap[entry.freq])freqMap[entry.freq]=[];
+    freqMap[entry.freq].push(key);
+    return entry.val;
+  }
+
+  function lfuPut(key,val){
+    if(capacity<=0)return null;
+    var evicted=null;
+    if(keyMap[key]){
+      keyMap[key].val=val;
+      lfuGet(key); // bump freq
+      return null;
+    }
+    if(Object.keys(keyMap).length>=capacity){
+      // evict LFU (LRU among ties = first in freqMap[minFreq])
+      var evictKey=freqMap[minFreq][0];
+      freqMap[minFreq].shift();
+      if(freqMap[minFreq].length===0)delete freqMap[minFreq];
+      delete keyMap[evictKey];
+      evicted=evictKey;
+    }
+    keyMap[key]={val:val,freq:1};
+    if(!freqMap[1])freqMap[1]=[];
+    freqMap[1].push(key);
+    minFreq=1;
+    return evicted;
+  }
+
+  function draw(){
+    var r=canvas.parentElement.getBoundingClientRect();
+    canvas.width=r.width-32;canvas.height=Math.max(r.height-32,320);
+    var w=canvas.width,h=canvas.height;ctx.clearRect(0,0,w,h);
+    var dark=document.documentElement.getAttribute('data-theme')==='dark';
+    var keys=Object.keys(keyMap);
+    if(!keys.length){
+      ctx.fillStyle=dark?'#aaa':'#888';ctx.font='14px sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
+      ctx.fillText('Cache empty',w/2,h/2);return;
+    }
+
+    // Group by frequency
+    var freqs=Object.keys(freqMap).map(Number).sort(function(a,b){return a-b;});
+    var rowH=60,pad=16,boxW=Math.min(80,(w-120)/(capacity+1));
+    var yStart=30;
+
+    ctx.fillStyle=dark?'#aaa':'#555';ctx.font='11px sans-serif';ctx.textAlign='left';ctx.textBaseline='top';
+    ctx.fillText('min freq = '+minFreq+'   size = '+keys.length+'/'+capacity,8,8);
+
+    for(var fi=0;fi<freqs.length;fi++){
+      var freq=freqs[fi];
+      var y=yStart+fi*(rowH+pad);
+      // freq label
+      ctx.fillStyle=dark?'#888':'#999';ctx.font='11px sans-serif';ctx.textAlign='right';ctx.textBaseline='middle';
+      ctx.fillText('freq='+freq,50,y+rowH/2);
+      ctx.strokeStyle=dark?'#333':'#ddd';ctx.lineWidth=1;ctx.setLineDash([4,4]);
+      ctx.beginPath();ctx.moveTo(56,y+rowH/2);ctx.lineTo(70,y+rowH/2);ctx.stroke();ctx.setLineDash([]);
+
+      var row=freqMap[freq];
+      for(var ki=0;ki<row.length;ki++){
+        var key=row[ki];
+        var x=70+ki*(boxW+8);
+        var color=highlight[key]||'#4361ee';
+        ctx.fillStyle=color;ctx.beginPath();ctx.roundRect(x,y,boxW,rowH,8);ctx.fill();
+        ctx.fillStyle='#fff';ctx.font='bold 13px sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
+        ctx.fillText('K:'+key,x+boxW/2,y+rowH/2-9);
+        ctx.font='11px sans-serif';
+        ctx.fillText('V:'+keyMap[key].val,x+boxW/2,y+rowH/2+9);
+        // LRU arrow label
+        if(ki===0){ctx.fillStyle=dark?'#888':'#aaa';ctx.font='9px sans-serif';ctx.fillText('LRU',x+boxW/2,y+rowH+4);}
+        if(ki===row.length-1&&row.length>1){ctx.fillStyle=dark?'#888':'#aaa';ctx.font='9px sans-serif';ctx.fillText('MRU',x+boxW/2,y+rowH+4);}
+      }
+    }
+  }
+
+  async function runDemo(){
+    if(running)return;running=true;stopped=false;logger.clear();init();
+    var delay=(11-document.getElementById('speed').value)*200;
+    var ops=[['put',1,10],['put',2,20],['put',3,30],['get',1],['get',1],['get',2],['put',4,40],['get',3],['put',5,50],['get',2],['get',4]];
+    for(var i=0;i<ops.length&&!stopped;i++){
+      highlight={};
+      var op=ops[i];
+      if(op[0]==='put'){
+        var ev=lfuPut(op[1],op[2]);
+        highlight[op[1]]='#f39c12';
+        var msg='put('+op[1]+','+op[2]+')';
+        if(ev!==null)msg+=' — evicted <span class="highlight">key '+ev+'</span>';
+        logger.log(msg);
+      } else {
+        var val=lfuGet(op[1]);
+        if(val===-1){logger.log('get('+op[1]+') — <span class="highlight">MISS</span>');}
+        else{highlight[op[1]]='#2ecc71';logger.log('get('+op[1]+') = '+val+' freq→'+keyMap[op[1]].freq);}
+      }
+      draw();await sleep(delay);
+    }
+    highlight={};draw();
+    if(!stopped)logger.log('<span class="highlight">Demo complete!</span>');
+    running=false;
+  }
+
+  document.getElementById('run-btn').addEventListener('click',runDemo);
+  document.getElementById('reset-btn').addEventListener('click',function(){stopped=true;running=false;init();logger.clear();draw();});
+  document.getElementById('capacity').addEventListener('input',function(){document.getElementById('cap-val').textContent=this.value;init();logger.clear();draw();});
+  document.getElementById('put-btn').addEventListener('click',function(){
+    var k=+document.getElementById('put-key').value,v=+document.getElementById('put-val').value;if(isNaN(k))return;
+    highlight={};var ev=lfuPut(k,v);highlight[k]='#f39c12';
+    logger.log(ev!==null?'put('+k+','+v+') evicted key '+ev:'put('+k+','+v+')');draw();
+  });
+  document.getElementById('get-btn').addEventListener('click',function(){
+    var k=+document.getElementById('get-key').value;if(isNaN(k))return;
+    highlight={};var val=lfuGet(k);
+    if(val===-1)logger.log('get('+k+') MISS');
+    else{highlight[k]='#2ecc71';logger.log('get('+k+') = '+val+(keyMap[k]?' freq→'+keyMap[k].freq:''));}
+    draw();
+  });
+  init();draw();window.addEventListener('resize',draw);
+})();
+</script>
+</body>
+</html>

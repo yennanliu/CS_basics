@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Multi-Source BFS - Algorithm Visualizer</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="common.js"></script>
+</head>
+<body>
+  <nav class="topbar">
+    <a href="../index.html" class="home-link">&larr; CS_basics</a>
+    <a href="index.html">Visualizer</a> <span class="sep">/</span>
+    <span class="title">Multi-Source BFS</span>
+    <button id="theme-toggle">&#127769;</button>
+  </nav>
+  <div class="container">
+    <h1>Multi-Source BFS</h1>
+    <p>Enqueue all sources at once; spread like ripples. LC 994 (Rotting Oranges), 542 (01 Matrix), 1162.</p>
+    <div class="viz-wrapper">
+      <div>
+        <div class="viz-canvas-area"><canvas id="canvas"></canvas></div>
+        <div class="legend">
+          <div class="legend-item"><div class="legend-dot" style="background:#e74c3c"></div> Source (rotten)</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#2ecc71"></div> Fresh (target)</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#f39c12"></div> Spreading</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#9b59b6"></div> Rotted (step label)</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#555"></div> Blocked</div>
+        </div>
+      </div>
+      <div class="viz-controls">
+        <h3>Controls</h3>
+        <label>Grid size</label>
+        <select id="grid-size">
+          <option value="6">6 × 6</option>
+          <option value="8" selected>8 × 8</option>
+          <option value="10">10 × 10</option>
+        </select>
+        <label>Sources (rotten): <span id="src-val">3</span></label>
+        <input type="range" id="src-count" min="1" max="6" value="3">
+        <label>Speed</label>
+        <input type="range" id="speed" min="1" max="10" value="6">
+        <div class="btn-row">
+          <button class="btn btn-primary" id="run-btn">Run</button>
+          <button class="btn btn-secondary" id="reset-btn">Reset</button>
+        </div>
+        <div class="complexity">Time: O(V+E) | All sources enqueued at t=0</div>
+        <h3>Steps</h3>
+        <div class="viz-log" id="log"></div>
+      </div>
+    </div>
+  </div>
+<script>
+(function(){
+  var canvas=document.getElementById('canvas'),ctx=canvas.getContext('2d');
+  var N=8,grid,dist,sources,running=false,stopped=false,logger=createLogger('log');
+  // cell types: 0=empty/blocked, 1=fresh, 2=rotten
+  var BLOCKED=0,FRESH=1,ROTTEN=2;
+
+  function init(){
+    N=+document.getElementById('grid-size').value;
+    var nsrc=+document.getElementById('src-count').value;
+    grid=[];dist=[];sources=[];
+    for(var i=0;i<N;i++){grid[i]=[];dist[i]=[];for(var j=0;j<N;j++){grid[i][j]=FRESH;dist[i][j]=-1;}}
+    // random blocked cells
+    for(var k=0;k<Math.floor(N*N*0.12);k++){
+      var r=Math.floor(Math.random()*N),c=Math.floor(Math.random()*N);
+      grid[r][c]=BLOCKED;
+    }
+    // random sources
+    var placed=0,tries=0;
+    while(placed<nsrc&&tries<200){
+      var r=Math.floor(Math.random()*N),c=Math.floor(Math.random()*N);
+      if(grid[r][c]===FRESH){grid[r][c]=ROTTEN;dist[r][c]=0;sources.push([r,c]);placed++;}
+      tries++;
+    }
+  }
+
+  function cellColor(r,c){
+    var dark=document.documentElement.getAttribute('data-theme')==='dark';
+    var v=grid[r][c];
+    if(v===BLOCKED)return '#555';
+    if(v===ROTTEN&&dist[r][c]===0)return '#e74c3c';
+    if(v===ROTTEN)return '#9b59b6';
+    if(v===FRESH)return '#2ecc71';
+    return dark?'#2a2a3e':'#eee';
+  }
+
+  function draw(){
+    var rect=canvas.parentElement.getBoundingClientRect();
+    canvas.width=rect.width-32;canvas.height=Math.max(rect.height-32,300);
+    var w=canvas.width,h=canvas.height;ctx.clearRect(0,0,w,h);
+    var cs=Math.min((w-20)/N,(h-20)/N),ox=(w-cs*N)/2,oy=(h-cs*N)/2;
+    var dark=document.documentElement.getAttribute('data-theme')==='dark';
+    for(var i=0;i<N;i++)for(var j=0;j<N;j++){
+      ctx.fillStyle=cellColor(i,j);
+      ctx.fillRect(ox+j*cs+1,oy+i*cs+1,cs-2,cs-2);
+      ctx.strokeStyle='rgba(0,0,0,.08)';ctx.strokeRect(ox+j*cs+1,oy+i*cs+1,cs-2,cs-2);
+      // draw distance number
+      if(dist[i][j]>=0&&grid[i][j]===ROTTEN){
+        ctx.fillStyle='#fff';ctx.font='bold '+Math.min(13,cs*.4)+'px sans-serif';
+        ctx.textAlign='center';ctx.textBaseline='middle';
+        ctx.fillText(dist[i][j],ox+j*cs+cs/2,oy+i*cs+cs/2);
+      }
+    }
+  }
+
+  async function runMS(){
+    if(running)return;running=true;stopped=false;logger.clear();
+    var delay=(11-document.getElementById('speed').value)*60;
+    var dirs=[[0,1],[0,-1],[1,0],[-1,0]];
+    // reset non-source rotten back to fresh for replay
+    for(var i=0;i<N;i++)for(var j=0;j<N;j++){if(grid[i][j]===ROTTEN&&dist[i][j]>0){grid[i][j]=FRESH;dist[i][j]=-1;}}
+
+    var queue=[];
+    for(var s=0;s<sources.length;s++){queue.push([sources[s][0],sources[s][1],0]);}
+    logger.log('Enqueue '+sources.length+' source(s) at t=0');
+    draw();await sleep(delay);
+
+    var maxDist=0,freshLeft=0;
+    for(var i=0;i<N;i++)for(var j=0;j<N;j++)if(grid[i][j]===FRESH)freshLeft++;
+
+    var qi=0;
+    while(qi<queue.length&&!stopped){
+      var cur=queue[qi++];
+      var r=cur[0],c=cur[1],d=cur[2];
+      for(var di=0;di<4;di++){
+        var nr=r+dirs[di][0],nc=c+dirs[di][1];
+        if(nr<0||nr>=N||nc<0||nc>=N)continue;
+        if(grid[nr][nc]!==FRESH)continue;
+        grid[nr][nc]=ROTTEN;dist[nr][nc]=d+1;freshLeft--;
+        if(d+1>maxDist)maxDist=d+1;
+        queue.push([nr,nc,d+1]);
+        // flash spreading color briefly
+        var saved=grid[nr][nc];
+        draw();
+      }
+      if(qi%Math.max(1,Math.floor(N/2))===0){
+        logger.log('t='+(d)+': rotted '+queue.length+' cells, '+freshLeft+' fresh left');
+        draw();await sleep(delay);
+      }
+    }
+    draw();
+    if(!stopped){
+      if(freshLeft>0)logger.log('<span class="highlight">Cannot rot all oranges. '+freshLeft+' fresh remain.</span>');
+      else logger.log('<span class="highlight">All rotted in '+maxDist+' minutes.</span>');
+    }
+    running=false;
+  }
+
+  document.getElementById('run-btn').addEventListener('click',runMS);
+  document.getElementById('reset-btn').addEventListener('click',function(){stopped=true;running=false;init();logger.clear();draw();});
+  document.getElementById('grid-size').addEventListener('change',function(){init();logger.clear();draw();});
+  document.getElementById('src-count').addEventListener('input',function(){document.getElementById('src-val').textContent=this.value;init();logger.clear();draw();});
+  init();draw();window.addEventListener('resize',draw);
+})();
+</script>
+</body>
+</html>
