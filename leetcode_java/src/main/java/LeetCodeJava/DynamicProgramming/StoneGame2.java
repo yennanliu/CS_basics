@@ -54,9 +54,38 @@ public class StoneGame2 {
 //
 //    }
 
-    // V1
-    // IDEA: DP + DFS ?? (gpt)
-    public int stoneGameII_1(int[] piles) {
+    // V1-1
+    // IDEA: TOP DOWN DP + DFS ?? (gpt)
+    /**  NOTE !!!
+     *
+     * - DP def:
+     *      dp[i][M] = maximum stones the
+     *                 current player can get starting
+     *                from index i with parameter M
+     *
+     *   -> Compute total remaining stones − opponent’s best
+     *
+     *
+     *  - DP eq:
+     *
+     *       From index i, player can take X piles where:
+     *
+     *              1 <= X <= 2M
+     *
+     *      Then opponent plays from i + X with M = max(M, X)
+     *
+     *      So:
+     *
+     *      ```
+     *      dp[i][M] = max(
+     *        total[i] - dp[i + X][max(M, X)]
+     *       )
+     *       ```
+     *
+     *     Where total[i] = sum of piles from i to end
+     *
+     */
+    public int stoneGameII_1_1(int[] piles) {
         int n = piles.length;
 
         // suffix sum: total[i] = sum from i to end
@@ -92,6 +121,117 @@ public class StoneGame2 {
         memo[i][M] = max;
         return max;
     }
+
+    // V1-2
+    // IDEA: BOTTOM UP DP (gpt)
+    /**
+     * Alright—here’s the **bottom-up DP version**
+     * for Stone Game II. It’s a bit trickier
+     * than top-down because of dependency ordering,
+     * but very interview-friendly once you see the pattern.
+     *
+     * ---
+     *
+     * ## 🧠 DP Definition (same as before)
+     *
+     * ```text
+     * dp[i][M] = max stones current player can get starting from index i with M
+     * ```
+     *
+     * We still use:
+     *
+     * ```text
+     * dp[i][M] = max(total[i] - dp[i + X][max(M, X)])
+     * ```
+     *
+     * ---
+     *
+     * ## 🔧 Key Observations for Bottom-up
+     *
+     * 1. We must compute `dp[i][M]` **after** all `dp[i + X][...]` are known
+     *    👉 So iterate `i` **from n-1 → 0**
+     *
+     * 2. `M` ranges from `1 → n`
+     *
+     * 3. If we can take all remaining piles:
+     *
+     * ```java
+     * if (i + 2 * M >= n) dp[i][M] = total[i];
+     * ```
+     *
+     * 👉 This is a HUGE optimization (and required for efficiency)
+     *
+     * ## ⏱ Complexity
+     *
+     * * Time: `O(n^3)`
+     *   (n states for `i`, n for `M`, and up to `2M` transitions)
+     *
+     * * Space: `O(n^2)`
+     *
+     * ---
+     *
+     * ## ⚡ Important Optimization Insight
+     *
+     * This line:
+     *
+     * ```java
+     * if (i + 2 * M >= n)
+     * ```
+     *
+     * means:
+     *
+     * > “I can grab everything → no need to simulate opponent”
+     *
+     * Without this, performance gets much worse.
+     *
+     * ---
+     *
+     * ## 🔥 Intuition Recap
+     *
+     * * You don’t maximize directly—you **minimize opponent**
+     * * So every move is:
+     *
+     * ```text
+     * take X → opponent gets dp[i+X][...] → you get remaining
+     * ```
+     *
+     */
+    public int stoneGameII_1_2(int[] piles) {
+        int n = piles.length;
+
+        // suffix sum
+        int[] total = new int[n];
+        total[n - 1] = piles[n - 1];
+        for (int i = n - 2; i >= 0; i--) {
+            total[i] = total[i + 1] + piles[i];
+        }
+
+        int[][] dp = new int[n][n + 1];
+
+        // fill from back
+        for (int i = n - 1; i >= 0; i--) {
+            for (int M = 1; M <= n; M++) {
+
+                // if can take all remaining
+                if (i + 2 * M >= n) {
+                    dp[i][M] = total[i];
+                } else {
+                    int max = 0;
+
+                    for (int X = 1; X <= 2 * M; X++) {
+                        max = Math.max(
+                                max,
+                                total[i] - dp[i + X][Math.max(M, X)]);
+                    }
+
+                    dp[i][M] = max;
+                }
+            }
+        }
+
+        return dp[0][1];
+    }
+
 
     // V2
     // IDEA: TOP DOWN DP (gemini)
@@ -142,7 +282,7 @@ public class StoneGame2 {
         return memo[i][m] = maxStones;
     }
 
-    
+
 
     // V3
     // IDEA: 2D DP
