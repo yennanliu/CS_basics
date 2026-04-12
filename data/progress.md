@@ -30,7 +30,7 @@
 	- dp.md (OK)
 	- graph.md (OK)
 	- greedy.md  (OK)
-	- heap.md  (TODO: LC examples) - `2-10) Find K Pairs with Smallest Sums`
+	- heap.md  (TODO: LC examples) - `2-15) Minimum Number of Visited Cells in a Grid`
 
 - to review
 - needcode `250` - similar LC by AI
@@ -320,6 +320,10 @@
 		- 27
 	- todo (20260411)
 		- 264,295,1167,1492,895
+	- todo (20260412)
+		- 373,378
+		- 1647,1383
+		- 871
 
  	==================================
 
