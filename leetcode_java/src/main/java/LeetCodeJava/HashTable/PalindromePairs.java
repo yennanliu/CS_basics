@@ -51,8 +51,71 @@ import java.util.*;
 public class PalindromePairs {
 
     // V0
-    // IDEA: HASHMAP + SUB STRING OP + Palindrome CHECK  (gemini)
+    // IDEA: HASHMAP + left, right sub palindrome check + Palindrome CHECK  (GPT)
     public List<List<Integer>> palindromePairs_0(String[] words) {
+
+        List<List<Integer>> res = new ArrayList<>();
+        Map<String, Integer> map = new HashMap<>();
+
+        // build map
+        for (int i = 0; i < words.length; i++) {
+            map.put(words[i], i);
+        }
+
+        for (int k = 0; k < words.length; k++) {
+            String w = words[k];
+
+            for (int i = 0; i <= w.length(); i++) {
+
+                String left = w.substring(0, i);
+                String right = w.substring(i);
+
+                /** NOTE !!!
+                 *
+                 *   2 cases
+                 *
+                 *    case 1) left is palindrome
+                 *    case 2) right is palindrome
+                 */
+                // case 1: left is palindrome
+                if (isPalindrome(left)) {
+                    String revRight = new StringBuilder(right).reverse().toString();
+
+                    if (map.containsKey(revRight) && map.get(revRight) != k) {
+                        res.add(Arrays.asList(map.get(revRight), k));
+                    }
+                }
+
+                // case 2: right is palindrome
+                // (avoid duplicate when right is empty)
+                if (i != w.length() && isPalindrome(right)) {
+                    String revLeft = new StringBuilder(left).reverse().toString();
+
+                    if (map.containsKey(revLeft) && map.get(revLeft) != k) {
+                        res.add(Arrays.asList(k, map.get(revLeft)));
+                    }
+                }
+            }
+        }
+
+        return res;
+    }
+
+//    private boolean isPalindrome(String s) {
+//        int l = 0, r = s.length() - 1;
+//
+//        while (l < r) {
+//            if (s.charAt(l++) != s.charAt(r--))
+//                return false;
+//        }
+//
+//        return true;
+//    }
+
+
+    // V0-0-1
+    // IDEA: HASHMAP + left, right sub palindrome check + Palindrome CHECK  (gemini)
+    public List<List<Integer>> palindromePairs_0_0_1(String[] words) {
         List<List<Integer>> res = new ArrayList<>();
         /** NOTE !!!
          *
@@ -672,5 +735,5 @@ public class PalindromePairs {
 
 
 
-
+    
 }

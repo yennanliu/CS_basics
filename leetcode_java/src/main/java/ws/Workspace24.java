@@ -7553,7 +7553,114 @@ public class Workspace24 {
      *
      *
      */
+    // 16.45 - 55 pm
+    // IDEA: STR OP + `palindrome` check
     public List<List<Integer>> palindromePairs(String[] words) {
+        // edge
+
+
+        // ???
+        List<List<Integer>> res = new ArrayList<>();
+        Map<String, Integer> map = new HashMap<>();
+        for (int i = 0; i < words.length; i++){
+            map.put(words[i], i);
+        }
+
+        // ???
+        // double loop
+        //    -> 1. word 2. idx of word
+        //    -> within double loop
+        //    -> we check if sub str if `Palindrome`
+
+        // ??
+        for(int k = 0; k < words.length; k++){
+
+            // ???
+            String w = words[k];
+
+            for(int i = 0; i < w.length(); i++){
+
+                // /??
+                //String subStr = w.substring(0,i);
+
+                String leftSub = w.substring(0, i);
+                String rightSub = w.substring(i, w.length() - 1);
+
+                /** NOTE !!!
+                 *
+                 *  2 cases
+                 *
+                 *  - case 1) left is palindrome
+                 *  - case 2) right is palindrome
+                 *
+                 */
+
+                // - case 1) left is palindrome
+                if(isPalindrome5(leftSub)){
+                    String revRight = new StringBuilder(rightSub).reverse().toString();
+                    if(map.containsKey(rightSub) && map.get(revRight) != k){
+                        res.add(Arrays.asList(map.get(revRight), k));
+                    }
+                }
+
+                // - case 2) right is palindrome
+                if(isPalindrome5(rightSub)){
+                    String revLeft = new StringBuilder(leftSub).reverse().toString();
+                    if(map.containsKey(leftSub) && map.get(revLeft) != k){
+                        res.add(Arrays.asList(map.get(revLeft), k));
+                    }
+
+                }
+
+
+
+
+//
+//
+//                // case 1) w[0,i] is `Palindrome` already
+//                if(isPalindrome5(subStr)){
+//                    String reversedStr = new StringBuilder(subStr).reverse().toString();
+//                    if(map.containsKey(reversedStr)){
+//                        // ???
+//                        res.add(Arrays.asList(i, map.get(reversedStr)));
+//                    }
+//                }
+//                // case 2) w[0,i] is NOT `Palindrome`, check if there existed the other word
+//                //         can make `w[0,i] + x`  as `Palindrome`
+//                else{
+//                    String reversedStr = new StringBuilder(subStr).reverse().toString();
+//                    if(map.containsKey(reversedStr)){
+//                        // ???
+//                        res.add(Arrays.asList(i, map.get(reversedStr)));
+//                    }
+//                }
+//
+
+            }
+        }
+
+
+        return res;
+    }
+
+
+
+    private boolean isPalindrome5(String str){
+        if(str == null || str.isEmpty() || str.length() <= 1){
+            return true;
+        }
+        // ??
+        StringBuilder sb = new StringBuilder(str);
+        return sb.reverse().toString().equals(str);
+    }
+
+
+
+
+
+
+
+    public List<List<Integer>> palindromePairs_93(String[] words) {
         // edge
 
         // ???
