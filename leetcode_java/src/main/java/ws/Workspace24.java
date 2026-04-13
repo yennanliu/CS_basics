@@ -5021,8 +5021,43 @@ public class Workspace24 {
      *
      *
      */
-    //  IDEA 1) 2D DP ???
+    // 9.08 - 18 am
+    // IDEA 1) 1D DP
     public int change(int amount, int[] coins) {
+        // edge
+
+        int n = amount; // ???
+        // - dp[i] = max combination count of num = i
+        int[] dp = new int[n + 1]; // ???
+        // ???
+        Arrays.fill(dp, 0);
+
+        dp[0] = 1; // ????
+
+        // ??
+        for(int coin: coins){
+            for(int i = coin; i < amount + 1; i++){
+                // Return the number of combinations that make up that amount.
+                // If that amount of money
+                // cannot be made up by any combination of the coins, return 0.
+                //dp[i] =  Math.max(dp[i - coin], dp[i]);
+                dp[i] += dp[i - coin];  // ?????
+            }
+        }
+
+
+        return dp[n] == 0 ? -1: dp[n];
+    }
+
+
+
+
+
+
+
+
+    //  IDEA 1) 2D DP ???
+    public int change_95(int amount, int[] coins) {
         // edge
 
         int n = amount; // ???
