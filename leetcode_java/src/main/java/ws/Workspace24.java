@@ -6998,8 +6998,17 @@ public class Workspace24 {
      *
      *
      */
-    // IDEA 3) 2D DP ???
+    // 8.23 - 33 am
     public int longestCommonSubsequence(String text1, String text2) {
+
+        return 0;
+    }
+
+
+
+
+    // IDEA 3) 2D DP ???
+    public int longestCommonSubsequence_99(String text1, String text2) {
         // edge
 
         int n1 = text1.length();

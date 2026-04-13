@@ -30,7 +30,8 @@
 	- dp.md (OK)
 	- graph.md (OK)
 	- greedy.md  (OK)
-	- heap.md  (TODO: LC examples) - `2-15) Minimum Number of Visited Cells in a Grid`
+	- heap.md  (OK)
+	- intervals.md  (TODO: LC examples)
 
 - to review
 - needcode `250` - similar LC by AI
@@ -324,6 +325,8 @@
 		- 373,378
 		- 1647,1383
 		- 871
+	- todo (20260413)
+		- 2617
 
  	==================================
 
