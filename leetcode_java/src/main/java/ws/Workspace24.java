@@ -8550,13 +8550,28 @@ public class Workspace24 {
     // 11.25 - 35 am
     /**
      *
+     *  IDEA 1) DP
+     *
+     *  IDEA 2) PQ ???
      *
      *
      */
+    // IDEA 1) DP
     public int minRefuelStops(int target, int startFuel, int[][] stations) {
 
         return 0;
     }
+
+
+    // LC 329
+    public int longestIncreasingPath(int[][] matrix) {
+
+        return 0;
+    }
+
+
+    
+
 
 
 
