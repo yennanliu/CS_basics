@@ -8546,6 +8546,20 @@ public class Workspace24 {
         return 0;
     }
 
+    // LC 871
+    // 11.25 - 35 am
+    /**
+     *
+     *
+     *
+     */
+    public int minRefuelStops(int target, int startFuel, int[][] stations) {
+
+        return 0;
+    }
+
+
+
 
 
 
