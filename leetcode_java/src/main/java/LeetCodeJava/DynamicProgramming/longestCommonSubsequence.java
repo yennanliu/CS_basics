@@ -131,6 +131,11 @@ public class longestCommonSubsequence {
                  *
                  */
                 // Case 1: Characters match
+                /** NOTE !!
+                 *
+                 *    we use `index`
+                 *    -> e.g. `i-1`, `j-1`
+                 */
                 if (text1.charAt(i - 1) == text2.charAt(j - 1)) {
                     // Diagonal move: 1 + result from both strings being 1 char shorter
                     /**
@@ -143,7 +148,7 @@ public class longestCommonSubsequence {
                      * LCS(i, j) = LCS(i-1, j-1) + 1
                      *
                      */
-                    dp[i][j] = 1 + dp[i - 1][j - 1];
+                    dp[i][j] = dp[i - 1][j - 1] + 1;
                 }
                 // Case 2: Characters don't match
                 else {

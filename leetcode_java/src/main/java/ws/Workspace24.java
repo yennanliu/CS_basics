@@ -6998,11 +6998,75 @@ public class Workspace24 {
      *
      *
      */
-    // 8.23 - 33 am
+    // 11.02 - 12 am
+    // idea 1) 2d DP
+    /**
+     *   - DP def:
+     *
+     *       - ??? dp[i][j]: max common seq
+     *                    for s1[0...i], s2[0..j]
+     *
+     *   - DP eq:
+     *
+     *     - dp[i][j]
+     *        = max
+     *
+     */
     public int longestCommonSubsequence(String text1, String text2) {
+        // edge
 
-        return 0;
+        int n1 = text1.length();
+        int n2 = text2.length();
+
+        int[][] dp = new int[n1 + 1][n2 + 1];
+
+        // ??
+        // init
+        dp[0][0] = 0; // ???
+
+        // if text2 is null
+        for(int i = 1; i < n1 + 1; i++){
+            dp[i][0] = 0; // ???
+        }
+
+        // if text1 is null
+        for(int i = 1; i < n2 + 1; i++){
+            dp[0][i] = 0; // ???
+        }
+
+        //  longest common subsequence
+        int lcs = 0;
+
+        for(int i = 1; i < n1 + 1; i++){
+            for(int j = 1; j < n2 + 1; j++){
+                //dp[i][j] =
+                // ??
+                // case 1) text1[i] == text2[j]
+                if (text1.charAt(i - 1) == text2.charAt(j - 1)) {
+                    dp[i][j] = dp[i - 1][j - 1] + 1; // ????
+                }
+
+
+                // case 2) text1[i] != text2[j]
+                else{
+                    dp[i][j] = Math.max(dp[i-1][j], dp[i][j-1]);
+                }
+
+                // ??
+                lcs = Math.max(lcs, dp[i][j]);
+            }
+        }
+
+
+        return lcs;
     }
+
+
+
+
+
+
+
 
 
 
