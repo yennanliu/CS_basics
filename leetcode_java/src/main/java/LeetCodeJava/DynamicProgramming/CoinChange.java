@@ -135,6 +135,11 @@ public class CoinChange {
         // amount + 1 is a safe "Infinity" because the max coins
         // needed is 'amount' (all 1-cent coins).
         int max = amount + 1;
+        /**  NOTE !!!
+         *
+         *   - DP def:
+         *    - dp[i] = minimum coins needed to make amount i
+         */
         int[] dp = new int[amount + 1];
         Arrays.fill(dp, max);
 
@@ -178,6 +183,12 @@ public class CoinChange {
                 if (i >= coin) {
                     // The current amount i can be reached by
                     // taking (i - coin) and adding 1 coin.
+                    /** NOTE !!!
+                     *
+                     *   DP transition:
+                     *
+                     *      dp[i] = Math.min(dp[i], dp[i - coin] + 1);
+                     */
                     dp[i] = Math.min(dp[i], dp[i - coin] + 1);
                 }
             }

@@ -4794,8 +4794,63 @@ public class Workspace24 {
      *   --------------
      *
      */
-
+    // 7.48 - 58 am
+    // IDEA: 1D DP + loop ????
+    /**
+     *   DP def:
+     *      - dp[i]: max combination counts (coins) make sum = i
+     *
+     *   DP eq:
+     *      - // ??
+     *      loop_over_coin
+     *         loop over coin - amount
+     *           dp[i - coin] = max( dp[i - coin], dp[i] )
+     *
+     */
     public int coinChange(int[] coins, int amount) {
+        // 1. Base case
+        if (amount == 0)
+            return 0;
+
+        // dp[i] = minimum coins needed to make amount i
+
+
+        // 2. Initialize DP with a value larger than any possible answer
+        // amount + 1 is a safe "Infinity" because the max coins
+        // needed is 'amount' (all 1-cent coins).
+        int max = amount + 1;
+        int[] dp = new int[amount + 1];
+
+        // ??
+        Arrays.fill(dp, max);
+
+        dp[0] = 0; // ????
+
+        // ??
+        for(int coin: coins){
+            // ???
+            for(int i = coin; i < amount + 1; i++){
+               // dp[i - coin] = max( dp[i - coin], dp[i] );
+               // dp[i] += Math.min( dp[i - coin], dp[i] ) + 1;
+                // NOTE !!
+                //  dp[i] = Math.min(dp[i], dp[i - coin] + 1);
+                dp[i] = Math.min( dp[i - coin] + 1, dp[i] );
+            }
+        }
+
+
+        return dp[amount] == max ? -1 : dp[amount];  //????
+    }
+
+
+
+
+
+
+
+
+
+    public int coinChange_99(int[] coins, int amount) {
         // 1. Base case
         if (amount == 0)
             return 0;
@@ -7365,8 +7420,67 @@ public class Workspace24 {
      *
      *
      */
-    // IDEA 2) 2D DP ????
+    // 7.21 - 31 am
+    // // IDEA 2) 2D DP ????
     public int maxProfit(int[] prices) {
+        // edge
+        if (prices == null || prices.length <= 1)
+            return 0;
+
+
+
+        int n = prices.length;
+        // ??
+        //int[][] dp = new int[n + 1][3];
+        int[][] dp = new int[n][3];
+
+        /**  NOTE: the `day 0` base case
+         *
+         *  -> we init day 0 per each case
+         *   - 0: `bought` OP
+         *   - 1: `sold` op
+         *   - 2: `do nothing` op
+         */
+
+        // ???
+        dp[0][0] = -1 * prices[0];
+        dp[0][1] = 0;
+        dp[0][2] = 0;
+
+
+        // init
+        for(int i = 1; i < n + 1; i++){
+            // case 1) hold
+            //        -> prev day: SOLD!!!! or  `do nothing` ???
+            //dp[i][2] = Math.max(dp[i-1][0], dp[i-1][2]);
+            dp[i][2] = Math.max(dp[i-1][1], dp[i-1][2]);
+
+            // case 2) sale
+            //       -> prev day: buy ???
+            //dp[i][1] = Math.max(dp[i-1][0], dp[i-1][2]) +  prices[i];
+            dp[i][1] = dp[i-1][0] +  prices[i];
+
+            // case 3) buy ???
+            //      -> prev day: `do nothing` ???
+            // // Either you held it yesterday OR you were resting yesterday and bought today
+            dp[i][0] = Math.max(dp[i-1][2] - prices[i], dp[i-1][2]);
+
+        }
+
+
+        return Math.max(dp[n - 1][1], dp[n - 1][2]);
+    }
+
+
+
+
+
+
+
+
+
+    // IDEA 2) 2D DP ????
+    public int maxProfit_99(int[] prices) {
         // edge
         if (prices == null || prices.length <= 1)
             return 0;
