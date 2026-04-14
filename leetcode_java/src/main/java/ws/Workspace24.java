@@ -6914,10 +6914,81 @@ public class Workspace24 {
      *
      *  -------------
      */
+    // 10.19 - 29 am
+    // IDEA 1) `pre` ORDER DFS ?????
+    List<TreeNode> res80 = new ArrayList<>();
+    public List<TreeNode> delNodes(TreeNode root, int[] to_delete) {
+        // edge
+        if(root == null){
+            return new ArrayList<>();
+        }
+
+
+        HashSet<Integer> set = new HashSet<>();
+        for(int x: to_delete){
+            set.add(x);
+        }
+
+        //dfsDeleteHelper1(root, set, false);
+        // NOTE !!! init `isParentDeleted` as true
+        dfsDeleteHelper1(root, set, true); // root has no parent → treated as deleted
+
+        return res80;
+    }
+
+
+
+
+    // ???
+    private TreeNode dfsDeleteHelper1(TreeNode root, HashSet<Integer> set, boolean isParentDeleted){
+        // edge
+        if(root == null){
+            // true; // ???
+            return null;
+        }
+
+        // ???
+//        if(set.contains(root.val)){
+//            isParentDeleted = true;
+//        }
+
+        boolean isDeleted = set.contains(root.val);
+
+        // ???
+        if(!isDeleted && isParentDeleted){
+            res80.add(root);
+        }
+
+        TreeNode _left = dfsDeleteHelper1(root.left, set, isParentDeleted);
+        TreeNode _right = dfsDeleteHelper1(root.right, set, isParentDeleted);
+
+//        // ???
+//        if(isParentDeleted){
+//            res80.add(_left);
+//            res80.add(_right);
+//        }else{
+//            // /??
+//            if(root != null){
+//                root.left = _left;
+//                root.right = _right;
+//            }
+//        }
+
+        return (isDeleted) ? null : root;
+    }
+
+
+
+
+
+
+
+
+
     // IDEA 1) POST ORDER DFS ?????
      ///  ???
     List<TreeNode> res99 = new ArrayList<>();
-    public List<TreeNode> delNodes(TreeNode root, int[] to_delete) {
+    public List<TreeNode> delNodes_99(TreeNode root, int[] to_delete) {
         // edge
 
 

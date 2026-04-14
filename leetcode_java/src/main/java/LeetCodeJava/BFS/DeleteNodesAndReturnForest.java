@@ -43,9 +43,67 @@ import java.util.*;
 public class DeleteNodesAndReturnForest {
 
     // V0
-//    public List<TreeNode> delNodes(TreeNode root, int[] to_delete) {
-//
-//    }
+    // IDEA: hybrid DFS (pre-order DFS, post-order DFS) + 2 status track (GPT)
+    /**
+     *
+     *  1. pre-order DFS, post-order DFS
+     *
+     *  2. 2 states track:
+     *
+     *     isDeleted → whether current node should be removed
+     *     isParentDeleted → whether parent was removed
+     */
+    /**
+     * 3. Time & Space Complexity
+     *
+     *    - Time Complexity: O(n)
+     *        You visit each node exactly once
+     *       HashSet lookup is O(1)
+     *
+     *
+     *    - Space Complexity: O(n)
+     *
+     *    Breakdown:
+     *
+     *     - Recursion stack
+     *        Worst case (skewed tree): O(n)
+     *        Balanced tree: O(log n)
+     *     - HashSet
+     *        Stores up to k nodes → O(k)
+     *     - Result list
+     *        In worst case (delete every other node): O(n)
+     *
+     */
+    List<TreeNode> res80 = new ArrayList<>();
+
+    public List<TreeNode> delNodes(TreeNode root, int[] to_delete) {
+
+        HashSet<Integer> set = new HashSet<>();
+        for (int x : to_delete) {
+            set.add(x);
+        }
+
+        dfs(root, set, true); // root has no parent → treated as deleted
+
+        return res80;
+    }
+
+    private TreeNode dfs(TreeNode node, HashSet<Integer> set, boolean isParentDeleted) {
+        if (node == null)
+            return null;
+
+        boolean isDeleted = set.contains(node.val);
+
+        // If this node is a new root
+        if (!isDeleted && isParentDeleted) {
+            res80.add(node);
+        }
+
+        node.left = dfs(node.left, set, isDeleted);
+        node.right = dfs(node.right, set, isDeleted);
+
+        return isDeleted ? null : node;
+    }
 
 
     // V0-0-1
