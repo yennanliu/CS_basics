@@ -1,6 +1,6 @@
 # Progress
 
-# 2026-04-14
+# 2026-04-15
 
 - LC weeekly 103
 	- lc_weekly_gemini.md
@@ -41,6 +41,7 @@
 		- monotonic_stack.md
 		- palindrome.md
 		- prefix_sum.md
+		- priority_queue.md
 
 - to review
 - needcode `250` - similar LC by AI
@@ -347,6 +348,8 @@
 		- 1696
 		- 456
 		- 516
+	- todo (20260415)
+		- 358,621,767
 
  	==================================
 

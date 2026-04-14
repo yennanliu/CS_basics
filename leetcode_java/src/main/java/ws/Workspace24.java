@@ -8861,6 +8861,16 @@ public class Workspace24 {
 
 
 
+    // LC 986
+    // 11.53 - 12.03 pm
+    /**
+     *
+     *
+     */
+    public int[][] intervalIntersection(int[][] firstList, int[][] secondList) {
+
+        return null;
+    }
 
 
 
