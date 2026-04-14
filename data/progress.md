@@ -35,6 +35,10 @@
 	- java_trick.md
 	- kadane_algorithm.md (TODO: LC examples)
 
+
+	- (tmp prep)
+		- monotonic_queue.md
+
 - to review
 - needcode `250` - similar LC by AI
     - Arrays & Hashing
@@ -335,6 +339,8 @@
 		- 986
 		- 1235
 		- 729,731
+		- 239,1438
+		- 1425,1696(advanced)
 
  	==================================
 
