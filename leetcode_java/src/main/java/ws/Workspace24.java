@@ -8564,13 +8564,153 @@ public class Workspace24 {
 
 
     // LC 329
+    // 7.24 -  34 am
+    /**
+     *  ->  return the length of the
+     *  longest increasing path in matrix.
+     *
+     *
+     *  ------------------
+     *
+     *  IDEA 1) 2D DP
+     *
+     *     - DP def:
+     *
+     *        - dp[i][j]:  max `increasing` len when visit [i,j]
+     *
+     *     - DP eq:
+     *
+     *  IDEA 2) MIN PQ + BFS ????
+     *
+     *  IDEA 3) BFS + BRUTE FORCE ??? (LOOP OVER ALL CELLS)
+     *
+     *
+     *   ------------------
+     *
+     */
+    // IDEA: DFS + memoization (top-down DP) ????
     public int longestIncreasingPath(int[][] matrix) {
+        // edge
+
+        int l = matrix.length;
+        int w = matrix[0].length;
+
+        // ??
+        int[][] dp = new int[l][w]; // ???
+
+        int globalMaxLen = 0;
+
+        // ??
+        for(int y = 0; y < l; y++){
+            for(int x = 0; x < w; x++){
+                globalMaxLen = Math.max(globalMaxLen,
+                        dfsPathHelper(matrix, dp, x, y)
+                );
+            }
+        }
+
+        return globalMaxLen;
+    }
+
+
+    private int dfsPathHelper(int[][] matrix, int[][] dp, int x, int y){
+        // edge // ???
+
+//        // ????
+//        if(dp[y][x] < len){
+//            return dp[y][x]; // ???
+//        }
+
+        int l = matrix.length;
+        int w = matrix[0].length;
+
+//        // validate !!!
+//        if(x < 0 || x >= w || y < 0 || y >= l){
+//            return 0;
+//        }
+
+        int[][] moves = new int[][] { {0,1}, {0,-1}, {1,0}, {-1,0} };
+
+        // ?? update len
+       // len += 1;
+
+        // update dp table???
+      //  dp[y][x] = Math.max(dp[y][x], len);
+
+        // ???
+       // int maxLen = len;
+
+        // ??
+        for(int[] m: moves){
+            int x_ = x + m[0];
+            int y_ = y + m[1];
+
+            boolean shouldProceed = (x_ >= 0
+                    && x_ < w && y_ >= 0 && y_ < l
+                    && matrix[y_][x_] > matrix[y][x]);
+
+            // ??
+            if(shouldProceed){
+                // ???
+                dp[y_][x_] = dp[y][x] + 1;
+
+                dfsPathHelper(matrix, dp, x_, y_);
+            }
+
+
+//            maxLen = Math.max(
+//                    maxLen,
+//                    dfsPathHelper(matrix, dp, x_, y_, len)
+//            );
+
+            // NOTE !!!
+            // NO NEED to `backtrack`,
+            // since `int` is primary type in java
+        }
+
+
+
+        //return maxLen;
+        return 0;
+    }
+
+
+
+
+
+
+
+
+
+
+    public int longestIncreasingPath_99(int[][] matrix) {
+        // edge
+
+        int l = matrix.length;
+        int w = matrix[0].length;
+
+        int globalMaxLen = 0;
+
+        // ??
+        for(int y = 0; y < l; y++){
+            for(int x = 0; x < w; x++){
+                globalMaxLen = Math.max(globalMaxLen,
+                        bfsGetMaxPathLen(matrix, x, y)
+                );
+            }
+        }
+
+        return globalMaxLen;
+    }
+
+    private int bfsGetMaxPathLen(int[][] matrix, int x, int y){
+        // todo: implement BFS logic
 
         return 0;
     }
 
 
-    
+
 
 
 

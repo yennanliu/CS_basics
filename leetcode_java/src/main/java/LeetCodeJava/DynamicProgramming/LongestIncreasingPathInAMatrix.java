@@ -46,9 +46,62 @@ import java.util.Queue;
 public class LongestIncreasingPathInAMatrix {
 
     // V0
-//    public int longestIncreasingPath(int[][] matrix) {
-//
-//    }
+    // IDEA: 2D DP + DFS (fixed by gpt)
+    public int longestIncreasingPath(int[][] matrix) {
+        int l = matrix.length;
+        int w = matrix[0].length;
+
+        int[][] dp = new int[l][w]; // memo
+
+        int globalMaxLen = 0;
+
+        for (int y = 0; y < l; y++) {
+            for (int x = 0; x < w; x++) {
+                globalMaxLen = Math.max(globalMaxLen,
+                        dfsPathHelper(matrix, dp, x, y));
+            }
+        }
+
+        return globalMaxLen;
+    }
+
+    private int dfsPathHelper(int[][] matrix, int[][] dp, int x, int y) {
+        int l = matrix.length;
+        int w = matrix[0].length;
+
+        // boundary check
+        if (x < 0 || x >= w || y < 0 || y >= l) {
+            return 0;
+        }
+
+        // memo hit
+        if (dp[y][x] != 0) {
+            return dp[y][x];
+        }
+
+        int[][] moves = new int[][] { { 0, 1 }, { 0, -1 }, { 1, 0 }, { -1, 0 } };
+
+        int maxLen = 1; // at least itself
+
+        for (int[] m : moves) {
+            int nx = x + m[0];
+            int ny = y + m[1];
+
+            // check bounds + strictly increasing
+            if (nx >= 0 && nx < w && ny >= 0 && ny < l &&
+                    matrix[ny][nx] > matrix[y][x]) {
+
+                maxLen = Math.max(
+                        maxLen,
+                        1 + dfsPathHelper(matrix, dp, nx, ny));
+            }
+        }
+
+        dp[y][x] = maxLen;
+        return maxLen;
+    }
+
+
 
     /** NOTE !!! (WRONG code, just for reference)
      *
