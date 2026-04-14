@@ -1828,24 +1828,183 @@ class Solution(object):
 ```
 
 ### 4.7) Search Insert Position (LC 35)
-**Approach**: Find leftmost position where target can be inserted
+
+**Problem**: Find index of target in sorted array. If not found, return the index where it should be inserted.
+
+**Approach**: Standard binary search - return `left` pointer when target not found
+
+#### Core Insight: Why `left` is the Insertion Position
+
+This is the **critical insight** that makes LC 35 trivial once understood. When binary search loop `while (l <= r)` exits, the pointers have special meaning:
+
+```
+Loop Exit Condition: l == r + 1 (l > r)
+
+Array State:
+[ elements < target ]  r  |  l  [ elements >= target ]
+
+index:     0   ...   r   l   ...   n-1
+value:    < target   gap      >= target
+```
+
+**What this means:**
+- `r` is the **last element smaller than target**
+- `l` is the **first element greater than or equal to target**
+- The insertion position is **exactly at `l`**
+
+#### Detailed Trace: `nums = [1, 3, 5, 6], target = 4`
+
+```
+Initial State:
+l=0, r=3
+[1,  3,  5,  6]
+ l           r
+
+Step 1: mid=1, nums[1]=3
+3 < 4 → l = mid + 1 = 2
+[1,  3,  5,  6]
+       l  r
+
+Step 2: mid=2, nums[2]=5
+5 > 4 → r = mid - 1 = 1
+[1,  3,  5,  6]
+    r  l
+
+Loop Ends (l > r):
+- r=1 points to 3 (last element < 4)
+- l=2 points to 5 (first element > 4)
+- Insertion position: l = 2 ✓
+
+Result array if we insert 4: [1, 3, 4, 5, 6]
+```
+
+#### Mathematical Guarantee
+
+When the loop exits without finding target:
+
+```
+Invariant maintained throughout search:
+- nums[0..l-1] < target
+- nums[l..end] >= target
+
+Therefore:
+- If target exists → found during loop
+- If target doesn't exist → l is exactly where it should be inserted
+```
+
+#### Java Implementation (Standard Pattern)
+
+```java
+public int searchInsert(int[] nums, int target) {
+    if (nums == null || nums.length == 0) {
+        return 0;
+    }
+
+    int l = 0;
+    int r = nums.length - 1;
+
+    while (l <= r) {
+        int mid = l + (r - l) / 2;  // avoid overflow
+        
+        if (nums[mid] == target) {
+            return mid;  // Found exact match
+        } else if (nums[mid] < target) {
+            l = mid + 1;  // Target is in right half
+        } else {
+            r = mid - 1;  // Target is in left half
+        }
+    }
+
+    // Key insight: l is always the correct insertion position
+    // At this point: l > r, so l = r + 1
+    // By invariant: nums[0..l-1] < target && nums[l..end] >= target
+    return l;
+}
+```
+
+#### Python Alternative (Left-Boundary Style)
+
 ```python
-# LC 035 Search Insert Position
-# V1' 
-# https://blog.csdn.net/fuxuemingzhu/article/details/70738108
 class Solution(object):
     def searchInsert(self, nums, target):
-        N = len(nums)
-        left, right = 0, N #[left, right)
-        while left < right:
-            mid = left + (right - left) / 2
+        left, right = 0, len(nums)  # Note: right = len(nums), not len-1
+        
+        while left < right:  # Note: < not <=
+            mid = left + (right - left) // 2
             if nums[mid] == target:
                 return mid
-            elif nums[mid] > target:
-                right = mid
-            else:
+            elif nums[mid] < target:
                 left = mid + 1
+            else:
+                right = mid  # Note: not mid-1
+        
+        # When left == right, left is insertion position
         return left
+```
+
+#### Why This Works Without Special Cases
+
+```
+Compare two approaches:
+
+❌ Complicated approach:
+Check if target is between mid and mid+1
+→ Need multiple conditional checks
+→ Error-prone edge cases
+
+✅ Clean approach:
+Just return l when loop ends
+→ Single line return
+→ Works for all cases (found, insert at start, end, middle)
+→ No special case handling needed
+```
+
+#### Complexity Analysis
+
+| Metric | Complexity |
+|--------|-----------|
+| Time | O(log n) - halving search space each iteration |
+| Space | O(1) - only two pointers, constant variables |
+
+#### Similar LeetCode Problems
+
+| LC # | Problem | Key Difference | Difficulty |
+|-----|---------|-----------------|-----------|
+| **35** | **Search Insert Position** | Base pattern - find insertion position | Easy |
+| 704 | Binary Search | Find exact target, return -1 if not found | Easy |
+| 34 | Find First and Last Position | Find both boundaries of target | Medium |
+| 367 | Valid Perfect Square | Binary search on answer space | Easy |
+| 744 | Find Smallest Letter Greater Than Target | Find smallest element > target | Easy |
+| 33 | Search in Rotated Sorted Array | Handle rotated array variation | Medium |
+| 81 | Search in Rotated Sorted Array II | Handle rotated array + duplicates | Medium |
+| 153 | Find Minimum in Rotated Sorted Array | Find minimum in rotated array | Medium |
+| 441 | Arranging Coins | Binary search variant (money/stairs) | Easy |
+| 1011 | Capacity To Ship Packages Within D Days | Binary search on answer + validation | Medium |
+| 875 | Koko Eating Bananas | Binary search on speed + time validation | Medium |
+| 1482 | Minimum Number of Days to Make m Bouquets | Binary search + greedy validation | Medium |
+
+#### Pattern Connection
+
+**LC 35 is a gateway problem** that teaches the fundamental insight:
+- Return value of binary search pointer when target not found
+- Foundation for "binary search on answer" problems
+- Essential for understanding left/right boundary searches
+
+**Next level problems** that build on this insight:
+- LC 34: Find boundaries (apply same logic to both left and right)
+- LC 1011, 875: Binary search on answer space (find minimum/maximum valid value)
+
+```python
+# Example: LC 34 - Find First and Last Position
+# Uses LC 35 insight twice (once for left boundary, once for right)
+def searchRange(nums, target):
+    # Find leftmost position (like LC 35 but looking for >=)
+    left = binarySearchLeft(nums, target)
+    
+    # Find rightmost position (like LC 35 but looking for <=)
+    right = binarySearchRight(nums, target)
+    
+    return [left, right]
 ```
 
 ### 4.8) Capacity To Ship Packages Within D Days (LC 1011)

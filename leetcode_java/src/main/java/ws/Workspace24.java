@@ -8793,6 +8793,72 @@ public class Workspace24 {
 
 
 
+    // LC 35
+    // 11.27 - 40 am
+    /**
+     *  -> return the index if the target is found.
+     *     - if NOT
+     *        -  where it would be if it were inserted in order.
+     *
+     *
+     *   -------------
+     *
+     *   ex 1)
+     *
+     *    Input: nums = [1,3,5,6], target = 5
+     *
+     */
+    // IDEA: BINARY SEARCH
+    public int searchInsert(int[] nums, int target) {
+        // edge
+
+        int l = 0;
+        int r = nums.length - 1;
+
+        // edge ??
+        if(nums[r] == nums[l]){
+            return 0; // ???
+        }
+        if(target > nums[r]){
+            return nums.length; // ???
+        }
+        if(target < nums[l]){
+            return 0; // ???
+        }
+
+        // ?
+        while (r >= l){
+            int mid = l + ( r - l ) / 2;
+            int midVal = nums[mid];
+
+            // case 1)
+            if(midVal == target){
+                return mid;
+            }
+            else if (midVal > target){
+                r = mid -1;
+            }else{
+                l = mid + 1;
+            }
+//            // case 2)
+//        /*    if(midVal > nums[l] && midVal < nums[r]){
+//                return mid; // ???
+//            }*/
+//            // ???
+//            // case 3)
+//            else{
+//                if (midVal > target){
+//                    l = mid + 1;
+//                }else{
+//                    r = mid -1;
+//                }
+//            }
+        }
+
+        return l;  // ???
+    }
+
+
 
 
 

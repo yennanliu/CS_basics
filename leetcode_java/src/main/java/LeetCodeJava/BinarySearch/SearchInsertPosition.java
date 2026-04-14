@@ -40,7 +40,9 @@ public class SearchInsertPosition {
 
     // V0
     // IDEA: BINARY SEARCH on left item (gemini)
-    /** NOTE !!!
+    /** NOTE !!! the `core` idea of insert op below:
+     *
+     *
      *
      *  when ` while (r >= l) loop end`
      *
