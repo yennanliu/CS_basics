@@ -101,6 +101,19 @@ public class LongestIncreasingPathInAMatrix {
         }
 
         // memo hit
+        /** Why is `dp[y][x]` guaranteed to be the `longest` ?
+         *
+         *  -> Because of what the DFS computes before storing it
+         *    -> maxLen = Math.max(maxLen, 1 + dfs(nx, ny));
+         *    -> “Try all possible valid next steps, and take the best one.”
+         *
+         *   and below items make `memo` safe and work.
+         *
+         *       1. The graph is a DAG (you only move to strictly larger values)
+         *       2. No cycles → no revisiting with better outcomes
+         *       3. No state changes → result is deterministic
+         *
+         */
         if (dp[y][x] != 0) {
             return dp[y][x];
         }
@@ -117,6 +130,9 @@ public class LongestIncreasingPathInAMatrix {
             if (nx >= 0 && nx < w && ny >= 0 && ny < l &&
                     matrix[ny][nx] > matrix[y][x]) {
 
+                /**
+                 * “Try all possible valid next steps, and take the best one.”
+                 */
                 maxLen = Math.max(
                         maxLen,
                         1 + dfsPathHelper(matrix, dp, nx, ny));

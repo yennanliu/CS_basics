@@ -898,6 +898,167 @@ def top_down_dp(nums):
     return dp(len(nums) - 1)
 ```
 
+### Template 6-1: DFS + Memoization Pattern (Graph/Sequence Chaining)
+
+**Problem Type**: Building sequences/chains where each element extends the previous one
+
+**Core Idea**:
+- Use DFS with memoization (top-down DP) to explore all possible chains from each starting point
+- **Key Insight**: Process in order of increasing size/length to enable bottom-up exploration through DFS
+- Only look forward: from current element, find all valid next elements that are exactly 1 step larger
+- Memoize results to avoid recomputing longest chain from each element
+
+**Pattern Overview**:
+1. **Organize by size/property**: Group elements by size/length (usually a Map or array grouping)
+2. **DFS from each element**: For each element, recursively find longest chain starting from it
+3. **Memoize results**: Store `memo[element] = longestChainLength` to avoid recomputation
+4. **Transition**: From current element, check all candidates in the next size group
+5. **Base case**: If no valid next elements exist, return 1 (single element is a chain of length 1)
+
+**Example: LC 1048 - Longest String Chain**
+
+**Core Idea**: 
+- A word chain is formed when each word is a predecessor of the next (exactly one letter inserted)
+- Build chains by finding all valid successors (words of length+1) that can follow current word
+- Use DFS to explore all chains, memoizing the longest chain starting from each word
+
+**State Definition**:
+- `memo[word]` = length of longest chain starting from `word`
+- `wordLengthMap[len]` = all words of length `len` for quick lookup of candidates
+
+**Java Implementation** (Top-down DFS + Memoization):
+```java
+private Map<Integer, List<String>> wordLengthMap;
+private Map<String, Integer> memo;
+
+public int longestStrChain(String[] words) {
+    // Organize words by length for O(1) lookup of next-length candidates
+    wordLengthMap = new HashMap<>();
+    for (String word : words) {
+        wordLengthMap.putIfAbsent(word.length(), new ArrayList<>());
+        wordLengthMap.get(word.length()).add(word);
+    }
+
+    int maxPath = 1;
+    memo = new HashMap<>();
+    
+    // Start DFS from each word to find longest chain
+    for (String word : words)
+        maxPath = Math.max(maxPath, dfs(word));
+
+    return maxPath;
+}
+
+private int dfs(String word) {
+    // Base case: no words longer than current word
+    if (!wordLengthMap.containsKey(word.length() + 1)) 
+        return 1;
+    
+    // Check memo first (avoid recomputation)
+    if (memo.containsKey(word)) 
+        return memo.get(word);
+
+    int maxPath = 0;
+    
+    // Try all words of length+1 as potential successors
+    List<String> nextWords = wordLengthMap.get(word.length() + 1);
+    for (String nextWord : nextWords) {
+        if (isOneOff(word, nextWord)) {  // Valid predecessor-successor pair
+            maxPath = Math.max(maxPath, dfs(nextWord));
+        }
+    }
+
+    // Store result: current chain = 1 + longest chain from successor
+    memo.put(word, maxPath + 1);
+    return memo.get(word);
+}
+
+// Helper: Check if exactly one letter was inserted
+private boolean isOneOff(String a, String b) {
+    int count = 0;
+    for (int i = 0, j = 0; i < b.length() && j < a.length() && count <= 1; i++) {
+        if (a.charAt(j) != b.charAt(i)) 
+            count++;
+        else 
+            j++;
+    }
+    return count <= 1;
+}
+```
+
+**Alternative: Bottom-up DP Variant** (without explicit DFS):
+```java
+public int longestStrChain(String[] words) {
+    // Sort by length to process in increasing order
+    Arrays.sort(words, (a, b) -> a.length() - b.length());
+    
+    Map<String, Integer> dp = new HashMap<>();
+    int maxPath = 1;
+
+    for (String word : words) {
+        int currLength = 1;
+        
+        // Try removing each character to find predecessors
+        StringBuilder sb = new StringBuilder(word);
+        for (int i = 0; i < word.length(); i++) {
+            sb.deleteCharAt(i);
+            String prevWord = sb.toString();
+            // Chain from predecessor if it exists
+            currLength = Math.max(currLength, dp.getOrDefault(prevWord, 0) + 1);
+            sb.insert(i, word.charAt(i));
+        }
+        
+        dp.put(word, currLength);
+        maxPath = Math.max(maxPath, currLength);
+    }
+
+    return maxPath;
+}
+```
+
+**Complexity Analysis**:
+| Aspect | Analysis |
+|--------|----------|
+| **Time** | O(N × L²) where N = number of words, L = max word length |
+| | For each word (N), check all candidates in next length group (≤N) |
+| | For each candidate, validate predecessor relationship (O(L)) |
+| **Space** | O(N) for memoization map + O(N) for word length grouping = O(N) |
+
+**Key Differences from Other DP Patterns**:
+- **vs. Standard DP**: Top-down DFS instead of bottom-up table
+- **vs. Graph BFS**: DFS naturally explores chains; memoization prevents revisiting
+- **vs. String DP**: Not comparing character-by-character edits, but validating structural predecessor relation
+
+**Similar LeetCode Problems** 📚:
+
+| Problem | LC # | Key Difference | Pattern |
+|---------|------|-----------------|---------|
+| **Longest String Chain** | 1048 | Strings with 1-char insert | DFS + Memo (forward) |
+| **Longest Increasing Subsequence** | 300 | Numbers with value ordering | DFS + Memo (backward) or DP |
+| **Word Ladder** | 127 | Find path between words (BFS) | BFS instead of DFS |
+| **Word Ladder II** | 126 | Find ALL paths (BFS + backtrack) | Multi-path variant |
+| **Longest Increasing Path in Matrix** | 329 | 2D grid version | DFS + Memo on 2D grid |
+| **Longest Path in Tree** | 2246 | Tree structure (no cycles) | DFS on tree |
+
+**Pattern Recognition Checklist** ✅:
+- ✅ Building chains/sequences where each element extends previous
+- ✅ Checking predecessor-successor relations (structural/value-based)
+- ✅ Need to find longest chain across multiple starting points
+- ✅ Natural to start DFS from each element and explore forward
+- ✅ Same element could be on a chain from multiple paths → memoize
+
+**Common Pitfalls** ⚠️:
+1. **Inefficient candidate checking**: Without organizing by size/property, checking all words O(N²) per word is slow
+   - ✅ Group by length/property for O(1) lookup
+2. **Recomputing chains**: Without memoization, many DFS branches recompute same subproblems
+   - ✅ Always memoize before recursive calls
+3. **Wrong direction**: Trying to build from smaller→larger vs. larger→smaller changes complexity
+   - ✅ Forward direction (smaller→larger) is more natural for chain-building
+4. **Validation complexity**: O(N) comparison per candidate pair is slow
+   - ✅ Use smart validation (like isOneOff with two-pointer) to check in O(L)
+
+---
+
 ### Template 7: String DP (Edit Distance / Levenshtein Distance)
 
 **Problem**: LC 72 - Edit Distance
