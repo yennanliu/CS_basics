@@ -31,7 +31,9 @@
 	- graph.md (OK)
 	- greedy.md  (OK)
 	- heap.md  (OK)
-	- intervals.md  (TODO: LC examples)
+	- intervals.md  (OK)
+	- java_trick.md
+	- kadane_algorithm.md (TODO: LC examples)
 
 - to review
 - needcode `250` - similar LC by AI
@@ -329,6 +331,10 @@
 		- 2617
 	- todo (20260414)
 		- 329,1048,300,127,120,931,403,847,1547
+		- 57,452
+		- 986
+		- 1235
+		- 729,731
 
  	==================================
 
