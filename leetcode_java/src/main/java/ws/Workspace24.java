@@ -8625,14 +8625,24 @@ public class Workspace24 {
         int w = matrix[0].length;
 
 //        // validate !!!
-//        if(x < 0 || x >= w || y < 0 || y >= l){
-//            return 0;
-//        }
+        if(x < 0 || x >= w || y < 0 || y >= l){
+            return 0;
+        }
+
+        // memo hit ??????
+        if (dp[y][x] != 0) {
+            return dp[y][x];
+        }
+
+
 
         int[][] moves = new int[][] { {0,1}, {0,-1}, {1,0}, {-1,0} };
 
         // ?? update len
        // len += 1;
+
+        int maxLen = 1; // at least itself
+
 
         // update dp table???
       //  dp[y][x] = Math.max(dp[y][x], len);
@@ -8651,17 +8661,15 @@ public class Workspace24 {
 
             // ??
             if(shouldProceed){
-                // ???
-                dp[y_][x_] = dp[y][x] + 1;
-
-                dfsPathHelper(matrix, dp, x_, y_);
+//                // ???
+//                dp[y_][x_] = dp[y][x] + 1;
+//
+//                dfsPathHelper(matrix, dp, x_, y_);
+                maxLen = Math.max(
+                        maxLen,
+                        1 + dfsPathHelper(matrix, dp, x_, y_)
+                );
             }
-
-
-//            maxLen = Math.max(
-//                    maxLen,
-//                    dfsPathHelper(matrix, dp, x_, y_, len)
-//            );
 
             // NOTE !!!
             // NO NEED to `backtrack`,
@@ -8669,9 +8677,11 @@ public class Workspace24 {
         }
 
 
+        // NOTE !!! update dp
+        dp[y][x] = maxLen;
 
-        //return maxLen;
-        return 0;
+        return maxLen;
+        //return 0;
     }
 
 

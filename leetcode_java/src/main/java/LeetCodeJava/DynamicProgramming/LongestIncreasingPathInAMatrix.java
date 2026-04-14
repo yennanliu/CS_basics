@@ -51,6 +51,13 @@ public class LongestIncreasingPathInAMatrix {
         int l = matrix.length;
         int w = matrix[0].length;
 
+        /** NOTE !!!
+         *
+         *  - DP def:
+         *
+         *     - dp[y][x] = longest ``increasing` path `starting`  FROM (x, y)
+         *
+         */
         int[][] dp = new int[l][w]; // memo
 
         int globalMaxLen = 0;
@@ -65,6 +72,25 @@ public class LongestIncreasingPathInAMatrix {
         return globalMaxLen;
     }
 
+
+    /** NOTE !!
+     *
+     *     1. No need for len parameter
+     *
+     *     2. how we pass `man len` via dp:
+     *          - 1 + dfsPathHelper(matrix, dp, nx, ny)
+     *
+     *     3. how we update dp table
+     *         - dp[y][x] = maxLen;
+     *
+     *     4. how we use memo (dp)
+     *        ```
+     *         if (dp[y][x] != 0) {
+     *             return dp[y][x];
+     *         }
+     *        ```
+     *
+     */
     private int dfsPathHelper(int[][] matrix, int[][] dp, int x, int y) {
         int l = matrix.length;
         int w = matrix[0].length;
@@ -97,6 +123,36 @@ public class LongestIncreasingPathInAMatrix {
             }
         }
 
+        /** NOTE !!!
+         *
+         *    why we update DP table here ? (but NOT in direction for loop above)
+         *
+         *    ->
+         *
+         *   1.   dp[y][x] means:
+         *       “the longest increasing path STARTING from (x, y)”
+         *
+         *     -> so we need to compute `max len` within all possible moves (4 moves ways)
+         *        from (x,y) and get the max, then we are able to update dp[y][x]
+         *
+         *
+         *   2.  🔄 Think of it like dependency flow
+         *       (x, y) depends on (nx, ny)
+         *
+         *       -> So the order is:
+         *
+         *           1. Compute neighbor result first:
+         *               ```
+         *               dp[ny][nx]
+         *               ```
+         *
+         *           2. Then compute current:
+         *
+         *              ```
+         *              dp[y][x] = 1 + dp[ny][nx]
+         *              ```
+         *
+         */
         dp[y][x] = maxLen;
         return maxLen;
     }
