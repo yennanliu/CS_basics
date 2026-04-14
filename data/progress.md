@@ -40,6 +40,7 @@
 		- monotonic_queue.md
 		- monotonic_stack.md
 		- palindrome.md
+		- prefix_sum.md
 
 - to review
 - needcode `250` - similar LC by AI
