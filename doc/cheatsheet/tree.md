@@ -427,6 +427,124 @@ def get_node_path(node):
 - Time complexity: O(N²) worst case (string building), O(N) with optimization
 - Space complexity: O(N) for HashMap and recursion stack
 
+#### **Pattern 8: Node Deletion with State Tracking (DFS + Memoization)**
+- **Use Case**: Problems requiring selective node deletion and formation of multiple tree roots
+- **Core Concept**: Track both whether current node should be deleted and whether its parent was deleted
+- **Key Insight**: When a node is deleted, its non-null children become new tree roots
+- **Example**: LC 1110 (Delete Nodes And Return Forest)
+- **Why it works**:
+  - Two-state tracking: `isDeleted` (current node) and `isParentDeleted` (parent's status)
+  - A node becomes a forest root if: (1) it's NOT deleted, AND (2) its parent WAS deleted or doesn't exist
+  - Post-order traversal: process children first, then decide whether to keep the node
+  - Clean disconnection: return null for deleted nodes, automatically severing parent-child links
+
+**Template Structure (DFS + State Tracking):**
+```java
+// Track two states: whether node is deleted, and whether parent was deleted
+private TreeNode dfs(TreeNode node, HashSet<Integer> deleteSet, boolean isParentDeleted, List<TreeNode> forest) {
+    if (node == null) {
+        return null;
+    }
+
+    boolean isDeleted = deleteSet.contains(node.val);
+
+    // If this node is NOT deleted but its parent WAS deleted, it becomes a root
+    if (!isDeleted && isParentDeleted) {
+        forest.add(node);
+    }
+
+    // Post-order: process children with current node's delete status
+    // This status becomes the "isParentDeleted" for children
+    node.left = dfs(node.left, deleteSet, isDeleted, forest);
+    node.right = dfs(node.right, deleteSet, isDeleted, forest);
+
+    // Return null if deleted (disconnect from parent), otherwise return node
+    return isDeleted ? null : node;
+}
+```
+
+**Alternative Template (BFS Approach):**
+```java
+// BFS: disconnect deleted nodes during traversal, collect forest roots
+public List<TreeNode> deleteNodes_BFS(TreeNode root, int[] to_delete) {
+    Set<Integer> deleteSet = new HashSet<>();
+    for (int val : to_delete) {
+        deleteSet.add(val);
+    }
+    
+    List<TreeNode> forest = new ArrayList<>();
+    Queue<TreeNode> q = new LinkedList<>();
+    q.add(root);
+    
+    while (!q.isEmpty()) {
+        TreeNode curNode = q.poll();
+        
+        // Process children: disconnect if they're in delete set
+        if (curNode.left != null) {
+            q.add(curNode.left);
+            if (deleteSet.contains(curNode.left.val)) {
+                curNode.left = null;  // Disconnect
+            }
+        }
+        
+        if (curNode.right != null) {
+            q.add(curNode.right);
+            if (deleteSet.contains(curNode.right.val)) {
+                curNode.right = null;  // Disconnect
+            }
+        }
+        
+        // If current node is deleted, its children become roots
+        if (deleteSet.contains(curNode.val)) {
+            if (curNode.left != null) {
+                forest.add(curNode.left);
+            }
+            if (curNode.right != null) {
+                forest.add(curNode.right);
+            }
+        }
+    }
+    
+    // Add original root if not deleted
+    if (!deleteSet.contains(root.val)) {
+        forest.add(root);
+    }
+    
+    return forest;
+}
+```
+
+**Complexity Analysis:**
+- **Time**: O(N) - visit each node exactly once
+- **Space**: O(N) - HashSet for delete values, result list, and recursion stack (worst case)
+
+**Key Points:**
+- Two states are critical: knowing if current node is deleted AND if parent is deleted
+- Forest root = (node is NOT deleted) AND (parent is deleted OR is root)
+- Post-order DFS naturally builds the answer as children are processed first
+- BFS approach: disconnect parent-child links immediately when encountered
+- Always add root to forest if not deleted (special case since it has no parent)
+
+**Common Applications:**
+- Tree pruning with multiple resulting subtrees
+- Forest formation from selective node removal
+- File system operations (delete nodes and keep remaining structure)
+- Hierarchical data management with cascading deletions
+
+**Pattern Recognition:**
+- ✅ Need to delete specific nodes and keep rest of tree structure
+- ✅ Result is a forest (multiple tree roots)
+- ✅ Deleted node's children should survive
+- ✅ State depends on both current node and parent's decision
+
+**Similar Problems:**
+| Problem | LC # | Key Difference |
+|---------|------|-----------------|
+| Delete Nodes And Return Forest | 1110 | Base pattern - delete by value, return remaining roots |
+| Delete Leaves With a Given Value | 1325 | Recursive leaf deletion (delete after children) |
+| Lowest Common Ancestor III | 1676 | Delete nodes and find LCA in resulting forest |
+| Trim a Binary Search Tree | 669 | Keep nodes within range (DFS node filtering) |
+
 ### 0-3) Traversal Order Selection Strategy
 
 ```
@@ -1979,6 +2097,7 @@ public class TreeNode {
 | Invert Binary Tree | 226 | DFS Node Swapping | Tree Inversion | Easy |
 | Flatten Binary Tree to Linked List | 114 | DFS Restructuring | Tree Flattening | Medium |
 | Merge Two Binary Trees | 617 | DFS Combination | Tree Merging | Easy |
+| Delete Nodes And Return Forest | 1110 | DFS + State Tracking | Tree Deletion + Forest Formation | Medium |
 
 #### **Subtree Comparison Problems (Node Path Pattern)**
 | Problem | LC # | Pattern | Template | Difficulty |
@@ -2119,6 +2238,150 @@ public int countNodes_2(TreeNode root) {
     return collected.size();
 }
 ```
+
+### 3.3) Delete Nodes And Return Forest (LC 1110)
+
+**Problem**: Given a binary tree root and an array of values to delete, remove those nodes and return a list of the roots of the remaining trees (forest).
+
+**Core Idea**: 
+- Use DFS with two state tracking: whether current node should be deleted, and whether parent was deleted
+- A node becomes a forest root if it's NOT deleted but its parent IS deleted
+- Post-order DFS processes children first, allowing clean disconnection
+
+**Approach 1: DFS + State Tracking (Recommended)**
+
+```java
+public List<TreeNode> delNodes(TreeNode root, int[] to_delete) {
+    HashSet<Integer> deleteSet = new HashSet<>();
+    for (int x : to_delete) {
+        deleteSet.add(x);
+    }
+    
+    List<TreeNode> forest = new ArrayList<>();
+    dfs(root, deleteSet, true, forest);  // root has no parent → treated as deleted
+    return forest;
+}
+
+private TreeNode dfs(TreeNode node, HashSet<Integer> deleteSet, boolean isParentDeleted, List<TreeNode> forest) {
+    if (node == null)
+        return null;
+
+    boolean isDeleted = deleteSet.contains(node.val);
+
+    // If this node is a new root (NOT deleted AND parent WAS deleted or doesn't exist)
+    if (!isDeleted && isParentDeleted) {
+        forest.add(node);
+    }
+
+    // Post-order: process children first (their isParentDeleted = current node's isDeleted)
+    node.left = dfs(node.left, deleteSet, isDeleted, forest);
+    node.right = dfs(node.right, deleteSet, isDeleted, forest);
+
+    // Return null to parent if deleted (automatically disconnects), else return node
+    return isDeleted ? null : node;
+}
+```
+
+**Complexity**: Time O(N), Space O(N)
+- Visit each node exactly once
+- HashSet operations: O(1)
+- Recursion depth: O(h) worst case O(N)
+
+**Approach 2: BFS (Level-Order Traversal)**
+
+```java
+public List<TreeNode> delNodes_BFS(TreeNode root, int[] to_delete) {
+    Set<Integer> deleteSet = new HashSet<>();
+    for (int val : to_delete) {
+        deleteSet.add(val);
+    }
+    
+    List<TreeNode> forest = new ArrayList<>();
+    Queue<TreeNode> q = new LinkedList<>();
+    q.add(root);
+    
+    while (!q.isEmpty()) {
+        TreeNode curNode = q.poll();
+        
+        // Disconnect children if they need to be deleted
+        if (curNode.left != null) {
+            q.add(curNode.left);
+            if (deleteSet.contains(curNode.left.val)) {
+                curNode.left = null;  // Disconnect
+            }
+        }
+        
+        if (curNode.right != null) {
+            q.add(curNode.right);
+            if (deleteSet.contains(curNode.right.val)) {
+                curNode.right = null;  // Disconnect
+            }
+        }
+        
+        // If current node is deleted, add its children as forest roots
+        if (deleteSet.contains(curNode.val)) {
+            if (curNode.left != null) {
+                forest.add(curNode.left);
+            }
+            if (curNode.right != null) {
+                forest.add(curNode.right);
+            }
+        }
+    }
+    
+    // Add original root if not deleted
+    if (!deleteSet.contains(root.val)) {
+        forest.add(root);
+    }
+    
+    return forest;
+}
+```
+
+**Complexity**: Time O(N), Space O(N)
+
+**Example Walkthrough**: 
+```
+Input: root = [1,2,3,4,5,6,7], to_delete = [3,5]
+
+       1
+      / \
+     2   3
+    / \ /  \
+   4  5 6   7
+
+Step 1: DFS processes:
+- Node 4: isParentDeleted=false (parent 2 not deleted) → NOT a root
+- Node 5: isDeleted=true, Node 2 disconnects it
+- Node 2: isParentDeleted=false (parent 1 not deleted) → NOT a root
+- Node 6: isParentDeleted=true (parent 3 deleted) → IS a root! Add 6
+- Node 7: isParentDeleted=true (parent 3 deleted) → IS a root! Add 7
+- Node 3: isDeleted=true, Node 1 disconnects it
+- Node 1: isParentDeleted=true (root, treated as parent deleted) and NOT deleted → IS a root! Add 1
+
+Result: [1(with subtree [2,4]), 6, 7]
+```
+
+**Key Insights**:
+1. **Two-State Pattern**: Track both `isDeleted` and `isParentDeleted`
+2. **Forest Root Condition**: `(!isDeleted && isParentDeleted)` OR `(!isDeleted && isRoot)`
+3. **Post-order DFS**: Children processed before parent decision, allowing clean disconnection
+4. **Automatic Disconnection**: Returning null from `dfs()` automatically sets parent's child to null
+5. **Why BFS works**: By queuing all children first, then processing, we naturally discover which nodes become roots
+
+**Common Pitfalls** ⚠️:
+1. **Forgetting root special case**: Root has no parent, so treat it as "parent deleted" to allow it as forest root
+2. **Wrong traversal order**: Must process children before parent to know if node is deleted
+3. **Not disconnecting properly**: BFS approach needs explicit `curNode.left = null` disconnection
+4. **Missing forest roots**: Check both initial root and nodes whose parent is deleted
+
+**Similar Problems**:
+| Problem | LC # | Key Difference |
+|---------|------|-----------------|
+| Delete Nodes And Return Forest | 1110 | Base pattern |
+| Delete Leaves With Given Value | 1325 | Recursive deletion (delete after children are processed) |
+| Trim a Binary Search Tree | 669 | Range-based filtering instead of value-based deletion |
+| Lowest Common Ancestor III | 1676 | Find LCA in forest after deletion |
 
 #### 1-1-3 -1) Get Maximum depth
 
