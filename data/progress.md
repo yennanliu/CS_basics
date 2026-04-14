@@ -39,6 +39,7 @@
 	- (tmp prep)
 		- monotonic_queue.md
 		- monotonic_stack.md
+		- palindrome.md
 
 - to review
 - needcode `250` - similar LC by AI
@@ -343,6 +344,8 @@
 		- 239,1438
 		- 1425,1696(advanced)
 		- 1696
+		- 456
+		- 516
 
  	==================================
 
