@@ -23,12 +23,27 @@ Breadth-First Search is a graph traversal algorithm that explores nodes level by
 - **State 2**: Completely processed (black)
 
 ### 2. BFS vs DFS Comparison
+
+#### 🔹 BFS (Breadth-First Search)
+- Uses a **Queue**
+- Order: **FIFO** (First In, First Out)
+- How it works: Visit a node → Add all neighbors to queue → Process in order added
+- 👉 Think: **level by level traversal**
+
+#### 🔹 DFS (Depth-First Search)
+- Uses a **Stack** (explicitly or via recursion)
+- Order: **FILO / LIFO** (Last In, First Out)
+- How it works: Go as deep as possible along one path → Backtrack when needed
+- 👉 Think: **go deep first, then backtrack**
+
 | Aspect | BFS | DFS |
 |--------|-----|-----|
-| Data Structure | Queue | Stack |
-| Memory | O(w) width | O(h) height |
-| Shortest Path | ✅ Yes | ❌ No |
+| Data Structure | Queue (FIFO) | Stack / Recursion (LIFO) |
+| Traversal Order | Level by level | Deep path first, then backtrack |
+| Memory | O(w) — width of tree | O(h) — height of tree |
+| Shortest Path | ✅ Yes (unweighted) | ❌ No |
 | Complete | ✅ Yes | ❌ No (infinite spaces) |
+| When to Use | Shortest path, level traversal | Explore all paths, topological sort, cycle detection |
 
 ## Implementation Patterns
 
