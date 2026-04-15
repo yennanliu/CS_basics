@@ -50,9 +50,95 @@ import java.util.Stack;
 public class BasicCalculator2 {
 
     // V0
-//    public int calculate(String s) {
-//
-//    }
+    // IDEA: STACK + STRING OP (fixed by gpt)
+    public int calculate(String s) {
+        if (s == null || s.length() == 0)
+            return 0;
+
+        Stack<Integer> stack = new Stack<>();
+        int num = 0;
+        char sign = '+'; // previous operator
+
+        for (int i = 0; i < s.length(); i++) {
+            char ch = s.charAt(i);
+
+            if (Character.isDigit(ch)) {
+                num = num * 10 + (ch - '0');
+            }
+
+            // if operator OR last char
+            if ((!Character.isDigit(ch) && ch != ' ') || i == s.length() - 1) {
+
+                if (sign == '+') {
+                    stack.push(num);
+                } else if (sign == '-') {
+                    stack.push(-num);
+                } else if (sign == '*') {
+                    stack.push(stack.pop() * num);
+                } else if (sign == '/') {
+                    stack.push(stack.pop() / num);
+                }
+
+                sign = ch;
+                num = 0;
+            }
+        }
+
+        int res = 0;
+        for (int val : stack) {
+            res += val;
+        }
+
+        return res;
+    }
+
+    // V0-1
+    // IDEA: STACK + STRING OP (fixed by GEMINI)
+    public int calculate_0_1(String s) {
+        if (s == null || s.isEmpty())
+            return 0;
+
+        Stack<Integer> stack = new Stack<>();
+        int currentNumber = 0;
+        char operation = '+'; // Track the LAST operator seen
+        int n = s.length();
+
+        for (int i = 0; i < n; i++) {
+            char ch = s.charAt(i);
+
+            // 1. Build the multi-digit number
+            if (Character.isDigit(ch)) {
+                currentNumber = (currentNumber * 10) + (ch - '0');
+            }
+
+            // 2. If it's an operator OR the last character of the string
+            if (!Character.isDigit(ch) && ch != ' ' || i == n - 1) {
+                if (operation == '+') {
+                    stack.push(currentNumber);
+                } else if (operation == '-') {
+                    stack.push(-currentNumber);
+                } else if (operation == '*') {
+                    // Precedence: Solve immediate and push result
+                    stack.push(stack.pop() * currentNumber);
+                } else if (operation == '/') {
+                    stack.push(stack.pop() / currentNumber);
+                }
+
+                // Update to the new operator and reset current number
+                operation = ch;
+                currentNumber = 0;
+            }
+        }
+
+        // 3. The stack now contains only values to be summed
+        int result = 0;
+        for (int val : stack) {
+            result += val;
+        }
+
+        return result;
+    }
+
 
     // V1-1
     // IDEA: STACK
