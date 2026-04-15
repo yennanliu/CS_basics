@@ -8976,6 +8976,11 @@ public class Workspace24 {
     }
 
 
+    // LC 456
+    public boolean find132pattern(int[] nums) {
+
+        return false;
+    }
 
 
 
