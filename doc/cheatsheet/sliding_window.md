@@ -18,6 +18,18 @@
 - **Optimization**: Min/max length, count, or sum within constraints
 - **Character/Element Tracking**: Problems requiring frequency counting
 
+### Quick Decision Guide
+
+| Problem Type | Template | Key Pattern | Examples |
+|--------------|----------|-------------|----------|
+| Find **exact** window size | Fixed Size | `for i` with size tracking | LC 438, 567 |
+| Find **maximum** valid window | Variable Max | `for-while` expand-contract | LC 3, 424 |
+| Find **minimum** valid window | Variable Min | `while-while` contract-expand | LC 76, 209 |
+| **Count** valid subarrays | Counting | `count += right-left+1` | LC 713, 992 |
+| **Exactly K** distinct/unique | At-Most Subtraction | `atMostK(k) - atMostK(k-1)` | LC 992, 340 |
+
+**How to read**: Start with your problem goal (maximum/minimum/count/exact), then choose the matching template.
+
 ### References
 - [labuladong Sliding Window Guide](https://labuladong.online/algo/essential-technique/sliding-window-framework/)
 - [Sliding Window Template Collection](https://leetcode.com/discuss/general-discussion/657507/sliding-window-for-beginners-problems-template-sample-solutions/)
@@ -752,7 +764,7 @@ Problem Analysis Flowchart:
    └── NO → Use custom approach
 ```
 
-## 3) LeetCode Examples
+## 3) Detailed LeetCode Examples
 
 ### 3.1) Fixed Size Window Examples
 
@@ -1494,7 +1506,9 @@ public List<Integer> partitionLabels_0_2(String s) {
     }
 ```
 
-## 4) Summary & Quick Reference
+## 4) Core Patterns & Quick Reference
+
+> **📌 Read this section after reviewing the templates (section 1) and before diving into detailed examples (sections 2-3).**
 
 ### 4.1) Template Quick Reference
 
@@ -1579,9 +1593,9 @@ count += right - left + 1  # All subarrays ending at 'right'
 - **Deque**: For sliding window maximum/minimum
 - **Prefix Sum**: For sum-based sliding window problems
 
-## LC Examples
+### 4.7) Additional Template Examples (Advanced Java Reference)
 
-### 2-1) Max Consecutive Ones III (LC 1004) — Variable Window (Max Length)
+#### LC 1004: Max Consecutive Ones III — Variable Window (Max Length)
 > Expand right, shrink left when zero count exceeds k.
 
 ```java
@@ -1602,7 +1616,7 @@ public int longestOnes(int[] nums, int k) {
 }
 ```
 
-### 2-2) Longest Substring Without Repeating Characters (LC 3) — Variable Window
+#### LC 3: Longest Substring Without Repeating Characters — Variable Window
 > Shrink left pointer whenever a duplicate character enters the window.
 
 ```java
@@ -1623,7 +1637,7 @@ public int lengthOfLongestSubstring(String s) {
 }
 ```
 
-### 2-3) Minimum Window Substring (LC 76) — Variable Window (Min Length)
+#### LC 76: Minimum Window Substring — Variable Window (Min Length)
 > Expand to include all required chars, then shrink to minimize window.
 
 ```java
@@ -1651,7 +1665,7 @@ public String minWindow(String s, String t) {
 }
 ```
 
-### 2-4) Permutation in String (LC 567) — Fixed Window Anagram Check
+#### LC 567: Permutation in String — Fixed Window Anagram Check
 > Maintain character frequency of window size len(s1); check if it matches s1's freq.
 
 ```java
@@ -1672,7 +1686,7 @@ public boolean checkInclusion(String s1, String s2) {
 }
 ```
 
-### 2-5) Find All Anagrams in a String (LC 438) — Fixed Window
+#### LC 438: Find All Anagrams in a String — Fixed Window
 > Same as LC 567 but collect all starting indices where anagram window matches.
 
 ```java
@@ -1694,7 +1708,7 @@ public List<Integer> findAnagrams(String s, String p) {
 }
 ```
 
-### 2-6) Minimum Size Subarray Sum (LC 209) — Variable Window (Min Length)
+#### LC 209: Minimum Size Subarray Sum — Variable Window (Min Length)
 > Expand right; once sum >= target, shrink left to find minimum window length.
 
 ```java
@@ -1714,7 +1728,7 @@ public int minSubArrayLen(int target, int[] nums) {
 }
 ```
 
-### 2-7) Longest Repeating Character Replacement (LC 424) — Variable Window
+#### LC 424: Longest Repeating Character Replacement — Variable Window
 > Window is valid if (window size - max frequency) <= k; expand and track max freq.
 
 ```java
@@ -1734,7 +1748,7 @@ public int characterReplacement(String s, int k) {
 }
 ```
 
-### 2-8) Subarray Product Less Than K (LC 713) — Sliding Window Count
+#### LC 713: Subarray Product Less Than K — Sliding Window Count
 > Shrink left when product >= k; each valid right position contributes (r-l+1) subarrays.
 
 ```java
@@ -1753,7 +1767,7 @@ public int numSubarrayProductLessThanK(int[] nums, int k) {
 }
 ```
 
-### 2-9) Sliding Window Maximum (LC 239) — Monotonic Deque
+#### LC 239: Sliding Window Maximum — Monotonic Deque
 > Maintain a decreasing deque of indices; front is always the max of current window.
 
 ```java
@@ -1776,7 +1790,7 @@ public int[] maxSlidingWindow(int[] nums, int k) {
 }
 ```
 
-### 2-10) Frequency of the Most Frequent Element (LC 1838) — Sliding Window
+#### LC 1838: Frequency of the Most Frequent Element — Sliding Window
 > Sort array; expand right, shrink left when cost to equalize window exceeds k.
 
 ```java
@@ -1799,7 +1813,7 @@ public int maxFrequency(int[] nums, int k) {
 }
 ```
 
-### 2-11) Longest Substring with At Most Two Distinct Characters (LC 159) — Variable Window
+#### LC 159: Longest Substring with At Most Two Distinct Characters — Variable Window
 > Shrink left when distinct chars in window exceed 2; use frequency map.
 
 ```java

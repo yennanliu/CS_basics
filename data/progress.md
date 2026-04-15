@@ -45,6 +45,8 @@
 		- queue.md
 		- recursion.md
 		- scanning_line.md
+		- set.md
+		- sliding_window.md
 
 - to review
 - needcode `250` - similar LC by AI
