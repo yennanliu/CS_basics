@@ -1,37 +1,43 @@
 # Stack
 
 <img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/stack.jpeg"></p>
-- A data structute with Last in, First out (LIFO) propery
+
+**Stack** is a data structure with Last-In-First-Out (LIFO) property. Each operation adds/removes from the top of the stack.
+
+### Key Properties
+- **Time Complexity**: O(1) for push, pop, peek
+- **Space Complexity**: O(n) where n is the number of elements
+- **Core Principle**: Last element added is the first one removed
+- **Use Case**: Problems involving order reversal, pattern matching, or maintaining context
 
 <img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/stack_101.png"></p>
 
+### Quick Decision Guide
+
+| Problem Type | Pattern | Key Idea | Examples |
+|--------------|---------|----------|----------|
+| Find **next greater/smaller** element | Monotonic Stack | Maintain increasing/decreasing order | LC 496, 503, 739 |
+| **Remove adjacent duplicates** | Stack with Pair [element, count] | Track counts, pop when k reached | LC 1047, 1209, 1544 |
+| **Decode strings** with brackets | Stack with Count | Use pairs for nested repetitions | LC 394, 726 |
+| **Arithmetic expressions** | Stack with Operators | Handle precedence and evaluation | LC 224, 227 |
+| **Remove k digits** for min number | Greedy + Monotonic | Pop larger digits when beneficial | LC 402 |
+| **Lexicographically smallest** with duplicates | Monotonic + Last Occurrence | Greedy removal with "appears later" check | LC 316, 1081 |
+| **Streaming/online** frequency | Stack with Span Pairs | Accumulate counts in pairs | LC 901 |
+| **FIFO from LIFO** | Two Stacks | Use input/output stacks for queue | LC 232 |
+
+**How to read**: Find your problem goal in the leftmost column, then use the pattern and examples as a starting point.
 
 - Ref
     - [fuck-Algorithm - single stack](https://github.com/labuladong/fucking-Algorithm/blob/master/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%B3%BB%E5%88%97/%E5%8D%95%E8%B0%83%E6%A0%88.md)
     - [fuck-Algorithm - implement array via stack / stack via array ](https://github.com/labuladong/fucking-Algorithm/blob/master/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%B3%BB%E5%88%97/%E9%98%9F%E5%88%97%E5%AE%9E%E7%8E%B0%E6%A0%88%E6%A0%88%E5%AE%9E%E7%8E%B0%E9%98%9F%E5%88%97.md)
 
-- It's critical to verify the to use stack if `increasing` or `decreasing` (aka `monotonic stack`) when solving LC problem
-- [Vodeo ref1](https://www.bilibili.com/list/525438321?sort_field=pubtime&spm_id_from=333.999.0.0&oid=779764003&bvid=BV1my4y1Z7jj)
+### Important Tips
+- **Monotonic Stack**: Critical pattern for problems involving "next greater/smaller" — check if the pattern requires increasing or decreasing order
+- **Stack with Pair**: For adjacent duplicate removal or nested counting problems, store `[element, count]` pairs
+- **Greedy Removal**: Some problems benefit from greedily removing elements while maintaining an invariant
 
-- Use cases
-    - Find next `big number` (next great number)
-        - LC 496
-        - LC 503
-        - LC 739
-        - LC 503
-    - Calculator, decode string
-        - LC 224
-        - LC 227
-        - LC 394
-    - Remove all adjacent duplicates
-         - LC 1047
-         - LC 1209
-    - monotonic stack
-        - LC 2104
-        - LC 239
-        - LC 402 (greedy removal - Remove K Digits)
-        - LC 316 (Remove Duplicate Letters)
-        - LC 901 (Online Stock Span - streaming data)
+### Video References
+- [Stack Fundamentals](https://www.bilibili.com/list/525438321?sort_field=pubtime&spm_id_from=333.999.0.0&oid=779764003&bvid=BV1my4y1Z7jj)
 
 ## 0) Concept
 - [Java Stack](https://blog.csdn.net/oChangWen/article/details/72859556)
@@ -428,19 +434,53 @@ class MyQueue_3{
 }
 ```
 
-## 1) General form
+## 1) Core Patterns
 
-### 1-1) Basic OP
+### 1-1) Basic Stack Operations
 
-### 1-1-1) basic ops
-- Stack insert
-- Stack pop 
-- Stack isEmpty
-- Stack hasElement
+**Stack push (insert):**
+```java
+// Java
+Stack<Integer> stack = new Stack<>();
+stack.push(element);  // O(1)
+```
 
+```python
+# Python
+stack = []
+stack.append(element)  # O(1)
+```
 
+**Stack pop (remove top):**
+```java
+// Java
+int top = stack.pop();  // O(1), throws if empty
+```
 
-### 1-1-2-1) next greater element
+```python
+# Python
+top = stack.pop()  # O(1), raises if empty
+```
+
+**Stack peek (view top):**
+```java
+// Java
+int top = stack.peek();  // O(1), throws if empty
+if (!stack.isEmpty()) {
+    top = stack.peek();
+}
+```
+
+```python
+# Python
+top = stack[-1]  # O(1), raises if empty
+if stack:
+    top = stack[-1]
+```
+
+---
+
+### 1-2) Monotonic Stack: Next Greater Element
 
 ```java
 // java
@@ -611,7 +651,7 @@ for i, each in enumerate(s):
 # ...
 ```
 
-## 2) LC Example
+## 2) LeetCode Examples
 
 ### 2-1) Decode String
 ```python

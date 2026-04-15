@@ -47,6 +47,9 @@
 		- scanning_line.md
 		- set.md
 		- sliding_window.md
+		- sort.md
+		- stack.md
+		- string.md
 
 - to review
 - needcode `250` - similar LC by AI
@@ -355,6 +358,7 @@
 		- 516
 	- todo (20260415)
 		- 358,621,767
+		- 992
 
  	==================================
 
