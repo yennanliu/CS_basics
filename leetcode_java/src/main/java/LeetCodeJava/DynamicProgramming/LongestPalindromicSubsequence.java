@@ -38,10 +38,120 @@ import java.util.Arrays;
 public class LongestPalindromicSubsequence {
 
     // V0
-    // IDEA: 2D DP (gemini)
+    // IDEA: 2D DP + `backwards, forward` process + LCS (gemini)
+    /** NOTE !!!
+     *
+     *  there is also a `forward + forward` looping`
+     *  -> refer V0-O-1
+     */
     /**
      * time = O(N)
      * space = O(N)
+     */
+    /**  Q:  why do we need `backward + forward` in double loop ??
+     *
+     * ->
+     *
+     * ## 🔑 Why **backward (i) + forward (j)** is required
+     *
+     * Recall the transition:
+     *
+     * ```
+     * dp[i][j] depends on:
+     *     dp[i+1][j]
+     *     dp[i][j-1]
+     *     dp[i+1][j-1]
+     * ```
+     *
+     * So when computing `dp[i][j]`, we must already know:
+     *
+     * * the row **below** → `i+1`
+     * * the column **left** → `j-1`
+     * * the **diagonal** → `i+1, j-1`
+     *
+     * ---
+     *
+     * ### ✅ Correct order: `i ↓` (backward), `j ↑` (forward)
+     *
+     * ```text
+     * i: n-1 → 0
+     * j: i+1 → n-1
+     * ```
+     *
+     * This guarantees:
+     *
+     * * `dp[i+1][j]` ✅ already computed (lower row)
+     * * `dp[i][j-1]` ✅ already computed (left cell)
+     * * `dp[i+1][j-1]` ✅ already computed (diagonal)
+     *
+     * ---
+     *
+     * ## ❌ Why other orders fail
+     *
+     * ### 🚫 1. `forward i + forward j`
+     *
+     * ```text
+     * i: 0 → n-1
+     * j: i+1 → n-1
+     * ```
+     *
+     * Problem:
+     *
+     * * `dp[i+1][j]` ❌ NOT computed yet
+     *
+     * 👉 You’re trying to use future values
+     *
+     * ---
+     *
+     * ### 🚫 2. `backward i + backward j`
+     *
+     * ```text
+     * i: n-1 → 0
+     * j: n-1 → i+1
+     * ```
+     *
+     * Problem:
+     *
+     * * `dp[i][j-1]` ❌ NOT computed yet
+     *
+     * 👉 Left side is missing
+     *
+     * ---
+     *
+     * ### 🚫 3. `forward i + backward j`
+     *
+     * Also breaks at least one dependency (either left or down).
+     *
+     * ---
+     *
+     * ## 🧠 Mental model
+     *
+     * Think of DP table:
+     *
+     * ```
+     *       j →
+     *    0 1 2 3 4
+     * i ↓
+     * 0  x x x x x
+     * 1    x x x x
+     * 2      x x x
+     * 3        x x
+     * 4          x
+     * ```
+     *
+     * We only fill **upper triangle**.
+     *
+     * To compute a cell:
+     *
+     * * we need **left**
+     * * **down**
+     * * **diagonal**
+     *
+     * So the only safe direction is:
+     * 👉 **bottom → top** (i decreasing)
+     * 👉 **left → right** (j increasing)
+     *
+     *
      */
     public int longestPalindromeSubseq(String s) {
         int n = s.length();
@@ -59,7 +169,7 @@ public class LongestPalindromicSubsequence {
 
         /** NOTE !!!
          *
-         *   i, j does backwards, forwards separately
+         *   i, j does `backwards`, forwards separately
          *
          *   (i: left boundary)
          *   (j: right boundary)
@@ -67,11 +177,43 @@ public class LongestPalindromicSubsequence {
          *   - Loop i backwards (start of the substring)
          *   - Loop j forwards (end of the substring)
          */
+        /**
+         *  Great question—this gets to the *core dependency structure* of DP for LeetCode 516 Longest Palindromic Subsequence.
+         *
+         * ---
+         *
+         * ## 🔑 Why **backward (i) + forward (j)** is required
+         *
+         * Recall the transition:
+         *
+         * ```
+         * dp[i][j] depends on:
+         *     dp[i+1][j]
+         *     dp[i][j-1]
+         *     dp[i+1][j-1]
+         * ```
+         *
+         * So when computing `dp[i][j]`, we must already know:
+         *
+         * * the row **below** → `i+1`
+         * * the column **left** → `j-1`
+         * * the **diagonal** → `i+1, j-1`
+         *
+         * ---
+         *
+         * ### ✅ Correct order: `i ↓` (backward), `j ↑` (forward)
+         *
+         *
+         */
         // Loop i backwards (start of the substring)
         for (int i = n - 1; i >= 0; i--) {
             // Loop j forwards (end of the substring)
             for (int j = i + 1; j < n; j++) {
                 if (s.charAt(i) == s.charAt(j)) {
+                    /** NOTE !!!
+                     *
+                     *  the transition eq
+                     */
                     // If characters match, add 2 to the result of the inner substring
                     dp[i][j] = dp[i + 1][j - 1] + 2;
                 } else {
@@ -90,8 +232,49 @@ public class LongestPalindromicSubsequence {
         return dp[0][n - 1];
     }
 
+
+    // V0-0-1
+    // IDEA: length-based DP approach + `forward + forward` looping (GPT)
+    public int longestPalindromeSubseq_0_0_1(String s) {
+        if (s == null || s.length() == 0)
+            return 0;
+
+        int n = s.length();
+        int[][] dp = new int[n][n];
+
+        // base case: single character
+        for (int i = 0; i < n; i++) {
+            dp[i][i] = 1;
+        }
+
+        /** NOTE !!!
+         *
+         *  it's  `forward + forward` looping`
+         *  compare with V0
+         */
+        // iterate by substring length
+        for (int len = 2; len <= n; len++) {
+            for (int i = 0; i + len - 1 < n; i++) {
+                int j = i + len - 1;
+
+                if (s.charAt(i) == s.charAt(j)) {
+                    if (len == 2) {
+                        dp[i][j] = 2; // special case like "aa"
+                    } else {
+                        dp[i][j] = dp[i + 1][j - 1] + 2;
+                    }
+                } else {
+                    dp[i][j] = Math.max(dp[i + 1][j], dp[i][j - 1]);
+                }
+            }
+        }
+
+        return dp[0][n - 1];
+    }
+
+
     // V0-1
-    // IDEA: 2D DP (gemini)
+    // IDEA: 2D DP +  `backwards, forward` process (gemini)
     /**  NOTE !!! core idea
      *
      * - DP def:

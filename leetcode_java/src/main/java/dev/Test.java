@@ -87,9 +87,12 @@ public class Test {
     // "1*2+3*4-0"
      public static int caculate(String s){
          // edge
-         if(s.isEmpty() || s.length() == 0){
+//         if(s.isEmpty() || s.length() == 0){
+//             return 0;
+//         }
+         if (s == null || s.length() == 0)
              return 0;
-         }
+
          if(s.length() == 1){
              return Integer.parseInt(String.valueOf(s.charAt(0)));
          }
@@ -109,6 +112,10 @@ public class Test {
          int curVal = 0;
 
          for(char ch: s.toCharArray()){
+
+
+
+
              String x = String.valueOf(ch);
              System.out.println("x = " + x);
 

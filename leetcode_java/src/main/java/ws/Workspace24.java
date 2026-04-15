@@ -8873,6 +8873,111 @@ public class Workspace24 {
     }
 
 
+    // LC 516
+    // 14.41 - 51 pm
+    /**
+     * -> Given a string s,
+     *    find the longest palindromic
+     *    subsequence's length in s.
+     *
+     *
+     * -------------
+     *
+     *  IDEA 1) BRUTE FORCE
+     *
+     *  IDEA 2) 2D DP ????
+     *
+     *     DP def:
+     *
+     *        dp[i][j]:
+     *          max subsequence len for s at [i. j] ??
+     *          -> e.g. between idx = i and idx  j
+     *
+     *     DP eq:
+     *
+     *         dp[i][j] =
+     *            // ??
+     *            if( s.chartat(i) == s.chartat(j))
+     *                max( dp[i][j-1] +1 , dp[i][j] )
+     *
+     *
+     *
+     * -------------
+     *
+     */
+    //  IDEA 2) 2D DP ????
+    public int longestPalindromeSubseq(String s) {
+        // edge
+        if (s == null || s.length() == 0) return 0;
+
+        //int maxLen = 1;
+        int len = s.length();
+
+        //int[][] dp = new int[len + 1][len + 1]; // ???
+        int[][] dp = new int[len][len]; // ???
+        // init ???
+        dp[0][0] = 0;
+
+        // ??
+        // base case: single char = 1
+        for(int i = 0; i < len; i++){
+            dp[i][i] = 1; // ???
+        }
+
+
+        // ??
+        /**
+         *      *         dp[i][j] =
+         *      *            // ??
+         *      *            if( s.chartat(i) == s.chartat(j))
+         *      *                max( dp[i][j-1] +1 , dp[i][j] )
+         *
+         */
+        // fill DP (bottom-up)
+        for(int i = 1; i < len; i++){
+            for(int j = i + 1; j < len; j++){
+                if(s.charAt(j) == s.charAt(i)){
+                    dp[i][j] = Math.max(dp[i][j], dp[i][j-1] + 1);
+                }
+            }
+        }
+
+
+        // ???
+        return dp[0][len - 1];
+    }
+
+
+
+
+
+
+
+    // brute force
+    public int longestPalindromeSubseq_2(String s) {
+        // edge
+
+        int maxLen = 1;
+        int len = s.length();
+
+        // ???
+        for(int i = 0; i < len; i++){
+            for(int j = i + 1; j < len; j++){
+                if(s.charAt(j) == s.charAt(i)){
+                    maxLen = Math.max(j - i + 1, maxLen);
+                }else{
+                    break;
+                }
+            }
+        }
+
+
+        return maxLen;
+    }
+
+
+
+
 
 
 }
