@@ -8977,10 +8977,89 @@ public class Workspace24 {
 
 
     // LC 456
+    // 15.30 - 15.40 pm
+    /**
+     *
+     * -> Return true if there is
+     *  a 132 pattern in nums, otherwise, return false.
+     *
+     *   - a 132 pattern
+     *       - subsequence of three integers
+     *         nums[i], nums[j] and nums[k]
+     *         such that i < j < k
+     *         and nums[i] < nums[k] < nums[j].
+     *
+     *
+     *  ----------
+     *
+     *  IDEA 1) BRUTE FORCE
+     *
+     *  IDEA 2) STACK ???
+     *
+     *   ->  if cur > prev:
+     *         st.add(cur)
+     *       else:
+     *
+     *
+     *   ------------
+     *
+     *   ex 1)
+     *
+     *     nums = [1,2,3,4]
+     *
+     *     -> st = [1,2,3,4] -> false
+     *
+     *
+     *   ex 2)
+     *
+     *     nums = [3,1,4,2]
+     *
+     *     -> st = [3,
+     *
+     *
+     *
+     */
+    // IDEA 2) STACK ???
     public boolean find132pattern(int[] nums) {
+        // edge ??
+
+        int first = Integer.MAX_VALUE; // ??
+        int second = -1 * Integer.MAX_VALUE; // ??
+        int third = Integer.MAX_VALUE; // ??
+
+        Stack<Integer> st = new Stack<>();
+
+        // ??
+        int idx = 0;
+        for(int x: nums){
+            // ???
+            if(idx == 0){
+                first = x; //Math.max(first, x);
+            }
+            else{
+                if(x > first){
+                    first = Math.min(first, x);
+                }else{
+                    // ???
+                    if(x > second){
+                        //second = Math.max(x, second);
+                        second = x;
+                    }
+                    // ???
+                    if(second > first && second > x && first > x){
+                        return true;
+                    }
+                }
+            }
+
+            idx += 1;
+        }
+
 
         return false;
     }
+
+
 
 
 

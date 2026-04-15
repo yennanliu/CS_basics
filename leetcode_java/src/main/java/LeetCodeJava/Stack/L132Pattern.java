@@ -51,6 +51,68 @@ public class L132Pattern {
 //
 //    }
 
+    // V0-1
+    // IDEA: Monotonic STACK (gpt)
+    public boolean find132pattern_0_1(int[] nums) {
+        if (nums == null || nums.length < 3)
+            return false;
+
+        Stack<Integer> stack = new Stack<>();
+        int third = Integer.MIN_VALUE; // this is nums[k]
+
+        // traverse from right to left
+        for (int i = nums.length - 1; i >= 0; i--) {
+
+            // if we find nums[i] < third → 132 pattern found
+            if (nums[i] < third) {
+                return true;
+            }
+
+            // maintain decreasing stack
+            while (!stack.isEmpty() && nums[i] > stack.peek()) {
+                third = stack.pop(); // update "2"
+            }
+
+            stack.push(nums[i]); // push as potential "3"
+        }
+
+        return false;
+    }
+
+    // V0-2
+    // IDEA: Monotonic STACK (GEMINI)
+    public boolean find132pattern_0_2(int[] nums) {
+        if (nums == null || nums.length < 3)
+            return false;
+
+        // This variable represents nums[k] (the '2' in '132')
+        int third = Integer.MIN_VALUE;
+
+        // This stack will store candidates for nums[j] (the '3' in '132')
+        Stack<Integer> stack = new Stack<>();
+
+        // Iterate backwards from right to left
+        for (int i = nums.length - 1; i >= 0; i--) {
+            // 1. If we find a '1' that is smaller than our best '2', we win!
+            // Because our stack logic ensures '2' is already smaller than some '3'
+            if (nums[i] < third) {
+                return true;
+            }
+
+            // 2. If current number is a potential '3' (larger than what's in stack)
+            // We pop the stack to update 'third' to be the largest possible '2'
+            while (!stack.isEmpty() && nums[i] > stack.peek()) {
+                third = stack.pop();
+            }
+
+            // 3. Push current number as a candidate for '3'
+            stack.push(nums[i]);
+        }
+
+        return false;
+    }
+
+
     // V1-1
     // IDEA: BRUTE FORCE (TLE)
     // https://leetcode.com/problems/132-pattern/editorial/
