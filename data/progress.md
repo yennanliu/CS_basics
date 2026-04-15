@@ -42,6 +42,9 @@
 		- palindrome.md
 		- prefix_sum.md
 		- priority_queue.md
+		- queue.md
+		- recursion.md
+		- scanning_line.md
 
 - to review
 - needcode `250` - similar LC by AI

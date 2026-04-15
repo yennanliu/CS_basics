@@ -1,28 +1,49 @@
 # Recursion
 
-For a problem, if there exists a recursive solution, we can follow the guidelines below to implement it. 
+## 0) Quick Reference
+
+**When should I use recursion?**
+- When a problem has **overlapping subproblems** that reduce the scope
+- When you can clearly define a **base case** and **recursive case**
+- When the problem naturally decomposes into smaller instances of itself
+- For **tree/graph traversal** or **backtracking** problems
+
+**Quick Decision Guide**
+
+| Use Case | Pattern | Key Idea |
+|----------|---------|----------|
+| Need info from parent nodes | **Top-Down** | Pass context down while traversing |
+| Need results from children | **Bottom-Up** | Solve children first, combine results |
+| Need to split & merge results | **Divide & Conquer** | Partition problem, solve parts, merge |
+| Need to explore all possibilities | **Backtracking** | DFS with decision making |
+| Multiple recursive calls, same subproblems | **Memoization** | Cache results to avoid redundant work |
+
+### Core Principle
+
+For a problem F(X) where X is the input:
 
 ```
-For instance, we define the problem as the function F(X) to implement, where X is the input of the function which also defines the scope of the problem.
-
-Then, in the function F(X), we will:
-
-1. Break the problem down into smaller scopes, such as x0 belongs X, x0 belongs X ..., xn belongs X 
-2. Call function F(x_0), F(x_1), ..., F(x_n) recursively to solve the subproblems of X;
-3. Finally, process the results from the recursive function calls to solve the problem corresponding to X.
+1. Break down into smaller scopes: x₀, x₁, ..., xₙ ∈ X
+2. Recursively solve: F(x₀), F(x₁), ..., F(xₙ)
+3. Combine results to solve F(X)
 ```
 
-- Tips
-    - When in doubt, write down the `recurrence relationship`
-    - Whenever possible, apply `memoization`
-    - When stack overflows, `tail recursion` might come to help 
-        - https://leetcode.com/explore/learn/card/recursion-i/253/conclusion/1650/
-- Ref
-    - https://medium.com/appworks-school/%E9%80%B2%E5%85%A5%E9%81%9E%E8%BF%B4-recursion-%E7%9A%84%E4%B8%96%E7%95%8C-%E4%B8%80-59fa4b394ef6
-    - https://labuladong.online/algo/practice-in-action/two-views-of-backtrack/#%E6%9A%B4%E5%8A%9B%E7%A9%B7%E4%B8%BE%E6%80%9D%E7%BB%B4%E6%96%B9%E6%B3%95-%E7%90%83%E7%9B%92%E6%A8%A1%E5%9E%8B
+### Quick Tips
 
-- Time complexity
-    - think as `tree` structure
+- **When in doubt**: Write down the **recurrence relationship** (how F(n) relates to F(n-1), F(n-2), etc.)
+- **For redundant calls**: Apply **memoization** (cache intermediate results)
+- **For stack overflow**: Use **tail recursion** or convert to **iteration**
+
+---
+
+## 1) Concepts
+
+### 1-1) Core Ideas
+
+### 1-2) Complexity Analysis
+
+**Time Complexity**:
+Think of recursion as a **tree structure**:
 ```
         fib(5)
        /      \
@@ -35,178 +56,50 @@ fib(2) fib(1) fib(1) fib(0)
 fib(1) fib(0)
 ```
 
-## 0) Concept
+Given a recursion algorithm: **O(T) = R × O(S)**
+- **R** = number of recursion invocations
+- **O(S)** = time complexity of work per call
+- For Fibonacci without memoization: **O(2^n)** (exponential)
 
-- Same concept is used in
-	- DFS
-	- backtrack
-	- tree
+**Space Complexity**:
 
-- Complexity analysis
-    - Time complexity
-        - https://leetcode.com/explore/learn/card/recursion-i/256/complexity-analysis/1669/
-        - Given a recursion algorithm, its time complexity O(T) is typically the product of `the number of recursion invocations `(denoted as R) and `the time complexity of calculation` (denoted as O(s)) that incurs along with each recursion call: `O(T) = R * O(S)`
-    - Space complexity
-        - https://leetcode.com/explore/learn/card/recursion-i/256/complexity-analysis/1671/
-        - Recursion `Related` Space
-            - stack
-                - local variables (used in recursive func calls)
-                - input param
-                - output variables
-                - "stackoverflow"
-                    - where the stack allocated for a program reaches its maximum space limit and the program crashes. 
-        - Recursion `Non-Related` Space
-            - heap
-                - global variables (call before func, can be used by all funcs)
-                - memoization (keep track all intermediate results)
-                - NOTE : it's important to consider memoization space usage when use memoization in code
+**Recursion-Related Space** (Call Stack):
+- Local variables in recursive function calls
+- Input parameters
+- Output variables
+- **Stack overflow risk**: when allocated stack space reaches system limit
 
-- Optimization
-    - Memoization
-        - https://leetcode.com/explore/learn/card/recursion-i/255/recursion-memoization/1495/
-        - use a cache save "already calculated" result, so when same request comes again, return cache directly. `hash map` is a good candidate for cache implementation.
-        - Example 1 : fibonacci number
-        ```python
-        # V1 : without Memoization (cache):
-        def fibonacci(n):
-            """
-            :type n: int
-            :rtype: int
-            """
-            if n < 2:
-                return n
-            else:
-                return fibonacci(n-1) + fibonacci(n-2)
+**Recursion-Independent Space** (Heap):
+- Global variables
+- Memoization cache (stores intermediate results)
+- **Important**: Count memoization space when analyzing overall complexity
 
-        # V2 : with Memoization (cache):
-        def fibonacci(n):
-            cache = {}
-            def help(n):
-                if n in cache:
-                    return cache[n]
-                if n < 2:
-                    res = n
-                else:
-                    res = help(n-1) + help(n-2)
-                cache[n] = res
-                return res
-            return help(n)
-        ```
-        - Example 2 : Climbing Stairs
-        ```python
-        # 070  Climbing Stairs
-        # V0 : without MEMORIZATION
-        class Solution:
-            # Time:  O(2^n)
-            # Space: O(n)
-            def climbStairs(self, n):
-                if n == 1:
-                    return 1
-                if n == 2:
-                    return 2
-                return self.climbStairs(n - 1) + self.climbStairs(n - 2)
-        # V0' :  RECURSION + MEMORIZATION
-        # https://leetcode.com/explore/learn/card/recursion-i/255/recursion-memoization/1662/
-        class Solution(object):
-            def climbStairs(self, n):
-                cache = {}
-                def help(n):
-                    if n in cache:
-                        return cache[n]
-                    if n <= 2:
-                        res = n
-                    else:
-                        res = help(n-2) + help(n-1)
-                    cache[n] = res
-                    return res
-                return help(n)
-        ```
+### 1-3) Related Concepts
 
-- Divide & Conquer
-    - https://leetcode.com/explore/learn/card/recursion-ii/470/divide-and-conquer/2869/
+Recursion is used in:
+- **DFS** (Depth-First Search) — tree/graph traversal
+- **Backtracking** — exploring all possibilities with pruning
+- **Tree problems** — natural fit for recursive algorithms
+- **Dynamic Programming** — with memoization optimization
 
-```
-# template
+---
 
-1. Divide. Divide the problem S into a set of subproblems: {S1, S2, ... Sn} where n >= 2. i.e. there are usually more than one subproblem.
+## 2) Patterns
 
-2. Conquer. Solve each subproblem recursively. 
+### 2-1) Basic Operation
 
-3. Combine. Combine the results of each subproblem.
-```
-
+Endless loop through elements in list (common in backtracking/generation):
 ```python
-# pseudo code
-def divide_and_conquer( S ):
-    # (1). Divide the problem into a set of subproblems.
-    [S1, S2, ... Sn] = divide(S)
-
-    # (2). Solve the subproblem recursively,
-    #   obtain the results of subproblems as [R1, R2... Rn].
-    rets = [divide_and_conquer(Si) for Si in [S1, S2, ... Sn]]
-    [R1, R2,... Rn] = rets
-
-    # (3). combine the results from the subproblems.
-    #   and return the combined result.
-    return combine([R1, R2,... Rn])
-```
-
-- Recursion to iteration (Unfold Recursion)
-    - Reason
-        - Risk of Stackoverflow
-        - Efficiency
-        - Complexity
-    - Tips
-        - The good news is that we can always convert a recursion to iteration. In order to do so, in general, we use a data structure of `stack or queue`, which replaces the role of the system call stack during the process of recursion.
-    - Steps
-        - Step 1: We use a stack or queue data structure within the function, to replace the role of the system call stack. At each occurrence of recursion, we simply push the parameters as a new element into the data structure that we created, instead of invoking a recursion.
-        - Step 2: In addition, we create a loop over the data structure that we created before. The chain invocation of recursion would then be replaced with the iteration within the loop.
-    - LC
-        - 100
- 
-    - Ref
-        - https://leetcode.com/explore/learn/card/recursion-ii/503/recursion-to-iteration/2693/
-
-
-### 0-1) Types
-
-- Basics
-- Divide and Conquer
-    - know some classical examples of divide-and-conquer algorithms, e.g. `merge sort` and `quick sort`.
-    - know how to apply a pseudocode template to implement the divide-and-conquer algorithms.
-    - know a theoretical tool called master theorem to calculate the time complexity for certain types of divide-and-conquer algorithms.
-    - Steps
-        - Divide -> Conquer -> Combine
-    - LC 22
-    - LC 84
-    - LC 315
-    - LC 327
-    - LC 493
-    - LC 1649
-    - LC 426
-- Backtracking
-- master theorem
-- Recursively and call the other recursion function
-    - LC 572
-
-### 0-2) Pattern
-
-## 1) General form
-
-### 1-1) Basic OP
-
-- Endless for loop elment in list
-```python
-# LC 022
-# ...
+# Example: LC 22 (Generate Parentheses)
 _list = ["(", ")"]
 for x in _list:
     _tmp = tmp + x
     help(_tmp)
-# ...
 ```
 
-### 1-2) Top down Recursion
+---
+
+### 2-2) Top-Down Recursion
 
 **Definition**: Start from the root and make decisions at each node based on information passed down from parent nodes. Also known as "preorder" approach.
 
@@ -252,7 +145,7 @@ def topDown(node, parentInfo):
     return combineResults(currentResult, leftResult, rightResult)
 ```
 
-**Related LeetCode Problems**:
+**Common LeetCode Problems**:
 - LC 104: Maximum Depth of Binary Tree
 - LC 110: Balanced Binary Tree
 - LC 112: Path Sum
@@ -283,7 +176,7 @@ def hasPathSum(self, root, targetSum):
     return topDown(root, 0)
 ```
 
-### 1-3) Bottom up Recursion
+### 2-3) Bottom-Up Recursion
 
 **Definition**: Start from leaf nodes and build up the solution by combining results from child nodes. Also known as "postorder" approach.
 
@@ -328,7 +221,7 @@ def bottomUp(node):
     return currentResult
 ```
 
-**Related LeetCode Problems**:
+**Common LeetCode Problems**:
 - LC 104: Maximum Depth of Binary Tree
 - LC 110: Balanced Binary Tree
 - LC 543: Diameter of Binary Tree
@@ -394,61 +287,67 @@ def isBalanced(self, root):
 | **Intuition** | More intuitive for path problems | More intuitive for aggregation |
 | **Memoization Need** | Often needed | Rarely needed |
 
-### 1-4) Pass previous status to next recursion
-```java
-// java
-// LC 404
-// V1
-// https://leetcode.com/problems/sum-of-left-leaves/editorial/
-// IDEA : Recursive Tree Traversal (Pre-order)
-// NOTE!!! we can pass previous status as param to the method (isLeft)
-private int processSubtree_2(TreeNode subtree, boolean isLeft) {
+---
 
-    // Base case: This is an empty subtree.
+### 2-4) Pass State to Next Recursion
+
+Pass accumulated state/context as parameters to child recursive calls. Useful when you need to track information from parent nodes.
+
+**Example: LC 404 (Sum of Left Leaves)**
+```java
+// LC 404 - Sum of Left Leaves
+// IDEA: Pre-order traversal, pass isLeft flag to track if node is left child
+private int processSubtree(TreeNode subtree, boolean isLeft) {
+    // Base case: empty subtree
     if (subtree == null) {
         return 0;
     }
 
-    // Base case: This is a leaf node.
+    // Base case: leaf node
     if (subtree.left == null && subtree.right == null) {
-        if (isLeft){
-            return subtree.val;
-        }else{
-            return 0;
-        }
+        return isLeft ? subtree.val : 0;
     }
 
-    // Recursive case: We need to add and return the results of the
-    // left and right subtrees.
-    return processSubtree_2(subtree.left, true) + processSubtree_2(subtree.right, false);
+    // Recursive case: process left and right subtrees
+    return processSubtree(subtree.left, true) + processSubtree(subtree.right, false);
 }
 ```
 
-### 1-5) `any` true status in recursion call
+**Key Insight**: By passing `isLeft` as a parameter, we track parent context without needing global state.
+
+---
+
+### 2-5) Any-True Status in Recursion
+
+When you need to find ANY true result among recursive calls, use OR logic. Stop early if any recursive call returns true.
+
+**Example: LC 572 (Subtree of Another Tree)**
 
 ```java
-// LC 572
-// java
-    public boolean isSubtree_0_1(TreeNode s, TreeNode t) {
-        // ...
-        /**
-         * NOTE !!! isSameTree and isSubtree with sub left, sub right tree
-         *
-         * e.g.
-         *   isSubtree(s.left, t)
-         *   isSubtree(s.right, t)
-         *
-         *   -> only take sub tree on s (root), but use the same t (sub root)
-         *
-         *
-         *  NOTE !!!
-         *   -> use "OR", so any `true` status can be found and return
-         */
-        return isSameTree(s, t) || isSubtree_0_1(s.left, t) || isSubtree_0_1(s.right, t);
+// LC 572 - Subtree of Another Tree
+public boolean isSubtree(TreeNode root, TreeNode subRoot) {
+    // Check if subtree rooted at 'root' matches 'subRoot'
+    // Use OR: if ANY recursive call returns true, short-circuit and return true
+    return isSameTree(root, subRoot) 
+        || isSubtree(root.left, subRoot) 
+        || isSubtree(root.right, subRoot);
+}
+
+private boolean isSameTree(TreeNode node1, TreeNode node2) {
+    if (node1 == null || node2 == null) {
+        return node1 == null && node2 == null;
     }
+    return node1.val == node2.val 
+        && isSameTree(node1.left, node2.left) 
+        && isSameTree(node1.right, node2.right);
+}
 ```
 
-### 1-6) Recursive Construction via Cartesian Product
+**Key Insight**: Using OR (`||`) allows early exit when a true result is found, avoiding unnecessary recursive calls.
+
+---
+
+### 2-6) Cartesian Product Construction
 
 **Definition**: Recursively generate all possible structures by dividing a range, building all sub-results for each partition, and combining them via Cartesian product. This is a form of **Divide & Conquer** where the "combine" step enumerates all left × right combinations.
 
@@ -475,7 +374,7 @@ private int processSubtree_2(TreeNode subtree, boolean isLeft) {
 private List<TreeNode> build(int start, int end) {
     List<TreeNode> res = new ArrayList<>();
     if (start > end) {
-        res.add(null);  // important: null = valid empty subtree
+        res.add(null);  // CRITICAL: null = valid empty subtree
         return res;
     }
     for (int i = start; i <= end; i++) {
@@ -489,14 +388,14 @@ private List<TreeNode> build(int start, int end) {
 }
 ```
 
-**Key Insight**: The base case must return a list containing `null` (not an empty list), because the Cartesian product with an empty list produces nothing — you'd lose all valid trees that have an empty left or right subtree.
+**Key Insight**: Base case must return `[null]` (list containing null), NOT empty list. Otherwise Cartesian product loses all trees with empty left/right subtrees.
 
 **Optimization**: Add memoization with `Map<Pair<Integer,Integer>, List<TreeNode>>` to avoid recomputing overlapping subproblems.
 
-**Related LeetCode Problems**:
-- LC 95: Unique Binary Search Trees II (generate all unique BSTs)
-- LC 96: Unique Binary Search Trees (count only — Catalan number DP)
-- LC 241: Different Ways to Add Parentheses (split expression at each operator)
+**Common LeetCode Problems**:
+- LC 95: Unique Binary Search Trees II
+- LC 96: Unique Binary Search Trees (Catalan count)
+- LC 241: Different Ways to Add Parentheses
 - LC 894: All Possible Full Binary Trees
 - LC 1382: Balance a Binary Search Tree
 
@@ -519,33 +418,137 @@ def generateTrees(n):
     return generate(1, n)
 ```
 
-**Example — LC 241: Different Ways to Add Parentheses**:
+---
+
+## 3) Advanced Techniques
+
+### 3-1) Memoization
+
+**Idea**: Cache results of recursive calls to avoid redundant work when the same subproblem is encountered multiple times.
+
+**When to Use**:
+- When recursive calls repeat (overlapping subproblems)
+- When time complexity without memoization is exponential
+- Trade space for time (use a hash map for cache)
+
+**Example 1: Fibonacci**
 ```python
-def diffWaysToCompute(expression):
-    # Base case: pure number
-    if expression.isdigit():
-        return [int(expression)]
-    results = []
-    for i, ch in enumerate(expression):
-        if ch in '+-*':
-            lefts = diffWaysToCompute(expression[:i])
-            rights = diffWaysToCompute(expression[i+1:])
-            for l in lefts:
-                for r in rights:
-                    if ch == '+': results.append(l + r)
-                    elif ch == '-': results.append(l - r)
-                    else: results.append(l * r)
-    return results
+# Without memoization: O(2^n) — exponential
+def fibonacci(n):
+    if n < 2:
+        return n
+    return fibonacci(n - 1) + fibonacci(n - 2)
+
+# With memoization: O(n) — linear
+def fibonacci(n):
+    cache = {}
+    def helper(n):
+        if n in cache:
+            return cache[n]
+        if n < 2:
+            res = n
+        else:
+            res = helper(n - 1) + helper(n - 2)
+        cache[n] = res
+        return res
+    return helper(n)
 ```
 
-## 2) LC Example
-
-### 2-1) Symmetric Tree
+**Example 2: Climbing Stairs (LC 70)**
 ```python
-# LC 101. Symmetric Tree
-# V0
-# IDEA : Recursive
-class Solution(object):
+# Without memoization: O(2^n)
+class Solution:
+    def climbStairs(self, n):
+        if n == 1:
+            return 1
+        if n == 2:
+            return 2
+        return self.climbStairs(n - 1) + self.climbStairs(n - 2)
+
+# With memoization: O(n)
+class Solution:
+    def climbStairs(self, n):
+        cache = {}
+        def helper(n):
+            if n in cache:
+                return cache[n]
+            if n <= 2:
+                res = n
+            else:
+                res = helper(n - 2) + helper(n - 1)
+            cache[n] = res
+            return res
+        return helper(n)
+```
+
+**Reference**: https://leetcode.com/explore/learn/card/recursion-i/255/recursion-memoization/1495/
+
+---
+
+### 3-2) Divide & Conquer
+
+**Template**:
+```
+1. Divide: Split problem into subproblems
+2. Conquer: Solve each subproblem recursively
+3. Combine: Merge subproblem results
+```
+
+**Pseudo-code**:
+```python
+def divide_and_conquer(problem):
+    # (1) Divide
+    subproblems = divide(problem)
+    
+    # (2) Conquer
+    results = [divide_and_conquer(sub) for sub in subproblems]
+    
+    # (3) Combine
+    return combine(results)
+```
+
+**Common Examples**:
+- Merge Sort — O(n log n)
+- Quick Sort — O(n log n) average
+- Binary Search — O(log n)
+
+**Common LeetCode Problems**:
+- LC 22: Generate Parentheses
+- LC 84: Largest Rectangle in Histogram
+- LC 315: Count of Smaller Numbers After Self
+- LC 493: Reverse Pairs
+- LC 1649: Create Sorted Array Through Instructions
+
+**Reference**: https://leetcode.com/explore/learn/card/recursion-ii/470/divide-and-conquer/2869/
+
+---
+
+### 3-3) Recursion to Iteration (Unfold Recursion)
+
+**Why Convert**:
+- Avoid stack overflow risk
+- Improve space/time efficiency
+- Reduce function call overhead
+
+**How to Convert**:
+```
+1. Use a stack or queue to replace the system call stack
+2. At each recursion point, push parameters onto data structure
+3. Replace recursive chain with loop over the data structure
+```
+
+**Example**: https://leetcode.com/explore/learn/card/recursion-ii/503/recursion-to-iteration/2693/
+
+---
+
+## 4) Complete LeetCode Examples
+
+### 4-1) Symmetric Tree (LC 101)
+
+**Pattern**: Bottom-up recursion, comparing two subtrees in parallel.
+
+```python
+class Solution:
     def isSymmetric(self, root):
         if not root:
             return True
@@ -559,37 +562,36 @@ class Solution(object):
         return self.mirror(left.left, right.right) and self.mirror(left.right, right.left)
 ```
 
-### 2-2) One Edit Distance
+---
+
+### 4-2) One Edit Distance (LC 161)
+
+**Pattern**: Pruning branches early (abs difference > 1), then checking each position.
+
 ```python
-# LC 161. One Edit Distance
-# V0
-# IDER : RECURSION
 class Solution:
     def isOneEditDistance(self, s, t):
-        m = len(s)
-        n = len(t)
+        m, n = len(s), len(t)
         if abs(m - n) > 1:
             return False
         if m > n:
             return self.isOneEditDistance(t, s)
         for i in range(m):
             if s[i] != t[i]:
-                # case 1
                 if m == n:
                     return s[i + 1:] == t[i + 1:]
-                # case 2
                 return s[i:] == t[i + 1:]
-        return m != n # double check this condition
+        return m != n
 ```
 
-### 2-3) Merge Two Sorted Lists
-```python
-# LC 021 Merge Two Sorted Lists
-# NOTE : there is also iteration solution
+---
 
-# V0''
-# IDEA : RECURSION
-class Solution(object):
+### 4-3) Merge Two Sorted Lists (LC 21)
+
+**Pattern**: Simple recursion with local state update.
+
+```python
+class Solution:
     def mergeTwoLists(self, l1, l2):
         if not l1 or not l2:
             return l1 or l2
@@ -601,138 +603,52 @@ class Solution(object):
             return l2
 ```
 
-### 2-4) Subtree of Another Tree
+---
+
+### 4-4) Subtree of Another Tree (LC 572)
+
+**Pattern**: Any-true status with recursive helper.
+
 ```python
-# LC 572 Subtree of Another Tree
-
-# V0
-# IDEA : BFS + DFS
-# bfs
-class Solution(object):
+class Solution:
     def isSubtree(self, root, subRoot):
-        
-        # dfs
-        # IDEA : LC 100 Same tree
-        def check(p, q):
-            if (not p and not q):
-                return True
-            elif (not p and q) or (p and not q):
-                return False
-            elif (p.left and not q.left) or (p.right and not q.right):
-                return False
-            elif (not p.left and q.left) or (not p.right and q.right):
-                return False
-            return p.val == q.val and check(p.left, q.left) and check(p.right, q.right)
-        
-        # bfs
-        if (not root and subRoot) or (root and not subRoot):
-            return False
-        q = [root]
-        cache = []
-        while q:
-            for i in range(len(q)):
-                tmp = q.pop(0)
-                if tmp.val == subRoot.val:
-                    ### NOTE : here we don't return res
-                    #          -> since we may have `root = [1,1], subRoot = [1]` case
-                    #          -> so we have a cache, collect all possible res
-                    #          -> then check if there is "True" in cache
-                    res = check(tmp, subRoot)
-                    cache.append(res)
-                    #return res
-                if tmp.left:
-                    q.append(tmp.left)
-                if tmp.right:
-                    q.append(tmp.right)
-        #print ("cache = " + str(cache))
-        # check if there is "True" in cache
-        return True in cache
-
-# V0'
-# IDEA : DFS + DFS (LC 100 Same tree)
-class Solution(object):
-    def isSubtree(self, root, subRoot):
-        # IDEA : LC 100 Same tree
         def isSameTree(p, q):
             if not p and not q:
                 return True
-            if (not p and q) or (p and not q):
+            if not p or not q:
                 return False
-            if p.val != q.val:
-                return False
-            return isSameTree(p.left, q.left) and isSameTree(p.right, q.right)
-        def help(root, subRoot):
-            # edge case
-            if not root and subRoot:
-                return False
-            if not root and not subRoot:
-                return True
-            # use isSameTree
-            if isSameTree(root, subRoot):
-                #return True
-                res.append(True)
-            if root.left:
-                help(root.left, subRoot)
-            if root.right:
-                help(root.right, subRoot)
-        res = []
-        help(root, subRoot)
-        #print ("res = " + str(res))
-        return True in res
-
-# V0' 
-# IDEA : DFS + DFS 
-class Solution(object):
-    def isSubtree(self, s, t):
-        if not s and not t:
-            return True
-        if not s or not t:
-            return False
-        return self.isSameTree(s, t) or self.isSubtree(s.left, t) or self.isSubtree(s.right, t)
+            return (p.val == q.val and 
+                    isSameTree(p.left, q.left) and 
+                    isSameTree(p.right, q.right))
         
-    def isSameTree(self, s, t):
-        if not s and not t:
+        if not root and not subRoot:
             return True
-        if not s or not t:
+        if not root or not subRoot:
             return False
-        return s.val == t.val and self.isSameTree(s.left, t.left) and self.isSameTree(s.right, t.right)
+        # Use OR: if any recursive call returns True, stop early
+        return (isSameTree(root, subRoot) or 
+                self.isSubtree(root.left, subRoot) or 
+                self.isSubtree(root.right, subRoot))
 ```
 
+**Java Version**:
 ```java
-// java
-// LC 572
- public boolean isSubtree(TreeNode root, TreeNode subRoot) {
-
-        // If this node is Empty, then no tree is rooted at this Node
-        // Hence, "tree rooted at node" cannot be equal to "tree rooted at subRoot"
-        // "tree rooted at subRoot" will always be non-empty, as per constraints
-        if (root == null) {
-            return false;
-        }
-
-        // Check if the "tree rooted at root" is identical to "tree roooted at subRoot"
-        if (isIdentical(root, subRoot)) {
-            return true;
-        }
-
-        // If not, check for "tree rooted at root.left" and "tree rooted at root.right"
-        // If either of them returns true, return true
-        // NOTE !!! either left or right tree equals subRoot is acceptable
-        return isSubtree(root.left, subRoot) || isSubtree(root.right, subRoot);
+public boolean isSubtree(TreeNode root, TreeNode subRoot) {
+    if (root == null) {
+        return false;
     }
-
-    /** NOTE !!! check this help func */
-    private boolean isIdentical(TreeNode node1, TreeNode node2) {
-
-        // If any of the nodes is null, then both must be null
-        if (node1 == null || node2 == null) {
-            return node1 == null && node2 == null;
-        }
-
-        // If both nodes are non-empty, then they are identical only if
-        // 1. Their values are equal
-        // 2. Their left subtrees are identical
-        // 3. Their right subtrees are identical
-        return node1.val == node2.val && isIdentical(node1.left, node2.left) && isIdentical(node1.right, node2.right);
+    if (isIdentical(root, subRoot)) {
+        return true;
     }
+    return isSubtree(root.left, subRoot) || isSubtree(root.right, subRoot);
+}
+
+private boolean isIdentical(TreeNode node1, TreeNode node2) {
+    if (node1 == null || node2 == null) {
+        return node1 == null && node2 == null;
+    }
+    return node1.val == node2.val && 
+           isIdentical(node1.left, node2.left) && 
+           isIdentical(node1.right, node2.right);
+}
 ```
