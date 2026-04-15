@@ -53,6 +53,50 @@ public class L132Pattern {
 
     // V0-1
     // IDEA: Monotonic STACK (gpt)
+    /**  Core idea:
+     *
+     * Traverse from right to left
+     * Use a stack to maintain possible "3" (nums[j])
+     * Track a variable third = best candidate for "2" (nums[k])
+     *
+     *  e.g. `1 -> 3 -> 2`
+     *
+     */
+    /**  Core idea V2:
+     *
+     *
+     * ---
+     *
+     * ## 🧠 Why this works
+     *
+     * We are building:
+     *
+     * ```text
+     * nums[i] < nums[k] < nums[j]
+     *    ↑        ↑        ↑
+     *    i      third    stack
+     * ```
+     *
+     * * `stack` → candidates for `nums[j]` (the "3")
+     * * `third` → best candidate for `nums[k]` (the "2")
+     * * When we find `nums[i] < third` → ✅ done
+     *
+     * ---
+     *
+     * ## 🔥 Example
+     *
+     * ```text id="zq9m2k"
+     * nums = [3, 1, 4, 2]
+     *
+     * Traverse from right:
+     * 2 → stack = [2]
+     * 4 → pop 2 → third = 2, stack = [], push 4
+     * 1 → 1 < third(2) → FOUND
+     * ```
+     *
+     * ---
+     *
+     */
     public boolean find132pattern_0_1(int[] nums) {
         if (nums == null || nums.length < 3)
             return false;
@@ -60,7 +104,11 @@ public class L132Pattern {
         Stack<Integer> stack = new Stack<>();
         int third = Integer.MIN_VALUE; // this is nums[k]
 
-        // traverse from right to left
+        /** NOTE !!!
+         *
+         *   loop from `right` -> `left`
+         */
+        // traverse from `right` to `left`
         for (int i = nums.length - 1; i >= 0; i--) {
 
             // if we find nums[i] < third → 132 pattern found
@@ -78,6 +126,7 @@ public class L132Pattern {
 
         return false;
     }
+
 
     // V0-2
     // IDEA: Monotonic STACK (GEMINI)
