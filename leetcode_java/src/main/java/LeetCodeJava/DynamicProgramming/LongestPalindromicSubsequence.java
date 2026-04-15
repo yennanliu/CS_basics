@@ -155,7 +155,12 @@ public class LongestPalindromicSubsequence {
      */
     public int longestPalindromeSubseq(String s) {
         int n = s.length();
-        // dp[i][j] = longest palindromic subsequence in s[i...j]
+        /**  NOTE !!
+         *
+         *  DP def:
+         *    - dp[i][j] = longest palindromic subsequence in s[i...j]
+         *
+         */
         int[][] dp = new int[n][n];
 
         /** NOTE !!!
@@ -240,6 +245,13 @@ public class LongestPalindromicSubsequence {
             return 0;
 
         int n = s.length();
+        /** NOTE !!
+         *
+         *  DP def:
+         *
+         *   - dp[i][j] = the `length` of the longest palindromic subsequence
+         *            within the substring s[i..j] (inclusive)
+         */
         int[][] dp = new int[n][n];
 
         // base case: single character
