@@ -9060,6 +9060,87 @@ public class Workspace24 {
     }
 
 
+    // LC 729
+    // 16.04 - 24 PM
+    /**
+     *
+     *  -> boolean book(int startTime, int endTime)
+     *     -> Returns true if the event can
+     *     be added to the calendar successfully
+     *     without causing a double booking.
+     *     Otherwise,
+     *     return false and do not add the event to the calendar.
+     *
+     *
+     *     - ONLY can add a new event if NOT
+     *       cause `double booking`.
+     *       -> e.g.:
+     *
+     *         -  two events have some non-empty
+     *         intersection (i.e., some moment is common to both events.).
+     *
+     *         - event:
+     *            [startTime, endTime),
+     *             startTime <= x < endTime.
+     *
+     *  ---------------
+     *
+     *
+     *  ---------------
+     *
+     *
+     */
+    //  IDEA 1) STACK
+    class MyCalendar {
+
+        // attr
+        Stack<Integer[]> st;
+
+        public MyCalendar() {
+            this.st = new Stack<>();
+        }
+
+        public boolean book(int startTime, int endTime) {
+            if(this.st.isEmpty()){
+                st.add(new Integer[]{startTime, endTime});
+                return true;
+            }
+
+            /** NOTE !!
+             *
+             *  it's NOT guarantee that new event start time always
+             *   >= prev event start time...
+             *
+             *  -> so we need to consider ALL NON OVERLAP cases.
+             *
+             *
+             *  |---|                old
+             *        |----|         new
+             *
+             *
+             *
+             *
+             *        |----|        old
+             *
+             *   |---|              new
+             */
+            Integer[] prev = st.peek();
+            boolean isNotOverlap = (prev[1] <= startTime && prev[1] < endTime) ||
+                    (endTime <= prev[0] && endTime < prev[1]);
+            if(isNotOverlap){
+                st.add(new Integer[]{startTime, endTime});
+                return true;
+            }
+
+            return false;
+        }
+
+    }
+
+
+
+
+
 
 
 

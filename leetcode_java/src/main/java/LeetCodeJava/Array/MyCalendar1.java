@@ -4,6 +4,7 @@ package LeetCodeJava.Array;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 import java.util.TreeMap;
 
 /**
@@ -48,16 +49,53 @@ import java.util.TreeMap;
 public class MyCalendar1 {
 
     // V0
+    // IDEA: STACK (fixed by gpt)
+    class MyCalendar {
+
+        Stack<Integer[]> st;
+
+        public MyCalendar() {
+            this.st = new Stack<>();
+        }
+
+        public boolean book(int startTime, int endTime) {
+
+            /** NOTE !!!
+             *
+             *  simply loop over all element from stack,
+             *  and check if there is an overlap.
+             *
+             *  if not, add new event to stack
+             */
+            // check against ALL intervals
+            for (Integer[] interval : st) {
+                int s = interval[0];
+                int e = interval[1];
+
+                // overlap condition
+                if (startTime < e && s < endTime) {
+                    return false;
+                }
+            }
+
+            // no overlap → safe to add
+            st.add(new Integer[] { startTime, endTime });
+            return true;
+        }
+    }
+
+
+    // V0-0-1
     // IDEA : BRUTE FORCE (fixed by gpt)
     // detailed explain : https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/array_overlap_explaination.md
     /**
      * time = O(N) per book operation
      * space = O(N)
      */
-    class MyCalendar {
+    class MyCalendar_0_0_1 {
         List<List<Integer>> dates;
 
-        public MyCalendar() {
+        public MyCalendar_0_0_1() {
             this.dates = new ArrayList<>();
         }
 
@@ -86,6 +124,7 @@ public class MyCalendar1 {
             return true;
         }
     }
+
 
     // V0-1
     // IDEA : ARRAY + BOUNDARY HANDLING
@@ -243,7 +282,7 @@ public class MyCalendar1 {
     }
 
     // V2-1
-    // IDEA : LINKEDLIST
+    // IDEA : LINKED LIST
     // https://leetcode.com/problems/my-calendar-i/solutions/1262570/js-python-java-c-easy-sorted-tree-linked-list-solutions-w-explanation/
     // time: O(N) per book, space: O(N)
     class ListNode {
@@ -279,7 +318,7 @@ public class MyCalendar1 {
     }
 
     // V3
-    // IDEA : LINKEDLIST
+    // IDEA : LINKED LIST
     // time: O(N) per book, space: O(N)
     // https://leetcode.com/problems/my-calendar-i/solutions/2372060/java-easy-solution-100-faster-code/
     class Node {
@@ -333,5 +372,7 @@ public class MyCalendar1 {
             }
         }
     }
+
+
 
 }
