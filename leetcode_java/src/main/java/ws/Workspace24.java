@@ -9137,13 +9137,58 @@ public class Workspace24 {
 
     }
 
-
-    // LC 72
+    /**
+     *   ->  return the `minimum` number
+     *      of operations required to
+     *      convert word1 to word2
+     *
+     *
+     *   ----------
+     *
+     *    IDEA 1) BRUTE FORCE
+     *
+     *    IDEA 2) 2D DP
+     *
+     *        - DP def:
+     *
+     *           - dp[i][j] =
+     *               - min op to convert word1 [0..i] to word2 ????
+     *               - j: op type ???
+     *                  - 0: insert
+     *                  - 1: delete
+     *                  - 2: replace
+     *
+     *        - DP eq:
+     *
+     *           dp[i][j] =
+     *
+     *             if w1[i] == w2[i]:
+     *                dp[i][j] = dp[i-1][j-1]    // ?????
+     *
+     *
+     *
+     */
+    //  IDEA 2) 2D DP
     public int minDistance(String word1, String word2) {
+        // edge
 
-        
+        int l1 =  word1.length();
+        int l2 = word2.length();
+
+
+        // ???
+        int[][] dp = new int[l1][3]; // ??
+
+        // init ???
+        // if
+
+
+
         return 0;
     }
+
+    // LC 72
+    // 7.43 - 53 am
 
 
 

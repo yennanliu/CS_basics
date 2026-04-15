@@ -46,8 +46,40 @@ package LeetCodeJava.DynamicProgramming;
 public class EditDistance {
 
     // V0
-//    public int minDistance(String word1, String word2) {
-//    }
+    // IDEA: 2D DP (GPT)
+    public int minDistance(String word1, String word2) {
+        int l1 = word1.length();
+        int l2 = word2.length();
+
+        int[][] dp = new int[l1 + 1][l2 + 1];
+
+        // base cases
+        for (int i = 0; i <= l1; i++) {
+            dp[i][0] = i;
+        }
+        for (int j = 0; j <= l2; j++) {
+            dp[0][j] = j;
+        }
+
+        // fill dp table
+        for (int i = 1; i <= l1; i++) {
+            for (int j = 1; j <= l2; j++) {
+                if (word1.charAt(i - 1) == word2.charAt(j - 1)) {
+                    dp[i][j] = dp[i - 1][j - 1];
+                } else {
+                    dp[i][j] = 1 + Math.min(
+                            dp[i - 1][j], // delete
+                            Math.min(
+                                    dp[i][j - 1], // insert
+                                    dp[i - 1][j - 1] // replace
+                            ));
+                }
+            }
+        }
+
+        return dp[l1][l2];
+    }
+
 
 
     // V0-1
@@ -380,7 +412,6 @@ public class EditDistance {
 
 
 
-
     // V0-5
     // IDEA: 2D DP (gpt)
     /**
@@ -640,4 +671,6 @@ public class EditDistance {
 
 
 
+
+    
 }
