@@ -50,6 +50,10 @@
 		- sort.md
 		- stack.md
 		- string.md
+		- tree.md
+		
+		- topology_sorting.md
+		- tree_backtrack.md
 
 - to review
 - needcode `250` - similar LC by AI
