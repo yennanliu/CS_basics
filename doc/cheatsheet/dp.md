@@ -769,6 +769,69 @@ Use this interval DP pattern when:
 
 **Reference**: See `leetcode_java/src/main/java/LeetCodeJava/DynamicProgramming/BurstBalloons.java` for multiple implementation variants.
 
+### Template 3-3: Backward-i + Forward-j Loop Order (Palindrome/Substring DP)
+
+**🎯 When to Use This Pattern**
+
+Use this when `dp[i][j]` depends on:
+- `dp[i+1][j-1]` — the **inner** substring (both boundaries shrink inward)
+- `dp[i+1][j]` — row **below** (i increases)
+- `dp[i][j-1]` — column **left** (j decreases)
+
+Classic problems: **LC 516 Longest Palindromic Subsequence**, **LC 5 Longest Palindromic Substring**, **LC 647 Palindromic Substrings**.
+
+**Core Insight: Dependency Direction Determines Loop Order**
+
+```
+dp[i][j] depends on:
+    dp[i+1][j-1]   ← diagonal (i+1, j-1): both already computed
+    dp[i+1][j]     ← row below: need i+1 before i  → loop i BACKWARD
+    dp[i][j-1]     ← column left: need j-1 before j → loop j FORWARD
+```
+
+So: **loop `i` from `n-1` down to `0`, loop `j` from `i+1` up to `n-1`**.
+
+**Template (Java)**:
+```java
+int n = s.length();
+int[][] dp = new int[n][n];
+
+// Base case: single characters
+for (int i = 0; i < n; i++) dp[i][i] = 1;
+
+// i backwards (so dp[i+1][...] is already filled)
+for (int i = n - 1; i >= 0; i--) {
+    // j forwards (so dp[...][j-1] is already filled)
+    for (int j = i + 1; j < n; j++) {
+        if (s.charAt(i) == s.charAt(j)) {
+            dp[i][j] = dp[i + 1][j - 1] + 2;   // expand palindrome
+        } else {
+            dp[i][j] = Math.max(dp[i + 1][j], dp[i][j - 1]);  // skip i or j
+        }
+    }
+}
+return dp[0][n - 1];
+```
+
+**Why NOT `length`-based outer loop here?**
+
+The length-based loop (Template 3) also works, but the backward-i + forward-j approach is more intuitive when the transition naturally reads as "expand/shrink boundaries" rather than "try a split point k".
+
+| Approach | Outer Loop | Use When |
+|---|---|---|
+| Length-based (Template 3) | `length: 2 → n` | Split-point `k` problems (burst balloons, matrix chain) |
+| Backward-i + Forward-j (this template) | `i: n-1 → 0` | Boundary expand/shrink problems (palindrome, LCS on same string) |
+
+**Similar LeetCode Problems**:
+- **LC 516** — Longest Palindromic Subsequence (exact template above)
+- **LC 5** — Longest Palindromic Substring (same loop order, boolean dp)
+- **LC 647** — Palindromic Substrings (count all palindromes)
+- **LC 1048** — Longest String Chain (DFS+memo or sort-by-length DP; see `LongestStringChain.java`)
+- **LC 1312** — Minimum Insertion Steps to Make a String Palindrome
+- **LC 730** — Count Different Palindromic Subsequences
+
+---
+
 ### Template 4: 0/1 Knapsack
 ```python
 def knapsack_01(weights, values, capacity):
