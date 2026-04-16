@@ -149,6 +149,14 @@ public class CountSubIslands {
              */
             // V2
             if (x_ >= 0 && x_ < w && y_ >= 0 && y_ < l) {
+                /** NOTE !!!
+                 *
+                 *   the condition that whether you should proceed
+                 *
+                 *   1. color != newColor
+                 *   2. new cell is NOT a `water`
+                 *
+                 */
                 if (grid2[y_][x_] != newColor && grid2[y_][x_] != 0) {
                     // proceed
                     color(grid2, x_, y_, newColor);
@@ -871,6 +879,8 @@ public class CountSubIslands {
         }
         return ans;
     }
+
+
 
 
 
