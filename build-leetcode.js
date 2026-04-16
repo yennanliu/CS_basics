@@ -1182,21 +1182,9 @@ function generatePageBody(problems, tagMap, coMatrix) {
             <button class="lc-btn" data-diff="Hard" onclick="toggleDifficulty('Hard')">Hard</button>
           </div>
         </div>
-        <div style="margin-bottom: 0.75rem; color: var(--text-light); font-size: 0.85rem; margin-top: 1rem;">Acceptance Rate:</div>
-        <div class="lc-acc-range-slider">
-          <input type="range" id="acc-min" min="0" max="100" value="0" onchange="applyFilters()" style="flex: 1;">
-          <span id="acc-min-val" style="min-width: 35px; font-size: 0.8rem;">0%</span>
-        </div>
-        <div class="lc-acc-range-slider">
-          <input type="range" id="acc-max" min="0" max="100" value="100" onchange="applyFilters()" style="flex: 1;">
-          <span id="acc-max-val" style="min-width: 35px; font-size: 0.8rem;">100%</span>
-        </div>
         <div style="margin-bottom: 0.75rem; color: var(--text-light); font-size: 0.85rem; margin-top: 1rem;">Tags:</div>
-        <div class="lc-tag-search">
-          <input type="text" id="lc-tag-search" placeholder="Filter tags..." onkeyup="filterTagPills()">
-        </div>
         <div class="lc-tag-filters" id="lc-tag-pills"></div>
-        <button class="lc-btn" style="width: 100%; margin-top: 1rem;" onclick="clearFilters()">Clear All Filters <span class="lc-filter-count-badge" id="filter-count-badge" style="display:none;">0</span></button>
+        <button class="lc-btn" style="width: 100%; margin-top: 1rem;" onclick="clearFilters()">Clear All Filters</button>
       </div>
       <div style="display: flex; flex-direction: column; gap: 1rem;">
         <div>
@@ -1360,33 +1348,13 @@ function initFilterView() {
 
   const tagContainer = document.getElementById('lc-tag-pills');
   if (tagContainer) {
-    // Calculate tag counts and difficulty ratings
-    const tagStats = {};
+    // Create tag buttons - simple, no stats
     allTags.forEach(tag => {
-      const problems = Object.values(PROBLEMS_DATA.problems).filter(p => p.tags.includes(tag));
-      const count = problems.length;
-      const avgDiff = (problems.filter(p => p.difficulty === 'Easy').length * 1 +
-                       problems.filter(p => p.difficulty === 'Medium').length * 2 +
-                       problems.filter(p => p.difficulty === 'Hard').length * 3) / count;
-      tagStats[tag] = { count, avgDiff };
-    });
-
-    // Sort with favorites first
-    const favTags = allTags.filter(t => state.favoriteTags.has(t));
-    const otherTags = allTags.filter(t => !state.favoriteTags.has(t));
-    const sortedTags = [...favTags, ...otherTags];
-
-    sortedTags.forEach(tag => {
-      const container = document.createElement('div');
-      container.style.position = 'relative';
-      container.style.display = 'inline-block';
-
       const btn = document.createElement('button');
       btn.className = 'lc-btn';
       btn.dataset.tag = tag;
-      btn.innerHTML = \`\${tag}<span class="tag-count">\${tagStats[tag].count}</span>\`;
-      btn.onclick = (e) => {
-        if (e.target.classList.contains('favorite-star')) return;
+      btn.textContent = tag;
+      btn.onclick = () => {
         btn.classList.toggle('active');
         if (btn.classList.contains('active')) {
           state.filterTags.add(tag);
@@ -1395,47 +1363,7 @@ function initFilterView() {
         }
         applyFilters();
       };
-
-      const star = document.createElement('span');
-      star.className = 'favorite-star';
-      star.textContent = '★';
-      if (state.favoriteTags.has(tag)) star.classList.add('active');
-      star.onclick = (e) => {
-        e.stopPropagation();
-        if (state.favoriteTags.has(tag)) {
-          state.favoriteTags.delete(tag);
-          star.classList.remove('active');
-        } else {
-          state.favoriteTags.add(tag);
-          star.classList.add('active');
-        }
-        localStorage.setItem('lc-fav-tags', JSON.stringify([...state.favoriteTags]));
-      };
-
-      container.appendChild(btn);
-      container.appendChild(star);
-      tagContainer.appendChild(container);
-    });
-  }
-
-  // Initialize picker tag select and exclude select
-  const pickerTagSelect = document.getElementById('picker-tag-select');
-  const pickerExcludeSelect = document.getElementById('picker-exclude-select');
-  if (pickerTagSelect || pickerExcludeSelect) {
-    allTags.forEach(tag => {
-      if (pickerTagSelect) {
-        const option = document.createElement('option');
-        option.value = tag;
-        option.textContent = tag;
-        pickerTagSelect.appendChild(option);
-      }
-
-      if (pickerExcludeSelect) {
-        const excludeOption = document.createElement('option');
-        excludeOption.value = tag;
-        excludeOption.textContent = tag;
-        pickerExcludeSelect.appendChild(excludeOption);
-      }
+      tagContainer.appendChild(btn);
     });
   }
 
@@ -1462,138 +1390,48 @@ function toggleDifficulty(diff) {
 function clearFilters() {
   state.filterDiffs.clear();
   state.filterTags.clear();
-  document.getElementById('lc-search').value = '';
-  document.getElementById('lc-tag-search').value = '';
-  state.searchQuery = '';
-  document.getElementById('acc-min').value = 0;
-  document.getElementById('acc-max').value = 100;
-  document.querySelectorAll('.lc-btn').forEach(b => b.classList.remove('active'));
-  document.querySelectorAll('[data-tag]').forEach(b => b.style.display = '');
+  const searchEl = document.getElementById('lc-search');
+  if (searchEl) searchEl.value = '';
+  document.querySelectorAll('[data-tag]').forEach(b => b.classList.remove('active'));
   applyFilters();
 }
 
-function filterTagPills() {
-  const searchEl = document.getElementById('lc-tag-search');
-  if (!searchEl) return;
-  const query = searchEl.value.toLowerCase();
-  document.querySelectorAll('[data-tag]').forEach(btn => {
-    const tag = btn.dataset.tag;
-    btn.style.display = tag.toLowerCase().includes(query) ? '' : 'none';
-  });
-}
-
-function sortProblems(field) {
-  // This will be called by column headers, we can implement client-side sorting
-  const query = document.getElementById('lc-search').value.toLowerCase();
-  let results = Object.values(PROBLEMS_DATA.problems).filter(p => {
-    const diffMatch = state.filterDiffs.size === 0 || state.filterDiffs.has(p.difficulty);
-    const tagMatch = state.filterTags.size === 0 || p.tags.some(t => state.filterTags.has(t));
-    const textMatch = !query || p.title.toLowerCase().includes(query) || p.id.includes(query);
-    const accMatch = p.acceptance >= state.filterAccMin && p.acceptance <= state.filterAccMax;
-    return diffMatch && tagMatch && textMatch && accMatch;
-  });
-
-  results.sort((a, b) => {
-    if (field === 'id') return parseInt(a.id) - parseInt(b.id);
-    if (field === 'title') return a.title.localeCompare(b.title);
-    if (field === 'difficulty') return ['Easy', 'Medium', 'Hard'].indexOf(a.difficulty) - ['Easy', 'Medium', 'Hard'].indexOf(b.difficulty);
-    if (field === 'acceptance') return b.acceptance - a.acceptance;
-    return 0;
-  });
-  state.currentPage = 0;
-  renderProblemList(results);
-}
-
-function updateFilterBadge() {
-  const count = state.filterDiffs.size + state.filterTags.size + (state.filterAccMin > 0 ? 1 : 0) + (state.filterAccMax < 100 ? 1 : 0);
-  const badge = document.getElementById('filter-count-badge');
-  if (badge) {
-    if (count > 0) {
-      badge.textContent = count;
-      badge.style.display = 'inline-block';
-    } else {
-      badge.style.display = 'none';
-    }
-  }
-}
 
 function applyFilters() {
-  const query = document.getElementById('lc-search').value.toLowerCase();
-  state.searchQuery = query;
-
-  // Update acceptance range state (with safety checks)
-  const accMinEl = document.getElementById('acc-min');
-  const accMaxEl = document.getElementById('acc-max');
-  if (accMinEl && accMaxEl) {
-    state.filterAccMin = parseInt(accMinEl.value) || 0;
-    state.filterAccMax = parseInt(accMaxEl.value) || 100;
-    if (document.getElementById('acc-min-val')) {
-      document.getElementById('acc-min-val').textContent = state.filterAccMin + '%';
-    }
-    if (document.getElementById('acc-max-val')) {
-      document.getElementById('acc-max-val').textContent = state.filterAccMax + '%';
-    }
-  }
+  const searchEl = document.getElementById('lc-search');
+  const query = searchEl ? searchEl.value.toLowerCase() : '';
 
   let results = Object.values(PROBLEMS_DATA.problems).filter(p => {
     const diffMatch = state.filterDiffs.size === 0 || state.filterDiffs.has(p.difficulty);
     const tagMatch = state.filterTags.size === 0 || p.tags.some(t => state.filterTags.has(t));
     const textMatch = !query || p.title.toLowerCase().includes(query) || p.id.includes(query);
-    const accMatch = p.acceptance >= state.filterAccMin && p.acceptance <= state.filterAccMax;
-    return diffMatch && tagMatch && textMatch && accMatch;
+    return diffMatch && tagMatch && textMatch;
   });
 
-  const sortBy = document.getElementById('lc-sort').value;
-  results.sort((a, b) => {
-    if (sortBy === 'acceptance') return b.acceptance - a.acceptance;
-    if (sortBy === 'difficulty') return ['Easy', 'Medium', 'Hard'].indexOf(a.difficulty) - ['Easy', 'Medium', 'Hard'].indexOf(b.difficulty);
-    return parseInt(a.id) - parseInt(b.id);
-  });
+  // Simple sort by ID
+  results.sort((a, b) => parseInt(a.id) - parseInt(b.id));
 
-  state.currentPage = 0;
   renderProblemList(results);
-  updateFilterBadge();
 }
 
 function renderProblemList(problems) {
   const container = document.getElementById('lc-problem-list');
   container.innerHTML = '';
-  document.getElementById('lc-result-count').textContent = problems.length;
+  const resultCount = document.getElementById('lc-result-count');
+  if (resultCount) {
+    resultCount.textContent = problems.length;
+  }
 
   if (problems.length === 0) {
-    container.innerHTML = '<div style="text-align:center; padding:3rem; color:var(--text-light);">No problems match your filters.</div>';
+    container.innerHTML = '<div style="text-align:center; padding:2rem; color:var(--text-light);">No problems match your filters.</div>';
     return;
   }
 
-  // Pagination
-  const pageSize = state.pageSize;
-  const totalPages = Math.ceil(problems.length / pageSize);
-  const start = state.currentPage * pageSize;
-  const end = Math.min(start + pageSize, problems.length);
-  const paginated = problems.slice(start, end);
-
-  // Render header
-  const header = document.createElement('div');
-  header.className = 'lc-problem-row';
-  header.style.background = 'var(--bg-color)';
-  header.style.fontWeight = '600';
-  header.style.cursor = 'default';
-  header.style.position = 'sticky';
-  header.style.top = '0';
-  header.style.zIndex = '10';
-  header.innerHTML = \`
-    <span style="cursor:pointer; user-select:none;" onclick="sortProblems('id')">#</span>
-    <span style="cursor:pointer; user-select:none;" onclick="sortProblems('title')">Title</span>
-    <span style="cursor:pointer; user-select:none;" onclick="sortProblems('difficulty')">Difficulty</span>
-    <span style="cursor:pointer; user-select:none;" onclick="sortProblems('tags')">Tags</span>
-    <span style="cursor:pointer; user-select:none;" onclick="sortProblems('acceptance')">Acceptance %</span>
-  \`;
-  container.appendChild(header);
-
-  // Render problems
-  paginated.forEach(p => {
+  // Simple list rendering - no pagination, no complex logic
+  problems.forEach(p => {
     const row = document.createElement('div');
     row.className = 'lc-problem-row';
+    row.style.cursor = 'pointer';
     row.onclick = () => window.open(generateLCURL(p.title), '_blank');
 
     row.innerHTML = \`
@@ -1605,23 +1443,6 @@ function renderProblemList(problems) {
     \`;
     container.appendChild(row);
   });
-
-  // Render pagination
-  if (totalPages > 1) {
-    const paginationDiv = document.createElement('div');
-    paginationDiv.className = 'lc-pagination';
-    for (let i = 0; i < totalPages; i++) {
-      const btn = document.createElement('button');
-      btn.textContent = i + 1;
-      btn.onclick = () => {
-        state.currentPage = i;
-        renderProblemList(problems);
-      };
-      if (i === state.currentPage) btn.classList.add('active');
-      paginationDiv.appendChild(btn);
-    }
-    container.appendChild(paginationDiv);
-  }
 }
 
 function generateLCURL(title) {
