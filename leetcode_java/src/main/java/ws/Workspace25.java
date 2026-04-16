@@ -96,6 +96,42 @@ public class Workspace25 {
 
     }
 
+    // LC 827
+    // 10.04 - 14 am
+    /**
+     *  -> Return the size of the
+     *  largest island in grid after applying
+     *  this operation.
+     *
+     *   NOTE:
+     *      - You are allowed to change
+     *        `at most `one` 0 to be 1.
+     *
+     *
+     *
+     *  ------------------
+     *
+     *   IDEA 1) DFS / BFS + brute force
+     *
+     *    -> find all `0`, and check one by one,
+     *       get the max updated `1` area
+     *
+     *   IDEA 2) `reverse` way. DFS / BFS
+     *
+     *    -> get all `1` island area, and check there neighbor `0`
+     *
+     *
+     *
+     *  ------------------
+     *
+     *
+     *
+     */
+    public int largestIsland(int[][] grid) {
+
+        return 0;
+    }
+
 
 
 
