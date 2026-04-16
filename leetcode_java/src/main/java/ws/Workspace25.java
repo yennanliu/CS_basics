@@ -203,12 +203,42 @@ public class Workspace25 {
     // 7.31 - 41 am
     /**
      *
+     *   ->  return the kth factor in this
+     *       or return -1 if n has less than k factors
      *
      *
+     *   -  a list of all factors of n
+     *      sorted in `ascending` order
+     *
+     *
+     *   n, k: positive int
+     *
+     *   factor of n
+     *      -> an integer i where n % i == 0.
+     *
+     *  --------
+     *
+     *  IDEA 1) BRUTE FORCE
+     *
+     *  IDEA 2) MATH
      */
     public int kthFactor(int n, int k) {
+        // edge
+        if(n <= 0){
+            return -1;
+        }
 
-        return 0;
+        for(int i = 1; i < n + 1; i++){
+            if(n % i == 0){
+                k -= 1;
+                // ???
+                if(k == 0){
+                    return i;
+                }
+            }
+        }
+
+        return -1; // ???
     }
 
 

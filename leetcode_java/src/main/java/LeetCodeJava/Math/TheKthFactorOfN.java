@@ -48,9 +48,27 @@ import java.util.List;
 public class TheKthFactorOfN {
 
     // V0
-//    public int kthFactor(int n, int k) {
-//
-//    }
+    // IDEA: MATH
+    public int kthFactor(int n, int k) {
+        // edge
+        if (n <= 0) {
+            return -1;
+        }
+
+        for (int i = 1; i < n + 1; i++) {
+            if (n % i == 0) {
+                k -= 1;
+                // ???
+                if (k == 0) {
+                    return i;
+                }
+            }
+        }
+
+        return -1; // ???
+    }
+
+
 
     // V1
     // IDEA: MATH
@@ -74,6 +92,7 @@ public class TheKthFactorOfN {
     }
 
 
+    
     // V2
     // IDEA: MATH
     // https://leetcode.com/problems/the-kth-factor-of-n/solutions/7631774/on-approach-to-find-kth-factor-by-vyankt-2jc9/
