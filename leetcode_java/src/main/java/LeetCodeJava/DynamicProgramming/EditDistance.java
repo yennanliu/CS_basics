@@ -51,9 +51,23 @@ public class EditDistance {
         int l1 = word1.length();
         int l2 = word2.length();
 
+        /** NOTE !!!
+         *
+         *   DP def:
+         *
+         *    dp[i][j] = min operations to convert
+         *            word1[0..i-1] → word2[0..j-1]
+         *
+         *
+         *   we need `l+1` as dp size
+         */
         int[][] dp = new int[l1 + 1][l2 + 1];
 
         // base cases
+        /** NOTE !!!
+         *
+         *  how we init base cases.
+         */
         for (int i = 0; i <= l1; i++) {
             dp[i][0] = i;
         }
@@ -64,6 +78,36 @@ public class EditDistance {
         // fill dp table
         for (int i = 1; i <= l1; i++) {
             for (int j = 1; j <= l2; j++) {
+                /**  NOTE !!!
+                 *
+                 *     DP eq:
+                 *
+                 *
+                 *     if word1.charAt(i-1) == word2.charAt(j-1):
+                 *     dp[i][j] = dp[i-1][j-1]
+                 * else:
+                 *     dp[i][j] = 1 + min(
+                 *         dp[i-1][j],     // delete
+                 *         dp[i][j-1],     // insert
+                 *         dp[i-1][j-1]    // replace
+                 *     )
+                 *
+                 *
+                 */
+                /**
+                 *   why `dp[i][j - 1]` for `insert` ?
+                 *
+                 *   ->
+                 *
+                 *   1. dp[i][j-1] =
+                 *        min ops to convert word1[0..i-1] → word2[0..`j-2`]
+                 *
+                 *   2. So we're one character short of matching word2.
+                 *
+                 *   3. -> We're missing the last character: word2[j]
+                 *      -> so we need to insert that last character
+                 *
+                 */
                 if (word1.charAt(i - 1) == word2.charAt(j - 1)) {
                     dp[i][j] = dp[i - 1][j - 1];
                 } else {
@@ -672,5 +716,5 @@ public class EditDistance {
 
 
 
-    
+
 }

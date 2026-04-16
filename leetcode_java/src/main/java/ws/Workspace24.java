@@ -9177,6 +9177,67 @@ public class Workspace24 {
 
 
         // ???
+        int[][] dp = new int[l1 + 1][l2 + 1]; // ??
+        // ????
+//        for(int i = 0; i < l1 + 1; i++){
+//            // ???
+//            Arrays.fill(dp[i], l1 * l2);
+//        }
+
+
+
+        // init ???
+        for(int i = 0; i < l1 + 1; i++){
+            dp[i][0] = i;
+        }
+        for(int i = 0; i < l2+ 1; i++){
+            dp[0][i] = i;
+        }
+
+        // 8.02 - 8,10
+        for(int i = 1; i < l1 + 1; i++){
+            for(int j = 1; j < l2+ 1; j++){
+               // dp[0][i] = i;
+               // /??
+               if(word1.charAt(i) == word2.charAt(j)){
+                   //dp[i][j] = Math.min(dp[i][j], dp[i-1][j-1]);
+                   dp[i][j] = dp[i-1][j-1]; //Math.min(dp[i][j], dp[i-1][j-1]);
+               }else{
+                   // insert
+                   dp[i][j] = Math.min(dp[i][j], dp[i-1][j-1] + 1);
+
+                   // delete
+                   dp[i][j] = Math.min(dp[i][j], dp[i-1][j]);
+
+                   // replace
+                   dp[i][j] = Math.min(dp[i][j], dp[i-1][j-1]);
+               }
+
+            }
+        }
+
+
+
+        return dp[l1][l2];
+    }
+
+
+
+
+
+
+
+
+
+
+    public int minDistance_99(String word1, String word2) {
+        // edge
+
+        int l1 =  word1.length();
+        int l2 = word2.length();
+
+
+        // ???
         int[][] dp = new int[l1][3]; // ??
 
         // init ???
