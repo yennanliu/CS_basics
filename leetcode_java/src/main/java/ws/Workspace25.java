@@ -128,27 +128,73 @@ public class Workspace25 {
      *
      */
     // IDEA: 2 PASS DFS
+    List<List<Integer[]>> isLandList = new ArrayList<>(); // ???
     public int largestIsland(int[][] grid) {
-
-//        private int rows;
-//        private int cols;
-        // Moves: (dr, dc)
-        int[][] MOVES = new int[][] { { 0, 1 }, { 0, -1 }, { 1, 0 }, { -1, 0 } };
 
         int l = grid.length;
         int w = grid[0].length;
 
         List<List<Integer>> collected = new ArrayList<>();
+        boolean[][] visited = new boolean[l][w];
+
+        for(int y = 0; y < l; y++){
+            for(int x = 0; x < w; x++){
+                if(grid[y][x] == 1){
+                    List<Integer[]> tmp = new ArrayList<>();
+                    dfsGetIslands(grid, x, y, visited, tmp);
+                    // ???
+                    isLandList.add(tmp);
+                }
+            }
+        }
+
+
+        int biggestArea = 0;
+
+        for(int y = 0; y < l; y++){
+            for(int x = 0; x < w; x++){
+                if(grid[y][x] == 1){
+                    biggestArea = Math.max(biggestArea,
+                            dfsFlip(grid, x, y, 1));
+                }
+            }
+        }
+
+
+
+        return biggestArea;
+    }
+
+    private List<Integer[]> dfsGetIslands(int[][] grid, int x, int y, boolean[][] visited, List<Integer[]> tmp){
+
+        int l = grid.length;
+        int w = grid[0].length;
+        int[][] moves = new int[][] { { 0, 1 }, { 0, -1 }, { 1, 0 }, { -1, 0 } };
+
+        for(int[] m: moves){
+            int x_ = x + m[0];
+            int y_ = y + m[1];
+            if(x_ >= 0 && x_ < w && y_ >= 0 && y_ < l && !visited[y_][x_] && grid[y_][x_] == 1){
+
+                // ???? do below (within for loop, or at beginning of this DFS fuc ??)
+                visited[y][x] = true;
+                tmp.add(new Integer[]{x,y});
+
+                dfsGetIslands(grid, x_, y_, visited, tmp);
+            }
+        }
+
+        return tmp;
+
+    }
+
+    private int dfsFlip(int[][] grid, int x, int y, int remainingOp){
+
+        int l = grid.length;
+        int w = grid[0].length;
+        int[][] moves = new int[][] { { 0, 1 }, { 0, -1 }, { 1, 0 }, { -1, 0 } };
 
         return 0;
-    }
-
-    private void dfsGetIslands(int[][] grid, int x, int y, boolean[][] visited){
-
-    }
-
-    private void dfsFlip(){
-
     }
 
 
