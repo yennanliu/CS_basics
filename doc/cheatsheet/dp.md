@@ -1124,44 +1124,75 @@ public int longestStrChain(String[] words) {
 
 ### Template 7: String DP (Edit Distance / Levenshtein Distance)
 
-**Problem**: LC 72 - Edit Distance
-Given two strings word1 and word2, find the minimum number of operations required to convert word1 to word2.
-Operations allowed: Insert, Delete, Replace (each counts as 1 step)
+#### 🎯 **Pattern Recognition**
 
-**Core Pattern**: Two-String Grid DP with three transition choices
+**When to use Edit Distance DP:**
+- ✅ Converting one string to another with insert/delete/replace operations
+- ✅ Finding minimum "edit distance" or "operations" between two strings
+- ✅ String transformation problems (especially LeetCode medium/hard string problems)
+- ✅ Two-string comparison problems where operations have costs
 
-**State Definition**:
+**Problem**: LC 72 - Edit Distance (aka Levenshtein Distance)
+
+Given two strings `word1` and `word2`, find the **minimum number of operations** required to convert `word1` to `word2`.
+
+Allowed operations (each counts as 1 step):
+1. Insert a character
+2. Delete a character
+3. Replace a character
+
+#### 💡 **Core DP Idea**
+
+The key insight is: **When characters don't match, choose the operation that leads to the minimum cost.**
+
+```
+At position (i, j):
+  - If chars match: No cost, take solution from (i-1, j-1)
+  - If they don't:
+      Delete from word1:   dp[i-1][j] + 1
+      Insert into word1:   dp[i][j-1] + 1
+      Replace in word1:    dp[i-1][j-1] + 1
+      → Take the minimum of these three
+```
+
+#### **State Definition**:
 - `dp[i][j]` = minimum operations to convert `word1[0...i-1]` to `word2[0...j-1]`
 
-**Base Cases**:
-- `dp[i][0] = i` (delete all i characters from word1)
-- `dp[0][j] = j` (insert all j characters to reach word2)
+#### **Base Cases**:
+- `dp[i][0] = i` (delete all i characters from word1 to get empty string)
+- `dp[0][j] = j` (insert all j characters into empty string to get word2)
 
-**Transition**:
-- If `word1[i-1] == word2[j-1]`: `dp[i][j] = dp[i-1][j-1]` (no operation needed)
-- Else: `dp[i][j] = 1 + min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1])`
-  - `dp[i-1][j] + 1`: **Delete** from word1
-  - `dp[i][j-1] + 1`: **Insert** into word1
-  - `dp[i-1][j-1] + 1`: **Replace** in word1
+#### **Transition**:
+```
+If word1[i-1] == word2[j-1]:
+    dp[i][j] = dp[i-1][j-1]  (no operation needed)
+Else:
+    dp[i][j] = 1 + min(
+        dp[i-1][j],     # Delete from word1
+        dp[i][j-1],     # Insert into word1
+        dp[i-1][j-1]    # Replace in word1
+    )
+```
 
-**Python Implementation**:
+#### **Python Implementation (Bottom-Up)**:
 ```python
-def string_dp(s1, s2):
-    """String DP for edit distance problems"""
-    m, n = len(s1), len(s2)
-    # dp[i][j] = min operations to convert s1[:i] to s2[:j]
+def minDistance(word1, word2):
+    """LC 72: Edit Distance - Bottom-Up DP"""
+    m, n = len(word1), len(word2)
+    # dp[i][j] = min operations to convert word1[:i] to word2[:j]
     dp = [[0] * (n + 1) for _ in range(m + 1)]
 
-    # Initialize base cases
+    # Base cases
     for i in range(m + 1):
         dp[i][0] = i
     for j in range(n + 1):
         dp[0][j] = j
 
+    # Fill DP table
     for i in range(1, m + 1):
         for j in range(1, n + 1):
-            if s1[i-1] == s2[j-1]:
-                dp[i][j] = dp[i-1][j-1]  # No operation needed
+            if word1[i-1] == word2[j-1]:
+                dp[i][j] = dp[i-1][j-1]
             else:
                 dp[i][j] = 1 + min(
                     dp[i-1][j],    # Delete
@@ -1172,37 +1203,36 @@ def string_dp(s1, s2):
     return dp[m][n]
 ```
 
-**Java Implementation** (Alternative indexing style):
+#### **Java Implementation (Bottom-Up)**:
 ```java
-// LC 72: Edit Distance
+// LC 72: Edit Distance - Standard approach
 public int minDistance(String word1, String word2) {
     int m = word1.length();
     int n = word2.length();
 
     int[][] dp = new int[m + 1][n + 1];
 
-    // Base cases: converting empty string
-    for(int i = 0; i <= m; i++) {
+    // Base cases
+    for (int i = 0; i <= m; i++) {
         dp[i][0] = i;  // Delete all characters
     }
-
-    for(int i = 0; i <= n; i++) {
-        dp[0][i] = i;  // Insert all characters
+    for (int j = 0; j <= n; j++) {
+        dp[0][j] = j;  // Insert all characters
     }
 
     // Fill DP table
-    for(int i = 0; i < m; i++) {
-        for(int j = 0; j < n; j++) {
-            if(word1.charAt(i) == word2.charAt(j)) {
-                // Characters match - no operation needed
-                dp[i + 1][j + 1] = dp[i][j];
+    for (int i = 1; i <= m; i++) {
+        for (int j = 1; j <= n; j++) {
+            if (word1.charAt(i - 1) == word2.charAt(j - 1)) {
+                dp[i][j] = dp[i - 1][j - 1];
             } else {
-                // Try all three operations and take minimum
-                int replace = dp[i][j];      // Replace word1[i] with word2[j]
-                int delete = dp[i][j + 1];   // Delete word1[i]
-                int insert = dp[i + 1][j];   // Insert word2[j]
-
-                dp[i + 1][j + 1] = Math.min(replace, Math.min(delete, insert)) + 1;
+                dp[i][j] = 1 + Math.min(
+                    dp[i - 1][j],    // Delete
+                    Math.min(
+                        dp[i][j - 1],    // Insert
+                        dp[i - 1][j - 1] // Replace
+                    )
+                );
             }
         }
     }
@@ -1211,43 +1241,189 @@ public int minDistance(String word1, String word2) {
 }
 ```
 
-**Key Insights**:
-1. **Indexing Styles**: Two common approaches:
-   - Style 1 (Python above): Loop `i` from 1 to m, access `s1[i-1]`, store in `dp[i][j]`
-   - Style 2 (Java above): Loop `i` from 0 to m-1, access `word1[i]`, store in `dp[i+1][j+1]`
+#### **Implementation Variants**
 
-2. **The Three Operations**:
-   ```
-   dp[i-1][j]   dp[i-1][j-1]      dp[i-1][j]   dp[i-1][j-1]
-                                ↓ (delete)     ↘ (replace)
-   dp[i][j-1]   dp[i][j]    =>   dp[i][j-1] → dp[i][j]
-                                   (insert)
-   ```
+**Variant 1: Top-Down Memoization (Recursion + Cache)**
+```java
+private int[][] memo;
 
-3. **Complexity**: Time O(m×n), Space O(m×n) (optimizable to O(n))
+public int minDistance(String word1, String word2) {
+    int m = word1.length();
+    int n = word2.length();
+    memo = new int[m][n];
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++) {
+            memo[i][j] = -1;
+        }
+    }
+    return dfs(0, 0, word1, word2, m, n);
+}
 
-**Example Trace**: `word1 = "horse"`, `word2 = "ros"`
+private int dfs(int i, int j, String word1, String word2, int m, int n) {
+    // Base cases
+    if (i == m) return n - j;
+    if (j == n) return m - i;
+    
+    // Check memo
+    if (memo[i][j] != -1) return memo[i][j];
+
+    int res;
+    if (word1.charAt(i) == word2.charAt(j)) {
+        res = dfs(i + 1, j + 1, word1, word2, m, n);
+    } else {
+        res = 1 + Math.min(
+            dfs(i + 1, j, word1, word2, m, n),      // Delete
+            Math.min(
+                dfs(i, j + 1, word1, word2, m, n),  // Insert
+                dfs(i + 1, j + 1, word1, word2, m, n) // Replace
+            )
+        );
+    }
+
+    memo[i][j] = res;
+    return res;
+}
 ```
-    ""  r   o   s
-""   0   1   2   3
-h    1   1   2   3
-o    2   2   1   2
-r    3   2   2   2
-s    4   3   3   2
-e    5   4   4   3
 
-Result: 3 operations (delete 'h', delete 'r', delete 'e')
-Or: replace 'h'→'r', remove 'r', remove 'e'
+**Variant 2: Space-Optimized (O(n) Space)**
+```java
+public int minDistance(String word1, String word2) {
+    int m = word1.length();
+    int n = word2.length();
+    
+    // Use 1D array instead of 2D (only need previous row)
+    int[] prev = new int[n + 1];
+    for (int j = 0; j <= n; j++) {
+        prev[j] = j;
+    }
+
+    for (int i = 1; i <= m; i++) {
+        int[] curr = new int[n + 1];
+        curr[0] = i;
+        
+        for (int j = 1; j <= n; j++) {
+            if (word1.charAt(i - 1) == word2.charAt(j - 1)) {
+                curr[j] = prev[j - 1];
+            } else {
+                curr[j] = 1 + Math.min(
+                    prev[j],        // Delete
+                    Math.min(
+                        curr[j - 1],    // Insert
+                        prev[j - 1]     // Replace
+                    )
+                );
+            }
+        }
+        
+        prev = curr;
+    }
+
+    return prev[n];
+}
 ```
 
-**Related Problems**:
-- LC 583: Delete Operation for Two Strings (variant: only delete allowed)
-- LC 712: Minimum ASCII Delete Sum (variant: minimize ASCII sum)
-- LC 1143: Longest Common Subsequence (maximize matches instead of minimize edits)
+#### **Visual DP Table Example**
 
-**File References**:
-- Java Implementation: `ref_code/interviews-master/leetcode/string/EditDistance.java`
-- See also: Two-String Grid Pattern section below for more context
+```
+Input: word1 = "horse", word2 = "ros"
+
+       ""  r   o   s
+    "" 0   1   2   3
+    h  1   1   2   3
+    o  2   2   1   2
+    r  3   2   2   2
+    s  4   3   3   2
+    e  5   4   4   3
+
+Result: dp[5][3] = 3 operations
+Explanation: 
+  - Replace 'h' → 'r': "rorse"
+  - Delete 'r': "rose"
+  - Delete 'e': "ros"
+```
+
+#### **Key Insights**
+
+1. **Three Operations Visualization**:
+   ```
+   dp[i-1][j]      dp[i-1][j-1]
+       ↓            ↘
+   dp[i][j-1] →   dp[i][j]
+   
+   Delete (↓):    dp[i-1][j] + 1
+   Replace (↘):   dp[i-1][j-1] + 1
+   Insert (→):    dp[i][j-1] + 1
+   ```
+
+2. **Indexing Styles**:
+   - **1-based indexing** (cleaner): Loop `i` from 1 to m, store in `dp[i][j]`
+   - **0-based indexing** (also works): Loop `i` from 0 to m-1, store in `dp[i+1][j+1]`
+
+3. **Complexity**:
+   - **Time**: O(m × n)
+   - **Space**: O(m × n) standard, O(min(m,n)) space-optimized
+
+4. **Why we look at 3 neighbors**:
+   - Characters **don't match** → pick cheapest operation
+   - Characters **match** → no cost, inherit from diagonal
+   - This greedy choice at each step leads to global optimum
+
+#### **Pattern Recognition Checklist** ✅
+
+Use this pattern when you see:
+- "Minimum number of operations" + two strings → Edit Distance
+- "Insert, Delete, Replace" operations → Edit Distance likely
+- "Convert string A to string B" → Edit Distance
+- "Levenshtein distance" or "edit distance" → Definitely this template
+- String comparison where operations have equal cost (1)
+
+#### **Common Mistakes** ⚠️
+
+1. **Wrong indexing**: Forgetting that `dp[i][j]` uses `word1[i-1]` and `word2[j-1]`
+   - ❌ `if (word1.charAt(i) == word2.charAt(j))`
+   - ✅ `if (word1.charAt(i-1) == word2.charAt(j-1))`
+
+2. **Incorrect base cases**: Not initializing the first row and column
+   - Must set `dp[i][0] = i` and `dp[0][j] = j`
+
+3. **Missing +1 for operations**: Forgetting to add 1 when characters don't match
+   - ❌ `dp[i][j] = Math.min(...)`
+   - ✅ `dp[i][j] = 1 + Math.min(...)`
+
+4. **Wrong state definition**: Confusing which string index corresponds to which dimension
+   - Be consistent: rows = word1, columns = word2
+
+---
+
+#### **Related String DP Problems** 📚
+
+| LC # | Problem | Variant/Difference | Difficulty | Key Insight |
+|------|---------|-------------------|------------|-------------|
+| **72** | **Edit Distance** | Classic (Insert, Delete, Replace) | Medium | 3 operations, take min |
+| **583** | Delete Operation for Two Strings | Only DELETE allowed | Medium | `dp[i][j] = dp[i-1][j] + 1` or `dp[i][j-1] + 1` |
+| **712** | Minimum ASCII Delete Sum | Delete with ASCII cost | Medium | Track cost instead of count |
+| **1143** | Longest Common Subsequence (LCS) | Maximize matches (opposite of edit) | Medium | Match: +1, Mismatch: max(left, top) |
+| **1312** | Minimum Insertion Steps | Make string palindrome | Hard | Similar to LCS |
+| **87** | Scramble String | Check if one string is scrambled version of another | Hard | 2D DP with partitioning |
+| **115** | Distinct Subsequences | Count subsequences matching pattern | Hard | Counting variant |
+| **44** | Wildcard Matching | Pattern matching with `?` and `*` | Hard | Extended string DP |
+| **10** | Regular Expression Matching | DP pattern matching | Hard | Handle regex special chars |
+
+#### **Comparison: LC 72 vs LC 1143 (LCS)**
+
+| Aspect | LC 72 (Edit Distance) | LC 1143 (LCS) |
+|--------|----------------------|-------------|
+| **Goal** | **Minimize** operations needed | **Maximize** matching characters |
+| **Operations** | Insert, Delete, Replace | Only match or skip |
+| **Match** | No cost (no operation) | +1 to length |
+| **Mismatch** | 1 + min(3 options) | max(skip left, skip right) |
+| **DP Transition** | `dp[i][j] = 1 + min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1])` | `dp[i][j] = dp[i-1][j-1] + 1` or `max(dp[i-1][j], dp[i][j-1])` |
+
+#### **File References**:
+- **Java Implementations**: `leetcode_java/src/main/java/LeetCodeJava/DynamicProgramming/EditDistance.java`
+  - Multiple solution approaches (bottom-up, top-down, space-optimized)
+  - Well-commented with detailed DP transition explanations
+- **Related**: See also Template 8 (Longest Common Subsequence) for the comparison-maximization variant
 
 ### Template 8: Longest Common Subsequence (LCS)
 ```python
