@@ -1,6 +1,6 @@
 # Progress
 
-# 2026-04-16
+# 2026-04-17
 
 - LC weeekly 103
 	- lc_weekly_gemini.md
@@ -34,26 +34,6 @@
 	- intervals.md  (OK)
 	- java_trick.md
 	- kadane_algorithm.md (TODO: LC examples)
-
-
-	- (tmp prep)
-		- monotonic_queue.md
-		- monotonic_stack.md
-		- palindrome.md
-		- prefix_sum.md
-		- priority_queue.md
-		- queue.md
-		- recursion.md
-		- scanning_line.md
-		- set.md
-		- sliding_window.md
-		- sort.md
-		- stack.md
-		- string.md
-		- tree.md
-		
-		- topology_sorting.md
-		- tree_backtrack.md
 
 - to review
 - needcode `250` - similar LC by AI
