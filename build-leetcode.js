@@ -1996,16 +1996,45 @@ try {
   const { problems, tagMap } = parseProblems();
   console.log(`✓ Parsed ${problems.size} problems across ${tagMap.size} tags`);
 
-  console.log('Building co-occurrence matrix...');
-  const coMatrix = buildCoMatrix(problems);
-  console.log('✓ Built co-occurrence index');
+  // Create output directory
+  if (!fs.existsSync('_site')) fs.mkdirSync('_site', { recursive: true });
+  if (!fs.existsSync('_site/data')) fs.mkdirSync('_site/data', { recursive: true });
 
+  // Generate and save JSON data
+  console.log('Generating problems JSON...');
+  const problemsArray = Array.from(problems.values()).map(p => ({
+    id: p.id,
+    title: p.title,
+    difficulty: p.difficulty,
+    tags: p.tags,
+    acceptance: p.acceptance
+  }));
+
+  const tagsArray = Array.from(tagMap.entries()).map(([tag, diffs]) => ({
+    name: tag,
+    count: (diffs.Easy?.length || 0) + (diffs.Medium?.length || 0) + (diffs.Hard?.length || 0)
+  })).sort((a, b) => b.count - a.count);
+
+  const jsonData = {
+    problems: problemsArray,
+    tags: tagsArray,
+    stats: {
+      totalProblems: problems.size,
+      totalTags: tagMap.size
+    }
+  };
+
+  console.log('Writing _site/data/lc-problems.json...');
+  fs.writeFileSync('_site/data/lc-problems.json', JSON.stringify(jsonData, null, 2));
+  console.log(`✓ Created _site/data/lc-problems.json (${problemsArray.length} problems, ${tagsArray.length} tags)`);
+
+  // Generate legacy pages if needed
   console.log('Generating HTML page...');
+  const coMatrix = buildCoMatrix(problems);
   const body = generatePageBody(problems, tagMap, coMatrix);
   const html = htmlTemplate('LeetCode Explorer', body);
 
   console.log('Writing _site/leetcode.html...');
-  if (!fs.existsSync('_site')) fs.mkdirSync('_site', { recursive: true });
   fs.writeFileSync('_site/leetcode.html', html);
   console.log('✓ Created _site/leetcode.html');
 
