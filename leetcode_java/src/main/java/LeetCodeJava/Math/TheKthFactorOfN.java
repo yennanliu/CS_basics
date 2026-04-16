@@ -92,7 +92,7 @@ public class TheKthFactorOfN {
     }
 
 
-    
+
     // V2
     // IDEA: MATH
     // https://leetcode.com/problems/the-kth-factor-of-n/solutions/7631774/on-approach-to-find-kth-factor-by-vyankt-2jc9/

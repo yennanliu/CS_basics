@@ -242,6 +242,10 @@ public class Workspace25 {
     }
 
 
+    // LC 1167
+    public int connectSticks(int[] sticks) {
+        return 0;
+    }
 
 
 
