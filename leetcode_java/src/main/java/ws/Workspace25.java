@@ -199,6 +199,19 @@ public class Workspace25 {
 
 
 
+    // LC 1492
+    // 7.31 - 41 am
+    /**
+     *
+     *
+     *
+     */
+    public int kthFactor(int n, int k) {
+
+        return 0;
+    }
+
+
 
 
 

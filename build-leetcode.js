@@ -387,6 +387,94 @@ a:hover { text-decoration: underline; }
   background: var(--surface);
   border: 1px solid var(--border-color);
   border-radius: var(--radius);
+  position: sticky;
+  top: 60px;
+  z-index: 50;
+}
+
+.lc-filter-count-badge {
+  display: inline-block;
+  background: var(--text-color);
+  color: var(--bg-color);
+  border-radius: 12px;
+  padding: 0.15rem 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-left: 0.5rem;
+}
+
+.lc-tag-search {
+  margin-bottom: 0.75rem;
+}
+
+.lc-tag-search input {
+  width: 100%;
+  padding: 0.4rem 0.75rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  font-family: var(--font);
+  font-size: 0.85rem;
+  background: var(--bg-color);
+  color: var(--text-color);
+}
+
+.lc-acc-range-slider {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  margin-top: 1rem;
+  font-size: 0.85rem;
+}
+
+.lc-acc-range-slider input[type="range"] {
+  flex: 1;
+}
+
+.lc-col-header {
+  cursor: pointer;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-weight: 600;
+}
+
+.lc-col-header:hover {
+  color: var(--text-color);
+}
+
+.lc-col-header .sort-indicator {
+  font-size: 0.7rem;
+  display: inline-block;
+}
+
+.lc-pagination {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.lc-pagination button {
+  padding: 0.4rem 0.8rem;
+  border: 1px solid var(--border-color);
+  background: var(--surface);
+  color: var(--text-color);
+  border-radius: var(--radius);
+  cursor: pointer;
+  font-family: var(--font);
+  font-size: 0.85rem;
+  transition: all 0.2s;
+}
+
+.lc-pagination button:hover {
+  background: var(--border-color);
+}
+
+.lc-pagination button.active {
+  background: var(--text-color);
+  color: var(--bg-color);
 }
 
 .lc-search-box input {
@@ -427,6 +515,40 @@ a:hover { text-decoration: underline; }
   background: var(--text-color);
   color: var(--bg-color);
   border-color: var(--text-color);
+}
+
+.lc-btn.favorite {
+  position: relative;
+}
+
+.lc-btn .tag-count {
+  display: inline-block;
+  background: var(--text-color);
+  color: var(--bg-color);
+  border-radius: 10px;
+  padding: 0 0.3rem;
+  font-size: 0.65rem;
+  font-weight: 600;
+  margin-left: 0.3rem;
+}
+
+.lc-btn.active .tag-count {
+  background: var(--bg-color);
+  color: var(--text-color);
+}
+
+.favorite-star {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  opacity: 0.5;
+  transition: opacity 0.2s;
+}
+
+.favorite-star.active {
+  opacity: 1;
 }
 
 /* Difficulty badges */
@@ -739,6 +861,83 @@ a:hover { text-decoration: underline; }
   font-size: 0.95rem;
 }
 
+.lc-similar-sort {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.lc-tag-match {
+  display: inline-block;
+  padding: 0.2rem 0.5rem;
+  background: var(--bg-color);
+  border-radius: 4px;
+  font-size: 0.7rem;
+  color: var(--text-light);
+  margin-right: 0.3rem;
+}
+
+.lc-tag-match.matched {
+  background: var(--border-color);
+  font-weight: 600;
+}
+
+.lc-export-controls {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+
+.lc-export-btn {
+  padding: 0.5rem 1rem;
+  background: var(--surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  color: var(--text-color);
+  cursor: pointer;
+  font-family: var(--font);
+  font-size: 0.85rem;
+  transition: all 0.2s;
+}
+
+.lc-export-btn:hover {
+  background: var(--border-color);
+}
+
+.lc-picker-exclude {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.lc-picker-exclude select {
+  padding: 0.4rem 0.75rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--text-color);
+  font-family: var(--font);
+  font-size: 0.85rem;
+}
+
+.loading-spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--border-color);
+  border-top-color: var(--text-color);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
 @media (max-width: 768px) {
   .lc-batch-row {
     grid-template-columns: 3rem 1fr;
@@ -983,9 +1182,21 @@ function generatePageBody(problems, tagMap, coMatrix) {
             <button class="lc-btn" data-diff="Hard" onclick="toggleDifficulty('Hard')">Hard</button>
           </div>
         </div>
+        <div style="margin-bottom: 0.75rem; color: var(--text-light); font-size: 0.85rem; margin-top: 1rem;">Acceptance Rate:</div>
+        <div class="lc-acc-range-slider">
+          <input type="range" id="acc-min" min="0" max="100" value="0" onchange="applyFilters()" style="flex: 1;">
+          <span id="acc-min-val" style="min-width: 35px; font-size: 0.8rem;">0%</span>
+        </div>
+        <div class="lc-acc-range-slider">
+          <input type="range" id="acc-max" min="0" max="100" value="100" onchange="applyFilters()" style="flex: 1;">
+          <span id="acc-max-val" style="min-width: 35px; font-size: 0.8rem;">100%</span>
+        </div>
         <div style="margin-bottom: 0.75rem; color: var(--text-light); font-size: 0.85rem; margin-top: 1rem;">Tags:</div>
+        <div class="lc-tag-search">
+          <input type="text" id="lc-tag-search" placeholder="Filter tags..." onkeyup="filterTagPills()">
+        </div>
         <div class="lc-tag-filters" id="lc-tag-pills"></div>
-        <button class="lc-btn" style="width: 100%; margin-top: 1rem;" onclick="clearFilters()">Clear All Filters</button>
+        <button class="lc-btn" style="width: 100%; margin-top: 1rem;" onclick="clearFilters()">Clear All Filters <span class="lc-filter-count-badge" id="filter-count-badge" style="display:none;">0</span></button>
       </div>
       <div style="display: flex; flex-direction: column; gap: 1rem;">
         <div>
@@ -1039,6 +1250,17 @@ function generatePageBody(problems, tagMap, coMatrix) {
             onchange="renderPickerCard()">
         </label>
         <button class="btn-primary" onclick="renderPickerCard()">Pick</button>
+        <button class="btn-secondary" onclick="recommendNext()">Recommend Next</button>
+      </div>
+      <div class="lc-picker-exclude" id="picker-exclude-tags" style="display:none;">
+        <label>Exclude tags:
+          <select id="picker-exclude-select" multiple style="min-width:200px; height:60px;">
+          </select>
+        </label>
+      </div>
+      <div class="lc-export-controls">
+        <button class="lc-export-btn" onclick="exportBatchList()">📥 Export List</button>
+        <button class="lc-export-btn" onclick="copyBatchList()">📋 Copy to Clipboard</button>
       </div>
       <div id="lc-picker-card-container"></div>
       <div class="lc-progress-section">
@@ -1068,6 +1290,11 @@ function generatePageBody(problems, tagMap, coMatrix) {
           results
         </label>
         <button class="btn-primary" onclick="findSimilar()">Find Similar</button>
+      </div>
+      <div class="lc-similar-sort" id="similar-sort-controls" style="display:none;">
+        <button class="lc-btn" data-sort="score" onclick="setSimilarSort('score')">By Similarity</button>
+        <button class="lc-btn" data-sort="difficulty" onclick="setSimilarSort('difficulty')">By Difficulty</button>
+        <button class="lc-btn" data-sort="acceptance" onclick="setSimilarSort('acceptance')">By Acceptance</button>
       </div>
       <div id="similar-results-area">
         <div class="lc-similar-empty">Enter a problem number or name above to find similar problems.</div>
@@ -1102,10 +1329,20 @@ const state = {
   activeView: 'filter',
   filterDiffs: new Set(),
   filterTags: new Set(),
+  filterAccMin: 0,
+  filterAccMax: 100,
   searchQuery: '',
+  searchDebounceTimer: null,
+  sortBy: 'id',
+  sortDir: 'asc',
+  currentPage: 0,
+  pageSize: 50,
   pickerDiffs: new Set(['Easy', 'Medium', 'Hard']),
   pickerTag: null,
-  mindmapInitialized: false
+  pickerExcludeTags: new Set(),
+  favoriteTags: new Set(JSON.parse(localStorage.getItem('lc-fav-tags') || '[]')),
+  mindmapInitialized: false,
+  similarSortBy: 'score'
 };
 
 // Tab switching
@@ -1122,12 +1359,33 @@ function initFilterView() {
   const tagContainer = document.getElementById('lc-tag-pills');
   const allTags = [...new Set(Object.values(PROBLEMS_DATA.problems).flatMap(p => p.tags))].sort();
 
+  // Calculate tag counts and difficulty ratings
+  const tagStats = {};
   allTags.forEach(tag => {
+    const problems = Object.values(PROBLEMS_DATA.problems).filter(p => p.tags.includes(tag));
+    const count = problems.length;
+    const avgDiff = (problems.filter(p => p.difficulty === 'Easy').length * 1 +
+                     problems.filter(p => p.difficulty === 'Medium').length * 2 +
+                     problems.filter(p => p.difficulty === 'Hard').length * 3) / count;
+    tagStats[tag] = { count, avgDiff };
+  });
+
+  // Sort with favorites first
+  const favTags = allTags.filter(t => state.favoriteTags.has(t));
+  const otherTags = allTags.filter(t => !state.favoriteTags.has(t));
+  const sortedTags = [...favTags, ...otherTags];
+
+  sortedTags.forEach(tag => {
+    const container = document.createElement('div');
+    container.style.position = 'relative';
+    container.style.display = 'inline-block';
+
     const btn = document.createElement('button');
     btn.className = 'lc-btn';
-    btn.textContent = tag;
     btn.dataset.tag = tag;
-    btn.onclick = () => {
+    btn.innerHTML = \`\${tag}<span class="tag-count">\${tagStats[tag].count}</span>\`;
+    btn.onclick = (e) => {
+      if (e.target.classList.contains('favorite-star')) return;
       btn.classList.toggle('active');
       if (btn.classList.contains('active')) {
         state.filterTags.add(tag);
@@ -1136,16 +1394,41 @@ function initFilterView() {
       }
       applyFilters();
     };
-    tagContainer.appendChild(btn);
+
+    const star = document.createElement('span');
+    star.className = 'favorite-star';
+    star.textContent = '★';
+    if (state.favoriteTags.has(tag)) star.classList.add('active');
+    star.onclick = (e) => {
+      e.stopPropagation();
+      if (state.favoriteTags.has(tag)) {
+        state.favoriteTags.delete(tag);
+        star.classList.remove('active');
+      } else {
+        state.favoriteTags.add(tag);
+        star.classList.add('active');
+      }
+      localStorage.setItem('lc-fav-tags', JSON.stringify([...state.favoriteTags]));
+    };
+
+    container.appendChild(btn);
+    container.appendChild(star);
+    tagContainer.appendChild(container);
   });
 
-  // Initialize picker tag select
+  // Initialize picker tag select and exclude select
   const pickerTagSelect = document.getElementById('picker-tag-select');
+  const pickerExcludeSelect = document.getElementById('picker-exclude-select');
   allTags.forEach(tag => {
     const option = document.createElement('option');
     option.value = tag;
     option.textContent = tag;
     pickerTagSelect.appendChild(option);
+
+    const excludeOption = document.createElement('option');
+    excludeOption.value = tag;
+    excludeOption.textContent = tag;
+    pickerExcludeSelect.appendChild(excludeOption);
   });
 
   // Initialize patterns view
@@ -1172,20 +1455,72 @@ function clearFilters() {
   state.filterDiffs.clear();
   state.filterTags.clear();
   document.getElementById('lc-search').value = '';
+  document.getElementById('lc-tag-search').value = '';
   state.searchQuery = '';
+  document.getElementById('acc-min').value = 0;
+  document.getElementById('acc-max').value = 100;
   document.querySelectorAll('.lc-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('[data-tag]').forEach(b => b.style.display = '');
   applyFilters();
+}
+
+function filterTagPills() {
+  const query = document.getElementById('lc-tag-search').value.toLowerCase();
+  document.querySelectorAll('[data-tag]').forEach(btn => {
+    const tag = btn.dataset.tag;
+    btn.style.display = tag.toLowerCase().includes(query) ? '' : 'none';
+  });
+}
+
+function sortProblems(field) {
+  // This will be called by column headers, we can implement client-side sorting
+  const query = document.getElementById('lc-search').value.toLowerCase();
+  let results = Object.values(PROBLEMS_DATA.problems).filter(p => {
+    const diffMatch = state.filterDiffs.size === 0 || state.filterDiffs.has(p.difficulty);
+    const tagMatch = state.filterTags.size === 0 || p.tags.some(t => state.filterTags.has(t));
+    const textMatch = !query || p.title.toLowerCase().includes(query) || p.id.includes(query);
+    const accMatch = p.acceptance >= state.filterAccMin && p.acceptance <= state.filterAccMax;
+    return diffMatch && tagMatch && textMatch && accMatch;
+  });
+
+  results.sort((a, b) => {
+    if (field === 'id') return parseInt(a.id) - parseInt(b.id);
+    if (field === 'title') return a.title.localeCompare(b.title);
+    if (field === 'difficulty') return ['Easy', 'Medium', 'Hard'].indexOf(a.difficulty) - ['Easy', 'Medium', 'Hard'].indexOf(b.difficulty);
+    if (field === 'acceptance') return b.acceptance - a.acceptance;
+    return 0;
+  });
+  state.currentPage = 0;
+  renderProblemList(results);
+}
+
+function updateFilterBadge() {
+  const count = state.filterDiffs.size + state.filterTags.size + (state.filterAccMin > 0 ? 1 : 0) + (state.filterAccMax < 100 ? 1 : 0);
+  const badge = document.getElementById('filter-count-badge');
+  if (count > 0) {
+    badge.textContent = count;
+    badge.style.display = 'inline-block';
+  } else {
+    badge.style.display = 'none';
+  }
 }
 
 function applyFilters() {
   const query = document.getElementById('lc-search').value.toLowerCase();
   state.searchQuery = query;
 
+  // Update acceptance range state
+  state.filterAccMin = parseInt(document.getElementById('acc-min').value);
+  state.filterAccMax = parseInt(document.getElementById('acc-max').value);
+  document.getElementById('acc-min-val').textContent = state.filterAccMin + '%';
+  document.getElementById('acc-max-val').textContent = state.filterAccMax + '%';
+
   let results = Object.values(PROBLEMS_DATA.problems).filter(p => {
     const diffMatch = state.filterDiffs.size === 0 || state.filterDiffs.has(p.difficulty);
     const tagMatch = state.filterTags.size === 0 || p.tags.some(t => state.filterTags.has(t));
     const textMatch = !query || p.title.toLowerCase().includes(query) || p.id.includes(query);
-    return diffMatch && tagMatch && textMatch;
+    const accMatch = p.acceptance >= state.filterAccMin && p.acceptance <= state.filterAccMax;
+    return diffMatch && tagMatch && textMatch && accMatch;
   });
 
   const sortBy = document.getElementById('lc-sort').value;
@@ -1195,7 +1530,9 @@ function applyFilters() {
     return parseInt(a.id) - parseInt(b.id);
   });
 
+  state.currentPage = 0;
   renderProblemList(results);
+  updateFilterBadge();
 }
 
 function renderProblemList(problems) {
@@ -1203,12 +1540,38 @@ function renderProblemList(problems) {
   container.innerHTML = '';
   document.getElementById('lc-result-count').textContent = problems.length;
 
-  problems.forEach(p => {
+  if (problems.length === 0) {
+    container.innerHTML = '<div style="text-align:center; padding:3rem; color:var(--text-light);">No problems match your filters.</div>';
+    return;
+  }
+
+  // Pagination
+  const pageSize = state.pageSize;
+  const totalPages = Math.ceil(problems.length / pageSize);
+  const start = state.currentPage * pageSize;
+  const end = Math.min(start + pageSize, problems.length);
+  const paginated = problems.slice(start, end);
+
+  // Render header
+  const header = document.createElement('div');
+  header.className = 'lc-problem-row';
+  header.style.background = 'var(--bg-color)';
+  header.style.fontWeight = '600';
+  header.style.cursor = 'default';
+  header.innerHTML = \`
+    <span class="lc-col-header" onclick="sortProblems('id')">#</span>
+    <span class="lc-col-header" onclick="sortProblems('title')">Title</span>
+    <span class="lc-col-header" onclick="sortProblems('difficulty')">Difficulty</span>
+    <span class="lc-col-header" onclick="sortProblems('tags')">Tags</span>
+    <span class="lc-col-header" onclick="sortProblems('acceptance')">Acceptance %</span>
+  \`;
+  container.appendChild(header);
+
+  // Render problems
+  paginated.forEach(p => {
     const row = document.createElement('div');
     row.className = 'lc-problem-row';
     row.onclick = () => window.open(generateLCURL(p.title), '_blank');
-
-    const slug = p.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 
     row.innerHTML = \`
       <span class="prob-id">#\${p.id}</span>
@@ -1219,6 +1582,23 @@ function renderProblemList(problems) {
     \`;
     container.appendChild(row);
   });
+
+  // Render pagination
+  if (totalPages > 1) {
+    const paginationDiv = document.createElement('div');
+    paginationDiv.className = 'lc-pagination';
+    for (let i = 0; i < totalPages; i++) {
+      const btn = document.createElement('button');
+      btn.textContent = i + 1;
+      btn.onclick = () => {
+        state.currentPage = i;
+        renderProblemList(problems);
+      };
+      if (i === state.currentPage) btn.classList.add('active');
+      paginationDiv.appendChild(btn);
+    }
+    container.appendChild(paginationDiv);
+  }
 }
 
 function generateLCURL(title) {
@@ -1420,19 +1800,23 @@ function getPickerPool() {
   const diffs = [...document.getElementById('lc-picker-card-container').parentElement.querySelectorAll('input[type="checkbox"]:checked')]
     .map(cb => cb.value);
   const tag = document.getElementById('picker-tag-select').value || null;
+  const excludeSelect = document.getElementById('picker-exclude-select');
+  const excludeTags = excludeSelect ? [...excludeSelect.selectedOptions].map(o => o.value) : [];
   const seen = new Set(JSON.parse(localStorage.getItem('lc-seen-problems') || '[]'));
 
   let pool = Object.values(PROBLEMS_DATA.problems).filter(p => {
     const diffOk = diffs.length === 0 || diffs.includes(p.difficulty);
     const tagOk = !tag || p.tags.includes(tag);
-    return diffOk && tagOk && !seen.has(p.id);
+    const excludeOk = !excludeTags.some(t => p.tags.includes(t));
+    return diffOk && tagOk && excludeOk && !seen.has(p.id);
   });
 
   if (pool.length === 0) {
     pool = Object.values(PROBLEMS_DATA.problems).filter(p => {
       const diffOk = diffs.length === 0 || diffs.includes(p.difficulty);
       const tagOk = !tag || p.tags.includes(tag);
-      return diffOk && tagOk;
+      const excludeOk = !excludeTags.some(t => p.tags.includes(t));
+      return diffOk && tagOk && excludeOk;
     });
   }
   return pool;
@@ -1615,20 +1999,146 @@ function findSimilar() {
     return;
   }
 
-  const rowsHtml = scored.map(({ problem: p, score }) => \`
-    <div class="lc-similar-row" onclick="window.open('\${generateLCURL(p.title)}','_blank')">
-      <span class="prob-id">#\${p.id}</span>
-      <span class="prob-title">\${p.title}</span>
-      <span class="diff-badge \${p.difficulty.toLowerCase()}">\${p.difficulty}</span>
-      <span class="prob-tags">\${p.tags.join(', ')}</span>
-      <span class="prob-acc">\${p.acceptance}%</span>
-      <span class="lc-sim-score">\${Math.round(score * 100)}% match</span>
-    </div>
-  \`).join('');
+  const rowsHtml = scored.map(({ problem: p, score }) => {
+    const sourceTagsSet = new Set(source.tags);
+    const matchedTags = p.tags.filter(t => sourceTagsSet.has(t));
+    const tagBreakdown = p.tags.map(t => \`<span class="lc-tag-match \${matchedTags.includes(t) ? 'matched' : ''}">\${t}</span>\`).join('');
+
+    return \`
+      <div class="lc-similar-row" style="flex-direction: column; align-items: flex-start;">
+        <div style="display: flex; gap: 0.75rem; align-items: center; width: 100%; flex-wrap: wrap;">
+          <span class="prob-id">#\${p.id}</span>
+          <span class="prob-title" style="cursor:pointer; flex:1;" onclick="event.stopPropagation(); window.open('\${generateLCURL(p.title)}','_blank')">\${p.title}</span>
+          <span class="diff-badge \${p.difficulty.toLowerCase()}">\${p.difficulty}</span>
+          <span class="prob-acc">\${p.acceptance}%</span>
+          <span class="lc-sim-score">\${Math.round(score * 100)}% match</span>
+        </div>
+        <div style="width: 100%; font-size: 0.8rem; margin-top: 0.5rem;">\${tagBreakdown}</div>
+      </div>
+    \`;
+  }).join('');
+
+  // Sort results if needed
+  if (state.similarSortBy === 'difficulty') {
+    scored.sort((a, b) => ['Easy', 'Medium', 'Hard'].indexOf(a.problem.difficulty) - ['Easy', 'Medium', 'Hard'].indexOf(b.problem.difficulty));
+  } else if (state.similarSortBy === 'acceptance') {
+    scored.sort((a, b) => b.problem.acceptance - a.problem.acceptance);
+  }
 
   area.innerHTML = sourceHtml +
+    \`<div class="lc-similar-sort" style="display:flex; gap:0.5rem; margin-bottom:1rem;">
+      <button class="lc-btn \${state.similarSortBy === 'score' ? 'active' : ''}" onclick="setSimilarSort('score')">By Similarity</button>
+      <button class="lc-btn \${state.similarSortBy === 'difficulty' ? 'active' : ''}" onclick="setSimilarSort('difficulty')">By Difficulty</button>
+      <button class="lc-btn \${state.similarSortBy === 'acceptance' ? 'active' : ''}" onclick="setSimilarSort('acceptance')">By Acceptance</button>
+    </div>\` +
     \`<div style="font-size:0.85rem; color:var(--text-light); margin-bottom:0.75rem;">Top \${scored.length} similar problems (by tag overlap):</div>\` +
     \`<div class="lc-similar-results">\${rowsHtml}</div>\`;
+}
+
+function setSimilarSort(sortBy) {
+  state.similarSortBy = sortBy;
+  findSimilar();
+}
+
+function recommendNext() {
+  const seen = new Set(JSON.parse(localStorage.getItem('lc-seen-problems') || '[]'));
+  const allProblems = Object.values(PROBLEMS_DATA.problems);
+
+  // Get unsolved problems by difficulty progression
+  const easyUnsolved = allProblems.filter(p => p.difficulty === 'Easy' && !seen.has(p.id));
+  const mediumUnsolved = allProblems.filter(p => p.difficulty === 'Medium' && !seen.has(p.id));
+  const hardUnsolved = allProblems.filter(p => p.difficulty === 'Hard' && !seen.has(p.id));
+
+  const seeCount = parseInt(document.getElementById('picker-gen-count').value) || 1;
+  let recommended = [];
+
+  if (easyUnsolved.length > 0) {
+    recommended = easyUnsolved.sort(() => Math.random() - 0.5).slice(0, seeCount);
+  } else if (mediumUnsolved.length > 0) {
+    recommended = mediumUnsolved.sort(() => Math.random() - 0.5).slice(0, seeCount);
+  } else if (hardUnsolved.length > 0) {
+    recommended = hardUnsolved.sort(() => Math.random() - 0.5).slice(0, seeCount);
+  }
+
+  const container = document.getElementById('lc-picker-card-container');
+  if (recommended.length === 0) {
+    container.innerHTML = '<div style="text-align:center; padding:2rem; color:var(--text-light);">🎉 All problems solved!</div>';
+    return;
+  }
+
+  if (seeCount === 1) {
+    const p = recommended[0];
+    container.innerHTML = \`
+      <div class="lc-picker-card">
+        <div class="prob-number">#\${p.id}</div>
+        <div class="prob-name">\${p.title}</div>
+        <div style="margin: 1rem 0;">
+          <span class="diff-badge \${p.difficulty.toLowerCase()}">\${p.difficulty}</span>
+        </div>
+        <div style="font-size: 0.85rem; color: var(--text-light); margin: 0.75rem 0;">
+          \${p.tags.join(' • ')}
+        </div>
+        <div class="lc-picker-actions">
+          <button class="btn-primary" onclick="markPickerDone(\${p.id})">Mark Done & Next</button>
+          <button class="btn-secondary" onclick="window.open('\${generateLCURL(p.title)}', '_blank')">Open on LeetCode ↗</button>
+        </div>
+      </div>
+    \`;
+  } else {
+    const listHtml = recommended.map(p => \`
+      <div class="lc-batch-row" id="batch-row-\${p.id}">
+        <span class="prob-id">#\${p.id}</span>
+        <span class="prob-title" style="cursor:pointer" onclick="window.open('\${generateLCURL(p.title)}','_blank')">\${p.title}</span>
+        <span class="diff-badge \${p.difficulty.toLowerCase()}">\${p.difficulty}</span>
+        <span class="prob-tags">\${p.tags.join(', ')}</span>
+        <span class="prob-acc">\${p.acceptance}%</span>
+        <button class="batch-done-btn" onclick="markBatchDone('\${p.id}')">✓ Done</button>
+      </div>
+    \`).join('');
+    container.innerHTML = \`
+      <div class="lc-batch-list">\${listHtml}</div>
+      <div style="display:flex; gap:0.75rem; flex-wrap:wrap; margin-bottom:1.5rem;">
+        <button class="btn-primary" onclick="markAllBatchDone(['\${recommended.map(p=>p.id).join("','")}'])">Mark All Done & Refresh</button>
+      </div>
+    \`;
+  }
+  updatePickerProgress();
+}
+
+function exportBatchList() {
+  const count = Math.max(1, parseInt(document.getElementById('picker-gen-count').value) || 1);
+  const pool = getPickerPool();
+  const picked = pickRandom(pool, count);
+
+  let csv = 'ID,Title,Difficulty,Tags,Acceptance\\n';
+  picked.forEach(p => {
+    const tags = p.tags.join(';');
+    csv += \`\${p.id},"\${p.title}",\${p.difficulty},"\${tags}",\${p.acceptance}\\n\`;
+  });
+
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const url = window.URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'lc-problems.csv';
+  a.click();
+}
+
+function copyBatchList() {
+  const count = Math.max(1, parseInt(document.getElementById('picker-gen-count').value) || 1);
+  const pool = getPickerPool();
+  const picked = pickRandom(pool, count);
+
+  let text = 'LeetCode Problems\\n' + '='.repeat(50) + '\\n';
+  picked.forEach(p => {
+    text += \`#\${p.id}: \${p.title} [\${p.difficulty}]\\n\`;
+    text += \`Tags: \${p.tags.join(', ')}\\n\`;
+    text += \`Acceptance: \${p.acceptance}%\\n\\n\`;
+  });
+
+  navigator.clipboard.writeText(text).then(() => {
+    alert('Copied to clipboard!');
+  });
 }
 
 // Boot
