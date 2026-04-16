@@ -12,72 +12,39 @@ Last Updated: 2022-02-27
 - #66 - Plus One - Array, Math - 42.5%
 - #26 - Remove Duplicates from Sorted Array - Array, Two Pointers - 48.3%
 - #27 - Remove Element - Array, Two Pointers - 50.9%
-- #119 - Pascal's Triangle II (/problem… - array, dynamic-programming, hash-table, math, counting - 56.7%
 - #136 - Single Number - Array, Bit Manipulation - 69.1%
 - #163 - Missing Ranges - Array - 30.9%
-- #169 - Majority Element (/problems/… - array, hash-table, divide-and-conquer, sorting, counting, binary-search, queue, sliding-window - 62.6%
 - #217 - Contains Duplicate - Array, Hash Table, Sorting - 60.3%
-- #219 - Contains Duplicate II (/proble… - array, hash-table, sliding-window, binary-search, stack, monotonic-stack, ordered-set - 40.5%
 - #228 - Summary Ranges - Array - 44.6%
-- #243 - Shortest Word Distance (/pro… - array, string, dynamic-programming, greedy - 64.0%
 - #268 - Missing Number - Array, Hash Table, Math, Bit Manipulation, Sorting - 58.9%
 - #283 - Move Zeroes - Array, Two Pointers - 60.3%
 - #349 - Intersection of Two Arrays - Array, Hash Table, Two Pointers, Binary Search, Sorting - 68.5%
 - #350 - Intersection of Two Arrays II - Array, Hash Table, Two Pointers, Binary Search, Sorting - 54.6%
 - #414 - Third Maximum Number - Array, Sorting - 31.6%
-- #422 - Valid Word Square (/problem… - array, matrix, depth-first-search, breadth-first-search, union-find - 38.6%
 - #448 - Find All Numbers Disappeared in an Array - Array, Hash Table - 58.8%
 - #463 - Island Perimeter - Array, Depth-First Search, Breadth-First Search, Matrix - 68.8%
 - #485 - Max Consecutive Ones - Array - 54.9%
-- #496 - Next Greater Element I (/prob… - array, hash-table, stack, monotonic-stack, two-pointers - 69.5%
 - #506 - Relative Ranks - Array, Sorting, Heap (Priority Queue) - 56.0%
-- #628 - Maximum Product of Three … - array, math, sorting, dynamic-programming, queue, sliding-window, heap-priority-queue, monotonic-queue - 46.8%
 - #643 - Maximum Average Subarray I - Array, Sliding Window - 43.3%
-- #717 - 1-bit and 2-bit Characters (/… - array, hash-table, binary-search, sliding-window, prefix-sum - 46.3%
 - #724 - Find Pivot Index - Array, Prefix Sum - 50.9%
-- #734 - Sentence Similarity (/proble… - array, hash-table, string, stack, simulation - 42.9%
 - #747 - Largest Number At Least Twice of Others - Array, Sorting - 44.9%
-- #832 - Flipping an Image (/problems… - array, two-pointers, matrix, simulation, hash-table, linked-list, design, hash-function - 79.5%
 - #836 - Rectangle Overlap - Math, Geometry - 43.1%
 - #852 - Peak Index in a Mountain Array - Array, Binary Search - 71.0%
 - #905 - Sort Array By Parity - Array, Two Pointers, Sorting - 74.8%
-- #929 - Unique Email Addresses (/pr… - array, hash-table, string, greedy - 67.4%
-- #937 - Reorder Data in Log Files (/pr… - array, string, sorting, two-pointers, stack, tree, depth-first-search, binary-search-tree - 55.9%
 - #941 - Valid Mountain Array - Array - 33.9%
-- #942 - DI String Match (/problems/d… - array, math, two-pointers, string, greedy, sorting, heap-priority-queue - 75.5%
-- #944 - Delete Columns to Make Sort… - array, string, two-pointers, math - 70.1%
 - #977 - Squares of a Sorted Array - Array, Two Pointers, Sorting - 71.5%
 - #989 - Add to Array-Form of Integer - Array, Math - 45.3%
-- #997 - Find the Town Judge (/proble… - array, hash-table, graph, binary-search - 50.0%
-- #1046 - Last Stone Weight (/problem… - array, heap-priority-queue - 63.0%
-- #1089 - Duplicate Zeros (/problems/d… - array, two-pointers, math, greedy - 51.1%
-- #1184 - Distance Between Bus Stops… - array, backtracking, bit-manipulation - 54.1%
-- #1200 - Minimum Absolute Differenc… - array, sorting, tree, depth-first-search, breadth-first-search, binary-tree - 69.8%
-- #1252 - Cells with Odd Values in a M… - array, math, simulation, hash-table, binary-search, greedy - 78.5%
-- #1275 - Find Winner on a Tic Tac Toe… - array, hash-table, matrix, simulation, binary-search - 55.1%
 - #1287 - Element Appearing More Than 25% In Sorted Array - Array - 59.5%
-- #1313 - Decompress Run-Length Enc… - array, hash-table, tree, depth-first-search, breadth-first-search, binary-tree - 85.8%
-- #1331 - Rank Transform of an Array (… - array, hash-table, sorting, string, depth-first-search, breadth-first-search, union-find - 58.4%
-- #1346 - Check If N and Its Double Exi… - array, hash-table, two-pointers, binary-search, sorting, tree, binary-search-tree, binary-tree - 35.5%
 - #1431 - Kids With the Greatest Number of Candies - Array - 87.8%
-- #1441 - Build an Array With Stack Op… - array, stack, simulation, string, sorting - 70.8%
-- #1470 - Shuffle the Array (/problems/… - array, tree, depth-first-search, breadth-first-search, binary-tree - 88.3%
 - #1480 - Running Sum of 1d Array - Array, Prefix Sum - 89.5%
 - #1512 - Number of Good Pairs - Array, Hash Table, Math, Counting - 87.9%
 - #1539 - Kth Missing Positive Number - Array, Binary Search - 55.2%
-- #1582 - Special Positions in a Binary … - array, matrix, hash-table, string - 64.9%
 - #1588 - Sum of All Odd Length Subarrays - Array, Math, Prefix Sum - 82.9%
-- #1619 - Mean of Array After Removin… - array, sorting, greedy - 64.6%
-- #1636 - Sort Array by Increasing Freq… - array, hash-table, sorting, string, two-pointers - 68.3%
 - #1672 - Richest Customer Wealth - Array, Matrix - 89.3%
-- #1708 - Largest Subarray Length K (/… - array, greedy, hash-table, string, counting, prefix-sum - 63.6%
 - #1732 - Find the Highest Altitude - Array, Prefix Sum - 78.9%
 - #1920 - Build Array from Permutation - Array, Simulation - 91.8%
 - #1929 - Concatenation of Array - Array - 91.7%
-- #2022 - Convert 1D Array Into 2D Arr… - array, matrix, simulation, dynamic-programming, graph, topological-sort - 60.2%
-- #2057 - Smallest Index With Equal Va… - array, breadth-first-search, dynamic-programming - 73.7%
 - #2089 - Find Target Indices After Sorting Array - Array, Binary Search, Sorting - 80.7%
-- #2114 - Maximum Number of Words … - array, string, two-pointers, simulation - 89.1%
 
 ### Medium
 - #1 - Two Sum - Array, Hash Table - 48.3%
@@ -105,133 +72,6 @@ Last Updated: 2022-02-27
 - #90 - Subsets II - Array, Backtracking, Bit Manipulation - 52.7%
 - #105 - Construct Binary Tree from Preorder and Inorder Traversal - Array, Hash Table, Divide and Conquer, Tree, Binary Tree - 56.9%
 - #106 - Construct Binary Tree from Inorder and Postorder Traversal - Array, Hash Table, Divide and Conquer, Tree, Binary Tree - 54.7%
-- #122 - Best Time to Buy and Sell St… - array, dynamic-programming, greedy, tree, breadth-first-search, binary-tree - 61.6%
-- #189 - Rotate Array (/problems/rotat… - array, math, two-pointers, tree, depth-first-search, breadth-first-search - 38.3%
-- #245 - Shortest Word Distance III (/… - array, string, dynamic-programming, greedy - 57.0%
-- #259 - 3Sum Smaller (/problems/3s… - array, two-pointers, binary-search, sorting, hash-table, string, trie - 50.2%
-- #287 - Find the Duplicate Number (/… - array, two-pointers, binary-search, bit-manipulation, dynamic-programming - 58.4%
-- #311 - Sparse Matrix Multiplication (… - array, hash-table, matrix - 65.6%
-- #313 - Super Ugly Number (/proble… - array, hash-table, math, dynamic-programming, heap-priority-queue, string, bit-manipulation - 46.0%
-- #325 - Maximum Size Subarray Sum… - array, hash-table, backtracking, matrix - 48.9%
-- #348 - Design Tic-Tac-Toe (/proble… - array, hash-table, design, matrix - 57.1%
-- #356 - Line Reflection (/problems/lin… - array, hash-table, math, dynamic-programming, memoization - 34.2%
-- #368 - Largest Divisible Subset (/pr… - array, math, dynamic-programming, sorting, string - 40.4%
-- #379 - Design Phone Directory (/pro… - array, hash-table, linked-list, design, queue, backtracking, matrix - 50.1%
-- #419 - Battleships in a Board (/probl… - array, depth-first-search, matrix, hash-table, math, binary-search, sorting, randomized - 73.1%
-- #427 - Construct Quad Tree (/probl… - array, divide-and-conquer, tree, matrix, bit-manipulation, breadth-first-search - 64.8%
-- #435 - Non-overlapping Intervals (/p… - array, dynamic-programming, greedy, sorting, linked-list, two-pointers - 47.7%
-- #442 - Find All Duplicates in an Arra… - array, hash-table, tree, depth-first-search, binary-search-tree, binary-tree - 72.1%
-- #447 - Number of Boomerangs (/pro… - array, hash-table, math, binary-search - 53.8%
-- #452 - Minimum Number of Arrows t… - array, greedy, sorting, dynamic-programming - 52.8%
-- #487 - Max Consecutive Ones II (/pr… - array, dynamic-programming, sliding-window, string, tree, depth-first-search, binary-tree - 48.7%
-- #491 - Increasing Subsequences (/p… - array, hash-table, backtracking, bit-manipulation, counting - 50.4%
-- #522 - Longest Uncommon Subseq… - array, hash-table, two-pointers, string, sorting, greedy - 40.1%
-- #523 - Continuous Subarray Sum (/… - array, hash-table, math, prefix-sum, string - 26.9%
-- #524 - Longest Word in Dictionary t… - array, two-pointers, string, sorting, design, matrix, prefix-sum - 50.8%
-- #525 - Contiguous Array (/problems… - array, hash-table, prefix-sum - 46.2%
-- #526 - Beautiful Arrangement (/prob… - array, dynamic-programming, backtracking, bit-manipulation, bitmask, hash-table, matrix - 64.1%
-- #531 - Lonely Pixel I (/problems/lone… - array, hash-table, matrix, math, dynamic-programming, probability-and-statistics - 60.6%
-- #532 - K-diff Pairs in an Array (/prob… - array, hash-table, two-pointers, binary-search, sorting, string - 39.9%
-- #533 - Lonely Pixel II (/problems/lon… - array, hash-table, matrix, database - 48.4%
-- #539 - Minimum Time Difference (/p… - array, math, string, sorting, hash-table - 53.9%
-- #540 - Single Element in a Sorted Ar… - array, binary-search, dynamic-programming, breadth-first-search, matrix - 58.7%
-- #554 - Brick Wall (/problems/brick-… - array, hash-table, math, reservoir-sampling, randomized - 52.5%
-- #562 - Longest Line of Consecutive … - array, dynamic-programming, matrix, design, counting, iterator - 48.9%
-- #581 - Shortest Unsorted Continuo… - array, two-pointers, stack, greedy, sorting, monotonic-stack, database - 34.0%
-- #609 - Find Duplicate File in System… - array, hash-table, string, binary-search, matrix, prefix-sum - 63.7%
-- #622 - Design Circular Queue (/prob… - array, linked-list, design, queue, hash-table, sorting, counting-sort - 48.5%
-- #665 - Non-decreasing Array (/probl… - array, string, backtracking, breadth-first-search, hash-table - 21.4%
-- #667 - Beautiful Arrangement II (/pr… - array, math, string, backtracking - 59.3%
-- #721 - Accounts Merge (/problems/… - array, string, depth-first-search, breadth-first-search, union-find - 55.5%
-- #722 - Remove Comments (/proble… - array, string, hash-table, two-pointers - 37.3%
-- #775 - Global and Local Inversions (… - array, math, hash-table, stack, monotonic-stack, prefix-sum - 45.4%
-- #789 - Escape The Ghosts (/proble… - array, math - 60.0%
-- #794 - Valid Tic-Tac-Toe State (/pro… - array, string, two-pointers, depth-first-search - 35.1%
-- #795 - Number of Subarrays with B… - array, two-pointers, string, dynamic-programming, stack, greedy - 52.3%
-- #813 - Largest Sum of Averages (/pr… - array, dynamic-programming, math, brainteaser, probability-and-statistics - 52.2%
-- #835 - Image Overlap (/problems/im… - array, matrix, hash-table, linked-list, dynamic-programming - 61.3%
-- #840 - Magic Squares In Grid (/probl… - array, math, matrix, depth-first-search, breadth-first-search, union-find - 38.3%
-- #845 - Longest Mountain in Array (/… - array, two-pointers, dynamic-programming, enumeration, binary-search - 39.7%
-- #846 - Hand of Straights (/problems… - array, hash-table, greedy, sorting, string, sliding-window - 56.1%
-- #849 - Maximize Distance to Closes… - array, breadth-first-search, heap-priority-queue, matrix - 47.4%
-- #916 - Word Subsets (/problems/wo… - array, hash-table, string, math, binary-search - 52.7%
-- #948 - Bag of Tokens (/problems/ba… - array, two-pointers, greedy, sorting, string, dynamic-programming - 46.2%
-- #954 - Array of Doubled Pairs (/prob… - array, hash-table, greedy, sorting, depth-first-search, breadth-first-search, graph - 38.4%
-- #955 - Delete Columns to Make Sort… - array, string, greedy, prefix-sum - 34.1%
-- #974 - Subarray Sums Divisible by K… - array, hash-table, prefix-sum, sorting, matrix - 53.0%
-- #983 - Minimum Cost For Tickets (/… - array, dynamic-programming, breadth-first-search, matrix - 63.8%
-- #990 - Satisfiability of Equality Equa… - array, string, union-find, graph, two-pointers - 49.6%
-- #1010 - Pairs of Songs With Total Dur… - array, hash-table, counting, dynamic-programming - 53.8%
-- #1014 - Best Sightseeing Pair (/probl… - array, dynamic-programming, tree, depth-first-search - 58.0%
-- #1019 - Next Greater Node In Linked … - array, linked-list, stack, monotonic-stack, database - 59.5%
-- #1027 - Longest Arithmetic Subsequ… - array, hash-table, binary-search, dynamic-programming, breadth-first-search - 48.4%
-- #1031 - Maximum Sum of Two Non-… - array, dynamic-programming, sliding-window - 59.3%
-- #1048 - Longest String Chain (/probl… - array, hash-table, two-pointers, string, dynamic-programming, breadth-first-search, matrix - 57.6%
-- #1049 - Last Stone Weight II (/proble… - array, dynamic-programming, matrix - 50.6%
-- #1094 - Car Pooling (/problems/car-p… - array, sorting, heap-priority-queue, simulation, prefix-sum, binary-search, interactive - 58.6%
-- #1101 - The Earliest Moment When E… - array, union-find, math, enumeration - 64.6%
-- #1105 - Filling Bookcase Shelves (/pr… - array, dynamic-programming, backtracking - 58.0%
-- #1124 - Longest Well-Performing Int… - array, hash-table, stack, monotonic-stack, prefix-sum - 34.1%
-- #1131 - Maximum of Absolute Value … - array, math, greedy, union-find, graph, topological-sort, matrix - 50.1%
-- #1144 - Decrease Elements To Make … - array, greedy, stack, monotonic-stack - 47.0%
-- #1170 - Compare Strings by Frequen… - array, hash-table, string, binary-search, sorting, dynamic-programming, greedy - 61.0%
-- #1191 - K-Concatenation Maximum S… - array, dynamic-programming, hash-table - 24.2%
-- #1218 - Longest Arithmetic Subsequ… - array, hash-table, dynamic-programming, linked-list, recursion - 50.7%
-- #1219 - Path with Maximum Gold (/pr… - array, backtracking, matrix, dynamic-programming, greedy - 65.9%
-- #1229 - Meeting Scheduler (/problem… - array, two-pointers, sorting, tree, depth-first-search, binary-tree - 54.6%
-- #1233 - Remove Sub-Folders from th… - array, string, trie, linked-list - 64.9%
-- #1258 - Synonymous Sentences (/pr… - array, hash-table, string, backtracking, union-find, math, geometry - 56.4%
-- #1272 - Remove Interval (/problems/r… - array, two-pointers, binary-search, stack, monotonic-stack - 60.7%
-- #1277 - Count Square Submatrices w… - array, dynamic-programming, matrix, queue, sliding-window, heap-priority-queue, monotonic-queue - 74.1%
-- #1296 - Divide Array in Sets of K Con… - array, hash-table, greedy, sorting, two-pointers, string - 56.4%
-- #1353 - Maximum Number of Events … - array, greedy, heap-priority-queue, hash-table, string - 33.3%
-- #1381 - Design a Stack With Increme… - array, stack, design, hash-table, string - 77.1%
-- #1424 - Diagonal Traverse II (/proble… - array, sorting, heap-priority-queue, hash-table, stack, monotonic-stack - 49.6%
-- #1452 - People Whose List of Favorit… - array, hash-table, string, two-pointers, sorting - 56.5%
-- #1471 - The k Strongest Values in an … - array, two-pointers, sorting, binary-search - 59.6%
-- #1477 - Find Two Non-overlapping S… - array, hash-table, binary-search, dynamic-programming, sliding-window, tree, depth-first-search, binary-tree - 36.5%
-- #1488 - Avoid Flood in The City (/pro… - array, hash-table, binary-search, greedy, heap-priority-queue - 25.3%
-- #1498 - Number of Subsequences Th… - array, two-pointers, binary-search, sorting, hash-table, tree, depth-first-search, breadth-first-search - 39.2%
-- #1524 - Number of Sub-arrays With … - array, math, dynamic-programming, prefix-sum, tree, depth-first-search, binary-tree - 43.7%
-- #1546 - Maximum Number of Non-O… - array, hash-table, greedy, prefix-sum, tree, depth-first-search - 46.0%
-- #1562 - Find Latest Group of Size M (… - array, binary-search, simulation, math, divide-and-conquer, dynamic-programming, tree, union-find - 40.7%
-- #1564 - Put Boxes Into the Warehous… - array, greedy, sorting, math, dynamic-programming, breadth-first-search, graph, memoization - 64.4%
-- #1570 - Dot Product of Two Sparse V… - array, hash-table, two-pointers, design, linked-list - 90.5%
-- #1580 - Put Boxes Into the Warehous… - array, greedy, sorting, union-find, graph - 63.7%
-- #1594 - Maximum Non Negative Prod… - array, dynamic-programming, matrix, bit-manipulation, bitmask - 33.0%
-- #1605 - Find Valid Matrix Given Row … - array, greedy, matrix, hash-table, string, backtracking - 78.4%
-- #1630 - Arithmetic Subarrays (/probl… - array, sorting, dynamic-programming, backtracking, bit-manipulation, bitmask - 78.2%
-- #1631 - Path With Minimum Effort (/p… - array, binary-search, depth-first-search, breadth-first-search, union-find, heap-priority-queue, matrix, string - 51.7%
-- #1642 - Furthest Building You Can Re… - array, greedy, heap-priority-queue, hash-table, depth-first-search, breadth-first-search, union-find, hash-function - 44.9%
-- #1722 - Minimize Hamming Distance … - array, depth-first-search, union-find, hash-table, tree, breadth-first-search, design - 47.3%
-- #1726 - Tuple with Same Product (/pr… - array, hash-table, tree, depth-first-search, breadth-first-search, design, binary-tree - 60.3%
-- #1727 - Largest Submatrix With Rear… - array, greedy, sorting, matrix - 60.2%
-- #1769 - Minimum Number of Operati… - array, string, tree, depth-first-search, binary-tree - 85.6%
-- #1774 - Closest Dessert Cost (/probl… - array, dynamic-programming, backtracking, stack, simulation - 46.0%
-- #1806 - Minimum Number of Operati… - array, math, simulation, geometry - 70.8%
-- #1807 - Evaluate the Bracket Pairs of … - array, hash-table, string, math, simulation, number-theory - 66.7%
-- #1813 - Sentence Similarity III (/probl… - array, two-pointers, string, dynamic-programming, bit-manipulation, memoization, bitmask - 32.2%
-- #1834 - Single-Threaded CPU (/probl… - array, sorting, heap-priority-queue, divide-and-conquer, quickselect - 40.3%
-- #1855 - Maximum Distance Between … - array, two-pointers, binary-search, greedy, dynamic-programming - 48.9%
-- #1874 - Minimize Product Sum of Tw… - array, greedy, sorting, hash-table - 89.5%
-- #1877 - Minimize Maximum Pair Sum … - array, two-pointers, greedy, sorting, string, union-find, graph - 80.6%
-- #1882 - Process Tasks Using Servers… - array, heap-priority-queue, hash-table, string, bit-manipulation, sorting - 36.8%
-- #1899 - Merge Triplets to Form Targe… - array, greedy, dynamic-programming, memoization - 60.8%
-- #1906 - Minimum Absolute Differenc… - array, hash-table, string, bit-manipulation, prefix-sum - 42.8%
-- #1921 - Eliminate Maximum Number … - array, greedy, sorting, math, recursion - 37.5%
-- #1937 - Maximum Number of Points … - array, dynamic-programming, stack, greedy, monotonic-stack - 34.9%
-- #1943 - Describe the Painting (/probl… - array, prefix-sum, dynamic-programming - 46.0%
-- #1966 - Binary Searchable Numbers i… - array, binary-search, dynamic-programming - 66.5%
-- #2007 - Find Original Array From Dou… - array, hash-table, greedy, sorting, binary-search, dynamic-programming - 37.2%
-- #2018 - Check if Word Can Be Placed… - array, matrix, enumeration, dynamic-programming, string - 47.3%
-- #2079 - Watering Plants (/problems/… - array, hash-table, tree - 80.5%
-- #2105 - Watering Plants II (/problems… - array, two-pointers, simulation, hash-table, sorting, enumeration - 51.3%
-- #2115 - Find All Possible Recipes fro… - array, hash-table, string, graph, topological-sort, greedy, heap-priority-queue - 37.9%
-- #2126 - Destroying Asteroids (/probl… - array, greedy, sorting, math - 48.0%
-- #2128 - Remove All Ones With Row a… - array, math, bit-manipulation, matrix, binary-search - 76.4%
-- #2135 - Count Words Obtained After … - array, hash-table, string, bit-manipulation, sorting, dynamic-programming - 35.6%
-- #2150 - Find All Lonely Numbers in th… - array, hash-table, counting, math, greedy - 60.3%
-- #2155 - All Divisions With the Highes… - array, math, enumeration, hash-table - 61.4%
 
 ### Hard
 - #4 - Median of Two Sorted Arrays - Array, Binary Search, Divide and Conquer - 33.7%
@@ -242,39 +82,6 @@ Last Updated: 2022-02-27
 - #85 - Maximal Rectangle - Array, Dynamic Programming, Stack, Matrix, Monotonic Stack - 42.4%
 - #135 - Candy - Array, Greedy - 36.7%
 - #218 - The Skyline Problem - Array, Divide and Conquer, Binary Indexed Tree, Segment Tree, Line Sweep, Heap (Priority Queue), Ordered Set - 38.4%
-- #296 - Best Meeting Point (/problem… - array, math, sorting, matrix, dynamic-programming, backtracking - 59.4%
-- #480 - Sliding Window Median (/pro… - array, hash-table, sliding-window, heap-priority-queue, stack - 40.7%
-- #568 - Maximum Vacation Days (/pr… - array, dynamic-programming, matrix, tree, depth-first-search, binary-tree - 44.1%
-- #630 - Course Schedule III (/proble… - array, greedy, heap-priority-queue, math, string - 35.6%
-- #632 - Smallest Range Covering Ele… - array, hash-table, greedy, sliding-window, sorting, heap-priority-queue, depth-first-search, breadth-first-search - 57.9%
-- #644 - Maximum Average Subarray I… - array, binary-search, math, union-find - 35.1%
-- #656 - Coin Path (/problems/coin-p… - array, dynamic-programming, math - 31.2%
-- #689 - Maximum Sum of 3 Non-Ove… - array, dynamic-programming, math, depth-first-search - 48.3%
-- #759 - Employee Free Time (/proble… - array, sorting, heap-priority-queue, math, string, stack - 70.8%
-- #768 - Max Chunks To Make Sorted … - array, stack, greedy, sorting, monotonic-stack, tree, depth-first-search, binary-search-tree - 51.8%
-- #782 - Transform to Chessboard (/p… - array, math, bit-manipulation, matrix, two-pointers, string, dynamic-programming - 52.1%
-- #827 - Making A Large Island (/probl… - array, depth-first-search, breadth-first-search, union-find, matrix, simulation - 44.7%
-- #871 - Minimum Number of Refuelin… - array, dynamic-programming, greedy, heap-priority-queue, depth-first-search, breadth-first-search, matrix - 35.5%
-- #879 - Profitable Schemes (/proble… - array, dynamic-programming, math, enumeration - 40.6%
-- #952 - Largest Component Size by … - array, math, union-find, dynamic-programming - 40.4%
-- #960 - Delete Columns to Make Sort… - array, string, dynamic-programming, backtracking, bit-manipulation, matrix - 56.4%
-- #980 - Unique Paths III (/problems/u… - array, backtracking, bit-manipulation, matrix, hash-table, tree, depth-first-search, design - 79.4%
-- #992 - Subarrays with K Different In… - array, hash-table, sliding-window, counting, stack, tree, depth-first-search, binary-tree - 53.2%
-- #995 - Minimum Number of K Conse… - array, bit-manipulation, sliding-window, prefix-sum, dynamic-programming - 50.6%
-- #1121 - Divide Array Into Increasing … - array, greedy, string, dynamic-programming, trie, sliding-window, rolling-hash, hash-function - 59.7%
-- #1326 - Minimum Number of Taps to … - array, dynamic-programming, greedy, hash-table, string, bit-manipulation - 48.2%
-- #1363 - Largest Multiple of Three (/pr… - array, dynamic-programming, greedy, hash-table, string, bit-manipulation, rolling-hash, hash-function - 34.4%
-- #1449 - Form Largest Integer With Di… - array, dynamic-programming, hash-table, string - 46.1%
-- #1691 - Maximum Height by Stacking… - array, dynamic-programming, sorting - 53.4%
-- #1697 - Checking Existence of Edge … - array, union-find, graph, sorting, two-pointers, string - 48.4%
-- #1703 - Minimum Adjacent Swaps for… - array, greedy, sliding-window, prefix-sum - 40.0%
-- #1707 - Maximum XOR With an Elem… - array, bit-manipulation, trie, binary-search, design, ordered-set - 43.2%
-- #1713 - Minimum Operations to Mak… - array, hash-table, binary-search, greedy, sliding-window, prefix-sum - 48.8%
-- #1793 - Maximum Score of a Good S… - array, two-pointers, binary-search, stack, monotonic-stack, math, bit-manipulation, recursion - 51.2%
-- #1944 - Number of Visible People in … - array, stack, monotonic-stack - 69.5%
-- #2088 - Count Fertile Pyramids in a L… - array, dynamic-programming, matrix, union-find, graph - 62.3%
-- #2122 - Recover the Original Array (/… - array, hash-table, sorting, enumeration, greedy - 37.6%
-- #2172 - Maximum AND Sum of Array … - array, dynamic-programming, bit-manipulation, bitmask - 42.7%
 
 ---
 
@@ -283,14 +90,11 @@ Last Updated: 2022-02-27
 ### Easy
 - #1 - Two Sum - Array, Hash Table - 48.3%
 - #136 - Single Number - Array, Bit Manipulation - 69.1%
-- #141 - Linked List Cycle (/problems/… - hash-table, linked-list, two-pointers, string, backtracking, tree, depth-first-search, binary-tree - 45.1%
-- #160 - Intersection of Two Linked Li… - hash-table, linked-list, two-pointers, array, math, enumeration, number-theory - 49.1%
 - #202 - Happy Number - Hash Table, Math, Two Pointers - 52.8%
 - #205 - Isomorphic Strings - Hash Table, String - 41.9%
 - #217 - Contains Duplicate - Array, Hash Table, Sorting - 60.3%
 - #242 - Valid Anagram - Hash Table, String, Sorting - 61.0%
 - #246 - Strobogrammatic Number - Hash Table, Two Pointers, String - 47.4%
-- #266 - Palindrome Permutation (/pr… - hash-table, string, bit-manipulation, array, dynamic-programming - 65.0%
 - #268 - Missing Number - Array, Hash Table, Math, Bit Manipulation, Sorting - 58.9%
 - #349 - Intersection of Two Arrays - Array, Hash Table, Two Pointers, Binary Search, Sorting - 68.5%
 - #350 - Intersection of Two Arrays II - Array, Hash Table, Two Pointers, Binary Search, Sorting - 54.6%
@@ -305,7 +109,6 @@ Last Updated: 2022-02-27
 - #1165 - Single-Row Keyboard - Hash Table, String - 85.6%
 - #1207 - Unique Number of Occurrences - Array, Hash Table - 72.0%
 - #1436 - Destination City - Hash Table, String - 77.7%
-- #1496 - Path Crossing (/problems/pat… - hash-table, string, tree, depth-first-search, breadth-first-search, binary-tree - 55.7%
 - #1512 - Number of Good Pairs - Array, Hash Table, Math, Counting - 87.9%
 
 ### Medium
@@ -323,24 +126,8 @@ Last Updated: 2022-02-27
 - #187 - Repeated DNA Sequences - Hash Table, String, Bit Manipulation, Sliding Window, Rolling Hash, Hash Function - 44.1%
 - #205 - Isomorphic Strings - Hash Table, String - 41.9%
 - #242 - Valid Anagram - Hash Table, String, Sorting - 61.0%
-- #267 - Palindrome Permutation II (/p… - hash-table, string, backtracking, breadth-first-search - 39.3%
 - #288 - Unique Word Abbreviation - Array, Hash Table, String, Design - 24.6%
 - #299 - Bulls and Cows - Hash Table, String, Counting - 46.9%
-- #424 - Longest Repeating Character… - hash-table, string, sliding-window, array, sorting, bucket-sort, ordered-set - 50.5%
-- #433 - Minimum Genetic Mutation (/… - hash-table, string, breadth-first-search, array, binary-search, sliding-window, prefix-sum - 45.7%
-- #438 - Find All Anagrams in a String… - hash-table, string, sliding-window, stack, design, ordered-set - 47.9%
-- #567 - Permutation in String (/probl… - hash-table, two-pointers, string, sliding-window, array, divide-and-conquer, tree, binary-tree - 45.0%
-- #635 - Design Log Storage System (… - hash-table, string, design, ordered-set, array, binary-search, divide-and-conquer, matrix - 62.1%
-- #677 - Map Sum Pairs (/problems/m… - hash-table, string, design, trie - 57.0%
-- #763 - Partition Labels (/problems/p… - hash-table, two-pointers, string, greedy, array, dynamic-programming, binary-indexed-tree - 78.7%
-- #1015 - Smallest Integer Divisible by … - hash-table, math - 46.9%
-- #1138 - Alphabet Board Path (/proble… - hash-table, string, array, matrix - 52.3%
-- #1166 - Design File System (/problem… - hash-table, string, design, trie, linked-list, recursion - 60.2%
-- #1202 - Smallest String With Swaps (… - hash-table, string, depth-first-search, breadth-first-search, union-find, linked-list, two-pointers - 52.4%
-- #1244 - Design A Leaderboard (/prob… - hash-table, design, sorting, math - 68.0%
-- #1554 - Strings Differ by One Charac… - hash-table, string, rolling-hash, hash-function, dynamic-programming - 65.2%
-- #1593 - Split a String Into the Max Nu… - hash-table, string, backtracking, array, dynamic-programming, matrix - 53.9%
-- #1915 - Number of Wonderful Substr… - hash-table, string, bit-manipulation, prefix-sum, array, binary-search - 43.1%
 
 ### Hard
 - #30 - Substring with Concatenation of All Words - Hash Table, String, Sliding Window - 27.8%
@@ -350,8 +137,6 @@ Last Updated: 2022-02-27
 - #358 - Rearrange String k Distance Apart - Hash Table, String, Greedy, Sorting, Heap (Priority Queue), Counting - 36.7%
 - #432 - All O`one Data Structure - Hash Table, Linked List, Design, Doubly-Linked List - 35.4%
 - #460 - LFU Cache - Hash Table, Linked List, Design, Doubly-Linked List - 39.0%
-- #770 - Basic Calculator IV (/problem… - hash-table, math, string, stack, recursion, dynamic-programming, bit-manipulation - 55.5%
-- #1153 - String Transforms Into Anoth… - hash-table, string - 35.5%
 
 ---
 
@@ -370,7 +155,6 @@ Last Updated: 2022-02-27
 - #168 - Excel Sheet Column Title - Math, String - 33.6%
 - #171 - Excel Sheet Column Number - Math, String - 60.4%
 - #242 - Valid Anagram - Hash Table, String, Sorting - 61.0%
-- #293 - Flip Game (/problems/flip-ga… - string, array, math, sorting - 62.4%
 - #344 - Reverse String - Two Pointers, String, Recursion - 73.8%
 - #345 - Reverse Vowels of a String - Two Pointers, String - 46.7%
 - #383 - Ransom Note - Hash Table, String, Counting - 55.6%
@@ -383,7 +167,6 @@ Last Updated: 2022-02-27
 - #482 - License Key Formatting - String - 43.1%
 - #520 - Detect Capital - String - 55.7%
 - #521 - Longest Uncommon Subsequence I - String - 60.0%
-- #551 - Student Attendance Record I… - string, math, array - 47.4%
 - #557 - Reverse Words in a String III - Two Pointers, String - 77.8%
 - #680 - Valid Palindrome II - Two Pointers, String, Greedy - 38.5%
 - #696 - Count Binary Substrings - Two Pointers, String - 62.4%
@@ -393,25 +176,19 @@ Last Updated: 2022-02-27
 - #800 - Similar RGB Color - Math, String, Enumeration - 63.6%
 - #804 - Unique Morse Code Words - Array, Hash Table, String - 79.8%
 - #824 - Goat Latin - String - 67.5%
-- #830 - Positions of Large Groups (/p… - string, array, backtracking, breadth-first-search - 51.3%
 - #859 - Buddy Strings - Hash Table, String - 28.8%
 - #884 - Uncommon Words from Two Sentences - Hash Table, String - 65.4%
 - #925 - Long Pressed Name - Two Pointers, String - 34.9%
 - #1002 - Find Common Characters - Array, Hash Table, String - 68.4%
-- #1078 - Occurrences After Bigram (/… - string, math, greedy, heap-priority-queue - 64.3%
 - #1108 - Defanging an IP Address - String - 88.9%
 - #1165 - Single-Row Keyboard - Hash Table, String - 85.6%
 - #1221 - Split a String in Balanced Strings - String, Greedy - 85.5%
 - #1290 - Convert Binary Number in a Linked List to Integer - Linked List, Math - 83.2%
 - #1370 - Increasing Decreasing String - Hash Table, String, Counting - 78.0%
 - #1417 - Reformat The String - String - 56.4%
-- #1422 - Maximum Score After Splittin… - string, array, dynamic-programming, hash-table - 57.7%
 - #1436 - Destination City - Hash Table, String - 77.7%
 - #1446 - Consecutive Characters - String - 62.0%
 - #1528 - Shuffle String - Array, String - 85.8%
-- #1544 - Make The String Great (/prob… - string, stack, array, math, interactive - 56.3%
-- #1576 - Replace All ?'s to Avoid Cons… - string, stack, greedy, bit-manipulation - 50.1%
-- #1592 - Rearrange Spaces Between … - string, dynamic-programming, tree, depth-first-search, graph - 44.0%
 - #1624 - Largest Substring Between Two Equal Characters - Hash Table, String - 59.2%
 - #1678 - Goal Parser Interpretation - String - 88.6%
 - #1684 - Count the Number of Consistent Strings - Array, Hash Table, String, Bit Manipulation, Counting - 82.4%
@@ -442,7 +219,6 @@ Last Updated: 2022-02-27
 - #151 - Reverse Words in a String - Two Pointers, String - 27.9%
 - #161 - One Edit Distance - Two Pointers, String - 33.9%
 - #165 - Compare Version Numbers - Two Pointers, String - 34.2%
-- #179 - Largest Number (/problems/l… - string, greedy, sorting, tree, breadth-first-search - 32.6%
 - #187 - Repeated DNA Sequences - Hash Table, String, Bit Manipulation, Sliding Window, Rolling Hash, Hash Function - 44.1%
 - #208 - Implement Trie (Prefix Tree) - Hash Table, String, Design, Trie - 57.3%
 - #227 - Basic Calculator II - Math, String, Stack - 41.2%
@@ -450,19 +226,6 @@ Last Updated: 2022-02-27
 - #249 - Group Shifted Strings - Array, Hash Table, String - 62.9%
 - #271 - Encode and Decode Strings - Array, String, Design - 36.9%
 - #299 - Bulls and Cows - Hash Table, String, Counting - 46.9%
-- #583 - Delete Operation for Two Stri… - string, dynamic-programming, hash-table, math, counting, prefix-sum - 55.1%
-- #816 - Ambiguous Coordinates (/pr… - string, backtracking, array, dynamic-programming, math - 55.9%
-- #926 - Flip String to Monotone Incre… - string, dynamic-programming, two-pointers - 58.2%
-- #1016 - Binary String With Substring… - string, math, geometry - 58.0%
-- #1055 - Shortest Way to Form String … - string, dynamic-programming, greedy, hash-table, stack, recursion - 58.1%
-- #1087 - Brace Expansion (/problems/… - string, backtracking, breadth-first-search, array, two-pointers, sorting - 64.4%
-- #1143 - Longest Common Subseque… - string, dynamic-programming, tree, depth-first-search, binary-tree - 58.9%
-- #1209 - Remove All Adjacent Duplicat… - string, stack, math - 56.1%
-- #1525 - Number of Good Ways to Spl… - string, dynamic-programming, bit-manipulation, tree, depth-first-search, binary-search-tree, binary-tree - 70.4%
-- #1717 - Maximum Score From Remov… - string, stack, greedy, bit-manipulation, array - 44.2%
-- #1864 - Minimum Number of Swaps t… - string, greedy, array, hash-table, counting, enumeration, prefix-sum - 38.3%
-- #1888 - Minimum Number of Flips to … - string, greedy, array, hash-table, prefix-sum - 36.2%
-- #1910 - Remove All Occurrences of a… - string, binary-search, array, dynamic-programming - 71.8%
 
 ### Hard
 - #10 - Regular Expression Matching - String, Dynamic Programming, Recursion - 28.2%
@@ -484,11 +247,6 @@ Last Updated: 2022-02-27
 - #411 - Minimum Unique Word Abbreviation - String, Backtracking, Bit Manipulation - 38.4%
 - #420 - Strong Password Checker - String, Greedy, Heap (Priority Queue) - 14.1%
 - #471 - Encode String with Shortest Length - String, Dynamic Programming - 50.7%
-- #664 - Strange Printer (/problems/st… - string, dynamic-programming, array, hash-table, two-pointers, binary-search, sorting - 45.3%
-- #730 - Count Different Palindromic … - string, dynamic-programming, depth-first-search, trie - 44.1%
-- #839 - Similar String Groups (/probl… - string, depth-first-search, breadth-first-search, union-find, array, dynamic-programming - 44.9%
-- #1585 - Check If String Is Transforma… - string, greedy, sorting, array, matrix - 48.3%
-- #2167 - Minimum Time to Remove All… - string, dynamic-programming, array, bit-manipulation, bitmask - 37.9%
 
 ---
 
@@ -538,10 +296,8 @@ Last Updated: 2022-02-27
 - #322 - Coin Change - Array, Dynamic Programming, Breadth-First Search - 39.8%
 - #329 - Longest Increasing Path in a Matrix - Dynamic Programming, Depth-First Search, Breadth-First Search, Graph, Topological Sort, Memoization - 49.2%
 - #343 - Integer Break - Math, Dynamic Programming - 53.6%
-- #351 - Android Unlock Patterns (/pr… - dynamic-programming, backtracking, array, hash-table, greedy, sorting - 50.8%
 - #357 - Count Numbers with Unique Digits - Math, Dynamic Programming, Backtracking - 50.4%
 - #377 - Combination Sum IV - Array, Dynamic Programming - 48.9%
-- #397 - Integer Replacement (/proble… - dynamic-programming, greedy, bit-manipulation, memoization, concurrency - 34.6%
 - #403 - Frog Jump - Array, Dynamic Programming - 42.8%
 - #416 - Partition Equal Subset Sum - Array, Dynamic Programming - 46.3%
 - #474 - Ones and Zeroes - Array, String, Dynamic Programming - 44.4%
@@ -549,14 +305,7 @@ Last Updated: 2022-02-27
 - #516 - Longest Palindromic Subsequence - String, Dynamic Programming - 60.2%
 - #518 - Coin Change 2 - Array, Dynamic Programming - 56.8%
 - #647 - Palindromic Substrings - String, Dynamic Programming - 64.3%
-- #688 - Knight Probability in Chessb… - dynamic-programming, string, math - 51.5%
 - #740 - Delete and Earn - Array, Hash Table, Dynamic Programming - 55.1%
-- #790 - Domino and Tromino Tiling (/… - dynamic-programming, array - 47.7%
-- #799 - Champagne Tower (/problem… - dynamic-programming, array, greedy, sorting - 44.8%
-- #935 - Knight Dialer (/problems/knig… - dynamic-programming - 48.8%
-- #1155 - Number of Dice Rolls With Ta… - dynamic-programming, string, array, hash-table - 47.6%
-- #1387 - Sort Integers by The Power V… - dynamic-programming, memoization, sorting, string, rolling-hash, string-matching, hash-function - 70.1%
-- #1641 - Count Sorted Vowel Strings (… - dynamic-programming, array, binary-search, string - 74.8%
 
 ### Hard
 - #10 - Regular Expression Matching - String, Dynamic Programming, Recursion - 28.2%
@@ -628,7 +377,6 @@ Last Updated: 2022-02-27
 - #1815 - Maximum Number of Groups Getting Fresh Donuts - Array, Dynamic Programming, Bit Manipulation, Memoization, Bitmask - 39.9%
 - #1883 - Minimum Skips to Arrive at Meeting On Time - Array, Dynamic Programming - 38.8%
 - #1900 - The Earliest and Latest Rounds Where Players Compete - Dynamic Programming, Memoization - 51.4%
-- #1931 - Painting a Grid With Three Di… - dynamic-programming - 56.6%
 - #1987 - Number of Unique Good Subsequences - String, Dynamic Programming - 52.0%
 
 ---
@@ -738,7 +486,6 @@ Last Updated: 2022-02-27
 - #1020 - Number of Enclaves - Array, Depth-First Search, Breadth-First Search, Union Find, Matrix - 61.5%
 - #1026 - Maximum Difference Between Node and Ancestor - Tree, Depth-First Search, Binary Tree - 73.1%
 - #1028 - Recover a Tree From Preorder Traversal - String, Tree, Depth-First Search, Binary Tree - 72.2%
-- #1042 - Flower Planting With No Adja… - depth-first-search, breadth-first-search, graph, array, stack, monotonic-stack - 49.8%
 - #1110 - Delete Nodes And Return Forest - Tree, Depth-First Search, Binary Tree - 69.2%
 - #1145 - Binary Tree Coloring Game - Tree, Depth-First Search, Binary Tree - 51.1%
 - #1161 - Maximum Level Sum of a Binary Tree - Tree, Depth-First Search, Breadth-First Search, Binary Tree - 66.7%
@@ -764,7 +511,6 @@ Last Updated: 2022-02-27
 - #1740 - Find Distance in a Binary Tree - Hash Table, Tree, Depth-First Search, Breadth-First Search, Binary Tree - 68.2%
 - #1766 - Tree of Coprimes - Math, Tree, Depth-First Search, Breadth-First Search - 38.0%
 - #1778 - Shortest Path in a Hidden Grid - Depth-First Search, Breadth-First Search, Graph, Interactive - 41.8%
-- #1858 - Longest Word With All Prefix… - depth-first-search, trie, tree, breadth-first-search, binary-tree - 66.1%
 - #1993 - Operations on Tree - Hash Table, Tree, Breadth-First Search, Design - 41.6%
 - #2049 - Count Nodes With the Highest Score - Array, Tree, Depth-First Search, Binary Tree - 49.4%
 - #2050 - Parallel Courses III - Dynamic Programming, Graph, Topological Sort - 60.3%
@@ -1071,7 +817,6 @@ Last Updated: 2022-02-27
 - #20 - Valid Parentheses - String, Stack - 40.6%
 - #155 - Min Stack - Stack, Design - 49.7%
 - #1047 - Remove All Adjacent Duplicates In String - String, Stack - 71.0%
-- #232 - Implement Queue using Stac… - stack, design, queue, array, binary-search - 57.1%
 - #682 - Baseball Game - Array, Stack, Simulation - 69.3%
 - #1021 - Remove Outermost Parentheses - String, Stack - 79.7%
 
@@ -1143,7 +888,6 @@ Last Updated: 2022-02-27
 - #501 - Find Mode in Binary Search Tree - Tree, Depth-First Search, Binary Search Tree, Binary Tree - 46.7%
 - #530 - Minimum Absolute Difference in BST - Tree, Depth-First Search, Breadth-First Search, Binary Search Tree, Binary Tree - 56.1%
 - #559 - Maximum Depth of N-ary Tree - Tree, Depth-First Search, Breadth-First Search - 70.8%
-- #617 - Merge Two Binary Trees (/pr… - tree, depth-first-search, breadth-first-search, binary-tree, array, stack, greedy, sorting, monotonic-stack - 77.6%
 - #671 - Second Minimum Node In a Binary Tree - Tree, Depth-First Search, Binary Tree - 43.5%
 - #700 - Search in a Binary Search Tree - Tree, Binary Search Tree, Binary Tree - 75.1%
 - #783 - Minimum Distance Between BST Nodes - Tree, Depth-First Search, Breadth-First Search, Binary Search Tree, Binary Tree - 55.8%
@@ -1255,7 +999,6 @@ Last Updated: 2022-02-27
 - #947 - Most Stones Removed with Same Row or Column - Depth-First Search, Union Find, Graph - 56.2%
 - #1059 - All Paths from Source Lead to Destination - Depth-First Search, Graph - 42.4%
 - #1135 - Connecting Cities With Minimum Cost - Union Find, Graph, Heap (Priority Queue), Minimum Spanning Tree - 60.6%
-- #1136 - Parallel Courses (/problems/… - graph, topological-sort - 60.7%
 - #1168 - Optimize Water Distribution in a Village - Union Find, Graph, Minimum Spanning Tree - 63.6%
 - #1192 - Critical Connections in a Network - Depth-First Search, Graph, Biconnected Component - 52.0%
 - #1514 - Path with Maximum Probability - Graph, Heap (Priority Queue), Shortest Path - 45.7%
@@ -1308,7 +1051,6 @@ Last Updated: 2022-02-27
 - #55 - Jump Game - Array, Dynamic Programming, Greedy - 37.5%
 - #678 - Valid Parenthesis String - String, Dynamic Programming, Stack, Greedy - 33.0%
 - #807 - Max Increase to Keep City Skyline - Array, Greedy, Matrix - 85.4%
-- #1414 - Find the Minimum Number of… - greedy, string, array, hash-table - 65.1%
 - #1509 - Minimum Difference Between Largest and Smallest Value in Three Moves - Array, Greedy, Sorting - 55.9%
 - #484 - Find Permutation - Array, Stack, Greedy - 64.3%
 - #1167 - Minimum Cost to Connect Sticks - Array, Greedy, Heap (Priority Queue) - 66.8%
@@ -1355,31 +1097,22 @@ Last Updated: 2022-02-27
 - #26 - Remove Duplicates from Sorted Array - Array, Two Pointers - 48.3%
 - #283 - Move Zeroes - Array, Two Pointers - 60.3%
 - #345 - Reverse Vowels of a String - Two Pointers, String - 46.7%
-- #541 - Reverse String II (/problems/r… - two-pointers, string, dynamic-programming - 50.0%
 - #844 - Backspace String Compare - Two Pointers, String, Stack, Simulation - 47.4%
-- #917 - Reverse Only Letters (/proble… - two-pointers, string, array, hash-table, binary-search, sorting - 60.9%
 
 ### Medium
 
-- #777 - Swap Adjacent in LR String (/… - two-pointers, string, dynamic-programming, depth-first-search, breadth-first-search, graph, topological-sort, memoization - 36.1%
 - #809 - Expressive Words - Array, Two Pointers, String - 46.3%
 - #253 - Meeting Rooms II - Array, Two Pointers, Greedy, Sorting, Heap (Priority Queue) - 49.3%
 - #15 - 3Sum - Array, Two Pointers, Sorting - 30.7%
 - #11 - Container With Most Water - Array, Two Pointers, Greedy - 53.4%
 - #75 - Sort Colors - Array, Two Pointers, Sorting - 54.1%
-- #838 - Push Dominoes (/problems/p… - two-pointers, string, dynamic-programming, greedy - 52.2%
 - #986 - Interval List Intersections - Array, Two Pointers - 70.9%
 - #360 - Sort Transformed Array - Array, Math, Two Pointers, Sorting - 52.9%
-- #481 - Magical String (/problems/m… - two-pointers, string - 49.5%
 - #723 - Candy Crush - Array, Two Pointers, Matrix, Simulation - 74.9%
-- #1616 - Split Two Strings to Make Pal… - two-pointers, string, greedy, array, hash-table, sorting - 31.4%
-- #1850 - Minimum Adjacent Swaps to … - two-pointers, string, greedy, array, hash-table, graph - 72.6%
-- #1871 - Jump Game VII (/problems/ju… - two-pointers, string, prefix-sum, math, dynamic-programming, stack - 24.7%
 
 ### Hard
 
 - #42 - Trapping Rain Water - Array, Two Pointers, Dynamic Programming, Stack, Monotonic Stack - 55.8%
-- #272 - Closest Binary Search Tree V… - two-pointers, stack, tree, depth-first-search, binary-search-tree, heap-priority-queue, binary-tree, array - 56.1%
 
 ## Sliding Window
 
@@ -1472,13 +1205,9 @@ Last Updated: 2022-02-27
 - #202 - Happy Number - Hash Table, Math, Two Pointers - 52.8%
 - #168 - Excel Sheet Column Title - Math, String - 33.6%
 - #258 - Add Digits - Math, Simulation, Number Theory - 62.2%
-- #405 - Convert a Number to Hexade… - math, bit-manipulation, dynamic-programming, array - 45.6%
 - #504 - Base 7 - Math - 47.3%
 - #326 - Power of Three - Math, Recursion - 43.3%
 - #231 - Power of Two - Math, Bit Manipulation, Recursion - 44.8%
-- #1037 - Valid Boomerang (/problems/… - math, geometry, string - 37.5%
-- #1056 - Confusing Number (/problem… - math, array, string, bit-manipulation - 46.2%
-- #1342 - Number of Steps to Reduce … - math, bit-manipulation, database, array, divide-and-conquer - 85.7%
 
 ### Medium
 
@@ -1489,47 +1218,20 @@ Last Updated: 2022-02-27
 - #29 - Divide Two Integers - Math, Bit Manipulation - 17.0%
 - #7 - Reverse Integer - Math - 26.5%
 - #343 - Integer Break - Math, Dynamic Programming - 53.6%
-- #365 - Water and Jug Problem (/pro… - math, depth-first-search, breadth-first-search - 33.7%
-- #396 - Rotate Function (/problems/r… - math, dynamic-programming, two-pointers, string - 38.9%
 - #400 - Nth Digit - Math, Binary Search - 33.4%
 - #48 - Rotate Image - Array, Math, Matrix - 65.8%
-- #640 - Solve the Equation (/problem… - math, string, simulation, bit-manipulation, breadth-first-search - 43.3%
-- #650 - 2 Keys Keyboard (/problems/… - math, dynamic-programming, array, binary-search - 52.1%
-- #651 - 4 Keys Keyboard (/problems/… - math, dynamic-programming, array - 54.0%
 - #670 - Maximum Swap - Math, Greedy - 47.3%
-- #779 - K-th Symbol in Grammar (/pr… - math, bit-manipulation, recursion, array, dynamic-programming - 39.8%
-- #788 - Rotated Digits (/problems/rot… - math, dynamic-programming, array, two-pointers, sorting - 57.3%
-- #1041 - Robot Bounded In Circle (/pr… - math, string, simulation, hash-table, sorting, heap-priority-queue, bucket-sort, counting - 55.5%
-- #1344 - Angle Between Hands of a Cl… - math, tree, breadth-first-search, binary-tree, array - 62.9%
-- #1513 - Number of Substrings With … - math, string, tree, depth-first-search, breadth-first-search, binary-search-tree, binary-tree - 44.0%
-- #1680 - Concatenation of Consecutiv… - math, bit-manipulation, simulation, concurrency, dynamic-programming - 52.6%
-- #1753 - Maximum Score From Remov… - math, greedy, heap-priority-queue, hash-table, string, counting - 64.7%
-- #1884 - Egg Drop With 2 Eggs and N … - math, dynamic-programming, array, hash-table, string - 70.2%
-- #1922 - Count Good Numbers (/probl… - math, recursion, array, prefix-sum, dynamic-programming - 38.3%
-- #2162 - Minimum Cost to Set Cookin… - math, enumeration, array, hash-table, counting - 33.0%
-- #2178 - Maximum Split of Positive Ev… - math, greedy, string, dynamic-programming, array - 53.0%
 
 ### Hard
 
-- #564 - Find the Closest Palindrome … - math, string, array, dynamic-programming - 21.1%
 - #660 - Remove 9 - Math - 55.2%
 - #149 - Max Points on a Line - Array, Hash Table, Math, Geometry - 20.0%
 - #233 - Number of Digit One - Math, Dynamic Programming, Recursion - 33.3%
-- #780 - Reaching Points (/problems/r… - math, tree, depth-first-search, breadth-first-search, binary-tree - 31.4%
 - #829 - Consecutive Numbers Sum - Math, Enumeration - 40.8%
-- #906 - Super Palindromes (/problem… - math, enumeration, array, stack, monotonic-stack - 39.2%
-- #1012 - Numbers With Repeated Digi… - math, dynamic-programming, string, stack - 38.5%
-- #1199 - Minimum Time to Build Block… - math, greedy, heap-priority-queue, array, sorting - 40.1%
-- #1622 - Fancy Sequence (/problems/f… - math, design, segment-tree, array, binary-search, sorting - 15.3%
-- #1896 - Minimum Cost to Change the… - math, string, dynamic-programming, stack, array - 52.9%
 
 ---
 
 ## Backtracking
-
-### Easy
-
-- #401 - Binary Watch - Backtracking, Bit Manipulation - 50.2%
 
 ### Medium
 
@@ -1561,10 +1263,6 @@ Last Updated: 2022-02-27
 ### Easy
 
 - #203 - Remove Linked List Elements - Linked List, Recursion - 43.0%
-- #206 - Reverse Linked List (/proble… - linked-list, recursion - 69.6%
-- #234 - Palindrome Linked List (/prob… - linked-list, two-pointers, stack, recursion, string, dynamic-programming, string-matching - 45.9%
-- #237 - Delete Node in a Linked List … - linked-list, string, greedy, sorting - 71.3%
-- #876 - Middle of the Linked List (/pr… - linked-list, two-pointers, string, array - 72.2%
 
 ### Medium
 
@@ -1574,19 +1272,15 @@ Last Updated: 2022-02-27
 - #369 - Plus One Linked List - Linked List, Math - 60.3%
 - #328 - Odd Even Linked List - Linked List - 59.3%
 - #92 - Reverse Linked List II - Linked List - 43.1%
-- #109 - Convert Sorted List to Binary… - linked-list, divide-and-conquer, tree, binary-search-tree, binary-tree, array, binary-search - 54.9%
 - #143 - Reorder List - Linked List, Two Pointers, Stack, Recursion - 46.9%
 - #445 - Add Two Numbers II - Linked List, Math, Stack - 58.3%
-- #707 - Design Linked List (/problem… - linked-list, design, array, two-pointers, sorting - 26.8%
 - #708 - Insert into a Sorted Circular Linked List - Linked List - 34.1%
-- #1265 - Print Immutable Linked List i… - linked-list, two-pointers, stack, recursion, array, matrix, enumeration - 94.3%
 
 ### Hard
 
 - #23 - Merge k Sorted Lists - Linked List, Divide and Conquer, Heap (Priority Queue), Merge Sort - 46.5%
 - #25 - Reverse Nodes in k-Group - Linked List, Recursion - 50.3%
 - #460 - LFU Cache - Hash Table, Linked List, Design, Doubly-Linked List - 39.0%
-- #1206 - Design Skiplist (/problems/d… - linked-list, design, dynamic-programming, graph, array - 59.7%
 
 ---
 
@@ -1628,7 +1322,6 @@ Last Updated: 2022-02-27
 - #260 - Single Number III - Array, Bit Manipulation - 67.0%
 - #137 - Single Number II - Array, Bit Manipulation - 56.3%
 - #29 - Divide Two Integers - Math, Bit Manipulation - 17.0%
-- #756 - Pyramid Transition Matrix (/p… - bit-manipulation, depth-first-search, breadth-first-search, linked-list, two-pointers, divide-and-conquer, sorting, merge-sort - 54.8%
 
 ### Hard
 
@@ -1695,7 +1388,6 @@ Last Updated: 2022-02-27
 - #803 - Bricks Falling When Hit - Array, Union Find, Matrix - 33.6%
 - #1168 - Optimize Water Distribution in a Village - Union Find, Graph, Minimum Spanning Tree - 63.6%
 - #685 - Redundant Connection II - Depth-First Search, Breadth-First Search, Union Find, Graph - 33.6%
-- #2076 - Process Restricted Friend Re… - union-find, graph, array, math, depth-first-search, breadth-first-search, geometry - 52.6%
 
 ---
 
@@ -1817,11 +1509,6 @@ Last Updated: 2022-02-27
 ---
 
 ## Divide and Conquer
-
-### Easy
-
-- #169 - Majority Element - Array, Hash Table, Divide and Conquer, Sorting, Counting - 62.6%
-- #190 - Reverse Bits - Divide and Conquer, Bit Manipulation - 47.8%
 
 ### Medium
 

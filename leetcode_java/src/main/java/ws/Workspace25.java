@@ -127,10 +127,31 @@ public class Workspace25 {
      *
      *
      */
+    // IDEA: 2 PASS DFS
     public int largestIsland(int[][] grid) {
+
+//        private int rows;
+//        private int cols;
+        // Moves: (dr, dc)
+        int[][] MOVES = new int[][] { { 0, 1 }, { 0, -1 }, { 1, 0 }, { -1, 0 } };
+
+        int l = grid.length;
+        int w = grid[0].length;
+
+        List<List<Integer>> collected = new ArrayList<>();
 
         return 0;
     }
+
+    private void dfsGetIslands(int[][] grid, int x, int y, boolean[][] visited){
+
+    }
+
+    private void dfsFlip(){
+
+    }
+
+
 
 
 
