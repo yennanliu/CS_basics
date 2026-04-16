@@ -1356,80 +1356,88 @@ function switchView(view) {
 
 // Filter view functions
 function initFilterView() {
-  const tagContainer = document.getElementById('lc-tag-pills');
   const allTags = [...new Set(Object.values(PROBLEMS_DATA.problems).flatMap(p => p.tags))].sort();
 
-  // Calculate tag counts and difficulty ratings
-  const tagStats = {};
-  allTags.forEach(tag => {
-    const problems = Object.values(PROBLEMS_DATA.problems).filter(p => p.tags.includes(tag));
-    const count = problems.length;
-    const avgDiff = (problems.filter(p => p.difficulty === 'Easy').length * 1 +
-                     problems.filter(p => p.difficulty === 'Medium').length * 2 +
-                     problems.filter(p => p.difficulty === 'Hard').length * 3) / count;
-    tagStats[tag] = { count, avgDiff };
-  });
+  const tagContainer = document.getElementById('lc-tag-pills');
+  if (tagContainer) {
+    // Calculate tag counts and difficulty ratings
+    const tagStats = {};
+    allTags.forEach(tag => {
+      const problems = Object.values(PROBLEMS_DATA.problems).filter(p => p.tags.includes(tag));
+      const count = problems.length;
+      const avgDiff = (problems.filter(p => p.difficulty === 'Easy').length * 1 +
+                       problems.filter(p => p.difficulty === 'Medium').length * 2 +
+                       problems.filter(p => p.difficulty === 'Hard').length * 3) / count;
+      tagStats[tag] = { count, avgDiff };
+    });
 
-  // Sort with favorites first
-  const favTags = allTags.filter(t => state.favoriteTags.has(t));
-  const otherTags = allTags.filter(t => !state.favoriteTags.has(t));
-  const sortedTags = [...favTags, ...otherTags];
+    // Sort with favorites first
+    const favTags = allTags.filter(t => state.favoriteTags.has(t));
+    const otherTags = allTags.filter(t => !state.favoriteTags.has(t));
+    const sortedTags = [...favTags, ...otherTags];
 
-  sortedTags.forEach(tag => {
-    const container = document.createElement('div');
-    container.style.position = 'relative';
-    container.style.display = 'inline-block';
+    sortedTags.forEach(tag => {
+      const container = document.createElement('div');
+      container.style.position = 'relative';
+      container.style.display = 'inline-block';
 
-    const btn = document.createElement('button');
-    btn.className = 'lc-btn';
-    btn.dataset.tag = tag;
-    btn.innerHTML = \`\${tag}<span class="tag-count">\${tagStats[tag].count}</span>\`;
-    btn.onclick = (e) => {
-      if (e.target.classList.contains('favorite-star')) return;
-      btn.classList.toggle('active');
-      if (btn.classList.contains('active')) {
-        state.filterTags.add(tag);
-      } else {
-        state.filterTags.delete(tag);
-      }
-      applyFilters();
-    };
+      const btn = document.createElement('button');
+      btn.className = 'lc-btn';
+      btn.dataset.tag = tag;
+      btn.innerHTML = \`\${tag}<span class="tag-count">\${tagStats[tag].count}</span>\`;
+      btn.onclick = (e) => {
+        if (e.target.classList.contains('favorite-star')) return;
+        btn.classList.toggle('active');
+        if (btn.classList.contains('active')) {
+          state.filterTags.add(tag);
+        } else {
+          state.filterTags.delete(tag);
+        }
+        applyFilters();
+      };
 
-    const star = document.createElement('span');
-    star.className = 'favorite-star';
-    star.textContent = '★';
-    if (state.favoriteTags.has(tag)) star.classList.add('active');
-    star.onclick = (e) => {
-      e.stopPropagation();
-      if (state.favoriteTags.has(tag)) {
-        state.favoriteTags.delete(tag);
-        star.classList.remove('active');
-      } else {
-        state.favoriteTags.add(tag);
-        star.classList.add('active');
-      }
-      localStorage.setItem('lc-fav-tags', JSON.stringify([...state.favoriteTags]));
-    };
+      const star = document.createElement('span');
+      star.className = 'favorite-star';
+      star.textContent = '★';
+      if (state.favoriteTags.has(tag)) star.classList.add('active');
+      star.onclick = (e) => {
+        e.stopPropagation();
+        if (state.favoriteTags.has(tag)) {
+          state.favoriteTags.delete(tag);
+          star.classList.remove('active');
+        } else {
+          state.favoriteTags.add(tag);
+          star.classList.add('active');
+        }
+        localStorage.setItem('lc-fav-tags', JSON.stringify([...state.favoriteTags]));
+      };
 
-    container.appendChild(btn);
-    container.appendChild(star);
-    tagContainer.appendChild(container);
-  });
+      container.appendChild(btn);
+      container.appendChild(star);
+      tagContainer.appendChild(container);
+    });
+  }
 
   // Initialize picker tag select and exclude select
   const pickerTagSelect = document.getElementById('picker-tag-select');
   const pickerExcludeSelect = document.getElementById('picker-exclude-select');
-  allTags.forEach(tag => {
-    const option = document.createElement('option');
-    option.value = tag;
-    option.textContent = tag;
-    pickerTagSelect.appendChild(option);
+  if (pickerTagSelect || pickerExcludeSelect) {
+    allTags.forEach(tag => {
+      if (pickerTagSelect) {
+        const option = document.createElement('option');
+        option.value = tag;
+        option.textContent = tag;
+        pickerTagSelect.appendChild(option);
+      }
 
-    const excludeOption = document.createElement('option');
-    excludeOption.value = tag;
-    excludeOption.textContent = tag;
-    pickerExcludeSelect.appendChild(excludeOption);
-  });
+      if (pickerExcludeSelect) {
+        const excludeOption = document.createElement('option');
+        excludeOption.value = tag;
+        excludeOption.textContent = tag;
+        pickerExcludeSelect.appendChild(excludeOption);
+      }
+    });
+  }
 
   // Initialize patterns view
   initPatternView();
@@ -1465,7 +1473,9 @@ function clearFilters() {
 }
 
 function filterTagPills() {
-  const query = document.getElementById('lc-tag-search').value.toLowerCase();
+  const searchEl = document.getElementById('lc-tag-search');
+  if (!searchEl) return;
+  const query = searchEl.value.toLowerCase();
   document.querySelectorAll('[data-tag]').forEach(btn => {
     const tag = btn.dataset.tag;
     btn.style.display = tag.toLowerCase().includes(query) ? '' : 'none';
@@ -1497,11 +1507,13 @@ function sortProblems(field) {
 function updateFilterBadge() {
   const count = state.filterDiffs.size + state.filterTags.size + (state.filterAccMin > 0 ? 1 : 0) + (state.filterAccMax < 100 ? 1 : 0);
   const badge = document.getElementById('filter-count-badge');
-  if (count > 0) {
-    badge.textContent = count;
-    badge.style.display = 'inline-block';
-  } else {
-    badge.style.display = 'none';
+  if (badge) {
+    if (count > 0) {
+      badge.textContent = count;
+      badge.style.display = 'inline-block';
+    } else {
+      badge.style.display = 'none';
+    }
   }
 }
 
@@ -1509,11 +1521,19 @@ function applyFilters() {
   const query = document.getElementById('lc-search').value.toLowerCase();
   state.searchQuery = query;
 
-  // Update acceptance range state
-  state.filterAccMin = parseInt(document.getElementById('acc-min').value);
-  state.filterAccMax = parseInt(document.getElementById('acc-max').value);
-  document.getElementById('acc-min-val').textContent = state.filterAccMin + '%';
-  document.getElementById('acc-max-val').textContent = state.filterAccMax + '%';
+  // Update acceptance range state (with safety checks)
+  const accMinEl = document.getElementById('acc-min');
+  const accMaxEl = document.getElementById('acc-max');
+  if (accMinEl && accMaxEl) {
+    state.filterAccMin = parseInt(accMinEl.value) || 0;
+    state.filterAccMax = parseInt(accMaxEl.value) || 100;
+    if (document.getElementById('acc-min-val')) {
+      document.getElementById('acc-min-val').textContent = state.filterAccMin + '%';
+    }
+    if (document.getElementById('acc-max-val')) {
+      document.getElementById('acc-max-val').textContent = state.filterAccMax + '%';
+    }
+  }
 
   let results = Object.values(PROBLEMS_DATA.problems).filter(p => {
     const diffMatch = state.filterDiffs.size === 0 || state.filterDiffs.has(p.difficulty);
@@ -1558,12 +1578,15 @@ function renderProblemList(problems) {
   header.style.background = 'var(--bg-color)';
   header.style.fontWeight = '600';
   header.style.cursor = 'default';
+  header.style.position = 'sticky';
+  header.style.top = '0';
+  header.style.zIndex = '10';
   header.innerHTML = \`
-    <span class="lc-col-header" onclick="sortProblems('id')">#</span>
-    <span class="lc-col-header" onclick="sortProblems('title')">Title</span>
-    <span class="lc-col-header" onclick="sortProblems('difficulty')">Difficulty</span>
-    <span class="lc-col-header" onclick="sortProblems('tags')">Tags</span>
-    <span class="lc-col-header" onclick="sortProblems('acceptance')">Acceptance %</span>
+    <span style="cursor:pointer; user-select:none;" onclick="sortProblems('id')">#</span>
+    <span style="cursor:pointer; user-select:none;" onclick="sortProblems('title')">Title</span>
+    <span style="cursor:pointer; user-select:none;" onclick="sortProblems('difficulty')">Difficulty</span>
+    <span style="cursor:pointer; user-select:none;" onclick="sortProblems('tags')">Tags</span>
+    <span style="cursor:pointer; user-select:none;" onclick="sortProblems('acceptance')">Acceptance %</span>
   \`;
   container.appendChild(header);
 
