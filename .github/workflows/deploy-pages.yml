@@ -498,6 +498,7 @@ jobs:
                   <a href="${basePath}patterns.html" class="${currentPage === 'patterns' ? 'active' : ''}">Pattern Recognition</a>
                   <a href="${basePath}faqs.html" class="${currentPage === 'faqs' ? 'active' : ''}">FAQs</a>
                   <a href="${basePath}resources.html" class="${currentPage === 'resources' ? 'active' : ''}">Resources</a>
+                  <a href="${basePath}leetcode.html" class="${currentPage === 'leetcode' ? 'active' : ''}">LC Explorer</a>
                 </div>
                 <a href="${basePath}algo_demo/index.html" class="${currentPage === 'visualizer' ? 'active' : ''}">Visualizer</a>
                 <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">&#127769;</button>
@@ -2108,6 +2109,9 @@ jobs:
           cp -r algo_demo _site/algo_demo
           echo "Copied algo_demo to _site/algo_demo"
         fi
+
+    - name: Build LeetCode Explorer page
+      run: node build-leetcode.js
 
     - name: Upload artifact
       uses: actions/upload-pages-artifact@v3

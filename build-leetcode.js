@@ -1,0 +1,1366 @@
+#!/usr/bin/env node
+
+/**
+ * Build LeetCode Explorer page from doc/google_leetcode_problems_by_tags.md
+ * Generates _site/leetcode.html with embedded data and interactive features
+ */
+
+const fs = require('fs');
+const path = require('path');
+
+// Parse markdown file
+function parseProblems() {
+  const content = fs.readFileSync('doc/google_leetcode_problems_by_tags.md', 'utf8');
+  const lines = content.split('\n');
+
+  const problems = new Map(); // id -> {id, title, tags, difficulty, acceptance}
+  const tagMap = new Map(); // tag -> {Easy: [ids], Medium: [ids], Hard: [ids]}
+
+  let currentTag = null;
+  let currentDiff = null;
+
+  for (const line of lines) {
+    // Tag sections: ## Array
+    if (line.startsWith('## ')) {
+      currentTag = line.slice(3).trim();
+      if (currentTag && !tagMap.has(currentTag)) {
+        tagMap.set(currentTag, { Easy: [], Medium: [], Hard: [] });
+      }
+      continue;
+    }
+
+    // Difficulty subsections: ### Easy
+    if (line.startsWith('### ')) {
+      currentDiff = line.slice(4).trim();
+      continue;
+    }
+
+    // Problem entries: - #66 - Plus One - Array, Math - 42.5%
+    if (line.startsWith('- #')) {
+      const match = line.match(/^- #(\d+)\s*-\s*(.+?)\s*-\s*(.+?)\s*-\s*([\d.]+)%/);
+      if (match) {
+        const [, idStr, title, tagsRaw, accStr] = match;
+        const id = idStr;
+        const tags = tagsRaw.split(',').map(t => t.trim()).filter(Boolean);
+        const acceptance = parseFloat(accStr);
+
+        // Store problem
+        if (!problems.has(id)) {
+          problems.set(id, {
+            id,
+            title: title.trim(),
+            tags,
+            difficulty: currentDiff || 'Unknown',
+            acceptance
+          });
+        }
+
+        // Add to tagMap
+        if (currentTag && currentDiff && tagMap.has(currentTag)) {
+          const diffKey = currentDiff; // 'Easy', 'Medium', 'Hard'
+          if (!tagMap.get(currentTag)[diffKey]) {
+            tagMap.get(currentTag)[diffKey] = [];
+          }
+          tagMap.get(currentTag)[diffKey].push(id);
+        }
+      }
+    }
+  }
+
+  return { problems, tagMap };
+}
+
+// Compute tag co-occurrence matrix
+function buildCoMatrix(problems) {
+  const coMatrix = {}; // tagA -> { tagB: count }
+
+  for (const problem of problems.values()) {
+    const uniqueTags = [...new Set(problem.tags)];
+    for (let i = 0; i < uniqueTags.length; i++) {
+      for (let j = i + 1; j < uniqueTags.length; j++) {
+        const [a, b] = [uniqueTags[i], uniqueTags[j]].sort();
+        if (!coMatrix[a]) coMatrix[a] = {};
+        coMatrix[a][b] = (coMatrix[a][b] || 0) + 1;
+      }
+    }
+  }
+
+  return coMatrix;
+}
+
+// Minimal htmlTemplate matching the existing deploy-pages.yml structure
+function htmlTemplate(title, body) {
+  const basePath = './';
+  const currentPage = 'leetcode';
+
+  return `<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>${title} - CS Basics</title>
+  <meta name="description" content="Interactive LeetCode problems explorer for interview preparation">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💻</text></svg>">
+  ${generateCSS()}
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="${basePath}index.html" class="logo">CS_basics</a>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links">
+        <a href="${basePath}index.html" class="">Home</a>
+        <div class="nav-study-group">
+          <span class="nav-study-label">Study</span>
+          <a href="${basePath}cheatsheets.html" class="">Cheat Sheets</a>
+          <a href="${basePath}patterns.html" class="">Pattern Recognition</a>
+          <a href="${basePath}leetcode.html" class="active">LC Explorer</a>
+          <a href="${basePath}faqs.html" class="">FAQs</a>
+          <a href="${basePath}resources.html" class="">Resources</a>
+        </div>
+        <a href="${basePath}algo_demo/index.html" class="">Visualizer</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode" onclick="toggleTheme()">🌙</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="content">
+      ${body}
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p>&copy; 2024 CS Basics. Open source on <a href="https://github.com/yennanliu/CS_basics">GitHub</a>.</p>
+  </footer>
+
+  <script>
+    function toggleTheme() {
+      const html = document.documentElement;
+      const current = html.getAttribute('data-theme') || 'light';
+      const next = current === 'light' ? 'dark' : 'light';
+      html.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    }
+
+    // Restore theme from localStorage
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+  </script>
+</body>
+</html>`;
+}
+
+// Generate complete CSS
+function generateCSS() {
+  return `<style>
+/* Design tokens */
+:root {
+  --bg-color: #fafafa;
+  --surface: #fff;
+  --text-color: #1a1a2e;
+  --text-light: #555;
+  --border-color: #e0e0e0;
+  --accent-color: #555;
+  --shadow: 0 2px 8px rgba(0,0,0,.08);
+  --shadow-md: 0 4px 12px rgba(0,0,0,.12);
+  --radius: 8px;
+  --font: 'Inter', system-ui, -apple-system, sans-serif;
+  --mono: 'JetBrains Mono', 'Fira Code', monospace;
+}
+
+[data-theme="dark"] {
+  --bg-color: #0f0f1a;
+  --surface: #1a1a2e;
+  --text-color: #e0e0e0;
+  --text-light: #aaa;
+  --border-color: #2a2a3e;
+  --accent-color: #666;
+  --shadow: 0 2px 8px rgba(0,0,0,.3);
+}
+
+/* Global */
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: var(--font);
+  background: var(--bg-color);
+  color: var(--text-color);
+  line-height: 1.6;
+  transition: background .3s, color .3s;
+}
+
+a { color: var(--text-color); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* Navbar */
+.navbar {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border-color);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: var(--shadow);
+}
+
+.nav-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0.75rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-right: 2rem;
+  color: var(--text-color);
+}
+
+.nav-links {
+  display: flex;
+  gap: 0;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.nav-links a, .nav-study-label, .theme-toggle {
+  padding: 0.5rem 0.75rem;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+
+.nav-links a {
+  color: var(--text-light);
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+}
+
+.nav-links a:hover, .nav-links a.active {
+  color: var(--text-color);
+  border-bottom-color: var(--text-color);
+}
+
+.nav-study-group {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  border-left: 1px solid var(--border-color);
+  border-right: 1px solid var(--border-color);
+  padding: 0 0.5rem;
+}
+
+.nav-study-label {
+  font-size: 0.75rem;
+  color: var(--text-light);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.github-link { margin-left: 1rem; }
+.github-link svg { transition: opacity .2s; }
+.github-link:hover svg { opacity: 0.7; }
+
+.nav-toggle, .theme-toggle {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.5rem;
+  color: var(--text-color);
+}
+
+@media (max-width: 768px) {
+  .nav-toggle { display: block; }
+  .nav-links { display: none; flex-direction: column; width: 100%; }
+  .nav-links.open { display: flex; }
+  .nav-study-group { border: none; padding: 0; }
+}
+
+/* Container */
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.content { min-height: 60vh; }
+
+/* LC Page Styles */
+.lc-hero {
+  text-align: center;
+  margin-bottom: 3rem;
+  padding: 2rem 0;
+}
+
+.lc-hero h1 {
+  font-size: 2.5rem;
+  margin: 0 0 0.5rem;
+  color: var(--text-color);
+}
+
+.lc-hero p {
+  font-size: 1.1rem;
+  color: var(--text-light);
+  margin: 0 0 1.5rem;
+}
+
+.lc-stats-bar {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.stat {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  background: var(--surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  font-size: 0.9rem;
+  color: var(--text-light);
+}
+
+.stat strong {
+  display: block;
+  font-size: 1.4rem;
+  color: var(--text-color);
+  margin-top: 0.25rem;
+}
+
+/* Tabs */
+.lc-tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 2px solid var(--border-color);
+  margin-bottom: 2rem;
+  overflow-x: auto;
+}
+
+.lc-tab {
+  background: none;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  font-family: var(--font);
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--text-light);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.lc-tab.active, .lc-tab:hover {
+  color: var(--text-color);
+  border-bottom-color: var(--text-color);
+}
+
+/* Views */
+.lc-view {
+  display: none;
+}
+
+.lc-view.active {
+  display: block;
+}
+
+/* Filter View */
+.lc-filter-controls {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: var(--surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+}
+
+.lc-search-box input {
+  width: 100%;
+  padding: 0.6rem 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  font-family: var(--font);
+  font-size: 0.95rem;
+  background: var(--bg-color);
+  color: var(--text-color);
+}
+
+.lc-diff-filters, .lc-tag-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.lc-btn {
+  padding: 0.4rem 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
+  background: var(--bg-color);
+  color: var(--text-color);
+  cursor: pointer;
+  font-family: var(--font);
+  font-size: 0.85rem;
+  transition: all 0.2s;
+}
+
+.lc-btn:hover {
+  background: var(--border-color);
+}
+
+.lc-btn.active {
+  background: var(--text-color);
+  color: var(--bg-color);
+  border-color: var(--text-color);
+}
+
+/* Difficulty badges */
+.diff-badge {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.diff-badge.easy { background: #1e7e34; color: #fff; }
+.diff-badge.medium { background: #b45309; color: #fff; }
+.diff-badge.hard { background: #b91c1c; color: #fff; }
+
+[data-theme="dark"] .diff-badge.easy { background: #166534; }
+[data-theme="dark"] .diff-badge.medium { background: #92400e; }
+[data-theme="dark"] .diff-badge.hard { background: #991b1b; }
+
+/* Problem List */
+.lc-problem-list {
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.lc-problem-row {
+  display: grid;
+  grid-template-columns: 3.5rem 1fr auto 12rem 3rem;
+  gap: 0.75rem;
+  align-items: center;
+  padding: 0.8rem 1rem;
+  border-bottom: 1px solid var(--border-color);
+  cursor: pointer;
+  transition: background 0.15s;
+  font-size: 0.9rem;
+  background: var(--surface);
+}
+
+.lc-problem-row:hover {
+  background: var(--bg-color);
+}
+
+.lc-problem-row:last-child {
+  border-bottom: none;
+}
+
+.prob-id {
+  color: var(--text-light);
+  font-family: var(--mono);
+  font-weight: 600;
+}
+
+.prob-tags {
+  color: var(--text-light);
+  font-size: 0.8rem;
+}
+
+.prob-acc {
+  color: var(--text-light);
+  font-size: 0.8rem;
+  text-align: right;
+}
+
+/* Pattern View */
+.lc-pattern-accordion {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.lc-pattern-item {
+  background: var(--surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.lc-pattern-header {
+  padding: 1rem;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--bg-color);
+  border-bottom: 1px solid var(--border-color);
+  user-select: none;
+}
+
+.lc-pattern-header:hover {
+  background: var(--border-color);
+}
+
+.lc-pattern-header.open {
+  border-bottom: none;
+}
+
+.lc-pattern-content {
+  display: none;
+  padding: 1rem;
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+.lc-pattern-content.open {
+  display: block;
+}
+
+.lc-co-tag {
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.lc-co-bar {
+  height: 20px;
+  background: var(--border-color);
+  border-radius: 4px;
+  overflow: hidden;
+  flex: 1;
+  max-width: 200px;
+}
+
+.lc-co-bar-fill {
+  height: 100%;
+  background: var(--text-color);
+  transition: width 0.3s;
+}
+
+/* Mind Map */
+.mindmap-container {
+  width: 100%;
+  height: 600px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  background: var(--bg-color);
+  position: relative;
+}
+
+.mindmap-controls {
+  margin-bottom: 1rem;
+  padding: 1rem;
+  background: var(--surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.mindmap-controls label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.mindmap-controls input[type="range"] {
+  width: 150px;
+}
+
+.mindmap-legend {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  font-size: 0.8rem;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.legend-color {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+/* Random Picker */
+.lc-picker-container {
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.lc-picker-controls {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.lc-picker-controls select {
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--text-color);
+  font-family: var(--font);
+}
+
+.lc-picker-card {
+  background: var(--surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  padding: 2.5rem;
+  text-align: center;
+  box-shadow: var(--shadow-md);
+  margin-bottom: 1.5rem;
+}
+
+.lc-picker-card .prob-number {
+  font-size: 0.95rem;
+  color: var(--text-light);
+  font-family: var(--mono);
+}
+
+.lc-picker-card .prob-name {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin: 0.75rem 0;
+  color: var(--text-color);
+}
+
+.lc-picker-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.btn-primary {
+  padding: 0.6rem 1.5rem;
+  background: var(--text-color);
+  color: var(--bg-color);
+  border: none;
+  border-radius: var(--radius);
+  font-weight: 600;
+  cursor: pointer;
+  font-family: var(--font);
+  transition: opacity 0.2s;
+}
+
+.btn-primary:hover {
+  opacity: 0.9;
+}
+
+.btn-secondary {
+  padding: 0.6rem 1.5rem;
+  background: var(--surface);
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  font-weight: 500;
+  cursor: pointer;
+  font-family: var(--font);
+  transition: all 0.2s;
+}
+
+.btn-secondary:hover {
+  background: var(--border-color);
+}
+
+.lc-progress-section {
+  margin-top: 2rem;
+}
+
+.lc-progress-bar {
+  width: 100%;
+  height: 8px;
+  background: var(--border-color);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-top: 0.5rem;
+}
+
+.lc-progress-fill {
+  height: 100%;
+  background: var(--text-color);
+  transition: width 0.3s;
+}
+
+.lc-recent-problems {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border-color);
+}
+
+.lc-recent-problems a {
+  display: inline-block;
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+  padding: 0.25rem 0.6rem;
+  background: var(--bg-color);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  font-size: 0.85rem;
+  transition: all 0.2s;
+}
+
+.lc-recent-problems a:hover {
+  background: var(--border-color);
+  text-decoration: none;
+}
+
+/* Footer */
+.footer {
+  text-align: center;
+  padding: 2rem;
+  border-top: 1px solid var(--border-color);
+  color: var(--text-light);
+  font-size: 0.85rem;
+  margin-top: 3rem;
+}
+
+.footer a {
+  color: var(--text-light);
+}
+
+@media (max-width: 768px) {
+  .lc-filter-controls {
+    grid-template-columns: 1fr;
+  }
+
+  .lc-problem-row {
+    grid-template-columns: 3rem 1fr;
+    gap: 0.5rem;
+  }
+
+  .lc-problem-row > *:nth-child(3),
+  .lc-problem-row > *:nth-child(4),
+  .lc-problem-row > *:nth-child(5) {
+    display: none;
+  }
+
+  .lc-hero h1 {
+    font-size: 1.8rem;
+  }
+
+  .lc-stats-bar {
+    gap: 1rem;
+  }
+
+  .stat {
+    padding: 0.5rem 1rem;
+    font-size: 0.8rem;
+  }
+}
+</style>`;
+}
+
+// Generate the main page content/body HTML
+function generatePageBody(problems, tagMap, coMatrix) {
+  const easyCount = [...problems.values()].filter(p => p.difficulty === 'Easy').length;
+  const mediumCount = [...problems.values()].filter(p => p.difficulty === 'Medium').length;
+  const hardCount = [...problems.values()].filter(p => p.difficulty === 'Hard').length;
+
+  const problemsJSON = JSON.stringify(Object.fromEntries(problems), null, 2);
+  const tagMapJSON = JSON.stringify(
+    Object.fromEntries(
+      Array.from(tagMap.entries()).map(([tag, diffs]) => [
+        tag,
+        {
+          Easy: diffs.Easy || [],
+          Medium: diffs.Medium || [],
+          Hard: diffs.Hard || []
+        }
+      ])
+    ),
+    null,
+    2
+  );
+  const coMatrixJSON = JSON.stringify(coMatrix, null, 2);
+
+  return `<div id="lc-page">
+  <div class="lc-hero">
+    <h1>LeetCode Explorer</h1>
+    <p>Interactive tool for exploring ${problems.size} Google LeetCode problems across ${tagMap.size} categories</p>
+    <div class="lc-stats-bar">
+      <span class="stat easy">Easy <strong>${easyCount}</strong></span>
+      <span class="stat medium">Medium <strong>${mediumCount}</strong></span>
+      <span class="stat hard">Hard <strong>${hardCount}</strong></span>
+      <span class="stat">Tags <strong>${tagMap.size}</strong></span>
+    </div>
+  </div>
+
+  <div class="lc-tabs" role="tablist">
+    <button class="lc-tab active" data-view="filter" onclick="switchView('filter')">Filter & Browse</button>
+    <button class="lc-tab" data-view="patterns" onclick="switchView('patterns')">Pattern Similarity</button>
+    <button class="lc-tab" data-view="mindmap" onclick="switchView('mindmap'); initMindMap()">Tag Mind Map</button>
+    <button class="lc-tab" data-view="picker" onclick="switchView('picker')">Random Picker</button>
+  </div>
+
+  <!-- Filter & Browse View -->
+  <div id="view-filter" class="lc-view active">
+    <div class="lc-filter-controls">
+      <div>
+        <div class="lc-search-box">
+          <input type="text" id="lc-search" placeholder="Search by name or number..." onkeyup="applyFilters()">
+        </div>
+        <div style="margin-top: 1rem;">
+          <div style="margin-bottom: 0.75rem; color: var(--text-light); font-size: 0.85rem;">Difficulty:</div>
+          <div class="lc-diff-filters">
+            <button class="lc-btn" data-diff="Easy" onclick="toggleDifficulty('Easy')">Easy</button>
+            <button class="lc-btn" data-diff="Medium" onclick="toggleDifficulty('Medium')">Medium</button>
+            <button class="lc-btn" data-diff="Hard" onclick="toggleDifficulty('Hard')">Hard</button>
+          </div>
+        </div>
+        <div style="margin-bottom: 0.75rem; color: var(--text-light); font-size: 0.85rem; margin-top: 1rem;">Tags:</div>
+        <div class="lc-tag-filters" id="lc-tag-pills"></div>
+        <button class="lc-btn" style="width: 100%; margin-top: 1rem;" onclick="clearFilters()">Clear All Filters</button>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 1rem;">
+        <div>
+          <label style="display: block; margin-bottom: 0.5rem; color: var(--text-light); font-size: 0.85rem;">Sort:</label>
+          <select onchange="applyFilters()" id="lc-sort">
+            <option value="id">By Number</option>
+            <option value="acceptance">By Acceptance %</option>
+            <option value="difficulty">By Difficulty</option>
+          </select>
+        </div>
+        <div style="padding: 0.75rem; background: var(--bg-color); border-radius: var(--radius); font-size: 0.85rem;">
+          <strong id="lc-result-count">0</strong> problems
+        </div>
+      </div>
+    </div>
+    <div class="lc-problem-list" id="lc-problem-list"></div>
+  </div>
+
+  <!-- Pattern Similarity View -->
+  <div id="view-patterns" class="lc-view">
+    <div class="lc-pattern-accordion" id="lc-pattern-accordion"></div>
+  </div>
+
+  <!-- Mind Map View -->
+  <div id="view-mindmap" class="lc-view">
+    <div class="mindmap-controls">
+      <label>Min connections: <input type="range" id="mindmap-threshold" min="5" max="50" value="15" onchange="updateMindMap()"></label>
+      <button class="lc-btn" onclick="resetMindMapZoom()">Reset Zoom</button>
+      <div class="mindmap-legend" id="mindmap-legend"></div>
+    </div>
+    <div class="mindmap-container" id="mindmap-container"></div>
+  </div>
+
+  <!-- Random Picker View -->
+  <div id="view-picker" class="lc-view">
+    <div class="lc-picker-container">
+      <div class="lc-picker-controls">
+        <div>Difficulty:</div>
+        <label><input type="checkbox" value="Easy" onchange="renderPickerCard()" checked> Easy</label>
+        <label><input type="checkbox" value="Medium" onchange="renderPickerCard()" checked> Medium</label>
+        <label><input type="checkbox" value="Hard" onchange="renderPickerCard()" checked> Hard</label>
+      </div>
+      <div class="lc-picker-controls">
+        <label>Tag: <select id="picker-tag-select" onchange="renderPickerCard()">
+          <option value="">All Tags</option>
+        </select></label>
+      </div>
+      <div id="lc-picker-card-container"></div>
+      <div class="lc-progress-section">
+        <div style="font-size: 0.9rem; color: var(--text-light);">Progress: <strong id="picker-count">0</strong> / <span id="picker-total">0</span> seen</div>
+        <div class="lc-progress-bar">
+          <div class="lc-progress-fill" id="picker-progress" style="width: 0%"></div>
+        </div>
+        <button class="lc-btn" style="width: 100%; margin-top: 1rem;" onclick="clearPickerHistory()">Clear History</button>
+      </div>
+      <div class="lc-recent-problems">
+        <div style="font-size: 0.85rem; color: var(--text-light); margin-bottom: 0.5rem;">Recently picked:</div>
+        <div id="picker-recent"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const PROBLEMS_DATA = {
+  problems: ${problemsJSON},
+  tagMap: ${tagMapJSON},
+  coMatrix: ${coMatrixJSON}
+};
+
+const TAG_GROUPS = {
+  'Array': 0, 'Matrix': 0, 'String': 0,
+  'Dynamic Programming': 1, 'Memoization': 1, 'Divide and Conquer': 1,
+  'Depth-First Search': 2, 'Breadth-First Search': 2, 'Graph': 2,
+  'Tree': 2, 'Binary Tree': 2, 'Binary Search Tree': 2, 'Trie': 2,
+  'Binary Search': 3, 'Sorting': 3, 'Two Pointers': 3, 'Sliding Window': 3,
+  'Hash Table': 4, 'Design': 4, 'Union Find': 4,
+  'Stack': 5, 'Queue': 5, 'Heap (Priority Queue)': 5, 'Monotonic Stack': 5,
+  'Math': 6, 'Bit Manipulation': 6, 'Combinatorics': 6,
+  'Greedy': 7, 'Backtracking': 7, 'Recursion': 7,
+};
+
+function getTagGroup(tag) { return TAG_GROUPS[tag] ?? 7; }
+
+// State
+const state = {
+  activeView: 'filter',
+  filterDiffs: new Set(),
+  filterTags: new Set(),
+  searchQuery: '',
+  pickerDiffs: new Set(['Easy', 'Medium', 'Hard']),
+  pickerTag: null,
+  mindmapInitialized: false
+};
+
+// Tab switching
+function switchView(view) {
+  state.activeView = view;
+  document.querySelectorAll('.lc-view').forEach(v => v.classList.remove('active'));
+  document.getElementById('view-' + view).classList.add('active');
+  document.querySelectorAll('.lc-tab').forEach(t => t.classList.remove('active'));
+  event.target.classList.add('active');
+}
+
+// Filter view functions
+function initFilterView() {
+  const tagContainer = document.getElementById('lc-tag-pills');
+  const allTags = [...new Set(Object.values(PROBLEMS_DATA.problems).flatMap(p => p.tags))].sort();
+
+  allTags.forEach(tag => {
+    const btn = document.createElement('button');
+    btn.className = 'lc-btn';
+    btn.textContent = tag;
+    btn.dataset.tag = tag;
+    btn.onclick = () => {
+      btn.classList.toggle('active');
+      if (btn.classList.contains('active')) {
+        state.filterTags.add(tag);
+      } else {
+        state.filterTags.delete(tag);
+      }
+      applyFilters();
+    };
+    tagContainer.appendChild(btn);
+  });
+
+  // Initialize picker tag select
+  const pickerTagSelect = document.getElementById('picker-tag-select');
+  allTags.forEach(tag => {
+    const option = document.createElement('option');
+    option.value = tag;
+    option.textContent = tag;
+    pickerTagSelect.appendChild(option);
+  });
+
+  // Initialize patterns view
+  initPatternView();
+
+  // Pick initial problem for picker
+  renderPickerCard();
+
+  applyFilters();
+}
+
+function toggleDifficulty(diff) {
+  const btn = document.querySelector(\`[data-diff="\${diff}"]\`);
+  btn.classList.toggle('active');
+  if (btn.classList.contains('active')) {
+    state.filterDiffs.add(diff);
+  } else {
+    state.filterDiffs.delete(diff);
+  }
+  applyFilters();
+}
+
+function clearFilters() {
+  state.filterDiffs.clear();
+  state.filterTags.clear();
+  document.getElementById('lc-search').value = '';
+  state.searchQuery = '';
+  document.querySelectorAll('.lc-btn').forEach(b => b.classList.remove('active'));
+  applyFilters();
+}
+
+function applyFilters() {
+  const query = document.getElementById('lc-search').value.toLowerCase();
+  state.searchQuery = query;
+
+  let results = Object.values(PROBLEMS_DATA.problems).filter(p => {
+    const diffMatch = state.filterDiffs.size === 0 || state.filterDiffs.has(p.difficulty);
+    const tagMatch = state.filterTags.size === 0 || p.tags.some(t => state.filterTags.has(t));
+    const textMatch = !query || p.title.toLowerCase().includes(query) || p.id.includes(query);
+    return diffMatch && tagMatch && textMatch;
+  });
+
+  const sortBy = document.getElementById('lc-sort').value;
+  results.sort((a, b) => {
+    if (sortBy === 'acceptance') return b.acceptance - a.acceptance;
+    if (sortBy === 'difficulty') return ['Easy', 'Medium', 'Hard'].indexOf(a.difficulty) - ['Easy', 'Medium', 'Hard'].indexOf(b.difficulty);
+    return parseInt(a.id) - parseInt(b.id);
+  });
+
+  renderProblemList(results);
+}
+
+function renderProblemList(problems) {
+  const container = document.getElementById('lc-problem-list');
+  container.innerHTML = '';
+  document.getElementById('lc-result-count').textContent = problems.length;
+
+  problems.forEach(p => {
+    const row = document.createElement('div');
+    row.className = 'lc-problem-row';
+    row.onclick = () => window.open(generateLCURL(p.title), '_blank');
+
+    const slug = p.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+
+    row.innerHTML = \`
+      <span class="prob-id">#\${p.id}</span>
+      <span class="prob-title">\${p.title}</span>
+      <span class="diff-badge \${p.difficulty.toLowerCase()}">\${p.difficulty}</span>
+      <span class="prob-tags">\${p.tags.join(', ')}</span>
+      <span class="prob-acc">\${p.acceptance}%</span>
+    \`;
+    container.appendChild(row);
+  });
+}
+
+function generateLCURL(title) {
+  const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  return \`https://leetcode.com/problems/\${slug}/\`;
+}
+
+// Pattern view
+function initPatternView() {
+  const container = document.getElementById('lc-pattern-accordion');
+  const allTags = [...new Set(Object.values(PROBLEMS_DATA.problems).flatMap(p => p.tags))].sort();
+
+  allTags.forEach(tag => {
+    const count = (PROBLEMS_DATA.tagMap[tag].Easy || []).length +
+                  (PROBLEMS_DATA.tagMap[tag].Medium || []).length +
+                  (PROBLEMS_DATA.tagMap[tag].Hard || []).length;
+
+    const item = document.createElement('div');
+    item.className = 'lc-pattern-item';
+
+    const header = document.createElement('div');
+    header.className = 'lc-pattern-header';
+    header.innerHTML = \`
+      <span><strong>\${tag}</strong> (\${count} problems)</span>
+      <span>▼</span>
+    \`;
+    header.onclick = () => {
+      header.classList.toggle('open');
+      content.classList.toggle('open');
+    };
+
+    const content = document.createElement('div');
+    content.className = 'lc-pattern-content';
+
+    // Build co-occurrence data for this tag
+    const coData = {};
+    Object.values(PROBLEMS_DATA.problems).forEach(p => {
+      if (p.tags.includes(tag)) {
+        p.tags.forEach(t => {
+          if (t !== tag) {
+            coData[t] = (coData[t] || 0) + 1;
+          }
+        });
+      }
+    });
+
+    const sorted = Object.entries(coData).sort((a, b) => b[1] - a[1]).slice(0, 5);
+    const maxCount = sorted[0]?.[1] || 1;
+
+    sorted.forEach(([coTag, count]) => {
+      const percent = (count / maxCount) * 100;
+      const line = document.createElement('div');
+      line.className = 'lc-co-tag';
+      line.innerHTML = \`
+        <span style="min-width: 150px;">\${coTag}</span>
+        <div class="lc-co-bar">
+          <div class="lc-co-bar-fill" style="width: \${percent}%"></div>
+        </div>
+        <span>(\${count})</span>
+      \`;
+      content.appendChild(line);
+    });
+
+    item.appendChild(header);
+    item.appendChild(content);
+    container.appendChild(item);
+  });
+}
+
+// Mind Map view
+let mindmapChart = null;
+
+function initMindMap() {
+  if (state.mindmapInitialized) return;
+  state.mindmapInitialized = true;
+
+  const threshold = parseInt(document.getElementById('mindmap-threshold').value);
+  renderMindMap(threshold);
+}
+
+function updateMindMap() {
+  const threshold = parseInt(document.getElementById('mindmap-threshold').value);
+  if (mindmapChart) {
+    document.getElementById('mindmap-container').innerHTML = '';
+  }
+  renderMindMap(threshold);
+}
+
+function resetMindMapZoom() {
+  if (!mindmapChart) return;
+  mindmapChart.transition().duration(750).call(d3.zoom().transform, d3.zoomIdentity.translate(50, 50));
+}
+
+function renderMindMap(threshold) {
+  // Build nodes and links
+  const nodes = Object.entries(PROBLEMS_DATA.tagMap).map(([tag, diffs]) => ({
+    id: tag,
+    count: (diffs.Easy || []).length + (diffs.Medium || []).length + (diffs.Hard || []).length,
+    group: getTagGroup(tag)
+  }));
+
+  const links = [];
+  Object.entries(PROBLEMS_DATA.coMatrix).forEach(([a, bMap]) => {
+    Object.entries(bMap).forEach(([b, count]) => {
+      if (count >= threshold && a < b) {
+        links.push({ source: a, target: b, value: count });
+      }
+    });
+  });
+
+  const width = document.getElementById('mindmap-container').clientWidth;
+  const height = 600;
+
+  const svg = d3.select('#mindmap-container').append('svg')
+    .attr('width', width)
+    .attr('height', height)
+    .call(d3.zoom().on('zoom', e => g.attr('transform', e.transform)));
+
+  mindmapChart = svg;
+
+  const g = svg.append('g').attr('transform', 'translate(50,50)');
+
+  const sim = d3.forceSimulation(nodes)
+    .force('link', d3.forceLink(links).id(d => d.id).distance(d => 200 / Math.log(d.value + 1)))
+    .force('charge', d3.forceManyBody().strength(-120))
+    .force('center', d3.forceCenter(width / 2 - 50, height / 2 - 50))
+    .force('collision', d3.forceCollide(d => Math.sqrt(d.count) * 3 + 8));
+
+  const link = g.append('g').selectAll('line').data(links).join('line')
+    .attr('stroke', 'var(--border-color)')
+    .attr('stroke-opacity', 0.5)
+    .attr('stroke-width', d => Math.log(d.value) * 0.5 + 0.5);
+
+  const color = d3.scaleOrdinal(d3.schemeTableau10);
+
+  const node = g.append('g').selectAll('g').data(nodes).join('g')
+    .call(d3.drag()
+      .on('start', e => { if (!e.active) sim.alphaTarget(0.3).restart(); e.subject.fx = e.subject.x; e.subject.fy = e.subject.y; })
+      .on('drag', e => { e.subject.fx = e.x; e.subject.fy = e.y; })
+      .on('end', e => { if (!e.active) sim.alphaTarget(0); e.subject.fx = null; e.subject.fy = null; })
+    );
+
+  node.append('circle')
+    .attr('r', d => Math.sqrt(d.count) * 3)
+    .attr('fill', d => color(d.group))
+    .attr('stroke', 'white')
+    .attr('stroke-width', 1.5)
+    .style('cursor', 'pointer')
+    .on('click', (e, d) => {
+      document.getElementById('view-filter').classList.add('active');
+      document.getElementById('view-patterns').classList.remove('active');
+      document.getElementById('view-mindmap').classList.remove('active');
+      document.getElementById('view-picker').classList.remove('active');
+
+      state.filterTags.clear();
+      state.filterTags.add(d.id);
+
+      document.querySelectorAll('.lc-btn[data-tag]').forEach(b => {
+        b.classList.toggle('active', b.dataset.tag === d.id);
+      });
+
+      applyFilters();
+    });
+
+  node.append('text')
+    .attr('dy', '0.35em')
+    .attr('text-anchor', 'middle')
+    .style('font-size', d => d.count > 200 ? '10px' : '8px')
+    .style('pointer-events', 'none')
+    .style('fill', 'white')
+    .style('font-weight', 'bold')
+    .text(d => d.id.length > 12 ? d.id.slice(0, 11) + '…' : d.id);
+
+  sim.on('tick', () => {
+    link.attr('x1', d => d.source.x).attr('y1', d => d.source.y)
+        .attr('x2', d => d.target.x).attr('y2', d => d.target.y);
+    node.attr('transform', d => \`translate(\${d.x},\${d.y})\`);
+  });
+
+  // Legend
+  const legend = document.getElementById('mindmap-legend');
+  legend.innerHTML = '';
+  const groupNames = ['Data Structures', 'DP/Greedy', 'Graphs', 'Search', 'Hash', 'Stack/Queue', 'Math', 'Other'];
+  groupNames.forEach((name, i) => {
+    const item = document.createElement('div');
+    item.className = 'legend-item';
+    item.innerHTML = \`
+      <div class="legend-color" style="background: \${color(i)}"></div>
+      <span>\${name}</span>
+    \`;
+    legend.appendChild(item);
+  });
+}
+
+// Picker view
+function renderPickerCard() {
+  const diffs = [...document.querySelectorAll('#lc-picker-card-container').parentElement.querySelectorAll('input[type="checkbox"]:checked')]
+    .map(cb => cb.value);
+  const tag = document.getElementById('picker-tag-select').value || null;
+
+  const seen = new Set(JSON.parse(localStorage.getItem('lc-seen-problems') || '[]'));
+  let pool = Object.values(PROBLEMS_DATA.problems).filter(p => {
+    const diffOk = diffs.length === 0 || diffs.includes(p.difficulty);
+    const tagOk = !tag || p.tags.includes(tag);
+    return diffOk && tagOk && !seen.has(p.id);
+  });
+
+  if (pool.length === 0) {
+    pool = Object.values(PROBLEMS_DATA.problems).filter(p => {
+      const diffOk = diffs.length === 0 || diffs.includes(p.difficulty);
+      const tagOk = !tag || p.tags.includes(tag);
+      return diffOk && tagOk;
+    });
+  }
+
+  const problem = pool[Math.floor(Math.random() * pool.length)];
+
+  const container = document.getElementById('lc-picker-card-container');
+  container.innerHTML = \`
+    <div class="lc-picker-card">
+      <div class="prob-number">#\${problem.id}</div>
+      <div class="prob-name">\${problem.title}</div>
+      <div style="margin: 1rem 0;">
+        <span class="diff-badge \${problem.difficulty.toLowerCase()}">\${problem.difficulty}</span>
+      </div>
+      <div style="font-size: 0.85rem; color: var(--text-light); margin: 0.75rem 0;">
+        \${problem.tags.join(' • ')}
+      </div>
+      <div style="font-size: 0.8rem; color: var(--text-light);">
+        Acceptance: \${problem.acceptance}%
+      </div>
+      <div class="lc-picker-actions">
+        <button class="btn-primary" onclick="markPickerDone(\${problem.id})">Mark Done & Next</button>
+        <button class="btn-secondary" onclick="renderPickerCard()">Skip</button>
+        <button class="btn-secondary" onclick="window.open('\${generateLCURL(problem.title)}', '_blank')">Open on LeetCode ↗</button>
+      </div>
+    </div>
+  \`;
+
+  updatePickerProgress();
+  updateRecentPickerList();
+}
+
+function markPickerDone(id) {
+  const seen = new Set(JSON.parse(localStorage.getItem('lc-seen-problems') || '[]'));
+  seen.add(String(id));
+  localStorage.setItem('lc-seen-problems', JSON.stringify([...seen]));
+  renderPickerCard();
+}
+
+function updatePickerProgress() {
+  const seen = new Set(JSON.parse(localStorage.getItem('lc-seen-problems') || '[]'));
+  const total = Object.keys(PROBLEMS_DATA.problems).length;
+  document.getElementById('picker-count').textContent = seen.size;
+  document.getElementById('picker-total').textContent = total;
+  document.getElementById('picker-progress').style.width = ((seen.size / total) * 100) + '%';
+}
+
+function updateRecentPickerList() {
+  const seen = JSON.parse(localStorage.getItem('lc-seen-problems') || '[]');
+  const recent = seen.slice(-5).reverse();
+  const container = document.getElementById('picker-recent');
+  container.innerHTML = '';
+
+  recent.forEach(id => {
+    const p = PROBLEMS_DATA.problems[id];
+    if (p) {
+      const link = document.createElement('a');
+      link.href = generateLCURL(p.title);
+      link.target = '_blank';
+      link.textContent = \`#\${p.id} \${p.title}\`;
+      container.appendChild(link);
+    }
+  });
+}
+
+function clearPickerHistory() {
+  if (confirm('Clear all progress?')) {
+    localStorage.removeItem('lc-seen-problems');
+    updatePickerProgress();
+    updateRecentPickerList();
+    renderPickerCard();
+  }
+}
+
+// Boot
+initFilterView();
+</script>`;
+}
+
+// Main execution
+try {
+  console.log('Parsing doc/google_leetcode_problems_by_tags.md...');
+  const { problems, tagMap } = parseProblems();
+  console.log(`✓ Parsed ${problems.size} problems across ${tagMap.size} tags`);
+
+  console.log('Building co-occurrence matrix...');
+  const coMatrix = buildCoMatrix(problems);
+  console.log('✓ Built co-occurrence index');
+
+  console.log('Generating HTML page...');
+  const body = generatePageBody(problems, tagMap, coMatrix);
+  const html = htmlTemplate('LeetCode Explorer', body);
+
+  console.log('Writing _site/leetcode.html...');
+  if (!fs.existsSync('_site')) fs.mkdirSync('_site', { recursive: true });
+  fs.writeFileSync('_site/leetcode.html', html);
+  console.log('✓ Created _site/leetcode.html');
+
+} catch (err) {
+  console.error('Error building LeetCode page:', err.message);
+  process.exit(1);
+}
