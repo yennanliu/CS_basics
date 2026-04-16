@@ -1,8 +1,57 @@
-Here's a **runnable SQL snippet** using a simple `accounts` table to demonstrate **isolation levels in MySQL**, particularly how anomalies can occur and be prevented with different settings.
+# MySQL 隔離級別設定與實際演示
+
+## 設定隔離級別
+
+### Session 級別（當前連線）
+
+```sql
+SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+START TRANSACTION;
+-- 執行查詢
+COMMIT;
+```
+
+### 全域級別（影響所有新連線）
+
+```sql
+SET GLOBAL TRANSACTION ISOLATION LEVEL READ COMMITTED;
+-- 需要 SUPER 或 SYSTEM_VARIABLES_ADMIN 權限
+```
+
+### 持久化設定（`my.cnf`）
+
+```ini
+[mysqld]
+transaction-isolation = READ-COMMITTED
+```
+
+```bash
+sudo systemctl restart mysql
+```
+
+### 查看當前隔離級別
+
+```sql
+SELECT @@session.transaction_isolation;  -- Session 級別
+SELECT @@global.transaction_isolation;   -- 全域級別
+```
+
+### Java JDBC 設定
+
+```java
+Connection conn = dataSource.getConnection();
+conn.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
+conn.setAutoCommit(false);
+conn.commit();
+```
 
 ---
 
-## 🧪 Setup: Accounts Table
+## 隔離級別演示
+
+> 使用 `accounts` 表，示範各隔離級別下不同異常的發生與防止。
+
+## 準備：建立 Accounts 表
 
 ```sql
 DROP TABLE IF EXISTS accounts;
