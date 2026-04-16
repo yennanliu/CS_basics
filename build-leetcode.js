@@ -1064,6 +1064,7 @@ function initPatternView() {
   const allTags = [...new Set(Object.values(PROBLEMS_DATA.problems).flatMap(p => p.tags))].sort();
 
   allTags.forEach(tag => {
+    if (!PROBLEMS_DATA.tagMap[tag]) return;
     const count = (PROBLEMS_DATA.tagMap[tag].Easy || []).length +
                   (PROBLEMS_DATA.tagMap[tag].Medium || []).length +
                   (PROBLEMS_DATA.tagMap[tag].Hard || []).length;
@@ -1152,10 +1153,11 @@ function renderMindMap(threshold) {
     group: getTagGroup(tag)
   }));
 
+  const nodeIds = new Set(nodes.map(n => n.id));
   const links = [];
   Object.entries(PROBLEMS_DATA.coMatrix).forEach(([a, bMap]) => {
     Object.entries(bMap).forEach(([b, count]) => {
-      if (count >= threshold && a < b) {
+      if (count >= threshold && nodeIds.has(a) && nodeIds.has(b)) {
         links.push({ source: a, target: b, value: count });
       }
     });
@@ -1247,7 +1249,7 @@ function renderMindMap(threshold) {
 
 // Picker view
 function renderPickerCard() {
-  const diffs = [...document.querySelectorAll('#lc-picker-card-container').parentElement.querySelectorAll('input[type="checkbox"]:checked')]
+  const diffs = [...document.getElementById('lc-picker-card-container').parentElement.querySelectorAll('input[type="checkbox"]:checked')]
     .map(cb => cb.value);
   const tag = document.getElementById('picker-tag-select').value || null;
 
