@@ -613,8 +613,148 @@ a:hover { text-decoration: underline; }
 
 /* Random Picker */
 .lc-picker-container {
-  max-width: 500px;
+  max-width: 600px;
   margin: 0 auto;
+}
+
+/* Batch picker list */
+.lc-batch-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.lc-batch-row {
+  display: grid;
+  grid-template-columns: 3.5rem 1fr auto 10rem 3rem auto;
+  gap: 0.75rem;
+  align-items: center;
+  padding: 0.85rem 1rem;
+  background: var(--surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  font-size: 0.9rem;
+  transition: background 0.15s;
+}
+
+.lc-batch-row:hover { background: var(--bg-color); }
+
+.lc-batch-row .batch-done-btn {
+  padding: 0.3rem 0.7rem;
+  font-size: 0.8rem;
+  background: var(--bg-color);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  cursor: pointer;
+  color: var(--text-color);
+  font-family: var(--font);
+  white-space: nowrap;
+}
+
+.lc-batch-row .batch-done-btn:hover { background: var(--border-color); }
+.lc-batch-row.done { opacity: 0.45; }
+
+/* Similar Problems */
+.lc-similar-container { max-width: 700px; margin: 0 auto; }
+
+.lc-similar-search {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 1.25rem;
+  background: var(--surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  margin-bottom: 1.5rem;
+}
+
+.lc-similar-search input[type="number"] {
+  width: 110px;
+  padding: 0.55rem 0.75rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  background: var(--bg-color);
+  color: var(--text-color);
+  font-family: var(--font);
+  font-size: 0.95rem;
+}
+
+.lc-similar-search input[type="text"] {
+  flex: 1;
+  min-width: 160px;
+  padding: 0.55rem 0.75rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  background: var(--bg-color);
+  color: var(--text-color);
+  font-family: var(--font);
+  font-size: 0.95rem;
+}
+
+.lc-source-card {
+  padding: 1rem 1.25rem;
+  background: var(--surface);
+  border: 1px solid var(--border-color);
+  border-left: 4px solid var(--text-color);
+  border-radius: var(--radius);
+  margin-bottom: 1.25rem;
+  font-size: 0.9rem;
+}
+
+.lc-similar-results {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.lc-similar-row {
+  display: grid;
+  grid-template-columns: 3.5rem 1fr auto 9rem 3rem auto;
+  gap: 0.75rem;
+  align-items: center;
+  padding: 0.8rem 1rem;
+  background: var(--surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.lc-similar-row:hover { background: var(--bg-color); }
+
+.lc-sim-score {
+  font-size: 0.75rem;
+  color: var(--text-light);
+  font-family: var(--mono);
+  white-space: nowrap;
+}
+
+.lc-similar-empty {
+  text-align: center;
+  padding: 3rem;
+  color: var(--text-light);
+  font-size: 0.95rem;
+}
+
+@media (max-width: 768px) {
+  .lc-batch-row {
+    grid-template-columns: 3rem 1fr;
+    gap: 0.5rem;
+  }
+  .lc-batch-row > *:nth-child(3),
+  .lc-batch-row > *:nth-child(4),
+  .lc-batch-row > *:nth-child(5) { display: none; }
+
+  .lc-similar-row {
+    grid-template-columns: 3rem 1fr;
+    gap: 0.5rem;
+  }
+  .lc-similar-row > *:nth-child(3),
+  .lc-similar-row > *:nth-child(4),
+  .lc-similar-row > *:nth-child(5) { display: none; }
 }
 
 .lc-picker-controls {
@@ -825,6 +965,7 @@ function generatePageBody(problems, tagMap, coMatrix) {
     <button class="lc-tab" data-view="patterns" onclick="switchView('patterns')">Pattern Similarity</button>
     <button class="lc-tab" data-view="mindmap" onclick="switchView('mindmap'); initMindMap()">Tag Mind Map</button>
     <button class="lc-tab" data-view="picker" onclick="switchView('picker')">Random Picker</button>
+    <button class="lc-tab" data-view="similar" onclick="switchView('similar')">Similar Problems</button>
   </div>
 
   <!-- Filter & Browse View -->
@@ -883,14 +1024,21 @@ function generatePageBody(problems, tagMap, coMatrix) {
     <div class="lc-picker-container">
       <div class="lc-picker-controls">
         <div>Difficulty:</div>
-        <label><input type="checkbox" value="Easy" onchange="renderPickerCard()" checked> Easy</label>
-        <label><input type="checkbox" value="Medium" onchange="renderPickerCard()" checked> Medium</label>
-        <label><input type="checkbox" value="Hard" onchange="renderPickerCard()" checked> Hard</label>
+        <label><input type="checkbox" value="Easy" id="pick-diff-easy" onchange="renderPickerCard()" checked> Easy</label>
+        <label><input type="checkbox" value="Medium" id="pick-diff-medium" onchange="renderPickerCard()" checked> Medium</label>
+        <label><input type="checkbox" value="Hard" id="pick-diff-hard" onchange="renderPickerCard()" checked> Hard</label>
       </div>
-      <div class="lc-picker-controls">
+      <div class="lc-picker-controls" style="gap: 1.25rem;">
         <label>Tag: <select id="picker-tag-select" onchange="renderPickerCard()">
           <option value="">All Tags</option>
         </select></label>
+        <label style="display:flex; align-items:center; gap:0.5rem;">
+          Count:
+          <input type="number" id="picker-gen-count" min="1" max="20" value="1"
+            style="width:60px; padding:0.4rem 0.5rem; border:1px solid var(--border-color); border-radius:var(--radius); background:var(--bg-color); color:var(--text-color); font-family:var(--font);"
+            onchange="renderPickerCard()">
+        </label>
+        <button class="btn-primary" onclick="renderPickerCard()">Pick</button>
       </div>
       <div id="lc-picker-card-container"></div>
       <div class="lc-progress-section">
@@ -903,6 +1051,26 @@ function generatePageBody(problems, tagMap, coMatrix) {
       <div class="lc-recent-problems">
         <div style="font-size: 0.85rem; color: var(--text-light); margin-bottom: 0.5rem;">Recently picked:</div>
         <div id="picker-recent"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Similar Problems View -->
+  <div id="view-similar" class="lc-view">
+    <div class="lc-similar-container">
+      <div class="lc-similar-search">
+        <input type="text" id="similar-problem-input" placeholder="Enter problem # or name (e.g. 10 or Two Sum)..."
+          onkeydown="if(event.key==='Enter') findSimilar()">
+        <label style="display:flex; align-items:center; gap:0.5rem; white-space:nowrap;">
+          Show:
+          <input type="number" id="similar-count-input" min="1" max="30" value="5"
+            style="width:60px; padding:0.4rem 0.5rem; border:1px solid var(--border-color); border-radius:var(--radius); background:var(--bg-color); color:var(--text-color); font-family:var(--font);">
+          results
+        </label>
+        <button class="btn-primary" onclick="findSimilar()">Find Similar</button>
+      </div>
+      <div id="similar-results-area">
+        <div class="lc-similar-empty">Enter a problem number or name above to find similar problems.</div>
       </div>
     </div>
   </div>
@@ -1247,13 +1415,13 @@ function renderMindMap(threshold) {
   });
 }
 
-// Picker view
-function renderPickerCard() {
+// Picker view — supports single card (count=1) and batch list (count>1)
+function getPickerPool() {
   const diffs = [...document.getElementById('lc-picker-card-container').parentElement.querySelectorAll('input[type="checkbox"]:checked')]
     .map(cb => cb.value);
   const tag = document.getElementById('picker-tag-select').value || null;
-
   const seen = new Set(JSON.parse(localStorage.getItem('lc-seen-problems') || '[]'));
+
   let pool = Object.values(PROBLEMS_DATA.problems).filter(p => {
     const diffOk = diffs.length === 0 || diffs.includes(p.difficulty);
     const tagOk = !tag || p.tags.includes(tag);
@@ -1267,30 +1435,60 @@ function renderPickerCard() {
       return diffOk && tagOk;
     });
   }
+  return pool;
+}
 
-  const problem = pool[Math.floor(Math.random() * pool.length)];
+function pickRandom(pool, n) {
+  const shuffled = [...pool].sort(() => Math.random() - 0.5);
+  return shuffled.slice(0, Math.min(n, pool.length));
+}
 
+function renderPickerCard() {
+  const count = Math.max(1, parseInt(document.getElementById('picker-gen-count').value) || 1);
+  const pool = getPickerPool();
+  const picked = pickRandom(pool, count);
   const container = document.getElementById('lc-picker-card-container');
-  container.innerHTML = \`
-    <div class="lc-picker-card">
-      <div class="prob-number">#\${problem.id}</div>
-      <div class="prob-name">\${problem.title}</div>
-      <div style="margin: 1rem 0;">
-        <span class="diff-badge \${problem.difficulty.toLowerCase()}">\${problem.difficulty}</span>
+
+  if (count === 1) {
+    const p = picked[0];
+    container.innerHTML = \`
+      <div class="lc-picker-card">
+        <div class="prob-number">#\${p.id}</div>
+        <div class="prob-name">\${p.title}</div>
+        <div style="margin: 1rem 0;">
+          <span class="diff-badge \${p.difficulty.toLowerCase()}">\${p.difficulty}</span>
+        </div>
+        <div style="font-size: 0.85rem; color: var(--text-light); margin: 0.75rem 0;">
+          \${p.tags.join(' • ')}
+        </div>
+        <div style="font-size: 0.8rem; color: var(--text-light);">Acceptance: \${p.acceptance}%</div>
+        <div class="lc-picker-actions">
+          <button class="btn-primary" onclick="markPickerDone(\${p.id})">Mark Done & Next</button>
+          <button class="btn-secondary" onclick="renderPickerCard()">Skip</button>
+          <button class="btn-secondary" onclick="window.open('\${generateLCURL(p.title)}', '_blank')">Open on LeetCode ↗</button>
+        </div>
       </div>
-      <div style="font-size: 0.85rem; color: var(--text-light); margin: 0.75rem 0;">
-        \${problem.tags.join(' • ')}
+    \`;
+  } else {
+    // Batch list mode
+    const listHtml = picked.map(p => \`
+      <div class="lc-batch-row" id="batch-row-\${p.id}">
+        <span class="prob-id">#\${p.id}</span>
+        <span class="prob-title" style="cursor:pointer" onclick="window.open('\${generateLCURL(p.title)}','_blank')">\${p.title}</span>
+        <span class="diff-badge \${p.difficulty.toLowerCase()}">\${p.difficulty}</span>
+        <span class="prob-tags">\${p.tags.join(', ')}</span>
+        <span class="prob-acc">\${p.acceptance}%</span>
+        <button class="batch-done-btn" onclick="markBatchDone('\${p.id}')">✓ Done</button>
       </div>
-      <div style="font-size: 0.8rem; color: var(--text-light);">
-        Acceptance: \${problem.acceptance}%
+    \`).join('');
+    container.innerHTML = \`
+      <div class="lc-batch-list">\${listHtml}</div>
+      <div style="display:flex; gap:0.75rem; flex-wrap:wrap; margin-bottom:1.5rem;">
+        <button class="btn-primary" onclick="markAllBatchDone(['\${picked.map(p=>p.id).join("','")}'])">Mark All Done & Refresh</button>
+        <button class="btn-secondary" onclick="renderPickerCard()">Re-pick</button>
       </div>
-      <div class="lc-picker-actions">
-        <button class="btn-primary" onclick="markPickerDone(\${problem.id})">Mark Done & Next</button>
-        <button class="btn-secondary" onclick="renderPickerCard()">Skip</button>
-        <button class="btn-secondary" onclick="window.open('\${generateLCURL(problem.title)}', '_blank')">Open on LeetCode ↗</button>
-      </div>
-    </div>
-  \`;
+    \`;
+  }
 
   updatePickerProgress();
   updateRecentPickerList();
@@ -1299,6 +1497,23 @@ function renderPickerCard() {
 function markPickerDone(id) {
   const seen = new Set(JSON.parse(localStorage.getItem('lc-seen-problems') || '[]'));
   seen.add(String(id));
+  localStorage.setItem('lc-seen-problems', JSON.stringify([...seen]));
+  renderPickerCard();
+}
+
+function markBatchDone(id) {
+  const seen = new Set(JSON.parse(localStorage.getItem('lc-seen-problems') || '[]'));
+  seen.add(String(id));
+  localStorage.setItem('lc-seen-problems', JSON.stringify([...seen]));
+  const row = document.getElementById('batch-row-' + id);
+  if (row) row.classList.add('done');
+  updatePickerProgress();
+  updateRecentPickerList();
+}
+
+function markAllBatchDone(ids) {
+  const seen = new Set(JSON.parse(localStorage.getItem('lc-seen-problems') || '[]'));
+  ids.forEach(id => seen.add(String(id)));
   localStorage.setItem('lc-seen-problems', JSON.stringify([...seen]));
   renderPickerCard();
 }
@@ -1313,7 +1528,7 @@ function updatePickerProgress() {
 
 function updateRecentPickerList() {
   const seen = JSON.parse(localStorage.getItem('lc-seen-problems') || '[]');
-  const recent = seen.slice(-5).reverse();
+  const recent = seen.slice(-8).reverse();
   const container = document.getElementById('picker-recent');
   container.innerHTML = '';
 
@@ -1336,6 +1551,84 @@ function clearPickerHistory() {
     updateRecentPickerList();
     renderPickerCard();
   }
+}
+
+// Similar Problems — Jaccard similarity on tags
+function computeSimilarity(tagsA, tagsB) {
+  const setA = new Set(tagsA);
+  const setB = new Set(tagsB);
+  const intersection = tagsA.filter(t => setB.has(t)).length;
+  const union = new Set([...tagsA, ...tagsB]).size;
+  return union === 0 ? 0 : intersection / union;
+}
+
+function findSimilar() {
+  const input = document.getElementById('similar-problem-input').value.trim();
+  const n = Math.max(1, parseInt(document.getElementById('similar-count-input').value) || 5);
+  const area = document.getElementById('similar-results-area');
+
+  if (!input) {
+    area.innerHTML = '<div class="lc-similar-empty">Please enter a problem number or name.</div>';
+    return;
+  }
+
+  // Find source problem by id or by title substring
+  const allProblems = Object.values(PROBLEMS_DATA.problems);
+  let source = PROBLEMS_DATA.problems[input] ||
+    allProblems.find(p => p.id === input) ||
+    allProblems.find(p => p.title.toLowerCase() === input.toLowerCase()) ||
+    allProblems.find(p => p.title.toLowerCase().includes(input.toLowerCase()));
+
+  if (!source) {
+    area.innerHTML = \`<div class="lc-similar-empty">Problem not found for "<strong>\${input}</strong>". Try a problem number like <em>10</em> or a title keyword.</div>\`;
+    return;
+  }
+
+  // Score all other problems
+  const scored = allProblems
+    .filter(p => p.id !== source.id)
+    .map(p => ({
+      problem: p,
+      score: computeSimilarity(source.tags, p.tags)
+    }))
+    .filter(x => x.score > 0)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, n);
+
+  // Source card
+  const sourceHtml = \`
+    <div class="lc-source-card">
+      <div style="font-size:0.8rem; color:var(--text-light); margin-bottom:0.4rem;">Source problem</div>
+      <div style="display:flex; align-items:center; gap:0.75rem; flex-wrap:wrap;">
+        <span class="prob-id" style="font-family:var(--mono); font-weight:600; color:var(--text-light);">#\${source.id}</span>
+        <strong>\${source.title}</strong>
+        <span class="diff-badge \${source.difficulty.toLowerCase()}">\${source.difficulty}</span>
+        <span style="font-size:0.8rem; color:var(--text-light);">\${source.acceptance}%</span>
+        <a href="\${generateLCURL(source.title)}" target="_blank" style="font-size:0.85rem; margin-left:auto;">Open ↗</a>
+      </div>
+      <div style="font-size:0.8rem; color:var(--text-light); margin-top:0.5rem;">\${source.tags.join(' • ')}</div>
+    </div>
+  \`;
+
+  if (scored.length === 0) {
+    area.innerHTML = sourceHtml + '<div class="lc-similar-empty">No similar problems found with overlapping tags.</div>';
+    return;
+  }
+
+  const rowsHtml = scored.map(({ problem: p, score }) => \`
+    <div class="lc-similar-row" onclick="window.open('\${generateLCURL(p.title)}','_blank')">
+      <span class="prob-id">#\${p.id}</span>
+      <span class="prob-title">\${p.title}</span>
+      <span class="diff-badge \${p.difficulty.toLowerCase()}">\${p.difficulty}</span>
+      <span class="prob-tags">\${p.tags.join(', ')}</span>
+      <span class="prob-acc">\${p.acceptance}%</span>
+      <span class="lc-sim-score">\${Math.round(score * 100)}% match</span>
+    </div>
+  \`).join('');
+
+  area.innerHTML = sourceHtml +
+    \`<div style="font-size:0.85rem; color:var(--text-light); margin-bottom:0.75rem;">Top \${scored.length} similar problems (by tag overlap):</div>\` +
+    \`<div class="lc-similar-results">\${rowsHtml}</div>\`;
 }
 
 // Boot
