@@ -492,14 +492,11 @@ jobs:
               </button>
               <div class="nav-links">
                 <a href="${basePath}index.html" class="${currentPage === 'home' ? 'active' : ''}">Home</a>
-                <div class="nav-study-group">
-                  <span class="nav-study-label">Study</span>
-                  <a href="${basePath}cheatsheets.html" class="${currentPage === 'cheatsheets' ? 'active' : ''}">Cheat Sheets</a>
-                  <a href="${basePath}patterns.html" class="${currentPage === 'patterns' ? 'active' : ''}">Pattern Recognition</a>
-                  <a href="${basePath}faqs.html" class="${currentPage === 'faqs' ? 'active' : ''}">FAQs</a>
-                  <a href="${basePath}resources.html" class="${currentPage === 'resources' ? 'active' : ''}">Resources</a>
-                  <a href="${basePath}leetcode.html" class="${currentPage === 'leetcode' ? 'active' : ''}">LC Explorer</a>
-                </div>
+                <a href="${basePath}cheatsheets.html" class="${currentPage === 'cheatsheets' ? 'active' : ''}">Cheat Sheets</a>
+                <a href="${basePath}patterns.html" class="${currentPage === 'patterns' ? 'active' : ''}">Pattern Recognition</a>
+                <a href="${basePath}faqs.html" class="${currentPage === 'faqs' ? 'active' : ''}">FAQs</a>
+                <a href="${basePath}resources.html" class="${currentPage === 'resources' ? 'active' : ''}">Resources</a>
+                <a href="${basePath}leetcode.html" class="${currentPage === 'leetcode' ? 'active' : ''}">LC Explorer</a>
                 <a href="${basePath}algo_demo/index.html" class="${currentPage === 'visualizer' ? 'active' : ''}">Visualizer</a>
                 <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">&#127769;</button>
                 <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">
@@ -837,44 +834,6 @@ jobs:
           border-color: rgba(255,255,255,0.3);
         }
 
-        /* Expanded Study section */
-        .nav-study-group {
-          display: flex;
-          align-items: center;
-          gap: 1.5rem;
-          padding: 0 0.5rem;
-          border-left: 1px solid rgba(255,255,255,0.1);
-          border-right: 1px solid rgba(255,255,255,0.1);
-          margin: 0 0.5rem;
-        }
-
-        .nav-study-label {
-          color: #aaaaaa;
-          font-size: 0.75rem;
-          text-transform: uppercase;
-          letter-spacing: 0.1em;
-          font-weight: 600;
-          padding: 0 0.5rem;
-        }
-
-        .nav-study-group a {
-          color: #e0e0e0;
-          text-decoration: none;
-          font-weight: 500;
-          transition: color 0.2s;
-          font-size: 0.9rem;
-          white-space: nowrap;
-        }
-
-        .nav-study-group a:hover {
-          color: #ffffff;
-        }
-
-        .nav-study-group a.active {
-          color: #ffffff;
-          border-bottom: 2px solid white;
-          padding-bottom: 0.25rem;
-        }
 
         /* Dark mode toggle */
         .theme-toggle {
@@ -1235,24 +1194,6 @@ jobs:
             border-bottom: none;
           }
 
-          .nav-study-group {
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 0.5rem;
-            border: none;
-            padding: 0.75rem 0 0.75rem 1.5rem;
-            margin: 0;
-            border-left: 2px solid rgba(255,255,255,0.2);
-          }
-
-          .nav-study-label {
-            font-size: 0.65rem;
-          }
-
-          .nav-study-group a {
-            font-size: 0.85rem;
-            white-space: normal;
-          }
 
           .navbar .container {
             position: relative;
