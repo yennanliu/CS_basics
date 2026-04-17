@@ -262,20 +262,37 @@ function generateLcExplorerHtml() {
     }
     .problem-row {
       display: grid;
-      grid-template-columns: 4rem 1fr auto 8rem;
-      gap: 1rem;
+      grid-template-columns: 4rem 1fr auto 8rem auto;
+      gap: 0.5rem;
       align-items: center;
       padding: 1rem;
       border-bottom: 1px solid var(--border);
       background: var(--surface);
-      cursor: pointer;
       transition: background 0.15s;
-    }
-    .problem-row:last-child {
-      border-bottom: none;
     }
     .problem-row:hover {
       background: var(--bg);
+    }
+    .problem-actions {
+      display: flex;
+      gap: 0.3rem;
+    }
+    .icon-btn {
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 0.3rem 0.6rem;
+      cursor: pointer;
+      color: var(--text-light);
+      font-size: 0.8rem;
+      transition: all 0.2s;
+    }
+    .icon-btn:hover {
+      border-color: var(--text);
+      color: var(--text);
+    }
+    .problem-row:last-child {
+      border-bottom: none;
     }
     .problem-id {
       font-family: monospace;
@@ -335,6 +352,12 @@ function generateLcExplorerHtml() {
       gap: 1rem;
       flex-wrap: wrap;
       margin-bottom: 1.5rem;
+      align-items: center;
+    }
+    .results-info {
+      margin-left: auto;
+      font-size: 0.9rem;
+      color: var(--text-light);
     }
     .loading {
       text-align: center;
@@ -346,12 +369,19 @@ function generateLcExplorerHtml() {
         grid-template-columns: 1fr;
       }
       .problem-row {
-        grid-template-columns: 3rem 1fr;
-        gap: 0.5rem;
+        grid-template-columns: 3rem 1fr auto;
+        gap: 0.3rem;
       }
       .problem-row > :nth-child(3),
       .problem-row > :nth-child(4) {
         display: none;
+      }
+      .problem-actions {
+        gap: 0.2rem;
+      }
+      .icon-btn {
+        padding: 0.2rem 0.4rem;
+        font-size: 0.7rem;
       }
       .header h1 {
         font-size: 1.5rem;
@@ -379,6 +409,9 @@ function generateLcExplorerHtml() {
 
     <div class="button-group">
       <button class="button button-secondary" onclick="clearFilters()">Clear Filters</button>
+      <button class="button button-secondary" onclick="exportCSV()">Export CSV</button>
+      <button class="button button-secondary" onclick="shareFilters()">Share Filters</button>
+      <div class="results-info" id="resultsInfo"></div>
     </div>
 
     <div class="controls">
@@ -451,7 +484,7 @@ function generateLcExplorerHtml() {
           tagSelect.appendChild(option);
         });
 
-        filterProblems();
+        restoreFiltersFromURL();
       } catch (err) {
         console.error('Error loading data:', err);
         document.getElementById('problemsContainer').innerHTML = '<div class="empty">Error loading problems</div>';
@@ -536,18 +569,26 @@ function generateLcExplorerHtml() {
 
     function renderProblems(problems) {
       const container = document.getElementById('problemsContainer');
+      const resultInfo = document.getElementById('resultsInfo');
 
       if (problems.length === 0) {
         container.innerHTML = '<div class="empty">No problems found</div>';
+        resultInfo.textContent = '';
         return;
       }
 
+      resultInfo.textContent = \`Showing \${problems.length} of \${allProblems.length} problems\`;
+
       container.innerHTML = problems.map(p => \`
-        <div class="problem-row" onclick="openProblem('\${p.title}')">
+        <div class="problem-row">
           <div class="problem-id">#\${p.id}</div>
-          <div class="problem-title">\${p.title}</div>
+          <div class="problem-title" onclick="openProblem('\${p.title}')" style="cursor: pointer;">\${p.title}</div>
           <div class="difficulty \${p.difficulty}">\${p.difficulty}</div>
           <div class="problem-acceptance">\${p.acceptance}%</div>
+          <div class="problem-actions">
+            <button class="icon-btn" title="Open on LeetCode" onclick="openProblem('\${p.title}')">LC</button>
+            <button class="icon-btn" title="Search GitHub" onclick="searchGitHub('\${p.id}', '\${p.title}')">GH</button>
+          </div>
         </div>
       \`).join('');
     }
@@ -556,6 +597,116 @@ function generateLcExplorerHtml() {
       const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
       window.open(\`https://leetcode.com/problems/\${slug}/\`, '_blank');
     }
+
+    function searchGitHub(id, title) {
+      const query = encodeURIComponent(id);
+      window.open(\`https://github.com/yennanliu/CS_basics/search?q=\${query}\`, '_blank');
+    }
+
+    function exportCSV() {
+      const query = document.getElementById('searchInput').value.toLowerCase();
+      let results = allProblems.filter(p => {
+        const matchesSearch = !query ||
+          p.title.toLowerCase().includes(query) ||
+          p.id.includes(query);
+        const matchesDiff = state.difficulties.size === 0 ||
+          state.difficulties.has(p.difficulty);
+        const matchesTags = state.tags.size === 0 ||
+          p.tags.some(t => state.tags.has(t));
+        return matchesSearch && matchesDiff && matchesTags;
+      });
+
+      const csv = ['ID,Title,Difficulty,Acceptance,Tags'].concat(
+        results.map(p =>
+          \`\${p.id},"\${p.title}",\${p.difficulty},\${p.acceptance}%,"\${p.tags.join(', ')}"\`
+        )
+      ).join('\\n');
+
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'leetcode-problems.csv';
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function shareFilters() {
+      const params = new URLSearchParams();
+      if (document.getElementById('searchInput').value) {
+        params.set('search', document.getElementById('searchInput').value);
+      }
+      if (state.difficulties.size > 0) {
+        params.set('difficulty', Array.from(state.difficulties).join(','));
+      }
+      if (state.tags.size > 0) {
+        params.set('tags', Array.from(state.tags).join(','));
+      }
+
+      if (params.toString()) {
+        const url = \`\${window.location.href.split('?')[0]}?\${params.toString()}\`;
+        navigator.clipboard.writeText(url).then(() => {
+          alert('Filter URL copied to clipboard!');
+        }).catch(() => {
+          prompt('Copy this filter URL:', url);
+        });
+      } else {
+        alert('No filters to share');
+      }
+    }
+
+    function restoreFiltersFromURL() {
+      const params = new URLSearchParams(window.location.search);
+
+      if (params.has('search')) {
+        document.getElementById('searchInput').value = params.get('search');
+        state.searchQuery = params.get('search').toLowerCase();
+      }
+
+      if (params.has('difficulty')) {
+        const diffs = params.get('difficulty').split(',');
+        diffs.forEach(diff => {
+          state.difficulties.add(diff);
+          document.querySelectorAll('.tag-btn').forEach(btn => {
+            if (btn.textContent === diff) btn.classList.add('active');
+          });
+        });
+      }
+
+      if (params.has('tags')) {
+        const tags = params.get('tags').split(',');
+        tags.forEach(tag => {
+          state.tags.add(tag);
+        });
+        updateSelectedTags();
+      }
+
+      if (params.toString()) {
+        filterProblems();
+      }
+    }
+
+    // Keyboard shortcuts
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') {
+        clearFilters();
+      } else if (e.key === 'r' && !document.activeElement.matches('input')) {
+        const filtered = allProblems.filter(p => {
+          const matchesSearch = !state.searchQuery ||
+            p.title.toLowerCase().includes(state.searchQuery) ||
+            p.id.includes(state.searchQuery);
+          const matchesDiff = state.difficulties.size === 0 ||
+            state.difficulties.has(p.difficulty);
+          const matchesTags = state.tags.size === 0 ||
+            p.tags.some(t => state.tags.has(t));
+          return matchesSearch && matchesDiff && matchesTags;
+        });
+        if (filtered.length > 0) {
+          const random = filtered[Math.floor(Math.random() * filtered.length)];
+          openProblem(random.title);
+        }
+      }
+    });
 
     function toggleTheme() {
       const html = document.documentElement;
