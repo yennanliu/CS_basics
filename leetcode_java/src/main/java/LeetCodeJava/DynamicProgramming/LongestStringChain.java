@@ -52,6 +52,68 @@ public class LongestStringChain {
 //    }
 
 
+    // V0-1
+    // IDEA: 1D DP (gpt)
+    public int longestStrChain_0_1(String[] words) {
+        Arrays.sort(words, (a, b) -> a.length() - b.length());
+
+        Map<String, Integer> dp = new HashMap<>();
+        int max = 1;
+
+        for (String word : words) {
+            int best = 1;
+
+            // try removing one char
+            for (int i = 0; i < word.length(); i++) {
+                String prev = word.substring(0, i) + word.substring(i + 1);
+                best = Math.max(best, dp.getOrDefault(prev, 0) + 1);
+            }
+
+            dp.put(word, best);
+            max = Math.max(max, best);
+        }
+
+        return max;
+    }
+
+
+    // V0-2
+    // IDEA: 1D DP + SORT + HASHMAP (gpt)
+    public int longestStrChain_0_2(String[] words) {
+        // 1. Sort words by length: O(N log N)
+        // This ensures predecessors are always processed before successors.
+        Arrays.sort(words, (a, b) -> a.length() - b.length());
+
+        // dp map: word -> longest chain ending at this word
+        Map<String, Integer> dp = new HashMap<>();
+        int maxChainLength = 1;
+
+        for (String word : words) {
+            int currentBest = 1;
+
+            // 2. Try removing every possible character to find a predecessor
+            for (int i = 0; i < word.length(); i++) {
+                // Construct predecessor by skipping character at index i
+                StringBuilder sb = new StringBuilder(word);
+                sb.deleteCharAt(i);
+                String predecessor = sb.toString();
+
+                // 3. If the predecessor exists, we extend its chain
+                if (dp.containsKey(predecessor)) {
+                    currentBest = Math.max(currentBest, dp.get(predecessor) + 1);
+                }
+            }
+
+            // Store result for current word
+            dp.put(word, currentBest);
+            maxChainLength = Math.max(maxChainLength, currentBest);
+        }
+
+        return maxChainLength;
+    }
+
+
+
 
     // V1-1
     // IDEA : DFS + Memoization | Increasing Word Length:
