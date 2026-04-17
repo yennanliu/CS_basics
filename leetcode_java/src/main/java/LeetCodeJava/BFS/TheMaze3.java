@@ -5,6 +5,7 @@ package LeetCodeJava.BFS;
 import java.util.Arrays;
 import java.util.Deque;
 import java.util.LinkedList;
+import java.util.PriorityQueue;
 
 /**
  *  499. The Maze III
@@ -76,6 +77,150 @@ public class TheMaze3 {
 //
 //    }
 
+    // V0-1
+    // IDEA: Dijkstra (GPT)
+    // TODO: validate
+    class State {
+        int x, y, dist;
+        String path;
+
+        State(int x, int y, int dist, String path) {
+            this.x = x;
+            this.y = y;
+            this.dist = dist;
+            this.path = path;
+        }
+    }
+
+    public String findShortestWay_0_1(int[][] maze, int[] ball, int[] hole) {
+        int m = maze.length, n = maze[0].length;
+
+        int[][] dirs = {{0, -1}, {-1, 0}, {1, 0}, {0, 1}};
+        char[] moves = {'l', 'u', 'd', 'r'};
+
+        // distance + lexicographic ordering
+        PriorityQueue<State> pq = new PriorityQueue<>(
+                (a, b) -> a.dist == b.dist ? a.path.compareTo(b.path) : a.dist - b.dist
+        );
+
+        int[][] dist = new int[m][n];
+        for (int[] row : dist) Arrays.fill(row, Integer.MAX_VALUE);
+
+        pq.offer(new State(ball[0], ball[1], 0, ""));
+        dist[ball[0]][ball[1]] = 0;
+
+        while (!pq.isEmpty()) {
+            State cur = pq.poll();
+
+            if (cur.x == hole[0] && cur.y == hole[1]) {
+                return cur.path;
+            }
+
+            for (int i = 0; i < 4; i++) {
+                int x = cur.x;
+                int y = cur.y;
+                int steps = 0;
+
+                // roll the ball
+                while (x + dirs[i][0] >= 0 && x + dirs[i][0] < m &&
+                        y + dirs[i][1] >= 0 && y + dirs[i][1] < n &&
+                        maze[x + dirs[i][0]][y + dirs[i][1]] == 0) {
+
+                    x += dirs[i][0];
+                    y += dirs[i][1];
+                    steps++;
+
+                    if (x == hole[0] && y == hole[1]) break;
+                }
+
+                String newPath = cur.path + moves[i];
+
+                if (cur.dist + steps < dist[x][y] ||
+                        (cur.dist + steps == dist[x][y] &&
+                                newPath.compareTo(newPath) < 0)) {
+
+                    dist[x][y] = cur.dist + steps;
+                    pq.offer(new State(x, y, dist[x][y], newPath));
+                }
+            }
+        }
+
+        return "impossible";
+    }
+
+    // V0-2
+    // IDEA: Dijkstra (GEMINI)
+    // TODO: validate
+    class Node implements Comparable<Node> {
+        int r, c, dist;
+        String path;
+
+        Node(int r, int c, int dist, String path) {
+            this.r = r;
+            this.c = c;
+            this.dist = dist;
+            this.path = path;
+        }
+
+        @Override
+        public int compareTo(Node other) {
+            if (this.dist != other.dist) return this.dist - other.dist;
+            return this.path.compareTo(other.path);
+        }
+    }
+
+    public String findShortestWay_0_2(int[][] maze, int[] ball, int[] hole) {
+        int rows = maze.length, cols = maze[0].length;
+        Node[][] dists = new Node[rows][cols];
+
+        // Initialize distances with "Infinity" nodes
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                dists[i][j] = new Node(i, j, Integer.MAX_VALUE, "");
+            }
+        }
+
+        PriorityQueue<Node> pq = new PriorityQueue<>();
+        pq.offer(new Node(ball[0], ball[1], 0, ""));
+
+        int[][] dirs = {{1, 0}, {0, -1}, {0, 1}, {-1, 0}};
+        String[] dirChars = {"d", "l", "r", "u"};
+
+        while (!pq.isEmpty()) {
+            Node curr = pq.poll();
+
+            // If we found a better way to this point already, skip
+            if (curr.compareTo(dists[curr.r][curr.c]) >= 0 && dists[curr.r][curr.c].dist != Integer.MAX_VALUE) continue;
+            dists[curr.r][curr.c] = curr;
+
+            if (curr.r == hole[0] && curr.c == hole[1]) return curr.path;
+
+            for (int i = 0; i < 4; i++) {
+                int nr = curr.r, nc = curr.c, d = curr.dist;
+
+                // Roll the ball
+                while (nr + dirs[i][0] >= 0 && nr + dirs[i][0] < rows &&
+                        nc + dirs[i][1] >= 0 && nc + dirs[i][1] < cols &&
+                        maze[nr + dirs[i][0]][nc + dirs[i][1]] == 0) {
+                    nr += dirs[i][0];
+                    nc += dirs[i][1];
+                    d++;
+                    // Stop rolling if we fall into the hole
+                    if (nr == hole[0] && nc == hole[1]) break;
+                }
+
+                Node next = new Node(nr, nc, d, curr.path + dirChars[i]);
+                if (next.compareTo(dists[nr][nc]) < 0) {
+                    pq.offer(next);
+                }
+            }
+        }
+
+        return "impossible";
+    }
+
+
+
     // V1
     // https://leetcode.ca/2017-04-12-499-The-Maze-III/
     public String findShortestWay_1(int[][] maze, int[] ball, int[] hole) {
@@ -121,7 +266,10 @@ public class TheMaze3 {
     }
 
 
+
     // V2
+
+
 
 
 }

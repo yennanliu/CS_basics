@@ -466,10 +466,102 @@ public class Workspace25 {
 
 
     // LC 449
-    // 16.37 - 47 pm
-    public String findShortestWay(int[][] maze, int[] ball, int[] hole) {
+    // 16.37 - 57 pm
+    /**
+     *  -> find out how the ball
+     *     could drop into the hole by
+     *     moving the shortest distance
+     *
+     *
+     *   1 means the wall
+     *   0 means the empty space
+     *
+     *   -------------
+     *
+     *   IDEA 1) BFS ??
+     *
+     *
+     */
+    // IDEA 1) BFS ??
+    class MyRecord{
+        int x;
+        int y;
+        StringBuilder sb;
 
-        return null;
+        MyRecord(int x, int y){
+            this.x = x;
+            this.y = y;
+            this.sb = new StringBuilder(); // ???
+        }
+
+        MyRecord(int x, int y, StringBuilder sb){
+            this.x = x;
+            this.y = y;
+            this.sb = sb;
+        }
+    }
+
+    public String findShortestWay(int[][] maze, int[] ball, int[] hole) {
+        // edge
+        if(ball[0] == hole[0] && ball[1] == hole[1]){
+            return "";
+        }
+
+
+        int l = maze.length;
+        int w = maze[0].length;
+
+        // ???
+        Deque<MyRecord> dq = new LinkedList<>();
+
+        dq.add(new MyRecord(ball[0], ball[1])); // ???
+
+        // ??
+        String moveStr = "ludr";
+        // ??
+        Map<String, Integer[]> moveMap = new HashMap<>();
+        moveMap.put("l", new Integer[]{0,-1});
+        moveMap.put("u", new Integer[]{-1,0});
+        moveMap.put("d", new Integer[]{1,0});
+        moveMap.put("r", new Integer[]{0,1});
+
+        //int[][] moves = new int[][]{ {0,1}, {0,-1}, {1,0}, {-1,0} };
+
+        while (!dq.isEmpty()){
+            // ???
+            int size = dq.size();
+            for(int i = 0; i < size; i++){
+
+                MyRecord record = dq.poll();
+                int x = record.x;
+                int y = record.y;
+                StringBuilder sb = record.sb;
+
+                // ?? if meet the `hole`
+                if(x == hole[0] && y == hole[1]){
+                    return sb.toString(); // /??
+                }
+
+                // mark as visit ????
+                maze[y][x] = -1;
+
+                for(char ch: moveStr.toCharArray()){
+                    Integer[] m = moveMap.get(String.valueOf(ch));
+                    int x_ = x + m[0];
+                    int y_ = y + m[1];
+                    // ??
+                    if(x_ >= 0 && x_ < w && y_ >= 0 && y_ < l && maze[y_][x_] == 0){
+                        sb.append(ch);
+                        dq.add(new MyRecord(x_, y_, sb));
+                    }
+                }
+
+            }
+
+        }
+
+
+        return "impossible";
     }
 
 
