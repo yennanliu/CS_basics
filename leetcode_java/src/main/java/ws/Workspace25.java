@@ -243,6 +243,32 @@ public class Workspace25 {
 
 
     // LC 1167
+    // 8.04 - 14 am
+    /**
+     * -> Return the minimum cost of
+     * connecting all the given sticks into
+     * one stick in this way.
+     *
+     * -------------
+     *
+     *   ex 1)
+     *
+     *    sticks = [2,4,3]
+     *
+     *    -> pay = (2+3) = 5, [5,3]
+     *    -> pay = 5 + (5+3) = 13 ??? [8]
+     *
+     *
+     *   ex 2)
+     *    sticks = [1,8,3,5]
+     *
+     *    -> p = 1+3 =4    [ 4,8,5]
+     *    -> p = 4 + (5+4) = 13,    [9,8]
+     *    -> p  = 13 + 17 = 30, [17]
+     *
+     *
+     */
+    // IDEA 1) SMALL PQ
     public int connectSticks(int[] sticks) {
         return 0;
     }
