@@ -113,7 +113,7 @@ const createPageTemplate = (title, content, currentPage = 'home', basePath = '')
         <a href="${basePath}patterns.html" class="${currentPage === 'patterns' ? 'active' : ''}">Patterns</a>
         <a href="${basePath}faqs.html" class="${currentPage === 'faqs' ? 'active' : ''}">FAQs</a>
         <a href="${basePath}resources.html" class="${currentPage === 'resources' ? 'active' : ''}">Resources</a>
-        <a href="${basePath}leetcode.html" class="${currentPage === 'leetcode' ? 'active' : ''}">LC Explorer</a>
+        <a href="${basePath}lc-explorer.html" class="${currentPage === 'lc-explorer' ? 'active' : ''}">LC Explorer</a>
         <a href="https://github.com/yennanliu/CS_basics" target="_blank">GitHub</a>
       </div>
     </div>
@@ -134,7 +134,7 @@ const homeContent = `
 <p>Welcome to CS Basics - your comprehensive computer science fundamentals repository.</p>
 <h2>Quick Links</h2>
 <ul>
-  <li><a href="leetcode.html">LeetCode Explorer</a> - Interactive explorer for LeetCode problems</li>
+  <li><a href="lc-explorer.html">LeetCode Explorer</a> - Interactive explorer for LeetCode problems</li>
   <li><a href="cheatsheets.html">Cheat Sheets</a> - Quick reference guides</li>
   <li><a href="patterns.html">Pattern Recognition</a> - Algorithm patterns and techniques</li>
   <li><a href="faqs.html">FAQs</a> - Frequently asked questions</li>

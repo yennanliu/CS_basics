@@ -20,7 +20,7 @@ const pageTemplate = (title, currentPage) => {
     { file: 'patterns.html', label: 'Patterns', id: 'patterns' },
     { file: 'faqs.html', label: 'FAQs', id: 'faqs' },
     { file: 'resources.html', label: 'Resources', id: 'resources' },
-    { file: 'leetcode.html', label: 'LC Explorer', id: 'leetcode' }
+    { file: 'lc-explorer.html', label: 'LC Explorer', id: 'lc-explorer' }
   ];
 
   const navLinks = pages
