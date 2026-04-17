@@ -47,7 +47,70 @@ public class MinimumFallingPathSum {
 //    }
 
 
+    // V0-1
+    // IDEA: DP (gpt)
+    public int minFallingPathSum_0_1(int[][] matrix) {
+        int n = matrix.length;
+
+        int[][] dp = new int[n][n];
+
+        // base case: first row
+        for (int j = 0; j < n; j++) {
+            dp[0][j] = matrix[0][j];
+        }
+
+        // fill DP
+        for (int i = 1; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                int up = dp[i - 1][j];
+                int left = (j > 0) ? dp[i - 1][j - 1] : Integer.MAX_VALUE;
+                int right = (j < n - 1) ? dp[i - 1][j + 1] : Integer.MAX_VALUE;
+
+                dp[i][j] = matrix[i][j] + Math.min(up, Math.min(left, right));
+            }
+        }
+
+        // result = min of last row
+        int res = Integer.MAX_VALUE;
+        for (int j = 0; j < n; j++) {
+            res = Math.min(res, dp[n - 1][j]);
+        }
+
+        return res;
+    }
+
+
+    // V0-2
+    // IDEA: DP (GEMINI)
+    public int minFallingPathSum_0_2(int[][] matrix) {
+        int n = matrix.length;
+
+        // 1. Start from the second row (y = 1) and accumulate sums
+        for (int y = 1; y < n; y++) {
+            for (int x = 0; x < n; x++) {
+                // Potential parents from the row above
+                int straight = matrix[y - 1][x];
+                int left = (x > 0) ? matrix[y - 1][x - 1] : Integer.MAX_VALUE;
+                int right = (x < n - 1) ? matrix[y - 1][x + 1] : Integer.MAX_VALUE;
+
+                // Update current cell with the minimum possible path sum
+                matrix[y][x] += Math.min(straight, Math.min(left, right));
+            }
+        }
+
+        // 2. The answer is the minimum value in the last row
+        int minPath = Integer.MAX_VALUE;
+        for (int x = 0; x < n; x++) {
+            minPath = Math.min(minPath, matrix[n - 1][x]);
+        }
+
+        return minPath;
+    }
+
+    
+
     // V1
+
 
 
     // V2

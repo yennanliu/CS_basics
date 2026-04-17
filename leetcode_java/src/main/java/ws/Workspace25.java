@@ -352,10 +352,119 @@ public class Workspace25 {
 
 
     // LC 931
+    // 10.27 - 37 am
+    /**
+     *  ->  return the minimum sum
+     *  of any falling path through matrix.
+     *
+     *    - n x n matrix
+     *
+     *    - can ONLY start from `first row`
+     *
+     *    - can ONLY move below dirs:
+     *       - (row + 1, col)
+     *       - (row + 1, col - 1)
+     *       - (row + 1, col + 1)
+     *
+     *
+     *
+     *
+     *
+     *  ----------------
+     *
+     *   IDEA 1) BRUTE FORCE ???
+     *
+     *
+     *   IDEA 2) DP ???
+     *
+     *      2D DP
+     *
+     *      - DP def
+     *
+     *           dp[i][j] = min path sum when visit (i,j)
+     *
+     *      - DP eq
+     *
+     *          `move backward ???`
+     *
+     *          dp[i][j] =
+     *              ( if still `in range` )
+     *              min ( dp[i-1][j], dp[i-1][j-1], dp[i+1][j+1] )
+     *
+     *
+     *
+     *
+     *  ----------------
+     *
+     * *    - can ONLY move below dirs:
+     *      *       - (row + 1, col)
+     *      *       - (row + 1, col - 1)
+     *      *       - (row + 1, col + 1)
+     *
+     */
     public int minFallingPathSum(int[][] matrix) {
+        // edge
 
-        return 0;
+        int n = matrix.length;
+
+        // ??
+        int[][] dp = new int[n + 1][n + 1]; // ??
+
+        // init ??
+       dp[0][0] = matrix[0][0];
+
+        for(int x = 1; x < n + 1; x++){
+            dp[0][x] = matrix[0][x];
+        }
+
+        for(int y = 1; y < n + 1; y++){
+            dp[y][0] += matrix[y][0];
+        }
+
+        int minPath = 100 * n * n; // ??
+
+        /**
+         *      * *    - can ONLY move below dirs:
+         *      *      *       - (row + 1, col)
+         *      *      *       - (row + 1, col - 1)
+         *      *      *       - (row + 1, col + 1)
+         *      *
+         */
+        // ???
+        for(int y = n + 1; y > 0; y--)
+            for(int x = n + 1; x > 0; x--){
+               // dp[0][x] = matrix[0][x];
+               int val1 = 100 * n * n;
+               int val2 = 100 * n * n;
+               int val3 = 100 * n * n;
+
+               // ??
+               if(y - 1 >= 0){
+                   val1 = matrix[y-1][x];
+               }
+                if(y - 1 >= 0 && x + 1 < n + 1){
+                    val2 = matrix[y-1][x+1];
+                }
+                if(y - 1 >= 0 && x + 1 < n + 1){
+                    val3 = matrix[y-1][x+1];
+                }
+
+                dp[y][x] = Math.min(dp[y][x],
+                        Math.min(Math.min(val1, val2), val3));
+            }
+
+        for(int x = 0; x < n + 1; x++){
+           minPath = Math.min(minPath, dp[0][x]);
+        }
+
+
+
+        return minPath;
     }
+
+
+
+
 
 
 
