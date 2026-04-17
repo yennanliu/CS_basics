@@ -25,8 +25,11 @@ func restoreIpAddresses(s string) []string {
 
 
 		for j := i; j < min(i+3, len(s)); j++ {
-			val, _ := strconv.Atoi(s[i:j+1])
-			if  val < 256 && (i == j || s[i] != '0') {
+			val, err := strconv.Atoi(s[i:j+1])
+			if err != nil {
+				break
+			}
+			if val < 256 && (i == j || s[i] != '0') {
 				backtrack(j+1 , dots + 1, currentIP + s[i:j+1] + ".")
 			}
 		}
