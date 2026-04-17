@@ -260,6 +260,18 @@ function generateLcExplorerHtml() {
       border-radius: var(--radius);
       overflow: hidden;
     }
+    .problem-header {
+      display: grid;
+      grid-template-columns: 4rem 1fr auto 8rem auto;
+      gap: 0.5rem;
+      align-items: center;
+      padding: 1rem;
+      background: var(--bg);
+      border-bottom: 2px solid var(--border);
+      font-weight: 600;
+      font-size: 0.85rem;
+      color: var(--text-light);
+    }
     .problem-row {
       display: grid;
       grid-template-columns: 4rem 1fr auto 8rem auto;
@@ -620,14 +632,25 @@ function generateLcExplorerHtml() {
       const resultInfo = document.getElementById('resultsInfo');
 
       if (problems.length === 0) {
-        container.innerHTML = '<div class="empty">No problems found</div>';
+        const message = state.searchQuery || state.difficulties.size > 0 || state.tags.size > 0
+          ? 'No problems match your filters. Try adjusting them.'
+          : 'No problems found';
+        container.innerHTML = \`<div class="empty">\${message}</div>\`;
         resultInfo.textContent = '';
         return;
       }
 
       resultInfo.textContent = \`Showing \${problems.length} of \${allProblems.length} problems\`;
 
-      container.innerHTML = problems.map(p => \`
+      const header = \`<div class="problem-header">
+        <div>#</div>
+        <div>Problem</div>
+        <div></div>
+        <div>Acceptance</div>
+        <div></div>
+      </div>\`;
+
+      const rows = problems.map(p => \`
         <div class="problem-row">
           <div class="problem-id">#\${p.id}</div>
           <div class="problem-title" onclick="openProblem('\${p.title}')" style="cursor: pointer;">\${p.title}</div>
@@ -639,6 +662,8 @@ function generateLcExplorerHtml() {
           </div>
         </div>
       \`).join('');
+
+      container.innerHTML = header + rows;
     }
 
     function openProblem(title) {

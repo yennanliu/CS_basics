@@ -270,8 +270,34 @@ public class Workspace25 {
      */
     // IDEA 1) SMALL PQ
     public int connectSticks(int[] sticks) {
-        return 0;
+        // edge
+
+        PriorityQueue<Integer> pq = new PriorityQueue<>(new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                int diff = o1 - o2;
+                return diff;
+            }
+        });
+
+        int cost = 0;
+
+        for(int x: sticks){
+            pq.add(x);
+        }
+
+        while (pq.size() > 1){
+            int s1 = pq.poll();
+            int s2 = pq.poll();
+            cost += (s1 + s2);
+            pq.add(s1 + s2);
+        }
+
+
+        return cost;
     }
+
+
 
 
 
