@@ -303,9 +303,28 @@ public class Workspace25 {
     // 8.20 - 30 am
     /**
      *  ->Return the length of the longest possible
-     *  word chain with words chosen from the given list of words.
+     *  word chain with words chosen
+     *  from the given list of words.
+     *
+     *  - wordA is a predecessor of wordB
+     *    - if and only if we can `insert`
+     *      exactly `one` letter anywhere in wordA
+     *      `without` changing the` order` of the
+     *      other characters to make it equal to wordB.
+     *
+     *
+     *   - A word chain is a sequence of words
+     *     [word1, word2, ..., wordk] with k >= 1
+     *
+     *      -> w1 is predecessor of w2
+     *         w2 is predecessor of w3
+     *         ...
      *
      *  ---------------
+     *
+     *   IDEA 1) BRUTE FORCE
+     *
+     *   IDEA 2) DP
      *
      *
      *  ---------------
