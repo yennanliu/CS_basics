@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Random LC Picker - CS Basics</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎲</text></svg>">
+  <style>
+    * { box-sizing: border-box; }
+    :root {
+      --bg: #fafafa;
+      --surface: #fff;
+      --text: #1a1a2e;
+      --text-light: #666;
+      --border: #e0e0e0;
+      --radius: 8px;
+      --accent: #2563eb;
+    }
+    [data-theme="dark"] {
+      --bg: #0f0f1a;
+      --surface: #1a1a2e;
+      --text: #e0e0e0;
+      --text-light: #aaa;
+      --border: #2a2a3e;
+    }
+    body {
+      margin: 0; padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      transition: background 0.3s, color 0.3s;
+    }
+
+    /* ── Navbar ── */
+    .navbar {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 2rem;
+      position: sticky; top: 0; z-index: 100;
+    }
+    .nav-content {
+      max-width: 900px; margin: 0 auto;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .logo { font-size: 1.1rem; font-weight: 700; color: var(--text); text-decoration: none; }
+    .nav-links { display: flex; gap: 1rem; list-style: none; margin: 0; padding: 0; }
+    .nav-links a { color: var(--text-light); text-decoration: none; font-size: 0.9rem; padding: 0.3rem 0; border-bottom: 2px solid transparent; transition: all 0.2s; }
+    .nav-links a:hover, .nav-links a.active { color: var(--text); border-bottom-color: var(--text); }
+    .theme-btn { background: none; border: none; font-size: 1.2rem; cursor: pointer; padding: 0.5rem; }
+
+    /* ── Main layout ── */
+    .container { max-width: 900px; margin: 2.5rem auto; padding: 0 1.5rem; }
+
+    .page-header { text-align: center; margin-bottom: 2.5rem; }
+    .page-header h1 { margin: 0 0 0.4rem; font-size: 2rem; }
+    .page-header p { color: var(--text-light); margin: 0; font-size: 0.95rem; }
+
+    /* ── Control panel ── */
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.75rem 2rem;
+      margin-bottom: 1.5rem;
+    }
+    .panel-title {
+      font-size: 0.8rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.08em; color: var(--text-light); margin: 0 0 1.25rem;
+    }
+
+    /* count row */
+    .count-row {
+      display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.5rem;
+    }
+    .count-label { font-weight: 600; font-size: 0.95rem; white-space: nowrap; }
+    .count-wrap {
+      display: flex; align-items: center;
+      border: 1px solid var(--border); border-radius: var(--radius);
+      overflow: hidden; background: var(--bg);
+    }
+    .count-btn {
+      background: none; border: none; width: 2.4rem; height: 2.4rem;
+      font-size: 1.3rem; cursor: pointer; color: var(--text);
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.15s;
+    }
+    .count-btn:hover { background: var(--border); }
+    .count-input {
+      width: 3.5rem; text-align: center; border: none;
+      border-left: 1px solid var(--border); border-right: 1px solid var(--border);
+      background: var(--bg); color: var(--text);
+      font-size: 1.1rem; font-weight: 700; padding: 0; height: 2.4rem;
+      font-family: inherit;
+    }
+    .count-input:focus { outline: none; }
+
+    .pick-btn {
+      padding: 0.6rem 2rem;
+      background: var(--text); color: var(--bg);
+      border: none; border-radius: var(--radius);
+      font-size: 1rem; font-weight: 700; cursor: pointer;
+      font-family: inherit; transition: opacity 0.2s;
+      display: flex; align-items: center; gap: 0.5rem;
+    }
+    .pick-btn:hover { opacity: 0.82; }
+    .reroll-btn {
+      padding: 0.6rem 1.2rem;
+      background: var(--surface); color: var(--text);
+      border: 1px solid var(--border); border-radius: var(--radius);
+      font-size: 0.9rem; font-weight: 600; cursor: pointer;
+      font-family: inherit; transition: border-color 0.2s;
+    }
+    .reroll-btn:hover { border-color: var(--text); }
+
+    /* filters */
+    .filters-row {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+    }
+    @media (max-width: 560px) { .filters-row { grid-template-columns: 1fr; } }
+
+    .filter-group label { display: block; font-size: 0.8rem; font-weight: 600; color: var(--text-light); margin-bottom: 0.45rem; text-transform: uppercase; letter-spacing: 0.05em; }
+    .tag-row { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    .tag-chip {
+      padding: 0.3rem 0.75rem; border: 1px solid var(--border);
+      border-radius: 999px; font-size: 0.8rem; cursor: pointer; user-select: none;
+      color: var(--text-light); background: var(--bg); transition: all 0.15s;
+    }
+    .tag-chip.active { background: var(--text); color: var(--bg); border-color: var(--text); }
+
+    .search-input {
+      width: 100%; padding: 0.55rem 0.85rem;
+      border: 1px solid var(--border); border-radius: var(--radius);
+      background: var(--bg); color: var(--text);
+      font-size: 0.9rem; font-family: inherit;
+    }
+    .search-input:focus { outline: none; border-color: var(--text); }
+
+    /* pool info */
+    .pool-info {
+      font-size: 0.82rem; color: var(--text-light); margin-top: 1rem;
+      padding-top: 1rem; border-top: 1px solid var(--border);
+    }
+
+    /* ── Results ── */
+    .results-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 0.75rem;
+    }
+    .results-count { font-size: 0.85rem; color: var(--text-light); font-weight: 600; }
+
+    .problem-card {
+      display: flex; align-items: center; gap: 0.85rem;
+      padding: 0.9rem 1.1rem;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); margin-bottom: 0.55rem;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .problem-card:hover { border-color: var(--text); box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+
+    .card-num {
+      font-family: monospace; font-size: 0.85rem;
+      color: var(--text-light); min-width: 3.2rem; font-weight: 600;
+    }
+    .card-title {
+      flex: 1; font-weight: 500; font-size: 0.95rem;
+      cursor: pointer; color: var(--text); text-decoration: none;
+    }
+    .card-title:hover { text-decoration: underline; }
+    .card-tags { display: flex; flex-wrap: wrap; gap: 0.3rem; }
+    .card-tag { font-size: 0.7rem; color: var(--text-light); background: var(--bg); border: 1px solid var(--border); border-radius: 4px; padding: 0.1rem 0.4rem; }
+
+    .diff-badge {
+      padding: 0.2rem 0.65rem; border-radius: 4px;
+      font-size: 0.72rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.05em; white-space: nowrap;
+    }
+    .diff-badge.Easy   { background: #1e7e34; color: #fff; }
+    .diff-badge.Medium { background: #b45309; color: #fff; }
+    .diff-badge.Hard   { background: #b91c1c; color: #fff; }
+    [data-theme="dark"] .diff-badge.Easy   { background: #166534; }
+    [data-theme="dark"] .diff-badge.Medium { background: #92400e; }
+    [data-theme="dark"] .diff-badge.Hard   { background: #991b1b; }
+
+    .card-actions { display: flex; gap: 0.4rem; }
+    .card-btn {
+      background: none; border: 1px solid var(--border); border-radius: 4px;
+      padding: 0.25rem 0.6rem; font-size: 0.75rem; cursor: pointer;
+      color: var(--text-light); transition: all 0.15s; white-space: nowrap;
+    }
+    .card-btn:hover { border-color: var(--text); color: var(--text); }
+
+    .empty-state {
+      text-align: center; color: var(--text-light);
+      padding: 3rem 1rem; font-size: 0.95rem;
+    }
+    .empty-state .emoji { font-size: 3rem; display: block; margin-bottom: 0.75rem; }
+
+    .loading { text-align: center; padding: 3rem; color: var(--text-light); }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-content">
+      <a href="index.html" class="logo">CS Basics</a>
+      <ul class="nav-links">
+        <li><a href="lc-explorer.html">LC Explorer</a></li>
+        <li><a href="lc-random-picker.html" class="active">🎲 Random Picker</a></li>
+        <li><a href="cheatsheets.html">Cheat Sheets</a></li>
+        <li><a href="faqs.html">FAQs</a></li>
+      </ul>
+      <button class="theme-btn" onclick="toggleTheme()" title="Toggle theme">🌓</button>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="page-header">
+      <h1>🎲 Random LC Picker</h1>
+      <p>Pick random LeetCode problems from your list. Filter first, then roll.</p>
+    </div>
+
+    <div class="panel" id="controlPanel">
+      <div class="count-row">
+        <span class="count-label">Pick</span>
+        <div class="count-wrap">
+          <button class="count-btn" onclick="adjustCount(-1)">−</button>
+          <input class="count-input" type="number" id="countInput" value="5" min="1" max="50">
+          <button class="count-btn" onclick="adjustCount(1)">+</button>
+        </div>
+        <span class="count-label">problems</span>
+        <button class="pick-btn" id="pickBtn" onclick="pick()" disabled>🎲 Pick!</button>
+        <button class="reroll-btn" id="rerollBtn" style="display:none" onclick="pick()">↺ Re-roll</button>
+      </div>
+
+      <div class="filters-row">
+        <div class="filter-group">
+          <label>Difficulty</label>
+          <div class="tag-row" id="diffChips">
+            <span class="tag-chip" data-diff="Easy"   onclick="toggleDiff('Easy')">Easy</span>
+            <span class="tag-chip" data-diff="Medium" onclick="toggleDiff('Medium')">Medium</span>
+            <span class="tag-chip" data-diff="Hard"   onclick="toggleDiff('Hard')">Hard</span>
+          </div>
+        </div>
+        <div class="filter-group">
+          <label>Search title / #</label>
+          <input class="search-input" type="text" id="searchInput" placeholder="e.g. Two Sum or 1" oninput="onSearch()">
+        </div>
+      </div>
+
+      <div class="pool-info" id="poolInfo">Loading problems…</div>
+    </div>
+
+    <div id="resultsSection" style="display:none">
+      <div class="results-header">
+        <span class="results-count" id="resultsCount"></span>
+      </div>
+      <div id="resultsList"></div>
+    </div>
+
+    <div class="loading" id="loadingMsg">Loading…</div>
+  </div>
+
+  <script>
+    let allProblems = [];
+    const state = { difficulties: new Set(), search: '' };
+
+    /* ── Data ── */
+    async function loadData() {
+      try {
+        const res = await fetch('./data/lc-problems.json');
+        const data = await res.json();
+        allProblems = Array.isArray(data) ? data : (data.problems || []);
+        document.getElementById('loadingMsg').style.display = 'none';
+        document.getElementById('pickBtn').disabled = false;
+        updatePoolInfo();
+      } catch (e) {
+        document.getElementById('loadingMsg').textContent = 'Failed to load problems.';
+      }
+    }
+
+    /* ── Filters ── */
+    function filtered() {
+      const q = state.search.toLowerCase();
+      return allProblems.filter(p => {
+        const matchSearch = !q || p.title.toLowerCase().includes(q) || String(p.id).includes(q);
+        const matchDiff = state.difficulties.size === 0 || state.difficulties.has(p.difficulty);
+        return matchSearch && matchDiff;
+      });
+    }
+
+    function updatePoolInfo() {
+      const pool = filtered();
+      document.getElementById('poolInfo').textContent =
+        `Pool: ${pool.length} problem${pool.length !== 1 ? 's' : ''} available`;
+    }
+
+    function toggleDiff(d) {
+      state.difficulties.has(d) ? state.difficulties.delete(d) : state.difficulties.add(d);
+      document.querySelector(`[data-diff="${d}"]`).classList.toggle('active');
+      updatePoolInfo();
+    }
+
+    function onSearch() {
+      state.search = document.getElementById('searchInput').value;
+      updatePoolInfo();
+    }
+
+    function adjustCount(delta) {
+      const el = document.getElementById('countInput');
+      el.value = Math.max(1, Math.min(50, parseInt(el.value || 5) + delta));
+    }
+
+    /* ── Pick ── */
+    function pick() {
+      const count = Math.max(1, Math.min(50, parseInt(document.getElementById('countInput').value) || 5));
+      const pool = filtered();
+      const section = document.getElementById('resultsSection');
+      const list = document.getElementById('resultsList');
+
+      if (pool.length === 0) {
+        section.style.display = '';
+        list.innerHTML = '<div class="empty-state"><span class="emoji">🤷</span>No problems match your filters.</div>';
+        document.getElementById('resultsCount').textContent = '';
+        document.getElementById('rerollBtn').style.display = 'none';
+        return;
+      }
+
+      const shuffled = [...pool].sort(() => Math.random() - 0.5);
+      const picked = shuffled.slice(0, Math.min(count, pool.length));
+
+      section.style.display = '';
+      document.getElementById('rerollBtn').style.display = '';
+      document.getElementById('resultsCount').textContent =
+        `${picked.length} problem${picked.length !== 1 ? 's' : ''} picked`;
+
+      list.innerHTML = picked.map(p => {
+        const tagsHtml = (p.tags || []).slice(0, 4).map(t =>
+          `<span class="card-tag">${t}</span>`).join('');
+        const safeTitle = p.title.replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+        return `
+          <div class="problem-card">
+            <span class="card-num">#${p.id}</span>
+            <span class="card-title" onclick="openLC('${safeTitle}')">${p.title}</span>
+            <div class="card-tags">${tagsHtml}</div>
+            <span class="diff-badge ${p.difficulty}">${p.difficulty}</span>
+            <div class="card-actions">
+              <button class="card-btn" onclick="openLC('${safeTitle}')">LC</button>
+              <button class="card-btn" onclick="openGH('${p.id}','${safeTitle}')">GH</button>
+            </div>
+          </div>`;
+      }).join('');
+
+      section.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    /* ── Open helpers ── */
+    function openLC(title) {
+      const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+      window.open(`https://leetcode.com/problems/${slug}/`, '_blank');
+    }
+    function openGH(id, title) {
+      const q = encodeURIComponent(`${id} ${title}`);
+      window.open(`https://github.com/yennanliu/CS_basics/search?q=${q}`, '_blank');
+    }
+
+    /* ── Theme ── */
+    function toggleTheme() {
+      const html = document.documentElement;
+      const next = html.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+      html.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    }
+    document.documentElement.setAttribute('data-theme', localStorage.getItem('theme') || 'light');
+
+    /* ── Keyboard ── */
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Enter' && document.activeElement !== document.getElementById('searchInput')) pick();
+    });
+
+    loadData();
+  </script>
+</body>
+</html>
