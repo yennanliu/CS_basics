@@ -438,29 +438,177 @@ def climbStairs_v2(n):
 - Avoids the mental overhead of mapping "step i" to "index i-1"
 
 ### Template 2: 2D Grid DP
+
+#### 🎯 Pattern (LC 64 — Minimum Path Sum)
+
+| Aspect | Detail |
+|--------|--------|
+| **Pattern** | 2D Grid DP — move right/down only |
+| **State** | `dp[i][j]` = min cost to reach cell `(i, j)` from `(0, 0)` |
+| **Transition** | `dp[i][j] = grid[i][j] + min(dp[i-1][j], dp[i][j-1])` |
+| **Base Cases** | First row: prefix sum left→right; First col: prefix sum top→bottom |
+| **Answer** | `dp[m-1][n-1]` |
+| **Time** | O(m × n) |
+| **Space** | O(m × n) standard, O(n) space-optimized |
+
+#### 💡 Core Idea
+
+> At each cell, the minimum cost path must have come from either **above** or **left** (only two options since movement is right/down only). Take the minimum of the two and add the current cell's value.
+
+**Why no `visited` array needed** (unlike LC 1631):
+- Movement is one-directional (right/down only) → no cycles, no revisiting
+- Each cell is computed exactly once in row-major order
+- DP fills naturally from top-left to bottom-right
+
+#### **Approach 1: 2D DP** (Standard)
+
+```java
+public int minPathSum(int[][] grid) {
+    int m = grid.length;
+    int n = grid[0].length;
+    int[][] dp = new int[m][n];
+
+    // Base: starting cell
+    dp[0][0] = grid[0][0];
+
+    // Base: first column — only one way (from above)
+    for (int i = 1; i < m; i++)
+        dp[i][0] = dp[i - 1][0] + grid[i][0];
+
+    // Base: first row — only one way (from left)
+    for (int j = 1; j < n; j++)
+        dp[0][j] = dp[0][j - 1] + grid[0][j];
+
+    // Fill rest: min of coming from above vs left
+    for (int i = 1; i < m; i++)
+        for (int j = 1; j < n; j++)
+            dp[i][j] = grid[i][j] + Math.min(dp[i - 1][j], dp[i][j - 1]);
+
+    return dp[m - 1][n - 1];
+}
+```
+
+#### **Approach 2: In-place DP** (Modify grid directly — O(1) extra space)
+
+```java
+public int minPathSum(int[][] grid) {
+    int m = grid.length, n = grid[0].length;
+
+    // First column prefix sum
+    for (int i = 1; i < m; i++)
+        grid[i][0] += grid[i - 1][0];
+
+    // First row prefix sum
+    for (int j = 1; j < n; j++)
+        grid[0][j] += grid[0][j - 1];
+
+    // Fill rest in-place
+    for (int i = 1; i < m; i++)
+        for (int j = 1; j < n; j++)
+            grid[i][j] += Math.min(grid[i - 1][j], grid[i][j - 1]);
+
+    return grid[m - 1][n - 1];
+}
+```
+
+**Trade-off**: Modifies the input grid. Use when space is critical and mutation is acceptable.
+
+#### **Approach 3: Space-Optimized 1D DP** (O(m) extra space)
+
+```java
+public int minPathSum(int[][] grid) {
+    int m = grid.length, n = grid[0].length;
+
+    // cur[i] = min cost to reach current column at row i
+    int[] cur = new int[m];
+    cur[0] = grid[0][0];
+
+    // Initialize first column
+    for (int i = 1; i < m; i++)
+        cur[i] = cur[i - 1] + grid[i][0];
+
+    // Process column by column
+    for (int j = 1; j < n; j++) {
+        cur[0] += grid[0][j];  // First row: only from left
+        for (int i = 1; i < m; i++)
+            cur[i] = Math.min(cur[i - 1], cur[i]) + grid[i][j];
+            //                ↑ from above    ↑ from left (prev col, same row)
+    }
+
+    return cur[m - 1];
+}
+```
+
+**Key Insight**: `cur[i]` before update = cost of reaching `(i, j-1)` (from left). After update of `cur[i-1]` = cost of reaching `(i-1, j)` (from above). So `min(cur[i-1], cur[i])` is exactly `min(above, left)`.
+
+#### **Approach Comparison**
+
+| Approach | Space | Modifies Input | Notes |
+|----------|-------|----------------|-------|
+| 2D DP | O(m×n) | No | Clearest to read |
+| In-place DP | O(1) | Yes ⚠️ | Best space, but destructive |
+| 1D DP (1 row) | O(m) | No | Good balance |
+
+#### **⚠️ LC 64 vs LC 1631: When to Use DP vs Dijkstra**
+
+| | LC 64 (Min Path Sum) | LC 1631 (Min Effort Path) |
+|---|---|---|
+| **Movement** | Right + Down only | All 4 directions |
+| **Cost** | Accumulative sum | Max of step differences |
+| **Revisit cells?** | No (one direction) | Yes (better path possible) |
+| **Algorithm** | 2D DP | Dijkstra + min-heap |
+| **`visited` needed?** | No | Yes |
+| **Why DP works** | No cycles, DAG structure | DP fails: can revisit |
+
+**Rule**: If movement is constrained to one direction (right/down) → use **2D DP**. If all 4 directions are allowed → use **Dijkstra** (or BFS with priority).
+
+#### **Similar LeetCode Problems** 📚
+
+| Problem | LC # | Key Difference | Algorithm |
+|---------|------|----------------|-----------|
+| **Minimum Path Sum** | 64 | Sum along path, right/down only | 2D DP |
+| **Unique Paths** | 62 | Count paths (not minimize sum) | 2D DP |
+| **Unique Paths II** | 63 | With obstacles | 2D DP (skip obstacles) |
+| **Triangle** | 120 | Triangle shape, top→bottom | 1D DP (bottom-up) |
+| **Minimum Falling Path Sum** | 931 | Can move diagonally ±1 | 2D DP |
+| **Maximal Square** | 221 | Find largest square of 1s | 2D DP (`min` of 3 neighbors) |
+| **Path With Min Effort** | 1631 | 4 directions, max-diff cost | Dijkstra |
+| **Shortest Path in Grid with Obstacles** | 1293 | BFS with k obstacle eliminations | BFS + state |
+
+#### **Visual Trace Example**
+
+```
+grid = [[1,3,1],
+        [1,5,1],
+        [4,2,1]]
+
+After DP:
+dp = [[1, 4, 5],
+      [2, 7, 6],
+      [6, 8, 7]]
+
+Path: 1→3→1→1→1 = 7
+```
+
 ```python
+# Python equivalent
 def grid_dp(grid):
-    """2D DP for grid/matrix problems"""
     if not grid or not grid[0]:
         return 0
-    
     m, n = len(grid), len(grid[0])
     dp = [[0] * n for _ in range(m)]
-    
-    # Initialize first row and column
     dp[0][0] = grid[0][0]
     for i in range(1, m):
         dp[i][0] = dp[i-1][0] + grid[i][0]
     for j in range(1, n):
         dp[0][j] = dp[0][j-1] + grid[0][j]
-    
-    # Fill DP table
     for i in range(1, m):
         for j in range(1, n):
             dp[i][j] = min(dp[i-1][j], dp[i][j-1]) + grid[i][j]
-    
     return dp[m-1][n-1]
 ```
+
+**File Reference**: `leetcode_java/src/main/java/LeetCodeJava/DynamicProgramming/MinimumPathSum.java`
 
 ### Template 3: Interval DP
 ```python
