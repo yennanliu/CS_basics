@@ -52,6 +52,19 @@ public class MinimumFallingPathSum {
     public int minFallingPathSum_0_1(int[][] matrix) {
         int n = matrix.length;
 
+        /** NOTE !!!
+         *
+         *  DP def:
+         *
+         *   - dp[i][j] = minimum path sum to
+         *                reach `cell` (i, j)
+         *
+         *
+         *  -------------
+         *
+         *  2. dp size = n !!!!
+         *
+         */
         int[][] dp = new int[n][n];
 
         // base case: first row
@@ -60,8 +73,24 @@ public class MinimumFallingPathSum {
         }
 
         // fill DP
+        /** NOTE !!!
+         *
+         *   1. both loop move `forward`
+         *      -> e.g. from 1 -> n, or  0 -> n
+         */
         for (int i = 1; i < n; i++) {
             for (int j = 0; j < n; j++) {
+                /** NOTE !!!
+                 *
+                 *    DP eq:
+                 *
+                 *     dp[i][j] = matrix[i][j] + min(
+                 *        dp[i-1][j],        // up
+                 *        dp[i-1][j-1],      // up-left
+                 *        dp[i-1][j+1]       // up-right
+                 *      )
+                 *
+                 */
                 int up = dp[i - 1][j];
                 int left = (j > 0) ? dp[i - 1][j - 1] : Integer.MAX_VALUE;
                 int right = (j < n - 1) ? dp[i - 1][j + 1] : Integer.MAX_VALUE;
@@ -107,7 +136,7 @@ public class MinimumFallingPathSum {
         return minPath;
     }
 
-    
+
 
     // V1
 
