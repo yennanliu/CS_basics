@@ -299,6 +299,22 @@ public class Workspace25 {
 
 
 
+    // LC 1048
+    // 8.20 - 30 am
+    /**
+     *  ->Return the length of the longest possible
+     *  word chain with words chosen from the given list of words.
+     *
+     *  ---------------
+     *
+     *
+     *  ---------------
+     *
+     */
+    public int longestStrChain(String[] words) {
+
+        return 0;
+    }
 
 
 
