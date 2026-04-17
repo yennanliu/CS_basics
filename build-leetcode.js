@@ -272,6 +272,19 @@ function generateLcExplorerHtml() {
       font-size: 0.85rem;
       color: var(--text-light);
     }
+    .header-cell {
+      cursor: pointer;
+      user-select: none;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+    .header-cell:hover {
+      color: var(--text);
+    }
+    .sort-indicator {
+      font-size: 0.7rem;
+    }
     .problem-row {
       display: grid;
       grid-template-columns: 4rem 1fr auto 8rem auto;
@@ -508,7 +521,9 @@ function generateLcExplorerHtml() {
       difficulties: new Set(),
       tags: new Set(),
       acceptanceMin: 0,
-      acceptanceMax: 100
+      acceptanceMax: 100,
+      sortBy: 'id',
+      sortAsc: true
     };
 
     async function loadData() {
@@ -600,6 +615,16 @@ function generateLcExplorerHtml() {
       }, 300);
     }
 
+    function sortProblems(field) {
+      if (state.sortBy === field) {
+        state.sortAsc = !state.sortAsc;
+      } else {
+        state.sortBy = field;
+        state.sortAsc = true;
+      }
+      filterProblems();
+    }
+
     function addTag() {
       const tagSelect = document.getElementById('tagSelect');
       const tag = tagSelect.value;
@@ -666,6 +691,22 @@ function generateLcExplorerHtml() {
         return matchesSearch && matchesDiff && matchesTags && matchesAcceptance;
       });
 
+      // Sort results
+      results.sort((a, b) => {
+        let aVal, bVal;
+        switch(state.sortBy) {
+          case 'id': aVal = parseInt(a.id); bVal = parseInt(b.id); break;
+          case 'title': aVal = a.title.toLowerCase(); bVal = b.title.toLowerCase(); break;
+          case 'difficulty':
+            const diffOrder = { 'Easy': 0, 'Medium': 1, 'Hard': 2 };
+            aVal = diffOrder[a.difficulty]; bVal = diffOrder[b.difficulty];
+            break;
+          case 'acceptance': aVal = a.acceptance; bVal = b.acceptance; break;
+          default: aVal = parseInt(a.id); bVal = parseInt(b.id);
+        }
+        return state.sortAsc ? (aVal < bVal ? -1 : 1) : (aVal > bVal ? -1 : 1);
+      });
+
       renderProblems(results);
     }
 
@@ -684,11 +725,16 @@ function generateLcExplorerHtml() {
 
       resultInfo.textContent = \`Showing \${problems.length} of \${allProblems.length} problems\`;
 
+      const getSortIndicator = (field) => {
+        if (state.sortBy !== field) return '';
+        return \` <span class="sort-indicator">\${state.sortAsc ? '▲' : '▼'}</span>\`;
+      };
+
       const header = \`<div class="problem-header">
-        <div>#</div>
-        <div>Problem</div>
-        <div></div>
-        <div>Acceptance</div>
+        <div class="header-cell" onclick="sortProblems('id')">#\${getSortIndicator('id')}</div>
+        <div class="header-cell" onclick="sortProblems('title')">Problem\${getSortIndicator('title')}</div>
+        <div class="header-cell" onclick="sortProblems('difficulty')">Diff\${getSortIndicator('difficulty')}</div>
+        <div class="header-cell" onclick="sortProblems('acceptance')">Acceptance\${getSortIndicator('acceptance')}</div>
         <div></div>
       </div>\`;
 
