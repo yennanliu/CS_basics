@@ -969,14 +969,16 @@ try {
   fs.writeFileSync('_site/data/lc-problems.json', JSON.stringify(jsonData, null, 2));
   console.log(`✓ Created _site/data/lc-problems.json`);
 
-  // Generate lc-explorer.html
-  console.log('Generating lc-explorer.html...');
+  // Generate leetcode.html (and lc-explorer.html as alias)
+  console.log('Generating leetcode.html...');
   const html = generateLcExplorerHtml();
+  fs.writeFileSync('_site/leetcode.html', html);
   fs.writeFileSync('_site/lc-explorer.html', html);
+  console.log(`✓ Created _site/leetcode.html`);
   console.log(`✓ Created _site/lc-explorer.html`);
 
   console.log('\n✅ Build complete!');
-  console.log(`   Open: _site/lc-explorer.html`);
+  console.log(`   Open: _site/leetcode.html`);
 
 } catch (err) {
   console.error('❌ Error:', err.message);
