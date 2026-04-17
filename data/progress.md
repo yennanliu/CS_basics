@@ -33,7 +33,8 @@
 	- heap.md  (OK)
 	- intervals.md  (OK)
 	- java_trick.md
-	- kadane_algorithm.md (TODO: LC examples)
+	- kadane_algorithm.md (OK)
+	- linked_list.md  (TODO: LC examples)
 
 - to review
 - needcode `250` - similar LC by AI
@@ -341,6 +342,9 @@
 		- 358,621,767
 		- 992
 		- 227,224
+	- todo (20260417)
+		- 918
+		- 1186,978
 
  	==================================
 
