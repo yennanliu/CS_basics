@@ -417,12 +417,17 @@ function generateLcExplorerHtml() {
     <div class="controls">
       <div class="control-group">
         <label class="control-label">Search</label>
-        <input type="text" id="searchInput" placeholder="Problem name or number..." oninput="filterProblems()">
+        <input type="text" id="searchInput" placeholder="Problem name or number..." oninput="debounceSearch()">
       </div>
 
       <div class="control-group">
         <label class="control-label">Difficulty</label>
         <div class="tag-filters" id="difficultyFilters"></div>
+      </div>
+
+      <div class="control-group">
+        <label class="control-label">Acceptance</label>
+        <div class="tag-filters" id="acceptanceFilters"></div>
       </div>
 
       <div class="control-group">
@@ -443,10 +448,13 @@ function generateLcExplorerHtml() {
   <script>
     let allProblems = [];
     let allTags = [];
+    let searchTimeout;
     const state = {
       searchQuery: '',
       difficulties: new Set(),
-      tags: new Set()
+      tags: new Set(),
+      acceptanceMin: 0,
+      acceptanceMax: 100
     };
 
     async function loadData() {
@@ -476,6 +484,20 @@ function generateLcExplorerHtml() {
           diffContainer.appendChild(btn);
         });
 
+        const accContainer = document.getElementById('acceptanceFilters');
+        const accRanges = [
+          { label: '0-30%', min: 0, max: 30 },
+          { label: '30-60%', min: 30, max: 60 },
+          { label: '60-100%', min: 60, max: 100 }
+        ];
+        accRanges.forEach(range => {
+          const btn = document.createElement('button');
+          btn.className = 'tag-btn';
+          btn.textContent = range.label;
+          btn.onclick = () => toggleAcceptance(range.min, range.max, btn);
+          accContainer.appendChild(btn);
+        });
+
         const tagSelect = document.getElementById('tagSelect');
         allTags.forEach(tag => {
           const option = document.createElement('option');
@@ -499,6 +521,29 @@ function generateLcExplorerHtml() {
         state.difficulties.delete(diff);
       }
       filterProblems();
+    }
+
+    function toggleAcceptance(min, max, btn) {
+      btn.classList.toggle('active');
+      if (btn.classList.contains('active')) {
+        state.acceptanceMin = min;
+        state.acceptanceMax = max;
+      } else {
+        state.acceptanceMin = 0;
+        state.acceptanceMax = 100;
+      }
+      // Only allow one acceptance filter at a time
+      document.getElementById('acceptanceFilters').querySelectorAll('.tag-btn').forEach(b => {
+        if (b !== btn) b.classList.remove('active');
+      });
+      filterProblems();
+    }
+
+    function debounceSearch() {
+      clearTimeout(searchTimeout);
+      searchTimeout = setTimeout(() => {
+        filterProblems();
+      }, 300);
     }
 
     function addTag() {
@@ -561,7 +606,10 @@ function generateLcExplorerHtml() {
         const matchesTags = state.tags.size === 0 ||
           p.tags.some(t => state.tags.has(t));
 
-        return matchesSearch && matchesDiff && matchesTags;
+        const matchesAcceptance = p.acceptance >= state.acceptanceMin &&
+          p.acceptance <= state.acceptanceMax;
+
+        return matchesSearch && matchesDiff && matchesTags && matchesAcceptance;
       });
 
       renderProblems(results);
@@ -642,6 +690,9 @@ function generateLcExplorerHtml() {
       if (state.tags.size > 0) {
         params.set('tags', Array.from(state.tags).join(','));
       }
+      if (state.acceptanceMin !== 0 || state.acceptanceMax !== 100) {
+        params.set('acceptance', \`\${state.acceptanceMin}-\${state.acceptanceMax}\`);
+      }
 
       if (params.toString()) {
         const url = \`\${window.location.href.split('?')[0]}?\${params.toString()}\`;
@@ -667,9 +718,20 @@ function generateLcExplorerHtml() {
         const diffs = params.get('difficulty').split(',');
         diffs.forEach(diff => {
           state.difficulties.add(diff);
-          document.querySelectorAll('.tag-btn').forEach(btn => {
+          document.querySelectorAll('#difficultyFilters .tag-btn').forEach(btn => {
             if (btn.textContent === diff) btn.classList.add('active');
           });
+        });
+      }
+
+      if (params.has('acceptance')) {
+        const [min, max] = params.get('acceptance').split('-').map(Number);
+        state.acceptanceMin = min;
+        state.acceptanceMax = max;
+        document.querySelectorAll('#acceptanceFilters .tag-btn').forEach(btn => {
+          if (btn.textContent.includes(min) || btn.textContent.includes(max)) {
+            btn.classList.add('active');
+          }
         });
       }
 
