@@ -326,6 +326,21 @@ public class Workspace25 {
      *
      *   IDEA 2) DP
      *
+     *     ???
+     *
+     *     DP def:
+     *
+     *      dp[i][j]:
+     *         if `word i` is predecessor of `word j` ???
+     *
+     *     DP eq
+     *       dp[i][j] =
+     *
+     *          if(word i -1 is predecessor of word i)
+     *            dp[i][j] = max( dp[i-1][j] + 1, dp[i][j] )
+     *          else:
+     *            dp[i][j] = 1 ???
+     *
      *
      *  ---------------
      *
