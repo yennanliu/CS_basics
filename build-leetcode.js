@@ -340,6 +340,21 @@ function generateLcExplorerHtml() {
       padding: 3rem;
       color: var(--text-light);
     }
+    .help-text {
+      font-size: 0.8rem;
+      color: var(--text-light);
+      padding: 0.75rem 1.5rem;
+      background: var(--bg);
+      border-top: 1px solid var(--border);
+    }
+    .help-text kbd {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      padding: 0.2rem 0.4rem;
+      font-family: monospace;
+      font-size: 0.75rem;
+    }
     .button {
       padding: 0.6rem 1.5rem;
       background: var(--text);
@@ -454,6 +469,13 @@ function generateLcExplorerHtml() {
 
     <div id="problemsContainer" class="problems-list">
       <div class="loading">Loading problems...</div>
+    </div>
+
+    <div class="help-text">
+      <strong>Shortcuts:</strong>
+      <kbd>Esc</kbd> clear filters •
+      <kbd>r</kbd> random problem •
+      click titles to open on LeetCode
     </div>
   </div>
 
