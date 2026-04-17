@@ -55,8 +55,20 @@ public class LongestStringChain {
     // V0-1
     // IDEA: 1D DP (gpt)
     public int longestStrChain_0_1(String[] words) {
+
+        /** NOTE !!
+         *
+         *  need to sort array first !!!
+         *  (len : small -> big)
+         */
         Arrays.sort(words, (a, b) -> a.length() - b.length());
 
+        /** NOTE !!
+         *
+         *   DP def:
+         *
+         *   dp[word] = longest chain ending at "word"
+         */
         Map<String, Integer> dp = new HashMap<>();
         int max = 1;
 
@@ -65,6 +77,14 @@ public class LongestStringChain {
 
             // try removing one char
             for (int i = 0; i < word.length(); i++) {
+                /** NOTE !!!
+                 *
+                 *   DP eq:
+                 *
+                 *   For each word, try removing one character:
+                 *     -> If the shorter word exists → it’s a predecessor
+                 *
+                 */
                 String prev = word.substring(0, i) + word.substring(i + 1);
                 best = Math.max(best, dp.getOrDefault(prev, 0) + 1);
             }
