@@ -282,6 +282,25 @@ function generateLcExplorerHtml() {
       background: var(--surface);
       transition: background 0.15s;
     }
+    .problem-title-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+    .problem-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.3rem;
+    }
+    .tag-badge {
+      font-size: 0.65rem;
+      padding: 0.2rem 0.4rem;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      color: var(--text-light);
+      white-space: nowrap;
+    }
     .problem-row:hover {
       background: var(--bg);
     }
@@ -672,18 +691,29 @@ function generateLcExplorerHtml() {
         <div></div>
       </div>\`;
 
-      const rows = problems.map(p => \`
-        <div class="problem-row">
-          <div class="problem-id">#\${p.id}</div>
-          <div class="problem-title" onclick="openProblem('\${p.title}')" style="cursor: pointer;">\${p.title}</div>
-          <div class="difficulty \${p.difficulty}">\${p.difficulty}</div>
-          <div class="problem-acceptance">\${p.acceptance}%</div>
-          <div class="problem-actions">
-            <button class="icon-btn" title="Open on LeetCode" onclick="openProblem('\${p.title}')">LC</button>
-            <button class="icon-btn" title="Search GitHub" onclick="searchGitHub('\${p.id}', '\${p.title}')">GH</button>
+      const rows = problems.map(p => {
+        const tagsHtml = p.tags.length > 0 ? \`
+          <div class="problem-tags">
+            \${p.tags.slice(0, 3).map(tag => \`<span class="tag-badge">\${tag}</span>\`).join('')}
+            \${p.tags.length > 3 ? \`<span class="tag-badge">+\${p.tags.length - 3}</span>\` : ''}
           </div>
-        </div>
-      \`).join('');
+        \` : '';
+        return \`
+          <div class="problem-row">
+            <div class="problem-id">#\${p.id}</div>
+            <div class="problem-title-wrapper">
+              <div class="problem-title" onclick="openProblem('\${p.title}')" style="cursor: pointer;">\${p.title}</div>
+              \${tagsHtml}
+            </div>
+            <div class="difficulty \${p.difficulty}">\${p.difficulty}</div>
+            <div class="problem-acceptance">\${p.acceptance}%</div>
+            <div class="problem-actions">
+              <button class="icon-btn" title="Open on LeetCode" onclick="openProblem('\${p.title}')">LC</button>
+              <button class="icon-btn" title="Search GitHub" onclick="searchGitHub('\${p.id}', '\${p.title}')">GH</button>
+            </div>
+          </div>
+        \`;
+      }).join('');
 
       container.innerHTML = header + rows;
     }
