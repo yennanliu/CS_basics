@@ -457,6 +457,7 @@ function generateLcExplorerHtml() {
       <button class="button button-secondary" onclick="clearFilters()">Clear Filters</button>
       <button class="button button-secondary" onclick="exportCSV()">Export CSV</button>
       <button class="button button-secondary" onclick="shareFilters()">Share Filters</button>
+      <button class="button button-secondary" onclick="copyListMarkdown()">Copy List</button>
       <div class="results-info" id="resultsInfo"></div>
     </div>
 
@@ -781,6 +782,34 @@ function generateLcExplorerHtml() {
       } else {
         alert('No filters to share');
       }
+    }
+
+    function copyListMarkdown() {
+      const query = document.getElementById('searchInput').value.toLowerCase();
+      let results = allProblems.filter(p => {
+        const matchesSearch = !query ||
+          p.title.toLowerCase().includes(query) ||
+          p.id.includes(query);
+        const matchesDiff = state.difficulties.size === 0 ||
+          state.difficulties.has(p.difficulty);
+        const matchesTags = state.tags.size === 0 ||
+          p.tags.some(t => state.tags.has(t));
+        const matchesAcceptance = p.acceptance >= state.acceptanceMin &&
+          p.acceptance <= state.acceptanceMax;
+        return matchesSearch && matchesDiff && matchesTags && matchesAcceptance;
+      });
+
+      const markdown = \`# LeetCode Problems (\${results.length})
+
+\${results.map(p =>
+        \`- [\${p.id}. \${p.title}](https://leetcode.com/problems/\${p.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}) [\${p.difficulty}] (\${p.acceptance}%)\`
+      ).join('\\n')}\`;
+
+      navigator.clipboard.writeText(markdown).then(() => {
+        alert(\`Copied \${results.length} problems to clipboard!\`);
+      }).catch(() => {
+        prompt('Copy this list:', markdown);
+      });
     }
 
     function restoreFiltersFromURL() {
