@@ -2054,6 +2054,9 @@ jobs:
     - name: Build LeetCode Explorer page
       run: node build-leetcode.js
 
+    - name: Ensure navigation pages exist
+      run: node ensure-nav-pages.js
+
     - name: Upload artifact
       uses: actions/upload-pages-artifact@v3
 
