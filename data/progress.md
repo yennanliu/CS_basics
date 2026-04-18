@@ -1,6 +1,6 @@
 # Progress
 
-# 2026-04-17
+# 2026-04-18
 
 - LC weeekly 103
 	- lc_weekly_gemini.md
@@ -34,7 +34,7 @@
 	- intervals.md  (OK)
 	- java_trick.md
 	- kadane_algorithm.md (OK)
-	- linked_list.md  (TODO: LC examples)
+	- linked_list.md  (TODO: LC examples) - `2-9) Swap Nodes in Pairs`
 
 - to review
 - needcode `250` - similar LC by AI
@@ -345,6 +345,8 @@
 	- todo (20260417)
 		- 918
 		- 1186,978
+	- todo (20260418)
+		- 92,725,19,143
 
  	==================================
 
