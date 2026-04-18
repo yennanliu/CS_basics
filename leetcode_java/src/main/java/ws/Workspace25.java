@@ -28,8 +28,18 @@ public class Workspace25 {
      *
      *
      */
-    // IDEA 1) 2 PASS DFS / BFS
+    // 16.55 - 17.05
     public int countSubIslands(int[][] grid1, int[][] grid2) {
+
+
+        return 0;
+    }
+
+
+
+
+    // IDEA 1) 2 PASS DFS / BFS
+    public int countSubIslands_99(int[][] grid1, int[][] grid2) {
         // edge
 
         int l = grid1.length;

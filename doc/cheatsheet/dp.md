@@ -541,13 +541,46 @@ public int minPathSum(int[][] grid) {
 
 **Key Insight**: `cur[i]` before update = cost of reaching `(i, j-1)` (from left). After update of `cur[i-1]` = cost of reaching `(i-1, j)` (from above). So `min(cur[i-1], cur[i])` is exactly `min(above, left)`.
 
+#### **Approach 4: Top-Down Memoization** (Recursive)
+
+```java
+public int minPathSum(int[][] grid) {
+    int m = grid.length - 1;
+    int n = grid[0].length - 1;
+    int[][] dp = new int[m + 1][n + 1];
+    for (int[] row : dp)
+        Arrays.fill(row, -1);
+    return helper(grid, m, n, dp);
+}
+
+// helper(m, n) = min path sum from (0,0) to (m,n)
+private int helper(int[][] grid, int m, int n, int[][] dp) {
+    if (m == 0 && n == 0) return grid[0][0];
+    if (m == 0) {
+        dp[m][n] = grid[m][n] + helper(grid, m, n - 1, dp);
+        return dp[m][n];
+    }
+    if (n == 0) {
+        dp[m][n] = grid[m][n] + helper(grid, m - 1, n, dp);
+        return dp[m][n];
+    }
+    if (dp[m][n] != -1) return dp[m][n];
+    // DP equation: min(come from left, come from above) + current cell
+    dp[m][n] = grid[m][n] + Math.min(helper(grid, m, n - 1, dp), helper(grid, m - 1, n, dp));
+    return dp[m][n];
+}
+```
+
+**Key Insight**: Recurse from `(m-1, n-1)` down to `(0, 0)`. Base cases handle the first row/column (only one direction possible). Cache with `dp[m][n] != -1` guard.
+
 #### **Approach Comparison**
 
 | Approach | Space | Modifies Input | Notes |
 |----------|-------|----------------|-------|
-| 2D DP | O(m×n) | No | Clearest to read |
+| Top-Down Memo | O(m×n) | No | Natural recursive thinking |
+| 2D DP | O(m×n) | No | Clearest iterative; easiest to reason about |
 | In-place DP | O(1) | Yes ⚠️ | Best space, but destructive |
-| 1D DP (1 row) | O(m) | No | Good balance |
+| 1D DP (1 row) | O(m) | No | Good balance of space and clarity |
 
 #### **⚠️ LC 64 vs LC 1631: When to Use DP vs Dijkstra**
 
@@ -569,6 +602,7 @@ public int minPathSum(int[][] grid) {
 | **Minimum Path Sum** | 64 | Sum along path, right/down only | 2D DP |
 | **Unique Paths** | 62 | Count paths (not minimize sum) | 2D DP |
 | **Unique Paths II** | 63 | With obstacles | 2D DP (skip obstacles) |
+| **Dungeon Game** | 174 | Same grid shape, but solve bottom-right → top-left (need min HP) | 2D DP (reverse direction) |
 | **Triangle** | 120 | Triangle shape, top→bottom | 1D DP (bottom-up) |
 | **Minimum Falling Path Sum** | 931 | Can move diagonally ±1 | 2D DP |
 | **Maximal Square** | 221 | Find largest square of 1s | 2D DP (`min` of 3 neighbors) |
