@@ -815,7 +815,73 @@ public class Workspace25 {
     }
 
 
+    // LC 312
+    // 17.25 - 42 pm
+    /**
+     *  -> Return the `maximum`
+     *     `coins` you can collect
+     *         by bursting the balloons wisely.
+     *
+     *  - You are asked to burst all the balloons
+     *  - if burst i ballon, can get
+     *      - nums[i - 1] * nums[i] * nums[i + 1] coins
+     *      - if the idx is OUT of boundary
+     *         - treat as 1 (otherwise)
+     *
+     *
+     *      -> coin = nums[i - 1] * nums[i] * nums[i + 1]
+     *
+     *
+     *  --------------
+     *
+     *   IDEA 1) BRUTE FORCE
+     *
+     *   IDEA 2) GREEDY ????
+     *     -> ALWAYS `burst smallest` ballon ????
+     *
+     *   IDEA 3) DP ?????
+     *
+     *     DP def:
+     *       dp[i][j]
+     *         max coin can get within [i,j] ?????
+     *
+     *     DP eq:
+     *        dp[i][j] =
+     *
+     *
+     *
+     *
+     *  --------------
+     *
+     */
+    public int maxCoins(int[] nums) {
+        // edge
 
+        int n = nums.length;
+        // /?
+        int[][] dp = new int[n][n];
+
+        // init ???
+        for(int i = 0; i < n; i++){
+            dp[i][i] = getCoin(nums, i);
+        }
+
+        for(int i = 1; i < n; i++){
+            for(int j = 1; j < n; j++){
+                // ????
+            }
+        }
+
+
+        // ????
+        return dp[0][n];
+    }
+
+
+    private int getCoin(int[] nums, int i){
+
+        return 0;
+    }
 
 
 

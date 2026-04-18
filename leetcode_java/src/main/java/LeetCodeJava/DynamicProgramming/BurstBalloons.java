@@ -40,7 +40,13 @@ public class BurstBalloons {
 //
 //    }
 
-    // V0-0-1
+    // V0-0-x
+    // https://www.youtube.com/watch?v=VFskby7lUbw
+    // https://www.youtube.com/watch?v=73r3KWiEvyk&list=PLot-Xpze53lcvx_tjrr_m2lgD2NsRHlNO
+    // https://neetcode.io/problems/burst-balloons/solution
+    // (NOTE !!! we have need solution at below V3-X)
+
+    // V2-1
     // IDEA: DP (GPT)
     /**  NOTE !!! core idea
      *
@@ -160,7 +166,7 @@ public class BurstBalloons {
      *
      *
      */
-    public int maxCoins_0_0_1(int[] nums) {
+    public int maxCoins_2_1(int[] nums) {
         int n = nums.length;
 
         // Create new array with padding 1 on both ends
@@ -190,13 +196,13 @@ public class BurstBalloons {
     }
 
 
-    // V0-1
+    // V2-2
     // IDEA: DP (gemini)
     /**
      * time = O(N^3)
      * space = O(N^2)
      */
-    public int maxCoins_0_1(int[] nums) {
+    public int maxCoins_2_2(int[] nums) {
         int n = nums.length;
         // 1. Add boundaries: [1, ...nums..., 1]
         int[] balloons = new int[n + 2];
@@ -228,13 +234,13 @@ public class BurstBalloons {
     }
 
 
-    // V0-2
+    // V2-3
     // IDEA: DP (GPT)
     /**
      * time = O(N^3)
      * space = O(N^2)
      */
-    public int maxCoins_0_2(int[] nums) {
+    public int maxCoins_2_3(int[] nums) {
         int n = nums.length;
 
         int[] arr = new int[n + 2];
@@ -268,13 +274,13 @@ public class BurstBalloons {
     }
 
 
-    // V0-3
+    // V2-4
     // IDEA: DP (gpt)
     /**
      * time = O(N^3)
      * space = O(N^2)
      */
-    public int maxCoins_0_3(int[] nums) {
+    public int maxCoins_2_4(int[] nums) {
         int n = nums.length;
 
         // Add 1 before and after to handle boundary cases easily
@@ -312,13 +318,13 @@ public class BurstBalloons {
         return maxCoins;
     }
 
-    // V0-4
+    // V2-5
     // IDEA: 2D DP (gemini)
     /**
      * time = O(N^3)
      * space = O(N^2)
      */
-    public int maxCoins_0_4(int[] nums) {
+    public int maxCoins_2_5(int[] nums) {
         int n = nums.length;
         // 1. Create a new array with boundaries 1 at both ends
         int[] balloons = new int[n + 2];
@@ -354,14 +360,14 @@ public class BurstBalloons {
     }
 
 
-    // V1-1
+    // V3-1
     // https://neetcode.io/problems/burst-balloons
     // IDEA:  Brute Force (Recursion)
     /**
      * time = O(N^3)
      * space = O(N^2)
      */
-    public int maxCoins_1_1(int[] nums) {
+    public int maxCoins_3_1(int[] nums) {
         int[] newNums = new int[nums.length + 2];
         newNums[0] = newNums[nums.length + 1] = 1;
         for (int i = 0; i < nums.length; i++) {
@@ -396,14 +402,14 @@ public class BurstBalloons {
     }
 
 
-    // V1-2
+    // V3-2
     // https://neetcode.io/problems/burst-balloons
     // IDEA: Dynamic Programming (Top-Down)
     /**
      * time = O(N^3)
      * space = O(N^2)
      */
-    public int maxCoins_1_2(int[] nums) {
+    public int maxCoins_3_2(int[] nums) {
         int n = nums.length;
         int[] newNums = new int[n + 2];
         newNums[0] = newNums[n + 1] = 1;
@@ -443,14 +449,14 @@ public class BurstBalloons {
     }
 
 
-    // V1-3
+    // V3-3
     // https://neetcode.io/problems/burst-balloons
     // IDEA: Dynamic Programming (Bottom-Up)
     /**
      * time = O(N^3)
      * space = O(N^2)
      */
-    public int maxCoins_1_3(int[] nums) {
+    public int maxCoins_3_3(int[] nums) {
         int n = nums.length;
         int[] newNums = new int[n + 2];
         newNums[0] = newNums[n + 1] = 1;

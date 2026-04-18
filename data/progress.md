@@ -2,8 +2,9 @@
 
 # 2026-04-18
 
-- LC weeekly 103
-	- lc_weekly_gemini.md
+- Needcode DP playlist
+	- https://www.youtube.com/watch?v=73r3KWiEvyk&list=PLot-Xpze53lcvx_tjrr_m2lgD2NsRHlNO
+- lc_weekly_gemini.md
 - cheatsheet (LC examples)
 	- hashmap.md (OK)
 	- set.md (OK)
