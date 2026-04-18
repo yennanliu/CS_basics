@@ -148,6 +148,10 @@ public class LongestStringChain {
         Arrays.fill(dp, 1);
         int maxChain = 1;
 
+        /** NOTE !!!
+         *
+         *  Double Loop  + DP
+         */
         // 2. Double Loop (Brute Force LIS)
         for (int j = 1; j < n; j++) {
             for (int i = 0; i < j; i++) {
@@ -164,8 +168,22 @@ public class LongestStringChain {
         return maxChain;
     }
 
+    /**  Help func:
+     *
+     *  The isPredecessor Logic: Your pointer logic was slightly reversed.
+     *  Since s2 is longer, you should skip a character in s2, not s1.
+     *
+     *  NOTE !!!
+     *    -> s2 is longer,
+     *      -> should skip a character in `s2`, not s1.
+     */
     private boolean isPredecessor(String s1, String s2) {
         // s1 is the shorter word, s2 is the longer word
+        /**  NOTE !!!
+         *
+         *  j is the pointer for s2
+         *
+         */
         int i = 0, j = 0;
         boolean usedUsedDiff = false;
 
@@ -177,9 +195,19 @@ public class LongestStringChain {
                 if (usedUsedDiff)
                     return false; // Already skipped a char in s2
                 usedUsedDiff = true;
+                /**  NOTE !!!
+                 *
+                 *  j is the pointer for s2,
+                 *
+                 *  -> should skip char in `S2` !!!!
+                 */
                 j++; // Skip the extra char in the longer word s2
             }
         }
+        /**  NOTE !!!
+         *
+         *  if can reach this point, s1 is a predecessor of s2
+         */
         return true; // If we reach here, s1 is a predecessor of s2
     }
 
