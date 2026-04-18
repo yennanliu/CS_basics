@@ -395,6 +395,7 @@ public class BurstBalloons {
                     newNums[k++] = nums[j];
                 }
             }
+            // NOTE !!! we call dfs here
             coins += dfs(newNums);
             maxCoins = Math.max(maxCoins, coins);
         }
@@ -480,6 +481,7 @@ public class BurstBalloons {
 
 
     // V2
+
 
 
 
