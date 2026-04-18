@@ -53,7 +53,7 @@ public class LongestStringChain {
 
 
     // V0-1
-    // IDEA: 1D DP (gpt)
+    // IDEA: Hashmap + string op (gpt)
     public int longestStrChain_0_1(String[] words) {
 
         /** NOTE !!
@@ -68,13 +68,27 @@ public class LongestStringChain {
          *   DP def:
          *
          *   dp[word] = longest chain ending at "word"
+         *
+         *
+         *  -> this is actually a `cache`, instead of DP.
          */
         Map<String, Integer> dp = new HashMap<>();
         int max = 1;
 
+        /** NOTE !!!
+         *
+         *   double loop
+         *
+         *    1. loop over words
+         *    2. loop over idx
+         */
         for (String word : words) {
             int best = 1;
 
+            /** NOTE !!!
+             *
+             *  in 2nd loop, we try to remove EACH of the char
+             */
             // try removing one char
             for (int i = 0; i < word.length(); i++) {
                 /** NOTE !!!
@@ -134,7 +148,7 @@ public class LongestStringChain {
 
 
     // V0-3
-    // IDEA: DP + isPredecessor (gemini)
+    // IDEA: 1D DP + isPredecessor (gemini)
     public int longestStrChain_0_3(String[] words) {
         int n = words.length;
         if (n <= 1)
@@ -143,6 +157,12 @@ public class LongestStringChain {
         // 1. Sort by length so we only look back at shorter words
         Arrays.sort(words, (a, b) -> a.length() - b.length());
 
+        /** NOTE !!!
+         *
+         *    DP def:
+         *
+         *     - dp[i] = max chain `length` ending at `index i`
+         */
         // dp[i] = max chain length ending at index i
         int[] dp = new int[n];
         Arrays.fill(dp, 1);
@@ -156,6 +176,16 @@ public class LongestStringChain {
         for (int j = 1; j < n; j++) {
             for (int i = 0; i < j; i++) {
                 // Only check if lengths differ by exactly 1
+                /** NOTE !!!
+                 *
+                 *   1.
+                 *    DP eq:
+                 *
+                 *     - if isPredecessor(words[i], words[j]):
+                 *           dp[j] = Math.max(dp[j], dp[i] + 1);
+                 *
+                 *   2. ONLY check if len diff == 1
+                 */
                 if (words[j].length() == words[i].length() + 1) {
                     if (isPredecessor(words[i], words[j])) {
                         dp[j] = Math.max(dp[j], dp[i] + 1);

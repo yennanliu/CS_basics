@@ -394,6 +394,25 @@ public class Workspace25 {
             }
         });
 
+        int n = words.length;
+        // ???
+        /**
+         *   DP def:
+         *      dp[i][j]:
+         *         is word i is `Predecessor` of word j
+         *
+         *  DP eq:
+         *
+         *      dp[i][j]
+         *         = if (isPredecessor(word_i, word_j):
+         *             dp[i][j] = max(  dp[i-1][j], dp[i-1][j-1] )
+         *
+         *
+         *
+         *
+         */
+        int[][] dp = new int[n][n]; // ???
+
         int longestLen = 1; // ??
 
         // ??? double loop
