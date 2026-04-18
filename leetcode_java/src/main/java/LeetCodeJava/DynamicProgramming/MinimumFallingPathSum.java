@@ -42,9 +42,86 @@ import java.util.Arrays;
 public class MinimumFallingPathSum {
 
     // V0
-//    public int minFallingPathSum(int[][] matrix) {
-//
-//    }
+    // IDEA: 2D DP + BOUNDARY CHECK (gpt)
+    public int minFallingPathSum(int[][] matrix) {
+
+        int n = matrix.length;
+
+        /** NOTE !!!
+         *
+         *   DP def:
+         *
+         *    dp[i][j] = minimum `sum` of a `falling path` that ends at
+         *               cell (i, j)
+         *
+         */
+        int[][] dp = new int[n][n];
+
+        /** NOTE !!! we ONLY need to init 1st row */
+        // init first row
+        for (int x = 0; x < n; x++) {
+            dp[0][x] = matrix[0][x];
+        }
+
+        /** NOTE !!! below init is NOT needed */
+//        for(int y = 0; y < n; y++){
+//            dp[y][0] += matrix[y][0];
+//        }
+
+
+        // fill dp
+        /** NOTE !!!
+         *
+         *   1. double loop
+         *   2. y starts from 1
+         *   3. x starts from 0
+         *
+         */
+        for (int y = 1; y < n; y++) {
+            // NOTE !!! x start from 0
+            for (int x = 0; x < n; x++) {
+
+                /** NOTE !!!
+                 *
+                 *   we use 3 var to make code clean
+                 *   -> up, left, right
+                 */
+                int up = dp[y - 1][x];
+                /** NOTE !!!
+                 *
+                 *  need to handel `out of boundary case`
+                 *  , use Integer.MAX_VALUE as default val
+                 */
+                int left = (x > 0) ? dp[y - 1][x - 1] : Integer.MAX_VALUE;
+                /** NOTE !!!
+                 *
+                 *  need to handel `out of boundary case`
+                 *  , use Integer.MAX_VALUE as default val
+                 */
+                int right = (x < n - 1) ? dp[y - 1][x + 1] : Integer.MAX_VALUE;
+
+
+                /** NOTE !!!
+                 *
+                 *  dp[y][x] is the min(left, right, up) + matrix[y][x]
+                 */
+                dp[y][x] = Math.min(up, Math.min(left, right)) + matrix[y][x];
+            }
+        }
+
+        // get answer from last row
+        int minPath = Integer.MAX_VALUE;
+        /** NOTE !!!
+         *
+         *  we loop bottom cell for getting `min path`
+         *  e.g. y = n-1, and x = [0, n]
+         */
+        for (int x = 0; x < n; x++) {
+            minPath = Math.min(minPath, dp[n - 1][x]);
+        }
+
+        return minPath;
+    }
 
 
     // V0-1

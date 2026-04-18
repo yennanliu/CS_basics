@@ -529,7 +529,68 @@ public class Workspace25 {
      *      *       - (row + 1, col + 1)
      *
      */
+    // 16.28 - 43 pm
+    // 2D DP ???
     public int minFallingPathSum(int[][] matrix) {
+        // edge
+
+        int n = matrix.length;
+
+        /**  DP def:
+         *
+         *  dp[i][j] = min `sum of any falling path`
+         *             to reach cell (i,j)
+         */
+        int[][] dp = new int[n][n]; // ??
+
+        // init ??
+        for(int x = 0; x < n; x++){
+            dp[0][x] = matrix[0][x]; // /???
+        }
+
+        // NOTE !!! we DON'T below init
+   /*     // /??
+        for(int y = 0; y < n; y++){
+            dp[y][0] += matrix[y][0];
+        }*/
+
+
+        int minPath = 100 * n * n; // ??
+
+
+        // ???
+        /**  DP eq
+         *
+         *  dp[i][j] = ??
+         */
+        for(int y = 1; y < n; y++){
+            for(int x = 1; x < n; x++){
+
+                // NOTE !!!
+                // we can use up, left, right val
+
+                dp[y][x] = Math.min(dp[y-1][x], Math.min(
+                        dp[y-1][x-1],
+                        x + 1 < n ? dp[y-1][x+1] : 0
+                )) + matrix[y][x]; //????
+            }
+        }
+
+        for(int x = 0; x < n; x++){
+            minPath = Math.min(minPath, dp[0][x]);
+        }
+
+        return minPath;
+    }
+
+
+
+
+
+
+
+
+    public int minFallingPathSum_99(int[][] matrix) {
         // edge
 
         int n = matrix.length;
