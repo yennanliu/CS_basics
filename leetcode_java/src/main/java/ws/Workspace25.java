@@ -345,10 +345,118 @@ public class Workspace25 {
      *  ---------------
      *
      */
+    // 15.42 - 52
+    /**
+     *
+     *  NOTE !!
+     *
+     *   wordA is a predecessor of wordB
+     *      if and only if we can insert
+     *      exactly one letter anywhere in
+     *      wordA without changing the order
+     *      of the other characters to make it equal to wordB.
+     *
+     *
+     *   -> if wordA is `predecessor` of worB
+     *      -> can ONLY insert ONE letter anywhere in wordA
+     *         to make wordA `equal to` wordB
+     *
+     *
+     * ----------
+     *
+     *
+     *
+     *  IDEA 1) SORT + DP ???
+     *
+     *   1. sort (small -> long ??)
+     *   2. dp[i][j]
+     *       =
+     *
+     *
+     *   IDEA 2) SORT + BRUTE FORCE ???
+     *
+     *
+     */
+    //  IDEA 2) SORT + BRUTE FORCE ???
     public int longestStrChain(String[] words) {
+        // edge
 
-        return 0;
+
+        List<String> list = new ArrayList<>();
+        for(String w: words){
+            list.add(w);
+        }
+        Collections.sort(list, new Comparator<String>() {
+            @Override
+            public int compare(String o1, String o2) {
+                int diff = o1.length() - o2.length();
+                return diff; // ??
+            }
+        });
+
+        int longestLen = 1; // ??
+
+        // ??? double loop
+        for(int i = 0; i < list.size(); i++){
+            for(int j = i + 1; j < list.size(); j++){
+                String s1 = list.get(i);
+                String s2 = list.get(j);
+                if(!isPredecessor(s1, s2)){
+                    break; // ??
+                }
+                longestLen = Math.max(longestLen, j - i + 1);
+            }
+        }
+
+        return longestLen;
     }
+
+
+    // ???
+    /**
+     *   *   -> if wordA is `predecessor` of worB
+     *      *      -> can ONLY insert ONE letter anywhere in wordA
+     *      *         to make wordA `equal to` wordB
+     */
+    private boolean isPredecessor(String s1, String s2){
+        if(s1.equals(s2)){
+            return true;
+        }
+//        if(s2.length() - s1.length() == 1){
+//            return true;
+//        }
+        if(s2.length() - s1.length() >= 2){
+            return false;
+        }
+
+        int quota = 1;
+
+        // ??
+        int i = 0;
+        int j = 0;
+
+        while (i < s1.length() && j < s2.length()){
+            if(s1.charAt(i) == s2.charAt(j)){
+                i += 1;
+                j += 1;
+            }else{
+                if(quota == 0){
+                    return false;
+                }
+                i += 1;
+                quota -= 1;
+            }
+        }
+
+        // ???
+        return  j == s2.length() - 1;
+    }
+
+
+
+
+
+
 
 
     // LC 931

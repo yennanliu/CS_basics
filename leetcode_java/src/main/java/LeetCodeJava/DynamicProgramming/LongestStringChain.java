@@ -133,6 +133,57 @@ public class LongestStringChain {
     }
 
 
+    // V0-3
+    // IDEA: DP + isPredecessor (gemini)
+    public int longestStrChain_0_3(String[] words) {
+        int n = words.length;
+        if (n <= 1)
+            return n;
+
+        // 1. Sort by length so we only look back at shorter words
+        Arrays.sort(words, (a, b) -> a.length() - b.length());
+
+        // dp[i] = max chain length ending at index i
+        int[] dp = new int[n];
+        Arrays.fill(dp, 1);
+        int maxChain = 1;
+
+        // 2. Double Loop (Brute Force LIS)
+        for (int j = 1; j < n; j++) {
+            for (int i = 0; i < j; i++) {
+                // Only check if lengths differ by exactly 1
+                if (words[j].length() == words[i].length() + 1) {
+                    if (isPredecessor(words[i], words[j])) {
+                        dp[j] = Math.max(dp[j], dp[i] + 1);
+                    }
+                }
+            }
+            maxChain = Math.max(maxChain, dp[j]);
+        }
+
+        return maxChain;
+    }
+
+    private boolean isPredecessor(String s1, String s2) {
+        // s1 is the shorter word, s2 is the longer word
+        int i = 0, j = 0;
+        boolean usedUsedDiff = false;
+
+        while (i < s1.length() && j < s2.length()) {
+            if (s1.charAt(i) == s2.charAt(j)) {
+                i++;
+                j++;
+            } else {
+                if (usedUsedDiff)
+                    return false; // Already skipped a char in s2
+                usedUsedDiff = true;
+                j++; // Skip the extra char in the longer word s2
+            }
+        }
+        return true; // If we reach here, s1 is a predecessor of s2
+    }
+
+
 
 
     // V1-1
