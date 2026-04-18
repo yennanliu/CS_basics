@@ -28,12 +28,64 @@ public class Workspace25 {
      *
      *
      */
-    // 16.55 - 17.05
+    // 16.55 - 17.20
+    // IDEA 1) 2 PASS DFS (color)
     public int countSubIslands(int[][] grid1, int[][] grid2) {
+        // edge
+
+        int l = grid1.length;
+        int w = grid1[0].length;
+
+        // int subIsland = 0;
+        for(int y = 0; y < l; y++){
+            for(int x = 0; x < w; x++){
+                if(grid2[y][x] == 1 && grid1[y][x] == 0){
+                    colorHelper99(grid1, grid2, x, y);
+                }
+            }
+        }
+
+        int subIsland = 0;
+
+        for(int y = 0; y < l; y++){
+            for(int x = 0; x < w; x++){
+                if(grid2[y][x] == 1 && grid1[y][x] == 1){
+                    colorHelper99(grid1, grid2, x, y);
+                    subIsland += 1;
+                }
+            }
+        }
+
+        return subIsland;
 
 
-        return 0;
     }
+
+    private void colorHelper99(int[][] grid1, int[][] grid2, int x, int y){
+        // edge ??
+
+        int l = grid1.length;
+        int w = grid1[0].length;
+
+        // mark as new `color`
+        grid2[y][x] = -1;
+
+        int[][] moves = new int[][] { {0,1}, {0,-1}, {1,0}, {-1,0} };
+
+        for(int[] m: moves){
+            int x_ = x + m[0];
+            int y_ = y + m[1];
+            // ???
+            if(x_ >= 0 && x_ < w && y_ >= 0 && y_ < l && grid2[y_][x_] == 1){
+                colorHelper99(grid1, grid2, x_, y_);
+            }
+        }
+
+    }
+
+
+
+
 
 
 
