@@ -1124,6 +1124,13 @@ public class Workspace25 {
     }
 
 
+    // LC 1248
+    public int numberOfSubarrays(int[] nums, int k) {
+
+        return 0;
+    }
+
+
 
 
 
