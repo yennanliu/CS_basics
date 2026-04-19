@@ -893,6 +893,19 @@ public class Workspace25 {
 
 
     // LC 1292
+    // 11.03 - 13 am
+    /**
+     *  ->  return the `maximum` `side-length` of a
+     *      square with a `sum` `less than or equal` to threshold
+     *     - OR return 0 if there is NO such square.
+     *
+     *   ------------------
+     *
+     *
+     *   ------------------
+     *
+     *
+     */
     public int maxSideLength(int[][] mat, int threshold) {
 
         return 0;

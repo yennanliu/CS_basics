@@ -30,19 +30,16 @@ jobs:
       with:
         node-version: '20'
 
-    - name: Create package.json and install dependencies
-      run: |
-        cat > package.json << 'PKGJSON'
-        {
-          "name": "cs-basics-site",
-          "version": "1.0.0",
-          "dependencies": {
-            "markdown-it": "^14.0.0",
-            "markdown-it-anchor": "^9.0.1"
-          }
-        }
-        PKGJSON
-        npm install
+    - name: Cache npm dependencies
+      uses: actions/cache@v4
+      with:
+        path: ~/.npm
+        key: ${{ runner.os }}-npm-${{ hashFiles('package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-npm-
+
+    - name: Install dependencies
+      run: npm ci
 
     - name: Create website directory and copy images
       run: |

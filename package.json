@@ -1,0 +1,10 @@
+{
+  "name": "cs-basics-site",
+  "version": "1.0.0",
+  "description": "GitHub Pages build dependencies for CS_basics",
+  "private": true,
+  "dependencies": {
+    "markdown-it": "^14.0.0",
+    "markdown-it-anchor": "^9.0.1"
+  }
+}
