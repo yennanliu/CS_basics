@@ -42,7 +42,25 @@ public class MaximumSideLengthOfASquareWithSumLessThanOrEqualToThreshold {
 
 
     // V0-1
-    // IDEA: 2D PREFIX SUM (fixed by gpt)
+    // IDEA: 2D PREFIX SUM + MATH (fixed by gpt)
+    /**  NOTE !!!!
+     *
+     *   the prefix fix sum `formula`:
+     *
+     *    The sum of a square from $(r1, c1)$ to $(r2, c2)$ is:
+     *
+     *       -> sum = p[r2][c2] - p[r1-1][c2] - p[r2][c1-1] + p[r1-1][c1-1]
+     */
+    /**
+     *      * ### 📊 Complexity Analysis
+     *      *
+     *      * | Metric | Complexity | Explanation |
+     *      * | :--- | :--- | :--- |
+     *      * | **Time** | **$O(M \times N)$** | Linear pass to build prefix sum and linear pass to find side length. |
+     *      * | **Space** | **$O(M \times N)$** | To store the 2D prefix sum array. |
+     *      *
+     *      * ---
+     */
     public int maxSideLength_0_1(int[][] mat, int threshold) {
         int m = mat.length;
         int n = mat[0].length;
