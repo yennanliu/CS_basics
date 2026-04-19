@@ -58,6 +58,13 @@ public class SmallestSubtreeWithAllTheDeepestNodes {
     /** NOTE !!! this is a LCA (Lowest Common Ancestor) problem */
     // V0
     // IDEA: LCA (POST order) + custom class (fixed by gemini)
+    /** NOTE !!!
+     *
+     *  we need below custom class !!!
+     *
+     *    - TreeNode
+     *    - dist
+     */
     class Result {
         TreeNode node;
         int dist;
@@ -69,6 +76,7 @@ public class SmallestSubtreeWithAllTheDeepestNodes {
     }
 
     public TreeNode subtreeWithAllDeepest(TreeNode root) {
+
         return dfs(root).node;
     }
 
@@ -114,6 +122,12 @@ public class SmallestSubtreeWithAllTheDeepestNodes {
          *
          */
         if (left.dist > right.dist) {
+            /** NOTE !!!
+             *
+             *  we return `Result` type and `updated dist` (left.dist + 1),
+             *  instead of `left`
+             *
+             */
             return new Result(left.node, left.dist + 1);
         }
 
@@ -123,6 +137,12 @@ public class SmallestSubtreeWithAllTheDeepestNodes {
          *   if right is `deeper` -> search right
          */
         if (right.dist > left.dist) {
+            /** NOTE !!!
+             *
+             *  we return `Result` type and `updated dist` (left.dist + 1),
+             *  instead of `right`
+             *
+             */
             return new Result(right.node, right.dist + 1);
         }
 
@@ -130,8 +150,11 @@ public class SmallestSubtreeWithAllTheDeepestNodes {
         // -> This current node is the LCA for all deepest nodes in its subtree
         /** NOTE !!!
          *
-         *   if left == right
+         * 1.   if left == right
          *   -> cur node is the LCA (answer)
+         *
+         *
+         * 2. the updated dist is `left.dist + 1`
          */
         return new Result(node, left.dist + 1);
     }

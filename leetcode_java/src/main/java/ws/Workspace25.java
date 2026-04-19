@@ -1021,18 +1021,99 @@ public class Workspace25 {
 
 
     // LC 865
-    // 12.39 - 49 pm
+    // 12.39 - 59 pm
     /**
      *
+     *  -> Return the smallest subtree
+     *  such that it contains all the deepest
+     *  nodes in the original tree.
+     *
+     *
+     *  ----------------
+     *
+     *   IDEA 1)  pre-order traverse + DFS ??? + LCA ??
+     *           (lowest common ancestor)
+     *
+     *
+     *   ----------------
      *
      *
      */
-    public TreeNode subtreeWithAllDeepest(TreeNode root) {
+    // IDEA: LCA (POST order) + custom class (fixed by gemini)
+    class Result {
+        TreeNode node;
+        int dist;
 
-        return null;
+        Result(TreeNode node, int dist) {
+            this.node = node;
+            this.dist = dist;
+        }
     }
 
 
+    // ???
+    //TreeNode deepstNode = null;
+    //TreeNode deepestNode = null;
+    //Result res = null;
+    public TreeNode subtreeWithAllDeepest(TreeNode root) {
+
+        //TreeNode deepstNode = root;
+
+        //Result  res = dfsDeepstNode(new Result(root, 0));
+        Result  res = dfsDeepstNode(root);
+        // ???
+        return res.node;
+    }
+
+    // ???
+    private Result dfsDeepstNode(TreeNode node){
+        // /??
+//        TreeNode node = result.node;
+//        int dist = result.dist;
+
+        // edge
+        if(node == null){
+            //return 0; // ???
+            //return false; // ???
+            // ???
+            return new Result(node, 0);
+        }
+
+//        boolean _left = dfsDeepstNode(root.left);
+//        boolean _right = dfsDeepstNode(root.right);
+
+        Result _left = dfsDeepstNode(node.left);
+        Result _right = dfsDeepstNode(node.right);
+
+
+        // NOTE !!! below
+        if(_left.dist > _right.dist){
+            return new Result(_left.node, _left.dist + 1);
+        }else if(_left.dist < _right.dist){
+            //return _left;
+            return new Result(_right.node, _right.dist + 1);
+        }
+
+        return new Result(node, _left.dist + 1); // ???
+
+/*
+        // ????
+        if(node.left == null && node.right == null){
+            return new Result(node, dist); // ???
+
+        }else{
+            if(node.left == null){
+                return new Result(node.right, dist + 1); // ???
+            }
+            return new Result(node.left, dist + 1); // ???
+        }
+*/
+
+        //return null;
+
+
+
+    }
 
 
 
