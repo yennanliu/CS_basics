@@ -40,6 +40,85 @@ public class MaximumSideLengthOfASquareWithSumLessThanOrEqualToThreshold {
 //
 //    }
 
+
+    // V0-1
+    // IDEA: 2D PREFIX SUM (fixed by gpt)
+    public int maxSideLength_0_1(int[][] mat, int threshold) {
+        int m = mat.length;
+        int n = mat[0].length;
+
+        // build prefix sum with padding (m+1 x n+1)
+        int[][] prefix = new int[m + 1][n + 1];
+
+        for (int i = 1; i <= m; i++) {
+            for (int j = 1; j <= n; j++) {
+                prefix[i][j] = mat[i - 1][j - 1]
+                        + prefix[i - 1][j]
+                        + prefix[i][j - 1]
+                        - prefix[i - 1][j - 1];
+            }
+        }
+
+        int maxLen = 0;
+
+        // try all square sizes
+        for (int len = 1; len <= Math.min(m, n); len++) {
+            for (int i = len; i <= m; i++) {
+                for (int j = len; j <= n; j++) {
+
+                    int sum = prefix[i][j]
+                            - prefix[i - len][j]
+                            - prefix[i][j - len]
+                            + prefix[i - len][j - len];
+
+                    if (sum <= threshold) {
+                        maxLen = len;
+                    }
+                }
+            }
+        }
+
+        return maxLen;
+    }
+
+    // V0-2
+    // IDEA: 2D Prefix Sum + Greedy (gemini)
+    public int maxSideLength_0_2(int[][] mat, int threshold) {
+        int m = mat.length;
+        int n = mat[0].length;
+        // Use n+1, m+1 to avoid boundary checks (0th row/col stay 0)
+        int[][] P = new int[m + 1][n + 1];
+
+        // 1. Build 2D Prefix Sum table
+        for (int i = 1; i <= m; i++) {
+            for (int j = 1; j <= n; j++) {
+                P[i][j] = mat[i - 1][j - 1] + P[i - 1][j] + P[i][j - 1] - P[i - 1][j - 1];
+            }
+        }
+
+        int maxSide = 0;
+        // 2. Greedy search: only check if we can increase the current maxSide
+        for (int i = 1; i <= m; i++) {
+            for (int j = 1; j <= n; j++) {
+                // Can we find a square of length (maxSide + 1) ending at (i, j)?
+                int nextSide = maxSide + 1;
+                if (i >= nextSide && j >= nextSide) {
+                    // Formula to get sum of square with side 'nextSide' ending at (i, j)
+                    int r1 = i - nextSide, c1 = j - nextSide;
+                    int currentSum = P[i][j] - P[r1][j] - P[i][c1] + P[r1][c1];
+
+                    if (currentSum <= threshold) {
+                        maxSide = nextSide;
+                    }
+                }
+            }
+        }
+
+        return maxSide;
+    }
+
+
+
     // V1-1
     // IDEA: BINARY SEARCH
     // https://leetcode.com/problems/maximum-side-length-of-a-square-with-sum-less-than-or-equal-to-threshold/editorial/
