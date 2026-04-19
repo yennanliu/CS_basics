@@ -34,7 +34,7 @@
     .navbar {
       background: var(--surface);
       border-bottom: 1px solid var(--border);
-      padding: 1rem 2rem;
+      padding: 0 2rem;
       position: sticky;
       top: 0;
       z-index: 100;
@@ -43,14 +43,38 @@
       max-width: 1200px;
       margin: 0 auto;
       display: flex;
-      justify-content: space-between;
-      align-items: center;
+      align-items: stretch;
+      gap: 1rem;
+    }
+    .nav-tabs {
+      display: flex;
+      align-items: stretch;
+      flex: 1;
+    }
+    .nav-tab {
+      font-size: 0.9rem;
+      color: var(--text-light);
+      text-decoration: none;
+      padding: 1rem 0.9rem;
+      border-bottom: 2px solid transparent;
+      white-space: nowrap;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .nav-tab:hover {
+      color: var(--text);
+    }
+    .nav-tab.active {
+      color: var(--text);
+      font-weight: 600;
+      border-bottom-color: var(--text);
     }
     .logo {
       font-size: 1.2rem;
       font-weight: 700;
       color: var(--text);
       text-decoration: none;
+      padding: 1rem 0;
+      white-space: nowrap;
     }
     .theme-btn {
       background: none;
@@ -389,14 +413,15 @@
   <nav class="navbar">
     <div class="nav-content">
       <a href="index.html" class="logo">CS Basics</a>
-      <a href="./index.html" style="font-size:0.9rem;color:var(--text);text-decoration:none;padding:0.4rem 0.9rem;">Home</a>
-      <a href="./cheatsheets.html" style="font-size:0.9rem;color:var(--text);text-decoration:none;padding:0.4rem 0.9rem;">Cheat Sheets</a>
-      <a href="./patterns.html" style="font-size:0.9rem;color:var(--text);text-decoration:none;padding:0.4rem 0.9rem;">Pattern Recognition</a>
-      <a href="./lc-explorer.html" style="font-size:0.9rem;color:var(--text);text-decoration:none;padding:0.4rem 0.9rem;">LC Explorer</a>
-      <a href="lc-random-picker.html" style="font-size:0.9rem;color:var(--text);text-decoration:none;padding:0.4rem 0.9rem;">🎲 Random Picker</a>
-      <a href="./faqs.html" style="font-size:0.9rem;color:var(--text);text-decoration:none;padding:0.4rem 0.9rem;">FAQs</a>
-      <a href="./resources.html" style="font-size:0.9rem;color:var(--text);text-decoration:none;padding:0.4rem 0.9rem;">Resources</a>
-      <a href="./algo_demo/index.html" style="font-size:0.9rem;color:var(--text);text-decoration:none;padding:0.4rem 0.9rem;">Visualizer</a>
+      <div class="nav-tabs">
+        <a href="./lc-explorer.html" class="nav-tab active">LC Explorer</a>
+        <a href="lc-random-picker.html" class="nav-tab">🎲 Random Picker</a>
+        <a href="./cheatsheets.html" class="nav-tab">Cheat Sheets</a>
+        <a href="./faqs.html" class="nav-tab">FAQs</a>
+        <a href="./patterns.html" class="nav-tab">Patterns</a>
+        <a href="./resources.html" class="nav-tab">Resources</a>
+        <a href="./algo_demo/index.html" class="nav-tab">Visualizer</a>
+      </div>
       <button class="theme-btn" onclick="toggleTheme()" aria-label="Toggle dark mode">🌙</button>
     </div>
   </nav>
