@@ -336,11 +336,9 @@ const htmlTemplate = (title, bodyContent, currentPage = 'home', basePath = '') =
   <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
   <link rel="stylesheet" href="${basePath}style.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <link rel="stylesheet" href="${basePath}vendor/fonts.css">
+  <link rel="stylesheet" href="${basePath}vendor/highlight/github-dark.min.css">
+  <script src="${basePath}vendor/highlight/highlight.min.js"></script>
   <script>
   // Apply theme before render to prevent flash
   (function() {

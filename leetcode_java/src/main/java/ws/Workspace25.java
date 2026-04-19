@@ -895,6 +895,10 @@ public class Workspace25 {
      *
      *  ----------------
      *
+     *   IDEA 1) BRUTE FORCE ???
+     *
+     *   IDEA 2) PREFIX SUM ????
+     *
      *
      *  ----------------
      *

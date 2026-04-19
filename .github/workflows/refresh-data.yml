@@ -1,0 +1,39 @@
+name: Refresh LeetCode Data
+
+on:
+  schedule:
+    - cron: '0 2 * * 1'  # Every Monday at 02:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Setup Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.x'
+
+    - name: Run categorize script
+      run: python3 script/categorize_lc_by_type.py
+
+    - name: Commit updated data files
+      run: |
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+        git add data/LC_Practice_*_By_Category.md
+        if git diff --cached --quiet; then
+          echo "No changes to commit"
+        else
+          git commit -m "chore: auto-refresh LC category data [skip ci]"
+          git push
+        fi

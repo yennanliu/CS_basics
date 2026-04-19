@@ -13,6 +13,8 @@ on:
       - 'ensure-nav-pages.js'
       - 'package.json'
       - 'package-lock.json'
+      - 'style.css'
+      - 'vendor/**'
   pull_request:
     branches: [ master ]
     paths:
@@ -25,6 +27,8 @@ on:
       - 'ensure-nav-pages.js'
       - 'package.json'
       - 'package-lock.json'
+      - 'style.css'
+      - 'vendor/**'
   workflow_dispatch:
 
 jobs:
@@ -58,6 +62,15 @@ jobs:
         mkdir -p _site/faqs
         node build-site.js
         cp style.css _site/style.css
+        mkdir -p _site/vendor/highlight
+        cp node_modules/highlight.js/styles/github-dark.min.css _site/vendor/highlight/github-dark.min.css
+        curl -sSfL "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" \
+          -o _site/vendor/highlight/highlight.min.js
+        cp vendor/fonts.css _site/vendor/fonts.css
+        curl -sSfL "https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7W0Q5nw.woff2" \
+          -o _site/vendor/inter.woff2
+        curl -sSfL "https://fonts.gstatic.com/s/jetbrainsmono/v24/tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPxDcwgknk-4.woff2" \
+          -o _site/vendor/jetbrains-mono.woff2
 
     - name: Validate generated HTML files
       run: |
