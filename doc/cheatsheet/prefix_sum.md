@@ -1147,7 +1147,84 @@ public int maxSumTwoNoOverlap_1(int[] nums, int firstLen, int secondLen) {
 }
 ```
 
-### 2-9) Sum of Distances (Pattern 7)
+### 2-9) Maximum Side Length of a Square with Sum ≤ Threshold (LC 1292)
+
+**Pattern:** 2D Prefix Sum + Binary Search **or** 2D Prefix Sum + Greedy
+
+**Core Idea:**
+1. Build a 2D prefix sum table (size `(m+1) x (n+1)`) so any square's sum is computed in O(1).
+2. **Binary Search approach**: Binary search on side length `[1, min(m,n)]`. For each candidate length `mid`, scan all valid top-left corners and check if any square sum ≤ threshold. → O(m·n·log(min(m,n)))
+3. **Greedy approach**: Single pass over all cells; at each cell `(i,j)`, only test if a square of side `maxSide+1` fits. If yes, increment `maxSide`. → O(m·n)
+
+**2D Prefix Sum formula (square ending at (i,j) with side `k`):**
+```
+sum = P[i][j] - P[i-k][j] - P[i][j-k] + P[i-k][j-k]
+```
+
+**Binary Search approach (Java):**
+```java
+// LC 1292 - V1 Binary Search
+public int maxSideLength(int[][] mat, int threshold) {
+    int m = mat.length, n = mat[0].length;
+    int[][] P = new int[m + 1][n + 1];
+    for (int i = 1; i <= m; i++)
+        for (int j = 1; j <= n; j++)
+            P[i][j] = mat[i-1][j-1] + P[i-1][j] + P[i][j-1] - P[i-1][j-1];
+
+    int l = 1, r = Math.min(m, n), ans = 0;
+    while (l <= r) {
+        int mid = (l + r) / 2;
+        boolean found = false;
+        outer:
+        for (int i = mid; i <= m; i++) {
+            for (int j = mid; j <= n; j++) {
+                int sum = P[i][j] - P[i-mid][j] - P[i][j-mid] + P[i-mid][j-mid];
+                if (sum <= threshold) { found = true; break outer; }
+            }
+        }
+        if (found) { ans = mid; l = mid + 1; }
+        else r = mid - 1;
+    }
+    return ans;
+}
+```
+
+**Greedy approach (Java):**
+```java
+// LC 1292 - V0 Greedy (O(m*n), optimal)
+public int maxSideLength(int[][] mat, int threshold) {
+    int m = mat.length, n = mat[0].length;
+    int[][] P = new int[m + 1][n + 1];
+    for (int i = 1; i <= m; i++)
+        for (int j = 1; j <= n; j++)
+            P[i][j] = mat[i-1][j-1] + P[i-1][j] + P[i][j-1] - P[i-1][j-1];
+
+    int maxSide = 0;
+    for (int i = 1; i <= m; i++) {
+        for (int j = 1; j <= n; j++) {
+            int k = maxSide + 1;           // only try to improve by 1
+            if (i >= k && j >= k) {
+                int sum = P[i][j] - P[i-k][j] - P[i][j-k] + P[i-k][j-k];
+                if (sum <= threshold) maxSide++;
+            }
+        }
+    }
+    return maxSide;
+}
+```
+
+**Why Greedy works:** We only need to know the *maximum* achievable side length. Scanning left-to-right, top-to-bottom ensures we never miss a valid square — if a larger square exists somewhere, it will be discovered when we reach its bottom-right corner.
+
+**Similar LCs:**
+| Problem | LC # | Similarity |
+|---------|------|------------|
+| Range Sum Query 2D | 304 | Core 2D prefix sum template |
+| Matrix Block Sum | 1314 | Fixed-radius 2D range query |
+| Number of Submatrices That Sum to Target | 1074 | 2D prefix sum + count (harder) |
+| Maximal Square | 221 | Max square in matrix (DP approach) |
+| Largest 1-Bordered Square | 1139 | Max square with border condition |
+
+### 2-11) Sum of Distances (Pattern 7)
 
 ```java
 // java
