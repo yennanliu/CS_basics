@@ -35,7 +35,8 @@
 	- intervals.md  (OK)
 	- java_trick.md
 	- kadane_algorithm.md (OK)
-	- linked_list.md  (TODO: LC examples) - `2-9) Swap Nodes in Pairs`
+	- linked_list.md  (OK)
+	- math.md (TODO: LC examples) 
 
 - to review
 - needcode `250` - similar LC by AI
@@ -348,6 +349,8 @@
 		- 1186,978
 	- todo (20260418)
 		- 92,725,19,143
+	- todo (20260419)
+		- 24,817
 
  	==================================
 
