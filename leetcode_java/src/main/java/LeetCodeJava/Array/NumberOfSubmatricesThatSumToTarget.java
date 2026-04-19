@@ -52,6 +52,102 @@ public class NumberOfSubmatricesThatSumToTarget {
 //
 //    }
 
+    // V0-1
+    // IDEA: PREFIX SUM + HASHMAP (gemini)
+    public int numSubmatrixSumTarget_0_1(int[][] matrix, int target) {
+        int rows = matrix.length;
+        int cols = matrix[0].length;
+        int count = 0;
+
+        // 1. Calculate prefix sums for each row
+        // This allows us to get the sum of any row segment in O(1)
+        for (int i = 0; i < rows; i++) {
+            for (int j = 1; j < cols; j++) {
+                matrix[i][j] += matrix[i][j - 1];
+            }
+        }
+
+        // 2. Iterate through all possible pairs of columns (left and right)
+        for (int left = 0; left < cols; left++) {
+            for (int right = left; right < cols; right++) {
+
+                // Map stores: current prefix sum -> frequency
+                Map<Integer, Integer> map = new HashMap<>();
+                map.put(0, 1); // Base case: a sum of 0 is seen once
+
+                int currentRunningSum = 0;
+
+                // 3. For the fixed column range, iterate through rows (1D subarray sum logic)
+                for (int i = 0; i < rows; i++) {
+                    // Sum of the current row between 'left' and 'right' columns
+                    int rowSum = matrix[i][right] - (left > 0 ? matrix[i][left - 1] : 0);
+                    currentRunningSum += rowSum;
+
+                    // If (currentRunningSum - target) exists in map, it means there is
+                    // a submatrix ending at row 'i' that sums to target.
+                    if (map.containsKey(currentRunningSum - target)) {
+                        count += map.get(currentRunningSum - target);
+                    }
+
+                    // Update the map with the current prefix sum
+                    map.put(currentRunningSum, map.getOrDefault(currentRunningSum, 0) + 1);
+                }
+            }
+        }
+
+        return count;
+    }
+
+
+    // V0-2
+    // IDEA: PREFIX SUM + HASHMAP (gpt)
+    public int numSubmatrixSumTarget_0_2(int[][] matrix, int target) {
+        int m = matrix.length;
+        int n = matrix[0].length;
+
+        int result = 0;
+
+        // Fix top row
+        for (int top = 0; top < m; top++) {
+
+            int[] colSum = new int[n];
+
+            // Expand bottom row
+            for (int bottom = top; bottom < m; bottom++) {
+
+                // Build compressed 1D array
+                for (int c = 0; c < n; c++) {
+                    colSum[c] += matrix[bottom][c];
+                }
+
+                // Count subarrays with sum = target
+                result += subarraySum_0_2(colSum, target);
+            }
+        }
+
+        return result;
+    }
+
+    // LC 560: Subarray Sum Equals K
+    private int subarraySum_0_2(int[] nums, int target) {
+        Map<Integer, Integer> map = new HashMap<>();
+        map.put(0, 1);
+
+        int sum = 0;
+        int count = 0;
+
+        for (int num : nums) {
+            sum += num;
+
+            count += map.getOrDefault(sum - target, 0);
+
+            map.put(sum, map.getOrDefault(sum, 0) + 1);
+        }
+
+        return count;
+    }
+
+
     // V1-1
     // IDEA: HASHMAP
     // https://leetcode.com/problems/number-of-submatrices-that-sum-to-target/solutions/4636406/cjavapythonjavascript-2-approaches-expla-g6af/
